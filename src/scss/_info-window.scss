@@ -1,0 +1,55 @@
+.oltb-info-window {
+    position: absolute;
+    background-color: $background-theme-light;
+    -webkit-filter: drop-shadow(0 0 .25rem rgba(0, 0, 0, .4));
+    filter: drop-shadow(0 0 .25rem rgba(0, 0, 0, .4));
+    padding: 1rem;
+    border-radius: .5rem;
+    bottom: .625rem;
+    left: 0;
+    transform: translateX(-50%);
+    min-width: 320px;
+
+    &::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        width: 0;
+        height: 0;
+        border-left: .625rem solid transparent;
+        border-right: .625rem solid transparent;
+        border-top: .625rem solid #FFFFFF;
+        transform: translate(-50%, 100%);
+    }
+
+    &__close {
+        text-decoration: none;
+        position: absolute;
+        font-size: 1.5rem;
+        color: $color-gray-dark;
+        top: .313rem;
+        right: .313rem;
+    }
+
+    &__content {
+        color: $color-gray-dark;
+
+        p {
+            font-size: 1rem;
+        }
+    }
+}
+
+body.oltb-dark .oltb-info-window {
+    background-color: $background-theme-dark;
+        
+    &::after {
+        border-top: .625rem solid $background-theme-dark;
+    }
+
+    &__close,
+    &__content {
+        color: $background-theme-light;
+    }
+}

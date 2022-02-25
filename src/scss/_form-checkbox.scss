@@ -1,0 +1,65 @@
+.oltb-checkbox-wrapper {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+
+    &__title {
+        margin-left: .25rem;
+    }
+
+    &__checkbox {
+        width: 1.25rem;
+        height: 1.25rem;
+        flex-shrink: 0;
+        background-color: #FFFFFF;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+        border: 1px solid $form-input-border-color;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        -webkit-print-color-adjust: exact;
+        color-adjust: exact;
+        border-radius: .25rem;
+        transition: border-color 150ms ease-in-out, box-shadow 150ms ease-in-out;
+    
+        &:checked {
+            background-color: $color-blue-dark;
+            border-color: $color-blue-dark;
+        }
+    
+        &:checked[type="checkbox"] {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10l3 3l6-6'/%3e%3c/svg%3e");
+        }
+    
+        &:focus {
+            border: 1px solid $color-blue-dark;
+            box-shadow: 0 0 0 $shadow-focus-width rgba($color-blue-dark, .3);
+        }
+    }
+}
+
+body.oltb-dark .oltb-checkbox-wrapper {
+    &__title {
+        color: #FFFFFF;
+    }
+
+    &__checkbox {
+        background-color: $color-gray-mid;
+        border: none;
+
+        &:checked {
+            background-color: $color-blue-dark;
+        }
+
+        &:focus {
+            border: none;
+            box-shadow: 0 0 0 $shadow-focus-width rgba($color-blue-light, .7);
+        }
+    }
+}

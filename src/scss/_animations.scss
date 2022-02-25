@@ -1,0 +1,89 @@
+.oltb-animations {
+    &--linear-spinner {
+        animation: oltb-spinner 1500ms linear infinite;
+    }
+
+    &--bouncy-spinner {
+        animation: oltb-spinner 1500ms ease infinite;
+    }
+
+    &--slide-in {
+        animation: oltb-slide-in 250ms forwards;
+    }
+
+    &--slide-out {
+        animation: oltb-slide-out 250ms forwards;
+    }
+
+    &--bounce {
+        animation: oltb-bounce 250ms forwards;
+    }
+
+    &--centered-bounce {
+        animation: oltb-centered-bounce 250ms forwards;
+    }
+}
+
+@keyframes oltb-spinner {
+    0% { 
+        transform: rotate(0deg); 
+    }
+
+    100% { 
+        transform: rotate(360deg); 
+    }
+}
+
+@keyframes oltb-slide-in {
+    0% {
+        transform: translateX(100%);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+@keyframes oltb-slide-out {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+@keyframes oltb-bounce {
+    0% { 
+        transform: scale(0.95);
+        opacity: .6;
+    }
+
+    50% { 
+        transform: scale(1.05);
+        opacity: .8;
+    }
+
+    100% { 
+        transform: scale(1.0);
+        opacity: 1;
+    }
+}
+
+@keyframes oltb-centered-bounce {
+    0% { 
+        transform: scale(0.95) translateX(-52.5%);
+        opacity: .6;
+    }
+
+    50% { 
+        transform: scale(1.05) translateX(-47.5%);
+        opacity: .8;
+    }
+
+    100% { 
+        transform: scale(1.0) translateX(-50%);
+        opacity: 1;
+    }
+}

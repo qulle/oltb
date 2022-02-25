@@ -1,0 +1,181 @@
+.oltb-btn {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 400;
+    text-align: center;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-color: transparent;
+    font-size: 1rem;
+    border-radius: .25rem;
+    border: none;
+    cursor: pointer;
+    box-shadow: $box-shadow-mid;
+    color: #FFFFFF;
+    padding: .5rem;
+
+    &:disabled {
+        opacity: .5;
+        pointer-events: none;
+    }
+
+    &--round {
+        border-radius: 100%;
+    }
+
+    &--blank {
+        box-shadow: none;
+        padding: 0;
+    }
+
+    &--light-blue {
+        background-color: $color-blue-light;
+
+        &:focus {
+            box-shadow: 0 0 0 $shadow-focus-width rgba($color-blue-light, .5);
+        }
+    }
+
+    &--mid-blue {
+        background-color: $color-blue-mid;
+
+        &:focus {
+            box-shadow: 0 0 0 $shadow-focus-width rgba($color-blue-mid, .5);
+        }
+    }
+
+    &--dark-blue {
+        background-color: $color-blue-dark;
+
+        &:focus {
+            box-shadow: 0 0 0 $shadow-focus-width rgba($color-blue-dark, .5);
+        }
+    }
+
+    &--light-green {
+        background-color: $color-green-light;
+
+        &:focus {
+            box-shadow: 0 0 0 $shadow-focus-width rgba($color-green-light, .5);
+        }
+    }
+
+    &--mid-green {
+        background-color: $color-green-mid;
+
+        &:focus {
+            box-shadow: 0 0 0 $shadow-focus-width rgba($color-green-mid, .5);
+        }
+    }
+
+    &--dark-green {
+        background-color: $color-green-dark;
+
+        &:focus {
+            box-shadow: 0 0 0 $shadow-focus-width rgba($color-green-dark, .5);
+        }
+    }
+
+    &--light-yellow {
+        background-color: $color-yellow-light;
+
+        &:focus {
+            box-shadow: 0 0 0 $shadow-focus-width rgba($color-yellow-light, .5);
+        }
+    }
+
+    &--mid-yellow {
+        background-color: $color-yellow-mid;
+
+        &:focus {
+            box-shadow: 0 0 0 $shadow-focus-width rgba($color-yellow-mid, .5);
+        }
+    }
+
+    &--dark-yellow {
+        background-color: $color-yellow-dark;
+
+        &:focus {
+            box-shadow: 0 0 0 $shadow-focus-width rgba($color-yellow-dark, .5);
+        }
+    }
+
+    &--light-orange {
+        background-color: $color-orange-light;
+
+        &:focus {
+            box-shadow: 0 0 0 $shadow-focus-width rgba($color-orange-light, .5);
+        }
+    }
+
+    &--mid-orange {
+        background-color: $color-orange-mid;
+
+        &:focus {
+            box-shadow: 0 0 0 $shadow-focus-width rgba($color-orange-mid, .5);
+        }
+    }
+
+    &--dark-orange {
+        background-color: $color-orange-dark;
+
+        &:focus {
+            box-shadow: 0 0 0 $shadow-focus-width rgba($color-orange-dark, .5);
+        }
+    }
+
+    &--light-red {
+        background-color: $color-red-light;
+
+        &:focus {
+            box-shadow: 0 0 0 $shadow-focus-width rgba($color-red-light, .5);
+        }
+    }
+
+    &--mid-red {
+        background-color: $color-red-mid;
+
+        &:focus {
+            box-shadow: 0 0 0 $shadow-focus-width rgba($color-red-mid, .5);
+        }
+    }
+
+    &--dark-red {
+        background-color: $color-red-dark;
+
+        &:focus {
+            box-shadow: 0 0 0 $shadow-focus-width rgba($color-red-dark, .5);
+        }
+    }
+
+    &--light-gray {
+        background-color: $color-gray-light;
+
+        &:focus {
+            box-shadow: 0 0 0 $shadow-focus-width rgba($color-gray-light, .5);
+        }
+    }
+
+    &--mid-gray {
+        background-color: $color-gray-mid;
+
+        &:focus {
+            box-shadow: 0 0 0 $shadow-focus-width rgba($color-gray-mid, .5);
+        }
+    }
+
+    &--dark-gray {
+        background-color: $color-gray-dark;
+
+        &:focus {
+            box-shadow: 0 0 0 $shadow-focus-width rgba($color-gray-dark, .5);
+        }
+    }
+}
+
+body.oltb-using-keyboard .oltb-btn--blank:focus {
+    box-shadow: 0 0 0 $shadow-focus-width rgba($color-gray-mid, .5);
+}

@@ -1,0 +1,32 @@
+// Override : default attribution style from ol
+body #map .ol-attribution {
+    padding: .25rem;
+    background-color: $background-theme-light;
+    bottom: .5rem;
+    right: .5rem;
+    border-radius: 2px;
+    box-shadow: $box-shadow-mid;
+    
+    ul, a {
+        color: $background-theme-dark;
+        text-shadow: none;
+    }
+
+    button {
+        background-color: $color-gray-mid;
+        font-weight: normal;
+
+        &:hover,
+        &:focus {
+            background-color: $color-gray-mid;
+        }
+    }
+}
+
+body.oltb-dark #map .ol-attribution {
+    background-color: $background-theme-dark;
+
+    ul, a {
+        color: $background-theme-light;
+    }
+}

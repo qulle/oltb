@@ -1,0 +1,37 @@
+.oltb-select {
+    display: block;
+    width: 100%;
+    min-width: 150px;
+    padding: .25rem 2.25rem .25rem .5rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    background-color: #FFFFFF;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right .75rem center;
+    background-size: 16px 12px;
+    border: 1px solid $form-input-border-color;
+    border-radius: .25rem;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    word-wrap: normal;
+    outline: none;
+
+    &:focus {
+        border: 1px solid rgba($color-blue-dark, .5);
+        box-shadow: 0 0 0 $shadow-focus-width rgba($color-blue-dark, .3);
+    }
+}
+
+body.oltb-dark .oltb-select {
+    background-color: $color-gray-mid;
+    border: 1px solid $color-gray-dark;
+    
+    &:focus {
+        border: 1px solid $color-gray-dark;
+        box-shadow: 0 0 0 $shadow-focus-width rgba($color-gray-mid, .5);
+    }
+}

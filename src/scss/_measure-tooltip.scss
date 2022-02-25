@@ -1,0 +1,26 @@
+.oltb-measure-tooltip {
+    position: relative;
+    background-color: rgba(0, 0, 0, .65);
+    border-radius: 2px;
+    color: $color-yellow-dark;
+    padding: .25rem .5rem;
+    white-space: nowrap;
+    font-size: .75rem;
+    font-weight: bold;
+
+    &::before {
+        border-top: .375rem solid rgba(0, 0, 0, .65);
+        border-right: .375rem solid transparent;
+        border-left: .375rem solid transparent;
+        content: '';
+        position: absolute;
+        bottom: -.375rem;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    &--ended {
+        color: #FFFFFF;
+        font-weight: bold;
+    }
+}

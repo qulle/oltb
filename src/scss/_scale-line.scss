@@ -1,0 +1,25 @@
+// Override : default scale-line style from ol
+body .ol-scale-line {
+    border-radius: 2px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: $background-theme-light;
+    padding: .5rem;
+    box-shadow: $box-shadow-mid;
+
+    &-inner {
+        border-width: 2px;
+        padding-bottom: 4px;
+        border-color: $background-theme-dark;
+        color: $background-theme-dark;
+    }
+}
+
+body.oltb-dark .ol-scale-line {
+    background-color: $background-theme-dark;
+
+    &-inner {
+        border-color: $background-theme-light;
+        color: $color-yellow-dark;
+    }
+}
