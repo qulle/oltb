@@ -406,7 +406,7 @@ controls: defaultControls({
     }),
     new Info({
         title: 'Hey!', 
-        content: '<p>This is a <em>modal window</em>, here you can place some text about you application or links to external resources.</p>'
+        content: '<p>This is a <em>modal window</em>, here you can place some text about your application or links to external resources.</p>'
     }),
     new Help({
         url: 'https://github.com/qulle/oltb',
