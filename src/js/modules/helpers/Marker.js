@@ -18,7 +18,7 @@ const generateMarker = function(options = {}) {
         info,
         lat,
         lon,
-        backgroundColor = '#0166A5',
+        backgroundColor = '#0166A5FF',
         color = '#FFFFFF',
         iconName,
         icon = defaultIcon,
