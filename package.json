@@ -22,12 +22,12 @@
     "dependencies": {
         "a-color-picker": "^1.2.1",
         "axios": "^0.26.0",
-        "ol": "^6.12.0",
+        "ol": "^6.13.0",
         "proj4": "^2.7.5",
         "tippy.js": "^6.3.7"
     },
     "devDependencies": {
         "parcel-bundler": "^1.12.5",
-        "sass": "^1.49.8"
+        "sass": "^1.49.9"
     }
 }

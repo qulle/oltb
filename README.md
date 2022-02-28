@@ -1,5 +1,5 @@
 # OpenLayers Toolbar - OLTB
-### Lightweight GIS toolbar developed for OpenLayers 6.12.0. The toolbar can be filled with any number of tools and can be used in both horizontal and vertical mode and is available in both light and dark theme.
+### Lightweight GIS toolbar developed for OpenLayers 6.13.0. The toolbar can be filled with any number of tools and can be used in both horizontal and vertical mode and is available in both light and dark theme.
 
 ## Current version 1.0.0-beta1 - [Demo](https://qulle.github.io/oltb/)
 
@@ -564,7 +564,7 @@ For some tools and features data is stored on the global window object. The name
 All classes and id:s in the project are also prefixed with the namespace `oltb`.
 
 ## External Github projects used in the creation of this project
-1. [OpenLayers 6.12.0](https://openlayers.org/en/v6.12.0/apidoc/)
+1. [OpenLayers 6.13.0](https://openlayers.org/en/v6.13.0/apidoc/)
 2. [Tippy.js 6.3.7](https://atomiks.github.io/tippyjs/)
 3. [Bootstrap Icons](https://icons.getbootstrap.com/)
 4. [A Color Picker 1.2.1](https://github.com/narsenico/a-color-picker)
