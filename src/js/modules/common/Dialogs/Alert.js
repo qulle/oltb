@@ -26,7 +26,7 @@ class Alert extends DialogBase {
 
         const okButton = document.createElement('button');
         okButton.setAttribute('type', 'button');
-        okButton.className = 'oltb-dialog__btn oltb-btn oltb-btn--mid-blue';
+        okButton.className = 'oltb-dialog__btn oltb-btn oltb-btn--blue-mid';
         okButton.innerText = confirmText;
         okButton.addEventListener('click', (event) => {
             this.close();

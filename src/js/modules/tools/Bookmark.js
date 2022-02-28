@@ -48,7 +48,7 @@ class Bookmark extends Control {
             <div id="oltb-bookmarks-box" class="oltb-toolbox-section">
                 <div class="oltb-toolbox-section__group">
                     <h4 class="oltb-toolbox-section__title">Bookmarks</h4>
-                    <button type="button" id="oltb-add-bookmark-btn" class="oltb-btn oltb-btn--dark-green oltb-w-100">Add bookmark</button>
+                    <button type="button" id="oltb-add-bookmark-btn" class="oltb-btn oltb-btn--green-dark oltb-w-100">Add bookmark</button>
                 </div>
                 <div class="oltb-toolbox-section__group">
                     <ul id="oltb-bookmark-stack" class="oltb-toolbox-list"></ul>

@@ -51,7 +51,7 @@ class Layers extends Control {
             <div id="oltb-layers-box" class="oltb-toolbox-section">
                 <div class="oltb-toolbox-section__group">
                     <h4 class="oltb-toolbox-section__title">Map layers</h4>
-                    <button type="button" id="oltb-add-map-layer-btn" class="oltb-btn oltb-btn--dark-green oltb-w-100">Create map layer</button>
+                    <button type="button" id="oltb-add-map-layer-btn" class="oltb-btn oltb-btn--green-dark oltb-w-100">Create map layer</button>
                 </div>
                 <div class="oltb-toolbox-section__group">
                     <ul id="oltb-map-layer-stack" class="oltb-toolbox-list"></ul>
@@ -60,7 +60,7 @@ class Layers extends Control {
                     <h4 class="oltb-toolbox-section__title">Feature layers</h4>
                     <div class="oltb-input-button-group">
                         <input type="text" id="oltb-add-feature-layer-txt" class="oltb-input" placeholder="Layer name">
-                        <button type="button" id="oltb-add-feature-layer-btn" class="oltb-btn oltb-btn--dark-green oltb-tippy" title="Create feature layer">
+                        <button type="button" id="oltb-add-feature-layer-btn" class="oltb-btn oltb-btn--green-dark oltb-tippy" title="Create feature layer">
                             ${getIcon({
                                 path: SVGPaths.PlusSmall,
                                 width: 20,

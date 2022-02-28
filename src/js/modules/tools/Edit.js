@@ -42,7 +42,7 @@ class Edit extends Control {
             <div id="oltb-edit-settings-box" class="oltb-toolbox-section">
                 <div class="oltb-toolbox-section__group">
                     <h4 class="oltb-toolbox-section__title">Edit tool</h4>
-                    <button type="button" disabled id="oltb-delete-selected-btn" class="oltb-btn oltb-btn--dark-red oltb-w-100">Delete selected features</button>
+                    <button type="button" disabled id="oltb-delete-selected-btn" class="oltb-btn oltb-btn--red-dark oltb-w-100">Delete selected features</button>
                 </div>
             </div>
         `);

@@ -21,7 +21,7 @@ class DebugInfoModal extends ModalBase {
             text: 'Copy debug info',
             attributes: {
                 type: 'button',
-                class: 'oltb-btn oltb-btn--dark-green oltb-mt-1'
+                class: 'oltb-btn oltb-btn--green-dark oltb-mt-1'
             }
         });
 
@@ -39,7 +39,7 @@ class DebugInfoModal extends ModalBase {
             text: 'Log map object',
             attributes: {
                 type: 'button',
-                class: 'oltb-btn oltb-btn--dark-green oltb-mt-1 oltb-ml-0625'
+                class: 'oltb-btn oltb-btn--green-dark oltb-mt-1 oltb-ml-0625'
             }
         });
 

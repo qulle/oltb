@@ -199,7 +199,7 @@ class MarkerModal extends ModalBase {
             text: `${isEdit ? 'Save changes' : 'Create marker'}`, 
             attributes: {
                 type: 'button', 
-                class: 'oltb-dialog__btn oltb-btn oltb-btn--dark-green'
+                class: 'oltb-dialog__btn oltb-btn oltb-btn--green-dark'
             }
         });
 
@@ -222,7 +222,7 @@ class MarkerModal extends ModalBase {
             text: 'Cancel',
             attributes: {
                 type: 'button', 
-                class: `oltb-dialog__btn oltb-btn ${isDarkTheme() ? 'oltb-btn--mid-gray' : 'oltb-btn--dark-gray'}`
+                class: `oltb-dialog__btn oltb-btn ${isDarkTheme() ? 'oltb-btn--gray-mid' : 'oltb-btn--gray-dark'}`
             }
         });
 
