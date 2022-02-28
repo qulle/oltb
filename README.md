@@ -528,7 +528,10 @@ import ContextMenu from './modules/common/ContextMenu';
 
 To create a context menu call the constructor and give a unique name as the first argument and a selector to trigger the menu. The context menu class extends the Control class from OpenLayers.
 ```javascript
-map.addControl(new ContextMenu('main.map.context.menu', '#map canvas'));
+map.addControl(new ContextMenu({
+    name: 'main.map.context.menu', 
+    selector: '#map canvas'
+});
 ```
 
 To add items to the context menu use the function `addContextMenuItem` and give the name that matches the context menu aswell as the name/label of the item, the icon and a function to call when the item is clicked.
