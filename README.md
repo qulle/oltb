@@ -6,6 +6,31 @@
 ## Screenshot
 ![Screenshot of the toolbar in action](images/demo.png?raw=true "Screenshot of the toolbar in action")
 
+## Table of contents
+1. [Browser support](#browser-support)
+2. [Get started](#get-started)
+3. [Architecture model](#architecture-model)
+4. [About the code](#about-the-code)
+    1. [HTML](#html)
+    2. [SCSS](#scss)
+    3. [Colors](#colors)
+    4. [JavaScript](#javascript)
+    5. [Callback functions and constructor parameters](#callback-functions-and-constructor-parameters)
+    6. [Hidden tools](#hidden-tools)
+    7. [Shortcut keys](#shortcut-keys)
+    8. [Custom projections](#custom-projections)
+    9. [Dialogs](#dialogs)
+    10. [Modal](#modal)
+    11. [Toast](#toast)
+    12. [Context menu](#context-menu)
+    13. [State Management](#state-management)
+    14. [Debug tool](#debug-tool)
+    15. [OLTB namespace](#oltb-namespace)
+5. [External GitHub projects](#external-github-projects)
+6. [Maps used in the demo](#maps-used-in-the-demo)
+7. [License](#license)
+8. [Author](#author)
+
 ## Browser support 
 | Desktop browser | Version | Mobile browser | Version |
 | ------------- | ------------- | ------------- | ------------- |
@@ -598,7 +623,7 @@ For some tools and features data is stored on the global window object. The name
 
 All classes and id:s in the project are also prefixed with the namespace `oltb`.
 
-## External Github projects used in the creation of this project
+## External GitHub projects
 1. [OpenLayers 6.13.0](https://openlayers.org/en/v6.13.0/apidoc/)
 2. [Tippy.js 6.3.7](https://atomiks.github.io/tippyjs/)
 3. [Bootstrap Icons](https://icons.getbootstrap.com/)
@@ -609,6 +634,9 @@ All classes and id:s in the project are also prefixed with the namespace `oltb`.
 1. [OpenStreetMap](https://www.openstreetmap.org/)
 2. [Maps.Stamen.Com](http://maps.stamen.com/)
 3. [ArcGIS](https://www.arcgis.com/index.html)
+
+## License
+[BSD-2-Clause License](LICENSE)
 
 ## Author
 [Qulle](https://github.com/qulle/)
