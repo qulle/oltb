@@ -52,6 +52,8 @@ class Coordinates extends Control {
 
         this.tooltipOverlay = tooltipOverlay;
 
+        SettingsManager.addSetting('copyCoordinatesOnClick', {state: true, text: 'Coordinates tool - Copy coordinates on click'});
+
         window.addEventListener('keyup', (event) => {
             if(isShortcutKeyOnly(event, 'c')) {
                 this.handleClick(event);

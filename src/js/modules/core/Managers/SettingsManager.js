@@ -12,9 +12,8 @@ class SettingsManager {
         ['keyboardZoom', {state: true, text: 'Enable zooming using keyboard'}],
         ['keyboardPan', {state: true, text: 'Enable panning using keyboard'}],
         ['selectVectorMapShapes', {state: false, text: 'Enable select of shapes in vector map layers'}],
-        ['showAttributions', {state: true, text: 'Show attributions (toggle requires reload of page)'}],
+        ['showAttributions', {state: true, text: 'Show attributions (toggle requires page reload)'}],
         ['alwaysNewLayers', {state: false, text: 'Always create new layer when selecting tool'}],
-        ['copyCoordinatesOnClick', {state: true, text: 'Copy coordinates on click (Coordinates tool)'}],
     ]);
 
     static init() {
@@ -26,22 +25,28 @@ class SettingsManager {
         });
     }
 
+    static addSetting(key, valueObj) {
+        this.settings.set(key, valueObj);
+    }
+
     static getSettings() {
         return this.settings;
     }
 
-    static setSetting(name, state) {
-        this.settings.get(name).state = state;
-        this.localStorage[name] = state;
+    static setSetting(key, state) {
+        this.settings.get(key).state = state;
+        this.localStorage[key] = state;
 
         StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
     }
 
-    static getSetting(name) {
-        return this.settings.get(name).state;
+    static getSetting(key) {
+        return this.settings.get(key).state;
     }
 }
 
-SettingsManager.init();
+window.addEventListener('DOMContentLoaded', function() {
+    SettingsManager.init();
+});
 
 export default SettingsManager;
