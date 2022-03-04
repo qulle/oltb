@@ -52,6 +52,7 @@ import InfoWindowManager from './modules/core/Managers/InfoWindowManager';
 import { mapElement } from './modules/core/ElementReferences';
 import './modules/helpers/Prototypes';
 import './modules/helpers/Accessibility';
+import './modules/helpers/SlideToggle';
 import './modules/epsg/Projections';
 
 const map = new Map({

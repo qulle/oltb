@@ -8,6 +8,8 @@ import { toolButtonsTippySingleton } from '../core/ToolbarTooltips';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { isHorizontal } from '../helpers/IsRowDirection';
 
+const LOCAL_STORAGE_NODE_NAME = 'direction';
+
 class DirectionToggle extends Control {
     constructor(callbacksObj = {}) {
         super({
@@ -67,7 +69,7 @@ class DirectionToggle extends Control {
     }
 
     clearDirection() {
-        StateManager.updateStateObject('direction', 'oltb-col');
+        StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, 'col');
         toolbarElement.classList.remove('row');
         document.body.classList.remove('oltb-row');
 
@@ -88,7 +90,7 @@ class DirectionToggle extends Control {
             direction = 'row';
             tooltipDirection = 'bottom';
 
-            StateManager.updateStateObject('direction', 'oltb-row');
+            StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, 'row');
             toolbarElement.classList.add('row');
             document.body.classList.add('oltb-row');
 

@@ -7,6 +7,8 @@ import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { isDarkTheme } from '../helpers/IsDarkTheme';
 
+const LOCAL_STORAGE_NODE_NAME = 'theme';
+
 class ThemeToggle extends Control {
     constructor(callbacksObj = {}) {
         super({
@@ -55,7 +57,7 @@ class ThemeToggle extends Control {
     }
 
     clearTheme() {
-        StateManager.updateStateObject('theme', 'oltb-light');
+        StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, 'light');
         toolbarElement.classList.remove('dark');
         document.body.classList.remove('oltb-dark');
 
@@ -72,7 +74,7 @@ class ThemeToggle extends Control {
         }else {
             theme = 'dark';
 
-            StateManager.updateStateObject('theme', 'oltb-dark');
+            StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, 'dark');
             toolbarElement.classList.add('dark');
             document.body.classList.add('oltb-dark');
 

@@ -10,6 +10,7 @@ import LayerTypes from '../core/olTypes/LayerTypes';
 import FormatTypes from '../core/olTypes/FormatTypes';
 import Config from '../core/Config';
 import InfoWindowManager from '../core/Managers/InfoWindowManager';
+import StateManager from '../core/Managers/StateManager';
 import Toast from '../common/Toast';
 import { Control } from 'ol/control';
 import { toolboxElement, toolbarElement } from '../core/ElementReferences';
@@ -18,7 +19,16 @@ import { addContextMenuItem } from '../common/ContextMenu';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 
-const layerButtonDefaultClasses = 'oltb-func-btn';
+const LAYER_BUTTON_DEFAULT_CLASSES = 'oltb-func-btn';
+/* 
+    Because this tool has two different sections that can be collapsed it's not a viable solution to have a single collapsed property. 
+    Unfortunately this results in two longer names stored in localStorage.
+*/
+const LOCAL_STORAGE_NODE_NAME = 'layersTool';
+const LOCAL_STORAGE_PROPS = {
+    'oltb-map-layers-toolbox-collapsed': false,
+    'oltb-feature-layers-toolbox-collapsed': false,
+};
 
 class Layers extends Control {
     constructor(callbacksObj = {}) {
@@ -47,41 +57,74 @@ class Layers extends Control {
         this.active = false;
         this.callbacksObj = callbacksObj;
 
+        // Load potential stored data from localStorage
+        const loadedPropertiesFromLocalStorage = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
+
+        // Merge the potential data replacing the default values
+        this.localStorage = {...LOCAL_STORAGE_PROPS, ...loadedPropertiesFromLocalStorage};
+
         toolboxElement.insertAdjacentHTML('beforeend', `
-            <div id="oltb-layers-box" class="oltb-toolbox-section">
-                <div class="oltb-toolbox-section__group">
-                    <h4 class="oltb-toolbox-section__title">Map layers</h4>
-                    <button type="button" id="oltb-add-map-layer-btn" class="oltb-btn oltb-btn--green-dark oltb-w-100">Create map layer</button>
+            <div id="oltb-layers-toolbox" class="oltb-toolbox-section">
+                <div class="oltb-toolbox-section__header">
+                    <h4 class="oltb-toolbox-section__title oltb-toggleable" data-oltb-toggleable-target="oltb-map-layers-toolbox-collapsed">
+                        Map layers
+                        <span class="oltb-toolbox-section__icon oltb-tippy" title="Toggle section"></span>
+                    </h4>
                 </div>
-                <div class="oltb-toolbox-section__group">
-                    <ul id="oltb-map-layer-stack" class="oltb-toolbox-list"></ul>
-                </div>
-                <div class="oltb-toolbox-section__group">
-                    <h4 class="oltb-toolbox-section__title">Feature layers</h4>
-                    <div class="oltb-input-button-group">
-                        <input type="text" id="oltb-add-feature-layer-txt" class="oltb-input" placeholder="Layer name">
-                        <button type="button" id="oltb-add-feature-layer-btn" class="oltb-btn oltb-btn--green-dark oltb-tippy" title="Create feature layer">
-                            ${getIcon({
-                                path: SVGPaths.PlusSmall,
-                                width: 20,
-                                height: 20,
-                                fill: 'none',
-                                stroke: 'rgb(255, 255, 255)'
-                            })}
-                        </button>
+                <div class="oltb-toolbox-section__groups" id="oltb-map-layers-toolbox-collapsed" style="display: ${this.localStorage['oltb-map-layers-toolbox-collapsed'] ? 'none' : 'block'}">
+                    <div class="oltb-toolbox-section__group">
+                        <button type="button" id="oltb-add-map-layer-btn" class="oltb-btn oltb-btn--green-dark oltb-w-100">Create map layer</button>
+                    </div>
+                    <div class="oltb-toolbox-section__group">
+                        <ul id="oltb-map-layer-stack" class="oltb-toolbox-list"></ul>
                     </div>
                 </div>
-                <div class="oltb-toolbox-section__group">
-                    <ul id="oltb-feature-layer-stack" class="oltb-toolbox-list oltb-toolbox-list--selectable"></ul>
+                <div class="oltb-toolbox-section__header">
+                    <h4 class="oltb-toolbox-section__title oltb-toggleable" data-oltb-toggleable-target="oltb-feature-layers-toolbox-collapsed">
+                        Feature layers
+                        <span class="oltb-toolbox-section__icon oltb-tippy" title="Toggle section"></span>
+                    </h4>
+                </div>
+                <div class="oltb-toolbox-section__groups" id="oltb-feature-layers-toolbox-collapsed" style="display: ${this.localStorage['oltb-feature-layers-toolbox-collapsed'] ? 'none' : 'block'}">
+                    <div class="oltb-toolbox-section__group">
+                        <div class="oltb-input-button-group">
+                            <input type="text" id="oltb-add-feature-layer-txt" class="oltb-input" placeholder="Layer name">
+                            <button type="button" id="oltb-add-feature-layer-btn" class="oltb-btn oltb-btn--green-dark oltb-tippy" title="Create feature layer">
+                                ${getIcon({
+                                    path: SVGPaths.PlusSmall,
+                                    width: 20,
+                                    height: 20,
+                                    fill: 'none',
+                                    stroke: 'rgb(255, 255, 255)'
+                                })}
+                            </button>
+                        </div>
+                    </div>
+                    <div class="oltb-toolbox-section__group">
+                        <ul id="oltb-feature-layer-stack" class="oltb-toolbox-list oltb-toolbox-list--selectable"></ul>
+                    </div>
                 </div>
             </div>
         `);
 
-        const layersToolbox = document.querySelector('#oltb-layers-box');
+        const layersToolbox = document.querySelector('#oltb-layers-toolbox');
         this.layersToolbox = layersToolbox;
         
         const mapLayerStack = layersToolbox.querySelector('#oltb-map-layer-stack');
         this.mapLayerStack = mapLayerStack;
+
+        const toggleableTriggers = layersToolbox.querySelectorAll('.oltb-toggleable');
+        toggleableTriggers.forEach(toggle => {
+            toggle.addEventListener('click', (event) => {
+                event.preventDefault();
+                
+                const targetName = toggle.dataset.oltbToggleableTarget;
+                document.getElementById(targetName).slideToggle(200, (collapsed) => {
+                    this.localStorage[targetName] = collapsed;
+                    StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+                });
+            });
+        });
 
         LayerManager.getMapLayers().forEach(mapLayer => {
             this.createMapLayerItem(mapLayer);
@@ -338,7 +381,7 @@ class Layers extends Control {
         const deleteButton = DOM.createElement({element: 'button',
             attributes: {
                 type: 'button',
-                class: layerButtonDefaultClasses + ' oltb-func-btn--delete oltb-tippy',
+                class: LAYER_BUTTON_DEFAULT_CLASSES + ' oltb-func-btn--delete oltb-tippy',
                 title: 'Delete layer',
             }
         });
@@ -359,7 +402,7 @@ class Layers extends Control {
         const downloadButton = DOM.createElement({element: 'button', 
             attributes: {
                 type: 'button',
-                class: layerButtonDefaultClasses + ' oltb-func-btn--download oltb-tippy',
+                class: LAYER_BUTTON_DEFAULT_CLASSES + ' oltb-func-btn--download oltb-tippy',
                 title: 'Download layer as geojson'
             }
         });
@@ -385,7 +428,7 @@ class Layers extends Control {
         const editButton = DOM.createElement({element: 'button',
             attributes: {
                 type: 'button',
-                class: layerButtonDefaultClasses + ' oltb-func-btn--edit oltb-tippy',
+                class: LAYER_BUTTON_DEFAULT_CLASSES + ' oltb-func-btn--edit oltb-tippy',
                 title: 'Rename layer'
             }
         });
@@ -419,7 +462,7 @@ class Layers extends Control {
         const visibilityButton = DOM.createElement({element: 'button',
             attributes: {
                 type: 'button',
-                class: layerButtonDefaultClasses + ' oltb-func-btn--visibility oltb-tippy',
+                class: LAYER_BUTTON_DEFAULT_CLASSES + ' oltb-func-btn--visibility oltb-tippy',
                 title: 'Toggle visibility'
             }
         });

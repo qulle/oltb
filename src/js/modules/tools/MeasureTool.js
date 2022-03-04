@@ -14,6 +14,13 @@ import { onFeatureChange } from '../helpers/Measure';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 
+const LOCAL_STORAGE_NODE_NAME = 'measureTool';
+const LOCAL_STORAGE_PROPS = {
+    collapsed: false,
+    toolTypeIndex: 0,
+    strokeColor: '#3B4352'
+};
+
 class MeasureTool extends Control {
     constructor(callbacksObj = {}) {
         super({
@@ -40,47 +47,67 @@ class MeasureTool extends Control {
         this.button = button;
         this.active = false;
         this.callbacksObj = callbacksObj;
+        
+        // Load potential stored data from localStorage
+        const loadedPropertiesFromLocalStorage = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
 
-        // Load potential stored settings from local storage
-        let lsSettings = JSON.parse(StateManager.getStateObject('measureTool')) || {};
-
-        const lsMeasureType = 'measureType' in lsSettings ? lsSettings['measureType'] : '0';
-        const lsStrokeColor = 'strokeColor' in lsSettings ? lsSettings['strokeColor'] : '#3B4352';
+        // Merge the potential data replacing the default values
+        this.localStorage = {...LOCAL_STORAGE_PROPS, ...loadedPropertiesFromLocalStorage};
 
         toolboxElement.insertAdjacentHTML('beforeend', `
-            <div id="oltb-measure-settings-box" class="oltb-toolbox-section">
-                <div class="oltb-toolbox-section__group">
-                    <h4 class="oltb-toolbox-section__title">Measure tool</h4>
-                    <label class="oltb-label" for="oltb-measure-type">Type</label>
-                    <select id="oltb-measure-type" class="oltb-select">
-                        <option value="LineString">Length</option>
-                        <option value="Polygon">Area</option>
-                    </select>
+            <div id="oltb-measure-toolbox" class="oltb-toolbox-section">
+                <div class="oltb-toolbox-section__header">
+                    <h4 class="oltb-toolbox-section__title oltb-toggleable" data-oltb-toggleable-target="oltb-measure-toolbox-collapsed">
+                        Measure tool
+                        <span class="oltb-toolbox-section__icon oltb-tippy" title="Toggle section"></span>
+                    </h4>
                 </div>
-                <div class="oltb-toolbox-section__group">
-                    <label class="oltb-label" for="oltb-measure-stroke-color">Stroke color</label>
-                    <div id="oltb-measure-stroke-color" class="oltb-color-input oltb-color-tippy" data-oltb-color-target="#oltb-measure-stroke-color" data-oltb-color="${lsStrokeColor}" tabindex="0">
-                        <div class="oltb-color-input__inner" style="background-color: ${lsStrokeColor};"></div>
+                <div class="oltb-toolbox-section__groups" id="oltb-measure-toolbox-collapsed" style="display: ${this.localStorage.collapsed ? 'none' : 'block'}">
+                    <div class="oltb-toolbox-section__group">
+                        <label class="oltb-label" for="oltb-measure-type">Type</label>
+                        <select id="oltb-measure-type" class="oltb-select">
+                            <option value="LineString">Length</option>
+                            <option value="Polygon">Area</option>
+                        </select>
+                    </div>
+                    <div class="oltb-toolbox-section__group">
+                        <label class="oltb-label" for="oltb-measure-stroke-color">Stroke color</label>
+                        <div id="oltb-measure-stroke-color" class="oltb-color-input oltb-color-tippy" data-oltb-color-target="#oltb-measure-stroke-color" data-oltb-color="${this.localStorage.strokeColor}" tabindex="0">
+                            <div class="oltb-color-input__inner" style="background-color: ${this.localStorage.strokeColor};"></div>
+                        </div>
                     </div>
                 </div>
             </div>
         `);
 
-        const measureSettingsBox = document.querySelector('#oltb-measure-settings-box');
-        const toolType = measureSettingsBox.querySelector('#oltb-measure-type');
-        const strokeColor = measureSettingsBox.querySelector('#oltb-measure-stroke-color');
+        const measureToolbox = document.querySelector('#oltb-measure-toolbox');
+        const toolType = measureToolbox.querySelector('#oltb-measure-type');
+        const strokeColor = measureToolbox.querySelector('#oltb-measure-stroke-color');
+
+        const toggleableTriggers = measureToolbox.querySelectorAll('.oltb-toggleable');
+        toggleableTriggers.forEach(toggle => {
+            toggle.addEventListener('click', (event) => {
+                event.preventDefault();
+                
+                const targetName = toggle.dataset.oltbToggleableTarget;
+                document.getElementById(targetName).slideToggle(200, (collapsed) => {
+                    this.localStorage.collapsed = collapsed;
+                    StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+                });
+            });
+        });
 
         toolType.addEventListener('change', () => updateTool());
         strokeColor.addEventListener('color-change', () => updateTool());
 
-        toolType.selectedIndex = lsMeasureType;
+        toolType.selectedIndex = this.localStorage.toolTypeIndex;
 
         const updateTool = () => {
             // Store current values in local storage
-            lsSettings['measureType'] = toolType.selectedIndex;
-            lsSettings['strokeColor'] = strokeColor.getAttribute('data-oltb-color');;
+            this.localStorage.toolTypeIndex = toolType.selectedIndex;
+            this.localStorage.strokeColor = strokeColor.getAttribute('data-oltb-color');;
 
-            StateManager.updateStateObject('measureTool', JSON.stringify(lsSettings));
+            StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
 
             this.selectMeasureTool(
                 toolType.value,
@@ -88,7 +115,7 @@ class MeasureTool extends Control {
             );
         }
 
-        this.measureSettingsBox = measureSettingsBox;
+        this.measureToolbox = measureToolbox;
         this.toolType = toolType;
         this.strokeColor = strokeColor;
 
@@ -109,7 +136,7 @@ class MeasureTool extends Control {
         });
 
         window.addEventListener('oltb.settings.cleared', () => {
-            lsSettings = {};
+            this.localStorage = LOCAL_STORAGE_PROPS;
         });
     }
 
@@ -151,7 +178,7 @@ class MeasureTool extends Control {
         }
 
         this.active = !this.active;
-        this.measureSettingsBox.classList.toggle('oltb-toolbox-section--show');
+        this.measureToolbox.classList.toggle('oltb-toolbox-section--show');
         this.button.classList.toggle('oltb-tool-button--active');
     }
 

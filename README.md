@@ -558,6 +558,38 @@ To insert a separator in the menu add an empty object.
 addContextMenuItem('main.map.context.menu', {});
 ```
 
+### State Management
+To use state management start by importing the following module.
+```javascript
+import StateManager from './modules/core/Managers/StateManager';
+```
+
+State management is done through localStorage. First add a node name and an object to store default values.
+```javascript
+const LOCAL_STORAGE_NODE_NAME = 'drawTool';
+const LOCAL_STORAGE_PROPS = {
+    collapsed: false,
+    toolTypeIndex: 5,
+    strokeColor: '#4A86B8',
+    strokeWidth: 2,
+    fillColor: '#FFFFFFFF'
+};
+```
+
+These two lines merges potential stored data into a runtime copy of the default properties located in `LOCAL_STORAGE_PROPS`. The spread operator is a really nice feature for this operation.
+```javascript
+// Load potential stored data from localStorage
+const loadedPropertiesFromLocalStorage = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
+
+// Merge the potential data replacing the default values
+this.localStorage = {...LOCAL_STORAGE_PROPS, ...loadedPropertiesFromLocalStorage};
+```
+
+To update the state in localStorage, call the `updateStateObject` method and pass in the node name along with the updated state object.
+```javascript
+StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+```
+
 ### Debug tool
 To make debugging and diagnosting errors easier there is a tool named `DebugInfo`. This tool will gather information about the map such as zoomlevel, location, layers, rotation, projection etc and displays the information in a modal window. To hide the debug tool as default, add the parameter `showWhenGetParameter: true` and add the get parameter to the url `/?debug=true` to show the tool.
 
@@ -571,6 +603,7 @@ All classes and id:s in the project are also prefixed with the namespace `oltb`.
 2. [Tippy.js 6.3.7](https://atomiks.github.io/tippyjs/)
 3. [Bootstrap Icons](https://icons.getbootstrap.com/)
 4. [A Color Picker 1.2.1](https://github.com/narsenico/a-color-picker)
+5. [Plain JS Slidetoggle 2.0.0](https://github.com/ericbutler555/plain-js-slidetoggle)
 
 ## Maps used in the demo
 1. [OpenStreetMap](https://www.openstreetmap.org/)

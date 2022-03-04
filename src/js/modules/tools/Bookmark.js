@@ -14,7 +14,12 @@ import { randomNumber } from '../helpers/Random';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 
-const bookmarkButtonDefaultClasses = 'oltb-func-btn';
+const BOOKMARK_BUTTON_DEFAULT_CLASSES = 'oltb-func-btn';
+const LOCAL_STORAGE_NODE_NAME = 'bookmarkTool';
+const LOCAL_STORAGE_PROPS = {
+    collapsed: false,
+    bookmarks: []
+};
 
 class Bookmark extends Control {
     constructor(callbacksObj = {}) {
@@ -42,31 +47,56 @@ class Bookmark extends Control {
         this.button = button;
         this.active = false;
         this.callbacksObj = callbacksObj;
-        this.bookmarks = JSON.parse(StateManager.getStateObject('bookmarks')) || [];
+        
+        // Load potential stored data from localStorage
+        const loadedPropertiesFromLocalStorage = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
+
+        // Merge the potential data replacing the default values
+        this.localStorage = {...LOCAL_STORAGE_PROPS, ...loadedPropertiesFromLocalStorage};
 
         toolboxElement.insertAdjacentHTML('beforeend', `
-            <div id="oltb-bookmarks-box" class="oltb-toolbox-section">
-                <div class="oltb-toolbox-section__group">
-                    <h4 class="oltb-toolbox-section__title">Bookmarks</h4>
-                    <button type="button" id="oltb-add-bookmark-btn" class="oltb-btn oltb-btn--green-dark oltb-w-100">Add bookmark</button>
+            <div id="oltb-bookmarks-toolbox" class="oltb-toolbox-section">
+                <div class="oltb-toolbox-section__header">
+                    <h4 class="oltb-toolbox-section__title oltb-toggleable" data-oltb-toggleable-target="oltb-bookmarks-toolbox-collapsed">
+                        Bookmarks
+                        <span class="oltb-toolbox-section__icon oltb-tippy" title="Toggle section"></span>
+                    </h4>
                 </div>
-                <div class="oltb-toolbox-section__group">
-                    <ul id="oltb-bookmark-stack" class="oltb-toolbox-list"></ul>
+                <div class="oltb-toolbox-section__groups" id="oltb-bookmarks-toolbox-collapsed" style="display: ${this.localStorage.collapsed ? 'none' : 'block'}">
+                    <div class="oltb-toolbox-section__group">
+                        <button type="button" id="oltb-add-bookmark-btn" class="oltb-btn oltb-btn--green-dark oltb-w-100">Add bookmark</button>
+                    </div>
+                    <div class="oltb-toolbox-section__group">
+                        <ul id="oltb-bookmark-stack" class="oltb-toolbox-list"></ul>
+                    </div>
                 </div>
             </div>
         `);
 
-        const bookmarksBox = document.querySelector('#oltb-bookmarks-box');
-        this.bookmarksBox = bookmarksBox;
+        const bookmarksToolbox = document.querySelector('#oltb-bookmarks-toolbox');
+        this.bookmarksToolbox = bookmarksToolbox;
 
-        const addBookmarkBtn = bookmarksBox.querySelector('#oltb-add-bookmark-btn');
+        const addBookmarkBtn = bookmarksToolbox.querySelector('#oltb-add-bookmark-btn');
         addBookmarkBtn.addEventListener('click', this.addBookmark.bind(this));
 
-        const bookmarkStack = bookmarksBox.querySelector('#oltb-bookmark-stack');
+        const bookmarkStack = bookmarksToolbox.querySelector('#oltb-bookmark-stack');
         this.bookmarkStack = bookmarkStack;
 
+        const toggleableTriggers = bookmarksToolbox.querySelectorAll('.oltb-toggleable');
+        toggleableTriggers.forEach(toggle => {
+            toggle.addEventListener('click', (event) => {
+                event.preventDefault();
+                
+                const targetName = toggle.dataset.oltbToggleableTarget;
+                document.getElementById(targetName).slideToggle(200, (collapsed) => {
+                    this.localStorage.collapsed = collapsed;
+                    StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+                });
+            });
+        });
+
         // Add all saved bookmarks from localstorage
-        this.bookmarks.forEach(bookmark => {
+        this.localStorage.bookmarks.forEach(bookmark => {
             this.createBookmark(bookmark);
         });
 
@@ -87,6 +117,10 @@ class Bookmark extends Control {
                 this.handleClick(event);
             }
         });
+
+        window.addEventListener('oltb.settings.cleared', () => {
+            this.localStorage = LOCAL_STORAGE_PROPS;
+        });
     }
 
     handleClick(event) {
@@ -96,7 +130,7 @@ class Bookmark extends Control {
 
     handleBookmarks() {
         this.active = !this.active;
-        this.bookmarksBox.classList.toggle('oltb-toolbox-section--show');
+        this.bookmarksToolbox.classList.toggle('oltb-toolbox-section--show');
         this.button.classList.toggle('oltb-tool-button--active');
     }
 
@@ -113,8 +147,8 @@ class Bookmark extends Control {
             location: location
         };
 
-        this.bookmarks.push(bookmark);
-        StateManager.updateStateObject('bookmarks', JSON.stringify(this.bookmarks));
+        this.localStorage.bookmarks.push(bookmark);
+        StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
 
         // Create the bookmark UI element
         this.createBookmark(bookmark);
@@ -130,7 +164,7 @@ class Bookmark extends Control {
     }
 
     clearBookmarks() {
-        StateManager.updateStateObject('bookmarks', '[]');
+        StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(LOCAL_STORAGE_PROPS));
         this.bookmarkStack.innerHTML = '';
 
         // User defined callback from constructor
@@ -178,7 +212,7 @@ class Bookmark extends Control {
         const zoomToButton = DOM.createElement({element: 'button',
             attributes: {
                 type: 'button',
-                class: bookmarkButtonDefaultClasses + ' oltb-func-btn--geo-pin oltb-tippy',
+                class: BOOKMARK_BUTTON_DEFAULT_CLASSES + ' oltb-func-btn--geo-pin oltb-tippy',
                 title: 'Zoom to location'
             }
         });
@@ -188,7 +222,7 @@ class Bookmark extends Control {
         const editButton = DOM.createElement({element: 'button',
             attributes: {
                 type: 'button',
-                class: bookmarkButtonDefaultClasses + ' oltb-func-btn--edit oltb-tippy',
+                class: BOOKMARK_BUTTON_DEFAULT_CLASSES + ' oltb-func-btn--edit oltb-tippy',
                 title: 'Rename bookmark'
             }
         });
@@ -198,7 +232,7 @@ class Bookmark extends Control {
         const deleteButton = DOM.createElement({element: 'button',
             attributes: {
                 type: 'button',
-                class: bookmarkButtonDefaultClasses + ' oltb-func-btn--delete oltb-tippy',
+                class: BOOKMARK_BUTTON_DEFAULT_CLASSES + ' oltb-func-btn--delete oltb-tippy',
                 title: 'Delete bookmark'
             }
         });
@@ -239,11 +273,11 @@ class Bookmark extends Control {
                 bookmarkElement.remove();
 
                 // Remove the bookmark from the collection
-                this.bookmarks = this.bookmarks.filter((item => {
+                this.localStorage.bookmarks = this.localStorage.bookmarks.filter((item => {
                     return item.id !== bookmark.id;
                 }));
 
-                StateManager.updateStateObject('bookmarks', JSON.stringify(this.bookmarks));
+                StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
 
                 // User defined callback from constructor
                 if(typeof this.callbacksObj.removed === 'function') {
@@ -264,7 +298,7 @@ class Bookmark extends Control {
                     bookmarkName.innerText = result.ellipsis(20);
                     bookmarkName._tippy.setContent(result);
 
-                    StateManager.updateStateObject('bookmarks', JSON.stringify(this.bookmarks));
+                    StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
 
                     // User defined callback from constructor
                     if(typeof this.callbacksObj.renamed === 'function') {

@@ -1,6 +1,10 @@
 import StateManager from "./StateManager";
 
+const LOCAL_STORAGE_NODE_NAME = 'settings';
+
 class SettingsManager {
+    static localStorage = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
+
     static settings = new Map([
         ['mouseWheelZoom', {state: false, text: 'Enable zooming using mousewheel only'}],
         ['altShiftDragRotate', {state: true, text: 'Enable rotate of map using Shift + Alt + Drag'}],
@@ -13,13 +17,11 @@ class SettingsManager {
         ['copyCoordinatesOnClick', {state: true, text: 'Copy coordinates on click (Coordinates tool)'}],
     ]);
 
-    static localStorageSettings = JSON.parse(StateManager.getStateObject('settings')) || {};
-
     static init() {
-        // Update the states of the settings map with values from local storage
+        // Update the states of the settings map with values from localStorage
         this.settings.forEach((value, key) => {
-            if(key in this.localStorageSettings) {
-                value.state = this.localStorageSettings[key];
+            if(key in this.localStorage) {
+                value.state = this.localStorage[key];
             }
         });
     }
@@ -30,9 +32,9 @@ class SettingsManager {
 
     static setSetting(name, state) {
         this.settings.get(name).state = state;
-        this.localStorageSettings[name] = state;
+        this.localStorage[name] = state;
 
-        StateManager.updateStateObject('settings', JSON.stringify(this.localStorageSettings));
+        StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
     }
 
     static getSetting(name) {

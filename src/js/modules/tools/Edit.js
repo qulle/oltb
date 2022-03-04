@@ -3,6 +3,7 @@ import EventType from 'ol/events/EventType';
 import Dialog from '../common/Dialog';
 import LayerManager from '../core/Managers/LayerManager';
 import SettingsManager from '../core/Managers/SettingsManager';
+import StateManager from '../core/Managers/StateManager';
 import { Control } from 'ol/control';
 import { Select, Modify, Translate } from 'ol/interaction';
 import { shiftKeyOnly } from 'ol/events/condition';
@@ -11,6 +12,11 @@ import { onFeatureChange } from '../helpers/Measure';
 import { toolboxElement, toolbarElement } from '../core/ElementReferences';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
+
+const LOCAL_STORAGE_NODE_NAME = 'editTool';
+const LOCAL_STORAGE_PROPS = {
+    collapsed: false
+};
 
 class Edit extends Control {
     constructor(callbacksObj = {}) {
@@ -38,23 +44,50 @@ class Edit extends Control {
         this.button = button;
         this.callbacksObj = callbacksObj;
 
+        // Load potential stored data from localStorage
+        const loadedPropertiesFromLocalStorage = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
+
+        // Merge the potential data replacing the default values
+        this.localStorage = {...LOCAL_STORAGE_PROPS, ...loadedPropertiesFromLocalStorage};
+        
         toolboxElement.insertAdjacentHTML('beforeend', `
-            <div id="oltb-edit-settings-box" class="oltb-toolbox-section">
-                <div class="oltb-toolbox-section__group">
-                    <h4 class="oltb-toolbox-section__title">Edit tool</h4>
-                    <button type="button" disabled id="oltb-delete-selected-btn" class="oltb-btn oltb-btn--red-dark oltb-w-100">Delete selected features</button>
+            <div id="oltb-edit-toolbox" class="oltb-toolbox-section">
+                <div class="oltb-toolbox-section__header">
+                    <h4 class="oltb-toolbox-section__title oltb-toggleable" data-oltb-toggleable-target="oltb-edit-toolbox-collapsed">
+                        Edit tool
+                        <span class="oltb-toolbox-section__icon oltb-tippy" title="Toggle section"></span>
+                    </h4>
+                </div>
+                <div class="oltb-toolbox-section__groups" id="oltb-edit-toolbox-collapsed" style="display: ${this.localStorage.collapsed ? 'none' : 'block'}">
+                    <div class="oltb-toolbox-section__group">
+                        <button type="button" disabled id="oltb-delete-selected-btn" class="oltb-btn oltb-btn--red-dark oltb-w-100">Delete selected features</button>
+                    </div>
                 </div>
             </div>
         `);
 
         const self = this;
 
-        const editSettingsBox = document.querySelector('#oltb-edit-settings-box');
-        this.editSettingsBox = editSettingsBox;
+        const editToolbox = document.querySelector('#oltb-edit-toolbox');
+        this.editToolbox = editToolbox;
 
-        const deleteSelectedButton = editSettingsBox.querySelector('#oltb-delete-selected-btn');
+        const deleteSelectedButton = editToolbox.querySelector('#oltb-delete-selected-btn');
         this.deleteSelectedButton = deleteSelectedButton;
         deleteSelectedButton.addEventListener('click', this.deleteSelectedFeatures.bind(this));
+
+        const toggleableTriggers = editToolbox.querySelectorAll('.oltb-toggleable');
+        toggleableTriggers.forEach(toggle => {
+            toggle.addEventListener('click', (event) => {
+                event.preventDefault();
+
+                const targetName = toggle.dataset.oltbToggleableTarget;
+                document.getElementById(targetName).slideToggle(200, (collapsed) => {
+                    this.localStorage.collapsed = collapsed;
+                    StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+                });
+            });
+        });
+
 
         const select = new Select({
             hitTolerance: 5,
@@ -148,6 +181,10 @@ class Edit extends Control {
                     this.deleteSelectedFeatures();
                 }
             }
+        });
+
+        window.addEventListener('oltb.settings.cleared', () => {
+            this.localStorage = LOCAL_STORAGE_PROPS;
         });
     }
 
@@ -248,7 +285,7 @@ class Edit extends Control {
         }
         
         this.active = !this.active;
-        this.editSettingsBox.classList.toggle('oltb-toolbox-section--show');
+        this.editToolbox.classList.toggle('oltb-toolbox-section--show');
         this.button.classList.toggle('oltb-tool-button--active');
     }
 }
