@@ -17,7 +17,7 @@ import {
 } from '../helpers/Fullscreen';
 
 class Fullscreen extends Control {
-    constructor(callbacksObj = {}) {
+    constructor(options = {}) {
         super({
             element: toolbarElement
         });
@@ -53,15 +53,15 @@ class Fullscreen extends Control {
                 this.button._tippy.setContent('Exit fullscreen (F)');
 
                 // User defined callback from constructor
-                if(typeof callbacksObj.enter === 'function') {
-                    callbacksObj.enter(event);
+                if(typeof options.enter === 'function') {
+                    options.enter(event);
                 }
             }else {
                 this.button._tippy.setContent('Enter fullscreen (F)');
 
                 // User defined callback from constructor
-                if(typeof callbacksObj.leave === 'function') {
-                    callbacksObj.leave(event);
+                if(typeof options.leave === 'function') {
+                    options.leave(event);
                 }
             }
         });

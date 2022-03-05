@@ -22,7 +22,7 @@ const LOCAL_STORAGE_PROPS = {
 };
 
 class Bookmark extends Control {
-    constructor(callbacksObj = {}) {
+    constructor(options = {}) {
         super({
             element: toolbarElement
         });
@@ -46,7 +46,7 @@ class Bookmark extends Control {
         this.element.appendChild(button);
         this.button = button;
         this.active = false;
-        this.callbacksObj = callbacksObj;
+        this.options = options;
         
         // Load potential stored data from localStorage
         const loadedPropertiesFromLocalStorage = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
@@ -158,8 +158,8 @@ class Bookmark extends Control {
         }
 
         // User defined callback from constructor
-        if(typeof this.callbacksObj.added === 'function') {
-            this.callbacksObj.added(bookmark);
+        if(typeof this.options.added === 'function') {
+            this.options.added(bookmark);
         }
     }
 
@@ -168,8 +168,8 @@ class Bookmark extends Control {
         this.bookmarkStack.innerHTML = '';
 
         // User defined callback from constructor
-        if(typeof this.callbacksObj.cleared === 'function') {
-            this.callbacksObj.cleared();
+        if(typeof this.options.cleared === 'function') {
+            this.options.cleared();
         }
     }
 
@@ -261,8 +261,8 @@ class Bookmark extends Control {
         });
 
         // User defined callback from constructor
-        if(typeof this.callbacksObj.zoomedTo === 'function') {
-            this.callbacksObj.zoomedTo(bookmark);
+        if(typeof this.options.zoomedTo === 'function') {
+            this.options.zoomedTo(bookmark);
         }
     }
 
@@ -280,8 +280,8 @@ class Bookmark extends Control {
                 StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
 
                 // User defined callback from constructor
-                if(typeof this.callbacksObj.removed === 'function') {
-                    this.callbacksObj.removed(bookmark);
+                if(typeof this.options.removed === 'function') {
+                    this.options.removed(bookmark);
                 }
             }
         });
@@ -301,8 +301,8 @@ class Bookmark extends Control {
                     StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
 
                     // User defined callback from constructor
-                    if(typeof this.callbacksObj.renamed === 'function') {
-                        this.callbacksObj.renamed(bookmark);
+                    if(typeof this.options.renamed === 'function') {
+                        this.options.renamed(bookmark);
                     }
                 }
             }

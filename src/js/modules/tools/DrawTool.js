@@ -21,7 +21,7 @@ const LOCAL_STORAGE_PROPS = {
 };
 
 class DrawTool extends Control {
-    constructor(callbacksObj = {}) {
+    constructor(options = {}) {
         super({
             element: toolbarElement
         });
@@ -45,7 +45,7 @@ class DrawTool extends Control {
         this.element.appendChild(button);
         this.button = button;
         this.active = false;
-        this.callbacksObj = callbacksObj;
+        this.options = options;
 
         // Load potential stored data from localStorage
         const loadedPropertiesFromLocalStorage = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
@@ -269,8 +269,8 @@ class DrawTool extends Control {
 
         this.interaction.on('drawstart', function(event) {
             // User defined callback from constructor
-            if(typeof self.callbacksObj.start === 'function') {
-                self.callbacksObj.start(event);
+            if(typeof self.options.start === 'function') {
+                self.options.start(event);
             }
         });
 
@@ -282,22 +282,22 @@ class DrawTool extends Control {
             layer.getSource().addFeature(feature);
 
             // User defined callback from constructor
-            if(typeof self.callbacksObj.end === 'function') {
-                self.callbacksObj.end(event);
+            if(typeof self.options.end === 'function') {
+                self.options.end(event);
             }
         });
 
         this.interaction.on('drawabort', function(event) {
             // User defined callback from constructor
-            if(typeof self.callbacksObj.abort === 'function') {
-                self.callbacksObj.abort(event);
+            if(typeof self.options.abort === 'function') {
+                self.options.abort(event);
             }
         });
 
         this.interaction.on('error', function(event) {
             // User defined callback from constructor
-            if(typeof self.callbacksObj.error === 'function') {
-                self.callbacksObj.error(event);
+            if(typeof self.options.error === 'function') {
+                self.options.error(event);
             }
         });
     }

@@ -11,7 +11,7 @@ import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 
 class ResetNorth extends Control {
-    constructor(callbacksObj = {}) {
+    constructor(options = {}) {
         super({
             element: toolbarElement
         });
@@ -33,7 +33,7 @@ class ResetNorth extends Control {
         );
 
         this.element.appendChild(button);
-        this.callbacksObj = callbacksObj;
+        this.options = options;
 
         addContextMenuItem('main.map.context.menu', {icon: icon, name: 'Set rotation by degrees', fn: function(map, coordinates, target) {
             const view = map.getView();
@@ -87,8 +87,8 @@ class ResetNorth extends Control {
 
         setTimeout(() => {
             // User defined callback from constructor
-            if(typeof this.callbacksObj.reset === 'function') {
-                this.callbacksObj.reset();
+            if(typeof this.options.reset === 'function') {
+                this.options.reset();
             }
         }, Config.animationDuration);
     }

@@ -7,7 +7,7 @@ import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 
 class ExportPNG extends Control {
-    constructor(callbacksObj = {}) {
+    constructor(options = {}) {
         super({
             element: toolbarElement
         });
@@ -29,7 +29,7 @@ class ExportPNG extends Control {
         );
 
         this.element.appendChild(button);
-        this.callbacksObj = callbacksObj;
+        this.options = options;
         window.addEventListener('keyup', (event) => {
             if(isShortcutKeyOnly(event, 'e')) {
                 this.handleClick(event);
@@ -77,8 +77,8 @@ class ExportPNG extends Control {
             }
 
             // User defined callback from constructor
-            if(typeof self.callbacksObj.exported === 'function') {
-                self.callbacksObj.exported();
+            if(typeof self.options.exported === 'function') {
+                self.options.exported();
             }
         });
 

@@ -31,7 +31,7 @@ const LOCAL_STORAGE_PROPS = {
 };
 
 class Layers extends Control {
-    constructor(callbacksObj = {}) {
+    constructor(options = {}) {
         super({
             element: toolbarElement
         });
@@ -55,7 +55,7 @@ class Layers extends Control {
         this.element.appendChild(button);
         this.button = button;
         this.active = false;
-        this.callbacksObj = callbacksObj;
+        this.options = options;
 
         // Load potential stored data from localStorage
         const loadedPropertiesFromLocalStorage = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
@@ -215,11 +215,11 @@ class Layers extends Control {
             buttons: {
                 visibilityButton: {
                     function: this.createVisibilityButton, 
-                    callback: this.callbacksObj.mapLayerVisibilityChanged
+                    callback: this.options.mapLayerVisibilityChanged
                 },
                 editButton: {
                     function: this.createEditButton,
-                    callback: this.callbacksObj.mapLayerRenamed
+                    callback: this.options.mapLayerRenamed
                 },
                 deleteButton: {
                     function: this.createDeleteButton,
@@ -229,8 +229,8 @@ class Layers extends Control {
         });
 
         // User defined callback from constructor
-        if(typeof this.callbacksObj.mapLayerAdded === 'function' && !silent) {
-            this.callbacksObj.mapLayerAdded(layerObject);
+        if(typeof this.options.mapLayerAdded === 'function' && !silent) {
+            this.options.mapLayerAdded(layerObject);
         }
     }
 
@@ -242,8 +242,8 @@ class Layers extends Control {
         this.mapLayerStack.querySelector(`#map-layer-${layerObject.id}`).remove();
 
         // User defined callback from constructor
-        if(typeof this.callbacksObj.mapLayerRemoved === 'function' && !silent) {
-            this.callbacksObj.mapLayerRemoved(layerObject);
+        if(typeof this.options.mapLayerRemoved === 'function' && !silent) {
+            this.options.mapLayerRemoved(layerObject);
         }
     }
 
@@ -258,15 +258,15 @@ class Layers extends Control {
             buttons: {
                 visibilityButton: {
                     function: this.createVisibilityButton, 
-                    callback: this.callbacksObj.featureLayerVisibilityChanged
+                    callback: this.options.featureLayerVisibilityChanged
                 },
                 editButton: {
                     function: this.createEditButton,
-                    callback: this.callbacksObj.featureLayerRenamed
+                    callback: this.options.featureLayerRenamed
                 },
                 downloadButton: {
                     function: this.createDownloadButton,
-                    callback: this.callbacksObj.featureLayerDownloaded
+                    callback: this.options.featureLayerDownloaded
                 },
                 deleteButton: {
                     function: this.createDeleteButton,
@@ -276,8 +276,8 @@ class Layers extends Control {
         });
 
         // User defined callback from constructor
-        if(typeof this.callbacksObj.featureLayerAdded === 'function' && !silent) {
-            this.callbacksObj.featureLayerAdded(layerObject);
+        if(typeof this.options.featureLayerAdded === 'function' && !silent) {
+            this.options.featureLayerAdded(layerObject);
         }
     }
 
@@ -296,8 +296,8 @@ class Layers extends Control {
         }
 
         // User defined callback from constructor
-        if(typeof this.callbacksObj.featureLayerRemoved === 'function' && !silent) {
-            this.callbacksObj.featureLayerRemoved(layerObject);
+        if(typeof this.options.featureLayerRemoved === 'function' && !silent) {
+            this.options.featureLayerRemoved(layerObject);
         }
     }
 

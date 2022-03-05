@@ -8,7 +8,7 @@ import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 
 class ZoomOut extends Control {
-    constructor(callbacksObj = {}) {
+    constructor(options = {}) {
         super({
             element: toolbarElement
         });
@@ -30,7 +30,7 @@ class ZoomOut extends Control {
         );
 
         this.element.appendChild(button);
-        this.callbacksObj = callbacksObj;
+        this.options = options;
         this.delta = -1;
 
         window.addEventListener('keyup', (event) => {
@@ -63,8 +63,8 @@ class ZoomOut extends Control {
 
         setTimeout(() => {
             // User defined callback from constructor
-            if(typeof this.callbacksObj.zoomed === 'function') {
-                this.callbacksObj.zoomed();
+            if(typeof this.options.zoomed === 'function') {
+                this.options.zoomed();
             }
         }, Config.animationDuration);
     }

@@ -10,7 +10,7 @@ import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 
 class ImportGeoJSON extends Control {
-    constructor(callbacksObj = {}) {
+    constructor(options = {}) {
         super({
             element: toolbarElement
         });
@@ -32,7 +32,7 @@ class ImportGeoJSON extends Control {
         );
 
         this.element.appendChild(button);
-        this.callbacksObj = callbacksObj;
+        this.options = options;
 
         // Helper element to open a local geojson file
         const inputDialog = document.createElement('input');
@@ -73,15 +73,15 @@ class ImportGeoJSON extends Control {
                 layer.getSource().addFeatures(features);
 
                 // User defined callback from constructor
-                if(typeof self.callbacksObj.imported === 'function') {
-                    self.callbacksObj.imported(features);
+                if(typeof self.options.imported === 'function') {
+                    self.options.imported(features);
                 }
             }catch(error) {
                 Toast.error({text: 'Error when parsing the geojson - check syntax'});
 
                 // User defined callback from constructor
-                if(typeof self.callbacksObj.error === 'function') {
-                    self.callbacksObj.error(file, error);
+                if(typeof self.options.error === 'function') {
+                    self.options.error(file, error);
                 }
             }
         }

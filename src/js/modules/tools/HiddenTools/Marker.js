@@ -9,7 +9,7 @@ import { SVGPaths, getIcon } from '../../core/Icons';
 import { toStringHDMS } from 'ol/coordinate';
 
 class HiddenMarker extends Control {
-    constructor(callbacksObj = {}) {
+    constructor(options = {}) {
         super({
             element: toolbarElement
         });
@@ -52,8 +52,8 @@ class HiddenMarker extends Control {
                 LayerManager.getActiveFeatureLayer({ifNoLayerName: 'Markers'}).layer.getSource().addFeatures(marker);
 
                 // User defined callback from constructor
-                if(typeof callbacksObj.added === 'function') {
-                    callbacksObj.added(marker);
+                if(typeof options.added === 'function') {
+                    options.added(marker);
                 }
             });
         }});
@@ -62,8 +62,8 @@ class HiddenMarker extends Control {
 
         window.addEventListener('oltb.feature.edited', function(event) {
             // User defined callback from constructor
-            if(typeof callbacksObj.edited === 'function') {
-                callbacksObj.edited([
+            if(typeof options.edited === 'function') {
+                options.edited([
                     event.detail.feature,
                     event.detail.linkedFeature
                 ]);
@@ -72,8 +72,8 @@ class HiddenMarker extends Control {
 
         window.addEventListener('oltb.feature.removed', function(event) {
             // User defined callback from constructor
-            if(typeof callbacksObj.removed === 'function') {
-                callbacksObj.removed([
+            if(typeof options.removed === 'function') {
+                options.removed([
                     event.detail.feature,
                     event.detail.linkedFeature
                 ]);

@@ -36,14 +36,12 @@ class Home extends Control {
         const {
             zoom = 1,
             lon = 0,
-            lat = 0,
-            ...callbacksObj
+            lat = 0
         } = options;
 
-        this.callbacksObj = callbacksObj;
-        const location = fromLonLat([lon, lat]);
+        this.options = options;
 
-        this.homeLocation = location;
+        this.homeLocation = fromLonLat([lon, lat]);;
         this.homeZoom = zoom;
         
         this.userDefinedHomeLocation = null;
@@ -85,8 +83,8 @@ class Home extends Control {
 
         setTimeout(() => {
             // User defined callback from constructor
-            if(typeof this.callbacksObj.home === 'function') {
-                this.callbacksObj.home();
+            if(typeof this.options.home === 'function') {
+                this.options.home();
             }
         }, Config.animationDuration);
     }

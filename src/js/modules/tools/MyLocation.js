@@ -15,7 +15,7 @@ import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { toStringHDMS } from 'ol/coordinate';
 
 class MyLocation extends Control {
-    constructor(callbacksObj = {}) {
+    constructor(options = {}) {
         super({
             element: toolbarElement
         });
@@ -37,7 +37,7 @@ class MyLocation extends Control {
         );
 
         this.element.appendChild(button);
-        this.callbacksObj = callbacksObj;
+        this.options = options;
 
         window.addEventListener('keyup', (event) => {
             if(isShortcutKeyOnly(event, 'g')) {
@@ -128,8 +128,8 @@ class MyLocation extends Control {
         });
 
         // User defined callback from constructor
-        if(typeof this.callbacksObj.location === 'function') {
-            this.callbacksObj.location(location);
+        if(typeof this.options.location === 'function') {
+            this.options.location(location);
         }
 
         this.loadingToast.remove();
@@ -139,8 +139,8 @@ class MyLocation extends Control {
         ptrToast({text: error.message});
         
         // User defined callback from constructor
-        if(typeof this.callbacksObj.error === 'function') {
-            this.callbacksObj.error(error);
+        if(typeof this.options.error === 'function') {
+            this.options.error(error);
         }
 
         this.loadingToast.remove();

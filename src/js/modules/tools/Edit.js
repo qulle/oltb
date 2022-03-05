@@ -19,7 +19,7 @@ const LOCAL_STORAGE_PROPS = {
 };
 
 class Edit extends Control {
-    constructor(callbacksObj = {}) {
+    constructor(options = {}) {
         super({
             element: toolbarElement
         });
@@ -42,7 +42,7 @@ class Edit extends Control {
 
         this.element.appendChild(button);
         this.button = button;
-        this.callbacksObj = callbacksObj;
+        this.options = options;
 
         // Load potential stored data from localStorage
         const loadedPropertiesFromLocalStorage = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
@@ -116,8 +116,8 @@ class Edit extends Control {
             self.deleteSelectedButton.removeAttribute('disabled');
 
             // User defined callback from constructor
-            if(typeof self.callbacksObj.selectadd === 'function') {
-                self.callbacksObj.selectadd(event);
+            if(typeof self.options.selectadd === 'function') {
+                self.options.selectadd(event);
             }
         });
 
@@ -127,8 +127,8 @@ class Edit extends Control {
             }
 
             // User defined callback from constructor
-            if(typeof self.callbacksObj.selectremove === 'function') {
-                self.callbacksObj.selectremove(event);
+            if(typeof self.options.selectremove === 'function') {
+                self.options.selectremove(event);
             }
         });
 
@@ -140,8 +140,8 @@ class Edit extends Control {
             self.attachOnChange(event.features);
 
             // User defined callback from constructor
-            if(typeof self.callbacksObj.modifystart === 'function') {
-                self.callbacksObj.modifystart(event);
+            if(typeof self.options.modifystart === 'function') {
+                self.options.modifystart(event);
             }
         });
 
@@ -149,8 +149,8 @@ class Edit extends Control {
             self.detachOnChange(event.features);
 
             // User defined callback from constructor
-            if(typeof self.callbacksObj.modifyend === 'function') {
-                self.callbacksObj.modifyend(event);
+            if(typeof self.options.modifyend === 'function') {
+                self.options.modifyend(event);
             }
         });
 
@@ -158,8 +158,8 @@ class Edit extends Control {
             self.attachOnChange(event.features);
 
             // User defined callback from constructor
-            if(typeof self.callbacksObj.translatestart === 'function') {
-                self.callbacksObj.translatestart(event);
+            if(typeof self.options.translatestart === 'function') {
+                self.options.translatestart(event);
             }
         });
 
@@ -167,8 +167,8 @@ class Edit extends Control {
             self.detachOnChange(event.features);
 
             // User defined callback from constructor
-            if(typeof self.callbacksObj.translateend === 'function') {
-                self.callbacksObj.translateend(event);
+            if(typeof self.options.translateend === 'function') {
+                self.options.translateend(event);
             }
         });
 
@@ -213,8 +213,8 @@ class Edit extends Control {
                             }
 
                             // User defined callback from constructor
-                            if(typeof this.callbacksObj.removedfeature === 'function') {
-                                this.callbacksObj.removedfeature(feature);
+                            if(typeof this.options.removedfeature === 'function') {
+                                this.options.removedfeature(feature);
                             }
                         }
                     });

@@ -29,10 +29,7 @@ class Info extends Control {
         );
 
         this.element.appendChild(button);
-
-        const { title, content } = options;
-        this.title = title;
-        this.content = content;
+        this.options = options;
 
         window.addEventListener('keyup', (event) => {
             if(isShortcutKeyOnly(event, 'i')) {
@@ -44,8 +41,8 @@ class Info extends Control {
     handleClick(event) {
         event.preventDefault();
         Modal.create({
-            title: this.title, 
-            content: this.content
+            title: this.options.title, 
+            content: this.options.content
         });
     }
 }

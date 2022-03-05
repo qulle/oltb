@@ -11,7 +11,7 @@ import { isHorizontal } from '../helpers/IsRowDirection';
 const LOCAL_STORAGE_NODE_NAME = 'direction';
 
 class DirectionToggle extends Control {
-    constructor(callbacksObj = {}) {
+    constructor(options = {}) {
         super({
             element: toolbarElement
         });
@@ -38,7 +38,7 @@ class DirectionToggle extends Control {
         );
 
         this.element.appendChild(button);
-        this.callbacksObj = callbacksObj;
+        this.options = options;
 
         this.button = button;
         this.active = false;
@@ -110,8 +110,8 @@ class DirectionToggle extends Control {
         }));
 
         // User defined callback from constructor
-        if(typeof this.callbacksObj.changed === 'function') {
-            this.callbacksObj.changed(direction);
+        if(typeof this.options.changed === 'function') {
+            this.options.changed(direction);
         }
     }
 }

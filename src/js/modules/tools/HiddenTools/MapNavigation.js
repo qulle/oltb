@@ -8,13 +8,14 @@ import { addContextMenuItem } from '../../common/ContextMenu';
 import { SVGPaths, getIcon } from '../../core/Icons';
 
 class HiddenMapNavigation extends Control {
-    constructor(callbacks = {}) {
+    constructor(options = {}) {
         super({
             element: toolbarElement
         });
 
         const moveCenterIcon = getIcon({path: SVGPaths.MoveCenter});
         const focusHereIcon = getIcon({path: SVGPaths.FocusHere});
+        const { focusZoom = 10 } = options;
 
         addContextMenuItem('main.map.context.menu', {icon: moveCenterIcon, name: 'Center map here', fn: function(map, coordinates, target) {
             const view = map.getView();
@@ -39,7 +40,7 @@ class HiddenMapNavigation extends Control {
         
             view.animate({
                 center: fromLonLat(coordinates),
-                zoom: callbacks.focusZoom || 10,
+                zoom: focusZoom,
                 duration: Config.animationDuration,
                 easing: easeOut
             });

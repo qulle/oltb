@@ -10,7 +10,7 @@ import { isDarkTheme } from '../helpers/IsDarkTheme';
 const LOCAL_STORAGE_NODE_NAME = 'theme';
 
 class ThemeToggle extends Control {
-    constructor(callbacksObj = {}) {
+    constructor(options = {}) {
         super({
             element: toolbarElement
         });
@@ -37,7 +37,7 @@ class ThemeToggle extends Control {
         );
 
         this.element.appendChild(button);
-        this.callbacksObj = callbacksObj;
+        this.options = options;
 
         this.button = button;
         this.active = false;
@@ -85,8 +85,8 @@ class ThemeToggle extends Control {
         }
 
         // User defined callback from constructor
-        if(typeof this.callbacksObj.changed === 'function') {
-            this.callbacksObj.changed(theme);
+        if(typeof this.options.changed === 'function') {
+            this.options.changed(theme);
         }
     }
 }

@@ -34,9 +34,8 @@ class DebugInfo extends Control {
         const urlSearchParameters = decodeURI(window.location.search);
         const urlObject = new URLSearchParams(urlSearchParameters);
         const debugParameter = (urlObject.get('debug') || '') === 'true';
-        const { showWhenGetParameter } = options;
 
-        if(showWhenGetParameter) {
+        if(options.showWhenGetParameter) {
             if(!debugParameter || debugParameter !== true) {
                 button.classList.add('oltb-tool-button--hidden');
             }
