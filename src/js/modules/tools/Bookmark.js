@@ -47,6 +47,9 @@ class Bookmark extends Control {
         this.button = button;
         this.active = false;
         this.options = options;
+
+        const { storeDataInLocalStorage = false } = options;
+        this.storeDataInLocalStorage = storeDataInLocalStorage;
         
         // Load potential stored data from localStorage
         const loadedPropertiesFromLocalStorage = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
@@ -147,8 +150,10 @@ class Bookmark extends Control {
             location: location
         };
 
-        this.localStorage.bookmarks.push(bookmark);
-        StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+        if(this.storeDataInLocalStorage) {
+            this.localStorage.bookmarks.push(bookmark);
+            StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+        }        
 
         // Create the bookmark UI element
         this.createBookmark(bookmark);

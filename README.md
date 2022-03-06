@@ -16,16 +16,17 @@
     3. [Colors](#colors)
     4. [JavaScript](#javascript)
     5. [Callback functions and constructor parameters](#callback-functions-and-constructor-parameters)
-    6. [Hidden tools](#hidden-tools)
-    7. [Shortcut keys](#shortcut-keys)
-    8. [Custom projections](#custom-projections)
-    9. [Dialogs](#dialogs)
-    10. [Modal](#modal)
-    11. [Toast](#toast)
-    12. [Context menu](#context-menu)
-    13. [State Management](#state-management)
-    14. [Debug tool](#debug-tool)
-    15. [OLTB namespace](#oltb-namespace)
+    6. [Store data locally instead of via API](#store-data-locally-instead-of-via-api)
+    7. [Hidden tools](#hidden-tools)
+    8. [Shortcut keys](#shortcut-keys)
+    9. [Custom projections](#custom-projections)
+    10. [Dialogs](#dialogs)
+    11. [Modal](#modal)
+    12. [Toast](#toast)
+    13. [Context menu](#context-menu)
+    14. [State Management](#state-management)
+    15. [Debug tool](#debug-tool)
+    16. [OLTB namespace](#oltb-namespace)
 5. [External GitHub projects](#external-github-projects)
 6. [Maps used in the demo](#maps-used-in-the-demo)
 7. [License](#license)
@@ -345,6 +346,7 @@ controls: defaultControls({
         }
     }),
     new Bookmark({
+        storeDataInLocalStorage: true,
         added: function(bookmark) {
             console.log('Bookmark added', bookmark);
         },
@@ -448,6 +450,11 @@ controls: defaultControls({
     new HiddenAbout()
 ])
 ```
+
+### Store data locally instead of via API
+Tools that creates objects at runtime, for example the BookmarkTool, LayerTool etc. returns data via the callback functions. There is also the possibility for these tools to store the created objects in localStorage instead. This is done by setting the constructor parameter `storeDataInLocalStorage: true`. This can be useful if you want to create a map-viewer that can persists data between page load but have no need for an additionall long-term storage via API. 
+
+**Note** At the moment only the BookmarkTool has this feature fully implemented.
 
 ### Hidden tools
 Tools refered to as `hidden tools` are tools that only add functionality via the context menu. The hidden tools are used to enable the same type of callback functions in the constructor as every other tool. 

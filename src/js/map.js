@@ -190,6 +190,7 @@ const map = new Map({
             }
         }),
         new Bookmark({
+            storeDataInLocalStorage: true,
             added: function(bookmark) {
                 console.log('Bookmark added', bookmark);
             },
