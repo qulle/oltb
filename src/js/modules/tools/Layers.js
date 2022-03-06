@@ -75,7 +75,7 @@ class Layers extends Control {
                     <div class="oltb-toolbox-section__group">
                         <button type="button" id="oltb-add-map-layer-btn" class="oltb-btn oltb-btn--green-dark oltb-w-100">Create map layer</button>
                     </div>
-                    <div class="oltb-toolbox-section__group">
+                    <div class="oltb-toolbox-section__group oltb-m-0">
                         <ul id="oltb-map-layer-stack" class="oltb-toolbox-list"></ul>
                     </div>
                 </div>
@@ -100,7 +100,7 @@ class Layers extends Control {
                             </button>
                         </div>
                     </div>
-                    <div class="oltb-toolbox-section__group">
+                    <div class="oltb-toolbox-section__group oltb-m-0">
                         <ul id="oltb-feature-layer-stack" class="oltb-toolbox-list oltb-toolbox-list--selectable"></ul>
                     </div>
                 </div>
