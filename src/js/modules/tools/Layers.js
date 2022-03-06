@@ -126,10 +126,6 @@ class Layers extends Control {
             });
         });
 
-        LayerManager.getMapLayers().forEach(mapLayer => {
-            this.createMapLayerItem(mapLayer);
-        });
-
         const featureLayerStack = layersToolbox.querySelector('#oltb-feature-layer-stack');
         this.featureLayerStack = featureLayerStack;
 
