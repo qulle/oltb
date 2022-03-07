@@ -7,10 +7,12 @@
 ![Screenshot of the toolbar in action](images/demo.png?raw=true "Screenshot of the toolbar in action")
 
 ## Table of contents
-1. [Browser support](#browser-support)
-2. [Get started](#get-started)
-3. [Architecture model](#architecture-model)
-4. [About the code](#about-the-code)
+1. [Branches](#branches)
+2. [Bug reporting and new features](#bug-reporting-and-new-features)
+3. [Get started](#get-started)
+4. [Browser support](#browser-support)
+5. [Architecture model](#architecture-model)
+6. [About the code](#about-the-code)
     1. [HTML](#html)
     2. [SCSS](#scss)
     3. [Colors](#colors)
@@ -27,19 +29,22 @@
     14. [State Management](#state-management)
     15. [Debug tool](#debug-tool)
     16. [OLTB namespace](#oltb-namespace)
-5. [External GitHub projects](#external-github-projects)
-6. [Maps used in the demo](#maps-used-in-the-demo)
-7. [License](#license)
-8. [Author](#author)
+7. [External GitHub projects](#external-github-projects)
+8. [Maps used in the demo](#maps-used-in-the-demo)
+9. [License](#license)
+10. [Author](#author)
 
-## Browser support 
-| Desktop browser | Version | Mobile browser | Version |
-| ------------- | ------------- | ------------- | ------------- |
-| `Mozilla Firefox` | 97.0.1 | `Android Google Chrome` | 98.0.4758.87 |
-| `Google Chrome` | 98.0.4758.102 | `Apple Safari` | 13.3 |
-| `Microsoft Edge` | 98.0.1108.56 | `Apple Google Chrome` | 90.0.4430.216 |
+## Branches
+There are two branches in the repository. The `main` branch which contains the releases and the `develop` branch which also contains all upcomming commits for the next release. So if you want to test the latest features go checkout the `develop` branch. The `gh-pages` branch is just for the latest build for the demo-page.
 
-_IE is not supported, it's time to move on._
+## Bug reporting and new features
+If you find a bug in the latest release on the `main` branch start by:
+
+1. Check if the bug exists on the `develop` branch.
+2. Check if there is an open issue.
+3. If no issue is open, please create one and tagg **@qulle**.
+
+Please use the existing `labels` to tag your issue.
 
 ## Get started
 The dev-environment uses npm so you need to have [Node.js](https://nodejs.org/en/) installed.
@@ -81,9 +86,18 @@ $ npm update --save
 
 **Note** that from npm version `7.0.0` the command `$ npm update` does not longer update the `package.json` file. From npm version `8.3.2` the command to run is `$ npm update --save` or to always apply the save option add `save=true` to the `.npmrc` file.
 
+## Browser support 
+| Desktop browser | Version | Mobile browser | Version |
+| ------------- | ------------- | ------------- | ------------- |
+| `Mozilla Firefox` | 97.0.1 | `Android Google Chrome` | 98.0.4758.87 |
+| `Google Chrome` | 98.0.4758.102 | `Apple Safari` | 13.3 |
+| `Microsoft Edge` | 98.0.1108.56 | `Apple Google Chrome` | 90.0.4430.216 |
+
+_IE is not supported, it's time to move on._
+
 ## Architecture model
 ![Architecture model](images/architecture.svg?raw=true "Architecture model")
-Architecture model showing my intentions of how an application should be build to keep the responsibility of each part separated and not end up with application specific code inside the toolbar.
+Architecture model showing my intentions of how an application could be built to keep the responsibility of each part separated and not end up with application specific code inside the toolbar.
 
 ## About the code
 Below is the basic HTML and JavaScript structure used in the project. For a complete example of how to set up the code go to `map.js` in the `src/js` directory. 
@@ -452,7 +466,7 @@ controls: defaultControls({
 ```
 
 ### Store data locally instead of via API
-Tools that creates objects at runtime, for example the BookmarkTool, LayerTool etc. returns data via the callback functions. There is also the possibility for these tools to store the created objects in localStorage instead. This is done by setting the constructor parameter `storeDataInLocalStorage: true`. This can be useful if you want to create a map-viewer that can persists data between page load but have no need for an additionall long-term storage via API. 
+Tools that create objects at runtime, for example the BookmarkTool, LayerTool etc. returns data via the callback functions. There is also the possibility for these tools to store the created objects in localStorage instead. This is done by setting the constructor parameter `storeDataInLocalStorage: true`. This can be useful if you want to create a map-viewer that can persists data between page load but have no need for an additionall long-term storage via API. 
 
 **Note** At the moment only the BookmarkTool has this feature fully implemented.
 
@@ -608,7 +622,7 @@ const LOCAL_STORAGE_PROPS = {
 };
 ```
 
-These two lines merges potential stored data into a runtime copy of the default properties located in `LOCAL_STORAGE_PROPS`. The spread operator is a really nice feature for this operation.
+These two nextcomming lines merges potential stored data into a runtime copy of the default properties located in `LOCAL_STORAGE_PROPS`. The spread operator is a really nice feature for this operation.
 ```javascript
 // Load potential stored data from localStorage
 const loadedPropertiesFromLocalStorage = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
@@ -640,7 +654,7 @@ All classes and id:s in the project are also prefixed with the namespace `oltb`.
 ## Maps used in the demo
 1. [OpenStreetMap](https://www.openstreetmap.org/)
 2. [Maps.Stamen.Com](http://maps.stamen.com/)
-3. [ArcGIS](https://www.arcgis.com/index.html)
+3. [ArcGIS World Topo](https://www.arcgis.com/index.html)
 
 ## License
 [BSD-2-Clause License](LICENSE)
