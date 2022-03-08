@@ -42,7 +42,7 @@ If you find a bug in the latest release on the `main` branch start by:
 
 1. Check if the bug exists on the `develop` branch.
 2. Check if there is an open issue.
-3. If no issue is open, please create one and tagg **@qulle**.
+3. If no issue is open, please create one and tag **@qulle**.
 
 Please use the existing `labels` to tag your issue.
 
