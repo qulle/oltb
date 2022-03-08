@@ -100,7 +100,11 @@ class MyLocation extends Control {
 
         const infoWindow = `
             <h3 class="oltb-text-center">My location</h3>
-            <p class="oltb-text-center oltb-m-0">${prettyCoords}</p>
+            <p class="oltb-text-center">${prettyCoords}</p>
+            <div class="oltb-d-flex oltb-justify-content-center">
+                <button class="oltb-func-btn oltb-func-btn--delete oltb-tippy" title="Delete marker" id="oltb-info-window-remove-marker"></button>
+                <button class="oltb-func-btn oltb-func-btn--copy oltb-tippy" title="Copy marker text" id="oltb-info-window-copy-marker-location" data-copy="My location ${prettyCoords}"></button>
+            </div>
         `;
 
         LayerManager.addFeatureLayer('My location');
