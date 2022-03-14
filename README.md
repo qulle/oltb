@@ -8,11 +8,12 @@
 
 ## Table of contents
 1. [Branches](#branches)
-2. [Bug reporting and new features](#bug-reporting-and-new-features)
-3. [Get started](#get-started)
-4. [Browser support](#browser-support)
-5. [Architecture model](#architecture-model)
-6. [About the code](#about-the-code)
+2. [Report a bug](#report-a-bug)
+3. [Request a new feature](#request-a-new-feature)
+4. [Get started](#get-started)
+5. [Browser support](#browser-support)
+6. [Architecture model](#architecture-model)
+7. [About the code](#about-the-code)
     1. [HTML](#html)
     2. [SCSS](#scss)
     3. [Colors](#colors)
@@ -29,22 +30,31 @@
     14. [State Management](#state-management)
     15. [Debug tool](#debug-tool)
     16. [OLTB namespace](#oltb-namespace)
-7. [External GitHub projects](#external-github-projects)
-8. [Maps used in the demo](#maps-used-in-the-demo)
-9. [License](#license)
-10. [Author](#author)
+8. [External GitHub projects](#external-github-projects)
+9. [Maps used in the demo](#maps-used-in-the-demo)
+10. [License](#license)
+11. [Author](#author)
 
 ## Branches
 There are two branches in the repository. The `main` branch which contains the releases and the `develop` branch which also contains all upcomming commits for the next release. So if you want to test the latest features go checkout the `develop` branch. The `gh-pages` branch is just for the latest build for the demo-page.
 
-## Bug reporting and new features
+## Report a bug
 If you find a bug in the latest release on the `main` branch start by:
 
 1. Check if the bug exists on the `develop` branch.
 2. Check if there is an open issue.
 3. If no issue is open, please create one and tag **@qulle**.
 
-Please use the existing `labels` to tag your issue.
+Use the existing `labels` to tag your issue.
+
+## Request a new feature
+If you are missing a feature in the latest release on the `main` branch start by:
+
+1. Check if the feature already has been added on the `develop` branch.
+2. Check if there is an open request in the issue tracker.
+3. If no issue is open, please create one and tag **@qulle**.
+
+Use the existing `labels` to tag your issue.
 
 ## Get started
 The dev-environment uses npm so you need to have [Node.js](https://nodejs.org/en/) installed.
