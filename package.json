@@ -21,9 +21,9 @@
     "homepage": "https://github.com/qulle/oltb#readme",
     "dependencies": {
         "a-color-picker": "^1.2.1",
-        "axios": "^0.26.0",
+        "axios": "^0.26.1",
         "ol": "^6.13.0",
-        "proj4": "^2.7.5",
+        "proj4": "^2.8.0",
         "tippy.js": "^6.3.7"
     },
     "devDependencies": {
