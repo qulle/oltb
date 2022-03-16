@@ -14,7 +14,7 @@
     border: none;
     cursor: pointer;
     box-shadow: $box-shadow-mid;
-    color: #FFFFFF;
+    color: $color-light;
     padding: .5rem;
 
     &:disabled {
