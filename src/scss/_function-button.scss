@@ -5,7 +5,7 @@
     background-repeat: no-repeat;
     background-position: center center;
     background-size: 16px 16px;
-    background-color: $color-gray-mid;
+    background-color: $color-blue-mid;
     transition: background-color 100ms ease-in-out;
     width: 1.875rem;
     height: 1.875rem;
@@ -18,15 +18,16 @@
     user-select: none;
 
     &:focus {
-        box-shadow: 0 0 0 $shadow-focus-width rgba($color-gray-mid, .5);
+        box-shadow: 0 0 0 $shadow-focus-width rgba($color-blue-mid, .5);
     }
 
     &:first-child {
         margin-left: 0;
     }
 
-    &:hover {
-        background-color: $color-blue-mid;
+    &:hover,
+    &:focus {
+        background-color: $color-blue-dark;
     }
         
     &--delete {

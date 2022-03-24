@@ -3,8 +3,14 @@
 
 ## Current version 1.0.0-beta1 - [Demo](https://qulle.github.io/oltb/)
 
-## Screenshot
-![Screenshot of the toolbar in action](images/demo.png?raw=true "Screenshot of the toolbar in action")
+## Screenshots
+A picture says more than a thousand words, but the demo above says it all.
+
+### Light theme
+![Screenshot Light Theme](images/demo-light.png?raw=true "Screenshot Light Theme")
+
+### Dark theme
+![Screenshot Dark Theme](images/demo-dark.png?raw=true "Screenshot Dark Theme")
 
 ## Table of contents
 1. [Branches](#branches)
@@ -13,27 +19,32 @@
 4. [Get started](#get-started)
 5. [Browser support](#browser-support)
 6. [Architecture model](#architecture-model)
-7. [About the code](#about-the-code)
+7. [Colors](#colors) 
+    1. [Theme colors](#theme-colors)
+    2. [Color palette](#color-palette)
+8. [About the code](#about-the-code)
     1. [HTML](#html)
     2. [SCSS](#scss)
-    3. [Colors](#colors)
-    4. [JavaScript](#javascript)
-    5. [Callback functions and constructor parameters](#callback-functions-and-constructor-parameters)
-    6. [Store data locally instead of via API](#store-data-locally-instead-of-via-api)
-    7. [Hidden tools](#hidden-tools)
-    8. [Shortcut keys](#shortcut-keys)
-    9. [Custom projections](#custom-projections)
-    10. [Dialogs](#dialogs)
-    11. [Modal](#modal)
-    12. [Toast](#toast)
-    13. [Context menu](#context-menu)
-    14. [State Management](#state-management)
-    15. [Debug tool](#debug-tool)
-    16. [OLTB namespace](#oltb-namespace)
-8. [External GitHub projects](#external-github-projects)
-9. [Maps used in the demo](#maps-used-in-the-demo)
-10. [License](#license)
-11. [Author](#author)
+    3. [JavaScript](#javascript)
+    4. [Callback functions and constructor parameters](#callback-functions-and-constructor-parameters)
+    5. [Store data locally instead of via API](#store-data-locally-instead-of-via-api)
+    6. [Hidden tools](#hidden-tools)
+    7. [Shortcut keys](#shortcut-keys)
+    8. [Custom projections](#custom-projections)
+    9. [Dialogs](#dialogs)
+        1. [Alert](#alert)
+        2. [Confirm](#confirm)
+        3. [Prompt](#prompt)
+    10. [Modal](#modal)
+    11. [Toast](#toast)
+    12. [Context menu](#context-menu)
+    13. [State Management](#state-management)
+    14. [Debug tool](#debug-tool)
+    15. [OLTB namespace](#oltb-namespace)
+9. [External GitHub projects](#external-github-projects)
+10. [Maps used in the demo](#maps-used-in-the-demo)
+11. [License](#license)
+12. [Author](#author)
 
 ## Branches
 There are two branches in the repository. The `main` branch which contains the releases and the `develop` branch which also contains all upcomming commits for the next release. So if you want to test the latest features go checkout the `develop` branch. The `gh-pages` branch is just for the latest build for the demo-page.
@@ -52,7 +63,7 @@ If you are missing a feature in the latest release on the `main` branch start by
 
 1. Check if the feature already has been added on the `develop` branch.
 2. Check if there is an open request in the issue tracker.
-3. If no issue is open, please create one and tag **@qulle**.
+3. If no request is open, please create one and tag **@qulle**.
 
 Use the existing `labels` to tag your issue.
 
@@ -109,6 +120,73 @@ _IE is not supported, it's time to move on._
 ![Architecture model](images/architecture.svg?raw=true "Architecture model")
 Architecture model showing my intentions of how an application could be built to keep the responsibility of each part separated and not end up with application specific code inside the toolbar.
 
+## Colors
+The design of the toolbar is very much closely related to the colors used. Here follows a deeper explanation as to how i use the colors in the project.
+
+### Theme colors
+The toolbar is awailable in both `light` and `dark` mode. I have decided to go for a small set of colors in both themes. This enables for a solid look-and-feel and association between colors and functionality. The `mid` color is to consider as the default normal color. For some situations the `light` and `dark` color is used in the normal state.
+<table>
+    <tr>
+        <th>Blue</th>
+        <td><img valign="middle" src="./images/colors/blue-light.svg"> #D7E3FA - $color-blue-light</td>
+        <td><img valign="middle" src="./images/colors/blue-mid.svg"> #6397C2 - $color-blue-mid</td>
+        <td><img valign="middle" src="./images/colors/blue-dark.svg"> #0166A5 - $color-blue-dark</td>
+    </tr>
+    <tr>
+        <th>Green</th>
+        <td><img valign="middle" src="./images/colors/green-light.svg"> #BCFAF4 - $color-green-light</td>
+        <td><img valign="middle" src="./images/colors/green-mid.svg"> #3CAEA3 - $color-green-mid</td>
+        <td><img valign="middle" src="./images/colors/green-dark.svg"> #007C70 - $color-green-dark</td>
+    </tr>
+    <tr>
+        <th>Gray</th>
+        <td><img valign="middle" src="./images/colors/gray-light.svg"> #D3D9E6 - $color-gray-light</td>
+        <td><img valign="middle" src="./images/colors/gray-mid.svg"> #959DAD - $color-gray-mid</td>
+        <td><img valign="middle" src="./images/colors/gray-dark.svg"> #3B4352 - $color-gray-dark</td>
+    </tr>
+</table>
+
+### Color palette
+The full color palette is displayed below.
+<table>
+    <tr>
+        <th>Blue</th>
+        <td><img valign="middle" src="./images/colors/blue-light.svg"> #D7E3FA - $color-blue-light</td>
+        <td><img valign="middle" src="./images/colors/blue-mid.svg"> #6397C2 - $color-blue-mid</td>
+        <td><img valign="middle" src="./images/colors/blue-dark.svg"> #0166A5 - $color-blue-dark</td>
+    </tr>
+    <tr>
+        <th>Green</th>
+        <td><img valign="middle" src="./images/colors/green-light.svg"> #BCFAF4 - $color-green-light</td>
+        <td><img valign="middle" src="./images/colors/green-mid.svg"> #3CAEA3 - $color-green-mid</td>
+        <td><img valign="middle" src="./images/colors/green-dark.svg"> #007C70 - $color-green-dark</td>
+    </tr>
+    <tr>
+        <th>Yellow</th>
+        <td><img valign="middle" src="./images/colors/yellow-light.svg"> #FFF1C5 - $color-yellow-light</td>
+        <td><img valign="middle" src="./images/colors/yellow-mid.svg"> #FBDD83 - $color-yellow-mid</td>
+        <td><img valign="middle" src="./images/colors/yellow-dark.svg"> #FBBD02 - $color-yellow-dark</td>
+    </tr>
+    <tr>
+        <th>Orange</th>
+        <td><img valign="middle" src="./images/colors/orange-light.svg"> #FFDDBC - $color-orange-light</td>
+        <td><img valign="middle" src="./images/colors/orange-mid.svg"> #FCBE80 - $color-orange-mid</td>
+        <td><img valign="middle" src="./images/colors/orange-dark.svg"> #F67D2C - $color-orange-dark</td>
+    </tr>
+    <tr>
+        <th>Red</th>
+        <td><img valign="middle" src="./images/colors/red-light.svg"> #FDB5B4 - $color-red-light</td>
+        <td><img valign="middle" src="./images/colors/red-mid.svg"> #E96B69 - $color-red-mid</td>
+        <td><img valign="middle" src="./images/colors/red-dark.svg"> #EB4542 - $color-red-dark</td>
+    </tr>
+    <tr>
+        <th>Gray</th>
+        <td><img valign="middle" src="./images/colors/gray-light.svg"> #D3D9E6 - $color-gray-light</td>
+        <td><img valign="middle" src="./images/colors/gray-mid.svg"> #959DAD - $color-gray-mid</td>
+        <td><img valign="middle" src="./images/colors/gray-dark.svg"> #3B4352 - $color-gray-dark</td>
+    </tr>
+</table>
+
 ## About the code
 Below is the basic HTML and JavaScript structure used in the project. For a complete example of how to set up the code go to `map.js` in the `src/js` directory. 
 
@@ -150,46 +228,6 @@ SCSS and HTML is written with [BEM](http://getbem.com/introduction/) (ish) namin
 .block__element {}
 .block__element--modifier {}
 ```
-
-### Colors
-<table>
-    <tr>
-        <th>Blue</th>
-        <td><img valign="middle" src="./images/colors/blue-light.svg"> #D7E3FA - $color-blue-light</td>
-        <td><img valign="middle" src="./images/colors/blue-mid.svg"> #4A86B8 - $color-blue-mid</td>
-        <td><img valign="middle" src="./images/colors/blue-dark.svg"> #0166A5 - $color-blue-dark</td>
-    </tr>
-    <tr>
-        <th>Green</th>
-        <td><img valign="middle" src="./images/colors/green-light.svg"> #ABFAF2 - $color-green-light</td>
-        <td><img valign="middle" src="./images/colors/green-mid.svg"> #67C7BD - $color-green-mid</td>
-        <td><img valign="middle" src="./images/colors/green-dark.svg"> #3CAEA3 - $color-green-dark</td>
-    </tr>
-    <tr>
-        <th>Yellow</th>
-        <td><img valign="middle" src="./images/colors/yellow-light.svg"> #FFEBAE - $color-yellow-light</td>
-        <td><img valign="middle" src="./images/colors/yellow-mid.svg"> #FBDD83 - $color-yellow-mid</td>
-        <td><img valign="middle" src="./images/colors/yellow-dark.svg"> #FFCC33 - $color-yellow-dark</td>
-    </tr>
-    <tr>
-        <th>Orange</th>
-        <td><img valign="middle" src="./images/colors/orange-light.svg"> #FFD5AC - $color-orange-light</td>
-        <td><img valign="middle" src="./images/colors/orange-mid.svg"> #FCBE80 - $color-orange-mid</td>
-        <td><img valign="middle" src="./images/colors/orange-dark.svg"> #F79A5A - $color-orange-dark</td>
-    </tr>
-    <tr>
-        <th>Red</th>
-        <td><img valign="middle" src="./images/colors/red-light.svg"> #FDB5B4 - $color-red-light</td>
-        <td><img valign="middle" src="./images/colors/red-mid.svg"> #F38C8A - $color-red-mid</td>
-        <td><img valign="middle" src="./images/colors/red-dark.svg"> #ED6663 - $color-red-dark</td>
-    </tr>
-    <tr>
-        <th>Gray</th>
-        <td><img valign="middle" src="./images/colors/gray-light.svg"> #D3D9E6 - $color-gray-light</td>
-        <td><img valign="middle" src="./images/colors/gray-mid.svg"> #8C94A4 - $color-gray-mid</td>
-        <td><img valign="middle" src="./images/colors/gray-dark.svg"> #3B4352 - $color-gray-dark</td>
-    </tr>
-</table>
 
 ### JavaScript
 The JavaScript tool-buttons are located in the `src/js/modules/tools` directory. Every tool has its own class and extend the Control-class from OpenLayers.
@@ -481,7 +519,7 @@ Tools that create objects at runtime, for example the BookmarkTool, LayerTool et
 **Note** At the moment only the BookmarkTool has this feature fully implemented.
 
 ### Hidden tools
-Tools refered to as `hidden tools` are tools that only add functionality via the context menu. The hidden tools are used to enable the same type of callback functions in the constructor as every other tool. 
+Tools refered to as hidden tools are tools that only add functionality via the context menu. The hidden tools are used to enable the same type of callback functions in the constructor as every other tool. 
 
 ### Shortcut keys
 All tools have a shortcut key for ease of use and speeds up the handling of the toolbar and map. The shortcut key is displayed in the tooltip on the corresponding tool.
@@ -497,12 +535,13 @@ All the dialogs uses trap focus and circles the tab-key to always stay in the op
 import Dialog from './modules/common/Dialog';
 ```
 
-To change the text in the confirm button, add the property `confirmText: 'Your text'`
+#### Alert
 ```javascript
 Dialog.alert({text: 'This is a custom alert message'});
 ```
+To change the text in the button, add the property `confirmText: 'Your text'`.
 
-To have a 'success' confirm dialog, add the property `confirmClass: Dialog.Success`. To change the text of the confirm button, add the property `confirmText: 'Your text'`.
+#### Confirm
 ```javascript
 Dialog.confirm({
     text: 'Do you want to delete this layer?',
@@ -515,7 +554,9 @@ Dialog.confirm({
 });
 ```
 
-To have a 'danger' prompt dialog, add the property `confirmClass: Dialog.Danger`. To change the text of the confirm button, add the property `confirmText: 'Your text'`.
+To have a `success` confirm dialog, add the property `confirmClass: Dialog.Success`. To change the text of the confirm button, add the property `confirmText: 'Your text'`.
+
+#### Prompt
 ```javascript
 Dialog.prompt({
     text: 'Change name of layer',
@@ -528,6 +569,7 @@ Dialog.prompt({
     }
 });
 ```
+To have a `danger` prompt dialog, add the property `confirmClass: Dialog.Danger`. To change the text of the confirm button, add the property `confirmText: 'Your text'`.
 
 The dialogs could be extended with more options, but i want to keep the configuration as simple as possible.
 

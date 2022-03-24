@@ -36,14 +36,14 @@
     }
 
     &--warning {
-        background-color: $color-orange-dark;
+        background-color: $color-orange-mid;
     }
 
     &--error {
-        background-color: $color-red-dark;
+        background-color: $color-red-mid;
     }
 
     &--success {
-        background-color: $color-green-dark;
+        background-color: $color-green-mid;
     }
 }

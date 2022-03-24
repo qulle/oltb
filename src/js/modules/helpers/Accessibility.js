@@ -6,7 +6,7 @@ document.documentElement.setAttribute('oltb-version', Config.version);
 
 // Remove default contextmenu
 mapElement.oncontextmenu = function(event) { 
-    return false; 
+    return true; 
 };
 
 // Accessibility help

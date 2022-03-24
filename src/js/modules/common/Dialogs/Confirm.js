@@ -10,7 +10,7 @@ class Confirm extends DialogBase {
             html, 
             onConfirm, 
             onCancel, 
-            confirmClass = 'oltb-btn--red-dark', 
+            confirmClass = 'oltb-btn--red-mid', 
             confirmText = 'Yes' 
         } = options;
 

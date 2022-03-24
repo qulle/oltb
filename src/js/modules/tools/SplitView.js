@@ -66,7 +66,7 @@ class SplitView extends Control {
                         <select id="oltb-right-src" class="oltb-select"></select>
                     </div>
                     <div class="oltb-toolbox-section__group">
-                        <button type="button" id="oltb-swap-sides-btn" class="oltb-btn oltb-btn--green-dark oltb-w-100">Swap sides</button>
+                        <button type="button" id="oltb-swap-sides-btn" class="oltb-btn oltb-btn--green-mid oltb-w-100">Swap sides</button>
                     </div>
                 </div>
             </div>

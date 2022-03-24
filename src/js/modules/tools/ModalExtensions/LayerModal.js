@@ -193,7 +193,7 @@ class LayerModal extends ModalBase {
             text: 'Create layer', 
             attributes: {
                 type: 'button', 
-                class: 'oltb-dialog__btn oltb-btn oltb-btn--green-dark'
+                class: 'oltb-dialog__btn oltb-btn oltb-btn--green-mid'
             }
         });
 

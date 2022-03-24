@@ -16,11 +16,11 @@ class Dialog {
     }
 
     static get Success() {
-        return 'oltb-btn--green-dark';
+        return 'oltb-btn--green-mid';
     }
 
     static get Danger() {
-        return 'oltb-btn--red-dark';
+        return 'oltb-btn--red-mid';
     }
 }
 

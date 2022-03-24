@@ -16,10 +16,15 @@
     box-shadow: $box-shadow-mid;
     color: $color-light;
     padding: .5rem;
+    text-shadow: $text-shadow-light;
 
     &:disabled {
         opacity: .5;
         pointer-events: none;
+    }
+
+    &__icon {
+        filter: $drop-shadow-filter-light;
     }
 
     &--round {

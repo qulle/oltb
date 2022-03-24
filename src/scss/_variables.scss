@@ -1,39 +1,36 @@
-$background-map-osm: #AAD3DF;
-$background-theme-light: #FFFFFF;
-$background-theme-dark: #3B4352;
-
-$color-light: #FFFFFF;
-$color-dark: #3B4352;
 $color-blue-light: #D7E3FA;
-$color-blue-mid: #4A86B8;
+$color-blue-mid: #6397C2;
 $color-blue-dark: #0166A5;
-$color-green-light: #ABFAF2;
-$color-green-mid: #67C7BD;
-$color-green-dark: #3CAEA3;
-$color-yellow-light: #FFEBAE;
+$color-green-light: #BCFAF4;
+$color-green-mid: #3CAEA3;
+$color-green-dark: #007C70;
+$color-yellow-light: #FFF1C5;
 $color-yellow-mid: #FBDD83;
-$color-yellow-dark: #FFCC33;
-$color-orange-light: #FFD5AC;
+$color-yellow-dark: #FBBD02;
+$color-orange-light: #FFDDBC;
 $color-orange-mid: #FCBE80;
-$color-orange-dark: #F79A5A;
+$color-orange-dark: #F67D2C;
 $color-red-light: #FDB5B4;
-$color-red-mid: #F38C8A;
-$color-red-dark: #ED6663;
+$color-red-mid: #E96B69;
+$color-red-dark: #EB4542;
 $color-gray-light: #D3D9E6;
-$color-gray-mid: #8C94A4;
+$color-gray-mid: #959DAD;
 $color-gray-dark: #3B4352;
 
-$form-input-border-color: #CED4DA;
+$background-map-osm: #AAD3DF;
 
-$form-input-border-color: #CED4DA;
+$background-theme-light: #FFFFFF;
+$background-theme-dark: $color-gray-dark;
+
+$color-light: #FFFFFF;
+$color-dark: $color-gray-dark;
+
+$form-input-border-color-light: #CED4DA;
+$form-input-border-color-dark: #2F3642;
 
 $box-shadow-light: 1px 1px 0 rgba(0, 0, 0, .1);
 $box-shadow-mid: 1px 1px 0 rgba(0, 0, 0, .2);
 $box-shadow-dark: 1px 1px 0 rgba(0, 0, 0, .3);
-
-$drop-shadow-filter-light: drop-shadow(1px 1px 0 rgba(0, 0, 0, .1));
-$drop-shadow-filter-mid: drop-shadow(1px 1px 0 rgba(0, 0, 0, .2));
-$drop-shadow-filter-dark: drop-shadow(1px 1px 0 rgba(0, 0, 0, .3));
 
 $drop-shadow-filter-light: drop-shadow(1px 1px 0 rgba(0, 0, 0, .1));
 $drop-shadow-filter-mid: drop-shadow(1px 1px 0 rgba(0, 0, 0, .2));
@@ -43,10 +40,10 @@ $text-shadow-light: 1px 1px 0 rgba(0, 0, 0, .1);
 $text-shadow-mid: 1px 1px 0 rgba(0, 0, 0, .2);
 $text-shadow-dark: 1px 1px 0 rgba(0, 0, 0, .3);
 
+$shadow-focus-width: 3px;
+
 $breakpoint-xxl: 1400px;
 $breakpoint-xl: 1200px;
 $breakpoint-lg: 992px;
 $breakpoint-md: 768px;
 $breakpoint-sm: 576px;
-
-$shadow-focus-width: 3px;

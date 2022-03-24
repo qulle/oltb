@@ -7,9 +7,9 @@
     padding: 0;
     position: fixed;
     user-select: none;
-    
     background-color: $background-theme-light;
     box-shadow: $box-shadow-mid;
+    text-shadow: $text-shadow-light;
     border-radius: 2px;
     font-size: .875rem;
   
@@ -38,6 +38,7 @@
         display: flex;
         padding-right: .625rem;
         margin: 0;
+        filter: $drop-shadow-filter-light;
 
         svg {
             width: 20px;

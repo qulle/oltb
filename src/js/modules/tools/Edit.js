@@ -60,7 +60,7 @@ class Edit extends Control {
                 </div>
                 <div class="oltb-toolbox-section__groups" id="oltb-edit-toolbox-collapsed" style="display: ${this.localStorage.collapsed ? 'none' : 'block'}">
                     <div class="oltb-toolbox-section__group">
-                        <button type="button" disabled id="oltb-delete-selected-btn" class="oltb-btn oltb-btn--red-dark oltb-w-100">Delete selected features</button>
+                        <button type="button" disabled id="oltb-delete-selected-btn" class="oltb-btn oltb-btn--red-mid oltb-w-100">Delete selected features</button>
                     </div>
                 </div>
             </div>

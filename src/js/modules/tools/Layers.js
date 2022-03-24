@@ -73,7 +73,7 @@ class Layers extends Control {
                 </div>
                 <div class="oltb-toolbox-section__groups" id="oltb-map-layers-toolbox-collapsed" style="display: ${this.localStorage['oltb-map-layers-toolbox-collapsed'] ? 'none' : 'block'}">
                     <div class="oltb-toolbox-section__group">
-                        <button type="button" id="oltb-add-map-layer-btn" class="oltb-btn oltb-btn--green-dark oltb-w-100">Create map layer</button>
+                        <button type="button" id="oltb-add-map-layer-btn" class="oltb-btn oltb-btn--green-mid oltb-w-100">Create map layer</button>
                     </div>
                     <div class="oltb-toolbox-section__group oltb-m-0">
                         <ul id="oltb-map-layer-stack" class="oltb-toolbox-list"></ul>
@@ -89,13 +89,14 @@ class Layers extends Control {
                     <div class="oltb-toolbox-section__group">
                         <div class="oltb-input-button-group">
                             <input type="text" id="oltb-add-feature-layer-txt" class="oltb-input" placeholder="Layer name">
-                            <button type="button" id="oltb-add-feature-layer-btn" class="oltb-btn oltb-btn--green-dark oltb-tippy" title="Create feature layer">
+                            <button type="button" id="oltb-add-feature-layer-btn" class="oltb-btn oltb-btn--green-mid oltb-tippy" title="Create feature layer">
                                 ${getIcon({
                                     path: SVGPaths.PlusSmall,
                                     width: 20,
                                     height: 20,
                                     fill: 'none',
-                                    stroke: 'rgb(255, 255, 255)'
+                                    stroke: 'rgb(255, 255, 255)',
+                                    class: 'oltb-btn__icon'
                                 })}
                             </button>
                         </div>

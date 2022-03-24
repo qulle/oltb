@@ -11,7 +11,7 @@ class Prompt extends DialogBase {
             value,
             onConfirm,
             onCancel,
-            confirmClass = 'oltb-btn--green-dark',
+            confirmClass = 'oltb-btn--green-mid',
             confirmText = 'Confirm'
         } = options;
 
