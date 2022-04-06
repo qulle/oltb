@@ -47,7 +47,7 @@ A picture says more than a thousand words, but the demo above says it all.
 12. [Author](#author)
 
 ## Branches
-There are two branches in the repository. The `main` branch which contains the releases and the `develop` branch which also contains all upcomming commits for the next release. So if you want to test the latest features go checkout the `develop` branch. The `gh-pages` branch is just for the latest build for the demo-page.
+There are two branches in the repository. The `main` branch which contains the releases and the `develop` branch which also contains all upcomming commits for the next release. So if you want to test the latest features go checkout the `develop` branch. The `gh-pages` branch is just for the latest build from the main branch that hosts the demo-page.
 
 ## Report a bug
 If you find a bug in the latest release on the `main` branch start by:
@@ -61,11 +61,11 @@ Use the existing `labels` to tag your issue.
 ## Request a new feature
 If you are missing a feature in the latest release on the `main` branch start by:
 
-1. Check if the feature already has been added on the `develop` branch.
+1. Check if the feature already has been implemented on the `develop` branch.
 2. Check if there is an open request in the issue tracker.
 3. If no request is open, please create one and tag **@qulle**.
 
-Use the existing `labels` to tag your issue.
+Use the existing `labels` to tag your request.
 
 ## Get started
 The dev-environment uses npm so you need to have [Node.js](https://nodejs.org/en/) installed.
