@@ -1,12 +1,14 @@
 import Config from '../core/Config';
 import { toolbarElement, toolboxElement, mapElement } from '../core/ElementReferences';
+import { URIGet } from '../helpers/URIGet';
 
 // Append version as custom attribute to the html element
 document.documentElement.setAttribute('oltb-version', Config.version);
 
-// Remove default contextmenu
+// Remove default contextmenu, show if the get parameter ?debug=true exists
+const debugParameter = URIGet('debug');
 mapElement.oncontextmenu = function(event) { 
-    return true; 
+    return debugParameter; 
 };
 
 // Accessibility help

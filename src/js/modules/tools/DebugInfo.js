@@ -5,6 +5,7 @@ import { Control } from 'ol/control';
 import { toolbarElement } from '../core/ElementReferences';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
+import { URIGet } from '../helpers/URIGet';
 
 class DebugInfo extends Control {
     constructor(options = {}) {
@@ -31,9 +32,7 @@ class DebugInfo extends Control {
         this.element.appendChild(button);
         
         // Check if the tool only should be visible if the get parameter ?debug=true exists
-        const urlSearchParameters = decodeURI(window.location.search);
-        const urlObject = new URLSearchParams(urlSearchParameters);
-        const debugParameter = (urlObject.get('debug') || '') === 'true';
+        const debugParameter = URIGet('debug');
 
         if(options.showWhenGetParameter) {
             if(!debugParameter || debugParameter !== true) {
