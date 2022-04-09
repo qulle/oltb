@@ -1,5 +1,5 @@
 # OpenLayers Toolbar - OLTB
-### Lightweight GIS toolbar developed for OpenLayers 6.13.0. The toolbar can be filled with any number of tools and can be used in both horizontal and vertical mode and is available in both light and dark theme.
+### Lightweight GIS toolbar developed for OpenLayers 6.14.1. The toolbar can be filled with any number of tools and can be used in both horizontal and vertical mode and is available in both light and dark theme.
 
 ## Current version 1.0.0-beta1 - [Demo](https://qulle.github.io/oltb/)
 
@@ -197,8 +197,8 @@ Below is the basic HTML and JavaScript structure used in the project. For a comp
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=0" />
-    <link rel="stylesheet" href="/scss/map.scss">
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="stylesheet" href="./scss/map.scss">
+    <link rel="icon" type="image/x-icon" href="./favicon.ico" />
     <title>OLTB - Toolbar for OpenLayers</title>
 </head>
 <body>
@@ -206,7 +206,7 @@ Below is the basic HTML and JavaScript structure used in the project. For a comp
 
     <div id="map" tabindex="0"></div>
 
-    <script src="/js/map.js"></script>
+    <script type="module" src="./js/map.js"></script>
 </body>
 </html>
 ```
@@ -697,7 +697,7 @@ For some tools and features data is stored on the global window object. The name
 All classes and id:s in the project are also prefixed with the namespace `oltb`.
 
 ## External GitHub projects
-1. [OpenLayers 6.13.0](https://openlayers.org/en/v6.13.0/apidoc/)
+1. [OpenLayers 6.14.1](https://openlayers.org/en/v6.14.1/apidoc/)
 2. [Tippy.js 6.3.7](https://atomiks.github.io/tippyjs/)
 3. [Bootstrap Icons](https://icons.getbootstrap.com/)
 4. [A Color Picker 1.2.1](https://github.com/narsenico/a-color-picker)

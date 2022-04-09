@@ -14,6 +14,9 @@ import { defaults as defaultInterctions, MouseWheelZoom, DragPan, DragRotate, Ke
 import { defaults as defaultControls } from 'ol/control';
 import { get as getProjection } from 'ol/proj';
 
+// Local map layers
+import worldMapUrl from 'url:../world-map.geojson';
+
 // Toolbar tools
 import HiddenMarker from './modules/tools/HiddenTools/Marker';
 import HiddenMapNavigation from './modules/tools/HiddenTools/MapNavigation';
@@ -339,7 +342,7 @@ LayerManager.addMapLayers([{
     name: 'Country world map',
     layer: new VectorLayer({
         source: new VectorSource({
-            url: require('../world-map.geojson'),
+            url: worldMapUrl,
             format: new GeoJSON()
         }),
         visible: false
