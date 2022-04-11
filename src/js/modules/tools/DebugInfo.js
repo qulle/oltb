@@ -32,7 +32,7 @@ class DebugInfo extends Control {
         this.element.appendChild(button);
         
         // Check if the tool only should be visible if the get parameter ?debug=true exists
-        const debugParameter = URIGet('debug');
+        const debugParameter = URIGet('debug') === 'true';
 
         if(options.showWhenGetParameter) {
             if(!debugParameter || debugParameter !== true) {

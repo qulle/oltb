@@ -6,7 +6,7 @@ import { URIGet } from '../helpers/URIGet';
 document.documentElement.setAttribute('oltb-version', Config.version);
 
 // Remove default contextmenu, show if the get parameter ?debug=true exists
-const debugParameter = URIGet('debug');
+const debugParameter = URIGet('debug') === 'true';
 mapElement.oncontextmenu = function(event) { 
     return debugParameter; 
 };
