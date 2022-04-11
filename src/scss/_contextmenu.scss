@@ -10,7 +10,7 @@
     background-color: $background-theme-light;
     box-shadow: $box-shadow-mid;
     text-shadow: $text-shadow-light;
-    border-radius: 2px;
+    border-radius: $border-radius;
     font-size: .875rem;
   
     &__item {
@@ -24,7 +24,7 @@
         display: flex;
         align-items: center;
         margin: .25rem;
-        border-radius: 2px;
+        border-radius: $border-radius;
         transition: background-color 100ms ease-in-out;
   
         &:hover,

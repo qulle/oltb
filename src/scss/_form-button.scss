@@ -10,7 +10,7 @@
     user-select: none;
     background-color: transparent;
     font-size: 1rem;
-    border-radius: .25rem;
+    border-radius: $border-radius;
     border: none;
     cursor: pointer;
     box-shadow: $box-shadow-mid;
@@ -28,7 +28,7 @@
     }
 
     &--round {
-        border-radius: 100%;
+        border-radius: 50%;
     }
 
     &--blank {

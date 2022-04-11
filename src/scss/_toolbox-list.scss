@@ -4,7 +4,7 @@
     list-style-type: none;
 
     &__item {
-        border-radius: 2px;
+        border-radius: $border-radius;
         margin-bottom: .5rem;
         color: $color-gray-dark;
         font-size: 1rem;
@@ -40,7 +40,7 @@
                 width: .25rem;
                 height: 1.5rem;
                 background-color: $color-gray-light;
-                border-radius: 4px;
+                border-radius: $border-radius;
                 position: absolute;
                 left: -.313rem;
                 top: 50%;

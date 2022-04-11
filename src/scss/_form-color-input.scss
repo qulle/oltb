@@ -9,7 +9,7 @@
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
-    border-radius: .25rem;
+    border-radius: $border-radius;
     transition: border-color 150ms ease-in-out, box-shadow 150ms ease-in-out;
     outline: none;
 
@@ -21,7 +21,7 @@
     &__inner {
         padding: .5rem;
         border: 1px solid rgba(0, 0, 0, .2);
-        border-radius: .25rem;
+        border-radius: $border-radius;
     }
 }
 

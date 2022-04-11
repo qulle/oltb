@@ -23,7 +23,7 @@
     min-width: 400px;
     margin: 2rem 1rem;
     padding: 1.5rem;
-    border-radius: 2px;
+    border-radius: $border-radius;
     box-shadow: $box-shadow-dark;
 
     &__header {
@@ -44,7 +44,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        border-radius: 4px;
+        border-radius: $border-radius;
         width: 1.75rem;
         height: 1.75rem;
     }

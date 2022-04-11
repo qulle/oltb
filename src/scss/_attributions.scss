@@ -4,7 +4,7 @@ body #map .ol-attribution {
     background-color: $background-theme-light;
     bottom: .5rem;
     right: .5rem;
-    border-radius: 2px;
+    border-radius: $border-radius;
     box-shadow: $box-shadow-mid;
     
     ul, a {
