@@ -8,7 +8,7 @@ import Stamen from 'ol/source/Stamen';
 import GeoJSON from 'ol/format/GeoJSON';
 import { Map, View } from 'ol';
 import { XYZ } from 'ol/source';
-import { fromLonLat } from 'ol/proj';
+import { fromLonLat, toLonLat } from 'ol/proj';
 import { platformModifierKeyOnly, altShiftKeysOnly, shiftKeyOnly } from 'ol/events/condition';
 import { defaults as defaultInterctions, MouseWheelZoom, DragPan, DragRotate, KeyboardZoom, KeyboardPan } from 'ol/interaction';
 import { defaults as defaultControls } from 'ol/control';
@@ -49,6 +49,7 @@ import HiddenAbout from './modules/tools/HiddenTools/About';
 // Additional toolbar helpers
 import ContextMenu from './modules/common/ContextMenu';
 import LayerManager from './modules/core/Managers/LayerManager';
+import StateManager from './modules/core/Managers/StateManager';
 import Config from './modules/core/Config';
 import SettingsManager from './modules/core/Managers/SettingsManager';
 import InfoWindowManager from './modules/core/Managers/InfoWindowManager';
@@ -57,6 +58,20 @@ import './modules/helpers/Prototypes';
 import './modules/helpers/Accessibility';
 import './modules/helpers/SlideToggle';
 import './modules/epsg/Projections';
+
+const LOCAL_STORAGE_NODE_NAME = 'mapData';
+const LOCAL_STORAGE_PROPS = {
+    lon: 18.6435,
+    lat: 60.1282,
+    zoom: 4,
+    rotation: 0
+};
+
+// Load potential stored data from localStorage
+const loadedPropertiesFromLocalStorage = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
+
+// Merge the potential data replacing the default values
+const localStorage = {...LOCAL_STORAGE_PROPS, ...loadedPropertiesFromLocalStorage};
 
 const map = new Map({
     interactions: defaultInterctions({
@@ -304,9 +319,26 @@ const map = new Map({
     target: mapElement,
     view: new View({
         projection: getProjection(Config.baseProjection),
-        center: fromLonLat([18.6435, 60.1282], Config.baseProjection),
-        zoom: 4
+        center: fromLonLat([
+            localStorage.lon, 
+            localStorage.lat
+        ], Config.baseProjection),
+        zoom: localStorage.zoom,
+        rotation: localStorage.rotation
     })
+});
+
+// Track changes to zoom, paning etc. store in localStorage
+map.on('moveend', (event) => {
+    const view = map.getView();
+    const center = toLonLat(view.getCenter());
+
+    localStorage.lon = center[0];
+    localStorage.lat = center[1];
+    localStorage.zoom = view.getZoom();
+    localStorage.rotation = view.getRotation();
+
+    StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(localStorage));
 });
 
 // Initialize static managers with reference to map

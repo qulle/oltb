@@ -516,7 +516,7 @@ controls: defaultControls({
 ### Store data locally instead of via API
 Tools that create objects at runtime, for example the BookmarkTool, LayerTool etc. returns data via the callback functions. There is also the possibility for these tools to store the created objects in localStorage instead. This is done by setting the constructor parameter `storeDataInLocalStorage: true`. This can be useful if you want to create a map-viewer that can persists data between page load but have no need for an additionall long-term storage via API. 
 
-**Note** At the moment only the BookmarkTool has this feature fully implemented.
+**Note** At the moment only the BookmarkTool has this feature fully implemented. The Map also stores base data (zoom, lon, lat) in localStorage. You can read more about the State Management [here](#state-management). 
 
 ### Hidden tools
 Tools refered to as hidden tools are tools that only add functionality via the context menu. The hidden tools are used to enable the same type of callback functions in the constructor as every other tool. 
