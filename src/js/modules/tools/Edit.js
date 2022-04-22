@@ -88,7 +88,6 @@ class Edit extends Control {
             });
         });
 
-
         const select = new Select({
             hitTolerance: 5,
             filter: function(feature, layer) {
