@@ -68,7 +68,7 @@ If you are missing a feature in the latest release on the `main` branch start by
 Use the existing `labels` to tag your request.
 
 ## Get started
-The dev-environment uses npm so you need to have [Node.js](https://nodejs.org/en/) installed.
+The dev-environment uses NPM so you need to have [Node.js](https://nodejs.org/en/) installed. I use Node version *16.14.2* and NPM version *8.7.0*.
 
 Clone the repo.
 ```
