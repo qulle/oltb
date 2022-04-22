@@ -250,6 +250,7 @@ import Edit from './modules/tools/Edit';
 import Bookmark from './modules/tools/Bookmark';
 import Layers from './modules/tools/Layers';
 import SplitView from './modules/tools/SplitView';
+import Overview from './modules/tools/Overview';
 import Magnify from './modules/tools/Magnify';
 import ResetNorth from './modules/tools/ResetNorth';
 import Coordinates from './modules/tools/Coordinates';
@@ -286,6 +287,7 @@ controls: defaultControls({
     new Bookmark(),
     new Layers(),
     new SplitView(),
+    new Overview(),
     new Magnify(),
     new ResetNorth(),
     new Coordinates(),
@@ -452,6 +454,7 @@ controls: defaultControls({
         }
     }),
     new SplitView(),
+    new Overview(),
     new Magnify(),
     new ResetNorth({
         reset: function() {
