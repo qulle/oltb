@@ -34,6 +34,8 @@ class ScaleLineTool extends Control {
 
         const { units = 'metric' } = options;
         this.units = units;
+
+        this.scaleLine = new ScaleLine({units: this.units});
         
         window.addEventListener('keyup', (event) => {
             if(isShortcutKeyOnly(event, 'k')) {
@@ -45,13 +47,6 @@ class ScaleLineTool extends Control {
     handleClick(event) {
         event.preventDefault();
 
-        // If first time the tool is activated
-        if(!this.scaleLine) {
-            this.scaleLine = new ScaleLine({units: this.units});
-            this.getMap().addControl(this.scaleLine);
-        }
-
-        // Handle tool toggle
         if(this.active) {
             this.scaleLine.setMap(null);
         }else {
