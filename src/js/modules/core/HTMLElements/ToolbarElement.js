@@ -36,4 +36,11 @@ if(toolbarElement.classList.contains('row')) {
     document.body.classList.add('oltb-row');
 }
 
+// Change how the scrollwheel behaves when toolbar is in horizontal mode
+toolbarElement.addEventListener('wheel', function(event) {
+    if(!event.ctrlKey) {
+        this.scrollLeft += event.deltaY > 0 ? 100 : -100;
+    }
+});
+
 export { toolbarElement };

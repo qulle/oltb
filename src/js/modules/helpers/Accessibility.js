@@ -24,17 +24,6 @@ document.body.addEventListener('keydown', function(event) {
     }
 });
 
-// Change how the scrollwheel behaves
-window.addEventListener('wheel', function(event) {
-    if(!event.ctrlKey) {
-        if(event.deltaY > 0) {
-            toolbarElement.scrollLeft += 100;
-        }else {
-            toolbarElement.scrollLeft -= 100;
-        }
-    }
-});
-
 const collisionDetection = function(event) {
     const windowWidth = window.innerWidth;
     const toolbarWidth = toolbarElement.offsetWidth;
