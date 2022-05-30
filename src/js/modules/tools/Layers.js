@@ -2,7 +2,6 @@ import 'ol/ol.css';
 import LayerManager from '../core/Managers/LayerManager';
 import Dialog from '../common/Dialog';
 import LayerModal from './ModalExtensions/LayerModal';
-import GeoJSON from 'ol/format/GeoJSON';
 import DOM from '../helpers/DOM';
 import EventType from 'ol/events/EventType';
 import SourceTypes from '../core/olTypes/SourceTypes';
@@ -18,6 +17,7 @@ import { download } from '../helpers/Download';
 import { addContextMenuItem } from '../common/ContextMenu';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
+import { exportLayerAsGeoJSON } from '../helpers/GeoJSON';
 
 const LAYER_BUTTON_DEFAULT_CLASSES = 'oltb-func-btn';
 /* 
@@ -405,11 +405,7 @@ class Layers extends Control {
         });
 
         downloadButton.addEventListener('click', function(event) {
-            const features = new GeoJSON().writeFeatures(
-                layerObject.layer.getSource().getFeatures(), 
-                {featureProjection: Config.baseProjection}
-            );
-            
+            const features = exportLayerAsGeoJSON(layerObject.layer);
             download(layerObject.name + '.geojson', features);
 
             // User defined callback from constructor

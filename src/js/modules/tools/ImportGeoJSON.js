@@ -1,13 +1,12 @@
 import 'ol/ol.css';
 import EventType from 'ol/events/EventType';
-import GeoJSON from 'ol/format/GeoJSON';
 import Toast from '../common/Toast';
 import LayerManager from '../core/Managers/LayerManager';
-import Config from '../core/Config';
 import { Control } from 'ol/control';
 import { toolbarElement } from '../core/ElementReferences';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
+import { importLayerAsGeoJSON } from '../helpers/GeoJSON';
 
 class ImportGeoJSON extends Control {
     constructor(options = {}) {
@@ -63,10 +62,10 @@ class ImportGeoJSON extends Control {
 
         fileReader.onload = function() {
             const file = fileDialog.files[0].name;
+            
             try {
                 const filename = file.split('.')[0];
-                const geoJSON = JSON.parse(fileReader.result);
-                const features = new GeoJSON().readFeatures(geoJSON, {featureProjection: Config.baseProjection});
+                const features = importLayerAsGeoJSON(fileReader.result);
 
                 LayerManager.addFeatureLayer('Import : ' + filename);
                 const layer = LayerManager.getActiveFeatureLayer().layer;
