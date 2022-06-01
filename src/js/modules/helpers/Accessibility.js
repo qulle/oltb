@@ -7,9 +7,11 @@ document.documentElement.setAttribute('oltb-version', Config.version);
 
 // Remove default contextmenu, show if the get parameter ?debug=true exists
 const debugParameter = URIGet('debug') === 'true';
-mapElement.oncontextmenu = function(event) { 
-    return debugParameter; 
-};
+mapElement.addEventListener('contextmenu', function(event) {
+    if(!debugParameter) {
+        event.preventDefault();
+    }
+});
 
 // Accessibility help
 // This will toggle the class using-keyboard on the body,
