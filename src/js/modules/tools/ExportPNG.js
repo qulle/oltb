@@ -1,7 +1,7 @@
 import 'ol/ol.css';
 import EventType from 'ol/events/EventType';
 import { Control } from 'ol/control';
-import { download } from '../helpers/Download';
+import { download } from '../helpers/Browser/Download';
 import { toolbarElement } from '../core/ElementReferences';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';

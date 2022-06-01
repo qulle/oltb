@@ -2,7 +2,7 @@ import 'ol/ol.css';
 import LayerManager from '../core/Managers/LayerManager';
 import Dialog from '../common/Dialog';
 import LayerModal from './ModalExtensions/LayerModal';
-import DOM from '../helpers/DOM';
+import DOM from '../helpers/Browser/DOM';
 import EventType from 'ol/events/EventType';
 import SourceTypes from '../core/olTypes/SourceTypes';
 import LayerTypes from '../core/olTypes/LayerTypes';
@@ -13,11 +13,11 @@ import StateManager from '../core/Managers/StateManager';
 import Toast from '../common/Toast';
 import { Control } from 'ol/control';
 import { toolboxElement, toolbarElement } from '../core/ElementReferences';
-import { download } from '../helpers/Download';
+import { download } from '../helpers/Browser/Download';
 import { addContextMenuItem } from '../common/ContextMenu';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
-import { exportLayerAsGeoJSON } from '../helpers/GeoJSON';
+import { exportLayerAsGeoJSON } from '../helpers/olFunctions/GeoJSON';
 
 const LAYER_BUTTON_DEFAULT_CLASSES = 'oltb-func-btn';
 /* 

@@ -2,7 +2,7 @@ import Point from 'ol/geom/Point';
 import Feature from 'ol/Feature';
 import { Circle as CircleStyle, Fill, Icon, Stroke, Style } from 'ol/style';
 import { fromLonLat } from 'ol/proj';
-import { SVGPaths, getIcon } from '../core/Icons';
+import { SVGPaths, getIcon } from '../../core/Icons';
 
 const defaultIcon = getIcon({
     path: SVGPaths.GeoPin,

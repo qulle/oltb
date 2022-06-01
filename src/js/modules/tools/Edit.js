@@ -8,7 +8,7 @@ import { Control } from 'ol/control';
 import { Select, Modify, Translate } from 'ol/interaction';
 import { shiftKeyOnly } from 'ol/events/condition';
 import { unByKey } from 'ol/Observable';
-import { onFeatureChange } from '../helpers/Measure';
+import { onFeatureChange } from '../helpers/olFunctions/Measure';
 import { toolboxElement, toolbarElement } from '../core/ElementReferences';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';

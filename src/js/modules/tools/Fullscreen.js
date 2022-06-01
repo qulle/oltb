@@ -14,7 +14,7 @@ import {
     requestFullScreen,
     requestFullScreenWithKeys,
     exitFullScreen
-} from '../helpers/Fullscreen';
+} from '../helpers/Browser/Fullscreen';
 
 class Fullscreen extends Control {
     constructor(options = {}) {

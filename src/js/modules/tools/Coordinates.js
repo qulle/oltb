@@ -8,7 +8,7 @@ import { Control } from 'ol/control';
 import { transform } from 'ol/proj';
 import { unByKey } from 'ol/Observable';
 import { toolbarElement } from '../core/ElementReferences';
-import { copyToClipboard } from '../helpers/CopyToClipboard';
+import { copyToClipboard } from '../helpers/Browser/CopyToClipboard';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { toStringHDMS } from 'ol/coordinate';

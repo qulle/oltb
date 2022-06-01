@@ -1,5 +1,5 @@
 import GeoJSON from 'ol/format/GeoJSON';
-import Config from '../core/Config';
+import Config from '../../core/Config';
 
 const importLayerAsGeoJSON = function(fileResult) {
     const geoJSON = JSON.parse(fileResult);

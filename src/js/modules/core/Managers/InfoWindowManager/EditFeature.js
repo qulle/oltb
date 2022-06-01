@@ -4,7 +4,7 @@ import InfoWindowManager from '../InfoWindowManager';
 import LayerManager from '../LayerManager';
 import { transform } from 'ol/proj';
 import { toStringHDMS } from 'ol/coordinate';
-import { generateMarker } from '../../../helpers/Marker';
+import { generateMarker } from '../../../helpers/olFunctions/Marker';
 import { SVGPaths, getIcon } from '../../Icons';
 
 const editFeature = function(feature) {

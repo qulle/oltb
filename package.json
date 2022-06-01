@@ -27,7 +27,7 @@
         "tippy.js": "^6.3.7"
     },
     "devDependencies": {
-        "@parcel/transformer-sass": "^2.5.0",
-        "parcel": "^2.5.0"
+        "@parcel/transformer-sass": "^2.6.0",
+        "parcel": "^2.6.0"
     }
 }

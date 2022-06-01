@@ -1,10 +1,10 @@
-import DOM from '../helpers/DOM';
+import DOM from '../helpers/Browser/DOM';
 import tippy from 'tippy.js';
 import 'tippy.js/dist/tippy.css';
 import { delegate, createSingleton } from 'tippy.js';
 import { mapElement } from './ElementReferences';
 import { isHorizontal } from '../helpers/IsRowDirection';
-import { eventDispatcher } from '../helpers/EventDispatcher';
+import { eventDispatcher } from '../helpers/Browser/EventDispatcher';
 
 const AColorPicker = require('a-color-picker');
 

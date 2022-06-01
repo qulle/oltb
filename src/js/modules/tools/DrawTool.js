@@ -7,7 +7,7 @@ import Draw, { createBox, createRegularPolygon } from 'ol/interaction/Draw';
 import { Control } from 'ol/control';
 import { Fill, Stroke, Circle, Style } from 'ol/style';
 import { toolboxElement, toolbarElement } from '../core/ElementReferences';
-import { eventDispatcher } from '../helpers/EventDispatcher';
+import { eventDispatcher } from '../helpers/Browser/EventDispatcher';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 

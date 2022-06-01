@@ -7,7 +7,7 @@ import { Control } from 'ol/control';
 import { getRenderPixel } from 'ol/render';
 import { unByKey } from 'ol/Observable';
 import { toolboxElement, toolbarElement, mapElement } from '../core/ElementReferences';
-import { eventDispatcher } from '../helpers/EventDispatcher';
+import { eventDispatcher } from '../helpers/Browser/EventDispatcher';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 

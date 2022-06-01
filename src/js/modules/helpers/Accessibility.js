@@ -1,6 +1,6 @@
 import Config from '../core/Config';
 import { toolbarElement, toolboxElement, mapElement } from '../core/ElementReferences';
-import { URIGet } from '../helpers/URIGet';
+import { URIGet } from '../helpers/Browser/URIGet';
 
 // Append version as custom attribute to the html element
 document.documentElement.setAttribute('oltb-version', Config.version);

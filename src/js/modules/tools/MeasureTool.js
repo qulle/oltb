@@ -9,8 +9,8 @@ import { Control } from 'ol/control';
 import { Fill, Stroke, Circle, Style } from 'ol/style';
 import { unByKey } from 'ol/Observable';
 import { toolboxElement, toolbarElement } from '../core/ElementReferences';
-import { eventDispatcher } from '../helpers/EventDispatcher';
-import { onFeatureChange } from '../helpers/Measure';
+import { eventDispatcher } from '../helpers/Browser/EventDispatcher';
+import { onFeatureChange } from '../helpers/olFunctions/Measure';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 

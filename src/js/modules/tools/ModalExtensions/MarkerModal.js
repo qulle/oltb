@@ -1,5 +1,5 @@
 import ModalBase from '../../common/Modals/ModalBase';
-import DOM from '../../helpers/DOM';
+import DOM from '../../helpers/Browser/DOM';
 import { SVGPaths } from '../../core/Icons';
 import { isDarkTheme } from '../../helpers/IsDarkTheme';
 

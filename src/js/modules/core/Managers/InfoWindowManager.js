@@ -1,6 +1,6 @@
 import Overlay from 'ol/Overlay';
 import Config from '../Config';
-import DOM from '../../helpers/DOM';
+import DOM from '../../helpers/Browser/DOM';
 import { getCenter } from 'ol/extent';
 import { SVGPaths, getIcon } from '../Icons';
 import { copyFeatureInfo } from './InfoWindowManager/CopyFeatureInfo';

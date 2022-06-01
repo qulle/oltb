@@ -3,7 +3,7 @@ import LayerManager from '../../core/Managers/LayerManager';
 import MarkerModal from '../ModalExtensions/MarkerModal';
 import { Control } from 'ol/control';
 import { toolbarElement } from '../../core/ElementReferences';
-import { generateMarker } from '../../helpers/Marker';
+import { generateMarker } from '../../helpers/olFunctions/Marker';
 import { addContextMenuItem } from '../../common/ContextMenu';
 import { SVGPaths, getIcon } from '../../core/Icons';
 import { toStringHDMS } from 'ol/coordinate';

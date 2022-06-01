@@ -2,7 +2,7 @@ import 'ol/ol.css';
 import EventType from 'ol/events/EventType';
 import Dialog from '../common/Dialog';
 import Toast from '../common/Toast';
-import DOM from '../helpers/DOM';
+import DOM from '../helpers/Browser/DOM';
 import Config from '../core/Config';
 import StateManager from '../core/Managers/StateManager';
 import { Control } from 'ol/control';

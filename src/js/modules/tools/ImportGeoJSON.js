@@ -6,7 +6,7 @@ import { Control } from 'ol/control';
 import { toolbarElement } from '../core/ElementReferences';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
-import { importLayerAsGeoJSON } from '../helpers/GeoJSON';
+import { importLayerAsGeoJSON } from '../helpers/olFunctions/GeoJSON';
 
 class ImportGeoJSON extends Control {
     constructor(options = {}) {
