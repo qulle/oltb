@@ -255,7 +255,7 @@ import Magnify from './modules/tools/Magnify';
 import ResetNorth from './modules/tools/ResetNorth';
 import Coordinates from './modules/tools/Coordinates';
 import MyLocation from './modules/tools/MyLocation';
-import ImportGeoJSON from './modules/tools/ImportGeoJSON';
+import ImportVectorLayer from './modules/tools/ImportVectorLayer';
 import ScaleLineTool from './modules/tools/ScaleLineTool';
 import Refresh from './modules/tools/Refresh';
 import ThemeToggle from './modules/tools/ThemeToggle';
@@ -292,7 +292,7 @@ controls: defaultControls({
     new ResetNorth(),
     new Coordinates(),
     new MyLocation(),
-    new ImportGeoJSON(),
+    new ImportVectorLayer(),
     new ScaleLineTool(),
     new Refresh(),
     new ThemeToggle(),
@@ -474,12 +474,12 @@ controls: defaultControls({
             console.log('Location error', error);
         }
     }),
-    new ImportGeoJSON({
+    new ImportVectorLayer({
         imported: function(features) {
             console.log('Imported', features);
         },
         error: function(filename, error) {
-            console.log('Error when importing geojson file:', filename, error);
+            console.log('Error when importing file:', filename, error);
         }
     }),
     new ScaleLineTool({

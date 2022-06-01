@@ -11,13 +11,13 @@ import Config from '../core/Config';
 import InfoWindowManager from '../core/Managers/InfoWindowManager';
 import StateManager from '../core/Managers/StateManager';
 import Toast from '../common/Toast';
+import DownloadLayerModal from './ModalExtensions/DownloadLayerModal';
 import { Control } from 'ol/control';
 import { toolboxElement, toolbarElement } from '../core/ElementReferences';
 import { download } from '../helpers/Browser/Download';
 import { addContextMenuItem } from '../common/ContextMenu';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
-import { exportLayerAsGeoJSON } from '../helpers/olFunctions/GeoJSON';
 
 const LAYER_BUTTON_DEFAULT_CLASSES = 'oltb-func-btn';
 /* 
@@ -400,18 +400,37 @@ class Layers extends Control {
             attributes: {
                 type: 'button',
                 class: LAYER_BUTTON_DEFAULT_CLASSES + ' oltb-func-btn--download oltb-tippy',
-                title: 'Download layer as geojson'
+                title: 'Download layer'
             }
         });
 
         downloadButton.addEventListener('click', function(event) {
-            const features = exportLayerAsGeoJSON(layerObject.layer);
-            download(layerObject.name + '.geojson', features);
+            const downloadModal = new DownloadLayerModal(function(result) {   
+                const format = result.format in FormatTypes
+                    ? new FormatTypes[result.format]() 
+                    : null;
 
-            // User defined callback from constructor
-            if(typeof callback === 'function') {
-                callback(layerObject);
-            }
+                if(!format) {
+                    Toast.error({text: 'Unsupported layer format'});
+                    return;
+                }
+
+                const features = layerObject.layer.getSource().getFeatures();
+                const formatString = format.writeFeatures(features, {
+                    featureProjection: Config.baseProjection,
+                    dataProjection: Config.baseProjection
+                });
+            
+                download(
+                    layerObject.name + '.' + result.format.toLowerCase(),
+                    formatString
+                );
+
+                // User defined callback from constructor
+                if(typeof callback === 'function') {
+                    callback(layerObject);
+                }
+            });
         });
 
         return downloadButton;
