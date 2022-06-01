@@ -18,6 +18,7 @@ import { download } from '../helpers/Browser/Download';
 import { addContextMenuItem } from '../common/ContextMenu';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
+import tippy from 'tippy.js';
 
 const LAYER_BUTTON_DEFAULT_CLASSES = 'oltb-func-btn';
 /* 
@@ -325,9 +326,22 @@ class Layers extends Control {
         const layerName = DOM.createElement({element: 'span', 
             text: layerObject.name.ellipsis(20),
             attributes: {
-                class: 'oltb-toolbox-list__title oltb-tippy',
+                class: 'oltb-toolbox-list__title',
                 title: layerObject.name,
             }
+        });
+
+        // This tooltip can not be triggered by the delegated .oltb-tippy class
+        // Because the tooltip instance can not be reached in the renaming function unless it is known during "compile time"
+        tippy(layerName, {
+            content(reference) {
+                const title = reference.getAttribute('title');
+                reference.removeAttribute('title');
+                return title;
+            },
+            placement: 'top',
+            theme: 'oltb oltb-themed',
+            delay: [600, 100]
         });
 
         // If feature layer - attach eventlistener for setting the active layer
