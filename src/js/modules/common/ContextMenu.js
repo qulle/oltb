@@ -135,5 +135,8 @@ const addContextMenuItem = function(name, item) {
     }
 }
 
-export {addContextMenuItems, addContextMenuItem};
-export default ContextMenu;
+export { 
+    ContextMenu as default, 
+    addContextMenuItems, 
+    addContextMenuItem 
+};
