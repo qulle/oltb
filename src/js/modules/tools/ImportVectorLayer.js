@@ -38,7 +38,7 @@ class ImportVectorLayer extends Control {
         const inputDialog = document.createElement('input');
         inputDialog.className = 'oltb-d-none';
         inputDialog.setAttribute('type', 'file');
-        inputDialog.setAttribute('accept', '.geojson, .json, .kml, .xml');
+        inputDialog.setAttribute('accept', '.geojson, .kml');
         inputDialog.addEventListener('change', this.loadVectorLayer.bind(this));
         document.body.insertAdjacentElement('beforeend', inputDialog);
         
