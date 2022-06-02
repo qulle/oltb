@@ -6,4 +6,12 @@ const FormatTypes = {
     'KML': KML
 };
 
-export default FormatTypes;
+const instantiateFormat = function(name, options) {
+    if(!(name in FormatTypes)) {
+        return null;
+    }
+
+    return new FormatTypes[name](options);
+}
+
+export { FormatTypes as default, instantiateFormat };

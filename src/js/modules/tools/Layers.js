@@ -4,21 +4,21 @@ import Dialog from '../common/Dialog';
 import LayerModal from './ModalExtensions/LayerModal';
 import DOM from '../helpers/Browser/DOM';
 import EventType from 'ol/events/EventType';
-import SourceTypes from '../core/olTypes/SourceTypes';
-import LayerTypes from '../core/olTypes/LayerTypes';
-import FormatTypes from '../core/olTypes/FormatTypes';
 import Config from '../core/Config';
 import InfoWindowManager from '../core/Managers/InfoWindowManager';
 import StateManager from '../core/Managers/StateManager';
 import Toast from '../common/Toast';
 import DownloadLayerModal from './ModalExtensions/DownloadLayerModal';
+import tippy from 'tippy.js';
 import { Control } from 'ol/control';
 import { toolboxElement, toolbarElement } from '../core/ElementReferences';
 import { download } from '../helpers/Browser/Download';
 import { addContextMenuItem } from '../common/ContextMenu';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
-import tippy from 'tippy.js';
+import { instantiateLayer } from '../core/olTypes/LayerTypes';
+import { instantiateSource } from '../core/olTypes/SourceTypes';
+import { instantiateFormat } from '../core/olTypes/FormatTypes';
 
 const LAYER_BUTTON_DEFAULT_CLASSES = 'oltb-func-btn';
 /* 
@@ -182,16 +182,14 @@ class Layers extends Control {
             try {
                 LayerManager.addMapLayer({
                     name: result.name,
-                    layer: new LayerTypes[result.layer]({
+                    layer: instantiateLayer(result.layer, {
                         projection: result.projection || Config.baseProjection,
-                        source: new SourceTypes[result.source]({
+                        source: instantiateSource(result.source, {
                             url: result.url,
                             params: JSON.parse(result.parameters),
                             wrapX: result.wrapX,
                             attributions: result.attributions,
-                            format: result.source in FormatTypes ? 
-                                new FormatTypes[result.source]() : 
-                                null
+                            format: instantiateFormat(result.source)
                         })
                     })
                 });
@@ -426,9 +424,7 @@ class Layers extends Control {
 
         downloadButton.addEventListener('click', function(event) {
             const downloadModal = new DownloadLayerModal(function(result) {   
-                const format = result.format in FormatTypes
-                    ? new FormatTypes[result.format]() 
-                    : null;
+                const format = instantiateFormat(result.format);
 
                 if(!format) {
                     Toast.error({text: 'Unsupported layer format'});

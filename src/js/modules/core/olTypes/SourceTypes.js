@@ -12,4 +12,12 @@ const SourceTypes = {
     'Vector': Vector
 };
 
-export default SourceTypes;
+const instantiateSource = function(name, options) {
+    if(!(name in SourceTypes)) {
+        return null;
+    }
+
+    return new SourceTypes[name](options);
+}
+
+export { SourceTypes as default, instantiateSource };

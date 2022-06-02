@@ -2,8 +2,8 @@ import 'ol/ol.css';
 import EventType from 'ol/events/EventType';
 import Toast from '../common/Toast';
 import LayerManager from '../core/Managers/LayerManager';
-import FormatTypes from '../core/olTypes/FormatTypes';
 import Config from '../core/Config';
+import FormatTypes, { instantiateFormat } from '../core/olTypes/FormatTypes';
 import { Control } from 'ol/control';
 import { toolbarElement } from '../core/ElementReferences';
 import { SVGPaths, getIcon } from '../core/Icons';
@@ -78,7 +78,7 @@ class ImportVectorLayer extends Control {
                     return;
                 }
 
-                const features = new FormatTypes[format]().readFeatures(fileReader.result, {
+                const features = instantiateFormat(format).readFeatures(fileReader.result, {
                     featureProjection: Config.baseProjection,
                     dataProjection: Config.baseProjection
                 });

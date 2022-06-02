@@ -6,4 +6,12 @@ const LayerTypes = {
     'Vector': VectorLayer
 };
 
-export default LayerTypes;
+const instantiateLayer = function(name, options) {
+    if(!(name in LayerTypes)) {
+        return null;
+    }
+
+    return new LayerTypes[name](options);
+}
+
+export { LayerTypes as default, instantiateLayer };
