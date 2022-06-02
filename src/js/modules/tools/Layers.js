@@ -306,7 +306,8 @@ class Layers extends Control {
         });
 
         // Create layer baser item - li
-        const layerElement = DOM.createElement({element: 'li', 
+        const layerElement = DOM.createElement({
+            element: 'li', 
             attributes: {
                 id: `${options.idPrefix}-${layerObject.id}`,
                 class: 'oltb-toolbox-list__item oltb-toolbox-list__item--active' + (!layerObject.layer.getVisible() ? ' oltb-toolbox-list__item--hidden' : '')
@@ -323,7 +324,8 @@ class Layers extends Control {
         });
 
         // Create layer name label
-        const layerName = DOM.createElement({element: 'span', 
+        const layerName = DOM.createElement({
+            element: 'span', 
             text: layerObject.name.ellipsis(20),
             attributes: {
                 class: 'oltb-toolbox-list__title',
@@ -356,7 +358,8 @@ class Layers extends Control {
         }
 
         // Create div for holding left side of layer item
-        const leftButtonWrapper = DOM.createElement({element: 'div', 
+        const leftButtonWrapper = DOM.createElement({
+            element: 'div', 
             attributes: {
                 class: 'oltb-toolbox-list__wrapper'
             }
@@ -366,7 +369,8 @@ class Layers extends Control {
         layerElement.appendChild(leftButtonWrapper);
 
         // Create div for holding right side of layer item
-        const rightButtonWrapper = DOM.createElement({element: 'div', 
+        const rightButtonWrapper = DOM.createElement({
+            element: 'div', 
             attributes: {
                 class: 'oltb-toolbox-list__wrapper'
             }
@@ -389,7 +393,8 @@ class Layers extends Control {
     }
 
     createDeleteButton(layerObject, callback) {
-        const deleteButton = DOM.createElement({element: 'button',
+        const deleteButton = DOM.createElement({
+            element: 'button',
             attributes: {
                 type: 'button',
                 class: LAYER_BUTTON_DEFAULT_CLASSES + ' oltb-func-btn--delete oltb-tippy',
@@ -410,7 +415,8 @@ class Layers extends Control {
     }
 
     createDownloadButton(layerObject, callback) {
-        const downloadButton = DOM.createElement({element: 'button', 
+        const downloadButton = DOM.createElement({
+            element: 'button', 
             attributes: {
                 type: 'button',
                 class: LAYER_BUTTON_DEFAULT_CLASSES + ' oltb-func-btn--download oltb-tippy',
@@ -451,7 +457,8 @@ class Layers extends Control {
     }
 
     createEditButton(layerObject, callback, layerName) {
-        const editButton = DOM.createElement({element: 'button',
+        const editButton = DOM.createElement({
+            element: 'button',
             attributes: {
                 type: 'button',
                 class: LAYER_BUTTON_DEFAULT_CLASSES + ' oltb-func-btn--edit oltb-tippy',
@@ -485,7 +492,8 @@ class Layers extends Control {
     createVisibilityButton(layerObject, callback, layerName) {
         const map = this.getMap();
 
-        const visibilityButton = DOM.createElement({element: 'button',
+        const visibilityButton = DOM.createElement({
+            element: 'button',
             attributes: {
                 type: 'button',
                 class: LAYER_BUTTON_DEFAULT_CLASSES + ' oltb-func-btn--visibility oltb-tippy',

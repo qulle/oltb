@@ -23,7 +23,8 @@ class InfoWindowManager {
         this.map = mapReference;
 
         // Create DOM elements
-        const infoWindow = DOM.createElement({element: 'div',
+        const infoWindow = DOM.createElement({
+            element: 'div',
             attributes: {
                 class: 'oltb-info-window'
             }
@@ -32,7 +33,8 @@ class InfoWindowManager {
         infoWindow.setAttribute('tabindex', -1);
         infoWindow.addEventListener('keydown', trapFocusKeyListener);
 
-        const closeButton = DOM.createElement({element: 'button', 
+        const closeButton = DOM.createElement({
+            element: 'button', 
             html: getIcon({
                 path: SVGPaths.Close,
                 fill: 'none',
@@ -48,7 +50,8 @@ class InfoWindowManager {
             this.hideOverlay();
         });
 
-        const content = DOM.createElement({element: 'div',
+        const content = DOM.createElement({
+            element: 'div',
             attributes: {
                 class: 'oltb-info-window__content'
             }

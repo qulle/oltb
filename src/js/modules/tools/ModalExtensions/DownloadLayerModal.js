@@ -9,7 +9,13 @@ class DownloadLayerModal extends ModalBase {
         super('Download feature layer');
 
         // Create and populate select element with layer format values
-        const layerFormatDiv = DOM.createElement({element: 'div', attributes: {class: 'oltb-mt-0625'}});
+        const layerFormatDiv = DOM.createElement({
+            element: 'div', 
+            attributes: {
+                class: 'oltb-mt-0625'
+            }
+        });
+
         const layerFormatSelect = DOM.createElement({element: 'select', 
             attributes: {
                 id: prefixLayerId + '-layer-type', 
@@ -19,11 +25,18 @@ class DownloadLayerModal extends ModalBase {
 
         ['GeoJSON', 'KML'].forEach(value => {
             layerFormatSelect.appendChild(
-                DOM.createElement({element: 'option', text: value, attributes: {value: value}}
+                DOM.createElement({
+                    element: 'option', 
+                    text: value, 
+                    attributes: {
+                        value: value
+                    }
+                }
             ));
         });
 
-        layerFormatDiv.appendChild(DOM.createElement({element: 'label', 
+        layerFormatDiv.appendChild(DOM.createElement({
+            element: 'label', 
             text: 'Layer format', 
             attributes: {
                 class: 'oltb-label',
@@ -34,8 +47,15 @@ class DownloadLayerModal extends ModalBase {
         layerFormatDiv.appendChild(layerFormatSelect);
 
         // Create buttons for download and cancel
-        const layerButtonsDiv = DOM.createElement({element: 'div', attributes: {class: 'oltb-d-flex oltb-justify-content-between oltb-mt-1'}});
-        const downloadButton = DOM.createElement({element: 'button', 
+        const layerButtonsDiv = DOM.createElement({
+            element: 'div', 
+            attributes: {
+                class: 'oltb-d-flex oltb-justify-content-between oltb-mt-1'
+            }
+        });
+
+        const downloadButton = DOM.createElement({
+            element: 'button', 
             text: 'Download layer', 
             attributes: {
                 type: 'button', 
@@ -52,11 +72,14 @@ class DownloadLayerModal extends ModalBase {
             typeof onCreate === 'function' && onCreate(result);
         });
 
-        const cancelButton = DOM.createElement({element: 'button', 
+        const cancelButton = DOM.createElement({
+            element: 'button', 
             text: 'Cancel', 
             attributes: {
                 type: 'button', 
-                class: `oltb-dialog__btn oltb-btn ${isDarkTheme() ? 'oltb-btn--gray-mid' : 'oltb-btn--gray-dark'}`
+                class: `oltb-dialog__btn oltb-btn ${isDarkTheme() 
+                    ? 'oltb-btn--gray-mid' 
+                    : 'oltb-btn--gray-dark'}`
             }
         });
 
@@ -69,7 +92,13 @@ class DownloadLayerModal extends ModalBase {
         layerButtonsDiv.appendChild(downloadButton);
 
         // Add all DOM elements to the modalContent
-        const modalContent = DOM.createElement({element: 'div', attributes: {class: 'oltb-modal__content'}});
+        const modalContent = DOM.createElement({
+            element: 'div', 
+            attributes: {
+                class: 'oltb-modal__content'
+            }
+        });
+        
         DOM.appendChildren(modalContent, [
             layerFormatDiv,
             layerButtonsDiv

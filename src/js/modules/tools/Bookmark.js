@@ -180,7 +180,8 @@ class Bookmark extends Control {
 
     createBookmark(bookmark) {
         // Create bookmark item
-        const bookmarkElement = DOM.createElement({element: 'li', 
+        const bookmarkElement = DOM.createElement({
+            element: 'li', 
             attributes: {
                 id: `oltb-bookmark-${bookmark.id}`,
                 class: 'oltb-toolbox-list__item'
@@ -188,7 +189,8 @@ class Bookmark extends Control {
         });
 
         // Create bookmark name label
-        const bookmarkName = DOM.createElement({element: 'span', 
+        const bookmarkName = DOM.createElement({
+            element: 'span', 
             text: bookmark.name.ellipsis(20),
             attributes: {
                 class: 'oltb-toolbox-list__title oltb-tippy',
@@ -197,7 +199,8 @@ class Bookmark extends Control {
         });
 
         // Create div for holding left side of bookmark item
-        const leftButtonWrapper = DOM.createElement({element: 'div', 
+        const leftButtonWrapper = DOM.createElement({
+            element: 'div', 
             attributes: {
                 class: 'oltb-toolbox-list__wrapper'
             }
@@ -207,14 +210,16 @@ class Bookmark extends Control {
         bookmarkElement.appendChild(leftButtonWrapper);
 
         // Create div for holding right side of bookmark item
-        const rightButtonWrapper = DOM.createElement({element: 'div', 
+        const rightButtonWrapper = DOM.createElement({
+            element: 'div', 
             attributes: {
                 class: 'oltb-toolbox-list__wrapper'
             }
         });
 
         // Add all buttons to the bookmark
-        const zoomToButton = DOM.createElement({element: 'button',
+        const zoomToButton = DOM.createElement({
+            element: 'button',
             attributes: {
                 type: 'button',
                 class: BOOKMARK_BUTTON_DEFAULT_CLASSES + ' oltb-func-btn--geo-pin oltb-tippy',
@@ -224,7 +229,8 @@ class Bookmark extends Control {
 
         zoomToButton.addEventListener('click', this.zoomToBookmark.bind(this, bookmark));
 
-        const editButton = DOM.createElement({element: 'button',
+        const editButton = DOM.createElement({
+            element: 'button',
             attributes: {
                 type: 'button',
                 class: BOOKMARK_BUTTON_DEFAULT_CLASSES + ' oltb-func-btn--edit oltb-tippy',
@@ -234,7 +240,8 @@ class Bookmark extends Control {
 
         editButton.addEventListener('click', this.editBookmark.bind(this, bookmark, bookmarkName));
 
-        const deleteButton = DOM.createElement({element: 'button',
+        const deleteButton = DOM.createElement({
+            element: 'button',
             attributes: {
                 type: 'button',
                 class: BOOKMARK_BUTTON_DEFAULT_CLASSES + ' oltb-func-btn--delete oltb-tippy',
@@ -244,7 +251,12 @@ class Bookmark extends Control {
 
         deleteButton.addEventListener('click', this.deleteBookmark.bind(this, bookmark, bookmarkElement));
 
-        DOM.appendChildren(rightButtonWrapper, [zoomToButton, editButton, deleteButton]);
+        DOM.appendChildren(rightButtonWrapper, [
+            zoomToButton, 
+            editButton, 
+            deleteButton
+        ]);
+        
         bookmarkElement.appendChild(rightButtonWrapper);
 
         // Add the bookmark to the user interface

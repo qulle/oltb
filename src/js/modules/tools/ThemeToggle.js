@@ -27,7 +27,10 @@ class ThemeToggle extends Control {
 
         const button = document.createElement('button');
         button.setAttribute('type', 'button');
-        button.setAttribute('data-tippy-content', isDarkTheme() ? 'Light theme' : 'Dark theme' + ' (T)');
+        button.setAttribute('data-tippy-content', isDarkTheme() 
+            ? 'Light theme' 
+            : 'Dark theme' + ' (T)'
+        );
         button.className = 'oltb-tool-button';
         button.innerHTML = isDarkTheme() ? this.lightThemeIcon : this.darkThemeIcon;
         button.addEventListener(
