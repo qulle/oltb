@@ -45,7 +45,7 @@ const generateMarker = function(options = {}) {
         })
     }));
 
-    featureBackground.attributes = {
+    featureBackground.properties = {
         notSelectable, 
         infoWindow,
         name,
@@ -64,7 +64,7 @@ const generateMarker = function(options = {}) {
         })
     }));
 
-    featureIcon.attributes = {
+    featureIcon.properties = {
         notSelectable,
         infoWindow,
         name,

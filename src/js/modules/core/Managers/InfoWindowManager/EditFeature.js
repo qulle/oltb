@@ -15,11 +15,11 @@ const editFeature = function(feature) {
             Config.baseProjection, 
             Config.wgs84Projection
         ),
-        name: feature.attributes.name,
-        info: feature.attributes.info,
-        backgroundColor: feature.attributes.backgroundColor,
-        color: feature.attributes.color,
-        icon: feature.attributes.icon
+        name: feature.properties.name,
+        info: feature.properties.info,
+        backgroundColor: feature.properties.backgroundColor,
+        color: feature.properties.color,
+        icon: feature.properties.icon
     }, function(result) {
         // Hide the current open overlay
         InfoWindowManager.hideOverlay();

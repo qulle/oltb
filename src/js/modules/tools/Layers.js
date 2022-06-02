@@ -507,10 +507,10 @@ class Layers extends Control {
             const hasFeatures = typeof layerObject.layer.getSource().getFeatures === 'function';
             if(hasFeatures) {
                 layerObject.layer.getSource().getFeatures().forEach(feature => {
-                    if('attributes' in feature && 'tooltipOverlay' in feature.attributes) {
+                    if('properties' in feature && 'tooltipOverlay' in feature.properties) {
                         flippedVisibility ? 
-                            feature.attributes.tooltipOverlay.setMap(map) : 
-                            feature.attributes.tooltipOverlay.setMap(null);
+                            feature.properties.tooltipOverlay.setMap(map) : 
+                            feature.properties.tooltipOverlay.setMap(null);
                     }
                 });
             }

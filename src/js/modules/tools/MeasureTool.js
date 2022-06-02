@@ -235,7 +235,7 @@ class MeasureTool extends Control {
     
             map.addOverlay(measureTooltipOverlay);
 
-            feature.attributes = {
+            feature.properties = {
                 tooltipElement: measureTooltipElement, 
                 tooltipOverlay: measureTooltipOverlay
             };
@@ -251,10 +251,10 @@ class MeasureTool extends Control {
         this.interaction.on('drawend', function(event) {
             const feature = event.feature;
 
-            unByKey(feature.attributes.onChangeListener);
+            unByKey(feature.properties.onChangeListener);
 
-            feature.attributes.tooltipElement.className = 'oltb-measure-tooltip oltb-measure-tooltip--ended';
-            feature.attributes.tooltipOverlay.setOffset([0, -7]);
+            feature.properties.tooltipElement.className = 'oltb-measure-tooltip oltb-measure-tooltip--ended';
+            feature.properties.tooltipOverlay.setOffset([0, -7]);
 
             feature.setStyle(styles);
 
@@ -269,7 +269,7 @@ class MeasureTool extends Control {
 
         this.interaction.on('drawabort', function(event) {
             const feature = event.feature;
-            map.removeOverlay(feature.attributes.tooltipOverlay);
+            map.removeOverlay(feature.properties.tooltipOverlay);
 
             // User defined callback from constructor
             if(typeof self.options.abort === 'function') {

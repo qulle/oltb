@@ -91,7 +91,7 @@ class Edit extends Control {
         const select = new Select({
             hitTolerance: 5,
             filter: function(feature, layer) {
-                const selectable = !('attributes' in feature && 'notSelectable' in feature.attributes);
+                const selectable = !('properties' in feature && 'notSelectable' in feature.properties);
                 const isFeatureLayer = LayerManager.getFeatureLayers().find(layerObject => {
                     return layerObject.layer.getSource().hasFeature(feature);
                 });
@@ -207,8 +207,8 @@ class Edit extends Control {
                             this.select.getFeatures().remove(feature);
 
                             // Remove potential overlays associated with the feature
-                            if('attributes' in feature && 'tooltipOverlay' in feature.attributes) {
-                                this.getMap().removeOverlay(feature.attributes.tooltipOverlay);
+                            if('properties' in feature && 'tooltipOverlay' in feature.properties) {
+                                this.getMap().removeOverlay(feature.properties.tooltipOverlay);
                             }
 
                             // User defined callback from constructor
@@ -230,18 +230,18 @@ class Edit extends Control {
 
     attachOnChange(features) {
         features.forEach(feature => {
-            if('attributes' in feature) {
-                feature.attributes.tooltipElement.className = 'oltb-measure-tooltip';
-                feature.attributes.onChangeListener = feature.getGeometry().on('change', onFeatureChange.bind(feature));
+            if('properties' in feature) {
+                feature.properties.tooltipElement.className = 'oltb-measure-tooltip';
+                feature.properties.onChangeListener = feature.getGeometry().on('change', onFeatureChange.bind(feature));
             }
         });
     }
 
     detachOnChange(features) {
         features.forEach(feature => {
-            if('attributes' in feature) {
-                unByKey(feature.attributes.onChangeListener);
-                feature.attributes.tooltipElement.className = 'oltb-measure-tooltip oltb-measure-tooltip--ended';
+            if('properties' in feature) {
+                unByKey(feature.properties.onChangeListener);
+                feature.properties.tooltipElement.className = 'oltb-measure-tooltip oltb-measure-tooltip--ended';
             }
         });
     }

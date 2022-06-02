@@ -14,7 +14,7 @@ const removeFeature = function(feature) {
             window.dispatchEvent(new CustomEvent('oltb.feature.removed', {
                 detail: {
                     feature: feature, 
-                    linkedFeature: feature?.attributes?.linkedFeature
+                    linkedFeature: feature?.properties?.linkedFeature
                 }
             }));
         }

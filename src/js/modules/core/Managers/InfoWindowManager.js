@@ -82,7 +82,7 @@ class InfoWindowManager {
             return feature;
         });
 
-        const infoWindow = feature?.attributes?.infoWindow;
+        const infoWindow = feature?.properties?.infoWindow;
         if(infoWindow) {
             this.content.innerHTML = infoWindow;
             this.overlay.setPosition(getCenter(
@@ -117,7 +117,7 @@ class InfoWindowManager {
 
     static onPointerMove(event) {
         const hit = this.map.forEachFeatureAtPixel(event.pixel, function(feature) {
-            return 'attributes' in feature && 'infoWindow' in feature.attributes;
+            return 'properties' in feature && 'infoWindow' in feature.properties;
         });
 
         this.map.getViewport().style.cursor = hit ? 'pointer' : 'default';
