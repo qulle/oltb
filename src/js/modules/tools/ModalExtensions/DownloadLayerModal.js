@@ -6,7 +6,7 @@ const prefixLayerId = 'oltb-download-layer-modal';
 
 class DownloadLayerModal extends ModalBase {
     constructor(onCreate, onCancel) {
-        super('Download feature layer');
+        super('Download layer');
 
         // Create and populate select element with layer format values
         const layerFormatDiv = DOM.createElement({
