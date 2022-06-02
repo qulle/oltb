@@ -178,19 +178,19 @@ class Layers extends Control {
     }
 
     showAddMapLayerModal() {
-        new LayerModal(function(response) {
+        const layerModal = new LayerModal(function(result) {
             try {
                 LayerManager.addMapLayer({
-                    name: response.name,
-                    layer: new LayerTypes[response.layer]({
-                        projection: response.projection || Config.baseProjection,
-                        source: new SourceTypes[response.source]({
-                            url: response.url,
-                            params: JSON.parse(response.parameters),
-                            wrapX: response.wrapX,
-                            attributions: response.attributions,
-                            format: response.source in FormatTypes ? 
-                                new FormatTypes[response.source]() : 
+                    name: result.name,
+                    layer: new LayerTypes[result.layer]({
+                        projection: result.projection || Config.baseProjection,
+                        source: new SourceTypes[result.source]({
+                            url: result.url,
+                            params: JSON.parse(result.parameters),
+                            wrapX: result.wrapX,
+                            attributions: result.attributions,
+                            format: result.source in FormatTypes ? 
+                                new FormatTypes[result.source]() : 
                                 null
                         })
                     })

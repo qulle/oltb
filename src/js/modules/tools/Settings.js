@@ -68,7 +68,7 @@ class Settings extends Control {
     handleClick(event) {
         event.preventDefault();
         
-        new SettingsModal();
+        const settingsModal = new SettingsModal();
     }
 }
 

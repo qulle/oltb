@@ -61,7 +61,7 @@ class DebugInfo extends Control {
             projection: view.getProjection()
         };
 
-        new DebugInfoModal(map, information);
+        const debugInfoModal = new DebugInfoModal(map, information);
     }
 }
 
