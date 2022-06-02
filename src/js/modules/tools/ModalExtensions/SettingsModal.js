@@ -6,7 +6,7 @@ class SettingsModal extends ModalBase {
     constructor() {
         super('Settings');
 
-        const documentfragment = document.createDocumentFragment();
+        const modalContent = DOM.createElement({element: 'div', attributes: {class: 'oltb-modal__content'}});
         const interactions = SettingsManager.getSettings();
         
         interactions.forEach((valueObj, key) => {
@@ -41,11 +41,10 @@ class SettingsModal extends ModalBase {
             });
 
             DOM.appendChildren(checkboxWrapper, [checkbox, label]);
-
-            documentfragment.appendChild(checkboxWrapper);
+            modalContent.appendChild(checkboxWrapper);
         });
 
-        this.show(documentfragment);
+        this.show(modalContent);
     }
 }
 

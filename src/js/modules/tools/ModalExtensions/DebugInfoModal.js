@@ -52,15 +52,11 @@ class DebugInfoModal extends ModalBase {
 
         DOM.appendChildren(buttonWrapper, [copyButton, logFullMapObjectButton]);
 
-        const wrapper = DOM.createElement({element: 'div', 
-            attributes: {
-                class: 'oltb-flex-content-center'
-            }
-        });
-
-        DOM.appendChildren(wrapper, [textArea, buttonWrapper]);
-
-        this.show(wrapper);
+        // Add all DOM elements to the modalContent
+        const modalContent = DOM.createElement({element: 'div', attributes: {class: 'oltb-modal__content oltb-flex-content-center'}});
+        DOM.appendChildren(modalContent, [textArea, buttonWrapper]);
+        
+        this.show(modalContent);
     }
 }
 
