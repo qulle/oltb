@@ -425,6 +425,13 @@ controls: defaultControls({
         }
     }),
     new Layers({
+        disableMapLayerVisibilityButton: false,
+        disableMapLayerEditButton: false,
+        disableMapLayerDeleteButton: false,
+        disableFeatureLayerVisibilityButton: false,
+        disableFeatureLayerEditButton: false,
+        disableFeatureLayerDeleteButton: false,
+        disableFeatureLayerDownloadButton: false,
         mapLayerAdded: function(layerObject) {
             console.log('Map layer added', layerObject);
         },

@@ -31,6 +31,16 @@ const LOCAL_STORAGE_PROPS = {
     'oltb-feature-layers-toolbox-collapsed': false,
 };
 
+const DEFAULT_OPTIONS = {
+    disableMapLayerVisibilityButton: false,
+    disableMapLayerEditButton: false,
+    disableMapLayerDeleteButton: false,
+    disableFeatureLayerVisibilityButton: false,
+    disableFeatureLayerEditButton: false,
+    disableFeatureLayerDeleteButton: false,
+    disableFeatureLayerDownloadButton: false
+};
+
 class Layers extends Control {
     constructor(options = {}) {
         super({
@@ -56,7 +66,7 @@ class Layers extends Control {
         this.element.appendChild(button);
         this.button = button;
         this.active = false;
-        this.options = options;
+        this.options = {...DEFAULT_OPTIONS, ...options};
 
         // Load potential stored data from localStorage
         const loadedPropertiesFromLocalStorage = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
@@ -204,23 +214,27 @@ class Layers extends Control {
         const layerObject = event.detail.layerObject;
         const silent = event.detail.silent;
 
+        const disableVisibilityButton = this.options.disableMapLayerVisibilityButton;
+        const disableEditButton = this.options.disableMapLayerEditButton;
+        const disableDeleteButton = this.options.disableMapLayerDeleteButton;
+
         // Add to UI
         this.createLayerItem(layerObject, {
             idPrefix: 'map-layer',
             target: this.mapLayerStack,
             buttons: {
-                visibilityButton: {
+                ...(!disableVisibilityButton && {visibilityButton: {
                     function: this.createVisibilityButton, 
                     callback: this.options.mapLayerVisibilityChanged
-                },
-                editButton: {
+                }}),
+                ...(!disableEditButton && {editButton: {
                     function: this.createEditButton,
                     callback: this.options.mapLayerRenamed
-                },
-                deleteButton: {
+                }}),
+                ...(!disableDeleteButton && {deleteButton: {
                     function: this.createDeleteButton,
                     callback: LayerManager.removeMapLayer.bind(LayerManager)
-                }
+                }})
             }
         });
 
@@ -247,27 +261,32 @@ class Layers extends Control {
         const layerObject = event.detail.layerObject;
         const silent = event.detail.silent;
 
+        const disableVisibilityButton = this.options.disableFeatureLayerVisibilityButton;
+        const disableEditButton = this.options.disableFeatureLayerEditButton;
+        const disableDownloadButton = this.options.disableFeatureLayerDownloadButton;
+        const disableDeleteButton = this.options.disableFeatureLayerDeleteButton;
+
         // Add to UI
         this.createLayerItem(layerObject, {
             idPrefix: 'oltb-feature-layer',
             target: this.featureLayerStack,
             buttons: {
-                visibilityButton: {
+                ...(!disableVisibilityButton && {visibilityButton: {
                     function: this.createVisibilityButton, 
                     callback: this.options.featureLayerVisibilityChanged
-                },
-                editButton: {
+                }}),
+                ...(!disableEditButton && {editButton: {
                     function: this.createEditButton,
                     callback: this.options.featureLayerRenamed
-                },
-                downloadButton: {
+                }}),
+                ...(!disableDownloadButton && {downloadButton: {
                     function: this.createDownloadButton,
                     callback: this.options.featureLayerDownloaded
-                },
-                deleteButton: {
+                }}),
+                ...(!disableDeleteButton && {deleteButton: {
                     function: this.createDeleteButton,
                     callback: LayerManager.removeFeatureLayer.bind(LayerManager)
-                }
+                }})
             }
         });
 
@@ -508,9 +527,9 @@ class Layers extends Control {
             if(hasFeatures) {
                 layerObject.layer.getSource().getFeatures().forEach(feature => {
                     if('properties' in feature && 'tooltipOverlay' in feature.properties) {
-                        flippedVisibility ? 
-                            feature.properties.tooltipOverlay.setMap(map) : 
-                            feature.properties.tooltipOverlay.setMap(null);
+                        flippedVisibility 
+                            ? feature.properties.tooltipOverlay.setMap(map)
+                            : feature.properties.tooltipOverlay.setMap(null);
                     }
                 });
             }
