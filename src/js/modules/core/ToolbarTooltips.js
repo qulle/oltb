@@ -109,4 +109,8 @@ window.addEventListener('resize', tooltipPlacement);
 window.addEventListener('DOMContentLoaded', initTooltipsWhenDOMContentLoaded);
 window.addEventListener('oltb.toolbar.direction.change', tooltipPlacement);
 
-export {toolButtonsTippySingleton, mapTippyDelegate, colorTippyDelegate};
+export {
+    toolButtonsTippySingleton, 
+    mapTippyDelegate, 
+    colorTippyDelegate
+};
