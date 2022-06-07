@@ -67,7 +67,19 @@ class Bookmark extends Control {
                 </div>
                 <div class="oltb-toolbox-section__groups" id="oltb-bookmarks-toolbox-collapsed" style="display: ${this.localStorage.collapsed ? 'none' : 'block'}">
                     <div class="oltb-toolbox-section__group">
-                        <button type="button" id="oltb-add-bookmark-btn" class="oltb-btn oltb-btn--green-mid oltb-w-100">Add bookmark</button>
+                        <div class="oltb-input-button-group">
+                            <input type="text" id="oltb-add-bookmark-txt" class="oltb-input" placeholder="Bookmark name">
+                            <button type="button" id="oltb-add-bookmark-btn" class="oltb-btn oltb-btn--green-mid oltb-tippy" title="Add Bookmark">
+                                ${getIcon({
+                                    path: SVGPaths.PlusSmall,
+                                    width: 20,
+                                    height: 20,
+                                    fill: 'none',
+                                    stroke: 'rgb(255, 255, 255)',
+                                    class: 'oltb-btn__icon'
+                                })}
+                            </button>
+                        </div>
                     </div>
                     <div class="oltb-toolbox-section__group oltb-m-0">
                         <ul id="oltb-bookmark-stack" class="oltb-toolbox-list"></ul>
@@ -80,7 +92,21 @@ class Bookmark extends Control {
         this.bookmarksToolbox = bookmarksToolbox;
 
         const addBookmarkBtn = bookmarksToolbox.querySelector('#oltb-add-bookmark-btn');
-        addBookmarkBtn.addEventListener('click', this.addBookmark.bind(this));
+        const addBookmarkTxt = bookmarksToolbox.querySelector('#oltb-add-bookmark-txt');
+
+        addBookmarkBtn.addEventListener('click', (event) => {
+            event.preventDefault();
+    
+            this.addBookmark(addBookmarkTxt.value);
+            addBookmarkTxt.value = '';
+        });
+
+        addBookmarkTxt.addEventListener('keyup', (event) => {
+            if(event.key === 'Enter') {
+                this.addBookmark(addBookmarkTxt.value);
+                addBookmarkTxt.value = '';
+            }
+        });
 
         const bookmarkStack = bookmarksToolbox.querySelector('#oltb-bookmark-stack');
         this.bookmarkStack = bookmarkStack;
@@ -137,15 +163,20 @@ class Bookmark extends Control {
         this.button.classList.toggle('oltb-tool-button--active');
     }
 
-    addBookmark() {
+    addBookmark(bookmarkName) {
         const view = this.getMap().getView();
         const zoom = view.getZoom();
         const location = view.getCenter();
-        const randomAnimal = generateAnimalName();
+
+        bookmarkName = bookmarkName.trim();
+
+        if(!bookmarkName) {
+            bookmarkName = generateAnimalName();
+        }
 
         const bookmark = {
             id: randomNumber(),
-            name: randomAnimal,
+            name: bookmarkName,
             zoom: zoom,
             location: location
         };
