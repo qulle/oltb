@@ -6,6 +6,11 @@ import { toolbarElement } from '../core/ElementReferences';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 
+const DEFAULT_OPTIONS = {
+    url: 'https://github.com/qulle/oltb',
+    target: '_blank'
+};
+
 class Help extends Control {
     constructor(options = {}) {
         super({
@@ -29,14 +34,7 @@ class Help extends Control {
         );
 
         this.element.appendChild(button);
-        
-        const {
-            url = 'https://github.com/qulle/oltb',
-            target = '_blank'
-        } = options;
-
-        this.url = url;
-        this.target = target;
+        this.options = {...DEFAULT_OPTIONS, ...options};
 
         window.addEventListener('keyup', (event) => {
             if(isShortcutKeyOnly(event, 'j')) {
@@ -48,7 +46,7 @@ class Help extends Control {
     handleClick(event) {
         event.preventDefault();
         try {
-            window.open(this.url, this.target).focus();
+            window.open(this.options.url, this.options.target).focus();
         }catch(error) {
             Toast.info({text: 'Action was blocked by browser, try open with mouse'});
         }

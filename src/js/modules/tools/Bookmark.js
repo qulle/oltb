@@ -21,6 +21,10 @@ const LOCAL_STORAGE_PROPS = {
     bookmarks: []
 };
 
+const DEFAULT_OPTIONS = {
+    storeDataInLocalStorage: false
+};
+
 class Bookmark extends Control {
     constructor(options = {}) {
         super({
@@ -47,9 +51,7 @@ class Bookmark extends Control {
         this.button = button;
         this.active = false;
         this.options = options;
-
-        const { storeDataInLocalStorage = false } = options;
-        this.storeDataInLocalStorage = storeDataInLocalStorage;
+        this.options = {...DEFAULT_OPTIONS, ...options};
         
         // Load potential stored data from localStorage
         const loadedPropertiesFromLocalStorage = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
@@ -181,7 +183,7 @@ class Bookmark extends Control {
             location: location
         };
 
-        if(this.storeDataInLocalStorage) {
+        if(this.options.storeDataInLocalStorage) {
             this.localStorage.bookmarks.push(bookmark);
             StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
         }        

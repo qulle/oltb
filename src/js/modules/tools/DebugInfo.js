@@ -7,6 +7,10 @@ import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { URIGet } from '../helpers/Browser/URIGet';
 
+const DEFAULT_OPTIONS = {
+    showWhenGetParameter: false
+};
+
 class DebugInfo extends Control {
     constructor(options = {}) {
         super({
@@ -30,11 +34,12 @@ class DebugInfo extends Control {
         );
 
         this.element.appendChild(button);
+        this.options = {...DEFAULT_OPTIONS, ...options};
         
         // Check if the tool only should be visible if the get parameter ?debug=true exists
         const debugParameter = URIGet('debug') === 'true';
 
-        if(options.showWhenGetParameter) {
+        if(this.options.showWhenGetParameter) {
             if(!debugParameter || debugParameter !== true) {
                 button.classList.add('oltb-tool-button--hidden');
             }

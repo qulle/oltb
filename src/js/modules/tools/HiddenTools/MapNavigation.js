@@ -7,6 +7,10 @@ import { fromLonLat } from 'ol/proj';
 import { addContextMenuItem } from '../../common/ContextMenu';
 import { SVGPaths, getIcon } from '../../core/Icons';
 
+const DEFAULT_OPTIONS = {
+    focusZoom: 2
+};
+
 class HiddenMapNavigation extends Control {
     constructor(options = {}) {
         super({
@@ -15,7 +19,7 @@ class HiddenMapNavigation extends Control {
 
         const moveCenterIcon = getIcon({path: SVGPaths.MoveCenter});
         const focusHereIcon = getIcon({path: SVGPaths.FocusHere});
-        const { focusZoom = 10 } = options;
+        options = {...DEFAULT_OPTIONS, ...options};
 
         addContextMenuItem('main.map.context.menu', {icon: moveCenterIcon, name: 'Center map here', fn: function(map, coordinates, target) {
             const view = map.getView();
@@ -40,7 +44,7 @@ class HiddenMapNavigation extends Control {
         
             view.animate({
                 center: fromLonLat(coordinates),
-                zoom: focusZoom,
+                zoom: options.focusZoom,
                 duration: Config.animationDuration,
                 easing: easeOut
             });

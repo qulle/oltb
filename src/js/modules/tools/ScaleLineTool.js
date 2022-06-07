@@ -5,6 +5,10 @@ import { toolbarElement } from '../core/ElementReferences';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 
+const DEFAULT_OPTIONS = {
+    units: 'metric'
+};
+
 class ScaleLineTool extends Control {
     constructor(options = {}) {
         super({
@@ -31,11 +35,9 @@ class ScaleLineTool extends Control {
         this.button = button;
         this.active = false;
         this.scaleLine = null;
+        this.options = {...DEFAULT_OPTIONS, ...options};
 
-        const { units = 'metric' } = options;
-        this.units = units;
-
-        this.scaleLine = new ScaleLine({units: this.units});
+        this.scaleLine = new ScaleLine({units: this.options.units});
         
         window.addEventListener('keyup', (event) => {
             if(isShortcutKeyOnly(event, 'k')) {
