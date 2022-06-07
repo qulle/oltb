@@ -425,9 +425,11 @@ controls: defaultControls({
         }
     }),
     new Layers({
+        disableMapCreateLayerButton: false,
         disableMapLayerVisibilityButton: false,
         disableMapLayerEditButton: false,
         disableMapLayerDeleteButton: false,
+        disableFeatureCreateLayerButton: false,
         disableFeatureLayerVisibilityButton: false,
         disableFeatureLayerEditButton: false,
         disableFeatureLayerDeleteButton: false,

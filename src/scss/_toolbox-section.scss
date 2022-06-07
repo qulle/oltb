@@ -20,6 +20,10 @@
         li:first-child {
             margin-top: 1rem;
         }
+
+        &--topmost li:first-child {
+            margin-top: 0;
+        }
     }
 
     &__title {

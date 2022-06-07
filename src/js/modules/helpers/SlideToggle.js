@@ -7,19 +7,25 @@ HTMLElement.prototype.slideToggle = function(duration, callback) {
         slideToggle(this, duration, callback);
     }
 };
-  
+
 HTMLElement.prototype.slideUp = function(duration, callback) {
     slideToggle(this, duration, callback);
 };
-  
+
 HTMLElement.prototype.slideDown = function (duration, callback) {
     slideToggle(this, duration, callback, true);
 };
-  
+
 function slideToggle(el, duration, callback, isDown) {
     if(typeof duration === 'undefined') duration = 200;
     if(typeof isDown === 'undefined') isDown = false;
   
+    // Fix to avoid jumping behaviour if no content is present
+    const hasContentHeight = parseFloat(window.getComputedStyle(el).getPropertyValue('height'));
+    if(hasContentHeight === 0) {
+        return;
+    }
+
     el.style.overflow = 'hidden';
     if(isDown) {
         el.style.display = 'block';
@@ -32,7 +38,7 @@ function slideToggle(el, duration, callback, isDown) {
     const elPaddingBottom = parseFloat(elStyles.getPropertyValue('padding-bottom'));
     const elMarginTop     = parseFloat(elStyles.getPropertyValue('margin-top'));
     const elMarginBottom  = parseFloat(elStyles.getPropertyValue('margin-bottom'));
-  
+
     const stepHeight        = elHeight        / duration;
     const stepPaddingTop    = elPaddingTop    / duration;
     const stepPaddingBottom = elPaddingBottom / duration;

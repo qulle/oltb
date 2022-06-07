@@ -32,9 +32,11 @@ const LOCAL_STORAGE_PROPS = {
 };
 
 const DEFAULT_OPTIONS = {
+    disableMapCreateLayerButton: false,
     disableMapLayerVisibilityButton: false,
     disableMapLayerEditButton: false,
     disableMapLayerDeleteButton: false,
+    disableFeatureCreateLayerButton: false,
     disableFeatureLayerVisibilityButton: false,
     disableFeatureLayerEditButton: false,
     disableFeatureLayerDeleteButton: false,
@@ -83,10 +85,15 @@ class Layers extends Control {
                     </h4>
                 </div>
                 <div class="oltb-toolbox-section__groups" id="oltb-map-layers-toolbox-collapsed" style="display: ${this.localStorage['oltb-map-layers-toolbox-collapsed'] ? 'none' : 'block'}">
-                    <div class="oltb-toolbox-section__group">
-                        <button type="button" id="oltb-add-map-layer-btn" class="oltb-btn oltb-btn--green-mid oltb-w-100">Create map layer</button>
-                    </div>
-                    <div class="oltb-toolbox-section__group oltb-m-0">
+                    ${
+                        !this.options.disableMapCreateLayerButton ? 
+                        `
+                            <div class="oltb-toolbox-section__group">
+                                <button type="button" id="oltb-add-map-layer-btn" class="oltb-btn oltb-btn--green-mid oltb-w-100">Create map layer</button>
+                            </div>
+                        ` : ''
+                    }
+                    <div class="oltb-toolbox-section__group ${this.options.disableMapCreateLayerButton ? 'oltb-toolbox-section__group--topmost' : ''} oltb-m-0">
                         <ul id="oltb-map-layer-stack" class="oltb-toolbox-list"></ul>
                     </div>
                 </div>
@@ -98,21 +105,26 @@ class Layers extends Control {
                 </div>
                 <div class="oltb-toolbox-section__groups" id="oltb-feature-layers-toolbox-collapsed" style="display: ${this.localStorage['oltb-feature-layers-toolbox-collapsed'] ? 'none' : 'block'}">
                     <div class="oltb-toolbox-section__group">
-                        <div class="oltb-input-button-group">
-                            <input type="text" id="oltb-add-feature-layer-txt" class="oltb-input" placeholder="Layer name">
-                            <button type="button" id="oltb-add-feature-layer-btn" class="oltb-btn oltb-btn--green-mid oltb-tippy" title="Create feature layer">
-                                ${getIcon({
-                                    path: SVGPaths.PlusSmall,
-                                    width: 20,
-                                    height: 20,
-                                    fill: 'none',
-                                    stroke: 'rgb(255, 255, 255)',
-                                    class: 'oltb-btn__icon'
-                                })}
-                            </button>
-                        </div>
+                        ${
+                            !this.options.disableFeatureCreateLayerButton ? 
+                            `
+                                <div class="oltb-input-button-group">
+                                    <input type="text" id="oltb-add-feature-layer-txt" class="oltb-input" placeholder="Layer name">
+                                    <button type="button" id="oltb-add-feature-layer-btn" class="oltb-btn oltb-btn--green-mid oltb-tippy" title="Create feature layer">
+                                        ${getIcon({
+                                            path: SVGPaths.PlusSmall,
+                                            width: 20,
+                                            height: 20,
+                                            fill: 'none',
+                                            stroke: 'rgb(255, 255, 255)',
+                                            class: 'oltb-btn__icon'
+                                        })}
+                                    </button>
+                                </div>
+                            ` : ''
+                        }
                     </div>
-                    <div class="oltb-toolbox-section__group oltb-m-0">
+                    <div class="oltb-toolbox-section__group ${this.options.disableFeatureCreateLayerButton ? 'oltb-toolbox-section__group--topmost' : ''} oltb-m-0">
                         <ul id="oltb-feature-layer-stack" class="oltb-toolbox-list oltb-toolbox-list--selectable"></ul>
                     </div>
                 </div>
@@ -144,24 +156,32 @@ class Layers extends Control {
         const addFeatureLayerBtn = layersToolbox.querySelector('#oltb-add-feature-layer-btn');
         const addFeatureLayerTxt = layersToolbox.querySelector('#oltb-add-feature-layer-txt');
 
-        addFeatureLayerBtn.addEventListener('click', function(event) {
-            event.preventDefault();
-
-            LayerManager.addFeatureLayer(addFeatureLayerTxt.value);
-            addFeatureLayerTxt.value = '';
-        });
-
-        addFeatureLayerTxt.addEventListener('keyup', function(event) {
-            if(event.key === 'Enter') {
+        if(addFeatureLayerBtn) {
+            addFeatureLayerBtn.addEventListener('click', function(event) {
+                event.preventDefault();
+    
                 LayerManager.addFeatureLayer(addFeatureLayerTxt.value);
                 addFeatureLayerTxt.value = '';
-            }
-        });
+            });
+        }
+
+        if(addFeatureLayerTxt) {
+            addFeatureLayerTxt.addEventListener('keyup', function(event) {
+                if(event.key === 'Enter') {
+                    LayerManager.addFeatureLayer(addFeatureLayerTxt.value);
+                    addFeatureLayerTxt.value = '';
+                }
+            });
+        }
 
         const addMapLayerBtn = layersToolbox.querySelector('#oltb-add-map-layer-btn');
-        addMapLayerBtn.addEventListener('click', this.showAddMapLayerModal.bind(this));
+        if(addMapLayerBtn) {
+            addMapLayerBtn.addEventListener('click', this.showAddMapLayerModal.bind(this));
+        }
 
-        addContextMenuItem('main.map.context.menu', {icon: icon, name: 'Add map layer', fn: this.showAddMapLayerModal.bind(this)});
+        if(!this.options.disableMapCreateLayerButton) {
+            addContextMenuItem('main.map.context.menu', {icon: icon, name: 'Add map layer', fn: this.showAddMapLayerModal.bind(this)});
+        }
 
         window.addEventListener('oltb.mapLayer.added', this.mapLayerAdded.bind(this));
         window.addEventListener('oltb.mapLayer.removed', this.mapLayerRemoved.bind(this));
