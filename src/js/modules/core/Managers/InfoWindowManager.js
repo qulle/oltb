@@ -1,6 +1,6 @@
 import Overlay from 'ol/Overlay';
 import Config from '../Config';
-import DOM from '../../helpers/DOM';
+import DOM from '../../helpers/Browser/DOM';
 import { getCenter } from 'ol/extent';
 import { SVGPaths, getIcon } from '../Icons';
 import { copyFeatureInfo } from './InfoWindowManager/CopyFeatureInfo';
@@ -23,7 +23,8 @@ class InfoWindowManager {
         this.map = mapReference;
 
         // Create DOM elements
-        const infoWindow = DOM.createElement({element: 'div',
+        const infoWindow = DOM.createElement({
+            element: 'div',
             attributes: {
                 class: 'oltb-info-window'
             }
@@ -32,7 +33,8 @@ class InfoWindowManager {
         infoWindow.setAttribute('tabindex', -1);
         infoWindow.addEventListener('keydown', trapFocusKeyListener);
 
-        const closeButton = DOM.createElement({element: 'button', 
+        const closeButton = DOM.createElement({
+            element: 'button', 
             html: getIcon({
                 path: SVGPaths.Close,
                 fill: 'none',
@@ -48,7 +50,8 @@ class InfoWindowManager {
             this.hideOverlay();
         });
 
-        const content = DOM.createElement({element: 'div',
+        const content = DOM.createElement({
+            element: 'div',
             attributes: {
                 class: 'oltb-info-window__content'
             }
@@ -79,7 +82,7 @@ class InfoWindowManager {
             return feature;
         });
 
-        const infoWindow = feature?.attributes?.infoWindow;
+        const infoWindow = feature?.properties?.infoWindow;
         if(infoWindow) {
             this.content.innerHTML = infoWindow;
             this.overlay.setPosition(getCenter(
@@ -114,7 +117,7 @@ class InfoWindowManager {
 
     static onPointerMove(event) {
         const hit = this.map.forEachFeatureAtPixel(event.pixel, function(feature) {
-            return 'attributes' in feature && 'infoWindow' in feature.attributes;
+            return 'properties' in feature && 'infoWindow' in feature.properties;
         });
 
         this.map.getViewport().style.cursor = hit ? 'pointer' : 'default';

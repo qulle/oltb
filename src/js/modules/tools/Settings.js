@@ -11,7 +11,7 @@ import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 
 class Settings extends Control {
-    constructor(callbacksObj = {}) {
+    constructor(options = {}) {
         super({
             element: toolbarElement
         });
@@ -32,7 +32,7 @@ class Settings extends Control {
             false
         );
 
-        this.callbacksObj = callbacksObj;
+        this.options = options;
         this.element.appendChild(button);
 
         addContextMenuItem('main.map.context.menu', {icon: icon, name: 'Clear settings', fn: () => {
@@ -57,8 +57,8 @@ class Settings extends Control {
         StateManager.clear();
 
         // User defined callback from constructor
-        if(typeof this.callbacksObj.cleared === 'function') {
-            this.callbacksObj.cleared();
+        if(typeof this.options.cleared === 'function') {
+            this.options.cleared();
         }
 
         // Emit event so that any tool can clean up
@@ -68,7 +68,7 @@ class Settings extends Control {
     handleClick(event) {
         event.preventDefault();
         
-        new SettingsModal();
+        const settingsModal = new SettingsModal();
     }
 }
 

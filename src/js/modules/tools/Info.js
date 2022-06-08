@@ -6,6 +6,11 @@ import { toolbarElement } from '../core/ElementReferences';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 
+const DEFAULT_OPTIONS = {
+    title: 'Hey!',
+    content: 'This is the default content, try adding some content of your own.'
+};
+
 class Info extends Control {
     constructor(options = {}) {
         super({
@@ -29,10 +34,7 @@ class Info extends Control {
         );
 
         this.element.appendChild(button);
-
-        const { title, content } = options;
-        this.title = title;
-        this.content = content;
+        this.options = {...DEFAULT_OPTIONS, ...options};
 
         window.addEventListener('keyup', (event) => {
             if(isShortcutKeyOnly(event, 'i')) {
@@ -44,8 +46,8 @@ class Info extends Control {
     handleClick(event) {
         event.preventDefault();
         Modal.create({
-            title: this.title, 
-            content: this.content
+            title: this.options.title, 
+            content: this.options.content
         });
     }
 }

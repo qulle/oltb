@@ -8,8 +8,10 @@ import { toolButtonsTippySingleton } from '../core/ToolbarTooltips';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { isHorizontal } from '../helpers/IsRowDirection';
 
+const LOCAL_STORAGE_NODE_NAME = 'direction';
+
 class DirectionToggle extends Control {
-    constructor(callbacksObj = {}) {
+    constructor(options = {}) {
         super({
             element: toolbarElement
         });
@@ -36,7 +38,7 @@ class DirectionToggle extends Control {
         );
 
         this.element.appendChild(button);
-        this.callbacksObj = callbacksObj;
+        this.options = options;
 
         this.button = button;
         this.active = false;
@@ -67,7 +69,7 @@ class DirectionToggle extends Control {
     }
 
     clearDirection() {
-        StateManager.updateStateObject('direction', 'oltb-col');
+        StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, 'col');
         toolbarElement.classList.remove('row');
         document.body.classList.remove('oltb-row');
 
@@ -88,7 +90,7 @@ class DirectionToggle extends Control {
             direction = 'row';
             tooltipDirection = 'bottom';
 
-            StateManager.updateStateObject('direction', 'oltb-row');
+            StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, 'row');
             toolbarElement.classList.add('row');
             document.body.classList.add('oltb-row');
 
@@ -100,7 +102,6 @@ class DirectionToggle extends Control {
         }
 
         // This will trigger collision detection for the toolbar vs toolbox
-        // window.dispatchEvent(new Event('resize'));
         window.dispatchEvent(new CustomEvent('oltb.toolbar.direction.change', {
             detail: {
                 direction: tooltipDirection
@@ -108,8 +109,8 @@ class DirectionToggle extends Control {
         }));
 
         // User defined callback from constructor
-        if(typeof this.callbacksObj.changed === 'function') {
-            this.callbacksObj.changed(direction);
+        if(typeof this.options.changed === 'function') {
+            this.options.changed(direction);
         }
     }
 }

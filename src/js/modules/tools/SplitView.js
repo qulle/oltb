@@ -1,14 +1,20 @@
 import 'ol/ol.css';
 import EventType from 'ol/events/EventType';
 import LayerManager from '../core/Managers/LayerManager';
+import StateManager from '../core/Managers/StateManager';
 import Toast from '../common/Toast';
 import { Control } from 'ol/control';
 import { getRenderPixel } from 'ol/render';
 import { unByKey } from 'ol/Observable';
 import { toolboxElement, toolbarElement, mapElement } from '../core/ElementReferences';
-import { eventDispatcher } from '../helpers/EventDispatcher';
+import { eventDispatcher } from '../helpers/Browser/EventDispatcher';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
+
+const LOCAL_STORAGE_NODE_NAME = 'splitViewTool';
+const LOCAL_STORAGE_PROPS = {
+    collapsed: false
+};
 
 class SplitView extends Control {
     constructor() {
@@ -36,19 +42,32 @@ class SplitView extends Control {
         this.button = button;
         this.active = false;
 
+        // Load potential stored data from localStorage
+        const loadedPropertiesFromLocalStorage = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
+
+        // Merge the potential data replacing the default values
+        this.localStorage = {...LOCAL_STORAGE_PROPS, ...loadedPropertiesFromLocalStorage};
+
         toolboxElement.insertAdjacentHTML('beforeend', `
-            <div id="oltb-split-view-settings-box" class="oltb-toolbox-section">
-                <div class="oltb-toolbox-section__group">
-                    <h4 class="oltb-toolbox-section__title">Split view</h4>
-                    <label class="oltb-label" for="oltb-left-src">Left side</label>
-                    <select id="oltb-left-src" class="oltb-select"></select>
+            <div id="oltb-split-view-toolbox" class="oltb-toolbox-section">
+                <div class="oltb-toolbox-section__header">
+                    <h4 class="oltb-toolbox-section__title oltb-toggleable" data-oltb-toggleable-target="oltb-split-view-toolbox-collapsed">
+                        Split view
+                        <span class="oltb-toolbox-section__icon oltb-tippy" title="Toggle section"></span>
+                    </h4>
                 </div>
-                <div class="oltb-toolbox-section__group">
-                    <label class="oltb-label" for="oltb-right-src">Right side</label>
-                    <select id="oltb-right-src" class="oltb-select"></select>
-                </div>
-                <div class="oltb-toolbox-section__group">
-                    <button type="button" id="oltb-swap-sides-btn" class="oltb-btn oltb-btn--dark-green oltb-w-100">Swap sides</button>
+                <div class="oltb-toolbox-section__groups" id="oltb-split-view-toolbox-collapsed" style="display: ${this.localStorage.collapsed ? 'none' : 'block'}">
+                    <div class="oltb-toolbox-section__group">
+                        <label class="oltb-label" for="oltb-left-src">Left side</label>
+                        <select id="oltb-left-src" class="oltb-select"></select>
+                    </div>
+                    <div class="oltb-toolbox-section__group">
+                        <label class="oltb-label" for="oltb-right-src">Right side</label>
+                        <select id="oltb-right-src" class="oltb-select"></select>
+                    </div>
+                    <div class="oltb-toolbox-section__group">
+                        <button type="button" id="oltb-swap-sides-btn" class="oltb-btn oltb-btn--green-mid oltb-w-100">Swap sides</button>
+                    </div>
                 </div>
             </div>
         `);
@@ -57,16 +76,29 @@ class SplitView extends Control {
             <input type="range" min="0" max="100" value="50" class="oltb-slider" id="oltb-split-view-slider">
         `);
 
-        const splitView = document.querySelector('#oltb-split-view-settings-box');
-        this.splitView = splitView;
+        const splitViewToolbox = document.querySelector('#oltb-split-view-toolbox');
+        this.splitViewToolbox = splitViewToolbox;
 
-        const leftSrc = splitView.querySelector('#oltb-left-src');
+        const leftSrc = splitViewToolbox.querySelector('#oltb-left-src');
         leftSrc.addEventListener('change', () => updateTool());
         this.leftSrc = leftSrc;
 
-        const rightSrc = splitView.querySelector('#oltb-right-src');
+        const rightSrc = splitViewToolbox.querySelector('#oltb-right-src');
         rightSrc.addEventListener('change', () => updateTool());
         this.rightSrc = rightSrc;
+
+        const toggleableTriggers = splitViewToolbox.querySelectorAll('.oltb-toggleable');
+        toggleableTriggers.forEach(toggle => {
+            toggle.addEventListener('click', (event) => {
+                event.preventDefault();
+                
+                const targetName = toggle.dataset.oltbToggleableTarget;
+                document.getElementById(targetName).slideToggle(200, (collapsed) => {
+                    this.localStorage.collapsed = collapsed;
+                    StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+                });
+            });
+        });
 
         const updateTool = () => {
             this.sourceChange(
@@ -75,7 +107,7 @@ class SplitView extends Control {
             );
         }
 
-        const swapSidesBtn = splitView.querySelector('#oltb-swap-sides-btn');
+        const swapSidesBtn = splitViewToolbox.querySelector('#oltb-swap-sides-btn');
         swapSidesBtn.addEventListener('click', (event) => {
             this.swapSides();
         });
@@ -94,6 +126,10 @@ class SplitView extends Control {
             if(isShortcutKeyOnly(event, 's')) {
                 this.handleClick(event);
             }
+        });
+
+        window.addEventListener('oltb.settings.cleared', () => {
+            this.localStorage = LOCAL_STORAGE_PROPS;
         });
     }
 
@@ -182,7 +218,7 @@ class SplitView extends Control {
         }
 
         this.active = !this.active;
-        this.splitView.classList.toggle('oltb-toolbox-section--show');
+        this.splitViewToolbox.classList.toggle('oltb-toolbox-section--show');
         this.splitViewSlider.classList.toggle('oltb-slider--show');
         this.button.classList.toggle('oltb-tool-button--active');
     }

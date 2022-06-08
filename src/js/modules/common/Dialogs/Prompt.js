@@ -11,7 +11,7 @@ class Prompt extends DialogBase {
             value,
             onConfirm,
             onCancel,
-            confirmClass = 'oltb-btn--dark-green',
+            confirmClass = 'oltb-btn--green-mid',
             confirmText = 'Confirm'
         } = options;
 
@@ -44,7 +44,7 @@ class Prompt extends DialogBase {
 
         const cancelButton = document.createElement('button');
         cancelButton.setAttribute('type', 'button');
-        cancelButton.className = `oltb-dialog__btn oltb-btn ${this.isDark ? 'oltb-btn--mid-gray' : 'oltb-btn--dark-gray'}`;
+        cancelButton.className = `oltb-dialog__btn oltb-btn ${this.isDark ? 'oltb-btn--gray-mid' : 'oltb-btn--gray-dark'}`;
         cancelButton.innerText = 'Cancel';
         cancelButton.addEventListener('click', (event) => {
             this.close();

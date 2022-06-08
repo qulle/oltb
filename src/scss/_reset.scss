@@ -18,3 +18,15 @@ p {
 textarea {
     resize: none;
 }
+
+/* Chrome, Firefox, Opera, Safari 10.1+ */
+::placeholder { 
+    color: $color-dark;
+    opacity: 1;
+}
+
+/* Microsoft Edge */
+::-ms-input-placeholder { 
+    color: $color-dark;
+    opacity: 1;
+}

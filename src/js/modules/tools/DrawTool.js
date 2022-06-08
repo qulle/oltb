@@ -7,12 +7,21 @@ import Draw, { createBox, createRegularPolygon } from 'ol/interaction/Draw';
 import { Control } from 'ol/control';
 import { Fill, Stroke, Circle, Style } from 'ol/style';
 import { toolboxElement, toolbarElement } from '../core/ElementReferences';
-import { eventDispatcher } from '../helpers/EventDispatcher';
+import { eventDispatcher } from '../helpers/Browser/EventDispatcher';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 
+const LOCAL_STORAGE_NODE_NAME = 'drawTool';
+const LOCAL_STORAGE_PROPS = {
+    collapsed: false,
+    toolTypeIndex: 5,
+    strokeColor: '#4A86B8',
+    strokeWidth: 2,
+    fillColor: '#FFFFFFFF'
+};
+
 class DrawTool extends Control {
-    constructor(callbacksObj = {}) {
+    constructor(options = {}) {
         super({
             element: toolbarElement
         });
@@ -36,57 +45,62 @@ class DrawTool extends Control {
         this.element.appendChild(button);
         this.button = button;
         this.active = false;
-        this.callbacksObj = callbacksObj;
+        this.options = options;
 
-        // Load potential stored settings from local storage
-        let lsSettings = JSON.parse(StateManager.getStateObject('drawTool')) || {};
+        // Load potential stored data from localStorage
+        const loadedPropertiesFromLocalStorage = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
 
-        const lsDrawType = 'drawType' in lsSettings ? lsSettings['drawType'] : '5';
-        const lsStrokeColor = 'strokeColor' in lsSettings ? lsSettings['strokeColor'] : '#4A86B8';
-        const lsStrokeWidth = 'strokeWidth' in lsSettings ? lsSettings['strokeWidth'] : '2';
-        const lsFillColor = 'fillColor' in lsSettings ? lsSettings['fillColor'] : '#FFFFFFFF';
+        // Merge the potential data replacing the default values
+        this.localStorage = {...LOCAL_STORAGE_PROPS, ...loadedPropertiesFromLocalStorage};
 
         toolboxElement.insertAdjacentHTML('beforeend', `
             <div id="oltb-drawing-tool-box" class="oltb-toolbox-section">
-                <div class="oltb-toolbox-section__group">
-                    <h4 class="oltb-toolbox-section__title">Drawing tool</h4>
-                    <label class="oltb-label" for="oltb-draw-type">Shape</label>
-                    <select id="oltb-draw-type" class="oltb-select">
-                        <option value="Circle">Circle</option>
-                        <option value="Square">Square</option>
-                        <option value="Rectangle">Rectangle</option>
-                        <option value="LineString">Line</option>
-                        <option value="Point">Point</option>
-                        <option value="Polygon" selected>Polygon</option>
-                    </select>
+                <div class="oltb-toolbox-section__header">
+                    <h4 class="oltb-toolbox-section__title oltb-toggleable" data-oltb-toggleable-target="oltb-drawing-toolbox-collapsed">
+                        Drawing tool
+                        <span class="oltb-toolbox-section__icon oltb-tippy" title="Toggle section"></span>
+                    </h4>
                 </div>
-                <div class="oltb-toolbox-section__group">
-                    <label class="oltb-label" for="oltb-draw-stroke-width">Stroke width</label>
-                    <select id="oltb-draw-stroke-width" class="oltb-select">
-                        <option value="1">1</option>
-                        <option value="1.25">1.25</option>
-                        <option value="1.5">1.5</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                        <option value="10">10</option>
-                    </select>
-                </div>
-                <div class="oltb-toolbox-section__group">
-                    <label class="oltb-label" for="oltb-draw-stroke-color">Stroke color</label>
-                    <div id="oltb-draw-stroke-color" class="oltb-color-input oltb-color-tippy" data-oltb-color-target="#oltb-draw-stroke-color" data-oltb-color="${lsStrokeColor}" tabindex="0">
-                        <div class="oltb-color-input__inner" style="background-color: ${lsStrokeColor};"></div>
+                <div class="oltb-toolbox-section__groups" id="oltb-drawing-toolbox-collapsed" style="display: ${this.localStorage.collapsed ? 'none' : 'block'}">
+                    <div class="oltb-toolbox-section__group">
+                        <label class="oltb-label" for="oltb-draw-type">Shape</label>
+                        <select id="oltb-draw-type" class="oltb-select">
+                            <option value="Circle">Circle</option>
+                            <option value="Square">Square</option>
+                            <option value="Rectangle">Rectangle</option>
+                            <option value="LineString">Line</option>
+                            <option value="Point">Point</option>
+                            <option value="Polygon" selected>Polygon</option>
+                        </select>
                     </div>
-                </div>
-                <div class="oltb-toolbox-section__group">
-                    <label class="oltb-label" for="oltb-draw-fill-color">Fill color</label>
-                    <div id="oltb-draw-fill-color" class="oltb-color-input oltb-color-tippy" data-oltb-color-target="#oltb-draw-fill-color" data-oltb-color="${lsFillColor}" tabindex="0">
-                        <div class="oltb-color-input__inner" style="background-color: ${lsFillColor};"></div>
+                    <div class="oltb-toolbox-section__group">
+                        <label class="oltb-label" for="oltb-draw-stroke-width">Stroke width</label>
+                        <select id="oltb-draw-stroke-width" class="oltb-select">
+                            <option value="1">1</option>
+                            <option value="1.25">1.25</option>
+                            <option value="1.5">1.5</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                        </select>
+                    </div>
+                    <div class="oltb-toolbox-section__group">
+                        <label class="oltb-label" for="oltb-draw-stroke-color">Stroke color</label>
+                        <div id="oltb-draw-stroke-color" class="oltb-color-input oltb-color-tippy" data-oltb-color-target="#oltb-draw-stroke-color" data-oltb-color="${this.localStorage.strokeColor}" tabindex="0">
+                            <div class="oltb-color-input__inner" style="background-color: ${this.localStorage.strokeColor};"></div>
+                        </div>
+                    </div>
+                    <div class="oltb-toolbox-section__group">
+                        <label class="oltb-label" for="oltb-draw-fill-color">Fill color</label>
+                        <div id="oltb-draw-fill-color" class="oltb-color-input oltb-color-tippy" data-oltb-color-target="#oltb-draw-fill-color" data-oltb-color="${this.localStorage.fillColor}" tabindex="0">
+                            <div class="oltb-color-input__inner" style="background-color: ${this.localStorage.fillColor};"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -98,22 +112,35 @@ class DrawTool extends Control {
         const strokeWidth = drawToolbox.querySelector('#oltb-draw-stroke-width');
         const strokeColor = drawToolbox.querySelector('#oltb-draw-stroke-color');
 
+        const toggleableTriggers = drawToolbox.querySelectorAll('.oltb-toggleable');
+        toggleableTriggers.forEach(toggle => {
+            toggle.addEventListener('click', (event) => {
+                event.preventDefault();
+
+                const targetName = toggle.dataset.oltbToggleableTarget;
+                document.getElementById(targetName).slideToggle(200, (collapsed) => {
+                    this.localStorage.collapsed = collapsed;
+                    StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+                });
+            });
+        });
+
         toolType.addEventListener('change', () => updateTool());
         fillColor.addEventListener('color-change', () => updateTool());
         strokeWidth.addEventListener('change', () => updateTool());
         strokeColor.addEventListener('color-change', () => updateTool());
 
-        toolType.selectedIndex = lsDrawType;
-        strokeWidth.selectedIndex = lsStrokeWidth;
+        toolType.selectedIndex = this.localStorage.toolTypeIndex;
+        strokeWidth.selectedIndex = this.localStorage.strokeWidth;
 
         const updateTool = () => {
             // Store current values in local storage
-            lsSettings['drawType'] = toolType.selectedIndex;
-            lsSettings['fillColor'] = fillColor.getAttribute('data-oltb-color');
-            lsSettings['strokeWidth'] = strokeWidth.selectedIndex;
-            lsSettings['strokeColor'] = strokeColor.getAttribute('data-oltb-color');;
+            this.localStorage.toolTypeIndex = toolType.selectedIndex;
+            this.localStorage.fillColor = fillColor.getAttribute('data-oltb-color');
+            this.localStorage.strokeWidth = strokeWidth.selectedIndex;
+            this.localStorage.strokeColor = strokeColor.getAttribute('data-oltb-color');;
 
-            StateManager.updateStateObject('drawTool', JSON.stringify(lsSettings));
+            StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
 
             // Update the draw tool in the map
             this.selectDrawTool(
@@ -144,7 +171,7 @@ class DrawTool extends Control {
         });
 
         window.addEventListener('oltb.settings.cleared', () => {
-            lsSettings = {};
+            this.localStorage = LOCAL_STORAGE_PROPS;
         });
     }
 
@@ -242,8 +269,8 @@ class DrawTool extends Control {
 
         this.interaction.on('drawstart', function(event) {
             // User defined callback from constructor
-            if(typeof self.callbacksObj.start === 'function') {
-                self.callbacksObj.start(event);
+            if(typeof self.options.start === 'function') {
+                self.options.start(event);
             }
         });
 
@@ -255,22 +282,22 @@ class DrawTool extends Control {
             layer.getSource().addFeature(feature);
 
             // User defined callback from constructor
-            if(typeof self.callbacksObj.end === 'function') {
-                self.callbacksObj.end(event);
+            if(typeof self.options.end === 'function') {
+                self.options.end(event);
             }
         });
 
         this.interaction.on('drawabort', function(event) {
             // User defined callback from constructor
-            if(typeof self.callbacksObj.abort === 'function') {
-                self.callbacksObj.abort(event);
+            if(typeof self.options.abort === 'function') {
+                self.options.abort(event);
             }
         });
 
         this.interaction.on('error', function(event) {
             // User defined callback from constructor
-            if(typeof self.callbacksObj.error === 'function') {
-                self.callbacksObj.error(event);
+            if(typeof self.options.error === 'function') {
+                self.options.error(event);
             }
         });
     }

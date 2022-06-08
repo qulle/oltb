@@ -8,13 +8,13 @@ import { Control } from 'ol/control';
 import { transform } from 'ol/proj';
 import { unByKey } from 'ol/Observable';
 import { toolbarElement } from '../core/ElementReferences';
-import { copyToClipboard } from '../helpers/CopyToClipboard';
+import { copyToClipboard } from '../helpers/Browser/CopyToClipboard';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { toStringHDMS } from 'ol/coordinate';
 
 class Coordinates extends Control {
-    constructor(callbacksObj = {}) {
+    constructor(options = {}) {
         super({
             element: toolbarElement
         });
@@ -38,7 +38,7 @@ class Coordinates extends Control {
         this.element.appendChild(button);
         this.button = button;
         this.active = false;
-        this.callbacksObj = callbacksObj;
+        this.options = options;
 
         const tooltipElement = document.createElement('span');
         tooltipElement.className = 'oltb-coordinate-tooltip';
@@ -51,6 +51,11 @@ class Coordinates extends Control {
         });
 
         this.tooltipOverlay = tooltipOverlay;
+
+        SettingsManager.addSetting('copyCoordinatesOnClick', {
+            state: true, 
+            text: 'Coordinates tool - Copy coordinates on click'
+        });
 
         window.addEventListener('keyup', (event) => {
             if(isShortcutKeyOnly(event, 'c')) {
@@ -117,8 +122,8 @@ class Coordinates extends Control {
         }
         
         // User defined callback from constructor
-        if(typeof this.callbacksObj.clicked === 'function') {
-            this.callbacksObj.clicked(coordinate);
+        if(typeof this.options.clicked === 'function') {
+            this.options.clicked(coordinate);
         }
     }
 }

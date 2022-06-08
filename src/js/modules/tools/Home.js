@@ -9,6 +9,12 @@ import { addContextMenuItem } from '../common/ContextMenu';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 
+const DEFAULT_OPTIONS = {
+    zoom: 1,
+    lon: 0,
+    lat: 0
+};
+
 class Home extends Control {
     constructor(options = {}) {
         super({
@@ -32,19 +38,10 @@ class Home extends Control {
         );
 
         this.element.appendChild(button);
-        
-        const {
-            zoom = 1,
-            lon = 0,
-            lat = 0,
-            ...callbacksObj
-        } = options;
+        this.options = {...DEFAULT_OPTIONS, ...options};
 
-        this.callbacksObj = callbacksObj;
-        const location = fromLonLat([lon, lat]);
-
-        this.homeLocation = location;
-        this.homeZoom = zoom;
+        this.homeLocation = fromLonLat([this.options.lon, this.options.lat]);;
+        this.homeZoom = this.options.zoom;
         
         this.userDefinedHomeLocation = null;
         this.userDefinedHomeZoom = null;
@@ -85,8 +82,8 @@ class Home extends Control {
 
         setTimeout(() => {
             // User defined callback from constructor
-            if(typeof this.callbacksObj.home === 'function') {
-                this.callbacksObj.home();
+            if(typeof this.options.home === 'function') {
+                this.options.home();
             }
         }, Config.animationDuration);
     }

@@ -1,8 +1,8 @@
 {
     "name": "oltb",
-    "version": "1.0.0-beta1",
-    "description": "",
-    "main": "index.html",
+    "browserslist": "> 0.5%, last 2 versions, not dead",
+    "version": "1.0.0-beta2",
+    "description": "Lightweight GIS toolbar developed for OpenLayers 6.14.1",
     "scripts": {
         "start": "parcel src/index.html --open",
         "build": "parcel build --public-url . src/index.html",
@@ -21,13 +21,12 @@
     "homepage": "https://github.com/qulle/oltb#readme",
     "dependencies": {
         "a-color-picker": "^1.2.1",
-        "axios": "^0.26.0",
-        "ol": "^6.12.0",
-        "proj4": "^2.7.5",
+        "ol": "^6.14.1",
+        "proj4": "^2.8.0",
         "tippy.js": "^6.3.7"
     },
     "devDependencies": {
-        "parcel-bundler": "^1.12.5",
-        "sass": "^1.49.8"
+        "@parcel/transformer-sass": "^2.6.0",
+        "parcel": "^2.6.0"
     }
 }

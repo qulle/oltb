@@ -7,8 +7,10 @@ import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { isDarkTheme } from '../helpers/IsDarkTheme';
 
+const LOCAL_STORAGE_NODE_NAME = 'theme';
+
 class ThemeToggle extends Control {
-    constructor(callbacksObj = {}) {
+    constructor(options = {}) {
         super({
             element: toolbarElement
         });
@@ -25,7 +27,10 @@ class ThemeToggle extends Control {
 
         const button = document.createElement('button');
         button.setAttribute('type', 'button');
-        button.setAttribute('data-tippy-content', isDarkTheme() ? 'Light theme' : 'Dark theme' + ' (T)');
+        button.setAttribute('data-tippy-content', isDarkTheme() 
+            ? 'Light theme' 
+            : 'Dark theme' + ' (T)'
+        );
         button.className = 'oltb-tool-button';
         button.innerHTML = isDarkTheme() ? this.lightThemeIcon : this.darkThemeIcon;
         button.addEventListener(
@@ -35,7 +40,7 @@ class ThemeToggle extends Control {
         );
 
         this.element.appendChild(button);
-        this.callbacksObj = callbacksObj;
+        this.options = options;
 
         this.button = button;
         this.active = false;
@@ -55,7 +60,7 @@ class ThemeToggle extends Control {
     }
 
     clearTheme() {
-        StateManager.updateStateObject('theme', 'oltb-light');
+        StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, 'light');
         toolbarElement.classList.remove('dark');
         document.body.classList.remove('oltb-dark');
 
@@ -72,7 +77,7 @@ class ThemeToggle extends Control {
         }else {
             theme = 'dark';
 
-            StateManager.updateStateObject('theme', 'oltb-dark');
+            StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, 'dark');
             toolbarElement.classList.add('dark');
             document.body.classList.add('oltb-dark');
 
@@ -83,8 +88,8 @@ class ThemeToggle extends Control {
         }
 
         // User defined callback from constructor
-        if(typeof this.callbacksObj.changed === 'function') {
-            this.callbacksObj.changed(theme);
+        if(typeof this.options.changed === 'function') {
+            this.options.changed(theme);
         }
     }
 }

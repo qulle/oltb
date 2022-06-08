@@ -1,28 +1,28 @@
 import 'ol/ol.css';
 import EventType from 'ol/events/EventType';
-import GeoJSON from 'ol/format/GeoJSON';
 import Toast from '../common/Toast';
 import LayerManager from '../core/Managers/LayerManager';
 import Config from '../core/Config';
+import FormatTypes, { instantiateFormat } from '../core/olTypes/FormatTypes';
 import { Control } from 'ol/control';
 import { toolbarElement } from '../core/ElementReferences';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 
-class ImportGeoJSON extends Control {
-    constructor(callbacksObj = {}) {
+class ImportVectorLayer extends Control {
+    constructor(options = {}) {
         super({
             element: toolbarElement
         });
         
         const icon = getIcon({
-            path: SVGPaths.Brackets,
+            path: SVGPaths.Open,
             class: 'oltb-tool-button__icon'
         });
 
         const button = document.createElement('button');
         button.setAttribute('type', 'button');
-        button.setAttribute('data-tippy-content', 'Open Geojson (O)');
+        button.setAttribute('data-tippy-content', 'Import Vector layer (O)');
         button.className = 'oltb-tool-button';
         button.innerHTML = icon;
         button.addEventListener(
@@ -32,14 +32,14 @@ class ImportGeoJSON extends Control {
         );
 
         this.element.appendChild(button);
-        this.callbacksObj = callbacksObj;
+        this.options = options;
 
         // Helper element to open a local geojson file
         const inputDialog = document.createElement('input');
         inputDialog.className = 'oltb-d-none';
         inputDialog.setAttribute('type', 'file');
-        inputDialog.setAttribute('accept', '.geojson, .json');
-        inputDialog.addEventListener('change', this.loadGeoJSON.bind(this));
+        inputDialog.setAttribute('accept', '.geojson, .kml');
+        inputDialog.addEventListener('change', this.loadVectorLayer.bind(this));
         document.body.insertAdjacentElement('beforeend', inputDialog);
         
         this.inputDialog = inputDialog;
@@ -56,32 +56,47 @@ class ImportGeoJSON extends Control {
         this.inputDialog.click();
     }
 
-    loadGeoJSON(event) {
+    loadVectorLayer(event) {
         const fileDialog = event.target;
         const fileReader = new FileReader();
         const self = this;
 
         fileReader.onload = function() {
             const file = fileDialog.files[0].name;
+            
             try {
                 const filename = file.split('.')[0];
-                const geoJSON = JSON.parse(fileReader.result);
-                const features = new GeoJSON().readFeatures(geoJSON, {featureProjection: Config.baseProjection});
+                const fileExtension = file.split('.').pop().toLowerCase();
+
+                // Can't use the in-operator since the format can be formatted by the user
+                // Forcing format to be lower-case and the do a search for it as a key in the format-object
+                const format = Object.keys(FormatTypes).find(key => key.toLowerCase() === fileExtension);
+
+                // This should not happen since the format is set in the dialog
+                if(!format) {
+                    Toast.error({text: 'Unsupported layer format'});
+                    return;
+                }
+
+                const features = instantiateFormat(format).readFeatures(fileReader.result, {
+                    featureProjection: Config.baseProjection,
+                    dataProjection: Config.baseProjection
+                });
 
                 LayerManager.addFeatureLayer('Import : ' + filename);
                 const layer = LayerManager.getActiveFeatureLayer().layer;
                 layer.getSource().addFeatures(features);
 
                 // User defined callback from constructor
-                if(typeof self.callbacksObj.imported === 'function') {
-                    self.callbacksObj.imported(features);
+                if(typeof self.options.imported === 'function') {
+                    self.options.imported(features);
                 }
             }catch(error) {
-                Toast.error({text: 'Error when parsing the geojson - check syntax'});
+                Toast.error({text: 'Error when parsing layer - check syntax'});
 
                 // User defined callback from constructor
-                if(typeof self.callbacksObj.error === 'function') {
-                    self.callbacksObj.error(file, error);
+                if(typeof self.options.error === 'function') {
+                    self.options.error(file, error);
                 }
             }
         }
@@ -90,4 +105,4 @@ class ImportGeoJSON extends Control {
     }
 }
 
-export default ImportGeoJSON;
+export default ImportVectorLayer;

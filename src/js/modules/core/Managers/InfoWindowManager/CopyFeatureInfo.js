@@ -1,5 +1,5 @@
 import Toast from '../../../common/Toast';
-import { copyToClipboard } from '../../../helpers/CopyToClipboard';
+import { copyToClipboard } from '../../../helpers/Browser/CopyToClipboard';
 
 const copyFeatureInfo = function(dataToCopy) {
     const copyStatus = copyToClipboard(dataToCopy);

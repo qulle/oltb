@@ -1,13 +1,17 @@
 import Config from '../core/Config';
 import { toolbarElement, toolboxElement, mapElement } from '../core/ElementReferences';
+import { URIGet } from '../helpers/Browser/URIGet';
 
 // Append version as custom attribute to the html element
 document.documentElement.setAttribute('oltb-version', Config.version);
 
-// Remove default contextmenu
-mapElement.oncontextmenu = function(event) { 
-    return false; 
-};
+// Remove default contextmenu, show if the get parameter ?debug=true exists
+const debugParameter = URIGet('debug') === 'true';
+mapElement.addEventListener('contextmenu', function(event) {
+    if(!debugParameter) {
+        event.preventDefault();
+    }
+});
 
 // Accessibility help
 // This will toggle the class using-keyboard on the body,
@@ -19,17 +23,6 @@ document.body.addEventListener('mousedown', function(event) {
 document.body.addEventListener('keydown', function(event) {
     if(event.key === 'Tab') {
         document.body.classList.add('oltb-using-keyboard');
-    }
-});
-
-// Change how the scrollwheel behaves
-window.addEventListener('wheel', function(event) {
-    if(!event.ctrlKey) {
-        if(event.deltaY > 0) {
-            toolbarElement.scrollLeft += 100;
-        }else {
-            toolbarElement.scrollLeft -= 100;
-        }
     }
 });
 

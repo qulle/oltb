@@ -13,7 +13,7 @@ class HiddenAbout extends Control {
             element: toolbarElement
         });
 
-        const icon = getIcon({path: SVGPaths.About});
+        const icon = getIcon({path: SVGPaths.GitHub});
 
         addContextMenuItem('main.map.context.menu', {});
         addContextMenuItem('main.map.context.menu', {icon: icon, name: 'About OLTB', fn: function() {

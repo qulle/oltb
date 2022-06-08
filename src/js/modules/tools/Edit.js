@@ -3,17 +3,23 @@ import EventType from 'ol/events/EventType';
 import Dialog from '../common/Dialog';
 import LayerManager from '../core/Managers/LayerManager';
 import SettingsManager from '../core/Managers/SettingsManager';
+import StateManager from '../core/Managers/StateManager';
 import { Control } from 'ol/control';
 import { Select, Modify, Translate } from 'ol/interaction';
 import { shiftKeyOnly } from 'ol/events/condition';
 import { unByKey } from 'ol/Observable';
-import { onFeatureChange } from '../helpers/Measure';
+import { onFeatureChange } from '../helpers/olFunctions/Measure';
 import { toolboxElement, toolbarElement } from '../core/ElementReferences';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 
+const LOCAL_STORAGE_NODE_NAME = 'editTool';
+const LOCAL_STORAGE_PROPS = {
+    collapsed: false
+};
+
 class Edit extends Control {
-    constructor(callbacksObj = {}) {
+    constructor(options = {}) {
         super({
             element: toolbarElement
         });
@@ -36,30 +42,56 @@ class Edit extends Control {
 
         this.element.appendChild(button);
         this.button = button;
-        this.callbacksObj = callbacksObj;
+        this.options = options;
 
+        // Load potential stored data from localStorage
+        const loadedPropertiesFromLocalStorage = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
+
+        // Merge the potential data replacing the default values
+        this.localStorage = {...LOCAL_STORAGE_PROPS, ...loadedPropertiesFromLocalStorage};
+        
         toolboxElement.insertAdjacentHTML('beforeend', `
-            <div id="oltb-edit-settings-box" class="oltb-toolbox-section">
-                <div class="oltb-toolbox-section__group">
-                    <h4 class="oltb-toolbox-section__title">Edit tool</h4>
-                    <button type="button" disabled id="oltb-delete-selected-btn" class="oltb-btn oltb-btn--dark-red oltb-w-100">Delete selected features</button>
+            <div id="oltb-edit-toolbox" class="oltb-toolbox-section">
+                <div class="oltb-toolbox-section__header">
+                    <h4 class="oltb-toolbox-section__title oltb-toggleable" data-oltb-toggleable-target="oltb-edit-toolbox-collapsed">
+                        Edit tool
+                        <span class="oltb-toolbox-section__icon oltb-tippy" title="Toggle section"></span>
+                    </h4>
+                </div>
+                <div class="oltb-toolbox-section__groups" id="oltb-edit-toolbox-collapsed" style="display: ${this.localStorage.collapsed ? 'none' : 'block'}">
+                    <div class="oltb-toolbox-section__group">
+                        <button type="button" disabled id="oltb-delete-selected-btn" class="oltb-btn oltb-btn--red-mid oltb-w-100">Delete selected features</button>
+                    </div>
                 </div>
             </div>
         `);
 
         const self = this;
 
-        const editSettingsBox = document.querySelector('#oltb-edit-settings-box');
-        this.editSettingsBox = editSettingsBox;
+        const editToolbox = document.querySelector('#oltb-edit-toolbox');
+        this.editToolbox = editToolbox;
 
-        const deleteSelectedButton = editSettingsBox.querySelector('#oltb-delete-selected-btn');
+        const deleteSelectedButton = editToolbox.querySelector('#oltb-delete-selected-btn');
         this.deleteSelectedButton = deleteSelectedButton;
         deleteSelectedButton.addEventListener('click', this.deleteSelectedFeatures.bind(this));
+
+        const toggleableTriggers = editToolbox.querySelectorAll('.oltb-toggleable');
+        toggleableTriggers.forEach(toggle => {
+            toggle.addEventListener('click', (event) => {
+                event.preventDefault();
+
+                const targetName = toggle.dataset.oltbToggleableTarget;
+                document.getElementById(targetName).slideToggle(200, (collapsed) => {
+                    this.localStorage.collapsed = collapsed;
+                    StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+                });
+            });
+        });
 
         const select = new Select({
             hitTolerance: 5,
             filter: function(feature, layer) {
-                const selectable = !('attributes' in feature && 'notSelectable' in feature.attributes);
+                const selectable = !('properties' in feature && 'notSelectable' in feature.properties);
                 const isFeatureLayer = LayerManager.getFeatureLayers().find(layerObject => {
                     return layerObject.layer.getSource().hasFeature(feature);
                 });
@@ -83,8 +115,8 @@ class Edit extends Control {
             self.deleteSelectedButton.removeAttribute('disabled');
 
             // User defined callback from constructor
-            if(typeof self.callbacksObj.selectadd === 'function') {
-                self.callbacksObj.selectadd(event);
+            if(typeof self.options.selectadd === 'function') {
+                self.options.selectadd(event);
             }
         });
 
@@ -94,8 +126,8 @@ class Edit extends Control {
             }
 
             // User defined callback from constructor
-            if(typeof self.callbacksObj.selectremove === 'function') {
-                self.callbacksObj.selectremove(event);
+            if(typeof self.options.selectremove === 'function') {
+                self.options.selectremove(event);
             }
         });
 
@@ -107,8 +139,8 @@ class Edit extends Control {
             self.attachOnChange(event.features);
 
             // User defined callback from constructor
-            if(typeof self.callbacksObj.modifystart === 'function') {
-                self.callbacksObj.modifystart(event);
+            if(typeof self.options.modifystart === 'function') {
+                self.options.modifystart(event);
             }
         });
 
@@ -116,8 +148,8 @@ class Edit extends Control {
             self.detachOnChange(event.features);
 
             // User defined callback from constructor
-            if(typeof self.callbacksObj.modifyend === 'function') {
-                self.callbacksObj.modifyend(event);
+            if(typeof self.options.modifyend === 'function') {
+                self.options.modifyend(event);
             }
         });
 
@@ -125,8 +157,8 @@ class Edit extends Control {
             self.attachOnChange(event.features);
 
             // User defined callback from constructor
-            if(typeof self.callbacksObj.translatestart === 'function') {
-                self.callbacksObj.translatestart(event);
+            if(typeof self.options.translatestart === 'function') {
+                self.options.translatestart(event);
             }
         });
 
@@ -134,8 +166,8 @@ class Edit extends Control {
             self.detachOnChange(event.features);
 
             // User defined callback from constructor
-            if(typeof self.callbacksObj.translateend === 'function') {
-                self.callbacksObj.translateend(event);
+            if(typeof self.options.translateend === 'function') {
+                self.options.translateend(event);
             }
         });
 
@@ -148,6 +180,10 @@ class Edit extends Control {
                     this.deleteSelectedFeatures();
                 }
             }
+        });
+
+        window.addEventListener('oltb.settings.cleared', () => {
+            this.localStorage = LOCAL_STORAGE_PROPS;
         });
     }
 
@@ -171,13 +207,13 @@ class Edit extends Control {
                             this.select.getFeatures().remove(feature);
 
                             // Remove potential overlays associated with the feature
-                            if('attributes' in feature && 'tooltipOverlay' in feature.attributes) {
-                                this.getMap().removeOverlay(feature.attributes.tooltipOverlay);
+                            if('properties' in feature && 'tooltipOverlay' in feature.properties) {
+                                this.getMap().removeOverlay(feature.properties.tooltipOverlay);
                             }
 
                             // User defined callback from constructor
-                            if(typeof this.callbacksObj.removedfeature === 'function') {
-                                this.callbacksObj.removedfeature(feature);
+                            if(typeof this.options.removedfeature === 'function') {
+                                this.options.removedfeature(feature);
                             }
                         }
                     });
@@ -194,18 +230,18 @@ class Edit extends Control {
 
     attachOnChange(features) {
         features.forEach(feature => {
-            if('attributes' in feature) {
-                feature.attributes.tooltipElement.className = 'oltb-measure-tooltip';
-                feature.attributes.onChangeListener = feature.getGeometry().on('change', onFeatureChange.bind(feature));
+            if('properties' in feature) {
+                feature.properties.tooltipElement.className = 'oltb-measure-tooltip';
+                feature.properties.onChangeListener = feature.getGeometry().on('change', onFeatureChange.bind(feature));
             }
         });
     }
 
     detachOnChange(features) {
         features.forEach(feature => {
-            if('attributes' in feature) {
-                unByKey(feature.attributes.onChangeListener);
-                feature.attributes.tooltipElement.className = 'oltb-measure-tooltip oltb-measure-tooltip--ended';
+            if('properties' in feature) {
+                unByKey(feature.properties.onChangeListener);
+                feature.properties.tooltipElement.className = 'oltb-measure-tooltip oltb-measure-tooltip--ended';
             }
         });
     }
@@ -248,7 +284,7 @@ class Edit extends Control {
         }
         
         this.active = !this.active;
-        this.editSettingsBox.classList.toggle('oltb-toolbox-section--show');
+        this.editToolbox.classList.toggle('oltb-toolbox-section--show');
         this.button.classList.toggle('oltb-tool-button--active');
     }
 }

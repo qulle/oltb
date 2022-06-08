@@ -3,34 +3,33 @@
     width: 100%;
     padding: .438rem;
     color: #212529;
-    background-color: #FFFFFF;
+    background-color: $background-theme-light;
     background-clip: padding-box;
-    border: 1px solid $form-input-border-color;
+    border: 1px solid $form-input-border-color-light;
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
-    border-radius: .25rem;
+    border-radius: $border-radius;
     transition: border-color 150ms ease-in-out, box-shadow 150ms ease-in-out;
     outline: none;
 
     &:focus {
-        border: 1px solid rgba($color-blue-dark, .5);
-        box-shadow: 0 0 0 $shadow-focus-width rgba($color-blue-dark, .3);
+        border: 1px solid rgba($color-blue-mid, .5);
+        box-shadow: 0 0 0 $shadow-focus-width rgba($color-blue-mid, .3);
     }
 
     &__inner {
         padding: .5rem;
         border: 1px solid rgba(0, 0, 0, .2);
-        border-radius: .25rem;
+        border-radius: $border-radius;
     }
 }
 
 body.oltb-dark .oltb-color-input {
     background-color: $color-gray-mid;
-    border: 1px solid $color-gray-dark;
+    border: 1px solid $form-input-border-color-dark;
 
     &:focus {
-        border: 1px solid $color-gray-dark;
         box-shadow: 0 0 0 $shadow-focus-width rgba($color-gray-mid, .5);
     }
 }

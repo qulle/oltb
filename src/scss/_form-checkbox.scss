@@ -7,30 +7,27 @@
         margin-bottom: 0;
     }
 
-    &__title {
-        margin-left: .25rem;
-    }
-
     &__checkbox {
+        margin: .25rem .625rem .25rem .25rem;
         width: 1.25rem;
         height: 1.25rem;
         flex-shrink: 0;
-        background-color: #FFFFFF;
+        background-color: $background-theme-light;
         background-repeat: no-repeat;
         background-position: center;
         background-size: contain;
-        border: 1px solid $form-input-border-color;
+        border: 1px solid $form-input-border-color-light;
         -webkit-appearance: none;
         -moz-appearance: none;
         appearance: none;
         -webkit-print-color-adjust: exact;
         color-adjust: exact;
-        border-radius: .25rem;
+        border-radius: $border-radius;
         transition: border-color 150ms ease-in-out, box-shadow 150ms ease-in-out;
     
         &:checked {
-            background-color: $color-blue-dark;
-            border-color: $color-blue-dark;
+            background-color: $color-blue-mid;
+            border-color: $color-blue-mid;
         }
     
         &:checked[type="checkbox"] {
@@ -38,15 +35,15 @@
         }
     
         &:focus {
-            border: 1px solid $color-blue-dark;
-            box-shadow: 0 0 0 $shadow-focus-width rgba($color-blue-dark, .3);
+            border: 1px solid $color-blue-mid;
+            box-shadow: 0 0 0 $shadow-focus-width rgba($color-blue-mid, .3);
         }
     }
 }
 
 body.oltb-dark .oltb-checkbox-wrapper {
     &__title {
-        color: #FFFFFF;
+        color: $color-light;
     }
 
     &__checkbox {
@@ -54,7 +51,7 @@ body.oltb-dark .oltb-checkbox-wrapper {
         border: none;
 
         &:checked {
-            background-color: $color-blue-dark;
+            background-color: $color-blue-mid;
         }
 
         &:focus {

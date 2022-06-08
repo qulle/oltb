@@ -5,6 +5,11 @@ import { Control } from 'ol/control';
 import { toolbarElement } from '../core/ElementReferences';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
+import { URIGet } from '../helpers/Browser/URIGet';
+
+const DEFAULT_OPTIONS = {
+    showWhenGetParameter: false
+};
 
 class DebugInfo extends Control {
     constructor(options = {}) {
@@ -29,14 +34,12 @@ class DebugInfo extends Control {
         );
 
         this.element.appendChild(button);
+        this.options = {...DEFAULT_OPTIONS, ...options};
         
         // Check if the tool only should be visible if the get parameter ?debug=true exists
-        const urlSearchParameters = decodeURI(window.location.search);
-        const urlObject = new URLSearchParams(urlSearchParameters);
-        const debugParameter = (urlObject.get('debug') || '') === 'true';
-        const { showWhenGetParameter } = options;
+        const debugParameter = URIGet('debug') === 'true';
 
-        if(showWhenGetParameter) {
+        if(this.options.showWhenGetParameter) {
             if(!debugParameter || debugParameter !== true) {
                 button.classList.add('oltb-tool-button--hidden');
             }
@@ -63,7 +66,7 @@ class DebugInfo extends Control {
             projection: view.getProjection()
         };
 
-        new DebugInfoModal(map, information);
+        const debugInfoModal = new DebugInfoModal(map, information);
     }
 }
 

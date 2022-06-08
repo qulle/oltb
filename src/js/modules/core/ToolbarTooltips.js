@@ -1,10 +1,10 @@
-import DOM from '../helpers/DOM';
+import DOM from '../helpers/Browser/DOM';
 import tippy from 'tippy.js';
 import 'tippy.js/dist/tippy.css';
 import { delegate, createSingleton } from 'tippy.js';
 import { mapElement } from './ElementReferences';
 import { isHorizontal } from '../helpers/IsRowDirection';
-import { eventDispatcher } from '../helpers/EventDispatcher';
+import { eventDispatcher } from '../helpers/Browser/EventDispatcher';
 
 const AColorPicker = require('a-color-picker');
 
@@ -33,7 +33,8 @@ const mapTippyDelegate = delegate(mapElement, {
 });
 
 // Color-picker element to instantiate  the ACP.
-const colorPickerElement = DOM.createElement({element: 'div', 
+const colorPickerElement = DOM.createElement({
+    element: 'div', 
     attributes: {
         id: 'otlb-color-picker',
         class: 'oltb-mt-0313 oltb-mb-0313',
@@ -42,7 +43,7 @@ const colorPickerElement = DOM.createElement({element: 'div',
         'acp-show-rgb': 'no',
         'acp-show-hsl': 'no',
         'acp-show-hex': 'yes',
-        'acp-palette': '#FFFFFF|#D7E3FA|#4A86B8|#0166A5|#ABFAF2|#67C7BD|#3CAEA3|#FFEBAE|#FCD769|#FFCC33|#FFD5AC|#FCBE80|#F79A5A|#FDB5B4|#F38C8A|#ED6663|#D3D9E6|#8C94A4|#3B4352|#000000'
+        'acp-palette': '#FFFFFF|#D7E3FA|#6397C2|#0166A5|#BCFAF4|#3CAEA3|#007C70|#FFF1C5|#FBDD83|#FBBD02|#FFDDBC|#FCBE80|#FCBE80|#F67D2C|#FDB5B4|#E96B69|#EB4542|#D3D9E6|#959DAD|#3B4352|#000000'
     }
 });
 
@@ -108,4 +109,8 @@ window.addEventListener('resize', tooltipPlacement);
 window.addEventListener('DOMContentLoaded', initTooltipsWhenDOMContentLoaded);
 window.addEventListener('oltb.toolbar.direction.change', tooltipPlacement);
 
-export {toolButtonsTippySingleton, mapTippyDelegate, colorTippyDelegate};
+export {
+    toolButtonsTippySingleton, 
+    mapTippyDelegate, 
+    colorTippyDelegate
+};

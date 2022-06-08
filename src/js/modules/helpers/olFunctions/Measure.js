@@ -4,8 +4,8 @@ import { getArea, getLength } from 'ol/sphere';
 const onFeatureChange = function(event) {
     const feature = this;
 
-    // Check if feature has attributes and tooltipElement property, if not, it has no tooltip to update
-    const hasTooltip = feature?.attributes?.tooltipElement;
+    // Check if feature has properties and tooltipElement property, if not, it has no tooltip to update
+    const hasTooltip = feature?.properties?.tooltipElement;
     if(!hasTooltip) {
         return;
     }
@@ -23,8 +23,8 @@ const onFeatureChange = function(event) {
         tooltipPosition = geometry.getLastCoordinate();
     }
 
-    feature.attributes.tooltipElement.innerHTML = tooltipText;
-    feature.attributes.tooltipOverlay.setPosition(tooltipPosition);
+    feature.properties.tooltipElement.innerHTML = tooltipText;
+    feature.properties.tooltipOverlay.setPosition(tooltipPosition);
 }
 
 const formatLength = function(line) {

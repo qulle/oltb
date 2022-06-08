@@ -1,6 +1,6 @@
 import Control from "ol/control/Control";
 import Config from '../core/Config';
-import trapFocusKeyListener from '../helpers/TrapFocus';
+import { trapFocusKeyListener } from '../helpers/TrapFocus';
 import { transform } from 'ol/proj';
 import { mapElement } from "../core/ElementReferences";
 
@@ -13,11 +13,9 @@ class ContextMenu extends Control {
         super({
             element: document.createElement('ul')
         });
-
-        const { name, selector } = options;
-
-        this.selector = selector;
-        this.items = menuItems.get(name);
+        
+        this.options = options;
+        this.items = menuItems.get(options.name);
         this.id = menuId++;
         this.target = null;
 
@@ -104,7 +102,7 @@ class ContextMenu extends Control {
 // Listen for contextmenu event to show menu
 document.addEventListener('contextmenu', (event) => {
     instances.forEach((menu) => {
-        if(event.target.matches(menu.selector)) {
+        if(event.target.matches(menu.options.selector)) {
             menu.show(event);
         }
     });
@@ -137,5 +135,8 @@ const addContextMenuItem = function(name, item) {
     }
 }
 
-export {addContextMenuItems, addContextMenuItem};
-export default ContextMenu;
+export { 
+    ContextMenu as default, 
+    addContextMenuItems, 
+    addContextMenuItem 
+};

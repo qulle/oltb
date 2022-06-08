@@ -3,13 +3,13 @@ import LayerManager from '../../core/Managers/LayerManager';
 import MarkerModal from '../ModalExtensions/MarkerModal';
 import { Control } from 'ol/control';
 import { toolbarElement } from '../../core/ElementReferences';
-import { generateMarker } from '../../helpers/Marker';
+import { generateMarker } from '../../helpers/olFunctions/Marker';
 import { addContextMenuItem } from '../../common/ContextMenu';
 import { SVGPaths, getIcon } from '../../core/Icons';
 import { toStringHDMS } from 'ol/coordinate';
 
 class HiddenMarker extends Control {
-    constructor(callbacksObj = {}) {
+    constructor(options = {}) {
         super({
             element: toolbarElement
         });
@@ -17,34 +17,34 @@ class HiddenMarker extends Control {
         const icon = getIcon({path: SVGPaths.Plus});
 
         addContextMenuItem('main.map.context.menu', {icon: icon, name: 'Create marker', fn: function(map, coordinates, target) {
-            new MarkerModal({coordinates: coordinates}, function(response) {
-                const prettyCoords = toStringHDMS([response.longitude, response.latitude]);
+            const markerModal = new MarkerModal({coordinates: coordinates}, function(result) {
+                const prettyCoords = toStringHDMS([result.longitude, result.latitude]);
                 const infoWindow = `
-                    <h3 class="oltb-text-center">${response.name}</h3>
-                    <p class="oltb-text-center">${response.info}</p>
+                    <h3 class="oltb-text-center">${result.name}</h3>
+                    <p class="oltb-text-center">${result.info}</p>
                     <p class="oltb-text-center">${prettyCoords}</p>
                     <div class="oltb-d-flex oltb-justify-content-center">
                         <button class="oltb-func-btn oltb-func-btn--delete oltb-tippy" title="Delete marker" id="oltb-info-window-remove-marker"></button>
-                        <button class="oltb-func-btn oltb-func-btn--copy oltb-tippy" title="Copy marker text" id="oltb-info-window-copy-marker-location" data-copy="${response.name} ${response.info}"></button>
+                        <button class="oltb-func-btn oltb-func-btn--copy oltb-tippy" title="Copy marker text" id="oltb-info-window-copy-marker-location" data-copy="${result.name} ${result.info}"></button>
                         <button class="oltb-func-btn oltb-func-btn--edit oltb-tippy" title="Edit marker" id="oltb-info-window-edit-marker"></button>
                     </div>
                 `;
                 
                 const marker = new generateMarker({
-                    name: response.name,
-                    info: response.info,
-                    lat: response.latitude,
-                    lon: response.longitude,
-                    iconName: response.icon,
+                    name: result.name,
+                    info: result.info,
+                    lat: result.latitude,
+                    lon: result.longitude,
+                    iconName: result.icon,
                     icon: getIcon({
-                        path: SVGPaths[response.icon],
+                        path: SVGPaths[result.icon],
                         width: 20,
                         height: 20,
                         fill: 'rgb(255, 255, 255)',
                         stroke: 'none'
                     }),
-                    backgroundColor: response.backgroundColor,
-                    color: response.color,
+                    backgroundColor: result.backgroundColor,
+                    color: result.color,
                     notSelectable: true,
                     infoWindow: infoWindow
                 });
@@ -52,8 +52,8 @@ class HiddenMarker extends Control {
                 LayerManager.getActiveFeatureLayer({ifNoLayerName: 'Markers'}).layer.getSource().addFeatures(marker);
 
                 // User defined callback from constructor
-                if(typeof callbacksObj.added === 'function') {
-                    callbacksObj.added(marker);
+                if(typeof options.added === 'function') {
+                    options.added(marker);
                 }
             });
         }});
@@ -62,8 +62,8 @@ class HiddenMarker extends Control {
 
         window.addEventListener('oltb.feature.edited', function(event) {
             // User defined callback from constructor
-            if(typeof callbacksObj.edited === 'function') {
-                callbacksObj.edited([
+            if(typeof options.edited === 'function') {
+                options.edited([
                     event.detail.feature,
                     event.detail.linkedFeature
                 ]);
@@ -72,8 +72,8 @@ class HiddenMarker extends Control {
 
         window.addEventListener('oltb.feature.removed', function(event) {
             // User defined callback from constructor
-            if(typeof callbacksObj.removed === 'function') {
-                callbacksObj.removed([
+            if(typeof options.removed === 'function') {
+                options.removed([
                     event.detail.feature,
                     event.detail.linkedFeature
                 ]);

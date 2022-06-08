@@ -2,7 +2,7 @@ import Point from 'ol/geom/Point';
 import Feature from 'ol/Feature';
 import { Circle as CircleStyle, Fill, Icon, Stroke, Style } from 'ol/style';
 import { fromLonLat } from 'ol/proj';
-import { SVGPaths, getIcon } from '../core/Icons';
+import { SVGPaths, getIcon } from '../../core/Icons';
 
 const defaultIcon = getIcon({
     path: SVGPaths.GeoPin,
@@ -18,7 +18,7 @@ const generateMarker = function(options = {}) {
         info,
         lat,
         lon,
-        backgroundColor = '#0166A5',
+        backgroundColor = '#0166A5FF',
         color = '#FFFFFF',
         iconName,
         icon = defaultIcon,
@@ -45,7 +45,7 @@ const generateMarker = function(options = {}) {
         })
     }));
 
-    featureBackground.attributes = {
+    featureBackground.properties = {
         notSelectable, 
         infoWindow,
         name,
@@ -64,7 +64,7 @@ const generateMarker = function(options = {}) {
         })
     }));
 
-    featureIcon.attributes = {
+    featureIcon.properties = {
         notSelectable,
         infoWindow,
         name,

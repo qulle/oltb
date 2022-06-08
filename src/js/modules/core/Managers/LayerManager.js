@@ -153,8 +153,8 @@ class LayerManager {
 
         // Remove potential overlays associated with each feature
         targetLayer.layer.getSource().getFeatures().forEach(feature => {
-            if('attributes' in feature && 'tooltipOverlay' in feature.attributes) {
-                this.map.removeOverlay(feature.attributes.tooltipOverlay);
+            if('properties' in feature && 'tooltipOverlay' in feature.properties) {
+                this.map.removeOverlay(feature.properties.tooltipOverlay);
             }
         });
 
@@ -194,7 +194,7 @@ class LayerManager {
     }
 
     static removeFeatureFromLayer(feature) {
-        const linkedFeature = feature?.attributes?.linkedFeature;
+        const linkedFeature = feature?.properties?.linkedFeature;
         
         this.getFeatureLayers().forEach(layerObject => {
             layerObject.layer.getSource().removeFeature(feature);

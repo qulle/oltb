@@ -7,7 +7,7 @@
     padding-top: 0;
     margin: 1rem;
     background-color: $background-theme-light;
-    border-radius: 2px;
+    border-radius: $border-radius;
     box-shadow: $box-shadow-mid;
     overflow: scroll;
     -ms-overflow-style: none;
@@ -44,8 +44,8 @@
             
             &:hover,
             &--active {
-                background-color: $color-yellow-light;
-                color: $color-gray-dark;
+                background-color: $color-blue-mid;
+                color: $color-light;
             }
         }
     }
@@ -53,7 +53,7 @@
 
 .oltb-tool-button {
     flex-shrink: 0;
-    border-radius: 2px;
+    border-radius: $border-radius;
     margin: .25rem 0 0 0;
     color: $color-gray-dark;
     height: 2.125rem;
@@ -89,8 +89,8 @@ body.oltb-using-keyboard #oltb {
         .oltb-tool-button {
             &:focus,
             &:active {
-                background-color: $color-yellow-light;
-                color: $color-gray-dark;
+                background-color: $color-blue-mid;
+                color: $color-light;
             }
         }
     }

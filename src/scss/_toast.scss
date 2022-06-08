@@ -9,14 +9,14 @@
 .oltb-toast {
     cursor: default;
     padding: .75rem .875rem;
-    border-radius: 2px;
+    border-radius: $border-radius;
     box-shadow: $box-shadow-mid;
     margin: 0 1rem 1rem 1rem;
     display: flex;
     align-items: center;
 
     &__message {
-        color: #FFFFFF;
+        color: $color-light;
         font-size: 1rem;
         font-weight: 500;
         margin-bottom: 0;
@@ -36,14 +36,14 @@
     }
 
     &--warning {
-        background-color: $color-orange-dark;
+        background-color: $color-orange-mid;
     }
 
     &--error {
-        background-color: $color-red-dark;
+        background-color: $color-red-mid;
     }
 
     &--success {
-        background-color: $color-green-dark;
+        background-color: $color-green-mid;
     }
 }

@@ -145,8 +145,8 @@ class Magnify extends Control {
                         const dI = i - half;
                         const dJ = j - half;
                         const dist = Math.sqrt(dI * dI + dJ * dJ);
-                        const sourceI = i;
-                        const sourceJ = j;
+                        let sourceI = i;
+                        let sourceJ = j;
                         
                         if(dist < half) {
                             sourceI = Math.round(half + dI / 2);
@@ -181,6 +181,8 @@ class Magnify extends Control {
                 }else {
                     Toast.error({text: 'A unknown error occurred with the magnifyer'});
                 }
+
+                console.error(error);
             }
         }
     }

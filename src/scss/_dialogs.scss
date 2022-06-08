@@ -19,7 +19,7 @@
     max-width: 90%;
     margin: 2rem auto;
     padding: 1.5rem;
-    border-radius: 2px;
+    border-radius: $border-radius;
     box-shadow: $box-shadow-dark;
     color: $color-gray-dark;
 
@@ -43,5 +43,5 @@
 
 body.oltb-dark .oltb-dialog {
     background-color: $background-theme-dark;
-    color: #FFFFFF;
+    color: $color-light;
 }

@@ -6,8 +6,8 @@ import LayerManager from '../core/Managers/LayerManager';
 import Config from '../core/Config';
 import { Control } from 'ol/control';
 import { toolbarElement } from '../core/ElementReferences';
-import { isFullScreen, exitFullScreen } from '../helpers/Fullscreen';
-import { generateMarker } from '../helpers/Marker';
+import { isFullScreen, exitFullScreen } from '../helpers/Browser/Fullscreen';
+import { generateMarker } from '../helpers/olFunctions/Marker';
 import { easeOut } from 'ol/easing';
 import { fromLonLat } from 'ol/proj';
 import { SVGPaths, getIcon } from '../core/Icons';
@@ -15,7 +15,7 @@ import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { toStringHDMS } from 'ol/coordinate';
 
 class MyLocation extends Control {
-    constructor(callbacksObj = {}) {
+    constructor(options = {}) {
         super({
             element: toolbarElement
         });
@@ -37,7 +37,7 @@ class MyLocation extends Control {
         );
 
         this.element.appendChild(button);
-        this.callbacksObj = callbacksObj;
+        this.options = options;
 
         window.addEventListener('keyup', (event) => {
             if(isShortcutKeyOnly(event, 'g')) {
@@ -100,7 +100,11 @@ class MyLocation extends Control {
 
         const infoWindow = `
             <h3 class="oltb-text-center">My location</h3>
-            <p class="oltb-text-center oltb-m-0">${prettyCoords}</p>
+            <p class="oltb-text-center">${prettyCoords}</p>
+            <div class="oltb-d-flex oltb-justify-content-center">
+                <button class="oltb-func-btn oltb-func-btn--delete oltb-tippy" title="Delete marker" id="oltb-info-window-remove-marker"></button>
+                <button class="oltb-func-btn oltb-func-btn--copy oltb-tippy" title="Copy marker text" id="oltb-info-window-copy-marker-location" data-copy="My location ${prettyCoords}"></button>
+            </div>
         `;
 
         LayerManager.addFeatureLayer('My location');
@@ -128,8 +132,8 @@ class MyLocation extends Control {
         });
 
         // User defined callback from constructor
-        if(typeof this.callbacksObj.location === 'function') {
-            this.callbacksObj.location(location);
+        if(typeof this.options.location === 'function') {
+            this.options.location(location);
         }
 
         this.loadingToast.remove();
@@ -139,8 +143,8 @@ class MyLocation extends Control {
         ptrToast({text: error.message});
         
         // User defined callback from constructor
-        if(typeof this.callbacksObj.error === 'function') {
-            this.callbacksObj.error(error);
+        if(typeof this.options.error === 'function') {
+            this.options.error(error);
         }
 
         this.loadingToast.remove();

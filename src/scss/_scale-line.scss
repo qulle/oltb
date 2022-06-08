@@ -1,6 +1,6 @@
 // Override : default scale-line style from ol
 body .ol-scale-line {
-    border-radius: 2px;
+    border-radius: $border-radius;
     left: 50%;
     transform: translateX(-50%);
     background-color: $background-theme-light;
@@ -20,6 +20,6 @@ body.oltb-dark .ol-scale-line {
 
     &-inner {
         border-color: $background-theme-light;
-        color: $color-yellow-dark;
+        color: $color-light;
     }
 }
