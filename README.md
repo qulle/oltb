@@ -108,11 +108,13 @@ $ npm update --save
 **Note** that from npm version `7.0.0` the command `$ npm update` does not longer update the `package.json` file. From npm version `8.3.2` the command to run is `$ npm update --save` or to always apply the save option add `save=true` to the `.npmrc` file.
 
 ## Browser support 
-| Desktop browser | Version | Mobile browser | Version |
-| ------------- | ------------- | ------------- | ------------- |
-| `Mozilla Firefox` | 97.0.1 | `Android Google Chrome` | 98.0.4758.87 |
-| `Google Chrome` | 98.0.4758.102 | `Apple Safari` | 13.3 |
-| `Microsoft Edge` | 98.0.1108.56 | `Apple Google Chrome` | 90.0.4430.216 |
+Manually tested in modern browsers.
+- Windows 10 
+    - `Mozilla Firefox 101.0` 
+    - `Microsoft Edge 102.0.1245.33`
+    - `Google Chrome 102.0.5005.63`
+- Samsung S9 
+    - `Google Chrome 100.0.4896.127`
 
 _IE is not supported, it's time to move on._
 
