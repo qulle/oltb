@@ -9,7 +9,7 @@ import GeoJSON from 'ol/format/GeoJSON';
 import { Map, View } from 'ol';
 import { XYZ } from 'ol/source';
 import { fromLonLat, toLonLat } from 'ol/proj';
-import { platformModifierKeyOnly, altShiftKeysOnly, shiftKeyOnly } from 'ol/events/condition';
+import { platformModifierKeyOnly, altShiftKeysOnly, shiftKeyOnly, targetNotEditable } from 'ol/events/condition';
 import { defaults as defaultInterctions, MouseWheelZoom, DragPan, DragRotate, KeyboardZoom, KeyboardPan } from 'ol/interaction';
 import { defaults as defaultControls } from 'ol/control';
 import { get as getProjection } from 'ol/proj';
@@ -98,12 +98,12 @@ const map = new Map({
         }),
         new KeyboardZoom({
             condition: function(event) {
-                return SettingsManager.getSetting('keyboardZoom');
+                return SettingsManager.getSetting('keyboardZoom') && targetNotEditable(event);
             }
         }),
         new KeyboardPan({
             condition: function(event) {
-                return SettingsManager.getSetting('keyboardPan') && document.activeElement === mapElement;
+                return SettingsManager.getSetting('keyboardPan') && targetNotEditable(event);
             }
         })
     ]),
