@@ -34,7 +34,7 @@ const editFeature = function(feature) {
             <p class="oltb-text-center">${prettyCoords}</p>
             <div class="oltb-d-flex oltb-justify-content-center">
                 <button class="oltb-func-btn oltb-func-btn--delete oltb-tippy" title="Delete marker" id="oltb-info-window-remove-marker"></button>
-                <button class="oltb-func-btn oltb-func-btn--copy oltb-tippy" title="Copy marker text" id="oltb-info-window-copy-marker-location" data-copy="${response.name} ${response.info}"></button>
+                <button class="oltb-func-btn oltb-func-btn--copy oltb-tippy" title="Copy marker text" id="oltb-info-window-copy-marker-location" data-copy="${result.name} ${result.info}"></button>
                 <button class="oltb-func-btn oltb-func-btn--edit oltb-tippy" title="Edit marker" id="oltb-info-window-edit-marker"></button>
             </div>
         `;
