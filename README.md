@@ -1,7 +1,8 @@
 # OpenLayers Toolbar - OLTB
 ### Lightweight GIS toolbar developed for OpenLayers 6.14.1. The toolbar can be filled with any number of tools and can be used in both horizontal and vertical mode and is available in both light and dark theme.
 
-## Current version 1.0.0-beta2 - [Demo](https://qulle.github.io/oltb/)
+## Latest build - [Demo](https://qulle.github.io/oltb/)
+The latest build is built using the last official release `v1.0.0-beta2` but may contain more features that have been added since then. Check the releases tab or the commit tags for specific versions.
 
 ## Screenshots
 A picture says more than a thousand words, but the demo above says it all.
@@ -47,12 +48,21 @@ A picture says more than a thousand words, but the demo above says it all.
 12. [Author](#author)
 
 ## Branches
-There are two branches in the repository. The `main` branch which contains the releases and the `develop` branch which also contains all upcomming commits for the next release. So if you want to test the latest features go checkout the `develop` branch. The `gh-pages` branch is just for the latest build from the main branch that hosts the demo-page.
+The main branch always holds the latest features. I have removed the develop branch and opted for a `trunk-based` development flow using short lived branches. 
+
+Issues are first registrated and a feature branch is created when development starts. That branch is then merged via a pull-request to main and the branch is removed.
+
+So the latest features are always available on main. The demo-page is always up-to-date with main and is hosted on the `gh-pages` branch.
+
+Use a descriptive prefix to categorize the intent with the branch:
+- `bug/exception-editing-marker`
+- `feature/new-format-to-layer-export`
+- `documentation/updating-browser-support-list`
 
 ## Report a bug
 If you find a bug in the latest release on the `main` branch start by:
 
-1. Check if the bug exists on the `develop` branch.
+1. Check if the bug exists on the latest commit on the `main` branch.
 2. Check if there is an open issue.
 3. If no issue is open, please create one and tag **@qulle**.
 
@@ -61,7 +71,7 @@ Use the existing `labels` to tag your issue.
 ## Request a new feature
 If you are missing a feature in the latest release on the `main` branch start by:
 
-1. Check if the feature already has been implemented on the `develop` branch.
+1. Check if the feature already has been implemented on a later commit on the `main` branch.
 2. Check if there is an open request in the issue tracker.
 3. If no request is open, please create one and tag **@qulle**.
 
