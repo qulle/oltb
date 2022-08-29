@@ -7,10 +7,8 @@ class SettingsModal extends ModalBase {
         super('Settings');
 
         const modalContent = DOM.createElement({
-            element: 'div', 
-            attributes: {
-                class: 'oltb-modal__content'
-            }
+            element: 'div',
+            class: 'oltb-modal__content'
         });
 
         const interactions = SettingsManager.getSettings();
@@ -18,25 +16,23 @@ class SettingsModal extends ModalBase {
         interactions.forEach((valueObj, key) => {
             const checkboxWrapper = DOM.createElement({
                 element: 'div',
-                attributes: {
-                    class: 'oltb-checkbox-wrapper'
-                }
+                class: 'oltb-checkbox-wrapper'
             });
 
             const label = DOM.createElement({
                 element: 'label',
                 text: valueObj.text,
+                class: 'oltb-checkbox-wrapper__title oltb-label--inline oltb-m-0',
                 attributes: {
-                    class: 'oltb-checkbox-wrapper__title oltb-label--inline oltb-m-0',
                     for: key
                 }
             });
 
             const checkbox = DOM.createElement({
                 element: 'input',
+                id: key,
+                class: 'oltb-checkbox-wrapper__checkbox',
                 attributes: {
-                    class: 'oltb-checkbox-wrapper__checkbox',
-                    id: key,
                     type: 'checkbox'
                 }
             });

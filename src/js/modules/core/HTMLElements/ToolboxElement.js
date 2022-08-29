@@ -1,10 +1,11 @@
+import DOM from '../../helpers/Browser/DOM';
 import { mapElement } from './MapElement';
 
-// Create toolbox element to add each separate tools parameters to
-const toolboxElement = document.createElement('div');
-toolboxElement.className = 'oltb-toolbox-container';
+const toolboxElement = DOM.createElement({
+    element: 'div', 
+    class: 'oltb-toolbox-container'
+});
 
-// Add the toolbox to the ol-map
 mapElement.appendChild(toolboxElement);
 
 export { toolboxElement };

@@ -69,7 +69,6 @@ class HiddenMarker extends Control {
                 ]);
             }
         });
-
         window.addEventListener('oltb.feature.removed', function(event) {
             // User defined callback from constructor
             if(typeof options.removed === 'function') {

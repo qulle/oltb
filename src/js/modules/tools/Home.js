@@ -1,6 +1,7 @@
 import 'ol/ol.css';
 import EventType from 'ol/events/EventType';
 import Config from '../core/Config';
+import DOM from '../helpers/Browser/DOM';
 import { Control } from 'ol/control';
 import { fromLonLat } from 'ol/proj';
 import { easeOut } from 'ol/easing';
@@ -26,11 +27,16 @@ class Home extends Control {
             class: 'oltb-tool-button__icon'
         });
 
-        const button = document.createElement('button');
-        button.setAttribute('type', 'button');
-        button.setAttribute('data-tippy-content', 'Zoom home (H)');
-        button.className = 'oltb-tool-button';
-        button.innerHTML = icon;
+        const button = DOM.createElement({
+            element: 'button',
+            html: icon,
+            class: 'oltb-tool-button',
+            attributes: {
+                type: 'button',
+                'data-tippy-content': 'Zoom home (H)'
+            }
+        });
+
         button.addEventListener(
             EventType.CLICK,
             this.handleClick.bind(this),
@@ -38,7 +44,7 @@ class Home extends Control {
         );
 
         this.element.appendChild(button);
-        this.options = {...DEFAULT_OPTIONS, ...options};
+        this.options = { ...DEFAULT_OPTIONS, ...options };
 
         this.homeLocation = fromLonLat([this.options.lon, this.options.lat]);;
         this.homeZoom = this.options.zoom;

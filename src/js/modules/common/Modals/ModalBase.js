@@ -1,35 +1,52 @@
+import DOM from '../../helpers/Browser/DOM';
 import { mapElement } from '../../core/ElementReferences';
 import { SVGPaths, getIcon } from '../../core/Icons';
 import { trapFocusKeyListener } from '../../helpers/TrapFocus';
 
-const animationClass = 'oltb-animations--bounce';
+const ANIMATION_CLASS = 'oltb-animations--bounce';
 
 class ModalBase {
     constructor(title = 'Modal title') {
-        const modalBackdrop = document.createElement('div');
-        modalBackdrop.className = 'oltb-modal-backdrop oltb-modal-backdrop--fixed';
-        modalBackdrop.setAttribute('tabindex', '-1');
+        const modalBackdrop = DOM.createElement({
+            element: 'div', 
+            class: 'oltb-modal-backdrop oltb-modal-backdrop--fixed',
+            attributes: {
+                tabindex: '-1'
+            }
+        });
+
         modalBackdrop.addEventListener('keydown', trapFocusKeyListener);
         modalBackdrop.addEventListener('click', this.bounceAnimation);
 
-        const modal = document.createElement('div');
-        modal.className = 'oltb-modal oltb-animations--bounce';
-
-        const modalHeader = document.createElement('div');
-        modalHeader.className = 'oltb-modal__header';
-
-        const modalTitle = document.createElement('h2');
-        modalTitle.className = 'oltb-modal__title';
-        modalTitle.innerHTML = title;
-
-        const modalClose = document.createElement('button');
-        modalClose.setAttribute('type', 'button');
-        modalClose.className = 'oltb-modal__close oltb-btn oltb-btn--blank';
-        modalClose.innerHTML = getIcon({
-            path: SVGPaths.Close, 
-            fill: 'none', 
-            stroke: 'currentColor'
+        const modal = DOM.createElement({
+            element: 'div', 
+            class: 'oltb-modal oltb-animations--bounce'
         });
+
+        const modalHeader = DOM.createElement({
+            element: 'div', 
+            class: 'oltb-modal__header'
+        });
+
+        const modalTitle = DOM.createElement({
+            element: 'h2', 
+            html: title,
+            class: 'oltb-modal__title'
+        });
+
+        const modalClose = DOM.createElement({
+            element: 'button', 
+            html: getIcon({
+                path: SVGPaths.Close, 
+                fill: 'none', 
+                stroke: 'currentColor'
+            }),
+            class: 'oltb-modal__close oltb-btn oltb-btn--blank',
+            attributes: {
+                type: 'button'
+            }
+        });
+        
         modalClose.addEventListener('click', (event) => {
             event.preventDefault();
             this.close();
@@ -57,12 +74,12 @@ class ModalBase {
         }
 
         const modal = this.firstElementChild;
-        modal.classList.remove(animationClass);
+        modal.classList.remove(ANIMATION_CLASS);
 
         // Trigger reflow of DOM, reruns animation when class is added back
         void modal.offsetWidth;
 
-        modal.classList.add(animationClass);
+        modal.classList.add(ANIMATION_CLASS);
     }
 
     show(modalContent) {

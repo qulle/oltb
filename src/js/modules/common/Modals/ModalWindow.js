@@ -1,4 +1,5 @@
 import ModalBase from './ModalBase';
+import DOM from '../../helpers/Browser/DOM';
 
 class ModalWindow extends ModalBase {
     constructor(options = {}) {
@@ -8,9 +9,11 @@ class ModalWindow extends ModalBase {
         } = options;
 
         super(title);
-    
-        const modalContent = document.createElement('div');
-        modalContent.className = 'oltb-modal__content';
+
+        const modalContent = DOM.createElement({
+            element: 'div', 
+            class: 'oltb-modal__content'
+        });
 
         if(typeof content === 'string') {
             modalContent.innerHTML = content;

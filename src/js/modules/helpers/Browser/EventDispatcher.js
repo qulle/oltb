@@ -1,9 +1,12 @@
 const eventDispatcher = function(elements, type, bubbles = false, cancelable = true) {
-    const evt = document.createEvent('HTMLEvents');
-    evt.initEvent(type, bubbles, cancelable);
+    const event = new Event(type, {
+        bubbles: bubbles,
+        cancelable: cancelable,
+        composed: false
+    });
 
     elements.forEach((element) => {
-        element.dispatchEvent(evt);
+        element.dispatchEvent(event);
     });
 }
 

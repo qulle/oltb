@@ -3,6 +3,7 @@ import EventType from 'ol/events/EventType';
 import Dialog from '../common/Dialog';
 import Toast from '../common/Toast';
 import Config from '../core/Config';
+import DOM from '../helpers/Browser/DOM';
 import { Control } from 'ol/control';
 import { easeOut } from 'ol/easing';
 import { toolbarElement } from '../core/ElementReferences';
@@ -21,11 +22,16 @@ class ResetNorth extends Control {
             class: 'oltb-tool-button__icon'
         });
 
-        const button = document.createElement('button');
-        button.setAttribute('type', 'button');
-        button.setAttribute('data-tippy-content', 'Reset rotation (N)');
-        button.className = 'oltb-tool-button';
-        button.innerHTML = icon;
+        const button = DOM.createElement({
+            element: 'button',
+            html: icon,
+            class: 'oltb-tool-button',
+            attributes: {
+                type: 'button',
+                'data-tippy-content': 'Reset rotation (N)'
+            }
+        });
+
         button.addEventListener(
             EventType.CLICK,
             this.handleClick.bind(this),

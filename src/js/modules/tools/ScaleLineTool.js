@@ -1,5 +1,6 @@
 import 'ol/ol.css';
 import EventType from 'ol/events/EventType';
+import DOM from '../helpers/Browser/DOM';
 import { Control, ScaleLine } from 'ol/control';
 import { toolbarElement } from '../core/ElementReferences';
 import { SVGPaths, getIcon } from '../core/Icons';
@@ -20,11 +21,16 @@ class ScaleLineTool extends Control {
             class: 'oltb-tool-button__icon'
         });
 
-        const button = document.createElement('button');
-        button.setAttribute('type', 'button');
-        button.setAttribute('data-tippy-content', 'Scale line (K)');
-        button.className = 'oltb-tool-button';
-        button.innerHTML = icon;
+        const button = DOM.createElement({
+            element: 'button',
+            html: icon,
+            class: 'oltb-tool-button',
+            attributes: {
+                type: 'button',
+                'data-tippy-content': 'Scale line (K)'
+            }
+        });
+
         button.addEventListener(
             EventType.CLICK,
             this.handleClick.bind(this),
@@ -35,7 +41,7 @@ class ScaleLineTool extends Control {
         this.button = button;
         this.active = false;
         this.scaleLine = null;
-        this.options = {...DEFAULT_OPTIONS, ...options};
+        this.options = { ...DEFAULT_OPTIONS, ...options };
 
         this.scaleLine = new ScaleLine({units: this.options.units});
         

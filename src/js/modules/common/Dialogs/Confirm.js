@@ -1,4 +1,5 @@
 import DialogBase from './DialogBase';
+import DOM from '../../helpers/Browser/DOM';
 import { mapElement } from '../../core/ElementReferences';
 
 class Confirm extends DialogBase {
@@ -14,10 +15,14 @@ class Confirm extends DialogBase {
             confirmText = 'Yes' 
         } = options;
 
-        const dialog = document.createElement('div');
-        dialog.className = 'oltb-dialog oltb-dialog--confirm oltb-animations--bounce';
+        const dialog = DOM.createElement({
+            element: 'div', 
+            class: 'oltb-dialog oltb-dialog--confirm oltb-animations--bounce'
+        });
 
-        const message = document.createElement('p');
+        const message = DOM.createElement({
+            element: 'p'
+        });
 
         if(text) {
             message.innerText = text;
@@ -27,27 +32,44 @@ class Confirm extends DialogBase {
             message.innerHTML = html;
         }
 
-        const confirmButton = document.createElement('button');
-        confirmButton.setAttribute('type', 'button');
-        confirmButton.className = `oltb-dialog__btn oltb-btn ${confirmClass}`;
-        confirmButton.innerText = confirmText;
+        const buttonWrapper = DOM.createElement({
+            element: 'div', 
+            class: 'oltb-dialog__button-wrapper'
+        });
+
+        const confirmButton = DOM.createElement({
+            element: 'button',
+            text: confirmText, 
+            class: `oltb-dialog__btn oltb-btn ${confirmClass}`,
+            attributes: {
+                type: 'button' 
+            }
+        });
+
         confirmButton.addEventListener('click', (event) => {
             this.close();
             typeof onConfirm === 'function' && onConfirm();
         });
-
-        const cancelButton = document.createElement('button');
-        cancelButton.setAttribute('type', 'button');
-        cancelButton.className = `oltb-dialog__btn oltb-btn ${this.isDark ? 'oltb-btn--gray-mid' : 'oltb-btn--gray-dark'}`;
-        cancelButton.innerText = 'Cancel';
+        
+        const cancelButton = DOM.createElement({
+            element: 'button',
+            text: 'Cancel',
+            class: `oltb-dialog__btn oltb-btn ${this.isDark ? 'oltb-btn--gray-mid' : 'oltb-btn--gray-dark'}`,
+            attributes: {
+                type: 'button'
+            }
+        });
+        
         cancelButton.addEventListener('click', (event) => {
             this.close();
             typeof onCancel === 'function' && onCancel();
         });
 
+        buttonWrapper.appendChild(cancelButton);
+        buttonWrapper.appendChild(confirmButton);
+
         dialog.appendChild(message);
-        dialog.appendChild(cancelButton);
-        dialog.appendChild(confirmButton);
+        dialog.appendChild(buttonWrapper);
 
         this.dialogBackdrop.appendChild(dialog);
         mapElement.appendChild(this.dialogBackdrop);

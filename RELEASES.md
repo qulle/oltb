@@ -1,9 +1,18 @@
 # Releases
 
+## 1.0.0-beta3
+TBA
+
+Some of the changes done in this version are:
+
+- Updated to latest version of OpenLayers 7.0.0
+- Updated the Parcel bundler to latest version 2.7.0
+- Code refactoring and improvements
+
 ## 1.0.0-beta2
 2022-06-09
 
-Some of the changes done in this version is:
+Some of the changes done in this version are:
 
 - Updated to latest version of OpenLayers 6.14.1
 - Updated the Parcel bundler to latest version 2.6.0

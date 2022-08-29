@@ -1,6 +1,7 @@
 import 'ol/ol.css';
 import EventType from 'ol/events/EventType';
 import Toast from '../common/Toast';
+import DOM from '../helpers/Browser/DOM';
 import { Control } from 'ol/control';
 import { toolbarElement } from '../core/ElementReferences';
 import { SVGPaths, getIcon } from '../core/Icons';
@@ -22,11 +23,16 @@ class Help extends Control {
             class: 'oltb-tool-button__icon'
         });
 
-        const button = document.createElement('button');
-        button.setAttribute('type', 'button');
-        button.setAttribute('data-tippy-content', 'Help (J)');
-        button.className = 'oltb-tool-button';
-        button.innerHTML = icon;
+        const button = DOM.createElement({
+            element: 'button',
+            html: icon,
+            class: 'oltb-tool-button',
+            attributes: {
+                type: 'button',
+                'data-tippy-content': 'Help (J)'
+            }
+        });
+
         button.addEventListener(
             EventType.CLICK,
             this.handleClick.bind(this),
@@ -34,7 +40,7 @@ class Help extends Control {
         );
 
         this.element.appendChild(button);
-        this.options = {...DEFAULT_OPTIONS, ...options};
+        this.options = { ...DEFAULT_OPTIONS, ...options };
 
         window.addEventListener('keyup', (event) => {
             if(isShortcutKeyOnly(event, 'j')) {

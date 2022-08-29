@@ -35,9 +35,9 @@ const mapTippyDelegate = delegate(mapElement, {
 // Color-picker element to instantiate  the ACP.
 const colorPickerElement = DOM.createElement({
     element: 'div', 
+    id: 'otlb-color-picker',
+    class: 'oltb-mt-0313 oltb-mb-0313',
     attributes: {
-        id: 'otlb-color-picker',
-        class: 'oltb-mt-0313 oltb-mb-0313',
         'acp-color': '#D7E3FA',
         'acp-show-alpha': 'yes',
         'acp-show-rgb': 'no',

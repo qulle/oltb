@@ -5,6 +5,7 @@ import Overlay from 'ol/Overlay';
 import LayerManager from '../core/Managers/LayerManager';
 import SettingsManager from '../core/Managers/SettingsManager';
 import StateManager from '../core/Managers/StateManager';
+import DOM from '../helpers/Browser/DOM';
 import { Control } from 'ol/control';
 import { Fill, Stroke, Circle, Style } from 'ol/style';
 import { unByKey } from 'ol/Observable';
@@ -32,11 +33,16 @@ class MeasureTool extends Control {
             class: 'oltb-tool-button__icon'
         });
 
-        const button = document.createElement('button');
-        button.setAttribute('type', 'button');
-        button.setAttribute('data-tippy-content', 'Measure (M)');
-        button.className = 'oltb-tool-button';
-        button.innerHTML = icon;
+        const button = DOM.createElement({
+            element: 'button',
+            html: icon,
+            class: 'oltb-tool-button',
+            attributes: {
+                type: 'button',
+                'data-tippy-content': 'Measure (M)'
+            }
+        });
+
         button.addEventListener(
             EventType.CLICK,
             this.handleClick.bind(this),
@@ -52,7 +58,7 @@ class MeasureTool extends Control {
         const loadedPropertiesFromLocalStorage = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
 
         // Merge the potential data replacing the default values
-        this.localStorage = {...LOCAL_STORAGE_PROPS, ...loadedPropertiesFromLocalStorage};
+        this.localStorage = { ...LOCAL_STORAGE_PROPS, ...loadedPropertiesFromLocalStorage };
 
         toolboxElement.insertAdjacentHTML('beforeend', `
             <div id="oltb-measure-toolbox" class="oltb-toolbox-section">
@@ -223,9 +229,11 @@ class MeasureTool extends Control {
 
         this.interaction.on('drawstart', function(event) {
             const feature = event.feature;
-
-            const measureTooltipElement = document.createElement('div');
-            measureTooltipElement.className = 'oltb-measure-tooltip';
+            
+            const measureTooltipElement = DOM.createElement({
+                element: 'div',
+                class: 'oltb-measure-tooltip'
+            });
     
             const measureTooltipOverlay = new Overlay({
                 element: measureTooltipElement,

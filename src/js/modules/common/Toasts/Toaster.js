@@ -1,4 +1,5 @@
 import { toastElement } from '../../core/ElementReferences';
+import DOM from '../../helpers/Browser/DOM';
 
 class Toaster {
     constructor(options = {}) {
@@ -9,9 +10,12 @@ class Toaster {
             clickToClose = true,
             spinner = false
         } = options;
-        
-        const toast = document.createElement('div');
-        toast.className = `oltb-toast oltb-toast--${type} oltb-animations--slide-in oltb-d-flex`;
+
+        const toast = DOM.createElement({
+            element: 'div',
+            class: `oltb-toast oltb-toast--${type} oltb-animations--slide-in oltb-d-flex` 
+        });
+
         this.toast = toast;
         
         if(clickToClose) {
@@ -20,14 +24,19 @@ class Toaster {
         }
 
         if(spinner) {
-            const spinnerElement = document.createElement('div');
-            spinnerElement.className = 'oltb-spinner oltb-spinner--small oltb-animations--linear-spinner';
+            const spinnerElement = DOM.createElement({
+                element: 'div',
+                class: 'oltb-spinner oltb-spinner--small oltb-animations--linear-spinner'
+            });
+            
             toast.appendChild(spinnerElement);
         }
 
-        const message = document.createElement('p');
-        message.className = `oltb-toast__message ${spinner ? 'oltb-ml-0625' : ''}`; 
-        message.innerText = text;
+        const message = DOM.createElement({
+            element: 'p', 
+            text: text,
+            class: `oltb-toast__message ${spinner ? 'oltb-ml-0625' : ''}`
+        });
     
         toast.appendChild(message);
         

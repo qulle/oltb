@@ -1,7 +1,15 @@
 class DOM {
-    static createElement(options) {
+    static createElement(options = {}) {
         const element = document.createElement(options.element);
-        
+
+        if(options.id) {
+            element.id = options.id;
+        }
+
+        if(options.class) {
+            element.className = options.class;
+        }
+
         if(options.value) {
             element.value = options.value;
         }
@@ -17,7 +25,12 @@ class DOM {
         if(options.style) {
             element.style = options.style;
         }
-    
+
+        if(options.title) {
+            element.title = options.title;
+        }
+
+        // Apply second level attribute properties
         for(const attribute in options.attributes) {
             element.setAttribute(attribute, options.attributes[attribute]);
         }

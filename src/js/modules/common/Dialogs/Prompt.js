@@ -1,4 +1,5 @@
 import DialogBase from './DialogBase';
+import DOM from '../../helpers/Browser/DOM';
 import { mapElement } from '../../core/ElementReferences';
 
 class Prompt extends DialogBase {
@@ -15,15 +16,23 @@ class Prompt extends DialogBase {
             confirmText = 'Confirm'
         } = options;
 
-        const dialog = document.createElement('div');
-        dialog.className = 'oltb-dialog oltb-dialog--prompt oltb-animations--bounce';
+        const dialog = DOM.createElement({
+            element: 'div', 
+            class: 'oltb-dialog oltb-dialog--prompt oltb-animations--bounce'
+        });
 
-        const message = document.createElement('p');
-        message.innerText = text;
+        const message = DOM.createElement({
+            element: 'p', 
+            text: text
+        });
 
-        const inputBox = document.createElement('input');
-        inputBox.setAttribute('type', 'text');
-        inputBox.className = 'oltb-dialog__input oltb-input';
+        const inputBox = DOM.createElement({
+            element: 'input',
+            class: 'oltb-dialog__input oltb-input', 
+            attributes: {
+                type: 'text'
+            }
+        });
 
         if(placeholder !== undefined && placeholder !== null) {
             inputBox.setAttribute('placeholder', placeholder);
@@ -33,28 +42,42 @@ class Prompt extends DialogBase {
             inputBox.value = value;
         }
 
-        const confirmButton = document.createElement('button');
-        confirmButton.setAttribute('type', 'button');
-        confirmButton.className = `oltb-dialog__btn oltb-btn ${confirmClass}`;
-        confirmButton.innerText = confirmText;
+        const buttonWrapper = DOM.createElement({
+            element: 'div',
+            class: 'oltb-dialog__button-wrapper'
+        });
+
+        const confirmButton = DOM.createElement({
+            element: 'button', 
+            text: confirmText,
+            class: `oltb-dialog__btn oltb-btn ${confirmClass}`
+        });
+
         confirmButton.addEventListener('click', (event) => {
             this.close();
             typeof onConfirm === 'function' && onConfirm(inputBox.value.trim());
         });
 
-        const cancelButton = document.createElement('button');
-        cancelButton.setAttribute('type', 'button');
-        cancelButton.className = `oltb-dialog__btn oltb-btn ${this.isDark ? 'oltb-btn--gray-mid' : 'oltb-btn--gray-dark'}`;
-        cancelButton.innerText = 'Cancel';
+        const cancelButton = DOM.createElement({
+            element: 'button', 
+            text: 'Cancel',
+            class: `oltb-dialog__btn oltb-btn ${this.isDark ? 'oltb-btn--gray-mid' : 'oltb-btn--gray-dark'}`,
+            attributes: {
+                type: 'button'
+            }
+        });
+        
         cancelButton.addEventListener('click', (event) => {
             this.close();
             typeof onCancel === 'function' && onCancel();
         });
 
+        buttonWrapper.appendChild(cancelButton);
+        buttonWrapper.appendChild(confirmButton);
+
         dialog.appendChild(message);
         dialog.appendChild(inputBox);
-        dialog.appendChild(cancelButton);
-        dialog.appendChild(confirmButton);
+        dialog.appendChild(buttonWrapper);
 
         this.dialogBackdrop.appendChild(dialog);
         mapElement.appendChild(this.dialogBackdrop);

@@ -4,6 +4,7 @@ import Dialog from '../common/Dialog';
 import Toast from '../common/Toast';
 import SettingsModal from './ModalExtensions/SettingsModal';
 import StateManager from '../core/Managers/StateManager';
+import DOM from '../helpers/Browser/DOM';
 import { Control } from 'ol/control';
 import { toolbarElement } from '../core/ElementReferences';
 import { addContextMenuItem } from '../common/ContextMenu';
@@ -21,11 +22,16 @@ class Settings extends Control {
             class: 'oltb-tool-button__icon'
         });
 
-        const button = document.createElement('button');
-        button.setAttribute('type', 'button');
-        button.setAttribute('data-tippy-content', 'Settings (U)');
-        button.className = 'oltb-tool-button';
-        button.innerHTML = icon;
+        const button = DOM.createElement({
+            element: 'button',
+            html: icon,
+            class: 'oltb-tool-button',
+            attributes: {
+                type: 'button',
+                'data-tippy-content': 'Settings (U)'
+            }
+        });
+
         button.addEventListener(
             EventType.CLICK,
             this.handleClick.bind(this),

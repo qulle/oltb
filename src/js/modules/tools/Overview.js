@@ -3,6 +3,7 @@ import EventType from 'ol/events/EventType';
 import OSM from 'ol/source/OSM';
 import TileLayer from 'ol/layer/Tile';
 import StateManager from '../core/Managers/StateManager';
+import DOM from '../helpers/Browser/DOM';
 import { Control, OverviewMap } from 'ol/control';
 import { toolboxElement, toolbarElement } from '../core/ElementReferences';
 import { SVGPaths, getIcon } from '../core/Icons';
@@ -24,11 +25,16 @@ class Overview extends Control {
             class: 'oltb-tool-button__icon'
         });
 
-        const button = document.createElement('button');
-        button.setAttribute('type', 'button');
-        button.setAttribute('data-tippy-content', 'Area overview (A)');
-        button.className = 'oltb-tool-button';
-        button.innerHTML = icon;
+        const button = DOM.createElement({
+            element: 'button',
+            html: icon,
+            class: 'oltb-tool-button',
+            attributes: {
+                type: 'button',
+                'data-tippy-content': 'Area overview (A)'
+            }
+        });
+
         button.addEventListener(
             EventType.CLICK,
             this.handleClick.bind(this),
@@ -43,7 +49,7 @@ class Overview extends Control {
         const loadedPropertiesFromLocalStorage = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
 
         // Merge the potential data replacing the default values
-        this.localStorage = {...LOCAL_STORAGE_PROPS, ...loadedPropertiesFromLocalStorage};
+        this.localStorage = { ...LOCAL_STORAGE_PROPS, ...loadedPropertiesFromLocalStorage };
 
         toolboxElement.insertAdjacentHTML('beforeend', `
             <div id="oltb-overview-toolbox" class="oltb-toolbox-section">
@@ -95,7 +101,6 @@ class Overview extends Control {
                 this.handleClick(event);
             }
         });
-
         window.addEventListener('oltb.settings.cleared', () => {
             this.localStorage = LOCAL_STORAGE_PROPS;
         });

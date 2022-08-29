@@ -1,5 +1,6 @@
 import Control from "ol/control/Control";
 import Config from '../core/Config';
+import DOM from '../helpers/Browser/DOM';
 import { trapFocusKeyListener } from '../helpers/TrapFocus';
 import { transform } from 'ol/proj';
 import { mapElement } from "../core/ElementReferences";
@@ -11,7 +12,7 @@ let menuId = 0;
 class ContextMenu extends Control {
     constructor(options = {}) {
         super({
-            element: document.createElement('ul')
+            element: DOM.createElement({element: 'ul'})
         });
         
         this.options = options;
@@ -28,7 +29,7 @@ class ContextMenu extends Control {
         this.menu = this.element;
         this.menu.className = 'oltb-context-menu';
         this.menu.setAttribute('data-contextmenu', this.id);
-        this.menu.setAttribute('tabindex', -1);
+        this.menu.setAttribute('tabindex', '-1');
         this.menu.addEventListener('keydown', trapFocusKeyListener);
 
         // Create <li>'s for each menu item
@@ -41,7 +42,9 @@ class ContextMenu extends Control {
     }
 
     addMenuItem(item, index) {
-        const li = document.createElement('li');
+        const li = DOM.createElement({
+            element: 'li'
+        });
 
         if(!('name' in item)) {
             li.className = 'oltb-context-menu__divider';
@@ -57,9 +60,12 @@ class ContextMenu extends Control {
                 }
             });
 
-            const icon = document.createElement('span');
-            icon.className = 'oltb-context-menu__icon';
-            icon.innerHTML = item.icon;
+            const icon = DOM.createElement({
+                element: 'span',
+                html: item.icon,
+                class: 'oltb-context-menu__icon'
+            });
+            
             li.insertAdjacentElement('afterbegin', icon);
         }
 

@@ -3,6 +3,7 @@ import EventType from 'ol/events/EventType';
 import Toast from '../common/Toast';
 import LayerManager from '../core/Managers/LayerManager';
 import Config from '../core/Config';
+import DOM from '../helpers/Browser/DOM';
 import FormatTypes, { instantiateFormat } from '../core/olTypes/FormatTypes';
 import { Control } from 'ol/control';
 import { toolbarElement } from '../core/ElementReferences';
@@ -20,11 +21,16 @@ class ImportVectorLayer extends Control {
             class: 'oltb-tool-button__icon'
         });
 
-        const button = document.createElement('button');
-        button.setAttribute('type', 'button');
-        button.setAttribute('data-tippy-content', 'Import Vector layer (O)');
-        button.className = 'oltb-tool-button';
-        button.innerHTML = icon;
+        const button = DOM.createElement({
+            element: 'button',
+            html: icon,
+            class: 'oltb-tool-button',
+            attributes: {
+                type: 'button',
+                'data-tippy-content': 'Import Vector layer (O)'
+            }
+        });
+
         button.addEventListener(
             EventType.CLICK,
             this.handleClick.bind(this),
@@ -35,15 +41,20 @@ class ImportVectorLayer extends Control {
         this.options = options;
 
         // Helper element to open a local geojson file
-        const inputDialog = document.createElement('input');
-        inputDialog.className = 'oltb-d-none';
-        inputDialog.setAttribute('type', 'file');
-        inputDialog.setAttribute('accept', '.geojson, .kml');
+        const inputDialog = DOM.createElement({
+            element: 'input',
+            class: 'oltb-d-none',
+            attributes: {
+                type: 'file',
+                accept: '.geojson, .kml'
+            }
+        })
+
         inputDialog.addEventListener('change', this.loadVectorLayer.bind(this));
-        document.body.insertAdjacentElement('beforeend', inputDialog);
-        
         this.inputDialog = inputDialog;
 
+        document.body.insertAdjacentElement('beforeend', inputDialog);
+        
         window.addEventListener('keyup', (event) => {
             if(isShortcutKeyOnly(event, 'o')) {
                 this.handleClick(event);

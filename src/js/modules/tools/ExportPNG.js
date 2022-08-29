@@ -1,5 +1,6 @@
 import 'ol/ol.css';
 import EventType from 'ol/events/EventType';
+import DOM from '../helpers/Browser/DOM';
 import { Control } from 'ol/control';
 import { download } from '../helpers/Browser/Download';
 import { toolbarElement } from '../core/ElementReferences';
@@ -17,11 +18,16 @@ class ExportPNG extends Control {
             class: 'oltb-tool-button__icon'
         });
 
-        const button = document.createElement('button');
-        button.setAttribute('type', 'button');
-        button.setAttribute('data-tippy-content', 'Export PNG (E)');
-        button.className = 'oltb-tool-button';
-        button.innerHTML = icon;
+        const button = DOM.createElement({
+            element: 'button',
+            html: icon,
+            class: 'oltb-tool-button',
+            attributes: {
+                type: 'button',
+                'data-tippy-content': 'Export PNG (E)'
+            }
+        });
+
         button.addEventListener(
             EventType.CLICK,
             this.handleClick.bind(this),
@@ -30,6 +36,7 @@ class ExportPNG extends Control {
 
         this.element.appendChild(button);
         this.options = options;
+        
         window.addEventListener('keyup', (event) => {
             if(isShortcutKeyOnly(event, 'e')) {
                 this.handleClick(event);
@@ -47,11 +54,14 @@ class ExportPNG extends Control {
         const map = this.getMap();
 
         map.once('rendercomplete', function() {
-            const mapCanvas = document.createElement('canvas');
             const size = map.getSize();
-    
-            mapCanvas.width = size[0];
-            mapCanvas.height = size[1];
+            const mapCanvas = DOM.createElement({
+                element: 'canvas',
+                attributes: {
+                    width: size[0],
+                    height: size[1]
+                }
+            });
     
             const mapContext = mapCanvas.getContext('2d');
             const canvases = document.querySelectorAll('.ol-layer canvas');

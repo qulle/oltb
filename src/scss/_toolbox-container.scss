@@ -29,7 +29,7 @@ body.oltb-dark .oltb-toolbox-container {
     background-color: $background-theme-dark;
 }
 
-@media only screen and(max-width: $breakpoint-sm) {
+@media only screen and (max-width: $breakpoint-sm) {
     .oltb-toolbox-container {
         width: calc(100% - 2rem);
         top: 4.5rem;

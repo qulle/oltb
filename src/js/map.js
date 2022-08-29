@@ -72,7 +72,7 @@ const LOCAL_STORAGE_PROPS = {
 const loadedPropertiesFromLocalStorage = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
 
 // Merge the potential data replacing the default values
-const localStorage = {...LOCAL_STORAGE_PROPS, ...loadedPropertiesFromLocalStorage};
+const localStorage = { ...LOCAL_STORAGE_PROPS, ...loadedPropertiesFromLocalStorage };
 
 const map = new Map({
     interactions: defaultInterctions({

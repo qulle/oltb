@@ -36,11 +36,16 @@ class Bookmark extends Control {
             class: 'oltb-tool-button__icon'
         });
 
-        const button = document.createElement('button');
-        button.setAttribute('type', 'button');
-        button.setAttribute('data-tippy-content', 'Bookmarks (B)');
-        button.className = 'oltb-tool-button';
-        button.innerHTML = icon;
+        const button = DOM.createElement({
+            element: 'button',
+            html: icon,
+            class: 'oltb-tool-button',
+            attributes: {
+                type: 'button',
+                'data-tippy-content': 'Bookmarks (B)'
+            }
+        });
+        
         button.addEventListener(
             EventType.CLICK,
             this.handleClick.bind(this),
@@ -51,13 +56,13 @@ class Bookmark extends Control {
         this.button = button;
         this.active = false;
         this.options = options;
-        this.options = {...DEFAULT_OPTIONS, ...options};
+        this.options = { ...DEFAULT_OPTIONS, ...options };
         
         // Load potential stored data from localStorage
         const loadedPropertiesFromLocalStorage = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
 
         // Merge the potential data replacing the default values
-        this.localStorage = {...LOCAL_STORAGE_PROPS, ...loadedPropertiesFromLocalStorage};
+        this.localStorage = { ...LOCAL_STORAGE_PROPS, ...loadedPropertiesFromLocalStorage };
 
         toolboxElement.insertAdjacentHTML('beforeend', `
             <div id="oltb-bookmarks-toolbox" class="oltb-toolbox-section">
@@ -148,7 +153,6 @@ class Bookmark extends Control {
                 this.handleClick(event);
             }
         });
-
         window.addEventListener('oltb.settings.cleared', () => {
             this.localStorage = LOCAL_STORAGE_PROPS;
         });
@@ -215,28 +219,22 @@ class Bookmark extends Control {
         // Create bookmark item
         const bookmarkElement = DOM.createElement({
             element: 'li', 
-            attributes: {
-                id: `oltb-bookmark-${bookmark.id}`,
-                class: 'oltb-toolbox-list__item'
-            }
+            id: `oltb-bookmark-${bookmark.id}`,
+            class: 'oltb-toolbox-list__item'
         });
 
         // Create bookmark name label
         const bookmarkName = DOM.createElement({
             element: 'span', 
             text: bookmark.name.ellipsis(20),
-            attributes: {
-                class: 'oltb-toolbox-list__title oltb-tippy',
-                title: bookmark.name,
-            }
+            class: 'oltb-toolbox-list__title oltb-tippy',
+            title: bookmark.name
         });
 
         // Create div for holding left side of bookmark item
         const leftButtonWrapper = DOM.createElement({
             element: 'div', 
-            attributes: {
-                class: 'oltb-toolbox-list__wrapper'
-            }
+            class: 'oltb-toolbox-list__wrapper'
         });
 
         leftButtonWrapper.appendChild(bookmarkName);
@@ -245,18 +243,16 @@ class Bookmark extends Control {
         // Create div for holding right side of bookmark item
         const rightButtonWrapper = DOM.createElement({
             element: 'div', 
-            attributes: {
-                class: 'oltb-toolbox-list__wrapper'
-            }
+            class: 'oltb-toolbox-list__wrapper'
         });
 
         // Add all buttons to the bookmark
         const zoomToButton = DOM.createElement({
             element: 'button',
+            class: BOOKMARK_BUTTON_DEFAULT_CLASSES + ' oltb-func-btn--geo-pin oltb-tippy',
+            title: 'Zoom to location',
             attributes: {
-                type: 'button',
-                class: BOOKMARK_BUTTON_DEFAULT_CLASSES + ' oltb-func-btn--geo-pin oltb-tippy',
-                title: 'Zoom to location'
+                type: 'button'
             }
         });
 
@@ -264,10 +260,10 @@ class Bookmark extends Control {
 
         const editButton = DOM.createElement({
             element: 'button',
+            class: BOOKMARK_BUTTON_DEFAULT_CLASSES + ' oltb-func-btn--edit oltb-tippy',
+            title: 'Rename bookmark',
             attributes: {
-                type: 'button',
-                class: BOOKMARK_BUTTON_DEFAULT_CLASSES + ' oltb-func-btn--edit oltb-tippy',
-                title: 'Rename bookmark'
+                type: 'button'
             }
         });
 
@@ -275,10 +271,10 @@ class Bookmark extends Control {
 
         const deleteButton = DOM.createElement({
             element: 'button',
+            class: BOOKMARK_BUTTON_DEFAULT_CLASSES + ' oltb-func-btn--delete oltb-tippy',
+            title: 'Delete bookmark',
             attributes: {
-                type: 'button',
-                class: BOOKMARK_BUTTON_DEFAULT_CLASSES + ' oltb-func-btn--delete oltb-tippy',
-                title: 'Delete bookmark'
+                type: 'button'
             }
         });
 

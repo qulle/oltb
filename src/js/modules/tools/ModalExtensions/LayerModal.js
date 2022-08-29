@@ -3,7 +3,7 @@ import DOM from '../../helpers/Browser/DOM';
 import Config from '../../core/Config';
 import { isDarkTheme } from '../../helpers/IsDarkTheme';
 
-const prefixLayerId = 'oltb-layer-modal';
+const PREFIX_LAYER_ID = 'oltb-layer-modal';
 
 class LayerModal extends ModalBase {
     constructor(onCreate, onCancel) {
@@ -11,28 +11,26 @@ class LayerModal extends ModalBase {
 
         // Create textbox for entering layer name
         const layerNameDiv = DOM.createElement({
-            element: 'div', 
-            attributes: {
-                class: 'oltb-m-0'
-            }
+            element: 'div',
+            class: 'oltb-m-0'
         });
 
         const layerNameTxt = DOM.createElement({
             element: 'input', 
+            id: PREFIX_LAYER_ID + '-layer-name',
+            class: 'oltb-input',
+            value: 'New map layer', 
             attributes: {
-                type: 'text', 
-                value: 'New map layer', 
-                id: prefixLayerId + '-layer-name', 
-                class: 'oltb-input'
+                type: 'text'
             }
         });
 
         layerNameDiv.appendChild(DOM.createElement({
             element: 'label', 
-            text: 'Name', 
+            text: 'Name',
+            class: 'oltb-label', 
             attributes: {
-                class: 'oltb-label',
-                for: prefixLayerId + '-layer-name'
+                for: PREFIX_LAYER_ID + '-layer-name'
             }
         }));
 
@@ -40,18 +38,14 @@ class LayerModal extends ModalBase {
 
         // Create and populate select element with the layer types
         const layerTypeDiv = DOM.createElement({
-            element: 'div', 
-            attributes: {
-                class: 'oltb-mt-0625'
-            }
+            element: 'div',
+            class: 'oltb-mt-0625'
         });
 
         const layerTypeSelect = DOM.createElement({
             element: 'select', 
-            attributes: {
-                id: prefixLayerId + '-layer-type', 
-                class: 'oltb-select'
-            }
+            id: PREFIX_LAYER_ID + '-layer-type',
+            class: 'oltb-select'
         });
 
         ['Tile', 'Vector'].forEach(type => {
@@ -59,19 +53,17 @@ class LayerModal extends ModalBase {
                 DOM.createElement({
                     element: 'option', 
                     text: type, 
-                    attributes: {
-                        value: type
-                    }
+                    value: type
                 }
             ));
         });
 
         layerTypeDiv.appendChild(DOM.createElement({
             element: 'label', 
-            text: 'Layer', 
+            text: 'Layer',
+            class: 'oltb-label', 
             attributes: {
-                class: 'oltb-label',
-                for: prefixLayerId + '-layer-type'
+                for: PREFIX_LAYER_ID + '-layer-type'
             }
         }));
 
@@ -79,18 +71,14 @@ class LayerModal extends ModalBase {
 
         // Create and populate select element with the source types
         const layerSourceDiv = DOM.createElement({
-            element: 'div', 
-            attributes: {
-                class: 'oltb-mt-0625'
-            }
+            element: 'div',
+            class: 'oltb-mt-0625' 
         });
 
         const layerSourceSelect = DOM.createElement({
             element: 'select', 
-            attributes: {
-                id: prefixLayerId + '-layer-source', 
-                class: 'oltb-select'
-            }
+            id: PREFIX_LAYER_ID + '-layer-source',
+            class: 'oltb-select'
         });
 
         ['TileWMS', 'XYZ', 'OSM', 'Vector'].forEach(type => {
@@ -98,19 +86,17 @@ class LayerModal extends ModalBase {
                 DOM.createElement({
                     element: 'option', 
                     text: type, 
-                    attributes: {
-                        value: type
-                    }
+                    value: type
                 }
             ));
         });
 
         layerSourceDiv.appendChild(DOM.createElement({
             element: 'label', 
-            text: 'Source', 
+            text: 'Source',
+            class: 'oltb-label', 
             attributes: {
-                class: 'oltb-label',
-                for: prefixLayerId + '-layer-source'
+                for: PREFIX_LAYER_ID + '-layer-source'
             }
         }));
 
@@ -118,28 +104,26 @@ class LayerModal extends ModalBase {
 
         // Create textbox for entering projection
         const layerProjectionDiv = DOM.createElement({
-            element: 'div', 
-            attributes: {
-                class: 'oltb-mt-0625'
-            }
+            element: 'div',
+            class: 'oltb-mt-0625' 
         });
 
         const layerProjectionTxt = DOM.createElement({
             element: 'input', 
+            id: PREFIX_LAYER_ID + '-layer-projection',
+            class: 'oltb-input', 
             attributes: {
                 type: 'text', 
-                id: prefixLayerId + '-layer-projection', 
-                class: 'oltb-input', 
                 placeholder: Config.baseProjection
             }
         });
 
         layerProjectionDiv.appendChild(DOM.createElement({
             element: 'label', 
-            text: 'Projection', 
+            text: 'Projection',
+            class: 'oltb-label', 
             attributes: {
-                class: 'oltb-label',
-                for: prefixLayerId + '-layer-projection'
+                for: PREFIX_LAYER_ID + '-layer-projection'
             }
         }));
 
@@ -147,27 +131,25 @@ class LayerModal extends ModalBase {
 
         // Create textbox for entering layer URL
         const layerURLDiv = DOM.createElement({
-            element: 'div', 
-            attributes: {
-                class: 'oltb-mt-0625'
-            }
+            element: 'div',
+            class: 'oltb-mt-0625'
         });
 
         const layerURLTxt = DOM.createElement({
-            element: 'input', 
+            element: 'input',
+            id: PREFIX_LAYER_ID + '-layer-url', 
+            class: 'oltb-input',
             attributes: {
-                type: 'text', 
-                id: prefixLayerId + '-layer-url', 
-                class: 'oltb-input'
+                type: 'text'
             }
         });
 
         layerURLDiv.appendChild(DOM.createElement({
             element: 'label', 
             text: 'URL', 
+            class: 'oltb-label',
             attributes: {
-                class: 'oltb-label',
-                for: prefixLayerId + '-layer-url'
+                for: PREFIX_LAYER_ID + '-layer-url'
             }
         }));
 
@@ -176,17 +158,15 @@ class LayerModal extends ModalBase {
         // Create textbox for entering parameters in JSON format
         const layerParametersDiv = DOM.createElement({
             element: 'div',
-            attributes: {
-                class: 'oltb-mt-0625'
-            }
+            class: 'oltb-mt-0625'
         });
 
         const layerParametersTxt = DOM.createElement({
             element: 'input', 
+            id: PREFIX_LAYER_ID + '-layer-parameters',
+            class: 'oltb-input', 
             attributes: {
                 type: 'text', 
-                id: prefixLayerId + '-layer-parameters', 
-                class: 'oltb-input', 
                 placeholder: '{"Layers": "HPD_TRP"}'
             }
         });
@@ -194,9 +174,9 @@ class LayerModal extends ModalBase {
         layerParametersDiv.appendChild(DOM.createElement({
             element: 'label', 
             text: 'Parameters (JSON)', 
+            class: 'oltb-label',
             attributes: {
-                class: 'oltb-label',
-                for: prefixLayerId + '-layer-parameters'
+                for: PREFIX_LAYER_ID + '-layer-parameters'
             }
         }));
 
@@ -204,18 +184,14 @@ class LayerModal extends ModalBase {
 
         // Create and populate select element with layer wrapX values
         const layerWrapXDiv = DOM.createElement({
-            element: 'div', 
-            attributes: {
-                class: 'oltb-mt-0625'
-            }
+            element: 'div',
+            class: 'oltb-mt-0625'
         });
 
         const layerWrapXSelect = DOM.createElement({
-            element: 'select', 
-            attributes: {
-                id: prefixLayerId + '-layer-wrapx', 
-                class: 'oltb-select'
-            }
+            element: 'select',
+            id: PREFIX_LAYER_ID + '-layer-wrapx', 
+            class: 'oltb-select'
         });
 
         ['False', 'True'].forEach(value => {
@@ -223,19 +199,17 @@ class LayerModal extends ModalBase {
                 DOM.createElement({
                     element: 'option', 
                     text: value, 
-                    attributes: {
-                        value: value
-                    }
+                    value: value
                 }
             ));
         });
 
         layerWrapXDiv.appendChild(DOM.createElement({
             element: 'label', 
-            text: 'WrapX', 
+            text: 'WrapX',
+            class: 'oltb-label', 
             attributes: {
-                class: 'oltb-label',
-                for: prefixLayerId + '-layer-wrapx'
+                for: PREFIX_LAYER_ID + '-layer-wrapx'
             }
         }));
 
@@ -243,27 +217,25 @@ class LayerModal extends ModalBase {
 
         // Create textbox for entering layer attributions
         const layerAttributionsDiv = DOM.createElement({
-            element: 'div', 
-            attributes: {
-                class: 'oltb-mt-0625'
-            }
+            element: 'div',
+            class: 'oltb-mt-0625'
         });
 
         const layerAttributionsTxt = DOM.createElement({
-            element: 'input', 
+            element: 'input',
+            id: PREFIX_LAYER_ID + '-layer-attributions', 
+            class: 'oltb-input',
             attributes: {
-                type: 'text',
-                id: prefixLayerId + '-layer-attributions', 
-                class: 'oltb-input'
+                type: 'text'
             }
         });
 
         layerAttributionsDiv.appendChild(DOM.createElement({
             element: 'label', 
             text: 'Attributions', 
+            class: 'oltb-label',
             attributes: {
-                class: 'oltb-label',
-                for: prefixLayerId + '-layer-attributions'
+                for: PREFIX_LAYER_ID + '-layer-attributions'
             }
         }));
 
@@ -271,18 +243,16 @@ class LayerModal extends ModalBase {
 
         // Create buttons for create and cancel
         const layerButtonsDiv = DOM.createElement({
-            element: 'div', 
-            attributes: {
-                class: 'oltb-d-flex oltb-justify-content-between oltb-mt-1'
-            }
+            element: 'div',
+            class: 'oltb-d-flex oltb-justify-content-between oltb-mt-1'
         });
 
         const createButton = DOM.createElement({
             element: 'button', 
-            text: 'Create layer', 
+            text: 'Create layer',
+            class: 'oltb-dialog__btn oltb-btn oltb-btn--green-mid', 
             attributes: {
-                type: 'button', 
-                class: 'oltb-dialog__btn oltb-btn oltb-btn--green-mid'
+                type: 'button'
             }
         });
 
@@ -304,11 +274,9 @@ class LayerModal extends ModalBase {
         const cancelButton = DOM.createElement({
             element: 'button', 
             text: 'Cancel', 
+            class: `oltb-dialog__btn oltb-btn ${isDarkTheme() ? 'oltb-btn--gray-mid' : 'oltb-btn--gray-dark'}`,
             attributes: {
-                type: 'button', 
-                class: `oltb-dialog__btn oltb-btn ${isDarkTheme() 
-                    ? 'oltb-btn--gray-mid' 
-                    : 'oltb-btn--gray-dark'}`
+                type: 'button'
             }
         });
 
@@ -322,10 +290,8 @@ class LayerModal extends ModalBase {
 
         // Add all DOM elements to the modalContent
         const modalContent = DOM.createElement({
-            element: 'div', 
-            attributes: {
-                class: 'oltb-modal__content'
-            }
+            element: 'div',
+            class: 'oltb-modal__content'
         });
         
         DOM.appendChildren(modalContent, [

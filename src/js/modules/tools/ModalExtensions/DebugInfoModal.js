@@ -10,8 +10,8 @@ class DebugInfoModal extends ModalBase {
         const textArea = DOM.createElement({
             element: 'textarea', 
             value: JSON.stringify(information, undefined, 4),
+            class: 'oltb-input oltb-hide-scrollbars',
             attributes: {
-                class: 'oltb-input oltb-hide-scrollbars',
                 rows: 15,
                 cols: 50,
                 spellcheck: 'false'
@@ -21,9 +21,9 @@ class DebugInfoModal extends ModalBase {
         const copyButton = DOM.createElement({
             element: 'button',
             text: 'Copy debug info',
+            class: 'oltb-btn oltb-btn--green-mid oltb-mt-1',
             attributes: {
-                type: 'button',
-                class: 'oltb-btn oltb-btn--green-mid oltb-mt-1'
+                type: 'button'
             }
         });
 
@@ -40,9 +40,9 @@ class DebugInfoModal extends ModalBase {
         const logFullMapObjectButton = DOM.createElement({
             element: 'button',
             text: 'Log map object',
+            class: 'oltb-btn oltb-btn--green-mid oltb-mt-1 oltb-ml-0625',
             attributes: {
-                type: 'button',
-                class: 'oltb-btn oltb-btn--green-mid oltb-mt-1 oltb-ml-0625'
+                type: 'button'
             }
         });
 
@@ -62,10 +62,8 @@ class DebugInfoModal extends ModalBase {
 
         // Add all DOM elements to the modalContent
         const modalContent = DOM.createElement({
-            element: 'div', 
-            attributes: {
-                class: 'oltb-modal__content oltb-flex-content-center'
-            }
+            element: 'div',
+            class: 'oltb-modal__content oltb-flex-content-center' 
         });
         
         DOM.appendChildren(modalContent, [

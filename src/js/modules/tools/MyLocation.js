@@ -4,6 +4,7 @@ import Toast from '../common/Toast';
 import Dialog from '../common/Dialog';
 import LayerManager from '../core/Managers/LayerManager';
 import Config from '../core/Config';
+import DOM from '../helpers/Browser/DOM';
 import { Control } from 'ol/control';
 import { toolbarElement } from '../core/ElementReferences';
 import { isFullScreen, exitFullScreen } from '../helpers/Browser/Fullscreen';
@@ -25,11 +26,16 @@ class MyLocation extends Control {
             class: 'oltb-tool-button__icon'
         });
 
-        const button = document.createElement('button');
-        button.setAttribute('type', 'button');
-        button.setAttribute('data-tippy-content', 'My location (G)');
-        button.className = 'oltb-tool-button';
-        button.innerHTML = icon;
+        const button = DOM.createElement({
+            element: 'button',
+            html: icon,
+            class: 'oltb-tool-button',
+            attributes: {
+                type: 'button',
+                'data-tippy-content': 'My location (G)'
+            }
+        });
+
         button.addEventListener(
             EventType.CLICK,
             this.handleClick.bind(this),

@@ -1,5 +1,5 @@
 # OpenLayers Toolbar - OLTB
-### Lightweight GIS toolbar developed for OpenLayers 6.14.1. The toolbar can be filled with any number of tools and can be used in both horizontal and vertical mode and is available in both light and dark theme.
+### Lightweight GIS toolbar developed for OpenLayers 7.0.0. The toolbar can be filled with any number of tools and can be used in both horizontal and vertical mode and is available in both light and dark theme.
 
 ## Latest build - [Demo](https://qulle.github.io/oltb/)
 The latest build is built using the last official release `v1.0.0-beta2` but may contain more features that have been added since then. Check the releases tab or the commit tags for specific versions.
@@ -58,6 +58,7 @@ Use a descriptive prefix to categorize the intent with the branch:
 - `bug/exception-editing-marker`
 - `feature/new-format-to-layer-export`
 - `documentation/updating-browser-support-list`
+- `code-improvement/updating-ol-version`
 
 ## Report a bug
 If you find a bug in the latest release on the `main` branch start by:
@@ -78,7 +79,7 @@ If you are missing a feature in the latest release on the `main` branch start by
 Use the existing `labels` to tag your request.
 
 ## Get started
-The dev-environment uses NPM so you need to have [Node.js](https://nodejs.org/en/) installed. I use Node version *16.14.2* and NPM version *8.7.0*.
+The dev-environment uses NPM so you need to have [Node.js](https://nodejs.org/en/) installed. I use Node version *16.16.0* and NPM version *8.16.0*.
 
 Clone the repo.
 ```
@@ -100,7 +101,7 @@ Make build for distribution.
 $ npm run build
 ```
 
-Use the following command to remove dist directory. Uses `rm -rf dist/`
+Use the following command to remove dist directory. Uses `rm -rf dist/ .parcel-cache/`
 ```
 $ npm run clean
 ```
@@ -704,7 +705,7 @@ These two nextcomming lines merges potential stored data into a runtime copy of 
 const loadedPropertiesFromLocalStorage = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
 
 // Merge the potential data replacing the default values
-this.localStorage = {...LOCAL_STORAGE_PROPS, ...loadedPropertiesFromLocalStorage};
+this.localStorage = { ...LOCAL_STORAGE_PROPS, ...loadedPropertiesFromLocalStorage };
 ```
 
 To update the state in localStorage, call the `updateStateObject` method and pass in the node name along with the updated state object.
@@ -721,7 +722,7 @@ For some tools and features data is stored on the global window object. The name
 All classes and id:s in the project are also prefixed with the namespace `oltb`.
 
 ## External GitHub projects
-1. [OpenLayers 6.14.1](https://openlayers.org/en/v6.14.1/apidoc/)
+1. [OpenLayers 7.0.0](https://openlayers.org/en/v7.0.0/apidoc/)
 2. [Tippy.js 6.3.7](https://atomiks.github.io/tippyjs/)
 3. [Bootstrap Icons](https://icons.getbootstrap.com/)
 4. [A Color Picker 1.2.1](https://github.com/narsenico/a-color-picker)

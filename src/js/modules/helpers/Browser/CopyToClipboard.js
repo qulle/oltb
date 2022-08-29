@@ -1,17 +1,22 @@
-const copyToClipboard = function(str) {
-    const textBox = document.createElement('textarea');
-    textBox.value = str;
-    textBox.setAttribute('readonly', '');
-    textBox.style.position = 'absolute';
-    textBox.style.left = '-9999px';
+import DOM from '../../helpers/Browser/DOM';
 
-    document.body.appendChild(textBox);
+const copyToClipboard = function(text) {
+    const textarea = DOM.createElement({
+        element: 'textarea', 
+        value: text,
+        style: 'position: absolute; left: -9999px;',
+        attributes: {
+            readonly: ''
+        }
+    });
 
-    textBox.select();
+    document.body.appendChild(textarea);
+
+    textarea.select();
 
     const didCopy = document.execCommand('copy');
 
-    document.body.removeChild(textBox);
+    document.body.removeChild(textarea);
 
     return didCopy;
 }

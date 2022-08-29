@@ -3,6 +3,7 @@ import EventType from 'ol/events/EventType';
 import LayerManager from '../core/Managers/LayerManager';
 import StateManager from '../core/Managers/StateManager';
 import Toast from '../common/Toast';
+import DOM from '../helpers/Browser/DOM';
 import { Control } from 'ol/control';
 import { getRenderPixel } from 'ol/render';
 import { unByKey } from 'ol/Observable';
@@ -27,11 +28,16 @@ class SplitView extends Control {
             class: 'oltb-tool-button__icon'
         });
 
-        const button = document.createElement('button');
-        button.setAttribute('type', 'button');
-        button.setAttribute('data-tippy-content', 'Split view (S)');
-        button.className = 'oltb-tool-button';
-        button.innerHTML = icon;
+        const button = DOM.createElement({
+            element: 'button',
+            html: icon,
+            class: 'oltb-tool-button',
+            attributes: {
+                type: 'button',
+                'data-tippy-content': 'Split view (S)'
+            }
+        });
+
         button.addEventListener(
             EventType.CLICK,
             this.handleClick.bind(this),
@@ -46,7 +52,7 @@ class SplitView extends Control {
         const loadedPropertiesFromLocalStorage = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
 
         // Merge the potential data replacing the default values
-        this.localStorage = {...LOCAL_STORAGE_PROPS, ...loadedPropertiesFromLocalStorage};
+        this.localStorage = { ...LOCAL_STORAGE_PROPS, ...loadedPropertiesFromLocalStorage };
 
         toolboxElement.insertAdjacentHTML('beforeend', `
             <div id="oltb-split-view-toolbox" class="oltb-toolbox-section">
@@ -121,13 +127,11 @@ class SplitView extends Control {
 
         window.addEventListener('oltb.mapLayer.added', this.mapLayerAdded.bind(this));
         window.addEventListener('oltb.mapLayer.removed', this.mapLayerRemoved.bind(this));
-
         window.addEventListener('keyup', (event) => {
             if(isShortcutKeyOnly(event, 's')) {
                 this.handleClick(event);
             }
         });
-
         window.addEventListener('oltb.settings.cleared', () => {
             this.localStorage = LOCAL_STORAGE_PROPS;
         });
@@ -135,14 +139,18 @@ class SplitView extends Control {
 
     mapLayerAdded(event) {
         const layerObject = event.detail.layerObject;
-    
-        const leftOption = document.createElement('option');
-        leftOption.innerText = layerObject.name;
-        leftOption.value = layerObject.id;
 
-        const rightOption = document.createElement('option');
-        rightOption.innerText = layerObject.name;
-        rightOption.value = layerObject.id;
+        const leftOption = DOM.createElement({
+            element: 'option',
+            text: layerObject.name,
+            value: layerObject.id.toString()
+        });
+
+        const rightOption = DOM.createElement({
+            element: 'option',
+            text: layerObject.name,
+            value: layerObject.id.toString()
+        });
 
         this.leftSrc.appendChild(leftOption);
         this.rightSrc.appendChild(rightOption);

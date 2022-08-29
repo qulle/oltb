@@ -54,11 +54,16 @@ class Layers extends Control {
             class: 'oltb-tool-button__icon'
         });
 
-        const button = document.createElement('button');
-        button.setAttribute('type', 'button');
-        button.setAttribute('data-tippy-content', 'Layers (L)');
-        button.className = 'oltb-tool-button';
-        button.innerHTML = icon;
+        const button = DOM.createElement({
+            element: 'button',
+            html: icon,
+            class: 'oltb-tool-button',
+            attributes: {
+                type: 'button',
+                'data-tippy-content': 'Layers (L)'
+            }
+        });
+
         button.addEventListener(
             EventType.CLICK,
             this.handleClick.bind(this),
@@ -68,13 +73,13 @@ class Layers extends Control {
         this.element.appendChild(button);
         this.button = button;
         this.active = false;
-        this.options = {...DEFAULT_OPTIONS, ...options};
+        this.options = { ...DEFAULT_OPTIONS, ...options };
 
         // Load potential stored data from localStorage
         const loadedPropertiesFromLocalStorage = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
 
         // Merge the potential data replacing the default values
-        this.localStorage = {...LOCAL_STORAGE_PROPS, ...loadedPropertiesFromLocalStorage};
+        this.localStorage = { ...LOCAL_STORAGE_PROPS, ...loadedPropertiesFromLocalStorage };
 
         toolboxElement.insertAdjacentHTML('beforeend', `
             <div id="oltb-layers-toolbox" class="oltb-toolbox-section">
@@ -185,10 +190,8 @@ class Layers extends Control {
 
         window.addEventListener('oltb.mapLayer.added', this.mapLayerAdded.bind(this));
         window.addEventListener('oltb.mapLayer.removed', this.mapLayerRemoved.bind(this));
-
         window.addEventListener('oltb.featureLayer.added', this.featureLayerAdded.bind(this));
         window.addEventListener('oltb.featureLayer.removed', this.featureLayerRemoved.bind(this));
-
         window.addEventListener('keyup', (event) => {
             if(isShortcutKeyOnly(event, 'l')) {
                 this.handleClick(event);
@@ -345,10 +348,8 @@ class Layers extends Control {
         // Create layer baser item - li
         const layerElement = DOM.createElement({
             element: 'li', 
-            attributes: {
-                id: `${options.idPrefix}-${layerObject.id}`,
-                class: 'oltb-toolbox-list__item oltb-toolbox-list__item--active' + (!layerObject.layer.getVisible() ? ' oltb-toolbox-list__item--hidden' : '')
-            }
+            id: `${options.idPrefix}-${layerObject.id}`,
+            class: 'oltb-toolbox-list__item oltb-toolbox-list__item--active' + (!layerObject.layer.getVisible() ? ' oltb-toolbox-list__item--hidden' : '')
         });
 
         // Eventlistener to update the UI if the visibility of the layer is changed
@@ -364,10 +365,8 @@ class Layers extends Control {
         const layerName = DOM.createElement({
             element: 'span', 
             text: layerObject.name.ellipsis(20),
-            attributes: {
-                class: 'oltb-toolbox-list__title',
-                title: layerObject.name,
-            }
+            class: 'oltb-toolbox-list__title',
+            title: layerObject.name
         });
 
         // This tooltip can not be triggered by the delegated .oltb-tippy class
@@ -396,10 +395,8 @@ class Layers extends Control {
 
         // Create div for holding left side of layer item
         const leftButtonWrapper = DOM.createElement({
-            element: 'div', 
-            attributes: {
-                class: 'oltb-toolbox-list__wrapper'
-            }
+            element: 'div',
+            class: 'oltb-toolbox-list__wrapper' 
         });
 
         leftButtonWrapper.appendChild(layerName);
@@ -407,10 +404,8 @@ class Layers extends Control {
 
         // Create div for holding right side of layer item
         const rightButtonWrapper = DOM.createElement({
-            element: 'div', 
-            attributes: {
-                class: 'oltb-toolbox-list__wrapper'
-            }
+            element: 'div',
+            class: 'oltb-toolbox-list__wrapper'
         });
 
         // Add all buttons to the layer
@@ -432,10 +427,10 @@ class Layers extends Control {
     createDeleteButton(layerObject, callback) {
         const deleteButton = DOM.createElement({
             element: 'button',
+            class: LAYER_BUTTON_DEFAULT_CLASSES + ' oltb-func-btn--delete oltb-tippy',
+            title: 'Delete layer',
             attributes: {
-                type: 'button',
-                class: LAYER_BUTTON_DEFAULT_CLASSES + ' oltb-func-btn--delete oltb-tippy',
-                title: 'Delete layer',
+                type: 'button'
             }
         });
 
@@ -454,10 +449,10 @@ class Layers extends Control {
     createDownloadButton(layerObject, callback) {
         const downloadButton = DOM.createElement({
             element: 'button', 
+            class: LAYER_BUTTON_DEFAULT_CLASSES + ' oltb-func-btn--download oltb-tippy',
+            title: 'Download layer',
             attributes: {
-                type: 'button',
-                class: LAYER_BUTTON_DEFAULT_CLASSES + ' oltb-func-btn--download oltb-tippy',
-                title: 'Download layer'
+                type: 'button'
             }
         });
 
@@ -494,10 +489,10 @@ class Layers extends Control {
     createEditButton(layerObject, callback, layerName) {
         const editButton = DOM.createElement({
             element: 'button',
+            class: LAYER_BUTTON_DEFAULT_CLASSES + ' oltb-func-btn--edit oltb-tippy',
+            title: 'Rename layer',
             attributes: {
-                type: 'button',
-                class: LAYER_BUTTON_DEFAULT_CLASSES + ' oltb-func-btn--edit oltb-tippy',
-                title: 'Rename layer'
+                type: 'button'
             }
         });
 
@@ -529,10 +524,10 @@ class Layers extends Control {
 
         const visibilityButton = DOM.createElement({
             element: 'button',
+            class: LAYER_BUTTON_DEFAULT_CLASSES + ' oltb-func-btn--visibility oltb-tippy',
+            title: 'Toggle visibility',
             attributes: {
-                type: 'button',
-                class: LAYER_BUTTON_DEFAULT_CLASSES + ' oltb-func-btn--visibility oltb-tippy',
-                title: 'Toggle visibility'
+                type: 'button'
             }
         });
 

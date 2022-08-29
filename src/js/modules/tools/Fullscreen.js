@@ -1,6 +1,7 @@
 import 'ol/ol.css';
 import Toast from '../common/Toast';
 import EventType from 'ol/events/EventType';
+import DOM from '../helpers/Browser/DOM';
 import { Control } from 'ol/control';
 import { listen } from 'ol/events';
 import { toolbarElement } from '../core/ElementReferences';
@@ -32,11 +33,16 @@ class Fullscreen extends Control {
             class: 'oltb-tool-button__icon'
         });
 
-        const button = document.createElement('button');
-        button.setAttribute('type', 'button');
-        button.setAttribute('data-tippy-content', isFullScreen() ? 'Exit fullscreen' : 'Enter fullscreen' + ' (F)');
-        button.className = 'oltb-tool-button';
-        button.innerHTML = isFullScreen() ? this.exitFullscreenIcon : this.enterFullscreenIcon;
+        const button = DOM.createElement({
+            element: 'button',
+            html: isFullScreen() ? this.exitFullscreenIcon : this.enterFullscreenIcon,
+            class: 'oltb-tool-button',
+            attributes: {
+                type: 'button',
+                'data-tippy-content': (isFullScreen() ? 'Exit fullscreen' : 'Enter fullscreen') + ' (F)'
+            }
+        });
+
         button.addEventListener(
             EventType.CLICK,
             this.handleClick.bind(this),

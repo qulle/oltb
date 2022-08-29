@@ -19,7 +19,7 @@ class HiddenMapNavigation extends Control {
 
         const moveCenterIcon = getIcon({path: SVGPaths.MoveCenter});
         const focusHereIcon = getIcon({path: SVGPaths.FocusHere});
-        options = {...DEFAULT_OPTIONS, ...options};
+        options = { ...DEFAULT_OPTIONS, ...options };
 
         addContextMenuItem('main.map.context.menu', {icon: moveCenterIcon, name: 'Center map here', fn: function(map, coordinates, target) {
             const view = map.getView();

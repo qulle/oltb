@@ -1,4 +1,5 @@
 import DialogBase from './DialogBase';
+import DOM from '../../helpers/Browser/DOM';
 import { mapElement } from '../../core/ElementReferences';
 
 class Alert extends DialogBase {
@@ -11,12 +12,17 @@ class Alert extends DialogBase {
             confirmText = 'Ok' 
         } = options;
 
-        const dialog = document.createElement('div');
-        dialog.className = 'oltb-dialog oltb-dialog--alert oltb-animations--bounce';
+        const dialog = DOM.createElement({
+            element: 'div',
+            class: 'oltb-dialog oltb-dialog--alert oltb-animations--bounce'
+        });
 
         if(text) {
-            const message = document.createElement('p');
-            message.innerText = text;
+            const message = DOM.createElement({
+                element: 'p', 
+                text: text
+            });
+
             dialog.appendChild(message);
         }
 
@@ -24,15 +30,26 @@ class Alert extends DialogBase {
             dialog.innerHTML = html;
         }
 
-        const okButton = document.createElement('button');
-        okButton.setAttribute('type', 'button');
-        okButton.className = 'oltb-dialog__btn oltb-btn oltb-btn--blue-mid';
-        okButton.innerText = confirmText;
+        const buttonWrapper = DOM.createElement({
+            element: 'div', 
+            class: 'oltb-dialog__button-wrapper'
+        });
+
+        const okButton = DOM.createElement({
+            element: 'button',
+            text: confirmText,
+            class: 'oltb-dialog__btn oltb-btn oltb-btn--blue-mid',
+            attributes: {
+                type: 'button'
+            }
+        });
+
         okButton.addEventListener('click', (event) => {
             this.close();
         });
 
-        dialog.appendChild(okButton);
+        buttonWrapper.appendChild(okButton);
+        dialog.appendChild(buttonWrapper);
 
         this.dialogBackdrop.appendChild(dialog);
         mapElement.appendChild(this.dialogBackdrop);

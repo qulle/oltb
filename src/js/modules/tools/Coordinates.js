@@ -3,6 +3,7 @@ import EventType from 'ol/events/EventType';
 import Overlay from 'ol/Overlay';
 import Config from '../core/Config';
 import Toast from '../common/Toast';
+import DOM from '../helpers/Browser/DOM';
 import SettingsManager from '../core/Managers/SettingsManager';
 import { Control } from 'ol/control';
 import { transform } from 'ol/proj';
@@ -24,11 +25,16 @@ class Coordinates extends Control {
             class: 'oltb-tool-button__icon'
         });
 
-        const button = document.createElement('button');
-        button.setAttribute('type', 'button');
-        button.setAttribute('data-tippy-content', 'Show coordinates (C)');
-        button.className = 'oltb-tool-button';
-        button.innerHTML = icon;
+        const button = DOM.createElement({
+            element: 'button',
+            html: icon,
+            class: 'oltb-tool-button',
+            attributes: {
+                type: 'button',
+                'data-tippy-content': 'Show coordinates (C)'
+            }
+        });
+
         button.addEventListener(
             EventType.CLICK,
             this.handleClick.bind(this),
@@ -40,8 +46,11 @@ class Coordinates extends Control {
         this.active = false;
         this.options = options;
 
-        const tooltipElement = document.createElement('span');
-        tooltipElement.className = 'oltb-coordinate-tooltip';
+        const tooltipElement = DOM.createElement({
+            element: 'span',
+            class: 'oltb-coordinate-tooltip'
+        })
+
         this.tooltipElement = tooltipElement;
 
         const tooltipOverlay = new Overlay({
