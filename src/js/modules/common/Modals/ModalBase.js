@@ -12,11 +12,12 @@ class ModalBase {
             class: 'oltb-modal-backdrop oltb-modal-backdrop--fixed',
             attributes: {
                 tabindex: '-1'
+            },
+            listeners: {
+                'click': this.bounceAnimation,
+                'keydown': trapFocusKeyListener
             }
         });
-
-        modalBackdrop.addEventListener('keydown', trapFocusKeyListener);
-        modalBackdrop.addEventListener('click', this.bounceAnimation);
 
         const modal = DOM.createElement({
             element: 'div', 
@@ -44,12 +45,10 @@ class ModalBase {
             class: 'oltb-modal__close oltb-btn oltb-btn--blank',
             attributes: {
                 type: 'button'
+            },
+            listeners: {
+                'click': this.close.bind(this)
             }
-        });
-        
-        modalClose.addEventListener('click', (event) => {
-            event.preventDefault();
-            this.close();
         });
 
         modalBackdrop.appendChild(modal);
@@ -74,11 +73,10 @@ class ModalBase {
         }
 
         const modal = this.firstElementChild;
-        modal.classList.remove(ANIMATION_CLASS);
 
         // Trigger reflow of DOM, reruns animation when class is added back
+        modal.classList.remove(ANIMATION_CLASS);
         void modal.offsetWidth;
-
         modal.classList.add(ANIMATION_CLASS);
     }
 

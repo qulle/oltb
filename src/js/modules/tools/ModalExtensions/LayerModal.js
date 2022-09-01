@@ -253,22 +253,23 @@ class LayerModal extends ModalBase {
             class: 'oltb-dialog__btn oltb-btn oltb-btn--green-mid', 
             attributes: {
                 type: 'button'
+            },
+            listeners: {
+                'click': () => {
+                    const layer = {
+                        name: layerNameTxt.value,
+                        layer: layerTypeSelect.value,
+                        source: layerSourceSelect.value,
+                        url: layerURLTxt.value,
+                        parameters: layerParametersTxt.value || '{}',
+                        wrapX: layerWrapXSelect.value,
+                        attributions: layerAttributionsTxt.value
+                    };
+        
+                    this.close();
+                    typeof onCreate === 'function' && onCreate(layer);
+                }
             }
-        });
-
-        createButton.addEventListener('click', (event) => {
-            const layer = {
-                name: layerNameTxt.value,
-                layer: layerTypeSelect.value,
-                source: layerSourceSelect.value,
-                url: layerURLTxt.value,
-                parameters: layerParametersTxt.value || '{}',
-                wrapX: layerWrapXSelect.value,
-                attributions: layerAttributionsTxt.value
-            };
-
-            this.close();
-            typeof onCreate === 'function' && onCreate(layer);
         });
 
         const cancelButton = DOM.createElement({
@@ -277,12 +278,13 @@ class LayerModal extends ModalBase {
             class: `oltb-dialog__btn oltb-btn ${isDarkTheme() ? 'oltb-btn--gray-mid' : 'oltb-btn--gray-dark'}`,
             attributes: {
                 type: 'button'
+            },
+            listeners: {
+                'click': () => {
+                    this.close();
+                    typeof onCancel === 'function' && onCancel();
+                }
             }
-        });
-
-        cancelButton.addEventListener('click', (event) => {
-            this.close();
-            typeof onCancel === 'function' && onCancel();
         });
 
         layerButtonsDiv.appendChild(cancelButton);

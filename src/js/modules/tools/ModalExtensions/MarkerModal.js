@@ -247,22 +247,23 @@ class MarkerModal extends ModalBase {
             class: 'oltb-dialog__btn oltb-btn oltb-btn--green-mid',
             attributes: {
                 type: 'button',
+            },
+            listeners: {
+                'click': () => {
+                    const response = {
+                        name: nameText.value.trim(),
+                        info: infoText.value.trim(),
+                        icon: iconSelect.value,
+                        latitude: parseFloat(latText.value),
+                        longitude: parseFloat(lonText.value),
+                        backgroundColor: backgroundColorInput.getAttribute('data-oltb-color'),
+                        color: colorInput.getAttribute('data-oltb-color')
+                    };
+        
+                    this.close();
+                    typeof onCreate === 'function' && onCreate(response);
+                }
             }
-        });
-
-        createButton.addEventListener('click', (event) => {
-            const response = {
-                name: nameText.value.trim(),
-                info: infoText.value.trim(),
-                icon: iconSelect.value,
-                latitude: parseFloat(latText.value),
-                longitude: parseFloat(lonText.value),
-                backgroundColor: backgroundColorInput.getAttribute('data-oltb-color'),
-                color: colorInput.getAttribute('data-oltb-color')
-            };
-
-            this.close();
-            typeof onCreate === 'function' && onCreate(response);
         });
 
         const cancelButton = DOM.createElement({
@@ -271,12 +272,13 @@ class MarkerModal extends ModalBase {
             class: `oltb-dialog__btn oltb-btn ${isDarkTheme() ? 'oltb-btn--gray-mid' : 'oltb-btn--gray-dark'}`,
             attributes: {
                 type: 'button'
+            },
+            listeners: {
+                'click': () => {
+                    this.close();
+                    typeof onCancel === 'function' && onCancel();
+                }
             }
-        });
-
-        cancelButton.addEventListener('click', (event) => {
-            this.close();
-            typeof onCancel === 'function' && onCancel();
         });
 
         markerButtonsDiv.appendChild(cancelButton);

@@ -1,6 +1,5 @@
 import 'ol/ol.css';
 import Toast from '../common/Toast';
-import EventType from 'ol/events/EventType';
 import DOM from '../helpers/Browser/DOM';
 import { Control } from 'ol/control';
 import { listen } from 'ol/events';
@@ -40,14 +39,11 @@ class Fullscreen extends Control {
             attributes: {
                 type: 'button',
                 'data-tippy-content': (isFullScreen() ? 'Exit fullscreen' : 'Enter fullscreen') + ' (F)'
+            },
+            listeners: {
+                'click': this.handleClick.bind(this)
             }
         });
-
-        button.addEventListener(
-            EventType.CLICK,
-            this.handleClick.bind(this),
-            false
-        );
 
         this.element.appendChild(button);
 

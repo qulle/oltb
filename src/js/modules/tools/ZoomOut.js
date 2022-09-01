@@ -1,5 +1,4 @@
 import 'ol/ol.css';
-import EventType from 'ol/events/EventType';
 import Config from '../core/Config';
 import DOM from '../helpers/Browser/DOM';
 import { Control } from 'ol/control';
@@ -26,14 +25,11 @@ class ZoomOut extends Control {
             attributes: {
                 type: 'button',
                 'data-tippy-content': 'Zoom out (W)'
+            },
+            listeners: {
+                'click': this.handleClick.bind(this)
             }
         });
-
-        button.addEventListener(
-            EventType.CLICK,
-            this.handleClick.bind(this),
-            false
-        );
 
         this.element.appendChild(button);
         this.options = options;

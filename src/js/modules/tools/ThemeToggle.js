@@ -1,5 +1,4 @@
 import 'ol/ol.css';
-import EventType from 'ol/events/EventType';
 import StateManager from '../core/Managers/StateManager';
 import DOM from '../helpers/Browser/DOM';
 import { Control } from 'ol/control';
@@ -33,14 +32,11 @@ class ThemeToggle extends Control {
             attributes: {
                 type: 'button',
                 'data-tippy-content': (isDarkTheme() ? 'Light theme' : 'Dark theme') + ' (T)'
+            },
+            listeners: {
+                'click': this.handleClick.bind(this)
             }
         });
-
-        button.addEventListener(
-            EventType.CLICK,
-            this.handleClick.bind(this),
-            false
-        );
 
         this.element.appendChild(button);
         this.options = options;

@@ -21,7 +21,7 @@
     "homepage": "https://github.com/qulle/oltb#readme",
     "dependencies": {
         "a-color-picker": "^1.2.1",
-        "ol": "^7.0.0",
+        "ol": "^7.1.0",
         "proj4": "^2.8.0",
         "tippy.js": "^6.3.7"
     },

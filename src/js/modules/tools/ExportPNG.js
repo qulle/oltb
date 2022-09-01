@@ -1,5 +1,4 @@
 import 'ol/ol.css';
-import EventType from 'ol/events/EventType';
 import DOM from '../helpers/Browser/DOM';
 import { Control } from 'ol/control';
 import { download } from '../helpers/Browser/Download';
@@ -25,14 +24,11 @@ class ExportPNG extends Control {
             attributes: {
                 type: 'button',
                 'data-tippy-content': 'Export PNG (E)'
+            },
+            listeners: {
+                'click': this.handleClick.bind(this)
             }
         });
-
-        button.addEventListener(
-            EventType.CLICK,
-            this.handleClick.bind(this),
-            false
-        );
 
         this.element.appendChild(button);
         this.options = options;

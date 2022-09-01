@@ -1,5 +1,4 @@
 import 'ol/ol.css';
-import EventType from 'ol/events/EventType';
 import Modal from '../common/Modal';
 import DOM from '../helpers/Browser/DOM';
 import { Control } from 'ol/control';
@@ -30,14 +29,11 @@ class Info extends Control {
             attributes: {
                 type: 'button',
                 'data-tippy-content': 'Info (I)'
+            },
+            listeners: {
+                'click': this.handleClick.bind(this)
             }
         });
-
-        button.addEventListener(
-            EventType.CLICK,
-            this.handleClick.bind(this),
-            false
-        );
 
         this.element.appendChild(button);
         this.options = { ...DEFAULT_OPTIONS, ...options };

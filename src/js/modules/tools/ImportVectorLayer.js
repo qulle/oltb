@@ -1,5 +1,4 @@
 import 'ol/ol.css';
-import EventType from 'ol/events/EventType';
 import Toast from '../common/Toast';
 import LayerManager from '../core/Managers/LayerManager';
 import Config from '../core/Config';
@@ -28,14 +27,11 @@ class ImportVectorLayer extends Control {
             attributes: {
                 type: 'button',
                 'data-tippy-content': 'Import Vector layer (O)'
+            },
+            listeners: {
+                'click': this.handleClick.bind(this)
             }
         });
-
-        button.addEventListener(
-            EventType.CLICK,
-            this.handleClick.bind(this),
-            false
-        );
 
         this.element.appendChild(button);
         this.options = options;
@@ -47,10 +43,12 @@ class ImportVectorLayer extends Control {
             attributes: {
                 type: 'file',
                 accept: '.geojson, .kml'
+            },
+            listeners: {
+                'change': this.loadVectorLayer.bind(this)
             }
         })
 
-        inputDialog.addEventListener('change', this.loadVectorLayer.bind(this));
         this.inputDialog = inputDialog;
 
         document.body.insertAdjacentElement('beforeend', inputDialog);

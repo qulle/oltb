@@ -41,11 +41,10 @@ class Alert extends DialogBase {
             class: 'oltb-dialog__btn oltb-btn oltb-btn--blue-mid',
             attributes: {
                 type: 'button'
+            },
+            listeners: {
+                'click': this.close.bind(this)
             }
-        });
-
-        okButton.addEventListener('click', (event) => {
-            this.close();
         });
 
         buttonWrapper.appendChild(okButton);

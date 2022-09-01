@@ -2,6 +2,7 @@ class DOM {
     static createElement(options = {}) {
         const element = document.createElement(options.element);
 
+        // Common attributes
         if(options.id) {
             element.id = options.id;
         }
@@ -30,11 +31,25 @@ class DOM {
             element.title = options.title;
         }
 
-        // Apply second level attribute properties
+        // Attributes that needs to be set using setAttribute
         for(const attribute in options.attributes) {
             element.setAttribute(attribute, options.attributes[attribute]);
         }
     
+        // Attach given listeners and callbacks
+        for(const listener in options.listeners) {
+            const callbacks = options.listeners[listener];
+
+            // The callback(s) can be given as a single reference or as a array of many 
+            if(Array.isArray(callbacks)) {
+                callbacks.forEach(callback => {
+                    element.addEventListener(listener, callback);
+                });
+            }else {
+                element.addEventListener(listener, callbacks);
+            }
+        }
+
         return element;
     }
 

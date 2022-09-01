@@ -1,5 +1,4 @@
 import 'ol/ol.css';
-import EventType from 'ol/events/EventType';
 import Dialog from '../common/Dialog';
 import Toast from '../common/Toast';
 import Config from '../core/Config';
@@ -29,14 +28,11 @@ class ResetNorth extends Control {
             attributes: {
                 type: 'button',
                 'data-tippy-content': 'Reset rotation (N)'
+            },
+            listeners: {
+                'click': this.handleClick.bind(this)
             }
         });
-
-        button.addEventListener(
-            EventType.CLICK,
-            this.handleClick.bind(this),
-            false
-        );
 
         this.element.appendChild(button);
         this.options = options;

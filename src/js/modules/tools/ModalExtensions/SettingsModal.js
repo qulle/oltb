@@ -34,16 +34,15 @@ class SettingsModal extends ModalBase {
                 class: 'oltb-checkbox-wrapper__checkbox',
                 attributes: {
                     type: 'checkbox'
+                },
+                listeners: {
+                    'click': () => SettingsManager.setSetting(key, this.checked)
                 }
             });
 
             if(valueObj.state) {
                 checkbox.setAttribute('checked', '');
             }
-
-            checkbox.addEventListener('change', function(event) {
-                SettingsManager.setSetting(key, this.checked);
-            });
 
             DOM.appendChildren(checkboxWrapper, [
                 checkbox, 

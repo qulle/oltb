@@ -1,6 +1,5 @@
 import 'ol/ol.css';
 import DebugInfoModal from './ModalExtensions/DebugInfoModal';
-import EventType from 'ol/events/EventType';
 import DOM from '../helpers/Browser/DOM';
 import { Control } from 'ol/control';
 import { toolbarElement } from '../core/ElementReferences';
@@ -30,14 +29,11 @@ class DebugInfo extends Control {
             attributes: {
                 type: 'button',
                 'data-tippy-content': 'Debug info (Y)'
+            },
+            listeners: {
+                'click': this.handleClick.bind(this)
             }
         });
-
-        button.addEventListener(
-            EventType.CLICK,
-            this.handleClick.bind(this),
-            false
-        );
 
         this.element.appendChild(button);
         this.options = { ...DEFAULT_OPTIONS, ...options };

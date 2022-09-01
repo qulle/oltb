@@ -1,6 +1,5 @@
 import 'ol/ol.css';
 import Toast from '../common/Toast';
-import EventType from 'ol/events/EventType';
 import DOM from '../helpers/Browser/DOM';
 import { Control } from 'ol/control';
 import { getRenderPixel } from 'ol/render';
@@ -27,18 +26,14 @@ class Magnify extends Control {
             attributes: {
                 type: 'button',
                 'data-tippy-content': 'Magnifier (Z)'
+            },
+            listeners: {
+                'click': this.handleClick.bind(this)
             }
         });
 
-        button.addEventListener(
-            EventType.CLICK,
-            this.handleClick.bind(this),
-            false
-        );
-
         this.element.appendChild(button);
         this.button = button;
-
         this.radius = 75;
 
         window.addEventListener('keyup', (event) => {

@@ -1,5 +1,4 @@
 import 'ol/ol.css';
-import EventType from 'ol/events/EventType';
 import Toast from '../common/Toast';
 import Dialog from '../common/Dialog';
 import LayerManager from '../core/Managers/LayerManager';
@@ -33,14 +32,11 @@ class MyLocation extends Control {
             attributes: {
                 type: 'button',
                 'data-tippy-content': 'My location (G)'
+            },
+            listeners: {
+                'click': this.handleClick.bind(this)
             }
         });
-
-        button.addEventListener(
-            EventType.CLICK,
-            this.handleClick.bind(this),
-            false
-        );
 
         this.element.appendChild(button);
         this.options = options;

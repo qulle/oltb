@@ -1,5 +1,4 @@
 import 'ol/ol.css';
-import EventType from 'ol/events/EventType';
 import Overlay from 'ol/Overlay';
 import Config from '../core/Config';
 import Toast from '../common/Toast';
@@ -32,14 +31,11 @@ class Coordinates extends Control {
             attributes: {
                 type: 'button',
                 'data-tippy-content': 'Show coordinates (C)'
+            },
+            listeners: {
+                'click': this.handleClick.bind(this)
             }
         });
-
-        button.addEventListener(
-            EventType.CLICK,
-            this.handleClick.bind(this),
-            false
-        );
 
         this.element.appendChild(button);
         this.button = button;

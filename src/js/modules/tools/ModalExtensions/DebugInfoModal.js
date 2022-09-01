@@ -24,16 +24,17 @@ class DebugInfoModal extends ModalBase {
             class: 'oltb-btn oltb-btn--green-mid oltb-mt-1',
             attributes: {
                 type: 'button'
-            }
-        });
-
-        copyButton.addEventListener('click', function(params) {
-            const copyStatus = copyToClipboard(textArea.value);
+            },
+            listeners: {
+                'click': () => {
+                    const copyStatus = copyToClipboard(textArea.value);
         
-            if(copyStatus) {
-                Toast.success({text: 'Debug info copied to clipboard', autoremove: 3000});
-            }else {
-                Toast.error({text: 'Failed to copy debug info'});
+                    if(copyStatus) {
+                        Toast.success({text: 'Debug info copied to clipboard', autoremove: 3000});
+                    }else {
+                        Toast.error({text: 'Failed to copy debug info'});
+                    } 
+                }
             }
         });
 
@@ -43,14 +44,15 @@ class DebugInfoModal extends ModalBase {
             class: 'oltb-btn oltb-btn--green-mid oltb-mt-1 oltb-ml-0625',
             attributes: {
                 type: 'button'
+            },
+            listeners: {
+                'click': () => {
+                    console.log(map);
+                    Toast.success({text: 'Map object logged to console (F12)', autoremove: 3000});
+                }
             }
         });
-
-        logFullMapObjectButton.addEventListener('click', function() {
-            console.log(map);
-            Toast.success({text: 'Map object logged to console (F12)', autoremove: 3000});
-        });
-
+        
         const buttonWrapper = DOM.createElement({
             element: 'div'
         }); 

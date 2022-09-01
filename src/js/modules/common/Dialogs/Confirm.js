@@ -43,12 +43,13 @@ class Confirm extends DialogBase {
             class: `oltb-dialog__btn oltb-btn ${confirmClass}`,
             attributes: {
                 type: 'button' 
+            },
+            listeners: {
+                'click': () => {
+                    this.close();
+                    typeof onConfirm === 'function' && onConfirm();
+                }
             }
-        });
-
-        confirmButton.addEventListener('click', (event) => {
-            this.close();
-            typeof onConfirm === 'function' && onConfirm();
         });
         
         const cancelButton = DOM.createElement({
@@ -57,12 +58,13 @@ class Confirm extends DialogBase {
             class: `oltb-dialog__btn oltb-btn ${this.isDark ? 'oltb-btn--gray-mid' : 'oltb-btn--gray-dark'}`,
             attributes: {
                 type: 'button'
+            },
+            listeners: {
+                'click': () => {
+                    this.close();
+                    typeof onCancel === 'function' && onCancel();
+                }
             }
-        });
-        
-        cancelButton.addEventListener('click', (event) => {
-            this.close();
-            typeof onCancel === 'function' && onCancel();
         });
 
         buttonWrapper.appendChild(cancelButton);

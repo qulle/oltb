@@ -25,11 +25,14 @@ class InfoWindowManager {
         // Create DOM elements
         const infoWindow = DOM.createElement({
             element: 'div',
-            class: 'oltb-info-window'
+            class: 'oltb-info-window',
+            attributes: {
+                tabindex: '-1'
+            },
+            listeners: {
+                'keydown': trapFocusKeyListener
+            }
         });
-
-        infoWindow.setAttribute('tabindex', '-1');
-        infoWindow.addEventListener('keydown', trapFocusKeyListener);
 
         const closeButton = DOM.createElement({
             element: 'button', 
@@ -38,12 +41,10 @@ class InfoWindowManager {
                 fill: 'none',
                 stroke: 'currentColor'
             }),
-            class: 'oltb-info-window__close oltb-btn oltb-btn--blank'
-        });
-
-        closeButton.addEventListener('click', (event) => {
-            event.preventDefault();
-            this.hideOverlay();
+            class: 'oltb-info-window__close oltb-btn oltb-btn--blank',
+            listeners: {
+                'click': this.hideOverlay.bind(this)
+            }
         });
 
         const content = DOM.createElement({
@@ -83,11 +84,9 @@ class InfoWindowManager {
                 feature.getGeometry().getExtent()
             ));
 
-            this.infoWindow.classList.remove(ANIMATION_CLASS);
-
             // Trigger reflow of DOM, reruns animation when class is added back
+            this.infoWindow.classList.remove(ANIMATION_CLASS);
             void this.infoWindow.offsetWidth;
-
             this.infoWindow.classList.add(ANIMATION_CLASS);
 
             const removeFeatureButton = this.content.querySelector('#oltb-info-window-remove-marker');

@@ -1,5 +1,4 @@
 import 'ol/ol.css';
-import EventType from 'ol/events/EventType';
 import Dialog from '../common/Dialog';
 import Toast from '../common/Toast';
 import SettingsModal from './ModalExtensions/SettingsModal';
@@ -29,14 +28,11 @@ class Settings extends Control {
             attributes: {
                 type: 'button',
                 'data-tippy-content': 'Settings (U)'
+            },
+            listeners: {
+                'click': this.handleClick.bind(this)
             }
         });
-
-        button.addEventListener(
-            EventType.CLICK,
-            this.handleClick.bind(this),
-            false
-        );
 
         this.options = options;
         this.element.appendChild(button);

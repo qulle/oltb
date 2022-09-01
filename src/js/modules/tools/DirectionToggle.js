@@ -1,5 +1,4 @@
 import 'ol/ol.css';
-import EventType from 'ol/events/EventType';
 import StateManager from '../core/Managers/StateManager';
 import DOM from '../helpers/Browser/DOM';
 import { Control } from 'ol/control';
@@ -34,18 +33,14 @@ class DirectionToggle extends Control {
             attributes: {
                 type: 'button',
                 'data-tippy-content': (isHorizontal() ? 'Vertical toolbar' : 'Horizontal toolbar') + ' (D)'
+            },
+            listeners: {
+                'click': this.handleClick.bind(this)
             }
         });
 
-        button.addEventListener(
-            EventType.CLICK,
-            this.handleClick.bind(this),
-            false
-        );
-
         this.element.appendChild(button);
         this.options = options;
-
         this.button = button;
         this.active = false;
         

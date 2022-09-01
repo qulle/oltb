@@ -1,5 +1,5 @@
 # OpenLayers Toolbar - OLTB
-### Lightweight GIS toolbar developed for OpenLayers 7.0.0. The toolbar can be filled with any number of tools and can be used in both horizontal and vertical mode and is available in both light and dark theme.
+### Lightweight GIS toolbar developed for OpenLayers 7.1.0. The toolbar can be filled with any number of tools and can be used in both horizontal and vertical mode and is available in both light and dark theme.
 
 ## Latest build - [Demo](https://qulle.github.io/oltb/)
 The latest build is built using the last official release `v1.0.0-beta2` but may contain more features that have been added since then. Check the releases tab or the commit tags for specific versions.
@@ -116,7 +116,7 @@ Install dependency updates.
 $ npm update --save
 ```
 
-**Note** that from npm version `7.0.0` the command `$ npm update` does not longer update the `package.json` file. From npm version `8.3.2` the command to run is `$ npm update --save` or to always apply the save option add `save=true` to the `.npmrc` file.
+**Note** that from npm version `7.1.0` the command `$ npm update` does not longer update the `package.json` file. From npm version `8.3.2` the command to run is `$ npm update --save` or to always apply the save option add `save=true` to the `.npmrc` file.
 
 ## Browser support 
 Manually tested in modern browsers.
@@ -690,7 +690,7 @@ import StateManager from './modules/core/Managers/StateManager';
 State management is done through localStorage. First add a node name and an object to store default values.
 ```javascript
 const LOCAL_STORAGE_NODE_NAME = 'drawTool';
-const LOCAL_STORAGE_PROPS = {
+const LOCAL_STORAGE_DEFAULTS = {
     collapsed: false,
     toolTypeIndex: 5,
     strokeColor: '#4A86B8',
@@ -699,13 +699,13 @@ const LOCAL_STORAGE_PROPS = {
 };
 ```
 
-These two nextcomming lines merges potential stored data into a runtime copy of the default properties located in `LOCAL_STORAGE_PROPS`. The spread operator is a really nice feature for this operation.
+These two nextcomming lines merges potential stored data into a runtime copy of the default properties located in `LOCAL_STORAGE_DEFAULTS`. The spread operator is a really nice feature for this operation.
 ```javascript
 // Load potential stored data from localStorage
-const loadedPropertiesFromLocalStorage = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
+const localStorageState = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
 
 // Merge the potential data replacing the default values
-this.localStorage = { ...LOCAL_STORAGE_PROPS, ...loadedPropertiesFromLocalStorage };
+this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
 ```
 
 To update the state in localStorage, call the `updateStateObject` method and pass in the node name along with the updated state object.
@@ -722,7 +722,7 @@ For some tools and features data is stored on the global window object. The name
 All classes and id:s in the project are also prefixed with the namespace `oltb`.
 
 ## External GitHub projects
-1. [OpenLayers 7.0.0](https://openlayers.org/en/v7.0.0/apidoc/)
+1. [OpenLayers 7.1.0](https://openlayers.org/en/v7.1.0/apidoc/)
 2. [Tippy.js 6.3.7](https://atomiks.github.io/tippyjs/)
 3. [Bootstrap Icons](https://icons.getbootstrap.com/)
 4. [A Color Picker 1.2.1](https://github.com/narsenico/a-color-picker)

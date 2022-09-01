@@ -1,5 +1,4 @@
 import 'ol/ol.css';
-import EventType from 'ol/events/EventType';
 import LayerManager from '../core/Managers/LayerManager';
 import StateManager from '../core/Managers/StateManager';
 import Toast from '../common/Toast';
@@ -13,7 +12,7 @@ import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 
 const LOCAL_STORAGE_NODE_NAME = 'splitViewTool';
-const LOCAL_STORAGE_PROPS = {
+const LOCAL_STORAGE_DEFAULTS = {
     collapsed: false
 };
 
@@ -35,24 +34,21 @@ class SplitView extends Control {
             attributes: {
                 type: 'button',
                 'data-tippy-content': 'Split view (S)'
+            },
+            listeners: {
+                'click': this.handleClick.bind(this)
             }
         });
-
-        button.addEventListener(
-            EventType.CLICK,
-            this.handleClick.bind(this),
-            false
-        );
 
         this.element.appendChild(button);
         this.button = button;
         this.active = false;
 
         // Load potential stored data from localStorage
-        const loadedPropertiesFromLocalStorage = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
+        const localStorageState = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
 
         // Merge the potential data replacing the default values
-        this.localStorage = { ...LOCAL_STORAGE_PROPS, ...loadedPropertiesFromLocalStorage };
+        this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
 
         toolboxElement.insertAdjacentHTML('beforeend', `
             <div id="oltb-split-view-toolbox" class="oltb-toolbox-section">

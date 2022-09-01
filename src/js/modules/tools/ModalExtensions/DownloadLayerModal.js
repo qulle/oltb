@@ -53,16 +53,17 @@ class DownloadLayerModal extends ModalBase {
             class: 'oltb-dialog__btn oltb-btn oltb-btn--green-mid', 
             attributes: {
                 type: 'button'
+            },
+            listeners: {
+                'click': () => {
+                    const result = {
+                        format: layerFormatSelect.value
+                    };
+        
+                    this.close();
+                    typeof onCreate === 'function' && onCreate(result);
+                }
             }
-        });
-
-        downloadButton.addEventListener('click', (event) => {
-            const result = {
-                format: layerFormatSelect.value
-            };
-
-            this.close();
-            typeof onCreate === 'function' && onCreate(result);
         });
 
         const cancelButton = DOM.createElement({
@@ -71,12 +72,13 @@ class DownloadLayerModal extends ModalBase {
             class: `oltb-dialog__btn oltb-btn ${isDarkTheme() ? 'oltb-btn--gray-mid' : 'oltb-btn--gray-dark'}`,
             attributes: {
                 type: 'button'
+            },
+            listeners: {
+                'click': () => {
+                    this.close();
+                    typeof onCancel === 'function' && onCancel();
+                }
             }
-        });
-
-        cancelButton.addEventListener('click', (event) => {
-            this.close();
-            typeof onCancel === 'function' && onCancel();
         });
 
         layerButtonsDiv.appendChild(cancelButton);

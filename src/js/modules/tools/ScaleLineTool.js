@@ -1,5 +1,4 @@
 import 'ol/ol.css';
-import EventType from 'ol/events/EventType';
 import DOM from '../helpers/Browser/DOM';
 import { Control, ScaleLine } from 'ol/control';
 import { toolbarElement } from '../core/ElementReferences';
@@ -28,14 +27,11 @@ class ScaleLineTool extends Control {
             attributes: {
                 type: 'button',
                 'data-tippy-content': 'Scale line (K)'
+            },
+            listeners: {
+                'click': this.handleClick.bind(this)
             }
         });
-
-        button.addEventListener(
-            EventType.CLICK,
-            this.handleClick.bind(this),
-            false
-        );
 
         this.element.appendChild(button);
         this.button = button;

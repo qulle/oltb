@@ -1,5 +1,4 @@
 import 'ol/ol.css';
-import EventType from 'ol/events/EventType';
 import OSM from 'ol/source/OSM';
 import TileLayer from 'ol/layer/Tile';
 import StateManager from '../core/Managers/StateManager';
@@ -10,7 +9,7 @@ import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 
 const LOCAL_STORAGE_NODE_NAME = 'overviewTool';
-const LOCAL_STORAGE_PROPS = {
+const LOCAL_STORAGE_DEFAULTS = {
     collapsed: false
 };
 
@@ -32,24 +31,21 @@ class Overview extends Control {
             attributes: {
                 type: 'button',
                 'data-tippy-content': 'Area overview (A)'
+            },
+            listeners: {
+                'click': this.handleClick.bind(this)
             }
         });
-
-        button.addEventListener(
-            EventType.CLICK,
-            this.handleClick.bind(this),
-            false
-        );
 
         this.element.appendChild(button);
         this.button = button;
         this.active = false;
 
         // Load potential stored data from localStorage
-        const loadedPropertiesFromLocalStorage = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
+        const localStorageState = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
 
         // Merge the potential data replacing the default values
-        this.localStorage = { ...LOCAL_STORAGE_PROPS, ...loadedPropertiesFromLocalStorage };
+        this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
 
         toolboxElement.insertAdjacentHTML('beforeend', `
             <div id="oltb-overview-toolbox" class="oltb-toolbox-section">
@@ -102,7 +98,7 @@ class Overview extends Control {
             }
         });
         window.addEventListener('oltb.settings.cleared', () => {
-            this.localStorage = LOCAL_STORAGE_PROPS;
+            this.localStorage = LOCAL_STORAGE_DEFAULTS;
         });
     }
 

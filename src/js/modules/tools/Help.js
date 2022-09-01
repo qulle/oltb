@@ -1,5 +1,4 @@
 import 'ol/ol.css';
-import EventType from 'ol/events/EventType';
 import Toast from '../common/Toast';
 import DOM from '../helpers/Browser/DOM';
 import { Control } from 'ol/control';
@@ -30,14 +29,11 @@ class Help extends Control {
             attributes: {
                 type: 'button',
                 'data-tippy-content': 'Help (J)'
+            },
+            listeners: {
+                'click': this.handleClick.bind(this)
             }
         });
-
-        button.addEventListener(
-            EventType.CLICK,
-            this.handleClick.bind(this),
-            false
-        );
 
         this.element.appendChild(button);
         this.options = { ...DEFAULT_OPTIONS, ...options };

@@ -3,7 +3,6 @@ import LayerManager from '../core/Managers/LayerManager';
 import Dialog from '../common/Dialog';
 import LayerModal from './ModalExtensions/LayerModal';
 import DOM from '../helpers/Browser/DOM';
-import EventType from 'ol/events/EventType';
 import Config from '../core/Config';
 import InfoWindowManager from '../core/Managers/InfoWindowManager';
 import StateManager from '../core/Managers/StateManager';
@@ -26,7 +25,7 @@ const LAYER_BUTTON_DEFAULT_CLASSES = 'oltb-func-btn';
     Unfortunately this results in two longer names stored in localStorage.
 */
 const LOCAL_STORAGE_NODE_NAME = 'layersTool';
-const LOCAL_STORAGE_PROPS = {
+const LOCAL_STORAGE_DEFAULTS = {
     'oltb-map-layers-toolbox-collapsed': false,
     'oltb-feature-layers-toolbox-collapsed': false,
 };
@@ -61,14 +60,11 @@ class Layers extends Control {
             attributes: {
                 type: 'button',
                 'data-tippy-content': 'Layers (L)'
+            },
+            listeners: {
+                'click': this.handleClick.bind(this)
             }
         });
-
-        button.addEventListener(
-            EventType.CLICK,
-            this.handleClick.bind(this),
-            false
-        );
 
         this.element.appendChild(button);
         this.button = button;
@@ -76,10 +72,10 @@ class Layers extends Control {
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
         // Load potential stored data from localStorage
-        const loadedPropertiesFromLocalStorage = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
+        const localStorageState = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
 
         // Merge the potential data replacing the default values
-        this.localStorage = { ...LOCAL_STORAGE_PROPS, ...loadedPropertiesFromLocalStorage };
+        this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
 
         toolboxElement.insertAdjacentHTML('beforeend', `
             <div id="oltb-layers-toolbox" class="oltb-toolbox-section">
@@ -172,7 +168,7 @@ class Layers extends Control {
 
         if(addFeatureLayerTxt) {
             addFeatureLayerTxt.addEventListener('keyup', function(event) {
-                if(event.key === 'Enter') {
+                if(event.key.toLowerCase() === 'enter') {
                     LayerManager.addFeatureLayer(addFeatureLayerTxt.value);
                     addFeatureLayerTxt.value = '';
                 }
@@ -431,16 +427,17 @@ class Layers extends Control {
             title: 'Delete layer',
             attributes: {
                 type: 'button'
-            }
-        });
-
-        deleteButton.addEventListener('click', function(event) {
-            Dialog.confirm({
-                html: `Do you want to delete layer <strong>${layerObject.name}</strong>?`,
-                onConfirm: function() {
-                    callback(layerObject);
+            },
+            listeners: {
+                'click': () => {
+                    Dialog.confirm({
+                        html: `Do you want to delete layer <strong>${layerObject.name}</strong>?`,
+                        onConfirm: function() {
+                            callback(layerObject);
+                        }
+                    });
                 }
-            });
+            }
         });
 
         return deleteButton;
@@ -493,27 +490,28 @@ class Layers extends Control {
             title: 'Rename layer',
             attributes: {
                 type: 'button'
-            }
-        });
-
-        editButton.addEventListener('click', function(event) {
-            Dialog.prompt({
-                text: 'Edit layer name',
-                value: layerObject.name,
-                confirmText: 'Rename',
-                onConfirm: function(result) {
-                    if(result !== null && !!result.length) {
-                        layerObject.name = result;
-                        layerName.innerText = result.ellipsis(20);
-                        layerName._tippy.setContent(result);
-                        
-                        // User defined callback from constructor
-                        if(typeof callback === 'function') {
-                            callback(layerObject);
+            },
+            listeners: {
+                'click': () => {
+                    Dialog.prompt({
+                        text: 'Edit layer name',
+                        value: layerObject.name,
+                        confirmText: 'Rename',
+                        onConfirm: function(result) {
+                            if(result !== null && !!result.length) {
+                                layerObject.name = result;
+                                layerName.innerText = result.ellipsis(20);
+                                layerName._tippy.setContent(result);
+                                
+                                // User defined callback from constructor
+                                if(typeof callback === 'function') {
+                                    callback(layerObject);
+                                }
+                            }
                         }
-                    }
+                    });
                 }
-            });
+            }
         });
 
         return editButton;
@@ -528,30 +526,31 @@ class Layers extends Control {
             title: 'Toggle visibility',
             attributes: {
                 type: 'button'
-            }
-        });
+            },
+            listeners: {
+                'click': () => {
+                    InfoWindowManager.hideOverlay();
 
-        visibilityButton.addEventListener('click', function(event) {
-            InfoWindowManager.hideOverlay();
-
-            const flippedVisibility = !layerObject.layer.getVisible();
-            layerObject.layer.setVisible(flippedVisibility);
-            
-            // Hide potential overlays associated with that layer
-            const hasFeatures = typeof layerObject.layer.getSource().getFeatures === 'function';
-            if(hasFeatures) {
-                layerObject.layer.getSource().getFeatures().forEach(feature => {
-                    if('properties' in feature && 'tooltipOverlay' in feature.properties) {
-                        flippedVisibility 
-                            ? feature.properties.tooltipOverlay.setMap(map)
-                            : feature.properties.tooltipOverlay.setMap(null);
+                    const flippedVisibility = !layerObject.layer.getVisible();
+                    layerObject.layer.setVisible(flippedVisibility);
+                    
+                    // Hide potential overlays associated with that layer
+                    const hasFeatures = typeof layerObject.layer.getSource().getFeatures === 'function';
+                    if(hasFeatures) {
+                        layerObject.layer.getSource().getFeatures().forEach(feature => {
+                            if('properties' in feature && 'tooltipOverlay' in feature.properties) {
+                                flippedVisibility 
+                                    ? feature.properties.tooltipOverlay.setMap(map)
+                                    : feature.properties.tooltipOverlay.setMap(null);
+                            }
+                        });
                     }
-                });
-            }
 
-            // User defined callback from constructor
-            if(typeof callback === 'function') {
-                callback(layerObject);
+                    // User defined callback from constructor
+                    if(typeof callback === 'function') {
+                        callback(layerObject);
+                    }
+                }
             }
         });
 

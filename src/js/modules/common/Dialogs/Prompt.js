@@ -50,12 +50,16 @@ class Prompt extends DialogBase {
         const confirmButton = DOM.createElement({
             element: 'button', 
             text: confirmText,
-            class: `oltb-dialog__btn oltb-btn ${confirmClass}`
-        });
-
-        confirmButton.addEventListener('click', (event) => {
-            this.close();
-            typeof onConfirm === 'function' && onConfirm(inputBox.value.trim());
+            class: `oltb-dialog__btn oltb-btn ${confirmClass}`,
+            attributes: {
+                type: 'button'
+            },
+            listeners: {
+                'click': () => {
+                    this.close();
+                    typeof onConfirm === 'function' && onConfirm(inputBox.value.trim());
+                }
+            }
         });
 
         const cancelButton = DOM.createElement({
@@ -64,12 +68,13 @@ class Prompt extends DialogBase {
             class: `oltb-dialog__btn oltb-btn ${this.isDark ? 'oltb-btn--gray-mid' : 'oltb-btn--gray-dark'}`,
             attributes: {
                 type: 'button'
+            },
+            listeners: {
+                'click': () => {
+                    this.close();
+                    typeof onCancel === 'function' && onCancel(); 
+                }
             }
-        });
-        
-        cancelButton.addEventListener('click', (event) => {
-            this.close();
-            typeof onCancel === 'function' && onCancel();
         });
 
         buttonWrapper.appendChild(cancelButton);

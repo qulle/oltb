@@ -11,11 +11,12 @@ class DialogBase {
             class: 'oltb-dialog-backdrop oltb-dialog-backdrop--fixed',
             attributes: {
                 tabindex: '-1'
+            },
+            listeners: {
+                'click': this.bounceAnimation,
+                'keydown': trapFocusKeyListener
             }
         });
-        
-        dialogBackdrop.addEventListener('keydown', trapFocusKeyListener);
-        dialogBackdrop.addEventListener('click', this.bounceAnimation);
 
         this.dialogBackdrop = dialogBackdrop;
         this.isDark = isDarkTheme();
@@ -35,11 +36,9 @@ class DialogBase {
 
         const dialog = this.firstElementChild;
 
-        dialog.classList.remove(ANIMATION_CLASS);
-
         // Trigger reflow of DOM, reruns animation when class is added back
+        dialog.classList.remove(ANIMATION_CLASS);
         void dialog.offsetWidth;
-
         dialog.classList.add(ANIMATION_CLASS);
     }
 
