@@ -48,8 +48,6 @@ class Edit extends Control {
 
         // Load potential stored data from localStorage
         const localStorageState = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
-
-        // Merge the potential data replacing the default values
         this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
         
         toolboxElement.insertAdjacentHTML('beforeend', `

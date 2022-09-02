@@ -57,7 +57,6 @@ class DebugInfo extends Control {
     handleClick(event) {
         event.preventDefault();
 
-        // Gather debug information
         const map = this.getMap();
         const view = map.getView();
 

@@ -71,8 +71,6 @@ const LOCAL_STORAGE_DEFAULTS = {
 
 // Load potential stored data from localStorage
 const localStorageState = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
-
-// Merge the potential data replacing the default values
 const localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
 
 const map = new Map({

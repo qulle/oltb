@@ -211,7 +211,7 @@ Below is the basic HTML and JavaScript structure used in the project. For a comp
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=0" />
     <link rel="stylesheet" href="./scss/map.scss">
-    <link rel="icon" type="image/x-icon" href="./favicon.ico" />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
     <title>OLTB - Toolbar for OpenLayers</title>
 </head>
 <body>
@@ -701,10 +701,7 @@ const LOCAL_STORAGE_DEFAULTS = {
 
 These two nextcomming lines merges potential stored data into a runtime copy of the default properties located in `LOCAL_STORAGE_DEFAULTS`. The spread operator is a really nice feature for this operation.
 ```javascript
-// Load potential stored data from localStorage
 const localStorageState = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
-
-// Merge the potential data replacing the default values
 this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
 ```
 
