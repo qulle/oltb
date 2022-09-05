@@ -40,7 +40,6 @@ class ThemeToggle extends Control {
 
         this.element.appendChild(button);
         this.options = options;
-
         this.button = button;
         this.active = false;
 
@@ -52,8 +51,7 @@ class ThemeToggle extends Control {
         });
     }
 
-    handleClick(event) {
-        event.preventDefault();
+    handleClick() {
         this.handleThemeToggle();
     }
 

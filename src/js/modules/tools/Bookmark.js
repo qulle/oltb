@@ -153,8 +153,7 @@ class Bookmark extends Control {
         });
     }
 
-    handleClick(event) {
-        event.preventDefault();
+    handleClick() {
         this.handleBookmarks();
     }
 

@@ -60,17 +60,15 @@ class ImportVectorLayer extends Control {
         });
     }
 
-    handleClick(event) {
-        event.preventDefault();
+    handleClick() {
         this.inputDialog.click();
     }
 
     loadVectorLayer(event) {
         const fileDialog = event.target;
         const fileReader = new FileReader();
-        const self = this;
 
-        fileReader.onload = function() {
+        fileReader.addEventListener('load', () => {
             const file = fileDialog.files[0].name;
             
             try {
@@ -97,18 +95,18 @@ class ImportVectorLayer extends Control {
                 layer.getSource().addFeatures(features);
 
                 // User defined callback from constructor
-                if(typeof self.options.imported === 'function') {
-                    self.options.imported(features);
+                if(typeof this.options.imported === 'function') {
+                    this.options.imported(features);
                 }
             }catch(error) {
                 Toast.error({text: 'Error when parsing layer - check syntax'});
 
                 // User defined callback from constructor
-                if(typeof self.options.error === 'function') {
-                    self.options.error(file, error);
+                if(typeof this.options.error === 'function') {
+                    this.options.error(file, error);
                 }
             }
-        }
+        });
               
         fileReader.readAsText(fileDialog.files[0]);
     }

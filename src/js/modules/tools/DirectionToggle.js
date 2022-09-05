@@ -63,8 +63,7 @@ class DirectionToggle extends Control {
         }
     }
 
-    handleClick(event) {
-        event.preventDefault();
+    handleClick() {
         this.handleDirectionToggle();
     }
 

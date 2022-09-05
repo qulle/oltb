@@ -45,8 +45,7 @@ class Help extends Control {
         });
     }
 
-    handleClick(event) {
-        event.preventDefault();
+    handleClick() {
         try {
             window.open(this.options.url, this.options.target).focus();
         }catch(error) {

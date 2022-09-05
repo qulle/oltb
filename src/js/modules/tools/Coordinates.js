@@ -69,8 +69,7 @@ class Coordinates extends Control {
         });
     }
 
-    handleClick(event) {
-        event.preventDefault();
+    handleClick() {
         this.handleCoordinateTooltip();
     }
 

@@ -58,8 +58,7 @@ class Home extends Control {
         });
     }
 
-    handleClick(event) {
-        event.preventDefault();
+    handleClick() {
         this.handleResetToHome();
     }
 

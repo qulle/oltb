@@ -45,8 +45,7 @@ class Info extends Control {
         });
     }
 
-    handleClick(event) {
-        event.preventDefault();
+    handleClick() {
         Modal.create({
             title: this.options.title, 
             content: this.options.content

@@ -75,8 +75,7 @@ class Fullscreen extends Control {
         });
     }
 
-    handleClick(event) {
-        event.preventDefault();
+    handleClick() {
         this.handleFullscreen();
     }
 

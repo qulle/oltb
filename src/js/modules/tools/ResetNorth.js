@@ -69,8 +69,7 @@ class ResetNorth extends Control {
         });
     }
 
-    handleClick(event) {
-        event.preventDefault();
+    handleClick() {
         this.handleResetNorth();
     }
 

@@ -13,6 +13,7 @@ import { eventDispatcher } from '../helpers/Browser/EventDispatcher';
 import { onFeatureChange } from '../helpers/olFunctions/Measure';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
+import { setActiveTool } from '../helpers/ActiveTool';
 
 const LOCAL_STORAGE_NODE_NAME = 'measureTool';
 const LOCAL_STORAGE_DEFAULTS = {
@@ -140,24 +141,13 @@ class MeasureTool extends Control {
         });
     }
 
-    // Called when user changes to another tool that first must deselect/cleanup this tool
+    // Called when the user activates a tool that cannot be used with this tool
     deSelect() {
         this.handleMeasure();
     }
 
-    handleClick(event) {
-        event.preventDefault();
-
-        // Check if there is a tool already in use that needs to be deselected
-        const activeTool = window?.oltb?.activeTool; 
-        if(activeTool && activeTool !== this) {
-            activeTool.deSelect();
-        }
-
-        // Set this tool as the active global tool
-        window.oltb = window.oltb || {};
-        window.oltb['activeTool'] = this;
-
+    handleClick() {
+        setActiveTool(this);
         this.handleMeasure();
     }
 
@@ -219,9 +209,7 @@ class MeasureTool extends Control {
 
         map.addInteraction(this.interaction);
 
-        const self = this;
-
-        this.interaction.on('drawstart', function(event) {
+        this.interaction.on('drawstart', (event) => {
             const feature = event.feature;
             
             const measureTooltipElement = DOM.createElement({
@@ -245,12 +233,12 @@ class MeasureTool extends Control {
             feature.getGeometry().on('change', onFeatureChange.bind(feature));
 
             // User defined callback from constructor
-            if(typeof self.options.start === 'function') {
-                self.options.start(event);
+            if(typeof this.options.start === 'function') {
+                this.options.start(event);
             }
         });
 
-        this.interaction.on('drawend', function(event) {
+        this.interaction.on('drawend', (event) => {
             const feature = event.feature;
 
             unByKey(feature.properties.onChangeListener);
@@ -264,25 +252,25 @@ class MeasureTool extends Control {
             layer.getSource().addFeature(feature);
 
             // User defined callback from constructor
-            if(typeof self.options.end === 'function') {
-                self.options.end(event);
+            if(typeof this.options.end === 'function') {
+                this.options.end(event);
             }
         });
 
-        this.interaction.on('drawabort', function(event) {
+        this.interaction.on('drawabort', (event) => {
             const feature = event.feature;
             map.removeOverlay(feature.properties.tooltipOverlay);
 
             // User defined callback from constructor
-            if(typeof self.options.abort === 'function') {
-                self.options.abort(event);
+            if(typeof this.options.abort === 'function') {
+                this.options.abort(event);
             }
         });
 
-        this.interaction.on('error', function(event) {
+        this.interaction.on('error', (event) => {
             // User defined callback from constructor
-            if(typeof self.options.error === 'function') {
-                self.options.error(event);
+            if(typeof this.options.error === 'function') {
+                this.options.error(event);
             }
         });
     }

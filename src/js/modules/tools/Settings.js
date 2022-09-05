@@ -67,9 +67,7 @@ class Settings extends Control {
         window.dispatchEvent(new CustomEvent('oltb.settings.cleared'));
     }
 
-    handleClick(event) {
-        event.preventDefault();
-        
+    handleClick() {
         const settingsModal = new SettingsModal();
     }
 }

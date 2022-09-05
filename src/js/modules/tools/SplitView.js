@@ -169,8 +169,7 @@ class SplitView extends Control {
         eventDispatcher([this.leftSrc, this.rightSrc], 'change');
     }
 
-    handleClick(event) {
-        event.preventDefault();
+    handleClick() {
         this.handleSplitView();
     }
 
@@ -267,7 +266,6 @@ class SplitView extends Control {
             this.onPostRenderListener = rightLayer.on('postrender', this.onPostRender.bind(this));
         }
 
-        // Render the map to se the ol-split-view
         map.render();
     }
 

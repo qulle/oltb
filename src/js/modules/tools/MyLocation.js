@@ -48,8 +48,7 @@ class MyLocation extends Control {
         });
     }
 
-    handleClick(event) {
-        event.preventDefault();
+    handleClick() {
         if(isFullScreen()) {
             Dialog.confirm({
                 text: 'To use geolocation you must exit fullscreen',

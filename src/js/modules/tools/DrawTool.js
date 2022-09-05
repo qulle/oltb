@@ -10,6 +10,7 @@ import { toolboxElement, toolbarElement } from '../core/ElementReferences';
 import { eventDispatcher } from '../helpers/Browser/EventDispatcher';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
+import { setActiveTool } from '../helpers/ActiveTool';
 
 const LOCAL_STORAGE_NODE_NAME = 'drawTool';
 const LOCAL_STORAGE_DEFAULTS = {
@@ -175,24 +176,13 @@ class DrawTool extends Control {
         });
     }
 
-    // Called when user changes to another tool that first must deselect/cleanup this tool
+    // Called when the user activates a tool that cannot be used with this tool
     deSelect() {
         this.handleDraw();
     }
 
-    handleClick(event) {
-        event.preventDefault();
-
-        // Check if there is a tool already in use that needs to be deselected
-        const activeTool = window?.oltb?.activeTool; 
-        if(activeTool && activeTool !== this) {
-            activeTool.deSelect();
-        }
-
-        // Set this tool as the active global tool
-        window.oltb = window.oltb || {};
-        window.oltb['activeTool'] = this;
-
+    handleClick() {
+        setActiveTool(this);
         this.handleDraw();
     }
 
@@ -265,16 +255,14 @@ class DrawTool extends Control {
 
         map.addInteraction(this.interaction);
 
-        const self = this;
-
-        this.interaction.on('drawstart', function(event) {
+        this.interaction.on('drawstart', (event) => {
             // User defined callback from constructor
-            if(typeof self.options.start === 'function') {
-                self.options.start(event);
+            if(typeof this.options.start === 'function') {
+                this.options.start(event);
             }
         });
 
-        this.interaction.on('drawend', function(event) {
+        this.interaction.on('drawend', (event) => {
             const feature = event.feature;
             feature.setStyle(style);
 
@@ -282,22 +270,22 @@ class DrawTool extends Control {
             layer.getSource().addFeature(feature);
 
             // User defined callback from constructor
-            if(typeof self.options.end === 'function') {
-                self.options.end(event);
+            if(typeof this.options.end === 'function') {
+                this.options.end(event);
             }
         });
 
-        this.interaction.on('drawabort', function(event) {
+        this.interaction.on('drawabort', (event) => {
             // User defined callback from constructor
-            if(typeof self.options.abort === 'function') {
-                self.options.abort(event);
+            if(typeof this.options.abort === 'function') {
+                this.options.abort(event);
             }
         });
 
-        this.interaction.on('error', function(event) {
+        this.interaction.on('error', (event) => {
             // User defined callback from constructor
-            if(typeof self.options.error === 'function') {
-                self.options.error(event);
+            if(typeof this.options.error === 'function') {
+                this.options.error(event);
             }
         });
     }

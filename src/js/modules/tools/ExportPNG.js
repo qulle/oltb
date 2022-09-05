@@ -40,16 +40,14 @@ class ExportPNG extends Control {
         });
     }
 
-    handleClick(event) {
-        event.preventDefault();
+    handleClick() {
         this.handleExportPNG();
     }
 
     handleExportPNG() {
-        const self = this;
         const map = this.getMap();
 
-        map.once('rendercomplete', function() {
+        map.once('rendercomplete', () => {
             const size = map.getSize();
             const mapCanvas = DOM.createElement({
                 element: 'canvas',
@@ -83,8 +81,8 @@ class ExportPNG extends Control {
             }
 
             // User defined callback from constructor
-            if(typeof self.options.exported === 'function') {
-                self.options.exported();
+            if(typeof this.options.exported === 'function') {
+                this.options.exported();
             }
         });
 

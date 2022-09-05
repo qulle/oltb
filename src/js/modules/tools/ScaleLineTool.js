@@ -48,9 +48,7 @@ class ScaleLineTool extends Control {
         });
     }
 
-    handleClick(event) {
-        event.preventDefault();
-
+    handleClick() {
         if(this.active) {
             this.scaleLine.setMap(null);
         }else {

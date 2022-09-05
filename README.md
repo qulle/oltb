@@ -15,15 +15,14 @@ A picture says more than a thousand words, but the demo above says it all.
 
 ## Table of contents
 1. [Branches](#branches)
-2. [Report a bug](#report-a-bug)
-3. [Request a new feature](#request-a-new-feature)
-4. [Get started](#get-started)
-5. [Browser support](#browser-support)
-6. [Architecture model](#architecture-model)
-7. [Colors](#colors) 
+2. [Request new Feature or report a Bug](#request-new-feature-or-report-a-bug)
+3. [Get started](#get-started)
+4. [Browser support](#browser-support)
+5. [Architecture model](#architecture-model)
+6. [Colors](#colors) 
     1. [Theme colors](#theme-colors)
     2. [Color palette](#color-palette)
-8. [About the code](#about-the-code)
+7. [About the code](#about-the-code)
     1. [HTML](#html)
     2. [SCSS](#scss)
     3. [JavaScript](#javascript)
@@ -42,10 +41,10 @@ A picture says more than a thousand words, but the demo above says it all.
     13. [State Management](#state-management)
     14. [Debug tool](#debug-tool)
     15. [OLTB namespace](#oltb-namespace)
-9. [External GitHub projects](#external-github-projects)
-10. [Maps used in the demo](#maps-used-in-the-demo)
-11. [License](#license)
-12. [Author](#author)
+8. [External GitHub projects](#external-github-projects)
+9. [Maps used in the demo](#maps-used-in-the-demo)
+10. [License](#license)
+11. [Author](#author)
 
 ## Branches
 The main branch always holds the latest features. I have removed the develop branch and opted for a `trunk-based` development flow using short lived branches. 
@@ -60,23 +59,14 @@ Use a descriptive prefix to categorize the intent with the branch:
 - `documentation/updating-browser-support-list`
 - `code-improvement/updating-ol-version`
 
-## Report a bug
-If you find a bug in the latest release on the `main` branch start by:
+## Request new Feature or report a Bug
+If you want to request a new Feature or report a Bug in the latest release on the `main` branch start by:
 
-1. Check if the bug exists on the latest commit on the `main` branch.
+1. Check if the feature/bug exists on the latest commit on the `main` branch.
 2. Check if there is an open issue.
 3. If no issue is open, please create one and tag **@qulle**.
 
 Use the existing `labels` to tag your issue.
-
-## Request a new feature
-If you are missing a feature in the latest release on the `main` branch start by:
-
-1. Check if the feature already has been implemented on a later commit on the `main` branch.
-2. Check if there is an open request in the issue tracker.
-3. If no request is open, please create one and tag **@qulle**.
-
-Use the existing `labels` to tag your request.
 
 ## Get started
 The dev-environment uses NPM so you need to have [Node.js](https://nodejs.org/en/) installed. I use Node version *16.16.0* and NPM version *8.16.0*.
@@ -116,7 +106,7 @@ Install dependency updates.
 $ npm update --save
 ```
 
-**Note** that from npm version `7.1.0` the command `$ npm update` does not longer update the `package.json` file. From npm version `8.3.2` the command to run is `$ npm update --save` or to always apply the save option add `save=true` to the `.npmrc` file.
+**Note** that from npm version `7.0.0` the command `$ npm update` does not longer update the `package.json` file. From npm version `8.3.2` the command to run is `$ npm update --save` or to always apply the save option add `save=true` to the `.npmrc` file.
 
 ## Browser support 
 Manually tested in modern browsers.
@@ -134,7 +124,7 @@ _IE is not supported, it's time to move on._
 Architecture model showing my intentions of how an application could be built to keep the responsibility of each part separated and not end up with application specific code inside the toolbar.
 
 ## Colors
-The design of the toolbar is very much closely related to the colors used. Here follows a deeper explanation as to how i use the colors in the project.
+The project's Theme colors and the full color palette are described below.
 
 ### Theme colors
 The toolbar is awailable in both `light` and `dark` mode. I have decided to go for a small set of colors in both themes. This enables for a solid look-and-feel and association between colors and functionality. The `mid` color is to consider as the default normal color. For some situations the `light` and `dark` color is used in the normal state.

@@ -38,8 +38,7 @@ class Refresh extends Control {
         });
     }
 
-    handleClick(event) {
-        event.preventDefault();
+    handleClick() {
         window.location.reload();
     }
 }

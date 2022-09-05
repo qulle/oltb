@@ -100,9 +100,7 @@ class Overview extends Control {
         });
     }
 
-    handleClick(event) {
-        event.preventDefault();
-
+    handleClick() {
         // This must come before the setMap method or it will sometimes fail to render the overview
         this.overviewToolbox.classList.toggle('oltb-toolbox-section--show');
 

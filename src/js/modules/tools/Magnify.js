@@ -43,9 +43,7 @@ class Magnify extends Control {
         });
     }
 
-    handleClick(event) {
-        event.preventDefault();
-    
+    handleClick() {    
         if(this.active) {
             const map = this.getMap();
             const mapContainer = map.getTarget();

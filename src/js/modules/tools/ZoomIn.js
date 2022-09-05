@@ -42,8 +42,7 @@ class ZoomIn extends Control {
         });
     }
 
-    handleClick(event) {
-        event.preventDefault();
+    handleClick() {
         this.handleZoomByDelta();
     }
 
