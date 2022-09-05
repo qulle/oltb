@@ -1,11 +1,11 @@
-const FOCUSABLEELEMENTS = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+const FOCUSABLE_ELEMENTS = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
 
 const trapFocusKeyListener = function(event) {
     // Component = the modal, alert, confirm etc.
     const component = this;
 
-    const firstFocusableElement = component.querySelectorAll(FOCUSABLEELEMENTS)[0];
-    const focusableContent = component.querySelectorAll(FOCUSABLEELEMENTS);
+    const firstFocusableElement = component.querySelectorAll(FOCUSABLE_ELEMENTS)[0];
+    const focusableContent = component.querySelectorAll(FOCUSABLE_ELEMENTS);
     const lastFocusableElement = focusableContent[focusableContent.length - 1];
 
     const isTabPressed = event.key === 'Tab';

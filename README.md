@@ -47,13 +47,9 @@ A picture says more than a thousand words, but the demo above says it all.
 11. [Author](#author)
 
 ## Branches
-The main branch always holds the latest features. I have removed the develop branch and opted for a `trunk-based` development flow using short lived branches. 
+The `main` branch always holds the latest features that are considered done. The latest commit from the main branch is available on the demo-page hosted on the `gh-pages` branch.
 
-Issues are first registrated and a feature branch is created when development starts. That branch is then merged via a pull-request to main and the branch is removed.
-
-So the latest features are always available on main. The demo-page is always up-to-date with main and is hosted on the `gh-pages` branch.
-
-Use a descriptive prefix to categorize the intent with the branch:
+Use a descriptive prefix to categorize the intent with each created branch:
 - `bug/exception-editing-marker`
 - `feature/new-format-to-layer-export`
 - `documentation/updating-browser-support-list`
@@ -540,12 +536,10 @@ Tools refered to as hidden tools are tools that only add functionality via the c
 All tools have a shortcut key for ease of use and speeds up the handling of the toolbar and map. The shortcut key is displayed in the tooltip on the corresponding tool.
 
 ### Custom projections
-You can define custom projections in the file `./modules/epsg/Projections`.
-This file is imported in the main `map.js` file and your projection can be used throughout the project. If you want to change the default proejction used, there is a general config file `./modules/core/Config.js` where you can change that.
+You can define custom projections in the file `./modules/epsg/Projections`. This file is imported in the main `map.js` file and your projection can be used throughout the project. If you want to change the default proejction used, there is a general config file `./modules/core/Config.js` where you can change that.
 
 ### Dialogs
-To use the custom dialogs in the map, include the following module.
-All the dialogs uses trap focus and circles the tab-key to always stay in the opened dialog.
+To use the custom dialogs in the map, include the following module. All the dialogs uses trap focus and circles the tab-key to always stay in the opened dialog.
 ```javascript
 import Dialog from './modules/common/Dialog';
 ```

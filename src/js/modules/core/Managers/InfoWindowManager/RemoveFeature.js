@@ -5,7 +5,6 @@ const removeFeature = function(feature) {
     Dialog.confirm({
         text: 'Do you want to delete this marker?',
         onConfirm: () => {
-            // Remove feature
             LayerManager.removeFeatureFromLayer(feature);
 
             this.hideOverlay();

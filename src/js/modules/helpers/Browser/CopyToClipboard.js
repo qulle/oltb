@@ -11,11 +11,8 @@ const copyToClipboard = function(text) {
     });
 
     document.body.appendChild(textarea);
-
     textarea.select();
-
     const didCopy = document.execCommand('copy');
-
     document.body.removeChild(textarea);
 
     return didCopy;
