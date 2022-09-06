@@ -10,5 +10,5 @@ String.prototype.isDigitsOnly = function() {
 }
 
 String.prototype.ellipsis = function(limit) {
-    return this.length > limit ? this.substr(0, limit) + '...' : this;
+    return this.length > limit ? this.substring(0, limit) + '...' : this;
 }

@@ -8,7 +8,7 @@ import Stamen from 'ol/source/Stamen';
 import GeoJSON from 'ol/format/GeoJSON';
 import { Map, View } from 'ol';
 import { XYZ } from 'ol/source';
-import { fromLonLat, toLonLat } from 'ol/proj';
+import { fromLonLat } from 'ol/proj';
 import { platformModifierKeyOnly, altShiftKeysOnly, shiftKeyOnly, targetNotEditable } from 'ol/events/condition';
 import { defaults as defaultInterctions, MouseWheelZoom, DragPan, DragRotate, KeyboardZoom, KeyboardPan } from 'ol/interaction';
 import { defaults as defaultControls } from 'ol/control';
@@ -60,8 +60,9 @@ import './modules/helpers/Accessibility';
 import './modules/helpers/SlideToggle';
 import './modules/epsg/Projections';
 
+// Note: This is the same NODE_NAME and PROPS that the MapNavigation.js tool is using
 const LOCAL_STORAGE_NODE_NAME = 'mapData';
-const LOCAL_STORAGE_PROPS = {
+const LOCAL_STORAGE_DEFAULTS = {
     lon: 18.6435,
     lat: 60.1282,
     zoom: 4,
@@ -69,10 +70,8 @@ const LOCAL_STORAGE_PROPS = {
 };
 
 // Load potential stored data from localStorage
-const loadedPropertiesFromLocalStorage = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
-
-// Merge the potential data replacing the default values
-const localStorage = {...LOCAL_STORAGE_PROPS, ...loadedPropertiesFromLocalStorage};
+const localStorageState = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
+const localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
 
 const map = new Map({
     interactions: defaultInterctions({
@@ -330,56 +329,44 @@ const map = new Map({
     })
 });
 
-// Track changes to zoom, paning etc. store in localStorage
-map.on('moveend', (event) => {
-    const view = map.getView();
-    const center = toLonLat(view.getCenter());
-
-    localStorage.lon = center[0];
-    localStorage.lat = center[1];
-    localStorage.zoom = view.getZoom();
-    localStorage.rotation = view.getRotation();
-
-    StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(localStorage));
-});
-
 // Initialize static managers with reference to map
 InfoWindowManager.init(map);
 LayerManager.init(map);
 
 // Register all map-layers to the Layermanager.
 // The layermanager will add these layers to the map.
-LayerManager.addMapLayers([{
-    name: 'Open street map',
-    layer: new TileLayer({
-        source: new OSM(),
-        visible: true
-    })
-}, {
-    name: 'ArcGIS World Topo',
-    layer: new TileLayer({
-        source: new XYZ({
-            attributions: 'Tiles © <a href="https://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer">ArcGIS</a>',
-            url:'https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}',
-        }),
-        visible: false
-    })
-}, {
-    name: 'Watercolor',
-    layer: new TileLayer({
-        source: new Stamen({
-            layer: 'watercolor'
-        }),
-        visible: false
-    })
-}, {
-    name: 'Country world map',
-    layer: new VectorLayer({
-        source: new VectorSource({
-            url: worldMapUrl,
-            format: new GeoJSON()
-        }),
-        visible: false
-    })
-}
+LayerManager.addMapLayers([
+    {
+        name: 'Open street map',
+        layer: new TileLayer({
+            source: new OSM(),
+            visible: true
+        })
+    }, {
+        name: 'ArcGIS World Topo',
+        layer: new TileLayer({
+            source: new XYZ({
+                attributions: 'Tiles © <a href="https://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer">ArcGIS</a>',
+                url:'https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}',
+            }),
+            visible: false
+        })
+    }, {
+        name: 'Watercolor',
+        layer: new TileLayer({
+            source: new Stamen({
+                layer: 'watercolor'
+            }),
+            visible: false
+        })
+    }, {
+        name: 'Country world map',
+        layer: new VectorLayer({
+            source: new VectorSource({
+                url: worldMapUrl,
+                format: new GeoJSON()
+            }),
+            visible: false
+        })
+    }
 ], true);

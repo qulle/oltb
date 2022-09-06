@@ -1,6 +1,6 @@
 import 'ol/ol.css';
 import Toast from '../common/Toast';
-import EventType from 'ol/events/EventType';
+import DOM from '../helpers/Browser/DOM';
 import { Control } from 'ol/control';
 import { getRenderPixel } from 'ol/render';
 import { unByKey } from 'ol/Observable';
@@ -19,20 +19,21 @@ class Magnify extends Control {
             class: 'oltb-tool-button__icon'
         });
 
-        const button = document.createElement('button');
-        button.setAttribute('type', 'button');
-        button.setAttribute('data-tippy-content', 'Magnifier (Z)');
-        button.className = 'oltb-tool-button';
-        button.innerHTML = icon;
-        button.addEventListener(
-            EventType.CLICK,
-            this.handleClick.bind(this),
-            false
-        );
+        const button = DOM.createElement({
+            element: 'button',
+            html: icon,
+            class: 'oltb-tool-button',
+            attributes: {
+                type: 'button',
+                'data-tippy-content': 'Magnifier (Z)'
+            },
+            listeners: {
+                'click': this.handleClick.bind(this)
+            }
+        });
 
         this.element.appendChild(button);
         this.button = button;
-
         this.radius = 75;
 
         window.addEventListener('keyup', (event) => {
@@ -42,9 +43,7 @@ class Magnify extends Control {
         });
     }
 
-    handleClick(event) {
-        event.preventDefault();
-    
+    handleClick() {    
         if(this.active) {
             const map = this.getMap();
             const mapContainer = map.getTarget();

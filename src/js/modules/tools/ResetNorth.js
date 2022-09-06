@@ -1,14 +1,16 @@
 import 'ol/ol.css';
-import EventType from 'ol/events/EventType';
 import Dialog from '../common/Dialog';
 import Toast from '../common/Toast';
 import Config from '../core/Config';
+import DOM from '../helpers/Browser/DOM';
 import { Control } from 'ol/control';
 import { easeOut } from 'ol/easing';
 import { toolbarElement } from '../core/ElementReferences';
 import { addContextMenuItem } from '../common/ContextMenu';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
+
+const DEFAULT_OPTIONS = {};
 
 class ResetNorth extends Control {
     constructor(options = {}) {
@@ -21,19 +23,21 @@ class ResetNorth extends Control {
             class: 'oltb-tool-button__icon'
         });
 
-        const button = document.createElement('button');
-        button.setAttribute('type', 'button');
-        button.setAttribute('data-tippy-content', 'Reset rotation (N)');
-        button.className = 'oltb-tool-button';
-        button.innerHTML = icon;
-        button.addEventListener(
-            EventType.CLICK,
-            this.handleClick.bind(this),
-            false
-        );
+        const button = DOM.createElement({
+            element: 'button',
+            html: icon,
+            class: 'oltb-tool-button',
+            attributes: {
+                type: 'button',
+                'data-tippy-content': 'Reset rotation (N)'
+            },
+            listeners: {
+                'click': this.handleClick.bind(this)
+            }
+        });
 
         this.element.appendChild(button);
-        this.options = options;
+        this.options = { ...DEFAULT_OPTIONS, ...options };
 
         addContextMenuItem('main.map.context.menu', {icon: icon, name: 'Set rotation by degrees', fn: function(map, coordinates, target) {
             const view = map.getView();
@@ -67,8 +71,7 @@ class ResetNorth extends Control {
         });
     }
 
-    handleClick(event) {
-        event.preventDefault();
+    handleClick() {
         this.handleResetNorth();
     }
 

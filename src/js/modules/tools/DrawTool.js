@@ -1,8 +1,8 @@
 import 'ol/ol.css';
 import LayerManager from '../core/Managers/LayerManager';
 import SettingsManager from '../core/Managers/SettingsManager';
-import EventType from 'ol/events/EventType';
 import StateManager from '../core/Managers/StateManager';
+import DOM from '../helpers/Browser/DOM';
 import Draw, { createBox, createRegularPolygon } from 'ol/interaction/Draw';
 import { Control } from 'ol/control';
 import { Fill, Stroke, Circle, Style } from 'ol/style';
@@ -10,15 +10,18 @@ import { toolboxElement, toolbarElement } from '../core/ElementReferences';
 import { eventDispatcher } from '../helpers/Browser/EventDispatcher';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
+import { setActiveTool } from '../helpers/ActiveTool';
 
 const LOCAL_STORAGE_NODE_NAME = 'drawTool';
-const LOCAL_STORAGE_PROPS = {
+const LOCAL_STORAGE_DEFAULTS = {
     collapsed: false,
     toolTypeIndex: 5,
     strokeColor: '#4A86B8',
     strokeWidth: 2,
     fillColor: '#FFFFFFFF'
 };
+
+const DEFAULT_OPTIONS = {};
 
 class DrawTool extends Control {
     constructor(options = {}) {
@@ -31,27 +34,27 @@ class DrawTool extends Control {
             class: 'oltb-tool-button__icon'
         });
 
-        const button = document.createElement('button');
-        button.setAttribute('type', 'button');
-        button.setAttribute('data-tippy-content', 'Draw (P)');
-        button.className = 'oltb-tool-button';
-        button.innerHTML = icon;
-        button.addEventListener(
-            EventType.CLICK,
-            this.handleClick.bind(this),
-            false
-        );
+        const button = DOM.createElement({
+            element: 'button',
+            html: icon,
+            class: 'oltb-tool-button',
+            attributes: {
+                type: 'button',
+                'data-tippy-content': 'Draw (P)'
+            },
+            listeners: {
+                'click': this.handleClick.bind(this)
+            }
+        });
 
         this.element.appendChild(button);
         this.button = button;
         this.active = false;
-        this.options = options;
+        this.options = { ...DEFAULT_OPTIONS, ...options };
 
         // Load potential stored data from localStorage
-        const loadedPropertiesFromLocalStorage = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
-
-        // Merge the potential data replacing the default values
-        this.localStorage = {...LOCAL_STORAGE_PROPS, ...loadedPropertiesFromLocalStorage};
+        const localStorageState = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
+        this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
 
         toolboxElement.insertAdjacentHTML('beforeend', `
             <div id="oltb-drawing-tool-box" class="oltb-toolbox-section">
@@ -155,9 +158,9 @@ class DrawTool extends Control {
         this.toolType = toolType;
 
         document.addEventListener('keyup', (event) => {
-            const key = event.key;
+            const key = event.key.toLowerCase();
 
-            if(key === 'Escape') {
+            if(key === 'escape') {
                 if(this.interaction) {
                     this.interaction.abortDrawing();
                 }
@@ -171,28 +174,17 @@ class DrawTool extends Control {
         });
 
         window.addEventListener('oltb.settings.cleared', () => {
-            this.localStorage = LOCAL_STORAGE_PROPS;
+            this.localStorage = LOCAL_STORAGE_DEFAULTS;
         });
     }
 
-    // Called when user changes to another tool that first must deselect/cleanup this tool
+    // Called when the user activates a tool that cannot be used with this tool
     deSelect() {
         this.handleDraw();
     }
 
-    handleClick(event) {
-        event.preventDefault();
-
-        // Check if there is a tool already in use that needs to be deselected
-        const activeTool = window?.oltb?.activeTool; 
-        if(activeTool && activeTool !== this) {
-            activeTool.deSelect();
-        }
-
-        // Set this tool as the active global tool
-        window.oltb = window.oltb || {};
-        window.oltb['activeTool'] = this;
-
+    handleClick() {
+        setActiveTool(this);
         this.handleDraw();
     }
 
@@ -265,16 +257,14 @@ class DrawTool extends Control {
 
         map.addInteraction(this.interaction);
 
-        const self = this;
-
-        this.interaction.on('drawstart', function(event) {
+        this.interaction.on('drawstart', (event) => {
             // User defined callback from constructor
-            if(typeof self.options.start === 'function') {
-                self.options.start(event);
+            if(typeof this.options.start === 'function') {
+                this.options.start(event);
             }
         });
 
-        this.interaction.on('drawend', function(event) {
+        this.interaction.on('drawend', (event) => {
             const feature = event.feature;
             feature.setStyle(style);
 
@@ -282,22 +272,22 @@ class DrawTool extends Control {
             layer.getSource().addFeature(feature);
 
             // User defined callback from constructor
-            if(typeof self.options.end === 'function') {
-                self.options.end(event);
+            if(typeof this.options.end === 'function') {
+                this.options.end(event);
             }
         });
 
-        this.interaction.on('drawabort', function(event) {
+        this.interaction.on('drawabort', (event) => {
             // User defined callback from constructor
-            if(typeof self.options.abort === 'function') {
-                self.options.abort(event);
+            if(typeof this.options.abort === 'function') {
+                this.options.abort(event);
             }
         });
 
-        this.interaction.on('error', function(event) {
+        this.interaction.on('error', (event) => {
             // User defined callback from constructor
-            if(typeof self.options.error === 'function') {
-                self.options.error(event);
+            if(typeof this.options.error === 'function') {
+                this.options.error(event);
             }
         });
     }

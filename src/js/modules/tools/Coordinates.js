@@ -1,8 +1,8 @@
 import 'ol/ol.css';
-import EventType from 'ol/events/EventType';
 import Overlay from 'ol/Overlay';
 import Config from '../core/Config';
 import Toast from '../common/Toast';
+import DOM from '../helpers/Browser/DOM';
 import SettingsManager from '../core/Managers/SettingsManager';
 import { Control } from 'ol/control';
 import { transform } from 'ol/proj';
@@ -12,6 +12,8 @@ import { copyToClipboard } from '../helpers/Browser/CopyToClipboard';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { toStringHDMS } from 'ol/coordinate';
+
+const DEFAULT_OPTIONS = {};
 
 class Coordinates extends Control {
     constructor(options = {}) {
@@ -24,24 +26,29 @@ class Coordinates extends Control {
             class: 'oltb-tool-button__icon'
         });
 
-        const button = document.createElement('button');
-        button.setAttribute('type', 'button');
-        button.setAttribute('data-tippy-content', 'Show coordinates (C)');
-        button.className = 'oltb-tool-button';
-        button.innerHTML = icon;
-        button.addEventListener(
-            EventType.CLICK,
-            this.handleClick.bind(this),
-            false
-        );
+        const button = DOM.createElement({
+            element: 'button',
+            html: icon,
+            class: 'oltb-tool-button',
+            attributes: {
+                type: 'button',
+                'data-tippy-content': 'Show coordinates (C)'
+            },
+            listeners: {
+                'click': this.handleClick.bind(this)
+            }
+        });
 
         this.element.appendChild(button);
         this.button = button;
         this.active = false;
-        this.options = options;
+        this.options = { ...DEFAULT_OPTIONS, ...options };
 
-        const tooltipElement = document.createElement('span');
-        tooltipElement.className = 'oltb-coordinate-tooltip';
+        const tooltipElement = DOM.createElement({
+            element: 'span',
+            class: 'oltb-coordinate-tooltip'
+        })
+
         this.tooltipElement = tooltipElement;
 
         const tooltipOverlay = new Overlay({
@@ -64,8 +71,7 @@ class Coordinates extends Control {
         });
     }
 
-    handleClick(event) {
-        event.preventDefault();
+    handleClick() {
         this.handleCoordinateTooltip();
     }
 

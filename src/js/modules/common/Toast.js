@@ -2,19 +2,19 @@ import Toaster from './Toasts/Toaster';
 
 class Toast {
     static info(options) {
-        return new Toaster({...options, type: Toaster.Info});
+        return new Toaster({ ...options, type: Toaster.Info });
     }
 
     static warning(options) {
-        return new Toaster({...options, type: Toaster.Warning});
+        return new Toaster({ ...options, type: Toaster.Warning });
     }
 
     static success(options) {
-        return new Toaster({...options, type: Toaster.Success});
+        return new Toaster({ ...options, type: Toaster.Success });
     }
 
     static error(options) {
-        return new Toaster({...options, type: Toaster.Error});
+        return new Toaster({ ...options, type: Toaster.Error });
     }
 }
 

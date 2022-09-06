@@ -105,7 +105,7 @@ body.oltb-using-keyboard #oltb {
 }
 
 // Always use horizontal toolbar for mobiles
-@media only screen and(max-width: $breakpoint-sm) {
+@media only screen and (max-width: $breakpoint-sm) {
     #oltb {
         max-width: calc(100% - 2rem);
         flex-direction: row;

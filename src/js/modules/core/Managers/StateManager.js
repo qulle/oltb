@@ -1,25 +1,25 @@
 class StateManager {
-    static internalState = JSON.parse(localStorage.getItem('oltb-state')) || {};
+    static runtimeState = JSON.parse(localStorage.getItem('oltb-state')) || {};
 
     static updateStateObject(name, value) {
-        this.internalState[name] = value;
+        this.runtimeState[name] = value;
         this.saveState();
     }
 
     static getStateObject(name) {
-        if(name in this.internalState) {
-            return this.internalState[name];
+        if(name in this.runtimeState) {
+            return this.runtimeState[name];
         }
         
         return null;
     }
 
     static saveState() {
-        localStorage.setItem('oltb-state', JSON.stringify(this.internalState));
+        localStorage.setItem('oltb-state', JSON.stringify(this.runtimeState));
     }
 
     static clear() {
-        this.internalState = {};
+        this.runtimeState = {};
         localStorage.clear();
     }
 }

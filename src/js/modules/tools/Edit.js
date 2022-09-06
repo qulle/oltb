@@ -1,9 +1,9 @@
 import 'ol/ol.css';
-import EventType from 'ol/events/EventType';
 import Dialog from '../common/Dialog';
 import LayerManager from '../core/Managers/LayerManager';
 import SettingsManager from '../core/Managers/SettingsManager';
 import StateManager from '../core/Managers/StateManager';
+import DOM from '../helpers/Browser/DOM';
 import { Control } from 'ol/control';
 import { Select, Modify, Translate } from 'ol/interaction';
 import { shiftKeyOnly } from 'ol/events/condition';
@@ -12,11 +12,14 @@ import { onFeatureChange } from '../helpers/olFunctions/Measure';
 import { toolboxElement, toolbarElement } from '../core/ElementReferences';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
+import { setActiveTool } from '../helpers/ActiveTool';
 
 const LOCAL_STORAGE_NODE_NAME = 'editTool';
-const LOCAL_STORAGE_PROPS = {
+const LOCAL_STORAGE_DEFAULTS = {
     collapsed: false
 };
+
+const DEFAULT_OPTIONS = {};
 
 class Edit extends Control {
     constructor(options = {}) {
@@ -29,26 +32,26 @@ class Edit extends Control {
             class: 'oltb-tool-button__icon'
         });
 
-        const button = document.createElement('button');
-        button.setAttribute('type', 'button');
-        button.setAttribute('data-tippy-content', 'Edit (V)');
-        button.className = 'oltb-tool-button';
-        button.innerHTML = icon;
-        button.addEventListener(
-            EventType.CLICK,
-            this.handleClick.bind(this),
-            false
-        );
+        const button = DOM.createElement({
+            element: 'button',
+            html: icon,
+            class: 'oltb-tool-button',
+            attributes: {
+                type: 'button',
+                'data-tippy-content': 'Edit (V)'
+            },
+            listeners: {
+                'click': this.handleClick.bind(this)
+            }
+        });
 
         this.element.appendChild(button);
         this.button = button;
-        this.options = options;
+        this.options = { ...DEFAULT_OPTIONS, ...options };
 
         // Load potential stored data from localStorage
-        const loadedPropertiesFromLocalStorage = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
-
-        // Merge the potential data replacing the default values
-        this.localStorage = {...LOCAL_STORAGE_PROPS, ...loadedPropertiesFromLocalStorage};
+        const localStorageState = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
+        this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
         
         toolboxElement.insertAdjacentHTML('beforeend', `
             <div id="oltb-edit-toolbox" class="oltb-toolbox-section">
@@ -65,8 +68,6 @@ class Edit extends Control {
                 </div>
             </div>
         `);
-
-        const self = this;
 
         const editToolbox = document.querySelector('#oltb-edit-toolbox');
         this.editToolbox = editToolbox;
@@ -111,23 +112,23 @@ class Edit extends Control {
             features: select.getFeatures(),
         });
 
-        select.getFeatures().on('add', function(event) {
-            self.deleteSelectedButton.removeAttribute('disabled');
+        select.getFeatures().on('add', (event) => {
+            this.deleteSelectedButton.removeAttribute('disabled');
 
             // User defined callback from constructor
-            if(typeof self.options.selectadd === 'function') {
-                self.options.selectadd(event);
+            if(typeof this.options.selectadd === 'function') {
+                this.options.selectadd(event);
             }
         });
 
-        select.getFeatures().on('remove', function(event) {
+        select.getFeatures().on('remove', (event) => {
             if(!select.getFeatures().getLength()) {
-                self.deleteSelectedButton.setAttribute('disabled', '');
+                this.deleteSelectedButton.setAttribute('disabled', '');
             }
 
             // User defined callback from constructor
-            if(typeof self.options.selectremove === 'function') {
-                self.options.selectremove(event);
+            if(typeof this.options.selectremove === 'function') {
+                this.options.selectremove(event);
             }
         });
 
@@ -135,39 +136,39 @@ class Edit extends Control {
         this.modify = modify;
         this.translate = translate;
 
-        this.modify.addEventListener('modifystart', function(event) {
-            self.attachOnChange(event.features);
+        this.modify.addEventListener('modifystart', (event) => {
+            this.attachOnChange(event.features);
 
             // User defined callback from constructor
-            if(typeof self.options.modifystart === 'function') {
-                self.options.modifystart(event);
+            if(typeof this.options.modifystart === 'function') {
+                this.options.modifystart(event);
             }
         });
 
-        this.modify.addEventListener('modifyend', function(event) {
-            self.detachOnChange(event.features);
+        this.modify.addEventListener('modifyend', (event) => {
+            this.detachOnChange(event.features);
 
             // User defined callback from constructor
-            if(typeof self.options.modifyend === 'function') {
-                self.options.modifyend(event);
+            if(typeof this.options.modifyend === 'function') {
+                this.options.modifyend(event);
             }
         });
 
-        this.translate.addEventListener('translatestart', function(event) {
-            self.attachOnChange(event.features);
+        this.translate.addEventListener('translatestart', (event) => {
+            this.attachOnChange(event.features);
 
             // User defined callback from constructor
-            if(typeof self.options.translatestart === 'function') {
-                self.options.translatestart(event);
+            if(typeof this.options.translatestart === 'function') {
+                this.options.translatestart(event);
             }
         });
 
-        this.translate.addEventListener('translateend', function(event) {
-            self.detachOnChange(event.features);
+        this.translate.addEventListener('translateend', (event) => {
+            this.detachOnChange(event.features);
 
             // User defined callback from constructor
-            if(typeof self.options.translateend === 'function') {
-                self.options.translateend(event);
+            if(typeof this.options.translateend === 'function') {
+                this.options.translateend(event);
             }
         });
 
@@ -181,9 +182,8 @@ class Edit extends Control {
                 }
             }
         });
-
         window.addEventListener('oltb.settings.cleared', () => {
-            this.localStorage = LOCAL_STORAGE_PROPS;
+            this.localStorage = LOCAL_STORAGE_DEFAULTS;
         });
     }
 
@@ -246,24 +246,13 @@ class Edit extends Control {
         });
     }
 
-    // Called when user changes to another tool that first must deselect/cleanup this tool
+    // Called when the user activates a tool that cannot be used with this tool
     deSelect() {
         this.handleEdit();
     }
 
-    handleClick(event) {
-        event.preventDefault();
-
-        // Check if there is a tool already in use that needs to be deselected
-        const activeTool = window?.oltb?.activeTool; 
-        if(activeTool && activeTool !== this) {
-            activeTool.deSelect();
-        }
-
-        // Set this tool as the active global tool
-        window.oltb = window.oltb || {};
-        window.oltb['activeTool'] = this;
-
+    handleClick() {
+        setActiveTool(this);
         this.handleEdit();
     }
 

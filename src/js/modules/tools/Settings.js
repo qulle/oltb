@@ -1,14 +1,16 @@
 import 'ol/ol.css';
-import EventType from 'ol/events/EventType';
 import Dialog from '../common/Dialog';
 import Toast from '../common/Toast';
 import SettingsModal from './ModalExtensions/SettingsModal';
 import StateManager from '../core/Managers/StateManager';
+import DOM from '../helpers/Browser/DOM';
 import { Control } from 'ol/control';
 import { toolbarElement } from '../core/ElementReferences';
 import { addContextMenuItem } from '../common/ContextMenu';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
+
+const DEFAULT_OPTIONS = {};
 
 class Settings extends Control {
     constructor(options = {}) {
@@ -21,19 +23,21 @@ class Settings extends Control {
             class: 'oltb-tool-button__icon'
         });
 
-        const button = document.createElement('button');
-        button.setAttribute('type', 'button');
-        button.setAttribute('data-tippy-content', 'Settings (U)');
-        button.className = 'oltb-tool-button';
-        button.innerHTML = icon;
-        button.addEventListener(
-            EventType.CLICK,
-            this.handleClick.bind(this),
-            false
-        );
+        const button = DOM.createElement({
+            element: 'button',
+            html: icon,
+            class: 'oltb-tool-button',
+            attributes: {
+                type: 'button',
+                'data-tippy-content': 'Settings (U)'
+            },
+            listeners: {
+                'click': this.handleClick.bind(this)
+            }
+        });
 
-        this.options = options;
         this.element.appendChild(button);
+        this.options = { ...DEFAULT_OPTIONS, ...options };
 
         addContextMenuItem('main.map.context.menu', {icon: icon, name: 'Clear settings', fn: () => {
             Dialog.confirm({
@@ -65,9 +69,7 @@ class Settings extends Control {
         window.dispatchEvent(new CustomEvent('oltb.settings.cleared'));
     }
 
-    handleClick(event) {
-        event.preventDefault();
-        
+    handleClick() {
         const settingsModal = new SettingsModal();
     }
 }

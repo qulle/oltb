@@ -1,10 +1,10 @@
 import 'ol/ol.css';
-import EventType from 'ol/events/EventType';
 import Draw from 'ol/interaction/Draw';
 import Overlay from 'ol/Overlay';
 import LayerManager from '../core/Managers/LayerManager';
 import SettingsManager from '../core/Managers/SettingsManager';
 import StateManager from '../core/Managers/StateManager';
+import DOM from '../helpers/Browser/DOM';
 import { Control } from 'ol/control';
 import { Fill, Stroke, Circle, Style } from 'ol/style';
 import { unByKey } from 'ol/Observable';
@@ -13,13 +13,16 @@ import { eventDispatcher } from '../helpers/Browser/EventDispatcher';
 import { onFeatureChange } from '../helpers/olFunctions/Measure';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
+import { setActiveTool } from '../helpers/ActiveTool';
 
 const LOCAL_STORAGE_NODE_NAME = 'measureTool';
-const LOCAL_STORAGE_PROPS = {
+const LOCAL_STORAGE_DEFAULTS = {
     collapsed: false,
     toolTypeIndex: 0,
     strokeColor: '#3B4352'
 };
+
+const DEFAULT_OPTIONS = {};
 
 class MeasureTool extends Control {
     constructor(options = {}) {
@@ -32,27 +35,27 @@ class MeasureTool extends Control {
             class: 'oltb-tool-button__icon'
         });
 
-        const button = document.createElement('button');
-        button.setAttribute('type', 'button');
-        button.setAttribute('data-tippy-content', 'Measure (M)');
-        button.className = 'oltb-tool-button';
-        button.innerHTML = icon;
-        button.addEventListener(
-            EventType.CLICK,
-            this.handleClick.bind(this),
-            false
-        );
+        const button = DOM.createElement({
+            element: 'button',
+            html: icon,
+            class: 'oltb-tool-button',
+            attributes: {
+                type: 'button',
+                'data-tippy-content': 'Measure (M)'
+            },
+            listeners: {
+                'click': this.handleClick.bind(this)
+            }
+        });
 
         this.element.appendChild(button);
         this.button = button;
         this.active = false;
-        this.options = options;
+        this.options = { ...DEFAULT_OPTIONS, ...options };
         
         // Load potential stored data from localStorage
-        const loadedPropertiesFromLocalStorage = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
-
-        // Merge the potential data replacing the default values
-        this.localStorage = {...LOCAL_STORAGE_PROPS, ...loadedPropertiesFromLocalStorage};
+        const localStorageState = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
+        this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
 
         toolboxElement.insertAdjacentHTML('beforeend', `
             <div id="oltb-measure-toolbox" class="oltb-toolbox-section">
@@ -120,9 +123,9 @@ class MeasureTool extends Control {
         this.strokeColor = strokeColor;
 
         document.addEventListener('keyup', (event) => {
-            const key = event.key;
+            const key = event.key.toLowerCase();
 
-            if(key === 'Escape') {
+            if(key === 'escape') {
                 if(this.interaction) {
                     this.interaction.abortDrawing();
                 }
@@ -136,28 +139,17 @@ class MeasureTool extends Control {
         });
 
         window.addEventListener('oltb.settings.cleared', () => {
-            this.localStorage = LOCAL_STORAGE_PROPS;
+            this.localStorage = LOCAL_STORAGE_DEFAULTS;
         });
     }
 
-    // Called when user changes to another tool that first must deselect/cleanup this tool
+    // Called when the user activates a tool that cannot be used with this tool
     deSelect() {
         this.handleMeasure();
     }
 
-    handleClick(event) {
-        event.preventDefault();
-
-        // Check if there is a tool already in use that needs to be deselected
-        const activeTool = window?.oltb?.activeTool; 
-        if(activeTool && activeTool !== this) {
-            activeTool.deSelect();
-        }
-
-        // Set this tool as the active global tool
-        window.oltb = window.oltb || {};
-        window.oltb['activeTool'] = this;
-
+    handleClick() {
+        setActiveTool(this);
         this.handleMeasure();
     }
 
@@ -219,13 +211,13 @@ class MeasureTool extends Control {
 
         map.addInteraction(this.interaction);
 
-        const self = this;
-
-        this.interaction.on('drawstart', function(event) {
+        this.interaction.on('drawstart', (event) => {
             const feature = event.feature;
-
-            const measureTooltipElement = document.createElement('div');
-            measureTooltipElement.className = 'oltb-measure-tooltip';
+            
+            const measureTooltipElement = DOM.createElement({
+                element: 'div',
+                class: 'oltb-measure-tooltip'
+            });
     
             const measureTooltipOverlay = new Overlay({
                 element: measureTooltipElement,
@@ -243,12 +235,12 @@ class MeasureTool extends Control {
             feature.getGeometry().on('change', onFeatureChange.bind(feature));
 
             // User defined callback from constructor
-            if(typeof self.options.start === 'function') {
-                self.options.start(event);
+            if(typeof this.options.start === 'function') {
+                this.options.start(event);
             }
         });
 
-        this.interaction.on('drawend', function(event) {
+        this.interaction.on('drawend', (event) => {
             const feature = event.feature;
 
             unByKey(feature.properties.onChangeListener);
@@ -262,25 +254,25 @@ class MeasureTool extends Control {
             layer.getSource().addFeature(feature);
 
             // User defined callback from constructor
-            if(typeof self.options.end === 'function') {
-                self.options.end(event);
+            if(typeof this.options.end === 'function') {
+                this.options.end(event);
             }
         });
 
-        this.interaction.on('drawabort', function(event) {
+        this.interaction.on('drawabort', (event) => {
             const feature = event.feature;
             map.removeOverlay(feature.properties.tooltipOverlay);
 
             // User defined callback from constructor
-            if(typeof self.options.abort === 'function') {
-                self.options.abort(event);
+            if(typeof this.options.abort === 'function') {
+                this.options.abort(event);
             }
         });
 
-        this.interaction.on('error', function(event) {
+        this.interaction.on('error', (event) => {
             // User defined callback from constructor
-            if(typeof self.options.error === 'function') {
-                self.options.error(event);
+            if(typeof this.options.error === 'function') {
+                this.options.error(event);
             }
         });
     }

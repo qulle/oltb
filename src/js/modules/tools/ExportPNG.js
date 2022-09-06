@@ -1,10 +1,12 @@
 import 'ol/ol.css';
-import EventType from 'ol/events/EventType';
+import DOM from '../helpers/Browser/DOM';
 import { Control } from 'ol/control';
 import { download } from '../helpers/Browser/Download';
 import { toolbarElement } from '../core/ElementReferences';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
+
+const DEFAULT_OPTIONS = {};
 
 class ExportPNG extends Control {
     constructor(options = {}) {
@@ -17,19 +19,22 @@ class ExportPNG extends Control {
             class: 'oltb-tool-button__icon'
         });
 
-        const button = document.createElement('button');
-        button.setAttribute('type', 'button');
-        button.setAttribute('data-tippy-content', 'Export PNG (E)');
-        button.className = 'oltb-tool-button';
-        button.innerHTML = icon;
-        button.addEventListener(
-            EventType.CLICK,
-            this.handleClick.bind(this),
-            false
-        );
+        const button = DOM.createElement({
+            element: 'button',
+            html: icon,
+            class: 'oltb-tool-button',
+            attributes: {
+                type: 'button',
+                'data-tippy-content': 'Export PNG (E)'
+            },
+            listeners: {
+                'click': this.handleClick.bind(this)
+            }
+        });
 
         this.element.appendChild(button);
-        this.options = options;
+        this.options = { ...DEFAULT_OPTIONS, ...options };
+        
         window.addEventListener('keyup', (event) => {
             if(isShortcutKeyOnly(event, 'e')) {
                 this.handleClick(event);
@@ -37,21 +42,22 @@ class ExportPNG extends Control {
         });
     }
 
-    handleClick(event) {
-        event.preventDefault();
+    handleClick() {
         this.handleExportPNG();
     }
 
     handleExportPNG() {
-        const self = this;
         const map = this.getMap();
 
-        map.once('rendercomplete', function() {
-            const mapCanvas = document.createElement('canvas');
+        map.once('rendercomplete', () => {
             const size = map.getSize();
-    
-            mapCanvas.width = size[0];
-            mapCanvas.height = size[1];
+            const mapCanvas = DOM.createElement({
+                element: 'canvas',
+                attributes: {
+                    width: size[0],
+                    height: size[1]
+                }
+            });
     
             const mapContext = mapCanvas.getContext('2d');
             const canvases = document.querySelectorAll('.ol-layer canvas');
@@ -77,8 +83,8 @@ class ExportPNG extends Control {
             }
 
             // User defined callback from constructor
-            if(typeof self.options.exported === 'function') {
-                self.options.exported();
+            if(typeof this.options.exported === 'function') {
+                this.options.exported();
             }
         });
 

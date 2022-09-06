@@ -68,7 +68,7 @@ body.oltb-dark .oltb-modal {
     }
 }
 
-@media only screen and(max-width: $breakpoint-sm) {
+@media only screen and (max-width: $breakpoint-sm) {
     .oltb-modal {
         min-width: calc(100% - 2rem);
     }

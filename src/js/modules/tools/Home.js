@@ -1,6 +1,6 @@
 import 'ol/ol.css';
-import EventType from 'ol/events/EventType';
 import Config from '../core/Config';
+import DOM from '../helpers/Browser/DOM';
 import { Control } from 'ol/control';
 import { fromLonLat } from 'ol/proj';
 import { easeOut } from 'ol/easing';
@@ -8,6 +8,7 @@ import { toolbarElement } from '../core/ElementReferences';
 import { addContextMenuItem } from '../common/ContextMenu';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
+import Toast from '../common/Toast';
 
 const DEFAULT_OPTIONS = {
     zoom: 1,
@@ -26,19 +27,21 @@ class Home extends Control {
             class: 'oltb-tool-button__icon'
         });
 
-        const button = document.createElement('button');
-        button.setAttribute('type', 'button');
-        button.setAttribute('data-tippy-content', 'Zoom home (H)');
-        button.className = 'oltb-tool-button';
-        button.innerHTML = icon;
-        button.addEventListener(
-            EventType.CLICK,
-            this.handleClick.bind(this),
-            false
-        );
+        const button = DOM.createElement({
+            element: 'button',
+            html: icon,
+            class: 'oltb-tool-button',
+            attributes: {
+                type: 'button',
+                'data-tippy-content': 'Zoom home (H)'
+            },
+            listeners: {
+                'click': this.handleClick.bind(this)
+            }
+        });
 
         this.element.appendChild(button);
-        this.options = {...DEFAULT_OPTIONS, ...options};
+        this.options = { ...DEFAULT_OPTIONS, ...options };
 
         this.homeLocation = fromLonLat([this.options.lon, this.options.lat]);;
         this.homeZoom = this.options.zoom;
@@ -56,8 +59,7 @@ class Home extends Control {
         });
     }
 
-    handleClick(event) {
-        event.preventDefault();
+    handleClick() {
         this.handleResetToHome();
     }
 
@@ -93,6 +95,8 @@ class Home extends Control {
 
         this.userDefinedHomeZoom = view.getZoom();
         this.userDefinedHomeLocation = view.getCenter();
+
+        Toast.success({text: 'Home location successfully set'});
     }
 }
 

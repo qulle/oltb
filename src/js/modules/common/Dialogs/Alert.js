@@ -1,38 +1,56 @@
 import DialogBase from './DialogBase';
+import DOM from '../../helpers/Browser/DOM';
 import { mapElement } from '../../core/ElementReferences';
+
+const DEFAULT_OPTIONS = {
+    text: undefined,
+    html: undefined,
+    confirmText: 'Ok'
+};
 
 class Alert extends DialogBase {
     constructor(options = {}) {
         super();
+        
+        this.options = { ...DEFAULT_OPTIONS, ...options };
 
-        const { 
-            text, 
-            html, 
-            confirmText = 'Ok' 
-        } = options;
+        const dialog = DOM.createElement({
+            element: 'div',
+            class: 'oltb-dialog oltb-dialog--alert oltb-animations--bounce'
+        });
 
-        const dialog = document.createElement('div');
-        dialog.className = 'oltb-dialog oltb-dialog--alert oltb-animations--bounce';
+        if(this.options.text) {
+            const message = DOM.createElement({
+                element: 'p', 
+                text: text
+            });
 
-        if(text) {
-            const message = document.createElement('p');
-            message.innerText = text;
             dialog.appendChild(message);
         }
 
-        if(html) {
-            dialog.innerHTML = html;
+        if(this.options.html) {
+            dialog.innerHTML = this.options.html;
         }
 
-        const okButton = document.createElement('button');
-        okButton.setAttribute('type', 'button');
-        okButton.className = 'oltb-dialog__btn oltb-btn oltb-btn--blue-mid';
-        okButton.innerText = confirmText;
-        okButton.addEventListener('click', (event) => {
-            this.close();
+        const buttonWrapper = DOM.createElement({
+            element: 'div', 
+            class: 'oltb-dialog__button-wrapper'
         });
 
-        dialog.appendChild(okButton);
+        const okButton = DOM.createElement({
+            element: 'button',
+            text: this.options.confirmText,
+            class: 'oltb-dialog__btn oltb-btn oltb-btn--blue-mid',
+            attributes: {
+                type: 'button'
+            },
+            listeners: {
+                'click': this.close.bind(this)
+            }
+        });
+
+        buttonWrapper.appendChild(okButton);
+        dialog.appendChild(buttonWrapper);
 
         this.dialogBackdrop.appendChild(dialog);
         mapElement.appendChild(this.dialogBackdrop);

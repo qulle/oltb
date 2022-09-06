@@ -175,9 +175,7 @@ class LayerManager {
         }));
     }
 
-    static getActiveFeatureLayer(options) {
-        options = options ?? {};
-
+    static getActiveFeatureLayer(options = {}) {
         if(!this.activeFeatureLayer) {
             this.addFeatureLayer(options.ifNoLayerName);
         }

@@ -1,11 +1,13 @@
 import 'ol/ol.css';
-import EventType from 'ol/events/EventType';
 import Config from '../core/Config';
+import DOM from '../helpers/Browser/DOM';
 import { Control } from 'ol/control';
 import { easeOut } from 'ol/easing';
 import { toolbarElement } from '../core/ElementReferences';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
+
+const DEFAULT_OPTIONS = {};
 
 class ZoomIn extends Control {
     constructor(options = {}) {
@@ -18,19 +20,21 @@ class ZoomIn extends Control {
             class: 'oltb-tool-button__icon'
         });
 
-        const button = document.createElement('button');
-        button.setAttribute('type', 'button');
-        button.setAttribute('data-tippy-content', 'Zoom in (Q)');
-        button.className = 'oltb-tool-button';
-        button.innerHTML = icon;
-        button.addEventListener(
-            EventType.CLICK,
-            this.handleClick.bind(this),
-            false
-        );
+        const button = DOM.createElement({
+            element: 'button',
+            html: icon,
+            class: 'oltb-tool-button',
+            attributes: {
+                type: 'button',
+                'data-tippy-content': 'Zoom in (Q)'
+            },
+            listeners: {
+                'click': this.handleClick.bind(this)
+            }
+        });
 
         this.element.appendChild(button);
-        this.options = options;
+        this.options = { ...DEFAULT_OPTIONS, ...options };
         this.delta = 1;
 
         window.addEventListener('keyup', (event) => {
@@ -40,8 +44,7 @@ class ZoomIn extends Control {
         });
     }
 
-    handleClick(event) {
-        event.preventDefault();
+    handleClick() {
         this.handleZoomByDelta();
     }
 

@@ -1,6 +1,6 @@
 import 'ol/ol.css';
 import Toast from '../common/Toast';
-import EventType from 'ol/events/EventType';
+import DOM from '../helpers/Browser/DOM';
 import { Control } from 'ol/control';
 import { listen } from 'ol/events';
 import { toolbarElement } from '../core/ElementReferences';
@@ -15,6 +15,8 @@ import {
     requestFullScreenWithKeys,
     exitFullScreen
 } from '../helpers/Browser/Fullscreen';
+
+const DEFAULT_OPTIONS = {};
 
 class Fullscreen extends Control {
     constructor(options = {}) {
@@ -32,36 +34,38 @@ class Fullscreen extends Control {
             class: 'oltb-tool-button__icon'
         });
 
-        const button = document.createElement('button');
-        button.setAttribute('type', 'button');
-        button.setAttribute('data-tippy-content', isFullScreen() ? 'Exit fullscreen' : 'Enter fullscreen' + ' (F)');
-        button.className = 'oltb-tool-button';
-        button.innerHTML = isFullScreen() ? this.exitFullscreenIcon : this.enterFullscreenIcon;
-        button.addEventListener(
-            EventType.CLICK,
-            this.handleClick.bind(this),
-            false
-        );
+        const button = DOM.createElement({
+            element: 'button',
+            html: isFullScreen() ? this.exitFullscreenIcon : this.enterFullscreenIcon,
+            class: 'oltb-tool-button',
+            attributes: {
+                type: 'button',
+                'data-tippy-content': (isFullScreen() ? 'Exit fullscreen' : 'Enter fullscreen') + ' (F)'
+            },
+            listeners: {
+                'click': this.handleClick.bind(this)
+            }
+        });
 
         this.element.appendChild(button);
-
         this.button = button;
         this.active = false;
+        this.options = { ...DEFAULT_OPTIONS, ...options };
 
         document.addEventListener('fullscreenchange', (event) => {
             if(document.fullscreenElement) {
                 this.button._tippy.setContent('Exit fullscreen (F)');
 
                 // User defined callback from constructor
-                if(typeof options.enter === 'function') {
-                    options.enter(event);
+                if(typeof this.options.enter === 'function') {
+                    this.options.enter(event);
                 }
             }else {
                 this.button._tippy.setContent('Enter fullscreen (F)');
 
                 // User defined callback from constructor
-                if(typeof options.leave === 'function') {
-                    options.leave(event);
+                if(typeof this.options.leave === 'function') {
+                    this.options.leave(event);
                 }
             }
         });
@@ -73,8 +77,7 @@ class Fullscreen extends Control {
         });
     }
 
-    handleClick(event) {
-        event.preventDefault();
+    handleClick() {
         this.handleFullscreen();
     }
 

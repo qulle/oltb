@@ -1,38 +1,43 @@
 import Control from "ol/control/Control";
 import Config from '../core/Config';
+import DOM from '../helpers/Browser/DOM';
 import { trapFocusKeyListener } from '../helpers/TrapFocus';
 import { transform } from 'ol/proj';
 import { mapElement } from "../core/ElementReferences";
 
+const DEFAULT_OPTIONS = {};
+
 const menuItems = new Map();
-const instances = new Map();
-let menuId = 0;
+const menuInstances = new Map();
 
 class ContextMenu extends Control {
     constructor(options = {}) {
         super({
-            element: document.createElement('ul')
+            element: DOM.createElement({
+                element: 'ul',
+                class: 'oltb-context-menu',
+                attributes: {
+                    tabindex: '-1',
+                    'data-contextmenu': options.name
+                },
+                listeners: {
+                    'keydown': trapFocusKeyListener
+                }
+            })
         });
         
-        this.options = options;
-        this.items = menuItems.get(options.name);
-        this.id = menuId++;
+        this.menu = this.element;
+        this.options = { ...DEFAULT_OPTIONS, ...options };
+        this.menuItems = menuItems.get(options.name);
         this.target = null;
 
         this.create();
-        instances.set(name, this);
+        menuInstances.set(options.name, this);
     }
 
     create() {
-        // Create root <ul>
-        this.menu = this.element;
-        this.menu.className = 'oltb-context-menu';
-        this.menu.setAttribute('data-contextmenu', this.id);
-        this.menu.setAttribute('tabindex', -1);
-        this.menu.addEventListener('keydown', trapFocusKeyListener);
-
         // Create <li>'s for each menu item
-        this.items.forEach((item, index) => {
+        this.menuItems.forEach((item, index) => {
             this.addMenuItem(item, index);
         });
 
@@ -41,29 +46,44 @@ class ContextMenu extends Control {
     }
 
     addMenuItem(item, index) {
-        const li = document.createElement('li');
-
         if(!('name' in item)) {
-            li.className = 'oltb-context-menu__divider';
+            const li = DOM.createElement({
+                element: 'li',
+                class: 'oltb-context-menu__divider'
+            });
+
+            this.menu.appendChild(li);
         }else {
-            li.className = 'oltb-context-menu__item';
-            li.textContent = item.name;
-            li.setAttribute('data-contextmenuitem', index);
-            li.setAttribute('tabindex', 0);
-            li.addEventListener('click', this.click.bind(this, li));
-            li.addEventListener('keyup', (event) => {
-                if(event.key === 'Enter') {
-                    this.click(li);
+            const li = DOM.createElement({
+                element: 'li',
+                text: item.name,
+                class: 'oltb-context-menu__item',
+                attributes: {
+                    tabindex: '0',
+                    'data-contextmenuitem': index
+                },
+                listeners: {
+                    'click': this.click.bind(this),
+                    'keyup': (event) => {
+                        const key = event.key.toLowerCase();
+                        if(key === 'enter') {
+                            this.click(event);
+                        }else if(key === 'escape') {
+                            this.hide();
+                        }
+                    }
                 }
             });
 
-            const icon = document.createElement('span');
-            icon.className = 'oltb-context-menu__icon';
-            icon.innerHTML = item.icon;
-            li.insertAdjacentElement('afterbegin', icon);
+            const icon = DOM.createElement({
+                element: 'span',
+                html: item.icon,
+                class: 'oltb-context-menu__icon'
+            });
+            
+            li.prepend(icon);
+            this.menu.appendChild(li);
         }
-
-        this.menu.appendChild(li);
     }
 
     show(event) {
@@ -88,35 +108,39 @@ class ContextMenu extends Control {
         this.target = null;
     }
 
-    click(item) {
-        const itemId = item.getAttribute('data-contextmenuitem');
-        if(this.items[itemId]) {
-            // Call item handler with map, the clicked point and target element as parameter
-            this.items[itemId].fn(this.getMap(), this.coordinates, this.target);
+    click(event) {
+        const id = event.target.getAttribute('data-contextmenuitem');
+        const contextItem = this.menuItems[id];
+        if(contextItem) {
+            contextItem.fn(
+                this.getMap(), 
+                this.coordinates, 
+                this.target
+            );
         }
 
         this.hide();
     }
 }
 
-// Listen for contextmenu event to show menu
-document.addEventListener('contextmenu', (event) => {
-    instances.forEach((menu) => {
+mapElement.addEventListener('contextmenu', (event) => {
+    menuInstances.forEach(menu => {
         if(event.target.matches(menu.options.selector)) {
             menu.show(event);
         }
     });
 });
 
-// Listen for click event to hide menu
-document.addEventListener('click', (event) => {
-    instances.forEach((menu) => {
+mapElement.addEventListener('click', (event) => {
+    menuInstances.forEach(menu => {
         menu.hide();
     });
 });
 
 const addContextMenuItems = function(name, items) {
-    items.forEach(item => addContextMenuItem(name, item));
+    items.forEach(item => {
+        addContextMenuItem(name, item);
+    });
 }
 
 const addContextMenuItem = function(name, item) {
@@ -127,8 +151,8 @@ const addContextMenuItem = function(name, item) {
     menuItems.get(name).push(item);
 
     // Check if context menu is created, if so, add the menu item to the context menu
-    if(instances.has(name)) {
-        const menu = instances.get(name);
+    if(menuInstances.has(name)) {
+        const menu = menuInstances.get(name);
         const index = menuItems.get(name).length - 1;
 
         menu.addMenuItem(item, index);

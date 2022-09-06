@@ -1,13 +1,15 @@
 import 'ol/ol.css';
-import EventType from 'ol/events/EventType';
 import Toast from '../common/Toast';
 import LayerManager from '../core/Managers/LayerManager';
 import Config from '../core/Config';
+import DOM from '../helpers/Browser/DOM';
 import FormatTypes, { instantiateFormat } from '../core/olTypes/FormatTypes';
 import { Control } from 'ol/control';
 import { toolbarElement } from '../core/ElementReferences';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
+
+const DEFAULT_OPTIONS = {};
 
 class ImportVectorLayer extends Control {
     constructor(options = {}) {
@@ -20,30 +22,36 @@ class ImportVectorLayer extends Control {
             class: 'oltb-tool-button__icon'
         });
 
-        const button = document.createElement('button');
-        button.setAttribute('type', 'button');
-        button.setAttribute('data-tippy-content', 'Import Vector layer (O)');
-        button.className = 'oltb-tool-button';
-        button.innerHTML = icon;
-        button.addEventListener(
-            EventType.CLICK,
-            this.handleClick.bind(this),
-            false
-        );
+        const button = DOM.createElement({
+            element: 'button',
+            html: icon,
+            class: 'oltb-tool-button',
+            attributes: {
+                type: 'button',
+                'data-tippy-content': 'Import Vector layer (O)'
+            },
+            listeners: {
+                'click': this.handleClick.bind(this)
+            }
+        });
 
         this.element.appendChild(button);
-        this.options = options;
+        this.options = { ...DEFAULT_OPTIONS, ...options };
 
         // Helper element to open a local geojson file
-        const inputDialog = document.createElement('input');
-        inputDialog.className = 'oltb-d-none';
-        inputDialog.setAttribute('type', 'file');
-        inputDialog.setAttribute('accept', '.geojson, .kml');
-        inputDialog.addEventListener('change', this.loadVectorLayer.bind(this));
-        document.body.insertAdjacentElement('beforeend', inputDialog);
-        
-        this.inputDialog = inputDialog;
+        const inputDialog = DOM.createElement({
+            element: 'input',
+            attributes: {
+                type: 'file',
+                accept: '.geojson, .kml'
+            },
+            listeners: {
+                'change': this.loadVectorLayer.bind(this)
+            }
+        })
 
+        this.inputDialog = inputDialog;
+        
         window.addEventListener('keyup', (event) => {
             if(isShortcutKeyOnly(event, 'o')) {
                 this.handleClick(event);
@@ -51,17 +59,15 @@ class ImportVectorLayer extends Control {
         });
     }
 
-    handleClick(event) {
-        event.preventDefault();
+    handleClick() {
         this.inputDialog.click();
     }
 
     loadVectorLayer(event) {
         const fileDialog = event.target;
         const fileReader = new FileReader();
-        const self = this;
 
-        fileReader.onload = function() {
+        fileReader.addEventListener('load', () => {
             const file = fileDialog.files[0].name;
             
             try {
@@ -88,18 +94,18 @@ class ImportVectorLayer extends Control {
                 layer.getSource().addFeatures(features);
 
                 // User defined callback from constructor
-                if(typeof self.options.imported === 'function') {
-                    self.options.imported(features);
+                if(typeof this.options.imported === 'function') {
+                    this.options.imported(features);
                 }
             }catch(error) {
                 Toast.error({text: 'Error when parsing layer - check syntax'});
 
                 // User defined callback from constructor
-                if(typeof self.options.error === 'function') {
-                    self.options.error(file, error);
+                if(typeof this.options.error === 'function') {
+                    this.options.error(file, error);
                 }
             }
-        }
+        });
               
         fileReader.readAsText(fileDialog.files[0]);
     }

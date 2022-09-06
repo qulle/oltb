@@ -31,8 +31,13 @@ const generateMarker = function(options = {}) {
     
     const point = new Point(fromLonLat([lon, lat]));
 
-    const featureBackground = new Feature({geometry: point});
-    const featureIcon = new Feature({geometry: point});
+    const featureBackground = new Feature({
+        geometry: point
+    });
+    
+    const featureIcon = new Feature({
+        geometry: point
+    });
 
     featureBackground.setStyle(new Style({
         image: new CircleStyle({

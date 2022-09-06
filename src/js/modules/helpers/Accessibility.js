@@ -21,7 +21,7 @@ document.body.addEventListener('mousedown', function(event) {
 });
 
 document.body.addEventListener('keydown', function(event) {
-    if(event.key === 'Tab') {
+    if(event.key.toLowerCase() === 'tab') {
         document.body.classList.add('oltb-using-keyboard');
     }
 });

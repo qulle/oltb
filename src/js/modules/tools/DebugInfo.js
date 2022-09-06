@@ -1,6 +1,6 @@
 import 'ol/ol.css';
 import DebugInfoModal from './ModalExtensions/DebugInfoModal';
-import EventType from 'ol/events/EventType';
+import DOM from '../helpers/Browser/DOM';
 import { Control } from 'ol/control';
 import { toolbarElement } from '../core/ElementReferences';
 import { SVGPaths, getIcon } from '../core/Icons';
@@ -22,19 +22,21 @@ class DebugInfo extends Control {
             class: 'oltb-tool-button__icon'
         });
 
-        const button = document.createElement('button');
-        button.setAttribute('type', 'button');
-        button.setAttribute('data-tippy-content', 'Debug info (Y)');
-        button.className = 'oltb-tool-button';
-        button.innerHTML = icon;
-        button.addEventListener(
-            EventType.CLICK,
-            this.handleClick.bind(this),
-            false
-        );
+        const button = DOM.createElement({
+            element: 'button',
+            html: icon,
+            class: 'oltb-tool-button',
+            attributes: {
+                type: 'button',
+                'data-tippy-content': 'Debug info (Y)'
+            },
+            listeners: {
+                'click': this.handleClick.bind(this)
+            }
+        });
 
         this.element.appendChild(button);
-        this.options = {...DEFAULT_OPTIONS, ...options};
+        this.options = { ...DEFAULT_OPTIONS, ...options };
         
         // Check if the tool only should be visible if the get parameter ?debug=true exists
         const debugParameter = URIGet('debug') === 'true';
@@ -52,10 +54,7 @@ class DebugInfo extends Control {
         });
     }
 
-    handleClick(event) {
-        event.preventDefault();
-
-        // Gather debug information
+    handleClick() {
         const map = this.getMap();
         const view = map.getView();
 

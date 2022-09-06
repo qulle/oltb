@@ -1,6 +1,6 @@
 import 'ol/ol.css';
-import EventType from 'ol/events/EventType';
 import StateManager from '../core/Managers/StateManager';
+import DOM from '../helpers/Browser/DOM';
 import { Control } from 'ol/control';
 import { toolbarElement } from '../core/ElementReferences';
 import { SVGPaths, getIcon } from '../core/Icons';
@@ -8,6 +8,8 @@ import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { isDarkTheme } from '../helpers/IsDarkTheme';
 
 const LOCAL_STORAGE_NODE_NAME = 'theme';
+
+const DEFAULT_OPTIONS = {};
 
 class ThemeToggle extends Control {
     constructor(options = {}) {
@@ -24,29 +26,26 @@ class ThemeToggle extends Control {
             path: SVGPaths.LightOff,
             class: 'oltb-tool-button__icon'
         });
-
-        const button = document.createElement('button');
-        button.setAttribute('type', 'button');
-        button.setAttribute('data-tippy-content', isDarkTheme() 
-            ? 'Light theme' 
-            : 'Dark theme' + ' (T)'
-        );
-        button.className = 'oltb-tool-button';
-        button.innerHTML = isDarkTheme() ? this.lightThemeIcon : this.darkThemeIcon;
-        button.addEventListener(
-            EventType.CLICK,
-            this.handleClick.bind(this),
-            false
-        );
+        
+        const button = DOM.createElement({
+            element: 'button',
+            html: isDarkTheme() ? this.lightThemeIcon : this.darkThemeIcon,
+            class: 'oltb-tool-button',
+            attributes: {
+                type: 'button',
+                'data-tippy-content': (isDarkTheme() ? 'Light theme' : 'Dark theme') + ' (T)'
+            },
+            listeners: {
+                'click': this.handleClick.bind(this)
+            }
+        });
 
         this.element.appendChild(button);
-        this.options = options;
-
         this.button = button;
         this.active = false;
+        this.options = { ...DEFAULT_OPTIONS, ...options };
 
         window.addEventListener('oltb.settings.cleared', this.clearTheme.bind(this));
-
         window.addEventListener('keyup', (event) => {
             if(isShortcutKeyOnly(event, 't')) {
                 this.handleClick(event);
@@ -54,8 +53,7 @@ class ThemeToggle extends Control {
         });
     }
 
-    handleClick(event) {
-        event.preventDefault();
+    handleClick() {
         this.handleThemeToggle();
     }
 

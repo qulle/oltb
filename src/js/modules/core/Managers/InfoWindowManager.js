@@ -8,7 +8,7 @@ import { removeFeature } from './InfoWindowManager/RemoveFeature';
 import { editFeature } from './InfoWindowManager/EditFeature';
 import { trapFocusKeyListener } from '../../helpers/TrapFocus';
 
-const animationClass = 'oltb-animations--centered-bounce';
+const ANIMATION_CLASS = 'oltb-animations--centered-bounce';
 
 class InfoWindowManager {
     static map;
@@ -25,13 +25,14 @@ class InfoWindowManager {
         // Create DOM elements
         const infoWindow = DOM.createElement({
             element: 'div',
+            class: 'oltb-info-window',
             attributes: {
-                class: 'oltb-info-window'
+                tabindex: '-1'
+            },
+            listeners: {
+                'keydown': trapFocusKeyListener
             }
         });
-
-        infoWindow.setAttribute('tabindex', -1);
-        infoWindow.addEventListener('keydown', trapFocusKeyListener);
 
         const closeButton = DOM.createElement({
             element: 'button', 
@@ -40,21 +41,15 @@ class InfoWindowManager {
                 fill: 'none',
                 stroke: 'currentColor'
             }),
-            attributes: {
-                class: 'oltb-info-window__close oltb-btn oltb-btn--blank'
+            class: 'oltb-info-window__close oltb-btn oltb-btn--blank',
+            listeners: {
+                'click': this.hideOverlay.bind(this)
             }
-        });
-
-        closeButton.addEventListener('click', (event) => {
-            event.preventDefault();
-            this.hideOverlay();
         });
 
         const content = DOM.createElement({
             element: 'div',
-            attributes: {
-                class: 'oltb-info-window__content'
-            }
+            class: 'oltb-info-window__content'
         });
 
         this.infoWindow = infoWindow;
@@ -89,12 +84,10 @@ class InfoWindowManager {
                 feature.getGeometry().getExtent()
             ));
 
-            this.infoWindow.classList.remove(animationClass);
-
             // Trigger reflow of DOM, reruns animation when class is added back
+            this.infoWindow.classList.remove(ANIMATION_CLASS);
             void this.infoWindow.offsetWidth;
-
-            this.infoWindow.classList.add(animationClass);
+            this.infoWindow.classList.add(ANIMATION_CLASS);
 
             const removeFeatureButton = this.content.querySelector('#oltb-info-window-remove-marker');
             if(removeFeatureButton) {
