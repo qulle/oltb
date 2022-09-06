@@ -8,6 +8,7 @@ import { toolbarElement } from '../core/ElementReferences';
 import { addContextMenuItem } from '../common/ContextMenu';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
+import Toast from '../common/Toast';
 
 const DEFAULT_OPTIONS = {
     zoom: 1,
@@ -94,6 +95,8 @@ class Home extends Control {
 
         this.userDefinedHomeZoom = view.getZoom();
         this.userDefinedHomeLocation = view.getCenter();
+
+        Toast.success({text: 'Home location successfully set'});
     }
 }
 

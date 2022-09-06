@@ -36,7 +36,7 @@ class SettingsModal extends ModalBase {
                     type: 'checkbox'
                 },
                 listeners: {
-                    'click': () => SettingsManager.setSetting(key, this.checked)
+                    'click': () => SettingsManager.setSetting(key, checkbox.checked)
                 }
             });
 

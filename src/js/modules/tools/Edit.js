@@ -19,6 +19,8 @@ const LOCAL_STORAGE_DEFAULTS = {
     collapsed: false
 };
 
+const DEFAULT_OPTIONS = {};
+
 class Edit extends Control {
     constructor(options = {}) {
         super({
@@ -45,7 +47,7 @@ class Edit extends Control {
 
         this.element.appendChild(button);
         this.button = button;
-        this.options = options;
+        this.options = { ...DEFAULT_OPTIONS, ...options };
 
         // Load potential stored data from localStorage
         const localStorageState = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};

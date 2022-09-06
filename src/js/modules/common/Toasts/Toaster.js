@@ -1,29 +1,31 @@
 import { toastElement } from '../../core/ElementReferences';
 import DOM from '../../helpers/Browser/DOM';
 
+const DEFAULT_OPTIONS = {
+    text: 'Default toast',
+    type: 'info',
+    autoremove: undefined,
+    clickToClose: true,
+    spinner: false
+};
+
 class Toaster {
     constructor(options = {}) {
-        const {
-            text = 'Toast message',
-            type = Toaster.Info,
-            autoremove,
-            clickToClose = true,
-            spinner = false
-        } = options;
+        this.options = { ...DEFAULT_OPTIONS, ...options };
 
         const toast = DOM.createElement({
             element: 'div',
-            class: `oltb-toast oltb-toast--${type} oltb-animations--slide-in oltb-d-flex` 
+            class: `oltb-toast oltb-toast--${this.options.type} oltb-animations--slide-in oltb-d-flex` 
         });
 
         this.toast = toast;
         
-        if(clickToClose) {
+        if(this.options.clickToClose) {
             toast.classList.add('oltb-toast--clickable');
             toast.addEventListener('click', this.remove.bind(this));
         }
 
-        if(spinner) {
+        if(this.options.spinner) {
             const spinnerElement = DOM.createElement({
                 element: 'div',
                 class: 'oltb-spinner oltb-spinner--small oltb-animations--linear-spinner'
@@ -34,20 +36,20 @@ class Toaster {
 
         const message = DOM.createElement({
             element: 'p', 
-            text: text,
-            class: `oltb-toast__message ${spinner ? 'oltb-ml-0625' : ''}`
+            text: this.options.text,
+            class: `oltb-toast__message ${this.options.sp ? 'oltb-ml-0625' : ''}`
         });
     
         toast.appendChild(message);
         
         // Add the toast to the DOM
-        toastElement.insertAdjacentElement('afterbegin', toast);
+        toastElement.prepend(toast);
 
         // If options.autoremove was set, start timer to remove after x ms
-        if(autoremove) {
+        if(this.options.autoremove) {
             setTimeout(() => {
                 this.remove();
-            }, options.autoremove);
+            }, this.options.autoremove);
         }
     }
 

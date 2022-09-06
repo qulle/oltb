@@ -15,6 +15,7 @@ import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 
 const BOOKMARK_BUTTON_DEFAULT_CLASSES = 'oltb-func-btn';
+
 const LOCAL_STORAGE_NODE_NAME = 'bookmarkTool';
 const LOCAL_STORAGE_DEFAULTS = {
     collapsed: false,
@@ -52,7 +53,6 @@ class Bookmark extends Control {
         this.element.appendChild(button);
         this.button = button;
         this.active = false;
-        this.options = options;
         this.options = { ...DEFAULT_OPTIONS, ...options };
         
         // Load potential stored data from localStorage
@@ -131,7 +131,7 @@ class Bookmark extends Control {
             this.createBookmark(bookmark);
         });
 
-        addContextMenuItem('main.map.context.menu', {icon: icon, name: 'Add location as bookmark', fn: this.addBookmark.bind(this)});
+        addContextMenuItem('main.map.context.menu', {icon: icon, name: 'Add location as bookmark', fn: this.addBookmark.bind(this, '')});
         addContextMenuItem('main.map.context.menu', {icon: icon, name: 'Clear all bookmarks', fn: () => {
             Dialog.confirm({
                 text: 'Do you want to clear all bookmarks?',
@@ -168,11 +168,11 @@ class Bookmark extends Control {
         const zoom = view.getZoom();
         const location = view.getCenter();
 
-        bookmarkName = bookmarkName.trim();
-
         if(!bookmarkName) {
             bookmarkName = generateAnimalName();
         }
+
+        bookmarkName = bookmarkName.trim();
 
         const bookmark = {
             id: randomNumber(),

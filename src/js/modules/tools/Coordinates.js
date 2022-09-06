@@ -13,6 +13,8 @@ import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { toStringHDMS } from 'ol/coordinate';
 
+const DEFAULT_OPTIONS = {};
+
 class Coordinates extends Control {
     constructor(options = {}) {
         super({
@@ -40,7 +42,7 @@ class Coordinates extends Control {
         this.element.appendChild(button);
         this.button = button;
         this.active = false;
-        this.options = options;
+        this.options = { ...DEFAULT_OPTIONS, ...options };
 
         const tooltipElement = DOM.createElement({
             element: 'span',

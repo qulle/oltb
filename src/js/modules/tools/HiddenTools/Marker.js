@@ -8,16 +8,20 @@ import { addContextMenuItem } from '../../common/ContextMenu';
 import { SVGPaths, getIcon } from '../../core/Icons';
 import { toStringHDMS } from 'ol/coordinate';
 
+const DEFAULT_OPTIONS = {};
+
 class HiddenMarker extends Control {
     constructor(options = {}) {
         super({
             element: toolbarElement
         });
 
+        this.options = { ...DEFAULT_OPTIONS, ...options };
+
         const icon = getIcon({path: SVGPaths.Plus});
 
-        addContextMenuItem('main.map.context.menu', {icon: icon, name: 'Create marker', fn: function(map, coordinates, target) {
-            const markerModal = new MarkerModal({coordinates: coordinates}, function(result) {
+        addContextMenuItem('main.map.context.menu', {icon: icon, name: 'Create marker', fn: (map, coordinates, target) => {
+            const markerModal = new MarkerModal({coordinates: coordinates}, (result) => {
                 const prettyCoords = toStringHDMS([result.longitude, result.latitude]);
                 const infoWindow = `
                     <h3 class="oltb-text-center">${result.name}</h3>
@@ -52,27 +56,27 @@ class HiddenMarker extends Control {
                 LayerManager.getActiveFeatureLayer({ifNoLayerName: 'Markers'}).layer.getSource().addFeatures(marker);
 
                 // User defined callback from constructor
-                if(typeof options.added === 'function') {
-                    options.added(marker);
+                if(typeof this.options.added === 'function') {
+                    this.options.added(marker);
                 }
             });
         }});
 
         addContextMenuItem('main.map.context.menu', {});
 
-        window.addEventListener('oltb.feature.edited', function(event) {
+        window.addEventListener('oltb.feature.edited', (event) => {
             // User defined callback from constructor
-            if(typeof options.edited === 'function') {
-                options.edited([
+            if(typeof this.options.edited === 'function') {
+                this.options.edited([
                     event.detail.feature,
                     event.detail.linkedFeature
                 ]);
             }
         });
-        window.addEventListener('oltb.feature.removed', function(event) {
+        window.addEventListener('oltb.feature.removed', (event) => {
             // User defined callback from constructor
-            if(typeof options.removed === 'function') {
-                options.removed([
+            if(typeof this.options.removed === 'function') {
+                this.options.removed([
                     event.detail.feature,
                     event.detail.linkedFeature
                 ]);

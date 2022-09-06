@@ -10,6 +10,8 @@ import { isHorizontal } from '../helpers/IsRowDirection';
 
 const LOCAL_STORAGE_NODE_NAME = 'direction';
 
+const DEFAULT_OPTIONS = {};
+
 class DirectionToggle extends Control {
     constructor(options = {}) {
         super({
@@ -40,9 +42,9 @@ class DirectionToggle extends Control {
         });
 
         this.element.appendChild(button);
-        this.options = options;
         this.button = button;
         this.active = false;
+        this.options = { ...DEFAULT_OPTIONS, ...options };
         
         this.isSmallDevice();
 

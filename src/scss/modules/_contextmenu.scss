@@ -35,6 +35,7 @@
     }
 
     &__icon {
+        pointer-events: none;
         display: flex;
         padding-right: .625rem;
         margin: 0;

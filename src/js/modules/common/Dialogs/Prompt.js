@@ -2,19 +2,21 @@ import DialogBase from './DialogBase';
 import DOM from '../../helpers/Browser/DOM';
 import { mapElement } from '../../core/ElementReferences';
 
+const DEFAULT_OPTIONS = {
+    text: undefined,
+    placeholder: undefined,
+    value: undefined,
+    onConfirm: undefined,
+    onCancel: undefined,
+    confirmClass: 'oltb-btn--green-mid',
+    confirmText: 'Confirm'
+};
+
 class Prompt extends DialogBase {
     constructor(options = {}) {
         super();
         
-        const {
-            text,
-            placeholder,
-            value,
-            onConfirm,
-            onCancel,
-            confirmClass = 'oltb-btn--green-mid',
-            confirmText = 'Confirm'
-        } = options;
+        this.options = { ...DEFAULT_OPTIONS, ...options };
 
         const dialog = DOM.createElement({
             element: 'div', 
@@ -23,7 +25,7 @@ class Prompt extends DialogBase {
 
         const message = DOM.createElement({
             element: 'p', 
-            text: text
+            text: this.options.text
         });
 
         const inputBox = DOM.createElement({
@@ -34,12 +36,18 @@ class Prompt extends DialogBase {
             }
         });
 
-        if(placeholder !== undefined && placeholder !== null) {
-            inputBox.setAttribute('placeholder', placeholder);
+        if(
+            this.options.placeholder !== undefined && 
+            this.options.placeholder !== null
+        ) {
+            inputBox.setAttribute('placeholder', this.options.placeholder);
         }
 
-        if(value !== undefined && value !== null) {
-            inputBox.value = value;
+        if(
+            this.options.value !== undefined && 
+            this.options.value !== null
+        ) {
+            inputBox.value = this.options.value;
         }
 
         const buttonWrapper = DOM.createElement({
@@ -49,15 +57,15 @@ class Prompt extends DialogBase {
 
         const confirmButton = DOM.createElement({
             element: 'button', 
-            text: confirmText,
-            class: `oltb-dialog__btn oltb-btn ${confirmClass}`,
+            text: this.options.confirmText,
+            class: `oltb-dialog__btn oltb-btn ${this.options.confirmClass}`,
             attributes: {
                 type: 'button'
             },
             listeners: {
                 'click': () => {
                     this.close();
-                    typeof onConfirm === 'function' && onConfirm(inputBox.value.trim());
+                    typeof this.options.onConfirm === 'function' && this.options.onConfirm(inputBox.value.trim());
                 }
             }
         });
@@ -72,7 +80,7 @@ class Prompt extends DialogBase {
             listeners: {
                 'click': () => {
                     this.close();
-                    typeof onCancel === 'function' && onCancel(); 
+                    typeof this.options.onCancel === 'function' && this.options.onCancel(); 
                 }
             }
         });

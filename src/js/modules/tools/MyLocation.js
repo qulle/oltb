@@ -14,6 +14,8 @@ import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { toStringHDMS } from 'ol/coordinate';
 
+const DEFAULT_OPTIONS = {};
+
 class MyLocation extends Control {
     constructor(options = {}) {
         super({
@@ -39,7 +41,7 @@ class MyLocation extends Control {
         });
 
         this.element.appendChild(button);
-        this.options = options;
+        this.options = { ...DEFAULT_OPTIONS, ...options };
 
         window.addEventListener('keyup', (event) => {
             if(isShortcutKeyOnly(event, 'g')) {

@@ -9,6 +9,8 @@ import { toolbarElement } from '../core/ElementReferences';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 
+const DEFAULT_OPTIONS = {};
+
 class ImportVectorLayer extends Control {
     constructor(options = {}) {
         super({
@@ -34,12 +36,11 @@ class ImportVectorLayer extends Control {
         });
 
         this.element.appendChild(button);
-        this.options = options;
+        this.options = { ...DEFAULT_OPTIONS, ...options };
 
         // Helper element to open a local geojson file
         const inputDialog = DOM.createElement({
             element: 'input',
-            class: 'oltb-d-none',
             attributes: {
                 type: 'file',
                 accept: '.geojson, .kml'
@@ -50,8 +51,6 @@ class ImportVectorLayer extends Control {
         })
 
         this.inputDialog = inputDialog;
-
-        document.body.insertAdjacentElement('beforeend', inputDialog);
         
         window.addEventListener('keyup', (event) => {
             if(isShortcutKeyOnly(event, 'o')) {

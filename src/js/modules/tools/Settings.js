@@ -10,6 +10,8 @@ import { addContextMenuItem } from '../common/ContextMenu';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 
+const DEFAULT_OPTIONS = {};
+
 class Settings extends Control {
     constructor(options = {}) {
         super({
@@ -34,8 +36,8 @@ class Settings extends Control {
             }
         });
 
-        this.options = options;
         this.element.appendChild(button);
+        this.options = { ...DEFAULT_OPTIONS, ...options };
 
         addContextMenuItem('main.map.context.menu', {icon: icon, name: 'Clear settings', fn: () => {
             Dialog.confirm({

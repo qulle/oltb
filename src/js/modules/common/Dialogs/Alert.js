@@ -2,22 +2,24 @@ import DialogBase from './DialogBase';
 import DOM from '../../helpers/Browser/DOM';
 import { mapElement } from '../../core/ElementReferences';
 
+const DEFAULT_OPTIONS = {
+    text: undefined,
+    html: undefined,
+    confirmText: 'Ok'
+};
+
 class Alert extends DialogBase {
     constructor(options = {}) {
         super();
-
-        const { 
-            text, 
-            html, 
-            confirmText = 'Ok' 
-        } = options;
+        
+        this.options = { ...DEFAULT_OPTIONS, ...options };
 
         const dialog = DOM.createElement({
             element: 'div',
             class: 'oltb-dialog oltb-dialog--alert oltb-animations--bounce'
         });
 
-        if(text) {
+        if(this.options.text) {
             const message = DOM.createElement({
                 element: 'p', 
                 text: text
@@ -26,8 +28,8 @@ class Alert extends DialogBase {
             dialog.appendChild(message);
         }
 
-        if(html) {
-            dialog.innerHTML = html;
+        if(this.options.html) {
+            dialog.innerHTML = this.options.html;
         }
 
         const buttonWrapper = DOM.createElement({
@@ -37,7 +39,7 @@ class Alert extends DialogBase {
 
         const okButton = DOM.createElement({
             element: 'button',
-            text: confirmText,
+            text: this.options.confirmText,
             class: 'oltb-dialog__btn oltb-btn oltb-btn--blue-mid',
             attributes: {
                 type: 'button'

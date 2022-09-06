@@ -36,8 +36,8 @@ class ScaleLineTool extends Control {
         this.element.appendChild(button);
         this.button = button;
         this.active = false;
-        this.scaleLine = null;
         this.options = { ...DEFAULT_OPTIONS, ...options };
+        this.scaleLine = null;
 
         this.scaleLine = new ScaleLine({units: this.options.units});
         

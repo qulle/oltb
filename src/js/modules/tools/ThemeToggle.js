@@ -9,6 +9,8 @@ import { isDarkTheme } from '../helpers/IsDarkTheme';
 
 const LOCAL_STORAGE_NODE_NAME = 'theme';
 
+const DEFAULT_OPTIONS = {};
+
 class ThemeToggle extends Control {
     constructor(options = {}) {
         super({
@@ -39,9 +41,9 @@ class ThemeToggle extends Control {
         });
 
         this.element.appendChild(button);
-        this.options = options;
         this.button = button;
         this.active = false;
+        this.options = { ...DEFAULT_OPTIONS, ...options };
 
         window.addEventListener('oltb.settings.cleared', this.clearTheme.bind(this));
         window.addEventListener('keyup', (event) => {

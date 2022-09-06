@@ -22,6 +22,8 @@ const LOCAL_STORAGE_DEFAULTS = {
     strokeColor: '#3B4352'
 };
 
+const DEFAULT_OPTIONS = {};
+
 class MeasureTool extends Control {
     constructor(options = {}) {
         super({
@@ -49,7 +51,7 @@ class MeasureTool extends Control {
         this.element.appendChild(button);
         this.button = button;
         this.active = false;
-        this.options = options;
+        this.options = { ...DEFAULT_OPTIONS, ...options };
         
         // Load potential stored data from localStorage
         const localStorageState = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};

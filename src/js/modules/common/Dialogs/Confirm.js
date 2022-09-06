@@ -2,18 +2,20 @@ import DialogBase from './DialogBase';
 import DOM from '../../helpers/Browser/DOM';
 import { mapElement } from '../../core/ElementReferences';
 
+const DEFAULT_OPTIONS = {
+    text: undefined,
+    html: undefined,
+    onConfirm: undefined,
+    onCancel: undefined,
+    confirmClass: 'oltb-btn--red-mid',
+    confirmText: 'Yes'
+};
+
 class Confirm extends DialogBase {
     constructor(options = {}) {
         super();
 
-        const { 
-            text, 
-            html, 
-            onConfirm, 
-            onCancel, 
-            confirmClass = 'oltb-btn--red-mid', 
-            confirmText = 'Yes' 
-        } = options;
+        this.options = { ...DEFAULT_OPTIONS, ...options };
 
         const dialog = DOM.createElement({
             element: 'div', 
@@ -24,12 +26,12 @@ class Confirm extends DialogBase {
             element: 'p'
         });
 
-        if(text) {
-            message.innerText = text;
+        if(this.options.text) {
+            message.innerText = this.options.text;
         }
 
-        if(html) {
-            message.innerHTML = html;
+        if(this.options.html) {
+            message.innerHTML = this.options.html;
         }
 
         const buttonWrapper = DOM.createElement({
@@ -39,15 +41,15 @@ class Confirm extends DialogBase {
 
         const confirmButton = DOM.createElement({
             element: 'button',
-            text: confirmText, 
-            class: `oltb-dialog__btn oltb-btn ${confirmClass}`,
+            text: this.options.confirmText, 
+            class: `oltb-dialog__btn oltb-btn ${this.options.confirmClass}`,
             attributes: {
                 type: 'button' 
             },
             listeners: {
                 'click': () => {
                     this.close();
-                    typeof onConfirm === 'function' && onConfirm();
+                    typeof this.options.onConfirm === 'function' && this.options.onConfirm();
                 }
             }
         });
@@ -62,7 +64,7 @@ class Confirm extends DialogBase {
             listeners: {
                 'click': () => {
                     this.close();
-                    typeof onCancel === 'function' && onCancel();
+                    typeof this.options.onCancel === 'function' && this.options.onCancel();
                 }
             }
         });

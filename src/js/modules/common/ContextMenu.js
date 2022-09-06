@@ -5,6 +5,8 @@ import { trapFocusKeyListener } from '../helpers/TrapFocus';
 import { transform } from 'ol/proj';
 import { mapElement } from "../core/ElementReferences";
 
+const DEFAULT_OPTIONS = {};
+
 const menuItems = new Map();
 const menuInstances = new Map();
 
@@ -25,8 +27,8 @@ class ContextMenu extends Control {
         });
         
         this.menu = this.element;
-        this.options = options;
-        this.items = menuItems.get(options.name);
+        this.options = { ...DEFAULT_OPTIONS, ...options };
+        this.menuItems = menuItems.get(options.name);
         this.target = null;
 
         this.create();
@@ -35,7 +37,7 @@ class ContextMenu extends Control {
 
     create() {
         // Create <li>'s for each menu item
-        this.items.forEach((item, index) => {
+        this.menuItems.forEach((item, index) => {
             this.addMenuItem(item, index);
         });
 
@@ -108,7 +110,7 @@ class ContextMenu extends Control {
 
     click(event) {
         const id = event.target.getAttribute('data-contextmenuitem');
-        const contextItem = this.items[id];
+        const contextItem = this.menuItems[id];
         if(contextItem) {
             contextItem.fn(
                 this.getMap(), 

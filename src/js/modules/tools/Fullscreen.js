@@ -16,6 +16,8 @@ import {
     exitFullScreen
 } from '../helpers/Browser/Fullscreen';
 
+const DEFAULT_OPTIONS = {};
+
 class Fullscreen extends Control {
     constructor(options = {}) {
         super({
@@ -46,24 +48,24 @@ class Fullscreen extends Control {
         });
 
         this.element.appendChild(button);
-
         this.button = button;
         this.active = false;
+        this.options = { ...DEFAULT_OPTIONS, ...options };
 
         document.addEventListener('fullscreenchange', (event) => {
             if(document.fullscreenElement) {
                 this.button._tippy.setContent('Exit fullscreen (F)');
 
                 // User defined callback from constructor
-                if(typeof options.enter === 'function') {
-                    options.enter(event);
+                if(typeof this.options.enter === 'function') {
+                    this.options.enter(event);
                 }
             }else {
                 this.button._tippy.setContent('Enter fullscreen (F)');
 
                 // User defined callback from constructor
-                if(typeof options.leave === 'function') {
-                    options.leave(event);
+                if(typeof this.options.leave === 'function') {
+                    this.options.leave(event);
                 }
             }
         });

@@ -27,7 +27,7 @@ class HiddenMapNavigation extends Control {
             element: toolbarElement
         });
 
-        options = { ...DEFAULT_OPTIONS, ...options };
+        this.options = { ...DEFAULT_OPTIONS, ...options };
 
         // Load potential stored data from localStorage
         const localStorageState = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
@@ -58,7 +58,7 @@ class HiddenMapNavigation extends Control {
         
             view.animate({
                 center: fromLonLat(coordinates),
-                zoom: options.focusZoom,
+                zoom: this.options.focusZoom,
                 duration: Config.animationDuration,
                 easing: easeOut
             });

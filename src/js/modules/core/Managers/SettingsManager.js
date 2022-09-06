@@ -1,9 +1,11 @@
 import StateManager from "./StateManager";
 
 const LOCAL_STORAGE_NODE_NAME = 'settings';
+const LOCAL_STORAGE_DEFAULTS = {};
 
 class SettingsManager {
-    static localStorage = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
+    static localStorageState = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
+    static localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...this.localStorageState };
 
     static settings = new Map([
         ['mouseWheelZoom', {state: false, text: 'Enable zooming using mousewheel only'}],

@@ -7,6 +7,8 @@ import { toolbarElement } from '../core/ElementReferences';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 
+const DEFAULT_OPTIONS = {};
+
 class ZoomOut extends Control {
     constructor(options = {}) {
         super({
@@ -32,7 +34,7 @@ class ZoomOut extends Control {
         });
 
         this.element.appendChild(button);
-        this.options = options;
+        this.options = { ...DEFAULT_OPTIONS, ...options };
         this.delta = -1;
 
         window.addEventListener('keyup', (event) => {
