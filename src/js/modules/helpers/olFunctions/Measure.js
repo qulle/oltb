@@ -1,30 +1,16 @@
-import { LineString, Polygon } from 'ol/geom';
+import { Polygon } from 'ol/geom';
 import { getArea, getLength } from 'ol/sphere';
 
-const onFeatureChange = function(event) {
-    const feature = this;
+const getMeasureTooltipValue = function(geometry) {
+    return geometry instanceof Polygon
+        ? formatArea(geometry)
+        : formatLength(geometry);
+}
 
-    // Check if feature has properties and tooltipElement property, if not, it has no tooltip to update
-    const hasTooltip = feature?.properties?.tooltipElement;
-    if(!hasTooltip) {
-        return;
-    }
-
-    const geometry = event.target;
-
-    let tooltipText;
-    let tooltipPosition;
-
-    if(geometry instanceof Polygon) {
-        tooltipText = formatArea(geometry);
-        tooltipPosition = geometry.getInteriorPoint().getCoordinates();
-    }else if(geometry instanceof LineString) {
-        tooltipText = formatLength(geometry);
-        tooltipPosition = geometry.getLastCoordinate();
-    }
-
-    feature.properties.tooltipElement.innerHTML = tooltipText;
-    feature.properties.tooltipOverlay.setPosition(tooltipPosition);
+const getMeasureTooltipCoordinates = function(geometry) {
+    return geometry instanceof Polygon
+        ? geometry.getInteriorPoint().getCoordinates()
+        : geometry.getLastCoordinate();
 }
 
 const formatLength = function(line) {
@@ -47,4 +33,7 @@ const formatArea = function(polygon) {
     return Math.round(area * 100) / 100 + ' ' + 'm<sup>2</sup>';
 };
 
-export { onFeatureChange };
+export {
+    getMeasureTooltipValue,
+    getMeasureTooltipCoordinates
+};

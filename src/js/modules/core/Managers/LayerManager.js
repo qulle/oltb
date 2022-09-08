@@ -1,5 +1,6 @@
 import { Vector as VectorLayer } from 'ol/layer'; 
 import { Vector as VectorSource } from 'ol/source';
+import { hasNestedProperty } from '../../helpers/HasNestedProperty';
 
 class LayerManager {
     static map;
@@ -153,7 +154,7 @@ class LayerManager {
 
         // Remove potential overlays associated with each feature
         targetLayer.layer.getSource().getFeatures().forEach(feature => {
-            if('properties' in feature && 'tooltipOverlay' in feature.properties) {
+            if(hasNestedProperty(feature, 'properties', 'tooltipOverlay')) {
                 this.map.removeOverlay(feature.properties.tooltipOverlay);
             }
         });

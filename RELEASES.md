@@ -8,6 +8,7 @@ Some of the changes done in this version are:
 - Updated to latest version of OpenLayers 7.1.0
 - Updated the Parcel bundler to latest version 2.7.0
 - Fixed Bookmark rename tooltip error
+- Added support for multiple tooltips, ex. when using the Coordinate tool and the Measuring tool together
 - Code refactoring and improvements
 
 ## 1.0.0-beta2

@@ -58,7 +58,9 @@ const editFeature = function(feature) {
             infoWindow: infoWindow
         });
 
-        LayerManager.getActiveFeatureLayer({ifNoLayerName: 'Markers'}).layer.getSource().addFeatures(marker);
+        LayerManager.getActiveFeatureLayer({
+            ifNoLayerName: 'Markers'
+        }).layer.getSource().addFeatures(marker);
 
         // Dispatch event to trigger callback
         window.dispatchEvent(new CustomEvent('oltb.feature.edited', {

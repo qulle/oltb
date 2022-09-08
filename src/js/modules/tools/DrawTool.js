@@ -268,7 +268,9 @@ class DrawTool extends Control {
             const feature = event.feature;
             feature.setStyle(style);
 
-            const layer = LayerManager.getActiveFeatureLayer({ifNoLayerName: 'Drawing layer'}).layer;
+            const layer = LayerManager.getActiveFeatureLayer({
+                ifNoLayerName: 'Drawing layer'
+            }).layer;
             layer.getSource().addFeature(feature);
 
             // User defined callback from constructor
