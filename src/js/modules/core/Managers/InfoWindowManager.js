@@ -7,6 +7,7 @@ import { copyFeatureInfo } from './InfoWindowManager/CopyFeatureInfo';
 import { removeFeature } from './InfoWindowManager/RemoveFeature';
 import { editFeature } from './InfoWindowManager/EditFeature';
 import { trapFocusKeyListener } from '../../helpers/TrapFocus';
+import { hasNestedProperty } from '../../helpers/HasNestedProperty';
 
 const ANIMATION_CLASS = 'oltb-animations--centered-bounce';
 
@@ -110,7 +111,7 @@ class InfoWindowManager {
 
     static onPointerMove(event) {
         const hit = this.map.forEachFeatureAtPixel(event.pixel, function(feature) {
-            return 'properties' in feature && 'infoWindow' in feature.properties;
+            return hasNestedProperty(feature, 'properties', 'infoWindow');
         });
 
         this.map.getViewport().style.cursor = hit ? 'pointer' : 'default';

@@ -51,6 +51,7 @@ import HiddenAbout from './modules/tools/HiddenTools/About';
 import ContextMenu from './modules/common/ContextMenu';
 import LayerManager from './modules/core/Managers/LayerManager';
 import StateManager from './modules/core/Managers/StateManager';
+import TooltipManager from './modules/core/Managers/TooltipManager';
 import Config from './modules/core/Config';
 import SettingsManager from './modules/core/Managers/SettingsManager';
 import InfoWindowManager from './modules/core/Managers/InfoWindowManager';
@@ -330,8 +331,13 @@ const map = new Map({
 });
 
 // Initialize static managers with reference to map
-InfoWindowManager.init(map);
-LayerManager.init(map);
+[
+    InfoWindowManager, 
+    LayerManager, 
+    TooltipManager
+].forEach(manager => {
+    manager.init(map);
+})
 
 // Register all map-layers to the Layermanager.
 // The layermanager will add these layers to the map.

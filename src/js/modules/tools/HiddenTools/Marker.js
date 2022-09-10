@@ -53,7 +53,9 @@ class HiddenMarker extends Control {
                     infoWindow: infoWindow
                 });
 
-                LayerManager.getActiveFeatureLayer({ifNoLayerName: 'Markers'}).layer.getSource().addFeatures(marker);
+                LayerManager.getActiveFeatureLayer({
+                    ifNoLayerName: 'Markers'
+                }).layer.getSource().addFeatures(marker);
 
                 // User defined callback from constructor
                 if(typeof this.options.added === 'function') {

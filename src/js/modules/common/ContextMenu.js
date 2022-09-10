@@ -4,6 +4,7 @@ import DOM from '../helpers/Browser/DOM';
 import { trapFocusKeyListener } from '../helpers/TrapFocus';
 import { transform } from 'ol/proj';
 import { mapElement } from "../core/ElementReferences";
+import { hasNestedProperty } from "../helpers/HasNestedProperty";
 
 const DEFAULT_OPTIONS = {};
 
@@ -46,7 +47,7 @@ class ContextMenu extends Control {
     }
 
     addMenuItem(item, index) {
-        if(!('name' in item)) {
+        if(!hasNestedProperty(item, 'name')) {
             const li = DOM.createElement({
                 element: 'li',
                 class: 'oltb-context-menu__divider'

@@ -1,9 +1,9 @@
 import 'ol/ol.css';
-import Overlay from 'ol/Overlay';
 import Config from '../core/Config';
 import Toast from '../common/Toast';
 import DOM from '../helpers/Browser/DOM';
 import SettingsManager from '../core/Managers/SettingsManager';
+import TooltipManager from '../core/Managers/TooltipManager';
 import { Control } from 'ol/control';
 import { transform } from 'ol/proj';
 import { unByKey } from 'ol/Observable';
@@ -42,22 +42,8 @@ class Coordinates extends Control {
         this.element.appendChild(button);
         this.button = button;
         this.active = false;
+        this.tooltipItem;
         this.options = { ...DEFAULT_OPTIONS, ...options };
-
-        const tooltipElement = DOM.createElement({
-            element: 'span',
-            class: 'oltb-coordinate-tooltip'
-        })
-
-        this.tooltipElement = tooltipElement;
-
-        const tooltipOverlay = new Overlay({
-            element: tooltipElement,
-            offset: [0, -11],
-            positioning: 'bottom-center'
-        });
-
-        this.tooltipOverlay = tooltipOverlay;
 
         SettingsManager.addSetting('copyCoordinatesOnClick', {
             state: true, 
@@ -77,14 +63,13 @@ class Coordinates extends Control {
 
     handleCoordinateTooltip() {
         const map = this.getMap();
-    
+
         if(this.active) {
-            map.removeOverlay(this.tooltipOverlay);
+            const poppedTooltip = TooltipManager.pop('coordinates');
             unByKey(this.onPointerMoveListener);
             unByKey(this.onMapClickListener);
-            this.tooltipOverlay.setPosition(null);
         }else {
-            map.addOverlay(this.tooltipOverlay);
+            this.tooltipItem = TooltipManager.push('coordinates');
             this.onPointerMoveListener = map.on('pointermove', this.onPointerMove.bind(this));
             this.onMapClickListener = map.on('click', this.onMapClick.bind(this))
         }
@@ -97,8 +82,7 @@ class Coordinates extends Control {
         const lonlat = transform(event.coordinate, Config.baseProjection, Config.wgs84Projection);
         const prettyCoords = toStringHDMS(lonlat);
 
-        this.tooltipOverlay.setPosition(event.coordinate);
-        this.tooltipElement.innerHTML = prettyCoords;
+        this.tooltipItem.innerHTML = prettyCoords;
     }
 
     onMapClick(event) {

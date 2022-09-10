@@ -18,6 +18,7 @@ import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { instantiateLayer } from '../core/olTypes/LayerTypes';
 import { instantiateSource } from '../core/olTypes/SourceTypes';
 import { instantiateFormat } from '../core/olTypes/FormatTypes';
+import { hasNestedProperty } from '../helpers/HasNestedProperty';
 
 const LAYER_BUTTON_DEFAULT_CLASSES = 'oltb-func-btn';
 /* 
@@ -535,7 +536,7 @@ class Layers extends Control {
                     const hasFeatures = typeof layerObject.layer.getSource().getFeatures === 'function';
                     if(hasFeatures) {
                         layerObject.layer.getSource().getFeatures().forEach(feature => {
-                            if('properties' in feature && 'tooltipOverlay' in feature.properties) {
+                            if(hasNestedProperty(feature, 'properties', 'tooltipOverlay')) {
                                 flippedVisibility 
                                     ? feature.properties.tooltipOverlay.setMap(map)
                                     : feature.properties.tooltipOverlay.setMap(null);

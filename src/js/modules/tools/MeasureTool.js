@@ -4,16 +4,17 @@ import Overlay from 'ol/Overlay';
 import LayerManager from '../core/Managers/LayerManager';
 import SettingsManager from '../core/Managers/SettingsManager';
 import StateManager from '../core/Managers/StateManager';
+import TooltipManager from '../core/Managers/TooltipManager';
 import DOM from '../helpers/Browser/DOM';
 import { Control } from 'ol/control';
 import { Fill, Stroke, Circle, Style } from 'ol/style';
-import { unByKey } from 'ol/Observable';
 import { toolboxElement, toolbarElement } from '../core/ElementReferences';
 import { eventDispatcher } from '../helpers/Browser/EventDispatcher';
-import { onFeatureChange } from '../helpers/olFunctions/Measure';
+import { getMeasureTooltipCoordinates, getMeasureTooltipValue } from '../helpers/olFunctions/Measure';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { setActiveTool } from '../helpers/ActiveTool';
+import { unByKey } from 'ol/Observable';
 
 const LOCAL_STORAGE_NODE_NAME = 'measureTool';
 const LOCAL_STORAGE_DEFAULTS = {
@@ -181,7 +182,7 @@ class MeasureTool extends Control {
             map.removeInteraction(this.interaction);
         }
         
-        const styles = [
+        this.styles = [
             new Style({
                 image: new Circle({
                     fill: new Fill({
@@ -206,75 +207,96 @@ class MeasureTool extends Control {
 
         this.interaction = new Draw({
             type: toolType,
-            style: styles
+            style: this.styles
         });
 
         map.addInteraction(this.interaction);
 
-        this.interaction.on('drawstart', (event) => {
-            const feature = event.feature;
-            
-            const measureTooltipElement = DOM.createElement({
-                element: 'div',
-                class: 'oltb-measure-tooltip'
-            });
-    
-            const measureTooltipOverlay = new Overlay({
-                element: measureTooltipElement,
-                offset: [0, -15],
-                positioning: 'bottom-center',
-            });
-    
-            map.addOverlay(measureTooltipOverlay);
+        this.interaction.on('drawstart', this.onDrawStart.bind(this));
+        this.interaction.on('drawend', this.onDrawEnd.bind(this));
+        this.interaction.on('drawabort', this.onDrawAbort.bind(this));
+        this.interaction.on('error', this.onDrawEnd.bind(this));
+    }
 
-            feature.properties = {
-                tooltipElement: measureTooltipElement, 
-                tooltipOverlay: measureTooltipOverlay
-            };
-
-            feature.getGeometry().on('change', onFeatureChange.bind(feature));
-
-            // User defined callback from constructor
-            if(typeof this.options.start === 'function') {
-                this.options.start(event);
-            }
+    onDrawStart(event) {
+        const feature = event.feature;
+        const tooltipItem = TooltipManager.push('measure');
+        
+        this.onChangeListener = feature.getGeometry().on('change', (event) => {
+            tooltipItem.innerHTML = getMeasureTooltipValue(event.target);
         });
 
-        this.interaction.on('drawend', (event) => {
-            const feature = event.feature;
+        // User defined callback from constructor
+        if(typeof this.options.start === 'function') {
+            this.options.start(event);
+        }
+    }
 
-            unByKey(feature.properties.onChangeListener);
+    onDrawEnd(event) {
+        unByKey(this.onChangeListener);
 
-            feature.properties.tooltipElement.className = 'oltb-measure-tooltip oltb-measure-tooltip--ended';
-            feature.properties.tooltipOverlay.setOffset([0, -7]);
+        const feature = event.feature;
+        const geometry = feature.getGeometry();
+        feature.setStyle(this.styles);
+        
+        const poppedTooltip = TooltipManager.pop('measure');
 
-            feature.setStyle(styles);
-
-            const layer = LayerManager.getActiveFeatureLayer({ifNoLayerName: 'Measurements layer'}).layer;
-            layer.getSource().addFeature(feature);
-
-            // User defined callback from constructor
-            if(typeof this.options.end === 'function') {
-                this.options.end(event);
-            }
+        // Create a permanent tooltip and add the last measured value
+        const tooltipWrapper = DOM.createElement({
+            element: 'div',
+            class: 'oltb-overlay-tooltip'
         });
 
-        this.interaction.on('drawabort', (event) => {
-            const feature = event.feature;
-            map.removeOverlay(feature.properties.tooltipOverlay);
-
-            // User defined callback from constructor
-            if(typeof this.options.abort === 'function') {
-                this.options.abort(event);
-            }
+        const tooltipItem = DOM.createElement({
+            element: 'span',
+            class: 'oltb-overlay-tooltip__item'
         });
 
-        this.interaction.on('error', (event) => {
-            // User defined callback from constructor
-            if(typeof this.options.error === 'function') {
-                this.options.error(event);
-            }
+        tooltipWrapper.appendChild(tooltipItem);
+
+        const tooltipOverlay = new Overlay({
+            element: tooltipWrapper,
+            offset: [0, -7],
+            positioning: 'bottom-center',
         });
+
+        this.getMap().addOverlay(tooltipOverlay);
+
+        feature.properties = {
+            tooltipOverlay: tooltipOverlay
+        };
+        
+        tooltipOverlay.setPosition(getMeasureTooltipCoordinates(geometry));
+        tooltipItem.innerHTML = getMeasureTooltipValue(geometry);
+
+        const layer = LayerManager.getActiveFeatureLayer({
+            ifNoLayerName: 'Measurements layer'
+        }).layer;
+
+        layer.getSource().addFeature(feature);
+
+        // User defined callback from constructor
+        if(typeof this.options.end === 'function') {
+            this.options.end(event);
+        }
+    }
+
+    onDrawAbort(event) {
+        unByKey(this.onChangeListener);
+        
+        const tooltipItem = TooltipManager.pop('measure');
+
+        // User defined callback from constructor
+        if(typeof this.options.abort === 'function') {
+            this.options.abort(event);
+        }
+    }
+
+    onDrawError(event) {
+        // User defined callback from constructor
+        if(typeof this.options.error === 'function') {
+            this.options.error(event);
+        }
     }
 }
 
