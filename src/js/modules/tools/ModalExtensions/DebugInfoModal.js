@@ -26,10 +26,10 @@ class DebugInfoModal extends ModalBase {
                 type: 'button'
             },
             listeners: {
-                'click': () => {
-                    const copyStatus = copyToClipboard(textArea.value);
+                'click': async () => {
+                    const didCopy = await copyToClipboard(textArea.value);
         
-                    if(copyStatus) {
+                    if(didCopy) {
                         Toast.success({text: 'Debug info copied to clipboard', autoremove: 3000});
                     }else {
                         Toast.error({text: 'Failed to copy debug info'});

@@ -15,7 +15,7 @@ import { defaults as defaultControls } from 'ol/control';
 import { get as getProjection } from 'ol/proj';
 
 // Local map layers
-import worldMapUrl from 'url:../world-map.geojson';
+import countriesGeoJSONUrl from 'url:../json/countries.geojson';
 
 // Toolbar tools
 import HiddenMarker from './modules/tools/HiddenTools/Marker';
@@ -59,7 +59,6 @@ import { mapElement } from './modules/core/ElementReferences';
 import './modules/helpers/Browser/Prototypes';
 import './modules/helpers/Accessibility';
 import './modules/helpers/SlideToggle';
-import './modules/epsg/Projections';
 
 // Note: This is the same NODE_NAME and PROPS that the MapNavigation.js tool is using
 const LOCAL_STORAGE_NODE_NAME = 'mapData';
@@ -83,34 +82,34 @@ const map = new Map({
     }).extend([
         new MouseWheelZoom({
             condition: function(event) { 
-                return platformModifierKeyOnly(event) || SettingsManager.getSetting('mouseWheelZoom'); 
+                return platformModifierKeyOnly(event) || SettingsManager.getSetting('mouse.wheel.zoom'); 
             }
         }),
         new DragRotate({
             condition: function(event) {
-                return altShiftKeysOnly(event) && SettingsManager.getSetting('altShiftDragRotate');
+                return altShiftKeysOnly(event) && SettingsManager.getSetting('alt.shift.drag.rotate');
             }
         }),
         new DragPan({
             condition: function(event) {
-                return (platformModifierKeyOnly(event) || SettingsManager.getSetting('dragPan')) && !altShiftKeysOnly(event) && !shiftKeyOnly(event);
+                return (platformModifierKeyOnly(event) || SettingsManager.getSetting('drag.pan')) && !altShiftKeysOnly(event) && !shiftKeyOnly(event);
             }
         }),
         new KeyboardZoom({
             condition: function(event) {
-                return SettingsManager.getSetting('keyboardZoom') && targetNotEditable(event);
+                return SettingsManager.getSetting('keyboard.zoom') && targetNotEditable(event);
             }
         }),
         new KeyboardPan({
             condition: function(event) {
-                return SettingsManager.getSetting('keyboardPan') && targetNotEditable(event);
+                return SettingsManager.getSetting('keyboard.pan') && targetNotEditable(event);
             }
         })
     ]),
     controls: defaultControls({
         zoom: false, 
         rotate: false, 
-        attribution: SettingsManager.getSetting('showAttributions')
+        attribution: SettingsManager.getSetting('show.attributions')
     }).extend([
         new HiddenMarker({
             added: function(marker) {
@@ -369,7 +368,7 @@ LayerManager.addMapLayers([
         name: 'Country world map',
         layer: new VectorLayer({
             source: new VectorSource({
-                url: worldMapUrl,
+                url: countriesGeoJSONUrl,
                 format: new GeoJSON()
             }),
             visible: false

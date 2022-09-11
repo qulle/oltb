@@ -9,10 +9,12 @@ class TooltipManager {
     static map;
     static tooltips = {}
 
-    static init(mapReference) {
-        if(!this.map) {
-            this.map = mapReference;
+    static init(map) {
+        if(this.map !== undefined) {
+            return;
         }
+
+        this.map = map;
 
         const tooltipElement = DOM.createElement({
             element: 'div',

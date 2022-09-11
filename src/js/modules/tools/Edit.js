@@ -99,7 +99,7 @@ class Edit extends Control {
                     return layerObject.layer.getSource().hasFeature(feature);
                 });
                 
-                return selectable && (isFeatureLayer || SettingsManager.getSetting('selectVectorMapShapes'));
+                return selectable && (isFeatureLayer || SettingsManager.getSetting('select.vector.map.shapes'));
             }
         });
         

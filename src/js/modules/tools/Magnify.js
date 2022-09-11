@@ -181,7 +181,7 @@ class Magnify extends Control {
                     Toast.error({text: 'A unknown error occurred with the magnifyer'});
                 }
 
-                console.error(error);
+                console.error(`Error using magnifyer ${[error]}`);
             }
         }
     }

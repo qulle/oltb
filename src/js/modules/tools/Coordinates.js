@@ -45,7 +45,7 @@ class Coordinates extends Control {
         this.tooltipItem;
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
-        SettingsManager.addSetting('copyCoordinatesOnClick', {
+        SettingsManager.addSetting('copy.coordinates.on.click', {
             state: true, 
             text: 'Coordinates tool - Copy coordinates on click'
         });
@@ -85,8 +85,8 @@ class Coordinates extends Control {
         this.tooltipItem.innerHTML = prettyCoords;
     }
 
-    onMapClick(event) {
-        if(!SettingsManager.getSetting('copyCoordinatesOnClick') || window?.oltb?.activeTool != null) {
+    async onMapClick(event) {
+        if(!SettingsManager.getSetting('copy.coordinates.on.click') || window?.oltb?.activeTool != null) {
             return;
         }
 
@@ -103,9 +103,9 @@ class Coordinates extends Control {
             degree: prettyCoords
         };
 
-        const copyStatus = copyToClipboard(prettyCoords);
+        const didCopy = await copyToClipboard(prettyCoords);
 
-        if(copyStatus) {
+        if(didCopy) {
             Toast.success({text: 'Coordinates copied to clipboard', autoremove: 3000});
         }else {
             Toast.error({text: 'Failed to copy coordinates'});

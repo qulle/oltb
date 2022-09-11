@@ -1,21 +1,12 @@
-import DOM from '../../helpers/Browser/DOM';
-
-const copyToClipboard = function(text) {
-    const textarea = DOM.createElement({
-        element: 'textarea', 
-        value: text,
-        style: 'position: absolute; left: -9999px;',
-        attributes: {
-            readonly: ''
-        }
-    });
-
-    document.body.appendChild(textarea);
-    textarea.select();
-    const didCopy = document.execCommand('copy');
-    document.body.removeChild(textarea);
-
-    return didCopy;
+const copyToClipboard = async function(text = '') {
+    return navigator.clipboard.writeText(text.trim())
+        .then(() => {
+            return true;
+        })
+        .catch(error => {
+            console.error(`Error copying data ${[error]}`);
+            return false;
+        });
 }
 
 export { copyToClipboard };

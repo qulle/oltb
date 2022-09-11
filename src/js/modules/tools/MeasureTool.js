@@ -161,7 +161,7 @@ class MeasureTool extends Control {
             // Remove this tool as the active global tool
             window.oltb.activeTool = null;
         }else {
-            if(SettingsManager.getSetting('alwaysNewLayers')) {
+            if(SettingsManager.getSetting('always.new.layers')) {
                 LayerManager.addFeatureLayer('Measurements layer');
             }
 

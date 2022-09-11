@@ -14,10 +14,8 @@ class LayerManager {
     static layerIdCounter = 0;
     static featureLayerZIndexBase = 10000;
 
-    static init(mapReference) {
-        if(!this.map) {
-            this.map = mapReference;
-        }
+    static init(map) {
+        this.map = map;
     }
 
     //-------------------------------------------
@@ -111,10 +109,9 @@ class LayerManager {
     //-------------------------------------------
     // Feature layers
     //-------------------------------------------
-    static addFeatureLayer(name = this.defaultLayerName, silent = false) {
+    static addFeatureLayer(name, silent = false) {
         name = name.trim();
-    
-        // Fall back to the default namne if no name is entered
+
         if(!name.length) {
             name = this.defaultLayerName;
         }

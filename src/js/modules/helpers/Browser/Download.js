@@ -1,7 +1,7 @@
 import DOM from '../../helpers/Browser/DOM';
 
 const download = function(filename, content) {
-    const element = DOM.createElement({
+    const downloadTrigger = DOM.createElement({
         element: 'a', 
         style: 'display: none;',
         attributes: {
@@ -10,14 +10,12 @@ const download = function(filename, content) {
     });
     
     if(isImage(filename)) {
-        element.setAttribute('href', content);
+        downloadTrigger.setAttribute('href', content);
     }else {
-        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(content));
+        downloadTrigger.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(content));
     }
     
-    document.body.appendChild(element);
-    element.click();
-    document.body.removeChild(element);
+    downloadTrigger.click();
 }
 
 const isImage = function(filename) {
