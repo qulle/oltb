@@ -16,12 +16,12 @@ class InfoWindowManager {
     static overlay;
     static content;
 
-    static init(mapReference) {
-        if(this.map) {
+    static init(map) {
+        if(this.map !== undefined) {
             return;
         }
 
-        this.map = mapReference;
+        this.map = map;
 
         // Create DOM elements
         const infoWindow = DOM.createElement({
@@ -79,6 +79,7 @@ class InfoWindowManager {
         });
 
         const infoWindow = feature?.properties?.infoWindow;
+        
         if(infoWindow) {
             this.content.innerHTML = infoWindow;
             this.overlay.setPosition(getCenter(

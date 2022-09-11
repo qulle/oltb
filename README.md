@@ -111,7 +111,7 @@ _IE is not supported, it's time to move on._
 
 ## Architecture model
 ![Architecture model](images/architecture.svg?raw=true "Architecture model")
-Architecture model showing my intentions of how an application could be built to keep the responsibility of each part separated and not end up with application specific code inside the toolbar.
+Model showing my intentions of how an application could be built to keep the responsibility of each part separated and not end up with application specific code inside the toolbar.
 
 ## Colors
 The project's Theme colors and the full color palette are described below.
@@ -265,7 +265,7 @@ and then calling the constructor in the array inside the extend method. The tool
 controls: defaultControls({
     zoom: false, 
     rotate: false, 
-    attribution: SettingsManager.getSetting('showAttributions')
+    attribution: SettingsManager.getSetting('show.attributions')
 }).extend([
     new HiddenMarker(),
     new HiddenMapNavigation(),
@@ -304,7 +304,7 @@ Tools that in any way change the map, create, modify or delete objects have seve
 controls: defaultControls({
     zoom: false, 
     rotate: false, 
-    attribution: SettingsManager.getSetting('showAttributions')
+    attribution: SettingsManager.getSetting('show.attributions')
 }).extend([
     new HiddenMarker({
         added: function(marker) {

@@ -8,9 +8,9 @@ const DEFAULT_OPTIONS = {
 
 class ModalWindow extends ModalBase {
     constructor(options = {}) {
-        this.options = { ...DEFAULT_OPTIONS, ...options };
+        super(options.title || DEFAULT_OPTIONS.title);
 
-        super(this.options.title);
+        this.options = { ...DEFAULT_OPTIONS, ...options };
 
         const modalContent = DOM.createElement({
             element: 'div', 

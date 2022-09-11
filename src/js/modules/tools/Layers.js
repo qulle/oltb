@@ -221,7 +221,7 @@ class Layers extends Control {
                     })
                 });
             }catch(error) {
-                console.error(error);
+                console.error(`Error adding layer ${[error]}`);
                 Toast.error({text: 'Something went wrong adding the layer'});
             }
         });

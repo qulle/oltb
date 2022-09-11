@@ -8,14 +8,14 @@ class SettingsManager {
     static localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...this.localStorageState };
 
     static settings = new Map([
-        ['mouseWheelZoom', {state: false, text: 'Enable zooming using mousewheel only'}],
-        ['altShiftDragRotate', {state: true, text: 'Enable rotate of map using Shift + Alt + Drag'}],
-        ['dragPan', {state: true, text: 'Enable dragging using mouse only'}],
-        ['keyboardZoom', {state: true, text: 'Enable zooming using keyboard'}],
-        ['keyboardPan', {state: true, text: 'Enable panning using keyboard'}],
-        ['selectVectorMapShapes', {state: false, text: 'Enable select of shapes in vector map layers'}],
-        ['showAttributions', {state: true, text: 'Show attributions (toggle requires page reload)'}],
-        ['alwaysNewLayers', {state: false, text: 'Always create new layer when selecting tool'}],
+        ['mouse.wheel.zoom', {state: false, text: 'Enable zooming using mousewheel only'}],
+        ['alt.shift.drag.rotate', {state: true, text: 'Enable rotate of map using Shift + Alt + Drag'}],
+        ['drag.pan', {state: true, text: 'Enable dragging using mouse only'}],
+        ['keyboard.zoom', {state: true, text: 'Enable zooming using keyboard'}],
+        ['keyboard.pan', {state: true, text: 'Enable panning using keyboard'}],
+        ['select.vector.map.shapes', {state: false, text: 'Enable select of shapes in vector map layers'}],
+        ['show.attributions', {state: true, text: 'Show attributions (toggle requires page reload)'}],
+        ['always.new.layers', {state: false, text: 'Always create new layer when selecting tool'}],
     ]);
 
     static init() {

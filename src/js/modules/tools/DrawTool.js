@@ -195,7 +195,7 @@ class DrawTool extends Control {
             // Remove this tool as the active global tool
             window.oltb.activeTool = null;
         }else {
-            if(SettingsManager.getSetting('alwaysNewLayers')) {
+            if(SettingsManager.getSetting('always.new.layers')) {
                 LayerManager.addFeatureLayer('Drawing layer');
             }
 
