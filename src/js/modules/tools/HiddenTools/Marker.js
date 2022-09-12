@@ -1,4 +1,3 @@
-import 'ol/ol.css';
 import LayerManager from '../../core/Managers/LayerManager';
 import MarkerModal from '../ModalExtensions/MarkerModal';
 import { Control } from 'ol/control';
@@ -53,9 +52,11 @@ class HiddenMarker extends Control {
                     infoWindow: infoWindow
                 });
 
-                LayerManager.getActiveFeatureLayer({
-                    ifNoLayerName: 'Markers'
-                }).layer.getSource().addFeatures(marker);
+                const layerWrapper = LayerManager.getActiveFeatureLayer({
+                    fallback: 'Markers'
+                });
+                
+                layerWrapper.layer.getSource().addFeatures(marker);
 
                 // User defined callback from constructor
                 if(typeof this.options.added === 'function') {
@@ -71,7 +72,7 @@ class HiddenMarker extends Control {
             if(typeof this.options.edited === 'function') {
                 this.options.edited([
                     event.detail.feature,
-                    event.detail.linkedFeature
+                    event.detail.partner
                 ]);
             }
         });
@@ -80,7 +81,7 @@ class HiddenMarker extends Control {
             if(typeof this.options.removed === 'function') {
                 this.options.removed([
                     event.detail.feature,
-                    event.detail.linkedFeature
+                    event.detail.partner
                 ]);
             }
         });

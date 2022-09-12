@@ -1,4 +1,3 @@
-import 'ol/ol.css';
 import LayerManager from '../core/Managers/LayerManager';
 import Dialog from '../common/Dialog';
 import LayerModal from './ModalExtensions/LayerModal';
@@ -138,10 +137,8 @@ class Layers extends Control {
         this.mapLayerStack = mapLayerStack;
 
         const toggleableTriggers = layersToolbox.querySelectorAll('.oltb-toggleable');
-        toggleableTriggers.forEach(toggle => {
+        toggleableTriggers.forEach((toggle) => {
             toggle.addEventListener('click', (event) => {
-                event.preventDefault();
-                
                 const targetName = toggle.dataset.oltbToggleableTarget;
                 document.getElementById(targetName).slideToggle(200, (collapsed) => {
                     this.localStorage[targetName] = collapsed;
@@ -158,8 +155,6 @@ class Layers extends Control {
 
         if(addFeatureLayerBtn) {
             addFeatureLayerBtn.addEventListener('click', function(event) {
-                event.preventDefault();
-    
                 LayerManager.addFeatureLayer(addFeatureLayerTxt.value);
                 addFeatureLayerTxt.value = '';
             });
@@ -210,7 +205,7 @@ class Layers extends Control {
                 LayerManager.addMapLayer({
                     name: result.name,
                     layer: instantiateLayer(result.layer, {
-                        projection: result.projection || Config.baseProjection,
+                        projection: result.projection || Config.projection,
                         source: instantiateSource(result.source, {
                             url: result.url,
                             params: JSON.parse(result.parameters),
@@ -221,22 +216,22 @@ class Layers extends Control {
                     })
                 });
             }catch(error) {
-                console.error(`Error adding layer ${[error]}`);
+                console.error(`Error adding layer [${error}]`);
                 Toast.error({text: 'Something went wrong adding the layer'});
             }
         });
     }
 
     mapLayerAdded(event) {
-        const layerObject = event.detail.layerObject;
-        const silent = event.detail.silent;
+        const layerWrapper = event.detail.layerWrapper;
+        const isSilent = event.detail.isSilent;
 
         const disableVisibilityButton = this.options.disableMapLayerVisibilityButton;
         const disableEditButton = this.options.disableMapLayerEditButton;
         const disableDeleteButton = this.options.disableMapLayerDeleteButton;
 
         // Add to UI
-        this.createLayerItem(layerObject, {
+        this.createLayerItem(layerWrapper, {
             idPrefix: 'map-layer',
             target: this.mapLayerStack,
             buttons: {
@@ -256,27 +251,27 @@ class Layers extends Control {
         });
 
         // User defined callback from constructor
-        if(typeof this.options.mapLayerAdded === 'function' && !silent) {
-            this.options.mapLayerAdded(layerObject);
+        if(typeof this.options.mapLayerAdded === 'function' && !isSilent) {
+            this.options.mapLayerAdded(layerWrapper);
         }
     }
 
     mapLayerRemoved(event) {
-        const layerObject = event.detail.layerObject;
-        const silent = event.detail.silent;
+        const layerWrapper = event.detail.layerWrapper;
+        const isSilent = event.detail.isSilent;
 
         // Remove layer from UI
-        this.mapLayerStack.querySelector(`#map-layer-${layerObject.id}`).remove();
+        this.mapLayerStack.querySelector(`#map-layer-${layerWrapper.id}`).remove();
 
         // User defined callback from constructor
-        if(typeof this.options.mapLayerRemoved === 'function' && !silent) {
-            this.options.mapLayerRemoved(layerObject);
+        if(typeof this.options.mapLayerRemoved === 'function' && !isSilent) {
+            this.options.mapLayerRemoved(layerWrapper);
         }
     }
 
     featureLayerAdded(event) {
-        const layerObject = event.detail.layerObject;
-        const silent = event.detail.silent;
+        const layerWrapper = event.detail.layerWrapper;
+        const isSilent = event.detail.isSilent;
 
         const disableVisibilityButton = this.options.disableFeatureLayerVisibilityButton;
         const disableEditButton = this.options.disableFeatureLayerEditButton;
@@ -284,7 +279,7 @@ class Layers extends Control {
         const disableDeleteButton = this.options.disableFeatureLayerDeleteButton;
 
         // Add to UI
-        this.createLayerItem(layerObject, {
+        this.createLayerItem(layerWrapper, {
             idPrefix: 'oltb-feature-layer',
             target: this.featureLayerStack,
             buttons: {
@@ -308,17 +303,17 @@ class Layers extends Control {
         });
 
         // User defined callback from constructor
-        if(typeof this.options.featureLayerAdded === 'function' && !silent) {
-            this.options.featureLayerAdded(layerObject);
+        if(typeof this.options.featureLayerAdded === 'function' && !isSilent) {
+            this.options.featureLayerAdded(layerWrapper);
         }
     }
 
     featureLayerRemoved(event) {
-        const layerObject = event.detail.layerObject;
-        const silent = event.detail.silent;
+        const layerWrapper = event.detail.layerWrapper;
+        const isSilent = event.detail.isSilent;
 
         // Remove layer from UI
-        this.featureLayerStack.querySelector(`#oltb-feature-layer-${layerObject.id}`).remove();
+        this.featureLayerStack.querySelector(`#oltb-feature-layer-${layerWrapper.id}`).remove();
 
         // Set top-most-layer tas the active layer
         // Important that it is the first child, the LayerManager uses the first next layer
@@ -328,12 +323,12 @@ class Layers extends Control {
         }
 
         // User defined callback from constructor
-        if(typeof this.options.featureLayerRemoved === 'function' && !silent) {
-            this.options.featureLayerRemoved(layerObject);
+        if(typeof this.options.featureLayerRemoved === 'function' && !isSilent) {
+            this.options.featureLayerRemoved(layerWrapper);
         }
     }
 
-    createLayerItem(layerObject, options) {
+    createLayerItem(layerWrapper, options) {
         // Should just be one li-item that has the active class, but just in case
         this.featureLayerStack.querySelectorAll('li').forEach((layer) => {
             layer.classList.remove('oltb-toolbox-list__item--active');
@@ -342,15 +337,14 @@ class Layers extends Control {
         // Create layer baser item - li
         const layerElement = DOM.createElement({
             element: 'li', 
-            id: `${options.idPrefix}-${layerObject.id}`,
-            class: 'oltb-toolbox-list__item oltb-toolbox-list__item--active' + (!layerObject.layer.getVisible() ? ' oltb-toolbox-list__item--hidden' : '')
+            id: `${options.idPrefix}-${layerWrapper.id}`,
+            class: 'oltb-toolbox-list__item oltb-toolbox-list__item--active' + (!layerWrapper.layer.getVisible() ? ' oltb-toolbox-list__item--hidden' : '')
         });
 
         // Eventlistener to update the UI if the visibility of the layer is changed
         // Other tools may change a layers visibility and the UI must be updated in this event
-        layerObject.layer.on('propertychange', function(event) {
-            const property = event.key;
-            if(property === 'visible') {
+        layerWrapper.layer.on('propertychange', function(event) {
+            if(event.key === 'visible') {
                 layerElement.classList.toggle('oltb-toolbox-list__item--hidden');
             }
         });
@@ -358,9 +352,9 @@ class Layers extends Control {
         // Create layer name label
         const layerName = DOM.createElement({
             element: 'span', 
-            text: layerObject.name.ellipsis(20),
+            text: layerWrapper.name.ellipsis(20),
             class: 'oltb-toolbox-list__title',
-            title: layerObject.name
+            title: layerWrapper.name
         });
 
         // This tooltip can not be triggered by the delegated .oltb-tippy class
@@ -379,9 +373,12 @@ class Layers extends Control {
         // If feature layer - attach eventlistener for setting the active layer
         if(options.idPrefix === 'oltb-feature-layer') {
             layerName.addEventListener('click', (event) => {
-                LayerManager.setActiveFeatureLayer(layerObject);
+                LayerManager.setActiveFeatureLayer(layerWrapper);
                 // Should just be one li-item that has the active class, but just in case
-                this.featureLayerStack.querySelectorAll('li').forEach(layer => layer.classList.remove('oltb-toolbox-list__item--active'));
+                this.featureLayerStack.querySelectorAll('li').forEach((layer) => {
+                    layer.classList.remove('oltb-toolbox-list__item--active')
+                });
+                    
                 // Set the new layer as the active layer
                 layerName.closest('li').classList.add('oltb-toolbox-list__item--active');
             });
@@ -406,7 +403,7 @@ class Layers extends Control {
         for(const name in options.buttons) {
             rightButtonWrapper.appendChild(options.buttons[name].function.call(
                 this,
-                layerObject,
+                layerWrapper,
                 options.buttons[name].callback,
                 layerName
             ));
@@ -418,7 +415,7 @@ class Layers extends Control {
         options.target.prepend(layerElement);
     }
 
-    createDeleteButton(layerObject, callback) {
+    createDeleteButton(layerWrapper, callback) {
         const deleteButton = DOM.createElement({
             element: 'button',
             class: LAYER_BUTTON_DEFAULT_CLASSES + ' oltb-func-btn--delete oltb-tippy',
@@ -429,9 +426,9 @@ class Layers extends Control {
             listeners: {
                 'click': () => {
                     Dialog.confirm({
-                        html: `Do you want to delete layer <strong>${layerObject.name}</strong>?`,
+                        html: `Do you want to delete layer <strong>${layerWrapper.name}</strong>?`,
                         onConfirm: function() {
-                            callback(layerObject);
+                            callback(layerWrapper);
                         }
                     });
                 }
@@ -441,7 +438,7 @@ class Layers extends Control {
         return deleteButton;
     }
 
-    createDownloadButton(layerObject, callback) {
+    createDownloadButton(layerWrapper, callback) {
         const downloadButton = DOM.createElement({
             element: 'button', 
             class: LAYER_BUTTON_DEFAULT_CLASSES + ' oltb-func-btn--download oltb-tippy',
@@ -460,20 +457,20 @@ class Layers extends Control {
                     return;
                 }
 
-                const features = layerObject.layer.getSource().getFeatures();
+                const features = layerWrapper.layer.getSource().getFeatures();
                 const formatString = format.writeFeatures(features, {
-                    featureProjection: Config.baseProjection,
-                    dataProjection: Config.baseProjection
+                    featureProjection: Config.projection,
+                    dataProjection: Config.projection
                 });
             
                 download(
-                    layerObject.name + '.' + result.format.toLowerCase(),
+                    layerWrapper.name + '.' + result.format.toLowerCase(),
                     formatString
                 );
 
                 // User defined callback from constructor
                 if(typeof callback === 'function') {
-                    callback(layerObject);
+                    callback(layerWrapper);
                 }
             });
         });
@@ -481,7 +478,7 @@ class Layers extends Control {
         return downloadButton;
     }
 
-    createEditButton(layerObject, callback, layerName) {
+    createEditButton(layerWrapper, callback, layerName) {
         const editButton = DOM.createElement({
             element: 'button',
             class: LAYER_BUTTON_DEFAULT_CLASSES + ' oltb-func-btn--edit oltb-tippy',
@@ -493,17 +490,17 @@ class Layers extends Control {
                 'click': () => {
                     Dialog.prompt({
                         text: 'Edit layer name',
-                        value: layerObject.name,
+                        value: layerWrapper.name,
                         confirmText: 'Rename',
                         onConfirm: function(result) {
                             if(result !== null && !!result.length) {
-                                layerObject.name = result;
+                                layerWrapper.name = result;
                                 layerName.innerText = result.ellipsis(20);
                                 layerName._tippy.setContent(result);
                                 
                                 // User defined callback from constructor
                                 if(typeof callback === 'function') {
-                                    callback(layerObject);
+                                    callback(layerWrapper);
                                 }
                             }
                         }
@@ -515,7 +512,7 @@ class Layers extends Control {
         return editButton;
     }
 
-    createVisibilityButton(layerObject, callback, layerName) {
+    createVisibilityButton(layerWrapper, callback, layerName) {
         const map = this.getMap();
 
         const visibilityButton = DOM.createElement({
@@ -529,24 +526,22 @@ class Layers extends Control {
                 'click': () => {
                     InfoWindowManager.hideOverlay();
 
-                    const flippedVisibility = !layerObject.layer.getVisible();
-                    layerObject.layer.setVisible(flippedVisibility);
-                    
+                    const flippedVisibility = !layerWrapper.layer.getVisible();
+                    layerWrapper.layer.setVisible(flippedVisibility);
+                     
                     // Hide potential overlays associated with that layer
-                    const hasFeatures = typeof layerObject.layer.getSource().getFeatures === 'function';
+                    const hasFeatures = typeof layerWrapper.layer.getSource().getFeatures === 'function';
                     if(hasFeatures) {
-                        layerObject.layer.getSource().getFeatures().forEach(feature => {
-                            if(hasNestedProperty(feature, 'properties', 'tooltipOverlay')) {
-                                flippedVisibility 
-                                    ? feature.properties.tooltipOverlay.setMap(map)
-                                    : feature.properties.tooltipOverlay.setMap(null);
+                        layerWrapper.layer.getSource().getFeatures().forEach((feature) => {
+                            if(hasNestedProperty(feature.getProperties(), 'tooltipOverlay')) {
+                                feature.getProperties().tooltipOverlay.setMap(flippedVisibility ? map : null)
                             }
                         });
                     }
 
                     // User defined callback from constructor
                     if(typeof callback === 'function') {
-                        callback(layerObject);
+                        callback(layerWrapper);
                     }
                 }
             }

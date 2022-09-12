@@ -1,4 +1,3 @@
-import 'ol/ol.css';
 import DOM from '../helpers/Browser/DOM';
 import { Control } from 'ol/control';
 import { toolbarElement } from '../core/ElementReferences';

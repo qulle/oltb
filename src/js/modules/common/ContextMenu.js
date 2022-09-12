@@ -90,7 +90,7 @@ class ContextMenu extends Control {
     show(event) {
         this.coordinates = transform(
             this.getMap().getEventCoordinate(event), 
-            Config.baseProjection, 
+            Config.projection, 
             Config.wgs84Projection
         );
         
@@ -125,7 +125,7 @@ class ContextMenu extends Control {
 }
 
 mapElement.addEventListener('contextmenu', (event) => {
-    menuInstances.forEach(menu => {
+    menuInstances.forEach((menu) => {
         if(event.target.matches(menu.options.selector)) {
             menu.show(event);
         }
@@ -133,13 +133,13 @@ mapElement.addEventListener('contextmenu', (event) => {
 });
 
 mapElement.addEventListener('click', (event) => {
-    menuInstances.forEach(menu => {
+    menuInstances.forEach((menu) => {
         menu.hide();
     });
 });
 
 const addContextMenuItems = function(name, items) {
-    items.forEach(item => {
+    items.forEach((item) => {
         addContextMenuItem(name, item);
     });
 }

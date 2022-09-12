@@ -1,4 +1,3 @@
-import 'ol/ol.css';
 import Dialog from '../common/Dialog';
 import LayerManager from '../core/Managers/LayerManager';
 import SettingsManager from '../core/Managers/SettingsManager';
@@ -79,10 +78,8 @@ class Edit extends Control {
         deleteSelectedButton.addEventListener('click', this.deleteSelectedFeatures.bind(this));
 
         const toggleableTriggers = editToolbox.querySelectorAll('.oltb-toggleable');
-        toggleableTriggers.forEach(toggle => {
+        toggleableTriggers.forEach((toggle) => {
             toggle.addEventListener('click', (event) => {
-                event.preventDefault();
-
                 const targetName = toggle.dataset.oltbToggleableTarget;
                 document.getElementById(targetName).slideToggle(200, (collapsed) => {
                     this.localStorage.collapsed = collapsed;
@@ -94,9 +91,9 @@ class Edit extends Control {
         const select = new Select({
             hitTolerance: 5,
             filter: function(feature, layer) {
-                const selectable = !hasNestedProperty(feature, 'properties', 'notSelectable');
-                const isFeatureLayer = LayerManager.getFeatureLayers().find(layerObject => {
-                    return layerObject.layer.getSource().hasFeature(feature);
+                const selectable = !hasNestedProperty(feature.getProperties(), 'notSelectable');
+                const isFeatureLayer = LayerManager.getFeatureLayers().find((layerWrapper) => {
+                    return layerWrapper.layer.getSource().hasFeature(feature);
                 });
                 
                 return selectable && (isFeatureLayer || SettingsManager.getSetting('select.vector.map.shapes'));
@@ -139,8 +136,8 @@ class Edit extends Control {
         this.translate = translate;
 
         this.modify.addEventListener('modifystart', (event) => {
-            event.features.forEach(feature => {
-                if(hasNestedProperty(feature, 'properties', 'tooltipOverlay')) {
+            event.features.forEach((feature) => {
+                if(hasNestedProperty(feature.getProperties(), 'tooltipOverlay')) {
                     this.attachOnChange(feature);
                 }
             });
@@ -152,8 +149,8 @@ class Edit extends Control {
         });
 
         this.modify.addEventListener('modifyend', (event) => {
-            event.features.forEach(feature => {
-                if(hasNestedProperty(feature, 'properties', 'tooltipOverlay')) {
+            event.features.forEach((feature) => {
+                if(hasNestedProperty(feature.getProperties(), 'tooltipOverlay')) {
                     this.detachOnChange(feature);
                 }
             });
@@ -165,8 +162,8 @@ class Edit extends Control {
         });
 
         this.translate.addEventListener('translatestart', (event) => {
-            event.features.forEach(feature => {
-                if(hasNestedProperty(feature, 'properties', 'tooltipOverlay')) {
+            event.features.forEach((feature) => {
+                if(hasNestedProperty(feature.getProperties(), 'tooltipOverlay')) {
                     this.attachOnChange(feature);
                 }
             });
@@ -178,8 +175,8 @@ class Edit extends Control {
         });
 
         this.translate.addEventListener('translateend', (event) => {
-            event.features.forEach(feature => {
-                if(hasNestedProperty(feature, 'properties', 'tooltipOverlay')) {
+            event.features.forEach((feature) => {
+                if(hasNestedProperty(feature.getProperties(), 'tooltipOverlay')) {
                     this.detachOnChange(feature);
                 }
             });
@@ -211,13 +208,13 @@ class Edit extends Control {
         Dialog.confirm({
             text: `Delete ${numSelectedFeatures} selected feature${numSelectedFeatures > 1 ? 's': ''}?`,
             onConfirm: () => {
-                const layerObjects = LayerManager.getFeatureLayers();
+                const layerWrappers = LayerManager.getFeatureLayers();
                 const features = [...this.select.getFeatures().getArray()];
 
                 // The user can select features from any layer. Each feature needs to be removed from its associated layer. 
-                features.forEach(feature => {
-                    layerObjects.forEach(layerObject => {
-                        const source = layerObject.layer.getSource();
+                features.forEach((feature) => {
+                    layerWrappers.forEach((layerWrapper) => {
+                        const source = layerWrapper.layer.getSource();
                         if(source.hasFeature(feature)) {
                             // Remove feature from layer
                             source.removeFeature(feature);
@@ -226,8 +223,8 @@ class Edit extends Control {
                             this.select.getFeatures().remove(feature);
 
                             // Remove potential overlays associated with the feature
-                            if(hasNestedProperty(feature, 'properties', 'tooltipOverlay')) {
-                                this.getMap().removeOverlay(feature.properties.tooltipOverlay);
+                            if(hasNestedProperty(feature.getProperties(), 'tooltipOverlay')) {
+                                this.getMap().removeOverlay(feature.getProperties().tooltipOverlay);
                             }
 
                             // User defined callback from constructor
@@ -253,8 +250,8 @@ class Edit extends Control {
             this.tooltipItem = TooltipManager.push('edit');
         }
 
-        feature.properties.tooltipOverlay.getElement().className = `oltb-overlay-tooltip ${hasOtherTooltip && selectedFeatures.length === 1 ? 'oltb-overlay-tooltip--hidden' : ''}`;
-        feature.properties.onChangeListener = feature.getGeometry().on('change', this.onFeatureChange.bind(this, feature));
+        feature.getProperties().tooltipOverlay.getElement().className = `oltb-overlay-tooltip ${hasOtherTooltip && selectedFeatures.length === 1 ? 'oltb-overlay-tooltip--hidden' : ''}`;
+        feature.getProperties().onChangeListener = feature.getGeometry().on('change', this.onFeatureChange.bind(this, feature));
     }
 
     detachOnChange(feature) {
@@ -265,9 +262,9 @@ class Edit extends Control {
             const poppedTooltip = TooltipManager.pop('edit');
         }
 
-        unByKey(feature.properties.onChangeListener);
+        unByKey(feature.getProperties().onChangeListener);
 
-        const overlay = feature.properties.tooltipOverlay;
+        const overlay = feature.getProperties().tooltipOverlay;
         overlay.setPosition(getMeasureTooltipCoordinates(feature.getGeometry()));
 
         const tooltip = overlay.getElement();
@@ -282,7 +279,7 @@ class Edit extends Control {
         if(hasOtherTooltip && selectedFeatures.length === 1) {
             this.tooltipItem.innerHTML = getMeasureTooltipValue(feature.getGeometry());
         }else {
-            const overlay = feature.properties.tooltipOverlay;
+            const overlay = feature.getProperties().tooltipOverlay;
             overlay.setPosition(getMeasureTooltipCoordinates(feature.getGeometry()));
 
             const tooltip = overlay.getElement();
@@ -309,14 +306,14 @@ class Edit extends Control {
         ];
 
         if(this.active) {
-            interactions.forEach(item => {
+            interactions.forEach((item) => {
                 map.removeInteraction(item);
             });
 
             // Remove this tool as the active global tool
             window.oltb.activeTool = null;
         }else {
-            interactions.forEach(item => {
+            interactions.forEach((item) => {
                 map.addInteraction(item);
             });
         }

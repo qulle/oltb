@@ -1,4 +1,3 @@
-import 'ol/ol.css';
 import Dialog from '../common/Dialog';
 import Toast from '../common/Toast';
 import SettingsModal from './ModalExtensions/SettingsModal';

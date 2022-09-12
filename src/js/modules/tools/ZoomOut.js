@@ -1,4 +1,3 @@
-import 'ol/ol.css';
 import Config from '../core/Config';
 import DOM from '../helpers/Browser/DOM';
 import { Control } from 'ol/control';

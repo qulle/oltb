@@ -1,4 +1,3 @@
-import 'ol/ol.css';
 import Toast from '../common/Toast';
 import LayerManager from '../core/Managers/LayerManager';
 import Config from '../core/Config';
@@ -36,21 +35,19 @@ class ImportVectorLayer extends Control {
         });
 
         this.element.appendChild(button);
+        this.fileReader = new FileReader();
         this.options = { ...DEFAULT_OPTIONS, ...options };
-
-        // Helper element to open a local geojson file
-        const inputDialog = DOM.createElement({
+        
+        this.inputDialog = DOM.createElement({
             element: 'input',
             attributes: {
                 type: 'file',
                 accept: '.geojson, .kml'
             },
             listeners: {
-                'change': this.loadVectorLayer.bind(this)
+                'change': this.loadLayer.bind(this)
             }
-        })
-
-        this.inputDialog = inputDialog;
+        });
         
         window.addEventListener('keyup', (event) => {
             if(isShortcutKeyOnly(event, 'o')) {
@@ -63,51 +60,52 @@ class ImportVectorLayer extends Control {
         this.inputDialog.click();
     }
 
-    loadVectorLayer(event) {
+    loadLayer(event) {
         const fileDialog = event.target;
-        const fileReader = new FileReader();
 
-        fileReader.addEventListener('load', () => {
-            const file = fileDialog.files[0].name;
+        this.fileReader.addEventListener('load', this.parseLayer.bind(this, fileDialog));
+        this.fileReader.readAsText(fileDialog.files[0]);
+    }
+
+    parseLayer(fileDialog) {
+        const file = fileDialog.files[0].name;
             
-            try {
-                const filename = file.split('.')[0];
-                const fileExtension = file.split('.').pop().toLowerCase();
+        try {
+            const filename = file.split('.')[0];
+            const fileExtension = file.split('.').pop().toLowerCase();
 
-                // Can't use the in-operator since the format can be formatted by the user
-                // Forcing format to be lower-case and the do a search for it as a key in the format-object
-                const format = Object.keys(FormatTypes).find(key => key.toLowerCase() === fileExtension);
+            // Can't use the in-operator since the format can be formatted by the user
+            // Forcing format to be lower-case and the do a search for it as a key in the format-object
+            const format = Object.keys(FormatTypes).find((key) => {
+                return key.toLowerCase() === fileExtension;
+            });
 
-                // This should not happen since the format is set in the dialog
-                if(!format) {
-                    Toast.error({text: 'Unsupported layer format'});
-                    return;
-                }
-
-                const features = instantiateFormat(format).readFeatures(fileReader.result, {
-                    featureProjection: Config.baseProjection,
-                    dataProjection: Config.baseProjection
-                });
-
-                LayerManager.addFeatureLayer('Import : ' + filename);
-                const layer = LayerManager.getActiveFeatureLayer().layer;
-                layer.getSource().addFeatures(features);
-
-                // User defined callback from constructor
-                if(typeof this.options.imported === 'function') {
-                    this.options.imported(features);
-                }
-            }catch(error) {
-                Toast.error({text: 'Error when parsing layer - check syntax'});
-
-                // User defined callback from constructor
-                if(typeof this.options.error === 'function') {
-                    this.options.error(file, error);
-                }
+            // This should not happen since the format is set in the dialog
+            if(!format) {
+                Toast.error({text: 'Unsupported layer format'});
+                return;
             }
-        });
-              
-        fileReader.readAsText(fileDialog.files[0]);
+
+            const features = instantiateFormat(format).readFeatures(this.fileReader.result, {
+                featureProjection: Config.projection
+            });
+
+            const layerWrapper = LayerManager.addFeatureLayer('Import : ' + filename);
+            layerWrapper.layer.getSource().addFeatures(features);
+
+            // User defined callback from constructor
+            if(typeof this.options.imported === 'function') {
+                this.options.imported(features);
+            }
+        }catch(error) {
+            console.error(`Error importing vector layer [${error}]`);
+            Toast.error({text: 'Error when parsing layer - check syntax'});
+
+            // User defined callback from constructor
+            if(typeof this.options.error === 'function') {
+                this.options.error(file, error);
+            }
+        }
     }
 }
 

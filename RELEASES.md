@@ -8,7 +8,9 @@ Some of the changes done in this version are:
 - Updated to latest version of OpenLayers 7.1.0
 - Updated the Parcel bundler to latest version 2.7.0
 - Fixed Bookmark rename tooltip error
+- Fixed projection issue in ImportVectorLayer tool
 - Added support for multiple tooltips, ex. when using the Coordinate tool and the Measuring tool together
+- Refactored LayerManager and improved functionality when adding layers
 - Code refactoring and improvements
 
 ## 1.0.0-beta2

@@ -1,21 +1,11 @@
 // Core OpenLayers
 import 'ol/ol.css';
-import TileLayer from 'ol/layer/Tile';
-import VectorLayer from 'ol/layer/Vector';
-import VectorSource from 'ol/source/Vector';
-import OSM from 'ol/source/OSM';
-import Stamen from 'ol/source/Stamen';
-import GeoJSON from 'ol/format/GeoJSON';
 import { Map, View } from 'ol';
-import { XYZ } from 'ol/source';
 import { fromLonLat } from 'ol/proj';
 import { platformModifierKeyOnly, altShiftKeysOnly, shiftKeyOnly, targetNotEditable } from 'ol/events/condition';
 import { defaults as defaultInterctions, MouseWheelZoom, DragPan, DragRotate, KeyboardZoom, KeyboardPan } from 'ol/interaction';
 import { defaults as defaultControls } from 'ol/control';
 import { get as getProjection } from 'ol/proj';
-
-// Local map layers
-import countriesGeoJSONUrl from 'url:../json/countries.geojson';
 
 // Toolbar tools
 import HiddenMarker from './modules/tools/HiddenTools/Marker';
@@ -60,12 +50,18 @@ import './modules/helpers/Browser/Prototypes';
 import './modules/helpers/Accessibility';
 import './modules/helpers/SlideToggle';
 
+// Load layers
+import './modules/layers/Maps';
+import './modules/layers/Countries';
+import './modules/layers/Continents';
+import './modules/layers/Capitals';
+
 // Note: This is the same NODE_NAME and PROPS that the MapNavigation.js tool is using
 const LOCAL_STORAGE_NODE_NAME = 'mapData';
 const LOCAL_STORAGE_DEFAULTS = {
-    lon: 18.6435,
-    lat: 60.1282,
-    zoom: 4,
+    lon: 25.5809,
+    lat: 23.7588,
+    zoom: 3,
     rotation: 0
 };
 
@@ -126,9 +122,9 @@ const map = new Map({
             focusZoom: 10
         }),
         new Home({
-            lon: 18.6435, 
-            lat: 60.1282, 
-            zoom: 4,
+            lon: 25.5809,
+            lat: 23.7588,
+            zoom: 3,
             home: function() {
                 console.log('Map zoomed home');
             }
@@ -226,32 +222,32 @@ const map = new Map({
             }
         }),
         new Layers({
-            mapLayerAdded: function(layerObject) {
-                console.log('Map layer added', layerObject);
+            mapLayerAdded: function(layerWrapper) {
+                console.log('Map layer added', layerWrapper);
             },
-            mapLayerRemoved: function(layerObject) {
-                console.log('Map layer removed', layerObject);
+            mapLayerRemoved: function(layerWrapper) {
+                console.log('Map layer removed', layerWrapper);
             },
-            mapLayerRenamed: function(layerObject) {
-                console.log('Map layer renamed', layerObject);
+            mapLayerRenamed: function(layerWrapper) {
+                console.log('Map layer renamed', layerWrapper);
             },
-            mapLayerVisibilityChanged: function(layerObject) {
-                console.log('Map layer visibility change', layerObject);
+            mapLayerVisibilityChanged: function(layerWrapper) {
+                console.log('Map layer visibility change', layerWrapper);
             },
-            featureLayerAdded: function(layerObject) {
-                console.log('Feature layer added', layerObject);
+            featureLayerAdded: function(layerWrapper) {
+                console.log('Feature layer added', layerWrapper);
             },
-            featureLayerRemoved: function(layerObject) {
-                console.log('Feature layer removed', layerObject);
+            featureLayerRemoved: function(layerWrapper) {
+                console.log('Feature layer removed', layerWrapper);
             },
-            featureLayerRenamed: function(layerObject) {
-                console.log('Feature layer renamed', layerObject);
+            featureLayerRenamed: function(layerWrapper) {
+                console.log('Feature layer renamed', layerWrapper);
             },
-            featureLayerVisibilityChanged: function(layerObject) {
-                console.log('Feature layer visibility change', layerObject);
+            featureLayerVisibilityChanged: function(layerWrapper) {
+                console.log('Feature layer visibility change', layerWrapper);
             },
-            featureLayerDownloaded: function(layerObject) {
-                console.log('Feature layer downloaded', layerObject);
+            featureLayerDownloaded: function(layerWrapper) {
+                console.log('Feature layer downloaded', layerWrapper);
             }
         }),
         new SplitView(),
@@ -319,11 +315,11 @@ const map = new Map({
     ]),
     target: mapElement,
     view: new View({
-        projection: getProjection(Config.baseProjection),
+        projection: getProjection(Config.projection),
         center: fromLonLat([
             localStorage.lon, 
             localStorage.lat
-        ], Config.baseProjection),
+        ], Config.projection),
         zoom: localStorage.zoom,
         rotation: localStorage.rotation
     })
@@ -334,44 +330,6 @@ const map = new Map({
     InfoWindowManager, 
     LayerManager, 
     TooltipManager
-].forEach(manager => {
+].forEach((manager) => {
     manager.init(map);
-})
-
-// Register all map-layers to the Layermanager.
-// The layermanager will add these layers to the map.
-LayerManager.addMapLayers([
-    {
-        name: 'Open street map',
-        layer: new TileLayer({
-            source: new OSM(),
-            visible: true
-        })
-    }, {
-        name: 'ArcGIS World Topo',
-        layer: new TileLayer({
-            source: new XYZ({
-                attributions: 'Tiles © <a href="https://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer">ArcGIS</a>',
-                url:'https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}',
-            }),
-            visible: false
-        })
-    }, {
-        name: 'Watercolor',
-        layer: new TileLayer({
-            source: new Stamen({
-                layer: 'watercolor'
-            }),
-            visible: false
-        })
-    }, {
-        name: 'Country world map',
-        layer: new VectorLayer({
-            source: new VectorSource({
-                url: countriesGeoJSONUrl,
-                format: new GeoJSON()
-            }),
-            visible: false
-        })
-    }
-], true);
+});

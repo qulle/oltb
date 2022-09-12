@@ -1,4 +1,3 @@
-import 'ol/ol.css';
 import Toast from '../common/Toast';
 import Dialog from '../common/Dialog';
 import LayerManager from '../core/Managers/LayerManager';
@@ -110,8 +109,8 @@ class MyLocation extends Control {
             </div>
         `;
 
-        LayerManager.addFeatureLayer('My location');
-        LayerManager.getActiveFeatureLayer().layer.getSource().addFeatures(
+        const layerWrapper = LayerManager.addFeatureLayer('My location');
+        layerWrapper.layer.getSource().addFeatures(
             new generateMarker({
                 lat: lat,
                 lon: lon,

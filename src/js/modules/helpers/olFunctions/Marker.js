@@ -4,7 +4,7 @@ import { Circle as CircleStyle, Fill, Icon, Stroke, Style } from 'ol/style';
 import { fromLonLat } from 'ol/proj';
 import { SVGPaths, getIcon } from '../../core/Icons';
 
-const defaultIcon = getIcon({
+const DEFAULT_ICON = getIcon({
     path: SVGPaths.GeoPin,
     width: 20,
     height: 20,
@@ -12,24 +12,26 @@ const defaultIcon = getIcon({
     stroke: 'none'
 });
 
+const DEFAULT_OPTIONS = {
+    name: undefined,
+    info: undefined,
+    lat: undefined,
+    lon: undefined,
+    backgroundColor: '#0166A5FF',
+    color: '#FFFFFF',
+    iconName: undefined,
+    icon: DEFAULT_ICON,
+    width: 15,
+    radius: 15,
+    scale: .7,
+    notSelectable: false,
+    infoWindow: undefined
+};
+
 const generateMarker = function(options = {}) {
-    const {
-        name,
-        info,
-        lat,
-        lon,
-        backgroundColor = '#0166A5FF',
-        color = '#FFFFFF',
-        iconName,
-        icon = defaultIcon,
-        width = 15,
-        radius = 15,
-        scale = .7,
-        notSelectable,
-        infoWindow
-    } = options;
+    options = { ...DEFAULT_OPTIONS, ...options };
     
-    const point = new Point(fromLonLat([lon, lat]));
+    const point = new Point(fromLonLat([options.lon, options.lat]));
 
     const featureBackground = new Feature({
         geometry: point
@@ -41,44 +43,42 @@ const generateMarker = function(options = {}) {
 
     featureBackground.setStyle(new Style({
         image: new CircleStyle({
-            radius: radius,
-            fill: new Fill({color: backgroundColor}),
+            radius: options.radius,
+            fill: new Fill({color: options.backgroundColor}),
             stroke: new Stroke({
-                color: backgroundColor.slice(0, -2) + '66',
-                width: width,
+                color: options.backgroundColor.slice(0, -2) + '66',
+                width: options.width,
             })
         })
     }));
-
-    featureBackground.properties = {
-        notSelectable, 
-        infoWindow,
-        name,
-        info,
-        backgroundColor,
-        color,
-        icon: iconName,
-        linkedFeature: featureIcon
-    };
     
     featureIcon.setStyle(new Style({
         image: new Icon({
-            src: 'data:image/svg+xml;utf8,' + icon,
-            scale: scale,
-            color: color
+            src: 'data:image/svg+xml;utf8,' + options.icon,
+            scale: options.scale,
+            color: options.color
         })
     }));
 
-    featureIcon.properties = {
-        notSelectable,
-        infoWindow,
-        name,
-        info,
-        backgroundColor,
-        color,
-        icon: iconName,
-        linkedFeature: featureBackground
+    const commonProperties = {
+        notSelectable: options.notSelectable, 
+        infoWindow: options.infoWindow,
+        name: options.name,
+        info: options.info,
+        backgroundColor: options.backgroundColor,
+        color: options.color,
+        icon: options.iconName
     };
+
+    featureBackground.setProperties({
+        ...commonProperties,
+        partner: featureIcon
+    });
+
+    featureIcon.setProperties({
+        ...commonProperties,
+        partner: featureBackground
+    });
 
     return [featureBackground, featureIcon];
 }

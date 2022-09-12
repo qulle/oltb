@@ -1,4 +1,3 @@
-import 'ol/ol.css';
 import Toast from '../common/Toast';
 import DOM from '../helpers/Browser/DOM';
 import { Control } from 'ol/control';
@@ -53,7 +52,7 @@ class Magnify extends Control {
             mapContainer.removeEventListener('mouseout', this.onMouseoutListenert);
             document.removeEventListener('keydown', this.onKeydownListener);
 
-            this.onPostrenderListeners.forEach(listener => {
+            this.onPostrenderListeners.forEach((listener) => {
                 unByKey(listener);
             });
 
@@ -81,12 +80,13 @@ class Magnify extends Control {
         document.addEventListener('keydown', this.onKeydownListener);
 
         this.onPostrenderListeners = [];
-        map.getLayers().getArray().forEach(layer => {
+        map.getLayers().getArray().forEach((layer) => {
             this.onPostrenderListeners.push(layer.on('postrender', this.onPostrender.bind(this)));
         });
     }
 
     onKeydown(event) {
+        // Disable map-zoom when changing size of magnifier
         event.preventDefault();
         
         const key = event.key;
@@ -181,7 +181,7 @@ class Magnify extends Control {
                     Toast.error({text: 'A unknown error occurred with the magnifyer'});
                 }
 
-                console.error(`Error using magnifyer ${[error]}`);
+                console.error(`Error using magnifyer [${error}]`);
             }
         }
     }

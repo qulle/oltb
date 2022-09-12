@@ -20,7 +20,7 @@ class DownloadLayerModal extends ModalBase {
             class: 'oltb-select'
         });
 
-        ['GeoJSON', 'KML'].forEach(value => {
+        ['GeoJSON', 'KML'].forEach((value) => {
             layerFormatSelect.appendChild(
                 DOM.createElement({
                     element: 'option', 

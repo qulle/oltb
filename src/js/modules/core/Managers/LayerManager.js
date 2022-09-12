@@ -2,65 +2,92 @@ import { Vector as VectorLayer } from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';
 import { hasNestedProperty } from '../../helpers/HasNestedProperty';
 
+const DEFAULT_LAYER_NAME = 'New layer';
+const ZINDEX_BASE = 1000;
+
 class LayerManager {
     static map;
-    static defaultLayerName = 'New layer';
+    static activeFeatureLayer;
+    static layerId = 0;
+
+    static queue = {
+        mapLayers: [],
+        featureLayers: []
+    };
+
     static layers = {
         mapLayers: [],
         featureLayers: []
     };
 
-    static activeFeatureLayer = this.layers.featureLayers[0];
-    static layerIdCounter = 0;
-    static featureLayerZIndexBase = 10000;
-
     static init(map) {
+        if(this.map) {
+            return;
+        }
+
         this.map = map;
+
+        // Handle queue of layers that was added before the map was ready
+        this.queue.mapLayers.forEach((item) => {
+            this.addMapLayerToMap(item.layerWrapper, item.isSilent);
+        });
+
+        this.queue.mapLayers = [];
+
+        this.queue.featureLayers.forEach((item) => {
+            this.addFeatureLayerToMap(item.layerWrapper, item.isSilent);
+        });
+
+        this.queue.featureLayers = [];
     }
 
     //-------------------------------------------
     // Map layers
     //-------------------------------------------
-    static addMapLayers(layerObjects, silent = false) {
-        for(let index in layerObjects) {
-            this.addMapLayer(layerObjects[index], silent);
+    static addMapLayers(layerWrappers, isSilent = false) {
+        for(let index in layerWrappers) {
+            this.addMapLayer(layerWrappers[index], isSilent);
         }
     }
 
-    static addMapLayer(layerObject, silent = false) {
-        // Add unique id parameter to the layer
-        layerObject.id = this.layerIdCounter;
-        this.layerIdCounter++;
+    static addMapLayer(layerWrapper, isSilent = false) {
+        layerWrapper.id = this.layerId;
+        this.layerId = this.layerId + 1;
     
-        // Store layer internally
-        this.layers.mapLayers.push(layerObject);
-    
-        // Add the layer to the map
-        this.map.addLayer(layerObject.layer);
-    
+        if(this.map) {
+            this.addMapLayerToMap(layerWrapper, isSilent);
+        }else {
+            this.queue.mapLayers.push({layerWrapper: layerWrapper, isSilent: isSilent});
+        }
+    }
+
+    static addMapLayerToMap(layerWrapper, isSilent = false) {
+        this.layers.mapLayers.push(layerWrapper);
+        this.map.addLayer(layerWrapper.layer);
+            
         // Dispatch event, the layer-tool updates the UI
         window.dispatchEvent(new CustomEvent('oltb.mapLayer.added', {
             detail: {
-                layerObject: layerObject, 
-                silent: silent
+                layerWrapper: layerWrapper, 
+                isSilent: isSilent
             }
         }));
     }
 
-    static removeMapLayer(targetLayer, silent = false) {
-        // Remove the layer from the internal layermanager datastructure
+    static removeMapLayer(targetLayer, isSilent = false) {
+        // Remove the layer from the internal collection
         this.layers.mapLayers = this.layers.mapLayers.filter(function(layer) {
             return layer.id !== targetLayer.id;
         }); 
 
-        // Remove layer from map
+        // Remove the actual ol layer
         this.map.removeLayer(targetLayer.layer);
 
         // Dispatch event, the layer-tool, updates the UI
         window.dispatchEvent(new CustomEvent('oltb.mapLayer.removed', {
             detail: {
-                layerObject: targetLayer, 
-                silent: silent
+                layerWrapper: targetLayer, 
+                isSilent: isSilent
             }
         }));
     }
@@ -70,8 +97,8 @@ class LayerManager {
     }
 
     static getMapLayerById(id) {
-        const result = this.layers.mapLayers.find(layerObject => {
-            return layerObject.id === id;
+        const result = this.layers.mapLayers.find((layerWrapper) => {
+            return layerWrapper.id === id;
         });
 
         return result;
@@ -89,8 +116,8 @@ class LayerManager {
     }
 
     static setTopMapLayerAsOnlyVisible() {
-        this.layers.mapLayers.forEach(layerObject => {
-            layerObject.layer.setVisible(false);
+        this.layers.mapLayers.forEach((layerWrapper) => {
+            layerWrapper.layer.setVisible(false);
         });
     
         if(!this.isMapLayersEmpty()) {
@@ -98,65 +125,72 @@ class LayerManager {
         }
     }
 
-    static isMapLayersEmpty() {
-        return this.getMapLayerSize() === 0;
-    }
-
     static getMapLayerSize() {
         return this.layers.mapLayers.length;
+    }
+
+    static isMapLayersEmpty() {
+        return this.getMapLayerSize() === 0;
     }
 
     //-------------------------------------------
     // Feature layers
     //-------------------------------------------
-    static addFeatureLayer(name, silent = false) {
+    static addFeatureLayer(name, isSilent = false) {
         name = name.trim();
 
         if(!name.length) {
-            name = this.defaultLayerName;
+            name = DEFAULT_LAYER_NAME;
         }
 
-        const layerObject = {
-            id: this.layerIdCounter,
+        const layerWrapper = {
+            id: this.layerId,
             name: name,
             layer: new VectorLayer({
                 source: new VectorSource(),
-                zIndex: this.featureLayerZIndexBase + this.layerIdCounter
+                zIndex: ZINDEX_BASE + this.layerId
             })
         };
 
-        this.layerIdCounter++;
-        this.activeFeatureLayer = layerObject;
+        this.layerId = this.layerId + 1;
+        this.activeFeatureLayer = layerWrapper;
 
-        // Store layer internally
-        this.layers.featureLayers.push(layerObject);
+        if(this.map) {
+            this.addFeatureLayerToMap(layerWrapper, isSilent);
+        }else {
+            this.queue.featureLayers.push({layerWrapper: layerWrapper, isSilent: isSilent});
+        }
 
-        // Add the layer to the map
-        this.map.addLayer(layerObject.layer);
+        return layerWrapper;
+    }
+
+    static addFeatureLayerToMap(layerWrapper, isSilent = false) {
+        this.layers.featureLayers.push(layerWrapper);
+        this.map.addLayer(layerWrapper.layer);
 
         // Dispatch event, the layer-tool, updates the UI
         window.dispatchEvent(new CustomEvent('oltb.featureLayer.added', {
             detail: {
-                layerObject: layerObject, 
-                silent: silent
+                layerWrapper: layerWrapper, 
+                isSilent: isSilent
             }
         }));
     }
 
-    static removeFeatureLayer(targetLayer, silent = false) {
-        // Remove the layer from the internal layermanager datastructure
+    static removeFeatureLayer(targetLayer, isSilent = false) {
+         // Remove the layer from the internal collection
         this.layers.featureLayers = this.layers.featureLayers.filter(function(layer) {
             return layer.id !== targetLayer.id;
         }); 
 
         // Remove potential overlays associated with each feature
-        targetLayer.layer.getSource().getFeatures().forEach(feature => {
-            if(hasNestedProperty(feature, 'properties', 'tooltipOverlay')) {
-                this.map.removeOverlay(feature.properties.tooltipOverlay);
+        targetLayer.layer.getSource().getFeatures().forEach((feature) => {
+            if(hasNestedProperty(feature.getProperties(), 'tooltipOverlay')) {
+                this.map.removeOverlay(feature.getProperties().tooltipOverlay);
             }
         });
 
-        // Remove layer from map
+        // Remove the actual ol layer
         this.map.removeLayer(targetLayer.layer);
 
         // Sett another layer as active if exists
@@ -167,15 +201,15 @@ class LayerManager {
         // Dispatch event, the layer-tool, updates the UI
         window.dispatchEvent(new CustomEvent('oltb.featureLayer.removed', {
             detail: {
-                layerObject: targetLayer, 
-                silent: silent
+                layerWrapper: targetLayer, 
+                isSilent: isSilent
             }
         }));
     }
 
     static getActiveFeatureLayer(options = {}) {
         if(!this.activeFeatureLayer) {
-            this.addFeatureLayer(options.ifNoLayerName);
+            this.addFeatureLayer(options.fallback);
         }
 
         return this.activeFeatureLayer;
@@ -190,23 +224,22 @@ class LayerManager {
     }
 
     static removeFeatureFromLayer(feature) {
-        const linkedFeature = feature?.properties?.linkedFeature;
-        
-        this.getFeatureLayers().forEach(layerObject => {
-            layerObject.layer.getSource().removeFeature(feature);
+        const partner = feature?.getProperties()?.partner;
 
-            if(linkedFeature) {
-                layerObject.layer.getSource().removeFeature(linkedFeature);
-            }
+        this.getFeatureLayers().forEach((layerWrapper) => {
+            const source = layerWrapper.layer.getSource();
+
+            feature && source.removeFeature(feature);
+            partner && source.removeFeature(partner);
         });
-    }
-
-    static isFeatureLayersEmpty() {
-        return this.getFeatureLayerSize() === 0;
     }
 
     static getFeatureLayerSize() {
         return this.layers.featureLayers.length;
+    }
+
+    static isFeatureLayersEmpty() {
+        return this.getFeatureLayerSize() === 0;
     }
 }
 

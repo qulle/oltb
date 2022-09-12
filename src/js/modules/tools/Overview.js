@@ -1,4 +1,3 @@
-import 'ol/ol.css';
 import OSM from 'ol/source/OSM';
 import TileLayer from 'ol/layer/Tile';
 import StateManager from '../core/Managers/StateManager';
@@ -63,10 +62,8 @@ class Overview extends Control {
         this.overviewToolbox = overviewToolbox;
 
         const toggleableTriggers = overviewToolbox.querySelectorAll('.oltb-toggleable');
-        toggleableTriggers.forEach(toggle => {
+        toggleableTriggers.forEach((toggle) => {
             toggle.addEventListener('click', (event) => {
-                event.preventDefault();
-
                 const targetName = toggle.dataset.oltbToggleableTarget;
                 document.getElementById(targetName).slideToggle(200, (collapsed) => {
                     this.localStorage.collapsed = collapsed;
