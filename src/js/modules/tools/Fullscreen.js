@@ -1,4 +1,3 @@
-import 'ol/ol.css';
 import Toast from '../common/Toast';
 import DOM from '../helpers/Browser/DOM';
 import { Control } from 'ol/control';

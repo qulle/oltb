@@ -1,4 +1,3 @@
-import 'ol/ol.css';
 import LayerManager from '../core/Managers/LayerManager';
 import SettingsManager from '../core/Managers/SettingsManager';
 import StateManager from '../core/Managers/StateManager';
@@ -116,10 +115,8 @@ class DrawTool extends Control {
         const strokeColor = drawToolbox.querySelector('#oltb-draw-stroke-color');
 
         const toggleableTriggers = drawToolbox.querySelectorAll('.oltb-toggleable');
-        toggleableTriggers.forEach(toggle => {
+        toggleableTriggers.forEach((toggle) => {
             toggle.addEventListener('click', (event) => {
-                event.preventDefault();
-
                 const targetName = toggle.dataset.oltbToggleableTarget;
                 document.getElementById(targetName).slideToggle(200, (collapsed) => {
                     this.localStorage.collapsed = collapsed;
@@ -268,10 +265,11 @@ class DrawTool extends Control {
             const feature = event.feature;
             feature.setStyle(style);
 
-            const layer = LayerManager.getActiveFeatureLayer({
-                ifNoLayerName: 'Drawing layer'
-            }).layer;
-            layer.getSource().addFeature(feature);
+            const layerWrapper = LayerManager.getActiveFeatureLayer({
+                fallback: 'Drawing layer'
+            });
+            
+            layerWrapper.layer.getSource().addFeature(feature);
 
             // User defined callback from constructor
             if(typeof this.options.end === 'function') {

@@ -1,16 +1,15 @@
-import 'ol/ol.css';
 import Overlay from 'ol/Overlay';
 import DOM from "../../helpers/Browser/DOM";
 import { unByKey } from 'ol/Observable';
 
 class TooltipManager {
+    static map;
     static tooltipElement;
     static tooltipOverlay;
-    static map;
     static tooltips = {}
 
     static init(map) {
-        if(this.map !== undefined) {
+        if(this.map) {
             return;
         }
 
@@ -57,8 +56,8 @@ class TooltipManager {
         this.tooltipOverlay.getElement().removeChild(tooltipItemElement);
 
         if(this.isEmpty()) {
-            this.map.removeOverlay(this.tooltipOverlay);
             unByKey(this.onPointerMoveListener);
+            this.map.removeOverlay(this.tooltipOverlay);
             this.tooltipOverlay.setPosition(null);
         }
 

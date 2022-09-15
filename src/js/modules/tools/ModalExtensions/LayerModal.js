@@ -48,7 +48,7 @@ class LayerModal extends ModalBase {
             class: 'oltb-select'
         });
 
-        ['Tile', 'Vector'].forEach(type => {
+        ['Tile', 'Vector'].forEach((type) => {
             layerTypeSelect.appendChild(
                 DOM.createElement({
                     element: 'option', 
@@ -81,7 +81,7 @@ class LayerModal extends ModalBase {
             class: 'oltb-select'
         });
 
-        ['TileWMS', 'XYZ', 'OSM', 'Vector'].forEach(type => {
+        ['TileWMS', 'XYZ', 'OSM', 'Vector'].forEach((type) => {
             layerSourceSelect.appendChild(
                 DOM.createElement({
                     element: 'option', 
@@ -114,7 +114,7 @@ class LayerModal extends ModalBase {
             class: 'oltb-input', 
             attributes: {
                 type: 'text', 
-                placeholder: Config.baseProjection
+                placeholder: Config.projection
             }
         });
 
@@ -194,7 +194,7 @@ class LayerModal extends ModalBase {
             class: 'oltb-select'
         });
 
-        ['False', 'True'].forEach(value => {
+        ['False', 'True'].forEach((value) => {
             layerWrapXSelect.appendChild(
                 DOM.createElement({
                     element: 'option', 

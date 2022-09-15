@@ -31,16 +31,17 @@ A picture says more than a thousand words, but the demo above says it all.
     6. [Hidden tools](#hidden-tools)
     7. [Shortcut keys](#shortcut-keys)
     8. [Custom projections](#custom-projections)
-    9. [Dialogs](#dialogs)
+    9. [Layers](#layers)
+    10. [Dialogs](#dialogs)
         1. [Alert](#alert)
         2. [Confirm](#confirm)
         3. [Prompt](#prompt)
-    10. [Modal](#modal)
-    11. [Toast](#toast)
-    12. [Context menu](#context-menu)
-    13. [State Management](#state-management)
-    14. [Debug tool](#debug-tool)
-    15. [OLTB namespace](#oltb-namespace)
+    11. [Modal](#modal)
+    12. [Toast](#toast)
+    13. [Context menu](#context-menu)
+    14. [State Management](#state-management)
+    15. [Debug tool](#debug-tool)
+    16. [OLTB namespace](#oltb-namespace)
 8. [External GitHub projects](#external-github-projects)
 9. [Maps used in the demo](#maps-used-in-the-demo)
 10. [License](#license)
@@ -53,7 +54,7 @@ Use a descriptive prefix to categorize the intent with each created branch:
 - `bug/exception-editing-marker`
 - `feature/new-format-to-layer-export`
 - `documentation/updating-browser-support-list`
-- `code-improvement/updating-ol-version`
+- `refactoring/updating-ol-version`
 
 ## Request new Feature or report a Bug
 If you want to request a new Feature or report a Bug in the latest release on the `main` branch start by:
@@ -321,9 +322,9 @@ controls: defaultControls({
         focusZoom: 10
     }),
     new Home({
-        lon: 18.6435, 
-        lat: 60.1282, 
-        zoom: 4,
+        lon: 25.5809,
+        lat: 23.7588,
+        zoom: 3,
         home: function() {
             console.log('Map zoomed home');
         }
@@ -531,6 +532,19 @@ All tools have a shortcut key for ease of use and speeds up the handling of the 
 
 ### Custom projections
 You can define custom projections in the file `./modules/epsg/Projections`. This file is imported in the main `map.js` file and your projection can be used throughout the project. If you want to change the default proejction used, there is a general config file `./modules/core/Config.js` where you can change that.
+
+### Layers
+Layers are added to the map using the `LayerManager`. The manager handels internal functionality and fires of events that the layer-tool captures to create the UI.
+
+Layers can be added at any time during the applications lifetime. If the map is not ready to recieve a layer the manager will queue the layer and add it to the map once the manager is initiated with a reference to the map.
+
+There are two types of layers, `map`- and `feature`-layers. Create layers using a separate file that is included in the `map.js` file. Exampels of adding different types of layers and attach infowindows can be found at the following location.
+```js
+import './modules/layers/Maps';
+import './modules/layers/Countries';
+import './modules/layers/Continents';
+import './modules/layers/Capitals';
+```
 
 ### Dialogs
 To use the custom dialogs in the map, include the following module. All the dialogs uses trap focus and circles the tab-key to always stay in the opened dialog.

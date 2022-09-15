@@ -42,7 +42,7 @@ class DOM {
 
             // The callback(s) can be given as a single reference or as a array of many 
             if(Array.isArray(callbacks)) {
-                callbacks.forEach(callback => {
+                callbacks.forEach((callback) => {
                     element.addEventListener(listener, callback);
                 });
             }else {
@@ -54,7 +54,7 @@ class DOM {
     }
 
     static appendChildren(element, children = []) {
-        children.forEach(child => {
+        children.forEach((child) => {
             element.appendChild(child);
         });
     }

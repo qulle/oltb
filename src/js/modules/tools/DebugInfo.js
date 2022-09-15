@@ -1,4 +1,3 @@
-import 'ol/ol.css';
 import DebugInfoModal from './ModalExtensions/DebugInfoModal';
 import DOM from '../helpers/Browser/DOM';
 import { Control } from 'ol/control';

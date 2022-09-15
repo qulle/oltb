@@ -1,4 +1,3 @@
-import 'ol/ol.css';
 import Config from '../../core/Config';
 import StateManager from '../../core/Managers/StateManager';
 import { Control } from 'ol/control';

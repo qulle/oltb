@@ -1,4 +1,3 @@
-import 'ol/ol.css';
 import Config from '../core/Config';
 import Toast from '../common/Toast';
 import DOM from '../helpers/Browser/DOM';
@@ -79,7 +78,7 @@ class Coordinates extends Control {
     }
 
     onPointerMove(event) {
-        const lonlat = transform(event.coordinate, Config.baseProjection, Config.wgs84Projection);
+        const lonlat = transform(event.coordinate, Config.projection, Config.wgs84Projection);
         const prettyCoords = toStringHDMS(lonlat);
 
         this.tooltipItem.innerHTML = prettyCoords;
@@ -90,7 +89,7 @@ class Coordinates extends Control {
             return;
         }
 
-        const lonlat = transform(event.coordinate, Config.baseProjection, Config.wgs84Projection);
+        const lonlat = transform(event.coordinate, Config.projection, Config.wgs84Projection);
         const lon = lonlat[0];
         const lat = lonlat[1];
         const prettyCoords = toStringHDMS(lonlat);

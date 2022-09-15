@@ -12,21 +12,48 @@ body #map .ol-attribution {
         text-shadow: none;
     }
 
+    &-expand,
+    &-collapse {
+        margin: 0;
+        display: block;
+    }
+
+    &-collapse {
+        height: 10px;
+    }
+
     button {
-        background-color: $color-gray-mid;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         font-weight: normal;
+        cursor: pointer;
+        background-color: $background-theme-light;
+        color: $background-theme-dark;
 
         &:hover,
         &:focus {
-            background-color: $color-gray-mid;
+            background-color: $color-blue-light;
+            outline: none;
         }
     }
 }
 
 body.oltb-dark #map .ol-attribution {
     background-color: $background-theme-dark;
+    font-weight: normal;
 
     ul, a {
         color: $background-theme-light;
+    }
+
+    button {
+        background-color: $background-theme-dark;
+        color: $background-theme-light;
+
+        &:hover,
+        &:focus {
+            background-color: $color-blue-mid;
+        }
     }
 }

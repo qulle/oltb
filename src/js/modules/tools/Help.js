@@ -1,4 +1,3 @@
-import 'ol/ol.css';
 import Toast from '../common/Toast';
 import DOM from '../helpers/Browser/DOM';
 import { Control } from 'ol/control';
@@ -49,6 +48,7 @@ class Help extends Control {
         try {
             window.open(this.options.url, this.options.target).focus();
         }catch(error) {
+            console.error(`Error opening Help [${error}]`);
             Toast.info({text: 'Action was blocked by browser, try open with mouse'});
         }
     }

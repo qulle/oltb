@@ -17,7 +17,7 @@ class InfoWindowManager {
     static content;
 
     static init(map) {
-        if(this.map !== undefined) {
+        if(this.map) {
             return;
         }
 
@@ -78,7 +78,7 @@ class InfoWindowManager {
             return feature;
         });
 
-        const infoWindow = feature?.properties?.infoWindow;
+        const infoWindow = feature?.getProperties()?.infoWindow;
         
         if(infoWindow) {
             this.content.innerHTML = infoWindow;
@@ -112,7 +112,7 @@ class InfoWindowManager {
 
     static onPointerMove(event) {
         const hit = this.map.forEachFeatureAtPixel(event.pixel, function(feature) {
-            return hasNestedProperty(feature, 'properties', 'infoWindow');
+            return hasNestedProperty(feature.getProperties(), 'infoWindow');
         });
 
         this.map.getViewport().style.cursor = hit ? 'pointer' : 'default';

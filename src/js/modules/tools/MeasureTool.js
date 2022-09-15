@@ -1,4 +1,3 @@
-import 'ol/ol.css';
 import Draw from 'ol/interaction/Draw';
 import Overlay from 'ol/Overlay';
 import LayerManager from '../core/Managers/LayerManager';
@@ -89,10 +88,8 @@ class MeasureTool extends Control {
         const strokeColor = measureToolbox.querySelector('#oltb-measure-stroke-color');
 
         const toggleableTriggers = measureToolbox.querySelectorAll('.oltb-toggleable');
-        toggleableTriggers.forEach(toggle => {
+        toggleableTriggers.forEach((toggle) => {
             toggle.addEventListener('click', (event) => {
-                event.preventDefault();
-                
                 const targetName = toggle.dataset.oltbToggleableTarget;
                 document.getElementById(targetName).slideToggle(200, (collapsed) => {
                     this.localStorage.collapsed = collapsed;
@@ -235,13 +232,12 @@ class MeasureTool extends Control {
     onDrawEnd(event) {
         unByKey(this.onChangeListener);
 
+        const map = this.getMap();
         const feature = event.feature;
-        const geometry = feature.getGeometry();
         feature.setStyle(this.styles);
         
         const poppedTooltip = TooltipManager.pop('measure');
 
-        // Create a permanent tooltip and add the last measured value
         const tooltipWrapper = DOM.createElement({
             element: 'div',
             class: 'oltb-overlay-tooltip'
@@ -257,23 +253,25 @@ class MeasureTool extends Control {
         const tooltipOverlay = new Overlay({
             element: tooltipWrapper,
             offset: [0, -7],
-            positioning: 'bottom-center',
+            positioning: 'bottom-center'
         });
 
-        this.getMap().addOverlay(tooltipOverlay);
-
-        feature.properties = {
+        feature.setProperties({
             tooltipOverlay: tooltipOverlay
-        };
+        });
         
+        const geometry = feature.getGeometry();
         tooltipOverlay.setPosition(getMeasureTooltipCoordinates(geometry));
         tooltipItem.innerHTML = getMeasureTooltipValue(geometry);
 
-        const layer = LayerManager.getActiveFeatureLayer({
-            ifNoLayerName: 'Measurements layer'
-        }).layer;
+        const layerWrapper = LayerManager.getActiveFeatureLayer({
+            fallback: 'Measurements layer'
+        });
+        
+        layerWrapper.layer.getSource().addFeature(feature);
 
-        layer.getSource().addFeature(feature);
+        // The layer might be hidden, check if the tooltip also should be hidden
+        tooltipOverlay.setMap(layerWrapper.layer.getVisible() ? map : null);
 
         // User defined callback from constructor
         if(typeof this.options.end === 'function') {

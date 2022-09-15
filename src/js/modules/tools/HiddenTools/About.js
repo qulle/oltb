@@ -1,4 +1,3 @@
-import 'ol/ol.css';
 import Dialog from '../../common/Dialog';
 import Config from '../../core/Config';
 import { Control } from 'ol/control';

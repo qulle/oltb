@@ -1,4 +1,3 @@
-import 'ol/ol.css';
 import LayerManager from '../core/Managers/LayerManager';
 import StateManager from '../core/Managers/StateManager';
 import Toast from '../common/Toast';
@@ -88,10 +87,8 @@ class SplitView extends Control {
         this.rightSrc = rightSrc;
 
         const toggleableTriggers = splitViewToolbox.querySelectorAll('.oltb-toggleable');
-        toggleableTriggers.forEach(toggle => {
+        toggleableTriggers.forEach((toggle) => {
             toggle.addEventListener('click', (event) => {
-                event.preventDefault();
-                
                 const targetName = toggle.dataset.oltbToggleableTarget;
                 document.getElementById(targetName).slideToggle(200, (collapsed) => {
                     this.localStorage.collapsed = collapsed;
@@ -132,18 +129,18 @@ class SplitView extends Control {
     }
 
     mapLayerAdded(event) {
-        const layerObject = event.detail.layerObject;
+        const layerWrapper = event.detail.layerWrapper;
 
         const leftOption = DOM.createElement({
             element: 'option',
-            text: layerObject.name,
-            value: layerObject.id.toString()
+            text: layerWrapper.name,
+            value: layerWrapper.id.toString()
         });
 
         const rightOption = DOM.createElement({
             element: 'option',
-            text: layerObject.name,
-            value: layerObject.id.toString()
+            text: layerWrapper.name,
+            value: layerWrapper.id.toString()
         });
 
         this.leftSrc.appendChild(leftOption);
@@ -151,16 +148,16 @@ class SplitView extends Control {
     }
 
     mapLayerRemoved(event) {
-        const layerObject = event.detail.layerObject;
+        const layerWrapper = event.detail.layerWrapper;
 
         this.leftSrc.childNodes.forEach((option) => {
-            if(parseInt(option.value, 10) === layerObject.id) {
+            if(parseInt(option.value, 10) === layerWrapper.id) {
                 option.remove();
             }
         });
 
         this.rightSrc.childNodes.forEach((option) => {
-            if(parseInt(option.value, 10) === layerObject.id) {
+            if(parseInt(option.value, 10) === layerWrapper.id) {
                 option.remove();
             }
         });
@@ -197,13 +194,13 @@ class SplitView extends Control {
             unByKey(this.onPostRenderListener);
 
             // Remove the ol-split-view-layers from the map
-            LayerManager.getMapLayers().forEach(layerObject => {
-                map.removeLayer(layerObject.layer);
+            LayerManager.getMapLayers().forEach((layerWrapper) => {
+                map.removeLayer(layerWrapper.layer);
             });
 
             // Add back all the original layers to the map
-            LayerManager.getMapLayers().forEach(layerObject => {
-                map.addLayer(layerObject.layer);
+            LayerManager.getMapLayers().forEach((layerWrapper) => {
+                map.addLayer(layerWrapper.layer);
             });
 
             // Set first layer as the only one visible
@@ -233,24 +230,24 @@ class SplitView extends Control {
 
         // Remove current layers from the map
         // Only the left and right layer will be added later
-        LayerManager.getMapLayers().forEach(layerObject => {
-            map.removeLayer(layerObject.layer);
-            layerObject.layer.setVisible(false);
+        LayerManager.getMapLayers().forEach((layerWrapper) => {
+            map.removeLayer(layerWrapper.layer);
+            layerWrapper.layer.setVisible(false);
         });
 
         // Get layers to view in split-mode
-        const leftLayerObject = LayerManager.getMapLayerById(leftSrcId);
-        const rightLayerObject = LayerManager.getMapLayerById(rightSrcId);
+        const leftlayerWrapper = LayerManager.getMapLayerById(leftSrcId);
+        const rightlayerWrapper = LayerManager.getMapLayerById(rightSrcId);
 
-        // This should not happen. But just in case
-        if(!leftLayerObject || !rightLayerObject) {
+        // This should not happen, but just in case
+        if(!leftlayerWrapper || !rightlayerWrapper) {
             Toast.error({text: 'One or both of the selected layers could not be loaded'});
             this.layerLoadingError = true;
             return;
         }
 
-        const leftLayer = leftLayerObject.layer;
-        const rightLayer = rightLayerObject.layer;
+        const leftLayer = leftlayerWrapper.layer;
+        const rightLayer = rightlayerWrapper.layer;
 
         // Left layer config
         leftLayer.setVisible(true);

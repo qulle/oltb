@@ -1,4 +1,3 @@
-import 'ol/ol.css';
 import Dialog from '../common/Dialog';
 import Toast from '../common/Toast';
 import DOM from '../helpers/Browser/DOM';
@@ -97,8 +96,6 @@ class Bookmark extends Control {
         const addBookmarkTxt = bookmarksToolbox.querySelector('#oltb-add-bookmark-txt');
 
         addBookmarkBtn.addEventListener('click', (event) => {
-            event.preventDefault();
-    
             this.addBookmark(addBookmarkTxt.value);
             addBookmarkTxt.value = '';
         });
@@ -114,10 +111,8 @@ class Bookmark extends Control {
         this.bookmarkStack = bookmarkStack;
 
         const toggleableTriggers = bookmarksToolbox.querySelectorAll('.oltb-toggleable');
-        toggleableTriggers.forEach(toggle => {
+        toggleableTriggers.forEach((toggle) => {
             toggle.addEventListener('click', (event) => {
-                event.preventDefault();
-                
                 const targetName = toggle.dataset.oltbToggleableTarget;
                 document.getElementById(targetName).slideToggle(200, (collapsed) => {
                     this.localStorage.collapsed = collapsed;
@@ -127,7 +122,7 @@ class Bookmark extends Control {
         });
 
         // Add all saved bookmarks from localstorage
-        this.localStorage.bookmarks.forEach(bookmark => {
+        this.localStorage.bookmarks.forEach((bookmark) => {
             this.createBookmark(bookmark);
         });
 
