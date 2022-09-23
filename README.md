@@ -255,6 +255,7 @@ import Refresh from './modules/tools/Refresh';
 import ThemeToggle from './modules/tools/ThemeToggle';
 import DirectionToggle from './modules/tools/DirectionToggle';
 import Info from './modules/tools/Info';
+import Notification from './modules/tools/Notification';
 import Help from './modules/tools/Help';
 import Settings from './modules/tools/Settings';
 import DebugInfo from './modules/tools/DebugInfo';
@@ -292,6 +293,7 @@ controls: defaultControls({
     new ThemeToggle(),
     new DirectionToggle(),
     new Info(),
+    new Notification(),
     new Help(),
     new Settings(),
     new DebugInfo()
@@ -503,6 +505,7 @@ controls: defaultControls({
         title: 'Hey!', 
         content: '<p>This is a <em>modal window</em>, here you can place some text about your application or links to external resources.</p>'
     }),
+    new Notification(),
     new Help({
         url: 'https://github.com/qulle/oltb',
         target: '_blank'
