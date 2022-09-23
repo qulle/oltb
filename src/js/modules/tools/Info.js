@@ -45,7 +45,7 @@ class Info extends Control {
     }
 
     handleClick() {
-        Modal.create({
+        const infoModal = Modal.create({
             title: this.options.title, 
             content: this.options.content
         });
