@@ -22,6 +22,7 @@ import Bookmark from './modules/tools/Bookmark';
 import Layers from './modules/tools/Layers';
 import SplitView from './modules/tools/SplitView';
 import Overview from './modules/tools/Overview';
+import GraticuleTool from './modules/tools/Graticule';
 import Magnify from './modules/tools/Magnify';
 import ResetNorth from './modules/tools/ResetNorth';
 import Coordinates from './modules/tools/Coordinates';
@@ -253,6 +254,13 @@ const map = new Map({
         }),
         new SplitView(),
         new Overview(),
+        new GraticuleTool({
+            color: 'rgba(59, 67, 82, 0.9)',
+            dashed: true,
+            width: 2,
+            showLabels: true,
+            wrapX: true
+        }),
         new Magnify(),
         new ResetNorth({
             reset: function() {
