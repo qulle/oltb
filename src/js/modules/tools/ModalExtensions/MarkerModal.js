@@ -10,7 +10,7 @@ const DEFAULT_OPTIONS = {};
 class MarkerModal extends ModalBase {
     constructor(options, onCreate, onCancel) {
         const isEdit = options.edit ?? false;
-
+        
         super(`${isEdit ? 'Edit' : 'Create'} marker`);
 
         this.options = { ...DEFAULT_OPTIONS, ...options };

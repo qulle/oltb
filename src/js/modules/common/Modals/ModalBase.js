@@ -6,7 +6,7 @@ import { trapFocusKeyListener } from '../../helpers/TrapFocus';
 const ANIMATION_CLASS = 'oltb-animations--bounce';
 
 class ModalBase {
-    constructor(title = 'Modal title') {
+    constructor(title, onClose) {
         const modalBackdrop = DOM.createElement({
             element: 'div', 
             class: 'oltb-modal-backdrop oltb-modal-backdrop--fixed',
@@ -58,6 +58,7 @@ class ModalBase {
 
         this.modalBackdrop = modalBackdrop;
         this.modal = modal;
+        this.onClose = onClose;
 
         window.addEventListener('keyup', (event) => {
             if(event.key === 'Escape') {
@@ -89,6 +90,11 @@ class ModalBase {
     close() {
         this.modalBackdrop.removeEventListener('keydown', trapFocusKeyListener);
         this.modalBackdrop.remove();
+
+        // User defined callback from constructor
+        if(typeof this.onClose === 'function') {
+            this.onClose();
+        }
     }
 }
 

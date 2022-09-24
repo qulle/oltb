@@ -273,6 +273,8 @@ const map = new Map({
             }
         }),
         new MyLocation({
+            enableHighAccuracy: true,
+            timeout: 5000,
             location: function(location) {
                 console.log('Location', location);
             },

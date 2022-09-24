@@ -13,7 +13,10 @@ import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { toStringHDMS } from 'ol/coordinate';
 
-const DEFAULT_OPTIONS = {};
+const DEFAULT_OPTIONS = {
+    enableHighAccuracy: true,
+    timeout: 5000
+};
 
 class MyLocation extends Control {
     constructor(options = {}) {
@@ -70,6 +73,10 @@ class MyLocation extends Control {
     }
 
     handleGEOLocation() {
+        if(this.loadingToast) {
+            return;
+        }
+
         if(navigator.geolocation) {
             // Show loading toast
             this.loadingToast = Toast.info({
@@ -79,10 +86,14 @@ class MyLocation extends Control {
             });
 
             // The browser geolocation api
-            navigator.geolocation.getCurrentPosition(this.onSuccess.bind(this), this.onError.bind(this), {
-                enableHighAccuracy: true,
-                timeout: 5000
-            });
+            navigator.geolocation.getCurrentPosition(
+                this.onSuccess.bind(this), 
+                this.onError.bind(this), 
+                {
+                    enableHighAccuracy: this.options.enableHighAccuracy,
+                    timeout: this.options.timeout
+                }
+            );
         }else { 
             this.onError({message: 'Geolocation is not supported by this browser.'}, Toast.error);
         }

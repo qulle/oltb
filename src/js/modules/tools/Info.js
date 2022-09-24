@@ -35,6 +35,7 @@ class Info extends Control {
         });
 
         this.element.appendChild(button);
+        this.infoModal = undefined;
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
         window.addEventListener('keyup', (event) => {
@@ -45,9 +46,16 @@ class Info extends Control {
     }
 
     handleClick() {
-        const infoModal = Modal.create({
+        if(this.infoModal) {
+            return;
+        }
+
+        this.infoModal = Modal.create({
             title: this.options.title, 
-            content: this.options.content
+            content: this.options.content,
+            onClose: () => {
+                this.infoModal = undefined;
+            }
         });
     }
 }

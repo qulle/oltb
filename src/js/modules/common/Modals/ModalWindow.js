@@ -8,22 +8,28 @@ const DEFAULT_OPTIONS = {
 
 class ModalWindow extends ModalBase {
     constructor(options = {}) {
-        super(options.title || DEFAULT_OPTIONS.title);
+        super(
+            options.title || DEFAULT_OPTIONS.title,
+            options.onClose
+        );
 
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
-        const modalContent = DOM.createElement({
+        this.modalContent = DOM.createElement({
             element: 'div', 
             class: 'oltb-modal__content'
         });
 
-        if(typeof this.options.content === 'string') {
-            modalContent.innerHTML = this.options.content;
-        }else {
-            modalContent.appendChild(this.options.content);
-        }
+        this.setContent(this.options.content);
+        this.show(this.modalContent);
+    }
 
-        this.show(modalContent);
+    setContent(content) {
+        if(typeof content === 'string') {
+            this.modalContent.innerHTML = content;
+        }else {
+            this.modalContent.appendChild(content);
+        }
     }
 }
 

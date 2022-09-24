@@ -463,10 +463,8 @@ class Layers extends Control {
                     dataProjection: Config.projection
                 });
             
-                download(
-                    layerWrapper.name + '.' + result.format.toLowerCase(),
-                    formatString
-                );
+                const fileName = layerWrapper.name + '.' + result.format.toLowerCase();
+                download(fileName, formatString);
 
                 // User defined callback from constructor
                 if(typeof callback === 'function') {

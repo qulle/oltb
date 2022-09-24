@@ -33,19 +33,21 @@ class HiddenMarker extends Control {
                     </div>
                 `;
                 
+                const icon = getIcon({
+                    path: SVGPaths[result.icon],
+                    width: 20,
+                    height: 20,
+                    fill: 'rgb(255, 255, 255)',
+                    stroke: 'none'
+                });
+                
                 const marker = new generateMarker({
                     name: result.name,
                     info: result.info,
                     lat: result.latitude,
                     lon: result.longitude,
                     iconName: result.icon,
-                    icon: getIcon({
-                        path: SVGPaths[result.icon],
-                        width: 20,
-                        height: 20,
-                        fill: 'rgb(255, 255, 255)',
-                        stroke: 'none'
-                    }),
+                    icon: icon,
                     backgroundColor: result.backgroundColor,
                     color: result.color,
                     notSelectable: true,

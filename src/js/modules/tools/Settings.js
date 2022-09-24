@@ -36,6 +36,7 @@ class Settings extends Control {
         });
 
         this.element.appendChild(button);
+        this.settingsModal = undefined;
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
         addContextMenuItem('main.map.context.menu', {icon: icon, name: 'Clear settings', fn: () => {
@@ -69,7 +70,15 @@ class Settings extends Control {
     }
 
     handleClick() {
-        const settingsModal = new SettingsModal();
+        if(this.settingsModal) {
+            return;
+        }
+
+        this.settingsModal = new SettingsModal({
+            onClose: () => {
+                this.settingsModal = undefined;
+            }
+        });
     }
 }
 

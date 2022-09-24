@@ -35,6 +35,7 @@ class DebugInfo extends Control {
         });
 
         this.element.appendChild(button);
+        this.debugInfoModal = undefined;
         this.options = { ...DEFAULT_OPTIONS, ...options };
         
         // Check if the tool only should be visible if the get parameter ?debug=true exists
@@ -54,6 +55,10 @@ class DebugInfo extends Control {
     }
 
     handleClick() {
+        if(this.debugInfoModal) {
+            return;
+        }
+
         const map = this.getMap();
         const view = map.getView();
 
@@ -64,7 +69,13 @@ class DebugInfo extends Control {
             projection: view.getProjection()
         };
 
-        const debugInfoModal = new DebugInfoModal(map, information);
+        this.debugInfoModal = new DebugInfoModal({
+            map: map,
+            information: information,
+            onClose: () => {
+                this.debugInfoModal = undefined;
+            }
+        });
     }
 }
 

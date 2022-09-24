@@ -33,6 +33,7 @@ class Notification extends Control {
         });
 
         this.element.appendChild(button);
+        this.notificationModal = undefined;
 
         window.addEventListener('keyup', (event) => {
             if(isShortcutKeyOnly(event, 'x')) {
@@ -42,18 +43,20 @@ class Notification extends Control {
     }
 
     handleClick() {
+        if(this.notificationModal) {
+            return;
+        }
+
         this.fetchData();
     }
 
     fetchData() {
-        const contentReference = DOM.createElement({
-            element: 'p',
-            text: 'Loading notifications...'
-        });
-
-        const notificationModal = Modal.create({
+        this.notificationModal = Modal.create({
             title: 'Notifications',
-            content: contentReference
+            content: '<p>Loading notifications...</p>',
+            onClose: () => {
+                this.notificationModal = undefined;
+            }
         });
 
         const timestamp = new Date().getTime().toString();
@@ -70,8 +73,8 @@ class Notification extends Control {
                 if(data.features.length === 0) {
                     features = '<p>No features currently under development</p>';
                 }else {
-                    data.features.forEach((feature, index) => {
-                        features += `<p ${data.features.length - 1 === index ? 'class="oltb-m-0"' : ''}>${feature}</p>`;
+                    data.features.forEach((feature) => {
+                        features += `<p>${feature}</p>`;
                     });
                 }
 
@@ -94,7 +97,7 @@ class Notification extends Control {
                     ${features}
                 `;
 
-                contentReference.innerHTML = content;
+                this.notificationModal.setContent(content);
             })
             .catch(error => {
                 const content = `
@@ -107,10 +110,10 @@ class Notification extends Control {
                         </a>
                     </p>
                     <h3>📡 Fetch error</h3>
-                    <p class="oltb-m-0">Data from the GitHub repo could not be fetched</p>
+                    <p>Data from the GitHub repo could not be fetched</p>
                 `;
 
-                contentReference.innerHTML = content;
+                this.notificationModal.setContent(content);
                 console.error(`Fetch error [${error}]`);
             });
     }

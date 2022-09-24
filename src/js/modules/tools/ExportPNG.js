@@ -7,6 +7,7 @@ import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 
 const DEFAULT_OPTIONS = {};
+const FILE_NAME = 'map.png';
 
 class ExportPNG extends Control {
     constructor(options = {}) {
@@ -76,11 +77,11 @@ class ExportPNG extends Control {
                         mapContext.drawImage(canvas, 0, 0);
                     }
                 });
-        
+
                 if(navigator.msSaveBlob) {
-                    navigator.msSaveBlob(mapCanvas.msToBlob(), 'map.png');
+                    navigator.msSaveBlob(mapCanvas.msToBlob(), FILE_NAME);
                 }else {
-                    download('map.png', mapCanvas.toDataURL());
+                    download(FILE_NAME, mapCanvas.toDataURL());
                 }
     
                 // User defined callback from constructor

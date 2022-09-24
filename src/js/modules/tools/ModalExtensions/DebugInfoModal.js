@@ -4,12 +4,12 @@ import Toast from '../../common/Toast';
 import { copyToClipboard } from '../../helpers/Browser/CopyToClipboard';
 
 class DebugInfoModal extends ModalBase {
-    constructor(map, information) {
-        super('Debug information');
+    constructor(options = {}) {
+        super('Debug information', options.onClose);
 
         const textArea = DOM.createElement({
             element: 'textarea', 
-            value: JSON.stringify(information, undefined, 4),
+            value: JSON.stringify(options.information, undefined, 4),
             class: 'oltb-input oltb-hide-scrollbars',
             attributes: {
                 rows: 15,

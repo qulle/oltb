@@ -481,6 +481,8 @@ controls: defaultControls({
         }
     }),
     new MyLocation({
+        enableHighAccuracy: true,
+        timeout: 5000,
         location: function(location) {
             console.log('Location', location);
         },

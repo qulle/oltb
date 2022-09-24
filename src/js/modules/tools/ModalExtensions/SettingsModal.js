@@ -3,8 +3,8 @@ import SettingsManager from '../../core/Managers/SettingsManager';
 import DOM from '../../helpers/Browser/DOM';
 
 class SettingsModal extends ModalBase {
-    constructor() {
-        super('Settings');
+    constructor(options = {}) {
+        super('Settings', options.onClose);
 
         const modalContent = DOM.createElement({
             element: 'div',
