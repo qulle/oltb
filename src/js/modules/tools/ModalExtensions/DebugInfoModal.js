@@ -13,7 +13,7 @@ class DebugInfoModal extends ModalBase {
             class: 'oltb-input oltb-hide-scrollbars',
             attributes: {
                 rows: 15,
-                cols: 50,
+                cols: 100,
                 spellcheck: 'false'
             }
         });

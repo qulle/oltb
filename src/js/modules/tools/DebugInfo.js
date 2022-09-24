@@ -5,6 +5,7 @@ import { toolbarElement } from '../core/ElementReferences';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { URIGet } from '../helpers/Browser/URIGet';
+import { projections } from '../epsg/Projections';
 
 const DEFAULT_OPTIONS = {
     showWhenGetParameter: false
@@ -66,7 +67,8 @@ class DebugInfo extends Control {
             zoom: view.getZoom(),
             location: view.getCenter(),
             rotation: view.getRotation(),
-            projection: view.getProjection()
+            projection: view.getProjection(),
+            proj4Defs: projections
         };
 
         this.debugInfoModal = new DebugInfoModal({
