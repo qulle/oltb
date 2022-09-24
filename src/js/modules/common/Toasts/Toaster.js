@@ -37,7 +37,7 @@ class Toaster {
         const message = DOM.createElement({
             element: 'p', 
             text: this.options.text,
-            class: `oltb-toast__message ${this.options.sp ? 'oltb-ml-0625' : ''}`
+            class: `oltb-toast__message ${this.options.spinner ? 'oltb-ml-0625' : ''}`
         });
     
         toast.appendChild(message);
