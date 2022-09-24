@@ -105,7 +105,7 @@ class Coordinates extends Control {
         const didCopy = await copyToClipboard(prettyCoords);
 
         if(didCopy) {
-            Toast.success({text: 'Coordinates copied to clipboard', autoremove: 3000});
+            Toast.success({text: 'Coordinates copied to clipboard', autoremove: 4000});
         }else {
             Toast.error({text: 'Failed to copy coordinates'});
         }

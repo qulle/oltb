@@ -45,7 +45,7 @@ class Settings extends Control {
                 onConfirm: () => {
                     this.clearSettings();
 
-                    Toast.success({text: "All settings was cleared", autoremove: 3000});
+                    Toast.success({text: "All settings was cleared", autoremove: 4000});
                 }
             });
         }});

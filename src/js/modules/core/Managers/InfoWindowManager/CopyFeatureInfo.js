@@ -5,7 +5,7 @@ const copyFeatureInfo = async function(dataToCopy) {
     const didCopy = await copyToClipboard(dataToCopy);
 
     if(didCopy) {
-        Toast.success({text: 'Data copied to clipboard', autoremove: 3000});
+        Toast.success({text: 'Data copied to clipboard', autoremove: 4000});
     }else {
         Toast.error({text: 'Failed to copy data'});
     }

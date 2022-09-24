@@ -36,8 +36,6 @@ class ScaleLineTool extends Control {
         this.button = button;
         this.active = false;
         this.options = { ...DEFAULT_OPTIONS, ...options };
-        this.scaleLine = null;
-
         this.scaleLine = new ScaleLine({units: this.options.units});
         
         window.addEventListener('keyup', (event) => {

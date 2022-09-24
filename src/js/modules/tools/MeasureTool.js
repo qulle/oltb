@@ -272,7 +272,11 @@ class MeasureTool extends Control {
         map.addOverlay(tooltipOverlay);
 
         // The layer might be hidden, check if the tooltip also should be hidden
-        tooltipOverlay.setMap(layerWrapper.layer.getVisible() ? map : null);
+        if(layerWrapper.layer.getVisible()) {
+            tooltipOverlay.setMap(map);
+        }else {
+            tooltipOverlay.setMap(null);
+        }
 
         // User defined callback from constructor
         if(typeof this.options.end === 'function') {

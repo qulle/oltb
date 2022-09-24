@@ -133,7 +133,7 @@ class Bookmark extends Control {
                 onConfirm: () => {
                     this.clearBookmarks();
 
-                    Toast.success({text: "All bookmarks was cleared", autoremove: 3000});
+                    Toast.success({text: "All bookmarks was cleared", autoremove: 4000});
                 }
             });
         }});
@@ -185,7 +185,7 @@ class Bookmark extends Control {
         this.createBookmark(bookmark);
 
         if(!this.active) {
-            Toast.success({text: 'Bookmark created', autoremove: 3000});
+            Toast.success({text: 'Bookmark created', autoremove: 4000});
         }
 
         // User defined callback from constructor

@@ -30,7 +30,7 @@ class DebugInfoModal extends ModalBase {
                     const didCopy = await copyToClipboard(textArea.value);
         
                     if(didCopy) {
-                        Toast.success({text: 'Debug info copied to clipboard', autoremove: 3000});
+                        Toast.success({text: 'Debug info copied to clipboard', autoremove: 4000});
                     }else {
                         Toast.error({text: 'Failed to copy debug info'});
                     } 
@@ -48,7 +48,7 @@ class DebugInfoModal extends ModalBase {
             listeners: {
                 'click': () => {
                     console.log(map);
-                    Toast.success({text: 'Map object logged to console (F12)', autoremove: 3000});
+                    Toast.success({text: 'Map object logged to console (F12)', autoremove: 4000});
                 }
             }
         });
