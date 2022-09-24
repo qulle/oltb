@@ -48,7 +48,7 @@ class HiddenMapNavigation extends Control {
         }});
 
         const focusHereIcon = getIcon({path: SVGPaths.FocusHere});
-        addContextMenuItem('main.map.context.menu', {icon: focusHereIcon, name: 'Focus here', fn: function(map, coordinates, target) {
+        addContextMenuItem('main.map.context.menu', {icon: focusHereIcon, name: 'Focus here', fn: (map, coordinates, target) => {
             const view = map.getView();
         
             if(view.getAnimating()) {
