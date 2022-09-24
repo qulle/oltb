@@ -27,7 +27,7 @@ class Help extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': 'Help (J)'
+                'data-tippy-content': 'Help (F1)'
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -38,7 +38,7 @@ class Help extends Control {
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
         window.addEventListener('keyup', (event) => {
-            if(isShortcutKeyOnly(event, 'j')) {
+            if(isShortcutKeyOnly(event, 'f1')) {
                 this.handleClick(event);
             }
         });
