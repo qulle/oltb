@@ -8,8 +8,8 @@ import { hasNestedProperty } from "../helpers/HasNestedProperty";
 
 const DEFAULT_OPTIONS = {};
 
-const menuItems = new Map();
-const menuInstances = new Map();
+const MENU_ITEMS = new Map();
+const MENU_INSTANCES = new Map();
 
 class ContextMenu extends Control {
     constructor(options = {}) {
@@ -29,16 +29,16 @@ class ContextMenu extends Control {
         
         this.menu = this.element;
         this.options = { ...DEFAULT_OPTIONS, ...options };
-        this.menuItems = menuItems.get(this.options.name);
+        this.MENU_ITEMS = MENU_ITEMS.get(this.options.name);
         this.target = null;
 
         this.create();
-        menuInstances.set(this.options.name, this);
+        MENU_INSTANCES.set(this.options.name, this);
     }
 
     create() {
         // Create <li>'s for each menu item
-        this.menuItems.forEach((item, index) => {
+        this.MENU_ITEMS.forEach((item, index) => {
             this.addMenuItem(item, index);
         });
 
@@ -111,7 +111,7 @@ class ContextMenu extends Control {
 
     click(event) {
         const id = event.target.getAttribute('data-contextmenuitem');
-        const contextItem = this.menuItems[id];
+        const contextItem = this.MENU_ITEMS[id];
         if(contextItem) {
             contextItem.fn(
                 this.getMap(), 
@@ -125,7 +125,7 @@ class ContextMenu extends Control {
 }
 
 mapElement.addEventListener('contextmenu', (event) => {
-    menuInstances.forEach((menu) => {
+    MENU_INSTANCES.forEach((menu) => {
         if(event.target.matches(menu.options.selector)) {
             menu.show(event);
         }
@@ -133,28 +133,28 @@ mapElement.addEventListener('contextmenu', (event) => {
 });
 
 mapElement.addEventListener('click', (event) => {
-    menuInstances.forEach((menu) => {
+    MENU_INSTANCES.forEach((menu) => {
         menu.hide();
     });
 });
 
-const addContextMenuItems = function(name, items) {
+const addContextMENU_ITEMS = function(name, items) {
     items.forEach((item) => {
         addContextMenuItem(name, item);
     });
 }
 
 const addContextMenuItem = function(name, item) {
-    if(!menuItems.has(name)) {
-        menuItems.set(name, []);
+    if(!MENU_ITEMS.has(name)) {
+        MENU_ITEMS.set(name, []);
     }
         
-    menuItems.get(name).push(item);
+    MENU_ITEMS.get(name).push(item);
 
     // Check if context menu is created, if so, add the menu item to the context menu
-    if(menuInstances.has(name)) {
-        const menu = menuInstances.get(name);
-        const index = menuItems.get(name).length - 1;
+    if(MENU_INSTANCES.has(name)) {
+        const menu = MENU_INSTANCES.get(name);
+        const index = MENU_ITEMS.get(name).length - 1;
 
         menu.addMenuItem(item, index);
     }
@@ -162,6 +162,6 @@ const addContextMenuItem = function(name, item) {
 
 export { 
     ContextMenu as default, 
-    addContextMenuItems, 
+    addContextMENU_ITEMS, 
     addContextMenuItem 
 };
