@@ -6,6 +6,7 @@ import { unByKey } from 'ol/Observable';
 import { toolbarElement } from '../core/ElementReferences';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
+import { ShortcutKeys } from '../helpers/Constants/ShortcutKeys';
 
 class Magnify extends Control {
     constructor() {
@@ -24,7 +25,7 @@ class Magnify extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': 'Magnifier (Z)'
+                'data-tippy-content': `Magnifier (${ShortcutKeys.Magnify})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -36,7 +37,7 @@ class Magnify extends Control {
         this.radius = 75;
 
         window.addEventListener('keyup', (event) => {
-            if(isShortcutKeyOnly(event, 'z')) {
+            if(isShortcutKeyOnly(event, ShortcutKeys.Magnify)) {
                 this.handleClick(event);
             }
         });

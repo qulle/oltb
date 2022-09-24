@@ -4,6 +4,7 @@ import { Control } from 'ol/control';
 import { toolbarElement } from '../core/ElementReferences';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
+import { ShortcutKeys } from '../helpers/Constants/ShortcutKeys';
 
 const DEFAULT_OPTIONS = {
     url: 'https://github.com/qulle/oltb',
@@ -27,7 +28,7 @@ class Help extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': 'Help (F1)'
+                'data-tippy-content': `Help (${ShortcutKeys.Help})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -38,7 +39,7 @@ class Help extends Control {
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
         window.addEventListener('keyup', (event) => {
-            if(isShortcutKeyOnly(event, 'f1')) {
+            if(isShortcutKeyOnly(event, ShortcutKeys.Help)) {
                 this.handleClick(event);
             }
         });

@@ -10,6 +10,7 @@ import { eventDispatcher } from '../helpers/Browser/EventDispatcher';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { setActiveTool } from '../helpers/ActiveTool';
+import { ShortcutKeys } from '../helpers/Constants/ShortcutKeys';
 
 const LOCAL_STORAGE_NODE_NAME = 'drawTool';
 const LOCAL_STORAGE_DEFAULTS = {
@@ -39,7 +40,7 @@ class DrawTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': 'Draw (P)'
+                'data-tippy-content': `Draw (${ShortcutKeys.Draw})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -165,7 +166,7 @@ class DrawTool extends Control {
                 if(this.interaction) {
                     this.interaction.removeLastPoint();
                 }
-            }else if(isShortcutKeyOnly(event, 'p')) {
+            }else if(isShortcutKeyOnly(event, ShortcutKeys.Draw)) {
                 this.handleClick(event);
             }
         });

@@ -5,6 +5,7 @@ import { easeOut } from 'ol/easing';
 import { toolbarElement } from '../core/ElementReferences';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
+import { ShortcutKeys } from '../helpers/Constants/ShortcutKeys';
 
 const DEFAULT_OPTIONS = {};
 
@@ -25,7 +26,7 @@ class ZoomIn extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': 'Zoom in (Q)'
+                'data-tippy-content': `Zoom in (${ShortcutKeys.ZoomIn})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -37,7 +38,7 @@ class ZoomIn extends Control {
         this.delta = 1;
 
         window.addEventListener('keyup', (event) => {
-            if(isShortcutKeyOnly(event, 'q')) {
+            if(isShortcutKeyOnly(event, ShortcutKeys.ZoomIn)) {
                 this.handleZoomByDelta();
             }
         });

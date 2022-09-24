@@ -6,6 +6,7 @@ import { SVGPaths, getIcon } from '../core/Icons';
 import { toolButtonsTippySingleton } from '../core/ToolbarTooltips';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { isHorizontal } from '../helpers/IsRowDirection';
+import { ShortcutKeys } from '../helpers/Constants/ShortcutKeys';
 
 const LOCAL_STORAGE_NODE_NAME = 'direction';
 
@@ -33,7 +34,7 @@ class DirectionToggle extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': (isHorizontal() ? 'Vertical toolbar' : 'Horizontal toolbar') + ' (D)'
+                'data-tippy-content': (isHorizontal() ? 'Vertical toolbar' : 'Horizontal toolbar') + ` (${ShortcutKeys.ToolbarDirection})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -50,7 +51,7 @@ class DirectionToggle extends Control {
         window.addEventListener('resize', this.isSmallDevice.bind(this));
         window.addEventListener('oltb.settings.cleared', this.clearDirection.bind(this));
         window.addEventListener('keyup', (event) => {
-            if(isShortcutKeyOnly(event, 'd')) {
+            if(isShortcutKeyOnly(event, ShortcutKeys.ToolbarDirection)) {
                 this.handleClick(event);
             }
         });
@@ -76,7 +77,7 @@ class DirectionToggle extends Control {
         // Update toolbar icon
         this.button.removeChild(this.button.firstElementChild);
         this.button.insertAdjacentHTML('afterbegin', this.horizontalIcon);
-        this.button._tippy.setContent('Horizontal toolbar (D)');
+        this.button._tippy.setContent(`Horizontal toolbar (${ShortcutKeys.ToolbarDirection})`);
         toolButtonsTippySingleton.setProps({placement: 'right'});
     }
 
@@ -97,7 +98,7 @@ class DirectionToggle extends Control {
             // Update toolbar icon
             this.button.removeChild(this.button.firstElementChild);
             this.button.insertAdjacentHTML('afterbegin', this.verticalIcon);
-            this.button._tippy.setContent('Vertical  toolbar (D)');
+            this.button._tippy.setContent(`Vertical  toolbar (${ShortcutKeys.ToolbarDirection})`);
             toolButtonsTippySingleton.setProps({placement: 'bottom'});
         }
 

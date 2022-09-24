@@ -1,5 +1,6 @@
 import Config from '../core/Config';
 import DOM from '../helpers/Browser/DOM';
+import Toast from '../common/Toast';
 import { Control } from 'ol/control';
 import { fromLonLat } from 'ol/proj';
 import { easeOut } from 'ol/easing';
@@ -7,7 +8,7 @@ import { toolbarElement } from '../core/ElementReferences';
 import { addContextMenuItem } from '../common/ContextMenu';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
-import Toast from '../common/Toast';
+import { ShortcutKeys } from '../helpers/Constants/ShortcutKeys';
 
 const DEFAULT_OPTIONS = {
     zoom: 1,
@@ -32,7 +33,7 @@ class Home extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': 'Zoom home (H)'
+                'data-tippy-content': `Zoom home (${ShortcutKeys.Home})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -52,7 +53,7 @@ class Home extends Control {
 
         window.addEventListener('oltb.settings.cleared', this.clearHomeLocation.bind(this));
         window.addEventListener('keyup', (event) => {
-            if(isShortcutKeyOnly(event, 'h')) {
+            if(isShortcutKeyOnly(event, ShortcutKeys.Home)) {
                 this.handleResetToHome();
             }
         });

@@ -8,6 +8,7 @@ import { toolbarElement } from '../core/ElementReferences';
 import { addContextMenuItem } from '../common/ContextMenu';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
+import { ShortcutKeys } from '../helpers/Constants/ShortcutKeys';
 
 const DEFAULT_OPTIONS = {};
 
@@ -28,7 +29,7 @@ class Settings extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': 'Settings (U)'
+                'data-tippy-content': `Settings (${ShortcutKeys.Settings})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -51,7 +52,7 @@ class Settings extends Control {
         }});
 
         window.addEventListener('keyup', (event) => {
-            if(isShortcutKeyOnly(event, 'u')) {
+            if(isShortcutKeyOnly(event, ShortcutKeys.Settings)) {
                 this.handleClick(event);
             }
         });

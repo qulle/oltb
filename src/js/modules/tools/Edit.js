@@ -14,6 +14,7 @@ import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { setActiveTool } from '../helpers/ActiveTool';
 import { getMeasureTooltipCoordinates, getMeasureTooltipValue } from '../helpers/olFunctions/Measure';
 import { hasNestedProperty } from '../helpers/HasNestedProperty';
+import { ShortcutKeys } from '../helpers/Constants/ShortcutKeys';
 
 const LOCAL_STORAGE_NODE_NAME = 'editTool';
 const LOCAL_STORAGE_DEFAULTS = {
@@ -39,7 +40,7 @@ class Edit extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': 'Edit (V)'
+                'data-tippy-content': `Edit (${ShortcutKeys.Edit})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -189,7 +190,7 @@ class Edit extends Control {
 
         window.addEventListener('oltb.featureLayer.removed', this.featureLayerRemoved.bind(this));
         window.addEventListener('keyup', (event) => {
-            if(isShortcutKeyOnly(event, 'v')) {
+            if(isShortcutKeyOnly(event, ShortcutKeys.Edit)) {
                 this.handleClick(event);
             }else if(isShortcutKeyOnly(event, 'delete')) {
                 if(this.select.getFeatures().getArray().length > 0) {

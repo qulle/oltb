@@ -6,6 +6,7 @@ import { Control, OverviewMap } from 'ol/control';
 import { toolboxElement, toolbarElement } from '../core/ElementReferences';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
+import { ShortcutKeys } from '../helpers/Constants/ShortcutKeys';
 
 const LOCAL_STORAGE_NODE_NAME = 'overviewTool';
 const LOCAL_STORAGE_DEFAULTS = {
@@ -29,7 +30,7 @@ class Overview extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': 'Area overview (A)'
+                'data-tippy-content': `Area overview (${ShortcutKeys.AreaOverview})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -88,7 +89,7 @@ class Overview extends Control {
         });
 
         window.addEventListener('keyup', (event) => {
-            if(isShortcutKeyOnly(event, 'a')) {
+            if(isShortcutKeyOnly(event, ShortcutKeys.AreaOverview)) {
                 this.handleClick(event);
             }
         });

@@ -12,6 +12,7 @@ import { easeOut } from 'ol/easing';
 import { randomNumber } from '../helpers/Random';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
+import { ShortcutKeys } from '../helpers/Constants/ShortcutKeys';
 
 const BOOKMARK_BUTTON_DEFAULT_CLASSES = 'oltb-func-btn';
 
@@ -42,7 +43,7 @@ class Bookmark extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': 'Bookmarks (B)'
+                'data-tippy-content': `Bookmarks (${ShortcutKeys.Bookmark})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -139,7 +140,7 @@ class Bookmark extends Control {
         }});
 
         window.addEventListener('keyup', (event) => {
-            if(isShortcutKeyOnly(event, 'b')) {
+            if(isShortcutKeyOnly(event, ShortcutKeys.Bookmark)) {
                 this.handleClick(event);
             }
         });

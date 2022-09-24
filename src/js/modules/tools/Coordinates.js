@@ -11,6 +11,7 @@ import { copyToClipboard } from '../helpers/Browser/CopyToClipboard';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { toStringHDMS } from 'ol/coordinate';
+import { ShortcutKeys } from '../helpers/Constants/ShortcutKeys';
 
 const DEFAULT_OPTIONS = {};
 
@@ -31,7 +32,7 @@ class Coordinates extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': 'Show coordinates (C)'
+                'data-tippy-content': `Show coordinates (${ShortcutKeys.Coordinates})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -50,7 +51,7 @@ class Coordinates extends Control {
         });
 
         window.addEventListener('keyup', (event) => {
-            if(isShortcutKeyOnly(event, 'c')) {
+            if(isShortcutKeyOnly(event, ShortcutKeys.Coordinates)) {
                 this.handleClick(event);
             }
         });

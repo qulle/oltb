@@ -8,6 +8,7 @@ import { toolbarElement } from '../core/ElementReferences';
 import { addContextMenuItem } from '../common/ContextMenu';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
+import { ShortcutKeys } from '../helpers/Constants/ShortcutKeys';
 
 const DEFAULT_OPTIONS = {};
 
@@ -28,7 +29,7 @@ class ResetNorth extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': 'Reset rotation (N)'
+                'data-tippy-content': `Reset North (${ShortcutKeys.ResetNorth})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -64,7 +65,7 @@ class ResetNorth extends Control {
         }});
 
         window.addEventListener('keyup', (event) => {
-            if(isShortcutKeyOnly(event, 'n')) {
+            if(isShortcutKeyOnly(event, ShortcutKeys.ResetNorth)) {
                 this.handleResetNorth();
             }
         });

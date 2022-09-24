@@ -14,6 +14,7 @@ import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { setActiveTool } from '../helpers/ActiveTool';
 import { unByKey } from 'ol/Observable';
+import { ShortcutKeys } from '../helpers/Constants/ShortcutKeys';
 
 const LOCAL_STORAGE_NODE_NAME = 'measureTool';
 const LOCAL_STORAGE_DEFAULTS = {
@@ -41,7 +42,7 @@ class MeasureTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': 'Measure (M)'
+                'data-tippy-content': `Measure (${ShortcutKeys.Measure})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -131,7 +132,7 @@ class MeasureTool extends Control {
                 if(this.interaction) {
                     this.interaction.removeLastPoint();
                 }
-            }else if(isShortcutKeyOnly(event, 'm')) {
+            }else if(isShortcutKeyOnly(event, ShortcutKeys.Measure)) {
                 this.handleClick(event);
             }
         });

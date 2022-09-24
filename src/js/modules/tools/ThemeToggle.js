@@ -5,6 +5,7 @@ import { toolbarElement } from '../core/ElementReferences';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { isDarkTheme } from '../helpers/IsDarkTheme';
+import { ShortcutKeys } from '../helpers/Constants/ShortcutKeys';
 
 const LOCAL_STORAGE_NODE_NAME = 'theme';
 
@@ -32,7 +33,7 @@ class ThemeToggle extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': (isDarkTheme() ? 'Light theme' : 'Dark theme') + ' (T)'
+                'data-tippy-content': (isDarkTheme() ? 'Light theme' : 'Dark theme') + ` (${ShortcutKeys.ToolbarTheme})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -46,7 +47,7 @@ class ThemeToggle extends Control {
 
         window.addEventListener('oltb.settings.cleared', this.clearTheme.bind(this));
         window.addEventListener('keyup', (event) => {
-            if(isShortcutKeyOnly(event, 't')) {
+            if(isShortcutKeyOnly(event, ShortcutKeys.ToolbarTheme)) {
                 this.handleClick(event);
             }
         });
@@ -64,7 +65,7 @@ class ThemeToggle extends Control {
         // Update toolbar icon
         this.button.removeChild(this.button.firstElementChild);
         this.button.insertAdjacentHTML('afterbegin', this.darkThemeIcon);
-        this.button._tippy.setContent('Dark theme (T)');
+        this.button._tippy.setContent(`Dark theme (${ShortcutKeys.ToolbarTheme})`);
     }
 
     handleThemeToggle() {
@@ -81,7 +82,7 @@ class ThemeToggle extends Control {
             // Update toolbar icon
             this.button.removeChild(this.button.firstElementChild);
             this.button.insertAdjacentHTML('afterbegin', this.lightThemeIcon);
-            this.button._tippy.setContent('Light theme (T)');
+            this.button._tippy.setContent(`Light theme (${ShortcutKeys.ToolbarTheme})`);
         }
 
         // User defined callback from constructor

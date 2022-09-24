@@ -5,6 +5,7 @@ import { Control } from 'ol/control';
 import { toolbarElement } from '../core/ElementReferences';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
+import { ShortcutKeys } from '../helpers/Constants/ShortcutKeys';
 
 const NOTIFICATION_URL = 'https://raw.githubusercontent.com/qulle/notification-endpoints/main/endpoints/oltb.json';
 
@@ -25,7 +26,7 @@ class Notification extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': 'Notifications (X)'
+                'data-tippy-content': `Notifications (${ShortcutKeys.Notifications})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -36,7 +37,7 @@ class Notification extends Control {
         this.notificationModal = undefined;
 
         window.addEventListener('keyup', (event) => {
-            if(isShortcutKeyOnly(event, 'x')) {
+            if(isShortcutKeyOnly(event, ShortcutKeys.Notifications)) {
                 this.handleClick(event);
             }
         });

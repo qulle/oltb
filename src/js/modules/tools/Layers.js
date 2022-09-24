@@ -18,6 +18,7 @@ import { instantiateLayer } from '../core/olTypes/LayerTypes';
 import { instantiateSource } from '../core/olTypes/SourceTypes';
 import { instantiateFormat } from '../core/olTypes/FormatTypes';
 import { hasNestedProperty } from '../helpers/HasNestedProperty';
+import { ShortcutKeys } from '../helpers/Constants/ShortcutKeys';
 
 const LAYER_BUTTON_DEFAULT_CLASSES = 'oltb-func-btn';
 /* 
@@ -59,7 +60,7 @@ class Layers extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': 'Layers (L)'
+                'data-tippy-content': `Layers (${ShortcutKeys.Layer})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -183,7 +184,7 @@ class Layers extends Control {
         window.addEventListener('oltb.featureLayer.added', this.featureLayerAdded.bind(this));
         window.addEventListener('oltb.featureLayer.removed', this.featureLayerRemoved.bind(this));
         window.addEventListener('keyup', (event) => {
-            if(isShortcutKeyOnly(event, 'l')) {
+            if(isShortcutKeyOnly(event, ShortcutKeys.Layer)) {
                 this.handleClick(event);
             }
         });

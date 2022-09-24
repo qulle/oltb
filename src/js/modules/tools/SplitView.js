@@ -9,6 +9,7 @@ import { toolboxElement, toolbarElement, mapElement } from '../core/ElementRefer
 import { eventDispatcher } from '../helpers/Browser/EventDispatcher';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
+import { ShortcutKeys } from '../helpers/Constants/ShortcutKeys';
 
 const LOCAL_STORAGE_NODE_NAME = 'splitViewTool';
 const LOCAL_STORAGE_DEFAULTS = {
@@ -32,7 +33,7 @@ class SplitView extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': 'Split view (S)'
+                'data-tippy-content': `Split view (${ShortcutKeys.SplitView})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -119,7 +120,7 @@ class SplitView extends Control {
         window.addEventListener('oltb.mapLayer.added', this.mapLayerAdded.bind(this));
         window.addEventListener('oltb.mapLayer.removed', this.mapLayerRemoved.bind(this));
         window.addEventListener('keyup', (event) => {
-            if(isShortcutKeyOnly(event, 's')) {
+            if(isShortcutKeyOnly(event, ShortcutKeys.SplitView)) {
                 this.handleClick(event);
             }
         });

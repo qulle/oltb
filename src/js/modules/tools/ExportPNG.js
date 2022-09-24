@@ -5,6 +5,7 @@ import { download } from '../helpers/Browser/Download';
 import { toolbarElement } from '../core/ElementReferences';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
+import { ShortcutKeys } from '../helpers/Constants/ShortcutKeys';
 
 const DEFAULT_OPTIONS = {};
 const FILE_NAME = 'map.png';
@@ -26,7 +27,7 @@ class ExportPNG extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': 'Export PNG (E)'
+                'data-tippy-content': `Export PNG (${ShortcutKeys.ExportPNG})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -37,7 +38,7 @@ class ExportPNG extends Control {
         this.options = { ...DEFAULT_OPTIONS, ...options };
         
         window.addEventListener('keyup', (event) => {
-            if(isShortcutKeyOnly(event, 'e')) {
+            if(isShortcutKeyOnly(event, ShortcutKeys.ExportPNG)) {
                 this.handleClick(event);
             }
         });

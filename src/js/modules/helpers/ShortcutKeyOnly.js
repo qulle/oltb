@@ -5,7 +5,7 @@ const isShortcutKeyOnly = function(event, key) {
            !event.shiftKey && 
            !event.altKey && 
            !event.metaKey && 
-           event.key.toLocaleLowerCase() === key;
+           event.key.toLocaleUpperCase() === key;
 }
 
 export { isShortcutKeyOnly };

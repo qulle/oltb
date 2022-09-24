@@ -4,6 +4,7 @@ import { Control } from 'ol/control';
 import { toolbarElement } from '../core/ElementReferences';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
+import { ShortcutKeys } from '../helpers/Constants/ShortcutKeys';
 
 const DEFAULT_OPTIONS = {
     title: 'Hey!',
@@ -27,7 +28,7 @@ class Info extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': 'Info (I)'
+                'data-tippy-content': `Info (${ShortcutKeys.Info})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -39,7 +40,7 @@ class Info extends Control {
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
         window.addEventListener('keyup', (event) => {
-            if(isShortcutKeyOnly(event, 'i')) {
+            if(isShortcutKeyOnly(event, ShortcutKeys.Info)) {
                 this.handleClick(event);
             }
         });

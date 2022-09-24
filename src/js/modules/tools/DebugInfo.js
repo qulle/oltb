@@ -6,6 +6,7 @@ import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { URIGet } from '../helpers/Browser/URIGet';
 import { projections } from '../epsg/Projections';
+import { ShortcutKeys } from '../helpers/Constants/ShortcutKeys';
 
 const DEFAULT_OPTIONS = {
     showWhenGetParameter: false
@@ -28,7 +29,7 @@ class DebugInfo extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': 'Debug info (Y)'
+                'data-tippy-content': `Debug info (${ShortcutKeys.DebugInfo})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -49,7 +50,7 @@ class DebugInfo extends Control {
         }
 
         window.addEventListener('keyup', (event) => {
-            if(isShortcutKeyOnly(event, 'y')) {
+            if(isShortcutKeyOnly(event, ShortcutKeys.DebugInfo)) {
                 this.handleClick(event);
             }
         });

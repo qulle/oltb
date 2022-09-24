@@ -5,6 +5,7 @@ import { Control } from 'ol/control';
 import { toolbarElement } from '../core/ElementReferences';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
+import { ShortcutKeys } from '../helpers/Constants/ShortcutKeys';
 
 const DEFAULT_OPTIONS = {
     color: 'rgba(59, 67, 82, 0.9)',
@@ -31,7 +32,7 @@ class GraticuleTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': 'Show graticule (J)'
+                'data-tippy-content': `Show graticule (${ShortcutKeys.Graticule})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -55,7 +56,7 @@ class GraticuleTool extends Control {
         });
 
         window.addEventListener('keyup', (event) => {
-            if(isShortcutKeyOnly(event, 'j')) {
+            if(isShortcutKeyOnly(event, ShortcutKeys.Graticule)) {
                 this.handleClick(event);
             }
         });

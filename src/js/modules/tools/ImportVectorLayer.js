@@ -7,6 +7,7 @@ import { Control } from 'ol/control';
 import { toolbarElement } from '../core/ElementReferences';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
+import { ShortcutKeys } from '../helpers/Constants/ShortcutKeys';
 
 const DEFAULT_OPTIONS = {};
 
@@ -27,7 +28,7 @@ class ImportVectorLayer extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': 'Import Vector layer (O)'
+                'data-tippy-content': `Import Vector layer (${ShortcutKeys.ImportVectorLayer})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -50,7 +51,7 @@ class ImportVectorLayer extends Control {
         });
         
         window.addEventListener('keyup', (event) => {
-            if(isShortcutKeyOnly(event, 'o')) {
+            if(isShortcutKeyOnly(event, ShortcutKeys.ImportVectorLayer)) {
                 this.handleClick(event);
             }
         });
