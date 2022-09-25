@@ -1,10 +1,10 @@
-import Config from '../core/Config';
+import CONFIG from '../core/Config';
 import { toolbarElement, toolboxElement, mapElement } from '../core/ElementReferences';
 import { URIGet } from '../helpers/Browser/URIGet';
 import { EVENTS } from './Constants/Events';
 
 // Append version as custom attribute to the html element
-document.documentElement.setAttribute('oltb-version', Config.version);
+document.documentElement.setAttribute('oltb-version', CONFIG.version);
 
 // Remove default contextmenu, show if the get parameter ?debug=true exists
 const debugParameter = URIGet('debug') === 'true';

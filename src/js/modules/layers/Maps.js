@@ -4,7 +4,7 @@ import OSM from 'ol/source/OSM';
 import Stamen from 'ol/source/Stamen';
 import { XYZ } from 'ol/source';
 
-const isSilent = true;
+const IS_SILENT = true;
 LayerManager.addMapLayers([
     {
         name: 'Open street map',
@@ -30,4 +30,4 @@ LayerManager.addMapLayers([
             visible: false
         })
     }
-], isSilent);
+], IS_SILENT);

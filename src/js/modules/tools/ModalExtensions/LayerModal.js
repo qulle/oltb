@@ -1,6 +1,6 @@
 import ModalBase from '../../common/Modals/ModalBase';
 import DOM from '../../helpers/Browser/DOM';
-import Config from '../../core/Config';
+import CONFIG from '../../core/Config';
 import { isDarkTheme } from '../../helpers/IsDarkTheme';
 
 const PREFIX_LAYER_ID = 'oltb-layer-modal';
@@ -42,14 +42,14 @@ class LayerModal extends ModalBase {
             class: 'oltb-mt-0625'
         });
 
-        const layerTypeSelect = DOM.createElement({
+        const LAYER_TYPESelect = DOM.createElement({
             element: 'select', 
             id: PREFIX_LAYER_ID + '-layer-type',
             class: 'oltb-select'
         });
 
         ['Tile', 'Vector'].forEach((type) => {
-            layerTypeSelect.appendChild(
+            LAYER_TYPESelect.appendChild(
                 DOM.createElement({
                     element: 'option', 
                     text: type, 
@@ -67,7 +67,7 @@ class LayerModal extends ModalBase {
             }
         }));
 
-        layerTypeDiv.appendChild(layerTypeSelect);
+        layerTypeDiv.appendChild(LAYER_TYPESelect);
 
         // Create and populate select element with the source types
         const layerSourceDiv = DOM.createElement({
@@ -114,7 +114,7 @@ class LayerModal extends ModalBase {
             class: 'oltb-input', 
             attributes: {
                 type: 'text', 
-                placeholder: Config.projection
+                placeholder: CONFIG.projection
             }
         });
 
@@ -258,7 +258,7 @@ class LayerModal extends ModalBase {
                 'click': () => {
                     const layer = {
                         name: layerNameTxt.value,
-                        layer: layerTypeSelect.value,
+                        layer: LAYER_TYPESelect.value,
                         source: layerSourceSelect.value,
                         url: layerURLTxt.value,
                         parameters: layerParametersTxt.value || '{}',

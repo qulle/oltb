@@ -5,7 +5,7 @@ import {
     Vector
 } from 'ol/source';
 
-const SourceTypes = {
+const SOURCE_TYPES = {
     'TileWMS': TileWMS,
     'XYZ': XYZ,
     'OSM': OSM,
@@ -13,11 +13,11 @@ const SourceTypes = {
 };
 
 const instantiateSource = function(name, options) {
-    if(!(name in SourceTypes)) {
+    if(!(name in SOURCE_TYPES)) {
         return null;
     }
 
-    return new SourceTypes[name](options);
+    return new SOURCE_TYPES[name](options);
 }
 
-export { SourceTypes as default, instantiateSource };
+export { SOURCE_TYPES as default, instantiateSource };

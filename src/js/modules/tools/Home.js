@@ -1,4 +1,4 @@
-import Config from '../core/Config';
+import CONFIG from '../core/Config';
 import DOM from '../helpers/Browser/DOM';
 import Toast from '../common/Toast';
 import { Control } from 'ol/control';
@@ -6,7 +6,7 @@ import { fromLonLat } from 'ol/proj';
 import { easeOut } from 'ol/easing';
 import { toolbarElement } from '../core/ElementReferences';
 import { addContextMenuItem } from '../common/ContextMenu';
-import { SVGPaths, getIcon } from '../core/Icons';
+import { SVG_PATHS, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { SHORTCUT_KEYS } from '../helpers/Constants/ShortcutKeys';
 import { EVENTS } from '../helpers/Constants/Events';
@@ -24,7 +24,7 @@ class Home extends Control {
         });
         
         const icon = getIcon({
-            path: SVGPaths.Home,
+            path: SVG_PATHS.Home,
             class: 'oltb-tool-button__icon'
         });
 
@@ -79,7 +79,7 @@ class Home extends Control {
         view.animate({
             zoom: this.userDefinedHomeZoom ? this.userDefinedHomeZoom : this.homeZoom,
             center: this.userDefinedHomeLocation ? this.userDefinedHomeLocation : this.homeLocation,
-            duration: Config.animationDuration,
+            duration: CONFIG.animationDuration,
             easing: easeOut
         });
 
@@ -88,7 +88,7 @@ class Home extends Control {
             if(typeof this.options.home === 'function') {
                 this.options.home();
             }
-        }, Config.animationDuration);
+        }, CONFIG.animationDuration);
     }
 
     setHomeLocation() {

@@ -4,7 +4,7 @@ import StateManager from '../core/Managers/StateManager';
 import DOM from '../helpers/Browser/DOM';
 import { Control, OverviewMap } from 'ol/control';
 import { toolboxElement, toolbarElement } from '../core/ElementReferences';
-import { SVGPaths, getIcon } from '../core/Icons';
+import { SVG_PATHS, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { SHORTCUT_KEYS } from '../helpers/Constants/ShortcutKeys';
 import { EVENTS } from '../helpers/Constants/Events';
@@ -21,7 +21,7 @@ class Overview extends Control {
         });
         
         const icon = getIcon({
-            path: SVGPaths.AspectRation,
+            path: SVG_PATHS.AspectRation,
             class: 'oltb-tool-button__icon'
         });
 

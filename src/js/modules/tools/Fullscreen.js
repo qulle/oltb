@@ -3,13 +3,13 @@ import DOM from '../helpers/Browser/DOM';
 import { Control } from 'ol/control';
 import { listen } from 'ol/events';
 import { toolbarElement } from '../core/ElementReferences';
-import { SVGPaths, getIcon } from '../core/Icons';
+import { SVG_PATHS, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { SHORTCUT_KEYS } from '../helpers/Constants/ShortcutKeys';
 import { EVENTS } from '../helpers/Constants/Events';
 import {
-    events,
-    FullScreenEventType,
+    FULL_SCREEN_EVENTS,
+    FULL_SCREEN_EVENT_TYPE,
     isFullScreenSupported,
     isFullScreen,
     requestFullScreen,
@@ -26,12 +26,12 @@ class Fullscreen extends Control {
         });
 
         this.enterFullscreenIcon = getIcon({
-            path: SVGPaths.EnterFullScreen,
+            path: SVG_PATHS.EnterFullScreen,
             class: 'oltb-tool-button__icon'
         });
 
         this.exitFullscreenIcon = getIcon({
-            path: SVGPaths.ExitFullScreen,
+            path: SVG_PATHS.ExitFullScreen,
             class: 'oltb-tool-button__icon'
         });
 
@@ -105,11 +105,11 @@ class Fullscreen extends Control {
         if(isFullScreen()) {
             this.button.removeChild(this.button.firstElementChild);
             this.button.insertAdjacentHTML('afterbegin', this.exitFullscreenIcon);
-            this.dispatchEvent(FullScreenEventType.ENTERFULLSCREEN);
+            this.dispatchEvent(FULL_SCREEN_EVENT_TYPE.EnterFullScreen);
         }else {
             this.button.removeChild(this.button.firstElementChild);
             this.button.insertAdjacentHTML('afterbegin', this.enterFullscreenIcon);
-            this.dispatchEvent(FullScreenEventType.LEAVEFULLSCREEN);
+            this.dispatchEvent(FULL_SCREEN_EVENT_TYPE.LeaveFullScreen);
         }
 
         this.getMap().updateSize();
@@ -121,10 +121,10 @@ class Fullscreen extends Control {
     setMap(map) {
         super.setMap(map);
         
-        for(let i = 0, ii = events.length; i < ii; ++i) {
+        for(let i = 0, ii = FULL_SCREEN_EVENTS.length; i < ii; ++i) {
             this.listenerKeys.push(listen(
                 document, 
-                events[i], 
+                FULL_SCREEN_EVENTS[i], 
                 this.handleFullScreenChange, 
                 this
             ));

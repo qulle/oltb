@@ -3,7 +3,7 @@ import Toast from '../common/Toast';
 import { Control } from 'ol/control';
 import { download } from '../helpers/Browser/Download';
 import { toolbarElement } from '../core/ElementReferences';
-import { SVGPaths, getIcon } from '../core/Icons';
+import { SVG_PATHS, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { SHORTCUT_KEYS } from '../helpers/Constants/ShortcutKeys';
 import { EVENTS } from '../helpers/Constants/Events';
@@ -18,7 +18,7 @@ class ExportPNG extends Control {
         });
         
         const icon = getIcon({
-            path: SVGPaths.Export,
+            path: SVG_PATHS.Export,
             class: 'oltb-tool-button__icon'
         });
 

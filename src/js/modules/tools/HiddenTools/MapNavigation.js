@@ -1,11 +1,11 @@
-import Config from '../../core/Config';
+import CONFIG from '../../core/Config';
 import StateManager from '../../core/Managers/StateManager';
 import { Control } from 'ol/control';
 import { toolbarElement } from '../../core/ElementReferences';
 import { easeOut } from 'ol/easing';
 import { fromLonLat, toLonLat } from 'ol/proj';
 import { addContextMenuItem } from '../../common/ContextMenu';
-import { SVGPaths, getIcon } from '../../core/Icons';
+import { SVG_PATHS, getIcon } from '../../core/Icons';
 import { EVENTS } from '../../helpers/Constants/Events';
 
 // Note: This is the same NODE_NAME and PROPS that the map.js file is using
@@ -33,7 +33,7 @@ class HiddenMapNavigation extends Control {
         const localStorageState = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
         this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
 
-        const moveCenterIcon = getIcon({path: SVGPaths.MoveCenter});
+        const moveCenterIcon = getIcon({path: SVG_PATHS.MoveCenter});
         addContextMenuItem('main.map.context.menu', {icon: moveCenterIcon, name: 'Center map here', fn: function(map, coordinates, target) {
             const view = map.getView();
         
@@ -43,12 +43,12 @@ class HiddenMapNavigation extends Control {
         
             view.animate({
                 center: fromLonLat(coordinates),
-                duration: Config.animationDuration,
+                duration: CONFIG.animationDuration,
                 easing: easeOut
             });
         }});
 
-        const focusHereIcon = getIcon({path: SVGPaths.FocusHere});
+        const focusHereIcon = getIcon({path: SVG_PATHS.FocusHere});
         addContextMenuItem('main.map.context.menu', {icon: focusHereIcon, name: 'Focus here', fn: (map, coordinates, target) => {
             const view = map.getView();
         
@@ -59,7 +59,7 @@ class HiddenMapNavigation extends Control {
             view.animate({
                 center: fromLonLat(coordinates),
                 zoom: this.options.focusZoom,
-                duration: Config.animationDuration,
+                duration: CONFIG.animationDuration,
                 easing: easeOut
             });
         }});

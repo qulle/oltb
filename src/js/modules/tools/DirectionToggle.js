@@ -2,7 +2,7 @@ import StateManager from '../core/Managers/StateManager';
 import DOM from '../helpers/Browser/DOM';
 import { Control } from 'ol/control';
 import { toolbarElement } from '../core/ElementReferences';
-import { SVGPaths, getIcon } from '../core/Icons';
+import { SVG_PATHS, getIcon } from '../core/Icons';
 import { toolButtonsTippySingleton } from '../core/ToolbarTooltips';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { isHorizontal } from '../helpers/IsRowDirection';
@@ -20,12 +20,12 @@ class DirectionToggle extends Control {
         });
         
         this.horizontalIcon = getIcon({
-            path: SVGPaths.DirectionHorizontal,
+            path: SVG_PATHS.DirectionHorizontal,
             class: 'oltb-tool-button__icon'
         });
 
         this.verticalIcon = getIcon({
-            path: SVGPaths.DirectionVertical,
+            path: SVG_PATHS.DirectionVertical,
             class: 'oltb-tool-button__icon'
         });
 

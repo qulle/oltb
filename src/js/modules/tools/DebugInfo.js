@@ -2,10 +2,10 @@ import DebugInfoModal from './ModalExtensions/DebugInfoModal';
 import DOM from '../helpers/Browser/DOM';
 import { Control } from 'ol/control';
 import { toolbarElement } from '../core/ElementReferences';
-import { SVGPaths, getIcon } from '../core/Icons';
+import { SVG_PATHS, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { URIGet } from '../helpers/Browser/URIGet';
-import { projections } from '../epsg/Projections';
+import { PROJECTIONS } from '../epsg/Projections';
 import { SHORTCUT_KEYS } from '../helpers/Constants/ShortcutKeys';
 import { EVENTS } from '../helpers/Constants/Events';
 
@@ -20,7 +20,7 @@ class DebugInfo extends Control {
         });
         
         const icon = getIcon({
-            path: SVGPaths.Debug,
+            path: SVG_PATHS.Debug,
             class: 'oltb-tool-button__icon'
         });
 
@@ -70,7 +70,7 @@ class DebugInfo extends Control {
             location: view.getCenter(),
             rotation: view.getRotation(),
             projection: view.getProjection(),
-            proj4Defs: projections
+            proj4Defs: PROJECTIONS
         };
 
         this.debugInfoModal = new DebugInfoModal({

@@ -1,12 +1,12 @@
-const events = [
+const FULL_SCREEN_EVENTS = [
     'fullscreenchange',
     'webkitfullscreenchange',
     'MSFullscreenChange'
 ];
   
-const FullScreenEventType = {
-    ENTERFULLSCREEN: 'enterfullscreen',
-    LEAVEFULLSCREEN: 'leavefullscreen'
+const FULL_SCREEN_EVENT_TYPE = {
+    EnterFullScreen: 'enterfullscreen',
+    LeaveFullScreen: 'leavefullscreen'
 };
 
 const isFullScreenSupported = function() {
@@ -56,8 +56,8 @@ const exitFullScreen = function() {
 }
 
 export {
-    events,
-    FullScreenEventType,
+    FULL_SCREEN_EVENTS,
+    FULL_SCREEN_EVENT_TYPE,
     isFullScreenSupported,
     isFullScreen,
     requestFullScreen,

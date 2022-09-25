@@ -1,19 +1,19 @@
 import LayerManager from "../core/Managers/LayerManager";
 import Toast from "../common/Toast";
 import { toStringHDMS } from "ol/coordinate";
-import { getIcon, SVGPaths } from "../core/Icons";
+import { getIcon, SVG_PATHS } from "../core/Icons";
 import { generateMarker } from '../helpers/olFunctions/Marker';
 
 import urlCapitalsGeoJSON from 'url:../../../json/capitals.geojson';
 
-const icon = getIcon({
-    path: SVGPaths.GeoMarkerFilled,
+const ICON = getIcon({
+    path: SVG_PATHS.GeoMarkerFilled,
     width: 20,
     height: 20,
     fill: 'rgb(255, 255, 255)'
 });
 
-const continentColors = {
+const CONTINENT_COLORS = {
     'Europe': '#0166A5FF',
     'Africa': '#007C70FF',
     'Antarctica': '#F67D2CFF',
@@ -26,7 +26,7 @@ const continentColors = {
     'US': '#3B4352FF'
 };
 
-const layerWrapper = LayerManager.addFeatureLayer('Capitals', true);
+const LAYER_WRAPPER = LayerManager.addFeatureLayer('Capitals', true);
 
 fetch(urlCapitalsGeoJSON)
     .then((response) => {
@@ -52,13 +52,13 @@ fetch(urlCapitalsGeoJSON)
                 </div>
             `;
         
-            const backgroundColor = continentColors[capital.properties.continentName] || '#223344FF';
+            const backgroundColor = CONTINENT_COLORS[capital.properties.continentName] || '#223344FF';
         
-            layerWrapper.layer.getSource().addFeatures(
+            LAYER_WRAPPER.layer.getSource().addFeatures(
                 new generateMarker({
                     lat: lat,
                     lon: lon,
-                    icon: icon,
+                    icon: ICON,
                     backgroundColor: backgroundColor,
                     notSelectable: true,
                     infoWindow: infoWindow

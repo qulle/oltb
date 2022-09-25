@@ -44,7 +44,7 @@ import ContextMenu from './modules/common/ContextMenu';
 import LayerManager from './modules/core/Managers/LayerManager';
 import StateManager from './modules/core/Managers/StateManager';
 import TooltipManager from './modules/core/Managers/TooltipManager';
-import Config from './modules/core/Config';
+import CONFIG from './modules/core/Config';
 import SettingsManager from './modules/core/Managers/SettingsManager';
 import InfoWindowManager from './modules/core/Managers/InfoWindowManager';
 import { mapElement } from './modules/core/ElementReferences';
@@ -69,8 +69,8 @@ const LOCAL_STORAGE_DEFAULTS = {
 };
 
 // Load potential stored data from localStorage
-const localStorageState = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
-const localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
+const LOCAL_STORAGE_STATE = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
+const LOCAL_STORAGE = { ...LOCAL_STORAGE_DEFAULTS, ...LOCAL_STORAGE_STATE };
 
 const map = new Map({
     interactions: defaultInterctions({
@@ -328,13 +328,13 @@ const map = new Map({
     ]),
     target: mapElement,
     view: new View({
-        projection: getProjection(Config.projection),
+        projection: getProjection(CONFIG.projection),
         center: fromLonLat([
-            localStorage.lon, 
-            localStorage.lat
-        ], Config.projection),
-        zoom: localStorage.zoom,
-        rotation: localStorage.rotation
+            LOCAL_STORAGE.lon, 
+            LOCAL_STORAGE.lat
+        ], CONFIG.projection),
+        zoom: LOCAL_STORAGE.zoom,
+        rotation: LOCAL_STORAGE.rotation
     })
 });
 

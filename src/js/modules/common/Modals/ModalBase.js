@@ -1,6 +1,6 @@
 import DOM from '../../helpers/Browser/DOM';
 import { mapElement } from '../../core/ElementReferences';
-import { SVGPaths, getIcon } from '../../core/Icons';
+import { SVG_PATHS, getIcon } from '../../core/Icons';
 import { trapFocusKeyListener } from '../../helpers/TrapFocus';
 import { EVENTS } from '../../helpers/Constants/Events';
 
@@ -39,7 +39,7 @@ class ModalBase {
         const modalClose = DOM.createElement({
             element: 'button', 
             html: getIcon({
-                path: SVGPaths.Close, 
+                path: SVG_PATHS.Close, 
                 fill: 'none', 
                 stroke: 'currentColor'
             }),

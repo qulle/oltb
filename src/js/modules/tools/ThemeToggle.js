@@ -2,7 +2,7 @@ import StateManager from '../core/Managers/StateManager';
 import DOM from '../helpers/Browser/DOM';
 import { Control } from 'ol/control';
 import { toolbarElement } from '../core/ElementReferences';
-import { SVGPaths, getIcon } from '../core/Icons';
+import { SVG_PATHS, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { isDarkTheme } from '../helpers/IsDarkTheme';
 import { SHORTCUT_KEYS } from '../helpers/Constants/ShortcutKeys';
@@ -19,12 +19,12 @@ class ThemeToggle extends Control {
         });
         
         this.lightThemeIcon = getIcon({
-            path: SVGPaths.LightOn,
+            path: SVG_PATHS.LightOn,
             class: 'oltb-tool-button__icon'
         });
 
         this.darkThemeIcon = getIcon({
-            path: SVGPaths.LightOff,
+            path: SVG_PATHS.LightOff,
             class: 'oltb-tool-button__icon'
         });
         

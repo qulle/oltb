@@ -1,17 +1,17 @@
 import TileLayer from 'ol/layer/Tile';
 import VectorLayer from 'ol/layer/Vector';
 
-const LayerTypes = {
+const LAYER_TYPES = {
     'Tile': TileLayer,
     'Vector': VectorLayer
 };
 
 const instantiateLayer = function(name, options) {
-    if(!(name in LayerTypes)) {
+    if(!(name in LAYER_TYPES)) {
         return null;
     }
 
-    return new LayerTypes[name](options);
+    return new LAYER_TYPES[name](options);
 }
 
-export { LayerTypes as default, instantiateLayer };
+export { LAYER_TYPES as default, instantiateLayer };

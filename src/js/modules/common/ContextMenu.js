@@ -1,5 +1,5 @@
 import Control from "ol/control/Control";
-import Config from '../core/Config';
+import CONFIG from '../core/Config';
 import DOM from '../helpers/Browser/DOM';
 import { trapFocusKeyListener } from '../helpers/TrapFocus';
 import { transform } from 'ol/proj';
@@ -91,8 +91,8 @@ class ContextMenu extends Control {
     show(event) {
         this.coordinates = transform(
             this.getMap().getEventCoordinate(event), 
-            Config.projection, 
-            Config.wgs84Projection
+            CONFIG.projection, 
+            CONFIG.wgs84Projection
         );
         
         this.menu.style.left = `${event.clientX}px`;

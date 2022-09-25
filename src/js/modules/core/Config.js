@@ -1,6 +1,6 @@
 import { version } from '/package.json';
 
-const Config = {
+const CONFIG = {
     version: version,
     projection: 'EPSG:3857',
     locale: 'en-us',
@@ -8,4 +8,4 @@ const Config = {
     animationDuration: 350
 };
 
-export default Config;
+export default CONFIG;

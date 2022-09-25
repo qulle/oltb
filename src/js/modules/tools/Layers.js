@@ -2,7 +2,7 @@ import LayerManager from '../core/Managers/LayerManager';
 import Dialog from '../common/Dialog';
 import LayerModal from './ModalExtensions/LayerModal';
 import DOM from '../helpers/Browser/DOM';
-import Config from '../core/Config';
+import CONFIG from '../core/Config';
 import InfoWindowManager from '../core/Managers/InfoWindowManager';
 import StateManager from '../core/Managers/StateManager';
 import Toast from '../common/Toast';
@@ -12,7 +12,7 @@ import { Control } from 'ol/control';
 import { toolboxElement, toolbarElement } from '../core/ElementReferences';
 import { download } from '../helpers/Browser/Download';
 import { addContextMenuItem } from '../common/ContextMenu';
-import { SVGPaths, getIcon } from '../core/Icons';
+import { SVG_PATHS, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { instantiateLayer } from '../core/olTypes/LayerTypes';
 import { instantiateSource } from '../core/olTypes/SourceTypes';
@@ -51,7 +51,7 @@ class Layers extends Control {
         });
         
         const icon = getIcon({
-            path: SVGPaths.Layers,
+            path: SVG_PATHS.Layers,
             class: 'oltb-tool-button__icon'
         });
 
@@ -113,7 +113,7 @@ class Layers extends Control {
                                     <input type="text" id="oltb-add-feature-layer-txt" class="oltb-input" placeholder="Layer name">
                                     <button type="button" id="oltb-add-feature-layer-btn" class="oltb-btn oltb-btn--green-mid oltb-tippy" title="Create feature layer">
                                         ${getIcon({
-                                            path: SVGPaths.PlusSmall,
+                                            path: SVG_PATHS.PlusSmall,
                                             width: 20,
                                             height: 20,
                                             fill: 'none',
@@ -207,7 +207,7 @@ class Layers extends Control {
                 LayerManager.addMapLayer({
                     name: result.name,
                     layer: instantiateLayer(result.layer, {
-                        projection: result.projection || Config.projection,
+                        projection: result.projection || CONFIG.projection,
                         source: instantiateSource(result.source, {
                             url: result.url,
                             params: JSON.parse(result.parameters),
@@ -461,8 +461,8 @@ class Layers extends Control {
 
                 const features = layerWrapper.layer.getSource().getFeatures();
                 const formatString = format.writeFeatures(features, {
-                    featureProjection: Config.projection,
-                    dataProjection: Config.projection
+                    featureProjection: CONFIG.projection,
+                    dataProjection: CONFIG.projection
                 });
             
                 const fileName = layerWrapper.name + '.' + result.format.toLowerCase();

@@ -1,11 +1,11 @@
 import Toast from '../common/Toast';
 import LayerManager from '../core/Managers/LayerManager';
-import Config from '../core/Config';
+import CONFIG from '../core/Config';
 import DOM from '../helpers/Browser/DOM';
-import FormatTypes, { instantiateFormat } from '../core/olTypes/FormatTypes';
+import FORMAT_TYPES, { instantiateFormat } from '../core/olTypes/FormatTypes';
 import { Control } from 'ol/control';
 import { toolbarElement } from '../core/ElementReferences';
-import { SVGPaths, getIcon } from '../core/Icons';
+import { SVG_PATHS, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { SHORTCUT_KEYS } from '../helpers/Constants/ShortcutKeys';
 import { EVENTS } from '../helpers/Constants/Events';
@@ -19,7 +19,7 @@ class ImportVectorLayer extends Control {
         });
         
         const icon = getIcon({
-            path: SVGPaths.Open,
+            path: SVG_PATHS.Open,
             class: 'oltb-tool-button__icon'
         });
 
@@ -78,7 +78,7 @@ class ImportVectorLayer extends Control {
 
             // Can't use the in-operator since the format can be formatted by the user
             // Forcing format to be lower-case and the do a search for it as a key in the format-object
-            const format = Object.keys(FormatTypes).find((key) => {
+            const format = Object.keys(FORMAT_TYPES).find((key) => {
                 return key.toLowerCase() === fileExtension;
             });
 
@@ -89,7 +89,7 @@ class ImportVectorLayer extends Control {
             }
 
             const features = instantiateFormat(format).readFeatures(this.fileReader.result, {
-                featureProjection: Config.projection
+                featureProjection: CONFIG.projection
             });
 
             const layerWrapper = LayerManager.addFeatureLayer('Import : ' + filename);

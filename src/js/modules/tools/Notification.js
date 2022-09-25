@@ -1,9 +1,9 @@
 import Modal from '../common/Modal';
 import DOM from '../helpers/Browser/DOM';
-import Config from '../core/Config';
+import CONFIG from '../core/Config';
 import { Control } from 'ol/control';
 import { toolbarElement } from '../core/ElementReferences';
-import { SVGPaths, getIcon } from '../core/Icons';
+import { SVG_PATHS, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { SHORTCUT_KEYS } from '../helpers/Constants/ShortcutKeys';
 import { EVENTS } from '../helpers/Constants/Events';
@@ -17,7 +17,7 @@ class Notification extends Control {
         });
         
         const icon = getIcon({
-            path: SVGPaths.Bell,
+            path: SVG_PATHS.Bell,
             class: 'oltb-tool-button__icon'
         });
 
@@ -86,14 +86,14 @@ class Notification extends Control {
                     <p>${json.qulle}</p>
                     <h3>🔭 Your version</h3>
                     <p>
-                        <a href="https://github.com/qulle/oltb/releases/tag/v${Config.version}" target="_blank" class="oltb-link">
-                            v${Config.version}
+                        <a href="https://github.com/qulle/oltb/releases/tag/v${CONFIG.version}" target="_blank" class="oltb-link">
+                            v${CONFIG.version}
                         </a>
                     </p>
                     <h3>🚀 Latest version</h3>
                     <p>
                         <a href="https://github.com/qulle/oltb/releases/tag/v${json.latest}" target="_blank" class="oltb-link">
-                            v${json.latest} - ${new Date(json.released).toLocaleDateString(Config.locale)}
+                            v${json.latest} - ${new Date(json.released).toLocaleDateString(CONFIG.locale)}
                         </a>
                     </p>
                     <h3>💡 New features under development</h3>
@@ -108,8 +108,8 @@ class Notification extends Control {
                     <p>Glad you are using my App, hope you find it useful!</p>
                     <h3>🔭 Your version</h3>
                     <p>
-                        <a href="https://github.com/qulle/oltb/releases/tag/v${Config.version}" target="_blank" class="oltb-link">
-                            v${Config.version}
+                        <a href="https://github.com/qulle/oltb/releases/tag/v${CONFIG.version}" target="_blank" class="oltb-link">
+                            v${CONFIG.version}
                         </a>
                     </p>
                     <h3>📡 Fetch error</h3>

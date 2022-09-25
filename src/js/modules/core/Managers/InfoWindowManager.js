@@ -1,8 +1,8 @@
 import Overlay from 'ol/Overlay';
-import Config from '../Config';
+import CONFIG from '../Config';
 import DOM from '../../helpers/Browser/DOM';
 import { getCenter } from 'ol/extent';
-import { SVGPaths, getIcon } from '../Icons';
+import { SVG_PATHS, getIcon } from '../Icons';
 import { copyFeatureInfo } from './InfoWindowManager/CopyFeatureInfo';
 import { removeFeature } from './InfoWindowManager/RemoveFeature';
 import { editFeature } from './InfoWindowManager/EditFeature';
@@ -39,7 +39,7 @@ class InfoWindowManager {
         const closeButton = DOM.createElement({
             element: 'button', 
             html: getIcon({
-                path: SVGPaths.Close,
+                path: SVG_PATHS.Close,
                 fill: 'none',
                 stroke: 'currentColor'
             }),
@@ -65,7 +65,7 @@ class InfoWindowManager {
             element: infoWindow,
             autoPan: true,
             autoPanAnimation: {
-                duration: Config.animationDuration
+                duration: CONFIG.animationDuration
             }
         });
 

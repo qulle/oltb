@@ -7,7 +7,7 @@ import { getRenderPixel } from 'ol/render';
 import { unByKey } from 'ol/Observable';
 import { toolboxElement, toolbarElement, mapElement } from '../core/ElementReferences';
 import { eventDispatcher } from '../helpers/Browser/EventDispatcher';
-import { SVGPaths, getIcon } from '../core/Icons';
+import { SVG_PATHS, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { SHORTCUT_KEYS } from '../helpers/Constants/ShortcutKeys';
 import { EVENTS } from '../helpers/Constants/Events';
@@ -24,7 +24,7 @@ class SplitView extends Control {
         });
         
         const icon = getIcon({
-            path: SVGPaths.SplitView,
+            path: SVG_PATHS.SplitView,
             class: 'oltb-tool-button__icon'
         });
 

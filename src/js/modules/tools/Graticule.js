@@ -3,7 +3,7 @@ import Stroke from 'ol/style/Stroke';
 import DOM from '../helpers/Browser/DOM';
 import { Control } from 'ol/control';
 import { toolbarElement } from '../core/ElementReferences';
-import { SVGPaths, getIcon } from '../core/Icons';
+import { SVG_PATHS, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { SHORTCUT_KEYS } from '../helpers/Constants/ShortcutKeys';
 import { EVENTS } from '../helpers/Constants/Events';
@@ -23,7 +23,7 @@ class GraticuleTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVGPaths.Globe,
+            path: SVG_PATHS.Globe,
             class: 'oltb-tool-button__icon'
         });
 

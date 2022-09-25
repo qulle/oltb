@@ -10,7 +10,7 @@ import { Fill, Stroke, Circle, Style } from 'ol/style';
 import { toolboxElement, toolbarElement } from '../core/ElementReferences';
 import { eventDispatcher } from '../helpers/Browser/EventDispatcher';
 import { getMeasureTooltipCoordinates, getMeasureTooltipValue } from '../helpers/olFunctions/Measure';
-import { SVGPaths, getIcon } from '../core/Icons';
+import { SVG_PATHS, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { setActiveTool } from '../helpers/ActiveTool';
 import { unByKey } from 'ol/Observable';
@@ -33,7 +33,7 @@ class MeasureTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVGPaths.Measure,
+            path: SVG_PATHS.Measure,
             class: 'oltb-tool-button__icon'
         });
 

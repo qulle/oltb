@@ -1,4 +1,4 @@
-const projections = [
+const PROJECTIONS = [
     {
         code: '3857',
         name: 'WGS 84 / Pseudo-Mercator',
@@ -25,7 +25,7 @@ const projections = [
 const getProj4Defs = function() {
     const result = [];
 
-    projections.forEach((projection) => {
+    PROJECTIONS.forEach((projection) => {
         result.push([
             'EPSG:' + projection.code,
             projection.proj4def
@@ -35,4 +35,4 @@ const getProj4Defs = function() {
     return result;
 }
 
-export { projections, getProj4Defs };
+export { PROJECTIONS, getProj4Defs };

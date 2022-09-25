@@ -1,11 +1,11 @@
-import Adjectives from './adjectives';
-import Animals from './animals';
+import ADJECTIVES from './adjectives';
+import ANIMALS from './animals';
 
 const generateAnimalName = function() {
-    const randomAnimal = Math.floor(Math.random() * Animals.length);
-    const randomAdjective = Math.floor(Math.random() * Adjectives.length);
+    const randomAnimal = Math.floor(Math.random() * ANIMALS.length);
+    const randomAdjective = Math.floor(Math.random() * ADJECTIVES.length);
 
-    return (Adjectives[randomAdjective] + ' ' + Animals[randomAnimal]).capitalize();
+    return (ADJECTIVES[randomAdjective] + ' ' + ANIMALS[randomAnimal]).capitalize();
 }
 
 export { generateAnimalName };

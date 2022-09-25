@@ -1,7 +1,7 @@
 import Toast from '../common/Toast';
 import Dialog from '../common/Dialog';
 import LayerManager from '../core/Managers/LayerManager';
-import Config from '../core/Config';
+import CONFIG from '../core/Config';
 import DOM from '../helpers/Browser/DOM';
 import { Control } from 'ol/control';
 import { toolbarElement } from '../core/ElementReferences';
@@ -9,7 +9,7 @@ import { isFullScreen, exitFullScreen } from '../helpers/Browser/Fullscreen';
 import { generateMarker } from '../helpers/olFunctions/Marker';
 import { easeOut } from 'ol/easing';
 import { fromLonLat } from 'ol/proj';
-import { SVGPaths, getIcon } from '../core/Icons';
+import { SVG_PATHS, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { toStringHDMS } from 'ol/coordinate';
 import { SHORTCUT_KEYS } from '../helpers/Constants/ShortcutKeys';
@@ -27,7 +27,7 @@ class MyLocation extends Control {
         });
         
         const icon = getIcon({
-            path: SVGPaths.GeoMarker,
+            path: SVG_PATHS.GeoMarker,
             class: 'oltb-tool-button__icon'
         });
 
@@ -107,7 +107,7 @@ class MyLocation extends Control {
         const prettyCoords = toStringHDMS([lon, lat]);
 
         const icon = getIcon({
-            path: SVGPaths.GeoMarkerFilled,
+            path: SVG_PATHS.GeoMarkerFilled,
             width: 20,
             height: 20,
             fill: 'rgb(255, 255, 255)'
@@ -142,7 +142,7 @@ class MyLocation extends Control {
 
         view.animate({
             center: fromLonLat([lon, lat]),
-            duration: Config.animationDuration,
+            duration: CONFIG.animationDuration,
             easing: easeOut
         });
 

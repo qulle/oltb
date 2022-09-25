@@ -1,12 +1,12 @@
 import Dialog from '../common/Dialog';
 import Toast from '../common/Toast';
-import Config from '../core/Config';
+import CONFIG from '../core/Config';
 import DOM from '../helpers/Browser/DOM';
 import { Control } from 'ol/control';
 import { easeOut } from 'ol/easing';
 import { toolbarElement } from '../core/ElementReferences';
 import { addContextMenuItem } from '../common/ContextMenu';
-import { SVGPaths, getIcon } from '../core/Icons';
+import { SVG_PATHS, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { SHORTCUT_KEYS } from '../helpers/Constants/ShortcutKeys';
 import { EVENTS } from '../helpers/Constants/Events';
@@ -20,7 +20,7 @@ class ResetNorth extends Control {
         });
         
         const icon = getIcon({
-            path: SVGPaths.Compass,
+            path: SVG_PATHS.Compass,
             class: 'oltb-tool-button__icon'
         });
 
@@ -55,7 +55,7 @@ class ResetNorth extends Control {
                     if(result.isDigitsOnly()) {
                         view.animate({
                             rotation: result * (Math.PI / 180),
-                            duration: Config.animationDuration,
+                            duration: CONFIG.animationDuration,
                             easing: easeOut
                         });
                     }else {
@@ -85,7 +85,7 @@ class ResetNorth extends Control {
 
         view.animate({
             rotation: 0,
-            duration: Config.animationDuration,
+            duration: CONFIG.animationDuration,
             easing: easeOut
         });
 
@@ -94,7 +94,7 @@ class ResetNorth extends Control {
             if(typeof this.options.reset === 'function') {
                 this.options.reset();
             }
-        }, Config.animationDuration);
+        }, CONFIG.animationDuration);
     }
 }
 

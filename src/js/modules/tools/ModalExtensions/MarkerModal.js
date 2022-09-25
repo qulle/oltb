@@ -1,6 +1,6 @@
 import ModalBase from '../../common/Modals/ModalBase';
 import DOM from '../../helpers/Browser/DOM';
-import { SVGPaths } from '../../core/Icons';
+import { SVG_PATHS } from '../../core/Icons';
 import { isDarkTheme } from '../../helpers/IsDarkTheme';
 
 const PREFIX_MARKER_ID = 'oltb-marker-modal';
@@ -82,7 +82,7 @@ class MarkerModal extends ModalBase {
             class: 'oltb-select'
         });
  
-        for(const path in SVGPaths) {
+        for(const path in SVG_PATHS) {
             iconSelect.appendChild(
                 DOM.createElement({
                     element: 'option', 

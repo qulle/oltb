@@ -1,9 +1,9 @@
-import Config from '../core/Config';
+import CONFIG from '../core/Config';
 import DOM from '../helpers/Browser/DOM';
 import { Control } from 'ol/control';
 import { easeOut } from 'ol/easing';
 import { toolbarElement } from '../core/ElementReferences';
-import { SVGPaths, getIcon } from '../core/Icons';
+import { SVG_PATHS, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { SHORTCUT_KEYS } from '../helpers/Constants/ShortcutKeys';
 import { EVENTS } from '../helpers/Constants/Events';
@@ -17,7 +17,7 @@ class ZoomOut extends Control {
         });
         
         const icon = getIcon({
-            path: SVGPaths.ZoomOut,
+            path: SVG_PATHS.ZoomOut,
             class: 'oltb-tool-button__icon'
         });
 
@@ -61,7 +61,7 @@ class ZoomOut extends Control {
 
         view.animate({
             zoom: newZoom,
-            duration: Config.animationDuration,
+            duration: CONFIG.animationDuration,
             easing: easeOut
         });
 
@@ -70,7 +70,7 @@ class ZoomOut extends Control {
             if(typeof this.options.zoomed === 'function') {
                 this.options.zoomed();
             }
-        }, Config.animationDuration);
+        }, CONFIG.animationDuration);
     }
 }
 

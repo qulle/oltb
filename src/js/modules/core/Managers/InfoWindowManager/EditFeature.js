@@ -1,11 +1,11 @@
-import Config from '../../../core/Config';
+import CONFIG from '../../../core/Config';
 import MarkerModal from "../../../tools/ModalExtensions/MarkerModal";
 import InfoWindowManager from '../InfoWindowManager';
 import LayerManager from '../LayerManager';
 import { transform } from 'ol/proj';
 import { toStringHDMS } from 'ol/coordinate';
 import { generateMarker } from '../../../helpers/olFunctions/Marker';
-import { SVGPaths, getIcon } from '../../Icons';
+import { SVG_PATHS, getIcon } from '../../Icons';
 
 const editFeature = function(feature) {
     const properties = feature.getProperties();
@@ -14,8 +14,8 @@ const editFeature = function(feature) {
         edit: true,
         coordinates: transform(
             feature.getGeometry().getCoordinates(), 
-            Config.projection, 
-            Config.wgs84Projection
+            CONFIG.projection, 
+            CONFIG.wgs84Projection
         ),
         name: properties.name,
         info: properties.info,
@@ -42,7 +42,7 @@ const editFeature = function(feature) {
         `;
         
         const icon = getIcon({
-            path: SVGPaths[result.icon],
+            path: SVG_PATHS[result.icon],
             width: 20,
             height: 20,
             fill: 'rgb(255, 255, 255)',

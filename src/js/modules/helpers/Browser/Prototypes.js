@@ -1,6 +1,3 @@
-// Expand with custom prototype features. 
-// Use with caution so as not to risk defining your own features that could cause problems with future versions of JavaScript. 
-
 String.prototype.capitalize = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
 }

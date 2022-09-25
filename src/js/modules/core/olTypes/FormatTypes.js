@@ -1,17 +1,17 @@
 import GeoJSON from 'ol/format/GeoJSON';
 import KML from 'ol/format/KML';
 
-const FormatTypes = {
+const FORMAT_TYPES = {
     'GeoJSON': GeoJSON,
     'KML': KML
 };
 
 const instantiateFormat = function(name, options) {
-    if(!(name in FormatTypes)) {
+    if(!(name in FORMAT_TYPES)) {
         return null;
     }
 
-    return new FormatTypes[name](options);
+    return new FORMAT_TYPES[name](options);
 }
 
-export { FormatTypes as default, instantiateFormat };
+export { FORMAT_TYPES as default, instantiateFormat };

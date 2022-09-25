@@ -1,4 +1,4 @@
-import Config from '../core/Config';
+import CONFIG from '../core/Config';
 import Toast from '../common/Toast';
 import DOM from '../helpers/Browser/DOM';
 import SettingsManager from '../core/Managers/SettingsManager';
@@ -8,7 +8,7 @@ import { transform } from 'ol/proj';
 import { unByKey } from 'ol/Observable';
 import { toolbarElement } from '../core/ElementReferences';
 import { copyToClipboard } from '../helpers/Browser/CopyToClipboard';
-import { SVGPaths, getIcon } from '../core/Icons';
+import { SVG_PATHS, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { toStringHDMS } from 'ol/coordinate';
 import { SHORTCUT_KEYS } from '../helpers/Constants/ShortcutKeys';
@@ -23,7 +23,7 @@ class Coordinates extends Control {
         });
 
         const icon = getIcon({
-            path: SVGPaths.Coordinates,
+            path: SVG_PATHS.Coordinates,
             class: 'oltb-tool-button__icon'
         });
 
@@ -80,7 +80,7 @@ class Coordinates extends Control {
     }
 
     onPointerMove(event) {
-        const lonlat = transform(event.coordinate, Config.projection, Config.wgs84Projection);
+        const lonlat = transform(event.coordinate, CONFIG.projection, CONFIG.wgs84Projection);
         const prettyCoords = toStringHDMS(lonlat);
 
         this.tooltipItem.innerHTML = prettyCoords;
@@ -91,7 +91,7 @@ class Coordinates extends Control {
             return;
         }
 
-        const lonlat = transform(event.coordinate, Config.projection, Config.wgs84Projection);
+        const lonlat = transform(event.coordinate, CONFIG.projection, CONFIG.wgs84Projection);
         const lon = lonlat[0];
         const lat = lonlat[1];
         const prettyCoords = toStringHDMS(lonlat);

@@ -7,7 +7,7 @@ import { Control } from 'ol/control';
 import { Fill, Stroke, Circle, Style } from 'ol/style';
 import { toolboxElement, toolbarElement } from '../core/ElementReferences';
 import { eventDispatcher } from '../helpers/Browser/EventDispatcher';
-import { SVGPaths, getIcon } from '../core/Icons';
+import { SVG_PATHS, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { setActiveTool } from '../helpers/ActiveTool';
 import { SHORTCUT_KEYS } from '../helpers/Constants/ShortcutKeys';
@@ -31,7 +31,7 @@ class DrawTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVGPaths.Pen,
+            path: SVG_PATHS.Pen,
             class: 'oltb-tool-button__icon'
         });
 

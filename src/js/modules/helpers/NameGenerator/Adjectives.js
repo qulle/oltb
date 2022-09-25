@@ -1,4 +1,4 @@
-export default [
+const ADJECTIVES = [
     'Abaft',
     'Abandoned',
     'Abased',
@@ -5829,3 +5829,5 @@ export default [
     'Zoophagous',
     'Zoophobic'
 ];
+
+export default ADJECTIVES;

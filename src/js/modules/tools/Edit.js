@@ -9,7 +9,7 @@ import { Select, Modify, Translate } from 'ol/interaction';
 import { shiftKeyOnly } from 'ol/events/condition';
 import { unByKey } from 'ol/Observable';
 import { toolboxElement, toolbarElement } from '../core/ElementReferences';
-import { SVGPaths, getIcon } from '../core/Icons';
+import { SVG_PATHS, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { setActiveTool } from '../helpers/ActiveTool';
 import { getMeasureTooltipCoordinates, getMeasureTooltipValue } from '../helpers/olFunctions/Measure';
@@ -31,7 +31,7 @@ class Edit extends Control {
         });
         
         const icon = getIcon({
-            path: SVGPaths.Edit,
+            path: SVG_PATHS.Edit,
             class: 'oltb-tool-button__icon'
         });
 

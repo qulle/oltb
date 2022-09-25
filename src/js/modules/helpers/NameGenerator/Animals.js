@@ -1,4 +1,4 @@
-export default [
+const ANIMALS = [
     'Aardvark',
     'Aardwolf',
     'Abalone',
@@ -1184,3 +1184,5 @@ export default [
     'Zopilote',
     'Zorilla'
 ];
+
+export default ANIMALS;

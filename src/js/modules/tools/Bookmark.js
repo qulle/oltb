@@ -1,7 +1,7 @@
 import Dialog from '../common/Dialog';
 import Toast from '../common/Toast';
 import DOM from '../helpers/Browser/DOM';
-import Config from '../core/Config';
+import CONFIG from '../core/Config';
 import StateManager from '../core/Managers/StateManager';
 import tippy from 'tippy.js';
 import { Control } from 'ol/control';
@@ -10,7 +10,7 @@ import { addContextMenuItem } from '../common/ContextMenu';
 import { generateAnimalName } from '../helpers/NameGenerator/NameGenerator';
 import { easeOut } from 'ol/easing';
 import { randomNumber } from '../helpers/Random';
-import { SVGPaths, getIcon } from '../core/Icons';
+import { SVG_PATHS, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { SHORTCUT_KEYS } from '../helpers/Constants/ShortcutKeys';
 import { EVENTS } from '../helpers/Constants/Events';
@@ -34,7 +34,7 @@ class Bookmark extends Control {
         });
         
         const icon = getIcon({
-            path: SVGPaths.Bookmark,
+            path: SVG_PATHS.Bookmark,
             class: 'oltb-tool-button__icon'
         });
 
@@ -74,7 +74,7 @@ class Bookmark extends Control {
                             <input type="text" id="oltb-add-bookmark-txt" class="oltb-input" placeholder="Bookmark name">
                             <button type="button" id="oltb-add-bookmark-btn" class="oltb-btn oltb-btn--green-mid oltb-tippy" title="Add Bookmark">
                                 ${getIcon({
-                                    path: SVGPaths.PlusSmall,
+                                    path: SVG_PATHS.PlusSmall,
                                     width: 20,
                                     height: 20,
                                     fill: 'none',
@@ -309,7 +309,7 @@ class Bookmark extends Control {
         view.animate({
             zoom: bookmark.zoom,
             center: bookmark.location,
-            duration: Config.animationDuration,
+            duration: CONFIG.animationDuration,
             easing: easeOut
         });
 

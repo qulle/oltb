@@ -3,20 +3,20 @@ import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import GeoJSON from 'ol/format/GeoJSON';
 import Toast from "../common/Toast";
-import Config from '../core/Config';
+import CONFIG from '../core/Config';
 import { bbox } from 'ol/loadingstrategy';
 import { getMeasureTooltipValue } from "../helpers/olFunctions/Measure";
 
 import urlCountriesGeoJSON from 'url:../../../json/countries.geojson';
 
-const isSilent = true;
+const IS_SILENT = true;
 LayerManager.addMapLayers([
     {
         name: 'Countries overlay',
         layer: new VectorLayer({
             source: new VectorSource({
                 format: new GeoJSON({
-                    featureProjection: Config.projection
+                    featureProjection: CONFIG.projection
                 }),
                 loader: function(extent, resolution, projection, success, failure) {
                     fetch(urlCountriesGeoJSON)
@@ -55,4 +55,4 @@ LayerManager.addMapLayers([
             visible: false
         })
     }
-], isSilent);
+], IS_SILENT);

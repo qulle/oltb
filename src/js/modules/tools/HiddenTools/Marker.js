@@ -4,7 +4,7 @@ import { Control } from 'ol/control';
 import { toolbarElement } from '../../core/ElementReferences';
 import { generateMarker } from '../../helpers/olFunctions/Marker';
 import { addContextMenuItem } from '../../common/ContextMenu';
-import { SVGPaths, getIcon } from '../../core/Icons';
+import { SVG_PATHS, getIcon } from '../../core/Icons';
 import { toStringHDMS } from 'ol/coordinate';
 import { EVENTS } from '../../helpers/Constants/Events';
 
@@ -18,7 +18,7 @@ class HiddenMarker extends Control {
 
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
-        const icon = getIcon({path: SVGPaths.Plus});
+        const icon = getIcon({path: SVG_PATHS.Plus});
 
         addContextMenuItem('main.map.context.menu', {icon: icon, name: 'Create marker', fn: (map, coordinates, target) => {
             const markerModal = new MarkerModal({coordinates: coordinates}, (result) => {
@@ -35,7 +35,7 @@ class HiddenMarker extends Control {
                 `;
                 
                 const icon = getIcon({
-                    path: SVGPaths[result.icon],
+                    path: SVG_PATHS[result.icon],
                     width: 20,
                     height: 20,
                     fill: 'rgb(255, 255, 255)',

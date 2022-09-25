@@ -2,10 +2,10 @@ import Point from 'ol/geom/Point';
 import Feature from 'ol/Feature';
 import { Circle as CircleStyle, Fill, Icon, Stroke, Style } from 'ol/style';
 import { fromLonLat } from 'ol/proj';
-import { SVGPaths, getIcon } from '../../core/Icons';
+import { SVG_PATHS, getIcon } from '../../core/Icons';
 
 const DEFAULT_ICON = getIcon({
-    path: SVGPaths.GeoPin,
+    path: SVG_PATHS.GeoPin,
     width: 20,
     height: 20,
     fill: 'rgb(255, 255, 255)',
