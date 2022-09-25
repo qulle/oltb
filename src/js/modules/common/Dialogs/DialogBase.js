@@ -1,4 +1,5 @@
 import DOM from '../../helpers/Browser/DOM';
+import { EVENTS } from '../../helpers/Constants/Events';
 import { isDarkTheme } from '../../helpers/IsDarkTheme';
 import { trapFocusKeyListener } from '../../helpers/TrapFocus';
 
@@ -21,7 +22,7 @@ class DialogBase {
         this.dialogBackdrop = dialogBackdrop;
         this.isDark = isDarkTheme();
 
-        window.addEventListener('keyup', (event) => {
+        window.addEventListener(EVENTS.Browser.KeyUp, (event) => {
             if(event.key === 'Escape') {
                 this.close();
             }
@@ -43,7 +44,7 @@ class DialogBase {
     }
 
     close() {
-        this.dialogBackdrop.removeEventListener('keydown', trapFocusKeyListener);
+        this.dialogBackdrop.removeEventListener(EVENTS.Browser.KeyDown, trapFocusKeyListener);
         this.dialogBackdrop.remove();
     }
 }

@@ -8,6 +8,7 @@ import { removeFeature } from './InfoWindowManager/RemoveFeature';
 import { editFeature } from './InfoWindowManager/EditFeature';
 import { trapFocusKeyListener } from '../../helpers/TrapFocus';
 import { hasNestedProperty } from '../../helpers/HasNestedProperty';
+import { EVENTS } from '../../helpers/Constants/Events';
 
 const ANIMATION_CLASS = 'oltb-animations--centered-bounce';
 
@@ -69,8 +70,8 @@ class InfoWindowManager {
         });
 
         this.map.addOverlay(this.overlay);
-        this.map.on('singleclick', this.onSingleClick.bind(this));
-        this.map.on('pointermove', this.onPointerMove.bind(this));
+        this.map.on(EVENTS.Ol.SingleClick, this.onSingleClick.bind(this));
+        this.map.on(EVENTS.Ol.PointerMove, this.onPointerMove.bind(this));
     }
 
     static onSingleClick(event) {
@@ -93,17 +94,17 @@ class InfoWindowManager {
 
             const removeFeatureButton = this.content.querySelector('#oltb-info-window-remove-marker');
             if(removeFeatureButton) {
-                removeFeatureButton.addEventListener('click', removeFeature.bind(this, feature));
+                removeFeatureButton.addEventListener(EVENTS.Browser.Click, removeFeature.bind(this, feature));
             }
 
             const copyFeatureInfoButton = this.content.querySelector('#oltb-info-window-copy-marker-location');
             if(copyFeatureInfoButton) {
-                copyFeatureInfoButton.addEventListener('click', copyFeatureInfo.bind(this, copyFeatureInfoButton.getAttribute('data-copy')));
+                copyFeatureInfoButton.addEventListener(EVENTS.Browser.Click, copyFeatureInfo.bind(this, copyFeatureInfoButton.getAttribute('data-copy')));
             }
 
             const editFeatureButton = this.content.querySelector('#oltb-info-window-edit-marker');
             if(editFeatureButton) {
-                editFeatureButton.addEventListener('click', editFeature.bind(this, feature));
+                editFeatureButton.addEventListener(EVENTS.Browser.Click, editFeature.bind(this, feature));
             }
         }else {
             this.hideOverlay();

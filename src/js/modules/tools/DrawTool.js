@@ -10,7 +10,8 @@ import { eventDispatcher } from '../helpers/Browser/EventDispatcher';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { setActiveTool } from '../helpers/ActiveTool';
-import { ShortcutKeys } from '../helpers/Constants/ShortcutKeys';
+import { SHORTCUT_KEYS } from '../helpers/Constants/ShortcutKeys';
+import { EVENTS } from '../helpers/Constants/Events';
 
 const LOCAL_STORAGE_NODE_NAME = 'drawTool';
 const LOCAL_STORAGE_DEFAULTS = {
@@ -40,7 +41,7 @@ class DrawTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Draw (${ShortcutKeys.Draw})`
+                'data-tippy-content': `Draw (${SHORTCUT_KEYS.Draw})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -117,7 +118,7 @@ class DrawTool extends Control {
 
         const toggleableTriggers = drawToolbox.querySelectorAll('.oltb-toggleable');
         toggleableTriggers.forEach((toggle) => {
-            toggle.addEventListener('click', (event) => {
+            toggle.addEventListener(EVENTS.Browser.Click, (event) => {
                 const targetName = toggle.dataset.oltbToggleableTarget;
                 document.getElementById(targetName).slideToggle(200, (collapsed) => {
                     this.localStorage.collapsed = collapsed;
@@ -126,10 +127,10 @@ class DrawTool extends Control {
             });
         });
 
-        toolType.addEventListener('change', () => updateTool());
-        fillColor.addEventListener('color-change', () => updateTool());
-        strokeWidth.addEventListener('change', () => updateTool());
-        strokeColor.addEventListener('color-change', () => updateTool());
+        toolType.addEventListener(EVENTS.Browser.Change, () => updateTool());
+        fillColor.addEventListener(EVENTS.Custom.ColorChange, () => updateTool());
+        strokeWidth.addEventListener(EVENTS.Browser.Change, () => updateTool());
+        strokeColor.addEventListener(EVENTS.Custom.ColorChange, () => updateTool());
 
         toolType.selectedIndex = this.localStorage.toolTypeIndex;
         strokeWidth.selectedIndex = this.localStorage.strokeWidth;
@@ -155,7 +156,7 @@ class DrawTool extends Control {
         this.drawToolbox = drawToolbox;
         this.toolType = toolType;
 
-        document.addEventListener('keyup', (event) => {
+        document.addEventListener(EVENTS.Browser.KeyUp, (event) => {
             const key = event.key.toLowerCase();
 
             if(key === 'escape') {
@@ -166,12 +167,12 @@ class DrawTool extends Control {
                 if(this.interaction) {
                     this.interaction.removeLastPoint();
                 }
-            }else if(isShortcutKeyOnly(event, ShortcutKeys.Draw)) {
+            }else if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Draw)) {
                 this.handleClick(event);
             }
         });
 
-        window.addEventListener('oltb.settings.cleared', () => {
+        window.addEventListener(EVENTS.Custom.SettingsCleared, () => {
             this.localStorage = LOCAL_STORAGE_DEFAULTS;
         });
     }
@@ -255,14 +256,14 @@ class DrawTool extends Control {
 
         map.addInteraction(this.interaction);
 
-        this.interaction.on('drawstart', (event) => {
+        this.interaction.on(EVENTS.Ol.DrawStart, (event) => {
             // User defined callback from constructor
             if(typeof this.options.start === 'function') {
                 this.options.start(event);
             }
         });
 
-        this.interaction.on('drawend', (event) => {
+        this.interaction.on(EVENTS.Ol.DrawEnd, (event) => {
             const feature = event.feature;
             feature.setStyle(style);
 
@@ -278,14 +279,14 @@ class DrawTool extends Control {
             }
         });
 
-        this.interaction.on('drawabort', (event) => {
+        this.interaction.on(EVENTS.Ol.DrawAbort, (event) => {
             // User defined callback from constructor
             if(typeof this.options.abort === 'function') {
                 this.options.abort(event);
             }
         });
 
-        this.interaction.on('error', (event) => {
+        this.interaction.on(EVENTS.Ol.Error, (event) => {
             // User defined callback from constructor
             if(typeof this.options.error === 'function') {
                 this.options.error(event);

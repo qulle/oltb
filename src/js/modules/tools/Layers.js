@@ -18,7 +18,8 @@ import { instantiateLayer } from '../core/olTypes/LayerTypes';
 import { instantiateSource } from '../core/olTypes/SourceTypes';
 import { instantiateFormat } from '../core/olTypes/FormatTypes';
 import { hasNestedProperty } from '../helpers/HasNestedProperty';
-import { ShortcutKeys } from '../helpers/Constants/ShortcutKeys';
+import { SHORTCUT_KEYS } from '../helpers/Constants/ShortcutKeys';
+import { EVENTS } from '../helpers/Constants/Events';
 
 const LAYER_BUTTON_DEFAULT_CLASSES = 'oltb-func-btn';
 /* 
@@ -60,7 +61,7 @@ class Layers extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Layers (${ShortcutKeys.Layer})`
+                'data-tippy-content': `Layers (${SHORTCUT_KEYS.Layer})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -139,7 +140,7 @@ class Layers extends Control {
 
         const toggleableTriggers = layersToolbox.querySelectorAll('.oltb-toggleable');
         toggleableTriggers.forEach((toggle) => {
-            toggle.addEventListener('click', (event) => {
+            toggle.addEventListener(EVENTS.Browser.Click, (event) => {
                 const targetName = toggle.dataset.oltbToggleableTarget;
                 document.getElementById(targetName).slideToggle(200, (collapsed) => {
                     this.localStorage[targetName] = collapsed;
@@ -155,14 +156,14 @@ class Layers extends Control {
         const addFeatureLayerTxt = layersToolbox.querySelector('#oltb-add-feature-layer-txt');
 
         if(addFeatureLayerBtn) {
-            addFeatureLayerBtn.addEventListener('click', function(event) {
+            addFeatureLayerBtn.addEventListener(EVENTS.Browser.Click, function(event) {
                 LayerManager.addFeatureLayer(addFeatureLayerTxt.value);
                 addFeatureLayerTxt.value = '';
             });
         }
 
         if(addFeatureLayerTxt) {
-            addFeatureLayerTxt.addEventListener('keyup', function(event) {
+            addFeatureLayerTxt.addEventListener(EVENTS.Browser.KeyUp, function(event) {
                 if(event.key.toLowerCase() === 'enter') {
                     LayerManager.addFeatureLayer(addFeatureLayerTxt.value);
                     addFeatureLayerTxt.value = '';
@@ -172,19 +173,19 @@ class Layers extends Control {
 
         const addMapLayerBtn = layersToolbox.querySelector('#oltb-add-map-layer-btn');
         if(addMapLayerBtn) {
-            addMapLayerBtn.addEventListener('click', this.showAddMapLayerModal.bind(this));
+            addMapLayerBtn.addEventListener(EVENTS.Browser.Click, this.showAddMapLayerModal.bind(this));
         }
 
         if(!this.options.disableMapCreateLayerButton) {
             addContextMenuItem('main.map.context.menu', {icon: icon, name: 'Add map layer', fn: this.showAddMapLayerModal.bind(this)});
         }
 
-        window.addEventListener('oltb.mapLayer.added', this.mapLayerAdded.bind(this));
-        window.addEventListener('oltb.mapLayer.removed', this.mapLayerRemoved.bind(this));
-        window.addEventListener('oltb.featureLayer.added', this.featureLayerAdded.bind(this));
-        window.addEventListener('oltb.featureLayer.removed', this.featureLayerRemoved.bind(this));
-        window.addEventListener('keyup', (event) => {
-            if(isShortcutKeyOnly(event, ShortcutKeys.Layer)) {
+        window.addEventListener(EVENTS.Custom.MapLayerAdded, this.mapLayerAdded.bind(this));
+        window.addEventListener(EVENTS.Custom.MapLayerRemoved, this.mapLayerRemoved.bind(this));
+        window.addEventListener(EVENTS.Custom.FeatureLayerAdded, this.featureLayerAdded.bind(this));
+        window.addEventListener(EVENTS.Custom.FeatureLayerRemoved, this.featureLayerRemoved.bind(this));
+        window.addEventListener(EVENTS.Browser.KeyUp, (event) => {
+            if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Layer)) {
                 this.handleClick(event);
             }
         });
@@ -344,7 +345,7 @@ class Layers extends Control {
 
         // Eventlistener to update the UI if the visibility of the layer is changed
         // Other tools may change a layers visibility and the UI must be updated in this event
-        layerWrapper.layer.on('propertychange', function(event) {
+        layerWrapper.layer.on(EVENTS.Ol.PropertyChange, function(event) {
             if(event.key === 'visible') {
                 layerElement.classList.toggle('oltb-toolbox-list__item--hidden');
             }
@@ -373,7 +374,7 @@ class Layers extends Control {
 
         // If feature layer - attach eventlistener for setting the active layer
         if(options.idPrefix === 'oltb-feature-layer') {
-            layerName.addEventListener('click', (event) => {
+            layerName.addEventListener(EVENTS.Browser.Click, (event) => {
                 LayerManager.setActiveFeatureLayer(layerWrapper);
                 // Should just be one li-item that has the active class, but just in case
                 this.featureLayerStack.querySelectorAll('li').forEach((layer) => {
@@ -449,7 +450,7 @@ class Layers extends Control {
             }
         });
 
-        downloadButton.addEventListener('click', function(event) {
+        downloadButton.addEventListener(EVENTS.Browser.Click, function(event) {
             const downloadModal = new DownloadLayerModal(function(result) {   
                 const format = instantiateFormat(result.format);
 

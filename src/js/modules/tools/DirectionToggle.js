@@ -6,7 +6,8 @@ import { SVGPaths, getIcon } from '../core/Icons';
 import { toolButtonsTippySingleton } from '../core/ToolbarTooltips';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { isHorizontal } from '../helpers/IsRowDirection';
-import { ShortcutKeys } from '../helpers/Constants/ShortcutKeys';
+import { SHORTCUT_KEYS } from '../helpers/Constants/ShortcutKeys';
+import { EVENTS } from '../helpers/Constants/Events';
 
 const LOCAL_STORAGE_NODE_NAME = 'direction';
 
@@ -34,7 +35,7 @@ class DirectionToggle extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': (isHorizontal() ? 'Vertical toolbar' : 'Horizontal toolbar') + ` (${ShortcutKeys.ToolbarDirection})`
+                'data-tippy-content': (isHorizontal() ? 'Vertical toolbar' : 'Horizontal toolbar') + ` (${SHORTCUT_KEYS.ToolbarDirection})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -48,10 +49,10 @@ class DirectionToggle extends Control {
         
         this.isSmallDevice();
 
-        window.addEventListener('resize', this.isSmallDevice.bind(this));
-        window.addEventListener('oltb.settings.cleared', this.clearDirection.bind(this));
-        window.addEventListener('keyup', (event) => {
-            if(isShortcutKeyOnly(event, ShortcutKeys.ToolbarDirection)) {
+        window.addEventListener(EVENTS.Browser.Resize, this.isSmallDevice.bind(this));
+        window.addEventListener(EVENTS.Custom.SettingsCleared, this.clearDirection.bind(this));
+        window.addEventListener(EVENTS.Browser.KeyUp, (event) => {
+            if(isShortcutKeyOnly(event, SHORTCUT_KEYS.ToolbarDirection)) {
                 this.handleClick(event);
             }
         });
@@ -77,7 +78,7 @@ class DirectionToggle extends Control {
         // Update toolbar icon
         this.button.removeChild(this.button.firstElementChild);
         this.button.insertAdjacentHTML('afterbegin', this.horizontalIcon);
-        this.button._tippy.setContent(`Horizontal toolbar (${ShortcutKeys.ToolbarDirection})`);
+        this.button._tippy.setContent(`Horizontal toolbar (${SHORTCUT_KEYS.ToolbarDirection})`);
         toolButtonsTippySingleton.setProps({placement: 'right'});
     }
 
@@ -98,7 +99,7 @@ class DirectionToggle extends Control {
             // Update toolbar icon
             this.button.removeChild(this.button.firstElementChild);
             this.button.insertAdjacentHTML('afterbegin', this.verticalIcon);
-            this.button._tippy.setContent(`Vertical  toolbar (${ShortcutKeys.ToolbarDirection})`);
+            this.button._tippy.setContent(`Vertical  toolbar (${SHORTCUT_KEYS.ToolbarDirection})`);
             toolButtonsTippySingleton.setProps({placement: 'bottom'});
         }
 

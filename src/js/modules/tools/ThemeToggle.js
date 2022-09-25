@@ -5,7 +5,8 @@ import { toolbarElement } from '../core/ElementReferences';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { isDarkTheme } from '../helpers/IsDarkTheme';
-import { ShortcutKeys } from '../helpers/Constants/ShortcutKeys';
+import { SHORTCUT_KEYS } from '../helpers/Constants/ShortcutKeys';
+import { EVENTS } from '../helpers/Constants/Events';
 
 const LOCAL_STORAGE_NODE_NAME = 'theme';
 
@@ -33,7 +34,7 @@ class ThemeToggle extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': (isDarkTheme() ? 'Light theme' : 'Dark theme') + ` (${ShortcutKeys.ToolbarTheme})`
+                'data-tippy-content': (isDarkTheme() ? 'Light theme' : 'Dark theme') + ` (${SHORTCUT_KEYS.ToolbarTheme})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -45,9 +46,9 @@ class ThemeToggle extends Control {
         this.active = false;
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
-        window.addEventListener('oltb.settings.cleared', this.clearTheme.bind(this));
-        window.addEventListener('keyup', (event) => {
-            if(isShortcutKeyOnly(event, ShortcutKeys.ToolbarTheme)) {
+        window.addEventListener(EVENTS.Custom.SettingsCleared, this.clearTheme.bind(this));
+        window.addEventListener(EVENTS.Browser.KeyUp, (event) => {
+            if(isShortcutKeyOnly(event, SHORTCUT_KEYS.ToolbarTheme)) {
                 this.handleClick(event);
             }
         });
@@ -65,7 +66,7 @@ class ThemeToggle extends Control {
         // Update toolbar icon
         this.button.removeChild(this.button.firstElementChild);
         this.button.insertAdjacentHTML('afterbegin', this.darkThemeIcon);
-        this.button._tippy.setContent(`Dark theme (${ShortcutKeys.ToolbarTheme})`);
+        this.button._tippy.setContent(`Dark theme (${SHORTCUT_KEYS.ToolbarTheme})`);
     }
 
     handleThemeToggle() {
@@ -82,7 +83,7 @@ class ThemeToggle extends Control {
             // Update toolbar icon
             this.button.removeChild(this.button.firstElementChild);
             this.button.insertAdjacentHTML('afterbegin', this.lightThemeIcon);
-            this.button._tippy.setContent(`Light theme (${ShortcutKeys.ToolbarTheme})`);
+            this.button._tippy.setContent(`Light theme (${SHORTCUT_KEYS.ToolbarTheme})`);
         }
 
         // User defined callback from constructor

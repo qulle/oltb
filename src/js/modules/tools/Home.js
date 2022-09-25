@@ -8,7 +8,8 @@ import { toolbarElement } from '../core/ElementReferences';
 import { addContextMenuItem } from '../common/ContextMenu';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
-import { ShortcutKeys } from '../helpers/Constants/ShortcutKeys';
+import { SHORTCUT_KEYS } from '../helpers/Constants/ShortcutKeys';
+import { EVENTS } from '../helpers/Constants/Events';
 
 const DEFAULT_OPTIONS = {
     zoom: 1,
@@ -33,7 +34,7 @@ class Home extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Zoom home (${ShortcutKeys.Home})`
+                'data-tippy-content': `Zoom home (${SHORTCUT_KEYS.Home})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -51,9 +52,9 @@ class Home extends Control {
 
         addContextMenuItem('main.map.context.menu', {icon: icon, name: 'Set as home', fn: this.setHomeLocation.bind(this)});
 
-        window.addEventListener('oltb.settings.cleared', this.clearHomeLocation.bind(this));
-        window.addEventListener('keyup', (event) => {
-            if(isShortcutKeyOnly(event, ShortcutKeys.Home)) {
+        window.addEventListener(EVENTS.Custom.SettingsCleared, this.clearHomeLocation.bind(this));
+        window.addEventListener(EVENTS.Browser.KeyUp, (event) => {
+            if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Home)) {
                 this.handleResetToHome();
             }
         });

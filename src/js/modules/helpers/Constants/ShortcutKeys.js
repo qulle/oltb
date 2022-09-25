@@ -1,4 +1,4 @@
-const ShortcutKeys = {
+const SHORTCUT_KEYS = {
     AreaOverview: 'A',
     Bookmark: 'B',
     Coordinates: 'C',
@@ -28,4 +28,4 @@ const ShortcutKeys = {
     Help: 'F1'
 };
 
-export { ShortcutKeys };
+export { SHORTCUT_KEYS };

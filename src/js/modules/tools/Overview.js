@@ -6,7 +6,8 @@ import { Control, OverviewMap } from 'ol/control';
 import { toolboxElement, toolbarElement } from '../core/ElementReferences';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
-import { ShortcutKeys } from '../helpers/Constants/ShortcutKeys';
+import { SHORTCUT_KEYS } from '../helpers/Constants/ShortcutKeys';
+import { EVENTS } from '../helpers/Constants/Events';
 
 const LOCAL_STORAGE_NODE_NAME = 'overviewTool';
 const LOCAL_STORAGE_DEFAULTS = {
@@ -30,7 +31,7 @@ class Overview extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Area overview (${ShortcutKeys.AreaOverview})`
+                'data-tippy-content': `Area overview (${SHORTCUT_KEYS.AreaOverview})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -64,7 +65,7 @@ class Overview extends Control {
 
         const toggleableTriggers = overviewToolbox.querySelectorAll('.oltb-toggleable');
         toggleableTriggers.forEach((toggle) => {
-            toggle.addEventListener('click', (event) => {
+            toggle.addEventListener(EVENTS.Browser.Click, (event) => {
                 const targetName = toggle.dataset.oltbToggleableTarget;
                 document.getElementById(targetName).slideToggle(200, (collapsed) => {
                     this.localStorage.collapsed = collapsed;
@@ -88,12 +89,12 @@ class Overview extends Control {
             ]
         });
 
-        window.addEventListener('keyup', (event) => {
-            if(isShortcutKeyOnly(event, ShortcutKeys.AreaOverview)) {
+        window.addEventListener(EVENTS.Browser.KeyUp, (event) => {
+            if(isShortcutKeyOnly(event, SHORTCUT_KEYS.AreaOverview)) {
                 this.handleClick(event);
             }
         });
-        window.addEventListener('oltb.settings.cleared', () => {
+        window.addEventListener(EVENTS.Custom.SettingsCleared, () => {
             this.localStorage = LOCAL_STORAGE_DEFAULTS;
         });
     }

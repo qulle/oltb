@@ -6,6 +6,7 @@ import { generateMarker } from '../../helpers/olFunctions/Marker';
 import { addContextMenuItem } from '../../common/ContextMenu';
 import { SVGPaths, getIcon } from '../../core/Icons';
 import { toStringHDMS } from 'ol/coordinate';
+import { EVENTS } from '../../helpers/Constants/Events';
 
 const DEFAULT_OPTIONS = {};
 
@@ -69,7 +70,7 @@ class HiddenMarker extends Control {
 
         addContextMenuItem('main.map.context.menu', {});
 
-        window.addEventListener('oltb.feature.edited', (event) => {
+        window.addEventListener(EVENTS.Custom.FeatureEdited, (event) => {
             // User defined callback from constructor
             if(typeof this.options.edited === 'function') {
                 this.options.edited([
@@ -78,7 +79,7 @@ class HiddenMarker extends Control {
                 ]);
             }
         });
-        window.addEventListener('oltb.feature.removed', (event) => {
+        window.addEventListener(EVENTS.Custom.FeatureRemoved, (event) => {
             // User defined callback from constructor
             if(typeof this.options.removed === 'function') {
                 this.options.removed([

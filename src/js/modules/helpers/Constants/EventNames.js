@@ -1,5 +1,0 @@
-const EventNames = {
-    
-};
-
-export { EventNames };

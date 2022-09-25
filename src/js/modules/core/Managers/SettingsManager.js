@@ -1,4 +1,5 @@
 import StateManager from "./StateManager";
+import { EVENTS } from "../../helpers/Constants/Events";
 
 const LOCAL_STORAGE_NODE_NAME = 'settings';
 const LOCAL_STORAGE_DEFAULTS = {};
@@ -47,7 +48,7 @@ class SettingsManager {
     }
 }
 
-window.addEventListener('DOMContentLoaded', function() {
+window.addEventListener(EVENTS.Browser.DOMContentLoaded, function() {
     SettingsManager.init();
 });
 

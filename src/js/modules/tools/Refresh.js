@@ -3,7 +3,8 @@ import { Control } from 'ol/control';
 import { toolbarElement } from '../core/ElementReferences';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
-import { ShortcutKeys } from '../helpers/Constants/ShortcutKeys';
+import { SHORTCUT_KEYS } from '../helpers/Constants/ShortcutKeys';
+import { EVENTS } from '../helpers/Constants/Events';
 
 class Refresh extends Control {
     constructor() {
@@ -22,7 +23,7 @@ class Refresh extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Refresh page (${ShortcutKeys.RefreshPage})`
+                'data-tippy-content': `Refresh page (${SHORTCUT_KEYS.RefreshPage})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -31,8 +32,8 @@ class Refresh extends Control {
 
         this.element.appendChild(button);
 
-        window.addEventListener('keyup', (event) => {
-            if(isShortcutKeyOnly(event, ShortcutKeys.RefreshPage)) {
+        window.addEventListener(EVENTS.Browser.KeyUp, (event) => {
+            if(isShortcutKeyOnly(event, SHORTCUT_KEYS.RefreshPage)) {
                 this.handleClick(event);
             }
         });

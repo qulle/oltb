@@ -5,6 +5,7 @@ import { trapFocusKeyListener } from '../helpers/TrapFocus';
 import { transform } from 'ol/proj';
 import { mapElement } from "../core/ElementReferences";
 import { hasNestedProperty } from "../helpers/HasNestedProperty";
+import { EVENTS } from "../helpers/Constants/Events";
 
 const DEFAULT_OPTIONS = {};
 
@@ -124,7 +125,7 @@ class ContextMenu extends Control {
     }
 }
 
-mapElement.addEventListener('contextmenu', (event) => {
+mapElement.addEventListener(EVENTS.Browser.ContextMenu, (event) => {
     MENU_INSTANCES.forEach((menu) => {
         if(event.target.matches(menu.options.selector)) {
             menu.show(event);
@@ -132,7 +133,7 @@ mapElement.addEventListener('contextmenu', (event) => {
     });
 });
 
-mapElement.addEventListener('click', (event) => {
+mapElement.addEventListener(EVENTS.Browser.Click, (event) => {
     MENU_INSTANCES.forEach((menu) => {
         menu.hide();
     });

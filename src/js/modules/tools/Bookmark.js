@@ -12,7 +12,8 @@ import { easeOut } from 'ol/easing';
 import { randomNumber } from '../helpers/Random';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
-import { ShortcutKeys } from '../helpers/Constants/ShortcutKeys';
+import { SHORTCUT_KEYS } from '../helpers/Constants/ShortcutKeys';
+import { EVENTS } from '../helpers/Constants/Events';
 
 const BOOKMARK_BUTTON_DEFAULT_CLASSES = 'oltb-func-btn';
 
@@ -43,7 +44,7 @@ class Bookmark extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Bookmarks (${ShortcutKeys.Bookmark})`
+                'data-tippy-content': `Bookmarks (${SHORTCUT_KEYS.Bookmark})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -96,12 +97,12 @@ class Bookmark extends Control {
         const addBookmarkBtn = bookmarksToolbox.querySelector('#oltb-add-bookmark-btn');
         const addBookmarkTxt = bookmarksToolbox.querySelector('#oltb-add-bookmark-txt');
 
-        addBookmarkBtn.addEventListener('click', (event) => {
+        addBookmarkBtn.addEventListener(EVENTS.Browser.Click, (event) => {
             this.addBookmark(addBookmarkTxt.value);
             addBookmarkTxt.value = '';
         });
 
-        addBookmarkTxt.addEventListener('keyup', (event) => {
+        addBookmarkTxt.addEventListener(EVENTS.Browser.KeyDown, (event) => {
             if(event.key.toLowerCase() === 'enter') {
                 this.addBookmark(addBookmarkTxt.value);
                 addBookmarkTxt.value = '';
@@ -113,7 +114,7 @@ class Bookmark extends Control {
 
         const toggleableTriggers = bookmarksToolbox.querySelectorAll('.oltb-toggleable');
         toggleableTriggers.forEach((toggle) => {
-            toggle.addEventListener('click', (event) => {
+            toggle.addEventListener(EVENTS.Browser.Click, (event) => {
                 const targetName = toggle.dataset.oltbToggleableTarget;
                 document.getElementById(targetName).slideToggle(200, (collapsed) => {
                     this.localStorage.collapsed = collapsed;
@@ -139,12 +140,12 @@ class Bookmark extends Control {
             });
         }});
 
-        window.addEventListener('keyup', (event) => {
-            if(isShortcutKeyOnly(event, ShortcutKeys.Bookmark)) {
+        window.addEventListener(EVENTS.Browser.KeyUp, (event) => {
+            if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Bookmark)) {
                 this.handleClick(event);
             }
         });
-        window.addEventListener('oltb.settings.cleared', () => {
+        window.addEventListener(EVENTS.Custom.SettingsCleared, () => {
             this.localStorage = LOCAL_STORAGE_DEFAULTS;
         });
     }

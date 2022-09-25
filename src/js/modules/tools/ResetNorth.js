@@ -8,7 +8,8 @@ import { toolbarElement } from '../core/ElementReferences';
 import { addContextMenuItem } from '../common/ContextMenu';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
-import { ShortcutKeys } from '../helpers/Constants/ShortcutKeys';
+import { SHORTCUT_KEYS } from '../helpers/Constants/ShortcutKeys';
+import { EVENTS } from '../helpers/Constants/Events';
 
 const DEFAULT_OPTIONS = {};
 
@@ -29,7 +30,7 @@ class ResetNorth extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Reset North (${ShortcutKeys.ResetNorth})`
+                'data-tippy-content': `Reset North (${SHORTCUT_KEYS.ResetNorth})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -64,8 +65,8 @@ class ResetNorth extends Control {
             });
         }});
 
-        window.addEventListener('keyup', (event) => {
-            if(isShortcutKeyOnly(event, ShortcutKeys.ResetNorth)) {
+        window.addEventListener(EVENTS.Browser.KeyUp, (event) => {
+            if(isShortcutKeyOnly(event, SHORTCUT_KEYS.ResetNorth)) {
                 this.handleResetNorth();
             }
         });

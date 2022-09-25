@@ -5,7 +5,8 @@ import { listen } from 'ol/events';
 import { toolbarElement } from '../core/ElementReferences';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
-import { ShortcutKeys } from '../helpers/Constants/ShortcutKeys';
+import { SHORTCUT_KEYS } from '../helpers/Constants/ShortcutKeys';
+import { EVENTS } from '../helpers/Constants/Events';
 import {
     events,
     FullScreenEventType,
@@ -40,7 +41,7 @@ class Fullscreen extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': (isFullScreen() ? 'Exit fullscreen' : 'Enter fullscreen') + ` (${ShortcutKeys.FullScreen})`
+                'data-tippy-content': (isFullScreen() ? 'Exit fullscreen' : 'Enter fullscreen') + ` (${SHORTCUT_KEYS.FullScreen})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -52,16 +53,16 @@ class Fullscreen extends Control {
         this.active = false;
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
-        document.addEventListener('fullscreenchange', (event) => {
+        document.addEventListener(EVENTS.Browser.FullScreenChange, (event) => {
             if(document.fullscreenElement) {
-                this.button._tippy.setContent(`Exit fullscreen (${ShortcutKeys.FullScreen})`);
+                this.button._tippy.setContent(`Exit fullscreen (${SHORTCUT_KEYS.FullScreen})`);
 
                 // User defined callback from constructor
                 if(typeof this.options.enter === 'function') {
                     this.options.enter(event);
                 }
             }else {
-                this.button._tippy.setContent(`Enter fullscreen (${ShortcutKeys.FullScreen})`);
+                this.button._tippy.setContent(`Enter fullscreen (${SHORTCUT_KEYS.FullScreen})`);
 
                 // User defined callback from constructor
                 if(typeof this.options.leave === 'function') {
@@ -70,8 +71,8 @@ class Fullscreen extends Control {
             }
         });
 
-        window.addEventListener('keyup', (event) => {
-            if(isShortcutKeyOnly(event, ShortcutKeys.FullScreen)) {
+        window.addEventListener(EVENTS.Browser.KeyUp, (event) => {
+            if(isShortcutKeyOnly(event, SHORTCUT_KEYS.FullScreen)) {
                 this.handleFullscreen();
             }
         });

@@ -6,6 +6,7 @@ import { easeOut } from 'ol/easing';
 import { fromLonLat, toLonLat } from 'ol/proj';
 import { addContextMenuItem } from '../../common/ContextMenu';
 import { SVGPaths, getIcon } from '../../core/Icons';
+import { EVENTS } from '../../helpers/Constants/Events';
 
 // Note: This is the same NODE_NAME and PROPS that the map.js file is using
 const LOCAL_STORAGE_NODE_NAME = 'mapData';
@@ -67,8 +68,8 @@ class HiddenMapNavigation extends Control {
 
         // Track changes to zoom, paning etc. store in localStorage
         // The event needs to be delayed and wrapped in order for the getMap() to return the correct object
-        window.addEventListener('DOMContentLoaded', (event) => {
-            this.getMap().on('moveend', this.onMoveEnd.bind(this));
+        window.addEventListener(EVENTS.Browser.DOMContentLoaded, (event) => {
+            this.getMap().on(EVENTS.Ol.MoveEnd, this.onMoveEnd.bind(this));
         });
     }
 

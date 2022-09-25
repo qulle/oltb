@@ -14,7 +14,8 @@ import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { setActiveTool } from '../helpers/ActiveTool';
 import { getMeasureTooltipCoordinates, getMeasureTooltipValue } from '../helpers/olFunctions/Measure';
 import { hasNestedProperty } from '../helpers/HasNestedProperty';
-import { ShortcutKeys } from '../helpers/Constants/ShortcutKeys';
+import { SHORTCUT_KEYS } from '../helpers/Constants/ShortcutKeys';
+import { EVENTS } from '../helpers/Constants/Events';
 
 const LOCAL_STORAGE_NODE_NAME = 'editTool';
 const LOCAL_STORAGE_DEFAULTS = {
@@ -40,7 +41,7 @@ class Edit extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Edit (${ShortcutKeys.Edit})`
+                'data-tippy-content': `Edit (${SHORTCUT_KEYS.Edit})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -76,11 +77,11 @@ class Edit extends Control {
 
         const deleteSelectedButton = editToolbox.querySelector('#oltb-delete-selected-btn');
         this.deleteSelectedButton = deleteSelectedButton;
-        deleteSelectedButton.addEventListener('click', this.deleteSelectedFeatures.bind(this));
+        deleteSelectedButton.addEventListener(EVENTS.Browser.Click, this.deleteSelectedFeatures.bind(this));
 
         const toggleableTriggers = editToolbox.querySelectorAll('.oltb-toggleable');
         toggleableTriggers.forEach((toggle) => {
-            toggle.addEventListener('click', (event) => {
+            toggle.addEventListener(EVENTS.Browser.Click, (event) => {
                 const targetName = toggle.dataset.oltbToggleableTarget;
                 document.getElementById(targetName).slideToggle(200, (collapsed) => {
                     this.localStorage.collapsed = collapsed;
@@ -112,7 +113,7 @@ class Edit extends Control {
             features: select.getFeatures(),
         });
 
-        select.getFeatures().on('add', (event) => {
+        select.getFeatures().on(EVENTS.Ol.Add, (event) => {
             this.deleteSelectedButton.removeAttribute('disabled');
 
             // User defined callback from constructor
@@ -121,7 +122,7 @@ class Edit extends Control {
             }
         });
 
-        select.getFeatures().on('remove', (event) => {
+        select.getFeatures().on(EVENTS.Ol.Remove, (event) => {
             if(!select.getFeatures().getLength()) {
                 this.deleteSelectedButton.setAttribute('disabled', '');
             }
@@ -136,7 +137,7 @@ class Edit extends Control {
         this.modify = modify;
         this.translate = translate;
 
-        this.modify.addEventListener('modifystart', (event) => {
+        this.modify.addEventListener(EVENTS.Ol.ModifyStart, (event) => {
             event.features.forEach((feature) => {
                 if(hasNestedProperty(feature.getProperties(), 'tooltipOverlay')) {
                     this.attachOnChange(feature);
@@ -149,7 +150,7 @@ class Edit extends Control {
             }
         });
 
-        this.modify.addEventListener('modifyend', (event) => {
+        this.modify.addEventListener(EVENTS.Ol.ModifyEnd, (event) => {
             event.features.forEach((feature) => {
                 if(hasNestedProperty(feature.getProperties(), 'tooltipOverlay')) {
                     this.detachOnChange(feature);
@@ -162,7 +163,7 @@ class Edit extends Control {
             }
         });
 
-        this.translate.addEventListener('translatestart', (event) => {
+        this.translate.addEventListener(EVENTS.Ol.TranslateStart, (event) => {
             event.features.forEach((feature) => {
                 if(hasNestedProperty(feature.getProperties(), 'tooltipOverlay')) {
                     this.attachOnChange(feature);
@@ -175,7 +176,7 @@ class Edit extends Control {
             }
         });
 
-        this.translate.addEventListener('translateend', (event) => {
+        this.translate.addEventListener(EVENTS.Ol.TranslateEnd, (event) => {
             event.features.forEach((feature) => {
                 if(hasNestedProperty(feature.getProperties(), 'tooltipOverlay')) {
                     this.detachOnChange(feature);
@@ -188,9 +189,9 @@ class Edit extends Control {
             }
         });
 
-        window.addEventListener('oltb.featureLayer.removed', this.featureLayerRemoved.bind(this));
-        window.addEventListener('keyup', (event) => {
-            if(isShortcutKeyOnly(event, ShortcutKeys.Edit)) {
+        window.addEventListener(EVENTS.Custom.FeatureLayerRemoved, this.featureLayerRemoved.bind(this));
+        window.addEventListener(EVENTS.Browser.KeyUp, (event) => {
+            if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Edit)) {
                 this.handleClick(event);
             }else if(isShortcutKeyOnly(event, 'delete')) {
                 if(this.select.getFeatures().getArray().length > 0) {
@@ -198,7 +199,7 @@ class Edit extends Control {
                 }
             }
         });
-        window.addEventListener('oltb.settings.cleared', () => {
+        window.addEventListener(EVENTS.Custom.SettingsCleared, () => {
             this.localStorage = LOCAL_STORAGE_DEFAULTS;
         });
     }
@@ -252,7 +253,7 @@ class Edit extends Control {
         }
 
         feature.getProperties().tooltipOverlay.getElement().className = `oltb-overlay-tooltip ${hasOtherTooltip && selectedFeatures.length === 1 ? 'oltb-overlay-tooltip--hidden' : ''}`;
-        feature.getProperties().onChangeListener = feature.getGeometry().on('change', this.onFeatureChange.bind(this, feature));
+        feature.getProperties().onChangeListener = feature.getGeometry().on(EVENTS.Ol.Change, this.onFeatureChange.bind(this, feature));
     }
 
     detachOnChange(feature) {

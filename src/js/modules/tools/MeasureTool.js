@@ -14,7 +14,8 @@ import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { setActiveTool } from '../helpers/ActiveTool';
 import { unByKey } from 'ol/Observable';
-import { ShortcutKeys } from '../helpers/Constants/ShortcutKeys';
+import { SHORTCUT_KEYS } from '../helpers/Constants/ShortcutKeys';
+import { EVENTS } from '../helpers/Constants/Events';
 
 const LOCAL_STORAGE_NODE_NAME = 'measureTool';
 const LOCAL_STORAGE_DEFAULTS = {
@@ -42,7 +43,7 @@ class MeasureTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Measure (${ShortcutKeys.Measure})`
+                'data-tippy-content': `Measure (${SHORTCUT_KEYS.Measure})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -90,7 +91,7 @@ class MeasureTool extends Control {
 
         const toggleableTriggers = measureToolbox.querySelectorAll('.oltb-toggleable');
         toggleableTriggers.forEach((toggle) => {
-            toggle.addEventListener('click', (event) => {
+            toggle.addEventListener(EVENTS.Browser.Click, (event) => {
                 const targetName = toggle.dataset.oltbToggleableTarget;
                 document.getElementById(targetName).slideToggle(200, (collapsed) => {
                     this.localStorage.collapsed = collapsed;
@@ -99,8 +100,8 @@ class MeasureTool extends Control {
             });
         });
 
-        toolType.addEventListener('change', () => updateTool());
-        strokeColor.addEventListener('color-change', () => updateTool());
+        toolType.addEventListener(EVENTS.Browser.Change, () => updateTool());
+        strokeColor.addEventListener(EVENTS.Custom.ColorChange, () => updateTool());
 
         toolType.selectedIndex = this.localStorage.toolTypeIndex;
 
@@ -121,7 +122,7 @@ class MeasureTool extends Control {
         this.toolType = toolType;
         this.strokeColor = strokeColor;
 
-        document.addEventListener('keyup', (event) => {
+        document.addEventListener(EVENTS.Browser.KeyUp, (event) => {
             const key = event.key.toLowerCase();
 
             if(key === 'escape') {
@@ -132,12 +133,12 @@ class MeasureTool extends Control {
                 if(this.interaction) {
                     this.interaction.removeLastPoint();
                 }
-            }else if(isShortcutKeyOnly(event, ShortcutKeys.Measure)) {
+            }else if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Measure)) {
                 this.handleClick(event);
             }
         });
 
-        window.addEventListener('oltb.settings.cleared', () => {
+        window.addEventListener(EVENTS.Custom.SettingsCleared, () => {
             this.localStorage = LOCAL_STORAGE_DEFAULTS;
         });
     }
@@ -210,17 +211,17 @@ class MeasureTool extends Control {
 
         map.addInteraction(this.interaction);
 
-        this.interaction.on('drawstart', this.onDrawStart.bind(this));
-        this.interaction.on('drawend', this.onDrawEnd.bind(this));
-        this.interaction.on('drawabort', this.onDrawAbort.bind(this));
-        this.interaction.on('error', this.onDrawEnd.bind(this));
+        this.interaction.on(EVENTS.Ol.DrawStart, this.onDrawStart.bind(this));
+        this.interaction.on(EVENTS.Ol.DrawEnd, this.onDrawEnd.bind(this));
+        this.interaction.on(EVENTS.Ol.DrawAbort, this.onDrawAbort.bind(this));
+        this.interaction.on(EVENTS.Ol.Error, this.onDrawEnd.bind(this));
     }
 
     onDrawStart(event) {
         const feature = event.feature;
         const tooltipItem = TooltipManager.push('measure');
         
-        this.onChangeListener = feature.getGeometry().on('change', (event) => {
+        this.onChangeListener = feature.getGeometry().on(EVENTS.Ol.Change, (event) => {
             tooltipItem.innerHTML = getMeasureTooltipValue(event.target);
         });
 

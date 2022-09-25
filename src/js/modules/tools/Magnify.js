@@ -6,7 +6,8 @@ import { unByKey } from 'ol/Observable';
 import { toolbarElement } from '../core/ElementReferences';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
-import { ShortcutKeys } from '../helpers/Constants/ShortcutKeys';
+import { SHORTCUT_KEYS } from '../helpers/Constants/ShortcutKeys';
+import { EVENTS } from '../helpers/Constants/Events';
 
 class Magnify extends Control {
     constructor() {
@@ -25,7 +26,7 @@ class Magnify extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Magnifier (${ShortcutKeys.Magnify})`
+                'data-tippy-content': `Magnifier (${SHORTCUT_KEYS.Magnify})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -36,8 +37,8 @@ class Magnify extends Control {
         this.button = button;
         this.radius = 75;
 
-        window.addEventListener('keyup', (event) => {
-            if(isShortcutKeyOnly(event, ShortcutKeys.Magnify)) {
+        window.addEventListener(EVENTS.Browser.KeyUp, (event) => {
+            if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Magnify)) {
                 this.handleClick(event);
             }
         });
@@ -49,9 +50,9 @@ class Magnify extends Control {
             const mapContainer = map.getTarget();
 
             // Remove the eventlisteners
-            mapContainer.removeEventListener('mousemove', this.onMousemoveListenert);
-            mapContainer.removeEventListener('mouseout', this.onMouseoutListenert);
-            document.removeEventListener('keydown', this.onKeydownListener);
+            mapContainer.removeEventListener(EVENTS.Browser.MouseMove, this.onMousemoveListenert);
+            mapContainer.removeEventListener(EVENTS.Browser.MouseOut, this.onMouseoutListenert);
+            document.removeEventListener(EVENTS.Browser.KeyDown, this.onKeydownListener);
 
             this.onPostrenderListeners.forEach((listener) => {
                 unByKey(listener);
@@ -72,17 +73,17 @@ class Magnify extends Control {
         const mapContainer = map.getTarget();
 
         this.onMousemoveListenert = this.onMousemove.bind(this);
-        mapContainer.addEventListener('mousemove', this.onMousemoveListenert);
+        mapContainer.addEventListener(EVENTS.Browser.MouseMove, this.onMousemoveListenert);
 
         this.onMouseoutListenert = this.onMouseout.bind(this);
-        mapContainer.addEventListener('mouseout', this.onMouseoutListenert);
+        mapContainer.addEventListener(EVENTS.Browser.MouseOut, this.onMouseoutListenert);
 
         this.onKeydownListener = this.onKeydown.bind(this);
-        document.addEventListener('keydown', this.onKeydownListener);
+        document.addEventListener(EVENTS.Browser.KeyDown, this.onKeydownListener);
 
         this.onPostrenderListeners = [];
         map.getLayers().getArray().forEach((layer) => {
-            this.onPostrenderListeners.push(layer.on('postrender', this.onPostrender.bind(this)));
+            this.onPostrenderListeners.push(layer.on(EVENTS.Ol.PostRender, this.onPostrender.bind(this)));
         });
     }
 

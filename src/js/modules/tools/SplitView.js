@@ -9,7 +9,8 @@ import { toolboxElement, toolbarElement, mapElement } from '../core/ElementRefer
 import { eventDispatcher } from '../helpers/Browser/EventDispatcher';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
-import { ShortcutKeys } from '../helpers/Constants/ShortcutKeys';
+import { SHORTCUT_KEYS } from '../helpers/Constants/ShortcutKeys';
+import { EVENTS } from '../helpers/Constants/Events';
 
 const LOCAL_STORAGE_NODE_NAME = 'splitViewTool';
 const LOCAL_STORAGE_DEFAULTS = {
@@ -33,7 +34,7 @@ class SplitView extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Split view (${ShortcutKeys.SplitView})`
+                'data-tippy-content': `Split view (${SHORTCUT_KEYS.SplitView})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -80,16 +81,16 @@ class SplitView extends Control {
         this.splitViewToolbox = splitViewToolbox;
 
         const leftSrc = splitViewToolbox.querySelector('#oltb-left-src');
-        leftSrc.addEventListener('change', () => updateTool());
+        leftSrc.addEventListener(EVENTS.Browser.Change, () => updateTool());
         this.leftSrc = leftSrc;
 
         const rightSrc = splitViewToolbox.querySelector('#oltb-right-src');
-        rightSrc.addEventListener('change', () => updateTool());
+        rightSrc.addEventListener(EVENTS.Browser.Change, () => updateTool());
         this.rightSrc = rightSrc;
 
         const toggleableTriggers = splitViewToolbox.querySelectorAll('.oltb-toggleable');
         toggleableTriggers.forEach((toggle) => {
-            toggle.addEventListener('click', (event) => {
+            toggle.addEventListener(EVENTS.Browser.Click, (event) => {
                 const targetName = toggle.dataset.oltbToggleableTarget;
                 document.getElementById(targetName).slideToggle(200, (collapsed) => {
                     this.localStorage.collapsed = collapsed;
@@ -106,25 +107,25 @@ class SplitView extends Control {
         }
 
         const swapSidesBtn = splitViewToolbox.querySelector('#oltb-swap-sides-btn');
-        swapSidesBtn.addEventListener('click', (event) => {
+        swapSidesBtn.addEventListener(EVENTS.Browser.Click, (event) => {
             this.swapSides();
         });
         
         const splitViewSlider = mapElement.querySelector('#oltb-split-view-slider');
-        splitViewSlider.addEventListener('input', (event) => {
+        splitViewSlider.addEventListener(EVENTS.Browser.Input, (event) => {
             this.getMap().render();
         });
         
         this.splitViewSlider = splitViewSlider;
 
-        window.addEventListener('oltb.mapLayer.added', this.mapLayerAdded.bind(this));
-        window.addEventListener('oltb.mapLayer.removed', this.mapLayerRemoved.bind(this));
-        window.addEventListener('keyup', (event) => {
-            if(isShortcutKeyOnly(event, ShortcutKeys.SplitView)) {
+        window.addEventListener(EVENTS.Custom.MapLayerAdded, this.mapLayerAdded.bind(this));
+        window.addEventListener(EVENTS.Custom.MapLayerRemoved, this.mapLayerRemoved.bind(this));
+        window.addEventListener(EVENTS.Browser.KeyUp, (event) => {
+            if(isShortcutKeyOnly(event, SHORTCUT_KEYS.SplitView)) {
                 this.handleClick(event);
             }
         });
-        window.addEventListener('oltb.settings.cleared', () => {
+        window.addEventListener(EVENTS.Custom.SettingsCleared, () => {
             this.localStorage = LOCAL_STORAGE_DEFAULTS;
         });
     }
@@ -260,8 +261,8 @@ class SplitView extends Control {
             rightLayer.setVisible(true);
 
             // Attach listeners to the right layer. Pre/Post render will only show part of the right map
-            this.onPreRenderListener = rightLayer.on('prerender', this.onPreRender.bind(this));
-            this.onPostRenderListener = rightLayer.on('postrender', this.onPostRender.bind(this));
+            this.onPreRenderListener = rightLayer.on(EVENTS.Ol.PreRender, this.onPreRender.bind(this));
+            this.onPostRenderListener = rightLayer.on(EVENTS.Ol.PostRender, this.onPostRender.bind(this));
         }
 
         map.render();

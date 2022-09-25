@@ -7,7 +7,8 @@ import { Control } from 'ol/control';
 import { toolbarElement } from '../core/ElementReferences';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
-import { ShortcutKeys } from '../helpers/Constants/ShortcutKeys';
+import { SHORTCUT_KEYS } from '../helpers/Constants/ShortcutKeys';
+import { EVENTS } from '../helpers/Constants/Events';
 
 const DEFAULT_OPTIONS = {};
 
@@ -28,7 +29,7 @@ class ImportVectorLayer extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Import Vector layer (${ShortcutKeys.ImportVectorLayer})`
+                'data-tippy-content': `Import Vector layer (${SHORTCUT_KEYS.ImportVectorLayer})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -50,8 +51,8 @@ class ImportVectorLayer extends Control {
             }
         });
         
-        window.addEventListener('keyup', (event) => {
-            if(isShortcutKeyOnly(event, ShortcutKeys.ImportVectorLayer)) {
+        window.addEventListener(EVENTS.Browser.KeyUp, (event) => {
+            if(isShortcutKeyOnly(event, SHORTCUT_KEYS.ImportVectorLayer)) {
                 this.handleClick(event);
             }
         });
@@ -64,7 +65,7 @@ class ImportVectorLayer extends Control {
     loadLayer(event) {
         const fileDialog = event.target;
 
-        this.fileReader.addEventListener('load', this.parseLayer.bind(this, fileDialog));
+        this.fileReader.addEventListener(EVENTS.Browser.Load, this.parseLayer.bind(this, fileDialog));
         this.fileReader.readAsText(fileDialog.files[0]);
     }
 

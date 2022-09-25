@@ -1,10 +1,11 @@
-import DOM from '../helpers/Browser/DOM';
-import tippy from 'tippy.js';
 import 'tippy.js/dist/tippy.css';
+import tippy from 'tippy.js';
+import DOM from '../helpers/Browser/DOM';
 import { delegate, createSingleton } from 'tippy.js';
 import { mapElement } from './ElementReferences';
 import { isHorizontal } from '../helpers/IsRowDirection';
 import { eventDispatcher } from '../helpers/Browser/EventDispatcher';
+import { EVENTS } from '../helpers/Constants/Events';
 
 const AColorPicker = require('a-color-picker');
 
@@ -72,7 +73,7 @@ const colorTippyDelegate = delegate(mapElement, {
 
         instance.setContent(colorPickerElement);
         colorPicker.setColor(instance.reference.getAttribute('data-oltb-color'));
-        colorPicker.on('change', (picker, color) => {
+        colorPicker.on(EVENTS.Browser.Change, (picker, color) => {
             // Force to always produce with alpha value
             // Important to be hex. Sometimes the two last digits are replaced with  fixed alpha value
             color = AColorPicker.parseColor(color, 'hexcss4');
@@ -82,11 +83,11 @@ const colorTippyDelegate = delegate(mapElement, {
             target.firstElementChild.style.backgroundColor = color;
 
             // Dispatch event to let tools know that color has changed.
-            eventDispatcher([instance.reference], 'color-change');
+            eventDispatcher([instance.reference], 'oltb.color.change');
         });
     },
     onHide(instance) {
-        colorPicker.off('change');
+        colorPicker.off(EVENTS.Browser.Change);
     },
     onHidden(instance) {
         instance.setContent(null);
@@ -105,9 +106,9 @@ const initTooltipsWhenDOMContentLoaded = function(event) {
     tooltipPlacement(event);
 }
 
-window.addEventListener('resize', tooltipPlacement);
-window.addEventListener('DOMContentLoaded', initTooltipsWhenDOMContentLoaded);
-window.addEventListener('oltb.toolbar.direction.change', tooltipPlacement);
+window.addEventListener(EVENTS.Browser.Resize, tooltipPlacement);
+window.addEventListener(EVENTS.Browser.DOMContentLoaded, initTooltipsWhenDOMContentLoaded);
+window.addEventListener(EVENTS.Custom.ToolbarDirectionChange, tooltipPlacement);
 
 export {
     toolButtonsTippySingleton, 

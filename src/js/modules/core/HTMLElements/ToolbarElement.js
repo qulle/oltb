@@ -1,4 +1,5 @@
 import StateManager from "../Managers/StateManager";
+import { EVENTS } from "../../helpers/Constants/Events";
 
 const toolbarElement = document.getElementById('oltb');
 
@@ -37,7 +38,7 @@ if(toolbarElement.classList.contains('row')) {
 }
 
 // Change how the scrollwheel behaves when toolbar is in horizontal mode
-toolbarElement.addEventListener('wheel', function(event) {
+toolbarElement.addEventListener(EVENTS.Browser.Wheel, function(event) {
     if(!event.ctrlKey) {
         this.scrollLeft += event.deltaY > 0 ? 100 : -100;
     }

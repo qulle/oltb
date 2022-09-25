@@ -12,7 +12,8 @@ import { fromLonLat } from 'ol/proj';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { toStringHDMS } from 'ol/coordinate';
-import { ShortcutKeys } from '../helpers/Constants/ShortcutKeys';
+import { SHORTCUT_KEYS } from '../helpers/Constants/ShortcutKeys';
+import { EVENTS } from '../helpers/Constants/Events';
 
 const DEFAULT_OPTIONS = {
     enableHighAccuracy: true,
@@ -36,7 +37,7 @@ class MyLocation extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `My location (${ShortcutKeys.MyLocation})`
+                'data-tippy-content': `My location (${SHORTCUT_KEYS.MyLocation})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -46,8 +47,8 @@ class MyLocation extends Control {
         this.element.appendChild(button);
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
-        window.addEventListener('keyup', (event) => {
-            if(isShortcutKeyOnly(event, ShortcutKeys.MyLocation)) {
+        window.addEventListener(EVENTS.Browser.KeyUp, (event) => {
+            if(isShortcutKeyOnly(event, SHORTCUT_KEYS.MyLocation)) {
                 this.handleClick(event);
             }
         });

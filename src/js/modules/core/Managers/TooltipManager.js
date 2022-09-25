@@ -1,6 +1,7 @@
 import Overlay from 'ol/Overlay';
 import DOM from "../../helpers/Browser/DOM";
 import { unByKey } from 'ol/Observable';
+import { EVENTS } from '../../helpers/Constants/Events';
 
 class TooltipManager {
     static map;
@@ -40,7 +41,7 @@ class TooltipManager {
 
         if(this.isEmpty()) {
             this.map.addOverlay(this.tooltipOverlay);
-            this.onPointerMoveListener = this.map.on('pointermove', this.onPointerMove.bind(this));
+            this.onPointerMoveListener = this.map.on(EVENTS.Ol.PointerMove, this.onPointerMove.bind(this));
         }
 
         this.tooltips[key] = tooltipItemElement;

@@ -1,5 +1,6 @@
-import { toastElement } from '../../core/ElementReferences';
 import DOM from '../../helpers/Browser/DOM';
+import { toastElement } from '../../core/ElementReferences';
+import { EVENTS } from '../../helpers/Constants/Events';
 
 const DEFAULT_OPTIONS = {
     text: 'Default toast',
@@ -22,7 +23,7 @@ class Toaster {
         
         if(this.options.clickToClose) {
             toast.classList.add('oltb-toast--clickable');
-            toast.addEventListener('click', this.remove.bind(this));
+            toast.addEventListener(EVENTS.Browser.Click, this.remove.bind(this));
         }
 
         if(this.options.spinner) {

@@ -11,7 +11,8 @@ import { copyToClipboard } from '../helpers/Browser/CopyToClipboard';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { toStringHDMS } from 'ol/coordinate';
-import { ShortcutKeys } from '../helpers/Constants/ShortcutKeys';
+import { SHORTCUT_KEYS } from '../helpers/Constants/ShortcutKeys';
+import { EVENTS } from '../helpers/Constants/Events';
 
 const DEFAULT_OPTIONS = {};
 
@@ -32,7 +33,7 @@ class Coordinates extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Show coordinates (${ShortcutKeys.Coordinates})`
+                'data-tippy-content': `Show coordinates (${SHORTCUT_KEYS.Coordinates})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -50,8 +51,8 @@ class Coordinates extends Control {
             text: 'Coordinates tool - Copy coordinates on click'
         });
 
-        window.addEventListener('keyup', (event) => {
-            if(isShortcutKeyOnly(event, ShortcutKeys.Coordinates)) {
+        window.addEventListener(EVENTS.Browser.KeyUp, (event) => {
+            if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Coordinates)) {
                 this.handleClick(event);
             }
         });
@@ -70,8 +71,8 @@ class Coordinates extends Control {
             unByKey(this.onMapClickListener);
         }else {
             this.tooltipItem = TooltipManager.push('coordinates');
-            this.onPointerMoveListener = map.on('pointermove', this.onPointerMove.bind(this));
-            this.onMapClickListener = map.on('click', this.onMapClick.bind(this))
+            this.onPointerMoveListener = map.on(EVENTS.Ol.PointerMove, this.onPointerMove.bind(this));
+            this.onMapClickListener = map.on(EVENTS.Browser.Click, this.onMapClick.bind(this))
         }
 
         this.active = !this.active;

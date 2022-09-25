@@ -2,6 +2,7 @@ import DOM from '../../helpers/Browser/DOM';
 import { mapElement } from '../../core/ElementReferences';
 import { SVGPaths, getIcon } from '../../core/Icons';
 import { trapFocusKeyListener } from '../../helpers/TrapFocus';
+import { EVENTS } from '../../helpers/Constants/Events';
 
 const ANIMATION_CLASS = 'oltb-animations--bounce';
 
@@ -60,7 +61,7 @@ class ModalBase {
         this.modal = modal;
         this.onClose = onClose;
 
-        window.addEventListener('keyup', (event) => {
+        window.addEventListener(EVENTS.Browser.KeyUp, (event) => {
             if(event.key === 'Escape') {
                 this.close();
             }
@@ -88,7 +89,7 @@ class ModalBase {
     }
 
     close() {
-        this.modalBackdrop.removeEventListener('keydown', trapFocusKeyListener);
+        this.modalBackdrop.removeEventListener(EVENTS.Browser.KeyDown, trapFocusKeyListener);
         this.modalBackdrop.remove();
 
         // User defined callback from constructor

@@ -3,7 +3,8 @@ import { Control, ScaleLine } from 'ol/control';
 import { toolbarElement } from '../core/ElementReferences';
 import { SVGPaths, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
-import { ShortcutKeys } from '../helpers/Constants/ShortcutKeys';
+import { SHORTCUT_KEYS } from '../helpers/Constants/ShortcutKeys';
+import { EVENTS } from '../helpers/Constants/Events';
 
 const DEFAULT_OPTIONS = {
     units: 'metric'
@@ -26,7 +27,7 @@ class ScaleLineTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Scale line (${ShortcutKeys.ScaleLine})`
+                'data-tippy-content': `Scale line (${SHORTCUT_KEYS.ScaleLine})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -39,8 +40,8 @@ class ScaleLineTool extends Control {
         this.options = { ...DEFAULT_OPTIONS, ...options };
         this.scaleLine = new ScaleLine({units: this.options.units});
         
-        window.addEventListener('keyup', (event) => {
-            if(isShortcutKeyOnly(event, ShortcutKeys.ScaleLine)) {
+        window.addEventListener(EVENTS.Browser.KeyUp, (event) => {
+            if(isShortcutKeyOnly(event, SHORTCUT_KEYS.ScaleLine)) {
                 this.handleClick(event);
             }
         });
