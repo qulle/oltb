@@ -29,14 +29,15 @@ const continentColors = {
 const layerWrapper = LayerManager.addFeatureLayer('Capitals', true);
 
 fetch(urlCapitalsGeoJSON)
-    .then(async (response) => {
+    .then((response) => {
         if(!response.ok) {
             throw new Error(`Fetch error [${response.status}] [${response.statusText}]`);
         }
 
-        const capitals = await response.json();
-
-        capitals.features.forEach((capital) => {
+        return response.json();
+    })
+    .then((json) => {
+        json.features.forEach((capital) => {
             const lon = capital.geometry.coordinates[0];
             const lat = capital.geometry.coordinates[1];
             const prettyCoords = toStringHDMS([lon, lat]);

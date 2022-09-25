@@ -19,17 +19,18 @@ LayerManager.addMapLayers([
                     featureProjection: Config.projection
                 }),
                 loader: function(extent, resolution, projection, success, failure) {
-
                     fetch(urlCountriesGeoJSON)
-                        .then(async (response) => {
+                        .then((response) => {
                             if(!response.ok) {
                                 throw new Error(`Fetch error [${response.status}] [${response.statusText}]`);
                             }
 
-                            const countries = await response.json();
+                            return response.json();
+                        })
+                        .then((json) => {
                             const features = new GeoJSON({
                                 featureProjection: projection.getCode()
-                            }).readFeatures(countries);
+                            }).readFeatures(json);
 
                             features.forEach((feature) => {
                                 feature.setProperties({

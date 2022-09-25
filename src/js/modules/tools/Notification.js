@@ -64,25 +64,26 @@ class Notification extends Control {
         const timestamp = new Date().getTime().toString();
 
         fetch(NOTIFICATION_URL + '?cache=' + timestamp)
-            .then(async (response) => {
-                const data = await response.json();
-
+            .then((response) => {
                 if(!response.ok) {
-                   return Promise.reject((data && data.message) || response.status);
+                    throw new Error(`Fetch error [${response.status}] [${response.statusText}]`);
                 }
 
+                return response.json();
+            })
+            .then((json) => {
                 let features = '';
-                if(data.features.length === 0) {
+                if(json.features.length === 0) {
                     features = '<p>No features currently under development</p>';
                 }else {
-                    data.features.forEach((feature) => {
+                    json.features.forEach((feature) => {
                         features += `<p>${feature}</p>`;
                     });
                 }
 
                 const content = `
                     <h3>👋 From Qulle</h3>
-                    <p>${data.qulle}</p>
+                    <p>${json.qulle}</p>
                     <h3>🔭 Your version</h3>
                     <p>
                         <a href="https://github.com/qulle/oltb/releases/tag/v${Config.version}" target="_blank" class="oltb-link">
@@ -91,8 +92,8 @@ class Notification extends Control {
                     </p>
                     <h3>🚀 Latest version</h3>
                     <p>
-                        <a href="https://github.com/qulle/oltb/releases/tag/v${data.latest}" target="_blank" class="oltb-link">
-                            v${data.latest} - ${new Date(data.released).toLocaleDateString(Config.locale)}
+                        <a href="https://github.com/qulle/oltb/releases/tag/v${json.latest}" target="_blank" class="oltb-link">
+                            v${json.latest} - ${new Date(json.released).toLocaleDateString(Config.locale)}
                         </a>
                     </p>
                     <h3>💡 New features under development</h3>
