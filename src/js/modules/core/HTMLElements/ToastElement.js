@@ -1,11 +1,11 @@
 import DOM from '../../helpers/Browser/DOM';
-import { mapElement } from './MapElement';
+import { MAP_ELEMENT } from './MapElement';
 
-const toastElement = DOM.createElement({
+const TOAST_ELEMENT = DOM.createElement({
     element: 'div', 
     class: 'oltb-toast-container'
 });
 
-mapElement.appendChild(toastElement);
+MAP_ELEMENT.appendChild(TOAST_ELEMENT);
 
-export { toastElement }
+export { TOAST_ELEMENT }

@@ -1,5 +1,5 @@
 import DOM from '../../helpers/Browser/DOM';
-import { toastElement } from '../../core/ElementReferences';
+import { TOAST_ELEMENT } from '../../core/ElementReferences';
 import { EVENTS } from '../../helpers/Constants/Events';
 
 const DEFAULT_OPTIONS = {
@@ -44,7 +44,7 @@ class Toaster {
         toast.appendChild(message);
         
         // Add the toast to the DOM
-        toastElement.prepend(toast);
+        TOAST_ELEMENT.prepend(toast);
 
         // If options.autoremove was set, start timer to remove after x ms
         if(this.options.autoremove) {

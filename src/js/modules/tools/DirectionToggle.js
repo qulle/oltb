@@ -1,7 +1,7 @@
 import StateManager from '../core/Managers/StateManager';
 import DOM from '../helpers/Browser/DOM';
 import { Control } from 'ol/control';
-import { toolbarElement } from '../core/ElementReferences';
+import { TOOLBAR_ELEMENT } from '../core/ElementReferences';
 import { SVG_PATHS, getIcon } from '../core/Icons';
 import { toolButtonsTippySingleton } from '../core/ToolbarTooltips';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
@@ -16,7 +16,7 @@ const DEFAULT_OPTIONS = {};
 class DirectionToggle extends Control {
     constructor(options = {}) {
         super({
-            element: toolbarElement
+            element: TOOLBAR_ELEMENT
         });
         
         this.horizontalIcon = getIcon({
@@ -72,7 +72,7 @@ class DirectionToggle extends Control {
 
     clearDirection() {
         StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, 'col');
-        toolbarElement.classList.remove('row');
+        TOOLBAR_ELEMENT.classList.remove('row');
         document.body.classList.remove('oltb-row');
 
         // Update toolbar icon
@@ -93,7 +93,7 @@ class DirectionToggle extends Control {
             tooltipDirection = 'bottom';
 
             StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, 'row');
-            toolbarElement.classList.add('row');
+            TOOLBAR_ELEMENT.classList.add('row');
             document.body.classList.add('oltb-row');
 
             // Update toolbar icon

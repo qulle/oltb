@@ -3,7 +3,7 @@ import CONFIG from '../core/Config';
 import DOM from '../helpers/Browser/DOM';
 import { trapFocusKeyListener } from '../helpers/TrapFocus';
 import { transform } from 'ol/proj';
-import { mapElement } from "../core/ElementReferences";
+import { MAP_ELEMENT } from "../core/ElementReferences";
 import { hasNestedProperty } from "../helpers/HasNestedProperty";
 import { EVENTS } from "../helpers/Constants/Events";
 
@@ -44,7 +44,7 @@ class ContextMenu extends Control {
         });
 
         // Add root element, the contextmenu, to the map
-        mapElement.appendChild(this.menu);
+        MAP_ELEMENT.appendChild(this.menu);
     }
 
     addMenuItem(item, index) {
@@ -125,7 +125,7 @@ class ContextMenu extends Control {
     }
 }
 
-mapElement.addEventListener(EVENTS.Browser.ContextMenu, (event) => {
+MAP_ELEMENT.addEventListener(EVENTS.Browser.ContextMenu, (event) => {
     MENU_INSTANCES.forEach((menu) => {
         if(event.target.matches(menu.options.selector)) {
             menu.show(event);
@@ -133,7 +133,7 @@ mapElement.addEventListener(EVENTS.Browser.ContextMenu, (event) => {
     });
 });
 
-mapElement.addEventListener(EVENTS.Browser.Click, (event) => {
+MAP_ELEMENT.addEventListener(EVENTS.Browser.Click, (event) => {
     MENU_INSTANCES.forEach((menu) => {
         menu.hide();
     });

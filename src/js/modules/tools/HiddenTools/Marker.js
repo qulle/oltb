@@ -1,7 +1,7 @@
 import LayerManager from '../../core/Managers/LayerManager';
 import MarkerModal from '../ModalExtensions/MarkerModal';
 import { Control } from 'ol/control';
-import { toolbarElement } from '../../core/ElementReferences';
+import { TOOLBAR_ELEMENT } from '../../core/ElementReferences';
 import { generateMarker } from '../../helpers/olFunctions/Marker';
 import { addContextMenuItem } from '../../common/ContextMenu';
 import { SVG_PATHS, getIcon } from '../../core/Icons';
@@ -13,7 +13,7 @@ const DEFAULT_OPTIONS = {};
 class HiddenMarker extends Control {
     constructor(options = {}) {
         super({
-            element: toolbarElement
+            element: TOOLBAR_ELEMENT
         });
 
         this.options = { ...DEFAULT_OPTIONS, ...options };

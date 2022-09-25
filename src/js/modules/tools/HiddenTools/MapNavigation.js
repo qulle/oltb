@@ -1,7 +1,7 @@
 import CONFIG from '../../core/Config';
 import StateManager from '../../core/Managers/StateManager';
 import { Control } from 'ol/control';
-import { toolbarElement } from '../../core/ElementReferences';
+import { TOOLBAR_ELEMENT } from '../../core/ElementReferences';
 import { easeOut } from 'ol/easing';
 import { fromLonLat, toLonLat } from 'ol/proj';
 import { addContextMenuItem } from '../../common/ContextMenu';
@@ -24,7 +24,7 @@ const DEFAULT_OPTIONS = {
 class HiddenMapNavigation extends Control {
     constructor(options = {}) {
         super({
-            element: toolbarElement
+            element: TOOLBAR_ELEMENT
         });
 
         this.options = { ...DEFAULT_OPTIONS, ...options };

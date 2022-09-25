@@ -3,7 +3,7 @@ import TileLayer from 'ol/layer/Tile';
 import StateManager from '../core/Managers/StateManager';
 import DOM from '../helpers/Browser/DOM';
 import { Control, OverviewMap } from 'ol/control';
-import { toolboxElement, toolbarElement } from '../core/ElementReferences';
+import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT } from '../core/ElementReferences';
 import { SVG_PATHS, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { SHORTCUT_KEYS } from '../helpers/Constants/ShortcutKeys';
@@ -17,7 +17,7 @@ const LOCAL_STORAGE_DEFAULTS = {
 class Overview extends Control {
     constructor() {
         super({
-            element: toolbarElement
+            element: TOOLBAR_ELEMENT
         });
         
         const icon = getIcon({
@@ -46,7 +46,7 @@ class Overview extends Control {
         const localStorageState = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
         this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
 
-        toolboxElement.insertAdjacentHTML('beforeend', `
+        TOOLBOX_ELEMENT.insertAdjacentHTML('beforeend', `
             <div id="oltb-overview-toolbox" class="oltb-toolbox-section">
                 <div class="oltb-toolbox-section__header">
                     <h4 class="oltb-toolbox-section__title oltb-toggleable" data-oltb-toggleable-target="oltb-overview-toolbox-collapsed">

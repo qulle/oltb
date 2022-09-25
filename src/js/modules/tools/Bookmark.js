@@ -5,7 +5,7 @@ import CONFIG from '../core/Config';
 import StateManager from '../core/Managers/StateManager';
 import tippy from 'tippy.js';
 import { Control } from 'ol/control';
-import { toolboxElement, toolbarElement } from '../core/ElementReferences';
+import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT } from '../core/ElementReferences';
 import { addContextMenuItem } from '../common/ContextMenu';
 import { generateAnimalName } from '../helpers/NameGenerator/NameGenerator';
 import { easeOut } from 'ol/easing';
@@ -30,7 +30,7 @@ const DEFAULT_OPTIONS = {
 class Bookmark extends Control {
     constructor(options = {}) {
         super({
-            element: toolbarElement
+            element: TOOLBAR_ELEMENT
         });
         
         const icon = getIcon({
@@ -60,7 +60,7 @@ class Bookmark extends Control {
         const localStorageState = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
         this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
 
-        toolboxElement.insertAdjacentHTML('beforeend', `
+        TOOLBOX_ELEMENT.insertAdjacentHTML('beforeend', `
             <div id="oltb-bookmarks-toolbox" class="oltb-toolbox-section">
                 <div class="oltb-toolbox-section__header">
                     <h4 class="oltb-toolbox-section__title oltb-toggleable" data-oltb-toggleable-target="oltb-bookmarks-toolbox-collapsed">

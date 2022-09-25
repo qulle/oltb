@@ -7,7 +7,7 @@ import TooltipManager from '../core/Managers/TooltipManager';
 import DOM from '../helpers/Browser/DOM';
 import { Control } from 'ol/control';
 import { Fill, Stroke, Circle, Style } from 'ol/style';
-import { toolboxElement, toolbarElement } from '../core/ElementReferences';
+import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT } from '../core/ElementReferences';
 import { eventDispatcher } from '../helpers/Browser/EventDispatcher';
 import { getMeasureTooltipCoordinates, getMeasureTooltipValue } from '../helpers/olFunctions/Measure';
 import { SVG_PATHS, getIcon } from '../core/Icons';
@@ -29,7 +29,7 @@ const DEFAULT_OPTIONS = {};
 class MeasureTool extends Control {
     constructor(options = {}) {
         super({
-            element: toolbarElement
+            element: TOOLBAR_ELEMENT
         });
         
         const icon = getIcon({
@@ -59,7 +59,7 @@ class MeasureTool extends Control {
         const localStorageState = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
         this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
 
-        toolboxElement.insertAdjacentHTML('beforeend', `
+        TOOLBOX_ELEMENT.insertAdjacentHTML('beforeend', `
             <div id="oltb-measure-toolbox" class="oltb-toolbox-section">
                 <div class="oltb-toolbox-section__header">
                     <h4 class="oltb-toolbox-section__title oltb-toggleable" data-oltb-toggleable-target="oltb-measure-toolbox-collapsed">

@@ -5,7 +5,7 @@ import DOM from '../helpers/Browser/DOM';
 import { Control } from 'ol/control';
 import { getRenderPixel } from 'ol/render';
 import { unByKey } from 'ol/Observable';
-import { toolboxElement, toolbarElement, mapElement } from '../core/ElementReferences';
+import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT, MAP_ELEMENT } from '../core/ElementReferences';
 import { eventDispatcher } from '../helpers/Browser/EventDispatcher';
 import { SVG_PATHS, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
@@ -20,7 +20,7 @@ const LOCAL_STORAGE_DEFAULTS = {
 class SplitView extends Control {
     constructor() {
         super({
-            element: toolbarElement
+            element: TOOLBAR_ELEMENT
         });
         
         const icon = getIcon({
@@ -49,7 +49,7 @@ class SplitView extends Control {
         const localStorageState = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
         this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
 
-        toolboxElement.insertAdjacentHTML('beforeend', `
+        TOOLBOX_ELEMENT.insertAdjacentHTML('beforeend', `
             <div id="oltb-split-view-toolbox" class="oltb-toolbox-section">
                 <div class="oltb-toolbox-section__header">
                     <h4 class="oltb-toolbox-section__title oltb-toggleable" data-oltb-toggleable-target="oltb-split-view-toolbox-collapsed">
@@ -73,7 +73,7 @@ class SplitView extends Control {
             </div>
         `);
 
-        mapElement.insertAdjacentHTML('beforeend', `
+        MAP_ELEMENT.insertAdjacentHTML('beforeend', `
             <input type="range" min="0" max="100" value="50" class="oltb-slider" id="oltb-split-view-slider">
         `);
 
@@ -111,7 +111,7 @@ class SplitView extends Control {
             this.swapSides();
         });
         
-        const splitViewSlider = mapElement.querySelector('#oltb-split-view-slider');
+        const splitViewSlider = MAP_ELEMENT.querySelector('#oltb-split-view-slider');
         splitViewSlider.addEventListener(EVENTS.Browser.Input, (event) => {
             this.getMap().render();
         });

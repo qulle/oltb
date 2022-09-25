@@ -1,7 +1,7 @@
 import DebugInfoModal from './ModalExtensions/DebugInfoModal';
 import DOM from '../helpers/Browser/DOM';
 import { Control } from 'ol/control';
-import { toolbarElement } from '../core/ElementReferences';
+import { TOOLBAR_ELEMENT } from '../core/ElementReferences';
 import { SVG_PATHS, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { URIGet } from '../helpers/Browser/URIGet';
@@ -16,7 +16,7 @@ const DEFAULT_OPTIONS = {
 class DebugInfo extends Control {
     constructor(options = {}) {
         super({
-            element: toolbarElement
+            element: TOOLBAR_ELEMENT
         });
         
         const icon = getIcon({

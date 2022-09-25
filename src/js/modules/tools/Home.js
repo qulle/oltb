@@ -4,7 +4,7 @@ import Toast from '../common/Toast';
 import { Control } from 'ol/control';
 import { fromLonLat } from 'ol/proj';
 import { easeOut } from 'ol/easing';
-import { toolbarElement } from '../core/ElementReferences';
+import { TOOLBAR_ELEMENT } from '../core/ElementReferences';
 import { addContextMenuItem } from '../common/ContextMenu';
 import { SVG_PATHS, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
@@ -20,7 +20,7 @@ const DEFAULT_OPTIONS = {
 class Home extends Control {
     constructor(options = {}) {
         super({
-            element: toolbarElement
+            element: TOOLBAR_ELEMENT
         });
         
         const icon = getIcon({

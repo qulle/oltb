@@ -1,5 +1,5 @@
 import CONFIG from '../core/Config';
-import { toolbarElement, toolboxElement, mapElement } from '../core/ElementReferences';
+import { TOOLBAR_ELEMENT, TOOLBOX_ELEMENT, MAP_ELEMENT } from '../core/ElementReferences';
 import { URIGet } from '../helpers/Browser/URIGet';
 import { EVENTS } from './Constants/Events';
 
@@ -8,7 +8,7 @@ document.documentElement.setAttribute('oltb-version', CONFIG.version);
 
 // Remove default contextmenu, show if the get parameter ?debug=true exists
 const debugParameter = URIGet('debug') === 'true';
-mapElement.addEventListener(EVENTS.Browser.ContextMenu, function(event) {
+MAP_ELEMENT.addEventListener(EVENTS.Browser.ContextMenu, function(event) {
     if(!debugParameter) {
         event.preventDefault();
     }
@@ -29,14 +29,14 @@ document.body.addEventListener(EVENTS.Browser.KeyDown, function(event) {
 
 const collisionDetection = function(event) {
     const windowWidth = window.innerWidth;
-    const toolbarWidth = toolbarElement.offsetWidth;
-    const toolboxWidth = toolboxElement.offsetWidth;
+    const toolbarWidth = TOOLBAR_ELEMENT.offsetWidth;
+    const toolboxWidth = TOOLBOX_ELEMENT.offsetWidth;
     const rem = 16;
     
     if(windowWidth - ((3 * rem) + toolbarWidth + toolboxWidth) <= 0) {
-        toolboxElement.classList.add('oltb-toolbox-container--collision');
+        TOOLBOX_ELEMENT.classList.add('oltb-toolbox-container--collision');
     }else {
-        toolboxElement.classList.remove('oltb-toolbox-container--collision');
+        TOOLBOX_ELEMENT.classList.remove('oltb-toolbox-container--collision');
     }
 }
 

@@ -6,7 +6,7 @@ import TooltipManager from '../core/Managers/TooltipManager';
 import { Control } from 'ol/control';
 import { transform } from 'ol/proj';
 import { unByKey } from 'ol/Observable';
-import { toolbarElement } from '../core/ElementReferences';
+import { TOOLBAR_ELEMENT } from '../core/ElementReferences';
 import { copyToClipboard } from '../helpers/Browser/CopyToClipboard';
 import { SVG_PATHS, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
@@ -19,7 +19,7 @@ const DEFAULT_OPTIONS = {};
 class Coordinates extends Control {
     constructor(options = {}) {
         super({
-            element: toolbarElement
+            element: TOOLBAR_ELEMENT
         });
 
         const icon = getIcon({

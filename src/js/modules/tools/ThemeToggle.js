@@ -1,7 +1,7 @@
 import StateManager from '../core/Managers/StateManager';
 import DOM from '../helpers/Browser/DOM';
 import { Control } from 'ol/control';
-import { toolbarElement } from '../core/ElementReferences';
+import { TOOLBAR_ELEMENT } from '../core/ElementReferences';
 import { SVG_PATHS, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { isDarkTheme } from '../helpers/IsDarkTheme';
@@ -15,7 +15,7 @@ const DEFAULT_OPTIONS = {};
 class ThemeToggle extends Control {
     constructor(options = {}) {
         super({
-            element: toolbarElement
+            element: TOOLBAR_ELEMENT
         });
         
         this.lightThemeIcon = getIcon({
@@ -60,7 +60,7 @@ class ThemeToggle extends Control {
 
     clearTheme() {
         StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, 'light');
-        toolbarElement.classList.remove('dark');
+        TOOLBAR_ELEMENT.classList.remove('dark');
         document.body.classList.remove('oltb-dark');
 
         // Update toolbar icon
@@ -77,7 +77,7 @@ class ThemeToggle extends Control {
             theme = 'dark';
 
             StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, 'dark');
-            toolbarElement.classList.add('dark');
+            TOOLBAR_ELEMENT.classList.add('dark');
             document.body.classList.add('oltb-dark');
 
             // Update toolbar icon

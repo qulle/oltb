@@ -1,2 +1,2 @@
-const mapElement = document.getElementById('map');
-export { mapElement };
+const MAP_ELEMENT = document.getElementById('map');
+export { MAP_ELEMENT };

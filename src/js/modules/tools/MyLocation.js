@@ -4,7 +4,7 @@ import LayerManager from '../core/Managers/LayerManager';
 import CONFIG from '../core/Config';
 import DOM from '../helpers/Browser/DOM';
 import { Control } from 'ol/control';
-import { toolbarElement } from '../core/ElementReferences';
+import { TOOLBAR_ELEMENT } from '../core/ElementReferences';
 import { isFullScreen, exitFullScreen } from '../helpers/Browser/Fullscreen';
 import { generateMarker } from '../helpers/olFunctions/Marker';
 import { easeOut } from 'ol/easing';
@@ -23,7 +23,7 @@ const DEFAULT_OPTIONS = {
 class MyLocation extends Control {
     constructor(options = {}) {
         super({
-            element: toolbarElement
+            element: TOOLBAR_ELEMENT
         });
         
         const icon = getIcon({

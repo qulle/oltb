@@ -1,11 +1,11 @@
 import DOM from '../../helpers/Browser/DOM';
-import { mapElement } from './MapElement';
+import { MAP_ELEMENT } from './MapElement';
 
-const toolboxElement = DOM.createElement({
+const TOOLBOX_ELEMENT = DOM.createElement({
     element: 'div', 
     class: 'oltb-toolbox-container'
 });
 
-mapElement.appendChild(toolboxElement);
+MAP_ELEMENT.appendChild(TOOLBOX_ELEMENT);
 
-export { toolboxElement };
+export { TOOLBOX_ELEMENT };

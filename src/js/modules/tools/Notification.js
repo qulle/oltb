@@ -2,7 +2,7 @@ import Modal from '../common/Modal';
 import DOM from '../helpers/Browser/DOM';
 import CONFIG from '../core/Config';
 import { Control } from 'ol/control';
-import { toolbarElement } from '../core/ElementReferences';
+import { TOOLBAR_ELEMENT } from '../core/ElementReferences';
 import { SVG_PATHS, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { SHORTCUT_KEYS } from '../helpers/Constants/ShortcutKeys';
@@ -13,7 +13,7 @@ const NOTIFICATION_URL = 'https://raw.githubusercontent.com/qulle/notification-e
 class Notification extends Control {
     constructor() {
         super({
-            element: toolbarElement
+            element: TOOLBAR_ELEMENT
         });
         
         const icon = getIcon({

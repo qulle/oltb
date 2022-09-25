@@ -1,6 +1,6 @@
 import DialogBase from './DialogBase';
 import DOM from '../../helpers/Browser/DOM';
-import { mapElement } from '../../core/ElementReferences';
+import { MAP_ELEMENT } from '../../core/ElementReferences';
 
 const DEFAULT_OPTIONS = {
     text: undefined,
@@ -93,7 +93,7 @@ class Prompt extends DialogBase {
         dialog.appendChild(buttonWrapper);
 
         this.dialogBackdrop.appendChild(dialog);
-        mapElement.appendChild(this.dialogBackdrop);
+        MAP_ELEMENT.appendChild(this.dialogBackdrop);
         this.dialogBackdrop.focus();
     }
 }

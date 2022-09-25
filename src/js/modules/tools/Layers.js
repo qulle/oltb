@@ -9,7 +9,7 @@ import Toast from '../common/Toast';
 import DownloadLayerModal from './ModalExtensions/DownloadLayerModal';
 import tippy from 'tippy.js';
 import { Control } from 'ol/control';
-import { toolboxElement, toolbarElement } from '../core/ElementReferences';
+import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT } from '../core/ElementReferences';
 import { download } from '../helpers/Browser/Download';
 import { addContextMenuItem } from '../common/ContextMenu';
 import { SVG_PATHS, getIcon } from '../core/Icons';
@@ -47,7 +47,7 @@ const DEFAULT_OPTIONS = {
 class Layers extends Control {
     constructor(options = {}) {
         super({
-            element: toolbarElement
+            element: TOOLBAR_ELEMENT
         });
         
         const icon = getIcon({
@@ -77,7 +77,7 @@ class Layers extends Control {
         const localStorageState = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
         this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
 
-        toolboxElement.insertAdjacentHTML('beforeend', `
+        TOOLBOX_ELEMENT.insertAdjacentHTML('beforeend', `
             <div id="oltb-layers-toolbox" class="oltb-toolbox-section">
                 <div class="oltb-toolbox-section__header">
                     <h4 class="oltb-toolbox-section__title oltb-toggleable" data-oltb-toggleable-target="oltb-map-layers-toolbox-collapsed">

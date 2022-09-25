@@ -1,5 +1,5 @@
 import DOM from '../../helpers/Browser/DOM';
-import { mapElement } from '../../core/ElementReferences';
+import { MAP_ELEMENT } from '../../core/ElementReferences';
 import { SVG_PATHS, getIcon } from '../../core/Icons';
 import { trapFocusKeyListener } from '../../helpers/TrapFocus';
 import { EVENTS } from '../../helpers/Constants/Events';
@@ -84,7 +84,7 @@ class ModalBase {
 
     show(modalContent) {
         this.modal.appendChild(modalContent);
-        mapElement.appendChild(this.modalBackdrop);
+        MAP_ELEMENT.appendChild(this.modalBackdrop);
         this.modalBackdrop.focus();
     }
 

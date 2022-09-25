@@ -2,7 +2,7 @@ import 'tippy.js/dist/tippy.css';
 import tippy from 'tippy.js';
 import DOM from '../helpers/Browser/DOM';
 import { delegate, createSingleton } from 'tippy.js';
-import { mapElement } from './ElementReferences';
+import { MAP_ELEMENT } from './ElementReferences';
 import { isHorizontal } from '../helpers/IsRowDirection';
 import { eventDispatcher } from '../helpers/Browser/EventDispatcher';
 import { EVENTS } from '../helpers/Constants/Events';
@@ -12,7 +12,7 @@ const AColorPicker = require('a-color-picker');
 // Create tippy singleton for toolbar
 const toolButtonsTippySingleton = createSingleton([], {
     placement: 'right',
-    appendTo: mapElement,
+    appendTo: MAP_ELEMENT,
     moveTransition: 'transform 0.2s ease-out',
     offset: [0, 12],
     theme: 'oltb'
@@ -20,7 +20,7 @@ const toolButtonsTippySingleton = createSingleton([], {
 
 // Delegate tippy instances for static and dynamic elements inside the #map
 // Add class .oltb-tippy and the title attribute to activate the tooltip
-const mapTippyDelegate = delegate(mapElement, {
+const mapTippyDelegate = delegate(MAP_ELEMENT, {
     content(reference) {
         const title = reference.getAttribute('title');
         reference.removeAttribute('title');
@@ -28,7 +28,7 @@ const mapTippyDelegate = delegate(mapElement, {
     },
     target: '.oltb-tippy',
     placement: 'top',
-    appendTo: mapElement,
+    appendTo: MAP_ELEMENT,
     theme: 'oltb oltb-themed',
     delay: [600, 100]
 });
@@ -53,12 +53,12 @@ const colorPicker = AColorPicker.createPicker(colorPickerElement);
 
 // Delegate tippy instances for triggering a color-picker inside the #map
 // Add class .oltb-color-tippy to activate the tooltip and the attribute data-oltb-color-target with a selector as value
-const colorTippyDelegate = delegate(mapElement, {
+const colorTippyDelegate = delegate(MAP_ELEMENT, {
     target: '.oltb-color-tippy',
     placement: 'left',
     offset: [0, 25],
     trigger: 'click',
-    appendTo: mapElement,
+    appendTo: MAP_ELEMENT,
     theme: 'oltb oltb-reversed-themed',
     interactive: true,
     allowHTML: true,

@@ -47,7 +47,7 @@ import TooltipManager from './modules/core/Managers/TooltipManager';
 import CONFIG from './modules/core/Config';
 import SettingsManager from './modules/core/Managers/SettingsManager';
 import InfoWindowManager from './modules/core/Managers/InfoWindowManager';
-import { mapElement } from './modules/core/ElementReferences';
+import { MAP_ELEMENT } from './modules/core/ElementReferences';
 import './modules/epsg/Registrate';
 import './modules/helpers/Browser/Prototypes';
 import './modules/helpers/Accessibility';
@@ -326,7 +326,7 @@ const map = new Map({
             selector: '#map canvas'
         })
     ]),
-    target: mapElement,
+    target: MAP_ELEMENT,
     view: new View({
         projection: getProjection(CONFIG.projection),
         center: fromLonLat([
