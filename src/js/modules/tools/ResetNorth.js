@@ -51,7 +51,7 @@ class ResetNorth extends Control {
                 text: 'Set rotation by degrees',
                 value: Math.round(rotation),
                 confirmText: 'Rotate map',
-                onConfirm: result => {
+                onConfirm: (result) => {
                     if(result.isDigitsOnly()) {
                         view.animate({
                             rotation: result * (Math.PI / 180),

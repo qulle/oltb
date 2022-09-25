@@ -3,7 +3,7 @@ const copyToClipboard = async function(text = '') {
         .then(() => {
             return true;
         })
-        .catch(error => {
+        .catch((error) => {
             console.error(`Error copying data [${error}]`);
             return false;
         });

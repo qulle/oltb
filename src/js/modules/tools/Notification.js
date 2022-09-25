@@ -64,7 +64,7 @@ class Notification extends Control {
         const timestamp = new Date().getTime().toString();
 
         fetch(NOTIFICATION_URL + '?cache=' + timestamp)
-            .then(async response => {
+            .then(async (response) => {
                 const data = await response.json();
 
                 if(!response.ok) {
@@ -101,7 +101,7 @@ class Notification extends Control {
 
                 this.notificationModal.setContent(content);
             })
-            .catch(error => {
+            .catch((error) => {
                 const content = `
                     <h3>👋 From Qulle</h3>
                     <p>Glad you are using my App, hope you find it useful!</p>

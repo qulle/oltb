@@ -21,7 +21,7 @@ LayerManager.addMapLayers([
                 loader: function(extent, resolution, projection, success, failure) {
 
                     fetch(urlCountriesGeoJSON)
-                        .then(async response => {
+                        .then(async (response) => {
                             if(!response.ok) {
                                 throw new Error(`Fetch error [${response.status}] [${response.statusText}]`);
                             }
@@ -43,7 +43,7 @@ LayerManager.addMapLayers([
                             this.addFeatures(features);
                             success(features);
                         })
-                        .catch(error => {
+                        .catch((error) => {
                             console.error(`Error loading Capitals [${error}]`);
                             Toast.error({text: 'Error loading Capitals layer'});
 

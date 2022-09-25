@@ -29,7 +29,7 @@ const continentColors = {
 const layerWrapper = LayerManager.addFeatureLayer('Capitals', true);
 
 fetch(urlCapitalsGeoJSON)
-    .then(async response => {
+    .then(async (response) => {
         if(!response.ok) {
             throw new Error(`Fetch error [${response.status}] [${response.statusText}]`);
         }
@@ -65,7 +65,7 @@ fetch(urlCapitalsGeoJSON)
             );
         });
     })
-    .catch(error => {
+    .catch((error) => {
         console.error(`Error loading Capitals [${error}]`);
         Toast.error({text: 'Error loading Capitals layer'});  
     });

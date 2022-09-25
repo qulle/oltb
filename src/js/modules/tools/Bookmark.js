@@ -326,9 +326,9 @@ class Bookmark extends Control {
                 bookmarkElement.remove();
 
                 // Remove the bookmark from the collection
-                this.localStorage.bookmarks = this.localStorage.bookmarks.filter((item => {
+                this.localStorage.bookmarks = this.localStorage.bookmarks.filter((item) => {
                     return item.id !== bookmark.id;
-                }));
+                });
 
                 StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
 

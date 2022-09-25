@@ -171,9 +171,7 @@ class Magnify extends Control {
                 context.putImageData(dest, originX, originY);
                 context.stroke();
                 context.restore();
-            }
-            catch(error)
-            {
+            }catch(error) {
                 // Click the tool-button to deactivate
                 this.button.click();
 
