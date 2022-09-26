@@ -106,7 +106,7 @@ class DirectionToggle extends Control {
         }
 
         // This will trigger collision detection for the toolbar vs toolbox
-        window.dispatchEvent(new CustomEvent('oltb.toolbar.direction.change', {
+        window.dispatchEvent(new CustomEvent(EVENTS.Custom.ToolbarDirectionChange, {
             detail: {
                 direction: tooltipDirection
             }

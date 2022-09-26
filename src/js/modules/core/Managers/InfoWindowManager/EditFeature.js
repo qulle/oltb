@@ -6,6 +6,7 @@ import { transform } from 'ol/proj';
 import { toStringHDMS } from 'ol/coordinate';
 import { generateMarker } from '../../../helpers/olFunctions/Marker';
 import { SVG_PATHS, getIcon } from '../../Icons';
+import { EVENTS } from '../../../helpers/Constants/Events';
 
 const editFeature = function(feature) {
     const properties = feature.getProperties();
@@ -67,7 +68,7 @@ const editFeature = function(feature) {
         }).layer.getSource().addFeature(marker);
 
         // Dispatch event to trigger callback
-        window.dispatchEvent(new CustomEvent('oltb.feature.edited', {
+        window.dispatchEvent(new CustomEvent(EVENTS.Custom.FeatureEdited, {
             detail: {
                 feature: marker
             }

@@ -1,6 +1,7 @@
 import { Vector as VectorLayer } from 'ol/layer'; 
 import { Vector as VectorSource } from 'ol/source';
 import { hasNestedProperty } from '../../helpers/HasNestedProperty';
+import { EVENTS } from '../../helpers/Constants/Events';
 
 const DEFAULT_LAYER_NAME = 'New layer';
 const ZINDEX_BASE = 1000;
@@ -66,7 +67,7 @@ class LayerManager {
         this.map.addLayer(layerWrapper.layer);
             
         // Dispatch event, the layer-tool updates the UI
-        window.dispatchEvent(new CustomEvent('oltb.mapLayer.added', {
+        window.dispatchEvent(new CustomEvent(EVENTS.Custom.MapLayerAdded, {
             detail: {
                 layerWrapper: layerWrapper, 
                 isSilent: isSilent
@@ -84,7 +85,7 @@ class LayerManager {
         this.map.removeLayer(targetLayer.layer);
 
         // Dispatch event, the layer-tool, updates the UI
-        window.dispatchEvent(new CustomEvent('oltb.mapLayer.removed', {
+        window.dispatchEvent(new CustomEvent(EVENTS.Custom.MapLayerRemoved, {
             detail: {
                 layerWrapper: targetLayer, 
                 isSilent: isSilent
@@ -169,7 +170,7 @@ class LayerManager {
         this.map.addLayer(layerWrapper.layer);
 
         // Dispatch event, the layer-tool, updates the UI
-        window.dispatchEvent(new CustomEvent('oltb.featureLayer.added', {
+        window.dispatchEvent(new CustomEvent(EVENTS.Custom.FeatureLayerAdded, {
             detail: {
                 layerWrapper: layerWrapper, 
                 isSilent: isSilent
@@ -199,7 +200,7 @@ class LayerManager {
             : null;
 
         // Dispatch event, the layer-tool, updates the UI
-        window.dispatchEvent(new CustomEvent('oltb.featureLayer.removed', {
+        window.dispatchEvent(new CustomEvent(EVENTS.Custom.FeatureLayerRemoved, {
             detail: {
                 layerWrapper: targetLayer, 
                 isSilent: isSilent

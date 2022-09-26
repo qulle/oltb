@@ -1,5 +1,6 @@
 import Dialog from '../../../common/Dialog';
 import LayerManager from '../LayerManager';
+import { EVENTS } from '../../../helpers/Constants/Events';
 
 const removeFeature = function(feature) {
     Dialog.confirm({
@@ -10,7 +11,7 @@ const removeFeature = function(feature) {
             this.hideOverlay();
 
             // Dispatch event to trigger callback
-            window.dispatchEvent(new CustomEvent('oltb.feature.removed', {
+            window.dispatchEvent(new CustomEvent(EVENTS.Custom.FeatureRemoved, {
                 detail: {
                     feature: feature
                 }

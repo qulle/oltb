@@ -72,7 +72,7 @@ class Settings extends Control {
         }
 
         // Emit event so that any tool can clean up
-        window.dispatchEvent(new CustomEvent('oltb.settings.cleared'));
+        window.dispatchEvent(new CustomEvent(EVENTS.Custom.SettingsCleared));
     }
 
     handleClick() {
