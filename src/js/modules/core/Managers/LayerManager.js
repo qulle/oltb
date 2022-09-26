@@ -224,13 +224,8 @@ class LayerManager {
     }
 
     static removeFeatureFromLayer(feature) {
-        const partner = feature?.getProperties()?.partner;
-
         this.getFeatureLayers().forEach((layerWrapper) => {
-            const source = layerWrapper.layer.getSource();
-
-            feature && source.removeFeature(feature);
-            partner && source.removeFeature(partner);
+            layerWrapper.layer.getSource().removeFeature(feature);
         });
     }
 

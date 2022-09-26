@@ -125,7 +125,7 @@ class MyLocation extends Control {
         `;
 
         const layerWrapper = LayerManager.addFeatureLayer('My location');
-        layerWrapper.layer.getSource().addFeatures(
+        layerWrapper.layer.getSource().addFeature(
             new generateMarker({
                 lat: lat,
                 lon: lon,

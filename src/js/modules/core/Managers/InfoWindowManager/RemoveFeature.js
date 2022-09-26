@@ -12,8 +12,7 @@ const removeFeature = function(feature) {
             // Dispatch event to trigger callback
             window.dispatchEvent(new CustomEvent('oltb.feature.removed', {
                 detail: {
-                    feature: feature, 
-                    partner: feature?.getProperties()?.partner
+                    feature: feature
                 }
             }));
         }

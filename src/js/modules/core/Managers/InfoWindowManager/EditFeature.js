@@ -64,13 +64,12 @@ const editFeature = function(feature) {
 
         LayerManager.getActiveFeatureLayer({
             fallback: 'Markers'
-        }).layer.getSource().addFeatures(marker);
+        }).layer.getSource().addFeature(marker);
 
         // Dispatch event to trigger callback
         window.dispatchEvent(new CustomEvent('oltb.feature.edited', {
             detail: {
-                feature: marker[0], 
-                partner: marker[1]
+                feature: marker
             }
         }));
     });

@@ -30,37 +30,32 @@ const DEFAULT_OPTIONS = {
 
 const generateMarker = function(options = {}) {
     options = { ...DEFAULT_OPTIONS, ...options };
-    
-    const point = new Point(fromLonLat([options.lon, options.lat]));
 
-    const featureBackground = new Feature({
-        geometry: point
-    });
-    
-    const featureIcon = new Feature({
-        geometry: point
+    const marker = new Feature({
+        geometry: new Point(fromLonLat([options.lon, options.lat]))
     });
 
-    featureBackground.setStyle(new Style({
-        image: new CircleStyle({
-            radius: options.radius,
-            fill: new Fill({color: options.backgroundColor}),
-            stroke: new Stroke({
-                color: options.backgroundColor.slice(0, -2) + '66',
-                width: options.width,
+    marker.setStyle([
+        new Style({
+            image: new CircleStyle({
+                radius: options.radius,
+                fill: new Fill({color: options.backgroundColor}),
+                stroke: new Stroke({
+                    color: options.backgroundColor.slice(0, -2) + '66',
+                    width: options.width,
+                })
+            })
+        }), 
+        new Style({
+            image: new Icon({
+                src: 'data:image/svg+xml;utf8,' + options.icon,
+                scale: options.scale,
+                color: options.color
             })
         })
-    }));
-    
-    featureIcon.setStyle(new Style({
-        image: new Icon({
-            src: 'data:image/svg+xml;utf8,' + options.icon,
-            scale: options.scale,
-            color: options.color
-        })
-    }));
+    ]);
 
-    const commonProperties = {
+    marker.setProperties({
         notSelectable: options.notSelectable, 
         infoWindow: options.infoWindow,
         name: options.name,
@@ -68,19 +63,9 @@ const generateMarker = function(options = {}) {
         backgroundColor: options.backgroundColor,
         color: options.color,
         icon: options.iconName
-    };
-
-    featureBackground.setProperties({
-        ...commonProperties,
-        partner: featureIcon
     });
 
-    featureIcon.setProperties({
-        ...commonProperties,
-        partner: featureBackground
-    });
-
-    return [featureBackground, featureIcon];
+    return marker;
 }
 
 export { generateMarker };

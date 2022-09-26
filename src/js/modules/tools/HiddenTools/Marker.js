@@ -66,7 +66,7 @@ class HiddenMarker extends Control {
                 fallback: 'Markers'
             });
             
-            layerWrapper.layer.getSource().addFeatures(marker);
+            layerWrapper.layer.getSource().addFeature(marker);
 
             // User defined callback from constructor
             if(typeof this.options.added === 'function') {
@@ -78,20 +78,14 @@ class HiddenMarker extends Control {
     onWindowFeatureEdited(event) {
         // User defined callback from constructor
         if(typeof this.options.edited === 'function') {
-            this.options.edited([
-                event.detail.feature,
-                event.detail.partner
-            ]);
+            this.options.edited(event.detail.feature);
         }
     }
 
     onWindowFeatureRemoved(event) {
         // User defined callback from constructor
         if(typeof this.options.removed === 'function') {
-            this.options.removed([
-                event.detail.feature,
-                event.detail.partner
-            ]);
+            this.options.removed(event.detail.feature);
         }
     }
 }

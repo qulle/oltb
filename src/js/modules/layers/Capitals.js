@@ -54,7 +54,7 @@ fetch(urlCapitalsGeoJSON)
         
             const backgroundColor = CONTINENT_COLORS[capital.properties.continentName] || '#223344FF';
         
-            LAYER_WRAPPER.layer.getSource().addFeatures(
+            LAYER_WRAPPER.layer.getSource().addFeature(
                 new generateMarker({
                     lat: lat,
                     lon: lon,
