@@ -47,18 +47,20 @@ class DirectionToggle extends Control {
         this.active = false;
         this.options = { ...DEFAULT_OPTIONS, ...options };
         
-        this.isSmallDevice();
+        this.onWindowDeviceCheck();
 
-        window.addEventListener(EVENTS.Browser.Resize, this.isSmallDevice.bind(this));
-        window.addEventListener(EVENTS.Custom.SettingsCleared, this.clearDirection.bind(this));
-        window.addEventListener(EVENTS.Browser.KeyUp, (event) => {
-            if(isShortcutKeyOnly(event, SHORTCUT_KEYS.ToolbarDirection)) {
-                this.handleClick(event);
-            }
-        });
+        window.addEventListener(EVENTS.Browser.Resize, this.onWindowDeviceCheck.bind(this));
+        window.addEventListener(EVENTS.Custom.SettingsCleared, this.onWindowClearDirection.bind(this));
+        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
     }
 
-    isSmallDevice(event) {
+    onWindowKeyUp(event) {
+        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.ToolbarDirection)) {
+            this.handleClick(event);
+        }
+    }
+
+    onWindowDeviceCheck(event) {
         if(window.innerWidth <= 576) {
             this.button.classList.add('oltb-tool-button--hidden');
         }else {
@@ -66,11 +68,7 @@ class DirectionToggle extends Control {
         }
     }
 
-    handleClick() {
-        this.handleDirectionToggle();
-    }
-
-    clearDirection() {
+    onWindowClearDirection() {
         StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, 'col');
         TOOLBAR_ELEMENT.classList.remove('row');
         document.body.classList.remove('oltb-row');
@@ -82,12 +80,16 @@ class DirectionToggle extends Control {
         toolButtonsTippySingleton.setProps({placement: 'right'});
     }
 
+    handleClick() {
+        this.handleDirectionToggle();
+    }
+
     handleDirectionToggle() {
         let direction = 'col';
         let tooltipDirection = 'right';
 
         if(isHorizontal()) {
-            this.clearDirection();
+            this.onWindowClearDirection();
         }else {
             direction = 'row';
             tooltipDirection = 'bottom';

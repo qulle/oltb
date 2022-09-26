@@ -124,57 +124,60 @@ class DrawTool extends Control {
         });
 
         this.toolType = this.drawToolbox.querySelector('#oltb-draw-type');
-        this.toolType.addEventListener(EVENTS.Browser.Change, () => updateTool());
+        this.toolType.addEventListener(EVENTS.Browser.Change, this.updateTool.bind(this));
 
         this.fillColor = this.drawToolbox.querySelector('#oltb-draw-fill-color');
-        this.fillColor.addEventListener(EVENTS.Custom.ColorChange, () => updateTool());
+        this.fillColor.addEventListener(EVENTS.Custom.ColorChange, this.updateTool.bind(this));
 
         this.strokeWidth = this.drawToolbox.querySelector('#oltb-draw-stroke-width');
-        this.strokeWidth.addEventListener(EVENTS.Browser.Change, () => updateTool());
+        this.strokeWidth.addEventListener(EVENTS.Browser.Change, this.updateTool.bind(this));
 
         this.strokeColor = this.drawToolbox.querySelector('#oltb-draw-stroke-color');
-        this.strokeColor.addEventListener(EVENTS.Custom.ColorChange, () => updateTool());
+        this.strokeColor.addEventListener(EVENTS.Custom.ColorChange, this.updateTool.bind(this));
 
         this.toolType.selectedIndex = this.localStorage.toolTypeIndex;
         this.strokeWidth.selectedIndex = this.localStorage.strokeWidth;
 
-        const updateTool = () => {
-            // Store current values in local storage
-            this.localStorage.toolTypeIndex = this.toolType.selectedIndex;
-            this.localStorage.fillColor = this.fillColor.getAttribute('data-oltb-color');
-            this.localStorage.strokeWidth = this.strokeWidth.selectedIndex;
-            this.localStorage.strokeColor = this.strokeColor.getAttribute('data-oltb-color');;
+        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(EVENTS.Custom.SettingsCleared, this.onWindowSettingsCleared.bind(this));
+    }
 
-            StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+    onWindowKeyUp(event) {
+        const key = event.key.toLowerCase();
 
-            // Update the draw tool in the map
-            this.selectDrawTool(
-                this.toolType.value,
-                this.fillColor.getAttribute('data-oltb-color'),
-                this.strokeWidth.value,
-                this.strokeColor.getAttribute('data-oltb-color')
-            );
-        }
-
-        document.addEventListener(EVENTS.Browser.KeyUp, (event) => {
-            const key = event.key.toLowerCase();
-
-            if(key === 'escape') {
-                if(this.interaction) {
-                    this.interaction.abortDrawing();
-                }
-            }else if(event.ctrlKey && key === 'z') {
-                if(this.interaction) {
-                    this.interaction.removeLastPoint();
-                }
-            }else if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Draw)) {
-                this.handleClick(event);
+        if(key === 'escape') {
+            if(this.interaction) {
+                this.interaction.abortDrawing();
             }
-        });
+        }else if(event.ctrlKey && key === 'z') {
+            if(this.interaction) {
+                this.interaction.removeLastPoint();
+            }
+        }else if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Draw)) {
+            this.handleClick(event);
+        }
+    }
 
-        window.addEventListener(EVENTS.Custom.SettingsCleared, () => {
-            this.localStorage = LOCAL_STORAGE_DEFAULTS;
-        });
+    onWindowSettingsCleared() {
+        this.localStorage = LOCAL_STORAGE_DEFAULTS;
+    }
+
+    updateTool() {
+        // Store current values in local storage
+        this.localStorage.toolTypeIndex = this.toolType.selectedIndex;
+        this.localStorage.fillColor = this.fillColor.getAttribute('data-oltb-color');
+        this.localStorage.strokeWidth = this.strokeWidth.selectedIndex;
+        this.localStorage.strokeColor = this.strokeColor.getAttribute('data-oltb-color');;
+
+        StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+
+        // Update the draw tool in the map
+        this.selectDrawTool(
+            this.toolType.value,
+            this.fillColor.getAttribute('data-oltb-color'),
+            this.strokeWidth.value,
+            this.strokeColor.getAttribute('data-oltb-color')
+        );
     }
 
     // Called when the user activates a tool that cannot be used with this tool
@@ -200,7 +203,7 @@ class DrawTool extends Control {
 
             // Dispatch event to select a tooltype from the settings-box
             // The event then triggers the activation of the draw tool
-            eventDispatcher([this.toolType], 'change');
+            eventDispatcher([this.toolType], EVENTS.Browser.Change);
         }
 
         this.active = !this.active;

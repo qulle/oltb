@@ -17,6 +17,8 @@ const LOCAL_STORAGE_DEFAULTS = {
     collapsed: false
 };
 
+const RADIX = 10;
+
 class SplitView extends Control {
     constructor() {
         super({
@@ -80,10 +82,10 @@ class SplitView extends Control {
         this.splitViewToolbox = document.querySelector('#oltb-split-view-toolbox');
 
         this.leftSrc = this.splitViewToolbox.querySelector('#oltb-left-src');
-        this.leftSrc.addEventListener(EVENTS.Browser.Change, () => updateTool());
+        this.leftSrc.addEventListener(EVENTS.Browser.Change, this.updateTool.bind(this));
 
         this.rightSrc = this.splitViewToolbox.querySelector('#oltb-right-src');
-        this.rightSrc.addEventListener(EVENTS.Browser.Change, () => updateTool());
+        this.rightSrc.addEventListener(EVENTS.Browser.Change, this.updateTool.bind(this));
 
         const toggleableTriggers = this.splitViewToolbox.querySelectorAll('.oltb-toggleable');
         toggleableTriggers.forEach((toggle) => {
@@ -96,13 +98,6 @@ class SplitView extends Control {
             });
         });
 
-        const updateTool = () => {
-            this.sourceChange(
-                parseInt(this.leftSrc.value, 10), 
-                parseInt(this.rightSrc.value, 10)
-            );
-        }
-
         const swapSidesBtn = this.splitViewToolbox.querySelector('#oltb-swap-sides-btn');
         swapSidesBtn.addEventListener(EVENTS.Browser.Click, (event) => {
             this.swapSides();
@@ -113,19 +108,23 @@ class SplitView extends Control {
             this.getMap().render();
         });
 
-        window.addEventListener(EVENTS.Custom.MapLayerAdded, this.mapLayerAdded.bind(this));
-        window.addEventListener(EVENTS.Custom.MapLayerRemoved, this.mapLayerRemoved.bind(this));
-        window.addEventListener(EVENTS.Browser.KeyUp, (event) => {
-            if(isShortcutKeyOnly(event, SHORTCUT_KEYS.SplitView)) {
-                this.handleClick(event);
-            }
-        });
-        window.addEventListener(EVENTS.Custom.SettingsCleared, () => {
-            this.localStorage = LOCAL_STORAGE_DEFAULTS;
-        });
+        window.addEventListener(EVENTS.Custom.MapLayerAdded, this.onWindowMapLayerAdded.bind(this));
+        window.addEventListener(EVENTS.Custom.MapLayerRemoved, this.onWindowMapLayerRemoved.bind(this));
+        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(EVENTS.Custom.SettingsCleared, this.onWindowSettingsCleared.bind(this));
     }
 
-    mapLayerAdded(event) {
+    onWindowKeyUp(event) {
+        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.SplitView)) {
+            this.handleClick(event);
+        }
+    }
+    
+    onWindowSettingsCleared() {
+        this.localStorage = LOCAL_STORAGE_DEFAULTS;
+    }
+
+    onWindowMapLayerAdded(event) {
         const layerWrapper = event.detail.layerWrapper;
 
         const leftOption = DOM.createElement({
@@ -144,23 +143,30 @@ class SplitView extends Control {
         this.rightSrc.appendChild(rightOption);
     }
 
-    mapLayerRemoved(event) {
+    onWindowMapLayerRemoved(event) {
         const layerWrapper = event.detail.layerWrapper;
 
         this.leftSrc.childNodes.forEach((option) => {
-            if(parseInt(option.value, 10) === layerWrapper.id) {
+            if(parseInt(option.value, RADIX) === layerWrapper.id) {
                 option.remove();
             }
         });
 
         this.rightSrc.childNodes.forEach((option) => {
-            if(parseInt(option.value, 10) === layerWrapper.id) {
+            if(parseInt(option.value, RADIX) === layerWrapper.id) {
                 option.remove();
             }
         });
 
         // Dispatch event so the map can update if an active layer was removed
-        eventDispatcher([this.leftSrc, this.rightSrc], 'change');
+        eventDispatcher([this.leftSrc, this.rightSrc], EVENTS.Browser.Change);
+    }
+
+    updateTool() {
+        this.sourceChange(
+            parseInt(this.leftSrc.value, RADIX), 
+            parseInt(this.rightSrc.value, RADIX)
+        );
     }
 
     handleClick() {
@@ -174,7 +180,7 @@ class SplitView extends Control {
         this.leftSrc.value = currentRightId;
 
         // Dispatch event so the map can update
-        eventDispatcher([this.leftSrc, this.rightSrc], 'change');
+        eventDispatcher([this.leftSrc, this.rightSrc], EVENTS.Browser.Change);
     }
 
     handleSplitView() {
@@ -205,7 +211,7 @@ class SplitView extends Control {
         }else {
             this.rightSrc.selectedIndex = '1';
 
-            eventDispatcher([this.rightSrc], 'change');
+            eventDispatcher([this.rightSrc], EVENTS.Browser.Change);
         }
 
         if(this.layerLoadingError) {

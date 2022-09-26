@@ -51,11 +51,13 @@ class Coordinates extends Control {
             text: 'Coordinates tool - Copy coordinates on click'
         });
 
-        window.addEventListener(EVENTS.Browser.KeyUp, (event) => {
-            if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Coordinates)) {
-                this.handleClick(event);
-            }
-        });
+        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
+    }
+
+    onWindowKeyUp(event) {
+        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Coordinates)) {
+            this.handleClick(event);
+        }
     }
 
     handleClick() {
@@ -104,13 +106,13 @@ class Coordinates extends Control {
             degree: prettyCoords
         };
 
-        const didCopy = await copyToClipboard(prettyCoords);
-
-        if(didCopy) {
-            Toast.success({text: 'Coordinates copied to clipboard', autoremove: 4000});
-        }else {
-            Toast.error({text: 'Failed to copy coordinates'});
-        }
+        copyToClipboard(prettyCoords)
+            .then(() => {
+                Toast.success({text: 'Coordinates copied to clipboard', autoremove: 4000});
+            })
+            .active(() => {
+                Toast.error({text: 'Failed to copy coordinates'});
+            });
         
         // User defined callback from constructor
         if(typeof this.options.clicked === 'function') {

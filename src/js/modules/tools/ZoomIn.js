@@ -38,11 +38,13 @@ class ZoomIn extends Control {
         this.options = { ...DEFAULT_OPTIONS, ...options };
         this.delta = 1;
 
-        window.addEventListener(EVENTS.Browser.KeyUp, (event) => {
-            if(isShortcutKeyOnly(event, SHORTCUT_KEYS.ZoomIn)) {
-                this.handleZoomByDelta();
-            }
-        });
+        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
+    }
+
+    onWindowKeyUp(event) {
+        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.ZoomIn)) {
+            this.handleClick(event);
+        }
     }
 
     handleClick() {

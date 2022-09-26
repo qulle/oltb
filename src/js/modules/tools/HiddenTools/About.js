@@ -15,13 +15,15 @@ class HiddenAbout extends Control {
         const icon = getIcon({path: SVG_PATHS.GitHub});
 
         addContextMenuItem('main.map.context.menu', {});
-        addContextMenuItem('main.map.context.menu', {icon: icon, name: 'About OLTB', fn: function() {
-            Dialog.alert({confirmText: 'Got it!', html: `
-                <h3>Version ${CONFIG.version}</h3>
-                <p>Developed by Qulle <a href="//github.com/qulle/oltb" target="_blank" class="oltb-link">github.com/qulle/oltb</a></p>
-                <p>Using OpenLayers <a href="//openlayers.org/en/v${VERSION}/apidoc/" target="_blank" class="oltb-link">${VERSION}</a></p>
-            `});
-        }});
+        addContextMenuItem('main.map.context.menu', {icon: icon, name: 'About OLTB', fn: this.onContextMenuAbout.bind(this)});
+    }
+
+    onContextMenuAbout(map, coordinates, target) {
+        Dialog.alert({confirmText: 'Got it!', html: `
+            <h3>Version ${CONFIG.version}</h3>
+            <p>Developed by Qulle <a href="//github.com/qulle/oltb" target="_blank" class="oltb-link">github.com/qulle/oltb</a></p>
+            <p>Using OpenLayers <a href="//openlayers.org/en/v${VERSION}/apidoc/" target="_blank" class="oltb-link">${VERSION}</a></p>
+        `});
     }
 }
 

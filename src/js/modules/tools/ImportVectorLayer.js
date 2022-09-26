@@ -51,11 +51,13 @@ class ImportVectorLayer extends Control {
             }
         });
         
-        window.addEventListener(EVENTS.Browser.KeyUp, (event) => {
-            if(isShortcutKeyOnly(event, SHORTCUT_KEYS.ImportVectorLayer)) {
-                this.handleClick(event);
-            }
-        });
+        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
+    }
+
+    onWindowKeyUp(event) {
+        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.ImportVectorLayer)) {
+            this.handleClick(event);
+        }
     }
 
     handleClick() {

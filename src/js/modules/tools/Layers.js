@@ -173,18 +173,24 @@ class Layers extends Control {
         }
 
         if(!this.options.disableMapCreateLayerButton) {
-            addContextMenuItem('main.map.context.menu', {icon: icon, name: 'Add map layer', fn: this.showAddMapLayerModal.bind(this)});
+            addContextMenuItem('main.map.context.menu', {icon: icon, name: 'Add map layer', fn: this.onContextMenuAddMapLayerModal.bind(this)});
         }
 
-        window.addEventListener(EVENTS.Custom.MapLayerAdded, this.mapLayerAdded.bind(this));
-        window.addEventListener(EVENTS.Custom.MapLayerRemoved, this.mapLayerRemoved.bind(this));
-        window.addEventListener(EVENTS.Custom.FeatureLayerAdded, this.featureLayerAdded.bind(this));
-        window.addEventListener(EVENTS.Custom.FeatureLayerRemoved, this.featureLayerRemoved.bind(this));
-        window.addEventListener(EVENTS.Browser.KeyUp, (event) => {
-            if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Layer)) {
-                this.handleClick(event);
-            }
-        });
+        window.addEventListener(EVENTS.Custom.MapLayerAdded, this.onWindowMapLayerAdded.bind(this));
+        window.addEventListener(EVENTS.Custom.MapLayerRemoved, this.onWindowMapLayerRemoved.bind(this));
+        window.addEventListener(EVENTS.Custom.FeatureLayerAdded, this.onWindowFeatureLayerAdded.bind(this));
+        window.addEventListener(EVENTS.Custom.FeatureLayerRemoved, this.onWindowFeatureLayerRemoved.bind(this));
+        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
+    }
+
+    onWindowKeyUp(event) {
+        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Layer)) {
+            this.handleClick(event);
+        }
+    }
+
+    onContextMenuAddMapLayerModal() {
+        this.showAddMapLayerModal();
     }
 
     handleClick() {
@@ -220,7 +226,7 @@ class Layers extends Control {
         });
     }
 
-    mapLayerAdded(event) {
+    onWindowMapLayerAdded(event) {
         const layerWrapper = event.detail.layerWrapper;
         const isSilent = event.detail.isSilent;
 
@@ -254,7 +260,7 @@ class Layers extends Control {
         }
     }
 
-    mapLayerRemoved(event) {
+    onWindowMapLayerRemoved(event) {
         const layerWrapper = event.detail.layerWrapper;
         const isSilent = event.detail.isSilent;
 
@@ -267,7 +273,7 @@ class Layers extends Control {
         }
     }
 
-    featureLayerAdded(event) {
+    onWindowFeatureLayerAdded(event) {
         const layerWrapper = event.detail.layerWrapper;
         const isSilent = event.detail.isSilent;
 
@@ -306,7 +312,7 @@ class Layers extends Control {
         }
     }
 
-    featureLayerRemoved(event) {
+    onWindowFeatureLayerRemoved(event) {
         const layerWrapper = event.detail.layerWrapper;
         const isSilent = event.detail.isSilent;
 

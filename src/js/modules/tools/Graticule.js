@@ -56,12 +56,14 @@ class GraticuleTool extends Control {
             wrapX: this.options.wrapX,
         });
 
-        window.addEventListener(EVENTS.Browser.KeyUp, (event) => {
-            if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Graticule)) {
-                this.handleClick(event);
-            }
-        });
+        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
     }
+
+    onWindowKeyUp(event) {
+        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Graticule)) {
+            this.handleClick(event);
+        }
+    }    
 
     handleClick() {
         if(this.active) {

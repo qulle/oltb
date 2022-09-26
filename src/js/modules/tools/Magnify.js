@@ -37,11 +37,13 @@ class Magnify extends Control {
         this.button = button;
         this.radius = 75;
 
-        window.addEventListener(EVENTS.Browser.KeyUp, (event) => {
-            if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Magnify)) {
-                this.handleClick(event);
-            }
-        });
+        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
+    }
+
+    onWindowKeyUp(event) {
+        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Magnify)) {
+            this.handleClick(event);
+        }
     }
 
     handleClick() {    

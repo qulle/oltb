@@ -54,12 +54,13 @@ class Fullscreen extends Control {
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
         document.addEventListener(EVENTS.Browser.FullScreenChange, this.onFullScreenChange.bind(this));
+        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
+    }
 
-        window.addEventListener(EVENTS.Browser.KeyUp, (event) => {
-            if(isShortcutKeyOnly(event, SHORTCUT_KEYS.FullScreen)) {
-                this.handleFullscreen();
-            }
-        });
+    onWindowKeyUp(event) {
+        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.FullScreen)) {
+            this.handleClick(event);
+        }
     }
 
     handleClick() {

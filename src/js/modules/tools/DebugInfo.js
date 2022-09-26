@@ -50,11 +50,13 @@ class DebugInfo extends Control {
             }
         }
 
-        window.addEventListener(EVENTS.Browser.KeyUp, (event) => {
-            if(isShortcutKeyOnly(event, SHORTCUT_KEYS.DebugInfo)) {
-                this.handleClick(event);
-            }
-        });
+        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
+    }
+
+    onWindowKeyUp(event) {
+        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.DebugInfo)) {
+            this.handleClick(event);
+        }
     }
 
     handleClick() {

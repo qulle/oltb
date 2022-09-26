@@ -40,11 +40,13 @@ class ScaleLineTool extends Control {
         this.options = { ...DEFAULT_OPTIONS, ...options };
         this.scaleLine = new ScaleLine({units: this.options.units});
         
-        window.addEventListener(EVENTS.Browser.KeyUp, (event) => {
-            if(isShortcutKeyOnly(event, SHORTCUT_KEYS.ScaleLine)) {
-                this.handleClick(event);
-            }
-        });
+        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
+    }
+
+    onWindowKeyUp(event) {
+        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.ScaleLine)) {
+            this.handleClick(event);
+        }
     }
 
     handleClick() {

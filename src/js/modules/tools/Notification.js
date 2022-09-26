@@ -37,11 +37,13 @@ class Notification extends Control {
         this.element.appendChild(button);
         this.notificationModal = undefined;
 
-        window.addEventListener(EVENTS.Browser.KeyUp, (event) => {
-            if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Notifications)) {
-                this.handleClick(event);
-            }
-        });
+        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
+    }
+
+    onWindowKeyUp(event) {
+        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Notifications)) {
+            this.handleClick(event);
+        }
     }
 
     handleClick() {

@@ -86,9 +86,9 @@ class MeasureTool extends Control {
         `);
 
         this.measureToolbox = document.querySelector('#oltb-measure-toolbox');
+        this.strokeColor = this.measureToolbox.querySelector('#oltb-measure-stroke-color');
         this.toolType = this.measureToolbox.querySelector('#oltb-measure-type');
         this.toolType.selectedIndex = this.localStorage.toolTypeIndex;
-        this.strokeColor = this.measureToolbox.querySelector('#oltb-measure-stroke-color');
 
         const toggleableTriggers = this.measureToolbox.querySelectorAll('.oltb-toggleable');
         toggleableTriggers.forEach((toggle) => {
@@ -101,41 +101,44 @@ class MeasureTool extends Control {
             });
         });
 
-        this.toolType.addEventListener(EVENTS.Browser.Change, () => updateTool());
-        this.strokeColor.addEventListener(EVENTS.Custom.ColorChange, () => updateTool());
+        this.toolType.addEventListener(EVENTS.Browser.Change, this.updateTool.bind(this));
+        this.strokeColor.addEventListener(EVENTS.Custom.ColorChange, this.updateTool.bind(this));
 
-        const updateTool = () => {
-            // Store current values in local storage
-            this.localStorage.toolTypeIndex = this.toolType.selectedIndex;
-            this.localStorage.strokeColor = this.strokeColor.getAttribute('data-oltb-color');;
+        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(EVENTS.Custom.SettingsCleared, this.onWindowSettingsCleared.bind(this));
+    }
 
-            StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+    onWindowKeyUp(event) {
+        const key = event.key.toLowerCase();
 
-            this.selectMeasureTool(
-                this.toolType.value,
-                this.strokeColor.getAttribute('data-oltb-color')
-            );
-        }
-
-        document.addEventListener(EVENTS.Browser.KeyUp, (event) => {
-            const key = event.key.toLowerCase();
-
-            if(key === 'escape') {
-                if(this.interaction) {
-                    this.interaction.abortDrawing();
-                }
-            }else if(event.ctrlKey && key === 'z') {
-                if(this.interaction) {
-                    this.interaction.removeLastPoint();
-                }
-            }else if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Measure)) {
-                this.handleClick(event);
+        if(key === 'escape') {
+            if(this.interaction) {
+                this.interaction.abortDrawing();
             }
-        });
+        }else if(event.ctrlKey && key === 'z') {
+            if(this.interaction) {
+                this.interaction.removeLastPoint();
+            }
+        }else if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Measure)) {
+            this.handleClick(event);
+        }
+    }
+    
+    onWindowSettingsCleared() {
+        this.localStorage = LOCAL_STORAGE_DEFAULTS;
+    }
 
-        window.addEventListener(EVENTS.Custom.SettingsCleared, () => {
-            this.localStorage = LOCAL_STORAGE_DEFAULTS;
-        });
+    updateTool() {
+        // Store current values in local storage
+        this.localStorage.toolTypeIndex = this.toolType.selectedIndex;
+        this.localStorage.strokeColor = this.strokeColor.getAttribute('data-oltb-color');;
+
+        StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+
+        this.selectMeasureTool(
+            this.toolType.value,
+            this.strokeColor.getAttribute('data-oltb-color')
+        );
     }
 
     // Called when the user activates a tool that cannot be used with this tool
@@ -161,7 +164,7 @@ class MeasureTool extends Control {
 
             // Dispatch event to select a tooltype from the settings-box
             // The event then triggers the activation of the measure tool
-            eventDispatcher([this.toolType], 'change');
+            eventDispatcher([this.toolType], EVENTS.Browser.Change);
         }
 
         this.active = !this.active;

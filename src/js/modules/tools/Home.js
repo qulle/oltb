@@ -50,21 +50,23 @@ class Home extends Control {
         this.userDefinedHomeLocation = null;
         this.userDefinedHomeZoom = null;
 
-        addContextMenuItem('main.map.context.menu', {icon: icon, name: 'Set as home', fn: this.setHomeLocation.bind(this)});
+        addContextMenuItem('main.map.context.menu', {icon: icon, name: 'Set as home', fn: this.onContextMenuSetHomeLocation.bind(this)});
 
-        window.addEventListener(EVENTS.Custom.SettingsCleared, this.clearHomeLocation.bind(this));
-        window.addEventListener(EVENTS.Browser.KeyUp, (event) => {
-            if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Home)) {
-                this.handleResetToHome();
-            }
-        });
+        window.addEventListener(EVENTS.Custom.SettingsCleared, this.onWindowClearHomeLocation.bind(this));
+        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
+    }
+
+    onWindowKeyUp(event) {
+        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Home)) {
+            this.handleClick(event);
+        }
     }
 
     handleClick() {
         this.handleResetToHome();
     }
 
-    clearHomeLocation() {
+    onWindowClearHomeLocation() {
         this.userDefinedHomeLocation = null;
         this.userDefinedHomeZoom = null;
     }
@@ -91,7 +93,7 @@ class Home extends Control {
         }, CONFIG.animationDuration);
     }
 
-    setHomeLocation() {
+    onContextMenuSetHomeLocation() {
         const view = this.getMap().getView();
 
         this.userDefinedHomeZoom = view.getZoom();

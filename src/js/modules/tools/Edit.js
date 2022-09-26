@@ -183,19 +183,23 @@ class Edit extends Control {
             }
         });
 
-        window.addEventListener(EVENTS.Custom.FeatureLayerRemoved, this.featureLayerRemoved.bind(this));
-        window.addEventListener(EVENTS.Browser.KeyUp, (event) => {
-            if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Edit)) {
-                this.handleClick(event);
-            }else if(isShortcutKeyOnly(event, 'delete')) {
-                if(this.select.getFeatures().getArray().length > 0) {
-                    this.deleteSelectedFeatures();
-                }
+        window.addEventListener(EVENTS.Custom.FeatureLayerRemoved, this.onWindowFeatureLayerRemoved.bind(this));
+        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(EVENTS.Custom.SettingsCleared, this.onWindowSettingsCleared.bind(this));
+    }
+
+    onWindowKeyUp(event) {
+        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Edit)) {
+            this.handleClick(event);
+        }else if(isShortcutKeyOnly(event, 'delete')) {
+            if(this.select.getFeatures().getArray().length > 0) {
+                this.deleteSelectedFeatures();
             }
-        });
-        window.addEventListener(EVENTS.Custom.SettingsCleared, () => {
-            this.localStorage = LOCAL_STORAGE_DEFAULTS;
-        });
+        }
+    }
+    
+    onWindowSettingsCleared() {
+        this.localStorage = LOCAL_STORAGE_DEFAULTS;
     }
 
     deleteSelectedFeatures() {
@@ -234,7 +238,7 @@ class Edit extends Control {
         });
     }
 
-    featureLayerRemoved(event) {
+    onWindowFeatureLayerRemoved(event) {
         this.select.getFeatures().clear();
     }
 

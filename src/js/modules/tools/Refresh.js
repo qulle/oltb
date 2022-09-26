@@ -32,11 +32,13 @@ class Refresh extends Control {
 
         this.element.appendChild(button);
 
-        window.addEventListener(EVENTS.Browser.KeyUp, (event) => {
-            if(isShortcutKeyOnly(event, SHORTCUT_KEYS.RefreshPage)) {
-                this.handleClick(event);
-            }
-        });
+        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
+    }
+
+    onWindowKeyUp(event) {
+        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.RefreshPage)) {
+            this.handleClick(event);
+        }
     }
 
     handleClick() {

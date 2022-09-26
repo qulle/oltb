@@ -40,34 +40,38 @@ class ResetNorth extends Control {
         this.element.appendChild(button);
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
-        addContextMenuItem('main.map.context.menu', {icon: icon, name: 'Set rotation by degrees', fn: function(map, coordinates, target) {
-            const view = map.getView();
+        addContextMenuItem('main.map.context.menu', {icon: icon, name: 'Set rotation by degrees', fn: this.onContextMenuSetRotation.bind(this)});
 
-            // Get current rotation and convert to normalized degree value
-            let rotation = view.getRotation() * (180 / Math.PI);
-            rotation = rotation < 0 ? rotation + 360 : rotation;
+        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
+    }
 
-            Dialog.prompt({
-                text: 'Set rotation by degrees',
-                value: Math.round(rotation),
-                confirmText: 'Rotate map',
-                onConfirm: (result) => {
-                    if(result.isDigitsOnly()) {
-                        view.animate({
-                            rotation: result * (Math.PI / 180),
-                            duration: CONFIG.animationDuration,
-                            easing: easeOut
-                        });
-                    }else {
-                        Toast.error({text: 'Failed to rotate map, only digits are allowed', autoremove: 4000});
-                    }
+    onWindowKeyUp(event) {
+        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.ResetNorth)) {
+            this.handleClick(event);
+        }
+    }
+
+    onContextMenuSetRotation(map, coordinates, target) {
+        const view = map.getView();
+
+        // Get current rotation and convert to normalized degree value
+        let rotation = view.getRotation() * (180 / Math.PI);
+        rotation = rotation < 0 ? rotation + 360 : rotation;
+
+        Dialog.prompt({
+            text: 'Set rotation by degrees',
+            value: Math.round(rotation),
+            confirmText: 'Rotate map',
+            onConfirm: (result) => {
+                if(result.isDigitsOnly()) {
+                    view.animate({
+                        rotation: result * (Math.PI / 180),
+                        duration: CONFIG.animationDuration,
+                        easing: easeOut
+                    });
+                }else {
+                    Toast.error({text: 'Failed to rotate map, only digits are allowed', autoremove: 4000});
                 }
-            });
-        }});
-
-        window.addEventListener(EVENTS.Browser.KeyUp, (event) => {
-            if(isShortcutKeyOnly(event, SHORTCUT_KEYS.ResetNorth)) {
-                this.handleResetNorth();
             }
         });
     }

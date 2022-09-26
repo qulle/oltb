@@ -34,42 +34,45 @@ class HiddenMapNavigation extends Control {
         this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
 
         const moveCenterIcon = getIcon({path: SVG_PATHS.MoveCenter});
-        addContextMenuItem('main.map.context.menu', {icon: moveCenterIcon, name: 'Center map here', fn: function(map, coordinates, target) {
-            const view = map.getView();
-        
-            if(view.getAnimating()) {
-                view.cancelAnimations();
-            }
-        
-            view.animate({
-                center: fromLonLat(coordinates),
-                duration: CONFIG.animationDuration,
-                easing: easeOut
-            });
-        }});
-
         const focusHereIcon = getIcon({path: SVG_PATHS.FocusHere});
-        addContextMenuItem('main.map.context.menu', {icon: focusHereIcon, name: 'Focus here', fn: (map, coordinates, target) => {
-            const view = map.getView();
-        
-            if(view.getAnimating()) {
-                view.cancelAnimations();
-            }
-        
-            view.animate({
-                center: fromLonLat(coordinates),
-                zoom: this.options.focusZoom,
-                duration: CONFIG.animationDuration,
-                easing: easeOut
-            });
-        }});
 
+        addContextMenuItem('main.map.context.menu', {icon: moveCenterIcon, name: 'Center map here', fn: this.onContextMenuCenterMap.bind(this)});
+        addContextMenuItem('main.map.context.menu', {icon: focusHereIcon, name: 'Focus here', fn: this.onContextMenuFocusHere.bind(this)});
         addContextMenuItem('main.map.context.menu', {});
 
         // Track changes to zoom, paning etc. store in localStorage
         // The event needs to be delayed and wrapped in order for the getMap() to return the correct object
         window.addEventListener(EVENTS.Browser.DOMContentLoaded, (event) => {
             this.getMap().on(EVENTS.Ol.MoveEnd, this.onMoveEnd.bind(this));
+        });
+    }
+
+    onContextMenuCenterMap(map, coordinates, target) {
+        const view = map.getView();
+        
+        if(view.getAnimating()) {
+            view.cancelAnimations();
+        }
+    
+        view.animate({
+            center: fromLonLat(coordinates),
+            duration: CONFIG.animationDuration,
+            easing: easeOut
+        });
+    }
+
+    onContextMenuFocusHere(map, coordinates, target) {
+        const view = map.getView();
+        
+        if(view.getAnimating()) {
+            view.cancelAnimations();
+        }
+    
+        view.animate({
+            center: fromLonLat(coordinates),
+            zoom: this.options.focusZoom,
+            duration: CONFIG.animationDuration,
+            easing: easeOut
         });
     }
 

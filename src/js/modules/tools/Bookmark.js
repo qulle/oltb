@@ -126,27 +126,36 @@ class Bookmark extends Control {
             this.createBookmark(bookmark);
         });
 
-        addContextMenuItem('main.map.context.menu', {icon: icon, name: 'Add location as bookmark', fn: this.addBookmark.bind(this, '')});
-        addContextMenuItem('main.map.context.menu', {icon: icon, name: 'Clear all bookmarks', fn: () => {
-            Dialog.confirm({
-                text: 'Do you want to clear all bookmarks?',
-                onConfirm: () => {
-                    this.clearBookmarks();
+        addContextMenuItem('main.map.context.menu', {icon: icon, name: 'Add location as bookmark', fn: this.onContextMenuBookmarkAdd.bind(this)});
+        addContextMenuItem('main.map.context.menu', {icon: icon, name: 'Clear all bookmarks', fn: this.onContextMenuBookmarksClear.bind(this)});
 
-                    Toast.success({text: "All bookmarks was cleared", autoremove: 4000});
-                }
-            });
-        }});
+        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(EVENTS.Custom.SettingsCleared, this.onWindowSettingsCleared.bind(this));
+    }
 
-        window.addEventListener(EVENTS.Browser.KeyUp, (event) => {
-            if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Bookmark)) {
-                this.handleClick(event);
+    onContextMenuBookmarkAdd(map, coordinates, target) {
+        this.addBookmark('');
+    }
+
+    onContextMenuBookmarksClear(map, coordinates, target) {
+        Dialog.confirm({
+            text: 'Do you want to clear all bookmarks?',
+            onConfirm: () => {
+                this.clearBookmarks();
+
+                Toast.success({text: "All bookmarks was cleared", autoremove: 4000});
             }
         });
+    }
 
-        window.addEventListener(EVENTS.Custom.SettingsCleared, () => {
-            this.localStorage = LOCAL_STORAGE_DEFAULTS;
-        });
+    onWindowKeyUp(event) {
+        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Bookmark)) {
+            this.handleClick(event);
+        }
+    }
+
+    onWindowSettingsCleared() {
+        this.localStorage = LOCAL_STORAGE_DEFAULTS;
     }
 
     handleClick() {

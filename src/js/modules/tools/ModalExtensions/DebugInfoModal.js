@@ -27,13 +27,13 @@ class DebugInfoModal extends ModalBase {
             },
             listeners: {
                 'click': async () => {
-                    const didCopy = await copyToClipboard(textArea.value);
-        
-                    if(didCopy) {
-                        Toast.success({text: 'Debug info copied to clipboard', autoremove: 4000});
-                    }else {
-                        Toast.error({text: 'Failed to copy debug info'});
-                    } 
+                    copyToClipboard(textArea.value)
+                        .then(() => {
+                            Toast.success({text: 'Debug info copied to clipboard', autoremove: 4000});
+                        })
+                        .catch(() => {
+                            Toast.error({text: 'Failed to copy debug info'});
+                        });
                 }
             }
         });
@@ -47,7 +47,7 @@ class DebugInfoModal extends ModalBase {
             },
             listeners: {
                 'click': () => {
-                    console.log(map);
+                    console.log(options.map);
                     Toast.success({text: 'Map object logged to console (F12)', autoremove: 4000});
                 }
             }

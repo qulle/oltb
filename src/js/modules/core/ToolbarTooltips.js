@@ -83,7 +83,7 @@ const colorTippyDelegate = delegate(MAP_ELEMENT, {
             target.firstElementChild.style.backgroundColor = color;
 
             // Dispatch event to let tools know that color has changed.
-            eventDispatcher([instance.reference], 'oltb.color.change');
+            eventDispatcher([instance.reference], EVENTS.Custom.ColorChange);
         });
     },
     onHide(instance) {

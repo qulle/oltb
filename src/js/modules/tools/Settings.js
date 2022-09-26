@@ -41,20 +41,24 @@ class Settings extends Control {
         this.settingsModal = undefined;
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
-        addContextMenuItem('main.map.context.menu', {icon: icon, name: 'Clear settings', fn: () => {
-            Dialog.confirm({
-                text: 'Do you want to clear all settings?',
-                onConfirm: () => {
-                    this.clearSettings();
+        addContextMenuItem('main.map.context.menu', {icon: icon, name: 'Clear settings', fn: this.onContextMenuSettingsClear.bind(this)});
 
-                    Toast.success({text: "All settings was cleared", autoremove: 4000});
-                }
-            });
-        }});
+        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
+    }
 
-        window.addEventListener(EVENTS.Browser.KeyUp, (event) => {
-            if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Settings)) {
-                this.handleClick(event);
+    onWindowKeyUp(event) {
+        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Settings)) {
+            this.handleClick(event);
+        }
+    }
+
+    onContextMenuSettingsClear(map, coordinates, target) {
+        Dialog.confirm({
+            text: 'Do you want to clear all settings?',
+            onConfirm: () => {
+                this.clearSettings();
+
+                Toast.success({text: "All settings was cleared", autoremove: 4000});
             }
         });
     }

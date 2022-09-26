@@ -46,19 +46,21 @@ class ThemeToggle extends Control {
         this.active = false;
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
-        window.addEventListener(EVENTS.Custom.SettingsCleared, this.clearTheme.bind(this));
-        window.addEventListener(EVENTS.Browser.KeyUp, (event) => {
-            if(isShortcutKeyOnly(event, SHORTCUT_KEYS.ToolbarTheme)) {
-                this.handleClick(event);
-            }
-        });
+        window.addEventListener(EVENTS.Custom.SettingsCleared, this.onWindowClearTheme.bind(this));
+        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
+    }
+
+    onWindowKeyUp(event) {
+        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.ToolbarTheme)) {
+            this.handleClick(event);
+        }
     }
 
     handleClick() {
         this.handleThemeToggle();
     }
 
-    clearTheme() {
+    onWindowClearTheme() {
         StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, 'light');
         TOOLBAR_ELEMENT.classList.remove('dark');
         document.body.classList.remove('oltb-dark');
@@ -72,7 +74,7 @@ class ThemeToggle extends Control {
     handleThemeToggle() {
         let theme = 'light';
         if(isDarkTheme()) {
-            this.clearTheme();
+            this.onWindowClearTheme();
         }else {
             theme = 'dark';
 
