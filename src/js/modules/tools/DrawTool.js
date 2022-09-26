@@ -19,7 +19,7 @@ const LOCAL_STORAGE_DEFAULTS = {
     toolTypeIndex: 5,
     strokeColor: '#4A86B8',
     strokeWidth: 2,
-    fillColor: '#FFFFFFFF'
+    fillColor: '#FFFFFF80'
 };
 
 const DEFAULT_OPTIONS = {};
@@ -135,6 +135,7 @@ class DrawTool extends Control {
         this.strokeColor = this.drawToolbox.querySelector('#oltb-draw-stroke-color');
         this.strokeColor.addEventListener(EVENTS.Custom.ColorChange, this.updateTool.bind(this));
 
+        // Set default selected value
         this.toolType.selectedIndex = this.localStorage.toolTypeIndex;
         this.strokeWidth.selectedIndex = this.localStorage.strokeWidth;
 
