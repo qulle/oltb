@@ -15,8 +15,8 @@ import ZoomIn from './modules/tools/ZoomIn';
 import ZoomOut from './modules/tools/ZoomOut';
 import FullScreen from './modules/tools/FullScreen';
 import ExportPNG from './modules/tools/ExportPNG';
-import DrawTool from './modules/tools/DrawTool';
-import MeasureTool from './modules/tools/MeasureTool';
+import Draw from './modules/tools/Draw';
+import Measure from './modules/tools/Measure';
 import Edit from './modules/tools/Edit';
 import Bookmark from './modules/tools/Bookmark';
 import Layers from './modules/tools/Layers';
@@ -28,7 +28,7 @@ import ResetNorth from './modules/tools/ResetNorth';
 import Coordinates from './modules/tools/Coordinates';
 import MyLocation from './modules/tools/MyLocation';
 import ImportVectorLayer from './modules/tools/ImportVectorLayer';
-import ScaleLineTool from './modules/tools/ScaleLineTool';
+import ScaleLine from './modules/tools/ScaleLine';
 import Refresh from './modules/tools/Refresh';
 import ThemeToggle from './modules/tools/ThemeToggle';
 import DirectionToggle from './modules/tools/DirectionToggle';
@@ -156,7 +156,7 @@ const map = new Map({
                 console.log('Map exported as png');
             }
         }),
-        new DrawTool({
+        new Draw({
             start: function(event) {
                 console.log('Draw Start');
             },
@@ -170,7 +170,7 @@ const map = new Map({
                 console.log('Draw error');
             }
         }),
-        new MeasureTool({
+        new Measure({
             start: function(event) {
                 console.log('Measure Start');
             },
@@ -292,7 +292,7 @@ const map = new Map({
                 console.log('Error when importing file:', filename, error);
             }
         }),
-        new ScaleLineTool({
+        new ScaleLine({
             units: 'metric'
         }),
         new Refresh(),

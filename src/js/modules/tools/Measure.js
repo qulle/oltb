@@ -26,7 +26,7 @@ const LOCAL_STORAGE_DEFAULTS = {
 
 const DEFAULT_OPTIONS = {};
 
-class MeasureTool extends Control {
+class Measure extends Control {
     constructor(options = {}) {
         super({
             element: TOOLBAR_ELEMENT
@@ -135,7 +135,7 @@ class MeasureTool extends Control {
 
         StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
 
-        this.selectMeasureTool(
+        this.selectMeasure(
             this.toolType.value,
             this.strokeColor.getAttribute('data-oltb-color')
         );
@@ -172,7 +172,7 @@ class MeasureTool extends Control {
         this.button.classList.toggle('oltb-tool-button--active');
     }
 
-    selectMeasureTool(toolType, strokeColor) {
+    selectMeasure(toolType, strokeColor) {
         const map = this.getMap();
 
         if(this.interaction) {
@@ -303,4 +303,4 @@ class MeasureTool extends Control {
     }
 }
 
-export default MeasureTool;
+export default Measure;

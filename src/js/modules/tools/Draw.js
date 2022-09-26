@@ -2,7 +2,7 @@ import LayerManager from '../core/Managers/LayerManager';
 import SettingsManager from '../core/Managers/SettingsManager';
 import StateManager from '../core/Managers/StateManager';
 import DOM from '../helpers/Browser/DOM';
-import Draw, { createBox, createRegularPolygon } from 'ol/interaction/Draw';
+import { default as DrawInteraction, createBox, createRegularPolygon } from 'ol/interaction/Draw';
 import { Control } from 'ol/control';
 import { Fill, Stroke, Circle, Style } from 'ol/style';
 import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT } from '../core/ElementReferences';
@@ -24,7 +24,7 @@ const LOCAL_STORAGE_DEFAULTS = {
 
 const DEFAULT_OPTIONS = {};
 
-class DrawTool extends Control {
+class Draw extends Control {
     constructor(options = {}) {
         super({
             element: TOOLBAR_ELEMENT
@@ -173,7 +173,7 @@ class DrawTool extends Control {
         StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
 
         // Update the draw tool in the map
-        this.selectDrawTool(
+        this.selectDraw(
             this.toolType.value,
             this.fillColor.getAttribute('data-oltb-color'),
             this.strokeWidth.value,
@@ -212,7 +212,7 @@ class DrawTool extends Control {
         this.button.classList.toggle('oltb-tool-button--active');
     }
 
-    selectDrawTool(toolType, fillColor, strokeWidth, strokeColor) {
+    selectDraw(toolType, fillColor, strokeWidth, strokeColor) {
         const map = this.getMap();
 
         // Remove previous interaction if tool is changed
@@ -252,7 +252,7 @@ class DrawTool extends Control {
             geometryFunction = createRegularPolygon();
         }
 
-        this.interaction = new Draw({
+        this.interaction = new DrawInteraction({
             type: toolType,
             style: style,
             geometryFunction: geometryFunction
@@ -299,4 +299,4 @@ class DrawTool extends Control {
     }
 }
 
-export default DrawTool;
+export default Draw;

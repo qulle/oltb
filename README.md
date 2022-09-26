@@ -238,8 +238,8 @@ import ZoomIn from './modules/tools/ZoomIn';
 import ZoomOut from './modules/tools/ZoomOut';
 import FullScreen from './modules/tools/FullScreen';
 import ExportPNG from './modules/tools/ExportPNG';
-import DrawTool from './modules/tools/DrawTool';
-import MeasureTool from './modules/tools/MeasureTool';
+import Draw from './modules/tools/Draw';
+import Measure from './modules/tools/Measure';
 import Edit from './modules/tools/Edit';
 import Bookmark from './modules/tools/Bookmark';
 import Layers from './modules/tools/Layers';
@@ -277,8 +277,8 @@ controls: defaultControls({
     new ZoomOut(),
     new FullScreen(),
     new ExportPNG(),
-    new DrawTool(),
-    new MeasureTool(),
+    new Draw(),
+    new Measure(),
     new Edit(),
     new Bookmark(),
     new Layers(),
@@ -356,7 +356,7 @@ controls: defaultControls({
             console.log('Map exported as png');
         }
     }),
-    new DrawTool({
+    new Draw({
         start: function(event) {
             console.log('Draw Start');
         },
@@ -370,7 +370,7 @@ controls: defaultControls({
             console.log('Draw error');
         }
     }),
-    new MeasureTool({
+    new Measure({
         start: function(event) {
             console.log('Measure Start');
         },
