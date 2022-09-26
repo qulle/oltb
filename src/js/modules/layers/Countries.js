@@ -5,7 +5,7 @@ import GeoJSON from 'ol/format/GeoJSON';
 import Toast from "../common/Toast";
 import CONFIG from '../core/Config';
 import { bbox } from 'ol/loadingstrategy';
-import { getMeasureTooltipValue } from "../helpers/olFunctions/Measure";
+import { getMeasureTooltipValue } from "../helpers/olFunctions/Measurements";
 
 import urlCountriesGeoJSON from 'url:../../../json/countries.geojson';
 

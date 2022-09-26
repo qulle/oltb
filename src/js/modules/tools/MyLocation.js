@@ -6,7 +6,7 @@ import DOM from '../helpers/Browser/DOM';
 import { Control } from 'ol/control';
 import { TOOLBAR_ELEMENT } from '../core/ElementReferences';
 import { isFullScreen, exitFullScreen } from '../helpers/Browser/Fullscreen';
-import { generateMarker } from '../helpers/olFunctions/Marker';
+import { generateMarker } from '../helpers/olFunctions/GenerateMarker';
 import { easeOut } from 'ol/easing';
 import { fromLonLat } from 'ol/proj';
 import { SVG_PATHS, getIcon } from '../core/Icons';

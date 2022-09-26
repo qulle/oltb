@@ -10,6 +10,7 @@ import { SVG_PATHS, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { SHORTCUT_KEYS } from '../helpers/Constants/ShortcutKeys';
 import { EVENTS } from '../helpers/Constants/Events';
+import { CONTEXT_MENUS } from '../helpers/Constants/ContextMenus';
 
 const DEFAULT_OPTIONS = {
     zoom: 1,
@@ -50,7 +51,7 @@ class Home extends Control {
         this.userDefinedHomeLocation = null;
         this.userDefinedHomeZoom = null;
 
-        addContextMenuItem('main.map.context.menu', {icon: icon, name: 'Set as home', fn: this.onContextMenuSetHomeLocation.bind(this)});
+        addContextMenuItem(CONTEXT_MENUS.MainMap, {icon: icon, name: 'Set as home', fn: this.onContextMenuSetHomeLocation.bind(this)});
 
         window.addEventListener(EVENTS.Custom.SettingsCleared, this.onWindowClearHomeLocation.bind(this));
         window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));

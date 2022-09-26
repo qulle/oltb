@@ -4,7 +4,7 @@ import InfoWindowManager from '../InfoWindowManager';
 import LayerManager from '../LayerManager';
 import { transform } from 'ol/proj';
 import { toStringHDMS } from 'ol/coordinate';
-import { generateMarker } from '../../../helpers/olFunctions/Marker';
+import { generateMarker } from '../../../helpers/olFunctions/GenerateMarker';
 import { SVG_PATHS, getIcon } from '../../Icons';
 import { EVENTS } from '../../../helpers/Constants/Events';
 

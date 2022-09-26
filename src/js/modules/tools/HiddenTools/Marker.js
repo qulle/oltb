@@ -2,11 +2,12 @@ import LayerManager from '../../core/Managers/LayerManager';
 import MarkerModal from '../ModalExtensions/MarkerModal';
 import { Control } from 'ol/control';
 import { TOOLBAR_ELEMENT } from '../../core/ElementReferences';
-import { generateMarker } from '../../helpers/olFunctions/Marker';
+import { generateMarker } from '../../helpers/olFunctions/GenerateMarker';
 import { addContextMenuItem } from '../../common/ContextMenu';
 import { SVG_PATHS, getIcon } from '../../core/Icons';
 import { toStringHDMS } from 'ol/coordinate';
 import { EVENTS } from '../../helpers/Constants/Events';
+import { CONTEXT_MENUS } from '../../helpers/Constants/ContextMenus';
 
 const DEFAULT_OPTIONS = {};
 
@@ -20,8 +21,8 @@ class HiddenMarker extends Control {
 
         const createIcon = getIcon({path: SVG_PATHS.Plus});
 
-        addContextMenuItem('main.map.context.menu', {icon: createIcon, name: 'Create marker', fn: this.onContextMenuCreateMarker.bind(this)});
-        addContextMenuItem('main.map.context.menu', {});
+        addContextMenuItem(CONTEXT_MENUS.MainMap, {icon: createIcon, name: 'Create marker', fn: this.onContextMenuCreateMarker.bind(this)});
+        addContextMenuItem(CONTEXT_MENUS.MainMap, {});
 
         window.addEventListener(EVENTS.Custom.FeatureEdited, this.onWindowFeatureEdited.bind(this));
         window.addEventListener(EVENTS.Custom.FeatureRemoved, this.onWindowFeatureRemoved.bind(this));

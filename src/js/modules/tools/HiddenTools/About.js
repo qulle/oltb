@@ -5,6 +5,7 @@ import { TOOLBAR_ELEMENT } from '../../core/ElementReferences';
 import { addContextMenuItem } from '../../common/ContextMenu';
 import { SVG_PATHS, getIcon } from '../../core/Icons';
 import { VERSION } from 'ol';
+import { CONTEXT_MENUS } from '../../helpers/Constants/ContextMenus';
 
 class HiddenAbout extends Control {
     constructor() {
@@ -14,8 +15,8 @@ class HiddenAbout extends Control {
 
         const icon = getIcon({path: SVG_PATHS.GitHub});
 
-        addContextMenuItem('main.map.context.menu', {});
-        addContextMenuItem('main.map.context.menu', {icon: icon, name: 'About OLTB', fn: this.onContextMenuAbout.bind(this)});
+        addContextMenuItem(CONTEXT_MENUS.MainMap, {});
+        addContextMenuItem(CONTEXT_MENUS.MainMap, {icon: icon, name: 'About OLTB', fn: this.onContextMenuAbout.bind(this)});
     }
 
     onContextMenuAbout(map, coordinates, target) {

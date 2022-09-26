@@ -10,6 +10,7 @@ import { SVG_PATHS, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { SHORTCUT_KEYS } from '../helpers/Constants/ShortcutKeys';
 import { EVENTS } from '../helpers/Constants/Events';
+import { CONTEXT_MENUS } from '../helpers/Constants/ContextMenus';
 
 const DEFAULT_OPTIONS = {};
 
@@ -40,7 +41,7 @@ class ResetNorth extends Control {
         this.element.appendChild(button);
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
-        addContextMenuItem('main.map.context.menu', {icon: icon, name: 'Set rotation by degrees', fn: this.onContextMenuSetRotation.bind(this)});
+        addContextMenuItem(CONTEXT_MENUS.MainMap, {icon: icon, name: 'Set rotation by degrees', fn: this.onContextMenuSetRotation.bind(this)});
 
         window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
     }

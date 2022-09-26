@@ -14,6 +14,7 @@ import { SVG_PATHS, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { SHORTCUT_KEYS } from '../helpers/Constants/ShortcutKeys';
 import { EVENTS } from '../helpers/Constants/Events';
+import { CONTEXT_MENUS } from '../helpers/Constants/ContextMenus';
 
 const BOOKMARK_BUTTON_DEFAULT_CLASSES = 'oltb-func-btn';
 
@@ -126,8 +127,8 @@ class Bookmark extends Control {
             this.createBookmark(bookmark);
         });
 
-        addContextMenuItem('main.map.context.menu', {icon: icon, name: 'Add location as bookmark', fn: this.onContextMenuBookmarkAdd.bind(this)});
-        addContextMenuItem('main.map.context.menu', {icon: icon, name: 'Clear all bookmarks', fn: this.onContextMenuBookmarksClear.bind(this)});
+        addContextMenuItem(CONTEXT_MENUS.MainMap, {icon: icon, name: 'Add location as bookmark', fn: this.onContextMenuBookmarkAdd.bind(this)});
+        addContextMenuItem(CONTEXT_MENUS.MainMap, {icon: icon, name: 'Clear all bookmarks', fn: this.onContextMenuBookmarksClear.bind(this)});
 
         window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
         window.addEventListener(EVENTS.Custom.SettingsCleared, this.onWindowSettingsCleared.bind(this));

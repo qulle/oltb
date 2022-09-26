@@ -48,6 +48,7 @@ import CONFIG from './modules/core/Config';
 import SettingsManager from './modules/core/Managers/SettingsManager';
 import InfoWindowManager from './modules/core/Managers/InfoWindowManager';
 import { MAP_ELEMENT } from './modules/core/ElementReferences';
+import { CONTEXT_MENUS } from './modules/helpers/Constants/ContextMenus';
 import './modules/epsg/Registrate';
 import './modules/helpers/Browser/Prototypes';
 import './modules/helpers/Accessibility';
@@ -322,7 +323,7 @@ const map = new Map({
         new DebugInfo(),
         new HiddenAbout(),
         new ContextMenu({
-            name: 'main.map.context.menu', 
+            name: CONTEXT_MENUS.MainMap, 
             selector: '#map canvas'
         })
     ]),

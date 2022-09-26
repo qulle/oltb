@@ -7,6 +7,7 @@ import { fromLonLat, toLonLat } from 'ol/proj';
 import { addContextMenuItem } from '../../common/ContextMenu';
 import { SVG_PATHS, getIcon } from '../../core/Icons';
 import { EVENTS } from '../../helpers/Constants/Events';
+import { CONTEXT_MENUS } from '../../helpers/Constants/ContextMenus';
 
 // Note: This is the same NODE_NAME and PROPS that the map.js file is using
 const LOCAL_STORAGE_NODE_NAME = 'mapData';
@@ -36,9 +37,9 @@ class HiddenMapNavigation extends Control {
         const moveCenterIcon = getIcon({path: SVG_PATHS.MoveCenter});
         const focusHereIcon = getIcon({path: SVG_PATHS.FocusHere});
 
-        addContextMenuItem('main.map.context.menu', {icon: moveCenterIcon, name: 'Center map here', fn: this.onContextMenuCenterMap.bind(this)});
-        addContextMenuItem('main.map.context.menu', {icon: focusHereIcon, name: 'Focus here', fn: this.onContextMenuFocusHere.bind(this)});
-        addContextMenuItem('main.map.context.menu', {});
+        addContextMenuItem(CONTEXT_MENUS.MainMap, {icon: moveCenterIcon, name: 'Center map here', fn: this.onContextMenuCenterMap.bind(this)});
+        addContextMenuItem(CONTEXT_MENUS.MainMap, {icon: focusHereIcon, name: 'Focus here', fn: this.onContextMenuFocusHere.bind(this)});
+        addContextMenuItem(CONTEXT_MENUS.MainMap, {});
 
         // Track changes to zoom, paning etc. store in localStorage
         // The event needs to be delayed and wrapped in order for the getMap() to return the correct object

@@ -20,6 +20,7 @@ import { instantiateFormat } from '../core/olTypes/FormatTypes';
 import { hasNestedProperty } from '../helpers/HasNestedProperty';
 import { SHORTCUT_KEYS } from '../helpers/Constants/ShortcutKeys';
 import { EVENTS } from '../helpers/Constants/Events';
+import { CONTEXT_MENUS } from '../helpers/Constants/ContextMenus';
 
 const LAYER_BUTTON_DEFAULT_CLASSES = 'oltb-func-btn';
 /* 
@@ -173,7 +174,7 @@ class Layers extends Control {
         }
 
         if(!this.options.disableMapCreateLayerButton) {
-            addContextMenuItem('main.map.context.menu', {icon: icon, name: 'Add map layer', fn: this.onContextMenuAddMapLayerModal.bind(this)});
+            addContextMenuItem(CONTEXT_MENUS.MainMap, {icon: icon, name: 'Add map layer', fn: this.onContextMenuAddMapLayerModal.bind(this)});
         }
 
         window.addEventListener(EVENTS.Custom.MapLayerAdded, this.onWindowMapLayerAdded.bind(this));
