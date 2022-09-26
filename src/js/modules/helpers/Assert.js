@@ -17,8 +17,12 @@ class Assert {
         this.check((left === right), message);
     }
 
-    static objectIs(left, right, message) {
-        this.check(Object.is(left, right), message);
+    static notEqualTo(left, right, message) {
+        this.check((left !== right), message);
+    }
+
+    static objectIsNot(left, right, message) {
+        this.check((!Object.is(left, right)), message);
     }
 
     static greaterThan(left, right, message) {

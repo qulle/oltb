@@ -91,11 +91,10 @@ class Bookmark extends Control {
             </div>
         `);
 
-        const bookmarksToolbox = document.querySelector('#oltb-bookmarks-toolbox');
-        this.bookmarksToolbox = bookmarksToolbox;
+        this.bookmarksToolbox = document.querySelector('#oltb-bookmarks-toolbox');
 
-        const addBookmarkBtn = bookmarksToolbox.querySelector('#oltb-add-bookmark-btn');
-        const addBookmarkTxt = bookmarksToolbox.querySelector('#oltb-add-bookmark-txt');
+        const addBookmarkBtn = this.bookmarksToolbox.querySelector('#oltb-add-bookmark-btn');
+        const addBookmarkTxt = this.bookmarksToolbox.querySelector('#oltb-add-bookmark-txt');
 
         addBookmarkBtn.addEventListener(EVENTS.Browser.Click, (event) => {
             this.addBookmark(addBookmarkTxt.value);
@@ -109,10 +108,9 @@ class Bookmark extends Control {
             }
         });
 
-        const bookmarkStack = bookmarksToolbox.querySelector('#oltb-bookmark-stack');
-        this.bookmarkStack = bookmarkStack;
+        this.bookmarkStack = this.bookmarksToolbox.querySelector('#oltb-bookmark-stack');
 
-        const toggleableTriggers = bookmarksToolbox.querySelectorAll('.oltb-toggleable');
+        const toggleableTriggers = this.bookmarksToolbox.querySelectorAll('.oltb-toggleable');
         toggleableTriggers.forEach((toggle) => {
             toggle.addEventListener(EVENTS.Browser.Click, (event) => {
                 const targetName = toggle.dataset.oltbToggleableTarget;
@@ -145,6 +143,7 @@ class Bookmark extends Control {
                 this.handleClick(event);
             }
         });
+
         window.addEventListener(EVENTS.Custom.SettingsCleared, () => {
             this.localStorage = LOCAL_STORAGE_DEFAULTS;
         });

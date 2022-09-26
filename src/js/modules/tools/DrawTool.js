@@ -110,13 +110,9 @@ class DrawTool extends Control {
             </div>
         `);
 
-        const drawToolbox = document.querySelector('#oltb-drawing-tool-box');
-        const toolType = drawToolbox.querySelector('#oltb-draw-type');
-        const fillColor = drawToolbox.querySelector('#oltb-draw-fill-color');
-        const strokeWidth = drawToolbox.querySelector('#oltb-draw-stroke-width');
-        const strokeColor = drawToolbox.querySelector('#oltb-draw-stroke-color');
+        this.drawToolbox = document.querySelector('#oltb-drawing-tool-box');
 
-        const toggleableTriggers = drawToolbox.querySelectorAll('.oltb-toggleable');
+        const toggleableTriggers = this.drawToolbox.querySelectorAll('.oltb-toggleable');
         toggleableTriggers.forEach((toggle) => {
             toggle.addEventListener(EVENTS.Browser.Click, (event) => {
                 const targetName = toggle.dataset.oltbToggleableTarget;
@@ -127,34 +123,38 @@ class DrawTool extends Control {
             });
         });
 
-        toolType.addEventListener(EVENTS.Browser.Change, () => updateTool());
-        fillColor.addEventListener(EVENTS.Custom.ColorChange, () => updateTool());
-        strokeWidth.addEventListener(EVENTS.Browser.Change, () => updateTool());
-        strokeColor.addEventListener(EVENTS.Custom.ColorChange, () => updateTool());
+        this.toolType = this.drawToolbox.querySelector('#oltb-draw-type');
+        this.toolType.addEventListener(EVENTS.Browser.Change, () => updateTool());
 
-        toolType.selectedIndex = this.localStorage.toolTypeIndex;
-        strokeWidth.selectedIndex = this.localStorage.strokeWidth;
+        this.fillColor = this.drawToolbox.querySelector('#oltb-draw-fill-color');
+        this.fillColor.addEventListener(EVENTS.Custom.ColorChange, () => updateTool());
+
+        this.strokeWidth = this.drawToolbox.querySelector('#oltb-draw-stroke-width');
+        this.strokeWidth.addEventListener(EVENTS.Browser.Change, () => updateTool());
+
+        this.strokeColor = this.drawToolbox.querySelector('#oltb-draw-stroke-color');
+        this.strokeColor.addEventListener(EVENTS.Custom.ColorChange, () => updateTool());
+
+        this.toolType.selectedIndex = this.localStorage.toolTypeIndex;
+        this.strokeWidth.selectedIndex = this.localStorage.strokeWidth;
 
         const updateTool = () => {
             // Store current values in local storage
-            this.localStorage.toolTypeIndex = toolType.selectedIndex;
-            this.localStorage.fillColor = fillColor.getAttribute('data-oltb-color');
-            this.localStorage.strokeWidth = strokeWidth.selectedIndex;
-            this.localStorage.strokeColor = strokeColor.getAttribute('data-oltb-color');;
+            this.localStorage.toolTypeIndex = this.toolType.selectedIndex;
+            this.localStorage.fillColor = this.fillColor.getAttribute('data-oltb-color');
+            this.localStorage.strokeWidth = this.strokeWidth.selectedIndex;
+            this.localStorage.strokeColor = this.strokeColor.getAttribute('data-oltb-color');;
 
             StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
 
             // Update the draw tool in the map
             this.selectDrawTool(
-                toolType.value,
-                fillColor.getAttribute('data-oltb-color'),
-                strokeWidth.value,
-                strokeColor.getAttribute('data-oltb-color')
+                this.toolType.value,
+                this.fillColor.getAttribute('data-oltb-color'),
+                this.strokeWidth.value,
+                this.strokeColor.getAttribute('data-oltb-color')
             );
         }
-
-        this.drawToolbox = drawToolbox;
-        this.toolType = toolType;
 
         document.addEventListener(EVENTS.Browser.KeyUp, (event) => {
             const key = event.key.toLowerCase();

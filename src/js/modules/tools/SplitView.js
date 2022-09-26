@@ -77,18 +77,15 @@ class SplitView extends Control {
             <input type="range" min="0" max="100" value="50" class="oltb-slider" id="oltb-split-view-slider">
         `);
 
-        const splitViewToolbox = document.querySelector('#oltb-split-view-toolbox');
-        this.splitViewToolbox = splitViewToolbox;
+        this.splitViewToolbox = document.querySelector('#oltb-split-view-toolbox');
 
-        const leftSrc = splitViewToolbox.querySelector('#oltb-left-src');
-        leftSrc.addEventListener(EVENTS.Browser.Change, () => updateTool());
-        this.leftSrc = leftSrc;
+        this.leftSrc = this.splitViewToolbox.querySelector('#oltb-left-src');
+        this.leftSrc.addEventListener(EVENTS.Browser.Change, () => updateTool());
 
-        const rightSrc = splitViewToolbox.querySelector('#oltb-right-src');
-        rightSrc.addEventListener(EVENTS.Browser.Change, () => updateTool());
-        this.rightSrc = rightSrc;
+        this.rightSrc = this.splitViewToolbox.querySelector('#oltb-right-src');
+        this.rightSrc.addEventListener(EVENTS.Browser.Change, () => updateTool());
 
-        const toggleableTriggers = splitViewToolbox.querySelectorAll('.oltb-toggleable');
+        const toggleableTriggers = this.splitViewToolbox.querySelectorAll('.oltb-toggleable');
         toggleableTriggers.forEach((toggle) => {
             toggle.addEventListener(EVENTS.Browser.Click, (event) => {
                 const targetName = toggle.dataset.oltbToggleableTarget;
@@ -101,22 +98,20 @@ class SplitView extends Control {
 
         const updateTool = () => {
             this.sourceChange(
-                parseInt(leftSrc.value, 10), 
-                parseInt(rightSrc.value, 10)
+                parseInt(this.leftSrc.value, 10), 
+                parseInt(this.rightSrc.value, 10)
             );
         }
 
-        const swapSidesBtn = splitViewToolbox.querySelector('#oltb-swap-sides-btn');
+        const swapSidesBtn = this.splitViewToolbox.querySelector('#oltb-swap-sides-btn');
         swapSidesBtn.addEventListener(EVENTS.Browser.Click, (event) => {
             this.swapSides();
         });
         
-        const splitViewSlider = MAP_ELEMENT.querySelector('#oltb-split-view-slider');
-        splitViewSlider.addEventListener(EVENTS.Browser.Input, (event) => {
+        this.splitViewSlider = MAP_ELEMENT.querySelector('#oltb-split-view-slider');
+        this.splitViewSlider.addEventListener(EVENTS.Browser.Input, (event) => {
             this.getMap().render();
         });
-        
-        this.splitViewSlider = splitViewSlider;
 
         window.addEventListener(EVENTS.Custom.MapLayerAdded, this.mapLayerAdded.bind(this));
         window.addEventListener(EVENTS.Custom.MapLayerRemoved, this.mapLayerRemoved.bind(this));

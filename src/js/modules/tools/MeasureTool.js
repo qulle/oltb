@@ -85,11 +85,12 @@ class MeasureTool extends Control {
             </div>
         `);
 
-        const measureToolbox = document.querySelector('#oltb-measure-toolbox');
-        const toolType = measureToolbox.querySelector('#oltb-measure-type');
-        const strokeColor = measureToolbox.querySelector('#oltb-measure-stroke-color');
+        this.measureToolbox = document.querySelector('#oltb-measure-toolbox');
+        this.toolType = this.measureToolbox.querySelector('#oltb-measure-type');
+        this.toolType.selectedIndex = this.localStorage.toolTypeIndex;
+        this.strokeColor = this.measureToolbox.querySelector('#oltb-measure-stroke-color');
 
-        const toggleableTriggers = measureToolbox.querySelectorAll('.oltb-toggleable');
+        const toggleableTriggers = this.measureToolbox.querySelectorAll('.oltb-toggleable');
         toggleableTriggers.forEach((toggle) => {
             toggle.addEventListener(EVENTS.Browser.Click, (event) => {
                 const targetName = toggle.dataset.oltbToggleableTarget;
@@ -100,27 +101,21 @@ class MeasureTool extends Control {
             });
         });
 
-        toolType.addEventListener(EVENTS.Browser.Change, () => updateTool());
-        strokeColor.addEventListener(EVENTS.Custom.ColorChange, () => updateTool());
-
-        toolType.selectedIndex = this.localStorage.toolTypeIndex;
+        this.toolType.addEventListener(EVENTS.Browser.Change, () => updateTool());
+        this.strokeColor.addEventListener(EVENTS.Custom.ColorChange, () => updateTool());
 
         const updateTool = () => {
             // Store current values in local storage
-            this.localStorage.toolTypeIndex = toolType.selectedIndex;
-            this.localStorage.strokeColor = strokeColor.getAttribute('data-oltb-color');;
+            this.localStorage.toolTypeIndex = this.toolType.selectedIndex;
+            this.localStorage.strokeColor = this.strokeColor.getAttribute('data-oltb-color');;
 
             StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
 
             this.selectMeasureTool(
-                toolType.value,
-                strokeColor.getAttribute('data-oltb-color')
+                this.toolType.value,
+                this.strokeColor.getAttribute('data-oltb-color')
             );
         }
-
-        this.measureToolbox = measureToolbox;
-        this.toolType = toolType;
-        this.strokeColor = strokeColor;
 
         document.addEventListener(EVENTS.Browser.KeyUp, (event) => {
             const key = event.key.toLowerCase();

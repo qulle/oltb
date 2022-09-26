@@ -60,10 +60,9 @@ class Overview extends Control {
             </div>
         `);
 
-        const overviewToolbox = document.querySelector('#oltb-overview-toolbox');
-        this.overviewToolbox = overviewToolbox;
+        this.overviewToolbox = document.querySelector('#oltb-overview-toolbox');
 
-        const toggleableTriggers = overviewToolbox.querySelectorAll('.oltb-toggleable');
+        const toggleableTriggers = this.overviewToolbox.querySelectorAll('.oltb-toggleable');
         toggleableTriggers.forEach((toggle) => {
             toggle.addEventListener(EVENTS.Browser.Click, (event) => {
                 const targetName = toggle.dataset.oltbToggleableTarget;

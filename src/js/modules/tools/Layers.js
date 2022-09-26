@@ -132,13 +132,10 @@ class Layers extends Control {
             </div>
         `);
 
-        const layersToolbox = document.querySelector('#oltb-layers-toolbox');
-        this.layersToolbox = layersToolbox;
-        
-        const mapLayerStack = layersToolbox.querySelector('#oltb-map-layer-stack');
-        this.mapLayerStack = mapLayerStack;
+        this.layersToolbox = document.querySelector('#oltb-layers-toolbox');
+        this.mapLayerStack = this.layersToolbox.querySelector('#oltb-map-layer-stack');
 
-        const toggleableTriggers = layersToolbox.querySelectorAll('.oltb-toggleable');
+        const toggleableTriggers = this.layersToolbox.querySelectorAll('.oltb-toggleable');
         toggleableTriggers.forEach((toggle) => {
             toggle.addEventListener(EVENTS.Browser.Click, (event) => {
                 const targetName = toggle.dataset.oltbToggleableTarget;
@@ -149,11 +146,10 @@ class Layers extends Control {
             });
         });
 
-        const featureLayerStack = layersToolbox.querySelector('#oltb-feature-layer-stack');
-        this.featureLayerStack = featureLayerStack;
+        this.featureLayerStack = this.layersToolbox.querySelector('#oltb-feature-layer-stack');
 
-        const addFeatureLayerBtn = layersToolbox.querySelector('#oltb-add-feature-layer-btn');
-        const addFeatureLayerTxt = layersToolbox.querySelector('#oltb-add-feature-layer-txt');
+        const addFeatureLayerBtn = this.layersToolbox.querySelector('#oltb-add-feature-layer-btn');
+        const addFeatureLayerTxt = this.layersToolbox.querySelector('#oltb-add-feature-layer-txt');
 
         if(addFeatureLayerBtn) {
             addFeatureLayerBtn.addEventListener(EVENTS.Browser.Click, function(event) {
@@ -171,7 +167,7 @@ class Layers extends Control {
             });
         }
 
-        const addMapLayerBtn = layersToolbox.querySelector('#oltb-add-map-layer-btn');
+        const addMapLayerBtn = this.layersToolbox.querySelector('#oltb-add-map-layer-btn');
         if(addMapLayerBtn) {
             addMapLayerBtn.addEventListener(EVENTS.Browser.Click, this.showAddMapLayerModal.bind(this));
         }
@@ -280,7 +276,7 @@ class Layers extends Control {
         const disableDownloadButton = this.options.disableFeatureLayerDownloadButton;
         const disableDeleteButton = this.options.disableFeatureLayerDeleteButton;
 
-        // Add to UI
+        // Add to UI, this will check if the user has disabled any of the UI-buttons for a layer
         this.createLayerItem(layerWrapper, {
             idPrefix: 'oltb-feature-layer',
             target: this.featureLayerStack,

@@ -72,14 +72,12 @@ class Edit extends Control {
             </div>
         `);
 
-        const editToolbox = document.querySelector('#oltb-edit-toolbox');
-        this.editToolbox = editToolbox;
+        this.editToolbox = document.querySelector('#oltb-edit-toolbox');
 
-        const deleteSelectedButton = editToolbox.querySelector('#oltb-delete-selected-btn');
-        this.deleteSelectedButton = deleteSelectedButton;
-        deleteSelectedButton.addEventListener(EVENTS.Browser.Click, this.deleteSelectedFeatures.bind(this));
+        this.deleteSelectedButton = this.editToolbox.querySelector('#oltb-delete-selected-btn');
+        this.deleteSelectedButton.addEventListener(EVENTS.Browser.Click, this.deleteSelectedFeatures.bind(this));
 
-        const toggleableTriggers = editToolbox.querySelectorAll('.oltb-toggleable');
+        const toggleableTriggers = this.editToolbox.querySelectorAll('.oltb-toggleable');
         toggleableTriggers.forEach((toggle) => {
             toggle.addEventListener(EVENTS.Browser.Click, (event) => {
                 const targetName = toggle.dataset.oltbToggleableTarget;
@@ -90,7 +88,7 @@ class Edit extends Control {
             });
         });
 
-        const select = new Select({
+        this.select = new Select({
             hitTolerance: 5,
             filter: function(feature, layer) {
                 const selectable = !hasNestedProperty(feature.getProperties(), 'notSelectable');
@@ -102,18 +100,18 @@ class Edit extends Control {
             }
         });
         
-        const modify = new Modify({
-            features: select.getFeatures(),
+        this.modify = new Modify({
+            features: this.select.getFeatures(),
             condition: function(event) {
                 return shiftKeyOnly(event);
             }
         });
 
-        const translate = new Translate({
-            features: select.getFeatures(),
+        this.translate = new Translate({
+            features: this.select.getFeatures(),
         });
 
-        select.getFeatures().on(EVENTS.Ol.Add, (event) => {
+        this.select.getFeatures().on(EVENTS.Ol.Add, (event) => {
             this.deleteSelectedButton.removeAttribute('disabled');
 
             // User defined callback from constructor
@@ -122,8 +120,8 @@ class Edit extends Control {
             }
         });
 
-        select.getFeatures().on(EVENTS.Ol.Remove, (event) => {
-            if(!select.getFeatures().getLength()) {
+        this.select.getFeatures().on(EVENTS.Ol.Remove, (event) => {
+            if(!this.select.getFeatures().getLength()) {
                 this.deleteSelectedButton.setAttribute('disabled', '');
             }
 
@@ -132,10 +130,6 @@ class Edit extends Control {
                 this.options.selectremove(event);
             }
         });
-
-        this.select = select;
-        this.modify = modify;
-        this.translate = translate;
 
         this.modify.addEventListener(EVENTS.Ol.ModifyStart, (event) => {
             event.features.forEach((feature) => {
