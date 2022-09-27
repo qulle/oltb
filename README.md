@@ -816,7 +816,7 @@ const LOCAL_STORAGE_DEFAULTS = {
     toolTypeIndex: 5,
     strokeColor: '#4A86B8',
     strokeWidth: 2,
-    fillColor: '#FFFFFFFF'
+    fillColor: '#FFFFFF80'
 };
 ```
 
