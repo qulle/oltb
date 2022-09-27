@@ -625,10 +625,18 @@ Tools that create objects at runtime, for example the BookmarkTool, LayerTool et
 Tools refered to as hidden tools are tools that only add functionality via the context menu. The hidden tools are used to enable the same type of callback functions in the constructor as every other tool. 
 
 ### Shortcut keys
-All tools have a shortcut key for ease of use and speeds up the handling of the toolbar and map. The shortcut key is displayed in the tooltip on the corresponding tool.
+All tools have a shortcut key for ease of use and speeds up the handling of the toolbar and map. The shortcut key is displayed in the tooltip on the corresponding tool. All shortcut keys are stored in the module `./modules/helpers/Constants/ShortcutKeys`.
+```javascript
+const SHORTCUT_KEYS = {
+    AreaOverview: 'A',
+    Bookmark: 'B',
+    Coordinates: 'C'
+    ...
+};
+```
 
 ### Custom projections
-You can define custom projections in the file `./modules/epsg/Projections`. This file is imported in the main `map.js` file and your projection can be used throughout the project. If you want to change the default proejction used, there is a general config file `./modules/core/Config.js` where you can change that.
+You can define custom projections in the file `./modules/epsg/Projections`. This file is registrated in `proj4.js` and the projections can be used throughout the project. If you want to change the default projection used, there is a general config module `./modules/core/Config` where you can change that. More projections can be fetched here [https://epsg.io/](https://epsg.io/).
 
 ### Layers
 Layers are added to the map using the `LayerManager`. The manager handels internal functionality and fires of events that the layer-tool captures to create the UI.
