@@ -758,19 +758,26 @@ import ContextMenu from './modules/common/ContextMenu';
 To create a context menu call the constructor and give a unique name as the first argument and a selector to trigger the menu. The context menu class extends the Control class from OpenLayers.
 ```javascript
 map.addControl(new ContextMenu({
-    name: 'main.map.context.menu', 
+    name: CONTEXT_MENUS.MainMap, 
     selector: '#map canvas'
 });
 ```
 
+There is a module for storing context menu names located in `./modules/helpers/Constants/ContextMenus`.
+```javascript
+const CONTEXT_MENUS = {
+    MainMap: 'main.map.context.menu'
+};
+```
+
 To add items to the context menu use the function `addContextMenuItem` and give the name that matches the context menu aswell as the name/label of the item, the icon and a function to call when the item is clicked.
 ```javascript
-addContextMenuItem('main.map.context.menu', {icon: '<svg>...</svg>', name: 'Zoom home', fn: this.handleResetToHome.bind(this)});
+addContextMenuItem(CONTEXT_MENUS.MainMap, {icon: '<svg>...</svg>', name: 'Zoom home', fn: this.handleResetToHome.bind(this)});
 ```
 
 The callback function recieves a references to the map, the clicked coordinates and the target element (the canvas).
 ```javascript
-addContextMenuItem('main.map.context.menu', {icon: '<svg>...</svg>', name: 'Clear settings', fn: function(map, coordinates, target) {
+addContextMenuItem(CONTEXT_MENUS.MainMap, {icon: '<svg>...</svg>', name: 'Clear settings', fn: function(map, coordinates, target) {
     Dialog.confirm({
         text: 'Do you want to clear all settings?',
         onConfirm: function() {
@@ -784,7 +791,7 @@ It is not important in what order the menu or its items are created. If no menu 
 
 To insert a separator in the menu add an empty object.
 ```javascript
-addContextMenuItem('main.map.context.menu', {});
+addContextMenuItem(CONTEXT_MENUS.MainMap, {});
 ```
 
 ### State Management
