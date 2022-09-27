@@ -1,22 +1,24 @@
+const DEFAULT_OPTIONS = {
+    width: 24,
+    height: 24,
+    fill: 'currentColor',
+    stroke: 'none',
+    class: '',
+    path: undefined
+};
+
 const getIcon = function(options = {}) {
-    const {
-        width = 24,
-        height = 24,
-        fill = 'currentColor',
-        stroke = 'none',
-        class: classes = '',
-        path
-    } = options;
+    options = { ...DEFAULT_OPTIONS, ...options };
 
     return `
         <svg xmlns="http://www.w3.org/2000/svg" 
-            width="${width}" 
-            height="${height}" 
-            fill="${fill}"
-            stroke="${stroke}" 
-            class="${classes}" 
+            width="${options.width}" 
+            height="${options.height}" 
+            fill="${options.fill}"
+            stroke="${options.stroke}" 
+            class="${options.class}" 
             viewBox="0 0 16 16">
-            ${path}
+            ${options.path}
         </svg>
     `;
 }

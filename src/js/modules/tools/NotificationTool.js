@@ -10,8 +10,10 @@ import { EVENTS } from '../helpers/Constants/Events';
 
 const NOTIFICATION_URL = 'https://raw.githubusercontent.com/qulle/notification-endpoints/main/endpoints/oltb.json';
 
-class Notification extends Control {
-    constructor() {
+const DEFAULT_OPTIONS = {};
+
+class NotificationTool extends Control {
+    constructor(options = {}) {
         super({
             element: TOOLBAR_ELEMENT
         });
@@ -36,6 +38,7 @@ class Notification extends Control {
 
         this.element.appendChild(button);
         this.notificationModal = undefined;
+        this.options = { ...DEFAULT_OPTIONS, ...options };
 
         window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
     }
@@ -47,14 +50,19 @@ class Notification extends Control {
     }
 
     handleClick() {
+        // User defined callback from constructor
+        if(typeof this.options.click === 'function') {
+            this.options.click();
+        }
+
+        this.handleFetchData();
+    }
+
+    handleFetchData() {
         if(this.notificationModal) {
             return;
         }
 
-        this.fetchData();
-    }
-
-    fetchData() {
         this.notificationModal = Modal.create({
             title: 'Notifications',
             content: '<p>Loading notifications...</p>',
@@ -124,4 +132,4 @@ class Notification extends Control {
     }
 }
 
-export default Notification;
+export default NotificationTool;

@@ -14,7 +14,7 @@ import { CONTEXT_MENUS } from '../helpers/Constants/ContextMenus';
 
 const DEFAULT_OPTIONS = {};
 
-class ResetNorth extends Control {
+class ResetNorthTool extends Control {
     constructor(options = {}) {
         super({
             element: TOOLBAR_ELEMENT
@@ -78,6 +78,11 @@ class ResetNorth extends Control {
     }
 
     handleClick() {
+        // User defined callback from constructor
+        if(typeof this.options.click === 'function') {
+            this.options.click();
+        }
+        
         this.handleResetNorth();
     }
 
@@ -103,4 +108,4 @@ class ResetNorth extends Control {
     }
 }
 
-export default ResetNorth;
+export default ResetNorthTool;

@@ -11,7 +11,7 @@ import { CONTEXT_MENUS } from '../../helpers/Constants/ContextMenus';
 
 const DEFAULT_OPTIONS = {};
 
-class HiddenMarker extends Control {
+class HiddenMarkerTool extends Control {
     constructor(options = {}) {
         super({
             element: TOOLBAR_ELEMENT
@@ -91,4 +91,4 @@ class HiddenMarker extends Control {
     }
 }
 
-export default HiddenMarker;
+export default HiddenMarkerTool;

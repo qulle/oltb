@@ -10,7 +10,7 @@ import { EVENTS } from '../helpers/Constants/Events';
 
 const DEFAULT_OPTIONS = {};
 
-class ZoomOut extends Control {
+class ZoomOutTool extends Control {
     constructor(options = {}) {
         super({
             element: TOOLBAR_ELEMENT
@@ -48,6 +48,11 @@ class ZoomOut extends Control {
     }
 
     handleClick() {
+        // User defined callback from constructor
+        if(typeof this.options.click === 'function') {
+            this.options.click();
+        }
+        
         this.handleZoomByDelta();
     }
 
@@ -76,4 +81,4 @@ class ZoomOut extends Control {
     }
 }
 
-export default ZoomOut;
+export default ZoomOutTool;

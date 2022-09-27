@@ -1,6 +1,6 @@
 import Point from 'ol/geom/Point';
 import Feature from 'ol/Feature';
-import { Circle as CircleStyle, Fill, Icon, Stroke, Style } from 'ol/style';
+import { Circle, Fill, Icon, Stroke, Style } from 'ol/style';
 import { fromLonLat } from 'ol/proj';
 import { SVG_PATHS, getIcon } from '../../core/Icons';
 
@@ -37,7 +37,7 @@ const generateMarker = function(options = {}) {
 
     marker.setStyle([
         new Style({
-            image: new CircleStyle({
+            image: new Circle({
                 radius: options.radius,
                 fill: new Fill({color: options.backgroundColor}),
                 stroke: new Stroke({

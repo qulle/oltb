@@ -9,8 +9,10 @@ import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { SHORTCUT_KEYS } from '../helpers/Constants/ShortcutKeys';
 import { EVENTS } from '../helpers/Constants/Events';
 
-class Magnify extends Control {
-    constructor() {
+const DEFAULT_OPTIONS = {};
+
+class MagnifyTool extends Control {
+    constructor(options = {}) {
         super({
             element: TOOLBAR_ELEMENT
         });
@@ -36,6 +38,7 @@ class Magnify extends Control {
         this.element.appendChild(button);
         this.button = button;
         this.radius = 75;
+        this.options = { ...DEFAULT_OPTIONS, ...options };
 
         window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
     }
@@ -46,9 +49,19 @@ class Magnify extends Control {
         }
     }
 
-    handleClick() {    
+    handleClick() {
+        // User defined callback from constructor
+        if(typeof this.options.click === 'function') {
+            this.options.click();
+        }
+
+        this.handleMagnify();
+    }
+
+    handleMagnify() {
+        const map = this.getMap();
+
         if(this.active) {
-            const map = this.getMap();
             const mapContainer = map.getTarget();
 
             // Remove the eventlisteners
@@ -63,30 +76,25 @@ class Magnify extends Control {
             // Update the map to remove the last rendering of the magnifier
             map.render();
         }else {
-            this.handleMagnify();
+            const mapContainer = map.getTarget();
+    
+            this.onMousemoveListenert = this.onMousemove.bind(this);
+            mapContainer.addEventListener(EVENTS.Browser.MouseMove, this.onMousemoveListenert);
+    
+            this.onMouseoutListenert = this.onMouseout.bind(this);
+            mapContainer.addEventListener(EVENTS.Browser.MouseOut, this.onMouseoutListenert);
+    
+            this.onKeydownListener = this.onKeydown.bind(this);
+            document.addEventListener(EVENTS.Browser.KeyDown, this.onKeydownListener);
+    
+            this.onPostrenderListeners = [];
+            map.getLayers().getArray().forEach((layer) => {
+                this.onPostrenderListeners.push(layer.on(EVENTS.Ol.PostRender, this.onPostrender.bind(this)));
+            });
         }
 
         this.active = !this.active;
         this.button.classList.toggle('oltb-tool-button--active');
-    }
-
-    handleMagnify() {
-        const map = this.getMap();
-        const mapContainer = map.getTarget();
-
-        this.onMousemoveListenert = this.onMousemove.bind(this);
-        mapContainer.addEventListener(EVENTS.Browser.MouseMove, this.onMousemoveListenert);
-
-        this.onMouseoutListenert = this.onMouseout.bind(this);
-        mapContainer.addEventListener(EVENTS.Browser.MouseOut, this.onMouseoutListenert);
-
-        this.onKeydownListener = this.onKeydown.bind(this);
-        document.addEventListener(EVENTS.Browser.KeyDown, this.onKeydownListener);
-
-        this.onPostrenderListeners = [];
-        map.getLayers().getArray().forEach((layer) => {
-            this.onPostrenderListeners.push(layer.on(EVENTS.Ol.PostRender, this.onPostrender.bind(this)));
-        });
     }
 
     onKeydown(event) {
@@ -189,4 +197,4 @@ class Magnify extends Control {
     }
 }
 
-export default Magnify;
+export default MagnifyTool;

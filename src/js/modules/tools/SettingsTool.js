@@ -14,7 +14,7 @@ import { CONTEXT_MENUS } from '../helpers/Constants/ContextMenus';
 
 const DEFAULT_OPTIONS = {};
 
-class Settings extends Control {
+class SettingsTool extends Control {
     constructor(options = {}) {
         super({
             element: TOOLBAR_ELEMENT
@@ -77,6 +77,15 @@ class Settings extends Control {
     }
 
     handleClick() {
+        // User defined callback from constructor
+        if(typeof this.options.click === 'function') {
+            this.options.click();
+        }
+
+        this.handleSettings();
+    }
+
+    handleSettings() {
         if(this.settingsModal) {
             return;
         }
@@ -89,4 +98,4 @@ class Settings extends Control {
     }
 }
 
-export default Settings;
+export default SettingsTool;

@@ -13,7 +13,7 @@ const DEFAULT_OPTIONS = {
     showWhenGetParameter: false
 };
 
-class DebugInfo extends Control {
+class DebugInfoTool extends Control {
     constructor(options = {}) {
         super({
             element: TOOLBAR_ELEMENT
@@ -60,6 +60,15 @@ class DebugInfo extends Control {
     }
 
     handleClick() {
+        // User defined callback from constructor
+        if(typeof this.options.click === 'function') {
+            this.options.click();
+        }
+
+        this.handleDebugInfo();
+    }
+
+    handleDebugInfo() {
         if(this.debugInfoModal) {
             return;
         }
@@ -85,4 +94,4 @@ class DebugInfo extends Control {
     }
 }
 
-export default DebugInfo;
+export default DebugInfoTool;

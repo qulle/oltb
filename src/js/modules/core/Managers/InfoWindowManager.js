@@ -25,7 +25,7 @@ class InfoWindowManager {
         this.map = map;
 
         // Create DOM elements
-        const infoWindow = DOM.createElement({
+        this.infoWindow = DOM.createElement({
             element: 'div',
             class: 'oltb-info-window',
             attributes: {
@@ -34,6 +34,11 @@ class InfoWindowManager {
             listeners: {
                 'keydown': trapFocusKeyListener
             }
+        });
+
+        this.content = DOM.createElement({
+            element: 'div',
+            class: 'oltb-info-window__content'
         });
 
         const closeButton = DOM.createElement({
@@ -49,20 +54,12 @@ class InfoWindowManager {
             }
         });
 
-        const content = DOM.createElement({
-            element: 'div',
-            class: 'oltb-info-window__content'
-        });
-
-        this.infoWindow = infoWindow;
-        this.content = content;
-
-        infoWindow.appendChild(closeButton);
-        infoWindow.appendChild(content);
+        this.infoWindow.appendChild(closeButton);
+        this.infoWindow.appendChild(this.content);
 
         // Create ol overlay
         this.overlay = new Overlay({
-            element: infoWindow,
+            element: this.infoWindow,
             autoPan: true,
             autoPanAnimation: {
                 duration: CONFIG.animationDuration

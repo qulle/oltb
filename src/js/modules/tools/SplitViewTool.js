@@ -19,8 +19,10 @@ const LOCAL_STORAGE_DEFAULTS = {
 
 const RADIX = 10;
 
-class SplitView extends Control {
-    constructor() {
+const DEFAULT_OPTIONS = {};
+
+class SplitViewTool extends Control {
+    constructor(options = {}) {
         super({
             element: TOOLBAR_ELEMENT
         });
@@ -46,6 +48,7 @@ class SplitView extends Control {
         this.element.appendChild(button);
         this.button = button;
         this.active = false;
+        this.options = { ...DEFAULT_OPTIONS, ...options };
 
         // Load potential stored data from localStorage
         const localStorageState = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
@@ -170,6 +173,11 @@ class SplitView extends Control {
     }
 
     handleClick() {
+        // User defined callback from constructor
+        if(typeof this.options.click === 'function') {
+            this.options.click();
+        }
+
         this.handleSplitView();
     }
 
@@ -308,4 +316,4 @@ class SplitView extends Control {
     }
 }
 
-export default SplitView;
+export default SplitViewTool;

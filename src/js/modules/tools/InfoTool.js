@@ -1,4 +1,4 @@
-import Toast from '../common/Toast';
+import Modal from '../common/Modal';
 import DOM from '../helpers/Browser/DOM';
 import { Control } from 'ol/control';
 import { TOOLBAR_ELEMENT } from '../core/ElementReferences';
@@ -8,18 +8,18 @@ import { SHORTCUT_KEYS } from '../helpers/Constants/ShortcutKeys';
 import { EVENTS } from '../helpers/Constants/Events';
 
 const DEFAULT_OPTIONS = {
-    url: 'https://github.com/qulle/oltb',
-    target: '_blank'
+    title: 'Hey!',
+    content: 'This is the default content, try adding some content of your own.'
 };
 
-class Help extends Control {
+class InfoTool extends Control {
     constructor(options = {}) {
         super({
             element: TOOLBAR_ELEMENT
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.Help,
+            path: SVG_PATHS.Info,
             class: 'oltb-tool-button__icon'
         });
 
@@ -29,7 +29,7 @@ class Help extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Help (${SHORTCUT_KEYS.Help})`
+                'data-tippy-content': `Info (${SHORTCUT_KEYS.Info})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -37,25 +37,40 @@ class Help extends Control {
         });
 
         this.element.appendChild(button);
+        this.infoModal = undefined;
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
         window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
     }
 
     onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Help)) {
+        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Info)) {
             this.handleClick(event);
         }
-    }
+    }    
 
     handleClick() {
-        try {
-            window.open(this.options.url, this.options.target).focus();
-        }catch(error) {
-            console.error(`Error opening Help [${error}]`);
-            Toast.info({text: 'Action was blocked by browser, try open with mouse'});
+        // User defined callback from constructor
+        if(typeof this.options.click === 'function') {
+            this.options.click();
         }
+
+        this.handleInfo();
+    }
+
+    handleInfo() {
+        if(this.infoModal) {
+            return;
+        }
+
+        this.infoModal = Modal.create({
+            title: this.options.title, 
+            content: this.options.content,
+            onClose: () => {
+                this.infoModal = undefined;
+            }
+        });
     }
 }
 
-export default Help;
+export default InfoTool;

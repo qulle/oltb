@@ -7,7 +7,7 @@ import { SVG_PATHS, getIcon } from '../../core/Icons';
 import { VERSION } from 'ol';
 import { CONTEXT_MENUS } from '../../helpers/Constants/ContextMenus';
 
-class HiddenAbout extends Control {
+class HiddenAboutTool extends Control {
     constructor() {
         super({
             element: TOOLBAR_ELEMENT
@@ -28,4 +28,4 @@ class HiddenAbout extends Control {
     }
 }
 
-export default HiddenAbout;
+export default HiddenAboutTool;

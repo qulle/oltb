@@ -1,4 +1,4 @@
-import Modal from '../common/Modal';
+import Toast from '../common/Toast';
 import DOM from '../helpers/Browser/DOM';
 import { Control } from 'ol/control';
 import { TOOLBAR_ELEMENT } from '../core/ElementReferences';
@@ -8,18 +8,18 @@ import { SHORTCUT_KEYS } from '../helpers/Constants/ShortcutKeys';
 import { EVENTS } from '../helpers/Constants/Events';
 
 const DEFAULT_OPTIONS = {
-    title: 'Hey!',
-    content: 'This is the default content, try adding some content of your own.'
+    url: 'https://github.com/qulle/oltb',
+    target: '_blank'
 };
 
-class Info extends Control {
+class HelpTool extends Control {
     constructor(options = {}) {
         super({
             element: TOOLBAR_ELEMENT
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.Info,
+            path: SVG_PATHS.Help,
             class: 'oltb-tool-button__icon'
         });
 
@@ -29,7 +29,7 @@ class Info extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Info (${SHORTCUT_KEYS.Info})`
+                'data-tippy-content': `Help (${SHORTCUT_KEYS.Help})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -37,31 +37,34 @@ class Info extends Control {
         });
 
         this.element.appendChild(button);
-        this.infoModal = undefined;
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
         window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
     }
 
     onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Info)) {
+        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Help)) {
             this.handleClick(event);
         }
-    }    
+    }
 
     handleClick() {
-        if(this.infoModal) {
-            return;
+        // User defined callback from constructor
+        if(typeof this.options.click === 'function') {
+            this.options.click();
         }
 
-        this.infoModal = Modal.create({
-            title: this.options.title, 
-            content: this.options.content,
-            onClose: () => {
-                this.infoModal = undefined;
-            }
-        });
+        this.handleHelp();
+    }
+
+    handleHelp() {
+        try {
+            window.open(this.options.url, this.options.target).focus();
+        }catch(error) {
+            console.error(`Error opening Help [${error}]`);
+            Toast.info({text: 'Action was blocked by browser, try open with mouse'});
+        }
     }
 }
 
-export default Info;
+export default HelpTool;

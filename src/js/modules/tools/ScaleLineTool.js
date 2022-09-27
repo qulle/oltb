@@ -1,5 +1,5 @@
 import DOM from '../helpers/Browser/DOM';
-import { Control, ScaleLine as ScaleLineControl } from 'ol/control';
+import { Control, ScaleLine } from 'ol/control';
 import { TOOLBAR_ELEMENT } from '../core/ElementReferences';
 import { SVG_PATHS, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
@@ -10,7 +10,7 @@ const DEFAULT_OPTIONS = {
     units: 'metric'
 };
 
-class ScaleLine extends Control {
+class ScaleLineTool extends Control {
     constructor(options = {}) {
         super({
             element: TOOLBAR_ELEMENT
@@ -38,7 +38,7 @@ class ScaleLine extends Control {
         this.button = button;
         this.active = false;
         this.options = { ...DEFAULT_OPTIONS, ...options };
-        this.scaleLine = new ScaleLineControl({units: this.options.units});
+        this.scaleLine = new ScaleLine({units: this.options.units});
         
         window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
     }
@@ -50,6 +50,15 @@ class ScaleLine extends Control {
     }
 
     handleClick() {
+        // User defined callback from constructor
+        if(typeof this.options.click === 'function') {
+            this.options.click();
+        }
+
+        this.handleScaleLine();
+    }
+
+    handleScaleLine() {
         if(this.active) {
             this.scaleLine.setMap(null);
         }else {
@@ -61,4 +70,4 @@ class ScaleLine extends Control {
     }
 }
 
-export default ScaleLine;
+export default ScaleLineTool;

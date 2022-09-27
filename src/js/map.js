@@ -8,43 +8,43 @@ import { defaults as defaultControls } from 'ol/control';
 import { get as getProjection } from 'ol/proj';
 
 // Toolbar tools
-import HiddenMarker from './modules/tools/HiddenTools/Marker';
-import HiddenMapNavigation from './modules/tools/HiddenTools/MapNavigation';
-import Home from './modules/tools/Home';
-import ZoomIn from './modules/tools/ZoomIn';
-import ZoomOut from './modules/tools/ZoomOut';
-import FullScreen from './modules/tools/FullScreen';
-import ExportPNG from './modules/tools/ExportPNG';
-import Draw from './modules/tools/Draw';
-import Measure from './modules/tools/Measure';
-import Edit from './modules/tools/Edit';
-import Bookmark from './modules/tools/Bookmark';
-import Layers from './modules/tools/Layers';
-import SplitView from './modules/tools/SplitView';
-import Overview from './modules/tools/Overview';
-import GraticuleTool from './modules/tools/Graticule';
-import Magnify from './modules/tools/Magnify';
-import ResetNorth from './modules/tools/ResetNorth';
-import Coordinates from './modules/tools/Coordinates';
-import MyLocation from './modules/tools/MyLocation';
-import ImportVectorLayer from './modules/tools/ImportVectorLayer';
-import ScaleLine from './modules/tools/ScaleLine';
-import Refresh from './modules/tools/Refresh';
-import ThemeToggle from './modules/tools/ThemeToggle';
-import DirectionToggle from './modules/tools/DirectionToggle';
-import Info from './modules/tools/Info';
-import Notification from './modules/tools/Notification';
-import Help from './modules/tools/Help';
-import Settings from './modules/tools/Settings';
-import DebugInfo from './modules/tools/DebugInfo';
-import HiddenAbout from './modules/tools/HiddenTools/About';
+import HiddenMarkerTool from './modules/tools/HiddenTools/MarkerTool';
+import HiddenMapNavigationTool from './modules/tools/HiddenTools/MapNavigationTool';
+import HomeTool from './modules/tools/HomeTool';
+import ZoomInTool from './modules/tools/ZoomInTool';
+import ZoomOutTool from './modules/tools/ZoomOutTool';
+import FullScreenTool from './modules/tools/FullScreenTool';
+import ExportPNGTool from './modules/tools/ExportPNGTool';
+import DrawTool from './modules/tools/DrawTool';
+import MeasureTool from './modules/tools/MeasureTool';
+import EditTool from './modules/tools/EditTool';
+import BookmarkTool from './modules/tools/BookmarkTool';
+import LayerTool from './modules/tools/LayerTool';
+import SplitViewTool from './modules/tools/SplitViewTool';
+import OverviewTool from './modules/tools/OverviewTool';
+import GraticuleTool from './modules/tools/GraticuleTool';
+import MagnifyTool from './modules/tools/MagnifyTool';
+import ResetNorthTool from './modules/tools/ResetNorthTool';
+import CoordinatesTool from './modules/tools/CoordinatesTool';
+import MyLocationTool from './modules/tools/MyLocationTool';
+import ImportVectorLayerTool from './modules/tools/ImportVectorLayerTool';
+import ScaleLineTool from './modules/tools/ScaleLineTool';
+import RefreshTool from './modules/tools/RefreshTool';
+import ThemeTool from './modules/tools/ThemeTool';
+import DirectionTool from './modules/tools/DirectionTool';
+import InfoTool from './modules/tools/InfoTool';
+import NotificationTool from './modules/tools/NotificationTool';
+import HelpTool from './modules/tools/HelpTool';
+import SettingsTool from './modules/tools/SettingsTool';
+import DebugInfoTool from './modules/tools/DebugInfoTool';
+import HiddenAboutTool from './modules/tools/HiddenTools/AboutTool';
 
 // Additional toolbar helpers
+import CONFIG from './modules/core/Config';
 import ContextMenu from './modules/common/ContextMenu';
 import LayerManager from './modules/core/Managers/LayerManager';
 import StateManager from './modules/core/Managers/StateManager';
 import TooltipManager from './modules/core/Managers/TooltipManager';
-import CONFIG from './modules/core/Config';
 import SettingsManager from './modules/core/Managers/SettingsManager';
 import InfoWindowManager from './modules/core/Managers/InfoWindowManager';
 import { MAP_ELEMENT } from './modules/core/ElementReferences';
@@ -111,7 +111,7 @@ const map = new Map({
         rotate: false, 
         attribution: SettingsManager.getSetting('show.attributions')
     }).extend([
-        new HiddenMarker({
+        new HiddenMarkerTool({
             added: function(marker) {
                 console.log('Marker added', marker);
             },
@@ -122,28 +122,40 @@ const map = new Map({
                 console.log('Marker edited', marker);
             }
         }),
-        new HiddenMapNavigation({
+        new HiddenMapNavigationTool({
             focusZoom: 10
         }),
-        new Home({
+        new HomeTool({
             lon: 25.5809,
             lat: 23.7588,
             zoom: 3,
+            click: function() {
+                console.log('HomeTool click');
+            },
             home: function() {
                 console.log('Map zoomed home');
             }
         }),
-        new ZoomIn({
+        new ZoomInTool({
+            click: function() {
+                console.log('ZoomInTool clicked');
+            },
             zoomed: function() {
                 console.log('Zoomed in');
             }
         }),
-        new ZoomOut({
+        new ZoomOutTool({
+            click: function() {
+                console.log('ZoomOutTool clicked');
+            },
             zoomed: function() {
                 console.log('Zoomed out');
             }
         }),
-        new FullScreen({
+        new FullScreenTool({
+            click: function() {
+                console.log('FullScreenTool clicked');
+            },
             enter: function(event) {
                 console.log('Enter fullscreen mode', event);
             },
@@ -151,12 +163,18 @@ const map = new Map({
                 console.log('Leave fullscreen mode', event);
             }
         }),
-        new ExportPNG({
+        new ExportPNGTool({
+            click: function() {
+                console.log('ExportPNGTool clicked');
+            },
             exported: function() {
                 console.log('Map exported as png');
             }
         }),
-        new Draw({
+        new DrawTool({
+            click: function() {
+                console.log('DrawTool clicked');
+            },
             start: function(event) {
                 console.log('Draw Start');
             },
@@ -170,7 +188,10 @@ const map = new Map({
                 console.log('Draw error');
             }
         }),
-        new Measure({
+        new MeasureTool({
+            click: function() {
+                console.log('MeasureTool clicked');
+            },
             start: function(event) {
                 console.log('Measure Start');
             },
@@ -184,7 +205,10 @@ const map = new Map({
                 console.log('Measure error');
             }
         }),
-        new Edit({
+        new EditTool({
+            click: function() {
+                console.log('EditTool clicked');
+            },
             selectadd: function(event) {
                 console.log('Selected feature');
             },
@@ -207,8 +231,11 @@ const map = new Map({
                 console.log('Removed feature', feature);
             }
         }),
-        new Bookmark({
+        new BookmarkTool({
             storeDataInLocalStorage: true,
+            click: function() {
+                console.log('BookmarkTool clicked');
+            },
             added: function(bookmark) {
                 console.log('Bookmark added', bookmark);
             },
@@ -225,7 +252,10 @@ const map = new Map({
                 console.log('Bookmarks cleared');
             }
         }),
-        new Layers({
+        new LayerTool({
+            click: function() {
+                console.log('LayerTool clicked');
+            },
             mapLayerAdded: function(layerWrapper) {
                 console.log('Map layer added', layerWrapper);
             },
@@ -254,29 +284,53 @@ const map = new Map({
                 console.log('Feature layer downloaded', layerWrapper);
             }
         }),
-        new SplitView(),
-        new Overview(),
+        new SplitViewTool({
+            click: function() {
+                console.log('SplitViewTool clicked');
+            }
+        }),
+        new OverviewTool({
+            click: function() {
+                console.log('OverviewTool clicked');
+            }
+        }),
         new GraticuleTool({
             color: 'rgba(59, 67, 82, 0.9)',
             dashed: true,
             width: 2,
             showLabels: true,
-            wrapX: true
+            wrapX: true,
+            click: function() {
+                console.log('GraticuleTool clicked');
+            }
         }),
-        new Magnify(),
-        new ResetNorth({
+        new MagnifyTool({
+            click: function() {
+                console.log('MagnifyTool clicked');
+            }
+        }),
+        new ResetNorthTool({
+            click: function() {
+                console.log('ResetNorthTool clicked');
+            },
             reset: function() {
                 console.log('Map north reset');
             }
         }),
-        new Coordinates({
-            clicked: function(coordinates) {
-                console.log('You clicked', coordinates);
+        new CoordinatesTool({
+            click: function() {
+                console.log('CoordinatesTool clicked');
+            },
+            mapClicked: function(coordinates) {
+                console.log('You clicked at', coordinates);
             }
         }),
-        new MyLocation({
+        new MyLocationTool({
             enableHighAccuracy: true,
             timeout: 5000,
+            click: function() {
+                console.log('MyLocationTool clicked');
+            },
             location: function(location) {
                 console.log('Location', location);
             },
@@ -284,7 +338,10 @@ const map = new Map({
                 console.log('Location error', error);
             }
         }),
-        new ImportVectorLayer({
+        new ImportVectorLayerTool({
+            click: function() {
+                console.log('ImportVectorLayerTool clicked');
+            },
             imported: function(features) {
                 console.log('Imported', features);
             },
@@ -292,36 +349,66 @@ const map = new Map({
                 console.log('Error when importing file:', filename, error);
             }
         }),
-        new ScaleLine({
-            units: 'metric'
+        new ScaleLineTool({
+            units: 'metric',
+            click: function() {
+                console.log('ScaleLineTool clicked');
+            }
         }),
-        new Refresh(),
-        new ThemeToggle({
+        new RefreshTool({
+            click: function() {
+                console.log('RefreshTool clicked');
+            }
+        }),
+        new ThemeTool({
+            click: function() {
+                console.log('ThemeTool clicked');
+            },
             changed: function(theme) {
                 console.log('Theme changed to', theme);
             }
         }),
-        new DirectionToggle({
+        new DirectionTool({
+            click: function() {
+                console.log('DirectionTool clicked');
+            },
             changed: function(direction) {
                 console.log('Direction changed to', direction);
             }
         }),
-        new Info({
+        new InfoTool({
             title: 'Hey!', 
-            content: '<p>This is a <em>modal window</em>, here you can place some text about your application or links to external resources.</p>'
+            content: '<p>This is a <em>modal window</em>, here you can place some text about your application or links to external resources.</p>',
+            click: function() {
+                console.log('InfoTool clicked');
+            }
         }),
-        new Notification(),
-        new Help({
+        new NotificationTool({
+            click: function() {
+                console.log('NotificationTool clicked');
+            }
+        }),
+        new HelpTool({
             url: 'https://github.com/qulle/oltb',
-            target: '_blank'
+            target: '_blank',
+            click: function() {
+                console.log('HelpTool clicked');
+            }
         }),
-        new Settings({
+        new SettingsTool({
+            click: function() {
+                console.log('SettingsTool clicked');
+            },
             cleared: function() {
                 console.log('Settings cleared');
             }
         }),
-        new DebugInfo(),
-        new HiddenAbout(),
+        new DebugInfoTool({
+            click: function() {
+                console.log('DebugInfoTool clicked');
+            }
+        }),
+        new HiddenAboutTool(),
         new ContextMenu({
             name: CONTEXT_MENUS.MainMap, 
             selector: '#map canvas'

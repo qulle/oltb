@@ -26,7 +26,7 @@ const LOCAL_STORAGE_DEFAULTS = {
 
 const DEFAULT_OPTIONS = {};
 
-class Measure extends Control {
+class MeasureTool extends Control {
     constructor(options = {}) {
         super({
             element: TOOLBAR_ELEMENT
@@ -147,6 +147,11 @@ class Measure extends Control {
     }
 
     handleClick() {
+        // User defined callback from constructor
+        if(typeof this.options.click === 'function') {
+            this.options.click();
+        }
+        
         setActiveTool(this);
         this.handleMeasure();
     }
@@ -303,4 +308,4 @@ class Measure extends Control {
     }
 }
 
-export default Measure;
+export default MeasureTool;

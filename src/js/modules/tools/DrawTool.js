@@ -2,7 +2,7 @@ import LayerManager from '../core/Managers/LayerManager';
 import SettingsManager from '../core/Managers/SettingsManager';
 import StateManager from '../core/Managers/StateManager';
 import DOM from '../helpers/Browser/DOM';
-import { default as DrawInteraction, createBox, createRegularPolygon } from 'ol/interaction/Draw';
+import Draw, { createBox, createRegularPolygon } from 'ol/interaction/Draw';
 import { Control } from 'ol/control';
 import { Fill, Stroke, Circle, Style } from 'ol/style';
 import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT } from '../core/ElementReferences';
@@ -24,7 +24,7 @@ const LOCAL_STORAGE_DEFAULTS = {
 
 const DEFAULT_OPTIONS = {};
 
-class Draw extends Control {
+class DrawTool extends Control {
     constructor(options = {}) {
         super({
             element: TOOLBAR_ELEMENT
@@ -187,6 +187,11 @@ class Draw extends Control {
     }
 
     handleClick() {
+        // User defined callback from constructor
+        if(typeof this.options.click === 'function') {
+            this.options.click();
+        }
+        
         setActiveTool(this);
         this.handleDraw();
     }
@@ -252,7 +257,7 @@ class Draw extends Control {
             geometryFunction = createRegularPolygon();
         }
 
-        this.interaction = new DrawInteraction({
+        this.interaction = new Draw({
             type: toolType,
             style: style,
             geometryFunction: geometryFunction
@@ -299,4 +304,4 @@ class Draw extends Control {
     }
 }
 
-export default Draw;
+export default DrawTool;

@@ -2,7 +2,7 @@ import DOM from '../helpers/Browser/DOM';
 import Toast from '../common/Toast';
 import { Control } from 'ol/control';
 import { download } from '../helpers/Browser/Download';
-import { TOOLBAR_ELEMENT } from '../core/ElementReferences';
+import { MAP_ELEMENT, TOOLBAR_ELEMENT } from '../core/ElementReferences';
 import { SVG_PATHS, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { SHORTCUT_KEYS } from '../helpers/Constants/ShortcutKeys';
@@ -11,7 +11,7 @@ import { EVENTS } from '../helpers/Constants/Events';
 const DEFAULT_OPTIONS = {};
 const FILE_NAME = 'map.png';
 
-class ExportPNG extends Control {
+class ExportPNGTool extends Control {
     constructor(options = {}) {
         super({
             element: TOOLBAR_ELEMENT
@@ -48,6 +48,11 @@ class ExportPNG extends Control {
     }
 
     handleClick() {
+        // User defined callback from constructor
+        if(typeof this.options.click === 'function') {
+            this.options.click();
+        }
+        
         this.handleExportPNG();
     }
 
@@ -57,7 +62,7 @@ class ExportPNG extends Control {
         map.once('rendercomplete', () => {
             try {
                 const size = map.getSize();
-                const mapCanvas = DOM.createElement({
+                const pngCanvas = DOM.createElement({
                     element: 'canvas',
                     attributes: {
                         width: size[0],
@@ -65,27 +70,32 @@ class ExportPNG extends Control {
                     }
                 });
         
-                const mapContext = mapCanvas.getContext('2d');
-                const canvases = document.querySelectorAll('.ol-layer canvas');
+                // Draw map layers (Canvases)
+                const pngContext = pngCanvas.getContext('2d');
+                const canvases = MAP_ELEMENT.querySelectorAll('.ol-layer canvas');
         
                 canvases.forEach((canvas) => {
                     if(canvas.width > 0) {
                         const opacity = canvas.parentNode.style.opacity;
-                        mapContext.globalAlpha = opacity === '' ? 1 : Number(opacity);
+                        pngContext.globalAlpha = opacity === '' ? 1 : Number(opacity);
         
                         const transform = canvas.style.transform;
                         const matrix = transform.match(/^matrix\(([^\(]*)\)$/)[1].split(',').map(Number);
         
-                        CanvasRenderingContext2D.prototype.setTransform.apply(mapContext, matrix);
+                        CanvasRenderingContext2D.prototype.setTransform.apply(pngContext, matrix);
         
-                        mapContext.drawImage(canvas, 0, 0);
+                        pngContext.drawImage(canvas, 0, 0);
                     }
                 });
 
+                // Draw overlays souch as Tooltips, InfoWindows
+                // TODO: Continue here. html2pdf.js ?
+                const overlays = MAP_ELEMENT.querySelectorAll('.ol-overlay-container');
+
                 if(navigator.msSaveBlob) {
-                    navigator.msSaveBlob(mapCanvas.msToBlob(), FILE_NAME);
+                    navigator.msSaveBlob(pngCanvas.msToBlob(), FILE_NAME);
                 }else {
-                    download(FILE_NAME, mapCanvas.toDataURL());
+                    download(FILE_NAME, pngCanvas.toDataURL());
                 }
     
                 // User defined callback from constructor
@@ -103,4 +113,4 @@ class ExportPNG extends Control {
     }
 }
 
-export default ExportPNG;
+export default ExportPNGTool;

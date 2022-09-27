@@ -19,7 +19,7 @@ import {
 
 const DEFAULT_OPTIONS = {};
 
-class Fullscreen extends Control {
+class FullscreenTool extends Control {
     constructor(options = {}) {
         super({
             element: TOOLBAR_ELEMENT
@@ -64,6 +64,11 @@ class Fullscreen extends Control {
     }
 
     handleClick() {
+        // User defined callback from constructor
+        if(typeof this.options.click === 'function') {
+            this.options.click();
+        }
+        
         this.handleFullscreen();
     }
 
@@ -135,4 +140,4 @@ class Fullscreen extends Control {
     }
 }
 
-export default Fullscreen;
+export default FullscreenTool;

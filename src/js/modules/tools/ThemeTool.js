@@ -12,7 +12,7 @@ const LOCAL_STORAGE_NODE_NAME = 'theme';
 
 const DEFAULT_OPTIONS = {};
 
-class ThemeToggle extends Control {
+class ThemeTool extends Control {
     constructor(options = {}) {
         super({
             element: TOOLBAR_ELEMENT
@@ -57,6 +57,11 @@ class ThemeToggle extends Control {
     }
 
     handleClick() {
+        // User defined callback from constructor
+        if(typeof this.options.click === 'function') {
+            this.options.click();
+        }
+        
         this.handleThemeToggle();
     }
 
@@ -95,4 +100,4 @@ class ThemeToggle extends Control {
     }
 }
 
-export default ThemeToggle;
+export default ThemeTool;

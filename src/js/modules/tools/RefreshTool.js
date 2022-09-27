@@ -6,8 +6,10 @@ import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { SHORTCUT_KEYS } from '../helpers/Constants/ShortcutKeys';
 import { EVENTS } from '../helpers/Constants/Events';
 
-class Refresh extends Control {
-    constructor() {
+const DEFAULT_OPTIONS = {};
+
+class RefreshTool extends Control {
+    constructor(options = {}) {
         super({
             element: TOOLBAR_ELEMENT
         });
@@ -31,6 +33,7 @@ class Refresh extends Control {
         });
 
         this.element.appendChild(button);
+        this.options = { ...DEFAULT_OPTIONS, ...options };
 
         window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
     }
@@ -42,8 +45,17 @@ class Refresh extends Control {
     }
 
     handleClick() {
+        // User defined callback from constructor
+        if(typeof this.options.click === 'function') {
+            this.options.click();
+        }
+
+        this.handleRefresh();
+    }
+
+    handleRefresh() {
         window.location.reload();
     }
 }
 
-export default Refresh;
+export default RefreshTool;

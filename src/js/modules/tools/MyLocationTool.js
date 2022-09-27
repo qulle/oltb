@@ -20,7 +20,7 @@ const DEFAULT_OPTIONS = {
     timeout: 5000
 };
 
-class MyLocation extends Control {
+class MyLocationTool extends Control {
     constructor(options = {}) {
         super({
             element: TOOLBAR_ELEMENT
@@ -57,6 +57,11 @@ class MyLocation extends Control {
     }
 
     handleClick() {
+        // User defined callback from constructor
+        if(typeof this.options.click === 'function') {
+            this.options.click();
+        }
+        
         if(isFullScreen()) {
             Dialog.confirm({
                 text: 'To use geolocation you must exit fullscreen',
@@ -168,4 +173,4 @@ class MyLocation extends Control {
     }
 }
 
-export default MyLocation;
+export default MyLocationTool;

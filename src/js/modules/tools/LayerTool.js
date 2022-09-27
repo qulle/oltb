@@ -45,7 +45,7 @@ const DEFAULT_OPTIONS = {
     disableFeatureLayerDownloadButton: false
 };
 
-class Layers extends Control {
+class LayerTool extends Control {
     constructor(options = {}) {
         super({
             element: TOOLBAR_ELEMENT
@@ -195,6 +195,11 @@ class Layers extends Control {
     }
 
     handleClick() {
+        // User defined callback from constructor
+        if(typeof this.options.click === 'function') {
+            this.options.click();
+        }
+        
         this.handleLayers();
     }
 
@@ -554,4 +559,4 @@ class Layers extends Control {
     }
 }
 
-export default Layers;
+export default LayerTool;

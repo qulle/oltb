@@ -28,7 +28,7 @@ const DEFAULT_OPTIONS = {
     storeDataInLocalStorage: false
 };
 
-class Bookmark extends Control {
+class BookmarkTool extends Control {
     constructor(options = {}) {
         super({
             element: TOOLBAR_ELEMENT
@@ -160,6 +160,11 @@ class Bookmark extends Control {
     }
 
     handleClick() {
+        // User defined callback from constructor
+        if(typeof this.options.click === 'function') {
+            this.options.click();
+        }
+
         this.handleBookmarks();
     }
 
@@ -372,4 +377,4 @@ class Bookmark extends Control {
     }
 }
 
-export default Bookmark;
+export default BookmarkTool;

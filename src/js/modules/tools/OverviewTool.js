@@ -14,8 +14,10 @@ const LOCAL_STORAGE_DEFAULTS = {
     collapsed: false
 };
 
-class Overview extends Control {
-    constructor() {
+const DEFAULT_OPTIONS = {};
+
+class OverviewTool extends Control {
+    constructor(options = {}) {
         super({
             element: TOOLBAR_ELEMENT
         });
@@ -41,6 +43,7 @@ class Overview extends Control {
         this.element.appendChild(button);
         this.button = button;
         this.active = false;
+        this.options = { ...DEFAULT_OPTIONS, ...options };
 
         // Load potential stored data from localStorage
         const localStorageState = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
@@ -103,6 +106,15 @@ class Overview extends Control {
     }
 
     handleClick() {
+        // User defined callback from constructor
+        if(typeof this.options.click === 'function') {
+            this.options.click();
+        }
+
+        this.handleOverview();
+    }
+
+    handleOverview() {
         // This must come before the setMap method or it will sometimes fail to render the overview
         this.overviewToolbox.classList.toggle('oltb-toolbox-section--show');
 
@@ -117,4 +129,4 @@ class Overview extends Control {
     }
 }
 
-export default Overview;
+export default OverviewTool;

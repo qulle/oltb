@@ -8,7 +8,7 @@ const trapFocusKeyListener = function(event) {
     const focusableContent = component.querySelectorAll(FOCUSABLE_ELEMENTS);
     const lastFocusableElement = focusableContent[focusableContent.length - 1];
 
-    const isTabPressed = event.key === 'Tab';
+    const isTabPressed = event.key.toLowerCase() === 'tab';
 
     if(!isTabPressed) {
         return;

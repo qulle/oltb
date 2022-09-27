@@ -24,7 +24,7 @@ const LOCAL_STORAGE_DEFAULTS = {
 
 const DEFAULT_OPTIONS = {};
 
-class Edit extends Control {
+class EditTool extends Control {
     constructor(options = {}) {
         super({
             element: TOOLBAR_ELEMENT
@@ -50,6 +50,7 @@ class Edit extends Control {
 
         this.element.appendChild(button);
         this.button = button;
+        this.active = false;
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
         // Load potential stored data from localStorage
@@ -293,6 +294,11 @@ class Edit extends Control {
     }
 
     handleClick() {
+        // User defined callback from constructor
+        if(typeof this.options.click === 'function') {
+            this.options.click();
+        }
+        
         setActiveTool(this);
         this.handleEdit();
     }
@@ -324,4 +330,4 @@ class Edit extends Control {
     }
 }
 
-export default Edit;
+export default EditTool;

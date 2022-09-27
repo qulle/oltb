@@ -16,7 +16,7 @@ import { EVENTS } from '../helpers/Constants/Events';
 
 const DEFAULT_OPTIONS = {};
 
-class Coordinates extends Control {
+class CoordinatesTool extends Control {
     constructor(options = {}) {
         super({
             element: TOOLBAR_ELEMENT
@@ -43,7 +43,7 @@ class Coordinates extends Control {
         this.element.appendChild(button);
         this.button = button;
         this.active = false;
-        this.tooltipItem;
+        this.tooltipItem = undefined;
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
         SettingsManager.addSetting('copy.coordinates.on.click', {
@@ -61,6 +61,11 @@ class Coordinates extends Control {
     }
 
     handleClick() {
+        // User defined callback from constructor
+        if(typeof this.options.click === 'function') {
+            this.options.click();
+        }
+        
         this.handleCoordinateTooltip();
     }
 
@@ -110,15 +115,15 @@ class Coordinates extends Control {
             .then(() => {
                 Toast.success({text: 'Coordinates copied to clipboard', autoremove: 4000});
             })
-            .active(() => {
+            .catch(() => {
                 Toast.error({text: 'Failed to copy coordinates'});
             });
         
         // User defined callback from constructor
-        if(typeof this.options.clicked === 'function') {
-            this.options.clicked(coordinate);
+        if(typeof this.options.mapClicked === 'function') {
+            this.options.mapClicked(coordinate);
         }
     }
 }
 
-export default Coordinates;
+export default CoordinatesTool;

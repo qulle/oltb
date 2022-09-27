@@ -12,7 +12,7 @@ import { EVENTS } from '../helpers/Constants/Events';
 
 const DEFAULT_OPTIONS = {};
 
-class ImportVectorLayer extends Control {
+class ImportVectorLayerTool extends Control {
     constructor(options = {}) {
         super({
             element: TOOLBAR_ELEMENT
@@ -61,6 +61,11 @@ class ImportVectorLayer extends Control {
     }
 
     handleClick() {
+        // User defined callback from constructor
+        if(typeof this.options.click === 'function') {
+            this.options.click();
+        }
+        
         this.inputDialog.click();
     }
 
@@ -113,4 +118,4 @@ class ImportVectorLayer extends Control {
     }
 }
 
-export default ImportVectorLayer;
+export default ImportVectorLayerTool;

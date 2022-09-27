@@ -66,6 +66,15 @@ class GraticuleTool extends Control {
     }    
 
     handleClick() {
+        // User defined callback from constructor
+        if(typeof this.options.click === 'function') {
+            this.options.click();
+        }
+
+        this.handleGraticule();
+    }
+
+    handleGraticule() {
         if(this.active) {
             this.graticule.setMap(null);
         }else {

@@ -13,7 +13,7 @@ const LOCAL_STORAGE_NODE_NAME = 'direction';
 
 const DEFAULT_OPTIONS = {};
 
-class DirectionToggle extends Control {
+class DirectionTool extends Control {
     constructor(options = {}) {
         super({
             element: TOOLBAR_ELEMENT
@@ -81,6 +81,11 @@ class DirectionToggle extends Control {
     }
 
     handleClick() {
+        // User defined callback from constructor
+        if(typeof this.options.click === 'function') {
+            this.options.click();
+        }
+        
         this.handleDirectionToggle();
     }
 
@@ -119,4 +124,4 @@ class DirectionToggle extends Control {
     }
 }
 
-export default DirectionToggle;
+export default DirectionTool;

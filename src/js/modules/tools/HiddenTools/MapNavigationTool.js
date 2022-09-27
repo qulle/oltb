@@ -22,7 +22,7 @@ const DEFAULT_OPTIONS = {
     focusZoom: 2
 };
 
-class HiddenMapNavigation extends Control {
+class HiddenMapNavigationTool extends Control {
     constructor(options = {}) {
         super({
             element: TOOLBAR_ELEMENT
@@ -90,4 +90,4 @@ class HiddenMapNavigation extends Control {
     }
 }
 
-export default HiddenMapNavigation;
+export default HiddenMapNavigationTool;

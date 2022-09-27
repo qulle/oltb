@@ -18,7 +18,7 @@ const DEFAULT_OPTIONS = {
     lat: 0
 };
 
-class Home extends Control {
+class HomeTool extends Control {
     constructor(options = {}) {
         super({
             element: TOOLBAR_ELEMENT
@@ -64,6 +64,11 @@ class Home extends Control {
     }
 
     handleClick() {
+        // User defined callback from constructor
+        if(typeof this.options.click === 'function') {
+            this.options.click();
+        }
+        
         this.handleResetToHome();
     }
 
@@ -104,4 +109,4 @@ class Home extends Control {
     }
 }
 
-export default Home;
+export default HomeTool;
