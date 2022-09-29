@@ -2,6 +2,7 @@ import StateManager from "../Managers/StateManager";
 import { EVENTS } from "../../helpers/Constants/Events";
 
 const TOOLBAR_ELEMENT = document.getElementById('oltb');
+TOOLBAR_ELEMENT.setAttribute('data-html2canvas-ignore', 'true');
 
 // Check if the user hav chosen dark theme
 const isLSDarkTheme = (StateManager.getStateObject('theme') === 'dark');

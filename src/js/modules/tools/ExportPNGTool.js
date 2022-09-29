@@ -1,3 +1,4 @@
+import html2canvas from 'html2canvas';
 import DOM from '../helpers/Browser/DOM';
 import Toast from '../common/Toast';
 import { Control } from 'ol/control';
@@ -38,12 +39,21 @@ class ExportPNGTool extends Control {
         this.element.appendChild(button);
         this.options = { ...DEFAULT_OPTIONS, ...options };
         
+        window.addEventListener(EVENTS.Browser.DOMContentLoaded, this.onWindowLoaded.bind(this));
         window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
     }
 
     onWindowKeyUp(event) {
         if(isShortcutKeyOnly(event, SHORTCUT_KEYS.ExportPNG)) {
             this.handleClick(event);
+        }
+    }
+
+    onWindowLoaded() {
+        const attributions = MAP_ELEMENT.querySelector('.ol-attribution');
+
+        if(attributions) {
+            attributions.setAttribute('data-html2canvas-ignore', 'true');
         }
     }
 
@@ -59,57 +69,64 @@ class ExportPNGTool extends Control {
     handleExportPNG() {
         const map = this.getMap();
 
-        map.once('rendercomplete', () => {
-            try {
-                const size = map.getSize();
-                const pngCanvas = DOM.createElement({
-                    element: 'canvas',
-                    attributes: {
-                        width: size[0],
-                        height: size[1]
-                    }
-                });
-        
-                // Draw map layers (Canvases)
-                const pngContext = pngCanvas.getContext('2d');
-                const canvases = MAP_ELEMENT.querySelectorAll('.ol-layer canvas');
-        
-                canvases.forEach((canvas) => {
-                    if(canvas.width > 0) {
-                        const opacity = canvas.parentNode.style.opacity;
-                        pngContext.globalAlpha = opacity === '' ? 1 : Number(opacity);
-        
-                        const transform = canvas.style.transform;
-                        const matrix = transform.match(/^matrix\(([^\(]*)\)$/)[1].split(',').map(Number);
-        
-                        CanvasRenderingContext2D.prototype.setTransform.apply(pngContext, matrix);
-        
-                        pngContext.drawImage(canvas, 0, 0);
-                    }
-                });
-
-                // Draw overlays souch as Tooltips, InfoWindows
-                // TODO: Continue here. html2pdf.js ?
-                const overlays = MAP_ELEMENT.querySelectorAll('.ol-overlay-container');
-
-                if(navigator.msSaveBlob) {
-                    navigator.msSaveBlob(pngCanvas.msToBlob(), FILE_NAME);
-                }else {
-                    download(FILE_NAME, pngCanvas.toDataURL());
-                }
-    
-                // User defined callback from constructor
-                if(typeof this.options.exported === 'function') {
-                    this.options.exported();
-                }
-            }catch(error) {
-                console.error(`Error exporting PNG [${error}]`);
-                Toast.error({text: 'Could not export the PNG'});
-            }
-        });
-
-        // This will trigger the above code to export the png
+        // RenderSync will trigger the export the png
+        map.once(EVENTS.Ol.RenderComplete, this.onRenderComplete.bind(this));
         map.renderSync();
+    }
+
+    async onRenderComplete() {
+        try {
+            const size = this.getMap().getSize();
+            const pngCanvas = DOM.createElement({
+                element: 'canvas',
+                attributes: {
+                    width: size[0],
+                    height: size[1]
+                }
+            });
+            
+            const pngContext = pngCanvas.getContext('2d');
+
+            // (1). Draw map layers (Canvases)
+            const mapCanvas = MAP_ELEMENT.querySelector('.ol-layer canvas');
+            const opacity = mapCanvas.parentNode.style.opacity;
+            pngContext.globalAlpha = opacity === '' ? 1 : Number(opacity);
+    
+            const matrix = mapCanvas.style.transform
+                .match(/^matrix\(([^\(]*)\)$/)[1]
+                .split(',')
+                .map(Number);
+
+            CanvasRenderingContext2D.prototype.setTransform.apply(pngContext, matrix);
+            pngContext.drawImage(mapCanvas, 0, 0);
+
+            // (2). Draw overlays souch as Tooltips and InfoWindows
+            const overlay = MAP_ELEMENT.querySelector('.ol-overlaycontainer-stopevent');
+            const overlayCanvas = await html2canvas(overlay, {
+                backgroundColor: null,
+                logging: false
+            });
+
+            pngContext.drawImage(overlayCanvas, 0, 0);
+
+            this.downloadCanvas(pngCanvas);
+        }catch(error) {
+            console.error(`Error exporting PNG [${error}]`);
+            Toast.error({text: 'Could not export the PNG'});
+        }
+    }
+
+    downloadCanvas(pngCanvas) {
+        if(navigator.msSaveBlob) {
+            navigator.msSaveBlob(pngCanvas.msToBlob(), FILE_NAME);
+        }else {
+            download(FILE_NAME, pngCanvas.toDataURL());
+        }
+
+        // User defined callback from constructor
+        if(typeof this.options.exported === 'function') {
+            this.options.exported();
+        }
     }
 }
 

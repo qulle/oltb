@@ -31,6 +31,7 @@ const EVENTS = {
         PropertyChange: 'propertychange',
         PreRender: 'prerender',
         PostRender: 'postrender',
+        RenderComplete: 'rendercomplete',
         SingleClick: 'singleclick',
         PointerMove: 'pointermove'
     },
