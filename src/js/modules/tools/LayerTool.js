@@ -29,10 +29,10 @@ const ID_PREFIX = 'oltb-layer';
     Because this tool has two different sections that can be collapsed it's not a viable solution to have a single collapsed property. 
     Unfortunately this results in two longer names stored in localStorage.
 */
-const LOCAL_STORAGE_NODE_NAME = 'layersTool';
+const LOCAL_STORAGE_NODE_NAME = 'layerTool';
 const LOCAL_STORAGE_DEFAULTS = {
-    'oltb-map-layers-toolbox-collapsed': false,
-    'oltb-feature-layers-toolbox-collapsed': false,
+    'oltb-layer-map-toolbox-collapsed': false,
+    'oltb-layer-feature-toolbox-collapsed': false,
 };
 
 const DEFAULT_OPTIONS = {
@@ -88,7 +88,7 @@ class LayerTool extends Control {
                         <span class="oltb-toolbox-section__icon oltb-tippy" title="Toggle section"></span>
                     </h4>
                 </div>
-                <div class="oltb-toolbox-section__groups" id="${ID_PREFIX}-map-toolbox-collapsed" style="display: ${this.localStorage['oltb-layer-map-toolbox-collapsed'] ? 'none' : 'block'}">
+                <div class="oltb-toolbox-section__groups" id="${ID_PREFIX}-map-toolbox-collapsed" style="display: ${this.localStorage[`${ID_PREFIX}-map-toolbox-collapsed`] ? 'none' : 'block'}">
                     ${
                         !this.options.disableMapCreateLayerButton ? 
                         `
@@ -107,7 +107,7 @@ class LayerTool extends Control {
                         <span class="oltb-toolbox-section__icon oltb-tippy" title="Toggle section"></span>
                     </h4>
                 </div>
-                <div class="oltb-toolbox-section__groups" id="${ID_PREFIX}-feature-toolbox-collapsed" style="display: ${this.localStorage['oltb-layer-feature-toolbox-collapsed'] ? 'none' : 'block'}">
+                <div class="oltb-toolbox-section__groups" id="${ID_PREFIX}-feature-toolbox-collapsed" style="display: ${this.localStorage[`${ID_PREFIX}-feature-toolbox-collapsed`] ? 'none' : 'block'}">
                     <div class="oltb-toolbox-section__group">
                         ${
                             !this.options.disableFeatureCreateLayerButton ? 
@@ -139,13 +139,7 @@ class LayerTool extends Control {
 
         const toggleableTriggers = this.layersToolbox.querySelectorAll('.oltb-toggleable');
         toggleableTriggers.forEach((toggle) => {
-            toggle.addEventListener(EVENTS.Browser.Click, (event) => {
-                const targetName = toggle.dataset.oltbToggleableTarget;
-                document.getElementById(targetName).slideToggle(200, (collapsed) => {
-                    this.localStorage[targetName] = collapsed;
-                    StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
-                });
-            });
+            toggle.addEventListener(EVENTS.Browser.Click, this.onToggleToolbox.bind(this, toggle));
         });
 
         this.mapLayerStack = this.layersToolbox.querySelector(`#${ID_PREFIX}-map-stack`);
@@ -176,6 +170,14 @@ class LayerTool extends Control {
         window.addEventListener(EVENTS.Custom.FeatureLayerAdded, this.onWindowFeatureLayerAdded.bind(this));
         window.addEventListener(EVENTS.Custom.FeatureLayerRemoved, this.onWindowFeatureLayerRemoved.bind(this));
         window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
+    }
+
+    onToggleToolbox(toggle) {
+        const targetName = toggle.dataset.oltbToggleableTarget;
+        document.getElementById(targetName).slideToggle(200, (collapsed) => {
+            this.localStorage[targetName] = collapsed;
+            StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+        });
     }
 
     onWindowKeyUp(event) {

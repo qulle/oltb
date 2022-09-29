@@ -69,17 +69,7 @@ class OverviewTool extends Control {
 
         const toggleableTriggers = this.overviewToolbox.querySelectorAll('.oltb-toggleable');
         toggleableTriggers.forEach((toggle) => {
-            toggle.addEventListener(EVENTS.Browser.Click, (event) => {
-                const targetName = toggle.dataset.oltbToggleableTarget;
-                document.getElementById(targetName).slideToggle(200, (collapsed) => {
-                    this.localStorage.collapsed = collapsed;
-                    StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
-                    
-                    // Force render of overview, other solutions will not render the dashed box correctly until the map is moved
-                    this.overviewMap.setMap(null);
-                    this.overviewMap.setMap(this.getMap());
-                });
-            });
+            toggle.addEventListener(EVENTS.Browser.Click, this.onToggleToolbox.bind(this, toggle));
         });
 
         this.overviewMap = new OverviewMap({
@@ -95,6 +85,18 @@ class OverviewTool extends Control {
 
         window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
         window.addEventListener(EVENTS.Custom.SettingsCleared, this.onWindowSettingsCleared.bind(this));
+    }
+
+    onToggleToolbox(toggle) {
+        const targetName = toggle.dataset.oltbToggleableTarget;
+        document.getElementById(targetName).slideToggle(200, (collapsed) => {
+            this.localStorage.collapsed = collapsed;
+            StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+        
+            // Force render of overview, other solutions will not render the dashed box correctly until the map is moved
+            this.overviewMap.setMap(null);
+            this.overviewMap.setMap(this.getMap());
+        });
     }
 
     onWindowKeyUp(event) {

@@ -116,13 +116,7 @@ class DrawTool extends Control {
 
         const toggleableTriggers = this.drawToolbox.querySelectorAll('.oltb-toggleable');
         toggleableTriggers.forEach((toggle) => {
-            toggle.addEventListener(EVENTS.Browser.Click, (event) => {
-                const targetName = toggle.dataset.oltbToggleableTarget;
-                document.getElementById(targetName).slideToggle(200, (collapsed) => {
-                    this.localStorage.collapsed = collapsed;
-                    StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
-                });
-            });
+            toggle.addEventListener(EVENTS.Browser.Click, this.onToggleToolbox.bind(this, toggle));
         });
 
         this.toolType = this.drawToolbox.querySelector(`#${ID_PREFIX}-type`);
@@ -143,6 +137,14 @@ class DrawTool extends Control {
 
         window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
         window.addEventListener(EVENTS.Custom.SettingsCleared, this.onWindowSettingsCleared.bind(this));
+    }
+
+    onToggleToolbox(toggle) {
+        const targetName = toggle.dataset.oltbToggleableTarget;
+        document.getElementById(targetName).slideToggle(200, (collapsed) => {
+            this.localStorage.collapsed = collapsed;
+            StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+        });
     }
 
     onWindowKeyUp(event) {

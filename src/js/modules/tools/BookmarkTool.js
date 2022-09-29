@@ -105,13 +105,7 @@ class BookmarkTool extends Control {
 
         const toggleableTriggers = this.bookmarkToolbox.querySelectorAll('.oltb-toggleable');
         toggleableTriggers.forEach((toggle) => {
-            toggle.addEventListener(EVENTS.Browser.Click, (event) => {
-                const targetName = toggle.dataset.oltbToggleableTarget;
-                document.getElementById(targetName).slideToggle(200, (collapsed) => {
-                    this.localStorage.collapsed = collapsed;
-                    StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
-                });
-            });
+            toggle.addEventListener(EVENTS.Browser.Click, this.onToggleToolbox.bind(this, toggle));
         });
 
         // Add all saved bookmarks from localstorage
@@ -124,6 +118,14 @@ class BookmarkTool extends Control {
 
         window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
         window.addEventListener(EVENTS.Custom.SettingsCleared, this.onWindowSettingsCleared.bind(this));
+    }
+
+    onToggleToolbox(toggle) {
+        const targetName = toggle.dataset.oltbToggleableTarget;
+        document.getElementById(targetName).slideToggle(200, (collapsed) => {
+            this.localStorage.collapsed = collapsed;
+            StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+        });
     }
 
     onContextMenuBookmarkAdd(map, coordinates, target) {

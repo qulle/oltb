@@ -95,13 +95,7 @@ class MeasureTool extends Control {
 
         const toggleableTriggers = this.measureToolbox.querySelectorAll('.oltb-toggleable');
         toggleableTriggers.forEach((toggle) => {
-            toggle.addEventListener(EVENTS.Browser.Click, (event) => {
-                const targetName = toggle.dataset.oltbToggleableTarget;
-                document.getElementById(targetName).slideToggle(200, (collapsed) => {
-                    this.localStorage.collapsed = collapsed;
-                    StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
-                });
-            });
+            toggle.addEventListener(EVENTS.Browser.Click, this.onToggleToolbox.bind(this, toggle));
         });
 
         this.toolType.addEventListener(EVENTS.Browser.Change, this.updateTool.bind(this));
@@ -109,6 +103,14 @@ class MeasureTool extends Control {
 
         window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
         window.addEventListener(EVENTS.Custom.SettingsCleared, this.onWindowSettingsCleared.bind(this));
+    }
+
+    onToggleToolbox(toggle) {
+        const targetName = toggle.dataset.oltbToggleableTarget;
+        document.getElementById(targetName).slideToggle(200, (collapsed) => {
+            this.localStorage.collapsed = collapsed;
+            StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+        });
     }
 
     onWindowKeyUp(event) {
