@@ -12,12 +12,13 @@ import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { SHORTCUT_KEYS } from '../helpers/Constants/ShortcutKeys';
 import { EVENTS } from '../helpers/Constants/Events';
 
+const ID_PREFIX = 'oltb-split-view';
+const RADIX = 10;
+
 const LOCAL_STORAGE_NODE_NAME = 'splitViewTool';
 const LOCAL_STORAGE_DEFAULTS = {
     collapsed: false
 };
-
-const RADIX = 10;
 
 const DEFAULT_OPTIONS = {};
 
@@ -55,39 +56,39 @@ class SplitViewTool extends Control {
         this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
 
         TOOLBOX_ELEMENT.insertAdjacentHTML('beforeend', `
-            <div id="oltb-split-view-toolbox" class="oltb-toolbox-section">
+            <div id="${ID_PREFIX}-toolbox" class="oltb-toolbox-section">
                 <div class="oltb-toolbox-section__header">
-                    <h4 class="oltb-toolbox-section__title oltb-toggleable" data-oltb-toggleable-target="oltb-split-view-toolbox-collapsed">
+                    <h4 class="oltb-toolbox-section__title oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">
                         Split view
                         <span class="oltb-toolbox-section__icon oltb-tippy" title="Toggle section"></span>
                     </h4>
                 </div>
-                <div class="oltb-toolbox-section__groups" id="oltb-split-view-toolbox-collapsed" style="display: ${this.localStorage.collapsed ? 'none' : 'block'}">
+                <div class="oltb-toolbox-section__groups" id="${ID_PREFIX}-toolbox-collapsed" style="display: ${this.localStorage.collapsed ? 'none' : 'block'}">
                     <div class="oltb-toolbox-section__group">
-                        <label class="oltb-label" for="oltb-left-src">Left side</label>
-                        <select id="oltb-left-src" class="oltb-select"></select>
+                        <label class="oltb-label" for="${ID_PREFIX}-left-src">Left side</label>
+                        <select id="${ID_PREFIX}-left-src" class="oltb-select"></select>
                     </div>
                     <div class="oltb-toolbox-section__group">
-                        <label class="oltb-label" for="oltb-right-src">Right side</label>
-                        <select id="oltb-right-src" class="oltb-select"></select>
+                        <label class="oltb-label" for="${ID_PREFIX}-src">Right side</label>
+                        <select id="${ID_PREFIX}-right-src" class="oltb-select"></select>
                     </div>
                     <div class="oltb-toolbox-section__group">
-                        <button type="button" id="oltb-swap-sides-btn" class="oltb-btn oltb-btn--green-mid oltb-w-100">Swap sides</button>
+                        <button type="button" id="${ID_PREFIX}-swap-btn" class="oltb-btn oltb-btn--green-mid oltb-w-100">Swap sides</button>
                     </div>
                 </div>
             </div>
         `);
 
         MAP_ELEMENT.insertAdjacentHTML('beforeend', `
-            <input type="range" min="0" max="100" value="50" class="oltb-slider" id="oltb-split-view-slider">
+            <input type="range" min="0" max="100" value="50" class="oltb-slider" id="${ID_PREFIX}-slider">
         `);
 
-        this.splitViewToolbox = document.querySelector('#oltb-split-view-toolbox');
+        this.splitViewToolbox = document.querySelector(`#${ID_PREFIX}-toolbox`);
 
-        this.leftSrc = this.splitViewToolbox.querySelector('#oltb-left-src');
+        this.leftSrc = this.splitViewToolbox.querySelector(`#${ID_PREFIX}-left-src`);
         this.leftSrc.addEventListener(EVENTS.Browser.Change, this.updateTool.bind(this));
 
-        this.rightSrc = this.splitViewToolbox.querySelector('#oltb-right-src');
+        this.rightSrc = this.splitViewToolbox.querySelector(`#${ID_PREFIX}-right-src`);
         this.rightSrc.addEventListener(EVENTS.Browser.Change, this.updateTool.bind(this));
 
         const toggleableTriggers = this.splitViewToolbox.querySelectorAll('.oltb-toggleable');
@@ -101,12 +102,12 @@ class SplitViewTool extends Control {
             });
         });
 
-        const swapSidesBtn = this.splitViewToolbox.querySelector('#oltb-swap-sides-btn');
+        const swapSidesBtn = this.splitViewToolbox.querySelector(`#${ID_PREFIX}-swap-btn`);
         swapSidesBtn.addEventListener(EVENTS.Browser.Click, (event) => {
             this.swapSides();
         });
         
-        this.splitViewSlider = MAP_ELEMENT.querySelector('#oltb-split-view-slider');
+        this.splitViewSlider = MAP_ELEMENT.querySelector(`#${ID_PREFIX}-slider`);
         this.splitViewSlider.addEventListener(EVENTS.Browser.Input, (event) => {
             this.getMap().render();
         });

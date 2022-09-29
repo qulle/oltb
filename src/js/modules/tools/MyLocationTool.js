@@ -15,6 +15,8 @@ import { toStringHDMS } from 'ol/coordinate';
 import { SHORTCUT_KEYS } from '../helpers/Constants/ShortcutKeys';
 import { EVENTS } from '../helpers/Constants/Events';
 
+const ID_PREFIX = 'oltb-info-window-marker';
+
 const DEFAULT_OPTIONS = {
     enableHighAccuracy: true,
     timeout: 5000
@@ -124,8 +126,8 @@ class MyLocationTool extends Control {
             <h3 class="oltb-text-center">My location</h3>
             <p class="oltb-text-center">${prettyCoords}</p>
             <div class="oltb-d-flex oltb-justify-content-center">
-                <button class="oltb-func-btn oltb-func-btn--delete oltb-tippy" title="Delete marker" id="oltb-info-window-remove-marker"></button>
-                <button class="oltb-func-btn oltb-func-btn--copy oltb-tippy" title="Copy marker text" id="oltb-info-window-copy-marker-location" data-copy="My location ${prettyCoords}"></button>
+                <button class="oltb-func-btn oltb-func-btn--delete oltb-tippy" title="Delete marker" id="${ID_PREFIX}-remove"></button>
+                <button class="oltb-func-btn oltb-func-btn--copy oltb-tippy" title="Copy marker text" id="${ID_PREFIX}-copy-location" data-copy="My location ${prettyCoords}"></button>
             </div>
         `;
 

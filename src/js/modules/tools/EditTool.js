@@ -17,6 +17,8 @@ import { hasNestedProperty } from '../helpers/HasNestedProperty';
 import { SHORTCUT_KEYS } from '../helpers/Constants/ShortcutKeys';
 import { EVENTS } from '../helpers/Constants/Events';
 
+const ID_PREFIX = 'oltb-edit';
+
 const LOCAL_STORAGE_NODE_NAME = 'editTool';
 const LOCAL_STORAGE_DEFAULTS = {
     collapsed: false
@@ -58,24 +60,24 @@ class EditTool extends Control {
         this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
         
         TOOLBOX_ELEMENT.insertAdjacentHTML('beforeend', `
-            <div id="oltb-edit-toolbox" class="oltb-toolbox-section">
+            <div id="${ID_PREFIX}-toolbox" class="oltb-toolbox-section">
                 <div class="oltb-toolbox-section__header">
-                    <h4 class="oltb-toolbox-section__title oltb-toggleable" data-oltb-toggleable-target="oltb-edit-toolbox-collapsed">
+                    <h4 class="oltb-toolbox-section__title oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">
                         Edit tool
                         <span class="oltb-toolbox-section__icon oltb-tippy" title="Toggle section"></span>
                     </h4>
                 </div>
-                <div class="oltb-toolbox-section__groups" id="oltb-edit-toolbox-collapsed" style="display: ${this.localStorage.collapsed ? 'none' : 'block'}">
+                <div class="oltb-toolbox-section__groups" id="${ID_PREFIX}-toolbox-collapsed" style="display: ${this.localStorage.collapsed ? 'none' : 'block'}">
                     <div class="oltb-toolbox-section__group">
-                        <button type="button" disabled id="oltb-delete-selected-btn" class="oltb-btn oltb-btn--red-mid oltb-w-100">Delete selected features</button>
+                        <button type="button" disabled id="${ID_PREFIX}-delete-selected-btn" class="oltb-btn oltb-btn--red-mid oltb-w-100">Delete selected features</button>
                     </div>
                 </div>
             </div>
         `);
 
-        this.editToolbox = document.querySelector('#oltb-edit-toolbox');
+        this.editToolbox = document.querySelector(`#${ID_PREFIX}-toolbox`);
 
-        this.deleteSelectedButton = this.editToolbox.querySelector('#oltb-delete-selected-btn');
+        this.deleteSelectedButton = this.editToolbox.querySelector(`#${ID_PREFIX}-delete-selected-btn`);
         this.deleteSelectedButton.addEventListener(EVENTS.Browser.Click, this.deleteSelectedFeatures.bind(this));
 
         const toggleableTriggers = this.editToolbox.querySelectorAll('.oltb-toggleable');

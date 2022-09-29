@@ -17,6 +17,7 @@ import { EVENTS } from '../helpers/Constants/Events';
 import { CONTEXT_MENUS } from '../helpers/Constants/ContextMenus';
 
 const BOOKMARK_BUTTON_DEFAULT_CLASSES = 'oltb-func-btn';
+const ID_PREFIX = 'oltb-bookmark';
 
 const LOCAL_STORAGE_NODE_NAME = 'bookmarkTool';
 const LOCAL_STORAGE_DEFAULTS = {
@@ -62,18 +63,18 @@ class BookmarkTool extends Control {
         this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
 
         TOOLBOX_ELEMENT.insertAdjacentHTML('beforeend', `
-            <div id="oltb-bookmarks-toolbox" class="oltb-toolbox-section">
+            <div id="${ID_PREFIX}-toolbox" class="oltb-toolbox-section">
                 <div class="oltb-toolbox-section__header">
-                    <h4 class="oltb-toolbox-section__title oltb-toggleable" data-oltb-toggleable-target="oltb-bookmarks-toolbox-collapsed">
+                    <h4 class="oltb-toolbox-section__title oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">
                         Bookmarks
                         <span class="oltb-toolbox-section__icon oltb-tippy" title="Toggle section"></span>
                     </h4>
                 </div>
-                <div class="oltb-toolbox-section__groups" id="oltb-bookmarks-toolbox-collapsed" style="display: ${this.localStorage.collapsed ? 'none' : 'block'}">
+                <div class="oltb-toolbox-section__groups" id="${ID_PREFIX}-toolbox-collapsed" style="display: ${this.localStorage.collapsed ? 'none' : 'block'}">
                     <div class="oltb-toolbox-section__group">
                         <div class="oltb-input-button-group">
-                            <input type="text" id="oltb-add-bookmark-txt" class="oltb-input" placeholder="Bookmark name">
-                            <button type="button" id="oltb-add-bookmark-btn" class="oltb-btn oltb-btn--green-mid oltb-tippy" title="Add Bookmark">
+                            <input type="text" id="${ID_PREFIX}-add-txt" class="oltb-input" placeholder="Bookmark name">
+                            <button type="button" id="${ID_PREFIX}-add-btn" class="oltb-btn oltb-btn--green-mid oltb-tippy" title="Add Bookmark">
                                 ${getIcon({
                                     path: SVG_PATHS.PlusSmall,
                                     width: 20,
@@ -86,32 +87,23 @@ class BookmarkTool extends Control {
                         </div>
                     </div>
                     <div class="oltb-toolbox-section__group oltb-m-0">
-                        <ul id="oltb-bookmark-stack" class="oltb-toolbox-list"></ul>
+                        <ul id="${ID_PREFIX}-stack" class="oltb-toolbox-list"></ul>
                     </div>
                 </div>
             </div>
         `);
 
-        this.bookmarksToolbox = document.querySelector('#oltb-bookmarks-toolbox');
+        this.bookmarkToolbox = document.querySelector(`#${ID_PREFIX}-toolbox`);
 
-        const addBookmarkBtn = this.bookmarksToolbox.querySelector('#oltb-add-bookmark-btn');
-        const addBookmarkTxt = this.bookmarksToolbox.querySelector('#oltb-add-bookmark-txt');
+        this.bookmarkStack = this.bookmarkToolbox.querySelector(`#${ID_PREFIX}-stack`);
 
-        addBookmarkBtn.addEventListener(EVENTS.Browser.Click, (event) => {
-            this.addBookmark(addBookmarkTxt.value);
-            addBookmarkTxt.value = '';
-        });
+        this.addBookmarkBtn = this.bookmarkToolbox.querySelector(`#${ID_PREFIX}-add-btn`);
+        this.addBookmarkTxt = this.bookmarkToolbox.querySelector(`#${ID_PREFIX}-add-txt`);
 
-        addBookmarkTxt.addEventListener(EVENTS.Browser.KeyDown, (event) => {
-            if(event.key.toLowerCase() === 'enter') {
-                this.addBookmark(addBookmarkTxt.value);
-                addBookmarkTxt.value = '';
-            }
-        });
+        this.addBookmarkBtn.addEventListener(EVENTS.Browser.Click, this.onBookmarkAdd.bind(this));
+        this.addBookmarkTxt.addEventListener(EVENTS.Browser.KeyUp, this.onBookmarkAdd.bind(this));
 
-        this.bookmarkStack = this.bookmarksToolbox.querySelector('#oltb-bookmark-stack');
-
-        const toggleableTriggers = this.bookmarksToolbox.querySelectorAll('.oltb-toggleable');
+        const toggleableTriggers = this.bookmarkToolbox.querySelectorAll('.oltb-toggleable');
         toggleableTriggers.forEach((toggle) => {
             toggle.addEventListener(EVENTS.Browser.Click, (event) => {
                 const targetName = toggle.dataset.oltbToggleableTarget;
@@ -159,6 +151,15 @@ class BookmarkTool extends Control {
         this.localStorage = LOCAL_STORAGE_DEFAULTS;
     }
 
+    onBookmarkAdd(event) {
+        if(event.type === 'keyup' && event.key.toLowerCase() !== 'enter') {
+            return;
+        }
+
+        this.addBookmark(this.addBookmarkTxt.value);
+        this.addBookmarkTxt.value = '';
+    }
+
     handleClick() {
         // User defined callback from constructor
         if(typeof this.options.click === 'function') {
@@ -170,7 +171,7 @@ class BookmarkTool extends Control {
 
     handleBookmarks() {
         this.active = !this.active;
-        this.bookmarksToolbox.classList.toggle('oltb-toolbox-section--show');
+        this.bookmarkToolbox.classList.toggle('oltb-toolbox-section--show');
         this.button.classList.toggle('oltb-tool-button--active');
     }
 

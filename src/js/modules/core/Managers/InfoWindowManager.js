@@ -11,6 +11,7 @@ import { hasNestedProperty } from '../../helpers/HasNestedProperty';
 import { EVENTS } from '../../helpers/Constants/Events';
 
 const ANIMATION_CLASS = 'oltb-animations--centered-bounce';
+const ID_PREFIX = 'oltb-info-window-marker';
 
 class InfoWindowManager {
     static map;
@@ -89,17 +90,17 @@ class InfoWindowManager {
             void this.infoWindow.offsetWidth;
             this.infoWindow.classList.add(ANIMATION_CLASS);
 
-            const removeFeatureButton = this.content.querySelector('#oltb-info-window-remove-marker');
+            const removeFeatureButton = this.content.querySelector(`#${ID_PREFIX}-remove`);
             if(removeFeatureButton) {
                 removeFeatureButton.addEventListener(EVENTS.Browser.Click, removeFeature.bind(this, feature));
             }
 
-            const copyFeatureInfoButton = this.content.querySelector('#oltb-info-window-copy-marker-location');
+            const copyFeatureInfoButton = this.content.querySelector(`#${ID_PREFIX}-copy-location`);
             if(copyFeatureInfoButton) {
                 copyFeatureInfoButton.addEventListener(EVENTS.Browser.Click, copyFeatureInfo.bind(this, copyFeatureInfoButton.getAttribute('data-copy')));
             }
 
-            const editFeatureButton = this.content.querySelector('#oltb-info-window-edit-marker');
+            const editFeatureButton = this.content.querySelector(`#${ID_PREFIX}-edit`);
             if(editFeatureButton) {
                 editFeatureButton.addEventListener(EVENTS.Browser.Click, editFeature.bind(this, feature));
             }

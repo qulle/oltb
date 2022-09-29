@@ -23,6 +23,8 @@ import { EVENTS } from '../helpers/Constants/Events';
 import { CONTEXT_MENUS } from '../helpers/Constants/ContextMenus';
 
 const LAYER_BUTTON_DEFAULT_CLASSES = 'oltb-func-btn';
+const ID_PREFIX = 'oltb-layer';
+
 /* 
     Because this tool has two different sections that can be collapsed it's not a viable solution to have a single collapsed property. 
     Unfortunately this results in two longer names stored in localStorage.
@@ -79,40 +81,40 @@ class LayerTool extends Control {
         this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
 
         TOOLBOX_ELEMENT.insertAdjacentHTML('beforeend', `
-            <div id="oltb-layers-toolbox" class="oltb-toolbox-section">
+            <div id="${ID_PREFIX}-toolbox" class="oltb-toolbox-section">
                 <div class="oltb-toolbox-section__header">
-                    <h4 class="oltb-toolbox-section__title oltb-toggleable" data-oltb-toggleable-target="oltb-map-layers-toolbox-collapsed">
+                    <h4 class="oltb-toolbox-section__title oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-map-toolbox-collapsed">
                         Map layers
                         <span class="oltb-toolbox-section__icon oltb-tippy" title="Toggle section"></span>
                     </h4>
                 </div>
-                <div class="oltb-toolbox-section__groups" id="oltb-map-layers-toolbox-collapsed" style="display: ${this.localStorage['oltb-map-layers-toolbox-collapsed'] ? 'none' : 'block'}">
+                <div class="oltb-toolbox-section__groups" id="${ID_PREFIX}-map-toolbox-collapsed" style="display: ${this.localStorage['oltb-layer-map-toolbox-collapsed'] ? 'none' : 'block'}">
                     ${
                         !this.options.disableMapCreateLayerButton ? 
                         `
                             <div class="oltb-toolbox-section__group">
-                                <button type="button" id="oltb-add-map-layer-btn" class="oltb-btn oltb-btn--green-mid oltb-w-100">Create map layer</button>
+                                <button type="button" id="${ID_PREFIX}-map-stack-add-btn" class="oltb-btn oltb-btn--green-mid oltb-w-100">Create map layer</button>
                             </div>
                         ` : ''
                     }
                     <div class="oltb-toolbox-section__group ${this.options.disableMapCreateLayerButton ? 'oltb-toolbox-section__group--topmost' : ''} oltb-m-0">
-                        <ul id="oltb-map-layer-stack" class="oltb-toolbox-list"></ul>
+                        <ul id="${ID_PREFIX}-map-stack" class="oltb-toolbox-list"></ul>
                     </div>
                 </div>
                 <div class="oltb-toolbox-section__header">
-                    <h4 class="oltb-toolbox-section__title oltb-toggleable" data-oltb-toggleable-target="oltb-feature-layers-toolbox-collapsed">
+                    <h4 class="oltb-toolbox-section__title oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-feature-toolbox-collapsed">
                         Feature layers
                         <span class="oltb-toolbox-section__icon oltb-tippy" title="Toggle section"></span>
                     </h4>
                 </div>
-                <div class="oltb-toolbox-section__groups" id="oltb-feature-layers-toolbox-collapsed" style="display: ${this.localStorage['oltb-feature-layers-toolbox-collapsed'] ? 'none' : 'block'}">
+                <div class="oltb-toolbox-section__groups" id="${ID_PREFIX}-feature-toolbox-collapsed" style="display: ${this.localStorage['oltb-layer-feature-toolbox-collapsed'] ? 'none' : 'block'}">
                     <div class="oltb-toolbox-section__group">
                         ${
                             !this.options.disableFeatureCreateLayerButton ? 
                             `
                                 <div class="oltb-input-button-group">
-                                    <input type="text" id="oltb-add-feature-layer-txt" class="oltb-input" placeholder="Layer name">
-                                    <button type="button" id="oltb-add-feature-layer-btn" class="oltb-btn oltb-btn--green-mid oltb-tippy" title="Create feature layer">
+                                    <input type="text" id="${ID_PREFIX}-feature-stack-add-txt" class="oltb-input" placeholder="Layer name">
+                                    <button type="button" id="${ID_PREFIX}-feature-stack-add-btn" class="oltb-btn oltb-btn--green-mid oltb-tippy" title="Create feature layer">
                                         ${getIcon({
                                             path: SVG_PATHS.PlusSmall,
                                             width: 20,
@@ -127,14 +129,13 @@ class LayerTool extends Control {
                         }
                     </div>
                     <div class="oltb-toolbox-section__group ${this.options.disableFeatureCreateLayerButton ? 'oltb-toolbox-section__group--topmost' : ''} oltb-m-0">
-                        <ul id="oltb-feature-layer-stack" class="oltb-toolbox-list oltb-toolbox-list--selectable"></ul>
+                        <ul id="${ID_PREFIX}-feature-stack" class="oltb-toolbox-list oltb-toolbox-list--selectable"></ul>
                     </div>
                 </div>
             </div>
         `);
 
-        this.layersToolbox = document.querySelector('#oltb-layers-toolbox');
-        this.mapLayerStack = this.layersToolbox.querySelector('#oltb-map-layer-stack');
+        this.layersToolbox = document.querySelector(`#${ID_PREFIX}-toolbox`);
 
         const toggleableTriggers = this.layersToolbox.querySelectorAll('.oltb-toggleable');
         toggleableTriggers.forEach((toggle) => {
@@ -147,28 +148,21 @@ class LayerTool extends Control {
             });
         });
 
-        this.featureLayerStack = this.layersToolbox.querySelector('#oltb-feature-layer-stack');
+        this.mapLayerStack = this.layersToolbox.querySelector(`#${ID_PREFIX}-map-stack`);
+        this.featureLayerStack = this.layersToolbox.querySelector(`#${ID_PREFIX}-feature-stack`);
 
-        const addFeatureLayerBtn = this.layersToolbox.querySelector('#oltb-add-feature-layer-btn');
-        const addFeatureLayerTxt = this.layersToolbox.querySelector('#oltb-add-feature-layer-txt');
+        this.addFeatureLayerBtn = this.layersToolbox.querySelector(`#${ID_PREFIX}-feature-stack-add-btn`);
+        this.addFeatureLayerTxt = this.layersToolbox.querySelector(`#${ID_PREFIX}-feature-stack-add-txt`);
 
-        if(addFeatureLayerBtn) {
-            addFeatureLayerBtn.addEventListener(EVENTS.Browser.Click, function(event) {
-                LayerManager.addFeatureLayer(addFeatureLayerTxt.value);
-                addFeatureLayerTxt.value = '';
-            });
+        if(this.addFeatureLayerBtn) {
+            this.addFeatureLayerBtn.addEventListener(EVENTS.Browser.Click, this.onFeatureLayerAdd.bind(this));
         }
 
-        if(addFeatureLayerTxt) {
-            addFeatureLayerTxt.addEventListener(EVENTS.Browser.KeyUp, function(event) {
-                if(event.key.toLowerCase() === 'enter') {
-                    LayerManager.addFeatureLayer(addFeatureLayerTxt.value);
-                    addFeatureLayerTxt.value = '';
-                }
-            });
+        if(this.addFeatureLayerTxt) {
+            this.addFeatureLayerTxt.addEventListener(EVENTS.Browser.KeyUp, this.onFeatureLayerAdd.bind(this));
         }
 
-        const addMapLayerBtn = this.layersToolbox.querySelector('#oltb-add-map-layer-btn');
+        const addMapLayerBtn = this.layersToolbox.querySelector(`#${ID_PREFIX}-map-stack-add-btn`);
         if(addMapLayerBtn) {
             addMapLayerBtn.addEventListener(EVENTS.Browser.Click, this.showAddMapLayerModal.bind(this));
         }
@@ -192,6 +186,15 @@ class LayerTool extends Control {
 
     onContextMenuAddMapLayerModal() {
         this.showAddMapLayerModal();
+    }
+
+    onFeatureLayerAdd(event) {
+        if(event.type === 'keyup' && event.key.toLowerCase() !== 'enter') {
+            return;
+        }
+
+        LayerManager.addFeatureLayer(this.addFeatureLayerTxt.value);
+        this.addFeatureLayerTxt.value = '';
     }
 
     handleClick() {
@@ -290,7 +293,7 @@ class LayerTool extends Control {
 
         // Add to UI, this will check if the user has disabled any of the UI-buttons for a layer
         this.createLayerItem(layerWrapper, {
-            idPrefix: 'oltb-feature-layer',
+            idPrefix: `${ID_PREFIX}-feature`,
             target: this.featureLayerStack,
             buttons: {
                 ...(!disableVisibilityButton && {visibilityButton: {
@@ -323,7 +326,7 @@ class LayerTool extends Control {
         const isSilent = event.detail.isSilent;
 
         // Remove layer from UI
-        this.featureLayerStack.querySelector(`#oltb-feature-layer-${layerWrapper.id}`).remove();
+        this.featureLayerStack.querySelector(`#${ID_PREFIX}-feature-${layerWrapper.id}`).remove();
 
         // Set top-most-layer tas the active layer
         // Important that it is the first child, the LayerManager uses the first next layer

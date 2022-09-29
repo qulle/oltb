@@ -8,6 +8,8 @@ import { generateMarker } from '../../../helpers/olFunctions/GenerateMarker';
 import { SVG_PATHS, getIcon } from '../../Icons';
 import { EVENTS } from '../../../helpers/Constants/Events';
 
+const ID_PREFIX = 'oltb-info-window-marker';
+
 const editFeature = function(feature) {
     const properties = feature.getProperties();
 
@@ -36,9 +38,9 @@ const editFeature = function(feature) {
             <p class="oltb-text-center">${result.info}</p>
             <p class="oltb-text-center">${prettyCoords}</p>
             <div class="oltb-d-flex oltb-justify-content-center">
-                <button class="oltb-func-btn oltb-func-btn--delete oltb-tippy" title="Delete marker" id="oltb-info-window-remove-marker"></button>
-                <button class="oltb-func-btn oltb-func-btn--copy oltb-tippy" title="Copy marker text" id="oltb-info-window-copy-marker-location" data-copy="${result.name} ${result.info} Coordinates ${prettyCoords}"></button>
-                <button class="oltb-func-btn oltb-func-btn--edit oltb-tippy" title="Edit marker" id="oltb-info-window-edit-marker"></button>
+                <button class="oltb-func-btn oltb-func-btn--delete oltb-tippy" title="Delete marker" id="${ID_PREFIX}-remove"></button>
+                <button class="oltb-func-btn oltb-func-btn--copy oltb-tippy" title="Copy marker text" id="${ID_PREFIX}-copy-location" data-copy="${result.name} ${result.info} Coordinates ${prettyCoords}"></button>
+                <button class="oltb-func-btn oltb-func-btn--edit oltb-tippy" title="Edit marker" id="${ID_PREFIX}-edit"></button>
             </div>
         `;
         

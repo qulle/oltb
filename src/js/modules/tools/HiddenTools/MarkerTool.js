@@ -9,6 +9,7 @@ import { toStringHDMS } from 'ol/coordinate';
 import { EVENTS } from '../../helpers/Constants/Events';
 import { CONTEXT_MENUS } from '../../helpers/Constants/ContextMenus';
 
+const ID_PREFIX = 'oltb-info-window';
 const DEFAULT_OPTIONS = {};
 
 class HiddenMarkerTool extends Control {
@@ -36,9 +37,9 @@ class HiddenMarkerTool extends Control {
                 <p class="oltb-text-center">${result.info}</p>
                 <p class="oltb-text-center">${prettyCoords}</p>
                 <div class="oltb-d-flex oltb-justify-content-center">
-                    <button class="oltb-func-btn oltb-func-btn--delete oltb-tippy" title="Delete marker" id="oltb-info-window-remove-marker"></button>
-                    <button class="oltb-func-btn oltb-func-btn--copy oltb-tippy" title="Copy marker text" id="oltb-info-window-copy-marker-location" data-copy="${result.name} ${result.info}"></button>
-                    <button class="oltb-func-btn oltb-func-btn--edit oltb-tippy" title="Edit marker" id="oltb-info-window-edit-marker"></button>
+                    <button class="oltb-func-btn oltb-func-btn--delete oltb-tippy" title="Delete marker" id="${ID_PREFIX}-marker-remove"></button>
+                    <button class="oltb-func-btn oltb-func-btn--copy oltb-tippy" title="Copy marker text" id="${ID_PREFIX}-marker-copy-location" data-copy="${result.name} ${result.info}"></button>
+                    <button class="oltb-func-btn oltb-func-btn--edit oltb-tippy" title="Edit marker" id="${ID_PREFIX}-marker-edit"></button>
                 </div>
             `;
             

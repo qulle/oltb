@@ -17,6 +17,8 @@ import { unByKey } from 'ol/Observable';
 import { SHORTCUT_KEYS } from '../helpers/Constants/ShortcutKeys';
 import { EVENTS } from '../helpers/Constants/Events';
 
+const ID_PREFIX = 'oltb-measure';
+
 const LOCAL_STORAGE_NODE_NAME = 'measureTool';
 const LOCAL_STORAGE_DEFAULTS = {
     collapsed: false,
@@ -60,24 +62,24 @@ class MeasureTool extends Control {
         this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
 
         TOOLBOX_ELEMENT.insertAdjacentHTML('beforeend', `
-            <div id="oltb-measure-toolbox" class="oltb-toolbox-section">
+            <div id="${ID_PREFIX}-toolbox" class="oltb-toolbox-section">
                 <div class="oltb-toolbox-section__header">
-                    <h4 class="oltb-toolbox-section__title oltb-toggleable" data-oltb-toggleable-target="oltb-measure-toolbox-collapsed">
+                    <h4 class="oltb-toolbox-section__title oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">
                         Measure tool
                         <span class="oltb-toolbox-section__icon oltb-tippy" title="Toggle section"></span>
                     </h4>
                 </div>
-                <div class="oltb-toolbox-section__groups" id="oltb-measure-toolbox-collapsed" style="display: ${this.localStorage.collapsed ? 'none' : 'block'}">
+                <div class="oltb-toolbox-section__groups" id="${ID_PREFIX}-toolbox-collapsed" style="display: ${this.localStorage.collapsed ? 'none' : 'block'}">
                     <div class="oltb-toolbox-section__group">
-                        <label class="oltb-label" for="oltb-measure-type">Type</label>
-                        <select id="oltb-measure-type" class="oltb-select">
+                        <label class="oltb-label" for="${ID_PREFIX}-type">Type</label>
+                        <select id="${ID_PREFIX}-type" class="oltb-select">
                             <option value="LineString">Length</option>
                             <option value="Polygon">Area</option>
                         </select>
                     </div>
                     <div class="oltb-toolbox-section__group">
-                        <label class="oltb-label" for="oltb-measure-stroke-color">Stroke color</label>
-                        <div id="oltb-measure-stroke-color" class="oltb-color-input oltb-color-tippy" data-oltb-color-target="#oltb-measure-stroke-color" data-oltb-color="${this.localStorage.strokeColor}" tabindex="0">
+                        <label class="oltb-label" for="${ID_PREFIX}-stroke-color">Stroke color</label>
+                        <div id="${ID_PREFIX}-stroke-color" class="oltb-color-input oltb-color-tippy" data-oltb-color-target="#${ID_PREFIX}-stroke-color" data-oltb-color="${this.localStorage.strokeColor}" tabindex="0">
                             <div class="oltb-color-input__inner" style="background-color: ${this.localStorage.strokeColor};"></div>
                         </div>
                     </div>
@@ -85,9 +87,10 @@ class MeasureTool extends Control {
             </div>
         `);
 
-        this.measureToolbox = document.querySelector('#oltb-measure-toolbox');
-        this.strokeColor = this.measureToolbox.querySelector('#oltb-measure-stroke-color');
-        this.toolType = this.measureToolbox.querySelector('#oltb-measure-type');
+        this.measureToolbox = document.querySelector(`#${ID_PREFIX}-toolbox`);
+
+        this.strokeColor = this.measureToolbox.querySelector(`#${ID_PREFIX}-stroke-color`);
+        this.toolType = this.measureToolbox.querySelector(`#${ID_PREFIX}-type`);
         this.toolType.selectedIndex = this.localStorage.toolTypeIndex;
 
         const toggleableTriggers = this.measureToolbox.querySelectorAll('.oltb-toggleable');

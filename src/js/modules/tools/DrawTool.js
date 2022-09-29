@@ -13,6 +13,8 @@ import { setActiveTool } from '../helpers/ActiveTool';
 import { SHORTCUT_KEYS } from '../helpers/Constants/ShortcutKeys';
 import { EVENTS } from '../helpers/Constants/Events';
 
+const ID_PREFIX = 'oltb-draw';
+
 const LOCAL_STORAGE_NODE_NAME = 'drawTool';
 const LOCAL_STORAGE_DEFAULTS = {
     collapsed: false,
@@ -58,17 +60,17 @@ class DrawTool extends Control {
         this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
 
         TOOLBOX_ELEMENT.insertAdjacentHTML('beforeend', `
-            <div id="oltb-drawing-tool-box" class="oltb-toolbox-section">
+            <div id="${ID_PREFIX}-toolbox" class="oltb-toolbox-section">
                 <div class="oltb-toolbox-section__header">
-                    <h4 class="oltb-toolbox-section__title oltb-toggleable" data-oltb-toggleable-target="oltb-drawing-toolbox-collapsed">
-                        Drawing tool
+                    <h4 class="oltb-toolbox-section__title oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">
+                        Draw tool
                         <span class="oltb-toolbox-section__icon oltb-tippy" title="Toggle section"></span>
                     </h4>
                 </div>
-                <div class="oltb-toolbox-section__groups" id="oltb-drawing-toolbox-collapsed" style="display: ${this.localStorage.collapsed ? 'none' : 'block'}">
+                <div class="oltb-toolbox-section__groups" id="${ID_PREFIX}-toolbox-collapsed" style="display: ${this.localStorage.collapsed ? 'none' : 'block'}">
                     <div class="oltb-toolbox-section__group">
-                        <label class="oltb-label" for="oltb-draw-type">Shape</label>
-                        <select id="oltb-draw-type" class="oltb-select">
+                        <label class="oltb-label" for="${ID_PREFIX}-type">Shape</label>
+                        <select id="${ID_PREFIX}-type" class="oltb-select">
                             <option value="Circle">Circle</option>
                             <option value="Square">Square</option>
                             <option value="Rectangle">Rectangle</option>
@@ -78,8 +80,8 @@ class DrawTool extends Control {
                         </select>
                     </div>
                     <div class="oltb-toolbox-section__group">
-                        <label class="oltb-label" for="oltb-draw-stroke-width">Stroke width</label>
-                        <select id="oltb-draw-stroke-width" class="oltb-select">
+                        <label class="oltb-label" for="${ID_PREFIX}-stroke-width">Stroke width</label>
+                        <select id="${ID_PREFIX}-stroke-width" class="oltb-select">
                             <option value="1">1</option>
                             <option value="1.25">1.25</option>
                             <option value="1.5">1.5</option>
@@ -95,14 +97,14 @@ class DrawTool extends Control {
                         </select>
                     </div>
                     <div class="oltb-toolbox-section__group">
-                        <label class="oltb-label" for="oltb-draw-stroke-color">Stroke color</label>
-                        <div id="oltb-draw-stroke-color" class="oltb-color-input oltb-color-tippy" data-oltb-color-target="#oltb-draw-stroke-color" data-oltb-color="${this.localStorage.strokeColor}" tabindex="0">
+                        <label class="oltb-label" for="${ID_PREFIX}-stroke-color">Stroke color</label>
+                        <div id="${ID_PREFIX}-stroke-color" class="oltb-color-input oltb-color-tippy" data-oltb-color-target="#${ID_PREFIX}-stroke-color" data-oltb-color="${this.localStorage.strokeColor}" tabindex="0">
                             <div class="oltb-color-input__inner" style="background-color: ${this.localStorage.strokeColor};"></div>
                         </div>
                     </div>
                     <div class="oltb-toolbox-section__group">
-                        <label class="oltb-label" for="oltb-draw-fill-color">Fill color</label>
-                        <div id="oltb-draw-fill-color" class="oltb-color-input oltb-color-tippy" data-oltb-color-target="#oltb-draw-fill-color" data-oltb-color="${this.localStorage.fillColor}" tabindex="0">
+                        <label class="oltb-label" for="${ID_PREFIX}-fill-color">Fill color</label>
+                        <div id="${ID_PREFIX}-fill-color" class="oltb-color-input oltb-color-tippy" data-oltb-color-target="#${ID_PREFIX}-fill-color" data-oltb-color="${this.localStorage.fillColor}" tabindex="0">
                             <div class="oltb-color-input__inner" style="background-color: ${this.localStorage.fillColor};"></div>
                         </div>
                     </div>
@@ -110,7 +112,7 @@ class DrawTool extends Control {
             </div>
         `);
 
-        this.drawToolbox = document.querySelector('#oltb-drawing-tool-box');
+        this.drawToolbox = document.querySelector(`#${ID_PREFIX}-toolbox`);
 
         const toggleableTriggers = this.drawToolbox.querySelectorAll('.oltb-toggleable');
         toggleableTriggers.forEach((toggle) => {
@@ -123,16 +125,16 @@ class DrawTool extends Control {
             });
         });
 
-        this.toolType = this.drawToolbox.querySelector('#oltb-draw-type');
+        this.toolType = this.drawToolbox.querySelector(`#${ID_PREFIX}-type`);
         this.toolType.addEventListener(EVENTS.Browser.Change, this.updateTool.bind(this));
 
-        this.fillColor = this.drawToolbox.querySelector('#oltb-draw-fill-color');
+        this.fillColor = this.drawToolbox.querySelector(`#${ID_PREFIX}-fill-color`);
         this.fillColor.addEventListener(EVENTS.Custom.ColorChange, this.updateTool.bind(this));
 
-        this.strokeWidth = this.drawToolbox.querySelector('#oltb-draw-stroke-width');
+        this.strokeWidth = this.drawToolbox.querySelector(`#${ID_PREFIX}-stroke-width`);
         this.strokeWidth.addEventListener(EVENTS.Browser.Change, this.updateTool.bind(this));
 
-        this.strokeColor = this.drawToolbox.querySelector('#oltb-draw-stroke-color');
+        this.strokeColor = this.drawToolbox.querySelector(`#${ID_PREFIX}-stroke-color`);
         this.strokeColor.addEventListener(EVENTS.Custom.ColorChange, this.updateTool.bind(this));
 
         // Set default selected value

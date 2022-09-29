@@ -6,6 +6,8 @@ import { generateMarker } from '../helpers/olFunctions/GenerateMarker';
 
 import urlCapitalsGeoJSON from 'url:../../../json/capitals.geojson';
 
+const ID_PREFIX = 'oltb-info-window-marker';
+
 const ICON = getIcon({
     path: SVG_PATHS.GeoMarkerFilled,
     width: 20,
@@ -47,8 +49,8 @@ fetch(urlCapitalsGeoJSON)
                 <p class="oltb-text-center">${capital.properties.capitalName} - ${capital.properties.continentName}</p>
                 <p class="oltb-text-center">${prettyCoords}</p>
                 <div class="oltb-d-flex oltb-justify-content-center">
-                    <button class="oltb-func-btn oltb-func-btn--delete oltb-tippy" title="Delete marker" id="oltb-info-window-remove-marker"></button>
-                    <button class="oltb-func-btn oltb-func-btn--copy oltb-tippy" title="Copy marker text" id="oltb-info-window-copy-marker-location" data-copy="Country ${capital.properties.countryName} Capital ${capital.properties.capitalName} Coordinates ${prettyCoords}"></button>
+                    <button class="oltb-func-btn oltb-func-btn--delete oltb-tippy" title="Delete marker" id="${ID_PREFIX}-remove"></button>
+                    <button class="oltb-func-btn oltb-func-btn--copy oltb-tippy" title="Copy marker text" id="${ID_PREFIX}-copy-location" data-copy="Country ${capital.properties.countryName} Capital ${capital.properties.capitalName} Coordinates ${prettyCoords}"></button>
                 </div>
             `;
         

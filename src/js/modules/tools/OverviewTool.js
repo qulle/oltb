@@ -9,6 +9,8 @@ import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { SHORTCUT_KEYS } from '../helpers/Constants/ShortcutKeys';
 import { EVENTS } from '../helpers/Constants/Events';
 
+const ID_PREFIX = 'oltb-overview';
+
 const LOCAL_STORAGE_NODE_NAME = 'overviewTool';
 const LOCAL_STORAGE_DEFAULTS = {
     collapsed: false
@@ -50,20 +52,20 @@ class OverviewTool extends Control {
         this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
 
         TOOLBOX_ELEMENT.insertAdjacentHTML('beforeend', `
-            <div id="oltb-overview-toolbox" class="oltb-toolbox-section">
+            <div id="${ID_PREFIX}-toolbox" class="oltb-toolbox-section">
                 <div class="oltb-toolbox-section__header">
-                    <h4 class="oltb-toolbox-section__title oltb-toggleable" data-oltb-toggleable-target="oltb-overview-toolbox-collapsed">
+                    <h4 class="oltb-toolbox-section__title oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">
                         Overview tool
                         <span class="oltb-toolbox-section__icon oltb-tippy" title="Toggle section"></span>
                     </h4>
                 </div>
-                <div class="oltb-toolbox-section__groups" id="oltb-overview-toolbox-collapsed" style="display: ${this.localStorage.collapsed ? 'none' : 'block'}">
-                    <div class="oltb-toolbox-section__group" id="oltb-overview-target"></div>
+                <div class="oltb-toolbox-section__groups" id="${ID_PREFIX}-toolbox-collapsed" style="display: ${this.localStorage.collapsed ? 'none' : 'block'}">
+                    <div class="oltb-toolbox-section__group" id="${ID_PREFIX}-target"></div>
                 </div>
             </div>
         `);
 
-        this.overviewToolbox = document.querySelector('#oltb-overview-toolbox');
+        this.overviewToolbox = document.querySelector(`#${ID_PREFIX}-toolbox`);
 
         const toggleableTriggers = this.overviewToolbox.querySelectorAll('.oltb-toggleable');
         toggleableTriggers.forEach((toggle) => {
