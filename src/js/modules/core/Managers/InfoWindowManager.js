@@ -7,8 +7,8 @@ import { copyFeatureInfo } from './info-window-manager/CopyFeatureInfo';
 import { removeFeature } from './info-window-manager/RemoveFeature';
 import { editFeature } from './info-window-manager/EditFeature';
 import { trapFocusKeyListener } from '../../helpers/TrapFocus';
-import { hasNestedProperty } from '../../helpers/HasNestedProperty';
-import { EVENTS } from '../../helpers/constants/Events';
+import { EVENTS } from '../../helpers/Constants/Events';
+import { Fill, Stroke, Style } from 'ol/style';
 
 const ANIMATION_CLASS = 'oltb-animations--centered-bounce';
 const ID_PREFIX = 'oltb-info-window-marker';
@@ -17,6 +17,7 @@ class InfoWindowManager {
     static map;
     static overlay;
     static content;
+    static lastFeature;
 
     static init(map) {
         if(this.map) {
@@ -110,11 +111,31 @@ class InfoWindowManager {
     }
 
     static onPointerMove(event) {
-        const hit = this.map.forEachFeatureAtPixel(event.pixel, function(feature) {
-            return hasNestedProperty(feature.getProperties(), 'infoWindow');
+        const feature = this.map.forEachFeatureAtPixel(event.pixel, function(feature) {
+            return feature;
         });
 
-        this.map.getViewport().style.cursor = hit ? 'pointer' : 'default';
+        if(this.lastFeature && (!feature || this.lastFeature !== feature)) {
+            this.lastFeature.setStyle(null);
+        }
+
+        const hightlight = feature?.getProperties()?.highlightOnHover;
+
+        if(hightlight) {
+            const style = new Style({
+                fill: new Fill({color: '#3B435266'}),
+                stroke: new Stroke({
+                    color: '#3B4352FF',
+                    width: 1.5
+                })
+            })
+
+            feature.setStyle(style);
+            this.lastFeature = feature;
+        }
+
+        const infoWindow = feature?.getProperties()?.infoWindow;
+        this.map.getViewport().style.cursor = infoWindow ? 'pointer' : 'default';
     }
 
     static hideOverlay() {
