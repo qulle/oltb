@@ -5,7 +5,7 @@ import { trapFocusKeyListener } from '../helpers/TrapFocus';
 import { transform } from 'ol/proj';
 import { MAP_ELEMENT } from "../core/ElementReferences";
 import { hasNestedProperty } from "../helpers/HasNestedProperty";
-import { EVENTS } from "../helpers/Constants/Events";
+import { EVENTS } from "../helpers/constants/Events";
 
 const DEFAULT_OPTIONS = {};
 

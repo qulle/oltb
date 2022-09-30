@@ -1,5 +1,5 @@
-import ModalBase from '../../common/Modals/ModalBase';
-import SettingsManager from '../../core/Managers/SettingsManager';
+import ModalBase from '../../common/modals/ModalBase';
+import SettingsManager from '../../core/managers/SettingsManager';
 import DOM from '../../helpers/Browser/DOM';
 
 class SettingsModal extends ModalBase {

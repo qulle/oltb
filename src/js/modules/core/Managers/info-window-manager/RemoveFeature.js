@@ -1,6 +1,6 @@
 import Dialog from '../../../common/Dialog';
 import LayerManager from '../LayerManager';
-import { EVENTS } from '../../../helpers/Constants/Events';
+import { EVENTS } from '../../../helpers/constants/Events';
 
 const removeFeature = function(feature) {
     Dialog.confirm({

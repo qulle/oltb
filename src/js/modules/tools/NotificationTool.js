@@ -5,8 +5,8 @@ import { Control } from 'ol/control';
 import { TOOLBAR_ELEMENT } from '../core/ElementReferences';
 import { SVG_PATHS, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
-import { SHORTCUT_KEYS } from '../helpers/Constants/ShortcutKeys';
-import { EVENTS } from '../helpers/Constants/Events';
+import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
+import { EVENTS } from '../helpers/constants/Events';
 
 const NOTIFICATION_URL = 'https://raw.githubusercontent.com/qulle/notification-endpoints/main/endpoints/oltb.json';
 

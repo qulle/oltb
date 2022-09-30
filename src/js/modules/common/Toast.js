@@ -1,4 +1,4 @@
-import Toaster from './Toasts/Toaster';
+import Toaster from './toasts/Toaster';
 
 class Toast {
     static info(options) {

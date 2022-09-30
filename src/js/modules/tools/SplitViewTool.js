@@ -1,5 +1,5 @@
-import LayerManager from '../core/Managers/LayerManager';
-import StateManager from '../core/Managers/StateManager';
+import LayerManager from '../core/managers/LayerManager';
+import StateManager from '../core/managers/StateManager';
 import Toast from '../common/Toast';
 import DOM from '../helpers/Browser/DOM';
 import { Control } from 'ol/control';
@@ -9,8 +9,8 @@ import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT, MAP_ELEMENT } from '../core/ElementRe
 import { eventDispatcher } from '../helpers/Browser/EventDispatcher';
 import { SVG_PATHS, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
-import { SHORTCUT_KEYS } from '../helpers/Constants/ShortcutKeys';
-import { EVENTS } from '../helpers/Constants/Events';
+import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
+import { EVENTS } from '../helpers/constants/Events';
 
 const ID_PREFIX = 'oltb-split-view';
 const RADIX = 10;

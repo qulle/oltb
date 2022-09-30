@@ -1,13 +1,13 @@
 import CONFIG from '../../core/Config';
-import StateManager from '../../core/Managers/StateManager';
+import StateManager from '../../core/managers/StateManager';
 import { Control } from 'ol/control';
 import { TOOLBAR_ELEMENT } from '../../core/ElementReferences';
 import { easeOut } from 'ol/easing';
 import { fromLonLat, toLonLat } from 'ol/proj';
 import { addContextMenuItem } from '../../common/ContextMenu';
 import { SVG_PATHS, getIcon } from '../../core/Icons';
-import { EVENTS } from '../../helpers/Constants/Events';
-import { CONTEXT_MENUS } from '../../helpers/Constants/ContextMenus';
+import { EVENTS } from '../../helpers/constants/Events';
+import { CONTEXT_MENUS } from '../../helpers/constants/ContextMenus';
 
 // Note: This is the same NODE_NAME and PROPS that the map.js file is using
 const LOCAL_STORAGE_NODE_NAME = 'mapData';

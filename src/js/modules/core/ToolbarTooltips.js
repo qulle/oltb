@@ -5,7 +5,7 @@ import { delegate, createSingleton } from 'tippy.js';
 import { MAP_ELEMENT } from './ElementReferences';
 import { isHorizontal } from '../helpers/IsRowDirection';
 import { eventDispatcher } from '../helpers/Browser/EventDispatcher';
-import { EVENTS } from '../helpers/Constants/Events';
+import { EVENTS } from '../helpers/constants/Events';
 
 const AColorPicker = require('a-color-picker');
 

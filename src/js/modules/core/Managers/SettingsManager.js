@@ -1,5 +1,5 @@
 import StateManager from "./StateManager";
-import { EVENTS } from "../../helpers/Constants/Events";
+import { EVENTS } from "../../helpers/constants/Events";
 
 const LOCAL_STORAGE_NODE_NAME = 'settings';
 const LOCAL_STORAGE_DEFAULTS = {};

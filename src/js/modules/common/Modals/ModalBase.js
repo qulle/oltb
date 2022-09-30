@@ -2,7 +2,7 @@ import DOM from '../../helpers/Browser/DOM';
 import { MAP_ELEMENT } from '../../core/ElementReferences';
 import { SVG_PATHS, getIcon } from '../../core/Icons';
 import { trapFocusKeyListener } from '../../helpers/TrapFocus';
-import { EVENTS } from '../../helpers/Constants/Events';
+import { EVENTS } from '../../helpers/constants/Events';
 
 const ANIMATION_CLASS = 'oltb-animations--bounce';
 

@@ -8,8 +8,8 @@ import { defaults as defaultControls } from 'ol/control';
 import { get as getProjection } from 'ol/proj';
 
 // Toolbar tools
-import HiddenMarkerTool from './modules/tools/HiddenTools/MarkerTool';
-import HiddenMapNavigationTool from './modules/tools/HiddenTools/MapNavigationTool';
+import HiddenMarkerTool from './modules/tools/hidden-tools/MarkerTool';
+import HiddenMapNavigationTool from './modules/tools/hidden-tools/MapNavigationTool';
 import HomeTool from './modules/tools/HomeTool';
 import ZoomInTool from './modules/tools/ZoomInTool';
 import ZoomOutTool from './modules/tools/ZoomOutTool';
@@ -37,18 +37,18 @@ import NotificationTool from './modules/tools/NotificationTool';
 import HelpTool from './modules/tools/HelpTool';
 import SettingsTool from './modules/tools/SettingsTool';
 import DebugInfoTool from './modules/tools/DebugInfoTool';
-import HiddenAboutTool from './modules/tools/HiddenTools/AboutTool';
+import HiddenAboutTool from './modules/tools/hidden-tools/AboutTool';
 
 // Additional toolbar helpers
 import CONFIG from './modules/core/Config';
 import ContextMenu from './modules/common/ContextMenu';
-import LayerManager from './modules/core/Managers/LayerManager';
-import StateManager from './modules/core/Managers/StateManager';
-import TooltipManager from './modules/core/Managers/TooltipManager';
-import SettingsManager from './modules/core/Managers/SettingsManager';
-import InfoWindowManager from './modules/core/Managers/InfoWindowManager';
+import LayerManager from './modules/core/managers/LayerManager';
+import StateManager from './modules/core/managers/StateManager';
+import TooltipManager from './modules/core/managers/TooltipManager';
+import SettingsManager from './modules/core/managers/SettingsManager';
+import InfoWindowManager from './modules/core/managers/InfoWindowManager';
 import { MAP_ELEMENT } from './modules/core/ElementReferences';
-import { CONTEXT_MENUS } from './modules/helpers/Constants/ContextMenus';
+import { CONTEXT_MENUS } from './modules/helpers/constants/ContextMenus';
 import './modules/epsg/Registrate';
 import './modules/helpers/Browser/Prototypes';
 import './modules/helpers/Accessibility';

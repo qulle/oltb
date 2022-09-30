@@ -1,4 +1,4 @@
-import DOM from '../../helpers/Browser/DOM';
+import DOM from '../../helpers/browser/DOM';
 import { MAP_ELEMENT } from './MapElement';
 
 const TOOLBOX_ELEMENT = DOM.createElement({

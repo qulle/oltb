@@ -1,4 +1,4 @@
-import ModalBase from '../../common/Modals/ModalBase';
+import ModalBase from '../../common/modals/ModalBase';
 import DOM from '../../helpers/Browser/DOM';
 import Toast from '../../common/Toast';
 import { copyToClipboard } from '../../helpers/Browser/CopyToClipboard';

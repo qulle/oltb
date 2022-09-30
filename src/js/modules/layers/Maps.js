@@ -1,4 +1,4 @@
-import LayerManager from "../core/Managers/LayerManager";
+import LayerManager from "../core/managers/LayerManager";
 import TileLayer from 'ol/layer/Tile';
 import OSM from 'ol/source/OSM';
 import Stamen from 'ol/source/Stamen';

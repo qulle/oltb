@@ -1,7 +1,7 @@
 import Overlay from 'ol/Overlay';
 import DOM from "../../helpers/Browser/DOM";
 import { unByKey } from 'ol/Observable';
-import { EVENTS } from '../../helpers/Constants/Events';
+import { EVENTS } from '../../helpers/constants/Events';
 
 class TooltipManager {
     static map;

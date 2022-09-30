@@ -1,4 +1,4 @@
-import LayerManager from "../core/Managers/LayerManager";
+import LayerManager from "../core/managers/LayerManager";
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import GeoJSON from 'ol/format/GeoJSON';

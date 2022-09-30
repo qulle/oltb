@@ -1,19 +1,19 @@
 import Toast from '../common/Toast';
 import Dialog from '../common/Dialog';
-import LayerManager from '../core/Managers/LayerManager';
+import LayerManager from '../core/managers/LayerManager';
 import CONFIG from '../core/Config';
 import DOM from '../helpers/Browser/DOM';
 import { Control } from 'ol/control';
 import { TOOLBAR_ELEMENT } from '../core/ElementReferences';
 import { isFullScreen, exitFullScreen } from '../helpers/Browser/Fullscreen';
-import { generateMarker } from '../helpers/olFunctions/GenerateMarker';
+import { generateMarker } from '../helpers/ol-functions/GenerateMarker';
 import { easeOut } from 'ol/easing';
 import { fromLonLat } from 'ol/proj';
 import { SVG_PATHS, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { toStringHDMS } from 'ol/coordinate';
-import { SHORTCUT_KEYS } from '../helpers/Constants/ShortcutKeys';
-import { EVENTS } from '../helpers/Constants/Events';
+import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
+import { EVENTS } from '../helpers/constants/Events';
 
 const ID_PREFIX = 'oltb-info-window-marker';
 

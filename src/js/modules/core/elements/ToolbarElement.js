@@ -1,5 +1,5 @@
-import StateManager from "../Managers/StateManager";
-import { EVENTS } from "../../helpers/Constants/Events";
+import StateManager from "../managers/StateManager";
+import { EVENTS } from "../../helpers/constants/Events";
 
 const TOOLBAR_ELEMENT = document.getElementById('oltb');
 TOOLBAR_ELEMENT.setAttribute('data-html2canvas-ignore', 'true');

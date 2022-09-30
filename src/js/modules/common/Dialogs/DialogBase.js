@@ -1,5 +1,5 @@
-import DOM from '../../helpers/Browser/DOM';
-import { EVENTS } from '../../helpers/Constants/Events';
+import DOM from '../../helpers/browser/DOM';
+import { EVENTS } from '../../helpers/constants/Events';
 import { isDarkTheme } from '../../helpers/IsDarkTheme';
 import { trapFocusKeyListener } from '../../helpers/TrapFocus';
 

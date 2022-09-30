@@ -1,11 +1,11 @@
-import LayerManager from "../core/Managers/LayerManager";
+import LayerManager from "../core/managers/LayerManager";
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import GeoJSON from 'ol/format/GeoJSON';
 import Toast from "../common/Toast";
 import CONFIG from '../core/Config';
 import { bbox } from 'ol/loadingstrategy';
-import { getMeasureTooltipValue } from "../helpers/olFunctions/Measurements";
+import { getMeasureTooltipValue } from "../helpers/ol-functions/Measurements";
 
 import urlCountriesGeoJSON from 'url:../../../json/countries.geojson';
 

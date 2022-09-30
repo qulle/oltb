@@ -1,7 +1,7 @@
 import { Vector as VectorLayer } from 'ol/layer'; 
 import { Vector as VectorSource } from 'ol/source';
 import { hasNestedProperty } from '../../helpers/HasNestedProperty';
-import { EVENTS } from '../../helpers/Constants/Events';
+import { EVENTS } from '../../helpers/constants/Events';
 
 const DEFAULT_LAYER_NAME = 'New layer';
 const ZINDEX_BASE = 1000;

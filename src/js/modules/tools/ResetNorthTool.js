@@ -8,9 +8,9 @@ import { TOOLBAR_ELEMENT } from '../core/ElementReferences';
 import { addContextMenuItem } from '../common/ContextMenu';
 import { SVG_PATHS, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
-import { SHORTCUT_KEYS } from '../helpers/Constants/ShortcutKeys';
-import { EVENTS } from '../helpers/Constants/Events';
-import { CONTEXT_MENUS } from '../helpers/Constants/ContextMenus';
+import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
+import { EVENTS } from '../helpers/constants/Events';
+import { CONTEXT_MENUS } from '../helpers/constants/ContextMenus';
 
 const DEFAULT_OPTIONS = {};
 

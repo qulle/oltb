@@ -1,8 +1,8 @@
-import LayerManager from "../core/Managers/LayerManager";
+import LayerManager from "../core/managers/LayerManager";
 import Toast from "../common/Toast";
 import { toStringHDMS } from "ol/coordinate";
 import { getIcon, SVG_PATHS } from "../core/Icons";
-import { generateMarker } from '../helpers/olFunctions/GenerateMarker';
+import { generateMarker } from '../helpers/ol-functions/GenerateMarker';
 
 import urlCapitalsGeoJSON from 'url:../../../json/capitals.geojson';
 

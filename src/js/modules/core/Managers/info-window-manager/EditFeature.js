@@ -1,12 +1,12 @@
 import CONFIG from '../../../core/Config';
-import MarkerModal from "../../../tools/ModalExtensions/MarkerModal";
+import MarkerModal from "../../../tools/modal-extensions/MarkerModal";
 import InfoWindowManager from '../InfoWindowManager';
 import LayerManager from '../LayerManager';
 import { transform } from 'ol/proj';
 import { toStringHDMS } from 'ol/coordinate';
-import { generateMarker } from '../../../helpers/olFunctions/GenerateMarker';
+import { generateMarker } from '../../../helpers/ol-functions/GenerateMarker';
 import { SVG_PATHS, getIcon } from '../../Icons';
-import { EVENTS } from '../../../helpers/Constants/Events';
+import { EVENTS } from '../../../helpers/constants/Events';
 
 const ID_PREFIX = 'oltb-info-window-marker';
 

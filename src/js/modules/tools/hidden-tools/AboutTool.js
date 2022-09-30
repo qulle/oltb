@@ -5,7 +5,7 @@ import { TOOLBAR_ELEMENT } from '../../core/ElementReferences';
 import { addContextMenuItem } from '../../common/ContextMenu';
 import { SVG_PATHS, getIcon } from '../../core/Icons';
 import { VERSION } from 'ol';
-import { CONTEXT_MENUS } from '../../helpers/Constants/ContextMenus';
+import { CONTEXT_MENUS } from '../../helpers/constants/ContextMenus';
 
 class HiddenAboutTool extends Control {
     constructor() {

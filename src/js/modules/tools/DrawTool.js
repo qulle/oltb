@@ -1,7 +1,7 @@
-import LayerManager from '../core/Managers/LayerManager';
-import SettingsManager from '../core/Managers/SettingsManager';
-import StateManager from '../core/Managers/StateManager';
-import ToolManager from '../core/Managers/ToolManager';
+import LayerManager from '../core/managers/LayerManager';
+import SettingsManager from '../core/managers/SettingsManager';
+import StateManager from '../core/managers/StateManager';
+import ToolManager from '../core/managers/ToolManager';
 import DOM from '../helpers/Browser/DOM';
 import Draw, { createBox, createRegularPolygon } from 'ol/interaction/Draw';
 import { Control } from 'ol/control';
@@ -10,8 +10,8 @@ import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT } from '../core/ElementReferences';
 import { eventDispatcher } from '../helpers/Browser/EventDispatcher';
 import { SVG_PATHS, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
-import { SHORTCUT_KEYS } from '../helpers/Constants/ShortcutKeys';
-import { EVENTS } from '../helpers/Constants/Events';
+import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
+import { EVENTS } from '../helpers/constants/Events';
 
 const ID_PREFIX = 'oltb-draw';
 
@@ -269,42 +269,47 @@ class DrawTool extends Control {
 
         map.addInteraction(this.interaction);
 
-        this.interaction.on(EVENTS.Ol.DrawStart, (event) => {
-            // User defined callback from constructor
-            if(typeof this.options.start === 'function') {
-                this.options.start(event);
-            }
+        this.interaction.on(EVENTS.Ol.DrawStart, this.onDrawStart.bind(this));
+        this.interaction.on(EVENTS.Ol.DrawEnd, this.onDrawEnd.bind(this, style));
+        this.interaction.on(EVENTS.Ol.DrawAbort, this.onDrawAbort.bind(this));
+        this.interaction.on(EVENTS.Ol.Error, this.onDrawError.bind(this));
+    }
+
+    onDrawStart(event) {
+        // User defined callback from constructor
+        if(typeof this.options.start === 'function') {
+            this.options.start(event);
+        }
+    }
+
+    onDrawEnd(style, event) {
+        const feature = event.feature;
+        feature.setStyle(style);
+
+        const layerWrapper = LayerManager.getActiveFeatureLayer({
+            fallback: 'Drawing layer'
         });
+        
+        layerWrapper.layer.getSource().addFeature(feature);
 
-        this.interaction.on(EVENTS.Ol.DrawEnd, (event) => {
-            const feature = event.feature;
-            feature.setStyle(style);
+        // User defined callback from constructor
+        if(typeof this.options.end === 'function') {
+            this.options.end(event);
+        }
+    }
 
-            const layerWrapper = LayerManager.getActiveFeatureLayer({
-                fallback: 'Drawing layer'
-            });
-            
-            layerWrapper.layer.getSource().addFeature(feature);
+    onDrawAbort(event) {
+        // User defined callback from constructor
+        if(typeof this.options.abort === 'function') {
+            this.options.abort(event);
+        }
+    }
 
-            // User defined callback from constructor
-            if(typeof this.options.end === 'function') {
-                this.options.end(event);
-            }
-        });
-
-        this.interaction.on(EVENTS.Ol.DrawAbort, (event) => {
-            // User defined callback from constructor
-            if(typeof this.options.abort === 'function') {
-                this.options.abort(event);
-            }
-        });
-
-        this.interaction.on(EVENTS.Ol.Error, (event) => {
-            // User defined callback from constructor
-            if(typeof this.options.error === 'function') {
-                this.options.error(event);
-            }
-        });
+    onDrawError(event) {
+        // User defined callback from constructor
+        if(typeof this.options.error === 'function') {
+            this.options.error(event);
+        }
     }
 }
 

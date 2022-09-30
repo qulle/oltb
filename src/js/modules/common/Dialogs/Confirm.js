@@ -1,5 +1,5 @@
 import DialogBase from './DialogBase';
-import DOM from '../../helpers/Browser/DOM';
+import DOM from '../../helpers/browser/DOM';
 import { MAP_ELEMENT } from '../../core/ElementReferences';
 
 const DEFAULT_OPTIONS = {

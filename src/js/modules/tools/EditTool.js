@@ -1,9 +1,9 @@
 import Dialog from '../common/Dialog';
-import LayerManager from '../core/Managers/LayerManager';
-import SettingsManager from '../core/Managers/SettingsManager';
-import StateManager from '../core/Managers/StateManager';
-import TooltipManager from '../core/Managers/TooltipManager';
-import ToolManager from '../core/Managers/ToolManager';
+import LayerManager from '../core/managers/LayerManager';
+import SettingsManager from '../core/managers/SettingsManager';
+import StateManager from '../core/managers/StateManager';
+import TooltipManager from '../core/managers/TooltipManager';
+import ToolManager from '../core/managers/ToolManager';
 import DOM from '../helpers/Browser/DOM';
 import { Control } from 'ol/control';
 import { Select, Modify, Translate } from 'ol/interaction';
@@ -12,10 +12,10 @@ import { unByKey } from 'ol/Observable';
 import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT } from '../core/ElementReferences';
 import { SVG_PATHS, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
-import { getMeasureTooltipCoordinates, getMeasureTooltipValue } from '../helpers/olFunctions/Measurements';
+import { getMeasureTooltipCoordinates, getMeasureTooltipValue } from '../helpers/ol-functions/Measurements';
 import { hasNestedProperty } from '../helpers/HasNestedProperty';
-import { SHORTCUT_KEYS } from '../helpers/Constants/ShortcutKeys';
-import { EVENTS } from '../helpers/Constants/Events';
+import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
+import { EVENTS } from '../helpers/constants/Events';
 
 const ID_PREFIX = 'oltb-edit';
 

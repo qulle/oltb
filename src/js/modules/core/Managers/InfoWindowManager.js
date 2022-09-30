@@ -3,12 +3,12 @@ import CONFIG from '../Config';
 import DOM from '../../helpers/Browser/DOM';
 import { getCenter } from 'ol/extent';
 import { SVG_PATHS, getIcon } from '../Icons';
-import { copyFeatureInfo } from './InfoWindowManager/CopyFeatureInfo';
-import { removeFeature } from './InfoWindowManager/RemoveFeature';
-import { editFeature } from './InfoWindowManager/EditFeature';
+import { copyFeatureInfo } from './info-window-manager/CopyFeatureInfo';
+import { removeFeature } from './info-window-manager/RemoveFeature';
+import { editFeature } from './info-window-manager/EditFeature';
 import { trapFocusKeyListener } from '../../helpers/TrapFocus';
 import { hasNestedProperty } from '../../helpers/HasNestedProperty';
-import { EVENTS } from '../../helpers/Constants/Events';
+import { EVENTS } from '../../helpers/constants/Events';
 
 const ANIMATION_CLASS = 'oltb-animations--centered-bounce';
 const ID_PREFIX = 'oltb-info-window-marker';

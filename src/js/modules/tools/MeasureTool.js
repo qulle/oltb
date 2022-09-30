@@ -1,21 +1,21 @@
 import Draw from 'ol/interaction/Draw';
 import Overlay from 'ol/Overlay';
-import LayerManager from '../core/Managers/LayerManager';
-import SettingsManager from '../core/Managers/SettingsManager';
-import StateManager from '../core/Managers/StateManager';
-import TooltipManager from '../core/Managers/TooltipManager';
-import ToolManager from '../core/Managers/ToolManager';
+import LayerManager from '../core/managers/LayerManager';
+import SettingsManager from '../core/managers/SettingsManager';
+import StateManager from '../core/managers/StateManager';
+import TooltipManager from '../core/managers/TooltipManager';
+import ToolManager from '../core/managers/ToolManager';
 import DOM from '../helpers/Browser/DOM';
 import { Control } from 'ol/control';
 import { Fill, Stroke, Circle, Style } from 'ol/style';
 import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT } from '../core/ElementReferences';
 import { eventDispatcher } from '../helpers/Browser/EventDispatcher';
-import { getMeasureTooltipCoordinates, getMeasureTooltipValue } from '../helpers/olFunctions/Measurements';
+import { getMeasureTooltipCoordinates, getMeasureTooltipValue } from '../helpers/ol-functions/Measurements';
 import { SVG_PATHS, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { unByKey } from 'ol/Observable';
-import { SHORTCUT_KEYS } from '../helpers/Constants/ShortcutKeys';
-import { EVENTS } from '../helpers/Constants/Events';
+import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
+import { EVENTS } from '../helpers/constants/Events';
 
 const ID_PREFIX = 'oltb-measure';
 

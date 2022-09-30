@@ -1,8 +1,8 @@
 import CONFIG from '../core/Config';
 import Toast from '../common/Toast';
 import DOM from '../helpers/Browser/DOM';
-import SettingsManager from '../core/Managers/SettingsManager';
-import TooltipManager from '../core/Managers/TooltipManager';
+import SettingsManager from '../core/managers/SettingsManager';
+import TooltipManager from '../core/managers/TooltipManager';
 import { Control } from 'ol/control';
 import { transform } from 'ol/proj';
 import { unByKey } from 'ol/Observable';
@@ -11,8 +11,8 @@ import { copyToClipboard } from '../helpers/Browser/CopyToClipboard';
 import { SVG_PATHS, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { toStringHDMS } from 'ol/coordinate';
-import { SHORTCUT_KEYS } from '../helpers/Constants/ShortcutKeys';
-import { EVENTS } from '../helpers/Constants/Events';
+import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
+import { EVENTS } from '../helpers/constants/Events';
 
 const DEFAULT_OPTIONS = {};
 
