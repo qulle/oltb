@@ -835,9 +835,7 @@ StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.loca
 To make debugging and diagnosting errors easier there is a tool named `DebugInfo`. This tool will gather information about the map such as zoomlevel, location, layers, rotation, projection etc and displays the information in a modal window. To hide the debug tool as default, add the parameter `showWhenGetParameter: true` and add the get parameter to the url `/?debug=true` to show the tool. Adding the debug parameter will also enable the default context-menu in the browser.
 
 ### OLTB namespace
-For some tools and features data is stored on the global window object. The name that is reserved for the toolbar is `window.oltb`. Data is stored in local storage under the key `oltb-state`. 
-
-All classes and id:s in the project are also prefixed with the namespace `oltb`.
+All classes and id:s in the project are prefixed with the namespace `oltb`. Data is also stored in local storage under the key `oltb-state`. 
 
 ## External GitHub projects
 1. [OpenLayers 7.1.0](https://openlayers.org/en/v7.1.0/apidoc/)

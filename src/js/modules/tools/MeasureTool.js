@@ -4,6 +4,7 @@ import LayerManager from '../core/Managers/LayerManager';
 import SettingsManager from '../core/Managers/SettingsManager';
 import StateManager from '../core/Managers/StateManager';
 import TooltipManager from '../core/Managers/TooltipManager';
+import ToolManager from '../core/Managers/ToolManager';
 import DOM from '../helpers/Browser/DOM';
 import { Control } from 'ol/control';
 import { Fill, Stroke, Circle, Style } from 'ol/style';
@@ -12,7 +13,6 @@ import { eventDispatcher } from '../helpers/Browser/EventDispatcher';
 import { getMeasureTooltipCoordinates, getMeasureTooltipValue } from '../helpers/olFunctions/Measurements';
 import { SVG_PATHS, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
-import { setActiveTool } from '../helpers/ActiveTool';
 import { unByKey } from 'ol/Observable';
 import { SHORTCUT_KEYS } from '../helpers/Constants/ShortcutKeys';
 import { EVENTS } from '../helpers/Constants/Events';
@@ -157,7 +157,7 @@ class MeasureTool extends Control {
             this.options.click();
         }
         
-        setActiveTool(this);
+        ToolManager.setActiveTool(this);
         this.handleMeasure();
     }
 
@@ -166,7 +166,7 @@ class MeasureTool extends Control {
             this.getMap().removeInteraction(this.interaction);
 
             // Remove this tool as the active global tool
-            window.oltb.activeTool = null;
+            ToolManager.removeActiveTool();
         }else {
             if(SettingsManager.getSetting('always.new.layers')) {
                 LayerManager.addFeatureLayer('Measurements layer');

@@ -3,6 +3,7 @@ import LayerManager from '../core/Managers/LayerManager';
 import SettingsManager from '../core/Managers/SettingsManager';
 import StateManager from '../core/Managers/StateManager';
 import TooltipManager from '../core/Managers/TooltipManager';
+import ToolManager from '../core/Managers/ToolManager';
 import DOM from '../helpers/Browser/DOM';
 import { Control } from 'ol/control';
 import { Select, Modify, Translate } from 'ol/interaction';
@@ -11,7 +12,6 @@ import { unByKey } from 'ol/Observable';
 import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT } from '../core/ElementReferences';
 import { SVG_PATHS, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
-import { setActiveTool } from '../helpers/ActiveTool';
 import { getMeasureTooltipCoordinates, getMeasureTooltipValue } from '../helpers/olFunctions/Measurements';
 import { hasNestedProperty } from '../helpers/HasNestedProperty';
 import { SHORTCUT_KEYS } from '../helpers/Constants/ShortcutKeys';
@@ -303,7 +303,7 @@ class EditTool extends Control {
             this.options.click();
         }
         
-        setActiveTool(this);
+        ToolManager.setActiveTool(this);
         this.handleEdit();
     }
 
@@ -321,7 +321,7 @@ class EditTool extends Control {
             });
 
             // Remove this tool as the active global tool
-            window.oltb.activeTool = null;
+            ToolManager.removeActiveTool();
         }else {
             interactions.forEach((item) => {
                 map.addInteraction(item);

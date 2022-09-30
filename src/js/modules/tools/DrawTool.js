@@ -1,6 +1,7 @@
 import LayerManager from '../core/Managers/LayerManager';
 import SettingsManager from '../core/Managers/SettingsManager';
 import StateManager from '../core/Managers/StateManager';
+import ToolManager from '../core/Managers/ToolManager';
 import DOM from '../helpers/Browser/DOM';
 import Draw, { createBox, createRegularPolygon } from 'ol/interaction/Draw';
 import { Control } from 'ol/control';
@@ -9,7 +10,6 @@ import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT } from '../core/ElementReferences';
 import { eventDispatcher } from '../helpers/Browser/EventDispatcher';
 import { SVG_PATHS, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
-import { setActiveTool } from '../helpers/ActiveTool';
 import { SHORTCUT_KEYS } from '../helpers/Constants/ShortcutKeys';
 import { EVENTS } from '../helpers/Constants/Events';
 
@@ -196,7 +196,7 @@ class DrawTool extends Control {
             this.options.click();
         }
         
-        setActiveTool(this);
+        ToolManager.setActiveTool(this);
         this.handleDraw();
     }
 
@@ -205,7 +205,7 @@ class DrawTool extends Control {
             this.getMap().removeInteraction(this.interaction);
 
             // Remove this tool as the active global tool
-            window.oltb.activeTool = null;
+            ToolManager.removeActiveTool();
         }else {
             if(SettingsManager.getSetting('always.new.layers')) {
                 LayerManager.addFeatureLayer('Drawing layer');
