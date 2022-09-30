@@ -1,10 +1,10 @@
 import DebugInfoModal from './ModalExtensions/DebugInfoModal';
+import URLManager from '../core/Managers/URLManager';
 import DOM from '../helpers/Browser/DOM';
 import { Control } from 'ol/control';
 import { TOOLBAR_ELEMENT } from '../core/ElementReferences';
 import { SVG_PATHS, getIcon } from '../core/Icons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
-import { URIGet } from '../helpers/Browser/URIGet';
 import { PROJECTIONS } from '../epsg/Projections';
 import { SHORTCUT_KEYS } from '../helpers/Constants/ShortcutKeys';
 import { EVENTS } from '../helpers/Constants/Events';
@@ -42,7 +42,7 @@ class DebugInfoTool extends Control {
         this.options = { ...DEFAULT_OPTIONS, ...options };
         
         // Check if the tool only should be visible if the get parameter ?debug=true exists
-        const debugParameter = URIGet('debug') === 'true';
+        const debugParameter = URLManager.getParameter('debug') === 'true';
 
         if(this.options.showWhenGetParameter) {
             if(!debugParameter || debugParameter !== true) {

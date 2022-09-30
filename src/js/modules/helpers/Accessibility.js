@@ -1,13 +1,13 @@
+import URLManager from '../core/Managers/URLManager';
 import CONFIG from '../core/Config';
 import { TOOLBAR_ELEMENT, TOOLBOX_ELEMENT, MAP_ELEMENT } from '../core/ElementReferences';
-import { URIGet } from '../helpers/Browser/URIGet';
 import { EVENTS } from './Constants/Events';
 
 // Append version as custom attribute to the html element
 document.documentElement.setAttribute('oltb-version', CONFIG.version);
 
 // Remove default contextmenu, show if the get parameter ?debug=true exists
-const debugParameter = URIGet('debug') === 'true';
+const debugParameter = URLManager.getParameter('debug') === 'true';
 MAP_ELEMENT.addEventListener(EVENTS.Browser.ContextMenu, function(event) {
     if(!debugParameter) {
         event.preventDefault();
