@@ -65,14 +65,17 @@ const editFeature = function(feature) {
             infoWindow: infoWindow
         });
 
-        LayerManager.getActiveFeatureLayer({
+        const layerWrapper = LayerManager.getActiveFeatureLayer({
             fallback: 'Markers'
-        }).layer.getSource().addFeature(marker);
+        });
+        
+        layerWrapper.layer.getSource().addFeature(marker);
 
         // Dispatch event to trigger callback
         window.dispatchEvent(new CustomEvent(EVENTS.Custom.FeatureEdited, {
             detail: {
-                feature: marker
+                before: feature,
+                after: marker
             }
         }));
     });

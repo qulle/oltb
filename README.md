@@ -318,8 +318,8 @@ controls: defaultControls({
         removed: function(marker) {
             console.log('Marker removed', marker);
         },
-        edited: function(marker) {
-            console.log('Marker edited', marker);
+        edited: function(before, after) {
+            console.log('Marker edited', before, after);
         }
     }),
     new HiddenMapNavigationTool({

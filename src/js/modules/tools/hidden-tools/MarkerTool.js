@@ -80,7 +80,10 @@ class HiddenMarkerTool extends Control {
     onWindowFeatureEdited(event) {
         // User defined callback from constructor
         if(typeof this.options.edited === 'function') {
-            this.options.edited(event.detail.feature);
+            this.options.edited(
+                event.detail.before, 
+                event.detail.after
+            );
         }
     }
 
