@@ -231,8 +231,8 @@ class Coordinates extends Control {}
 
 When using the custom tools, all that is needed is to import the module(s) you want to have in your toolbar
 ```javascript
-import HiddenMarkerTool from './modules/tools/HiddenTools/MarkerTool';
-import HiddenMapNavigationTool from './modules/tools/HiddenTools/MapNavigationTool';
+import HiddenMarkerTool from './modules/tools/hidden-tools/MarkerTool';
+import HiddenMapNavigationTool from './modules/tools/hidden-tools/MapNavigationTool';
 import HomeTool from './modules/tools/HomeTool';
 import ZoomInTool from './modules/tools/ZoomInTool';
 import ZoomOutTool from './modules/tools/ZoomOutTool';
@@ -260,7 +260,7 @@ import NotificationTool from './modules/tools/NotificationTool';
 import HelpTool from './modules/tools/HelpTool';
 import SettingsTool from './modules/tools/SettingsTool';
 import DebugInfoTool from './modules/tools/DebugInfoTool';
-import HiddenAboutTool from './modules/tools/HiddenTools/AboutTool';
+import HiddenAboutTool from './modules/tools/hidden-tools/AboutTool';
 ```
 
 and then calling the constructor in the array inside the extend method. The tools are added to the toolbar in the order you include them in this array.
@@ -805,7 +805,7 @@ addContextMenuItem(CONTEXT_MENUS.MainMap, {});
 ### State Management
 To use state management start by importing the following module.
 ```javascript
-import StateManager from './modules/core/Managers/StateManager';
+import StateManager from './modules/core/managers/StateManager';
 ```
 
 State management is done through localStorage. First add a node name and an object to store default values.
