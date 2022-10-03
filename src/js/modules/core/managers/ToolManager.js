@@ -13,6 +13,10 @@ class ToolManager {
         return this.tool;
     }
 
+    static hasActiveTool() {
+        return this.tool !== undefined;
+    }
+
     static removeActiveTool() {
         this.tool = undefined;
     }

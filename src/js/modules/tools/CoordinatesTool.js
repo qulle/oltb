@@ -3,6 +3,7 @@ import Toast from '../common/Toast';
 import DOM from '../helpers/Browser/DOM';
 import SettingsManager from '../core/managers/SettingsManager';
 import TooltipManager from '../core/managers/TooltipManager';
+import ToolManager from '../core/managers/ToolManager';
 import { Control } from 'ol/control';
 import { transform } from 'ol/proj';
 import { unByKey } from 'ol/Observable';
@@ -94,7 +95,7 @@ class CoordinatesTool extends Control {
     }
 
     async onMapClick(event) {
-        if(!SettingsManager.getSetting('copy.coordinates.on.click') || window?.oltb?.activeTool != null) {
+        if(!SettingsManager.getSetting('copy.coordinates.on.click') || ToolManager.hasActiveTool()) {
             return;
         }
 

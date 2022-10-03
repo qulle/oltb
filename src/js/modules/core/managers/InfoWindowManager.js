@@ -123,9 +123,9 @@ class InfoWindowManager {
 
         if(hightlight) {
             const style = new Style({
-                fill: new Fill({color: '#3B435266'}),
+                fill: new Fill({color: '#3B435288'}),
                 stroke: new Stroke({
-                    color: '#3B4352FF',
+                    color: '#369ACDFF',
                     width: 1.5
                 })
             })
