@@ -9,7 +9,7 @@ import { transform } from 'ol/proj';
 import { unByKey } from 'ol/Observable';
 import { TOOLBAR_ELEMENT } from '../core/ElementReferences';
 import { copyToClipboard } from '../helpers/Browser/CopyToClipboard';
-import { SVG_PATHS, getIcon } from '../core/Icons';
+import { SVG_PATHS, getIcon } from '../core/SVGIcons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { toStringHDMS } from 'ol/coordinate';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';

@@ -10,7 +10,7 @@ import { addContextMenuItem } from '../common/ContextMenu';
 import { generateAnimalName } from '../helpers/name-generator/NameGenerator';
 import { easeOut } from 'ol/easing';
 import { randomNumber } from '../helpers/Random';
-import { SVG_PATHS, getIcon } from '../core/Icons';
+import { SVG_PATHS, getIcon } from '../core/SVGIcons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { EVENTS } from '../helpers/constants/Events';

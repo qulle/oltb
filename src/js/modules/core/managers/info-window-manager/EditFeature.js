@@ -5,7 +5,7 @@ import LayerManager from '../LayerManager';
 import { transform } from 'ol/proj';
 import { toStringHDMS } from 'ol/coordinate';
 import { generateMarker } from '../../../helpers/ol-functions/GenerateMarker';
-import { SVG_PATHS, getIcon } from '../../Icons';
+import { SVG_PATHS, getIcon } from '../../SVGIcons';
 import { EVENTS } from '../../../helpers/constants/Events';
 
 const ID_PREFIX = 'oltb-info-window-marker';

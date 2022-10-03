@@ -1,6 +1,6 @@
 import ModalBase from '../../common/modals/ModalBase';
 import DOM from '../../helpers/Browser/DOM';
-import { SVG_PATHS } from '../../core/Icons';
+import { SVG_PATHS } from '../../core/SVGIcons';
 import { isDarkTheme } from '../../helpers/IsDarkTheme';
 
 const PREFIX_MARKER_ID = 'oltb-marker-modal';

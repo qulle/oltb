@@ -12,7 +12,7 @@ import { Control } from 'ol/control';
 import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT } from '../core/ElementReferences';
 import { download } from '../helpers/Browser/Download';
 import { addContextMenuItem } from '../common/ContextMenu';
-import { SVG_PATHS, getIcon } from '../core/Icons';
+import { SVG_PATHS, getIcon } from '../core/SVGIcons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { instantiateLayer } from '../core/ol-types/LayerTypes';
 import { instantiateSource } from '../core/ol-types/SourceTypes';

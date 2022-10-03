@@ -5,7 +5,7 @@ import { TOOLBAR_ELEMENT } from '../../core/ElementReferences';
 import { easeOut } from 'ol/easing';
 import { fromLonLat, toLonLat } from 'ol/proj';
 import { addContextMenuItem } from '../../common/ContextMenu';
-import { SVG_PATHS, getIcon } from '../../core/Icons';
+import { SVG_PATHS, getIcon } from '../../core/SVGIcons';
 import { EVENTS } from '../../helpers/constants/Events';
 import { CONTEXT_MENUS } from '../../helpers/constants/ContextMenus';
 

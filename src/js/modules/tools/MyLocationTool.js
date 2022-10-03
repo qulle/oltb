@@ -9,7 +9,7 @@ import { isFullScreen, exitFullScreen } from '../helpers/Browser/Fullscreen';
 import { generateMarker } from '../helpers/ol-functions/GenerateMarker';
 import { easeOut } from 'ol/easing';
 import { fromLonLat } from 'ol/proj';
-import { SVG_PATHS, getIcon } from '../core/Icons';
+import { SVG_PATHS, getIcon } from '../core/SVGIcons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { toStringHDMS } from 'ol/coordinate';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';

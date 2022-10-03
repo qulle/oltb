@@ -4,7 +4,7 @@ import { Control } from 'ol/control';
 import { TOOLBAR_ELEMENT } from '../../core/ElementReferences';
 import { generateMarker } from '../../helpers/ol-functions/GenerateMarker';
 import { addContextMenuItem } from '../../common/ContextMenu';
-import { SVG_PATHS, getIcon } from '../../core/Icons';
+import { SVG_PATHS, getIcon } from '../../core/SVGIcons';
 import { toStringHDMS } from 'ol/coordinate';
 import { EVENTS } from '../../helpers/constants/Events';
 import { CONTEXT_MENUS } from '../../helpers/constants/ContextMenus';

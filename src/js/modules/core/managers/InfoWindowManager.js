@@ -2,7 +2,7 @@ import Overlay from 'ol/Overlay';
 import CONFIG from '../Config';
 import DOM from '../../helpers/Browser/DOM';
 import { getCenter } from 'ol/extent';
-import { SVG_PATHS, getIcon } from '../Icons';
+import { SVG_PATHS, getIcon } from '../SVGIcons';
 import { copyFeatureInfo } from './info-window-manager/CopyFeatureInfo';
 import { removeFeature } from './info-window-manager/RemoveFeature';
 import { editFeature } from './info-window-manager/EditFeature';

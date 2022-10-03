@@ -2,7 +2,7 @@ import Point from 'ol/geom/Point';
 import Feature from 'ol/Feature';
 import { Icon, Style } from 'ol/style';
 import { fromLonLat } from 'ol/proj';
-import { getWindBarb } from '../../core/Windbarbs';
+import { getWindBarb } from '../../core/SVGWindbarbs';
 
 const DEFAULT_OPTIONS = {
     lat: undefined,

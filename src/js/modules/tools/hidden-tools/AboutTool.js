@@ -3,7 +3,7 @@ import CONFIG from '../../core/Config';
 import { Control } from 'ol/control';
 import { TOOLBAR_ELEMENT } from '../../core/ElementReferences';
 import { addContextMenuItem } from '../../common/ContextMenu';
-import { SVG_PATHS, getIcon } from '../../core/Icons';
+import { SVG_PATHS, getIcon } from '../../core/SVGIcons';
 import { VERSION } from 'ol';
 import { CONTEXT_MENUS } from '../../helpers/constants/ContextMenus';
 
