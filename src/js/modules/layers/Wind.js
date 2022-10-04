@@ -21,7 +21,7 @@ const CONTINENT_DIRECTION = {
     'US': 210
 };
 
-const LAYER_WRAPPER = LayerManager.addFeatureLayer('Windbarbs', true, true);
+const LAYER_WRAPPER = LayerManager.addFeatureLayer('Windbarbs', false, true);
 
 fetch(urlCapitalsGeoJSON)
     .then((response) => {

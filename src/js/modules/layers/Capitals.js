@@ -28,7 +28,7 @@ const CONTINENT_COLORS = {
     'US': '#3B4352FF'
 };
 
-const LAYER_WRAPPER = LayerManager.addFeatureLayer('Capitals', false, true);
+const LAYER_WRAPPER = LayerManager.addFeatureLayer('Capitals', true, true);
 
 fetch(urlCapitalsGeoJSON)
     .then((response) => {
