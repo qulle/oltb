@@ -1,3 +1,4 @@
+import CONFIG from '../core/Config';
 import DebugInfoModal from './modal-extensions/DebugInfoModal';
 import URLManager from '../core/managers/URLManager';
 import DOM from '../helpers/Browser/DOM';
@@ -81,7 +82,8 @@ class DebugInfoTool extends Control {
             location: view.getCenter(),
             rotation: view.getRotation(),
             projection: view.getProjection(),
-            proj4Defs: PROJECTIONS
+            proj4Defs: PROJECTIONS,
+            defaultConfig: CONFIG
         };
 
         this.debugInfoModal = new DebugInfoModal({

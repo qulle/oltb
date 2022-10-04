@@ -1,4 +1,4 @@
-// Core OpenLayers
+// (1). Core OpenLayers
 import 'ol/ol.css';
 import { Map, View } from 'ol';
 import { fromLonLat } from 'ol/proj';
@@ -7,7 +7,7 @@ import { defaults as defaultInterctions, MouseWheelZoom, DragPan, DragRotate, Ke
 import { defaults as defaultControls } from 'ol/control';
 import { get as getProjection } from 'ol/proj';
 
-// Toolbar tools
+// (2). Toolbar tools
 import HiddenMarkerTool from './modules/tools/hidden-tools/MarkerTool';
 import HiddenMapNavigationTool from './modules/tools/hidden-tools/MapNavigationTool';
 import HomeTool from './modules/tools/HomeTool';
@@ -39,7 +39,7 @@ import SettingsTool from './modules/tools/SettingsTool';
 import DebugInfoTool from './modules/tools/DebugInfoTool';
 import HiddenAboutTool from './modules/tools/hidden-tools/AboutTool';
 
-// Additional toolbar helpers
+// (3). Additional toolbar helpers
 import CONFIG from './modules/core/Config';
 import ContextMenu from './modules/common/ContextMenu';
 import LayerManager from './modules/core/managers/LayerManager';
@@ -55,7 +55,7 @@ import './modules/helpers/Browser/Prototypes';
 import './modules/helpers/Accessibility';
 import './modules/helpers/SlideToggle';
 
-// Load layers
+// (4). Load layers
 import './modules/layers/Maps';
 import './modules/layers/Countries';
 import './modules/layers/Continents';
