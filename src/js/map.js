@@ -58,7 +58,7 @@ import './modules/helpers/SlideToggle';
 import './modules/layers/Maps';
 import './modules/layers/Countries';
 import './modules/layers/Continents';
-// import './modules/layers/Capitals';
+import './modules/layers/Capitals';
 import './modules/layers/Wind';
 
 // Note: This is the same NODE_NAME and PROPS that the MapNavigation.js tool is using

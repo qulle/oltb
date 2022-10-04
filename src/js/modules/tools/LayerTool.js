@@ -239,7 +239,7 @@ class LayerTool extends Control {
 
     onWindowMapLayerAdded(event) {
         const layerWrapper = event.detail.layerWrapper;
-        const isSilent = event.detail.isSilent;
+        const silent = event.detail.silent;
 
         const disableVisibilityButton = this.options.disableMapLayerVisibilityButton;
         const disableEditButton = this.options.disableMapLayerEditButton;
@@ -247,7 +247,7 @@ class LayerTool extends Control {
 
         // Add to UI
         this.createLayerItem(layerWrapper, {
-            idPrefix: 'map-layer',
+            idPrefix: `${ID_PREFIX}-map`,
             target: this.mapLayerStack,
             buttons: {
                 ...(!disableVisibilityButton && {visibilityButton: {
@@ -266,27 +266,27 @@ class LayerTool extends Control {
         });
 
         // User defined callback from constructor
-        if(typeof this.options.mapLayerAdded === 'function' && !isSilent) {
+        if(typeof this.options.mapLayerAdded === 'function' && !silent) {
             this.options.mapLayerAdded(layerWrapper);
         }
     }
 
     onWindowMapLayerRemoved(event) {
         const layerWrapper = event.detail.layerWrapper;
-        const isSilent = event.detail.isSilent;
+        const silent = event.detail.silent;
 
         // Remove layer from UI
         this.mapLayerStack.querySelector(`#map-layer-${layerWrapper.id}`).remove();
 
         // User defined callback from constructor
-        if(typeof this.options.mapLayerRemoved === 'function' && !isSilent) {
+        if(typeof this.options.mapLayerRemoved === 'function' && !silent) {
             this.options.mapLayerRemoved(layerWrapper);
         }
     }
 
     onWindowFeatureLayerAdded(event) {
         const layerWrapper = event.detail.layerWrapper;
-        const isSilent = event.detail.isSilent;
+        const silent = event.detail.silent;
 
         const disableVisibilityButton = this.options.disableFeatureLayerVisibilityButton;
         const disableEditButton = this.options.disableFeatureLayerEditButton;
@@ -318,14 +318,14 @@ class LayerTool extends Control {
         });
 
         // User defined callback from constructor
-        if(typeof this.options.featureLayerAdded === 'function' && !isSilent) {
+        if(typeof this.options.featureLayerAdded === 'function' && !silent) {
             this.options.featureLayerAdded(layerWrapper);
         }
     }
 
     onWindowFeatureLayerRemoved(event) {
         const layerWrapper = event.detail.layerWrapper;
-        const isSilent = event.detail.isSilent;
+        const silent = event.detail.silent;
 
         // Remove layer from UI
         this.featureLayerStack.querySelector(`#${ID_PREFIX}-feature-${layerWrapper.id}`).remove();
@@ -338,7 +338,7 @@ class LayerTool extends Control {
         }
 
         // User defined callback from constructor
-        if(typeof this.options.featureLayerRemoved === 'function' && !isSilent) {
+        if(typeof this.options.featureLayerRemoved === 'function' && !silent) {
             this.options.featureLayerRemoved(layerWrapper);
         }
     }
@@ -386,8 +386,9 @@ class LayerTool extends Control {
         });
 
         // If feature layer - attach eventlistener for setting the active layer
-        if(options.idPrefix === 'oltb-feature-layer') {
+        if(options.idPrefix === `${ID_PREFIX}-feature`) {
             layerName.addEventListener(EVENTS.Browser.Click, (event) => {
+                console.log('sdfadfasd');
                 LayerManager.setActiveFeatureLayer(layerWrapper);
                 // Should just be one li-item that has the active class, but just in case
                 this.featureLayerStack.querySelectorAll('li').forEach((layer) => {
@@ -460,32 +461,33 @@ class LayerTool extends Control {
             title: 'Download layer',
             attributes: {
                 type: 'button'
+            },
+            listeners: {
+                'click': () => {
+                    const downloadModal = new DownloadLayerModal(function(result) {   
+                        const format = instantiateFormat(result.format);
+        
+                        if(!format) {
+                            Toast.error({text: 'Unsupported layer format'});
+                            return;
+                        }
+        
+                        const features = layerWrapper.layer.getSource().getFeatures();
+                        const formatString = format.writeFeatures(features, {
+                            featureProjection: CONFIG.projection,
+                            dataProjection: CONFIG.projection
+                        });
+                    
+                        const fileName = layerWrapper.name + '.' + result.format.toLowerCase();
+                        download(fileName, formatString);
+        
+                        // User defined callback from constructor
+                        if(typeof callback === 'function') {
+                            callback(layerWrapper);
+                        }
+                    });
+                }
             }
-        });
-
-        downloadButton.addEventListener(EVENTS.Browser.Click, function(event) {
-            const downloadModal = new DownloadLayerModal(function(result) {   
-                const format = instantiateFormat(result.format);
-
-                if(!format) {
-                    Toast.error({text: 'Unsupported layer format'});
-                    return;
-                }
-
-                const features = layerWrapper.layer.getSource().getFeatures();
-                const formatString = format.writeFeatures(features, {
-                    featureProjection: CONFIG.projection,
-                    dataProjection: CONFIG.projection
-                });
-            
-                const fileName = layerWrapper.name + '.' + result.format.toLowerCase();
-                download(fileName, formatString);
-
-                // User defined callback from constructor
-                if(typeof callback === 'function') {
-                    callback(layerWrapper);
-                }
-            });
         });
 
         return downloadButton;

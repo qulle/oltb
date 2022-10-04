@@ -3,6 +3,7 @@ import Feature from 'ol/Feature';
 import { Icon, Style } from 'ol/style';
 import { fromLonLat } from 'ol/proj';
 import { getWindBarb } from '../../core/SVGWindbarbs';
+import { degreesToRadians } from '../Conversions';
 
 const DEFAULT_OPTIONS = {
     lat: undefined,
@@ -24,7 +25,7 @@ const generateWindbarb = function(options = {}) {
         new Style({
             image: new Icon({
                 src: 'data:image/svg+xml;utf8,' + getWindBarb(options.windSpeed),
-                rotation: options.rotation
+                rotation: degreesToRadians(options.rotation)
             })
         })
     ]);

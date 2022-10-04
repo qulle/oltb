@@ -28,15 +28,16 @@ class LayerManager {
 
         this.map = map;
 
-        // Handle queue of layers that was added before the map was ready
+        // (1). Handle queue of map-layers that was added before the map was ready
         this.queue.mapLayers.forEach((item) => {
-            this.addMapLayerToMap(item.layerWrapper, item.isSilent);
+            this.addMapLayerToMap(item.layerWrapper, item.silent);
         });
 
         this.queue.mapLayers = [];
 
+        // (2). Handle queue of map-layers that was added before the map was ready
         this.queue.featureLayers.forEach((item) => {
-            this.addFeatureLayerToMap(item.layerWrapper, item.isSilent);
+            this.addFeatureLayerToMap(item.layerWrapper, item.silent);
         });
 
         this.queue.featureLayers = [];
@@ -45,24 +46,24 @@ class LayerManager {
     //-------------------------------------------
     // Map layers
     //-------------------------------------------
-    static addMapLayers(layerWrappers, isSilent = false) {
+    static addMapLayers(layerWrappers, silent = false) {
         for(let index in layerWrappers) {
-            this.addMapLayer(layerWrappers[index], isSilent);
+            this.addMapLayer(layerWrappers[index], silent);
         }
     }
 
-    static addMapLayer(layerWrapper, isSilent = false) {
+    static addMapLayer(layerWrapper, silent = false) {
         layerWrapper.id = this.layerId;
         this.layerId = this.layerId + 1;
     
         if(this.map) {
-            this.addMapLayerToMap(layerWrapper, isSilent);
+            this.addMapLayerToMap(layerWrapper, silent);
         }else {
-            this.queue.mapLayers.push({layerWrapper: layerWrapper, isSilent: isSilent});
+            this.queue.mapLayers.push({layerWrapper: layerWrapper, silent: silent});
         }
     }
 
-    static addMapLayerToMap(layerWrapper, isSilent = false) {
+    static addMapLayerToMap(layerWrapper, silent = false) {
         this.layers.mapLayers.push(layerWrapper);
         this.map.addLayer(layerWrapper.layer);
             
@@ -70,12 +71,12 @@ class LayerManager {
         window.dispatchEvent(new CustomEvent(EVENTS.Custom.MapLayerAdded, {
             detail: {
                 layerWrapper: layerWrapper, 
-                isSilent: isSilent
+                silent: silent
             }
         }));
     }
 
-    static removeMapLayer(targetLayer, isSilent = false) {
+    static removeMapLayer(targetLayer, silent = false) {
         // Remove the layer from the internal collection
         this.layers.mapLayers = this.layers.mapLayers.filter(function(layer) {
             return layer.id !== targetLayer.id;
@@ -88,7 +89,7 @@ class LayerManager {
         window.dispatchEvent(new CustomEvent(EVENTS.Custom.MapLayerRemoved, {
             detail: {
                 layerWrapper: targetLayer, 
-                isSilent: isSilent
+                silent: silent
             }
         }));
     }
@@ -137,7 +138,7 @@ class LayerManager {
     //-------------------------------------------
     // Feature layers
     //-------------------------------------------
-    static addFeatureLayer(name, isSilent = false) {
+    static addFeatureLayer(name, visible = true, silent = false) {
         name = name.trim();
 
         if(!name.length) {
@@ -149,7 +150,8 @@ class LayerManager {
             name: name,
             layer: new VectorLayer({
                 source: new VectorSource(),
-                zIndex: ZINDEX_BASE + this.layerId
+                zIndex: ZINDEX_BASE + this.layerId,
+                visible: visible
             })
         };
 
@@ -157,15 +159,15 @@ class LayerManager {
         this.activeFeatureLayer = layerWrapper;
 
         if(this.map) {
-            this.addFeatureLayerToMap(layerWrapper, isSilent);
+            this.addFeatureLayerToMap(layerWrapper, silent);
         }else {
-            this.queue.featureLayers.push({layerWrapper: layerWrapper, isSilent: isSilent});
+            this.queue.featureLayers.push({layerWrapper: layerWrapper, silent: silent});
         }
 
         return layerWrapper;
     }
 
-    static addFeatureLayerToMap(layerWrapper, isSilent = false) {
+    static addFeatureLayerToMap(layerWrapper, silent = false) {
         this.layers.featureLayers.push(layerWrapper);
         this.map.addLayer(layerWrapper.layer);
 
@@ -173,12 +175,12 @@ class LayerManager {
         window.dispatchEvent(new CustomEvent(EVENTS.Custom.FeatureLayerAdded, {
             detail: {
                 layerWrapper: layerWrapper, 
-                isSilent: isSilent
+                silent: silent
             }
         }));
     }
 
-    static removeFeatureLayer(targetLayer, isSilent = false) {
+    static removeFeatureLayer(targetLayer, silent = false) {
          // Remove the layer from the internal collection
         this.layers.featureLayers = this.layers.featureLayers.filter(function(layer) {
             return layer.id !== targetLayer.id;
@@ -203,7 +205,7 @@ class LayerManager {
         window.dispatchEvent(new CustomEvent(EVENTS.Custom.FeatureLayerRemoved, {
             detail: {
                 layerWrapper: targetLayer, 
-                isSilent: isSilent
+                silent: silent
             }
         }));
     }

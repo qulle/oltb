@@ -6,7 +6,6 @@ import CONFIG from "../core/Config";
 
 import urlContinentsGeoJSON from 'url:../../../json/continents.geojson';
 
-const IS_SILENT = true;
 LayerManager.addMapLayers([
     {
         name: 'Continents overlay',
@@ -20,4 +19,4 @@ LayerManager.addMapLayers([
             visible: true
         })
     }
-], IS_SILENT);
+], true);

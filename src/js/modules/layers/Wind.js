@@ -7,20 +7,21 @@ import { generateWindbarb } from "../helpers/ol-functions/GenerateWindbarb";
 import urlCapitalsGeoJSON from 'url:../../../json/capitals.geojson';
 
 const ID_PREFIX = 'oltb-info-window-marker';
-const LAYER_WRAPPER = LayerManager.addFeatureLayer('Windbarbs', true);
 
 const CONTINENT_DIRECTION = {
     'Europe': 5,
-    'Africa': 0.17,
-    'Antarctica': 1,
-    'Asia': 0.5,
-    'Australia': 0.5,
-    'Central America': 1.57,
-    'North America': 1.57,
-    'South America': 1.57,
-    'UM': 1.57,
-    'US': 1.57
+    'Africa': 110,
+    'Antarctica': 65,
+    'Asia': 65,
+    'Australia': 65,
+    'Central America': 210,
+    'North America': 210,
+    'South America': 210,
+    'UM': 210,
+    'US': 210
 };
+
+const LAYER_WRAPPER = LayerManager.addFeatureLayer('Windbarbs', true, true);
 
 fetch(urlCapitalsGeoJSON)
     .then((response) => {
@@ -46,7 +47,7 @@ fetch(urlCapitalsGeoJSON)
                 <p class="oltb-text-center">${prettyCoords}</p>
                 <div class="oltb-d-flex oltb-justify-content-center">
                     <button class="oltb-func-btn oltb-func-btn--delete oltb-tippy" title="Delete marker" id="${ID_PREFIX}-remove"></button>
-                    <button class="oltb-func-btn oltb-func-btn--copy oltb-tippy" title="Copy marker text" id="${ID_PREFIX}-copy-location" data-copy="Country ${capital.properties.countryName} Capital ${capital.properties.capitalName} Coordinates ${prettyCoords}"></button>
+                    <button class="oltb-func-btn oltb-func-btn--copy oltb-tippy" title="Copy marker text" id="${ID_PREFIX}-copy-location" data-copy="Wind speed ${windSpeed}m/s - Direction ${rotation}deg"></button>
                 </div>
             `;
 

@@ -9,7 +9,6 @@ import { getMeasureTooltipValue } from "../helpers/ol-functions/Measurements";
 
 import urlCountriesGeoJSON from 'url:../../../json/countries.geojson';
 
-const IS_SILENT = true;
 LayerManager.addMapLayers([
     {
         name: 'Countries overlay',
@@ -56,4 +55,4 @@ LayerManager.addMapLayers([
             visible: false
         })
     }
-], IS_SILENT);
+], true);
