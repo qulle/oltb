@@ -45,8 +45,10 @@ LayerManager.addMapLayers([
                             success(features);
                         })
                         .catch((error) => {
-                            console.error(`Error loading Capitals [${error}]`);
-                            Toast.error({text: 'Error loading Capitals layer'});
+                            const errorMessage = 'Error loading Capitals layer';
+
+                            console.error(`${errorMessage} [${error}]`);
+                            Toast.error({text: errorMessage});
 
                             failure();
                         });

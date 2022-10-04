@@ -280,6 +280,7 @@ class MeasureTool extends Control {
         });
         
         layerWrapper.layer.getSource().addFeature(feature);
+        
         map.addOverlay(tooltipOverlay);
 
         // The layer might be hidden, check if the tooltip also should be hidden

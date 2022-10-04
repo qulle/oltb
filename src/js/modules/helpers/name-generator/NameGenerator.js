@@ -1,11 +1,12 @@
 import ADJECTIVES from './adjectives';
 import ANIMALS from './animals';
+import { randomNumber } from '../Random';
 
 const generateAnimalName = function() {
-    const randomAnimal    = Math.floor(Math.random() * ANIMALS.length);
-    const randomAdjective = Math.floor(Math.random() * ADJECTIVES.length);
+    const animalIndex    = randomNumber(0, ANIMALS.length    - 1);
+    const adjectiveIndex = randomNumber(0, ADJECTIVES.length - 1);
 
-    return (ADJECTIVES[randomAdjective] + ' ' + ANIMALS[randomAnimal]).capitalize();
+    return (ADJECTIVES[adjectiveIndex] + ' ' + ANIMALS[animalIndex]).capitalize();
 }
 
 export { generateAnimalName };

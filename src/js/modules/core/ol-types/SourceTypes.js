@@ -1,9 +1,4 @@
-import {
-    TileWMS, 
-    XYZ,
-    OSM,
-    Vector
-} from 'ol/source';
+import { TileWMS, XYZ, OSM, Vector } from 'ol/source';
 
 const SOURCE_TYPES = {
     'TileWMS': TileWMS,

@@ -20,7 +20,9 @@ class HiddenMarkerTool extends Control {
 
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
-        const createIcon = getIcon({path: SVG_PATHS.Plus});
+        const createIcon = getIcon({
+            path: SVG_PATHS.Plus
+        });
 
         addContextMenuItem(CONTEXT_MENUS.MainMap, {icon: createIcon, name: 'Create marker', fn: this.onContextMenuCreateMarker.bind(this)});
         addContextMenuItem(CONTEXT_MENUS.MainMap, {});

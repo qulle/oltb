@@ -105,6 +105,7 @@ class ImportVectorLayerTool extends Control {
             });
 
             const layerWrapper = LayerManager.addFeatureLayer('Import : ' + filename);
+            
             layerWrapper.layer.getSource().addFeatures(features);
 
             // User defined callback from constructor

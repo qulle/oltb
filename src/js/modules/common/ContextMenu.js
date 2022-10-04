@@ -43,7 +43,6 @@ class ContextMenu extends Control {
             this.addMenuItem(item, index);
         });
 
-        // Add root element, the contextmenu, to the map
         MAP_ELEMENT.appendChild(this.menu);
     }
 

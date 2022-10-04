@@ -61,11 +61,13 @@ class ModalBase {
         this.modal = modal;
         this.onClose = onClose;
 
-        window.addEventListener(EVENTS.Browser.KeyUp, (event) => {
-            if(event.key === 'Escape') {
-                this.close();
-            }
-        });
+        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
+    }
+
+    onWindowKeyUp(event) {
+        if(event.key.toLowerCase() === 'escape') {
+            this.close();
+        }
     }
 
     bounceAnimation(event) {

@@ -2,7 +2,7 @@ class DOM {
     static createElement(options = {}) {
         const element = document.createElement(options.element);
 
-        // Common attributes
+        // (1). Common attributes
         if(options.id) {
             element.id = options.id;
         }
@@ -31,12 +31,12 @@ class DOM {
             element.title = options.title;
         }
 
-        // Attributes that needs to be set using setAttribute
+        // (2). Attributes that needs to be set using setAttribute
         for(const attribute in options.attributes) {
             element.setAttribute(attribute, options.attributes[attribute]);
         }
     
-        // Attach given listeners and callbacks
+        // (3). Attach given listeners and callbacks
         for(const listener in options.listeners) {
             const callbacks = options.listeners[listener];
 

@@ -34,8 +34,13 @@ class HiddenMapNavigationTool extends Control {
         const localStorageState = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
         this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
 
-        const moveCenterIcon = getIcon({path: SVG_PATHS.MoveCenter});
-        const focusHereIcon = getIcon({path: SVG_PATHS.FocusHere});
+        const moveCenterIcon = getIcon({
+            path: SVG_PATHS.MoveCenter
+        });
+        
+        const focusHereIcon = getIcon({
+            path: SVG_PATHS.FocusHere
+        });
 
         addContextMenuItem(CONTEXT_MENUS.MainMap, {icon: moveCenterIcon, name: 'Center map here', fn: this.onContextMenuCenterMap.bind(this)});
         addContextMenuItem(CONTEXT_MENUS.MainMap, {icon: focusHereIcon, name: 'Focus here', fn: this.onContextMenuFocusHere.bind(this)});

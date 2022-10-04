@@ -13,7 +13,9 @@ class HiddenAboutTool extends Control {
             element: TOOLBAR_ELEMENT
         });
 
-        const icon = getIcon({path: SVG_PATHS.GitHub});
+        const icon = getIcon({
+            path: SVG_PATHS.GitHub
+        });
 
         addContextMenuItem(CONTEXT_MENUS.MainMap, {});
         addContextMenuItem(CONTEXT_MENUS.MainMap, {icon: icon, name: 'About OLTB', fn: this.onContextMenuAbout.bind(this)});

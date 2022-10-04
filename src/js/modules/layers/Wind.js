@@ -67,6 +67,8 @@ fetch(urlCapitalsGeoJSON)
         });
     })
     .catch((error) => {
-        console.error(`Error loading Windbarbs [${error}]`);
-        Toast.error({text: 'Error loading Windbarbs layer'});  
+        const errorMessage = 'Error loading Windbarbs layer';
+
+        console.error(`${errorMessage} [${error}]`);
+        Toast.error({text: errorMessage}); 
     });
