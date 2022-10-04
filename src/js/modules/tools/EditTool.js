@@ -16,6 +16,7 @@ import { getMeasureTooltipCoordinates, getMeasureTooltipValue } from '../helpers
 import { hasNestedProperty } from '../helpers/HasNestedProperty';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { EVENTS } from '../helpers/constants/Events';
+import { SETTINGS } from '../helpers/constants/Settings';
 
 const ID_PREFIX = 'oltb-edit';
 
@@ -93,7 +94,7 @@ class EditTool extends Control {
                     return layerWrapper.layer.getSource().hasFeature(feature);
                 });
                 
-                return selectable && (isFeatureLayer || SettingsManager.getSetting('select.vector.map.shapes'));
+                return selectable && (isFeatureLayer || SettingsManager.getSetting(SETTINGS.SelectVectorMapShapes));
             }
         });
         

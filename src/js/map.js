@@ -49,6 +49,7 @@ import SettingsManager from './modules/core/managers/SettingsManager';
 import InfoWindowManager from './modules/core/managers/InfoWindowManager';
 import { MAP_ELEMENT } from './modules/core/ElementReferences';
 import { CONTEXT_MENUS } from './modules/helpers/constants/ContextMenus';
+import { SETTINGS } from './modules/helpers/constants/Settings';
 import './modules/epsg/Registrate';
 import './modules/helpers/Browser/Prototypes';
 import './modules/helpers/Accessibility';
@@ -83,34 +84,34 @@ const map = new Map({
     }).extend([
         new MouseWheelZoom({
             condition: function(event) { 
-                return platformModifierKeyOnly(event) || SettingsManager.getSetting('mouse.wheel.zoom'); 
+                return platformModifierKeyOnly(event) || SettingsManager.getSetting(SETTINGS.MouseWheelZoom); 
             }
         }),
         new DragRotate({
             condition: function(event) {
-                return altShiftKeysOnly(event) && SettingsManager.getSetting('alt.shift.drag.rotate');
+                return altShiftKeysOnly(event) && SettingsManager.getSetting(SETTINGS.AltShiftDragRotate);
             }
         }),
         new DragPan({
             condition: function(event) {
-                return (platformModifierKeyOnly(event) || SettingsManager.getSetting('drag.pan')) && !altShiftKeysOnly(event) && !shiftKeyOnly(event);
+                return (platformModifierKeyOnly(event) || SettingsManager.getSetting(SETTINGS.DragPan)) && !altShiftKeysOnly(event) && !shiftKeyOnly(event);
             }
         }),
         new KeyboardZoom({
             condition: function(event) {
-                return SettingsManager.getSetting('keyboard.zoom') && targetNotEditable(event);
+                return SettingsManager.getSetting(SETTINGS.KeyboardZoom) && targetNotEditable(event);
             }
         }),
         new KeyboardPan({
             condition: function(event) {
-                return SettingsManager.getSetting('keyboard.pan') && targetNotEditable(event);
+                return SettingsManager.getSetting(SETTINGS.KeyboardPan) && targetNotEditable(event);
             }
         })
     ]),
     controls: defaultControls({
         zoom: false, 
         rotate: false, 
-        attribution: SettingsManager.getSetting('show.attributions')
+        attribution: SettingsManager.getSetting(SETTINGS.ShowAttributions)
     }).extend([
         new HiddenMarkerTool({
             added: function(marker) {

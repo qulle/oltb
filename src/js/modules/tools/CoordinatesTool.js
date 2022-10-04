@@ -14,6 +14,7 @@ import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { toStringHDMS } from 'ol/coordinate';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { EVENTS } from '../helpers/constants/Events';
+import { SETTINGS } from '../helpers/constants/Settings';
 
 const DEFAULT_OPTIONS = {};
 
@@ -47,7 +48,7 @@ class CoordinatesTool extends Control {
         this.tooltipItem = undefined;
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
-        SettingsManager.addSetting('copy.coordinates.on.click', {
+        SettingsManager.addSetting(SETTINGS.CopyCoordinatesOnClick, {
             state: true, 
             text: 'Coordinates tool - Copy coordinates on click'
         });
@@ -95,7 +96,7 @@ class CoordinatesTool extends Control {
     }
 
     async onMapClick(event) {
-        if(!SettingsManager.getSetting('copy.coordinates.on.click') || ToolManager.hasActiveTool()) {
+        if(!SettingsManager.getSetting(SETTINGS.CopyCoordinatesOnClick) || ToolManager.hasActiveTool()) {
             return;
         }
 

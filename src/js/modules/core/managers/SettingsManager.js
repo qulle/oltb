@@ -1,5 +1,6 @@
 import StateManager from "./StateManager";
 import { EVENTS } from "../../helpers/constants/Events";
+import { SETTINGS } from "../../helpers/constants/Settings";
 
 const LOCAL_STORAGE_NODE_NAME = 'settings';
 const LOCAL_STORAGE_DEFAULTS = {};
@@ -9,14 +10,14 @@ class SettingsManager {
     static localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...this.localStorageState };
 
     static settings = new Map([
-        ['mouse.wheel.zoom', {state: false, text: 'Enable zooming using mousewheel only'}],
-        ['alt.shift.drag.rotate', {state: true, text: 'Enable rotate of map using Shift + Alt + Drag'}],
-        ['drag.pan', {state: true, text: 'Enable dragging using mouse only'}],
-        ['keyboard.zoom', {state: true, text: 'Enable zooming using keyboard'}],
-        ['keyboard.pan', {state: true, text: 'Enable panning using keyboard'}],
-        ['select.vector.map.shapes', {state: false, text: 'Enable select of shapes in vector map layers'}],
-        ['show.attributions', {state: true, text: 'Show attributions (toggle requires page reload)'}],
-        ['always.new.layers', {state: false, text: 'Always create new layer when selecting tool'}],
+        [SETTINGS.MouseWheelZoom, {state: false, text: 'Enable zooming using mousewheel only'}],
+        [SETTINGS.AltShiftDragRotate, {state: true, text: 'Enable rotate of map using Shift + Alt + Drag'}],
+        [SETTINGS.DragPan, {state: true, text: 'Enable dragging using mouse only'}],
+        [SETTINGS.KeyboardZoom, {state: true, text: 'Enable zooming using keyboard'}],
+        [SETTINGS.KeyboardPan, {state: true, text: 'Enable panning using keyboard'}],
+        [SETTINGS.SelectVectorMapShapes, {state: false, text: 'Enable select of shapes in vector map layers'}],
+        [SETTINGS.ShowAttributions, {state: true, text: 'Show attributions (toggle requires page reload)'}],
+        [SETTINGS.AlwaysNewLayers, {state: false, text: 'Always create new layer when selecting tool'}],
     ]);
 
     static init() {

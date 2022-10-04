@@ -12,6 +12,7 @@ import { SVG_PATHS, getIcon } from '../core/SVGIcons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { EVENTS } from '../helpers/constants/Events';
+import { SETTINGS } from '../helpers/constants/Settings';
 
 const ID_PREFIX = 'oltb-draw';
 
@@ -207,7 +208,7 @@ class DrawTool extends Control {
             // Remove this tool as the active global tool
             ToolManager.removeActiveTool();
         }else {
-            if(SettingsManager.getSetting('always.new.layers')) {
+            if(SettingsManager.getSetting(SETTINGS.AlwaysNewLayers)) {
                 LayerManager.addFeatureLayer('Drawing layer');
             }
 
