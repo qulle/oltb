@@ -55,10 +55,13 @@ fetch(urlCapitalsGeoJSON)
                 new generateWindbarb({
                     lat: lat,
                     lon: lon,
+                    fill: 'rgb(59, 67, 82)',
+                    scale: .8,
                     windSpeed: windSpeed,
                     rotation: rotation,
                     notSelectable: true,
-                    infoWindow: infoWindow
+                    infoWindow: infoWindow,
+                    strokeWidth: 3
                 })
             );
         });

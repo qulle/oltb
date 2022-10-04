@@ -83,19 +83,29 @@ const getSVGPath = function(windSpeed) {
     else return WIND_BARB_0;
 }
 
-const getWindBarb = function(windSpeed) {
+const DEFAULT_OPTIONS = {
+    windSpeed: 0,
+    width: 250,
+    height: 250,
+    fill: 'rgba(59, 67, 82)',
+    strokeWidth: 3
+};
+
+const getWindBarb = function(options = {}) {
+    options = { ...DEFAULT_OPTIONS, ...options };
+
     return `
         <svg xmlns="http://www.w3.org/2000/svg" 
-            width="250" 
-            height="250" 
-            fill="rgba(59, 67, 82, 1)"
-            stroke="rgba(59, 67, 82, 1)"
-            stroke-width="3"
+            width="${options.width}" 
+            height="${options.width}" 
+            fill="${options.fill}"
+            stroke="${options.fill}"
+            stroke-width="${options.strokeWidth}"
             stroke-linecap="round"
             stroke-linejoin="round"
             stroke-miterlimit="10"
             viewBox="0 0 250 250">
-            ${getSVGPath(windSpeed)}
+            ${getSVGPath(options.windSpeed)}
         </svg>
     `;
 }

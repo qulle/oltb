@@ -22,7 +22,8 @@ A picture says more than a thousand words, but the demo above says it all.
 6. [Colors](#colors) 
     1. [Theme colors](#theme-colors)
     2. [Color palette](#color-palette)
-7. [About the code](#about-the-code)
+7. [Icons](#icons)
+8. [About the code](#about-the-code)
     1. [HTML](#html)
     2. [SCSS](#scss)
     3. [JavaScript](#javascript)
@@ -42,10 +43,10 @@ A picture says more than a thousand words, but the demo above says it all.
     14. [State Management](#state-management)
     15. [Debug tool](#debug-tool)
     16. [OLTB namespace](#oltb-namespace)
-8. [External GitHub projects](#external-github-projects)
-9. [Maps used in the demo](#maps-used-in-the-demo)
-10. [License](#license)
-11. [Author](#author)
+9. [External GitHub projects](#external-github-projects)
+10. [Maps used in the demo](#maps-used-in-the-demo)
+11. [License](#license)
+12. [Author](#author)
 
 ## Branches
 The `main` branch always holds the latest features that are considered done. The latest commit from the main branch is available on the demo-page hosted on the `gh-pages` branch.
@@ -180,6 +181,34 @@ The full color palette is displayed below.
         <td><img valign="middle" src="./images/colors/gray-dark.svg"> #3B4352 - $color-gray-dark</td>
     </tr>
 </table>
+
+## Icons
+There are two modules for using SVG icons. One is for normal Icons and the other one is for Windbarbs.
+
+Normal icons
+```javascript
+import { getIcon, SVG_PATHS } from './modules/core/SVGIcons';
+
+const icon = getIcon({
+    path: SVG_PATHS.GeoMarkerFilled,
+    width: 20,
+    height: 20,
+    fill: 'rgb(255, 255, 255)'
+});
+```
+
+Windbarb icons
+```javascript
+export { getWindBarb } from './modules/core/SVGWindbarbs';
+
+const icon = getWindBarb({
+    windSpeed: 25,
+    width: 250,
+    height: 250,
+    color: 'rgb(59, 67, 82),
+    strokeWidth: 3
+});
+```
 
 ## About the code
 Below is the basic HTML and JavaScript structure used in the project. For a complete example of how to set up the code go to `map.js` in the `src/js` directory. 

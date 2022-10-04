@@ -10,6 +10,11 @@ const DEFAULT_OPTIONS = {
     lon: undefined,
     windSpeed: 0,
     rotation: 0,
+    width: 250,
+    height: 250,
+    fill: 'rgb(59, 67, 82)',
+    strokeWidth: 3,
+    scale: 1,
     notSelectable: false,
     infoWindow: undefined
 };
@@ -21,11 +26,20 @@ const generateWindbarb = function(options = {}) {
         geometry: new Point(fromLonLat([options.lon, options.lat]))
     });
 
+    const icon = getWindBarb({
+        windSpeed: options.windSpeed,
+        width: options.width,
+        height: options.height,
+        color: options.fill,
+        strokeWidth: options.strokeWidth
+    });
+
     windbarb.setStyle([
         new Style({
             image: new Icon({
-                src: 'data:image/svg+xml;utf8,' + getWindBarb(options.windSpeed),
-                rotation: degreesToRadians(options.rotation)
+                src: 'data:image/svg+xml;utf8,' + icon,
+                rotation: degreesToRadians(options.rotation),
+                scale: options.scale
             })
         })
     ]);
