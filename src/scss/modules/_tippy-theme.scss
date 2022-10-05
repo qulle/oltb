@@ -52,7 +52,7 @@ body.oltb-dark .tippy-box[data-theme~='oltb-themed'] {
     }
 }
 
-body:not(.oltb-dark) .tippy-box[data-theme~='oltb-reversed-themed'] {
+body:not(.oltb-dark) .tippy-box[data-theme~='oltb-inverted-themed'] {
     background-color: $background-theme-light;
     color: $background-theme-dark;
 

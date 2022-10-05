@@ -13,7 +13,8 @@ const AColorPicker = require('a-color-picker');
 const toolButtonsTippySingleton = createSingleton([], {
     placement: 'right',
     appendTo: MAP_ELEMENT,
-    moveTransition: 'transform 0.2s ease-out',
+    moveTransition: 'transform 200ms ease-out',
+    delay: 500,
     offset: [0, 12],
     theme: 'oltb'
 });
@@ -59,7 +60,7 @@ const colorTippyDelegate = delegate(MAP_ELEMENT, {
     offset: [0, 25],
     trigger: 'click',
     appendTo: MAP_ELEMENT,
-    theme: 'oltb oltb-reversed-themed',
+    theme: 'oltb oltb-inverted-themed',
     interactive: true,
     allowHTML: true,
     onShow(instance) {

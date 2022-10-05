@@ -37,8 +37,10 @@ fetch(urlCapitalsGeoJSON)
             const lat = capital.geometry.coordinates[1];
             const prettyCoords = toStringHDMS([lon, lat]);
         
-            // Get SVG for winds between 0 and 40m/s (75knots)
+            // Get windspeed between 0 and 40m/s (75knots)
             const windSpeed = randomNumber(0, 40);
+
+            // Get example direction to not have all wind barbs facing the same way
             const rotation = CONTINENT_DIRECTION[capital.properties.continentName] || 0;
 
             const infoWindow = `

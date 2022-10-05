@@ -3,7 +3,7 @@ import DOM from '../helpers/Browser/DOM';
 import { Control } from 'ol/control';
 import { TOOLBAR_ELEMENT } from '../core/ElementReferences';
 import { SVG_PATHS, getIcon } from '../core/SVGIcons';
-import { toolButtonsTippySingleton } from '../core/ToolbarTooltips';
+import { toolButtonsTippySingleton } from '../core/Tooltips';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { isHorizontal } from '../helpers/IsRowDirection';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
