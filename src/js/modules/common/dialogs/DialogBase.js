@@ -39,10 +39,7 @@ class DialogBase {
 
         const dialog = this.firstElementChild;
 
-        // Trigger reflow of DOM, reruns animation when class is added back
-        dialog.classList.remove(ANIMATION_CLASS);
-        void dialog.offsetWidth;
-        dialog.classList.add(ANIMATION_CLASS);
+        DOM.rerunAnimation(dialog, ANIMATION_CLASS);
     }
 
     close() {

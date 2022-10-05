@@ -128,10 +128,7 @@ class InfoWindowManager {
             ));
         }
 
-        // Trigger reflow of DOM, reruns animation when class is added back
-        this.infoWindow.classList.remove(ANIMATION_CLASS);
-        void this.infoWindow.offsetWidth;
-        this.infoWindow.classList.add(ANIMATION_CLASS);
+        DOM.rerunAnimation(this.infoWindow, ANIMATION_CLASS);
 
         const removeFeatureButton = this.content.querySelector(`#${ID_PREFIX}-remove`);
         if(removeFeatureButton) {

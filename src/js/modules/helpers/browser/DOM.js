@@ -58,6 +58,12 @@ class DOM {
             element.appendChild(child);
         });
     }
+
+    static rerunAnimation(element, className) {
+        element.classList.remove(className);
+        void element.offsetWidth;
+        element.classList.add(className);
+    }
 }
 
 export default DOM;

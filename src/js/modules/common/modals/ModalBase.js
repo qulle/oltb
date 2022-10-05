@@ -78,10 +78,7 @@ class ModalBase {
 
         const modal = this.firstElementChild;
 
-        // Trigger reflow of DOM, reruns animation when class is added back
-        modal.classList.remove(ANIMATION_CLASS);
-        void modal.offsetWidth;
-        modal.classList.add(ANIMATION_CLASS);
+        DOM.rerunAnimation(modal, ANIMATION_CLASS);
     }
 
     show(modalContent) {
