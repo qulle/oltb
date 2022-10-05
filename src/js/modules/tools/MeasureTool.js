@@ -153,7 +153,7 @@ class MeasureTool extends Control {
     }
 
     handleClick() {
-        // User defined callback from constructor
+        // Note: User defined callback from constructor
         if(typeof this.options.click === 'function') {
             this.options.click();
         }
@@ -234,7 +234,7 @@ class MeasureTool extends Control {
             tooltipItem.innerHTML = getMeasureTooltipValue(event.target);
         });
 
-        // User defined callback from constructor
+        // Note: User defined callback from constructor
         if(typeof this.options.start === 'function') {
             this.options.start(event);
         }
@@ -290,7 +290,7 @@ class MeasureTool extends Control {
             tooltipOverlay.setMap(null);
         }
 
-        // User defined callback from constructor
+        // Note: User defined callback from constructor
         if(typeof this.options.end === 'function') {
             this.options.end(event);
         }
@@ -301,14 +301,14 @@ class MeasureTool extends Control {
         
         const tooltipItem = TooltipManager.pop('measure');
 
-        // User defined callback from constructor
+        // Note: User defined callback from constructor
         if(typeof this.options.abort === 'function') {
             this.options.abort(event);
         }
     }
 
     onDrawError(event) {
-        // User defined callback from constructor
+        // Note: User defined callback from constructor
         if(typeof this.options.error === 'function') {
             this.options.error(event);
         }

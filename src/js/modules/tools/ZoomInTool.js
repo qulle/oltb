@@ -48,7 +48,7 @@ class ZoomInTool extends Control {
     }
 
     handleClick() {
-        // User defined callback from constructor
+        // Note: User defined callback from constructor
         if(typeof this.options.click === 'function') {
             this.options.click();
         }
@@ -68,16 +68,16 @@ class ZoomInTool extends Control {
 
         view.animate({
             zoom: newZoom,
-            duration: CONFIG.animationDuration,
+            duration: CONFIG.animationDuration.normal,
             easing: easeOut
         });
 
         setTimeout(() => {
-            // User defined callback from constructor
+            // Note: User defined callback from constructor
             if(typeof this.options.zoomed === 'function') {
                 this.options.zoomed();
             }
-        }, CONFIG.animationDuration);
+        }, CONFIG.animationDuration.normal);
     }
 }
 

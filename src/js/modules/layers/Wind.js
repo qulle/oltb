@@ -43,7 +43,7 @@ fetch(urlCapitalsGeoJSON)
 
             const infoWindow = `
                 <h3 class="oltb-text-center">${capital.properties.countryName} - ${capital.properties.countryCode}</h3>
-                <p class="oltb-text-center">Wind speed ${windSpeed}m/s - Direction ${rotation}deg</p>
+                <p class="oltb-text-center">Wind speed <strong>${windSpeed}m/s</strong> - Direction <strong>${rotation}deg</strong></p>
                 <p class="oltb-text-center">${prettyCoords}</p>
                 <div class="oltb-d-flex oltb-justify-content-center">
                     <button class="oltb-func-btn oltb-func-btn--delete oltb-tippy" title="Delete marker" id="${ID_PREFIX}-remove"></button>
@@ -56,6 +56,7 @@ fetch(urlCapitalsGeoJSON)
                     lat: lat,
                     lon: lon,
                     fill: 'rgb(59, 67, 82)',
+                    stroke: 'rgb(59, 67, 82)',
                     scale: .8,
                     windSpeed: windSpeed,
                     rotation: rotation,

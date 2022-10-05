@@ -1,6 +1,7 @@
 import Toast from '../common/Toast';
 import Dialog from '../common/Dialog';
 import LayerManager from '../core/managers/LayerManager';
+import InfoWindowManager from '../core/managers/InfoWindowManager';
 import CONFIG from '../core/Config';
 import DOM from '../helpers/Browser/DOM';
 import { Control } from 'ol/control';
@@ -59,7 +60,7 @@ class MyLocationTool extends Control {
     }
 
     handleClick() {
-        // User defined callback from constructor
+        // Note: User defined callback from constructor
         if(typeof this.options.click === 'function') {
             this.options.click();
         }
@@ -70,12 +71,13 @@ class MyLocationTool extends Control {
                 confirmClass: Dialog.Success,
                 confirmText: 'Exit fullscreen',
                 onConfirm: () => {
-                    exitFullScreen();
-
-                    // Delay to let the browser exit full screen for better experience
-                    setTimeout(() => {
-                        this.handleGEOLocation();
-                    }, 800);
+                    exitFullScreen()
+                        .then(() => {
+                            this.handleGEOLocation();
+                        })
+                        .catch((error) => {
+                            console.error(`Error exiting fullscreen [${error}]`);
+                        });
                 }
             });
         }else {
@@ -89,14 +91,15 @@ class MyLocationTool extends Control {
         }
 
         if(navigator.geolocation) {
-            // Show loading toast
             this.loadingToast = Toast.info({
                 text: 'Trying to find your location...', 
-                clickToClose: false,
-                spinner: true
+                clickToRemove: false,
+                spinner: true,
+                onRemove: () => {
+                    this.loadingToast = undefined;
+                }
             });
 
-            // The browser geolocation api
             navigator.geolocation.getCurrentPosition(
                 this.onSuccess.bind(this), 
                 this.onError.bind(this), 
@@ -133,15 +136,15 @@ class MyLocationTool extends Control {
 
         const layerWrapper = LayerManager.addFeatureLayer('My location');
         
-        layerWrapper.layer.getSource().addFeature(
-            new generateMarker({
-                lat: lat,
-                lon: lon,
-                icon: icon,
-                notSelectable: true,
-                infoWindow: infoWindow
-            })
-        );
+        const marker = new generateMarker({
+            lat: lat,
+            lon: lon,
+            icon: icon,
+            notSelectable: true,
+            infoWindow: infoWindow
+        });
+
+        layerWrapper.layer.getSource().addFeature(marker);
 
         // Center map over location
         const view = this.getMap().getView();
@@ -152,11 +155,17 @@ class MyLocationTool extends Control {
 
         view.animate({
             center: fromLonLat([lon, lat]),
-            duration: CONFIG.animationDuration,
+            zoom: 6,
+            duration: CONFIG.animationDuration.normal,
             easing: easeOut
         });
 
-        // User defined callback from constructor
+        // Trigger InfoWindow to show
+        setTimeout(() => {
+            InfoWindowManager.showOverly(marker, fromLonLat([lon, lat]));
+        }, CONFIG.animationDuration.normal);
+
+        // Note: User defined callback from constructor
         if(typeof this.options.location === 'function') {
             this.options.location(location);
         }
@@ -167,7 +176,7 @@ class MyLocationTool extends Control {
     onError(error, ptrToast = Toast.error) {
         ptrToast({text: error.message});
         
-        // User defined callback from constructor
+        // Note: User defined callback from constructor
         if(typeof this.options.error === 'function') {
             this.options.error(error);
         }

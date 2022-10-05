@@ -63,7 +63,7 @@ class CoordinatesTool extends Control {
     }
 
     handleClick() {
-        // User defined callback from constructor
+        // Note: User defined callback from constructor
         if(typeof this.options.click === 'function') {
             this.options.click();
         }
@@ -121,7 +121,7 @@ class CoordinatesTool extends Control {
                 Toast.error({text: 'Failed to copy coordinates'});
             });
         
-        // User defined callback from constructor
+        // Note: User defined callback from constructor
         if(typeof this.options.mapClicked === 'function') {
             this.options.mapClicked(coordinate);
         }

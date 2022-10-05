@@ -64,7 +64,7 @@ class InfoWindowManager {
             element: this.infoWindow,
             autoPan: true,
             autoPanAnimation: {
-                duration: CONFIG.animationDuration
+                duration: CONFIG.animationDuration.normal
             }
         });
 
@@ -81,30 +81,7 @@ class InfoWindowManager {
         const infoWindow = feature?.getProperties()?.infoWindow;
         
         if(infoWindow) {
-            this.content.innerHTML = infoWindow;
-            this.overlay.setPosition(getCenter(
-                feature.getGeometry().getExtent()
-            ));
-
-            // Trigger reflow of DOM, reruns animation when class is added back
-            this.infoWindow.classList.remove(ANIMATION_CLASS);
-            void this.infoWindow.offsetWidth;
-            this.infoWindow.classList.add(ANIMATION_CLASS);
-
-            const removeFeatureButton = this.content.querySelector(`#${ID_PREFIX}-remove`);
-            if(removeFeatureButton) {
-                removeFeatureButton.addEventListener(EVENTS.Browser.Click, removeFeature.bind(this, feature));
-            }
-
-            const copyFeatureInfoButton = this.content.querySelector(`#${ID_PREFIX}-copy-location`);
-            if(copyFeatureInfoButton) {
-                copyFeatureInfoButton.addEventListener(EVENTS.Browser.Click, copyFeatureInfo.bind(this, copyFeatureInfoButton.getAttribute('data-copy')));
-            }
-
-            const editFeatureButton = this.content.querySelector(`#${ID_PREFIX}-edit`);
-            if(editFeatureButton) {
-                editFeatureButton.addEventListener(EVENTS.Browser.Click, editFeature.bind(this, feature));
-            }
+            this.showOverly(feature);
         }else {
             this.hideOverlay();
         }
@@ -136,6 +113,40 @@ class InfoWindowManager {
 
         const infoWindow = feature?.getProperties()?.infoWindow;
         this.map.getViewport().style.cursor = infoWindow ? 'pointer' : 'default';
+    }
+
+    static showOverly(feature, position) {
+        const infoWindow = feature.getProperties().infoWindow;
+
+        this.content.innerHTML = infoWindow;
+
+        if(position) {
+            this.overlay.setPosition(position);
+        }else {
+            this.overlay.setPosition(getCenter(
+                feature.getGeometry().getExtent()
+            ));
+        }
+
+        // Trigger reflow of DOM, reruns animation when class is added back
+        this.infoWindow.classList.remove(ANIMATION_CLASS);
+        void this.infoWindow.offsetWidth;
+        this.infoWindow.classList.add(ANIMATION_CLASS);
+
+        const removeFeatureButton = this.content.querySelector(`#${ID_PREFIX}-remove`);
+        if(removeFeatureButton) {
+            removeFeatureButton.addEventListener(EVENTS.Browser.Click, removeFeature.bind(this, feature));
+        }
+
+        const copyFeatureInfoButton = this.content.querySelector(`#${ID_PREFIX}-copy-location`);
+        if(copyFeatureInfoButton) {
+            copyFeatureInfoButton.addEventListener(EVENTS.Browser.Click, copyFeatureInfo.bind(this, copyFeatureInfoButton.getAttribute('data-copy')));
+        }
+
+        const editFeatureButton = this.content.querySelector(`#${ID_PREFIX}-edit`);
+        if(editFeatureButton) {
+            editFeatureButton.addEventListener(EVENTS.Browser.Click, editFeature.bind(this, feature));
+        }
     }
 
     static hideOverlay() {

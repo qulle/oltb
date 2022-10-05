@@ -5,7 +5,11 @@ const CONFIG = {
     locale: 'en-us',
     projection: 'EPSG:3857',
     wgs84Projection: 'EPSG:4326',
-    animationDuration: 350
+    animationDuration: {
+        slow: 450,
+        normal: 350,
+        fast: 250
+    }
 };
 
 export default CONFIG;

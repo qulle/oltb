@@ -47,11 +47,11 @@ const requestFullScreenWithKeys = function(element) {
   
 const exitFullScreen = function() {
     if(document.exitFullscreen) {
-        document.exitFullscreen();
+        return document.exitFullscreen();
     }else if(document['msExitFullscreen']) {
-        document['msExitFullscreen']();
+        return document['msExitFullscreen']();
     }else if(document['webkitExitFullscreen']) {
-        document['webkitExitFullscreen']();
+        return document['webkitExitFullscreen']();
     }
 }
 

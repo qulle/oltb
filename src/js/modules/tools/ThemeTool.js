@@ -57,7 +57,7 @@ class ThemeTool extends Control {
     }
 
     handleClick() {
-        // User defined callback from constructor
+        // Note: User defined callback from constructor
         if(typeof this.options.click === 'function') {
             this.options.click();
         }
@@ -93,7 +93,7 @@ class ThemeTool extends Control {
             this.button._tippy.setContent(`Light theme (${SHORTCUT_KEYS.ToolbarTheme})`);
         }
 
-        // User defined callback from constructor
+        // Note: User defined callback from constructor
         if(typeof this.options.changed === 'function') {
             this.options.changed(theme);
         }

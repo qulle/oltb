@@ -67,7 +67,7 @@ class ResetNorthTool extends Control {
                 if(result.isDigitsOnly()) {
                     view.animate({
                         rotation: result * (Math.PI / 180),
-                        duration: CONFIG.animationDuration,
+                        duration: CONFIG.animationDuration.normal,
                         easing: easeOut
                     });
                 }else {
@@ -78,7 +78,7 @@ class ResetNorthTool extends Control {
     }
 
     handleClick() {
-        // User defined callback from constructor
+        // Note: User defined callback from constructor
         if(typeof this.options.click === 'function') {
             this.options.click();
         }
@@ -95,16 +95,16 @@ class ResetNorthTool extends Control {
 
         view.animate({
             rotation: 0,
-            duration: CONFIG.animationDuration,
+            duration: CONFIG.animationDuration.normal,
             easing: easeOut
         });
 
         setTimeout(() => {
-            // User defined callback from constructor
+            // Note: User defined callback from constructor
             if(typeof this.options.reset === 'function') {
                 this.options.reset();
             }
-        }, CONFIG.animationDuration);
+        }, CONFIG.animationDuration.normal);
     }
 }
 

@@ -64,7 +64,7 @@ class FullscreenTool extends Control {
     }
 
     handleClick() {
-        // User defined callback from constructor
+        // Note: User defined callback from constructor
         if(typeof this.options.click === 'function') {
             this.options.click();
         }
@@ -76,14 +76,14 @@ class FullscreenTool extends Control {
         if(document.fullscreenElement) {
             this.button._tippy.setContent(`Exit fullscreen (${SHORTCUT_KEYS.FullScreen})`);
 
-            // User defined callback from constructor
+            // Note: User defined callback from constructor
             if(typeof this.options.enter === 'function') {
                 this.options.enter(event);
             }
         }else {
             this.button._tippy.setContent(`Enter fullscreen (${SHORTCUT_KEYS.FullScreen})`);
 
-            // User defined callback from constructor
+            // Note: User defined callback from constructor
             if(typeof this.options.leave === 'function') {
                 this.options.leave(event);
             }

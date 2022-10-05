@@ -72,7 +72,7 @@ class HiddenMarkerTool extends Control {
             
             layerWrapper.layer.getSource().addFeature(marker);
 
-            // User defined callback from constructor
+            // Note: User defined callback from constructor
             if(typeof this.options.added === 'function') {
                 this.options.added(marker);
             }
@@ -80,7 +80,7 @@ class HiddenMarkerTool extends Control {
     }
 
     onWindowFeatureEdited(event) {
-        // User defined callback from constructor
+        // Note: User defined callback from constructor
         if(typeof this.options.edited === 'function') {
             this.options.edited(
                 event.detail.before, 
@@ -90,7 +90,7 @@ class HiddenMarkerTool extends Control {
     }
 
     onWindowFeatureRemoved(event) {
-        // User defined callback from constructor
+        // Note: User defined callback from constructor
         if(typeof this.options.removed === 'function') {
             this.options.removed(event.detail.feature);
         }

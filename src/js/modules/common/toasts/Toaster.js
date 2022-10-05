@@ -1,12 +1,13 @@
 import DOM from '../../helpers/Browser/DOM';
 import { TOAST_ELEMENT } from '../../core/ElementReferences';
 import { EVENTS } from '../../helpers/constants/Events';
+import CONFIG from '../../core/Config';
 
 const DEFAULT_OPTIONS = {
     text: 'Default toast',
     type: 'info',
     autoremove: undefined,
-    clickToClose: true,
+    clickToRemove: true,
     spinner: false
 };
 
@@ -21,7 +22,7 @@ class Toaster {
 
         this.toast = toast;
         
-        if(this.options.clickToClose) {
+        if(this.options.clickToRemove) {
             toast.classList.add('oltb-toast--clickable');
             toast.addEventListener(EVENTS.Browser.Click, this.remove.bind(this));
         }
@@ -60,7 +61,11 @@ class Toaster {
         // Remove the toast from DOM after animation finishes
         setTimeout(() => {
             this.toast.remove();
-        }, 250);
+            
+            if(typeof this.options.onRemove === 'function') {
+                this.options.onRemove();
+            }
+        }, CONFIG.animationDuration.fast);
     }
 
     static get Info()    { return 'info'; }

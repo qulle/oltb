@@ -200,7 +200,7 @@ class LayerTool extends Control {
     }
 
     handleClick() {
-        // User defined callback from constructor
+        // Note: User defined callback from constructor
         if(typeof this.options.click === 'function') {
             this.options.click();
         }
@@ -265,20 +265,22 @@ class LayerTool extends Control {
             }
         });
 
-        // User defined callback from constructor
+        // Note: User defined callback from constructor
         if(typeof this.options.mapLayerAdded === 'function' && !silent) {
             this.options.mapLayerAdded(layerWrapper);
         }
     }
 
     onWindowMapLayerRemoved(event) {
+        InfoWindowManager.hideOverlay();
+
         const layerWrapper = event.detail.layerWrapper;
         const silent = event.detail.silent;
 
         // Remove layer from UI
         this.mapLayerStack.querySelector(`#map-layer-${layerWrapper.id}`).remove();
 
-        // User defined callback from constructor
+        // Note: User defined callback from constructor
         if(typeof this.options.mapLayerRemoved === 'function' && !silent) {
             this.options.mapLayerRemoved(layerWrapper);
         }
@@ -317,13 +319,15 @@ class LayerTool extends Control {
             }
         });
 
-        // User defined callback from constructor
+        // Note: User defined callback from constructor
         if(typeof this.options.featureLayerAdded === 'function' && !silent) {
             this.options.featureLayerAdded(layerWrapper);
         }
     }
 
     onWindowFeatureLayerRemoved(event) {
+        InfoWindowManager.hideOverlay();
+
         const layerWrapper = event.detail.layerWrapper;
         const silent = event.detail.silent;
 
@@ -337,7 +341,7 @@ class LayerTool extends Control {
             this.featureLayerStack.firstChild.classList.add('oltb-toolbox-list__item--active');
         }
 
-        // User defined callback from constructor
+        // Note: User defined callback from constructor
         if(typeof this.options.featureLayerRemoved === 'function' && !silent) {
             this.options.featureLayerRemoved(layerWrapper);
         }
@@ -481,7 +485,7 @@ class LayerTool extends Control {
                         const fileName = layerWrapper.name + '.' + result.format.toLowerCase();
                         download(fileName, formatString);
         
-                        // User defined callback from constructor
+                        // Note: User defined callback from constructor
                         if(typeof callback === 'function') {
                             callback(layerWrapper);
                         }
@@ -513,7 +517,7 @@ class LayerTool extends Control {
                                 layerName.innerText = result.ellipsis(20);
                                 layerName._tippy.setContent(result);
                                 
-                                // User defined callback from constructor
+                                // Note: User defined callback from constructor
                                 if(typeof callback === 'function') {
                                     callback(layerWrapper);
                                 }
@@ -554,7 +558,7 @@ class LayerTool extends Control {
                         });
                     }
 
-                    // User defined callback from constructor
+                    // Note: User defined callback from constructor
                     if(typeof callback === 'function') {
                         callback(layerWrapper);
                     }

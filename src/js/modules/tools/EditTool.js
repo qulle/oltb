@@ -112,7 +112,7 @@ class EditTool extends Control {
         this.select.getFeatures().on(EVENTS.Ol.Add, (event) => {
             this.deleteSelectedButton.removeAttribute('disabled');
 
-            // User defined callback from constructor
+            // Note: User defined callback from constructor
             if(typeof this.options.selectadd === 'function') {
                 this.options.selectadd(event);
             }
@@ -123,7 +123,7 @@ class EditTool extends Control {
                 this.deleteSelectedButton.setAttribute('disabled', '');
             }
 
-            // User defined callback from constructor
+            // Note: User defined callback from constructor
             if(typeof this.options.selectremove === 'function') {
                 this.options.selectremove(event);
             }
@@ -136,7 +136,7 @@ class EditTool extends Control {
                 }
             });
 
-            // User defined callback from constructor
+            // Note: User defined callback from constructor
             if(typeof this.options.modifystart === 'function') {
                 this.options.modifystart(event);
             }
@@ -149,7 +149,7 @@ class EditTool extends Control {
                 }
             });
 
-            // User defined callback from constructor
+            // Note: User defined callback from constructor
             if(typeof this.options.modifyend === 'function') {
                 this.options.modifyend(event);
             }
@@ -162,7 +162,7 @@ class EditTool extends Control {
                 }
             });
 
-            // User defined callback from constructor
+            // Note: User defined callback from constructor
             if(typeof this.options.translatestart === 'function') {
                 this.options.translatestart(event);
             }
@@ -175,7 +175,7 @@ class EditTool extends Control {
                 }
             });
 
-            // User defined callback from constructor
+            // Note: User defined callback from constructor
             if(typeof this.options.translateend === 'function') {
                 this.options.translateend(event);
             }
@@ -233,7 +233,7 @@ class EditTool extends Control {
                                 this.getMap().removeOverlay(feature.getProperties().tooltipOverlay);
                             }
 
-                            // User defined callback from constructor
+                            // Note: User defined callback from constructor
                             if(typeof this.options.removedfeature === 'function') {
                                 this.options.removedfeature(feature);
                             }
@@ -299,7 +299,7 @@ class EditTool extends Control {
     }
 
     handleClick() {
-        // User defined callback from constructor
+        // Note: User defined callback from constructor
         if(typeof this.options.click === 'function') {
             this.options.click();
         }

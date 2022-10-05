@@ -94,7 +94,7 @@ class ModalBase {
         this.modalBackdrop.removeEventListener(EVENTS.Browser.KeyDown, trapFocusKeyListener);
         this.modalBackdrop.remove();
 
-        // User defined callback from constructor
+        // Note: User defined callback from constructor
         if(typeof this.onClose === 'function') {
             this.onClose();
         }

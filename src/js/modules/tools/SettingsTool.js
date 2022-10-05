@@ -67,7 +67,7 @@ class SettingsTool extends Control {
     clearSettings() {
         StateManager.clear();
 
-        // User defined callback from constructor
+        // Note: User defined callback from constructor
         if(typeof this.options.cleared === 'function') {
             this.options.cleared();
         }
@@ -77,7 +77,7 @@ class SettingsTool extends Control {
     }
 
     handleClick() {
-        // User defined callback from constructor
+        // Note: User defined callback from constructor
         if(typeof this.options.click === 'function') {
             this.options.click();
         }

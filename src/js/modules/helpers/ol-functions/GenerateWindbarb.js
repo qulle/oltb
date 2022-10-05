@@ -13,6 +13,7 @@ const DEFAULT_OPTIONS = {
     width: 250,
     height: 250,
     fill: 'rgb(59, 67, 82)',
+    stroke: 'rgb(59, 67, 82)',
     strokeWidth: 3,
     scale: 1,
     notSelectable: false,
@@ -30,7 +31,8 @@ const generateWindbarb = function(options = {}) {
         windSpeed: options.windSpeed,
         width: options.width,
         height: options.height,
-        color: options.fill,
+        fill: options.fill,
+        stroke: options.stroke,
         strokeWidth: options.strokeWidth
     });
 

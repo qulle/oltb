@@ -23,6 +23,8 @@ A picture says more than a thousand words, but the demo above says it all.
     1. [Theme colors](#theme-colors)
     2. [Color palette](#color-palette)
 7. [Icons](#icons)
+    1. [Basic icons](#basic-icons)
+    2. [Windbarb icons](#windbarb-icons)
 8. [About the code](#about-the-code)
     1. [HTML](#html)
     2. [SCSS](#scss)
@@ -183,29 +185,34 @@ The full color palette is displayed below.
 </table>
 
 ## Icons
-There are two modules for using SVG icons. One is for normal Icons and the other one is for Windbarbs.
+There are two modules for using SVG icons. One is for basic icons and the other one is for windbarb icos.
 
-Normal icons
+### Basic icons
+Most of the icons are from the excellent [icons.getbootstrap.com](https://icons.getbootstrap.com/). Icons have been added on a as needed basis and far from all icons have been added.
 ```javascript
 import { getIcon, SVG_PATHS } from './modules/core/SVGIcons';
 
 const icon = getIcon({
     path: SVG_PATHS.GeoMarkerFilled,
+    class: 'some-class',
     width: 20,
     height: 20,
-    fill: 'rgb(255, 255, 255)'
+    fill: 'rgb(255, 255, 255)',
+    stroke: 'none'
 });
 ```
 
-Windbarb icons
+### Windbarb icons
+The windbarbs are available from 0 to 190 knots (0 to 97.5m/s). To get more information about the windbarbs visit my other project [github.com/qulle/svg-wind-barbs](https://github.com/qulle/svg-wind-barbs).
 ```javascript
-export { getWindBarb } from './modules/core/SVGWindbarbs';
+import { getWindBarb } from './modules/core/SVGWindbarbs';
 
 const icon = getWindBarb({
     windSpeed: 25,
     width: 250,
     height: 250,
-    color: 'rgb(59, 67, 82),
+    fill: 'rgb(59, 67, 82)',
+    stroke: 'rgb(59, 67, 82)',
     strokeWidth: 3
 });
 ```
@@ -677,6 +684,7 @@ There are two types of layers, `map`- and `feature`-layers. Create layers using 
 import './modules/layers/Maps';
 import './modules/layers/Countries';
 import './modules/layers/Continents';
+import './modules/layers/Wind';
 import './modules/layers/Capitals';
 ```
 
@@ -738,7 +746,7 @@ Modal.create({
 });
 ```
 
-A reference to the created modal is returned from the create function. This can be used to block the creation of a second modal if a button is pressed again.
+A reference to the created modal is returned from the create function. This can be used to block the creation of a second modal if a button is pressed again. The onClose callback can be used to release the lock.
 ```javascript
 infoToolClick() {
     if(this.infoModal) {
@@ -771,19 +779,39 @@ Toast.error({text: 'Failed to contact database'});
 
 To remove the toast after a specific time (ms), add the `autoremove` property.
 ```javascript
-Toast.success({text: 'Changes were saved to database', autoremove: 3000});
+Toast.success({
+    text: 'Changes were saved to database', 
+    autoremove: 4000
+});
 ```
 
-To close the toast from the code, store a reference to the toast and then call the remove method. The attribute `clickToClose` is set to false, this means that the user can't click on the toast to close it.
+To close the toast from the code, store a reference to the toast and then call the remove method. The attribute `clickToRemove` is set to false, this means that the user can't click on the toast to remove it. The `spinner` attribute adds a loading animation to the toast.
 ```javascript
-const loadingToast = Toast.info({text: 'Trying to find your location...', clickToClose: false});
+this.loadingToast = Toast.info({
+    text: 'Trying to find your location...', 
+    clickToRemove: false,
+    spinner: true,
+});
 
-loadingToast.remove();
+this.loadingToast.remove();
 ```
 
-To add a loading spinner in the toast. Add the `spinner` property.
+The returned reference to the toast can be used to block further actions while a task is being performed. The onRemove callback can be used to release the lock.
 ```javascript
-const loadingToast = Toast.info({text: 'Trying to find your location...', clickToClose: false, spinner: true});
+myLocationToolClick() {
+    if(this.loadingToast) {
+        return;
+    }
+
+    this.loadingToast = Toast.info({
+        text: 'Trying to find your location...', 
+        clickToRemove: false, 
+        spinner: true,
+        onRemove: () => {
+            this.loadingToast = undefined;
+        }
+    });
+}
 ```
 
 ### Context menu

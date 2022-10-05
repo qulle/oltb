@@ -64,7 +64,7 @@ class HomeTool extends Control {
     }
 
     handleClick() {
-        // User defined callback from constructor
+        // Note: User defined callback from constructor
         if(typeof this.options.click === 'function') {
             this.options.click();
         }
@@ -87,16 +87,16 @@ class HomeTool extends Control {
         view.animate({
             zoom: this.userDefinedHomeZoom ? this.userDefinedHomeZoom : this.homeZoom,
             center: this.userDefinedHomeLocation ? this.userDefinedHomeLocation : this.homeLocation,
-            duration: CONFIG.animationDuration,
+            duration: CONFIG.animationDuration.normal,
             easing: easeOut
         });
 
         setTimeout(() => {
-            // User defined callback from constructor
+            // Note: User defined callback from constructor
             if(typeof this.options.home === 'function') {
                 this.options.home();
             }
-        }, CONFIG.animationDuration);
+        }, CONFIG.animationDuration.normal);
     }
 
     onContextMenuSetHomeLocation() {

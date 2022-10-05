@@ -62,7 +62,7 @@ class HiddenMapNavigationTool extends Control {
     
         view.animate({
             center: fromLonLat(coordinates),
-            duration: CONFIG.animationDuration,
+            duration: CONFIG.animationDuration.normal,
             easing: easeOut
         });
     }
@@ -77,7 +77,7 @@ class HiddenMapNavigationTool extends Control {
         view.animate({
             center: fromLonLat(coordinates),
             zoom: this.options.focusZoom,
-            duration: CONFIG.animationDuration,
+            duration: CONFIG.animationDuration.normal,
             easing: easeOut
         });
     }

@@ -88,6 +88,7 @@ const DEFAULT_OPTIONS = {
     width: 250,
     height: 250,
     fill: 'rgba(59, 67, 82)',
+    stroke: 'rgba(59, 67, 82)',
     strokeWidth: 3
 };
 
@@ -97,9 +98,9 @@ const getWindBarb = function(options = {}) {
     return `
         <svg xmlns="http://www.w3.org/2000/svg" 
             width="${options.width}" 
-            height="${options.width}" 
+            height="${options.height}" 
             fill="${options.fill}"
-            stroke="${options.fill}"
+            stroke="${options.stroke}"
             stroke-width="${options.strokeWidth}"
             stroke-linecap="round"
             stroke-linejoin="round"

@@ -61,7 +61,7 @@ class ImportVectorLayerTool extends Control {
     }
 
     handleClick() {
-        // User defined callback from constructor
+        // Note: User defined callback from constructor
         if(typeof this.options.click === 'function') {
             this.options.click();
         }
@@ -108,7 +108,7 @@ class ImportVectorLayerTool extends Control {
             
             layerWrapper.layer.getSource().addFeatures(features);
 
-            // User defined callback from constructor
+            // Note: User defined callback from constructor
             if(typeof this.options.imported === 'function') {
                 this.options.imported(features);
             }
@@ -116,7 +116,7 @@ class ImportVectorLayerTool extends Control {
             console.error(`Error importing vector layer [${error}]`);
             Toast.error({text: 'Error when parsing layer - check syntax'});
 
-            // User defined callback from constructor
+            // Note: User defined callback from constructor
             if(typeof this.options.error === 'function') {
                 this.options.error(file, error);
             }

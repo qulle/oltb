@@ -163,7 +163,7 @@ class BookmarkTool extends Control {
     }
 
     handleClick() {
-        // User defined callback from constructor
+        // Note: User defined callback from constructor
         if(typeof this.options.click === 'function') {
             this.options.click();
         }
@@ -207,7 +207,7 @@ class BookmarkTool extends Control {
             Toast.success({text: 'Bookmark created', autoremove: 4000});
         }
 
-        // User defined callback from constructor
+        // Note: User defined callback from constructor
         if(typeof this.options.added === 'function') {
             this.options.added(bookmark);
         }
@@ -217,7 +217,7 @@ class BookmarkTool extends Control {
         StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(LOCAL_STORAGE_DEFAULTS));
         this.bookmarkStack.innerHTML = '';
 
-        // User defined callback from constructor
+        // Note: User defined callback from constructor
         if(typeof this.options.cleared === 'function') {
             this.options.cleared();
         }
@@ -326,11 +326,11 @@ class BookmarkTool extends Control {
         view.animate({
             zoom: bookmark.zoom,
             center: bookmark.location,
-            duration: CONFIG.animationDuration,
+            duration: CONFIG.animationDuration.normal,
             easing: easeOut
         });
 
-        // User defined callback from constructor
+        // Note: User defined callback from constructor
         if(typeof this.options.zoomedTo === 'function') {
             this.options.zoomedTo(bookmark);
         }
@@ -349,7 +349,7 @@ class BookmarkTool extends Control {
 
                 StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
 
-                // User defined callback from constructor
+                // Note: User defined callback from constructor
                 if(typeof this.options.removed === 'function') {
                     this.options.removed(bookmark);
                 }
@@ -370,7 +370,7 @@ class BookmarkTool extends Control {
 
                     StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
 
-                    // User defined callback from constructor
+                    // Note: User defined callback from constructor
                     if(typeof this.options.renamed === 'function') {
                         this.options.renamed(bookmark);
                     }

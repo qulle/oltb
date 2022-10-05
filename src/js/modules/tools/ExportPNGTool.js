@@ -58,7 +58,7 @@ class ExportPNGTool extends Control {
     }
 
     handleClick() {
-        // User defined callback from constructor
+        // Note: User defined callback from constructor
         if(typeof this.options.click === 'function') {
             this.options.click();
         }
@@ -123,7 +123,7 @@ class ExportPNGTool extends Control {
             download(FILE_NAME, pngCanvas.toDataURL());
         }
 
-        // User defined callback from constructor
+        // Note: User defined callback from constructor
         if(typeof this.options.exported === 'function') {
             this.options.exported();
         }

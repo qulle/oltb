@@ -2,6 +2,7 @@ import LayerManager from '../core/managers/LayerManager';
 import SettingsManager from '../core/managers/SettingsManager';
 import StateManager from '../core/managers/StateManager';
 import ToolManager from '../core/managers/ToolManager';
+import Toast from '../common/Toast';
 import DOM from '../helpers/Browser/DOM';
 import Draw, { createBox, createRegularPolygon } from 'ol/interaction/Draw';
 import { Control } from 'ol/control';
@@ -192,7 +193,7 @@ class DrawTool extends Control {
     }
 
     handleClick() {
-        // User defined callback from constructor
+        // Note: User defined callback from constructor
         if(typeof this.options.click === 'function') {
             this.options.click();
         }
@@ -277,7 +278,7 @@ class DrawTool extends Control {
     }
 
     onDrawStart(event) {
-        // User defined callback from constructor
+        // Note: User defined callback from constructor
         if(typeof this.options.start === 'function') {
             this.options.start(event);
         }
@@ -293,21 +294,25 @@ class DrawTool extends Control {
         
         layerWrapper.layer.getSource().addFeature(feature);
 
-        // User defined callback from constructor
+        if(!layerWrapper.layer.getVisible()) {
+            Toast.info({text: 'You are drawing in a hidden layer', autoremove: 4000});
+        }
+
+        // Note: User defined callback from constructor
         if(typeof this.options.end === 'function') {
             this.options.end(event);
         }
     }
 
     onDrawAbort(event) {
-        // User defined callback from constructor
+        // Note: User defined callback from constructor
         if(typeof this.options.abort === 'function') {
             this.options.abort(event);
         }
     }
 
     onDrawError(event) {
-        // User defined callback from constructor
+        // Note: User defined callback from constructor
         if(typeof this.options.error === 'function') {
             this.options.error(event);
         }
