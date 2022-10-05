@@ -5,6 +5,7 @@ import SettingsManager from '../core/managers/SettingsManager';
 import StateManager from '../core/managers/StateManager';
 import TooltipManager from '../core/managers/TooltipManager';
 import ToolManager from '../core/managers/ToolManager';
+import Toast from '../common/Toast';
 import DOM from '../helpers/Browser/DOM';
 import { Control } from 'ol/control';
 import { Fill, Stroke, Circle, Style } from 'ol/style';
@@ -281,6 +282,10 @@ class MeasureTool extends Control {
         
         layerWrapper.layer.getSource().addFeature(feature);
         
+        if(!layerWrapper.layer.getVisible()) {
+            Toast.info({text: 'You are measuring in a hidden layer', autoremove: 4000});
+        }
+
         map.addOverlay(tooltipOverlay);
 
         // The layer might be hidden, check if the tooltip also should be hidden
