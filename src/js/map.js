@@ -50,6 +50,7 @@ import InfoWindowManager from './modules/core/managers/InfoWindowManager';
 import { MAP_ELEMENT } from './modules/core/ElementReferences';
 import { CONTEXT_MENUS } from './modules/helpers/constants/ContextMenus';
 import { SETTINGS } from './modules/helpers/constants/Settings';
+import './modules/core/Tooltips';
 import './modules/epsg/Registrate';
 import './modules/helpers/Browser/Prototypes';
 import './modules/helpers/Accessibility';

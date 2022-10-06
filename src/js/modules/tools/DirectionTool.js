@@ -1,5 +1,6 @@
 import StateManager from '../core/managers/StateManager';
 import DOM from '../helpers/Browser/DOM';
+import CONFIG from '../core/Config';
 import { Control } from 'ol/control';
 import { TOOLBAR_ELEMENT } from '../core/ElementReferences';
 import { SVG_PATHS, getIcon } from '../core/SVGIcons';
@@ -61,7 +62,7 @@ class DirectionTool extends Control {
     }
 
     onWindowDeviceCheck(event) {
-        if(window.innerWidth <= 576) {
+        if(window.innerWidth <= CONFIG.deviceWidth.sm) {
             this.button.classList.add('oltb-tool-button--hidden');
         }else {
             this.button.classList.remove('oltb-tool-button--hidden');
