@@ -22,9 +22,6 @@ A picture says more than a thousand words, but the demo above says it all.
 6. [Colors](#colors) 
     1. [Theme colors](#theme-colors)
     2. [Color palette](#color-palette)
-7. [Icons](#icons)
-    1. [Basic icons](#basic-icons)
-    2. [Windbarb icons](#windbarb-icons)
 8. [About the code](#about-the-code)
     1. [HTML](#html)
     2. [SCSS](#scss)
@@ -41,10 +38,13 @@ A picture says more than a thousand words, but the demo above says it all.
         3. [Prompt](#prompt)
     11. [Modal](#modal)
     12. [Toast](#toast)
-    13. [Context menu](#context-menu)
-    14. [State Management](#state-management)
-    15. [Debug tool](#debug-tool)
-    16. [OLTB namespace](#oltb-namespace)
+    13. [Icons](#icons)
+        1. [Basic icons](#basic-icons)
+        2. [Windbarb icons](#windbarb-icons)
+    14. [Context menu](#context-menu)
+    15. [State Management](#state-management)
+    16. [Debug tool](#debug-tool)
+    17. [OLTB namespace](#oltb-namespace)
 9. [External GitHub projects](#external-github-projects)
 10. [Maps used in the demo](#maps-used-in-the-demo)
 11. [License](#license)
@@ -183,39 +183,6 @@ The full color palette is displayed below.
         <td><img valign="middle" src="./images/colors/gray-dark.svg"> #3B4352 - $color-gray-dark</td>
     </tr>
 </table>
-
-## Icons
-There are two modules for using SVG icons. One is for basic icons and the other one is for windbarb icos.
-
-### Basic icons
-Most of the icons are from the excellent [icons.getbootstrap.com](https://icons.getbootstrap.com/). Icons have been added on a as needed basis and far from all icons have been added.
-```javascript
-import { getIcon, SVG_PATHS } from './modules/core/SVGIcons';
-
-const icon = getIcon({
-    path: SVG_PATHS.GeoMarkerFilled,
-    class: 'some-class',
-    width: 20,
-    height: 20,
-    fill: 'rgb(255, 255, 255)',
-    stroke: 'none'
-});
-```
-
-### Windbarb icons
-The windbarbs are available from 0 to 190 knots (0 to 97.5m/s). To get more information about the windbarbs visit my other project [github.com/qulle/svg-wind-barbs](https://github.com/qulle/svg-wind-barbs).
-```javascript
-import { getWindBarb } from './modules/core/SVGWindbarbs';
-
-const icon = getWindBarb({
-    windSpeed: 25,
-    width: 250,
-    height: 250,
-    fill: 'rgb(59, 67, 82)',
-    stroke: 'rgb(59, 67, 82)',
-    strokeWidth: 3
-});
-```
 
 ## About the code
 Below is the basic HTML and JavaScript structure used in the project. For a complete example of how to set up the code go to `map.js` in the `src/js` directory. 
@@ -812,6 +779,39 @@ myLocationToolClick() {
         }
     });
 }
+```
+
+### Icons
+There are two modules for using SVG icons. One is for basic icons and the other one is for windbarb icons.
+
+#### Basic icons
+Most of the icons are from the excellent [icons.getbootstrap.com](https://icons.getbootstrap.com/). Icons have been added on a as needed basis and far from all icons have been added.
+```javascript
+import { getIcon, SVG_PATHS } from './modules/core/SVGIcons';
+
+const icon = getIcon({
+    path: SVG_PATHS.GeoMarkerFilled,
+    class: 'some-class',
+    width: 20,
+    height: 20,
+    fill: 'rgb(255, 255, 255)',
+    stroke: 'none'
+});
+```
+
+#### Windbarb icons
+The windbarbs are available from 0 to 190 knots (0 to 97.5m/s). To get more information about the windbarbs visit my other project [github.com/qulle/svg-wind-barbs](https://github.com/qulle/svg-wind-barbs).
+```javascript
+import { getWindBarb } from './modules/core/SVGWindbarbs';
+
+const icon = getWindBarb({
+    windSpeed: 25,
+    width: 250,
+    height: 250,
+    fill: 'rgb(59, 67, 82)',
+    stroke: 'rgb(59, 67, 82)',
+    strokeWidth: 3
+});
 ```
 
 ### Context menu
