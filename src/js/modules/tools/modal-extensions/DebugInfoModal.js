@@ -10,7 +10,7 @@ class DebugInfoModal extends ModalBase {
         const textArea = DOM.createElement({
             element: 'textarea', 
             value: JSON.stringify(options.information, undefined, 4),
-            class: 'oltb-input oltb-hide-scrollbars',
+            class: 'oltb-input oltb-thin-scrollbars',
             attributes: {
                 rows: 15,
                 cols: 100,
