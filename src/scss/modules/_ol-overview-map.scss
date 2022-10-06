@@ -11,6 +11,10 @@
         border-radius: $border-radius;
     }
 
+    .ol-overviewmap-box {
+        border: 2px dotted $color-gray-dark;
+    }
+
     .ol-viewport {
         border-radius: $border-radius;
     }

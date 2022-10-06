@@ -99,20 +99,24 @@ class InfoWindowManager {
         const hightlight = feature?.getProperties()?.highlightOnHover;
 
         if(hightlight) {
-            const style = new Style({
-                fill: new Fill({color: '#3B435288'}),
-                stroke: new Stroke({
-                    color: '#369ACDFF',
-                    width: 1.5
-                })
-            })
-
-            feature.setStyle(style);
-            this.lastFeature = feature;
+            this.hightlightVectorSection(feature);
         }
 
         const infoWindow = feature?.getProperties()?.infoWindow;
         this.map.getViewport().style.cursor = infoWindow ? 'pointer' : 'default';
+    }
+
+    static hightlightVectorSection(feature) {
+        const style = new Style({
+            fill: new Fill({color: '#254372AA'}),
+            stroke: new Stroke({
+                color: '#369ACDFF',
+                width: 1.5
+            })
+        })
+
+        feature.setStyle(style);
+        this.lastFeature = feature;
     }
 
     static showOverly(feature, position) {

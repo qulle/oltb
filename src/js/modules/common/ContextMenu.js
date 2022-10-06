@@ -138,7 +138,7 @@ MAP_ELEMENT.addEventListener(EVENTS.Browser.Click, (event) => {
     });
 });
 
-const addContextMENU_ITEMS = function(name, items) {
+const addContextMenuItems = function(name, items) {
     items.forEach((item) => {
         addContextMenuItem(name, item);
     });
@@ -162,6 +162,6 @@ const addContextMenuItem = function(name, item) {
 
 export { 
     ContextMenu as default, 
-    addContextMENU_ITEMS, 
+    addContextMenuItems, 
     addContextMenuItem 
 };
