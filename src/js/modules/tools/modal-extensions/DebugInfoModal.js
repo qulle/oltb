@@ -38,7 +38,7 @@ class DebugInfoModal extends ModalBase {
             }
         });
 
-        const logFullMapObjectButton = DOM.createElement({
+        const logFullMapButton = DOM.createElement({
             element: 'button',
             text: 'Log map object',
             class: 'oltb-btn oltb-btn--green-mid oltb-mt-1 oltb-ml-0625',
@@ -59,7 +59,7 @@ class DebugInfoModal extends ModalBase {
 
         DOM.appendChildren(buttonWrapper, [
             copyButton, 
-            logFullMapObjectButton
+            logFullMapButton
         ]);
 
         // Add all DOM elements to the modalContent

@@ -3,10 +3,10 @@ import CONFIG from '../core/Config';
 import { TOOLBAR_ELEMENT, TOOLBOX_ELEMENT, MAP_ELEMENT } from '../core/ElementReferences';
 import { EVENTS } from './constants/Events';
 
-// Append version as custom attribute to the html element
+// (1). Set version as custom attribute to the html element
 document.documentElement.setAttribute('oltb-version', CONFIG.version);
 
-// Remove default contextmenu, show if the get parameter ?debug=true exists
+// (2). Remove default contextmenu, show if the get parameter ?debug=true exists
 const debugParameter = URLManager.getParameter('debug') === 'true';
 MAP_ELEMENT.addEventListener(EVENTS.Browser.ContextMenu, function(event) {
     if(!debugParameter) {
@@ -14,9 +14,7 @@ MAP_ELEMENT.addEventListener(EVENTS.Browser.ContextMenu, function(event) {
     }
 });
 
-// Accessibility help
-// This will toggle the class using-keyboard on the body,
-// that class can then be used in the SASS to apply custom focus/active style only when the user uses the keyboard
+// (3). Toggle class to be used in the SCSS to apply custom style only when the user uses the keyboard
 document.body.addEventListener(EVENTS.Browser.MouseDown, function(event) {
     document.body.classList.remove('oltb-using-keyboard');
 });
@@ -27,6 +25,7 @@ document.body.addEventListener(EVENTS.Browser.KeyDown, function(event) {
     }
 });
 
+// (4). When toolbar is in horizontal mode check if it collides with the toolbox
 const collisionDetection = function(event) {
     const windowWidth = window.innerWidth;
     const toolbarWidth = TOOLBAR_ELEMENT.offsetWidth;

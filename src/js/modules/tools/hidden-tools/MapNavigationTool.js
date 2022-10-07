@@ -48,9 +48,11 @@ class HiddenMapNavigationTool extends Control {
 
         // Track changes to zoom, paning etc. store in localStorage
         // The event needs to be delayed and wrapped in order for the getMap() to return the correct object
-        window.addEventListener(EVENTS.Browser.DOMContentLoaded, (event) => {
-            this.getMap().on(EVENTS.Ol.MoveEnd, this.onMoveEnd.bind(this));
-        });
+        window.addEventListener(EVENTS.Browser.DOMContentLoaded, this.onDOMContentLoaded.bind(this));
+    }
+
+    onDOMContentLoaded(event) {
+        this.getMap().on(EVENTS.Ol.MoveEnd, this.onMoveEnd.bind(this));
     }
 
     onContextMenuCenterMap(map, coordinates, target) {
