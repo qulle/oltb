@@ -56,13 +56,16 @@ const generateMarker = function(options = {}) {
     ]);
 
     marker.setProperties({
-        notSelectable: options.notSelectable, 
-        infoWindow: options.infoWindow,
-        name: options.name,
-        info: options.info,
-        backgroundColor: options.backgroundColor,
-        color: options.color,
-        icon: options.iconName
+        oltb: {
+            type: 'marker',
+            notSelectable: options.notSelectable, 
+            infoWindow: options.infoWindow,
+            name: options.name,
+            info: options.info,
+            backgroundColor: options.backgroundColor,
+            color: options.color,
+            icon: options.iconName
+        }
     });
 
     return marker;

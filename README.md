@@ -389,6 +389,10 @@ controls: defaultControls({
         },
         error: function(event) {
             console.log('Draw error');
+        },
+        intersected: function(event, intersectedFeatures) {
+            console.log('Draw end', event.feature);
+            console.log('Intersected features', intersectedFeatures);
         }
     }),
     new MeasureTool({

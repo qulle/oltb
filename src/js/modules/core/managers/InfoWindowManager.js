@@ -78,7 +78,7 @@ class InfoWindowManager {
             return feature;
         });
 
-        const infoWindow = feature?.getProperties()?.infoWindow;
+        const infoWindow = feature?.getProperties()?.oltb?.infoWindow;
         
         if(infoWindow) {
             this.showOverly(feature);
@@ -96,13 +96,13 @@ class InfoWindowManager {
             this.lastFeature.setStyle(null);
         }
 
-        const hightlight = feature?.getProperties()?.highlightOnHover;
+        const hightlight = feature?.getProperties()?.oltb?.highlightOnHover;
 
         if(hightlight) {
             this.hightlightVectorSection(feature);
         }
 
-        const infoWindow = feature?.getProperties()?.infoWindow;
+        const infoWindow = feature?.getProperties()?.oltb?.infoWindow;
         this.map.getViewport().style.cursor = infoWindow ? 'pointer' : 'default';
     }
 
@@ -120,7 +120,7 @@ class InfoWindowManager {
     }
 
     static showOverly(feature, position) {
-        const infoWindow = feature.getProperties().infoWindow;
+        const infoWindow = feature.getProperties().oltb.infoWindow;
 
         this.content.innerHTML = infoWindow;
 

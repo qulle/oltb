@@ -89,7 +89,7 @@ class EditTool extends Control {
         this.select = new Select({
             hitTolerance: 5,
             filter: function(feature, layer) {
-                const selectable = !hasNestedProperty(feature.getProperties(), 'notSelectable');
+                const selectable = !hasNestedProperty(feature.getProperties(), 'oltb', 'notSelectable');
                 const isFeatureLayer = LayerManager.getFeatureLayers().find((layerWrapper) => {
                     return layerWrapper.layer.getSource().hasFeature(feature);
                 });
@@ -131,7 +131,7 @@ class EditTool extends Control {
 
         this.modify.addEventListener(EVENTS.Ol.ModifyStart, (event) => {
             event.features.forEach((feature) => {
-                if(hasNestedProperty(feature.getProperties(), 'tooltipOverlay')) {
+                if(hasNestedProperty(feature.getProperties(), 'oltb', 'tooltipOverlay')) {
                     this.attachOnChange(feature);
                 }
             });
@@ -144,7 +144,7 @@ class EditTool extends Control {
 
         this.modify.addEventListener(EVENTS.Ol.ModifyEnd, (event) => {
             event.features.forEach((feature) => {
-                if(hasNestedProperty(feature.getProperties(), 'tooltipOverlay')) {
+                if(hasNestedProperty(feature.getProperties(), 'oltb', 'tooltipOverlay')) {
                     this.detachOnChange(feature);
                 }
             });
@@ -157,7 +157,7 @@ class EditTool extends Control {
 
         this.translate.addEventListener(EVENTS.Ol.TranslateStart, (event) => {
             event.features.forEach((feature) => {
-                if(hasNestedProperty(feature.getProperties(), 'tooltipOverlay')) {
+                if(hasNestedProperty(feature.getProperties(), 'oltb', 'tooltipOverlay')) {
                     this.attachOnChange(feature);
                 }
             });
@@ -170,7 +170,7 @@ class EditTool extends Control {
 
         this.translate.addEventListener(EVENTS.Ol.TranslateEnd, (event) => {
             event.features.forEach((feature) => {
-                if(hasNestedProperty(feature.getProperties(), 'tooltipOverlay')) {
+                if(hasNestedProperty(feature.getProperties(), 'oltb', 'tooltipOverlay')) {
                     this.detachOnChange(feature);
                 }
             });
@@ -229,8 +229,8 @@ class EditTool extends Control {
                             this.select.getFeatures().remove(feature);
 
                             // Remove potential overlays associated with the feature
-                            if(hasNestedProperty(feature.getProperties(), 'tooltipOverlay')) {
-                                this.getMap().removeOverlay(feature.getProperties().tooltipOverlay);
+                            if(hasNestedProperty(feature.getProperties(), 'oltb', 'tooltipOverlay')) {
+                                this.getMap().removeOverlay(feature.getProperties().oltb.tooltipOverlay);
                             }
 
                             // Note: User defined callback from constructor
@@ -256,8 +256,8 @@ class EditTool extends Control {
             this.tooltipItem = TooltipManager.push('edit');
         }
 
-        feature.getProperties().tooltipOverlay.getElement().className = `oltb-overlay-tooltip ${hasOtherTooltip && selectedFeatures.length === 1 ? 'oltb-overlay-tooltip--hidden' : ''}`;
-        feature.getProperties().onChangeListener = feature.getGeometry().on(EVENTS.Ol.Change, this.onFeatureChange.bind(this, feature));
+        feature.getProperties().oltb.tooltipOverlay.getElement().className = `oltb-overlay-tooltip ${hasOtherTooltip && selectedFeatures.length === 1 ? 'oltb-overlay-tooltip--hidden' : ''}`;
+        feature.getProperties().oltb.onChangeListener = feature.getGeometry().on(EVENTS.Ol.Change, this.onFeatureChange.bind(this, feature));
     }
 
     detachOnChange(feature) {
@@ -268,9 +268,9 @@ class EditTool extends Control {
             const poppedTooltip = TooltipManager.pop('edit');
         }
 
-        unByKey(feature.getProperties().onChangeListener);
+        unByKey(feature.getProperties().oltb.onChangeListener);
 
-        const overlay = feature.getProperties().tooltipOverlay;
+        const overlay = feature.getProperties().oltb.tooltipOverlay;
         overlay.setPosition(getMeasureTooltipCoordinates(feature.getGeometry()));
 
         const tooltip = overlay.getElement();
@@ -285,7 +285,7 @@ class EditTool extends Control {
         if(hasOtherTooltip && selectedFeatures.length === 1) {
             this.tooltipItem.innerHTML = getMeasureTooltipValue(feature.getGeometry());
         }else {
-            const overlay = feature.getProperties().tooltipOverlay;
+            const overlay = feature.getProperties().oltb.tooltipOverlay;
             overlay.setPosition(getMeasureTooltipCoordinates(feature.getGeometry()));
 
             const tooltip = overlay.getElement();
@@ -293,7 +293,6 @@ class EditTool extends Control {
         }
     }
 
-    // Called when the user activates a tool that cannot be used with this tool
     deSelect() {
         this.handleEdit();
     }

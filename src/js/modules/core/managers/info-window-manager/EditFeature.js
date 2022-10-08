@@ -11,7 +11,7 @@ import { EVENTS } from '../../../helpers/constants/Events';
 const ID_PREFIX = 'oltb-info-window-marker';
 
 const editFeature = function(feature) {
-    const properties = feature.getProperties();
+    const properties = feature.getProperties().oltb;
 
     const markerModal = new MarkerModal({
         edit: true,

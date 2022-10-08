@@ -14,6 +14,7 @@ import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { EVENTS } from '../helpers/constants/Events';
 import { SETTINGS } from '../helpers/constants/Settings';
+import { LinearRing, Polygon } from 'ol/geom';
 
 const ID_PREFIX = 'oltb-draw';
 
@@ -21,8 +22,8 @@ const LOCAL_STORAGE_NODE_NAME = 'drawTool';
 const LOCAL_STORAGE_DEFAULTS = {
     collapsed: false,
     toolTypeIndex: 5,
+    strokeWidthIndex: 4,
     strokeColor: '#4A86B8',
-    strokeWidth: 2,
     fillColor: '#FFFFFF80'
 };
 
@@ -55,6 +56,7 @@ class DrawTool extends Control {
         this.element.appendChild(button);
         this.button = button;
         this.active = false;
+        this.intersectedFeatures = [];
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
         // Load potential stored data from localStorage
@@ -78,7 +80,21 @@ class DrawTool extends Control {
                             <option value="Rectangle">Rectangle</option>
                             <option value="LineString">Line</option>
                             <option value="Point">Point</option>
-                            <option value="Polygon" selected>Polygon</option>
+                            <option value="Polygon">Polygon</option>
+                        </select>
+                    </div>
+                    <div class="oltb-toolbox-section__group">
+                        <label class="oltb-label" for="${ID_PREFIX}-intersection">Intersection</label>
+                        <select id="${ID_PREFIX}-intersection" class="oltb-select">
+                            <option value="false" selected>False</option>
+                            <option value="true">True</option>
+                        </select>
+                    </div>
+                    <div class="oltb-toolbox-section__group">
+                        <label class="oltb-label" for="${ID_PREFIX}-intersection-mode">Intersection mode</label>
+                        <select id="${ID_PREFIX}-intersection-mode" class="oltb-select">
+                            <option value="InExtent" selected>In Extent</option>
+                            <option value="IntersectingExtent">Intersecting Extent</option>
                         </select>
                     </div>
                     <div class="oltb-toolbox-section__group">
@@ -88,6 +104,7 @@ class DrawTool extends Control {
                             <option value="1.25">1.25</option>
                             <option value="1.5">1.5</option>
                             <option value="2">2</option>
+                            <option value="2.5">2.5</option>
                             <option value="3">3</option>
                             <option value="4">4</option>
                             <option value="5">5</option>
@@ -124,6 +141,12 @@ class DrawTool extends Control {
         this.toolType = this.drawToolbox.querySelector(`#${ID_PREFIX}-type`);
         this.toolType.addEventListener(EVENTS.Browser.Change, this.updateTool.bind(this));
 
+        this.intersection = this.drawToolbox.querySelector(`#${ID_PREFIX}-intersection`);
+        this.intersection.addEventListener(EVENTS.Browser.Change, this.updateTool.bind(this));
+
+        this.intersectionMode = this.drawToolbox.querySelector(`#${ID_PREFIX}-intersection-mode`);
+        this.intersectionMode.addEventListener(EVENTS.Browser.Change, this.updateTool.bind(this));
+
         this.fillColor = this.drawToolbox.querySelector(`#${ID_PREFIX}-fill-color`);
         this.fillColor.addEventListener(EVENTS.Custom.ColorChange, this.updateTool.bind(this));
 
@@ -133,9 +156,9 @@ class DrawTool extends Control {
         this.strokeColor = this.drawToolbox.querySelector(`#${ID_PREFIX}-stroke-color`);
         this.strokeColor.addEventListener(EVENTS.Custom.ColorChange, this.updateTool.bind(this));
 
-        // Set default selected value
+        // Set default selected values
         this.toolType.selectedIndex = this.localStorage.toolTypeIndex;
-        this.strokeWidth.selectedIndex = this.localStorage.strokeWidth;
+        this.strokeWidth.selectedIndex  = this.localStorage.strokeWidthIndex;
 
         window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
         window.addEventListener(EVENTS.Custom.SettingsCleared, this.onWindowSettingsCleared.bind(this));
@@ -172,22 +195,24 @@ class DrawTool extends Control {
     updateTool() {
         // Store current values in local storage
         this.localStorage.toolTypeIndex = this.toolType.selectedIndex;
+        this.localStorage.strokeWidthIndex = this.strokeWidth.selectedIndex;
         this.localStorage.fillColor = this.fillColor.getAttribute('data-oltb-color');
-        this.localStorage.strokeWidth = this.strokeWidth.selectedIndex;
         this.localStorage.strokeColor = this.strokeColor.getAttribute('data-oltb-color');;
 
         StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
 
+        this.isIntersectionMode = this.intersection.value.toLowerCase() === 'true';
+        this.intersectionMode.disabled = !this.isIntersectionMode;
+
         // Update the draw tool in the map
         this.selectDraw(
             this.toolType.value,
-            this.fillColor.getAttribute('data-oltb-color'),
             this.strokeWidth.value,
+            this.fillColor.getAttribute('data-oltb-color'),
             this.strokeColor.getAttribute('data-oltb-color')
         );
     }
 
-    // Called when the user activates a tool that cannot be used with this tool
     deSelect() {
         this.handleDraw();
     }
@@ -206,7 +231,6 @@ class DrawTool extends Control {
         if(this.active) {
             this.getMap().removeInteraction(this.interaction);
 
-            // Remove this tool as the active global tool
             ToolManager.removeActiveTool();
         }else {
             if(SettingsManager.getSetting(SETTINGS.AlwaysNewLayers)) {
@@ -223,7 +247,7 @@ class DrawTool extends Control {
         this.button.classList.toggle('oltb-tool-button--active');
     }
 
-    selectDraw(toolType, fillColor, strokeWidth, strokeColor) {
+    selectDraw(toolType, strokeWidth, fillColor, strokeColor) {
         const map = this.getMap();
 
         // Remove previous interaction if tool is changed
@@ -250,7 +274,7 @@ class DrawTool extends Control {
             stroke: stroke
         });
 
-        // A normal circle can not be serialized to json, approximated circle as polygon instead. 
+        // Note: A normal circle can not be serialized to json, approximated circle as polygon instead. 
         // Also use circle to create square and rectangle
         let geometryFunction = null;
         if(toolType === 'Square') {
@@ -266,6 +290,7 @@ class DrawTool extends Control {
         this.interaction = new Draw({
             type: toolType,
             style: style,
+            stopClick: true,
             geometryFunction: geometryFunction
         });
 
@@ -285,23 +310,76 @@ class DrawTool extends Control {
     }
 
     onDrawEnd(style, event) {
-        const feature = event.feature;
-        feature.setStyle(style);
-
         const layerWrapper = LayerManager.getActiveFeatureLayer({
             fallback: 'Drawing layer'
         });
-        
-        layerWrapper.layer.getSource().addFeature(feature);
+
+        const source = layerWrapper.layer.getSource();
+
+        if(this.isIntersectionMode) {
+            this.onDrawEndIntersection(source, event);
+        }else {
+            this.onDrawEndNormal(source, style, event);
+        }
 
         if(!layerWrapper.layer.getVisible()) {
             Toast.info({text: 'You are drawing in a hidden layer', autoremove: 4000});
         }
+    }
+
+    onDrawEndNormal(source, style, event) {
+        const feature = event.feature;
+        
+        feature.setStyle(style);
+        source.addFeature(feature);
 
         // Note: User defined callback from constructor
         if(typeof this.options.end === 'function') {
             this.options.end(event);
         }
+    }
+
+    onDrawEndIntersection(source, event) {
+        const feature = event.feature;
+        const featureGeometry = feature.getGeometry();
+
+        if(this.intersectionMode.value === 'InExtent') {
+            source.forEachFeatureInExtent(featureGeometry.getExtent(), (intersectedFeature) => {
+                const type = intersectedFeature.getProperties()?.oltb?.type;
+
+                if(type !== 'marker' && type !== 'measurement') {
+                    this.intersectedFeatures.push(intersectedFeature);
+                }
+            });
+        }else if(this.intersectionMode.value === 'IntersectingExtent') {
+            source.forEachFeatureIntersectingExtent(featureGeometry.getExtent(), (intersectedFeature) => {
+                const type = intersectedFeature.getProperties()?.oltb?.type;
+
+                if(type !== 'marker' && type !== 'measurement') {
+                    this.intersectedFeatures.push(intersectedFeature);
+                }
+            });
+        }
+
+        this.intersectedFeatures.forEach((intersected) => {
+            const coordinates = intersected.getGeometry().getCoordinates();
+            const geometry    = new Polygon(coordinates.slice(0, coordinates.length));
+            const linearRing  = new LinearRing(featureGeometry.getCoordinates()[0]);
+
+            geometry.appendLinearRing(linearRing);
+            intersected.setGeometry(geometry);
+        });
+
+        if(this.intersectedFeatures.length === 0) {
+            Toast.info({text: 'No intersecting objects found', autoremove: 4000});
+        }
+
+        // Note: User defined callback from constructor
+        if(typeof this.options.intersected === 'function') {
+            this.options.intersected(event, this.intersectedFeatures);
+        }
+
+        this.intersectedFeatures = [];
     }
 
     onDrawAbort(event) {

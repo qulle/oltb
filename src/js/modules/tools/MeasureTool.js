@@ -148,7 +148,6 @@ class MeasureTool extends Control {
         );
     }
 
-    // Called when the user activates a tool that cannot be used with this tool
     deSelect() {
         this.handleMeasure();
     }
@@ -199,9 +198,9 @@ class MeasureTool extends Control {
                     }),
                     stroke: new Stroke({
                         color: strokeColor,
+                        width: 2
                     }),
-                    radius: 5,
-                    width: 1.25
+                    radius: 5
                 }),
                 fill: new Fill({
                     color: 'rgba(255, 255, 255, .5)'
@@ -209,13 +208,14 @@ class MeasureTool extends Control {
                 stroke: new Stroke({
                     color: strokeColor,
                     lineDash: [2, 5],
-                    width: 2
+                    width: 2.5
                 })
             })
         ];
 
         this.interaction = new Draw({
             type: toolType,
+            stopClick: true,
             style: this.styles
         });
 
@@ -269,7 +269,10 @@ class MeasureTool extends Control {
         });
 
         feature.setProperties({
-            tooltipOverlay: tooltipOverlay
+            oltb: {
+                type: 'measurement',
+                tooltipOverlay: tooltipOverlay
+            }
         });
         
         const geometry = feature.getGeometry();

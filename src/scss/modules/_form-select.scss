@@ -24,6 +24,10 @@
         border: 1px solid rgba($color-blue-mid, .5);
         box-shadow: 0 0 0 $shadow-focus-width rgba($color-blue-mid, .3);
     }
+
+    &:disabled {
+        background-color: $background-theme-light-disabled;
+    }
 }
 
 body.oltb-dark .oltb-select {
@@ -32,5 +36,9 @@ body.oltb-dark .oltb-select {
     
     &:focus {
         box-shadow: 0 0 0 $shadow-focus-width rgba($color-gray-mid, .5);
+    }
+
+    &:disabled {
+        background-color: $background-theme-dark-disabled;
     }
 }

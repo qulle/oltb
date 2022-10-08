@@ -552,8 +552,8 @@ class LayerTool extends Control {
                     const hasFeatures = typeof layerWrapper.layer.getSource().getFeatures === 'function';
                     if(hasFeatures) {
                         layerWrapper.layer.getSource().getFeatures().forEach((feature) => {
-                            if(hasNestedProperty(feature.getProperties(), 'tooltipOverlay')) {
-                                feature.getProperties().tooltipOverlay.setMap(flippedVisibility ? map : null)
+                            if(hasNestedProperty(feature.getProperties(), 'oltb', 'tooltipOverlay')) {
+                                feature.getProperties().oltb.tooltipOverlay.setMap(flippedVisibility ? map : null)
                             }
                         });
                     }

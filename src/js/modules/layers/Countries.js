@@ -33,11 +33,13 @@ LayerManager.addMapLayers([
 
                             features.forEach((feature) => {
                                 feature.setProperties({
-                                    highlightOnHover: true,
-                                    infoWindow: `
-                                        <h3 class="oltb-text-center">${feature.getProperties().name}</h3>
-                                        <p class="oltb-text-center">Approximate <strong>${getMeasureTooltipValue(feature.getGeometry())}</strong></p>
-                                    `
+                                    oltb: {
+                                        highlightOnHover: true,
+                                        infoWindow: `
+                                            <h3 class="oltb-text-center">${feature.getProperties().name}</h3>
+                                            <p class="oltb-text-center">Approximate <strong>${getMeasureTooltipValue(feature.getGeometry())}</strong></p>
+                                        `
+                                    }
                                 });
                             });
 

@@ -47,8 +47,11 @@ const generateWindbarb = function(options = {}) {
     ]);
 
     windbarb.setProperties({
-        notSelectable: options.notSelectable, 
-        infoWindow: options.infoWindow
+        oltb: {
+            type: 'marker',
+            notSelectable: options.notSelectable, 
+            infoWindow: options.infoWindow
+        }
     });
 
     return windbarb;
