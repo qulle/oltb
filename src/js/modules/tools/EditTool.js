@@ -13,16 +13,18 @@ import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT } from '../core/ElementReferences';
 import { SVG_PATHS, getIcon } from '../core/SVGIcons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { getMeasureTooltipCoordinates, getMeasureTooltipValue } from '../helpers/ol-functions/Measurements';
-import { hasNestedProperty } from '../helpers/HasNestedProperty';
+import { hasCustomFeatureProperty } from '../helpers/HasNestedProperty';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { EVENTS } from '../helpers/constants/Events';
 import { SETTINGS } from '../helpers/constants/Settings';
+import { FEATURE_PROPERTIES } from '../helpers/constants/FeatureProperties';
 
 const ID_PREFIX = 'oltb-edit';
 
 const LOCAL_STORAGE_NODE_NAME = 'editTool';
 const LOCAL_STORAGE_DEFAULTS = {
-    collapsed: false
+    collapsed: false,
+    hitTolerance: 5
 };
 
 const DEFAULT_OPTIONS = {};
@@ -87,9 +89,9 @@ class EditTool extends Control {
         });
 
         this.select = new Select({
-            hitTolerance: 5,
+            hitTolerance: this.options.hitTolerance,
             filter: function(feature, layer) {
-                const selectable = !hasNestedProperty(feature.getProperties(), 'oltb', 'notSelectable');
+                const selectable = !hasCustomFeatureProperty(feature.getProperties(), FEATURE_PROPERTIES.NotSelectable);
                 const isFeatureLayer = LayerManager.getFeatureLayers().find((layerWrapper) => {
                     return layerWrapper.layer.getSource().hasFeature(feature);
                 });
@@ -109,81 +111,90 @@ class EditTool extends Control {
             features: this.select.getFeatures(),
         });
 
-        this.select.getFeatures().on(EVENTS.Ol.Add, (event) => {
-            this.deleteSelectedButton.removeAttribute('disabled');
+        this.select.getFeatures().on(EVENTS.Ol.Add, this.onSelectAddFeature.bind(this));
+        this.select.getFeatures().on(EVENTS.Ol.Remove, this.onSelectRemoveFeature.bind(this));
 
-            // Note: User defined callback from constructor
-            if(typeof this.options.selectadd === 'function') {
-                this.options.selectadd(event);
-            }
-        });
+        this.modify.addEventListener(EVENTS.Ol.ModifyStart, this.onModifyStart.bind(this));
+        this.modify.addEventListener(EVENTS.Ol.ModifyEnd, this.onModifyEnd.bind(this));
 
-        this.select.getFeatures().on(EVENTS.Ol.Remove, (event) => {
-            if(!this.select.getFeatures().getLength()) {
-                this.deleteSelectedButton.setAttribute('disabled', '');
-            }
-
-            // Note: User defined callback from constructor
-            if(typeof this.options.selectremove === 'function') {
-                this.options.selectremove(event);
-            }
-        });
-
-        this.modify.addEventListener(EVENTS.Ol.ModifyStart, (event) => {
-            event.features.forEach((feature) => {
-                if(hasNestedProperty(feature.getProperties(), 'oltb', 'tooltipOverlay')) {
-                    this.attachOnChange(feature);
-                }
-            });
-
-            // Note: User defined callback from constructor
-            if(typeof this.options.modifystart === 'function') {
-                this.options.modifystart(event);
-            }
-        });
-
-        this.modify.addEventListener(EVENTS.Ol.ModifyEnd, (event) => {
-            event.features.forEach((feature) => {
-                if(hasNestedProperty(feature.getProperties(), 'oltb', 'tooltipOverlay')) {
-                    this.detachOnChange(feature);
-                }
-            });
-
-            // Note: User defined callback from constructor
-            if(typeof this.options.modifyend === 'function') {
-                this.options.modifyend(event);
-            }
-        });
-
-        this.translate.addEventListener(EVENTS.Ol.TranslateStart, (event) => {
-            event.features.forEach((feature) => {
-                if(hasNestedProperty(feature.getProperties(), 'oltb', 'tooltipOverlay')) {
-                    this.attachOnChange(feature);
-                }
-            });
-
-            // Note: User defined callback from constructor
-            if(typeof this.options.translatestart === 'function') {
-                this.options.translatestart(event);
-            }
-        });
-
-        this.translate.addEventListener(EVENTS.Ol.TranslateEnd, (event) => {
-            event.features.forEach((feature) => {
-                if(hasNestedProperty(feature.getProperties(), 'oltb', 'tooltipOverlay')) {
-                    this.detachOnChange(feature);
-                }
-            });
-
-            // Note: User defined callback from constructor
-            if(typeof this.options.translateend === 'function') {
-                this.options.translateend(event);
-            }
-        });
+        this.translate.addEventListener(EVENTS.Ol.TranslateStart, this.onTranslateStart.bind(this));
+        this.translate.addEventListener(EVENTS.Ol.TranslateEnd, this.onTranslateEnd.bind(this));
 
         window.addEventListener(EVENTS.Custom.FeatureLayerRemoved, this.onWindowFeatureLayerRemoved.bind(this));
         window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
         window.addEventListener(EVENTS.Custom.SettingsCleared, this.onWindowSettingsCleared.bind(this));
+    }
+
+    onSelectAddFeature(event) {
+        this.deleteSelectedButton.removeAttribute('disabled');
+
+        // Note: User defined callback from constructor
+        if(typeof this.options.selectadd === 'function') {
+            this.options.selectadd(event);
+        }
+    }
+
+    onSelectRemoveFeature(event) {
+        if(!this.select.getFeatures().getLength()) {
+            this.deleteSelectedButton.setAttribute('disabled', '');
+        }
+
+        // Note: User defined callback from constructor
+        if(typeof this.options.selectremove === 'function') {
+            this.options.selectremove(event);
+        }
+    }
+
+    onModifyStart(event) {
+        event.features.forEach((feature) => {
+            if(hasCustomFeatureProperty(feature.getProperties(), FEATURE_PROPERTIES.Tooltip)) {
+                this.attachOnChange(feature);
+            }
+        });
+
+        // Note: User defined callback from constructor
+        if(typeof this.options.modifystart === 'function') {
+            this.options.modifystart(event);
+        }
+    }
+
+    onModifyEnd(event) {
+        event.features.forEach((feature) => {
+            if(hasCustomFeatureProperty(feature.getProperties(), FEATURE_PROPERTIES.Tooltip)) {
+                this.detachOnChange(feature);
+            }
+        });
+
+        // Note: User defined callback from constructor
+        if(typeof this.options.modifyend === 'function') {
+            this.options.modifyend(event);
+        }
+    }
+
+    onTranslateStart(event) {
+        event.features.forEach((feature) => {
+            if(hasCustomFeatureProperty(feature.getProperties(), FEATURE_PROPERTIES.Tooltip)) {
+                this.attachOnChange(feature);
+            }
+        });
+
+        // Note: User defined callback from constructor
+        if(typeof this.options.translatestart === 'function') {
+            this.options.translatestart(event);
+        }
+    }
+
+    onTranslateEnd(event) {
+        event.features.forEach((feature) => {
+            if(hasCustomFeatureProperty(feature.getProperties(), FEATURE_PROPERTIES.Tooltip)) {
+                this.detachOnChange(feature);
+            }
+        });
+
+        // Note: User defined callback from constructor
+        if(typeof this.options.translateend === 'function') {
+            this.options.translateend(event);
+        }
     }
 
     onToggleToolbox(toggle) {
@@ -229,8 +240,8 @@ class EditTool extends Control {
                             this.select.getFeatures().remove(feature);
 
                             // Remove potential overlays associated with the feature
-                            if(hasNestedProperty(feature.getProperties(), 'oltb', 'tooltipOverlay')) {
-                                this.getMap().removeOverlay(feature.getProperties().oltb.tooltipOverlay);
+                            if(hasCustomFeatureProperty(feature.getProperties(), FEATURE_PROPERTIES.Tooltip)) {
+                                this.getMap().removeOverlay(feature.getProperties().oltb.tooltip);
                             }
 
                             // Note: User defined callback from constructor
@@ -256,7 +267,7 @@ class EditTool extends Control {
             this.tooltipItem = TooltipManager.push('edit');
         }
 
-        feature.getProperties().oltb.tooltipOverlay.getElement().className = `oltb-overlay-tooltip ${hasOtherTooltip && selectedFeatures.length === 1 ? 'oltb-overlay-tooltip--hidden' : ''}`;
+        feature.getProperties().oltb.tooltip.getElement().className = `oltb-overlay-tooltip ${hasOtherTooltip && selectedFeatures.length === 1 ? 'oltb-overlay-tooltip--hidden' : ''}`;
         feature.getProperties().oltb.onChangeListener = feature.getGeometry().on(EVENTS.Ol.Change, this.onFeatureChange.bind(this, feature));
     }
 
@@ -270,7 +281,7 @@ class EditTool extends Control {
 
         unByKey(feature.getProperties().oltb.onChangeListener);
 
-        const overlay = feature.getProperties().oltb.tooltipOverlay;
+        const overlay = feature.getProperties().oltb.tooltip;
         overlay.setPosition(getMeasureTooltipCoordinates(feature.getGeometry()));
 
         const tooltip = overlay.getElement();
@@ -285,7 +296,7 @@ class EditTool extends Control {
         if(hasOtherTooltip && selectedFeatures.length === 1) {
             this.tooltipItem.innerHTML = getMeasureTooltipValue(feature.getGeometry());
         }else {
-            const overlay = feature.getProperties().oltb.tooltipOverlay;
+            const overlay = feature.getProperties().oltb.tooltip;
             overlay.setPosition(getMeasureTooltipCoordinates(feature.getGeometry()));
 
             const tooltip = overlay.getElement();

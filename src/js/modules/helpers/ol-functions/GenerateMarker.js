@@ -3,6 +3,7 @@ import Feature from 'ol/Feature';
 import { Circle, Fill, Icon, Stroke, Style } from 'ol/style';
 import { fromLonLat } from 'ol/proj';
 import { SVG_PATHS, getIcon } from '../../core/SVGIcons';
+import { FEATURE_PROPERTIES } from '../constants/FeatureProperties';
 
 const DEFAULT_ICON = getIcon({
     path: SVG_PATHS.GeoPin,
@@ -57,7 +58,7 @@ const generateMarker = function(options = {}) {
 
     marker.setProperties({
         oltb: {
-            type: 'marker',
+            type: FEATURE_PROPERTIES.Type.Marker,
             notSelectable: options.notSelectable, 
             infoWindow: options.infoWindow,
             name: options.name,

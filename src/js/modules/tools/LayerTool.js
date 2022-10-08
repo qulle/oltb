@@ -17,10 +17,11 @@ import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { instantiateLayer } from '../core/ol-types/LayerTypes';
 import { instantiateSource } from '../core/ol-types/SourceTypes';
 import { instantiateFormat } from '../core/ol-types/FormatTypes';
-import { hasNestedProperty } from '../helpers/HasNestedProperty';
+import { hasCustomFeatureProperty } from '../helpers/HasNestedProperty';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { EVENTS } from '../helpers/constants/Events';
 import { CONTEXT_MENUS } from '../helpers/constants/ContextMenus';
+import { FEATURE_PROPERTIES } from '../helpers/constants/FeatureProperties';
 
 const LAYER_BUTTON_DEFAULT_CLASSES = 'oltb-func-btn';
 const ID_PREFIX = 'oltb-layer';
@@ -552,8 +553,8 @@ class LayerTool extends Control {
                     const hasFeatures = typeof layerWrapper.layer.getSource().getFeatures === 'function';
                     if(hasFeatures) {
                         layerWrapper.layer.getSource().getFeatures().forEach((feature) => {
-                            if(hasNestedProperty(feature.getProperties(), 'oltb', 'tooltipOverlay')) {
-                                feature.getProperties().oltb.tooltipOverlay.setMap(flippedVisibility ? map : null)
+                            if(hasCustomFeatureProperty(feature.getProperties(), FEATURE_PROPERTIES.Tooltip)) {
+                                feature.getProperties().oltb.tooltip.setMap(flippedVisibility ? map : null)
                             }
                         });
                     }

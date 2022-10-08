@@ -8,6 +8,7 @@ import { bbox } from 'ol/loadingstrategy';
 import { getMeasureTooltipValue } from "../helpers/ol-functions/Measurements";
 
 import urlCountriesGeoJSON from 'url:../../../json/countries.geojson';
+import { FEATURE_PROPERTIES } from "../helpers/constants/FeatureProperties";
 
 LayerManager.addMapLayers([
     {
@@ -34,6 +35,7 @@ LayerManager.addMapLayers([
                             features.forEach((feature) => {
                                 feature.setProperties({
                                     oltb: {
+                                        type: FEATURE_PROPERTIES.Type.Layer,
                                         highlightOnHover: true,
                                         infoWindow: `
                                             <h3 class="oltb-text-center">${feature.getProperties().name}</h3>

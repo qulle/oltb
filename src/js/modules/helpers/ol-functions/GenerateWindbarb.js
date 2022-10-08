@@ -4,6 +4,7 @@ import { Icon, Style } from 'ol/style';
 import { fromLonLat } from 'ol/proj';
 import { getWindBarb } from '../../core/SVGWindbarbs';
 import { degreesToRadians } from '../Conversions';
+import { FEATURE_PROPERTIES } from '../constants/FeatureProperties';
 
 const DEFAULT_OPTIONS = {
     lat: undefined,
@@ -48,7 +49,7 @@ const generateWindbarb = function(options = {}) {
 
     windbarb.setProperties({
         oltb: {
-            type: 'marker',
+            type: FEATURE_PROPERTIES.Type.Windbarb,
             notSelectable: options.notSelectable, 
             infoWindow: options.infoWindow
         }

@@ -18,6 +18,7 @@ import { unByKey } from 'ol/Observable';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { EVENTS } from '../helpers/constants/Events';
 import { SETTINGS } from '../helpers/constants/Settings';
+import { FEATURE_PROPERTIES } from '../helpers/constants/FeatureProperties';
 
 const ID_PREFIX = 'oltb-measure';
 
@@ -270,8 +271,8 @@ class MeasureTool extends Control {
 
         feature.setProperties({
             oltb: {
-                type: 'measurement',
-                tooltipOverlay: tooltipOverlay
+                type: FEATURE_PROPERTIES.Type.Measurement,
+                tooltip: tooltipOverlay
             }
         });
         

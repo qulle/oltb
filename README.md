@@ -413,6 +413,7 @@ controls: defaultControls({
         }
     }),
     new EditTool({
+        hitTolerance: 5,
         click: function() {
             console.log('EditTool clicked');
         },

@@ -15,6 +15,8 @@ import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { EVENTS } from '../helpers/constants/Events';
 import { SETTINGS } from '../helpers/constants/Settings';
 import { LinearRing, Polygon } from 'ol/geom';
+import { isFeatureIntersectable } from '../helpers/IsFeatureIntersectable';
+import { FEATURE_PROPERTIES } from '../helpers/constants/FeatureProperties';
 
 const ID_PREFIX = 'oltb-draw';
 
@@ -84,17 +86,10 @@ class DrawTool extends Control {
                         </select>
                     </div>
                     <div class="oltb-toolbox-section__group">
-                        <label class="oltb-label" for="${ID_PREFIX}-intersection">Intersection</label>
-                        <select id="${ID_PREFIX}-intersection" class="oltb-select">
+                        <label class="oltb-label" for="${ID_PREFIX}-intersection-enable">Intersection</label>
+                        <select id="${ID_PREFIX}-intersection-enable" class="oltb-select">
                             <option value="false" selected>False</option>
                             <option value="true">True</option>
-                        </select>
-                    </div>
-                    <div class="oltb-toolbox-section__group">
-                        <label class="oltb-label" for="${ID_PREFIX}-intersection-mode">Intersection mode</label>
-                        <select id="${ID_PREFIX}-intersection-mode" class="oltb-select">
-                            <option value="InExtent" selected>In Extent</option>
-                            <option value="IntersectingExtent">Intersecting Extent</option>
                         </select>
                     </div>
                     <div class="oltb-toolbox-section__group">
@@ -141,11 +136,8 @@ class DrawTool extends Control {
         this.toolType = this.drawToolbox.querySelector(`#${ID_PREFIX}-type`);
         this.toolType.addEventListener(EVENTS.Browser.Change, this.updateTool.bind(this));
 
-        this.intersection = this.drawToolbox.querySelector(`#${ID_PREFIX}-intersection`);
-        this.intersection.addEventListener(EVENTS.Browser.Change, this.updateTool.bind(this));
-
-        this.intersectionMode = this.drawToolbox.querySelector(`#${ID_PREFIX}-intersection-mode`);
-        this.intersectionMode.addEventListener(EVENTS.Browser.Change, this.updateTool.bind(this));
+        this.intersectionEnable = this.drawToolbox.querySelector(`#${ID_PREFIX}-intersection-enable`);
+        this.intersectionEnable.addEventListener(EVENTS.Browser.Change, this.updateTool.bind(this));
 
         this.fillColor = this.drawToolbox.querySelector(`#${ID_PREFIX}-fill-color`);
         this.fillColor.addEventListener(EVENTS.Custom.ColorChange, this.updateTool.bind(this));
@@ -162,6 +154,10 @@ class DrawTool extends Control {
 
         window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
         window.addEventListener(EVENTS.Custom.SettingsCleared, this.onWindowSettingsCleared.bind(this));
+    }
+
+    isIntersectionEnabled() {
+        return this.intersectionEnable.value.toLowerCase() === 'true';
     }
 
     onToggleToolbox(toggle) {
@@ -201,8 +197,13 @@ class DrawTool extends Control {
 
         StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
 
-        this.isIntersectionMode = this.intersection.value.toLowerCase() === 'true';
-        this.intersectionMode.disabled = !this.isIntersectionMode;
+        // IntersectionMode doesn't play well when tool is LineString or Point
+        if(this.toolType.value === 'LineString' || this.toolType.value === 'Point') {
+            this.intersectionEnable.selectedIndex = 0;
+            this.intersectionEnable.disabled = true;
+        }else {
+            this.intersectionEnable.disabled = false;
+        }
 
         // Update the draw tool in the map
         this.selectDraw(
@@ -284,7 +285,7 @@ class DrawTool extends Control {
             geometryFunction = createBox();
             toolType = 'Circle';
         }else if(toolType === 'Circle') {
-            geometryFunction = createRegularPolygon();
+            geometryFunction = createRegularPolygon(32);
         }
 
         this.interaction = new Draw({
@@ -316,7 +317,7 @@ class DrawTool extends Control {
 
         const source = layerWrapper.layer.getSource();
 
-        if(this.isIntersectionMode) {
+        if(this.isIntersectionEnabled()) {
             this.onDrawEndIntersection(source, event);
         }else {
             this.onDrawEndNormal(source, style, event);
@@ -331,6 +332,12 @@ class DrawTool extends Control {
         const feature = event.feature;
         
         feature.setStyle(style);
+        feature.setProperties({
+            oltb: {
+                type: FEATURE_PROPERTIES.Type.Drawing
+            }
+        });
+
         source.addFeature(feature);
 
         // Note: User defined callback from constructor
@@ -343,23 +350,14 @@ class DrawTool extends Control {
         const feature = event.feature;
         const featureGeometry = feature.getGeometry();
 
-        if(this.intersectionMode.value === 'InExtent') {
-            source.forEachFeatureInExtent(featureGeometry.getExtent(), (intersectedFeature) => {
-                const type = intersectedFeature.getProperties()?.oltb?.type;
+        source.forEachFeatureIntersectingExtent(featureGeometry.getExtent(), (intersectedFeature) => {
+            const type = intersectedFeature.getProperties()?.oltb?.type;
+            const geometry = intersectedFeature.getGeometry();
 
-                if(type !== 'marker' && type !== 'measurement') {
-                    this.intersectedFeatures.push(intersectedFeature);
-                }
-            });
-        }else if(this.intersectionMode.value === 'IntersectingExtent') {
-            source.forEachFeatureIntersectingExtent(featureGeometry.getExtent(), (intersectedFeature) => {
-                const type = intersectedFeature.getProperties()?.oltb?.type;
-
-                if(type !== 'marker' && type !== 'measurement') {
-                    this.intersectedFeatures.push(intersectedFeature);
-                }
-            });
-        }
+            if(isFeatureIntersectable(type, geometry)) {
+                this.intersectedFeatures.push(intersectedFeature);
+            }
+        });
 
         this.intersectedFeatures.forEach((intersected) => {
             const coordinates = intersected.getGeometry().getCoordinates();
