@@ -279,7 +279,7 @@ class LayerTool extends Control {
         const silent = event.detail.silent;
 
         // Remove layer from UI
-        this.mapLayerStack.querySelector(`#map-layer-${layerWrapper.id}`).remove();
+        this.mapLayerStack.querySelector(`#${ID_PREFIX}-map-${layerWrapper.id}`).remove();
 
         // Note: User defined callback from constructor
         if(typeof this.options.mapLayerRemoved === 'function' && !silent) {
@@ -393,7 +393,6 @@ class LayerTool extends Control {
         // If feature layer - attach eventlistener for setting the active layer
         if(options.idPrefix === `${ID_PREFIX}-feature`) {
             layerName.addEventListener(EVENTS.Browser.Click, (event) => {
-                console.log('sdfadfasd');
                 LayerManager.setActiveFeatureLayer(layerWrapper);
                 // Should just be one li-item that has the active class, but just in case
                 this.featureLayerStack.querySelectorAll('li').forEach((layer) => {
@@ -553,7 +552,7 @@ class LayerTool extends Control {
                     const hasFeatures = typeof layerWrapper.layer.getSource().getFeatures === 'function';
                     if(hasFeatures) {
                         layerWrapper.layer.getSource().getFeatures().forEach((feature) => {
-                            if(hasCustomFeatureProperty(feature.getProperties(), FEATURE_PROPERTIES.Tooltip)) {
+                            if(hasCustomFeatureProperty(feature.getProperties(), FEATURE_PROPERTIES.tooltip)) {
                                 feature.getProperties().oltb.tooltip.setMap(flippedVisibility ? map : null)
                             }
                         });

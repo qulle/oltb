@@ -20,7 +20,7 @@ const ID_PREFIX = 'oltb-info-window-marker';
 
 const DEFAULT_OPTIONS = {
     enableHighAccuracy: true,
-    timeout: 5000
+    timeout: 10000
 };
 
 class MyLocationTool extends Control {

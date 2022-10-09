@@ -1,13 +1,13 @@
 import { Polygon } from 'ol/geom';
 import { getArea, getLength } from 'ol/sphere';
 
-const getMeasureTooltipValue = function(geometry) {
+const getMeasureValue = function(geometry) {
     return geometry instanceof Polygon
         ? formatArea(geometry)
         : formatLength(geometry);
 }
 
-const getMeasureTooltipCoordinates = function(geometry) {
+const getMeasureCoordinates = function(geometry) {
     return geometry instanceof Polygon
         ? geometry.getInteriorPoint().getCoordinates()
         : geometry.getLastCoordinate();
@@ -34,6 +34,6 @@ const formatArea = function(polygon) {
 };
 
 export {
-    getMeasureTooltipValue,
-    getMeasureTooltipCoordinates
+    getMeasureValue,
+    getMeasureCoordinates
 };

@@ -1,5 +1,4 @@
 import Draw from 'ol/interaction/Draw';
-import Overlay from 'ol/Overlay';
 import LayerManager from '../core/managers/LayerManager';
 import SettingsManager from '../core/managers/SettingsManager';
 import StateManager from '../core/managers/StateManager';
@@ -11,7 +10,7 @@ import { Control } from 'ol/control';
 import { Fill, Stroke, Circle, Style } from 'ol/style';
 import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT } from '../core/ElementReferences';
 import { eventDispatcher } from '../helpers/Browser/EventDispatcher';
-import { getMeasureTooltipCoordinates, getMeasureTooltipValue } from '../helpers/ol-functions/Measurements';
+import { getMeasureCoordinates, getMeasureValue } from '../helpers/ol-functions/Measurements';
 import { SVG_PATHS, getIcon } from '../core/SVGIcons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { unByKey } from 'ol/Observable';
@@ -19,6 +18,7 @@ import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { EVENTS } from '../helpers/constants/Events';
 import { SETTINGS } from '../helpers/constants/Settings';
 import { FEATURE_PROPERTIES } from '../helpers/constants/FeatureProperties';
+import { generateTooltip } from '../helpers/ol-functions/GenerateTooltip';
 
 const ID_PREFIX = 'oltb-measure';
 
@@ -167,7 +167,6 @@ class MeasureTool extends Control {
         if(this.active) {
             this.getMap().removeInteraction(this.interaction);
 
-            // Remove this tool as the active global tool
             ToolManager.removeActiveTool();
         }else {
             if(SettingsManager.getSetting(SETTINGS.AlwaysNewLayers)) {
@@ -233,7 +232,7 @@ class MeasureTool extends Control {
         const tooltipItem = TooltipManager.push('measure');
         
         this.onChangeListener = feature.getGeometry().on(EVENTS.Ol.Change, (event) => {
-            tooltipItem.innerHTML = getMeasureTooltipValue(event.target);
+            tooltipItem.innerHTML = getMeasureValue(event.target);
         });
 
         // Note: User defined callback from constructor
@@ -250,35 +249,18 @@ class MeasureTool extends Control {
         feature.setStyle(this.styles);
         
         const poppedTooltip = TooltipManager.pop('measure');
-
-        const tooltipWrapper = DOM.createElement({
-            element: 'div',
-            class: 'oltb-overlay-tooltip'
-        });
-
-        const tooltipItem = DOM.createElement({
-            element: 'span',
-            class: 'oltb-overlay-tooltip__item'
-        });
-
-        tooltipWrapper.appendChild(tooltipItem);
-
-        const tooltipOverlay = new Overlay({
-            element: tooltipWrapper,
-            offset: [0, -7],
-            positioning: 'bottom-center'
-        });
+        const tooltip = generateTooltip();
 
         feature.setProperties({
             oltb: {
-                type: FEATURE_PROPERTIES.Type.Measurement,
-                tooltip: tooltipOverlay
+                type: FEATURE_PROPERTIES.type.measurement,
+                tooltip: tooltip.getOverlay()
             }
         });
         
         const geometry = feature.getGeometry();
-        tooltipOverlay.setPosition(getMeasureTooltipCoordinates(geometry));
-        tooltipItem.innerHTML = getMeasureTooltipValue(geometry);
+        tooltip.setPosition(getMeasureCoordinates(geometry));
+        tooltip.setData(getMeasureValue(geometry));
 
         const layerWrapper = LayerManager.getActiveFeatureLayer({
             fallback: 'Measurements layer'
@@ -290,13 +272,13 @@ class MeasureTool extends Control {
             Toast.info({text: 'You are measuring in a hidden layer', autoremove: 4000});
         }
 
-        map.addOverlay(tooltipOverlay);
+        map.addOverlay(tooltip.getOverlay());
 
         // The layer might be hidden, check if the tooltip also should be hidden
         if(layerWrapper.layer.getVisible()) {
-            tooltipOverlay.setMap(map);
+            tooltip.getOverlay().setMap(map);
         }else {
-            tooltipOverlay.setMap(null);
+            tooltip.getOverlay().setMap(null);
         }
 
         // Note: User defined callback from constructor

@@ -189,7 +189,7 @@ class LayerManager {
 
         // Remove potential overlays associated with each feature
         targetLayer.layer.getSource().getFeatures().forEach((feature) => {
-            if(hasCustomFeatureProperty(feature.getProperties(), FEATURE_PROPERTIES.Tooltip)) {
+            if(hasCustomFeatureProperty(feature.getProperties(), FEATURE_PROPERTIES.tooltip)) {
                 this.map.removeOverlay(feature.getProperties().oltb.tooltip);
             }
         });

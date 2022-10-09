@@ -217,6 +217,12 @@ const map = new Map({
             click: function() {
                 console.log('EditTool clicked');
             },
+            styleChange: function(event, style) {
+                console.log('Feature style changed');
+            },
+            shapeOperation: function(type, a, b, result) {
+                console.log('Shape operation', type);
+            },
             selectadd: function(event) {
                 console.log('Selected feature');
             },
@@ -237,6 +243,9 @@ const map = new Map({
             },
             removedfeature: function(feature) {
                 console.log('Removed feature', feature);
+            },
+            error: function(event) {
+                console.log('Edit error');
             }
         }),
         new BookmarkTool({

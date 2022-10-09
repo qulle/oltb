@@ -26,7 +26,7 @@ const LOCAL_STORAGE_DEFAULTS = {
     toolTypeIndex: 5,
     strokeWidthIndex: 4,
     strokeColor: '#4A86B8',
-    fillColor: '#FFFFFF80'
+    fillColor: '#D7E3FA80'
 };
 
 const DEFAULT_OPTIONS = {};
@@ -334,7 +334,7 @@ class DrawTool extends Control {
         feature.setStyle(style);
         feature.setProperties({
             oltb: {
-                type: FEATURE_PROPERTIES.Type.Drawing
+                type: FEATURE_PROPERTIES.type.drawing
             }
         });
 

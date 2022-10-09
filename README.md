@@ -417,6 +417,12 @@ controls: defaultControls({
         click: function() {
             console.log('EditTool clicked');
         },
+        styleChange: function(event, style) {
+            console.log('Feature style changed');
+        },
+        shapeOperation: function(type, a, b, result) {
+            console.log('Shape operation', type);
+        },
         selectadd: function(event) {
             console.log('Selected feature');
         },
@@ -437,6 +443,9 @@ controls: defaultControls({
         },
         removedfeature: function(feature) {
             console.log('Removed feature', feature);
+        },
+        error: function(event) {
+            console.log('Edit error');
         }
     }),
     new BookmarkTool({
@@ -901,10 +910,12 @@ All classes and id:s in the project are prefixed with the namespace `oltb`. Data
 
 ## External GitHub projects
 1. [OpenLayers 7.1.0](https://openlayers.org/en/v7.1.0/apidoc/)
-2. [Tippy.js 6.3.7](https://atomiks.github.io/tippyjs/)
-3. [Bootstrap Icons](https://icons.getbootstrap.com/)
-4. [A Color Picker 1.2.1](https://github.com/narsenico/a-color-picker)
-5. [Plain JS Slidetoggle 2.0.0](https://github.com/ericbutler555/plain-js-slidetoggle)
+2. [Parcel 2.7.0](https://parceljs.org/)
+3. [Tippy.js 6.3.7](https://atomiks.github.io/tippyjs/)
+4. [Bootstrap Icons](https://icons.getbootstrap.com/)
+5. [A Color Picker 1.2.1](https://github.com/narsenico/a-color-picker)
+6. [Plain JS Slidetoggle 2.0.0](https://github.com/ericbutler555/plain-js-slidetoggle)
+7. [JSTS 2.9.2](https://github.com/bjornharrtell/jsts)
 
 ## Maps used in the demo
 1. [OpenStreetMap](https://www.openstreetmap.org/)
