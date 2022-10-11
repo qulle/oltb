@@ -127,7 +127,7 @@ class SplitViewTool extends Control {
     }
     
     onWindowSettingsCleared() {
-        this.localStorage = LOCAL_STORAGE_DEFAULTS;
+        this.localStorage = { ...LOCAL_STORAGE_DEFAULTS };
     }
 
     onWindowMapLayerAdded(event) {
@@ -181,7 +181,57 @@ class SplitViewTool extends Control {
             this.options.click();
         }
 
-        this.handleSplitView();
+        if(LayerManager.getMapLayerSize() <= 1) {
+            Toast.info({text: 'You must have more then one map-layer to use the split view'});
+            return;
+        }
+
+        if(this.active) {
+            this.deActivateTool();
+        }else {
+            this.activateTool();
+        }
+    }
+
+    activateTool() {
+        this.rightSrc.selectedIndex = '1';
+
+        eventDispatcher([this.rightSrc], EVENTS.Browser.Change);
+
+        if(this.layerLoadingError) {
+            return;
+        }
+
+        this.active = true;
+        this.splitViewToolbox.classList.add('oltb-toolbox-section--show');
+        this.splitViewSlider.classList.add('oltb-slider--show');
+        this.button.classList.add('oltb-tool-button--active');
+    }
+
+    deActivateTool() {
+        const map = this.getMap();
+
+        // Remove previosly added listeners
+        unByKey(this.onPreRenderListener);
+        unByKey(this.onPostRenderListener);
+
+        // Remove the ol-split-view-layers from the map
+        LayerManager.getMapLayers().forEach((layerWrapper) => {
+            map.removeLayer(layerWrapper.layer);
+        });
+
+        // Add back all the original layers to the map
+        LayerManager.getMapLayers().forEach((layerWrapper) => {
+            map.addLayer(layerWrapper.layer);
+        });
+
+        // Set first layer as the only one visible
+        LayerManager.setTopMapLayerAsOnlyVisible();
+
+        this.active = false;
+        this.splitViewToolbox.classList.remove('oltb-toolbox-section--show');
+        this.splitViewSlider.classList.remove('oltb-slider--show');
+        this.button.classList.remove('oltb-tool-button--active');
     }
 
     swapSides() {
@@ -192,47 +242,6 @@ class SplitViewTool extends Control {
 
         // Dispatch event so the map can update
         eventDispatcher([this.leftSrc, this.rightSrc], EVENTS.Browser.Change);
-    }
-
-    handleSplitView() {
-        if(LayerManager.getMapLayerSize() <= 1) {
-            Toast.info({text: 'You must have more then one map-layer to use the split view'});
-            return;
-        }
-
-        const map = this.getMap();
-
-        if(this.active) {
-            // Remove previosly added listeners
-            unByKey(this.onPreRenderListener);
-            unByKey(this.onPostRenderListener);
-
-            // Remove the ol-split-view-layers from the map
-            LayerManager.getMapLayers().forEach((layerWrapper) => {
-                map.removeLayer(layerWrapper.layer);
-            });
-
-            // Add back all the original layers to the map
-            LayerManager.getMapLayers().forEach((layerWrapper) => {
-                map.addLayer(layerWrapper.layer);
-            });
-
-            // Set first layer as the only one visible
-            LayerManager.setTopMapLayerAsOnlyVisible();
-        }else {
-            this.rightSrc.selectedIndex = '1';
-
-            eventDispatcher([this.rightSrc], EVENTS.Browser.Change);
-        }
-
-        if(this.layerLoadingError) {
-            return;
-        }
-
-        this.active = !this.active;
-        this.splitViewToolbox.classList.toggle('oltb-toolbox-section--show');
-        this.splitViewSlider.classList.toggle('oltb-slider--show');
-        this.button.classList.toggle('oltb-tool-button--active');
     }
 
     sourceChange(leftSrcId, rightSrcId) {

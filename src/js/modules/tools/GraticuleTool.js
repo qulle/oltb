@@ -71,18 +71,25 @@ class GraticuleTool extends Control {
             this.options.click();
         }
 
-        this.handleGraticule();
+        if(this.active) {
+            this.deActivateTool();
+        }else {
+            this.activateTool();
+        }
     }
 
-    handleGraticule() {
-        if(this.active) {
-            this.graticule.setMap(null);
-        }else {
-            this.graticule.setMap(this.getMap());
-        }
+    activateTool() {
+        this.graticule.setMap(this.getMap());
 
-        this.active = !this.active;
-        this.button.classList.toggle('oltb-tool-button--active');
+        this.active = true;
+        this.button.classList.add('oltb-tool-button--active');
+    }
+
+    deActivateTool() {
+        this.graticule.setMap(null);
+
+        this.active = false;
+        this.button.classList.remove('oltb-tool-button--active');
     }
 }
 

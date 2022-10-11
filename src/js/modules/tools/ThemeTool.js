@@ -62,22 +62,8 @@ class ThemeTool extends Control {
             this.options.click();
         }
         
-        this.handleThemeToggle();
-    }
-
-    onWindowClearTheme() {
-        StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, 'light');
-        TOOLBAR_ELEMENT.classList.remove('dark');
-        document.body.classList.remove('oltb-dark');
-
-        // Update toolbar icon
-        this.button.removeChild(this.button.firstElementChild);
-        this.button.insertAdjacentHTML('afterbegin', this.darkThemeIcon);
-        this.button._tippy.setContent(`Dark theme (${SHORTCUT_KEYS.ToolbarTheme})`);
-    }
-
-    handleThemeToggle() {
         let theme = 'light';
+        
         if(isDarkTheme()) {
             this.onWindowClearTheme();
         }else {
@@ -97,6 +83,17 @@ class ThemeTool extends Control {
         if(typeof this.options.changed === 'function') {
             this.options.changed(theme);
         }
+    }
+
+    onWindowClearTheme() {
+        StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, 'light');
+        TOOLBAR_ELEMENT.classList.remove('dark');
+        document.body.classList.remove('oltb-dark');
+
+        // Update toolbar icon
+        this.button.removeChild(this.button.firstElementChild);
+        this.button.insertAdjacentHTML('afterbegin', this.darkThemeIcon);
+        this.button._tippy.setContent(`Dark theme (${SHORTCUT_KEYS.ToolbarTheme})`);
     }
 }
 

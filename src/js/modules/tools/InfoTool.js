@@ -55,10 +55,6 @@ class InfoTool extends Control {
             this.options.click();
         }
 
-        this.handleInfo();
-    }
-
-    handleInfo() {
         if(this.infoModal) {
             return;
         }

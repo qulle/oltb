@@ -69,7 +69,22 @@ class FullscreenTool extends Control {
             this.options.click();
         }
         
-        this.handleFullscreen();
+        if(!isFullScreenSupported()) {
+            Toast.info({text: 'Fullscreen is not supported'});
+            return;
+        }
+        
+        if(isFullScreen()) {
+            exitFullScreen();
+        }else {
+            let element = this.getMap().getTargetElement();
+
+            if(this.keys) {
+                requestFullScreenWithKeys(element);
+            }else {
+                requestFullScreen(element);
+            }
+        }
     }
 
     onFullScreenChange(event) {
@@ -86,25 +101,6 @@ class FullscreenTool extends Control {
             // Note: User defined callback from constructor
             if(typeof this.options.leave === 'function') {
                 this.options.leave(event);
-            }
-        }
-    }
-
-    handleFullscreen() {
-        if(!isFullScreenSupported()) {
-            Toast.info({text: 'Fullscreen is not supported'});
-            return;
-        }
-        
-        if(isFullScreen()) {
-            exitFullScreen();
-        }else {
-            let element = this.getMap().getTargetElement();
-
-            if(this.keys) {
-                requestFullScreenWithKeys(element);
-            }else {
-                requestFullScreen(element);
             }
         }
     }

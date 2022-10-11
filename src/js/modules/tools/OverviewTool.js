@@ -106,7 +106,7 @@ class OverviewTool extends Control {
     }
     
     onWindowSettingsCleared() {
-        this.localStorage = LOCAL_STORAGE_DEFAULTS;
+        this.localStorage = { ...LOCAL_STORAGE_DEFAULTS };
     }
 
     handleClick() {
@@ -115,21 +115,28 @@ class OverviewTool extends Control {
             this.options.click();
         }
 
-        this.handleOverview();
+        if(this.active) {
+            this.deActivateTool();
+        }else {
+            this.activateTool(); 
+        }
     }
 
-    handleOverview() {
-        // This must come before the setMap method or it will sometimes fail to render the overview
-        this.overviewToolbox.classList.toggle('oltb-toolbox-section--show');
+    activateTool() {
+        // Note: Add --show class before setMap or the overview will not render correctly
+        this.overviewToolbox.classList.add('oltb-toolbox-section--show');
+        this.overviewMap.setMap(this.getMap());
 
-        if(this.active) {
-            this.overviewMap.setMap(null);
-        }else {
-            this.overviewMap.setMap(this.getMap());  
-        }
+        this.active = true;
+        this.button.classList.add('oltb-tool-button--active');
+    }
 
-        this.active = !this.active;
-        this.button.classList.toggle('oltb-tool-button--active');
+    deActivateTool() {
+        this.overviewMap.setMap(null);
+
+        this.active = false;
+        this.button.classList.remove('oltb-tool-button--active');
+        this.overviewToolbox.classList.remove('oltb-toolbox-section--show');
     }
 }
 

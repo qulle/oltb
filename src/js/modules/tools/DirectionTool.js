@@ -87,10 +87,6 @@ class DirectionTool extends Control {
             this.options.click();
         }
         
-        this.handleDirectionToggle();
-    }
-
-    handleDirectionToggle() {
         let direction = 'col';
         let tooltipDirection = 'right';
 

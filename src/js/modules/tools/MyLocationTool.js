@@ -73,7 +73,7 @@ class MyLocationTool extends Control {
                 onConfirm: () => {
                     exitFullScreen()
                         .then(() => {
-                            this.handleGEOLocation();
+                            this.getGEOLocation();
                         })
                         .catch((error) => {
                             console.error(`Error exiting fullscreen [${error}]`);
@@ -81,11 +81,11 @@ class MyLocationTool extends Control {
                 }
             });
         }else {
-            this.handleGEOLocation();
+            this.getGEOLocation();
         }
     }
 
-    handleGEOLocation() {
+    getGEOLocation() {
         if(this.loadingToast) {
             return;
         }

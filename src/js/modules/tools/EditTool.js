@@ -229,16 +229,28 @@ class EditTool extends Control {
     onSelectFeatureRemove(event) {
         const feature = event.element;
 
+        // Note: The setTimeout must be used, if not, the style will be reset to the style used before the feature was selected
         setTimeout(() => {
             if(this.colorHasChanged) {
-                // TODO: Finish this and test will all shapes that colors can be updated
-                if(getCustomFeatureProperty(feature.getProperties(), 'type') === FEATURE_PROPERTIES.type.measurement) {
-                    this.lastStyle.getStroke().setLineDash([2, 5])
-                }else {
-                    this.lastStyle.getStroke().setLineDash([0, 0]);
-                }
-
+                // Set the lastStyle as the default style
                 feature.setStyle(this.lastStyle);
+
+                if(getCustomFeatureProperty(feature.getProperties(), 'type') === FEATURE_PROPERTIES.type.measurement) {
+                    // Note: To add lineDash, a new Style object must be used
+                    // If the lastStyle is used all object that is referenced with that object will get a dashed line
+                    const style = new Style({
+                        fill: new Fill({
+                            color: this.lastStyle.getFill().getColor()
+                        }),
+                        stroke: new Stroke({
+                            color: this.lastStyle.getStroke().getColor(),
+                            width: this.lastStyle.getStroke().getWidth(),
+                            lineDash: [2, 5]
+                        })
+                    });
+                    
+                    feature.setStyle(style);
+                }
 
                 // Note: User defined callback from constructor
                 if(typeof this.options.styleChange === 'function') {
@@ -337,7 +349,13 @@ class EditTool extends Control {
     }
     
     onWindowSettingsCleared() {
-        this.localStorage = LOCAL_STORAGE_DEFAULTS;
+        this.localStorage = { ...LOCAL_STORAGE_DEFAULTS };
+
+        this.fillColor.setAttribute('data-oltb-color', this.localStorage.fillColor);
+        this.fillColor.firstElementChild.style.backgroundColor = this.localStorage.fillColor;
+
+        this.strokeColor.setAttribute('data-oltb-color', this.localStorage.strokeColor);
+        this.strokeColor.firstElementChild.style.backgroundColor = this.localStorage.strokeColor;
     }
 
     onDeleteSelectedFeatures() {
@@ -406,6 +424,11 @@ class EditTool extends Control {
         features.forEach((feature) => {
             feature.setStyle(this.lastStyle);      
         });
+
+        this.localStorage.fillColor = this.lastStyle.getFill().getColor();
+        this.localStorage.strokeColor = this.lastStyle.getStroke().getColor();
+
+        StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
     }
 
     onShapeOperator(operation, type) {
@@ -513,8 +536,9 @@ class EditTool extends Control {
         }
 
         const properties = feature.getProperties();
+        const hiddenTooltip = hasOtherTooltip && selectedFeatures.length === 1;
 
-        properties.oltb.tooltip.getElement().className = `oltb-overlay-tooltip ${hasOtherTooltip && selectedFeatures.length === 1 ? 'oltb-overlay-tooltip--hidden' : ''}`;
+        properties.oltb.tooltip.getElement().className = `oltb-overlay-tooltip ${hiddenTooltip ? 'oltb-overlay-tooltip--hidden' : ''}`;
         properties.oltb.onChangeListener = feature.getGeometry().on(EVENTS.Ol.Change, this.onFeatureChange.bind(this, feature));
     }
 
@@ -556,7 +580,7 @@ class EditTool extends Control {
     }
 
     deSelect() {
-        this.handleEdit();
+        this.deActivateTool();
     }
 
     handleClick() {
@@ -565,39 +589,43 @@ class EditTool extends Control {
             this.options.click();
         }
         
-        ToolManager.setActiveTool(this);
-        this.handleEdit();
+        if(this.active) {
+            this.deActivateTool();
+        }else {
+            this.activateTool();
+        }
     }
 
-    handleEdit() {
-        const map = this.getMap();
-        const interactions = [
+    activateTool() {
+        [
             this.select,
             this.translate,
             this.modify
-        ];
+        ].forEach((item) => {
+            this.getMap().addInteraction(item);
+        });
 
-        if(this.active) {
-            interactions.forEach((item) => {
-                map.removeInteraction(item);
-            });
+        ToolManager.setActiveTool(this);
 
-            ToolManager.removeActiveTool();
-        }else {
-            interactions.forEach((item) => {
-                map.addInteraction(item);
-            });
-        }
+        this.active = true;
+        this.editToolbox.classList.add('oltb-toolbox-section--show');
+        this.button.classList.add('oltb-tool-button--active');
+    }
 
-        if(this.colorHasChanged) {
-            this.localStorage.fillColor   = this.lastStyle.getFill().getColor();
-            this.localStorage.strokeColor = this.lastStyle.getStroke().getColor();
-            StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
-        }
-        
-        this.active = !this.active;
-        this.editToolbox.classList.toggle('oltb-toolbox-section--show');
-        this.button.classList.toggle('oltb-tool-button--active');
+    deActivateTool() {
+        [
+            this.select,
+            this.translate,
+            this.modify
+        ].forEach((item) => {
+            this.getMap().removeInteraction(item);
+        });
+
+        ToolManager.removeActiveTool();
+
+        this.active = false;
+        this.editToolbox.classList.remove('oltb-toolbox-section--show');
+        this.button.classList.remove('oltb-tool-button--active');
     }
 }
 

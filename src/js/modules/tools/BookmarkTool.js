@@ -150,7 +150,7 @@ class BookmarkTool extends Control {
     }
 
     onWindowSettingsCleared() {
-        this.localStorage = LOCAL_STORAGE_DEFAULTS;
+        this.localStorage = { ...LOCAL_STORAGE_DEFAULTS };
     }
 
     onBookmarkAdd(event) {
@@ -168,10 +168,6 @@ class BookmarkTool extends Control {
             this.options.click();
         }
 
-        this.handleBookmarks();
-    }
-
-    handleBookmarks() {
         this.active = !this.active;
         this.bookmarkToolbox.classList.toggle('oltb-toolbox-section--show');
         this.button.classList.toggle('oltb-tool-button--active');

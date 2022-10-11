@@ -55,46 +55,53 @@ class MagnifyTool extends Control {
             this.options.click();
         }
 
-        this.handleMagnify();
+        if(this.active) {
+            this.deActivateTool();
+        }else {
+            this.activateTool();
+        }
     }
 
-    handleMagnify() {
+    activateTool() {
         const map = this.getMap();
-
-        if(this.active) {
-            const mapContainer = map.getTarget();
-
-            // Remove the eventlisteners
-            mapContainer.removeEventListener(EVENTS.Browser.MouseMove, this.onMousemoveListenert);
-            mapContainer.removeEventListener(EVENTS.Browser.MouseOut, this.onMouseoutListenert);
-            document.removeEventListener(EVENTS.Browser.KeyDown, this.onKeydownListener);
-
-            this.onPostrenderListeners.forEach((listener) => {
-                unByKey(listener);
-            });
-
-            // Update the map to remove the last rendering of the magnifier
-            map.render();
-        }else {
-            const mapContainer = map.getTarget();
+        const mapContainer = map.getTarget();
     
-            this.onMousemoveListenert = this.onMousemove.bind(this);
-            mapContainer.addEventListener(EVENTS.Browser.MouseMove, this.onMousemoveListenert);
-    
-            this.onMouseoutListenert = this.onMouseout.bind(this);
-            mapContainer.addEventListener(EVENTS.Browser.MouseOut, this.onMouseoutListenert);
-    
-            this.onKeydownListener = this.onKeydown.bind(this);
-            document.addEventListener(EVENTS.Browser.KeyDown, this.onKeydownListener);
-    
-            this.onPostrenderListeners = [];
-            map.getLayers().getArray().forEach((layer) => {
-                this.onPostrenderListeners.push(layer.on(EVENTS.Ol.PostRender, this.onPostrender.bind(this)));
-            });
-        }
+        this.onMousemoveListenert = this.onMousemove.bind(this);
+        mapContainer.addEventListener(EVENTS.Browser.MouseMove, this.onMousemoveListenert);
 
-        this.active = !this.active;
-        this.button.classList.toggle('oltb-tool-button--active');
+        this.onMouseoutListenert = this.onMouseout.bind(this);
+        mapContainer.addEventListener(EVENTS.Browser.MouseOut, this.onMouseoutListenert);
+
+        this.onKeydownListener = this.onKeydown.bind(this);
+        document.addEventListener(EVENTS.Browser.KeyDown, this.onKeydownListener);
+
+        this.onPostrenderListeners = [];
+        map.getLayers().getArray().forEach((layer) => {
+            this.onPostrenderListeners.push(layer.on(EVENTS.Ol.PostRender, this.onPostrender.bind(this)));
+        });
+
+        this.active = true;
+        this.button.classList.add('oltb-tool-button--active');
+    }
+
+    deActivateTool() {
+        const map = this.getMap();
+        const mapContainer = map.getTarget();
+
+        // Remove the eventlisteners
+        mapContainer.removeEventListener(EVENTS.Browser.MouseMove, this.onMousemoveListenert);
+        mapContainer.removeEventListener(EVENTS.Browser.MouseOut, this.onMouseoutListenert);
+        document.removeEventListener(EVENTS.Browser.KeyDown, this.onKeydownListener);
+
+        this.onPostrenderListeners.forEach((listener) => {
+            unByKey(listener);
+        });
+
+        // Update the map to remove the last rendering of the magnifier
+        map.render();
+
+        this.active = false;
+        this.button.classList.remove('oltb-tool-button--active');
     }
 
     onKeydown(event) {

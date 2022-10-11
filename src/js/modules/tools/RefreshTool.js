@@ -50,10 +50,6 @@ class RefreshTool extends Control {
             this.options.click();
         }
 
-        this.handleRefresh();
-    }
-
-    handleRefresh() {
         window.location.reload();
     }
 }

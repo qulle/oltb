@@ -53,10 +53,6 @@ class ZoomOutTool extends Control {
             this.options.click();
         }
         
-        this.handleZoomByDelta();
-    }
-
-    handleZoomByDelta() {
         const view = this.getMap().getView();
 
         const currentZoom = view.getZoom();

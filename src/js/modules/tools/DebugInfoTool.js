@@ -66,10 +66,6 @@ class DebugInfoTool extends Control {
             this.options.click();
         }
 
-        this.handleDebugInfo();
-    }
-
-    handleDebugInfo() {
         if(this.debugInfoModal) {
             return;
         }

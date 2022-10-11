@@ -69,15 +69,6 @@ class HomeTool extends Control {
             this.options.click();
         }
         
-        this.handleResetToHome();
-    }
-
-    onWindowClearHomeLocation() {
-        this.userDefinedHomeLocation = null;
-        this.userDefinedHomeZoom = null;
-    }
-
-    handleResetToHome() {
         const view = this.getMap().getView();
 
         if(view.getAnimating()) {
@@ -97,6 +88,11 @@ class HomeTool extends Control {
                 this.options.home();
             }
         }, CONFIG.animationDuration.normal);
+    }
+
+    onWindowClearHomeLocation() {
+        this.userDefinedHomeLocation = null;
+        this.userDefinedHomeZoom = null;
     }
 
     onContextMenuSetHomeLocation() {

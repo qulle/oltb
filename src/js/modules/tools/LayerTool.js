@@ -206,13 +206,23 @@ class LayerTool extends Control {
             this.options.click();
         }
         
-        this.handleLayers();
+        if(this.active) {
+            this.deActivateTool();
+        }else {
+            this.activateTool();
+        }
     }
 
-    handleLayers() {
-        this.active = !this.active;
-        this.layersToolbox.classList.toggle('oltb-toolbox-section--show');
-        this.button.classList.toggle('oltb-tool-button--active');
+    activateTool() {
+        this.active = true;
+        this.layersToolbox.classList.add('oltb-toolbox-section--show');
+        this.button.classList.add('oltb-tool-button--active');
+    }
+
+    deActivateTool() {
+        this.active = false;
+        this.layersToolbox.classList.remove('oltb-toolbox-section--show');
+        this.button.classList.remove('oltb-tool-button--active');
     }
 
     showAddMapLayerModal() {

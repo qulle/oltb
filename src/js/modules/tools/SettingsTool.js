@@ -82,10 +82,6 @@ class SettingsTool extends Control {
             this.options.click();
         }
 
-        this.handleSettings();
-    }
-
-    handleSettings() {
         if(this.settingsModal) {
             return;
         }

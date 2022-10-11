@@ -156,16 +156,16 @@ class DrawTool extends Control {
         window.addEventListener(EVENTS.Custom.SettingsCleared, this.onWindowSettingsCleared.bind(this));
     }
 
-    isIntersectionEnabled() {
-        return this.intersectionEnable.value.toLowerCase() === 'true';
-    }
-
     onToggleToolbox(toggle) {
         const targetName = toggle.dataset.oltbToggleableTarget;
         document.getElementById(targetName).slideToggle(200, (collapsed) => {
             this.localStorage.collapsed = collapsed;
             StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
         });
+    }
+
+    isIntersectionEnabled() {
+        return this.intersectionEnable.value.toLowerCase() === 'true';
     }
 
     onWindowKeyUp(event) {
@@ -185,7 +185,20 @@ class DrawTool extends Control {
     }
 
     onWindowSettingsCleared() {
-        this.localStorage = LOCAL_STORAGE_DEFAULTS;
+        // Update runtime copy of localStorage to default
+        this.localStorage = { ...LOCAL_STORAGE_DEFAULTS };
+
+        // Rest UI components
+        this.fillColor.setAttribute('data-oltb-color', this.localStorage.fillColor);
+        this.fillColor.firstElementChild.style.backgroundColor = this.localStorage.fillColor;
+
+        this.strokeColor.setAttribute('data-oltb-color', this.localStorage.strokeColor);
+        this.strokeColor.firstElementChild.style.backgroundColor = this.localStorage.strokeColor;
+
+        // Update the tool to use the correct colors
+        if(this.active) {
+            this.updateTool();
+        }
     }
 
     updateTool() {
@@ -215,7 +228,7 @@ class DrawTool extends Control {
     }
 
     deSelect() {
-        this.handleDraw();
+        this.deActivateTool();
     }
 
     handleClick() {
@@ -223,29 +236,38 @@ class DrawTool extends Control {
         if(typeof this.options.click === 'function') {
             this.options.click();
         }
-        
-        ToolManager.setActiveTool(this);
-        this.handleDraw();
+
+        if(this.active) {
+            this.deActivateTool();
+        }else {
+            this.activateTool();
+        }
     }
 
-    handleDraw() {
-        if(this.active) {
-            this.getMap().removeInteraction(this.interaction);
+    activateTool() {
+        this.active = true;
+        this.drawToolbox.classList.add('oltb-toolbox-section--show');
+        this.button.classList.add('oltb-tool-button--active');
 
-            ToolManager.removeActiveTool();
-        }else {
-            if(SettingsManager.getSetting(SETTINGS.AlwaysNewLayers)) {
-                LayerManager.addFeatureLayer('Drawing layer');
-            }
+        ToolManager.setActiveTool(this);
 
-            // Dispatch event to select a tooltype from the settings-box
-            // The event then triggers the activation of the draw tool
-            eventDispatcher([this.toolType], EVENTS.Browser.Change);
+        if(SettingsManager.getSetting(SETTINGS.AlwaysNewLayers)) {
+            LayerManager.addFeatureLayer('Drawing layer');
         }
 
-        this.active = !this.active;
-        this.drawToolbox.classList.toggle('oltb-toolbox-section--show');
-        this.button.classList.toggle('oltb-tool-button--active');
+        // Triggers activation of the draw tool
+        eventDispatcher([this.toolType], EVENTS.Browser.Change);
+    }
+
+    deActivateTool() {
+        this.active = false;
+        this.drawToolbox.classList.remove('oltb-toolbox-section--show');
+        this.button.classList.remove('oltb-tool-button--active');
+
+        this.getMap().removeInteraction(this.interaction);
+        this.interaction = undefined;
+
+        ToolManager.removeActiveTool();
     }
 
     selectDraw(toolType, strokeWidth, fillColor, strokeColor) {
@@ -256,23 +278,24 @@ class DrawTool extends Control {
             map.removeInteraction(this.interaction);
         }
 
-        const stroke = new Stroke({
-            color: strokeColor,
-            width: strokeWidth
-        });
-
-        const style = new Style({
+        this.style = new Style({
             image: new Circle({
                 fill: new Fill({
                     color: fillColor
                 }),
-                stroke: stroke,
+                stroke: new Stroke({
+                    color: strokeColor,
+                    width: strokeWidth
+                }),
                 radius: 5
             }),
             fill: new Fill({
                 color: fillColor
             }),
-            stroke: stroke
+            stroke: new Stroke({
+                color: strokeColor,
+                width: strokeWidth
+            })
         });
 
         // Note: A normal circle can not be serialized to json, approximated circle as polygon instead. 
@@ -290,7 +313,7 @@ class DrawTool extends Control {
 
         this.interaction = new Draw({
             type: toolType,
-            style: style,
+            style: this.style,
             stopClick: true,
             geometryFunction: geometryFunction
         });
@@ -298,7 +321,7 @@ class DrawTool extends Control {
         map.addInteraction(this.interaction);
 
         this.interaction.on(EVENTS.Ol.DrawStart, this.onDrawStart.bind(this));
-        this.interaction.on(EVENTS.Ol.DrawEnd, this.onDrawEnd.bind(this, style));
+        this.interaction.on(EVENTS.Ol.DrawEnd, this.onDrawEnd.bind(this));
         this.interaction.on(EVENTS.Ol.DrawAbort, this.onDrawAbort.bind(this));
         this.interaction.on(EVENTS.Ol.Error, this.onDrawError.bind(this));
     }
@@ -310,7 +333,7 @@ class DrawTool extends Control {
         }
     }
 
-    onDrawEnd(style, event) {
+    onDrawEnd(event) {
         const layerWrapper = LayerManager.getActiveFeatureLayer({
             fallback: 'Drawing layer'
         });
@@ -320,7 +343,7 @@ class DrawTool extends Control {
         if(this.isIntersectionEnabled()) {
             this.onDrawEndIntersection(source, event);
         }else {
-            this.onDrawEndNormal(source, style, event);
+            this.onDrawEndNormal(source, event);
         }
 
         if(!layerWrapper.layer.getVisible()) {
@@ -328,10 +351,10 @@ class DrawTool extends Control {
         }
     }
 
-    onDrawEndNormal(source, style, event) {
+    onDrawEndNormal(source, event) {
         const feature = event.feature;
         
-        feature.setStyle(style);
+        feature.setStyle(this.style);
         feature.setProperties({
             oltb: {
                 type: FEATURE_PROPERTIES.type.drawing

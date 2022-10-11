@@ -83,10 +83,6 @@ class ResetNorthTool extends Control {
             this.options.click();
         }
         
-        this.handleResetNorth();
-    }
-
-    handleResetNorth() {
         const view = this.getMap().getView();
 
         if(view.getAnimating()) {

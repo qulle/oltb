@@ -26,7 +26,8 @@ const LOCAL_STORAGE_NODE_NAME = 'measureTool';
 const LOCAL_STORAGE_DEFAULTS = {
     collapsed: false,
     toolTypeIndex: 0,
-    strokeColor: '#3B4352'
+    strokeColor: '#4A86B8',
+    fillColor: '#D7E3FA80'
 };
 
 const DEFAULT_OPTIONS = {};
@@ -86,23 +87,34 @@ class MeasureTool extends Control {
                             <div class="oltb-color-input__inner" style="background-color: ${this.localStorage.strokeColor};"></div>
                         </div>
                     </div>
+                    <div class="oltb-toolbox-section__group">
+                        <label class="oltb-label" for="${ID_PREFIX}-fill-color">Fill color</label>
+                        <div id="${ID_PREFIX}-fill-color" class="oltb-color-input oltb-color-tippy" data-oltb-color-target="#${ID_PREFIX}-fill-color" data-oltb-color="${this.localStorage.fillColor}" tabindex="0">
+                            <div class="oltb-color-input__inner" style="background-color: ${this.localStorage.fillColor};"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         `);
 
         this.measureToolbox = document.querySelector(`#${ID_PREFIX}-toolbox`);
 
-        this.strokeColor = this.measureToolbox.querySelector(`#${ID_PREFIX}-stroke-color`);
-        this.toolType = this.measureToolbox.querySelector(`#${ID_PREFIX}-type`);
-        this.toolType.selectedIndex = this.localStorage.toolTypeIndex;
-
         const toggleableTriggers = this.measureToolbox.querySelectorAll('.oltb-toggleable');
         toggleableTriggers.forEach((toggle) => {
             toggle.addEventListener(EVENTS.Browser.Click, this.onToggleToolbox.bind(this, toggle));
         });
 
+        this.toolType = this.measureToolbox.querySelector(`#${ID_PREFIX}-type`);
         this.toolType.addEventListener(EVENTS.Browser.Change, this.updateTool.bind(this));
+
+        this.fillColor = this.measureToolbox.querySelector(`#${ID_PREFIX}-fill-color`);
+        this.fillColor.addEventListener(EVENTS.Custom.ColorChange, this.updateTool.bind(this));
+
+        this.strokeColor = this.measureToolbox.querySelector(`#${ID_PREFIX}-stroke-color`);
         this.strokeColor.addEventListener(EVENTS.Custom.ColorChange, this.updateTool.bind(this));
+
+        // Set default selected values
+        this.toolType.selectedIndex = this.localStorage.toolTypeIndex; 
 
         window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
         window.addEventListener(EVENTS.Custom.SettingsCleared, this.onWindowSettingsCleared.bind(this));
@@ -133,24 +145,39 @@ class MeasureTool extends Control {
     }
     
     onWindowSettingsCleared() {
-        this.localStorage = LOCAL_STORAGE_DEFAULTS;
+        // Update runtime copy of localStorage to default
+        this.localStorage = { ...LOCAL_STORAGE_DEFAULTS };
+
+        // Rest UI components
+        this.fillColor.setAttribute('data-oltb-color', this.localStorage.fillColor);
+        this.fillColor.firstElementChild.style.backgroundColor = this.localStorage.fillColor;
+
+        this.strokeColor.setAttribute('data-oltb-color', this.localStorage.strokeColor);
+        this.strokeColor.firstElementChild.style.backgroundColor = this.localStorage.strokeColor;
+
+        // Update the tool to use the correct colors
+        if(this.active) {
+            this.updateTool();
+        }
     }
 
     updateTool() {
         // Store current values in local storage
         this.localStorage.toolTypeIndex = this.toolType.selectedIndex;
+        this.localStorage.fillColor = this.fillColor.getAttribute('data-oltb-color');
         this.localStorage.strokeColor = this.strokeColor.getAttribute('data-oltb-color');;
 
         StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
 
         this.selectMeasure(
             this.toolType.value,
+            this.fillColor.getAttribute('data-oltb-color'),
             this.strokeColor.getAttribute('data-oltb-color')
         );
     }
 
     deSelect() {
-        this.handleMeasure();
+        this.deActivateTool();
     }
 
     handleClick() {
@@ -159,33 +186,43 @@ class MeasureTool extends Control {
             this.options.click();
         }
         
-        ToolManager.setActiveTool(this);
-        this.handleMeasure();
+        if(this.active) {
+            this.deActivateTool();
+        }else {
+            this.activateTool();
+        }   
     }
 
-    handleMeasure() {
-        if(this.active) {
-            this.getMap().removeInteraction(this.interaction);
+    activateTool() {
+        this.active = true;
+        this.measureToolbox.classList.add('oltb-toolbox-section--show');
+        this.button.classList.add('oltb-tool-button--active'); 
 
-            ToolManager.removeActiveTool();
-        }else {
-            if(SettingsManager.getSetting(SETTINGS.AlwaysNewLayers)) {
-                LayerManager.addFeatureLayer('Measurements layer');
-            }
+        ToolManager.setActiveTool(this);
 
-            // Dispatch event to select a tooltype from the settings-box
-            // The event then triggers the activation of the measure tool
-            eventDispatcher([this.toolType], EVENTS.Browser.Change);
+        if(SettingsManager.getSetting(SETTINGS.AlwaysNewLayers)) {
+            LayerManager.addFeatureLayer('Measurements layer');
         }
 
-        this.active = !this.active;
-        this.measureToolbox.classList.toggle('oltb-toolbox-section--show');
-        this.button.classList.toggle('oltb-tool-button--active');
+        // Triggers activation of the measure tool
+        eventDispatcher([this.toolType], EVENTS.Browser.Change);
     }
 
-    selectMeasure(toolType, strokeColor) {
+    deActivateTool() {
+        this.active = false;
+        this.measureToolbox.classList.remove('oltb-toolbox-section--show');
+        this.button.classList.remove('oltb-tool-button--active'); 
+
+        this.getMap().removeInteraction(this.interaction);
+        this.interaction = undefined;
+
+        ToolManager.removeActiveTool();
+    }
+
+    selectMeasure(toolType, fillColor, strokeColor) {
         const map = this.getMap();
 
+        // Remove previous interaction if tool is changed
         if(this.interaction) {
             map.removeInteraction(this.interaction);
         }
@@ -194,7 +231,7 @@ class MeasureTool extends Control {
             new Style({
                 image: new Circle({
                     fill: new Fill({
-                        color: 'rgba(255, 255, 255, 1)'
+                        color: fillColor
                     }),
                     stroke: new Stroke({
                         color: strokeColor,
@@ -203,7 +240,7 @@ class MeasureTool extends Control {
                     radius: 5
                 }),
                 fill: new Fill({
-                    color: 'rgba(255, 255, 255, .5)'
+                    color: fillColor
                 }),
                 stroke: new Stroke({
                     color: strokeColor,

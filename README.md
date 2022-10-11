@@ -544,7 +544,7 @@ controls: defaultControls({
     }),
     new MyLocationTool({
         enableHighAccuracy: true,
-        timeout: 5000,
+        timeout: 10000,
         click: function() {
             console.log('MyLocationTool clicked');
         },
