@@ -341,10 +341,8 @@ class EditTool extends Control {
     onWindowKeyUp(event) {
         if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Edit)) {
             this.handleClick(event);
-        }else if(isShortcutKeyOnly(event, 'delete')) {
-            if(this.select.getFeatures().getArray().length > 0) {
-                this.deleteSelectedFeatures();
-            }
+        }else if(isShortcutKeyOnly(event, 'DELETE') && this.active) {
+            this.onDeleteSelectedFeatures();
         }
     }
     
