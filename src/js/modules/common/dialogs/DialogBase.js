@@ -7,19 +7,18 @@ const ANIMATION_CLASS = 'oltb-animations--bounce';
 
 class DialogBase {
     constructor() {
-        const dialogBackdrop = DOM.createElement({
+        this.dialogBackdrop = DOM.createElement({
             element: 'div', 
             class: 'oltb-dialog-backdrop oltb-dialog-backdrop--fixed',
             attributes: {
                 tabindex: '-1'
             },
             listeners: {
-                'click': this.bounceAnimation,
+                'click': this.bounceAnimation.bind(this),
                 'keydown': trapFocusKeyListener
             }
         });
 
-        this.dialogBackdrop = dialogBackdrop;
         this.isDark = isDarkTheme();
 
         window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
@@ -31,14 +30,16 @@ class DialogBase {
         }
     }
 
+    isBackdropClicked(event) {
+        return event.target === this.dialogBackdrop;
+    }
+
     bounceAnimation(event) {
-        // To prevent trigger the animation if clicked in the dialog and not the backdrop
-        if(event.target !== this) {
+        if(!this.isBackdropClicked(event)) {
             return;
         }
 
-        const dialog = this.firstElementChild;
-
+        const dialog = this.dialogBackdrop.firstElementChild;
         DOM.rerunAnimation(dialog, ANIMATION_CLASS);
     }
 

@@ -26,7 +26,7 @@ class InfoWindowManager {
 
         this.map = map;
 
-        // Create DOM elements
+        // (1). Create DOM element representing infoWindow
         this.infoWindow = DOM.createElement({
             element: 'div',
             class: 'oltb-info-window',
@@ -59,7 +59,7 @@ class InfoWindowManager {
         this.infoWindow.appendChild(closeButton);
         this.infoWindow.appendChild(this.content);
 
-        // Create ol overlay
+        // (2). Create ol overlay to host infoWindow
         this.overlay = new Overlay({
             element: this.infoWindow,
             autoPan: true,

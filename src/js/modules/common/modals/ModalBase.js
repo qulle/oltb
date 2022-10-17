@@ -8,19 +8,19 @@ const ANIMATION_CLASS = 'oltb-animations--bounce';
 
 class ModalBase {
     constructor(title, onClose) {
-        const modalBackdrop = DOM.createElement({
+        this.modalBackdrop = DOM.createElement({
             element: 'div', 
             class: 'oltb-modal-backdrop oltb-modal-backdrop--fixed',
             attributes: {
                 tabindex: '-1'
             },
             listeners: {
-                'click': this.bounceAnimation,
+                'click': this.bounceAnimation.bind(this),
                 'keydown': trapFocusKeyListener
             }
         });
 
-        const modal = DOM.createElement({
+        this.modal = DOM.createElement({
             element: 'div', 
             class: 'oltb-modal oltb-animations--bounce'
         });
@@ -52,13 +52,11 @@ class ModalBase {
             }
         });
 
-        modalBackdrop.appendChild(modal);
-        modal.appendChild(modalHeader);
+        this.modalBackdrop.appendChild(this.modal);
+        this.modal.appendChild(modalHeader);
         modalHeader.appendChild(modalTitle);
         modalHeader.appendChild(modalClose);
 
-        this.modalBackdrop = modalBackdrop;
-        this.modal = modal;
         this.onClose = onClose;
 
         window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
@@ -70,14 +68,16 @@ class ModalBase {
         }
     }
 
+    isBackdropClicked(event) {
+        return event.target === this.modalBackdrop;
+    }
+
     bounceAnimation(event) {
-        // To prevent trigger the animation if clicked in the modal and not the backdrop
-        if(event.target !== this) {
+        if(!this.isBackdropClicked(event)) {
             return;
         }
 
-        const modal = this.firstElementChild;
-
+        const modal = this.modalBackdrop.firstElementChild;
         DOM.rerunAnimation(modal, ANIMATION_CLASS);
     }
 
