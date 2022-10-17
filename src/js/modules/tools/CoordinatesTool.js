@@ -76,20 +76,21 @@ class CoordinatesTool extends Control {
     }
 
     activateTool() {
-        const poppedTooltip = TooltipManager.pop('coordinates');
-        unByKey(this.onPointerMoveListener);
-        unByKey(this.onMapClickListener);
+        const map = this.getMap();
+
+        this.tooltipItem = TooltipManager.push('coordinates');
+        this.onPointerMoveListener = map.on(EVENTS.Ol.PointerMove, this.onPointerMove.bind(this));
+        this.onMapClickListener = map.on(EVENTS.Browser.Click, this.onMapClick.bind(this));
 
         this.active = true;
         this.button.classList.add('oltb-tool-button--active');
     }
 
     deActivateTool() {
-        const map = this.getMap();
-
-        this.tooltipItem = TooltipManager.push('coordinates');
-        this.onPointerMoveListener = map.on(EVENTS.Ol.PointerMove, this.onPointerMove.bind(this));
-        this.onMapClickListener = map.on(EVENTS.Browser.Click, this.onMapClick.bind(this))
+        const poppedTooltip = TooltipManager.pop('coordinates');
+        
+        unByKey(this.onPointerMoveListener);
+        unByKey(this.onMapClickListener);
 
         this.active = false;
         this.button.classList.remove('oltb-tool-button--active');

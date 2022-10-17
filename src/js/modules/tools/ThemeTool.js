@@ -62,6 +62,10 @@ class ThemeTool extends Control {
             this.options.click();
         }
         
+        this.momentaryActivation();
+    }
+
+    momentaryActivation() {
         let theme = 'light';
         
         if(isDarkTheme()) {

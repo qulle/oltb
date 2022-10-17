@@ -55,10 +55,10 @@ class NotificationTool extends Control {
             this.options.click();
         }
 
-        this.getNotifications();
+        this.momentaryActivation();
     }
 
-    getNotifications() {
+    momentaryActivation() {
         if(this.notificationModal) {
             return;
         }

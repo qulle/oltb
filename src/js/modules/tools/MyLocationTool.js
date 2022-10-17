@@ -65,6 +65,10 @@ class MyLocationTool extends Control {
             this.options.click();
         }
         
+        this.momentaryActivation();
+    }
+
+    momentaryActivation() {
         if(isFullScreen()) {
             Dialog.confirm({
                 text: 'To use geolocation you must exit fullscreen',

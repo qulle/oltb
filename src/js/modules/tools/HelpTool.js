@@ -54,6 +54,10 @@ class HelpTool extends Control {
             this.options.click();
         }
 
+        this.momentaryActivation();
+    }
+
+    momentaryActivation() {
         try {
             window.open(this.options.url, this.options.target).focus();
         }catch(error) {

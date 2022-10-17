@@ -82,6 +82,10 @@ class SettingsTool extends Control {
             this.options.click();
         }
 
+        this.momentaryActivation();
+    }
+
+    momentaryActivation() {
         if(this.settingsModal) {
             return;
         }

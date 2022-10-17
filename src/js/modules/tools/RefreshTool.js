@@ -50,6 +50,10 @@ class RefreshTool extends Control {
             this.options.click();
         }
 
+        this.momentaryActivation();
+    }
+
+    momentaryActivation() {
         window.location.reload();
     }
 }

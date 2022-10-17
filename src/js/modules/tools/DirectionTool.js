@@ -86,7 +86,11 @@ class DirectionTool extends Control {
         if(typeof this.options.click === 'function') {
             this.options.click();
         }
-        
+
+        this.momentaryActivation();
+    }
+
+    momentaryActivation() {
         let direction = 'col';
         let tooltipDirection = 'right';
 

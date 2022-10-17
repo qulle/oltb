@@ -68,7 +68,11 @@ class FullscreenTool extends Control {
         if(typeof this.options.click === 'function') {
             this.options.click();
         }
-        
+
+        this.momentaryActivation();
+    }
+
+    momentaryActivation() {
         if(!isFullScreenSupported()) {
             Toast.info({text: 'Fullscreen is not supported'});
             return;

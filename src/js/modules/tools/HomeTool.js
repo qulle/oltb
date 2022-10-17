@@ -69,6 +69,10 @@ class HomeTool extends Control {
             this.options.click();
         }
         
+        this.momentaryActivation();
+    }
+
+    momentaryActivation() {
         const view = this.getMap().getView();
 
         if(view.getAnimating()) {

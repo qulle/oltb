@@ -53,6 +53,10 @@ class ZoomInTool extends Control {
             this.options.click();
         }
         
+        this.momentaryActivation();
+    }
+
+    momentaryActivation() {
         const view = this.getMap().getView();
 
         const currentZoom = view.getZoom();

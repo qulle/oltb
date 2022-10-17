@@ -66,6 +66,10 @@ class ImportVectorLayerTool extends Control {
             this.options.click();
         }
         
+        this.momentaryActivation();
+    }
+
+    momentaryActivation() {
         this.inputDialog.click();
     }
 

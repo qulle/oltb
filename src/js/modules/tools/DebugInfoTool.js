@@ -66,6 +66,10 @@ class DebugInfoTool extends Control {
             this.options.click();
         }
 
+        this.momentaryActivation();
+    }
+
+    momentaryActivation() {
         if(this.debugInfoModal) {
             return;
         }

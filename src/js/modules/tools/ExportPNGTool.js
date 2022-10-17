@@ -62,7 +62,11 @@ class ExportPNGTool extends Control {
         if(typeof this.options.click === 'function') {
             this.options.click();
         }
-        
+
+        this.momentaryActivation();
+    }
+
+    momentaryActivation() {
         const map = this.getMap();
 
         // RenderSync will trigger the export the png

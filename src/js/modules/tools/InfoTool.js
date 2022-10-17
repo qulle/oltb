@@ -55,6 +55,10 @@ class InfoTool extends Control {
             this.options.click();
         }
 
+        this.momentaryActivation();
+    }
+
+    momentaryActivation() {
         if(this.infoModal) {
             return;
         }
