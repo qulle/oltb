@@ -883,6 +883,7 @@ State management is done through localStorage. First add a node name and an obje
 ```javascript
 const LOCAL_STORAGE_NODE_NAME = 'drawTool';
 const LOCAL_STORAGE_DEFAULTS = {
+    active: false,
     collapsed: false,
     toolTypeIndex: 5,
     strokeColor: '#4A86B8',
