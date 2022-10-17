@@ -22,6 +22,7 @@ const ID_PREFIX = 'oltb-draw';
 
 const LOCAL_STORAGE_NODE_NAME = 'drawTool';
 const LOCAL_STORAGE_DEFAULTS = {
+    active: false,
     collapsed: false,
     toolTypeIndex: 5,
     strokeWidthIndex: 4,
@@ -154,6 +155,7 @@ class DrawTool extends Control {
 
         window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
         window.addEventListener(EVENTS.Custom.SettingsCleared, this.onWindowSettingsCleared.bind(this));
+        window.addEventListener(EVENTS.Browser.DOMContentLoaded, this.onDOMContentLoaded.bind(this));
     }
 
     onToggleToolbox(toggle) {
@@ -162,6 +164,13 @@ class DrawTool extends Control {
             this.localStorage.collapsed = collapsed;
             StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
         });
+    }
+
+    onDOMContentLoaded() {
+        // Re-activate tool if it was active before the application was reloaded
+        if(this.localStorage.active) {
+            this.activateTool();
+        }
     }
 
     isIntersectionEnabled() {
@@ -257,6 +266,9 @@ class DrawTool extends Control {
 
         // Triggers activation of the draw tool
         eventDispatcher([this.toolType], EVENTS.Browser.Change);
+
+        this.localStorage.active = true;
+        StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
     }
 
     deActivateTool() {
@@ -268,6 +280,9 @@ class DrawTool extends Control {
         this.interaction = undefined;
 
         ToolManager.removeActiveTool();
+
+        this.localStorage.active = false;
+        StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
     }
 
     selectDraw(toolType, strokeWidth, fillColor, strokeColor) {

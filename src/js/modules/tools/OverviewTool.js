@@ -13,6 +13,7 @@ const ID_PREFIX = 'oltb-overview';
 
 const LOCAL_STORAGE_NODE_NAME = 'overviewTool';
 const LOCAL_STORAGE_DEFAULTS = {
+    active: false,
     collapsed: false
 };
 
@@ -85,6 +86,7 @@ class OverviewTool extends Control {
 
         window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
         window.addEventListener(EVENTS.Custom.SettingsCleared, this.onWindowSettingsCleared.bind(this));
+        window.addEventListener(EVENTS.Browser.DOMContentLoaded, this.onDOMContentLoaded.bind(this));
     }
 
     onToggleToolbox(toggle) {
@@ -97,6 +99,13 @@ class OverviewTool extends Control {
             this.overviewMap.setMap(null);
             this.overviewMap.setMap(this.getMap());
         });
+    }
+
+    onDOMContentLoaded() {
+        // Re-activate tool if it was active before the application was reloaded
+        if(this.localStorage.active) {
+            this.activateTool();
+        }
     }
 
     onWindowKeyUp(event) {
@@ -129,6 +138,9 @@ class OverviewTool extends Control {
 
         this.active = true;
         this.button.classList.add('oltb-tool-button--active');
+
+        this.localStorage.active = true;
+        StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
     }
 
     deActivateTool() {
@@ -137,6 +149,9 @@ class OverviewTool extends Control {
         this.active = false;
         this.button.classList.remove('oltb-tool-button--active');
         this.overviewToolbox.classList.remove('oltb-toolbox-section--show');
+
+        this.localStorage.active = false;
+        StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
     }
 }
 

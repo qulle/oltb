@@ -17,6 +17,7 @@ const RADIX = 10;
 
 const LOCAL_STORAGE_NODE_NAME = 'splitViewTool';
 const LOCAL_STORAGE_DEFAULTS = {
+    active: false,
     collapsed: false
 };
 
@@ -110,6 +111,7 @@ class SplitViewTool extends Control {
         window.addEventListener(EVENTS.Custom.MapLayerRemoved, this.onWindowMapLayerRemoved.bind(this));
         window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
         window.addEventListener(EVENTS.Custom.SettingsCleared, this.onWindowSettingsCleared.bind(this));
+        window.addEventListener(EVENTS.Browser.DOMContentLoaded, this.onDOMContentLoaded.bind(this));
     }
 
     onToggleToolbox(toggle) {
@@ -118,6 +120,13 @@ class SplitViewTool extends Control {
             this.localStorage.collapsed = collapsed;
             StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
         });
+    }
+
+    onDOMContentLoaded() {
+        // Re-activate tool if it was active before the application was reloaded
+        if(this.localStorage.active) {
+            this.activateTool();
+        }
     }
 
     onWindowKeyUp(event) {
@@ -206,6 +215,9 @@ class SplitViewTool extends Control {
         this.splitViewToolbox.classList.add('oltb-toolbox-section--show');
         this.splitViewSlider.classList.add('oltb-slider--show');
         this.button.classList.add('oltb-tool-button--active');
+
+        this.localStorage.active = true;
+        StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
     }
 
     deActivateTool() {
@@ -232,6 +244,9 @@ class SplitViewTool extends Control {
         this.splitViewToolbox.classList.remove('oltb-toolbox-section--show');
         this.splitViewSlider.classList.remove('oltb-slider--show');
         this.button.classList.remove('oltb-tool-button--active');
+
+        this.localStorage.active = false;
+        StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
     }
 
     swapSides() {

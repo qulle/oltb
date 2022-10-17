@@ -24,6 +24,7 @@ const ID_PREFIX = 'oltb-measure';
 
 const LOCAL_STORAGE_NODE_NAME = 'measureTool';
 const LOCAL_STORAGE_DEFAULTS = {
+    active: false,
     collapsed: false,
     toolTypeIndex: 0,
     strokeColor: '#4A86B8',
@@ -118,6 +119,7 @@ class MeasureTool extends Control {
 
         window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
         window.addEventListener(EVENTS.Custom.SettingsCleared, this.onWindowSettingsCleared.bind(this));
+        window.addEventListener(EVENTS.Browser.DOMContentLoaded, this.onDOMContentLoaded.bind(this));
     }
 
     onToggleToolbox(toggle) {
@@ -126,6 +128,13 @@ class MeasureTool extends Control {
             this.localStorage.collapsed = collapsed;
             StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
         });
+    }
+
+    onDOMContentLoaded() {
+        // Re-activate tool if it was active before the application was reloaded
+        if(this.localStorage.active) {
+            this.activateTool();
+        }
     }
 
     onWindowKeyUp(event) {
@@ -206,6 +215,9 @@ class MeasureTool extends Control {
 
         // Triggers activation of the measure tool
         eventDispatcher([this.toolType], EVENTS.Browser.Change);
+
+        this.localStorage.active = true;
+        StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
     }
 
     deActivateTool() {
@@ -217,6 +229,9 @@ class MeasureTool extends Control {
         this.interaction = undefined;
 
         ToolManager.removeActiveTool();
+
+        this.localStorage.active = false;
+        StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
     }
 
     selectMeasure(toolType, fillColor, strokeColor) {

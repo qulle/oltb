@@ -1,5 +1,6 @@
 import Toast from '../common/Toast';
 import DOM from '../helpers/Browser/DOM';
+import StateManager from '../core/managers/StateManager';
 import { Control } from 'ol/control';
 import { getRenderPixel } from 'ol/render';
 import { unByKey } from 'ol/Observable';
@@ -8,6 +9,11 @@ import { SVG_PATHS, getIcon } from '../core/SVGIcons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { EVENTS } from '../helpers/constants/Events';
+
+const LOCAL_STORAGE_NODE_NAME = 'magnifyTool';
+const LOCAL_STORAGE_DEFAULTS = {
+    active: false
+};
 
 const DEFAULT_OPTIONS = {};
 
@@ -40,7 +46,19 @@ class MagnifyTool extends Control {
         this.radius = 75;
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
+        // Load potential stored data from localStorage
+        const localStorageState = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
+        this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
+
         window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(EVENTS.Browser.DOMContentLoaded, this.onDOMContentLoaded.bind(this));
+    }
+
+    onDOMContentLoaded() {
+        // Re-activate tool if it was active before the application was reloaded
+        if(this.localStorage.active) {
+            this.activateTool();
+        }
     }
 
     onWindowKeyUp(event) {
@@ -82,6 +100,9 @@ class MagnifyTool extends Control {
 
         this.active = true;
         this.button.classList.add('oltb-tool-button--active');
+
+        this.localStorage.active = true;
+        StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
     }
 
     deActivateTool() {
@@ -102,6 +123,9 @@ class MagnifyTool extends Control {
 
         this.active = false;
         this.button.classList.remove('oltb-tool-button--active');
+
+        this.localStorage.active = false;
+        StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
     }
 
     onKeydown(event) {

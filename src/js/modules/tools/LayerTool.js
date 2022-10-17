@@ -32,6 +32,7 @@ const ID_PREFIX = 'oltb-layer';
 */
 const LOCAL_STORAGE_NODE_NAME = 'layerTool';
 const LOCAL_STORAGE_DEFAULTS = {
+    active: false, 
     'oltb-layer-map-toolbox-collapsed': false,
     'oltb-layer-feature-toolbox-collapsed': false,
 };
@@ -171,6 +172,7 @@ class LayerTool extends Control {
         window.addEventListener(EVENTS.Custom.FeatureLayerAdded, this.onWindowFeatureLayerAdded.bind(this));
         window.addEventListener(EVENTS.Custom.FeatureLayerRemoved, this.onWindowFeatureLayerRemoved.bind(this));
         window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(EVENTS.Browser.DOMContentLoaded, this.onDOMContentLoaded.bind(this));
     }
 
     onToggleToolbox(toggle) {
@@ -179,6 +181,13 @@ class LayerTool extends Control {
             this.localStorage[targetName] = collapsed;
             StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
         });
+    }
+
+    onDOMContentLoaded() {
+        // Re-activate tool if it was active before the application was reloaded
+        if(this.localStorage.active) {
+            this.activateTool();
+        }
     }
 
     onWindowKeyUp(event) {
@@ -217,12 +226,18 @@ class LayerTool extends Control {
         this.active = true;
         this.layersToolbox.classList.add('oltb-toolbox-section--show');
         this.button.classList.add('oltb-tool-button--active');
+
+        this.localStorage.active = true;
+        StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
     }
 
     deActivateTool() {
         this.active = false;
         this.layersToolbox.classList.remove('oltb-toolbox-section--show');
         this.button.classList.remove('oltb-tool-button--active');
+
+        this.localStorage.active = false;
+        StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
     }
 
     showAddMapLayerModal() {

@@ -33,6 +33,7 @@ const ID_PREFIX = 'oltb-edit';
 
 const LOCAL_STORAGE_NODE_NAME = 'editTool';
 const LOCAL_STORAGE_DEFAULTS = {
+    active: false,
     collapsed: false,
     hitTolerance: 5,
     strokeColor: '#4A86B8',
@@ -217,12 +218,20 @@ class EditTool extends Control {
         window.addEventListener(EVENTS.Custom.FeatureLayerRemoved, this.onWindowFeatureLayerRemoved.bind(this));
         window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
         window.addEventListener(EVENTS.Custom.SettingsCleared, this.onWindowSettingsCleared.bind(this));
+        window.addEventListener(EVENTS.Browser.DOMContentLoaded, this.onDOMContentLoaded.bind(this));
     }
 
     onSelectFeatureAdd(event) {
         // Note: User defined callback from constructor
         if(typeof this.options.selectadd === 'function') {
             this.options.selectadd(event);
+        }
+    }
+
+    onDOMContentLoaded() {
+        // Re-activate tool if it was active before the application was reloaded
+        if(this.localStorage.active) {
+            this.activateTool();
         }
     }
 
@@ -608,6 +617,9 @@ class EditTool extends Control {
         this.active = true;
         this.editToolbox.classList.add('oltb-toolbox-section--show');
         this.button.classList.add('oltb-tool-button--active');
+
+        this.localStorage.active = true;
+        StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
     }
 
     deActivateTool() {
@@ -624,6 +636,9 @@ class EditTool extends Control {
         this.active = false;
         this.editToolbox.classList.remove('oltb-toolbox-section--show');
         this.button.classList.remove('oltb-tool-button--active');
+
+        this.localStorage.active = false;
+        StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
     }
 }
 

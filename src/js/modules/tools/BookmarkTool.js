@@ -21,6 +21,7 @@ const ID_PREFIX = 'oltb-bookmark';
 
 const LOCAL_STORAGE_NODE_NAME = 'bookmarkTool';
 const LOCAL_STORAGE_DEFAULTS = {
+    active: false,
     collapsed: false,
     bookmarks: []
 };
@@ -118,6 +119,7 @@ class BookmarkTool extends Control {
 
         window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
         window.addEventListener(EVENTS.Custom.SettingsCleared, this.onWindowSettingsCleared.bind(this));
+        window.addEventListener(EVENTS.Browser.DOMContentLoaded, this.onDOMContentLoaded.bind(this));
     }
 
     onToggleToolbox(toggle) {
@@ -126,6 +128,13 @@ class BookmarkTool extends Control {
             this.localStorage.collapsed = collapsed;
             StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
         });
+    }
+
+    onDOMContentLoaded() {
+        // Re-activate tool if it was active before the application was reloaded
+        if(this.localStorage.active) {
+            this.activateTool();
+        }
     }
 
     onContextMenuBookmarkAdd(map, coordinates, target) {
@@ -168,9 +177,29 @@ class BookmarkTool extends Control {
             this.options.click();
         }
 
-        this.active = !this.active;
-        this.bookmarkToolbox.classList.toggle('oltb-toolbox-section--show');
-        this.button.classList.toggle('oltb-tool-button--active');
+        if(this.active) {
+            this.deActivateTool();
+        }else {
+            this.activateTool();
+        }
+    }
+
+    activateTool() {
+        this.active = true;
+        this.bookmarkToolbox.classList.add('oltb-toolbox-section--show');
+        this.button.classList.add('oltb-tool-button--active');
+
+        this.localStorage.active = true;
+        StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+    }
+
+    deActivateTool() {
+        this.active = false;
+        this.bookmarkToolbox.classList.remove('oltb-toolbox-section--show');
+        this.button.classList.remove('oltb-tool-button--active');
+
+        this.localStorage.active = false;
+        StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
     }
 
     addBookmark(bookmarkName) {

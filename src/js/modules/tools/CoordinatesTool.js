@@ -4,6 +4,7 @@ import DOM from '../helpers/Browser/DOM';
 import SettingsManager from '../core/managers/SettingsManager';
 import TooltipManager from '../core/managers/TooltipManager';
 import ToolManager from '../core/managers/ToolManager';
+import StateManager from '../core/managers/StateManager';
 import { Control } from 'ol/control';
 import { transform } from 'ol/proj';
 import { unByKey } from 'ol/Observable';
@@ -15,6 +16,11 @@ import { toStringHDMS } from 'ol/coordinate';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { EVENTS } from '../helpers/constants/Events';
 import { SETTINGS } from '../helpers/constants/Settings';
+
+const LOCAL_STORAGE_NODE_NAME = 'coordinateTool';
+const LOCAL_STORAGE_DEFAULTS = {
+    active: false
+};
 
 const DEFAULT_OPTIONS = {};
 
@@ -48,12 +54,24 @@ class CoordinatesTool extends Control {
         this.tooltipItem = undefined;
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
+        // Load potential stored data from localStorage
+        const localStorageState = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
+        this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
+
         SettingsManager.addSetting(SETTINGS.CopyCoordinatesOnClick, {
             state: true, 
             text: 'Coordinates tool - Copy coordinates on click'
         });
 
         window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(EVENTS.Browser.DOMContentLoaded, this.onDOMContentLoaded.bind(this));
+    }
+
+    onDOMContentLoaded() {
+        // Re-activate tool if it was active before the application was reloaded
+        if(this.localStorage.active) {
+            this.activateTool();
+        }
     }
 
     onWindowKeyUp(event) {
@@ -84,6 +102,9 @@ class CoordinatesTool extends Control {
 
         this.active = true;
         this.button.classList.add('oltb-tool-button--active');
+
+        this.localStorage.active = true;
+        StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
     }
 
     deActivateTool() {
@@ -94,6 +115,9 @@ class CoordinatesTool extends Control {
 
         this.active = false;
         this.button.classList.remove('oltb-tool-button--active');
+
+        this.localStorage.active = false;
+        StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
     }
 
     onPointerMove(event) {
