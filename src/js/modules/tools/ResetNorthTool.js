@@ -11,6 +11,7 @@ import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { EVENTS } from '../helpers/constants/Events';
 import { CONTEXT_MENUS } from '../helpers/constants/ContextMenus';
+import { degreesToRadians, radiansToDegrees } from '../helpers/Conversions';
 
 const DEFAULT_OPTIONS = {};
 
@@ -56,7 +57,7 @@ class ResetNorthTool extends Control {
         const view = map.getView();
 
         // Get current rotation and convert to normalized degree value
-        let rotation = view.getRotation() * (180 / Math.PI);
+        let rotation = radiansToDegrees(view.getRotation());
         rotation = rotation < 0 ? rotation + 360 : rotation;
 
         Dialog.prompt({
@@ -66,7 +67,7 @@ class ResetNorthTool extends Control {
             onConfirm: (result) => {
                 if(result.isDigitsOnly()) {
                     view.animate({
-                        rotation: result * (Math.PI / 180),
+                        rotation: degreesToRadians(result),
                         duration: CONFIG.animationDuration.normal,
                         easing: easeOut
                     });
