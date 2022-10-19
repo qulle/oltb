@@ -1,13 +1,12 @@
-import LayerManager from "../core/Managers/LayerManager";
+import LayerManager from "../core/managers/LayerManager";
 import TileLayer from 'ol/layer/Tile';
 import OSM from 'ol/source/OSM';
 import Stamen from 'ol/source/Stamen';
 import { XYZ } from 'ol/source';
 
-const isSilent = true;
 LayerManager.addMapLayers([
     {
-        name: 'Open street map',
+        name: 'Open Street Map',
         layer: new TileLayer({
             source: new OSM(),
             visible: true
@@ -22,12 +21,24 @@ LayerManager.addMapLayers([
             visible: false
         })
     }, {
-        name: 'Watercolor',
+        name: 'Stamen Watercolor',
         layer: new TileLayer({
+            maxZoom: 12,
             source: new Stamen({
-                layer: 'watercolor'
+                layer: 'watercolor',
+                attributions: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://creativecommons.org/licenses/by-sa/3.0">CC BY SA</a>.',
+            }),
+            visible: false
+        })
+    }, {
+        name: 'Stamen Terrain',
+        layer: new TileLayer({
+            maxZoom: 12,
+            source: new Stamen({
+                layer: 'terrain',
+                attributions: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://www.openstreetmap.org/copyright">ODbL</a>.',
             }),
             visible: false
         })
     }
-], isSilent);
+], true);

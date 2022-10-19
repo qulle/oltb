@@ -22,7 +22,7 @@ A picture says more than a thousand words, but the demo above says it all.
 6. [Colors](#colors) 
     1. [Theme colors](#theme-colors)
     2. [Color palette](#color-palette)
-7. [About the code](#about-the-code)
+8. [About the code](#about-the-code)
     1. [HTML](#html)
     2. [SCSS](#scss)
     3. [JavaScript](#javascript)
@@ -38,14 +38,17 @@ A picture says more than a thousand words, but the demo above says it all.
         3. [Prompt](#prompt)
     11. [Modal](#modal)
     12. [Toast](#toast)
-    13. [Context menu](#context-menu)
-    14. [State Management](#state-management)
-    15. [Debug tool](#debug-tool)
-    16. [OLTB namespace](#oltb-namespace)
-8. [External GitHub projects](#external-github-projects)
-9. [Maps used in the demo](#maps-used-in-the-demo)
-10. [License](#license)
-11. [Author](#author)
+    13. [Icons](#icons)
+        1. [Basic icons](#basic-icons)
+        2. [Windbarb icons](#windbarb-icons)
+    14. [Context menu](#context-menu)
+    15. [State Management](#state-management)
+    16. [Debug tool](#debug-tool)
+    17. [OLTB namespace](#oltb-namespace)
+9. [External GitHub projects](#external-github-projects)
+10. [Maps used in the demo](#maps-used-in-the-demo)
+11. [License](#license)
+12. [Author](#author)
 
 ## Branches
 The `main` branch always holds the latest features that are considered done. The latest commit from the main branch is available on the demo-page hosted on the `gh-pages` branch.
@@ -231,36 +234,36 @@ class Coordinates extends Control {}
 
 When using the custom tools, all that is needed is to import the module(s) you want to have in your toolbar
 ```javascript
-import HiddenMarker from './modules/tools/HiddenTools/Marker';
-import HiddenMapNavigation from './modules/tools/HiddenTools/MapNavigation';
-import Home from './modules/tools/Home';
-import ZoomIn from './modules/tools/ZoomIn';
-import ZoomOut from './modules/tools/ZoomOut';
-import FullScreen from './modules/tools/FullScreen';
-import ExportPNG from './modules/tools/ExportPNG';
+import HiddenMarkerTool from './modules/tools/hidden-tools/MarkerTool';
+import HiddenMapNavigationTool from './modules/tools/hidden-tools/MapNavigationTool';
+import HomeTool from './modules/tools/HomeTool';
+import ZoomInTool from './modules/tools/ZoomInTool';
+import ZoomOutTool from './modules/tools/ZoomOutTool';
+import FullScreenTool from './modules/tools/FullScreenTool';
+import ExportPNGTool from './modules/tools/ExportPNGTool';
 import DrawTool from './modules/tools/DrawTool';
 import MeasureTool from './modules/tools/MeasureTool';
-import Edit from './modules/tools/Edit';
-import Bookmark from './modules/tools/Bookmark';
-import Layers from './modules/tools/Layers';
-import SplitView from './modules/tools/SplitView';
-import Overview from './modules/tools/Overview';
-import GraticuleTool from './modules/tools/Graticule';
-import Magnify from './modules/tools/Magnify';
-import ResetNorth from './modules/tools/ResetNorth';
-import Coordinates from './modules/tools/Coordinates';
-import MyLocation from './modules/tools/MyLocation';
-import ImportVectorLayer from './modules/tools/ImportVectorLayer';
+import EditTool from './modules/tools/EditTool';
+import BookmarkTool from './modules/tools/BookmarkTool';
+import LayerTool from './modules/tools/LayerTool';
+import SplitViewTool from './modules/tools/SplitViewTool';
+import OverviewTool from './modules/tools/OverviewTool';
+import GraticuleTool from './modules/tools/GraticuleTool';
+import MagnifyTool from './modules/tools/MagnifyTool';
+import ResetNorthTool from './modules/tools/ResetNorthTool';
+import CoordinatesTool from './modules/tools/CoordinatesTool';
+import MyLocationTool from './modules/tools/MyLocationTool';
+import ImportVectorLayerTool from './modules/tools/ImportVectorLayerTool';
 import ScaleLineTool from './modules/tools/ScaleLineTool';
-import Refresh from './modules/tools/Refresh';
-import ThemeToggle from './modules/tools/ThemeToggle';
-import DirectionToggle from './modules/tools/DirectionToggle';
-import Info from './modules/tools/Info';
-import Notification from './modules/tools/Notification';
-import Help from './modules/tools/Help';
-import Settings from './modules/tools/Settings';
-import DebugInfo from './modules/tools/DebugInfo';
-import HiddenAbout from './modules/tools/HiddenTools/About';
+import RefreshTool from './modules/tools/RefreshTool';
+import ThemeTool from './modules/tools/ThemeTool';
+import DirectionTool from './modules/tools/DirectionTool';
+import InfoTool from './modules/tools/InfoTool';
+import NotificationTool from './modules/tools/NotificationTool';
+import HelpTool from './modules/tools/HelpTool';
+import SettingsTool from './modules/tools/SettingsTool';
+import DebugInfoTool from './modules/tools/DebugInfoTool';
+import HiddenAboutTool from './modules/tools/hidden-tools/AboutTool';
 ```
 
 and then calling the constructor in the array inside the extend method. The tools are added to the toolbar in the order you include them in this array.
@@ -270,80 +273,92 @@ controls: defaultControls({
     rotate: false, 
     attribution: SettingsManager.getSetting('show.attributions')
 }).extend([
-    new HiddenMarker(),
-    new HiddenMapNavigation(),
-    new Home(),
-    new ZoomIn(),
-    new ZoomOut(),
-    new FullScreen(),
-    new ExportPNG(),
+    new HiddenMarkerTool(),
+    new HiddenMapNavigationTool(),
+    new HomeTool(),
+    new ZoomInTool(),
+    new ZoomOutTool(),
+    new FullScreenTool(),
+    new ExportPNGTool(),
     new DrawTool(),
     new MeasureTool(),
-    new Edit(),
-    new Bookmark(),
-    new Layers(),
-    new SplitView(),
-    new Overview(),
+    new EditTool(),
+    new BookmarkTool(),
+    new LayerTool(),
+    new SplitViewTool(),
+    new OverviewTool(),
     new GraticuleTool(),
-    new Magnify(),
-    new ResetNorth(),
-    new Coordinates(),
-    new MyLocation(),
-    new ImportVectorLayer(),
+    new MagnifyTool(),
+    new ResetNorthTool(),
+    new CoordinatesTool(),
+    new MyLocationTool(),
+    new ImportVectorLayerTool(),
     new ScaleLineTool(),
-    new Refresh(),
-    new ThemeToggle(),
-    new DirectionToggle(),
-    new Info(),
-    new Notification(),
-    new Help(),
-    new Settings(),
-    new DebugInfo()
-    new HiddenAbout()
+    new RefreshTool(),
+    new ThemeTool(),
+    new DirectionTool(),
+    new InfoTool(),
+    new NotificationTool(),
+    new HelpTool(),
+    new SettingsTool(),
+    new DebugInfoTool()
+    new HiddenAboutTool()
 ])
 ```
 
 ### Callback functions and constructor parameters
-Tools that in any way change the map, create, modify or delete objects have several different callback functions that return data to you. 
+Tools that in any way change the map, create, modify or delete objects have several different callback functions that return data to you. All tools in the main toolbar have at least one callback that is named `click`.
 ```javascript
 controls: defaultControls({
     zoom: false, 
     rotate: false, 
     attribution: SettingsManager.getSetting('show.attributions')
 }).extend([
-    new HiddenMarker({
+    new HiddenMarkerTool({
         added: function(marker) {
-            console.log('Marker added', marker);
+                console.log('Marker added', marker);
         },
         removed: function(marker) {
             console.log('Marker removed', marker);
         },
-        edited: function(marker) {
-            console.log('Marker edited', marker);
+        edited: function(before, after) {
+            console.log('Marker edited', before, after);
         }
     }),
-    new HiddenMapNavigation({
+    new HiddenMapNavigationTool({
         focusZoom: 10
     }),
-    new Home({
+    new HomeTool({
         lon: 25.5809,
         lat: 23.7588,
         zoom: 3,
+        click: function() {
+            console.log('HomeTool click');
+        },
         home: function() {
             console.log('Map zoomed home');
         }
     }),
-    new ZoomIn({
+    new ZoomInTool({
+        click: function() {
+            console.log('ZoomInTool clicked');
+        },
         zoomed: function() {
             console.log('Zoomed in');
         }
     }),
-    new ZoomOut({
+    new ZoomOutTool({
+        click: function() {
+            console.log('ZoomOutTool clicked');
+        },
         zoomed: function() {
             console.log('Zoomed out');
         }
     }),
-    new FullScreen({
+    new FullScreenTool({
+        click: function() {
+            console.log('FullScreenTool clicked');
+        },
         enter: function(event) {
             console.log('Enter fullscreen mode', event);
         },
@@ -351,12 +366,18 @@ controls: defaultControls({
             console.log('Leave fullscreen mode', event);
         }
     }),
-    new ExportPNG({
+    new ExportPNGTool({
+        click: function() {
+            console.log('ExportPNGTool clicked');
+        },
         exported: function() {
             console.log('Map exported as png');
         }
     }),
     new DrawTool({
+        click: function() {
+            console.log('DrawTool clicked');
+        },
         start: function(event) {
             console.log('Draw Start');
         },
@@ -368,14 +389,21 @@ controls: defaultControls({
         },
         error: function(event) {
             console.log('Draw error');
+        },
+        intersected: function(event, intersectedFeatures) {
+            console.log('Draw end', event.feature);
+            console.log('Intersected features', intersectedFeatures);
         }
     }),
     new MeasureTool({
+        click: function() {
+            console.log('MeasureTool clicked');
+        },
         start: function(event) {
             console.log('Measure Start');
         },
         end: function(event) {
-            console.log('Measure end');
+            console.log('Measure end', event.feature);
         },
         abort: function(event) {
             console.log('Measure abort');
@@ -384,9 +412,19 @@ controls: defaultControls({
             console.log('Measure error');
         }
     }),
-    new Edit({
+    new EditTool({
+        hitTolerance: 5,
+        click: function() {
+            console.log('EditTool clicked');
+        },
+        styleChange: function(event, style) {
+            console.log('Feature style changed');
+        },
+        shapeOperation: function(type, a, b, result) {
+            console.log('Shape operation', type);
+        },
         selectadd: function(event) {
-             console.log('Selected feature');
+            console.log('Selected feature');
         },
         selectremove: function(event) {
             console.log('Deselected feature');
@@ -405,15 +443,24 @@ controls: defaultControls({
         },
         removedfeature: function(feature) {
             console.log('Removed feature', feature);
+        },
+        error: function(event) {
+            console.log('Edit error');
         }
     }),
-    new Bookmark({
+    new BookmarkTool({
         storeDataInLocalStorage: true,
+        click: function() {
+            console.log('BookmarkTool clicked');
+        },
         added: function(bookmark) {
             console.log('Bookmark added', bookmark);
         },
         removed: function(bookmark) {
             console.log('Bookmark removed', bookmark);
+        },
+        renamed: function(bookmark) {
+            console.log('Bookmark renamed', bookmark);
         },
         zoomedTo: function(bookmark) {
             console.log('Zoomed to bookmark', bookmark);
@@ -422,65 +469,85 @@ controls: defaultControls({
             console.log('Bookmarks cleared');
         }
     }),
-    new Layers({
-        disableMapCreateLayerButton: false,
-        disableMapLayerVisibilityButton: false,
-        disableMapLayerEditButton: false,
-        disableMapLayerDeleteButton: false,
-        disableFeatureCreateLayerButton: false,
-        disableFeatureLayerVisibilityButton: false,
-        disableFeatureLayerEditButton: false,
-        disableFeatureLayerDeleteButton: false,
-        disableFeatureLayerDownloadButton: false,
-        mapLayerAdded: function(layerObject) {
-            console.log('Map layer added', layerObject);
+    new LayerTool({
+        click: function() {
+            console.log('LayerTool clicked');
         },
-        mapLayerRemoved: function(layerObject) {
-            console.log('Map layer removed', layerObject);
+        mapLayerAdded: function(layerWrapper) {
+            console.log('Map layer added', layerWrapper);
         },
-        mapLayerRenamed: function(layerObject) {
-            console.log('Map layer renamed', layerObject);
+        mapLayerRemoved: function(layerWrapper) {
+            console.log('Map layer removed', layerWrapper);
         },
-        mapLayerVisibilityChanged: function(layerObject) {
-            console.log('Map layer visibility change', layerObject);
+        mapLayerRenamed: function(layerWrapper) {
+            console.log('Map layer renamed', layerWrapper);
         },
-        featureLayerAdded: function(layerObject) {
-            console.log('Feature layer added', layerObject);
+        mapLayerVisibilityChanged: function(layerWrapper) {
+            console.log('Map layer visibility change', layerWrapper);
         },
-        featureLayerRemoved: function(layerObject) {
-            console.log('Feature layer added', layerObject);
+        featureLayerAdded: function(layerWrapper) {
+            console.log('Feature layer added', layerWrapper);
         },
-        featureLayerRenamed: function(layerObject) {
-            console.log('Feature layer renamed', layerObject);
+        featureLayerRemoved: function(layerWrapper) {
+            console.log('Feature layer removed', layerWrapper);
         },
-        featureLayerVisibilityChanged: function(layerObject) {
-            console.log('Feature layer visibility change', layerObject);
+        featureLayerRenamed: function(layerWrapper) {
+            console.log('Feature layer renamed', layerWrapper);
         },
-        featureLayerDownloaded: function(layerObject) {
-            console.log('Feature layer downloaded', layerObject);
+        featureLayerVisibilityChanged: function(layerWrapper) {
+            console.log('Feature layer visibility change', layerWrapper);
+        },
+        featureLayerDownloaded: function(layerWrapper) {
+            console.log('Feature layer downloaded', layerWrapper);
         }
     }),
-    new SplitView(),
-    new Overview(),
+    new SplitViewTool({
+        click: function() {
+            console.log('SplitViewTool clicked');
+        }
+    }),
+    new OverviewTool({
+        click: function() {
+            console.log('OverviewTool clicked');
+        }
+    }),
     new GraticuleTool({
         color: 'rgba(59, 67, 82, 0.9)',
         dashed: true,
         width: 2,
         showLabels: true,
-        wrapX: true
+        wrapX: true,
+        click: function() {
+            console.log('GraticuleTool clicked');
+        }
     }),
-    new Magnify(),
-    new ResetNorth({
+    new MagnifyTool({
+        click: function() {
+            console.log('MagnifyTool clicked');
+        }
+    }),
+    new ResetNorthTool({
+        click: function() {
+            console.log('ResetNorthTool clicked');
+        },
         reset: function() {
             console.log('Map north reset');
         }
     }),
-    new Coordinates({
-        clicked: function(coordinates) {
-            console.log('You clicked', coordinates);
+    new CoordinatesTool({
+        click: function() {
+            console.log('CoordinatesTool clicked');
+        },
+        mapClicked: function(coordinates) {
+            console.log('You clicked at', coordinates);
         }
     }),
-    new MyLocation({
+    new MyLocationTool({
+        enableHighAccuracy: true,
+        timeout: 10000,
+        click: function() {
+            console.log('MyLocationTool clicked');
+        },
         location: function(location) {
             console.log('Location', location);
         },
@@ -488,7 +555,10 @@ controls: defaultControls({
             console.log('Location error', error);
         }
     }),
-    new ImportVectorLayer({
+    new ImportVectorLayerTool({
+        click: function() {
+            console.log('ImportVectorLayerTool clicked');
+        },
         imported: function(features) {
             console.log('Imported', features);
         },
@@ -497,37 +567,69 @@ controls: defaultControls({
         }
     }),
     new ScaleLineTool({
-        units: 'metric'
+        units: 'metric',
+        click: function() {
+            console.log('ScaleLineTool clicked');
+        }
     }),
-    new Refresh(),
-    new ThemeToggle({
+    new RefreshTool({
+        click: function() {
+            console.log('RefreshTool clicked');
+        }
+    }),
+    new ThemeTool({
+        click: function() {
+            console.log('ThemeTool clicked');
+        },
         changed: function(theme) {
             console.log('Theme changed to', theme);
         }
     }),
-    new DirectionToggle({
+    new DirectionTool({
+        click: function() {
+            console.log('DirectionTool clicked');
+        },
         changed: function(direction) {
             console.log('Direction changed to', direction);
         }
     }),
-    new Info({
+    new InfoTool({
         title: 'Hey!', 
-        content: '<p>This is a <em>modal window</em>, here you can place some text about your application or links to external resources.</p>'
+        content: '<p>This is a <em>modal window</em>, here you can place some text about your application or links to external resources.</p>',
+        click: function() {
+            console.log('InfoTool clicked');
+        }
     }),
-    new Notification(),
-    new Help({
+    new NotificationTool({
+        click: function() {
+            console.log('NotificationTool clicked');
+        }
+    }),
+    new HelpTool({
         url: 'https://github.com/qulle/oltb',
-        target: '_blank'
+        target: '_blank',
+        click: function() {
+            console.log('HelpTool clicked');
+        }
     }),
-    new Settings({
+    new SettingsTool({
+        click: function() {
+            console.log('SettingsTool clicked');
+        },
         cleared: function() {
             console.log('Settings cleared');
         }
     }),
-    new DebugInfo({
-        showWhenGetParameter: true
+    new DebugInfoTool({
+        click: function() {
+            console.log('DebugInfoTool clicked');
+        }
     }),
-    new HiddenAbout()
+    new HiddenAboutTool(),
+    new ContextMenu({
+        name: CONTEXT_MENUS.MainMap, 
+        selector: '#map canvas'
+    })
 ])
 ```
 
@@ -540,10 +642,18 @@ Tools that create objects at runtime, for example the BookmarkTool, LayerTool et
 Tools refered to as hidden tools are tools that only add functionality via the context menu. The hidden tools are used to enable the same type of callback functions in the constructor as every other tool. 
 
 ### Shortcut keys
-All tools have a shortcut key for ease of use and speeds up the handling of the toolbar and map. The shortcut key is displayed in the tooltip on the corresponding tool.
+All tools have a shortcut key for ease of use and speeds up the handling of the toolbar and map. The shortcut key is displayed in the tooltip on the corresponding tool. All shortcut keys are stored in the module `./modules/helpers/Constants/ShortcutKeys`.
+```javascript
+const SHORTCUT_KEYS = {
+    AreaOverview: 'A',
+    Bookmark: 'B',
+    Coordinates: 'C'
+    ...
+};
+```
 
 ### Custom projections
-You can define custom projections in the file `./modules/epsg/Projections`. This file is imported in the main `map.js` file and your projection can be used throughout the project. If you want to change the default proejction used, there is a general config file `./modules/core/Config.js` where you can change that.
+You can define custom projections in the file `./modules/epsg/Projections`. This file is registrated in `proj4.js` and the projections can be used throughout the project. If you want to change the default projection used, there is a general config module `./modules/core/Config` where you can change that. More projections can be fetched here [https://epsg.io/](https://epsg.io/).
 
 ### Layers
 Layers are added to the map using the `LayerManager`. The manager handels internal functionality and fires of events that the layer-tool captures to create the UI.
@@ -555,6 +665,7 @@ There are two types of layers, `map`- and `feature`-layers. Create layers using 
 import './modules/layers/Maps';
 import './modules/layers/Countries';
 import './modules/layers/Continents';
+import './modules/layers/Wind';
 import './modules/layers/Capitals';
 ```
 
@@ -616,6 +727,23 @@ Modal.create({
 });
 ```
 
+A reference to the created modal is returned from the create function. This can be used to block the creation of a second modal if a button is pressed again. The onClose callback can be used to release the lock.
+```javascript
+infoToolClick() {
+    if(this.infoModal) {
+        return;
+    }
+
+    this.infoModal = Modal.create({
+        title: 'Title', 
+        content: 'Text/HTML content',
+        onClose: () => {
+            this.infoModal = undefined;
+        }
+    });
+}
+```
+
 ### Toast
 To use the custom toasts in the map, include the following module.
 ```javascript
@@ -632,19 +760,72 @@ Toast.error({text: 'Failed to contact database'});
 
 To remove the toast after a specific time (ms), add the `autoremove` property.
 ```javascript
-Toast.success({text: 'Changes were saved to database', autoremove: 3000});
+Toast.success({
+    text: 'Changes were saved to database', 
+    autoremove: 4000
+});
 ```
 
-To close the toast from the code, store a reference to the toast and then call the remove method. The attribute `clickToClose` is set to false, this means that the user can't click on the toast to close it.
+To close the toast from the code, store a reference to the toast and then call the remove method. The attribute `clickToRemove` is set to false, this means that the user can't click on the toast to remove it. The `spinner` attribute adds a loading animation to the toast.
 ```javascript
-const loadingToast = Toast.info({text: 'Trying to find your location...', clickToClose: false});
+this.loadingToast = Toast.info({
+    text: 'Trying to find your location...', 
+    clickToRemove: false,
+    spinner: true,
+});
 
-loadingToast.remove();
+this.loadingToast.remove();
 ```
 
-To add a loading spinner in the toast. Add the `spinner` property.
+The returned reference to the toast can be used to block further actions while a task is being performed. The onRemove callback can be used to release the lock.
 ```javascript
-const loadingToast = Toast.info({text: 'Trying to find your location...', clickToClose: false, spinner: true});
+myLocationToolClick() {
+    if(this.loadingToast) {
+        return;
+    }
+
+    this.loadingToast = Toast.info({
+        text: 'Trying to find your location...', 
+        clickToRemove: false, 
+        spinner: true,
+        onRemove: () => {
+            this.loadingToast = undefined;
+        }
+    });
+}
+```
+
+### Icons
+There are two modules for using SVG icons. One is for basic icons and the other one is for windbarb icons.
+
+#### Basic icons
+Most of the icons are from the excellent [icons.getbootstrap.com](https://icons.getbootstrap.com/). Icons have been added on a as needed basis and far from all icons have been added.
+```javascript
+import { getIcon, SVG_PATHS } from './modules/core/SVGIcons';
+
+const icon = getIcon({
+    path: SVG_PATHS.GeoMarkerFilled,
+    class: 'some-class',
+    width: 20,
+    height: 20,
+    fill: 'rgb(255, 255, 255)',
+    stroke: 'none'
+});
+```
+
+#### Windbarb icons
+The windbarbs are available from 0 to 190 knots (0 to 97.5m/s). To get more information about the windbarbs visit my other project [github.com/qulle/svg-wind-barbs](https://github.com/qulle/svg-wind-barbs).
+```javascript
+import { getWindBarb } from './modules/core/SVGWindbarbs';
+
+const icon = getWindBarb({
+    windSpeed: 25,
+    width: 250,
+    height: 250,
+    fill: 'rgb(59, 67, 82)',
+    stroke: 'rgb(59, 67, 82)',
+    strokeWidth: 3
+});
 ```
 
 ### Context menu
@@ -656,19 +837,26 @@ import ContextMenu from './modules/common/ContextMenu';
 To create a context menu call the constructor and give a unique name as the first argument and a selector to trigger the menu. The context menu class extends the Control class from OpenLayers.
 ```javascript
 map.addControl(new ContextMenu({
-    name: 'main.map.context.menu', 
+    name: CONTEXT_MENUS.MainMap, 
     selector: '#map canvas'
 });
 ```
 
+There is a module for storing context menu names located in `./modules/helpers/Constants/ContextMenus`.
+```javascript
+const CONTEXT_MENUS = {
+    MainMap: 'main.map.context.menu'
+};
+```
+
 To add items to the context menu use the function `addContextMenuItem` and give the name that matches the context menu aswell as the name/label of the item, the icon and a function to call when the item is clicked.
 ```javascript
-addContextMenuItem('main.map.context.menu', {icon: '<svg>...</svg>', name: 'Zoom home', fn: this.handleResetToHome.bind(this)});
+addContextMenuItem(CONTEXT_MENUS.MainMap, {icon: '<svg>...</svg>', name: 'Zoom home', fn: this.handleResetToHome.bind(this)});
 ```
 
 The callback function recieves a references to the map, the clicked coordinates and the target element (the canvas).
 ```javascript
-addContextMenuItem('main.map.context.menu', {icon: '<svg>...</svg>', name: 'Clear settings', fn: function(map, coordinates, target) {
+addContextMenuItem(CONTEXT_MENUS.MainMap, {icon: '<svg>...</svg>', name: 'Clear settings', fn: function(map, coordinates, target) {
     Dialog.confirm({
         text: 'Do you want to clear all settings?',
         onConfirm: function() {
@@ -682,24 +870,25 @@ It is not important in what order the menu or its items are created. If no menu 
 
 To insert a separator in the menu add an empty object.
 ```javascript
-addContextMenuItem('main.map.context.menu', {});
+addContextMenuItem(CONTEXT_MENUS.MainMap, {});
 ```
 
 ### State Management
 To use state management start by importing the following module.
 ```javascript
-import StateManager from './modules/core/Managers/StateManager';
+import StateManager from './modules/core/managers/StateManager';
 ```
 
 State management is done through localStorage. First add a node name and an object to store default values.
 ```javascript
 const LOCAL_STORAGE_NODE_NAME = 'drawTool';
 const LOCAL_STORAGE_DEFAULTS = {
+    active: false,
     collapsed: false,
     toolTypeIndex: 5,
     strokeColor: '#4A86B8',
     strokeWidth: 2,
-    fillColor: '#FFFFFFFF'
+    fillColor: '#FFFFFF80'
 };
 ```
 
@@ -718,16 +907,16 @@ StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.loca
 To make debugging and diagnosting errors easier there is a tool named `DebugInfo`. This tool will gather information about the map such as zoomlevel, location, layers, rotation, projection etc and displays the information in a modal window. To hide the debug tool as default, add the parameter `showWhenGetParameter: true` and add the get parameter to the url `/?debug=true` to show the tool. Adding the debug parameter will also enable the default context-menu in the browser.
 
 ### OLTB namespace
-For some tools and features data is stored on the global window object. The name that is reserved for the toolbar is `window.oltb`. Data is stored in local storage under the key `oltb-state`. 
-
-All classes and id:s in the project are also prefixed with the namespace `oltb`.
+All classes and id:s in the project are prefixed with the namespace `oltb`. Data is also stored in local storage under the key `oltb-state`. 
 
 ## External GitHub projects
 1. [OpenLayers 7.1.0](https://openlayers.org/en/v7.1.0/apidoc/)
-2. [Tippy.js 6.3.7](https://atomiks.github.io/tippyjs/)
-3. [Bootstrap Icons](https://icons.getbootstrap.com/)
-4. [A Color Picker 1.2.1](https://github.com/narsenico/a-color-picker)
-5. [Plain JS Slidetoggle 2.0.0](https://github.com/ericbutler555/plain-js-slidetoggle)
+2. [Parcel 2.7.0](https://parceljs.org/)
+3. [Tippy.js 6.3.7](https://atomiks.github.io/tippyjs/)
+4. [Bootstrap Icons](https://icons.getbootstrap.com/)
+5. [A Color Picker 1.2.1](https://github.com/narsenico/a-color-picker)
+6. [Plain JS Slidetoggle 2.0.0](https://github.com/ericbutler555/plain-js-slidetoggle)
+7. [JSTS 2.9.2](https://github.com/bjornharrtell/jsts)
 
 ## Maps used in the demo
 1. [OpenStreetMap](https://www.openstreetmap.org/)

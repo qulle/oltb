@@ -1,15 +1,16 @@
 import Control from "ol/control/Control";
-import Config from '../core/Config';
+import CONFIG from '../core/Config';
 import DOM from '../helpers/Browser/DOM';
 import { trapFocusKeyListener } from '../helpers/TrapFocus';
 import { transform } from 'ol/proj';
-import { mapElement } from "../core/ElementReferences";
+import { MAP_ELEMENT } from "../core/ElementReferences";
 import { hasNestedProperty } from "../helpers/HasNestedProperty";
+import { EVENTS } from "../helpers/constants/Events";
 
 const DEFAULT_OPTIONS = {};
 
-const menuItems = new Map();
-const menuInstances = new Map();
+const MENU_ITEMS = new Map();
+const MENU_INSTANCES = new Map();
 
 class ContextMenu extends Control {
     constructor(options = {}) {
@@ -29,21 +30,20 @@ class ContextMenu extends Control {
         
         this.menu = this.element;
         this.options = { ...DEFAULT_OPTIONS, ...options };
-        this.menuItems = menuItems.get(options.name);
+        this.MENU_ITEMS = MENU_ITEMS.get(this.options.name);
         this.target = null;
 
         this.create();
-        menuInstances.set(options.name, this);
+        MENU_INSTANCES.set(this.options.name, this);
     }
 
     create() {
         // Create <li>'s for each menu item
-        this.menuItems.forEach((item, index) => {
+        this.MENU_ITEMS.forEach((item, index) => {
             this.addMenuItem(item, index);
         });
 
-        // Add root element, the contextmenu, to the map
-        mapElement.appendChild(this.menu);
+        MAP_ELEMENT.appendChild(this.menu);
     }
 
     addMenuItem(item, index) {
@@ -90,8 +90,8 @@ class ContextMenu extends Control {
     show(event) {
         this.coordinates = transform(
             this.getMap().getEventCoordinate(event), 
-            Config.projection, 
-            Config.wgs84Projection
+            CONFIG.projection, 
+            CONFIG.wgs84Projection
         );
         
         this.menu.style.left = `${event.clientX}px`;
@@ -111,7 +111,7 @@ class ContextMenu extends Control {
 
     click(event) {
         const id = event.target.getAttribute('data-contextmenuitem');
-        const contextItem = this.menuItems[id];
+        const contextItem = this.MENU_ITEMS[id];
         if(contextItem) {
             contextItem.fn(
                 this.getMap(), 
@@ -124,16 +124,16 @@ class ContextMenu extends Control {
     }
 }
 
-mapElement.addEventListener('contextmenu', (event) => {
-    menuInstances.forEach((menu) => {
+MAP_ELEMENT.addEventListener(EVENTS.Browser.ContextMenu, (event) => {
+    MENU_INSTANCES.forEach((menu) => {
         if(event.target.matches(menu.options.selector)) {
             menu.show(event);
         }
     });
 });
 
-mapElement.addEventListener('click', (event) => {
-    menuInstances.forEach((menu) => {
+MAP_ELEMENT.addEventListener(EVENTS.Browser.Click, (event) => {
+    MENU_INSTANCES.forEach((menu) => {
         menu.hide();
     });
 });
@@ -145,16 +145,16 @@ const addContextMenuItems = function(name, items) {
 }
 
 const addContextMenuItem = function(name, item) {
-    if(!menuItems.has(name)) {
-        menuItems.set(name, []);
+    if(!MENU_ITEMS.has(name)) {
+        MENU_ITEMS.set(name, []);
     }
         
-    menuItems.get(name).push(item);
+    MENU_ITEMS.get(name).push(item);
 
     // Check if context menu is created, if so, add the menu item to the context menu
-    if(menuInstances.has(name)) {
-        const menu = menuInstances.get(name);
-        const index = menuItems.get(name).length - 1;
+    if(MENU_INSTANCES.has(name)) {
+        const menu = MENU_INSTANCES.get(name);
+        const index = MENU_ITEMS.get(name).length - 1;
 
         menu.addMenuItem(item, index);
     }

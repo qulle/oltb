@@ -1,0 +1,21 @@
+// Override : default overviewmap style from ol
+#oltb-overview-toolbox .ol-overviewmap {
+    position: relative;
+    padding: 0;
+    border-radius: $border-radius;
+
+    .ol-overviewmap-map {
+        display: block;
+        width: 100%;
+        margin: 0;
+        border-radius: $border-radius;
+    }
+
+    .ol-overviewmap-box {
+        border: 2px dotted $color-gray-dark;
+    }
+
+    .ol-viewport {
+        border-radius: $border-radius;
+    }
+}

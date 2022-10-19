@@ -1,17 +1,38 @@
-import proj4 from 'proj4';
-import { register } from 'ol/proj/proj4';
+const PROJECTIONS = [
+    {
+        code: '3857',
+        name: 'WGS 84 / Pseudo-Mercator',
+        proj4def: '+proj=merc +a=6378137 +b=6378137 +lat_ts=0 +lon_0=0 +x_0=0 +y_0=0 +k=1 +units=m +nadgrids=@null +wktext +no_defs +type=crs',
+        bbox: '85.06,-180,-85.06,180'
+    }, {
+        code: '4326',
+        name: 'WGS 84',
+        proj4def: '+proj=longlat +datum=WGS84 +no_defs +type=crs',
+        bbox: '90,-180,-90,180'
+    }, {
+        code: '7789',
+        name: 'ITRF2014',
+        proj4def: '+proj=geocent +ellps=GRS80 +units=m +no_defs +type=crs',
+        bbox: '90,-180,-90,180'
+    }, {
+        code: '3006',
+        name: 'SWEREF99 TM',
+        proj4def: '+proj=utm +zone=33 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs +type=crs',
+        bbox: '69.07,10.03,54.96,24.17'
+    }
+];
 
-proj4.defs([
-    [
-        'EPSG:3006',
-        '+proj=utm +zone=33 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs'
-    ], [
-        'EPSG:4326',
-        '+title=WGS 84 (long/lat) +proj=longlat +ellps=WGS84 +datum=WGS84 +units=degrees'
-    ], [
-        'EPSG:4269',
-        '+title=NAD83 (long/lat) +proj=longlat +a=6378137.0 +b=6356752.31414036 +ellps=GRS80 +datum=NAD83 +units=degrees'
-    ]
-]);
+const getProj4Defs = function() {
+    const result = [];
 
-register(proj4);
+    PROJECTIONS.forEach((projection) => {
+        result.push([
+            'EPSG:' + projection.code,
+            projection.proj4def
+        ]);
+    });
+
+    return result;
+}
+
+export { PROJECTIONS, getProj4Defs };

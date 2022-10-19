@@ -1,11 +1,23 @@
 import { version } from '/package.json';
 
-const Config = {
+const CONFIG = {
     version: version,
-    projection: 'EPSG:3857',
     locale: 'en-us',
+    projection: 'EPSG:3857',
     wgs84Projection: 'EPSG:4326',
-    animationDuration: 350
+    deviceWidth: {
+        xs: '0',
+        sm: '576',
+        md: '768',
+        lg: '992',
+        xl: '1200',
+        xxl: '1400'
+    },
+    animationDuration: {
+        slow: 450,
+        normal: 350,
+        fast: 250
+    }
 };
 
-export default Config;
+export default CONFIG;

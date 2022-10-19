@@ -1,19 +1,21 @@
-import LayerManager from "../core/Managers/LayerManager";
+import LayerManager from "../core/managers/LayerManager";
 import Toast from "../common/Toast";
 import { toStringHDMS } from "ol/coordinate";
-import { getIcon, SVGPaths } from "../core/Icons";
-import { generateMarker } from '../helpers/olFunctions/Marker';
+import { getIcon, SVG_PATHS } from "../core/SVGIcons";
+import { generateMarker } from '../helpers/ol-functions/GenerateMarker';
 
 import urlCapitalsGeoJSON from 'url:../../../json/capitals.geojson';
 
-const icon = getIcon({
-    path: SVGPaths.GeoMarkerFilled,
+const ID_PREFIX = 'oltb-info-window-marker';
+
+const ICON = getIcon({
+    path: SVG_PATHS.GeoMarkerFilled,
     width: 20,
     height: 20,
     fill: 'rgb(255, 255, 255)'
 });
 
-const continentColors = {
+const CONTINENT_COLORS = {
     'Europe': '#0166A5FF',
     'Africa': '#007C70FF',
     'Antarctica': '#F67D2CFF',
@@ -26,17 +28,18 @@ const continentColors = {
     'US': '#3B4352FF'
 };
 
-const layerWrapper = LayerManager.addFeatureLayer('Capitals', true);
+const LAYER_WRAPPER = LayerManager.addFeatureLayer('Capitals', true, true);
 
 fetch(urlCapitalsGeoJSON)
-    .then(async response => {
+    .then((response) => {
         if(!response.ok) {
             throw new Error(`Fetch error [${response.status}] [${response.statusText}]`);
         }
 
-        const capitals = await response.json();
-
-        capitals.features.forEach((capital) => {
+        return response.json();
+    })
+    .then((json) => {
+        json.features.forEach((capital) => {
             const lon = capital.geometry.coordinates[0];
             const lat = capital.geometry.coordinates[1];
             const prettyCoords = toStringHDMS([lon, lat]);
@@ -46,18 +49,18 @@ fetch(urlCapitalsGeoJSON)
                 <p class="oltb-text-center">${capital.properties.capitalName} - ${capital.properties.continentName}</p>
                 <p class="oltb-text-center">${prettyCoords}</p>
                 <div class="oltb-d-flex oltb-justify-content-center">
-                    <button class="oltb-func-btn oltb-func-btn--delete oltb-tippy" title="Delete marker" id="oltb-info-window-remove-marker"></button>
-                    <button class="oltb-func-btn oltb-func-btn--copy oltb-tippy" title="Copy marker text" id="oltb-info-window-copy-marker-location" data-copy="Country ${capital.properties.countryName} Capital ${capital.properties.capitalName} Coordinates ${prettyCoords}"></button>
+                    <button class="oltb-func-btn oltb-func-btn--delete oltb-tippy" title="Delete marker" id="${ID_PREFIX}-remove"></button>
+                    <button class="oltb-func-btn oltb-func-btn--copy oltb-tippy" title="Copy marker text" id="${ID_PREFIX}-copy-location" data-copy="Country ${capital.properties.countryName} Capital ${capital.properties.capitalName} Coordinates ${prettyCoords}"></button>
                 </div>
             `;
         
-            const backgroundColor = continentColors[capital.properties.continentName] || '#223344FF';
+            const backgroundColor = CONTINENT_COLORS[capital.properties.continentName] || '#223344FF';
         
-            layerWrapper.layer.getSource().addFeatures(
+            LAYER_WRAPPER.layer.getSource().addFeature(
                 new generateMarker({
                     lat: lat,
                     lon: lon,
-                    icon: icon,
+                    icon: ICON,
                     backgroundColor: backgroundColor,
                     notSelectable: true,
                     infoWindow: infoWindow
@@ -65,7 +68,9 @@ fetch(urlCapitalsGeoJSON)
             );
         });
     })
-    .catch(error => {
-        console.error(`Error loading Capitals [${error}]`);
-        Toast.error({text: 'Error loading Capitals layer'});  
+    .catch((error) => {
+        const errorMessage = 'Error loading Capitals layer';
+
+        console.error(`${errorMessage} [${error}]`);
+        Toast.error({text: errorMessage});
     });

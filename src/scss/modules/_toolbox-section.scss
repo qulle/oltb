@@ -21,8 +21,25 @@
             margin-top: 1rem;
         }
 
+        .oltb-label {
+            font-size: 1rem;
+        }
+
         &--topmost li:first-child {
             margin-top: 0;
+        }
+
+        &--sub-toolbar {
+            display: block;
+            font-size: 0;
+
+            .oltb-btn {
+                margin-left: .375rem;
+
+                &:first-of-type {
+                    margin-left: 0;
+                }
+            }
         }
     }
 

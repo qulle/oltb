@@ -1,16 +1,20 @@
-const hasNestedProperty = (obj, prop, ...restProps) => {
+const hasNestedProperty = (obj, prop, ...rest) => {
     if(obj === undefined) {
         return false;
     }
 
     if(
-        restProps.length === 0 &&
+        rest.length === 0 &&
         Object.prototype.hasOwnProperty.call(obj, prop)
     ) {
         return true;
     }
 
-    return hasNestedProperty(obj[prop], ...restProps);
+    return hasNestedProperty(obj[prop], ...rest);
 }
 
-export { hasNestedProperty };
+const hasCustomFeatureProperty = function(obj, ...props) {
+    return hasNestedProperty(obj, 'oltb', props);
+}
+
+export { hasNestedProperty, hasCustomFeatureProperty };

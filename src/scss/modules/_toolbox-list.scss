@@ -20,6 +20,7 @@
 
         &--hidden {
             .oltb-toolbox-list__title {
+                font-style: italic;
                 text-decoration: line-through;
             }
     
@@ -49,8 +50,12 @@
                 box-shadow: $box-shadow-light;
             }
         
-            &--active::before {
-                background-color: $color-green-mid;
+            &--active {
+                font-weight: bold;
+
+                &::before {
+                    background-color: $color-green-mid;
+                }
             }
         }
 

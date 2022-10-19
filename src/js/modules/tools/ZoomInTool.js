@@ -1,0 +1,84 @@
+import CONFIG from '../core/Config';
+import DOM from '../helpers/Browser/DOM';
+import { Control } from 'ol/control';
+import { easeOut } from 'ol/easing';
+import { TOOLBAR_ELEMENT } from '../core/ElementReferences';
+import { SVG_PATHS, getIcon } from '../core/SVGIcons';
+import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
+import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
+import { EVENTS } from '../helpers/constants/Events';
+
+const DEFAULT_OPTIONS = {};
+
+class ZoomInTool extends Control {
+    constructor(options = {}) {
+        super({
+            element: TOOLBAR_ELEMENT
+        });
+        
+        const icon = getIcon({
+            path: SVG_PATHS.ZoomIn,
+            class: 'oltb-tool-button__icon'
+        });
+
+        const button = DOM.createElement({
+            element: 'button',
+            html: icon,
+            class: 'oltb-tool-button',
+            attributes: {
+                type: 'button',
+                'data-tippy-content': `Zoom in (${SHORTCUT_KEYS.ZoomIn})`
+            },
+            listeners: {
+                'click': this.handleClick.bind(this)
+            }
+        });
+
+        this.element.appendChild(button);
+        this.options = { ...DEFAULT_OPTIONS, ...options };
+        this.delta = 1;
+
+        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
+    }
+
+    onWindowKeyUp(event) {
+        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.ZoomIn)) {
+            this.handleClick(event);
+        }
+    }
+
+    handleClick() {
+        // Note: User defined callback from constructor
+        if(typeof this.options.click === 'function') {
+            this.options.click();
+        }
+        
+        this.momentaryActivation();
+    }
+
+    momentaryActivation() {
+        const view = this.getMap().getView();
+
+        const currentZoom = view.getZoom();
+        const newZoom = view.getConstrainedZoom(currentZoom + this.delta);
+            
+        if(view.getAnimating()) {
+            view.cancelAnimations();
+        }
+
+        view.animate({
+            zoom: newZoom,
+            duration: CONFIG.animationDuration.normal,
+            easing: easeOut
+        });
+
+        setTimeout(() => {
+            // Note: User defined callback from constructor
+            if(typeof this.options.zoomed === 'function') {
+                this.options.zoomed();
+            }
+        }, CONFIG.animationDuration.normal);
+    }
+}
+
+export default ZoomInTool;
