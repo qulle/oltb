@@ -1,7 +1,7 @@
 {
     "name": "oltb",
     "browserslist": "> 0.5%, last 2 versions, not dead",
-    "version": "1.0.0-beta2",
+    "version": "1.0.0-beta3",
     "description": "Lightweight mobile friendly GIS toolbar developed for OpenLayers 7.1.0",
     "scripts": {
         "start": "parcel src/index.html --open",

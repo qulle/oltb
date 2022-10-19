@@ -2,7 +2,7 @@
 ### Lightweight GIS toolbar developed for OpenLayers 7.1.0. The toolbar can be filled with any number of tools and can be used in both horizontal and vertical mode and is available in both light and dark theme.
 
 ## Latest build - [Demo](https://qulle.github.io/oltb/)
-The latest build is built using the last official release `v1.0.0-beta2` but may contain more features that have been added since then. Check the releases tab or the commit tags for specific versions.
+The latest build is built using the last official release `v1.0.0-beta3` but may contain more features that have been added since then. Check the releases tab or the commit tags for specific versions.
 
 ## Screenshots
 A picture says more than a thousand words, but the demo above says it all.
