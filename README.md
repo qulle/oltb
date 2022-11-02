@@ -13,6 +13,23 @@ A picture says more than a thousand words, but the demo above says it all.
 ### Dark theme
 ![Screenshot Dark Theme](images/demo-dark.png?raw=true "Screenshot Dark Theme")
 
+
+# Chapter 1 - External Usage
+This chapter describes the ways in which you can use this toolbar in your applications.
+
+## CDN 
+```javascript
+// TODO
+```
+
+## NPM
+```javascript
+// TODO
+```
+
+# Chapter 2 - Internal Development
+This chapter describes in detail how the toolbar is structured, internal dependencies and how all parts are connected together.
+
 ## Table of contents
 1. [Branches](#branches)
 2. [Request new Feature or report a Bug](#request-new-feature-or-report-a-bug)

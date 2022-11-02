@@ -1,24 +1,22 @@
 {
     "name": "oltb",
-    "browserslist": "> 0.5%, last 2 versions, not dead",
     "version": "1.0.0-beta3",
+    "author": "Qulle",
+    "license": "BSD-2-Clause license",
     "description": "Lightweight mobile friendly GIS toolbar developed for OpenLayers 7.1.0",
-    "scripts": {
-        "start": "parcel src/index.html --open",
-        "build": "parcel build --public-url . src/index.html",
-        "clean": "rm -rf dist/ .parcel-cache/"
-    },
     "repository": {
         "type": "git",
         "url": "git+https://github.com/qulle/oltb.git"
     },
-    "keywords": [],
-    "author": "Qulle",
-    "license": "BSD-2-Clause license",
+    "homepage": "https://github.com/qulle/oltb#readme",
     "bugs": {
         "url": "https://github.com/qulle/oltb/issues"
     },
-    "homepage": "https://github.com/qulle/oltb#readme",
+    "scripts": {
+        "start": "parcel src/index.html --open",
+        "build": "rollup --config",
+        "clean": "rm -rf dist/ .parcel-cache/"
+    },
     "dependencies": {
         "a-color-picker": "^1.2.1",
         "html2canvas": "^1.4.1",
@@ -29,6 +27,13 @@
     },
     "devDependencies": {
         "@parcel/transformer-sass": "^2.7.0",
-        "parcel": "^2.7.0"
+        "@rollup/plugin-commonjs": "^23.0.2",
+        "@rollup/plugin-json": "^5.0.1",
+        "@rollup/plugin-node-resolve": "^15.0.1",
+        "parcel": "^2.7.0",
+        "rollup": "^3.2.5",
+        "rollup-plugin-import-css": "^3.1.0",
+        "rollup-plugin-replace": "^2.2.0",
+        "rollup-plugin-scss": "^3.0.0"
     }
 }

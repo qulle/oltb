@@ -1,6 +1,10 @@
 class ToolManager {
     static tool;
 
+    static init(map) {
+        // Note: Not used in this Manager
+    }
+
     static setActiveTool(tool) {
         if(this.tool && this.tool !== tool) {
             this.tool.deSelect();

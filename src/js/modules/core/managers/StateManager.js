@@ -1,6 +1,10 @@
 class StateManager {
     static runtimeState = JSON.parse(localStorage.getItem('oltb-state')) || {};
 
+    static init(map) {
+        // Note: Not used in this Manager
+    }
+
     static updateStateObject(name, value) {
         this.runtimeState[name] = value;
         this.saveState();

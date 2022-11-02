@@ -52,7 +52,11 @@ class HiddenMapNavigationTool extends Control {
     }
 
     onDOMContentLoaded(event) {
-        this.getMap().on(EVENTS.Ol.MoveEnd, this.onMoveEnd.bind(this));
+        const map = this.getMap();
+
+        if(map) {
+            map.on(EVENTS.Ol.MoveEnd, this.onMoveEnd.bind(this));
+        }
     }
 
     onContextMenuCenterMap(map, coordinates, target) {

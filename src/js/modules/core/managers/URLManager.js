@@ -3,6 +3,10 @@ class URLManager {
         window.location.assign(path);
     }
 
+    static init(map) {
+        // Note: Not used in this Manager
+    }
+
     static replaceParameter(parameters) {
         history.replaceState(null, null, '?' + parameters.toString());
     }

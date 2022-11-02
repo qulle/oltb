@@ -6,8 +6,7 @@ const SETTINGS = {
     KeyboardPan: 'keyboard.pan',
     KeyboardZoom: 'keyboard.zoom',
     MouseWheelZoom: 'mouse.wheel.zoom',
-    SelectVectorMapShapes: 'select.vector.map.shapes',
-    ShowAttributions: 'show.attributions'
+    SelectVectorMapShapes: 'select.vector.map.shapes'
 };
 
 export { SETTINGS };

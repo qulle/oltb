@@ -1,10 +1,9 @@
 import CONFIG from './Config';
+import AColorPicker from 'a-color-picker';
 import DOM from '../helpers/browser/DOM';
 import { isHorizontal } from '../helpers/IsRowDirection';
 import { EVENTS } from '../helpers/constants/Events';
 import { eventDispatcher } from '../helpers/Browser/EventDispatcher';
-
-const AColorPicker = require('a-color-picker');
 
 // (1). Create element to host ACP instance
 const colorPickerElement = DOM.createElement({

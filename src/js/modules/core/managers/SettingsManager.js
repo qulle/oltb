@@ -9,6 +9,10 @@ class SettingsManager {
     static localStorageState = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
     static localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...this.localStorageState };
 
+    static init(map) {
+        // Note: Not used in this Manager
+    }
+
     static settings = new Map([
         [
             SETTINGS.MouseWheelZoom, {
@@ -39,11 +43,6 @@ class SettingsManager {
             SETTINGS.SelectVectorMapShapes, {
                 state: false, 
                 text: 'Enable select of shapes in vector map layers'
-            }
-        ], [
-            SETTINGS.ShowAttributions, {
-                state: true, 
-                text: 'Show attributions (toggle requires page reload)'
             }
         ], [
             SETTINGS.AlwaysNewLayers, {

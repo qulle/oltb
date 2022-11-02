@@ -22,7 +22,7 @@ class Alert extends DialogBase {
         if(this.options.text) {
             const message = DOM.createElement({
                 element: 'p', 
-                text: text
+                text: this.options.text
             });
 
             dialog.appendChild(message);
