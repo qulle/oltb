@@ -1,6 +1,6 @@
 import CONFIG from './Config';
-import AColorPicker from 'a-color-picker';
 import DOM from '../helpers/browser/DOM';
+import * as AColorPicker from 'a-color-picker';
 import { isHorizontal } from '../helpers/IsRowDirection';
 import { EVENTS } from '../helpers/constants/Events';
 import { eventDispatcher } from '../helpers/Browser/EventDispatcher';

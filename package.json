@@ -4,6 +4,16 @@
     "author": "Qulle",
     "license": "BSD-2-Clause license",
     "description": "Lightweight mobile friendly GIS toolbar developed for OpenLayers 7.1.0",
+    "keywords": [
+        "open-source",
+        "gis",
+        "toolbar",
+        "openlayers",
+        "rollupjs",
+        "parceljs",
+        "gis-toolbar",
+        "openlayers-toolbar"
+    ],
     "repository": {
         "type": "git",
         "url": "git+https://github.com/qulle/oltb.git"
@@ -30,9 +40,9 @@
         "@rollup/plugin-commonjs": "^23.0.2",
         "@rollup/plugin-json": "^5.0.1",
         "@rollup/plugin-node-resolve": "^15.0.1",
+        "@rollup/plugin-terser": "^0.1.0",
         "parcel": "^2.7.0",
         "rollup": "^3.2.5",
-        "rollup-plugin-import-css": "^3.1.0",
         "rollup-plugin-replace": "^2.2.0",
         "rollup-plugin-scss": "^3.0.0"
     }
