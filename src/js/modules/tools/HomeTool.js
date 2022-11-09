@@ -13,7 +13,7 @@ import { EVENTS } from '../helpers/constants/Events';
 import { CONTEXT_MENUS } from '../helpers/constants/ContextMenus';
 
 const DEFAULT_OPTIONS = {
-    zoom: 1,
+    zoom: 3,
     lon: 0,
     lat: 0
 };

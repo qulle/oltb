@@ -30,7 +30,7 @@ class ContextMenu extends Control {
         
         this.menu = this.element;
         this.options = { ...DEFAULT_OPTIONS, ...options };
-        this.MENU_ITEMS = MENU_ITEMS.get(this.options.name);
+        this.MENU_ITEMS = MENU_ITEMS.get(this.options.name) || [];
         this.target = null;
 
         this.create();

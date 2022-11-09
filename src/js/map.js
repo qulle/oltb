@@ -5,10 +5,17 @@ import { defaults as defaultInterctions } from 'ol/interaction';
 import { defaults as defaultControls } from 'ol/control';
 import { get as getProjection } from 'ol/proj';
 
-// (2). The Toolbar
+// (2). Add layers
+import './modules/layers/Maps';
+import './modules/layers/Countries';
+import './modules/layers/Continents';
+import './modules/layers/Wind';
+import './modules/layers/Capitals';
+
+// (3). The Toolbar
 import OLTB from './oltb';
 
-// (3). Create Map instance
+// (4). Create Map instance
 const map = new Map({
     interactions: defaultInterctions({
         mouseWheelZoom: false,
@@ -25,7 +32,7 @@ const map = new Map({
     })
 });
 
-// (4). Create Toolbar instance
+// (5). Create Toolbar instance
 const toolbar = new OLTB({
     map: map,
     tools: {
@@ -336,6 +343,7 @@ const toolbar = new OLTB({
             }
         },
         DebugInfoTool: {
+            onlyWhenGetParameter: false,
             click: function() {
                 console.log('DebugInfoTool clicked');
             }

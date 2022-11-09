@@ -1,3 +1,4 @@
+import * as jsts from 'jsts/dist/jsts';
 import Dialog from '../common/Dialog';
 import LayerManager from '../core/managers/LayerManager';
 import SettingsManager from '../core/managers/SettingsManager';
@@ -13,7 +14,7 @@ import { unByKey } from 'ol/Observable';
 import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT } from '../core/ElementReferences';
 import { SVG_PATHS, getIcon } from '../core/SVGIcons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
-import { getMeasureCoordinates, getMeasureValue } from '../helpers/ol-functions/Measurements';
+import { getMeasureCoordinates, getMeasureValue } from '../helpers/Measurements';
 import { hasCustomFeatureProperty } from '../helpers/HasNestedProperty';
 import { getCustomFeatureProperty } from '../helpers/GetNestedProperty';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
@@ -25,9 +26,14 @@ import { GeometryCollection, LinearRing, LineString, MultiLineString, MultiPoint
 import { Fill, Stroke, Style } from 'ol/style';
 import { generateTooltip } from '../helpers/ol-functions/GenerateTooltip';
 
-// JSTS Lib
-import OL3Parser from 'jsts/org/locationtech/jts/io/OL3Parser.js';
-import { OverlayOp } from 'jsts/org/locationtech/jts/operation/overlay';
+/*!
+ *  Note: JSTS
+ *  To avoid circular dependencies i include the full dist
+ *  This increases the bundle size but removes errors/warnings in Rollup build process
+ *  Also more features can be used from this very functional lib in the future
+ *   
+ *  https://github.com/bjornharrtell/jsts#caveats
+ */
 
 const ID_PREFIX = 'oltb-edit';
 
@@ -101,7 +107,7 @@ class EditTool extends Control {
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
         // JSTS
-        this.parser = new OL3Parser();
+        this.parser = new jsts.io.OL3Parser();
         this.parser.inject(Point, LineString, LinearRing, Polygon, MultiPoint, MultiLineString, MultiPolygon, GeometryCollection);
 
         // Load potential stored data from localStorage
@@ -515,19 +521,19 @@ class EditTool extends Control {
     }
 
     unionFeatures(a, b) {
-        return OverlayOp.union(a, b);
+        return jsts.operation.overlay.OverlayOp.union(a, b);
     }
 
     intersectFeatures(a, b) {
-        return OverlayOp.intersection(a, b);
+        return jsts.operation.overlay.OverlayOp.intersection(a, b);
     }
 
     excludeFeatures(a, b) {
-        return OverlayOp.symDifference(a, b);
+        return jsts.operation.overlay.OverlayOp.symDifference(a, b);
     }
 
     differenceFeatures(a, b) {
-        return OverlayOp.difference(a, b);
+        return jsts.operation.overlay.OverlayOp.difference(a, b);
     }
 
     onWindowFeatureLayerRemoved(event) {

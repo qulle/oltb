@@ -29,127 +29,37 @@ import SettingsTool from './SettingsTool';
 import DebugInfoTool from './DebugInfoTool';
 import HiddenAboutTool from './hidden-tools/AboutTool';
 
-const ALL_TOOLS = [
-    {
-        name: 'HiddenMarkerTool',
-        tool: HiddenMarkerTool
-    },
-    {
-        name: 'HiddenMapNavigationTool',
-        tool: HiddenMapNavigationTool
-    },
-    {
-        name: 'HomeTool',
-        tool: HomeTool
-    },
-    {
-        name: 'ZoomInTool',
-        tool: ZoomInTool
-    },
-    {
-        name: 'ZoomOutTool',
-        tool: ZoomOutTool
-    },
-    {
-        name: 'FullscreenTool',
-        tool: FullscreenTool
-    },
-    {
-        name: 'ExportPNGTool',
-        tool: ExportPNGTool
-    },
-    {
-        name: 'DrawTool',
-        tool: DrawTool
-    },
-    {
-        name: 'MeasureTool',
-        tool: MeasureTool
-    },
-    {
-        name: 'EditTool',
-        tool: EditTool
-    },
-    {
-        name: 'BookmarkTool',
-        tool: BookmarkTool
-    },
-    {
-        name: 'LayerTool',
-        tool: LayerTool
-    },
-    {
-        name: 'SplitViewTool',
-        tool: SplitViewTool
-    },
-    {
-        name: 'OverviewTool',
-        tool: OverviewTool
-    },
-    {
-        name: 'GraticuleTool',
-        tool: GraticuleTool
-    },
-    {
-        name: 'MagnifyTool',
-        tool: MagnifyTool
-    },
-    {
-        name: 'ResetNorthTool',
-        tool: ResetNorthTool
-    },
-    {
-        name: 'CoordinatesTool',
-        tool: CoordinatesTool
-    },
-    {
-        name: 'MyLocationTool',
-        tool: MyLocationTool
-    },
-    {
-        name: 'ImportVectorLayerTool',
-        tool: ImportVectorLayerTool
-    },
-    {
-        name: 'ScaleLineTool',
-        tool: ScaleLineTool
-    },
-    {
-        name: 'RefreshTool',
-        tool: RefreshTool
-    },
-    {
-        name: 'ThemeTool',
-        tool: ThemeTool
-    },
-    {
-        name: 'DirectionTool',
-        tool: DirectionTool
-    },
-    {
-        name: 'InfoTool',
-        tool: InfoTool
-    },
-    {
-        name: 'NotificationTool',
-        tool: NotificationTool
-    },
-    {
-        name: 'HelpTool',
-        tool: HelpTool
-    },
-    {
-        name: 'SettingsTool',
-        tool: SettingsTool
-    },
-    {
-        name: 'DebugInfoTool',
-        tool: DebugInfoTool
-    },
-    {
-        name: 'HiddenAboutTool',
-        tool: HiddenAboutTool
-    }
-];
+const ALL_TOOLS = {
+    HiddenMarkerTool,
+    HiddenMapNavigationTool,
+    HomeTool,
+    ZoomInTool,
+    ZoomOutTool,
+    FullscreenTool,
+    ExportPNGTool,
+    DrawTool,
+    MeasureTool,
+    EditTool,
+    BookmarkTool,
+    LayerTool,
+    SplitViewTool,
+    OverviewTool,
+    GraticuleTool,
+    MagnifyTool,
+    ResetNorthTool,
+    CoordinatesTool,
+    MyLocationTool,
+    ImportVectorLayerTool,
+    ScaleLineTool,
+    RefreshTool,
+    ThemeTool,
+    DirectionTool,
+    InfoTool,
+    NotificationTool,
+    HelpTool,
+    SettingsTool,
+    DebugInfoTool,
+    HiddenAboutTool
+};
 
 export default ALL_TOOLS;

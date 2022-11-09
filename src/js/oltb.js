@@ -3,38 +3,38 @@ import { platformModifierKeyOnly, altShiftKeysOnly, shiftKeyOnly, targetNotEdita
 import { MouseWheelZoom, DragPan, DragRotate, KeyboardZoom, KeyboardPan } from 'ol/interaction';
 import { fromLonLat } from 'ol/proj';
 
-// (2). Toolbar tools
-import ALL_TOOLS from './modules/tools/index';
+// (2). Core Toolbar
+import '../scss/oltb.scss';
+import Dialog from './modules/common/Dialog';
+import Toast from './modules/common/Toast';
+import Modal from './modules/common/Modal';
+import ContextMenu from './modules/common/ContextMenu';
+import CONFIG from './modules/core/Config';
+import { MAP_ELEMENT } from './modules/core/ElementReferences';
+import { CONTEXT_MENUS } from './modules/helpers/constants/ContextMenus';
+import { SETTINGS } from './modules/helpers/constants/Settings';
 
-// (3). Managers
+// (3). Core Managers
 import StateManager from './modules/core/managers/StateManager';
 import SettingsManager from './modules/core/managers/SettingsManager';
 import LayerManager from './modules/core/managers/LayerManager';
 import TooltipManager from './modules/core/managers/TooltipManager';
 import InfoWindowManager from './modules/core/managers/InfoWindowManager';
 
-// (4). Additional toolbar helpers
-import ContextMenu from './modules/common/ContextMenu';
-import CONFIG from './modules/core/Config';
-import Dialog from './modules/common/Dialog';
-import Toast from './modules/common/Toast';
-import Modal from './modules/common/Modal';
-import { MAP_ELEMENT } from './modules/core/ElementReferences';
-import { CONTEXT_MENUS } from './modules/helpers/constants/ContextMenus';
-import { SETTINGS } from './modules/helpers/constants/Settings';
-import '../scss/oltb.scss';
+// (4). Custom OL generator functions
+import { generateMarker } from './modules/helpers/ol-functions/GenerateMarker';
+import { generateTooltip } from './modules/helpers/ol-functions/GenerateTooltip';
+import { generateWindbarb } from './modules/helpers/ol-functions/GenerateWindbarb';
+
+// (5). Toolbar tools
+import ALL_TOOLS from './modules/tools/index';
+
+// (6). Additional toolbar helpers
 import './modules/core/Tooltips';
 import './modules/epsg/Registrate';
 import './modules/helpers/Browser/Prototypes';
 import './modules/helpers/Accessibility';
 import './modules/helpers/SlideToggle';
-
-// (5). Load layers
-import './modules/layers/Maps';
-// import './modules/layers/Countries';
-// import './modules/layers/Continents';
-// import './modules/layers/Wind';
-// import './modules/layers/Capitals';
 
 // Note: This is the same NODE_NAME and PROPS that the MapNavigation.js tool is using
 const LOCAL_STORAGE_NODE_NAME = 'mapData';
@@ -50,40 +50,44 @@ const LOCAL_STORAGE_STATE = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE
 const LOCAL_STORAGE = { ...LOCAL_STORAGE_DEFAULTS, ...LOCAL_STORAGE_STATE };
 
 class OLTB {
-    dialog = Dialog;
-    toast  = Toast;
-    modal  = Modal;
+    // Private scope
+    #tools = {};
 
-    managers = {
-        StateManager,
-        SettingsManager,
-        LayerManager,
-        TooltipManager,
-        InfoWindowManager
-    };
+    // Public scope
+    StateManager      = StateManager;
+    LayerManager      = LayerManager;
+    TooltipManager    = TooltipManager;
+    SettingsManager   = SettingsManager;
+    InfoWindowManager = InfoWindowManager;
 
-    tools = {};
+    Toast  = Toast;
+    Modal  = Modal;
+    Dialog = Dialog;
+
+    generateMarker   = generateMarker;
+    generateTooltip  = generateTooltip;
+    generateWindbarb = generateWindbarb;
 
     constructor(options = {}) {
-        // Create all tool instances
-        if(options.tools) {
-            Object.entries(options.tools).forEach((entry) => {
-                // Key   = Name of Tool
-                // Value = User defined Tool constructor parameters
-                const [key, value] = entry;
+        // What tools to add
+        const tools = options.tools && Object.keys(options.tools).length 
+            ? options.tools 
+            : ALL_TOOLS;
 
-                const result = ALL_TOOLS.find((item) => {
-                    return key === item.name;
-                });
+        // Create tool instances
+        Object.entries(tools).forEach((entry) => {
+            const [key, value] = entry;
 
-                if(result) {
-                    this.tools[key] = new result.tool(value);
-                }
-            });
-        }
+            const toolName = key;
+            const toolParameters = typeof value !== 'function' ? value : {};
 
-        // Always add the Core ContextMenu
-        this.tools['ContextMenu'] = new ContextMenu({
+            if(ALL_TOOLS.hasOwnProperty(toolName)) {
+                this.#tools[toolName] = new ALL_TOOLS[toolName](toolParameters);
+            }
+        });
+
+        // Always add the ContextMenu
+        this.#tools['ContextMenu'] = new ContextMenu({
             name: CONTEXT_MENUS.MainMap, 
             selector: `#${MAP_ELEMENT.id} canvas`
         });
@@ -94,11 +98,17 @@ class OLTB {
     }
 
     setMap(map) {
-        Object.values(this.tools).forEach((tool) => {
+        Object.values(this.#tools).forEach((tool) => {
             tool.setMap(map);
         });
 
-        Object.values(this.managers).forEach((manager) => {
+        [
+            StateManager,
+            SettingsManager,
+            LayerManager,
+            TooltipManager,
+            InfoWindowManager
+        ].forEach((manager) => {
             manager.init(map);
         });
 
@@ -133,14 +143,12 @@ class OLTB {
         ]);
 
         const view = map.getView();
+        const coordinate = fromLonLat([
+            LOCAL_STORAGE.lon,
+            LOCAL_STORAGE.lat
+        ], CONFIG.projection);
 
-        view.setCenter(
-            fromLonLat([
-                LOCAL_STORAGE.lon,
-                LOCAL_STORAGE.lat
-            ], CONFIG.projection)
-        );
-
+        view.setCenter(coordinate);
         view.setZoom(LOCAL_STORAGE.zoom);
         view.setRotation(LOCAL_STORAGE.rotation);
     }

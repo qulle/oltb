@@ -1,30 +1,43 @@
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
-import replace from 'rollup-plugin-replace';
-import scss from 'rollup-plugin-scss'
 import json from '@rollup/plugin-json';
 import terser from '@rollup/plugin-terser';
+import replace from '@rollup/plugin-replace';
+import scss from 'rollup-plugin-scss';
+import license from 'rollup-plugin-license';
+
+const jsBanner  = await import('./rollup.jsbanner.mjs');
+const cssBanner = await import('./rollup.cssbanner.mjs');
 
 export default {
     input: './src/js/oltb.js',
     output: {
         file: './dist/oltb.min.js',
         format: 'iife',
-        name: 'oltb',
-        sourcemap: true
+        name: 'oltb'
     },
     plugins: [
         resolve(),
         commonjs(),
         replace({
+            preventAssignment: true,
             'process.env.NODE_ENV': JSON.stringify('production')
         }),
         scss({
             output: './dist/oltb.min.css',
             outputStyle: 'compressed',
-            sourceMap: true
+            processor: (css) => {
+                return cssBanner.banner + '\n' + css;
+            }
         }),
         json(),
-        terser()
+        terser({
+            format: {
+                comments: false
+            }
+        }),
+        license({
+            banner: jsBanner.banner
+        })
     ]
 };

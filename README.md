@@ -1,5 +1,5 @@
 # OpenLayers Toolbar - OLTB
-### Lightweight GIS toolbar developed for OpenLayers 7.1.0. The toolbar can be filled with any number of tools and can be used in both horizontal and vertical mode and is available in both light and dark theme.
+### Portable mobile friendly GIS toolbar developed for OpenLayers 7.1.0. The toolbar can be filled with any number of tools and can be used in both horizontal and vertical mode and is available in both light and dark theme.
 
 ## Latest build - [Demo](https://qulle.github.io/oltb/)
 The latest build is built using the last official release `v1.0.0-beta3` but may contain more features that have been added since then. Check the releases tab or the commit tags for specific versions.
@@ -12,7 +12,6 @@ A picture says more than a thousand words, but the demo above says it all.
 
 ### Dark theme
 ![Screenshot Dark Theme](images/demo-dark.png?raw=true "Screenshot Dark Theme")
-
 
 # Chapter 1 - External Usage
 This chapter describes the ways in which you can use this toolbar in your applications.
@@ -32,14 +31,12 @@ This chapter describes in detail how the toolbar is structured, internal depende
 
 ## Table of contents
 1. [Branches](#branches)
-2. [Request new Feature or report a Bug](#request-new-feature-or-report-a-bug)
-3. [Get started](#get-started)
-4. [Browser support](#browser-support)
-5. [Architecture model](#architecture-model)
-6. [Colors](#colors) 
+2. [Get started](#get-started)
+3. [Browser support](#browser-support)
+4. [Colors](#colors) 
     1. [Theme colors](#theme-colors)
     2. [Color palette](#color-palette)
-8. [About the code](#about-the-code)
+5. [About the code](#about-the-code)
     1. [HTML](#html)
     2. [SCSS](#scss)
     3. [JavaScript](#javascript)
@@ -62,28 +59,13 @@ This chapter describes in detail how the toolbar is structured, internal depende
     15. [State Management](#state-management)
     16. [Debug tool](#debug-tool)
     17. [OLTB namespace](#oltb-namespace)
-9. [External GitHub projects](#external-github-projects)
-10. [Maps used in the demo](#maps-used-in-the-demo)
-11. [License](#license)
-12. [Author](#author)
+6. [External GitHub projects](#external-github-projects)
+7. [Maps used in the demo](#maps-used-in-the-demo)
+8. [License](#license)
+9. [Author](#author)
 
 ## Branches
 The `main` branch always holds the latest features that are considered done. The latest commit from the main branch is available on the demo-page hosted on the `gh-pages` branch.
-
-Use a descriptive prefix to categorize the intent with each created branch:
-- `bug/exception-editing-marker`
-- `feature/new-format-to-layer-export`
-- `documentation/updating-browser-support-list`
-- `refactoring/updating-ol-version`
-
-## Request new Feature or report a Bug
-If you want to request a new Feature or report a Bug in the latest release on the `main` branch start by:
-
-1. Check if the feature/bug exists on the latest commit on the `main` branch.
-2. Check if there is an open issue.
-3. If no issue is open, please create one and tag **@qulle**.
-
-Use the existing `labels` to tag your issue.
 
 ## Get started
 The dev-environment uses NPM so you need to have [Node.js](https://nodejs.org/en/) installed. I use Node version *16.16.0* and NPM version *8.16.0*.
@@ -108,7 +90,7 @@ Make build for distribution.
 $ npm run build
 ```
 
-Use the following command to remove dist directory. Uses `rm -rf dist/ .parcel-cache/`
+Use the following command to remove dist directory. Uses `rm -rf dist/ demo/ .parcel-cache/`
 ```
 $ npm run clean
 ```
@@ -129,10 +111,6 @@ $ npm update --save
 Manually tested in modern browsers (Mozilla Firefox, Microsoft Edge, Google Chrome).
 
 _IE is not supported, it's time to move on._
-
-## Architecture model
-![Architecture model](images/architecture.svg?raw=true "Architecture model")
-Model showing my intentions of how an application could be built to keep the responsibility of each part separated and not end up with application specific code inside the toolbar.
 
 ## Colors
 The project's Theme colors and the full color palette are described below.
@@ -211,13 +189,11 @@ Below is the basic HTML and JavaScript structure used in the project. For a comp
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=0" />
-    <link rel="stylesheet" href="./scss/map.scss">
     <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
     <title>OLTB - Toolbar for OpenLayers</title>
 </head>
 <body>
     <div id="oltb"></div>
-
     <div id="map" tabindex="0"></div>
 
     <script type="module" src="./js/map.js"></script>
@@ -638,6 +614,7 @@ controls: defaultControls({
         }
     }),
     new DebugInfoTool({
+        onlyWhenGetParameter: false,
         click: function() {
             console.log('DebugInfoTool clicked');
         }
@@ -921,19 +898,20 @@ StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.loca
 ```
 
 ### Debug tool
-To make debugging and diagnosting errors easier there is a tool named `DebugInfo`. This tool will gather information about the map such as zoomlevel, location, layers, rotation, projection etc and displays the information in a modal window. To hide the debug tool as default, add the parameter `showWhenGetParameter: true` and add the get parameter to the url `/?debug=true` to show the tool. Adding the debug parameter will also enable the default context-menu in the browser.
+To make debugging and diagnosting errors easier there is a tool named `DebugInfo`. This tool will gather information about the map such as zoomlevel, location, layers, rotation, projection etc and displays the information in a modal window. To hide the debug tool as default, add the parameter `onlyWhenGetParameter: true` and add the get parameter to the url `/?debug=true` to show the tool. Adding the debug parameter will also enable the default context-menu in the browser.
 
 ### OLTB namespace
 All classes and id:s in the project are prefixed with the namespace `oltb`. Data is also stored in local storage under the key `oltb-state`. 
 
 ## External GitHub projects
 1. [OpenLayers 7.1.0](https://openlayers.org/en/v7.1.0/apidoc/)
-2. [Parcel 2.7.0](https://parceljs.org/)
-3. [Tippy.js 6.3.7](https://atomiks.github.io/tippyjs/)
-4. [Bootstrap Icons](https://icons.getbootstrap.com/)
-5. [A Color Picker 1.2.1](https://github.com/narsenico/a-color-picker)
-6. [Plain JS Slidetoggle 2.0.0](https://github.com/ericbutler555/plain-js-slidetoggle)
-7. [JSTS 2.9.2](https://github.com/bjornharrtell/jsts)
+2. [Tippy.js 6.3.7](https://atomiks.github.io/tippyjs/)
+3. [Bootstrap Icons](https://icons.getbootstrap.com/)
+4. [A Color Picker 1.2.1](https://github.com/narsenico/a-color-picker)
+5. [Plain JS Slidetoggle 2.0.0](https://github.com/ericbutler555/plain-js-slidetoggle)
+6. [JSTS 2.9.2](https://github.com/bjornharrtell/jsts)
+7. [Parcel 2.7.0](https://parceljs.org/)
+8. [Rollup 3.2.5](https://github.com/rollup/rollup)
 
 ## Maps used in the demo
 1. [OpenStreetMap](https://www.openstreetmap.org/)

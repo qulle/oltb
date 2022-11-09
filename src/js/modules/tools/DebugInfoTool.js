@@ -11,7 +11,7 @@ import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { EVENTS } from '../helpers/constants/Events';
 
 const DEFAULT_OPTIONS = {
-    showWhenGetParameter: false
+    onlyWhenGetParameter: false
 };
 
 class DebugInfoTool extends Control {
@@ -45,7 +45,7 @@ class DebugInfoTool extends Control {
         // Check if the tool only should be visible if the get parameter ?debug=true exists
         const debugParameter = URLManager.getParameter('debug') === 'true';
 
-        if(this.options.showWhenGetParameter) {
+        if(this.options.onlyWhenGetParameter) {
             if(!debugParameter || debugParameter !== true) {
                 button.classList.add('oltb-tool-button--hidden');
             }

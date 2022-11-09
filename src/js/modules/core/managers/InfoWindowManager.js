@@ -136,17 +136,17 @@ class InfoWindowManager {
 
         const removeFeatureButton = this.content.querySelector(`#${ID_PREFIX}-remove`);
         if(removeFeatureButton) {
-            removeFeatureButton.addEventListener(EVENTS.Browser.Click, removeFeature.bind(this, feature));
+            removeFeatureButton.addEventListener(EVENTS.Browser.Click, removeFeature.bind(this, InfoWindowManager, feature));
         }
 
         const copyFeatureInfoButton = this.content.querySelector(`#${ID_PREFIX}-copy-location`);
         if(copyFeatureInfoButton) {
-            copyFeatureInfoButton.addEventListener(EVENTS.Browser.Click, copyFeatureInfo.bind(this, copyFeatureInfoButton.getAttribute('data-copy')));
+            copyFeatureInfoButton.addEventListener(EVENTS.Browser.Click, copyFeatureInfo.bind(this, InfoWindowManager, copyFeatureInfoButton.getAttribute('data-copy')));
         }
 
         const editFeatureButton = this.content.querySelector(`#${ID_PREFIX}-edit`);
         if(editFeatureButton) {
-            editFeatureButton.addEventListener(EVENTS.Browser.Click, editFeature.bind(this, feature));
+            editFeatureButton.addEventListener(EVENTS.Browser.Click, editFeature.bind(this, InfoWindowManager, feature));
         }
     }
 

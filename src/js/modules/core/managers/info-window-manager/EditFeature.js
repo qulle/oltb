@@ -1,6 +1,5 @@
 import CONFIG from '../../../core/Config';
 import MarkerModal from "../../../tools/modal-extensions/MarkerModal";
-import InfoWindowManager from '../InfoWindowManager';
 import LayerManager from '../LayerManager';
 import { transform } from 'ol/proj';
 import { toStringHDMS } from 'ol/coordinate';
@@ -10,7 +9,7 @@ import { EVENTS } from '../../../helpers/constants/Events';
 
 const ID_PREFIX = 'oltb-info-window-marker';
 
-const editFeature = function(feature) {
+const editFeature = function(InfoWindowManager, feature) {
     const properties = feature.getProperties().oltb;
 
     const markerModal = new MarkerModal({
