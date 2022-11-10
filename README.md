@@ -1,5 +1,11 @@
-# OpenLayers Toolbar - OLTB
-### Portable mobile friendly GIS toolbar developed for OpenLayers 7.1.0. The toolbar can be filled with any number of tools and can be used in both horizontal and vertical mode and is available in both light and dark theme.
+<p align="center">
+	<img src="images/oltb.svg" width="200" />
+</p>
+
+<h1 align="center">Toolbar for OpenLayers</h1>
+
+## About
+OLTB is a portable mobile friendly GIS toolbar developed for `OpenLayers 7.1.0`. The toolbar can be filled with any number of tools and can be used in both horizontal and vertical mode and is available in both light and dark theme.
 
 ## Latest build - [Demo](https://qulle.github.io/oltb/)
 The latest build is built using the last official release `v1.0.0-beta3` but may contain more features that have been added since then. Check the releases tab or the commit tags for specific versions.
@@ -68,7 +74,7 @@ This chapter describes in detail how the toolbar is structured, internal depende
 The `main` branch always holds the latest features that are considered done. The latest commit from the main branch is available on the demo-page hosted on the `gh-pages` branch.
 
 ## Get started
-The dev-environment uses NPM so you need to have [Node.js](https://nodejs.org/en/) installed. I use Node version *16.16.0* and NPM version *8.16.0*.
+The dev-environment uses NPM so you need to have [Node.js](https://nodejs.org/en/) installed. I use Node version *18.12.0* and NPM version *8.16.0*.
 
 Clone the repo.
 ```

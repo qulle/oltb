@@ -27,7 +27,7 @@ const LOCAL_STORAGE_DEFAULTS = {
     active: false,
     collapsed: false,
     toolTypeIndex: 0,
-    strokeColor: '#4A86B8',
+    strokeColor: '#3B4352',
     fillColor: '#D7E3FA80'
 };
 

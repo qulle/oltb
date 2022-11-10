@@ -3,7 +3,7 @@
     "version": "1.0.0-beta3",
     "author": "Qulle",
     "license": "BSD-2-Clause license",
-    "description": "Portable mobile friendly GIS toolbar developed for OpenLayers 7.1.0",
+    "description": "OLTB is a portable mobile friendly GIS toolbar developed for OpenLayers 7.1.0",
     "keywords": [
         "open-source",
         "gis",

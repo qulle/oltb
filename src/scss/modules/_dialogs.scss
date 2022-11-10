@@ -1,18 +1,3 @@
-.oltb-dialog-backdrop {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, .6);
-    z-index: 900;
-    text-align: center;
-
-    &--fixed {
-        position: fixed;
-    }
-}
-
 .oltb-dialog {
     background-color: $background-theme-light;
     display: inline-block;
@@ -22,6 +7,21 @@
     border-radius: $border-radius;
     box-shadow: $box-shadow-dark;
     color: $color-gray-dark;
+
+    &-backdrop {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, .6);
+        z-index: 900;
+        text-align: center;
+
+        &--fixed {
+            position: fixed;
+        }
+    }
 
     &__input {
         margin-bottom: 1rem;
