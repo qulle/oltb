@@ -10,7 +10,7 @@ const jsBanner  = await import('./rollup.jsbanner.mjs');
 const cssBanner = await import('./rollup.cssbanner.mjs');
 
 export default {
-    input: './src/js/oltb.js',
+    input: './src/oltb/js/oltb.js',
     output: {
         file: './dist/oltb.min.js',
         format: 'iife',
