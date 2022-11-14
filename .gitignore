@@ -1,5 +1,7 @@
 /node_modules
 /.cache
 /.parcel-cache
+/serve
+/demo
 /dist
 /archive

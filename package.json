@@ -23,10 +23,10 @@
         "url": "https://github.com/qulle/oltb/issues"
     },
     "scripts": {
-        "start": "parcel src/index.html --open",
-        "build:demo": "parcel build --public-url . src/index.html --dist-dir demo",
+        "start": "parcel serve examples/latest/npm/index.html --open --dist-dir serve",
+        "build:demo": "parcel build --public-url . examples/latest/npm/index.html --dist-dir demo",
         "build:lib": "rollup --config",
-        "clean": "rm -rf dist/ demo/ .parcel-cache/"
+        "clean": "rm -rf serve/ dist/ demo/ .parcel-cache/"
     },
     "dependencies": {
         "a-color-picker": "^1.2.1",

@@ -6,14 +6,14 @@ import { defaults as defaultControls } from 'ol/control';
 import { get as getProjection } from 'ol/proj';
 
 // (2). Add layers
-import './modules/layers/Maps';
-import './modules/layers/Countries';
-import './modules/layers/Continents';
-import './modules/layers/Wind';
-import './modules/layers/Capitals';
+import './layers/Maps';
+import './layers/Countries';
+import './layers/Continents';
+import './layers/Wind';
+import './layers/Capitals';
 
 // (3). The Toolbar
-import OLTB from './oltb';
+import OLTB from '../../../src/oltb/js/oltb';
 
 // (4). Create Map instance
 const map = new Map({

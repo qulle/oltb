@@ -1,5 +1,5 @@
 <p align="center">
-	<img src="images/oltb.svg" width="200" />
+	<img src="images/oltb-full.svg" width="200" />
 </p>
 
 <h1 align="center">Toolbar for OpenLayers</h1>
