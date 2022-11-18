@@ -36,7 +36,7 @@ import './modules/helpers/Browser/Prototypes';
 import './modules/helpers/Accessibility';
 import './modules/helpers/SlideToggle';
 
-// Note: This is the same NODE_NAME and PROPS that the MapNavigation.js tool is using
+// Note: This is the same NODE_NAME and PROPS that the MapNavigationTool.js is using
 const LOCAL_STORAGE_NODE_NAME = 'mapData';
 const LOCAL_STORAGE_DEFAULTS = {
     lon: 25.5809,
@@ -69,7 +69,7 @@ class OLTB {
     generateWindbarb = generateWindbarb;
 
     constructor(options = {}) {
-        // What tools to add
+        // Tools that should be added
         const tools = options.tools && Object.keys(options.tools).length 
             ? options.tools 
             : ALL_TOOLS;

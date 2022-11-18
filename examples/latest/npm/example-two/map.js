@@ -1,42 +1,125 @@
 // (1). Core OpenLayers
 import 'ol/ol.css';
 import { Map, View } from 'ol';
-import { defaults as defaultInterctions } from 'ol/interaction';
+import { fromLonLat } from 'ol/proj';
+import { platformModifierKeyOnly, altShiftKeysOnly, shiftKeyOnly, targetNotEditable } from 'ol/events/condition';
+import { defaults as defaultInterctions, MouseWheelZoom, DragPan, DragRotate, KeyboardZoom, KeyboardPan } from 'ol/interaction';
 import { defaults as defaultControls } from 'ol/control';
 import { get as getProjection } from 'ol/proj';
 
 // (2). Add layers
-import './layers/Maps';
-import './layers/Countries';
-import './layers/Continents';
-import './layers/Wind';
-import './layers/Capitals';
+import '../shared/layers/Maps';
+import '../shared/layers/Countries';
+import '../shared/layers/Continents';
+import '../shared/layers/Wind';
+import '../shared/layers/Capitals';
 
-// (3). The Toolbar
-import OLTB from '../../../src/oltb/js/oltb';
+// (3). Additional toolbar helpers
+import '../../../../src/oltb/js/modules/core/Tooltips';
+import '../../../../src/oltb/js/modules/epsg/Registrate';
+import '../../../../src/oltb/js/modules/helpers/Browser/Prototypes';
+import '../../../../src/oltb/js/modules/helpers/Accessibility';
+import '../../../../src/oltb/js/modules/helpers/SlideToggle';
 
-// (4). Create Map instance
+// (4). Core Toolbar
+import '../../../../src/oltb/scss/oltb.scss';
+import ContextMenu from '../../../../src/oltb/js/modules/common/ContextMenu';
+import CONFIG from '../../../../src/oltb/js/modules/core/Config';
+import { MAP_ELEMENT } from '../../../../src/oltb/js/modules/core/ElementReferences';
+import { CONTEXT_MENUS } from '../../../../src/oltb/js/modules/helpers/constants/ContextMenus';
+import { SETTINGS } from '../../../../src/oltb/js/modules/helpers/constants/Settings';
+
+// (5). Core Managers
+import StateManager from '../../../../src/oltb/js/modules/core/managers/StateManager';
+import SettingsManager from '../../../../src/oltb/js/modules/core/managers/SettingsManager';
+import LayerManager from '../../../../src/oltb/js/modules/core/managers/LayerManager';
+import TooltipManager from '../../../../src/oltb/js/modules/core/managers/TooltipManager';
+import InfoWindowManager from '../../../../src/oltb/js/modules/core/managers/InfoWindowManager';
+
+// (6). Import individual tools
+import HiddenMarkerTool from '../../../../src/oltb/js/modules/tools/hidden-tools/MarkerTool';
+import HiddenMapNavigationTool from '../../../../src/oltb/js/modules/tools/hidden-tools/MapNavigationTool';
+import HomeTool from '../../../../src/oltb/js/modules/tools/HomeTool';
+import ZoomInTool from '../../../../src/oltb/js/modules/tools/ZoomInTool';
+import ZoomOutTool from '../../../../src/oltb/js/modules/tools/ZoomOutTool';
+import FullScreenTool from '../../../../src/oltb/js/modules/tools/FullScreenTool';
+import ExportPNGTool from '../../../../src/oltb/js/modules/tools/ExportPNGTool';
+import DrawTool from '../../../../src/oltb/js/modules/tools/DrawTool';
+import MeasureTool from '../../../../src/oltb/js/modules/tools/MeasureTool';
+import EditTool from '../../../../src/oltb/js/modules/tools/EditTool';
+import BookmarkTool from '../../../../src/oltb/js/modules/tools/BookmarkTool';
+import LayerTool from '../../../../src/oltb/js/modules/tools/LayerTool';
+import SplitViewTool from '../../../../src/oltb/js/modules/tools/SplitViewTool';
+import OverviewTool from '../../../../src/oltb/js/modules/tools/OverviewTool';
+import GraticuleTool from '../../../../src/oltb/js/modules/tools/GraticuleTool';
+import MagnifyTool from '../../../../src/oltb/js/modules/tools/MagnifyTool';
+import ResetNorthTool from '../../../../src/oltb/js/modules/tools/ResetNorthTool';
+import CoordinatesTool from '../../../../src/oltb/js/modules/tools/CoordinatesTool';
+import MyLocationTool from '../../../../src/oltb/js/modules/tools/MyLocationTool';
+import ImportVectorLayerTool from '../../../../src/oltb/js/modules/tools/ImportVectorLayerTool';
+import ScaleLineTool from '../../../../src/oltb/js/modules/tools/ScaleLineTool';
+import RefreshTool from '../../../../src/oltb/js/modules/tools/RefreshTool';
+import ThemeTool from '../../../../src/oltb/js/modules/tools/ThemeTool';
+import DirectionTool from '../../../../src/oltb/js/modules/tools/DirectionTool';
+import InfoTool from '../../../../src/oltb/js/modules/tools/InfoTool';
+import NotificationTool from '../../../../src/oltb/js/modules/tools/NotificationTool';
+import HelpTool from '../../../../src/oltb/js/modules/tools/HelpTool';
+import SettingsTool from '../../../../src/oltb/js/modules/tools/SettingsTool';
+import DebugInfoTool from '../../../../src/oltb/js/modules/tools/DebugInfoTool';
+import HiddenAboutTool from '../../../../src/oltb/js/modules/tools/hidden-tools/AboutTool';
+
+// Note: This is the same NODE_NAME and PROPS that the MapNavigationTool.js is using
+const LOCAL_STORAGE_NODE_NAME = 'mapData';
+const LOCAL_STORAGE_DEFAULTS = {
+    lon: 25.5809,
+    lat: 23.7588,
+    zoom: 3,
+    rotation: 0
+};
+
+// (7). Load potential stored data from localStorage
+const LOCAL_STORAGE_STATE = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
+const LOCAL_STORAGE = { ...LOCAL_STORAGE_DEFAULTS, ...LOCAL_STORAGE_STATE };
+
+// (8). Create Map instance
 const map = new Map({
     interactions: defaultInterctions({
         mouseWheelZoom: false,
         altShiftDragRotate: false,
         dragPan: false,
         keyboard: false
-    }),
+    }).extend([
+        new MouseWheelZoom({
+            condition: function(event) { 
+                return platformModifierKeyOnly(event) || SettingsManager.getSetting(SETTINGS.MouseWheelZoom); 
+            }
+        }),
+        new DragRotate({
+            condition: function(event) {
+                return altShiftKeysOnly(event) && SettingsManager.getSetting(SETTINGS.AltShiftDragRotate);
+            }
+        }),
+        new DragPan({
+            condition: function(event) {
+                return (platformModifierKeyOnly(event) || SettingsManager.getSetting(SETTINGS.DragPan)) && !altShiftKeysOnly(event) && !shiftKeyOnly(event);
+            }
+        }),
+        new KeyboardZoom({
+            condition: function(event) {
+                return SettingsManager.getSetting(SETTINGS.KeyboardZoom) && targetNotEditable(event);
+            }
+        }),
+        new KeyboardPan({
+            condition: function(event) {
+                return SettingsManager.getSetting(SETTINGS.KeyboardPan) && targetNotEditable(event);
+            }
+        })
+    ]),
     controls: defaultControls({
         zoom: false, 
         rotate: false
-    }),
-    view: new View({
-        projection: getProjection('EPSG:3857')
-    })
-});
-
-// (5). Create Toolbar instance
-const toolbar = new OLTB({
-    map: map,
-    tools: {
-        HiddenMarkerTool: {
+    }).extend([
+        new HiddenMarkerTool({
             added: function(marker) {
                 console.log('Marker added', marker);
             },
@@ -46,11 +129,11 @@ const toolbar = new OLTB({
             edited: function(before, after) {
                 console.log('Marker edited', before, after);
             }
-        },
-        HiddenMapNavigationTool: {
+        }),
+        new HiddenMapNavigationTool({
             focusZoom: 10
-        },
-        HomeTool: {
+        }),
+        new HomeTool({
             lon: 25.5809,
             lat: 23.7588,
             zoom: 3,
@@ -60,26 +143,26 @@ const toolbar = new OLTB({
             home: function() {
                 console.log('Map zoomed home');
             }
-        },
-        ZoomInTool: {
+        }),
+        new ZoomInTool({
             click: function() {
                 console.log('ZoomInTool clicked');
             },
             zoomed: function() {
                 console.log('Zoomed in');
             }
-        },
-        ZoomOutTool: {
+        }),
+        new ZoomOutTool({
             click: function() {
                 console.log('ZoomOutTool clicked');
             },
             zoomed: function() {
                 console.log('Zoomed out');
             }
-        },
-        FullscreenTool: {
+        }),
+        new FullScreenTool({
             click: function() {
-                console.log('FullscreenTool clicked');
+                console.log('FullScreenTool clicked');
             },
             enter: function(event) {
                 console.log('Enter fullscreen mode', event);
@@ -87,16 +170,16 @@ const toolbar = new OLTB({
             leave: function(event) {
                 console.log('Leave fullscreen mode', event);
             }
-        },
-        ExportPNGTool: {
+        }),
+        new ExportPNGTool({
             click: function() {
                 console.log('ExportPNGTool clicked');
             },
             exported: function() {
                 console.log('Map exported as png');
             }
-        },
-        DrawTool: {
+        }),
+        new DrawTool({
             click: function() {
                 console.log('DrawTool clicked');
             },
@@ -116,8 +199,8 @@ const toolbar = new OLTB({
                 console.log('Draw end', event.feature);
                 console.log('Intersected features', intersectedFeatures);
             }
-        },
-        MeasureTool: {
+        }),
+        new MeasureTool({
             click: function() {
                 console.log('MeasureTool clicked');
             },
@@ -133,8 +216,8 @@ const toolbar = new OLTB({
             error: function(event) {
                 console.log('Measure error');
             }
-        },
-        EditTool: {
+        }),
+        new EditTool({
             hitTolerance: 5,
             click: function() {
                 console.log('EditTool clicked');
@@ -169,8 +252,8 @@ const toolbar = new OLTB({
             error: function(event) {
                 console.log('Edit error');
             }
-        },
-        BookmarkTool: {
+        }),
+        new BookmarkTool({
             storeDataInLocalStorage: true,
             click: function() {
                 console.log('BookmarkTool clicked');
@@ -190,8 +273,8 @@ const toolbar = new OLTB({
             cleared: function() {
                 console.log('Bookmarks cleared');
             }
-        },
-        LayerTool: {
+        }),
+        new LayerTool({
             click: function() {
                 console.log('LayerTool clicked');
             },
@@ -222,18 +305,18 @@ const toolbar = new OLTB({
             featureLayerDownloaded: function(layerWrapper) {
                 console.log('Feature layer downloaded', layerWrapper);
             }
-        },
-        SplitViewTool: {
+        }),
+        new SplitViewTool({
             click: function() {
                 console.log('SplitViewTool clicked');
             }
-        },
-        OverviewTool: {
+        }),
+        new OverviewTool({
             click: function() {
                 console.log('OverviewTool clicked');
             }
-        },
-        GraticuleTool: {
+        }),
+        new GraticuleTool({
             color: 'rgba(59, 67, 82, 0.9)',
             dashed: true,
             width: 2,
@@ -242,29 +325,29 @@ const toolbar = new OLTB({
             click: function() {
                 console.log('GraticuleTool clicked');
             }
-        },
-        MagnifyTool: {
+        }),
+        new MagnifyTool({
             click: function() {
                 console.log('MagnifyTool clicked');
             }
-        },
-        ResetNorthTool: {
+        }),
+        new ResetNorthTool({
             click: function() {
                 console.log('ResetNorthTool clicked');
             },
             reset: function() {
                 console.log('Map north reset');
             }
-        },
-        CoordinatesTool: {
+        }),
+        new CoordinatesTool({
             click: function() {
                 console.log('CoordinatesTool clicked');
             },
             mapClicked: function(coordinates) {
                 console.log('You clicked at', coordinates);
             }
-        },
-        MyLocationTool: {
+        }),
+        new MyLocationTool({
             enableHighAccuracy: true,
             timeout: 10000,
             click: function() {
@@ -276,8 +359,8 @@ const toolbar = new OLTB({
             error: function(error) {
                 console.log('Location error', error);
             }
-        },
-        ImportVectorLayerTool: {
+        }),
+        new ImportVectorLayerTool({
             click: function() {
                 console.log('ImportVectorLayerTool clicked');
             },
@@ -287,67 +370,92 @@ const toolbar = new OLTB({
             error: function(filename, error) {
                 console.log('Error when importing file:', filename, error);
             }
-        },
-        ScaleLineTool: {
+        }),
+        new ScaleLineTool({
             units: 'metric',
             click: function() {
                 console.log('ScaleLineTool clicked');
             }
-        },
-        RefreshTool: {
+        }),
+        new RefreshTool({
             click: function() {
                 console.log('RefreshTool clicked');
             }
-        },
-        ThemeTool: {
+        }),
+        new ThemeTool({
             click: function() {
                 console.log('ThemeTool clicked');
             },
             changed: function(theme) {
                 console.log('Theme changed to', theme);
             }
-        },
-        DirectionTool: {
+        }),
+        new DirectionTool({
             click: function() {
                 console.log('DirectionTool clicked');
             },
             changed: function(direction) {
                 console.log('Direction changed to', direction);
             }
-        },
-        InfoTool: {
+        }),
+        new InfoTool({
             title: 'Hey!', 
             content: '<p>This is a <em>modal window</em>, here you can place some text about your application or links to external resources.</p>',
             click: function() {
                 console.log('InfoTool clicked');
             }
-        },
-        NotificationTool: {
+        }),
+        new NotificationTool({
             click: function() {
                 console.log('NotificationTool clicked');
             }
-        },
-        HelpTool: {
+        }),
+        new HelpTool({
             url: 'https://github.com/qulle/oltb',
             target: '_blank',
             click: function() {
                 console.log('HelpTool clicked');
             }
-        },
-        SettingsTool: {
+        }),
+        new SettingsTool({
             click: function() {
                 console.log('SettingsTool clicked');
             },
             cleared: function() {
                 console.log('Settings cleared');
             }
-        },
-        DebugInfoTool: {
+        }),
+        new DebugInfoTool({
             onlyWhenGetParameter: false,
             click: function() {
                 console.log('DebugInfoTool clicked');
             }
-        },
-        HiddenAboutTool: {}
-    }
+        }),
+        new HiddenAboutTool(),
+        new ContextMenu({
+            name: CONTEXT_MENUS.MainMap, 
+            selector: '#map canvas'
+        })
+    ]),
+    target: MAP_ELEMENT,
+    view: new View({
+        projection: getProjection(CONFIG.projection),
+        center: fromLonLat([
+            LOCAL_STORAGE.lon, 
+            LOCAL_STORAGE.lat
+        ], CONFIG.projection),
+        zoom: LOCAL_STORAGE.zoom,
+        rotation: LOCAL_STORAGE.rotation
+    })
+});
+
+// (9). Initialize static managers
+[
+    StateManager,
+    SettingsManager,
+    LayerManager,
+    TooltipManager,
+    InfoWindowManager
+].forEach((manager) => {
+    manager.init(map);
 });

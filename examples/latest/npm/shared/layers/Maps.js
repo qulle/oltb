@@ -1,4 +1,4 @@
-import LayerManager from "../../../../src/oltb/js/modules/core/managers/LayerManager";
+import LayerManager from "../../../../../src/oltb/js/modules/core/managers/LayerManager";
 import TileLayer from 'ol/layer/Tile';
 import OSM from 'ol/source/OSM';
 import Stamen from 'ol/source/Stamen';

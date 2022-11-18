@@ -1,10 +1,10 @@
-import LayerManager from "../../../../src/oltb/js/modules/core/managers/LayerManager";
-import Toast from "../../../../src/oltb/js/modules/common/Toast";
+import LayerManager from "../../../../../src/oltb/js/modules/core/managers/LayerManager";
+import Toast from "../../../../../src/oltb/js/modules/common/Toast";
 import { toStringHDMS } from "ol/coordinate";
-import { getIcon, SVG_PATHS } from "../../../../src/oltb/js/modules/core/SVGIcons";
-import { generateMarker } from '../../../../src/oltb/js/modules/helpers/ol-functions/GenerateMarker';
+import { getIcon, SVG_PATHS } from "../../../../../src/oltb/js/modules/core/SVGIcons";
+import { generateMarker } from '../../../../../src/oltb/js/modules/helpers/ol-functions/GenerateMarker';
 
-import urlCapitalsGeoJSON from 'url:./capitals.geojson';
+import urlCapitalsGeoJSON from 'url:../geojson/capitals.geojson';
 
 const ID_PREFIX = 'oltb-info-window-marker';
 

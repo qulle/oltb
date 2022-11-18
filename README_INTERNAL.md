@@ -73,7 +73,7 @@ Make distribution library build.
 $ npm run build:lib
 ```
 
-Use the following command to remove dist directory. Uses `rm -rf serve/ dist/ demo/ .parcel-cache/`
+Use the following command clean builds.
 ```
 $ npm run clean
 ```
@@ -99,7 +99,7 @@ _IE is not supported, it's time to move on._
 The project's Theme colors and the full color palette are described below.
 
 ### Theme colors
-The toolbar is awailable in both `light` and `dark` mode. I have decided to go for a small set of colors in both themes. This enables for a solid look-and-feel and association between colors and functionality. The `mid` color is to consider as the default normal color. For some situations the `light` and `dark` color is used in the normal state.
+The toolbar is available in both `light` and `dark` mode. I have decided to go for a small set of colors in both themes. This enables for a solid look-and-feel and association between colors and functionality. The `mid` color is to consider as the default normal color. For some situations the `light` and `dark` color is used in the normal state.
 <table>
     <tr>
         <th>Blue</th>
@@ -179,17 +179,17 @@ Below is the basic HTML and JavaScript structure used in the project. For a comp
     <div id="oltb"></div>
     <div id="map" tabindex="0"></div>
 
-    <script type="module" src="./js/map.js"></script>
+    <script type="module" src="./map.js"></script>
 </body>
 </html>
 ```
 
-The toolbar is vertical by default, add class `row` to change direction. The user can change the direction using the tool `DirectionToggle`.
+The toolbar is vertical by default, add class `row` to change direction. The user can change the direction using the tool `DirectionTool`.
 ```HTML
 <div id="oltb" class="row"></div>
 ```
 
-The toolbar theme is light by default, add class `dark` to change theme. The user can change the theme using the tool `ThemeToggle`.
+The toolbar theme is light by default, add class `dark` to change theme. The user can change the theme using the tool `ThemeTool`.
 ```HTML
 <div id="oltb" class="dark"></div>
 ```
@@ -203,7 +203,7 @@ SCSS and HTML is written with [BEM](http://getbem.com/introduction/) naming conv
 ```
 
 ### JavaScript
-The JavaScript tool-buttons are located in the directory `src/oltb/js/modules/tools`. Every tool has its own class and extend the Control-class from OpenLayers.
+The tools are located in the directory `src/oltb/js/modules/tools`. Every tool has its own class and extend the Control-class from OpenLayers.
 ```javascript
 class Coordinates extends Control {}
 ```
@@ -637,14 +637,7 @@ Layers are added to the map using the `LayerManager`. The manager handels intern
 
 Layers can be added at any time during the applications lifetime. If the map is not ready to recieve a layer the manager will queue the layer and add it to the map once the manager is initiated with a reference to the map.
 
-There are two types of layers, `map`- and `feature`-layers. Create layers using a separate file that is included in the `map.js` file. Exampels of adding different types of layers and attach infowindows can be found at the following location.
-```js
-import './modules/layers/Maps';
-import './modules/layers/Countries';
-import './modules/layers/Continents';
-import './modules/layers/Wind';
-import './modules/layers/Capitals';
-```
+There are two types of layers, `map`- and `feature`-layers. Exampels of adding different types of layers are available in the [examples directory](https://github.com/qulle/oltb/tree/main/examples/).
 
 ### Dialogs
 To use the custom dialogs in the map, include the following module. All the dialogs uses trap focus and circles the tab-key to always stay in the opened dialog.
@@ -688,15 +681,13 @@ Dialog.prompt({
 ```
 To have a `danger` prompt dialog, add the property `confirmClass: Dialog.Danger`. To change the text of the confirm button, add the property `confirmText: 'Your text'`.
 
-The dialogs could be extended with more options, but i want to keep the configuration as simple as possible.
-
 ### Modal
 To use the custom modal in the map, include the following module.
 ```javascript
 import Modal from './modules/common/Modal';
 ```
 
-The modal uses the trap focus to circle the tab-key.
+The modal uses trap focus to circle the tab-key.
 ```javascript
 Modal.create({
     title: 'Title', 
@@ -704,7 +695,7 @@ Modal.create({
 });
 ```
 
-A reference to the created modal is returned from the create function. This can be used to block the creation of a second modal if a button is pressed again. The onClose callback can be used to release the lock.
+A reference to the created modal is returned from the create function. This can be used to block the creation of a second modal if a button is pressed again. The `onClose` callback can be used to release the lock.
 ```javascript
 infoToolClick() {
     if(this.infoModal) {
@@ -754,7 +745,7 @@ this.loadingToast = Toast.info({
 this.loadingToast.remove();
 ```
 
-The returned reference to the toast can be used to block further actions while a task is being performed. The onRemove callback can be used to release the lock.
+The returned reference to the toast can be used to block further actions while a task is being performed. The `onRemove` callback can be used to release the lock.
 ```javascript
 myLocationToolClick() {
     if(this.loadingToast) {
@@ -811,7 +802,7 @@ To use the context menu start by importing the following module.
 import ContextMenu from './modules/common/ContextMenu';
 ```
 
-To create a context menu call the constructor and give a unique name as the first argument and a selector to trigger the menu. The context menu class extends the Control class from OpenLayers.
+To create a context menu call the constructor and give a unique name as the first argument and a selector to trigger the menu. The context menu class extends the Control-class from OpenLayers.
 ```javascript
 map.addControl(new ContextMenu({
     name: CONTEXT_MENUS.MainMap, 
@@ -843,7 +834,7 @@ addContextMenuItem(CONTEXT_MENUS.MainMap, {icon: '<svg>...</svg>', name: 'Clear 
 }});
 ```
 
-It is not important in what order the menu or its items are created. If no menu exist with the given name all menu items will be stored and added once the menu is created.
+It is not important in what order the menu or its items are created. If no menu exist with the given name all menu items will be queued and added once the menu is created.
 
 To insert a separator in the menu add an empty object.
 ```javascript
@@ -881,7 +872,7 @@ StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.loca
 ```
 
 ### Debug tool
-To make debugging and diagnosting errors easier there is a tool named `DebugInfo`. This tool will gather information about the map such as zoomlevel, location, layers, rotation, projection etc and displays the information in a modal window. To hide the debug tool as default, add the parameter `onlyWhenGetParameter: true` and add the get parameter to the url `/?debug=true` to show the tool. Adding the debug parameter will also enable the default context-menu in the browser.
+To make debugging and diagnosting errors easier there is a tool named `DebugInfoTool`. This tool will gather information about the map such as zoomlevel, location, layers, rotation, projection etc and displays the information in a modal window. To hide the debug tool as default, add the parameter `onlyWhenGetParameter: true` and add the get parameter to the url `/?debug=true` to show the tool. Adding the debug parameter will also enable the default context-menu in the browser.
 
 ### OLTB namespace
 All classes and id:s in the project are prefixed with the namespace `oltb`. Data is also stored in local storage under the key `oltb-state`. 

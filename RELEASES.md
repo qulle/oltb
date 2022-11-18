@@ -1,5 +1,16 @@
 # Releases
 
+## 1.0.0
+TBA
+
+Some of the changes done in this version are:
+
+- Implemented build system for creating portable library
+- Deployed the project on NPM and jsdelivr (CDN)
+- Added examples for both NPM and CND usage
+- Fixed Alert dialog, undefined text property
+- Code refactoring and improvements
+
 ## 1.0.0-beta3
 2022-10-19
 

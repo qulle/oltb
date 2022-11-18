@@ -1,14 +1,14 @@
-import LayerManager from "../../../../src/oltb/js/modules/core/managers/LayerManager";
+import LayerManager from "../../../../../src/oltb/js/modules/core/managers/LayerManager";
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import GeoJSON from 'ol/format/GeoJSON';
-import Toast from "../../../../src/oltb/js/modules/common/Toast";
-import CONFIG from '../../../../src/oltb/js/modules/core/Config';
+import Toast from "../../../../../src/oltb/js/modules/common/Toast";
+import CONFIG from '../../../../../src/oltb/js/modules/core/Config';
 import { bbox } from 'ol/loadingstrategy';
-import { getMeasureValue } from "../../../../src/oltb/js/modules/helpers/Measurements";
-import { FEATURE_PROPERTIES } from "../../../../src/oltb/js/modules/helpers/constants/FeatureProperties";
+import { getMeasureValue } from "../../../../../src/oltb/js/modules/helpers/Measurements";
+import { FEATURE_PROPERTIES } from "../../../../../src/oltb/js/modules/helpers/constants/FeatureProperties";
 
-import urlCountriesGeoJSON from 'url:./countries.geojson';
+import urlCountriesGeoJSON from 'url:../geojson/countries.geojson';
 
 LayerManager.addMapLayers([
     {

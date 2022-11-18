@@ -23,7 +23,7 @@
         "url": "https://github.com/qulle/oltb/issues"
     },
     "scripts": {
-        "start": "parcel serve examples/latest/npm/index.html --open --dist-dir serve/",
+        "start": "parcel serve examples/latest/npm/example-two/index.html --open --dist-dir serve/",
         "build:demo": "parcel build --public-url . examples/latest/npm/index.html --dist-dir demo/",
         "build:lib": "rollup --config",
         "clean": "rm -rf serve/ dist/ demo/ .parcel-cache/"
