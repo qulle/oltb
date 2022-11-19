@@ -60,7 +60,7 @@ import ScaleLineTool from '../../../../src/oltb/js/modules/tools/ScaleLineTool';
 import GraticuleTool from '../../../../src/oltb/js/modules/tools/GraticuleTool';
 import MyLocationTool from '../../../../src/oltb/js/modules/tools/MyLocationTool';
 import ResetNorthTool from '../../../../src/oltb/js/modules/tools/ResetNorthTool';
-import FullScreenTool from '../../../../src/oltb/js/modules/tools/FullScreenTool';
+import FullscreenTool from '../../../../src/oltb/js/modules/tools/FullscreenTool';
 import CoordinatesTool from '../../../../src/oltb/js/modules/tools/CoordinatesTool';
 import HiddenAboutTool from '../../../../src/oltb/js/modules/tools/hidden-tools/AboutTool';
 import NotificationTool from '../../../../src/oltb/js/modules/tools/NotificationTool';
@@ -160,9 +160,9 @@ const map = new Map({
                 console.log('Zoomed out');
             }
         }),
-        new FullScreenTool({
+        new FullscreenTool({
             click: function() {
-                console.log('FullScreenTool clicked');
+                console.log('FullscreenTool clicked');
             },
             enter: function(event) {
                 console.log('Enter fullscreen mode', event);

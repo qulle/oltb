@@ -1,17 +1,14 @@
 import StateManager from "./StateManager";
-import { EVENTS } from "../../helpers/constants/Events";
 import { SETTINGS } from "../../helpers/constants/Settings";
 
 const LOCAL_STORAGE_NODE_NAME = 'settings';
 const LOCAL_STORAGE_DEFAULTS = {};
 
 class SettingsManager {
-    static localStorageState = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
-    static localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...this.localStorageState };
+    static #localStorageState = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
+    static #localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...this.#localStorageState };
 
-    static init(map) { }
-
-    static settings = new Map([
+    static #settings = new Map([
         [
             SETTINGS.MouseWheelZoom, {
                 state: false, 
@@ -50,37 +47,33 @@ class SettingsManager {
         ],
     ]);
 
-    static init() {
+    static init(map) {
         // Update the states of the settings map with values from localStorage
-        this.settings.forEach((value, key) => {
-            if(key in this.localStorage) {
-                value.state = this.localStorage[key];
+        this.#settings.forEach((value, key) => {
+            if(key in this.#localStorage) {
+                value.state = this.#localStorage[key];
             }
         });
     }
 
     static addSetting(key, valueObj) {
-        this.settings.set(key, valueObj);
+        this.#settings.set(key, valueObj);
     }
 
     static getSettings() {
-        return this.settings;
+        return this.#settings;
     }
 
     static setSetting(key, state) {
-        this.settings.get(key).state = state;
-        this.localStorage[key] = state;
+        this.#settings.get(key).state = state;
+        this.#localStorage[key] = state;
 
-        StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+        StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.#localStorage));
     }
 
     static getSetting(key) {
-        return this.settings.get(key).state;
+        return this.#settings.get(key).state;
     }
 }
-
-window.addEventListener(EVENTS.Browser.DOMContentLoaded, function() {
-    SettingsManager.init();
-});
 
 export default SettingsManager;

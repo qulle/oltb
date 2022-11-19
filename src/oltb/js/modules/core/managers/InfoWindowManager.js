@@ -14,17 +14,17 @@ const ANIMATION_CLASS = 'oltb-animations--centered-bounce';
 const ID_PREFIX = 'oltb-info-window-marker';
 
 class InfoWindowManager {
-    static map;
-    static overlay;
-    static content;
-    static lastFeature;
+    static #map;
+    static #overlay;
+    static #content;
+    static #lastFeature;
 
     static init(map) {
-        if(this.map) {
+        if(this.#map) {
             return;
         }
 
-        this.map = map;
+        this.#map = map;
 
         // (1). Create DOM element representing infoWindow
         this.infoWindow = DOM.createElement({
@@ -38,7 +38,7 @@ class InfoWindowManager {
             }
         });
 
-        this.content = DOM.createElement({
+        this.#content = DOM.createElement({
             element: 'div',
             class: 'oltb-info-window__content'
         });
@@ -57,10 +57,10 @@ class InfoWindowManager {
         });
 
         this.infoWindow.appendChild(closeButton);
-        this.infoWindow.appendChild(this.content);
+        this.infoWindow.appendChild(this.#content);
 
         // (2). Create ol overlay to host infoWindow
-        this.overlay = new Overlay({
+        this.#overlay = new Overlay({
             element: this.infoWindow,
             autoPan: true,
             autoPanAnimation: {
@@ -68,13 +68,13 @@ class InfoWindowManager {
             }
         });
 
-        this.map.addOverlay(this.overlay);
-        this.map.on(EVENTS.Ol.SingleClick, this.onSingleClick.bind(this));
-        this.map.on(EVENTS.Ol.PointerMove, this.onPointerMove.bind(this));
+        this.#map.addOverlay(this.#overlay);
+        this.#map.on(EVENTS.Ol.SingleClick, this.onSingleClick.bind(this));
+        this.#map.on(EVENTS.Ol.PointerMove, this.onPointerMove.bind(this));
     }
 
     static onSingleClick(event) {
-        const feature = this.map.forEachFeatureAtPixel(event.pixel, function(feature) {
+        const feature = this.#map.forEachFeatureAtPixel(event.pixel, function(feature) {
             return feature;
         });
 
@@ -88,12 +88,12 @@ class InfoWindowManager {
     }
 
     static onPointerMove(event) {
-        const feature = this.map.forEachFeatureAtPixel(event.pixel, function(feature) {
+        const feature = this.#map.forEachFeatureAtPixel(event.pixel, function(feature) {
             return feature;
         });
 
-        if(this.lastFeature && (!feature || this.lastFeature !== feature)) {
-            this.lastFeature.setStyle(null);
+        if(this.#lastFeature && (!feature || this.#lastFeature !== feature)) {
+            this.#lastFeature.setStyle(null);
         }
 
         const hightlight = feature?.getProperties()?.oltb?.highlightOnHover;
@@ -103,7 +103,7 @@ class InfoWindowManager {
         }
 
         const infoWindow = feature?.getProperties()?.oltb?.infoWindow;
-        this.map.getViewport().style.cursor = infoWindow ? 'pointer' : 'default';
+        this.#map.getViewport().style.cursor = infoWindow ? 'pointer' : 'default';
     }
 
     static hightlightVectorSection(feature) {
@@ -116,43 +116,43 @@ class InfoWindowManager {
         })
 
         feature.setStyle(style);
-        this.lastFeature = feature;
+        this.#lastFeature = feature;
     }
 
     static showOverly(feature, position) {
         const infoWindow = feature.getProperties().oltb.infoWindow;
 
-        this.content.innerHTML = infoWindow;
+        this.#content.innerHTML = infoWindow;
 
         if(position) {
-            this.overlay.setPosition(position);
+            this.#overlay.setPosition(position);
         }else {
-            this.overlay.setPosition(getCenter(
+            this.#overlay.setPosition(getCenter(
                 feature.getGeometry().getExtent()
             ));
         }
 
         DOM.rerunAnimation(this.infoWindow, ANIMATION_CLASS);
 
-        const removeFeatureButton = this.content.querySelector(`#${ID_PREFIX}-remove`);
+        const removeFeatureButton = this.#content.querySelector(`#${ID_PREFIX}-remove`);
         if(removeFeatureButton) {
             removeFeatureButton.addEventListener(EVENTS.Browser.Click, removeFeature.bind(this, InfoWindowManager, feature));
         }
 
-        const copyFeatureInfoButton = this.content.querySelector(`#${ID_PREFIX}-copy-location`);
+        const copyFeatureInfoButton = this.#content.querySelector(`#${ID_PREFIX}-copy-location`);
         if(copyFeatureInfoButton) {
             copyFeatureInfoButton.addEventListener(EVENTS.Browser.Click, copyFeatureInfo.bind(this, InfoWindowManager, copyFeatureInfoButton.getAttribute('data-copy')));
         }
 
-        const editFeatureButton = this.content.querySelector(`#${ID_PREFIX}-edit`);
+        const editFeatureButton = this.#content.querySelector(`#${ID_PREFIX}-edit`);
         if(editFeatureButton) {
             editFeatureButton.addEventListener(EVENTS.Browser.Click, editFeature.bind(this, InfoWindowManager, feature));
         }
     }
 
     static hideOverlay() {
-        this.content.innerHTML = '';
-        this.overlay.setPosition(undefined);
+        this.#content.innerHTML = '';
+        this.#overlay.setPosition(undefined);
     }
 }
 

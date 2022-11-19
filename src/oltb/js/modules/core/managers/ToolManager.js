@@ -1,26 +1,26 @@
 class ToolManager {
-    static tool;
+    static #tool;
 
     static init(map) { }
 
     static setActiveTool(tool) {
-        if(this.tool && this.tool !== tool) {
-            this.tool.deSelect();
+        if(this.#tool && this.#tool !== tool) {
+            this.#tool.deSelect();
         }
 
-        this.tool = tool;
+        this.#tool = tool;
     }
 
     static getActiveTool() {
-        return this.tool;
+        return this.#tool;
     }
 
     static hasActiveTool() {
-        return this.tool !== undefined;
+        return this.#tool !== undefined;
     }
 
     static removeActiveTool() {
-        this.tool = undefined;
+        this.#tool = undefined;
     }
 }
 

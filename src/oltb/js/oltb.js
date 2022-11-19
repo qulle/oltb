@@ -50,10 +50,8 @@ const LOCAL_STORAGE_STATE = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE
 const LOCAL_STORAGE = { ...LOCAL_STORAGE_DEFAULTS, ...LOCAL_STORAGE_STATE };
 
 class OLTB {
-    // Private scope
     #tools = {};
 
-    // Public scope
     StateManager      = StateManager;
     LayerManager      = LayerManager;
     TooltipManager    = TooltipManager;

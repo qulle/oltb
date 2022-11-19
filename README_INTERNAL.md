@@ -210,36 +210,36 @@ class Coordinates extends Control {}
 
 When using the custom tools, all that is needed is to import the module(s) you want to have in your toolbar.
 ```javascript
-import HiddenMarkerTool from './modules/tools/hidden-tools/MarkerTool';
-import HiddenMapNavigationTool from './modules/tools/hidden-tools/MapNavigationTool';
 import HomeTool from './modules/tools/HomeTool';
-import ZoomInTool from './modules/tools/ZoomInTool';
-import ZoomOutTool from './modules/tools/ZoomOutTool';
-import FullScreenTool from './modules/tools/FullScreenTool';
-import ExportPNGTool from './modules/tools/ExportPNGTool';
 import DrawTool from './modules/tools/DrawTool';
-import MeasureTool from './modules/tools/MeasureTool';
 import EditTool from './modules/tools/EditTool';
-import BookmarkTool from './modules/tools/BookmarkTool';
-import LayerTool from './modules/tools/LayerTool';
-import SplitViewTool from './modules/tools/SplitViewTool';
-import OverviewTool from './modules/tools/OverviewTool';
-import GraticuleTool from './modules/tools/GraticuleTool';
-import MagnifyTool from './modules/tools/MagnifyTool';
-import ResetNorthTool from './modules/tools/ResetNorthTool';
-import CoordinatesTool from './modules/tools/CoordinatesTool';
-import MyLocationTool from './modules/tools/MyLocationTool';
-import ImportVectorLayerTool from './modules/tools/ImportVectorLayerTool';
-import ScaleLineTool from './modules/tools/ScaleLineTool';
-import RefreshTool from './modules/tools/RefreshTool';
-import ThemeTool from './modules/tools/ThemeTool';
-import DirectionTool from './modules/tools/DirectionTool';
 import InfoTool from './modules/tools/InfoTool';
-import NotificationTool from './modules/tools/NotificationTool';
 import HelpTool from './modules/tools/HelpTool';
+import ThemeTool from './modules/tools/ThemeTool';
+import LayerTool from './modules/tools/LayerTool';
+import ZoomInTool from './modules/tools/ZoomInTool';
+import MeasureTool from './modules/tools/MeasureTool';
+import MagnifyTool from './modules/tools/MagnifyTool';
+import ZoomOutTool from './modules/tools/ZoomOutTool';
+import RefreshTool from './modules/tools/RefreshTool';
 import SettingsTool from './modules/tools/SettingsTool';
+import OverviewTool from './modules/tools/OverviewTool';
+import BookmarkTool from './modules/tools/BookmarkTool';
+import DirectionTool from './modules/tools/DirectionTool';
 import DebugInfoTool from './modules/tools/DebugInfoTool';
+import SplitViewTool from './modules/tools/SplitViewTool';
+import ExportPNGTool from './modules/tools/ExportPNGTool';
+import ScaleLineTool from './modules/tools/ScaleLineTool';
+import GraticuleTool from './modules/tools/GraticuleTool';
+import MyLocationTool from './modules/tools/MyLocationTool';
+import ResetNorthTool from './modules/tools/ResetNorthTool';
+import FullscreenTool from './modules/tools/FullscreenTool';
+import CoordinatesTool from './modules/tools/CoordinatesTool';
 import HiddenAboutTool from './modules/tools/hidden-tools/AboutTool';
+import NotificationTool from './modules/tools/NotificationTool';
+import HiddenMarkerTool from './modules/tools/hidden-tools/MarkerTool';
+import ImportVectorLayerTool from './modules/tools/ImportVectorLayerTool';
+import HiddenMapNavigationTool from './modules/tools/hidden-tools/MapNavigationTool';
 ```
 
 Then call the constructor for each tool in the extend method. The tools are added to the toolbar in the order you include them in the array.
@@ -254,7 +254,7 @@ controls: defaultControls({
     new HomeTool(),
     new ZoomInTool(),
     new ZoomOutTool(),
-    new FullScreenTool(),
+    new FullscreenTool(),
     new ExportPNGTool(),
     new DrawTool(),
     new MeasureTool(),
@@ -331,9 +331,9 @@ controls: defaultControls({
             console.log('Zoomed out');
         }
     }),
-    new FullScreenTool({
+    new FullscreenTool({
         click: function() {
-            console.log('FullScreenTool clicked');
+            console.log('FullscreenTool clicked');
         },
         enter: function(event) {
             console.log('Enter fullscreen mode', event);

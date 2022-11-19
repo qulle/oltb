@@ -42,11 +42,11 @@ class DebugInfoTool extends Control {
         this.debugInfoModal = undefined;
         this.options = { ...DEFAULT_OPTIONS, ...options };
         
-        // Check if the tool only should be visible if the get parameter ?debug=true exists
-        const debugParameter = URLManager.getParameter('debug') === 'true';
+        // If the tool only should be visible in debug mode (?debug=true)
+        const isDebug = URLManager.getParameter('debug') === 'true';
 
         if(this.options.onlyWhenGetParameter) {
-            if(!debugParameter || debugParameter !== true) {
+            if(!isDebug || isDebug !== true) {
                 button.classList.add('oltb-tool-button--hidden');
             }
         }

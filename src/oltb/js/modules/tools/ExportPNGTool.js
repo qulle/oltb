@@ -1,5 +1,6 @@
 import DOM from '../helpers/Browser/DOM';
 import Toast from '../common/Toast';
+import URLManager from '../core/managers/URLManager';
 import html2canvas from 'html2canvas';
 import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
@@ -38,6 +39,9 @@ class ExportPNGTool extends Control {
 
         this.element.appendChild(button);
         this.options = { ...DEFAULT_OPTIONS, ...options };
+
+        // If the tool should activate detailed logging in the html2canvas process (?debug=true)
+        this.isDebug = URLManager.getParameter('debug') === 'true';
         
         window.addEventListener(EVENTS.Browser.DOMContentLoaded, this.onWindowLoaded.bind(this));
         window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
@@ -103,8 +107,10 @@ class ExportPNGTool extends Control {
             // (2). Draw overlays souch as Tooltips and InfoWindows
             const overlay = MAP_ELEMENT.querySelector('.ol-overlaycontainer-stopevent');
             const overlayCanvas = await html2canvas(overlay, {
+                scrollX: 0,
+                scrollY: 0,
                 backgroundColor: null,
-                logging: false
+                logging: this.isDebug
             });
 
             pngContext.drawImage(overlayCanvas, 0, 0);

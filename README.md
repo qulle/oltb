@@ -26,15 +26,15 @@ The latest demo is built using the last official release `v1.0.0-beta3` but may 
 ## CDN 
 ```javascript
 // TODO
-// ex: https://cdn.jsdelivr.net/npm/oltb@latest/dist/oltb.min.js
-// ex: https://cdn.jsdelivr.net/npm/oltb@latest/dist/oltb.min.css
+// ex: https://cdn.jsdelivr.net/npm/oltb@v1.0.0/dist/oltb.min.js
+// ex: https://cdn.jsdelivr.net/npm/oltb@v1.0.0/dist/oltb.min.css
 ```
 
 ## Examples
 Examples for both the NPM and CDN version can be viewed for each release in the [examples directory](https://github.com/qulle/oltb/tree/main/examples/).
 
 ## Want more info?
-Have a look at the [Internal Development Documentation](https://github.com/qulle/oltb/blob/main/README_INTERNAL.md).
+Have a look at the [Internal Development Documentation](README_INTERNAL.md).
 
 ## External GitHub projects
 1. [OpenLayers 7.1.0](https://openlayers.org/en/v7.1.0/apidoc/)
