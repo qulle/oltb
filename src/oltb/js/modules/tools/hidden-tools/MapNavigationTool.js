@@ -1,13 +1,13 @@
 import CONFIG from '../../core/Config';
 import StateManager from '../../core/managers/StateManager';
+import { EVENTS } from '../../helpers/constants/Events';
 import { Control } from 'ol/control';
-import { TOOLBAR_ELEMENT } from '../../core/ElementReferences';
 import { easeOut } from 'ol/easing';
-import { fromLonLat, toLonLat } from 'ol/proj';
+import { CONTEXT_MENUS } from '../../helpers/constants/ContextMenus';
+import { TOOLBAR_ELEMENT } from '../../core/ElementReferences';
 import { addContextMenuItem } from '../../common/ContextMenu';
 import { SVG_PATHS, getIcon } from '../../core/SVGIcons';
-import { EVENTS } from '../../helpers/constants/Events';
-import { CONTEXT_MENUS } from '../../helpers/constants/ContextMenus';
+import { fromLonLat, toLonLat } from 'ol/proj';
 
 // Note: This is the same NODE_NAME and PROPS that the map.js file is using
 const LOCAL_STORAGE_NODE_NAME = 'mapData';
@@ -30,7 +30,7 @@ class HiddenMapNavigationTool extends Control {
 
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
-        // Load potential stored data from localStorage
+        // Load stored data from localStorage
         const localStorageState = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
         this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
 

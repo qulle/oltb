@@ -1,8 +1,8 @@
+import { EVENTS } from '../../helpers/constants/Events';
+import { FEATURE_PROPERTIES } from '../../helpers/constants/FeatureProperties';
 import { Vector as VectorLayer } from 'ol/layer'; 
 import { Vector as VectorSource } from 'ol/source';
 import { hasCustomFeatureProperty } from '../../helpers/HasNestedProperty';
-import { EVENTS } from '../../helpers/constants/Events';
-import { FEATURE_PROPERTIES } from '../../helpers/constants/FeatureProperties';
 
 const DEFAULT_LAYER_NAME = 'New layer';
 const ZINDEX_BASE = 1000;

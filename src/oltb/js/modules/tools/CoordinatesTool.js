@@ -1,21 +1,21 @@
-import CONFIG from '../core/Config';
-import Toast from '../common/Toast';
 import DOM from '../helpers/Browser/DOM';
-import SettingsManager from '../core/managers/SettingsManager';
-import TooltipManager from '../core/managers/TooltipManager';
+import Toast from '../common/Toast';
+import CONFIG from '../core/Config';
 import ToolManager from '../core/managers/ToolManager';
 import StateManager from '../core/managers/StateManager';
+import TooltipManager from '../core/managers/TooltipManager';
+import SettingsManager from '../core/managers/SettingsManager';
+import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
-import { transform } from 'ol/proj';
 import { unByKey } from 'ol/Observable';
-import { TOOLBAR_ELEMENT } from '../core/ElementReferences';
-import { copyToClipboard } from '../helpers/Browser/CopyToClipboard';
-import { SVG_PATHS, getIcon } from '../core/SVGIcons';
-import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
+import { SETTINGS } from '../helpers/constants/Settings';
+import { transform } from 'ol/proj';
 import { toStringHDMS } from 'ol/coordinate';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
-import { EVENTS } from '../helpers/constants/Events';
-import { SETTINGS } from '../helpers/constants/Settings';
+import { TOOLBAR_ELEMENT } from '../core/ElementReferences';
+import { copyToClipboard } from '../helpers/Browser/CopyToClipboard';
+import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
+import { SVG_PATHS, getIcon } from '../core/SVGIcons';
 
 const LOCAL_STORAGE_NODE_NAME = 'coordinateTool';
 const LOCAL_STORAGE_DEFAULTS = {
@@ -54,7 +54,7 @@ class CoordinatesTool extends Control {
         this.tooltipItem = undefined;
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
-        // Load potential stored data from localStorage
+        // Load stored data from localStorage
         const localStorageState = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
         this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
 

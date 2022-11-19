@@ -1,5 +1,5 @@
-import ModalBase from './ModalBase';
 import DOM from '../../helpers/Browser/DOM';
+import ModalBase from './ModalBase';
 
 const DEFAULT_OPTIONS = {
     title: 'Modal title',

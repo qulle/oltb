@@ -1,12 +1,12 @@
-import Modal from '../common/Modal';
 import DOM from '../helpers/Browser/DOM';
+import Modal from '../common/Modal';
 import CONFIG from '../core/Config';
-import { Control } from 'ol/control';
-import { TOOLBAR_ELEMENT } from '../core/ElementReferences';
-import { SVG_PATHS, getIcon } from '../core/SVGIcons';
-import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
-import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { EVENTS } from '../helpers/constants/Events';
+import { Control } from 'ol/control';
+import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
+import { TOOLBAR_ELEMENT } from '../core/ElementReferences';
+import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
+import { SVG_PATHS, getIcon } from '../core/SVGIcons';
 
 const NOTIFICATION_URL = 'https://raw.githubusercontent.com/qulle/notification-endpoints/main/endpoints/oltb.json';
 

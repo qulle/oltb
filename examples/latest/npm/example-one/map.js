@@ -1,16 +1,16 @@
 // (1). Core OpenLayers
 import 'ol/ol.css';
 import { Map, View } from 'ol';
-import { defaults as defaultInterctions } from 'ol/interaction';
-import { defaults as defaultControls } from 'ol/control';
 import { get as getProjection } from 'ol/proj';
+import { defaults as defaultControls } from 'ol/control';
+import { defaults as defaultInterctions } from 'ol/interaction';
 
 // (2). Add layers
 import '../shared/layers/Maps';
-import '../shared/layers/Countries';
-import '../shared/layers/Continents';
 import '../shared/layers/Wind';
 import '../shared/layers/Capitals';
+import '../shared/layers/Countries';
+import '../shared/layers/Continents';
 
 // (3). The Toolbar
 import OLTB from '../../../../src/oltb/js/oltb';

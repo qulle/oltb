@@ -1,8 +1,8 @@
-import CONFIG from './Config';
-import DOM from '../helpers/browser/DOM';
 import * as AColorPicker from 'a-color-picker';
-import { isHorizontal } from '../helpers/IsRowDirection';
+import DOM from '../helpers/browser/DOM';
+import CONFIG from './Config';
 import { EVENTS } from '../helpers/constants/Events';
+import { isHorizontal } from '../helpers/IsRowDirection';
 import { eventDispatcher } from '../helpers/Browser/EventDispatcher';
 
 // (1). Create element to host ACP instance

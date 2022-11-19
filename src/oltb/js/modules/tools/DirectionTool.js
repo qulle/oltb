@@ -1,14 +1,14 @@
-import StateManager from '../core/managers/StateManager';
 import DOM from '../helpers/Browser/DOM';
 import CONFIG from '../core/Config';
+import StateManager from '../core/managers/StateManager';
+import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
-import { TOOLBAR_ELEMENT } from '../core/ElementReferences';
-import { SVG_PATHS, getIcon } from '../core/SVGIcons';
-import { toolButtonsTippySingleton } from '../core/Tooltips';
-import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { isHorizontal } from '../helpers/IsRowDirection';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
-import { EVENTS } from '../helpers/constants/Events';
+import { TOOLBAR_ELEMENT } from '../core/ElementReferences';
+import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
+import { SVG_PATHS, getIcon } from '../core/SVGIcons';
+import { toolButtonsTippySingleton } from '../core/Tooltips';
 
 const LOCAL_STORAGE_NODE_NAME = 'direction';
 

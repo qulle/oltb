@@ -1,11 +1,11 @@
-import Control from "ol/control/Control";
-import CONFIG from '../core/Config';
 import DOM from '../helpers/Browser/DOM';
-import { trapFocusKeyListener } from '../helpers/TrapFocus';
+import CONFIG from '../core/Config';
+import Control from "ol/control/Control";
+import { EVENTS } from "../helpers/constants/Events";
 import { transform } from 'ol/proj';
 import { MAP_ELEMENT } from "../core/ElementReferences";
 import { hasNestedProperty } from "../helpers/HasNestedProperty";
-import { EVENTS } from "../helpers/constants/Events";
+import { trapFocusKeyListener } from '../helpers/TrapFocus';
 
 const DEFAULT_OPTIONS = {};
 

@@ -1,11 +1,11 @@
-import Modal from '../common/Modal';
 import DOM from '../helpers/Browser/DOM';
-import { Control } from 'ol/control';
-import { TOOLBAR_ELEMENT } from '../core/ElementReferences';
-import { SVG_PATHS, getIcon } from '../core/SVGIcons';
-import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
-import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
+import Modal from '../common/Modal';
 import { EVENTS } from '../helpers/constants/Events';
+import { Control } from 'ol/control';
+import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
+import { TOOLBAR_ELEMENT } from '../core/ElementReferences';
+import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
+import { SVG_PATHS, getIcon } from '../core/SVGIcons';
 
 const DEFAULT_OPTIONS = {
     title: 'Hey!',

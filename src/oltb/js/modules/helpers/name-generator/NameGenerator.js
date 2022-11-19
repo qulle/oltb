@@ -1,5 +1,5 @@
-import ADJECTIVES from './Adjectives';
 import ANIMALS from './Animals';
+import ADJECTIVES from './Adjectives';
 import { randomNumber } from '../Random';
 
 const generateAnimalName = function() {

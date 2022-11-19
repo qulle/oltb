@@ -1,14 +1,14 @@
-import Toast from '../common/Toast';
 import DOM from '../helpers/Browser/DOM';
+import Toast from '../common/Toast';
 import StateManager from '../core/managers/StateManager';
-import { Control } from 'ol/control';
-import { getRenderPixel } from 'ol/render';
-import { unByKey } from 'ol/Observable';
-import { TOOLBAR_ELEMENT } from '../core/ElementReferences';
-import { SVG_PATHS, getIcon } from '../core/SVGIcons';
-import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
-import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { EVENTS } from '../helpers/constants/Events';
+import { Control } from 'ol/control';
+import { unByKey } from 'ol/Observable';
+import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
+import { getRenderPixel } from 'ol/render';
+import { TOOLBAR_ELEMENT } from '../core/ElementReferences';
+import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
+import { SVG_PATHS, getIcon } from '../core/SVGIcons';
 
 const LOCAL_STORAGE_NODE_NAME = 'magnifyTool';
 const LOCAL_STORAGE_DEFAULTS = {
@@ -46,7 +46,7 @@ class MagnifyTool extends Control {
         this.radius = 75;
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
-        // Load potential stored data from localStorage
+        // Load stored data from localStorage
         const localStorageState = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
         this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
 

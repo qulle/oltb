@@ -1,7 +1,7 @@
 import Point from 'ol/geom/Point';
 import Feature from 'ol/Feature';
-import { Icon, Style } from 'ol/style';
 import { fromLonLat } from 'ol/proj';
+import { Icon, Style } from 'ol/style';
 import { getWindBarb } from '../../core/SVGWindbarbs';
 import { degreesToRadians } from '../Conversions';
 import { FEATURE_PROPERTIES } from '../constants/FeatureProperties';

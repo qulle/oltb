@@ -1,13 +1,13 @@
-import html2canvas from 'html2canvas';
 import DOM from '../helpers/Browser/DOM';
 import Toast from '../common/Toast';
+import html2canvas from 'html2canvas';
+import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { download } from '../helpers/Browser/Download';
-import { MAP_ELEMENT, TOOLBAR_ELEMENT } from '../core/ElementReferences';
-import { SVG_PATHS, getIcon } from '../core/SVGIcons';
-import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
-import { EVENTS } from '../helpers/constants/Events';
+import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
+import { SVG_PATHS, getIcon } from '../core/SVGIcons';
+import { MAP_ELEMENT, TOOLBAR_ELEMENT } from '../core/ElementReferences';
 
 const DEFAULT_OPTIONS = {};
 const FILE_NAME = 'map.png';

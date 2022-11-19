@@ -9,9 +9,7 @@ class SettingsManager {
     static localStorageState = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
     static localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...this.localStorageState };
 
-    static init(map) {
-        // Note: Not used in this Manager
-    }
+    static init(map) { }
 
     static settings = new Map([
         [

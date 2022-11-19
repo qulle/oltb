@@ -1,16 +1,16 @@
-import Dialog from '../common/Dialog';
-import Toast from '../common/Toast';
-import CONFIG from '../core/Config';
 import DOM from '../helpers/Browser/DOM';
+import Toast from '../common/Toast';
+import Dialog from '../common/Dialog';
+import CONFIG from '../core/Config';
+import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { easeOut } from 'ol/easing';
+import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
+import { CONTEXT_MENUS } from '../helpers/constants/ContextMenus';
 import { TOOLBAR_ELEMENT } from '../core/ElementReferences';
+import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { addContextMenuItem } from '../common/ContextMenu';
 import { SVG_PATHS, getIcon } from '../core/SVGIcons';
-import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
-import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
-import { EVENTS } from '../helpers/constants/Events';
-import { CONTEXT_MENUS } from '../helpers/constants/ContextMenus';
 import { degreesToRadians, radiansToDegrees } from '../helpers/Conversions';
 
 const DEFAULT_OPTIONS = {};

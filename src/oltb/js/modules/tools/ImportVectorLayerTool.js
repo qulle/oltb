@@ -1,14 +1,15 @@
-import Toast from '../common/Toast';
-import LayerManager from '../core/managers/LayerManager';
-import CONFIG from '../core/Config';
 import DOM from '../helpers/Browser/DOM';
-import FORMAT_TYPES, { instantiateFormat } from '../core/ol-types/FormatTypes';
-import { Control } from 'ol/control';
-import { TOOLBAR_ELEMENT } from '../core/ElementReferences';
-import { SVG_PATHS, getIcon } from '../core/SVGIcons';
-import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
-import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
+import Toast from '../common/Toast';
+import CONFIG from '../core/Config';
+import LayerManager from '../core/managers/LayerManager';
+import FORMAT_TYPES from '../core/ol-types/FormatTypes';
 import { EVENTS } from '../helpers/constants/Events';
+import { Control } from 'ol/control';
+import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
+import { TOOLBAR_ELEMENT } from '../core/ElementReferences';
+import { instantiateFormat } from '../core/ol-types/FormatTypes';
+import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
+import { SVG_PATHS, getIcon } from '../core/SVGIcons';
 
 const DEFAULT_OPTIONS = {};
 

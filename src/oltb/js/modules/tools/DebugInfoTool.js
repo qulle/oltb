@@ -1,14 +1,14 @@
-import CONFIG from '../core/Config';
-import DebugInfoModal from './modal-extensions/DebugInfoModal';
-import URLManager from '../core/managers/URLManager';
 import DOM from '../helpers/Browser/DOM';
+import CONFIG from '../core/Config';
+import URLManager from '../core/managers/URLManager';
+import DebugInfoModal from './modal-extensions/DebugInfoModal';
+import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
-import { TOOLBAR_ELEMENT } from '../core/ElementReferences';
-import { SVG_PATHS, getIcon } from '../core/SVGIcons';
-import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { PROJECTIONS } from '../epsg/Projections';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
-import { EVENTS } from '../helpers/constants/Events';
+import { TOOLBAR_ELEMENT } from '../core/ElementReferences';
+import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
+import { SVG_PATHS, getIcon } from '../core/SVGIcons';
 
 const DEFAULT_OPTIONS = {
     onlyWhenGetParameter: false

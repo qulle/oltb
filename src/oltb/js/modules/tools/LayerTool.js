@@ -1,27 +1,27 @@
-import LayerManager from '../core/managers/LayerManager';
-import Dialog from '../common/Dialog';
-import LayerModal from './modal-extensions/LayerModal';
 import DOM from '../helpers/Browser/DOM';
-import CONFIG from '../core/Config';
-import InfoWindowManager from '../core/managers/InfoWindowManager';
-import StateManager from '../core/managers/StateManager';
-import Toast from '../common/Toast';
-import DownloadLayerModal from './modal-extensions/DownloadLayerModal';
 import tippy from 'tippy.js';
+import Toast from '../common/Toast';
+import Dialog from '../common/Dialog';
+import CONFIG from '../core/Config';
+import LayerModal from './modal-extensions/LayerModal';
+import StateManager from '../core/managers/StateManager';
+import LayerManager from '../core/managers/LayerManager';
+import InfoWindowManager from '../core/managers/InfoWindowManager';
+import DownloadLayerModal from './modal-extensions/DownloadLayerModal';
+import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
-import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT } from '../core/ElementReferences';
 import { download } from '../helpers/Browser/Download';
-import { addContextMenuItem } from '../common/ContextMenu';
-import { SVG_PATHS, getIcon } from '../core/SVGIcons';
-import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
+import { CONTEXT_MENUS } from '../helpers/constants/ContextMenus';
+import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { instantiateLayer } from '../core/ol-types/LayerTypes';
 import { instantiateSource } from '../core/ol-types/SourceTypes';
 import { instantiateFormat } from '../core/ol-types/FormatTypes';
-import { hasCustomFeatureProperty } from '../helpers/HasNestedProperty';
-import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
-import { EVENTS } from '../helpers/constants/Events';
-import { CONTEXT_MENUS } from '../helpers/constants/ContextMenus';
+import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
+import { addContextMenuItem } from '../common/ContextMenu';
+import { SVG_PATHS, getIcon } from '../core/SVGIcons';
 import { FEATURE_PROPERTIES } from '../helpers/constants/FeatureProperties';
+import { hasCustomFeatureProperty } from '../helpers/HasNestedProperty';
+import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT } from '../core/ElementReferences';
 
 const LAYER_BUTTON_DEFAULT_CLASSES = 'oltb-func-btn';
 const ID_PREFIX = 'oltb-layer';
@@ -78,7 +78,7 @@ class LayerTool extends Control {
         this.active = false;
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
-        // Load potential stored data from localStorage
+        // Load stored data from localStorage
         const localStorageState = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
         this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
 

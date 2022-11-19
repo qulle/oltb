@@ -1,20 +1,20 @@
-import Dialog from '../common/Dialog';
-import Toast from '../common/Toast';
 import DOM from '../helpers/Browser/DOM';
-import CONFIG from '../core/Config';
-import StateManager from '../core/managers/StateManager';
 import tippy from 'tippy.js';
+import Toast from '../common/Toast';
+import CONFIG from '../core/Config';
+import Dialog from '../common/Dialog';
+import StateManager from '../core/managers/StateManager';
+import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
-import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT } from '../core/ElementReferences';
-import { addContextMenuItem } from '../common/ContextMenu';
-import { generateAnimalName } from '../helpers/name-generator/NameGenerator';
 import { easeOut } from 'ol/easing';
 import { randomNumber } from '../helpers/Random';
-import { SVG_PATHS, getIcon } from '../core/SVGIcons';
-import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
-import { EVENTS } from '../helpers/constants/Events';
 import { CONTEXT_MENUS } from '../helpers/constants/ContextMenus';
+import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
+import { SVG_PATHS, getIcon } from '../core/SVGIcons';
+import { addContextMenuItem } from '../common/ContextMenu';
+import { generateAnimalName } from '../helpers/name-generator/NameGenerator';
+import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT } from '../core/ElementReferences';
 
 const BOOKMARK_BUTTON_DEFAULT_CLASSES = 'oltb-func-btn';
 const ID_PREFIX = 'oltb-bookmark';
@@ -59,7 +59,7 @@ class BookmarkTool extends Control {
         this.active = false;
         this.options = { ...DEFAULT_OPTIONS, ...options };
         
-        // Load potential stored data from localStorage
+        // Load stored data from localStorage
         const localStorageState = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
         this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
 

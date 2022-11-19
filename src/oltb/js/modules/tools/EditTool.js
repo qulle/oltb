@@ -1,30 +1,30 @@
 import * as jsts from 'jsts/dist/jsts';
-import Dialog from '../common/Dialog';
-import LayerManager from '../core/managers/LayerManager';
-import SettingsManager from '../core/managers/SettingsManager';
-import StateManager from '../core/managers/StateManager';
-import TooltipManager from '../core/managers/TooltipManager';
-import ToolManager from '../core/managers/ToolManager';
 import DOM from '../helpers/Browser/DOM';
 import Toast from '../common/Toast';
+import Dialog from '../common/Dialog';
+import ToolManager from '../core/managers/ToolManager';
+import LayerManager from '../core/managers/LayerManager';
+import StateManager from '../core/managers/StateManager';
+import TooltipManager from '../core/managers/TooltipManager';
+import SettingsManager from '../core/managers/SettingsManager';
+import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
-import { Select, Modify, Translate } from 'ol/interaction';
-import { shiftKeyOnly } from 'ol/events/condition';
+import { Feature } from 'ol';
 import { unByKey } from 'ol/Observable';
-import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT } from '../core/ElementReferences';
-import { SVG_PATHS, getIcon } from '../core/SVGIcons';
+import { SETTINGS } from '../helpers/constants/Settings';
+import { shiftKeyOnly } from 'ol/events/condition';
+import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
+import { generateTooltip } from '../helpers/ol-functions/GenerateTooltip';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
-import { getMeasureCoordinates, getMeasureValue } from '../helpers/Measurements';
+import { SVG_PATHS, getIcon } from '../core/SVGIcons';
+import { FEATURE_PROPERTIES } from '../helpers/constants/FeatureProperties';
+import { Fill, Stroke, Style } from 'ol/style';
 import { hasCustomFeatureProperty } from '../helpers/HasNestedProperty';
 import { getCustomFeatureProperty } from '../helpers/GetNestedProperty';
-import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
-import { EVENTS } from '../helpers/constants/Events';
-import { SETTINGS } from '../helpers/constants/Settings';
-import { FEATURE_PROPERTIES } from '../helpers/constants/FeatureProperties';
-import { Feature } from 'ol';
+import { Select, Modify, Translate } from 'ol/interaction';
+import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT } from '../core/ElementReferences';
+import { getMeasureCoordinates, getMeasureValue } from '../helpers/Measurements';
 import { GeometryCollection, LinearRing, LineString, MultiLineString, MultiPoint, MultiPolygon, Point, Polygon } from 'ol/geom';
-import { Fill, Stroke, Style } from 'ol/style';
-import { generateTooltip } from '../helpers/ol-functions/GenerateTooltip';
 
 /*!
  *  Note: JSTS
@@ -110,7 +110,7 @@ class EditTool extends Control {
         this.parser = new jsts.io.OL3Parser();
         this.parser.inject(Point, LineString, LinearRing, Polygon, MultiPoint, MultiLineString, MultiPolygon, GeometryCollection);
 
-        // Load potential stored data from localStorage
+        // Load stored data from localStorage
         const localStorageState = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
         this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
         

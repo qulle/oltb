@@ -1,22 +1,23 @@
+import DOM from '../helpers/Browser/DOM';
+import Draw from 'ol/interaction/Draw';
+import Toast from '../common/Toast';
+import ToolManager from '../core/managers/ToolManager';
+import StateManager from '../core/managers/StateManager';
 import LayerManager from '../core/managers/LayerManager';
 import SettingsManager from '../core/managers/SettingsManager';
-import StateManager from '../core/managers/StateManager';
-import ToolManager from '../core/managers/ToolManager';
-import Toast from '../common/Toast';
-import DOM from '../helpers/Browser/DOM';
-import Draw, { createBox, createRegularPolygon } from 'ol/interaction/Draw';
-import { Control } from 'ol/control';
-import { Fill, Stroke, Circle, Style } from 'ol/style';
-import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT } from '../core/ElementReferences';
-import { eventDispatcher } from '../helpers/Browser/EventDispatcher';
-import { SVG_PATHS, getIcon } from '../core/SVGIcons';
-import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
-import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { EVENTS } from '../helpers/constants/Events';
+import { Control } from 'ol/control';
 import { SETTINGS } from '../helpers/constants/Settings';
+import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
+import { eventDispatcher } from '../helpers/Browser/EventDispatcher';
+import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
+import { FEATURE_PROPERTIES } from '../helpers/constants/FeatureProperties';
+import { SVG_PATHS, getIcon } from '../core/SVGIcons';
 import { LinearRing, Polygon } from 'ol/geom';
 import { isFeatureIntersectable } from '../helpers/IsFeatureIntersectable';
-import { FEATURE_PROPERTIES } from '../helpers/constants/FeatureProperties';
+import { Fill, Stroke, Circle, Style } from 'ol/style';
+import { createBox, createRegularPolygon } from 'ol/interaction/Draw';
+import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT } from '../core/ElementReferences';
 
 const ID_PREFIX = 'oltb-draw';
 
@@ -62,7 +63,7 @@ class DrawTool extends Control {
         this.intersectedFeatures = [];
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
-        // Load potential stored data from localStorage
+        // Load stored data from localStorage
         const localStorageState = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
         this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
 

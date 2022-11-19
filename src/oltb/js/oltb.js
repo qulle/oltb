@@ -1,24 +1,24 @@
 // (1). Core OpenLayers
-import { platformModifierKeyOnly, altShiftKeysOnly, shiftKeyOnly, targetNotEditable } from 'ol/events/condition';
-import { MouseWheelZoom, DragPan, DragRotate, KeyboardZoom, KeyboardPan } from 'ol/interaction';
 import { fromLonLat } from 'ol/proj';
+import { MouseWheelZoom, DragPan, DragRotate, KeyboardZoom, KeyboardPan } from 'ol/interaction';
+import { platformModifierKeyOnly, altShiftKeysOnly, shiftKeyOnly, targetNotEditable } from 'ol/events/condition';
 
 // (2). Core Toolbar
 import '../scss/oltb.scss';
-import Dialog from './modules/common/Dialog';
 import Toast from './modules/common/Toast';
 import Modal from './modules/common/Modal';
-import ContextMenu from './modules/common/ContextMenu';
+import Dialog from './modules/common/Dialog';
 import CONFIG from './modules/core/Config';
+import ContextMenu from './modules/common/ContextMenu';
+import { SETTINGS } from './modules/helpers/constants/Settings';
 import { MAP_ELEMENT } from './modules/core/ElementReferences';
 import { CONTEXT_MENUS } from './modules/helpers/constants/ContextMenus';
-import { SETTINGS } from './modules/helpers/constants/Settings';
 
 // (3). Core Managers
-import StateManager from './modules/core/managers/StateManager';
-import SettingsManager from './modules/core/managers/SettingsManager';
 import LayerManager from './modules/core/managers/LayerManager';
+import StateManager from './modules/core/managers/StateManager';
 import TooltipManager from './modules/core/managers/TooltipManager';
+import SettingsManager from './modules/core/managers/SettingsManager';
 import InfoWindowManager from './modules/core/managers/InfoWindowManager';
 
 // (4). Custom OL generator functions
@@ -32,9 +32,9 @@ import ALL_TOOLS from './modules/tools/index';
 // (6). Additional toolbar helpers
 import './modules/core/Tooltips';
 import './modules/epsg/Registrate';
-import './modules/helpers/Browser/Prototypes';
-import './modules/helpers/Accessibility';
 import './modules/helpers/SlideToggle';
+import './modules/helpers/Accessibility';
+import './modules/helpers/Browser/Prototypes';
 
 // Note: This is the same NODE_NAME and PROPS that the MapNavigationTool.js is using
 const LOCAL_STORAGE_NODE_NAME = 'mapData';
@@ -45,7 +45,7 @@ const LOCAL_STORAGE_DEFAULTS = {
     rotation: 0
 };
 
-// Load potential stored data from localStorage
+// Load stored data from localStorage
 const LOCAL_STORAGE_STATE = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
 const LOCAL_STORAGE = { ...LOCAL_STORAGE_DEFAULTS, ...LOCAL_STORAGE_STATE };
 
@@ -103,10 +103,10 @@ class OLTB {
         });
 
         [
-            StateManager,
-            SettingsManager,
             LayerManager,
+            StateManager,
             TooltipManager,
+            SettingsManager,
             InfoWindowManager
         ].forEach((manager) => {
             manager.init(map);

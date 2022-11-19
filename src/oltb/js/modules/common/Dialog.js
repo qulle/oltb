@@ -1,6 +1,6 @@
 import Alert from './dialogs/Alert';
-import Confirm from './dialogs/Confirm';
 import Prompt from './dialogs/Prompt';
+import Confirm from './dialogs/Confirm';
 
 class Dialog {
     static alert(options) {

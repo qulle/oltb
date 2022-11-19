@@ -1,12 +1,12 @@
-import StateManager from '../core/managers/StateManager';
 import DOM from '../helpers/Browser/DOM';
+import StateManager from '../core/managers/StateManager';
+import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
-import { TOOLBAR_ELEMENT } from '../core/ElementReferences';
-import { SVG_PATHS, getIcon } from '../core/SVGIcons';
-import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { isDarkTheme } from '../helpers/IsDarkTheme';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
-import { EVENTS } from '../helpers/constants/Events';
+import { TOOLBAR_ELEMENT } from '../core/ElementReferences';
+import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
+import { SVG_PATHS, getIcon } from '../core/SVGIcons';
 
 const LOCAL_STORAGE_NODE_NAME = 'theme';
 

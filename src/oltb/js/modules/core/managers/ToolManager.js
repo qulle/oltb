@@ -1,9 +1,7 @@
 class ToolManager {
     static tool;
 
-    static init(map) {
-        // Note: Not used in this Manager
-    }
+    static init(map) { }
 
     static setActiveTool(tool) {
         if(this.tool && this.tool !== tool) {

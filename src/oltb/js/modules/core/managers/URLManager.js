@@ -1,10 +1,8 @@
 class URLManager {
+    static init(map) { }
+    
     static assign(path) {
         window.location.assign(path);
-    }
-
-    static init(map) {
-        // Note: Not used in this Manager
     }
 
     static replaceParameter(parameters) {

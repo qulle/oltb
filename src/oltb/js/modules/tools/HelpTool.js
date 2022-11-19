@@ -1,11 +1,11 @@
-import Toast from '../common/Toast';
 import DOM from '../helpers/Browser/DOM';
-import { Control } from 'ol/control';
-import { TOOLBAR_ELEMENT } from '../core/ElementReferences';
-import { SVG_PATHS, getIcon } from '../core/SVGIcons';
-import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
-import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
+import Toast from '../common/Toast';
 import { EVENTS } from '../helpers/constants/Events';
+import { Control } from 'ol/control';
+import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
+import { TOOLBAR_ELEMENT } from '../core/ElementReferences';
+import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
+import { SVG_PATHS, getIcon } from '../core/SVGIcons';
 
 const DEFAULT_OPTIONS = {
     url: 'https://github.com/qulle/oltb',

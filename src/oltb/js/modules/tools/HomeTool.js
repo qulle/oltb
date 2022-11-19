@@ -1,16 +1,16 @@
-import CONFIG from '../core/Config';
 import DOM from '../helpers/Browser/DOM';
 import Toast from '../common/Toast';
+import CONFIG from '../core/Config';
+import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
-import { fromLonLat } from 'ol/proj';
 import { easeOut } from 'ol/easing';
+import { fromLonLat } from 'ol/proj';
+import { CONTEXT_MENUS } from '../helpers/constants/ContextMenus';
+import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { TOOLBAR_ELEMENT } from '../core/ElementReferences';
+import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { addContextMenuItem } from '../common/ContextMenu';
 import { SVG_PATHS, getIcon } from '../core/SVGIcons';
-import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
-import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
-import { EVENTS } from '../helpers/constants/Events';
-import { CONTEXT_MENUS } from '../helpers/constants/ContextMenus';
 
 const DEFAULT_OPTIONS = {
     zoom: 3,

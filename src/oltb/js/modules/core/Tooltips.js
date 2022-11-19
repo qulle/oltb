@@ -1,10 +1,10 @@
 import 'tippy.js/dist/tippy.css';
 import tippy from 'tippy.js';
 import CONFIG from './Config';
-import { delegate, createSingleton } from 'tippy.js';
+import { EVENTS } from '../helpers/constants/Events';
 import { MAP_ELEMENT } from './ElementReferences';
 import { isHorizontal } from '../helpers/IsRowDirection';
-import { EVENTS } from '../helpers/constants/Events';
+import { delegate, createSingleton } from 'tippy.js';
 import { colorPicker, onColorPickerTooltipShow } from './ColorPicker';
 
 // (1). Create tippy singleton for the Toolbar

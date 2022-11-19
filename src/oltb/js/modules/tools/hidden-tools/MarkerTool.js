@@ -1,13 +1,13 @@
-import LayerManager from '../../core/managers/LayerManager';
 import MarkerModal from '../modal-extensions/MarkerModal';
+import LayerManager from '../../core/managers/LayerManager';
+import { EVENTS } from '../../helpers/constants/Events';
 import { Control } from 'ol/control';
-import { TOOLBAR_ELEMENT } from '../../core/ElementReferences';
+import { toStringHDMS } from 'ol/coordinate';
+import { CONTEXT_MENUS } from '../../helpers/constants/ContextMenus';
 import { generateMarker } from '../../helpers/ol-functions/GenerateMarker';
+import { TOOLBAR_ELEMENT } from '../../core/ElementReferences';
 import { addContextMenuItem } from '../../common/ContextMenu';
 import { SVG_PATHS, getIcon } from '../../core/SVGIcons';
-import { toStringHDMS } from 'ol/coordinate';
-import { EVENTS } from '../../helpers/constants/Events';
-import { CONTEXT_MENUS } from '../../helpers/constants/ContextMenus';
 
 const ID_PREFIX = 'oltb-info-window';
 const DEFAULT_OPTIONS = {};

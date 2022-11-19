@@ -1,20 +1,20 @@
+import DOM from '../helpers/Browser/DOM';
 import Toast from '../common/Toast';
+import CONFIG from '../core/Config';
 import Dialog from '../common/Dialog';
 import LayerManager from '../core/managers/LayerManager';
 import InfoWindowManager from '../core/managers/InfoWindowManager';
-import CONFIG from '../core/Config';
-import DOM from '../helpers/Browser/DOM';
+import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
-import { TOOLBAR_ELEMENT } from '../core/ElementReferences';
-import { isFullScreen, exitFullScreen } from '../helpers/Browser/Fullscreen';
-import { generateMarker } from '../helpers/ol-functions/GenerateMarker';
 import { easeOut } from 'ol/easing';
 import { fromLonLat } from 'ol/proj';
-import { SVG_PATHS, getIcon } from '../core/SVGIcons';
-import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { toStringHDMS } from 'ol/coordinate';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
-import { EVENTS } from '../helpers/constants/Events';
+import { generateMarker } from '../helpers/ol-functions/GenerateMarker';
+import { TOOLBAR_ELEMENT } from '../core/ElementReferences';
+import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
+import { SVG_PATHS, getIcon } from '../core/SVGIcons';
+import { isFullScreen, exitFullScreen } from '../helpers/Browser/Fullscreen';
 
 const ID_PREFIX = 'oltb-info-window-marker';
 

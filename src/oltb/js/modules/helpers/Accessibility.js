@@ -1,7 +1,7 @@
-import URLManager from '../core/managers/URLManager';
 import CONFIG from '../core/Config';
-import { TOOLBAR_ELEMENT, TOOLBOX_ELEMENT, MAP_ELEMENT } from '../core/ElementReferences';
+import URLManager from '../core/managers/URLManager';
 import { EVENTS } from './constants/Events';
+import { TOOLBAR_ELEMENT, TOOLBOX_ELEMENT, MAP_ELEMENT } from '../core/ElementReferences';
 
 // (1). Set version as custom attribute to the html element
 document.documentElement.setAttribute('oltb-version', CONFIG.version);

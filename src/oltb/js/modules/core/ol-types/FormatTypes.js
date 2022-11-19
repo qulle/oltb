@@ -1,5 +1,5 @@
-import GeoJSON from 'ol/format/GeoJSON';
 import KML from 'ol/format/KML';
+import GeoJSON from 'ol/format/GeoJSON';
 
 const FORMAT_TYPES = {
     'GeoJSON': GeoJSON,
