@@ -3,8 +3,11 @@ import { version } from '../../../../../package.json';
 const CONFIG = {
     version: version,
     locale: 'en-us',
-    projection: 'EPSG:3857',
-    wgs84Projection: 'EPSG:4326',
+    scrollDistance: 100,
+    projection: {
+        default: 'EPSG:3857',
+        wgs84: 'EPSG:4326'
+    },
     overlayOffset: {
         horizontal: 0,
         vertical: -8

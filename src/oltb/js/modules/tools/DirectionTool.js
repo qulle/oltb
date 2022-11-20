@@ -8,9 +8,10 @@ import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { TOOLBAR_ELEMENT } from '../core/ElementReferences';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { SVG_PATHS, getIcon } from '../core/SVGIcons';
+import { LOCAL_STORAGE_KEYS } from '../helpers/constants/LocalStorageKeys';
 import { toolButtonsTippySingleton } from '../core/Tooltips';
 
-const LOCAL_STORAGE_NODE_NAME = 'direction';
+const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.DirectionTool;
 
 const DEFAULT_OPTIONS = {};
 

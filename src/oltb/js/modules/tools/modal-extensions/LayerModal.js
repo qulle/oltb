@@ -114,7 +114,7 @@ class LayerModal extends ModalBase {
             class: 'oltb-input', 
             attributes: {
                 type: 'text', 
-                placeholder: CONFIG.projection
+                placeholder: CONFIG.projection.default
             }
         });
 

@@ -16,13 +16,14 @@ import { eventDispatcher } from '../helpers/Browser/EventDispatcher';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { FEATURE_PROPERTIES } from '../helpers/constants/FeatureProperties';
 import { SVG_PATHS, getIcon } from '../core/SVGIcons';
+import { LOCAL_STORAGE_KEYS } from '../helpers/constants/LocalStorageKeys';
 import { Fill, Stroke, Circle, Style } from 'ol/style';
 import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT } from '../core/ElementReferences';
 import { getMeasureCoordinates, getMeasureValue } from '../helpers/Measurements';
 
 const ID_PREFIX = 'oltb-measure';
 
-const LOCAL_STORAGE_NODE_NAME = 'measureTool';
+const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.MeasureTool;
 const LOCAL_STORAGE_DEFAULTS = {
     active: false,
     collapsed: false,

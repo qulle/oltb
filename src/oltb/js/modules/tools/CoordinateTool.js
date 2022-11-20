@@ -16,15 +16,16 @@ import { TOOLBAR_ELEMENT } from '../core/ElementReferences';
 import { copyToClipboard } from '../helpers/Browser/CopyToClipboard';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { SVG_PATHS, getIcon } from '../core/SVGIcons';
+import { LOCAL_STORAGE_KEYS } from '../helpers/constants/LocalStorageKeys';
 
-const LOCAL_STORAGE_NODE_NAME = 'coordinateTool';
+const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.CoordinateTool;
 const LOCAL_STORAGE_DEFAULTS = {
     active: false
 };
 
 const DEFAULT_OPTIONS = {};
 
-class CoordinatesTool extends Control {
+class CoordinateTool extends Control {
     constructor(options = {}) {
         super({
             element: TOOLBAR_ELEMENT
@@ -121,7 +122,11 @@ class CoordinatesTool extends Control {
     }
 
     onPointerMove(event) {
-        const lonlat = transform(event.coordinate, CONFIG.projection, CONFIG.wgs84Projection);
+        const lonlat = transform(
+            event.coordinate, 
+            CONFIG.projection.default, 
+            CONFIG.projection.wgs84
+        );
         const prettyCoords = toStringHDMS(lonlat);
 
         this.tooltipItem.innerHTML = prettyCoords;
@@ -160,4 +165,4 @@ class CoordinatesTool extends Control {
     }
 }
 
-export default CoordinatesTool;
+export default CoordinateTool;

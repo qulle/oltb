@@ -18,7 +18,12 @@ class HiddenAboutTool extends Control {
         });
 
         addContextMenuItem(CONTEXT_MENUS.MainMap, {});
-        addContextMenuItem(CONTEXT_MENUS.MainMap, {icon: icon, name: 'About OLTB', fn: this.onContextMenuAbout.bind(this)});
+        
+        addContextMenuItem(CONTEXT_MENUS.MainMap, {
+            icon: icon, 
+            name: 'About OLTB', 
+            fn: this.onContextMenuAbout.bind(this)
+        });
     }
 
     onContextMenuAbout(map, coordinates, target) {

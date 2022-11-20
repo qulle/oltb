@@ -6,12 +6,13 @@ import { EVENTS } from '../helpers/constants/Events';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { SVG_PATHS, getIcon } from '../core/SVGIcons';
+import { LOCAL_STORAGE_KEYS } from '../helpers/constants/LocalStorageKeys';
 import { Control, OverviewMap } from 'ol/control';
 import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT } from '../core/ElementReferences';
 
 const ID_PREFIX = 'oltb-overview';
 
-const LOCAL_STORAGE_NODE_NAME = 'overviewTool';
+const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.OverviewTool;
 const LOCAL_STORAGE_DEFAULTS = {
     active: false,
     collapsed: false

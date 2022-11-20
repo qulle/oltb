@@ -1,7 +1,8 @@
 import StateManager from "./StateManager";
 import { SETTINGS } from "../../helpers/constants/Settings";
+import { LOCAL_STORAGE_KEYS } from "../../helpers/constants/LocalStorageKeys";
 
-const LOCAL_STORAGE_NODE_NAME = 'settings';
+const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.SettingsManager;
 const LOCAL_STORAGE_DEFAULTS = {};
 
 class SettingsManager {

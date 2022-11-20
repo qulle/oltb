@@ -13,13 +13,14 @@ import { CONTEXT_MENUS } from '../helpers/constants/ContextMenus';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { SVG_PATHS, getIcon } from '../core/SVGIcons';
 import { addContextMenuItem } from '../common/ContextMenu';
+import { LOCAL_STORAGE_KEYS } from '../helpers/constants/LocalStorageKeys';
 import { generateAnimalName } from '../helpers/name-generator/NameGenerator';
 import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT } from '../core/ElementReferences';
 
 const BOOKMARK_BUTTON_DEFAULT_CLASSES = 'oltb-func-btn';
 const ID_PREFIX = 'oltb-bookmark';
 
-const LOCAL_STORAGE_NODE_NAME = 'bookmarkTool';
+const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.BookmarkTool;
 const LOCAL_STORAGE_DEFAULTS = {
     active: false,
     collapsed: false,
@@ -114,8 +115,17 @@ class BookmarkTool extends Control {
             this.createBookmark(bookmark);
         });
 
-        addContextMenuItem(CONTEXT_MENUS.MainMap, {icon: icon, name: 'Add location as bookmark', fn: this.onContextMenuBookmarkAdd.bind(this)});
-        addContextMenuItem(CONTEXT_MENUS.MainMap, {icon: icon, name: 'Clear all bookmarks', fn: this.onContextMenuBookmarksClear.bind(this)});
+        addContextMenuItem(CONTEXT_MENUS.MainMap, {
+            icon: icon, 
+            name: 'Add location as bookmark', 
+            fn: this.onContextMenuBookmarkAdd.bind(this)
+        });
+
+        addContextMenuItem(CONTEXT_MENUS.MainMap, {
+            icon: icon, 
+            name: 'Clear all bookmarks', 
+            fn: this.onContextMenuBookmarksClear.bind(this)
+        });
 
         window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
         window.addEventListener(EVENTS.Custom.SettingsCleared, this.onWindowSettingsCleared.bind(this));

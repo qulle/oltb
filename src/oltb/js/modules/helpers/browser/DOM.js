@@ -65,7 +65,7 @@ class DOM {
         element.classList.add(className);
 
         // Note: 250ms matches the time given in _animations.scss
-        // Without removing the animation-class the html2canvas is note rendered correctly
+        // With the animation-class the html2canvas fails to render the exported PNG correctly
         setTimeout(() => {
             element.classList.remove(className);
         }, 250);

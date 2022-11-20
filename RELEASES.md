@@ -8,6 +8,7 @@ Some of the changes done in this version are:
 - Implemented build system for creating portable library
 - Deployed the project on NPM and jsdelivr (CDN)
 - Added examples for both NPM and CND usage
+- Fixed the opacity and position issue of InfoWindow when exporting map as PNG
 - Fixed Alert dialog, undefined text property
 - Code refactoring and improvements
 

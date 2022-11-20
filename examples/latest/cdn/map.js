@@ -237,9 +237,9 @@ const toolbar = new oltb({
                 console.log('Map north reset');
             }
         },
-        CoordinatesTool: {
+        CoordinateTool: {
             click: function() {
-                console.log('CoordinatesTool clicked');
+                console.log('CoordinateTool clicked');
             },
             mapClicked: function(coordinates) {
                 console.log('You clicked at', coordinates);

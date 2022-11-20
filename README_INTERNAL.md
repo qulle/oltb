@@ -63,6 +63,12 @@ Start the dev server.
 $ npm start
 ```
 
+Start targeted example.
+```
+$ npm run start:one
+$ npm run start:two
+```
+
 Make GitHub demo build.
 ```
 $ npm run build:demo
@@ -234,7 +240,7 @@ import GraticuleTool from './modules/tools/GraticuleTool';
 import MyLocationTool from './modules/tools/MyLocationTool';
 import ResetNorthTool from './modules/tools/ResetNorthTool';
 import FullscreenTool from './modules/tools/FullscreenTool';
-import CoordinatesTool from './modules/tools/CoordinatesTool';
+import CoordinateTool from './modules/tools/CoordinateTool';
 import HiddenAboutTool from './modules/tools/hidden-tools/AboutTool';
 import NotificationTool from './modules/tools/NotificationTool';
 import HiddenMarkerTool from './modules/tools/hidden-tools/MarkerTool';
@@ -266,7 +272,7 @@ controls: defaultControls({
     new GraticuleTool(),
     new MagnifyTool(),
     new ResetNorthTool(),
-    new CoordinatesTool(),
+    new CoordinateTool(),
     new MyLocationTool(),
     new ImportVectorLayerTool(),
     new ScaleLineTool(),
@@ -510,9 +516,9 @@ controls: defaultControls({
             console.log('Map north reset');
         }
     }),
-    new CoordinatesTool({
+    new CoordinateTool({
         click: function() {
-            console.log('CoordinatesTool clicked');
+            console.log('CoordinateTool clicked');
         },
         mapClicked: function(coordinates) {
             console.log('You clicked at', coordinates);

@@ -42,7 +42,11 @@ class ResetNorthTool extends Control {
         this.element.appendChild(button);
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
-        addContextMenuItem(CONTEXT_MENUS.MainMap, {icon: icon, name: 'Set rotation by degrees', fn: this.onContextMenuSetRotation.bind(this)});
+        addContextMenuItem(CONTEXT_MENUS.MainMap, {
+            icon: icon, 
+            name: 'Set rotation by degrees', 
+            fn: this.onContextMenuSetRotation.bind(this)
+        });
 
         window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
     }

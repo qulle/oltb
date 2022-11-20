@@ -13,6 +13,7 @@ import { eventDispatcher } from '../helpers/Browser/EventDispatcher';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { FEATURE_PROPERTIES } from '../helpers/constants/FeatureProperties';
 import { SVG_PATHS, getIcon } from '../core/SVGIcons';
+import { LOCAL_STORAGE_KEYS } from '../helpers/constants/LocalStorageKeys';
 import { LinearRing, Polygon } from 'ol/geom';
 import { isFeatureIntersectable } from '../helpers/IsFeatureIntersectable';
 import { Fill, Stroke, Circle, Style } from 'ol/style';
@@ -21,7 +22,7 @@ import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT } from '../core/ElementReferences';
 
 const ID_PREFIX = 'oltb-draw';
 
-const LOCAL_STORAGE_NODE_NAME = 'drawTool';
+const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.DrawTool;
 const LOCAL_STORAGE_DEFAULTS = {
     active: false,
     collapsed: false,

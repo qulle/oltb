@@ -10,12 +10,13 @@ import { getRenderPixel } from 'ol/render';
 import { eventDispatcher } from '../helpers/Browser/EventDispatcher';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { SVG_PATHS, getIcon } from '../core/SVGIcons';
+import { LOCAL_STORAGE_KEYS } from '../helpers/constants/LocalStorageKeys';
 import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT, MAP_ELEMENT } from '../core/ElementReferences';
 
 const ID_PREFIX = 'oltb-split-view';
 const RADIX = 10;
 
-const LOCAL_STORAGE_NODE_NAME = 'splitViewTool';
+const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.SplitViewTool;
 const LOCAL_STORAGE_DEFAULTS = {
     active: false,
     collapsed: false

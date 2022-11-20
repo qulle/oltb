@@ -9,8 +9,8 @@ import { CONTEXT_MENUS } from '../helpers/constants/ContextMenus';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { TOOLBAR_ELEMENT } from '../core/ElementReferences';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
-import { addContextMenuItem } from '../common/ContextMenu';
 import { SVG_PATHS, getIcon } from '../core/SVGIcons';
+import { addContextMenuItem } from '../common/ContextMenu';
 
 const DEFAULT_OPTIONS = {
     zoom: 3,
@@ -51,7 +51,11 @@ class HomeTool extends Control {
         this.userDefinedHomeLocation = null;
         this.userDefinedHomeZoom = null;
 
-        addContextMenuItem(CONTEXT_MENUS.MainMap, {icon: icon, name: 'Set as home', fn: this.onContextMenuSetHomeLocation.bind(this)});
+        addContextMenuItem(CONTEXT_MENUS.MainMap, {
+            icon: icon, 
+            name: 'Set as home', 
+            fn: this.onContextMenuSetHomeLocation.bind(this)
+        });
 
         window.addEventListener(EVENTS.Custom.SettingsCleared, this.onWindowClearHomeLocation.bind(this));
         window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));

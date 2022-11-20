@@ -90,8 +90,8 @@ class ContextMenu extends Control {
     show(event) {
         this.coordinates = transform(
             this.getMap().getEventCoordinate(event), 
-            CONFIG.projection, 
-            CONFIG.wgs84Projection
+            CONFIG.projection.default, 
+            CONFIG.projection.wgs84
         );
         
         this.menu.style.left = `${event.clientX}px`;

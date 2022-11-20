@@ -6,8 +6,9 @@ import { TOOLBAR_ELEMENT } from '../core/ElementReferences';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { Control, ScaleLine } from 'ol/control';
 import { SVG_PATHS, getIcon } from '../core/SVGIcons';
+import { LOCAL_STORAGE_KEYS } from '../helpers/constants/LocalStorageKeys';
 
-const LOCAL_STORAGE_NODE_NAME = 'scaleLineTool';
+const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.ScaleLineTool;
 const LOCAL_STORAGE_DEFAULTS = {
     active: false
 };

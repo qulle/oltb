@@ -42,7 +42,11 @@ class SettingsTool extends Control {
         this.settingsModal = undefined;
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
-        addContextMenuItem(CONTEXT_MENUS.MainMap, {icon: icon, name: 'Clear settings', fn: this.onContextMenuSettingsClear.bind(this)});
+        addContextMenuItem(CONTEXT_MENUS.MainMap, {
+            icon: icon, 
+            name: 'Clear settings', 
+            fn: this.onContextMenuSettingsClear.bind(this)
+        });
 
         window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
     }

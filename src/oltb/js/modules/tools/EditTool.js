@@ -17,6 +17,7 @@ import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { generateTooltip } from '../helpers/ol-functions/GenerateTooltip';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { SVG_PATHS, getIcon } from '../core/SVGIcons';
+import { LOCAL_STORAGE_KEYS } from '../helpers/constants/LocalStorageKeys';
 import { FEATURE_PROPERTIES } from '../helpers/constants/FeatureProperties';
 import { Fill, Stroke, Style } from 'ol/style';
 import { hasCustomFeatureProperty } from '../helpers/HasNestedProperty';
@@ -30,14 +31,14 @@ import { GeometryCollection, LinearRing, LineString, MultiLineString, MultiPoint
  *  Note: JSTS
  *  To avoid circular dependencies i include the full dist
  *  This increases the bundle size but removes errors/warnings in Rollup build process
- *  Also more features can be used from this very functional lib in the future
+ *  Also more features can be used from this lib in the future
  *   
  *  https://github.com/bjornharrtell/jsts#caveats
  */
 
 const ID_PREFIX = 'oltb-edit';
 
-const LOCAL_STORAGE_NODE_NAME = 'editTool';
+const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.EditTool;
 const LOCAL_STORAGE_DEFAULTS = {
     active: false,
     collapsed: false,

@@ -7,10 +7,11 @@ import { CONTEXT_MENUS } from '../../helpers/constants/ContextMenus';
 import { TOOLBAR_ELEMENT } from '../../core/ElementReferences';
 import { addContextMenuItem } from '../../common/ContextMenu';
 import { SVG_PATHS, getIcon } from '../../core/SVGIcons';
+import { LOCAL_STORAGE_KEYS } from '../../helpers/constants/LocalStorageKeys';
 import { fromLonLat, toLonLat } from 'ol/proj';
 
 // Note: This is the same NODE_NAME and PROPS that the map.js file is using
-const LOCAL_STORAGE_NODE_NAME = 'mapData';
+const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.MapData;
 const LOCAL_STORAGE_DEFAULTS = {
     lon: 18.6435,
     lat: 60.1282,
@@ -42,8 +43,18 @@ class HiddenMapNavigationTool extends Control {
             path: SVG_PATHS.FocusHere
         });
 
-        addContextMenuItem(CONTEXT_MENUS.MainMap, {icon: moveCenterIcon, name: 'Center map here', fn: this.onContextMenuCenterMap.bind(this)});
-        addContextMenuItem(CONTEXT_MENUS.MainMap, {icon: focusHereIcon, name: 'Focus here', fn: this.onContextMenuFocusHere.bind(this)});
+        addContextMenuItem(CONTEXT_MENUS.MainMap, {
+            icon: moveCenterIcon, 
+            name: 'Center map here', 
+            fn: this.onContextMenuCenterMap.bind(this)
+        });
+
+        addContextMenuItem(CONTEXT_MENUS.MainMap, {
+            icon: focusHereIcon, 
+            name: 'Focus here', 
+            fn: this.onContextMenuFocusHere.bind(this)
+        });
+        
         addContextMenuItem(CONTEXT_MENUS.MainMap, {});
 
         // Track changes to zoom, paning etc. store in localStorage

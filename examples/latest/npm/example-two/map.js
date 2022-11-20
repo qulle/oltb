@@ -28,6 +28,7 @@ import ContextMenu from '../../../../src/oltb/js/modules/common/ContextMenu';
 import { SETTINGS } from '../../../../src/oltb/js/modules/helpers/constants/Settings';
 import { MAP_ELEMENT } from '../../../../src/oltb/js/modules/core/ElementReferences';
 import { CONTEXT_MENUS } from '../../../../src/oltb/js/modules/helpers/constants/ContextMenus';
+import { LOCAL_STORAGE_KEYS } from '../../../../src/oltb/js/modules/helpers/constants/LocalStorageKeys';
 
 // (5). Core Managers
 import LayerManager from '../../../../src/oltb/js/modules/core/managers/LayerManager';
@@ -61,7 +62,7 @@ import GraticuleTool from '../../../../src/oltb/js/modules/tools/GraticuleTool';
 import MyLocationTool from '../../../../src/oltb/js/modules/tools/MyLocationTool';
 import ResetNorthTool from '../../../../src/oltb/js/modules/tools/ResetNorthTool';
 import FullscreenTool from '../../../../src/oltb/js/modules/tools/FullscreenTool';
-import CoordinatesTool from '../../../../src/oltb/js/modules/tools/CoordinatesTool';
+import CoordinateTool from '../../../../src/oltb/js/modules/tools/CoordinateTool';
 import HiddenAboutTool from '../../../../src/oltb/js/modules/tools/hidden-tools/AboutTool';
 import NotificationTool from '../../../../src/oltb/js/modules/tools/NotificationTool';
 import HiddenMarkerTool from '../../../../src/oltb/js/modules/tools/hidden-tools/MarkerTool';
@@ -69,7 +70,7 @@ import ImportVectorLayerTool from '../../../../src/oltb/js/modules/tools/ImportV
 import HiddenMapNavigationTool from '../../../../src/oltb/js/modules/tools/hidden-tools/MapNavigationTool';
 
 // Note: This is the same NODE_NAME and PROPS that the MapNavigationTool.js is using
-const LOCAL_STORAGE_NODE_NAME = 'mapData';
+const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.MapData;
 const LOCAL_STORAGE_DEFAULTS = {
     lon: 25.5809,
     lat: 23.7588,
@@ -339,9 +340,9 @@ const map = new Map({
                 console.log('Map north reset');
             }
         }),
-        new CoordinatesTool({
+        new CoordinateTool({
             click: function() {
-                console.log('CoordinatesTool clicked');
+                console.log('CoordinateTool clicked');
             },
             mapClicked: function(coordinates) {
                 console.log('You clicked at', coordinates);

@@ -19,6 +19,7 @@ import { instantiateFormat } from '../core/ol-types/FormatTypes';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { addContextMenuItem } from '../common/ContextMenu';
 import { SVG_PATHS, getIcon } from '../core/SVGIcons';
+import { LOCAL_STORAGE_KEYS } from '../helpers/constants/LocalStorageKeys';
 import { FEATURE_PROPERTIES } from '../helpers/constants/FeatureProperties';
 import { hasCustomFeatureProperty } from '../helpers/HasNestedProperty';
 import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT } from '../core/ElementReferences';
@@ -30,7 +31,7 @@ const ID_PREFIX = 'oltb-layer';
     Because this tool has two different sections that can be collapsed it's not a viable solution to have a single collapsed property. 
     Unfortunately this results in two longer names stored in localStorage.
 */
-const LOCAL_STORAGE_NODE_NAME = 'layerTool';
+const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.LayerTool;
 const LOCAL_STORAGE_DEFAULTS = {
     active: false, 
     'oltb-layer-map-toolbox-collapsed': false,
@@ -164,7 +165,11 @@ class LayerTool extends Control {
         }
 
         if(!this.options.disableMapCreateLayerButton) {
-            addContextMenuItem(CONTEXT_MENUS.MainMap, {icon: icon, name: 'Add map layer', fn: this.onContextMenuAddMapLayerModal.bind(this)});
+            addContextMenuItem(CONTEXT_MENUS.MainMap, {
+                icon: icon, 
+                name: 'Add map layer', 
+                fn: this.onContextMenuAddMapLayerModal.bind(this)
+            });
         }
 
         window.addEventListener(EVENTS.Custom.MapLayerAdded, this.onWindowMapLayerAdded.bind(this));
@@ -246,7 +251,7 @@ class LayerTool extends Control {
                 LayerManager.addMapLayer({
                     name: result.name,
                     layer: instantiateLayer(result.layer, {
-                        projection: result.projection || CONFIG.projection,
+                        projection: result.projection || CONFIG.projection.default,
                         source: instantiateSource(result.source, {
                             url: result.url,
                             params: JSON.parse(result.parameters),
@@ -503,8 +508,8 @@ class LayerTool extends Control {
         
                         const features = layerWrapper.layer.getSource().getFeatures();
                         const formatString = format.writeFeatures(features, {
-                            featureProjection: CONFIG.projection,
-                            dataProjection: CONFIG.projection
+                            featureProjection: CONFIG.projection.default,
+                            dataProjection: CONFIG.projection.default
                         });
                     
                         const fileName = layerWrapper.name + '.' + result.format.toLowerCase();

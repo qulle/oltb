@@ -101,11 +101,11 @@ class ImportVectorLayerTool extends Control {
             }
 
             const dataProjection = fileExtension.toLowerCase() === 'kml' 
-                ? CONFIG.projection 
+                ? CONFIG.projection.default 
                 : undefined;
                 
             const features = instantiateFormat(format).readFeatures(this.fileReader.result, {
-                featureProjection: CONFIG.projection,
+                featureProjection: CONFIG.projection.default,
                 dataProjection: dataProjection
             });
 

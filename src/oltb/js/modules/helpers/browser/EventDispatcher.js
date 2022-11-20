@@ -1,4 +1,9 @@
-const eventDispatcher = function(elements, type, bubbles = false, cancelable = true) {
+const eventDispatcher = function(
+    elements, 
+    type, 
+    bubbles = false, 
+    cancelable = true
+) {
     const event = new Event(type, {
         bubbles: bubbles,
         cancelable: cancelable,

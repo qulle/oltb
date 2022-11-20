@@ -13,6 +13,7 @@ import ContextMenu from './modules/common/ContextMenu';
 import { SETTINGS } from './modules/helpers/constants/Settings';
 import { MAP_ELEMENT } from './modules/core/ElementReferences';
 import { CONTEXT_MENUS } from './modules/helpers/constants/ContextMenus';
+import { LOCAL_STORAGE_KEYS } from './modules/helpers/constants/LocalStorageKeys';
 
 // (3). Core Managers
 import LayerManager from './modules/core/managers/LayerManager';
@@ -37,7 +38,7 @@ import './modules/helpers/Accessibility';
 import './modules/helpers/Browser/Prototypes';
 
 // Note: This is the same NODE_NAME and PROPS that the MapNavigationTool.js is using
-const LOCAL_STORAGE_NODE_NAME = 'mapData';
+const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.MapData;
 const LOCAL_STORAGE_DEFAULTS = {
     lon: 25.5809,
     lat: 23.7588,
@@ -144,7 +145,7 @@ class OLTB {
         const coordinate = fromLonLat([
             LOCAL_STORAGE.lon,
             LOCAL_STORAGE.lat
-        ], CONFIG.projection);
+        ], CONFIG.projection.default);
 
         view.setCenter(coordinate);
         view.setZoom(LOCAL_STORAGE.zoom);

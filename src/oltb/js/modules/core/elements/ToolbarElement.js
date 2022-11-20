@@ -1,3 +1,4 @@
+import CONFIG from "../Config";
 import StateManager from "../managers/StateManager";
 import { EVENTS } from "../../helpers/constants/Events";
 
@@ -41,7 +42,8 @@ if(TOOLBAR_ELEMENT.classList.contains('row')) {
 // (7). Change how the scrollwheel behaves when toolbar is in horizontal mode
 TOOLBAR_ELEMENT.addEventListener(EVENTS.Browser.Wheel, function(event) {
     if(!event.ctrlKey) {
-        this.scrollLeft += event.deltaY > 0 ? 100 : -100;
+        const distance = CONFIG.scrollDistance;
+        this.scrollLeft += event.deltaY > 0 ? distance : -distance;
     }
 });
 

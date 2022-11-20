@@ -24,7 +24,12 @@ class HiddenMarkerTool extends Control {
             path: SVG_PATHS.Plus
         });
 
-        addContextMenuItem(CONTEXT_MENUS.MainMap, {icon: createIcon, name: 'Create marker', fn: this.onContextMenuCreateMarker.bind(this)});
+        addContextMenuItem(CONTEXT_MENUS.MainMap, {
+            icon: createIcon, 
+            name: 'Create marker', 
+            fn: this.onContextMenuCreateMarker.bind(this)
+        });
+        
         addContextMenuItem(CONTEXT_MENUS.MainMap, {});
 
         window.addEventListener(EVENTS.Custom.FeatureEdited, this.onWindowFeatureEdited.bind(this));
