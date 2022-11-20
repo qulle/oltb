@@ -3,7 +3,7 @@ import { EVENTS } from '../../helpers/constants/Events';
 import { isDarkTheme } from '../../helpers/IsDarkTheme';
 import { trapFocusKeyListener } from '../../helpers/TrapFocus';
 
-const ANIMATION_CLASS = 'oltb-animations--bounce';
+const ANIMATION_CLASS = 'oltb-animation--bounce';
 
 class DialogBase {
     constructor() {

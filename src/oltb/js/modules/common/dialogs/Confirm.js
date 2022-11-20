@@ -19,7 +19,7 @@ class Confirm extends DialogBase {
 
         const dialog = DOM.createElement({
             element: 'div', 
-            class: 'oltb-dialog oltb-dialog--confirm oltb-animations--bounce'
+            class: 'oltb-dialog oltb-dialog--confirm oltb-animation oltb-animation--bounce'
         });
 
         const message = DOM.createElement({

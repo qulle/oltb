@@ -16,7 +16,7 @@ class Alert extends DialogBase {
 
         const dialog = DOM.createElement({
             element: 'div',
-            class: 'oltb-dialog oltb-dialog--alert oltb-animations--bounce'
+            class: 'oltb-dialog oltb-dialog--alert oltb-animation oltb-animation--bounce'
         });
 
         if(this.options.text) {

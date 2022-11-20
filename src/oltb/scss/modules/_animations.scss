@@ -1,26 +1,38 @@
-.oltb-animations {
+.oltb-animation {
+    animation-duration: 250ms;
+    animation-timing-function: linear;
+    animation-delay: 0;
+    animation-iteration-count: 1;
+    animation-direction: normal;
+    animation-fill-mode: forwards;
+    animation-play-state: running;
+    
     &--linear-spinner {
-        animation: oltb-spinner 1500ms linear infinite;
+        animation-name: oltb-spinner;
+        animation-duration: 1500ms;
+        animation-iteration-count: infinite;
     }
 
     &--bouncy-spinner {
-        animation: oltb-spinner 1500ms ease infinite;
+        animation-name: oltb-spinner;
+        animation-duration: 1500ms;
+        animation-iteration-count: infinite;
     }
 
     &--slide-in {
-        animation: oltb-slide-in 250ms forwards;
+        animation-name: oltb-slide-in;
     }
 
     &--slide-out {
-        animation: oltb-slide-out 250ms forwards;
+        animation-name: oltb-slide-out;
     }
 
     &--bounce {
-        animation: oltb-bounce 250ms forwards;
+        animation-name: oltb-bounce;
     }
 
     &--centered-bounce {
-        animation: oltb-centered-bounce 250ms forwards;
+        animation-name: oltb-centered-bounce;
     }
 }
 
@@ -57,33 +69,27 @@
 @keyframes oltb-bounce {
     0% { 
         transform: scale(0.95);
-        opacity: .6;
     }
 
     50% { 
         transform: scale(1.05);
-        opacity: .8;
     }
 
     100% { 
         transform: scale(1.0);
-        opacity: 1;
     }
 }
 
 @keyframes oltb-centered-bounce {
     0% { 
         transform: scale(0.95) translateX(-52.5%);
-        opacity: .6;
     }
 
     50% { 
         transform: scale(1.05) translateX(-47.5%);
-        opacity: .8;
     }
 
     100% { 
         transform: scale(1.0) translateX(-50%);
-        opacity: 1;
     }
 }

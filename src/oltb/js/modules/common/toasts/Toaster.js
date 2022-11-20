@@ -17,7 +17,7 @@ class Toaster {
 
         const toast = DOM.createElement({
             element: 'div',
-            class: `oltb-toast oltb-toast--${this.options.type} oltb-animations--slide-in oltb-d-flex` 
+            class: `oltb-toast oltb-toast--${this.options.type} oltb-animation oltb-animation--slide-in oltb-d-flex` 
         });
 
         this.toast = toast;
@@ -30,7 +30,7 @@ class Toaster {
         if(this.options.spinner) {
             const spinnerElement = DOM.createElement({
                 element: 'div',
-                class: 'oltb-spinner oltb-spinner--small oltb-animations--linear-spinner'
+                class: 'oltb-spinner oltb-spinner--small oltb-animation oltb-animation--linear-spinner'
             });
             
             toast.appendChild(spinnerElement);
@@ -54,7 +54,7 @@ class Toaster {
     }
 
     remove() {
-        this.toast.classList.add('oltb-toast--remove', 'oltb-animations--slide-out');
+        this.toast.classList.add('oltb-toast--remove', 'oltb-animation--slide-out');
     
         // Remove the toast from DOM after animation finishes
         setTimeout(() => {

@@ -5,6 +5,10 @@ const CONFIG = {
     locale: 'en-us',
     projection: 'EPSG:3857',
     wgs84Projection: 'EPSG:4326',
+    overlayOffset: {
+        horizontal: 0,
+        vertical: -8
+    },
     deviceWidth: {
         xs: '0',
         sm: '576',

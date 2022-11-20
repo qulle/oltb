@@ -10,7 +10,7 @@ import { SVG_PATHS, getIcon } from '../SVGIcons';
 import { Fill, Stroke, Style } from 'ol/style';
 import { trapFocusKeyListener } from '../../helpers/TrapFocus';
 
-const ANIMATION_CLASS = 'oltb-animations--centered-bounce';
+const ANIMATION_CLASS = 'oltb-animation--centered-bounce';
 const ID_PREFIX = 'oltb-info-window-marker';
 
 class InfoWindowManager {
@@ -29,7 +29,7 @@ class InfoWindowManager {
         // (1). Create DOM element representing infoWindow
         this.infoWindow = DOM.createElement({
             element: 'div',
-            class: 'oltb-info-window',
+            class: 'oltb-info-window oltb-animation',
             attributes: {
                 tabindex: '-1'
             },
@@ -62,6 +62,11 @@ class InfoWindowManager {
         // (2). Create ol overlay to host infoWindow
         this.#overlay = new Overlay({
             element: this.infoWindow,
+            positioning: 'bottom-center',
+            offset: [
+                CONFIG.overlayOffset.horizontal,
+                CONFIG.overlayOffset.vertical
+            ],
             autoPan: true,
             autoPanAnimation: {
                 duration: CONFIG.animationDuration.normal

@@ -4,7 +4,7 @@ import { MAP_ELEMENT } from '../../core/ElementReferences';
 import { SVG_PATHS, getIcon } from '../../core/SVGIcons';
 import { trapFocusKeyListener } from '../../helpers/TrapFocus';
 
-const ANIMATION_CLASS = 'oltb-animations--bounce';
+const ANIMATION_CLASS = 'oltb-animation--bounce';
 
 class ModalBase {
     constructor(title, onClose) {
@@ -22,7 +22,7 @@ class ModalBase {
 
         this.modal = DOM.createElement({
             element: 'div', 
-            class: 'oltb-modal oltb-animations--bounce'
+            class: 'oltb-modal oltb-animation oltb-animation--bounce'
         });
 
         const modalHeader = DOM.createElement({

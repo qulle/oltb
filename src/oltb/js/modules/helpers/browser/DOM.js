@@ -63,6 +63,12 @@ class DOM {
         element.classList.remove(className);
         void element.offsetWidth;
         element.classList.add(className);
+
+        // Note: 250ms matches the time given in _animations.scss
+        // Without removing the animation-class the html2canvas is note rendered correctly
+        setTimeout(() => {
+            element.classList.remove(className);
+        }, 250);
     }
 }
 

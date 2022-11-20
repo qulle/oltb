@@ -1,4 +1,5 @@
 import DOM from "../../helpers/Browser/DOM";
+import CONFIG from "../Config";
 import Overlay from 'ol/Overlay';
 import { EVENTS } from '../../helpers/constants/Events';
 import { unByKey } from 'ol/Observable';
@@ -23,8 +24,11 @@ class TooltipManager {
         this.#tooltipOverlay = new Overlay({
             stopEvent: false,
             element: tooltipElement,
-            offset: [0, -6],
-            positioning: 'bottom-center'
+            positioning: 'bottom-center',
+            offset: [
+                CONFIG.overlayOffset.horizontal,
+                CONFIG.overlayOffset.vertical
+            ]
         });
     }
 

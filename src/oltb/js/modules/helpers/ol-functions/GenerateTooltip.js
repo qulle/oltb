@@ -1,4 +1,5 @@
 import DOM from '../browser/DOM';
+import CONFIG from '../../core/Config';
 import { Overlay } from 'ol';
 
 const generateTooltip = function(data = '') {
@@ -17,8 +18,11 @@ const generateTooltip = function(data = '') {
 
     const overlay = new Overlay({
         element: wrapper,
-        offset: [0, -7],
-        positioning: 'bottom-center'
+        positioning: 'bottom-center',
+        offset: [
+            CONFIG.overlayOffset.horizontal,
+            CONFIG.overlayOffset.vertical
+        ]
     });
 
     return {
