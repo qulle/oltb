@@ -32,7 +32,7 @@ class CoordinateTool extends Control {
         });
 
         const icon = getIcon({
-            path: SVG_PATHS.Coordinates,
+            path: SVG_PATHS.Coordinate,
             class: 'oltb-tool-button__icon'
         });
 
@@ -42,7 +42,7 @@ class CoordinateTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Show coordinates (${SHORTCUT_KEYS.Coordinates})`
+                'data-tippy-content': `Show coordinates (${SHORTCUT_KEYS.Coordinate})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -59,9 +59,9 @@ class CoordinateTool extends Control {
         const localStorageState = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
         this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
 
-        SettingsManager.addSetting(SETTINGS.CopyCoordinatesOnClick, {
+        SettingsManager.addSetting(SETTINGS.CopyCoordinateOnClick, {
             state: true, 
-            text: 'Coordinates tool - Copy coordinates on click'
+            text: 'Coordinate tool - Copy coordinates on click'
         });
 
         window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
@@ -76,7 +76,7 @@ class CoordinateTool extends Control {
     }
 
     onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Coordinates)) {
+        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Coordinate)) {
             this.handleClick(event);
         }
     }
@@ -133,7 +133,7 @@ class CoordinateTool extends Control {
     }
 
     async onMapClick(event) {
-        if(!SettingsManager.getSetting(SETTINGS.CopyCoordinatesOnClick) || ToolManager.hasActiveTool()) {
+        if(!SettingsManager.getSetting(SETTINGS.CopyCoordinateOnClick) || ToolManager.hasActiveTool()) {
             return;
         }
 
@@ -152,7 +152,7 @@ class CoordinateTool extends Control {
 
         copyToClipboard(prettyCoords)
             .then(() => {
-                Toast.success({text: 'Coordinates copied to clipboard', autoremove: 4000});
+                Toast.success({text: 'Coordinate copied to clipboard', autoremove: 4000});
             })
             .catch(() => {
                 Toast.error({text: 'Failed to copy coordinates'});

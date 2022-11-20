@@ -1,7 +1,7 @@
 const SHORTCUT_KEYS = {
     AreaOverview: 'A',
     Bookmark: 'B',
-    Coordinates: 'C',
+    Coordinate: 'C',
     ToolbarDirection: 'D',
     ExportPNG: 'E',
     FullScreen: 'F',

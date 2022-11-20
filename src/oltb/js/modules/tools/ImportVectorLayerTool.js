@@ -99,14 +99,9 @@ class ImportVectorLayerTool extends Control {
                 Toast.error({text: 'Unsupported layer format'});
                 return;
             }
-
-            const dataProjection = fileExtension.toLowerCase() === 'kml' 
-                ? CONFIG.projection.default 
-                : undefined;
                 
             const features = instantiateFormat(format).readFeatures(this.fileReader.result, {
-                featureProjection: CONFIG.projection.default,
-                dataProjection: dataProjection
+                featureProjection: CONFIG.projection.default
             });
 
             const layerWrapper = LayerManager.addFeatureLayer('Import : ' + filename);

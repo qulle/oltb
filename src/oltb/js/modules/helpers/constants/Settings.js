@@ -6,7 +6,7 @@ const SETTINGS = {
     AlwaysNewLayers: 'always.new.layers',
     AltShiftDragRotate: 'alt.shift.drag.rotate',
     SelectVectorMapShapes: 'select.vector.map.shapes',
-    CopyCoordinatesOnClick: 'copy.coordinates.on.click'
+    CopyCoordinateOnClick: 'copy.coordinate.on.click'
 };
 
 export { SETTINGS };
