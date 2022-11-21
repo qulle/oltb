@@ -8,8 +8,10 @@ Some of the changes done in this version are:
 - Implemented build system for creating portable library
 - Deployed the project on NPM and jsdelivr (CDN)
 - Added examples for both NPM and CND usage
+- Removed data projection from both export and import of vector layers. Default value from OL will be used. In later versions, this may be allowed to be selected by the user
 - Fixed the opacity and position issue of InfoWindow when exporting map as PNG
 - Fixed Alert dialog, undefined text property
+- Fixed issue where importing vector layers re-generates previously imported layers
 - Code refactoring and improvements
 
 ## 1.0.0-beta3

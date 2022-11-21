@@ -38,7 +38,7 @@ class ImportVectorLayerTool extends Control {
         });
 
         this.element.appendChild(button);
-        this.fileReader = new FileReader();
+        this.fileReader = undefined;
         this.options = { ...DEFAULT_OPTIONS, ...options };
         
         this.inputDialog = DOM.createElement({
@@ -77,6 +77,7 @@ class ImportVectorLayerTool extends Control {
     loadLayer(event) {
         const fileDialog = event.target;
 
+        this.fileReader = new FileReader();
         this.fileReader.addEventListener(EVENTS.Browser.Load, this.parseLayer.bind(this, fileDialog));
         this.fileReader.readAsText(fileDialog.files[0]);
     }

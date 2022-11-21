@@ -508,8 +508,7 @@ class LayerTool extends Control {
         
                         const features = layerWrapper.layer.getSource().getFeatures();
                         const formatString = format.writeFeatures(features, {
-                            featureProjection: CONFIG.projection.default,
-                            dataProjection: CONFIG.projection.default
+                            featureProjection: CONFIG.projection.default
                         });
                     
                         const fileName = layerWrapper.name + '.' + result.format.toLowerCase();
