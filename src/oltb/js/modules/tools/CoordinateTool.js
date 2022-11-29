@@ -127,6 +127,7 @@ class CoordinateTool extends Control {
             CONFIG.projection.default, 
             CONFIG.projection.wgs84
         );
+        
         const prettyCoords = toStringHDMS(lonlat);
 
         this.tooltipItem.innerHTML = prettyCoords;
@@ -137,7 +138,12 @@ class CoordinateTool extends Control {
             return;
         }
 
-        const lonlat = transform(event.coordinate, CONFIG.projection, CONFIG.wgs84Projection);
+        const lonlat = transform(
+            event.coordinate, 
+            CONFIG.projection.default, 
+            CONFIG.projection.wgs84
+        );
+
         const lon = lonlat[0];
         const lat = lonlat[1];
         const prettyCoords = toStringHDMS(lonlat);
