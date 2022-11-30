@@ -12,7 +12,7 @@ const cssBanner = await import('./rollup.cssbanner.mjs');
 export default {
     input: './src/oltb/js/oltb.js',
     output: {
-        file: './dist/oltb.min.js',
+        file: './dist/dist/oltb.min.js',
         format: 'iife',
         name: 'oltb'
     },
@@ -24,7 +24,7 @@ export default {
             'process.env.NODE_ENV': JSON.stringify('production')
         }),
         scss({
-            output: './dist/oltb.min.css',
+            output: './dist/dist/oltb.min.css',
             outputStyle: 'compressed',
             processor: (css) => {
                 return cssBanner.banner + '\n' + css;
