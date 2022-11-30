@@ -9,7 +9,8 @@ const DEFAULT_OPTIONS = {
     onConfirm: undefined,
     onCancel: undefined,
     confirmClass: 'oltb-btn--green-mid',
-    confirmText: 'Confirm'
+    confirmText: 'Confirm',
+    cancelText: 'Cancel'
 };
 
 class Prompt extends DialogBase {
@@ -72,7 +73,7 @@ class Prompt extends DialogBase {
 
         const cancelButton = DOM.createElement({
             element: 'button', 
-            text: 'Cancel',
+            text: this.options.cancelText,
             class: `oltb-dialog__btn oltb-btn ${this.isDark ? 'oltb-btn--gray-mid' : 'oltb-btn--gray-dark'}`,
             attributes: {
                 type: 'button'

@@ -5,6 +5,7 @@ import { MAP_ELEMENT } from '../../core/ElementReferences';
 const DEFAULT_OPTIONS = {
     text: undefined,
     html: undefined,
+    onCancel: undefined,
     confirmText: 'Ok'
 };
 
@@ -45,7 +46,10 @@ class Alert extends DialogBase {
                 type: 'button'
             },
             listeners: {
-                'click': this.close.bind(this)
+                'click': () => {
+                    this.close();
+                    typeof this.options.onClose === 'function' && this.options.onClose();
+                }
             }
         });
 

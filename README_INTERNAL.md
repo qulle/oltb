@@ -653,9 +653,20 @@ import Dialog from './modules/common/Dialog';
 
 #### Alert
 ```javascript
-Dialog.alert({text: 'This is a custom alert message'});
+Dialog.alert({
+    text: 'This is a custom alert message',
+    onClose: () => {
+        console.log('Alert closed');
+    }
+});
 ```
-To change the text in the button, add the property `confirmText: 'Your text'`.
+
+Other properties that you can add is.
+```javascript
+({
+    confirmText: 'Your text' // Changes text on ok button
+});
+```
 
 #### Confirm
 ```javascript
@@ -670,7 +681,14 @@ Dialog.confirm({
 });
 ```
 
-To have a `success` confirm dialog, add the property `confirmClass: Dialog.Success`. To change the text of the confirm button, add the property `confirmText: 'Your text'`.
+Other properties that you can add is.
+```javascript
+({
+    confirmClass: Dialog.Success, // Changes to success dialog
+    confirmText: 'Your text',     // Changes text on confirm button
+    cancelText: 'Your text'       // Changes text on cancel button
+});
+```
 
 #### Prompt
 ```javascript
@@ -685,7 +703,15 @@ Dialog.prompt({
     }
 });
 ```
-To have a `danger` prompt dialog, add the property `confirmClass: Dialog.Danger`. To change the text of the confirm button, add the property `confirmText: 'Your text'`.
+
+Other properties that you can add is.
+```javascript
+({
+    confirmClass: Dialog.Danger,  // Changes to danger dialog
+    confirmText: 'Your text',     // Changes text on confirm button
+    cancelText: 'Your text'       // Changes text on cancel button
+});
+```
 
 ### Modal
 To use the custom modal in the map, include the following module.
@@ -697,7 +723,10 @@ The modal uses trap focus to circle the tab-key.
 ```javascript
 Modal.create({
     title: 'Title', 
-    content: 'Text/HTML content'
+    content: 'Text/HTML content',
+    onClose: () => {
+        console.log('Modal closed');
+    }
 });
 ```
 
