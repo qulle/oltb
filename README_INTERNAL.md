@@ -63,23 +63,17 @@ Start the dev server.
 $ npm start
 ```
 
-Start targeted example.
-```
-$ npm run start:one
-$ npm run start:two
-```
-
 Make GitHub demo build.
 ```
-$ npm run build:demo
+$ bash github_demo.sh
 ```
 
-Make distribution library build.
+Make NPM library build.
 ```
-$ npm run build:lib
+$ bash npm_dist.sh
 ```
 
-Use the following command clean builds.
+Use the following command clean all.
 ```
 $ npm run clean
 ```
@@ -95,6 +89,9 @@ $ npm update --save
 ```
 
 **Note** that from npm version `7.0.0` the command `$ npm update` does not longer update the `package.json` file. From npm version `8.3.2` the command to run is `$ npm update --save` or to always apply the save option add `save=true` to the `.npmrc` file.
+
+## Making a Release
+// TODO
 
 ## Browser support 
 Manually tested in modern browsers (Mozilla Firefox, Microsoft Edge, Google Chrome).

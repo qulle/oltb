@@ -5,37 +5,37 @@ import { platformModifierKeyOnly, altShiftKeysOnly, shiftKeyOnly, targetNotEdita
 
 // (2). Core Toolbar
 import '../scss/oltb.scss';
-import Toast from './modules/common/Toast';
-import Modal from './modules/common/Modal';
-import Dialog from './modules/common/Dialog';
-import CONFIG from './modules/core/Config';
-import ContextMenu from './modules/common/ContextMenu';
-import { SETTINGS } from './modules/helpers/constants/Settings';
-import { MAP_ELEMENT } from './modules/core/ElementReferences';
-import { CONTEXT_MENUS } from './modules/helpers/constants/ContextMenus';
-import { LOCAL_STORAGE_KEYS } from './modules/helpers/constants/LocalStorageKeys';
+import Toast from './common/Toast';
+import Modal from './common/Modal';
+import Dialog from './common/Dialog';
+import CONFIG from './core/Config';
+import ContextMenu from './common/ContextMenu';
+import { SETTINGS } from './helpers/constants/Settings';
+import { MAP_ELEMENT } from './core/ElementReferences';
+import { CONTEXT_MENUS } from './helpers/constants/ContextMenus';
+import { LOCAL_STORAGE_KEYS } from './helpers/constants/LocalStorageKeys';
 
 // (3). Core Managers
-import LayerManager from './modules/core/managers/LayerManager';
-import StateManager from './modules/core/managers/StateManager';
-import TooltipManager from './modules/core/managers/TooltipManager';
-import SettingsManager from './modules/core/managers/SettingsManager';
-import InfoWindowManager from './modules/core/managers/InfoWindowManager';
+import LayerManager from './core/managers/LayerManager';
+import StateManager from './core/managers/StateManager';
+import TooltipManager from './core/managers/TooltipManager';
+import SettingsManager from './core/managers/SettingsManager';
+import InfoWindowManager from './core/managers/InfoWindowManager';
 
 // (4). Custom OL generator functions
-import { generateMarker } from './modules/helpers/ol-functions/GenerateMarker';
-import { generateTooltip } from './modules/helpers/ol-functions/GenerateTooltip';
-import { generateWindbarb } from './modules/helpers/ol-functions/GenerateWindbarb';
+import { generateMarker } from './helpers/ol-functions/GenerateMarker';
+import { generateTooltip } from './helpers/ol-functions/GenerateTooltip';
+import { generateWindbarb } from './helpers/ol-functions/GenerateWindbarb';
 
 // (5). Toolbar tools
-import ALL_TOOLS from './modules/tools/index';
+import ALL_TOOLS from './tools/index';
 
 // (6). Additional toolbar helpers
-import './modules/core/Tooltips';
-import './modules/epsg/Registrate';
-import './modules/helpers/SlideToggle';
-import './modules/helpers/Accessibility';
-import './modules/helpers/Browser/Prototypes';
+import './core/Tooltips';
+import './epsg/Registrate';
+import './helpers/SlideToggle';
+import './helpers/Accessibility';
+import './helpers/Browser/Prototypes';
 
 // Note: This is the same NODE_NAME and PROPS that the MapNavigationTool.js is using
 const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.MapData;
@@ -59,6 +59,7 @@ class OLTB {
     SettingsManager   = SettingsManager;
     InfoWindowManager = InfoWindowManager;
 
+    CONFIG = CONFIG;
     Toast  = Toast;
     Modal  = Modal;
     Dialog = Dialog;

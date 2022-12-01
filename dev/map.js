@@ -8,66 +8,66 @@ import { platformModifierKeyOnly, altShiftKeysOnly, shiftKeyOnly, targetNotEdita
 import { defaults as defaultInterctions, MouseWheelZoom, DragPan, DragRotate, KeyboardZoom, KeyboardPan } from 'ol/interaction';
 
 // (2). Add layers
-import '../shared/layers/Maps';
-import '../shared/layers/Wind';
-import '../shared/layers/Capitals';
-import '../shared/layers/Countries';
-import '../shared/layers/Continents';
+import './layers/Maps';
+import './layers/Wind';
+import './layers/Capitals';
+import './layers/Countries';
+import './layers/Continents';
 
 // (3). Additional toolbar helpers
-import '../../../../src/oltb/js/modules/core/Tooltips';
-import '../../../../src/oltb/js/modules/epsg/Registrate';
-import '../../../../src/oltb/js/modules/helpers/SlideToggle';
-import '../../../../src/oltb/js/modules/helpers/Accessibility';
-import '../../../../src/oltb/js/modules/helpers/Browser/Prototypes';
+import '../src/oltb/js/core/Tooltips';
+import '../src/oltb/js/epsg/Registrate';
+import '../src/oltb/js/helpers/SlideToggle';
+import '../src/oltb/js/helpers/Accessibility';
+import '../src/oltb/js/helpers/Browser/Prototypes';
 
 // (4). Core Toolbar
-import '../../../../src/oltb/scss/oltb.scss';
-import CONFIG from '../../../../src/oltb/js/modules/core/Config';
-import ContextMenu from '../../../../src/oltb/js/modules/common/ContextMenu';
-import { SETTINGS } from '../../../../src/oltb/js/modules/helpers/constants/Settings';
-import { MAP_ELEMENT } from '../../../../src/oltb/js/modules/core/ElementReferences';
-import { CONTEXT_MENUS } from '../../../../src/oltb/js/modules/helpers/constants/ContextMenus';
-import { LOCAL_STORAGE_KEYS } from '../../../../src/oltb/js/modules/helpers/constants/LocalStorageKeys';
+import '../src/oltb/scss/oltb.scss';
+import CONFIG from '../src/oltb/js/core/Config';
+import ContextMenu from '../src/oltb/js/common/ContextMenu';
+import { SETTINGS } from '../src/oltb/js/helpers/constants/Settings';
+import { MAP_ELEMENT } from '../src/oltb/js/core/ElementReferences';
+import { CONTEXT_MENUS } from '../src/oltb/js/helpers/constants/ContextMenus';
+import { LOCAL_STORAGE_KEYS } from '../src/oltb/js/helpers/constants/LocalStorageKeys';
 
 // (5). Core Managers
-import LayerManager from '../../../../src/oltb/js/modules/core/managers/LayerManager';
-import StateManager from '../../../../src/oltb/js/modules/core/managers/StateManager';
-import TooltipManager from '../../../../src/oltb/js/modules/core/managers/TooltipManager';
-import SettingsManager from '../../../../src/oltb/js/modules/core/managers/SettingsManager';
-import InfoWindowManager from '../../../../src/oltb/js/modules/core/managers/InfoWindowManager';
+import LayerManager from '../src/oltb/js/core/managers/LayerManager';
+import StateManager from '../src/oltb/js/core/managers/StateManager';
+import TooltipManager from '../src/oltb/js/core/managers/TooltipManager';
+import SettingsManager from '../src/oltb/js/core/managers/SettingsManager';
+import InfoWindowManager from '../src/oltb/js/core/managers/InfoWindowManager';
 
 // (6). Import individual tools
-import HomeTool from '../../../../src/oltb/js/modules/tools/HomeTool';
-import DrawTool from '../../../../src/oltb/js/modules/tools/DrawTool';
-import EditTool from '../../../../src/oltb/js/modules/tools/EditTool';
-import InfoTool from '../../../../src/oltb/js/modules/tools/InfoTool';
-import HelpTool from '../../../../src/oltb/js/modules/tools/HelpTool';
-import ThemeTool from '../../../../src/oltb/js/modules/tools/ThemeTool';
-import LayerTool from '../../../../src/oltb/js/modules/tools/LayerTool';
-import ZoomInTool from '../../../../src/oltb/js/modules/tools/ZoomInTool';
-import MeasureTool from '../../../../src/oltb/js/modules/tools/MeasureTool';
-import MagnifyTool from '../../../../src/oltb/js/modules/tools/MagnifyTool';
-import ZoomOutTool from '../../../../src/oltb/js/modules/tools/ZoomOutTool';
-import RefreshTool from '../../../../src/oltb/js/modules/tools/RefreshTool';
-import SettingsTool from '../../../../src/oltb/js/modules/tools/SettingsTool';
-import OverviewTool from '../../../../src/oltb/js/modules/tools/OverviewTool';
-import BookmarkTool from '../../../../src/oltb/js/modules/tools/BookmarkTool';
-import DirectionTool from '../../../../src/oltb/js/modules/tools/DirectionTool';
-import DebugInfoTool from '../../../../src/oltb/js/modules/tools/DebugInfoTool';
-import SplitViewTool from '../../../../src/oltb/js/modules/tools/SplitViewTool';
-import ExportPNGTool from '../../../../src/oltb/js/modules/tools/ExportPNGTool';
-import ScaleLineTool from '../../../../src/oltb/js/modules/tools/ScaleLineTool';
-import GraticuleTool from '../../../../src/oltb/js/modules/tools/GraticuleTool';
-import MyLocationTool from '../../../../src/oltb/js/modules/tools/MyLocationTool';
-import ResetNorthTool from '../../../../src/oltb/js/modules/tools/ResetNorthTool';
-import FullscreenTool from '../../../../src/oltb/js/modules/tools/FullscreenTool';
-import CoordinateTool from '../../../../src/oltb/js/modules/tools/CoordinateTool';
-import HiddenAboutTool from '../../../../src/oltb/js/modules/tools/hidden-tools/AboutTool';
-import NotificationTool from '../../../../src/oltb/js/modules/tools/NotificationTool';
-import HiddenMarkerTool from '../../../../src/oltb/js/modules/tools/hidden-tools/MarkerTool';
-import ImportVectorLayerTool from '../../../../src/oltb/js/modules/tools/ImportVectorLayerTool';
-import HiddenMapNavigationTool from '../../../../src/oltb/js/modules/tools/hidden-tools/MapNavigationTool';
+import HomeTool from '../src/oltb/js/tools/HomeTool';
+import DrawTool from '../src/oltb/js/tools/DrawTool';
+import EditTool from '../src/oltb/js/tools/EditTool';
+import InfoTool from '../src/oltb/js/tools/InfoTool';
+import HelpTool from '../src/oltb/js/tools/HelpTool';
+import ThemeTool from '../src/oltb/js/tools/ThemeTool';
+import LayerTool from '../src/oltb/js/tools/LayerTool';
+import ZoomInTool from '../src/oltb/js/tools/ZoomInTool';
+import MeasureTool from '../src/oltb/js/tools/MeasureTool';
+import MagnifyTool from '../src/oltb/js/tools/MagnifyTool';
+import ZoomOutTool from '../src/oltb/js/tools/ZoomOutTool';
+import RefreshTool from '../src/oltb/js/tools/RefreshTool';
+import SettingsTool from '../src/oltb/js/tools/SettingsTool';
+import OverviewTool from '../src/oltb/js/tools/OverviewTool';
+import BookmarkTool from '../src/oltb/js/tools/BookmarkTool';
+import DirectionTool from '../src/oltb/js/tools/DirectionTool';
+import DebugInfoTool from '../src/oltb/js/tools/DebugInfoTool';
+import SplitViewTool from '../src/oltb/js/tools/SplitViewTool';
+import ExportPNGTool from '../src/oltb/js/tools/ExportPNGTool';
+import ScaleLineTool from '../src/oltb/js/tools/ScaleLineTool';
+import GraticuleTool from '../src/oltb/js/tools/GraticuleTool';
+import MyLocationTool from '../src/oltb/js/tools/MyLocationTool';
+import ResetNorthTool from '../src/oltb/js/tools/ResetNorthTool';
+import FullscreenTool from '../src/oltb/js/tools/FullscreenTool';
+import CoordinateTool from '../src/oltb/js/tools/CoordinateTool';
+import HiddenAboutTool from '../src/oltb/js/tools/hidden-tools/AboutTool';
+import NotificationTool from '../src/oltb/js/tools/NotificationTool';
+import HiddenMarkerTool from '../src/oltb/js/tools/hidden-tools/MarkerTool';
+import ImportVectorLayerTool from '../src/oltb/js/tools/ImportVectorLayerTool';
+import HiddenMapNavigationTool from '../src/oltb/js/tools/hidden-tools/MapNavigationTool';
 
 // Note: This is the same NODE_NAME and PROPS that the MapNavigationTool.js is using
 const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.MapData;
@@ -440,11 +440,11 @@ const map = new Map({
     ]),
     target: MAP_ELEMENT,
     view: new View({
-        projection: getProjection(CONFIG.projection),
+        projection: getProjection(CONFIG.projection.default),
         center: fromLonLat([
             LOCAL_STORAGE.lon, 
             LOCAL_STORAGE.lat
-        ], CONFIG.projection),
+        ], CONFIG.projection.default),
         zoom: LOCAL_STORAGE.zoom,
         rotation: LOCAL_STORAGE.rotation
     })
