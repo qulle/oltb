@@ -91,7 +91,58 @@ $ npm update --save
 **Note** that from npm version `7.0.0` the command `$ npm update` does not longer update the `package.json` file. From npm version `8.3.2` the command to run is `$ npm update --save` or to always apply the save option add `save=true` to the `.npmrc` file.
 
 ## Making a Release
-// TODO
+```bash
+# (1). Checkout and update main branch
+$ git checkout main
+$ git pull
+
+# (2). Clean old data
+$ npm run clean
+
+# (3). Update version in: 
+#      - package.json
+
+# (4). Update version and dependencies in:
+#      - rollup.cssbanner.mjs
+#      - rollup.jsbanner.mjs
+
+# (5). Create new dist, this will build the portable IIFE lib and move the source-modules to the dist directory 
+$ bash tasks/npm-dist.sh
+
+# (6). Create new example structure
+$ bash tasks/dist-examples-setup.sh -v x.y.z
+
+# (7). Manually add example code for:
+#      - NPM x 2
+#      - CDN
+
+# (8). Clean up linked example
+$ bash tasks/dist-examples-cleanup.sh -v x.y.z
+
+# (9). Publish package to NPM
+$ bash tasks/npm-publish.sh
+
+# (10). Commit and push updated examples to GitHub
+$ git add .
+$ git commit -m "New release x.y.z"
+$ git push
+
+# (11). Create new demo, this will build the GitHub demo using the NPM version
+$ bash tasks/github-demo.sh
+
+# (12). Commit and push demo to GitHub
+$ git push origin --delete gh-pages
+$ git add dist -f
+$ git commit -m "gh-pages demo release x.y.z"
+$ git subtree push --prefix dist origin gh-pages
+
+# (13). Clean temp demo commit
+$ git reset --hard HEAD~1
+
+# (14). Tag the release
+git tag -a vx.y.x -m "vx.y.x"
+git push origin --tags
+```
 
 ## Browser support 
 Manually tested in modern browsers (Mozilla Firefox, Microsoft Edge, Google Chrome).
@@ -616,7 +667,7 @@ controls: defaultControls({
 ### Store data locally instead of via API
 Tools that create objects at runtime, for example the BookmarkTool, LayerTool etc. returns data via the callback functions. There is also the possibility for these tools to store the created objects in localStorage instead. This is done by setting the constructor parameter `storeDataInLocalStorage: true`. This can be useful if you want to create a map-viewer that can persists data between page load but have no need for an additionall long-term storage via API. 
 
-**Note** At the moment only the BookmarkTool has this feature fully implemented. The Map also stores base data (zoom, lon, lat) in localStorage. You can read more about the State Management [here](#state-management). 
+**Note** At the moment only the BookmarkTool has this feature implemented. The Map also stores base data (zoom, lon, lat) in localStorage. You can read more about the State Management [here](#state-management). 
 
 ### Hidden tools
 Tools refered to as hidden tools are tools that only add functionality via the context menu. The hidden tools are used to enable the same type of callback functions that exists on all other tools. 
