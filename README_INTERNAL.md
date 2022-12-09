@@ -709,7 +709,7 @@ Dialog.alert({
 });
 ```
 
-Other properties that you can add is.
+Other properties that you can add are:
 ```javascript
 ({
     confirmText: 'Your text' // Changes text on ok button
@@ -729,7 +729,7 @@ Dialog.confirm({
 });
 ```
 
-Other properties that you can add is.
+Other properties that you can add are:
 ```javascript
 ({
     confirmClass: Dialog.Success, // Changes to success dialog
@@ -752,7 +752,7 @@ Dialog.prompt({
 });
 ```
 
-Other properties that you can add is.
+Other properties that you can add are:
 ```javascript
 ({
     confirmClass: Dialog.Danger,  // Changes to danger dialog
@@ -902,19 +902,27 @@ const CONTEXT_MENUS = {
 
 To add items to the context menu use the function `addContextMenuItem` and give the name that matches the context menu aswell as the name/label of the item, the icon and a function to call when the item is clicked.
 ```javascript
-addContextMenuItem(CONTEXT_MENUS.MainMap, {icon: '<svg>...</svg>', name: 'Zoom home', fn: this.handleResetToHome.bind(this)});
+addContextMenuItem(CONTEXT_MENUS.MainMap, {
+    icon: '<svg>...</svg>', 
+    name: 'Zoom home', 
+    fn: this.handleResetToHome.bind(this)
+});
 ```
 
 The callback function recieves a references to the map, the clicked coordinates and the target element (the canvas).
 ```javascript
-addContextMenuItem(CONTEXT_MENUS.MainMap, {icon: '<svg>...</svg>', name: 'Clear settings', fn: function(map, coordinates, target) {
-    Dialog.confirm({
-        text: 'Do you want to clear all settings?',
-        onConfirm: function() {
-            localStorage.clear();
-        }
-    });
-}});
+addContextMenuItem(CONTEXT_MENUS.MainMap, {
+    icon: '<svg>...</svg>', 
+    name: 'Clear settings', 
+    fn: function(map, coordinates, target) {
+        Dialog.confirm({
+            text: 'Do you want to clear all settings?',
+            onConfirm: function() {
+                localStorage.clear();
+            }
+        });
+    }
+});
 ```
 
 It is not important in what order the menu or its items are created. If no menu exist with the given name all menu items will be queued and added once the menu is created.
