@@ -24,7 +24,7 @@ export default {
             'process.env.NODE_ENV': JSON.stringify('production')
         }),
         scss({
-            output: './dist/dist/oltb.min.css',
+            fileName: 'oltb.min.css',
             outputStyle: 'compressed',
             processor: (css) => {
                 return cssBanner.banner + '\n' + css;

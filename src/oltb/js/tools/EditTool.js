@@ -1,4 +1,4 @@
-import * as jsts from 'jsts/dist/jsts';
+import jsts from 'jsts/dist/jsts.min';
 import DOM from '../helpers/Browser/DOM';
 import Toast from '../common/Toast';
 import Dialog from '../common/Dialog';
