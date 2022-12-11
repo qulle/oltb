@@ -109,37 +109,42 @@ $ npm run clean
 # (5). Create new dist, this will build the portable IIFE lib and move the source-modules to the dist directory 
 $ bash tasks/npm-dist.sh
 
-# (6). Create new example structure
+# (6). Clean package.json
+#      - scripts
+#      - files
+#      - devDependencies
+
+# (7). Create new example structure
 $ bash tasks/dist-examples-setup.sh -v x.y.z
 
-# (7). Manually add example code for:
+# (8). Manually add example code for:
 #      - NPM x 2
 #      - CDN
 
-# (8). Clean up linked example
+# (9). Clean up linked example
 $ bash tasks/dist-examples-cleanup.sh -v x.y.z
 
-# (9). Publish package to NPM
+# (10). Publish package to NPM
 $ bash tasks/npm-publish.sh
 
-# (10). Commit and push updated examples to GitHub
+# (11). Commit and push updated examples to GitHub
 $ git add .
 $ git commit -m "New release x.y.z"
 $ git push
 
-# (11). Create new demo, this will build the GitHub demo using the NPM version
+# (12). Create new demo, this will build the GitHub demo using the NPM version
 $ bash tasks/github-demo.sh
 
-# (12). Commit and push demo to GitHub
+# (13). Commit and push demo to GitHub
 $ git push origin --delete gh-pages
 $ git add dist -f
 $ git commit -m "gh-pages demo release x.y.z"
 $ git subtree push --prefix dist origin gh-pages
 
-# (13). Clean temp demo commit
+# (14). Clean temp demo commit
 $ git reset --hard HEAD~1
 
-# (14). Tag the release
+# (15). Tag the release
 git tag -a vx.y.x -m "vx.y.x"
 git push origin --tags
 ```

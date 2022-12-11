@@ -6,9 +6,9 @@ import { Control } from 'ol/control';
 import { unByKey } from 'ol/Observable';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { getRenderPixel } from 'ol/render';
-import { TOOLBAR_ELEMENT } from '../core/ElementReferences';
-import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
-import { SVG_PATHS, getIcon } from '../core/SVGIcons';
+import { TOOLBAR_ELEMENT } from '../core/elements/index';
+import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
+import { SVG_PATHS, getIcon } from '../core/icons/SVGIcons';
 import { LOCAL_STORAGE_KEYS } from '../helpers/constants/LocalStorageKeys';
 
 const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.MagnifyTool;

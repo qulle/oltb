@@ -1,8 +1,3 @@
-/* 
-    Plain JS slideToggle
-    https://github.com/ericbutler555/plain-js-slidetoggle 
-*/
-
 HTMLElement.prototype.slideToggle = function(duration, callback) {
     if(this.clientHeight === 0) {
         slideToggle(this, duration, callback, true);

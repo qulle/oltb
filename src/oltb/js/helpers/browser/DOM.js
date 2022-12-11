@@ -1,8 +1,10 @@
+import CONFIG from "../../core/Config";
+
 class DOM {
     static createElement(options = {}) {
         const element = document.createElement(options.element);
 
-        // (1). Common attributes
+        // Common attributes
         if(options.id) {
             element.id = options.id;
         }
@@ -31,12 +33,12 @@ class DOM {
             element.title = options.title;
         }
 
-        // (2). Attributes that needs to be set using setAttribute
+        // Attributes that needs to be set using setAttribute
         for(const attribute in options.attributes) {
             element.setAttribute(attribute, options.attributes[attribute]);
         }
     
-        // (3). Attach given listeners and callbacks
+        // Attach given listeners and callbacks
         for(const listener in options.listeners) {
             const callbacks = options.listeners[listener];
 
@@ -68,7 +70,7 @@ class DOM {
         // With the animation-class the html2canvas fails to render the exported PNG correctly
         setTimeout(() => {
             element.classList.remove(className);
-        }, 250);
+        }, CONFIG.animationDuration.fast);
     }
 }
 

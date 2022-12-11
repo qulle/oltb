@@ -1,5 +1,7 @@
+import CONFIG from "../Config";
+
 class StateManager {
-    static #runtimeState = JSON.parse(localStorage.getItem('oltb-state')) || {};
+    static #runtimeState = JSON.parse(localStorage.getItem(CONFIG.localStorage.key)) || {};
 
     static init(map) { }
 
@@ -17,7 +19,7 @@ class StateManager {
     }
 
     static saveState() {
-        localStorage.setItem('oltb-state', JSON.stringify(this.#runtimeState));
+        localStorage.setItem(CONFIG.localStorage.key, JSON.stringify(this.#runtimeState));
     }
 
     static clear() {

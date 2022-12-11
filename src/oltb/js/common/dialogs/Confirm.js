@@ -1,6 +1,6 @@
 import DOM from '../../helpers/browser/DOM';
 import DialogBase from './DialogBase';
-import { MAP_ELEMENT } from '../../core/ElementReferences';
+import { MAP_ELEMENT } from '../../core/elements/index';
 
 const DEFAULT_OPTIONS = {
     text: undefined,

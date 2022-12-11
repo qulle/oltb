@@ -14,16 +14,16 @@ import { unByKey } from 'ol/Observable';
 import { SETTINGS } from '../helpers/constants/Settings';
 import { shiftKeyOnly } from 'ol/events/condition';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
-import { generateTooltip } from '../helpers/ol-functions/GenerateTooltip';
-import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
-import { SVG_PATHS, getIcon } from '../core/SVGIcons';
+import { generateTooltip } from '../generators/GenerateTooltip';
+import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
+import { SVG_PATHS, getIcon } from '../core/icons/SVGIcons';
 import { LOCAL_STORAGE_KEYS } from '../helpers/constants/LocalStorageKeys';
 import { FEATURE_PROPERTIES } from '../helpers/constants/FeatureProperties';
 import { Fill, Stroke, Style } from 'ol/style';
-import { hasCustomFeatureProperty } from '../helpers/HasNestedProperty';
-import { getCustomFeatureProperty } from '../helpers/GetNestedProperty';
+import { hasCustomFeatureProperty } from '../helpers/browser/HasNestedProperty';
+import { getCustomFeatureProperty } from '../helpers/browser/GetNestedProperty';
 import { Select, Modify, Translate } from 'ol/interaction';
-import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT } from '../core/ElementReferences';
+import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT } from '../core/elements/index';
 import { getMeasureCoordinates, getMeasureValue } from '../helpers/Measurements';
 import { GeometryCollection, LinearRing, LineString, MultiLineString, MultiPoint, MultiPolygon, Point, Polygon } from 'ol/geom';
 
@@ -197,7 +197,10 @@ class EditTool extends Control {
                     return layerWrapper.layer.getSource().hasFeature(feature);
                 });
                 
-                return selectable && (isFeatureLayer || SettingsManager.getSetting(SETTINGS.SelectVectorMapShapes));
+                return (
+                    selectable && 
+                    (isFeatureLayer || SettingsManager.getSetting(SETTINGS.SelectVectorMapShapes))
+                );
             },
             style: this.lastStyle
         });

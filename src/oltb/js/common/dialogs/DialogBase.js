@@ -1,7 +1,7 @@
 import DOM from '../../helpers/browser/DOM';
 import { EVENTS } from '../../helpers/constants/Events';
 import { isDarkTheme } from '../../helpers/IsDarkTheme';
-import { trapFocusKeyListener } from '../../helpers/TrapFocus';
+import { trapFocusKeyListener } from '../../helpers/browser/TrapFocus';
 
 const ANIMATION_CLASS = 'oltb-animation--bounce';
 

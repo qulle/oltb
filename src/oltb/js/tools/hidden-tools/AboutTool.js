@@ -3,9 +3,9 @@ import Dialog from '../../common/Dialog';
 import { VERSION } from 'ol';
 import { Control } from 'ol/control';
 import { CONTEXT_MENUS } from '../../helpers/constants/ContextMenus';
-import { TOOLBAR_ELEMENT } from '../../core/ElementReferences';
+import { TOOLBAR_ELEMENT } from '../../core/elements/index';
 import { addContextMenuItem } from '../../common/ContextMenu';
-import { SVG_PATHS, getIcon } from '../../core/SVGIcons';
+import { SVG_PATHS, getIcon } from '../../core/icons/SVGIcons';
 
 class HiddenAboutTool extends Control {
     constructor() {

@@ -1,21 +1,21 @@
-// (1). Core OpenLayers
+// Core OpenLayers
 import 'ol/ol.css';
 import { Map, View } from 'ol';
 import { get as getProjection } from 'ol/proj';
 import { defaults as defaultControls } from 'ol/control';
 import { defaults as defaultInterctions } from 'ol/interaction';
 
-// (2). Add layers
+// Add layers
 import '../shared/layers/Maps';
 import '../shared/layers/Wind';
 import '../shared/layers/Capitals';
 import '../shared/layers/Countries';
 import '../shared/layers/Continents';
 
-// (3). The Toolbar
+// The Toolbar
 import OLTB from '../../../../src/oltb/js/oltb';
 
-// (4). Create Map instance
+// Create Map instance
 const map = new Map({
     interactions: defaultInterctions({
         mouseWheelZoom: false,
@@ -32,7 +32,7 @@ const map = new Map({
     })
 });
 
-// (5). Create Toolbar instance
+// Create Toolbar instance
 const toolbar = new OLTB({
     map: map,
     tools: {

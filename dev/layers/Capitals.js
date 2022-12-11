@@ -1,8 +1,8 @@
 import Toast from "../../src/oltb/js/common/Toast";
 import LayerManager from "../../src/oltb/js/core/managers/LayerManager";
 import { toStringHDMS } from "ol/coordinate";
-import { generateMarker } from '../../src/oltb/js/helpers/ol-functions/GenerateMarker';
-import { getIcon, SVG_PATHS } from "../../src/oltb/js/core/SVGIcons";
+import { generateMarker } from '../../src/oltb/js/generators/GenerateMarker';
+import { getIcon, SVG_PATHS } from "../../src/oltb/js/core/icons/SVGIcons";
 
 import urlCapitalsGeoJSON from 'url:../geojson/capitals.geojson';
 

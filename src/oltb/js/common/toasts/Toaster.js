@@ -1,7 +1,7 @@
 import DOM from '../../helpers/Browser/DOM';
 import CONFIG from '../../core/Config';
 import { EVENTS } from '../../helpers/constants/Events';
-import { TOAST_ELEMENT } from '../../core/ElementReferences';
+import { TOAST_ELEMENT } from '../../core/elements/index';
 
 const DEFAULT_OPTIONS = {
     text: 'Default toast',

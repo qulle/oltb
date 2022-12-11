@@ -1,5 +1,5 @@
-import DOM from '../browser/DOM';
-import CONFIG from '../../core/Config';
+import DOM from '../helpers/browser/DOM';
+import CONFIG from '../core/Config';
 import { Overlay } from 'ol';
 
 const generateTooltip = function(data = '') {

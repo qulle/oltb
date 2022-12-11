@@ -1,8 +1,8 @@
 import Point from 'ol/geom/Point';
 import Feature from 'ol/Feature';
 import { fromLonLat } from 'ol/proj';
-import { SVG_PATHS, getIcon } from '../../core/SVGIcons';
-import { FEATURE_PROPERTIES } from '../constants/FeatureProperties';
+import { SVG_PATHS, getIcon } from '../core/icons/SVGIcons';
+import { FEATURE_PROPERTIES } from '../helpers/constants/FeatureProperties';
 import { Circle, Fill, Icon, Stroke, Style } from 'ol/style';
 
 const DEFAULT_ICON = getIcon({

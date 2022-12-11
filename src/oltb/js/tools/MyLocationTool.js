@@ -10,10 +10,10 @@ import { easeOut } from 'ol/easing';
 import { fromLonLat } from 'ol/proj';
 import { toStringHDMS } from 'ol/coordinate';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
-import { generateMarker } from '../helpers/ol-functions/GenerateMarker';
-import { TOOLBAR_ELEMENT } from '../core/ElementReferences';
-import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
-import { SVG_PATHS, getIcon } from '../core/SVGIcons';
+import { generateMarker } from '../generators/GenerateMarker';
+import { TOOLBAR_ELEMENT } from '../core/elements/index';
+import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
+import { SVG_PATHS, getIcon } from '../core/icons/SVGIcons';
 import { isFullScreen, exitFullScreen } from '../helpers/Browser/Fullscreen';
 
 const ID_PREFIX = 'oltb-info-window-marker';

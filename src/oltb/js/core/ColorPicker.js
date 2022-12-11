@@ -5,7 +5,7 @@ import { EVENTS } from '../helpers/constants/Events';
 import { isHorizontal } from '../helpers/IsRowDirection';
 import { eventDispatcher } from '../helpers/Browser/EventDispatcher';
 
-// (1). Create element to host ACP instance
+// Create element to host ACP instance
 const colorPickerElement = DOM.createElement({
     element: 'div', 
     id: 'otlb-color-picker',
@@ -20,10 +20,10 @@ const colorPickerElement = DOM.createElement({
     }
 });
 
-// (2). Create the ACP instance
+// Create the ACP instance
 const colorPicker = AColorPicker.createPicker(colorPickerElement);
 
-// (3). Callback function for Tooltip onShow ACP
+// Callback function for Tooltip onShow ACP
 const onColorPickerTooltipShow = function(instance) {
     instance.setProps({
         placement: (window.innerWidth <= CONFIG.deviceWidth.sm || isHorizontal()) ? 'bottom' : 'left'
@@ -36,10 +36,11 @@ const onColorPickerTooltipShow = function(instance) {
 
     colorPicker.setColor(instance.reference.getAttribute('data-oltb-color'));
     colorPicker.on(EVENTS.Browser.Change, (picker, color) => {
-        // Important to be always be HEX with Alpha value, sometimes the two last digits are replaced with fixed alpha value
+        // Important to always be HEX with Alpha value
+        // Sometimes the two last digits are replaced with fixed alpha value
         color = AColorPicker.parseColor(color, 'hexcss4');
 
-        // Update color on the ColorPicker
+        // Update color on the ACP instance
         target.setAttribute('data-oltb-color', color);
         target.firstElementChild.style.backgroundColor = color;
 

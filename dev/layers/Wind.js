@@ -1,8 +1,8 @@
 import Toast from "../../src/oltb/js/common/Toast";
 import LayerManager from "../../src/oltb/js/core/managers/LayerManager";
 import { toStringHDMS } from "ol/coordinate";
-import { randomNumber } from "../../src/oltb/js/helpers/Random";
-import { generateWindbarb } from "../../src/oltb/js/helpers/ol-functions/GenerateWindbarb";
+import { randomNumber } from "../../src/oltb/js/helpers/browser/Random";
+import { generateWindbarb } from "../../src/oltb/js/generators/GenerateWindbarb";
 
 import urlCapitalsGeoJSON from 'url:../geojson/capitals.geojson';
 

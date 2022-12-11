@@ -16,13 +16,13 @@ import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { instantiateLayer } from '../core/ol-types/LayerTypes';
 import { instantiateSource } from '../core/ol-types/SourceTypes';
 import { instantiateFormat } from '../core/ol-types/FormatTypes';
-import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
+import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
 import { addContextMenuItem } from '../common/ContextMenu';
-import { SVG_PATHS, getIcon } from '../core/SVGIcons';
+import { SVG_PATHS, getIcon } from '../core/icons/SVGIcons';
 import { LOCAL_STORAGE_KEYS } from '../helpers/constants/LocalStorageKeys';
 import { FEATURE_PROPERTIES } from '../helpers/constants/FeatureProperties';
-import { hasCustomFeatureProperty } from '../helpers/HasNestedProperty';
-import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT } from '../core/ElementReferences';
+import { hasCustomFeatureProperty } from '../helpers/browser/HasNestedProperty';
+import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT } from '../core/elements/index';
 
 const LAYER_BUTTON_DEFAULT_CLASSES = 'oltb-func-btn';
 const ID_PREFIX = 'oltb-layer';
@@ -206,7 +206,10 @@ class LayerTool extends Control {
     }
 
     onFeatureLayerAdd(event) {
-        if(event.type === 'keyup' && event.key.toLowerCase() !== 'enter') {
+        if(
+            event.type === 'keyup' && 
+            event.key.toLowerCase() !== 'enter'
+        ) {
             return;
         }
 

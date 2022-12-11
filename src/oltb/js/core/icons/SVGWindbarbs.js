@@ -95,7 +95,7 @@ const DEFAULT_OPTIONS = {
 const getWindBarb = function(options = {}) {
     options = { ...DEFAULT_OPTIONS, ...options };
 
-    return `
+    return (`
         <svg xmlns="http://www.w3.org/2000/svg" 
             width="${options.width}" 
             height="${options.height}" 
@@ -108,7 +108,7 @@ const getWindBarb = function(options = {}) {
             viewBox="0 0 250 250">
             ${getSVGPath(options.windSpeed)}
         </svg>
-    `;
+    `);
 }
 
 export { getWindBarb };

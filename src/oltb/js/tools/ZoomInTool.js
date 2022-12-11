@@ -4,9 +4,9 @@ import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { easeOut } from 'ol/easing';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
-import { TOOLBAR_ELEMENT } from '../core/ElementReferences';
-import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
-import { SVG_PATHS, getIcon } from '../core/SVGIcons';
+import { TOOLBAR_ELEMENT } from '../core/elements/index';
+import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
+import { SVG_PATHS, getIcon } from '../core/icons/SVGIcons';
 
 const DEFAULT_OPTIONS = {};
 

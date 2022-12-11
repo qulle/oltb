@@ -4,10 +4,10 @@ import { EVENTS } from '../../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { toStringHDMS } from 'ol/coordinate';
 import { CONTEXT_MENUS } from '../../helpers/constants/ContextMenus';
-import { generateMarker } from '../../helpers/ol-functions/GenerateMarker';
-import { TOOLBAR_ELEMENT } from '../../core/ElementReferences';
+import { generateMarker } from '../../generators/GenerateMarker';
+import { TOOLBAR_ELEMENT } from '../../core/elements/index';
 import { addContextMenuItem } from '../../common/ContextMenu';
-import { SVG_PATHS, getIcon } from '../../core/SVGIcons';
+import { SVG_PATHS, getIcon } from '../../core/icons/SVGIcons';
 
 const ID_PREFIX = 'oltb-info-window';
 const DEFAULT_OPTIONS = {};

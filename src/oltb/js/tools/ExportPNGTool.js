@@ -6,9 +6,9 @@ import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { download } from '../helpers/Browser/Download';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
-import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
-import { SVG_PATHS, getIcon } from '../core/SVGIcons';
-import { MAP_ELEMENT, TOOLBAR_ELEMENT } from '../core/ElementReferences';
+import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
+import { SVG_PATHS, getIcon } from '../core/icons/SVGIcons';
+import { MAP_ELEMENT, TOOLBAR_ELEMENT } from '../core/elements/index';
 
 const DEFAULT_OPTIONS = {};
 const FILE_NAME = 'map.png';
@@ -91,7 +91,7 @@ class ExportPNGTool extends Control {
             
             const pngContext = pngCanvas.getContext('2d');
 
-            // (1). Draw map layers (Canvases)
+            // Draw map layers (Canvases)
             const mapCanvas = MAP_ELEMENT.querySelector('.ol-layer canvas');
             const opacity = mapCanvas.parentNode.style.opacity;
             pngContext.globalAlpha = opacity === '' ? 1 : Number(opacity);
@@ -104,7 +104,7 @@ class ExportPNGTool extends Control {
             CanvasRenderingContext2D.prototype.setTransform.apply(pngContext, matrix);
             pngContext.drawImage(mapCanvas, 0, 0);
 
-            // (2). Draw overlays souch as Tooltips and InfoWindows
+            // Draw overlays souch as Tooltips and InfoWindows
             const overlay = MAP_ELEMENT.querySelector('.ol-overlaycontainer-stopevent');
             const overlayCanvas = await html2canvas(overlay, {
                 scrollX: 0,

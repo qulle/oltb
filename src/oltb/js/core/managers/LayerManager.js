@@ -2,7 +2,7 @@ import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import { EVENTS } from '../../helpers/constants/Events';
 import { FEATURE_PROPERTIES } from '../../helpers/constants/FeatureProperties';
-import { hasCustomFeatureProperty } from '../../helpers/HasNestedProperty';
+import { hasCustomFeatureProperty } from '../../helpers/browser/HasNestedProperty';
 
 const DEFAULT_LAYER_NAME = 'New layer';
 const ZINDEX_BASE = 1000;
@@ -29,14 +29,14 @@ class LayerManager {
 
         this.#map = map;
 
-        // (1). Handle queue of map-layers that was added before the map was ready
+        // Handle queue of map-layers that was added before the map was ready
         this.#queue.mapLayers.forEach((item) => {
             this.addMapLayerToMap(item.layerWrapper, item.silent);
         });
 
         this.#queue.mapLayers = [];
 
-        // (2). Handle queue of map-layers that was added before the map was ready
+        // Handle queue of feature-layers that was added before the map was ready
         this.#queue.featureLayers.forEach((item) => {
             this.addFeatureLayerToMap(item.layerWrapper, item.silent);
         });

@@ -27,6 +27,7 @@
         "build": "npm run build:demo && npm run build:lib",
         "build:demo": "parcel build --public-url . ./dev/index.html --dist-dir demo/",
         "build:lib": "rollup --config",
+        "examples": "parcel serve ./examples/index.html --open --dist-dir serve/",
         "clean": "rm -rf serve/ dist/ demo/ .parcel-cache/"
     },
     "files": [
@@ -48,7 +49,7 @@
         "@rollup/plugin-replace": "^5.0.1",
         "@rollup/plugin-terser": "^0.1.0",
         "parcel": "^2.8.1",
-        "rollup": "^3.7.0",
+        "rollup": "^3.7.1",
         "rollup-plugin-license": "^3.0.1",
         "rollup-plugin-scss": "^4.0.0"
     }

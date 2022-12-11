@@ -10,7 +10,7 @@ const DEFAULT_OPTIONS = {
 const getIcon = function(options = {}) {
     options = { ...DEFAULT_OPTIONS, ...options };
 
-    return `
+    return (`
         <svg xmlns="http://www.w3.org/2000/svg" 
             width="${options.width}" 
             height="${options.height}" 
@@ -20,7 +20,7 @@ const getIcon = function(options = {}) {
             viewBox="0 0 16 16">
             ${options.path}
         </svg>
-    `;
+    `);
 }
 
 const SVG_PATHS = {

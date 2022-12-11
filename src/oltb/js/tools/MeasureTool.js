@@ -11,14 +11,14 @@ import { Control } from 'ol/control';
 import { unByKey } from 'ol/Observable';
 import { SETTINGS } from '../helpers/constants/Settings';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
-import { generateTooltip } from '../helpers/ol-functions/GenerateTooltip';
+import { generateTooltip } from '../generators/GenerateTooltip';
 import { eventDispatcher } from '../helpers/Browser/EventDispatcher';
-import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
+import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
 import { FEATURE_PROPERTIES } from '../helpers/constants/FeatureProperties';
-import { SVG_PATHS, getIcon } from '../core/SVGIcons';
+import { SVG_PATHS, getIcon } from '../core/icons/SVGIcons';
 import { LOCAL_STORAGE_KEYS } from '../helpers/constants/LocalStorageKeys';
 import { Fill, Stroke, Circle, Style } from 'ol/style';
-import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT } from '../core/ElementReferences';
+import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT } from '../core/elements/index';
 import { getMeasureCoordinates, getMeasureValue } from '../helpers/Measurements';
 
 const ID_PREFIX = 'oltb-measure';

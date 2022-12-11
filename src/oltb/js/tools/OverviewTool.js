@@ -4,11 +4,11 @@ import TileLayer from 'ol/layer/Tile';
 import StateManager from '../core/managers/StateManager';
 import { EVENTS } from '../helpers/constants/Events';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
-import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
-import { SVG_PATHS, getIcon } from '../core/SVGIcons';
+import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
+import { SVG_PATHS, getIcon } from '../core/icons/SVGIcons';
 import { LOCAL_STORAGE_KEYS } from '../helpers/constants/LocalStorageKeys';
 import { Control, OverviewMap } from 'ol/control';
-import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT } from '../core/ElementReferences';
+import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT } from '../core/elements/index';
 
 const ID_PREFIX = 'oltb-overview';
 

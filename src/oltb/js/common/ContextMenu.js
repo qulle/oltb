@@ -3,9 +3,9 @@ import CONFIG from '../core/Config';
 import Control from "ol/control/Control";
 import { EVENTS } from "../helpers/constants/Events";
 import { transform } from 'ol/proj';
-import { MAP_ELEMENT } from "../core/ElementReferences";
-import { hasNestedProperty } from "../helpers/HasNestedProperty";
-import { trapFocusKeyListener } from '../helpers/TrapFocus';
+import { MAP_ELEMENT } from "../core/elements/index";
+import { hasNestedProperty } from "../helpers/browser/HasNestedProperty";
+import { trapFocusKeyListener } from '../helpers/browser/TrapFocus';
 
 const DEFAULT_OPTIONS = {};
 
@@ -38,7 +38,7 @@ class ContextMenu extends Control {
     }
 
     create() {
-        // Create <li>'s for each menu item
+        // Create <li> elements for each menu item
         this.MENU_ITEMS.forEach((item, index) => {
             this.addMenuItem(item, index);
         });
@@ -145,18 +145,19 @@ const addContextMenuItems = function(name, items) {
 }
 
 const addContextMenuItem = function(name, item) {
+    // Keep track of all menu items for this named instance
     if(!MENU_ITEMS.has(name)) {
         MENU_ITEMS.set(name, []);
     }
         
     MENU_ITEMS.get(name).push(item);
 
-    // Check if context menu is created, if so, add the menu item to the context menu
+    // Check if context menu already is created, if so the item can be added directly
     if(MENU_INSTANCES.has(name)) {
         const menu = MENU_INSTANCES.get(name);
         const index = MENU_ITEMS.get(name).length - 1;
 
-        menu.addMenuItem(item, index);
+        menu.addMenuItem(item, 0);
     }
 }
 

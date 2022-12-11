@@ -1,6 +1,6 @@
 import ANIMALS from './Animals';
 import ADJECTIVES from './Adjectives';
-import { randomNumber } from '../Random';
+import { randomNumber } from '../browser/Random';
 
 const generateAnimalName = function() {
     const animalIndex    = randomNumber(0, ANIMALS.length    - 1);

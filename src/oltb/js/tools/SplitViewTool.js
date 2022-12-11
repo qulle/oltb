@@ -1,5 +1,6 @@
 import DOM from '../helpers/Browser/DOM';
 import Toast from '../common/Toast';
+import CONFIG from '../core/Config';
 import LayerManager from '../core/managers/LayerManager';
 import StateManager from '../core/managers/StateManager';
 import { EVENTS } from '../helpers/constants/Events';
@@ -8,10 +9,10 @@ import { unByKey } from 'ol/Observable';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { getRenderPixel } from 'ol/render';
 import { eventDispatcher } from '../helpers/Browser/EventDispatcher';
-import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
-import { SVG_PATHS, getIcon } from '../core/SVGIcons';
+import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
+import { SVG_PATHS, getIcon } from '../core/icons/SVGIcons';
 import { LOCAL_STORAGE_KEYS } from '../helpers/constants/LocalStorageKeys';
-import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT, MAP_ELEMENT } from '../core/ElementReferences';
+import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT, MAP_ELEMENT } from '../core/elements/index';
 
 const ID_PREFIX = 'oltb-split-view';
 const RADIX = 10;
@@ -310,7 +311,7 @@ class SplitViewTool extends Control {
         const mapSize = this.getMap().getSize();
 
         // Calculate offset for the handlebar. The range slider is not perfectly linear with towards the edges. 
-        const halfHandleWidth = 16;
+        const halfHandleWidth = CONFIG.rem;
         const sliderWidth = this.splitViewSlider.offsetWidth;
         const sliderCenter = sliderWidth / 2;
         const percentOfRange = (this.splitViewSlider.value / (this.splitViewSlider.max - this.splitViewSlider.min));

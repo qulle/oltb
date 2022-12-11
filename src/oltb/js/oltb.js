@@ -1,9 +1,9 @@
-// (1). Core OpenLayers
+// Core OpenLayers
 import { fromLonLat } from 'ol/proj';
 import { MouseWheelZoom, DragPan, DragRotate, KeyboardZoom, KeyboardPan } from 'ol/interaction';
 import { platformModifierKeyOnly, altShiftKeysOnly, shiftKeyOnly, targetNotEditable } from 'ol/events/condition';
 
-// (2). Core Toolbar
+// Core Toolbar
 import '../scss/oltb.scss';
 import Toast from './common/Toast';
 import Modal from './common/Modal';
@@ -11,26 +11,26 @@ import Dialog from './common/Dialog';
 import CONFIG from './core/Config';
 import ContextMenu from './common/ContextMenu';
 import { SETTINGS } from './helpers/constants/Settings';
-import { MAP_ELEMENT } from './core/ElementReferences';
+import { MAP_ELEMENT } from './core/elements/index';
 import { CONTEXT_MENUS } from './helpers/constants/ContextMenus';
 import { LOCAL_STORAGE_KEYS } from './helpers/constants/LocalStorageKeys';
 
-// (3). Core Managers
+// Core Managers
 import LayerManager from './core/managers/LayerManager';
 import StateManager from './core/managers/StateManager';
 import TooltipManager from './core/managers/TooltipManager';
 import SettingsManager from './core/managers/SettingsManager';
 import InfoWindowManager from './core/managers/InfoWindowManager';
 
-// (4). Custom OL generator functions
-import { generateMarker } from './helpers/ol-functions/GenerateMarker';
-import { generateTooltip } from './helpers/ol-functions/GenerateTooltip';
-import { generateWindbarb } from './helpers/ol-functions/GenerateWindbarb';
+// Custom OL generator functions
+import { generateMarker } from './generators/GenerateMarker';
+import { generateTooltip } from './generators/GenerateTooltip';
+import { generateWindbarb } from './generators/GenerateWindbarb';
 
-// (5). Toolbar tools
+// Toolbar tools
 import ALL_TOOLS from './tools/index';
 
-// (6). Additional toolbar helpers
+// Additional toolbar helpers
 import './core/Tooltips';
 import './epsg/Registrate';
 import './helpers/SlideToggle';
@@ -53,16 +53,17 @@ const LOCAL_STORAGE = { ...LOCAL_STORAGE_DEFAULTS, ...LOCAL_STORAGE_STATE };
 class OLTB {
     #tools = {};
 
-    StateManager      = StateManager;
-    LayerManager      = LayerManager;
-    TooltipManager    = TooltipManager;
-    SettingsManager   = SettingsManager;
-    InfoWindowManager = InfoWindowManager;
+    static CONFIG = CONFIG;
 
-    CONFIG = CONFIG;
-    Toast  = Toast;
-    Modal  = Modal;
-    Dialog = Dialog;
+    static StateManager      = StateManager;
+    static LayerManager      = LayerManager;
+    static TooltipManager    = TooltipManager;
+    static SettingsManager   = SettingsManager;
+    static InfoWindowManager = InfoWindowManager;
+    
+    static Toast  = Toast;
+    static Modal  = Modal;
+    static Dialog = Dialog;
 
     generateMarker   = generateMarker;
     generateTooltip  = generateTooltip;

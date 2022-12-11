@@ -7,10 +7,10 @@ import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { CONTEXT_MENUS } from '../helpers/constants/ContextMenus';
-import { TOOLBAR_ELEMENT } from '../core/ElementReferences';
-import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
+import { TOOLBAR_ELEMENT } from '../core/elements/index';
+import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
 import { addContextMenuItem } from '../common/ContextMenu';
-import { SVG_PATHS, getIcon } from '../core/SVGIcons';
+import { SVG_PATHS, getIcon } from '../core/icons/SVGIcons';
 
 const DEFAULT_OPTIONS = {};
 

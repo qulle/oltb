@@ -21,7 +21,7 @@
         -moz-appearance: none;
         appearance: none;
         -webkit-print-color-adjust: exact;
-        color-adjust: exact;
+        print-color-adjust: exact;
         border-radius: $border-radius;
         transition: border-color 150ms ease-in-out, box-shadow 150ms ease-in-out;
     

@@ -6,9 +6,9 @@ import { getCenter } from 'ol/extent';
 import { editFeature } from './info-window-manager/EditFeature';
 import { removeFeature } from './info-window-manager/RemoveFeature';
 import { copyFeatureInfo } from './info-window-manager/CopyFeatureInfo';
-import { SVG_PATHS, getIcon } from '../SVGIcons';
+import { SVG_PATHS, getIcon } from '../icons/SVGIcons';
 import { Fill, Stroke, Style } from 'ol/style';
-import { trapFocusKeyListener } from '../../helpers/TrapFocus';
+import { trapFocusKeyListener } from '../../helpers/browser/TrapFocus';
 
 const ANIMATION_CLASS = 'oltb-animation--centered-bounce';
 const ID_PREFIX = 'oltb-info-window-marker';
@@ -26,7 +26,7 @@ class InfoWindowManager {
 
         this.#map = map;
 
-        // (1). Create DOM element representing infoWindow
+        // Create DOM element representing infoWindow
         this.infoWindow = DOM.createElement({
             element: 'div',
             class: 'oltb-info-window oltb-animation',
@@ -59,7 +59,7 @@ class InfoWindowManager {
         this.infoWindow.appendChild(closeButton);
         this.infoWindow.appendChild(this.#content);
 
-        // (2). Create ol overlay to host infoWindow
+        // Create ol overlay to host infoWindow
         this.#overlay = new Overlay({
             element: this.infoWindow,
             positioning: 'bottom-center',
@@ -108,7 +108,12 @@ class InfoWindowManager {
         }
 
         const infoWindow = feature?.getProperties()?.oltb?.infoWindow;
-        this.#map.getViewport().style.cursor = infoWindow ? 'pointer' : 'default';
+
+        if(infoWindow) {
+            this.#map.getViewport().style.cursor = 'pointer';
+        }else {
+            this.#map.getViewport().style.cursor = 'default';
+        }
     }
 
     static hightlightVectorSection(feature) {

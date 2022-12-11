@@ -4,6 +4,10 @@ const CONFIG = {
     version: version,
     locale: 'en-us',
     scrollDistance: 100,
+    rem: 16,
+    localStorage: {
+        key: 'oltb-state'
+    },
     projection: {
         default: 'EPSG:3857',
         wgs84: 'EPSG:4326'

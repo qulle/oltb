@@ -1,4 +1,4 @@
-// (1). Core OpenLayers
+// Core OpenLayers
 import 'ol/ol.css';
 import { Map, View } from 'ol';
 import { fromLonLat } from 'ol/proj';
@@ -7,37 +7,37 @@ import { defaults as defaultControls } from 'ol/control';
 import { platformModifierKeyOnly, altShiftKeysOnly, shiftKeyOnly, targetNotEditable } from 'ol/events/condition';
 import { defaults as defaultInterctions, MouseWheelZoom, DragPan, DragRotate, KeyboardZoom, KeyboardPan } from 'ol/interaction';
 
-// (2). Add layers
+// Add layers
 import '../shared/layers/Maps';
 import '../shared/layers/Wind';
 import '../shared/layers/Capitals';
 import '../shared/layers/Countries';
 import '../shared/layers/Continents';
 
-// (3). Additional toolbar helpers
+// Additional toolbar helpers
 import '../../../../src/oltb/js/core/Tooltips';
 import '../../../../src/oltb/js/epsg/Registrate';
 import '../../../../src/oltb/js/helpers/SlideToggle';
 import '../../../../src/oltb/js/helpers/Accessibility';
 import '../../../../src/oltb/js/helpers/Browser/Prototypes';
 
-// (4). Core Toolbar
+// Core Toolbar
 import '../../../../src/oltb/scss/oltb.scss';
 import CONFIG from '../../../../src/oltb/js/core/Config';
 import ContextMenu from '../../../../src/oltb/js/common/ContextMenu';
 import { SETTINGS } from '../../../../src/oltb/js/helpers/constants/Settings';
-import { MAP_ELEMENT } from '../../../../src/oltb/js/core/ElementReferences';
+import { MAP_ELEMENT } from '../../../../src/oltb/js/core/elements/index';
 import { CONTEXT_MENUS } from '../../../../src/oltb/js/helpers/constants/ContextMenus';
 import { LOCAL_STORAGE_KEYS } from '../../../../src/oltb/js/helpers/constants/LocalStorageKeys';
 
-// (5). Core Managers
+// Core Managers
 import LayerManager from '../../../../src/oltb/js/core/managers/LayerManager';
 import StateManager from '../../../../src/oltb/js/core/managers/StateManager';
 import TooltipManager from '../../../../src/oltb/js/core/managers/TooltipManager';
 import SettingsManager from '../../../../src/oltb/js/core/managers/SettingsManager';
 import InfoWindowManager from '../../../../src/oltb/js/core/managers/InfoWindowManager';
 
-// (6). Import individual tools
+// Import individual tools
 import HomeTool from '../../../../src/oltb/js/tools/HomeTool';
 import DrawTool from '../../../../src/oltb/js/tools/DrawTool';
 import EditTool from '../../../../src/oltb/js/tools/EditTool';
@@ -78,11 +78,11 @@ const LOCAL_STORAGE_DEFAULTS = {
     rotation: 0
 };
 
-// (7). Load stored data from localStorage
+// Load stored data from localStorage
 const LOCAL_STORAGE_STATE = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
 const LOCAL_STORAGE = { ...LOCAL_STORAGE_DEFAULTS, ...LOCAL_STORAGE_STATE };
 
-// (8). Create Map instance
+// Create Map instance
 const map = new Map({
     interactions: defaultInterctions({
         mouseWheelZoom: false,
@@ -450,7 +450,7 @@ const map = new Map({
     })
 });
 
-// (9). Initialize static managers
+// Initialize static managers
 [
     LayerManager,
     StateManager,
