@@ -2,8 +2,8 @@ import DOM from '../../helpers/Browser/DOM';
 import ModalBase from './ModalBase';
 
 const DEFAULT_OPTIONS = {
-    title: 'Default title',
-    content: 'Default content'
+    title: 'Default modal title',
+    content: 'Default modal content'
 };
 
 class ModalWindow extends ModalBase {

@@ -54,7 +54,8 @@ class DebugInfoModal extends ModalBase {
         });
         
         const buttonWrapper = DOM.createElement({
-            element: 'div'
+            element: 'div',
+            class: 'oltb-modal__button-wrapper'
         }); 
 
         DOM.appendChildren(buttonWrapper, [

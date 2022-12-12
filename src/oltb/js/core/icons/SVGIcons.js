@@ -1,28 +1,3 @@
-const DEFAULT_OPTIONS = {
-    width: 24,
-    height: 24,
-    fill: 'currentColor',
-    stroke: 'none',
-    class: '',
-    path: undefined
-};
-
-const getIcon = function(options = {}) {
-    options = { ...DEFAULT_OPTIONS, ...options };
-
-    return (`
-        <svg xmlns="http://www.w3.org/2000/svg" 
-            width="${options.width}" 
-            height="${options.height}" 
-            fill="${options.fill}"
-            stroke="${options.stroke}" 
-            class="${options.class}" 
-            viewBox="0 0 16 16">
-            ${options.path}
-        </svg>
-    `);
-}
-
 const SVG_PATHS = {
     About: `
         <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
@@ -183,5 +158,30 @@ const SVG_PATHS = {
         <path fill-rule="evenodd" d="M3 6.5a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5z"/>
     `
 };
+
+const DEFAULT_OPTIONS = {
+    width: 24,
+    height: 24,
+    fill: 'currentColor',
+    stroke: 'none',
+    class: '',
+    path: undefined
+};
+
+const getIcon = function(options = {}) {
+    options = { ...DEFAULT_OPTIONS, ...options };
+
+    return (`
+        <svg xmlns="http://www.w3.org/2000/svg" 
+            width="${options.width}" 
+            height="${options.height}" 
+            fill="${options.fill}"
+            stroke="${options.stroke}" 
+            class="${options.class}" 
+            viewBox="0 0 16 16">
+            ${options.path}
+        </svg>
+    `);
+}
 
 export { SVG_PATHS, getIcon };

@@ -17,7 +17,7 @@ import './layers/Continents';
 // Additional toolbar helpers
 import '../src/oltb/js/core/Tooltips';
 import '../src/oltb/js/epsg/Registrate';
-import '../src/oltb/js/helpers/SlideToggle';
+import '../src/oltb/js/helpers/browser/SlideToggle';
 import '../src/oltb/js/helpers/Accessibility';
 import '../src/oltb/js/helpers/Browser/Prototypes';
 

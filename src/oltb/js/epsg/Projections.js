@@ -27,7 +27,7 @@ const getProj4Defs = function() {
 
     PROJECTIONS.forEach((projection) => {
         result.push([
-            'EPSG:' + projection.code,
+            `EPSG: ${projection.code}`,
             projection.proj4def
         ]);
     });

@@ -45,7 +45,7 @@ class LayerManager {
     }
 
     //-------------------------------------------
-    // Map layers
+    // Map layers specific
     //-------------------------------------------
     static addMapLayers(layerWrappers, silent = false) {
         for(let index in layerWrappers) {
@@ -107,10 +107,10 @@ class LayerManager {
         return result;
     }
 
-    static getOLMapLayers() {
+    static getOlMapLayers() {
         const olLayers = [];
 
-        // Filter out the actual ol-layer
+        // Filter out the actual ol layer
         for(let index in this.#layers.mapLayers) {
             olLayers.push(this.#layers.mapLayers[index].layer);
         }
@@ -137,7 +137,7 @@ class LayerManager {
     }
 
     //-------------------------------------------
-    // Feature layers
+    // Feature layers specific
     //-------------------------------------------
     static addFeatureLayer(name, visible = true, silent = false) {
         name = name.trim();

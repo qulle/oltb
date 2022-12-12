@@ -9,15 +9,24 @@ class LayerModal extends ModalBase {
     constructor(onCreate, onCancel) {
         super('Create map layer');
 
-        // Create textbox for entering layer name
-        const layerNameDiv = DOM.createElement({
+        // Create textbox for layer name
+        const nameDiv = DOM.createElement({
             element: 'div',
             class: 'oltb-m-0'
         });
 
-        const layerNameTxt = DOM.createElement({
+        nameDiv.appendChild(DOM.createElement({
+            element: 'label', 
+            text: 'Name',
+            class: 'oltb-label', 
+            attributes: {
+                for: `${PREFIX_LAYER_ID}-layer-name`
+            }
+        }));
+
+        const nameText = DOM.createElement({
             element: 'input', 
-            id: PREFIX_LAYER_ID + '-layer-name',
+            id: `${PREFIX_LAYER_ID}-layer-name`,
             class: 'oltb-input',
             value: 'New map layer', 
             attributes: {
@@ -25,64 +34,31 @@ class LayerModal extends ModalBase {
             }
         });
 
-        layerNameDiv.appendChild(DOM.createElement({
-            element: 'label', 
-            text: 'Name',
-            class: 'oltb-label', 
-            attributes: {
-                for: PREFIX_LAYER_ID + '-layer-name'
-            }
-        }));
-
-        layerNameDiv.appendChild(layerNameTxt);
+        nameDiv.appendChild(nameText);
 
         // Create and populate select element with the layer types
-        const layerTypeDiv = DOM.createElement({
+        const typeDiv = DOM.createElement({
             element: 'div',
             class: 'oltb-mt-0625'
         });
 
-        const LAYER_TYPESelect = DOM.createElement({
-            element: 'select', 
-            id: PREFIX_LAYER_ID + '-layer-type',
-            class: 'oltb-select'
-        });
-
-        ['Tile', 'Vector'].forEach((type) => {
-            LAYER_TYPESelect.appendChild(
-                DOM.createElement({
-                    element: 'option', 
-                    text: type, 
-                    value: type
-                }
-            ));
-        });
-
-        layerTypeDiv.appendChild(DOM.createElement({
+        typeDiv.appendChild(DOM.createElement({
             element: 'label', 
             text: 'Layer',
             class: 'oltb-label', 
             attributes: {
-                for: PREFIX_LAYER_ID + '-layer-type'
+                for: `${PREFIX_LAYER_ID}-layer-type`
             }
         }));
 
-        layerTypeDiv.appendChild(LAYER_TYPESelect);
-
-        // Create and populate select element with the source types
-        const layerSourceDiv = DOM.createElement({
-            element: 'div',
-            class: 'oltb-mt-0625' 
-        });
-
-        const layerSourceSelect = DOM.createElement({
+        const typeSelect = DOM.createElement({
             element: 'select', 
-            id: PREFIX_LAYER_ID + '-layer-source',
+            id: `${PREFIX_LAYER_ID}-layer-type`,
             class: 'oltb-select'
         });
 
-        ['TileWMS', 'XYZ', 'OSM', 'Vector'].forEach((type) => {
-            layerSourceSelect.appendChild(
+        ['Tile', 'Vector'].forEach((type) => {
+            typeSelect.appendChild(
                 DOM.createElement({
                     element: 'option', 
                     text: type, 
@@ -91,26 +67,59 @@ class LayerModal extends ModalBase {
             ));
         });
 
-        layerSourceDiv.appendChild(DOM.createElement({
-            element: 'label', 
-            text: 'Source',
-            class: 'oltb-label', 
-            attributes: {
-                for: PREFIX_LAYER_ID + '-layer-source'
-            }
-        }));
+        typeDiv.appendChild(typeSelect);
 
-        layerSourceDiv.appendChild(layerSourceSelect);
-
-        // Create textbox for entering projection
-        const layerProjectionDiv = DOM.createElement({
+        // Create and populate select element with the source types
+        const sourceDiv = DOM.createElement({
             element: 'div',
             class: 'oltb-mt-0625' 
         });
 
-        const layerProjectionTxt = DOM.createElement({
+        sourceDiv.appendChild(DOM.createElement({
+            element: 'label', 
+            text: 'Source',
+            class: 'oltb-label', 
+            attributes: {
+                for: `${PREFIX_LAYER_ID}-layer-source`
+            }
+        }));
+
+        const sourceSelect = DOM.createElement({
+            element: 'select', 
+            id: `${PREFIX_LAYER_ID}-layer-source`,
+            class: 'oltb-select'
+        });
+
+        ['TileWMS', 'XYZ', 'OSM', 'Vector'].forEach((type) => {
+            sourceSelect.appendChild(
+                DOM.createElement({
+                    element: 'option', 
+                    text: type, 
+                    value: type
+                }
+            ));
+        });
+
+        sourceDiv.appendChild(sourceSelect);
+
+        // Create textbox for projection
+        const projectionDiv = DOM.createElement({
+            element: 'div',
+            class: 'oltb-mt-0625' 
+        });
+
+        projectionDiv.appendChild(DOM.createElement({
+            element: 'label', 
+            text: 'Projection',
+            class: 'oltb-label', 
+            attributes: {
+                for: `${PREFIX_LAYER_ID}-layer-projection`
+            }
+        }));
+
+        const projectionText = DOM.createElement({
             element: 'input', 
-            id: PREFIX_LAYER_ID + '-layer-projection',
+            id: `${PREFIX_LAYER_ID}-layer-projection`,
             class: 'oltb-input', 
             attributes: {
                 type: 'text', 
@@ -118,52 +127,52 @@ class LayerModal extends ModalBase {
             }
         });
 
-        layerProjectionDiv.appendChild(DOM.createElement({
-            element: 'label', 
-            text: 'Projection',
-            class: 'oltb-label', 
-            attributes: {
-                for: PREFIX_LAYER_ID + '-layer-projection'
-            }
-        }));
+        projectionDiv.appendChild(projectionText);
 
-        layerProjectionDiv.appendChild(layerProjectionTxt);
-
-        // Create textbox for entering layer URL
-        const layerURLDiv = DOM.createElement({
+        // Create textbox for layer URL
+        const urlDiv = DOM.createElement({
             element: 'div',
             class: 'oltb-mt-0625'
         });
 
-        const layerURLTxt = DOM.createElement({
+        urlDiv.appendChild(DOM.createElement({
+            element: 'label', 
+            text: 'URL', 
+            class: 'oltb-label',
+            attributes: {
+                for: `${PREFIX_LAYER_ID}-layer-url`
+            }
+        }));
+
+        const urlText = DOM.createElement({
             element: 'input',
-            id: PREFIX_LAYER_ID + '-layer-url', 
+            id: `${PREFIX_LAYER_ID}-layer-url`, 
             class: 'oltb-input',
             attributes: {
                 type: 'text'
             }
         });
 
-        layerURLDiv.appendChild(DOM.createElement({
-            element: 'label', 
-            text: 'URL', 
-            class: 'oltb-label',
-            attributes: {
-                for: PREFIX_LAYER_ID + '-layer-url'
-            }
-        }));
+        urlDiv.appendChild(urlText);
 
-        layerURLDiv.appendChild(layerURLTxt);
-
-        // Create textbox for entering parameters in JSON format
-        const layerParametersDiv = DOM.createElement({
+        // Create textbox for parameters
+        const parametersDiv = DOM.createElement({
             element: 'div',
             class: 'oltb-mt-0625'
         });
 
-        const layerParametersTxt = DOM.createElement({
+        parametersDiv.appendChild(DOM.createElement({
+            element: 'label', 
+            text: 'Parameters (JSON)', 
+            class: 'oltb-label',
+            attributes: {
+                for: `${PREFIX_LAYER_ID}-layer-parameters`
+            }
+        }));
+
+        const parametersText = DOM.createElement({
             element: 'input', 
-            id: PREFIX_LAYER_ID + '-layer-parameters',
+            id: `${PREFIX_LAYER_ID}-layer-parameters`,
             class: 'oltb-input', 
             attributes: {
                 type: 'text', 
@@ -171,31 +180,31 @@ class LayerModal extends ModalBase {
             }
         });
 
-        layerParametersDiv.appendChild(DOM.createElement({
-            element: 'label', 
-            text: 'Parameters (JSON)', 
-            class: 'oltb-label',
-            attributes: {
-                for: PREFIX_LAYER_ID + '-layer-parameters'
-            }
-        }));
-
-        layerParametersDiv.appendChild(layerParametersTxt);
+        parametersDiv.appendChild(parametersText);
 
         // Create and populate select element with layer wrapX values
-        const layerWrapXDiv = DOM.createElement({
+        const wrapXDiv = DOM.createElement({
             element: 'div',
             class: 'oltb-mt-0625'
         });
 
-        const layerWrapXSelect = DOM.createElement({
+        wrapXDiv.appendChild(DOM.createElement({
+            element: 'label', 
+            text: 'WrapX',
+            class: 'oltb-label', 
+            attributes: {
+                for: `${PREFIX_LAYER_ID}-layer-wrapx`
+            }
+        }));
+
+        const wrapXSelect = DOM.createElement({
             element: 'select',
-            id: PREFIX_LAYER_ID + '-layer-wrapx', 
+            id: `${PREFIX_LAYER_ID}-layer-wrapx`, 
             class: 'oltb-select'
         });
 
         ['False', 'True'].forEach((value) => {
-            layerWrapXSelect.appendChild(
+            wrapXSelect.appendChild(
                 DOM.createElement({
                     element: 'option', 
                     text: value, 
@@ -204,45 +213,36 @@ class LayerModal extends ModalBase {
             ));
         });
 
-        layerWrapXDiv.appendChild(DOM.createElement({
-            element: 'label', 
-            text: 'WrapX',
-            class: 'oltb-label', 
-            attributes: {
-                for: PREFIX_LAYER_ID + '-layer-wrapx'
-            }
-        }));
+        wrapXDiv.appendChild(wrapXSelect);
 
-        layerWrapXDiv.appendChild(layerWrapXSelect);
-
-        // Create textbox for entering layer attributions
-        const layerAttributionsDiv = DOM.createElement({
+        // Create textbox for layer attributions
+        const attributionsDiv = DOM.createElement({
             element: 'div',
             class: 'oltb-mt-0625'
         });
 
-        const layerAttributionsTxt = DOM.createElement({
+        attributionsDiv.appendChild(DOM.createElement({
+            element: 'label', 
+            text: 'Attributions', 
+            class: 'oltb-label',
+            attributes: {
+                for: `${PREFIX_LAYER_ID}-layer-attributions`
+            }
+        }));
+
+        const attributionsText = DOM.createElement({
             element: 'input',
-            id: PREFIX_LAYER_ID + '-layer-attributions', 
+            id: `${PREFIX_LAYER_ID}-layer-attributions`, 
             class: 'oltb-input',
             attributes: {
                 type: 'text'
             }
         });
 
-        layerAttributionsDiv.appendChild(DOM.createElement({
-            element: 'label', 
-            text: 'Attributions', 
-            class: 'oltb-label',
-            attributes: {
-                for: PREFIX_LAYER_ID + '-layer-attributions'
-            }
-        }));
-
-        layerAttributionsDiv.appendChild(layerAttributionsTxt);
+        attributionsDiv.appendChild(attributionsText);
 
         // Create buttons for create and cancel
-        const layerButtonsDiv = DOM.createElement({
+        const buttonsDiv = DOM.createElement({
             element: 'div',
             class: 'oltb-d-flex oltb-justify-content-between oltb-mt-1'
         });
@@ -257,13 +257,13 @@ class LayerModal extends ModalBase {
             listeners: {
                 'click': () => {
                     const layer = {
-                        name: layerNameTxt.value,
-                        layer: LAYER_TYPESelect.value,
-                        source: layerSourceSelect.value,
-                        url: layerURLTxt.value,
-                        parameters: layerParametersTxt.value || '{}',
-                        wrapX: layerWrapXSelect.value,
-                        attributions: layerAttributionsTxt.value
+                        name: nameText.value,
+                        layer: typeSelect.value,
+                        source: sourceSelect.value,
+                        url: urlText.value,
+                        parameters: parametersText.value || '{}',
+                        wrapX: wrapXSelect.value,
+                        attributions: attributionsText.value
                     };
         
                     this.close();
@@ -287,8 +287,8 @@ class LayerModal extends ModalBase {
             }
         });
 
-        layerButtonsDiv.appendChild(cancelButton);
-        layerButtonsDiv.appendChild(createButton);
+        buttonsDiv.appendChild(cancelButton);
+        buttonsDiv.appendChild(createButton);
 
         // Add all DOM elements to the modalContent
         const modalContent = DOM.createElement({
@@ -297,15 +297,15 @@ class LayerModal extends ModalBase {
         });
         
         DOM.appendChildren(modalContent, [
-            layerNameDiv,
-            layerTypeDiv,
-            layerSourceDiv,
-            layerProjectionDiv,
-            layerURLDiv,
-            layerParametersDiv,
-            layerWrapXDiv,
-            layerAttributionsDiv,
-            layerButtonsDiv
+            nameDiv,
+            typeDiv,
+            sourceDiv,
+            projectionDiv,
+            urlDiv,
+            parametersDiv,
+            wrapXDiv,
+            attributionsDiv,
+            buttonsDiv
         ]);
 
         this.show(modalContent);

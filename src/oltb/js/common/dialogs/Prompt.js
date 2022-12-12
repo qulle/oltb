@@ -3,7 +3,7 @@ import DialogBase from './DialogBase';
 import { MAP_ELEMENT } from '../../core/elements/index';
 
 const DEFAULT_OPTIONS = {
-    text: undefined,
+    text: 'Default prompt text',
     placeholder: undefined,
     value: undefined,
     onConfirm: undefined,

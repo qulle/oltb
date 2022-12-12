@@ -38,7 +38,6 @@ class ContextMenu extends Control {
     }
 
     create() {
-        // Create <li> elements for each menu item
         this.MENU_ITEMS.forEach((item, index) => {
             this.addMenuItem(item, index);
         });
@@ -152,7 +151,7 @@ const addContextMenuItem = function(name, item) {
         
     MENU_ITEMS.get(name).push(item);
 
-    // Check if context menu already is created, if so the item can be added directly
+    // Check if context menu already is created, if so the item must be added directly
     if(MENU_INSTANCES.has(name)) {
         const menu = MENU_INSTANCES.get(name);
         const index = MENU_ITEMS.get(name).length - 1;

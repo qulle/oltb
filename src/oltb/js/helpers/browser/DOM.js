@@ -61,12 +61,12 @@ class DOM {
         });
     }
 
-    static rerunAnimation(element, className) {
+    static runAnimation(element, className) {
         element.classList.remove(className);
         void element.offsetWidth;
         element.classList.add(className);
 
-        // Note: 250ms matches the time given in _animations.scss
+        // Note: CONFIG.animationDuration.fast matches the time given in _animations.scss
         // With the animation-class the html2canvas fails to render the exported PNG correctly
         setTimeout(() => {
             element.classList.remove(className);

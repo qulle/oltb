@@ -23,7 +23,6 @@ const colorPickerElement = DOM.createElement({
 // Create the ACP instance
 const colorPicker = AColorPicker.createPicker(colorPickerElement);
 
-// Callback function for Tooltip onShow ACP
 const onColorPickerTooltipShow = function(instance) {
     instance.setProps({
         placement: (window.innerWidth <= CONFIG.deviceWidth.sm || isHorizontal()) ? 'bottom' : 'left'

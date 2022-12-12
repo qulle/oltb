@@ -305,7 +305,7 @@ class BookmarkTool extends Control {
         // Add all buttons to the bookmark
         const zoomToButton = DOM.createElement({
             element: 'button',
-            class: BOOKMARK_BUTTON_DEFAULT_CLASSES + ' oltb-func-btn--geo-pin oltb-tippy',
+            class: `${BOOKMARK_BUTTON_DEFAULT_CLASSES} oltb-func-btn--geo-pin oltb-tippy`,
             title: 'Zoom to location',
             attributes: {
                 type: 'button'
@@ -317,7 +317,7 @@ class BookmarkTool extends Control {
         
         const editButton = DOM.createElement({
             element: 'button',
-            class: BOOKMARK_BUTTON_DEFAULT_CLASSES + ' oltb-func-btn--edit oltb-tippy',
+            class: `${BOOKMARK_BUTTON_DEFAULT_CLASSES} oltb-func-btn--edit oltb-tippy`,
             title: 'Rename bookmark',
             attributes: {
                 type: 'button'
@@ -329,7 +329,7 @@ class BookmarkTool extends Control {
 
         const deleteButton = DOM.createElement({
             element: 'button',
-            class: BOOKMARK_BUTTON_DEFAULT_CLASSES + ' oltb-func-btn--delete oltb-tippy',
+            class: `${BOOKMARK_BUTTON_DEFAULT_CLASSES} oltb-func-btn--delete oltb-tippy`,
             title: 'Delete bookmark',
             attributes: {
                 type: 'button'

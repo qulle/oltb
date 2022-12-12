@@ -9,19 +9,28 @@ class DownloadLayerModal extends ModalBase {
         super('Download layer');
 
         // Create and populate select element with layer format values
-        const layerFormatDiv = DOM.createElement({
+        const formatDiv = DOM.createElement({
             element: 'div',
             class: 'oltb-mt-0625'
         });
 
-        const layerFormatSelect = DOM.createElement({
+        formatDiv.appendChild(DOM.createElement({
+            element: 'label', 
+            text: 'Layer format',
+            class: 'oltb-label', 
+            attributes: {
+                for: `${PREFIX_LAYER_ID}-layer-wrapx`
+            }
+        }));
+
+        const formatSelect = DOM.createElement({
             element: 'select',
-            id: PREFIX_LAYER_ID + '-layer-type',  
+            id: `${PREFIX_LAYER_ID}-layer-type`,  
             class: 'oltb-select'
         });
 
         ['GeoJSON', 'KML'].forEach((value) => {
-            layerFormatSelect.appendChild(
+            formatSelect.appendChild(
                 DOM.createElement({
                     element: 'option', 
                     text: value, 
@@ -30,19 +39,10 @@ class DownloadLayerModal extends ModalBase {
             ));
         });
 
-        layerFormatDiv.appendChild(DOM.createElement({
-            element: 'label', 
-            text: 'Layer format',
-            class: 'oltb-label', 
-            attributes: {
-                for: PREFIX_LAYER_ID + '-layer-wrapx'
-            }
-        }));
-
-        layerFormatDiv.appendChild(layerFormatSelect);
+        formatDiv.appendChild(formatSelect);
 
         // Create buttons for download and cancel
-        const layerButtonsDiv = DOM.createElement({
+        const buttonsDiv = DOM.createElement({
             element: 'div',
             class: 'oltb-d-flex oltb-justify-content-between oltb-mt-1' 
         });
@@ -57,7 +57,7 @@ class DownloadLayerModal extends ModalBase {
             listeners: {
                 'click': () => {
                     const result = {
-                        format: layerFormatSelect.value
+                        format: formatSelect.value
                     };
         
                     this.close();
@@ -81,8 +81,8 @@ class DownloadLayerModal extends ModalBase {
             }
         });
 
-        layerButtonsDiv.appendChild(cancelButton);
-        layerButtonsDiv.appendChild(downloadButton);
+        buttonsDiv.appendChild(cancelButton);
+        buttonsDiv.appendChild(downloadButton);
 
         // Add all DOM elements to the modalContent
         const modalContent = DOM.createElement({
@@ -91,8 +91,8 @@ class DownloadLayerModal extends ModalBase {
         });
         
         DOM.appendChildren(modalContent, [
-            layerFormatDiv,
-            layerButtonsDiv
+            formatDiv,
+            buttonsDiv
         ]);
 
         this.show(modalContent);

@@ -105,7 +105,7 @@ class ImportVectorLayerTool extends Control {
                 featureProjection: CONFIG.projection.default
             });
 
-            const layerWrapper = LayerManager.addFeatureLayer('Import : ' + filename);
+            const layerWrapper = LayerManager.addFeatureLayer(`Import : ${filename}`);
             
             layerWrapper.layer.getSource().addFeatures(features);
 

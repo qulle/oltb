@@ -49,7 +49,7 @@ class SettingsManager {
     ]);
 
     static init(map) {
-        // Update the states of the settings map with values from localStorage
+        // Update the states of the settings with values from localStorage
         this.#settings.forEach((value, key) => {
             if(key in this.#localStorage) {
                 value.state = this.#localStorage[key];

@@ -142,7 +142,7 @@ class InfoWindowManager {
             ));
         }
 
-        DOM.rerunAnimation(this.infoWindow, ANIMATION_CLASS);
+        DOM.runAnimation(this.infoWindow, ANIMATION_CLASS);
 
         const removeFeatureButton = this.#content.querySelector(`#${ID_PREFIX}-remove`);
         if(removeFeatureButton) {

@@ -15,4 +15,7 @@ const instantiateSource = function(name, options) {
     return new SOURCE_TYPES[name](options);
 }
 
-export { SOURCE_TYPES as default, instantiateSource };
+export { 
+    SOURCE_TYPES as default, 
+    instantiateSource 
+};

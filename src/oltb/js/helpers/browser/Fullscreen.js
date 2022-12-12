@@ -13,7 +13,7 @@ const isFullScreenSupported = function() {
     const body = document.body;
     
     return !!(
-        body['webkitRequestFullscreen'] ||
+        (body['webkitRequestFullscreen']) ||
         (body['msRequestFullscreen'] && document['msFullscreenEnabled']) ||
         (body.requestFullscreen && document.fullscreenEnabled)
     );

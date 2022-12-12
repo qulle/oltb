@@ -3,32 +3,32 @@ import StateManager from "../managers/StateManager";
 import { EVENTS } from "../../helpers/constants/Events";
 import { LOCAL_STORAGE_KEYS } from '../../helpers/constants/LocalStorageKeys';
 
-const directionKey = LOCAL_STORAGE_KEYS.DirectionTool;
-const themeKey = LOCAL_STORAGE_KEYS.ThemeTool;
+const DIRECTION_KEY = LOCAL_STORAGE_KEYS.DirectionTool;
+const THEME_KEY = LOCAL_STORAGE_KEYS.ThemeTool;
 
 const TOOLBAR_ELEMENT = document.getElementById('oltb');
 TOOLBAR_ELEMENT.setAttribute('data-html2canvas-ignore', 'true');
 
 // Check if the user has chosen dark theme
-const isLSDarkTheme = (StateManager.getStateObject(themeKey) === 'dark');
+const isLSDarkTheme = (StateManager.getStateObject(THEME_KEY) === 'dark');
 if(isLSDarkTheme) {
     TOOLBAR_ELEMENT.classList.add('dark');
 }
 
 // Check if the user has chosen light theme 
-const isLSLightTheme = (StateManager.getStateObject(themeKey) === 'light');
+const isLSLightTheme = (StateManager.getStateObject(THEME_KEY) === 'light');
 if(isLSLightTheme) {
     TOOLBAR_ELEMENT.classList.remove('dark');
 }
 
 // Check if the user has chosen horizontal layout 
-const isLSHorizontal = (StateManager.getStateObject(directionKey) === 'row');
+const isLSHorizontal = (StateManager.getStateObject(DIRECTION_KEY) === 'row');
 if(isLSHorizontal) {
     TOOLBAR_ELEMENT.classList.add('row');
 }
 
 // Check if the user has chosen vertical layout 
-const isLSVertical = (StateManager.getStateObject(directionKey) === 'col');
+const isLSVertical = (StateManager.getStateObject(DIRECTION_KEY) === 'col');
 if(isLSVertical) {
     TOOLBAR_ELEMENT.classList.remove('row');
 }

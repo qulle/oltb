@@ -33,7 +33,10 @@ const generateMarker = function(options = {}) {
     options = { ...DEFAULT_OPTIONS, ...options };
 
     const marker = new Feature({
-        geometry: new Point(fromLonLat([options.lon, options.lat]))
+        geometry: new Point(fromLonLat([
+            options.lon, 
+            options.lat
+        ]))
     });
 
     marker.setStyle([
@@ -42,14 +45,14 @@ const generateMarker = function(options = {}) {
                 radius: options.radius,
                 fill: new Fill({color: options.backgroundColor}),
                 stroke: new Stroke({
-                    color: options.backgroundColor.slice(0, -2) + '66',
+                    color: `${options.backgroundColor.slice(0, -2)}66`,
                     width: options.width,
                 })
             })
         }), 
         new Style({
             image: new Icon({
-                src: 'data:image/svg+xml;utf8,' + options.icon,
+                src: `data:image/svg+xml;utf8,${options.icon}`,
                 scale: options.scale,
                 color: options.color
             })

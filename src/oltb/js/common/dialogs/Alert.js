@@ -3,7 +3,7 @@ import DialogBase from './DialogBase';
 import { MAP_ELEMENT } from '../../core/elements/index';
 
 const DEFAULT_OPTIONS = {
-    text: undefined,
+    text: 'Default alert text',
     html: undefined,
     onCancel: undefined,
     confirmText: 'Ok'

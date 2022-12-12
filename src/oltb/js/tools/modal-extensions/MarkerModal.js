@@ -15,7 +15,7 @@ class MarkerModal extends ModalBase {
 
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
-        // Create textbox name
+        // Create textbox for marker name
         const nameDiv = DOM.createElement({
             element: 'div',
             class: 'oltb-m-0'
@@ -26,13 +26,13 @@ class MarkerModal extends ModalBase {
             text: 'Name',
             class: 'oltb-label', 
             attributes: {
-                for: 'marker-name'
+                for: `${PREFIX_MARKER_ID}-marker-name`
             }
         }));
 
         const nameText = DOM.createElement({
             element: 'input', 
-            id: PREFIX_MARKER_ID + '-marker-name',
+            id: `${PREFIX_MARKER_ID}-marker-name`,
             class: 'oltb-input',
             value: isEdit && this.options.name.length ? this.options.name : 'Marker',
             attributes: {
@@ -42,7 +42,7 @@ class MarkerModal extends ModalBase {
 
         nameDiv.appendChild(nameText);
 
-        // Create textbox info
+        // Create textbox for marker info
         const infoDiv = DOM.createElement({
             element: 'div',
             class: 'oltb-mt-0625'
@@ -53,13 +53,13 @@ class MarkerModal extends ModalBase {
             text: 'Info text',
             class: 'oltb-label', 
             attributes: {
-                for: PREFIX_MARKER_ID + '-marker-info'
+                for: `${PREFIX_MARKER_ID}-marker-info`
             }
         }));
 
         const infoText = DOM.createElement({
             element: 'input', 
-            id: PREFIX_MARKER_ID + '-marker-info',
+            id: `${PREFIX_MARKER_ID}-marker-info`,
             class: 'oltb-input',
             value: isEdit && this.options.info.length ? this.options.info : '',
             attributes: {
@@ -76,9 +76,18 @@ class MarkerModal extends ModalBase {
             class: 'oltb-mt-0625'
         });
 
+        iconDiv.appendChild(DOM.createElement({
+            element: 'label', 
+            text: 'Icon',
+            class: 'oltb-label', 
+            attributes: {
+                for: `${PREFIX_MARKER_ID}-icon`
+            }
+        }));
+
         const iconSelect = DOM.createElement({
             element: 'select',
-            id: PREFIX_MARKER_ID + '-icon', 
+            id: `${PREFIX_MARKER_ID}-icon`, 
             class: 'oltb-select'
         });
  
@@ -102,18 +111,9 @@ class MarkerModal extends ModalBase {
             }
         }
  
-        iconDiv.appendChild(DOM.createElement({
-            element: 'label', 
-            text: 'Icon',
-            class: 'oltb-label', 
-            attributes: {
-                for: PREFIX_MARKER_ID + '-icon'
-            }
-        }));
- 
         iconDiv.appendChild(iconSelect);
 
-        // Create textbox latitude
+        // Create textbox for marker latitude
         const latDiv = DOM.createElement({
             element: 'div',
             class: 'oltb-mt-0625'
@@ -124,13 +124,13 @@ class MarkerModal extends ModalBase {
             text: 'Latitud',
             class: 'oltb-label', 
             attributes: {
-                for: PREFIX_MARKER_ID + '-marker-lat'
+                for: `${PREFIX_MARKER_ID}-marker-lat`
             }
         }));
 
         const latText = DOM.createElement({
             element: 'input',
-            id: PREFIX_MARKER_ID + '-marker-lat',
+            id: `${PREFIX_MARKER_ID}-marker-lat`,
             class: 'oltb-input',
             value: this.options.coordinates[1],
             attributes: {
@@ -140,7 +140,7 @@ class MarkerModal extends ModalBase {
 
         latDiv.appendChild(latText);
 
-        // Create textbox longitude
+        // Create textbox for marker longitude
         const lonDiv = DOM.createElement({
             element: 'div',
             class: 'oltb-mt-0625'
@@ -151,13 +151,13 @@ class MarkerModal extends ModalBase {
             text: 'Longitud', 
             class: 'oltb-label',
             attributes: {
-                for: PREFIX_MARKER_ID + '-marker-lon'
+                for: `${PREFIX_MARKER_ID}-marker-lon`
             }
         }));
 
         const lonText = DOM.createElement({
             element: 'input',
-            id: PREFIX_MARKER_ID + '-marker-lon',
+            id: `${PREFIX_MARKER_ID}-marker-lon`,
             class: 'oltb-input',
             value: this.options.coordinates[0],
             attributes: {
@@ -167,7 +167,7 @@ class MarkerModal extends ModalBase {
 
         lonDiv.appendChild(lonText);
 
-        // Create color picker
+        // Create color picker for background
         const backgroundColorDiv = DOM.createElement({
             element: 'div',
             class: 'oltb-mt-0625'
@@ -178,7 +178,7 @@ class MarkerModal extends ModalBase {
             text: 'Background color',
             class: 'oltb-label', 
             attributes: {
-                for: PREFIX_MARKER_ID + '-marker-bgColor'
+                for: `${PREFIX_MARKER_ID}-marker-background`
             }
         }));
 
@@ -186,11 +186,11 @@ class MarkerModal extends ModalBase {
 
         const backgroundColorInput = DOM.createElement({
             element: 'div',
-            id: PREFIX_MARKER_ID + '-marker-bgColor',
+            id: `${PREFIX_MARKER_ID}-marker-background`,
             class: 'oltb-color-input oltb-color-tippy',
             attributes: {
                 tabindex: 0,
-                'data-oltb-color-target': '#' + PREFIX_MARKER_ID + '-marker-bgColor',
+                'data-oltb-color-target': `#${PREFIX_MARKER_ID}-marker-background`,
                 'data-oltb-color': backgroundColor
             }
         });
@@ -203,7 +203,7 @@ class MarkerModal extends ModalBase {
 
         backgroundColorDiv.appendChild(backgroundColorInput);
 
-        // Create color picker
+        // Create color picker for color
         const colorDiv = DOM.createElement({
             element: 'div',
             class: 'oltb-mt-0625' 
@@ -214,7 +214,7 @@ class MarkerModal extends ModalBase {
             text: 'Color',
             class: 'oltb-label', 
             attributes: {
-                for: PREFIX_MARKER_ID + '-marker-color'
+                for: `${PREFIX_MARKER_ID}-marker-color`
             }
         }));
 
@@ -222,11 +222,11 @@ class MarkerModal extends ModalBase {
 
         const colorInput = DOM.createElement({
             element: 'div',
-            id: PREFIX_MARKER_ID + '-marker-color',
+            id: `${PREFIX_MARKER_ID}-marker-color`,
             class: 'oltb-color-input oltb-color-tippy',
             attributes: {
                 tabindex: 0,
-                'data-oltb-color-target': '#' + PREFIX_MARKER_ID + '-marker-color',
+                'data-oltb-color-target': `#${PREFIX_MARKER_ID}-marker-color`,
                 'data-oltb-color': color
             }
         });
@@ -240,7 +240,7 @@ class MarkerModal extends ModalBase {
         colorDiv.appendChild(colorInput);
 
         // Create buttons for create and cancel
-        const markerButtonsDiv = DOM.createElement({
+        const buttonsDiv = DOM.createElement({
             element: 'div',
             class: 'oltb-d-flex oltb-justify-content-between oltb-mt-1'
         });
@@ -285,8 +285,8 @@ class MarkerModal extends ModalBase {
             }
         });
 
-        markerButtonsDiv.appendChild(cancelButton);
-        markerButtonsDiv.appendChild(createButton);
+        buttonsDiv.appendChild(cancelButton);
+        buttonsDiv.appendChild(createButton);
 
         // Add all DOM elements to the modalContent
         const modalContent = DOM.createElement({
@@ -302,7 +302,7 @@ class MarkerModal extends ModalBase {
             lonDiv,
             backgroundColorDiv,
             colorDiv,
-            markerButtonsDiv
+            buttonsDiv
         ]);
 
         this.show(modalContent);

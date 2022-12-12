@@ -25,7 +25,9 @@ const generateWindbarb = function(options = {}) {
     options = { ...DEFAULT_OPTIONS, ...options };
 
     const windbarb = new Feature({
-        geometry: new Point(fromLonLat([options.lon, options.lat]))
+        geometry: new Point(fromLonLat([
+            options.lon, options.lat
+        ]))
     });
 
     const icon = getWindBarb({
@@ -40,7 +42,7 @@ const generateWindbarb = function(options = {}) {
     windbarb.setStyle([
         new Style({
             image: new Icon({
-                src: 'data:image/svg+xml;utf8,' + icon,
+                src: `data:image/svg+xml;utf8,${icon}`,
                 rotation: degreesToRadians(options.rotation),
                 scale: options.scale
             })

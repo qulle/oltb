@@ -12,7 +12,7 @@ const download = function(filename, content) {
     if(isImage(filename)) {
         downloadTrigger.setAttribute('href', content);
     }else {
-        downloadTrigger.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(content));
+        downloadTrigger.setAttribute('href', `data:text/plain;charset=utf-8,${encodeURIComponent(content)}`);
     }
     
     downloadTrigger.click();

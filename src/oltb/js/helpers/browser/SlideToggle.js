@@ -53,17 +53,17 @@ function slideToggle(el, duration, callback, isDown) {
         const elapsed = timestamp - start;
   
         if(isDown) {
-            el.style.height        = (stepHeight        * elapsed) + 'px';
-            el.style.paddingTop    = (stepPaddingTop    * elapsed) + 'px';
-            el.style.paddingBottom = (stepPaddingBottom * elapsed) + 'px';
-            el.style.marginTop     = (stepMarginTop     * elapsed) + 'px';
-            el.style.marginBottom  = (stepMarginBottom  * elapsed) + 'px';
+            el.style.height        = `${(stepHeight        * elapsed)}px`;
+            el.style.paddingTop    = `${(stepPaddingTop    * elapsed)}px`;
+            el.style.paddingBottom = `${(stepPaddingBottom * elapsed)}px`;
+            el.style.marginTop     = `${(stepMarginTop     * elapsed)}px`;
+            el.style.marginBottom  = `${(stepMarginBottom  * elapsed)}px`;
         }else {
-            el.style.height        = elHeight        - (stepHeight        * elapsed) + 'px';
-            el.style.paddingTop    = elPaddingTop    - (stepPaddingTop    * elapsed) + 'px';
-            el.style.paddingBottom = elPaddingBottom - (stepPaddingBottom * elapsed) + 'px';
-            el.style.marginTop     = elMarginTop     - (stepMarginTop     * elapsed) + 'px';
-            el.style.marginBottom  = elMarginBottom  - (stepMarginBottom  * elapsed) + 'px';
+            el.style.height        = `${elHeight        - (stepHeight        * elapsed)}px`;
+            el.style.paddingTop    = `${elPaddingTop    - (stepPaddingTop    * elapsed)}px`;
+            el.style.paddingBottom = `${elPaddingBottom - (stepPaddingBottom * elapsed)}px`;
+            el.style.marginTop     = `${elMarginTop     - (stepMarginTop     * elapsed)}px`;
+            el.style.marginBottom  = `${elMarginBottom  - (stepMarginBottom  * elapsed)}px`;
         }
   
         if(elapsed >= duration) {

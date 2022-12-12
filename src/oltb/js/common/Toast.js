@@ -1,20 +1,20 @@
-import Toaster from './toasts/Toaster';
+import ToastBase from './toasts/ToastBase';
 
 class Toast {
     static info(options) {
-        return new Toaster({ ...options, type: Toaster.Info });
+        return new ToastBase({ ...options, type: ToastBase.Info });
     }
 
     static warning(options) {
-        return new Toaster({ ...options, type: Toaster.Warning });
+        return new ToastBase({ ...options, type: ToastBase.Warning });
     }
 
     static success(options) {
-        return new Toaster({ ...options, type: Toaster.Success });
+        return new ToastBase({ ...options, type: ToastBase.Success });
     }
 
     static error(options) {
-        return new Toaster({ ...options, type: Toaster.Error });
+        return new ToastBase({ ...options, type: ToastBase.Error });
     }
 }
 

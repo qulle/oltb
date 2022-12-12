@@ -25,7 +25,6 @@ const editFeature = function(InfoWindowManager, feature) {
         color: properties.color,
         icon: properties.icon
     }, function(result) {
-        // Hide the current open overlay
         InfoWindowManager.hideOverlay();
 
         // Remove old marker and add new, easier then updating the existing marker with new data.

@@ -391,7 +391,7 @@ class LayerTool extends Control {
         const layerElement = DOM.createElement({
             element: 'li', 
             id: `${options.idPrefix}-${layerWrapper.id}`,
-            class: 'oltb-toolbox-list__item oltb-toolbox-list__item--active' + (!layerWrapper.layer.getVisible() ? ' oltb-toolbox-list__item--hidden' : '')
+            class: `oltb-toolbox-list__item oltb-toolbox-list__item--active ${(!layerWrapper.layer.getVisible() ? ' oltb-toolbox-list__item--hidden' : '')}`
         });
 
         // Eventlistener to update the UI if the visibility of the layer is changed
@@ -471,7 +471,7 @@ class LayerTool extends Control {
     createDeleteButton(layerWrapper, callback) {
         const deleteButton = DOM.createElement({
             element: 'button',
-            class: LAYER_BUTTON_DEFAULT_CLASSES + ' oltb-func-btn--delete oltb-tippy',
+            class: `${LAYER_BUTTON_DEFAULT_CLASSES} oltb-func-btn--delete oltb-tippy`,
             title: 'Delete layer',
             attributes: {
                 type: 'button'
@@ -494,7 +494,7 @@ class LayerTool extends Control {
     createDownloadButton(layerWrapper, callback) {
         const downloadButton = DOM.createElement({
             element: 'button', 
-            class: LAYER_BUTTON_DEFAULT_CLASSES + ' oltb-func-btn--download oltb-tippy',
+            class: `${LAYER_BUTTON_DEFAULT_CLASSES} oltb-func-btn--download oltb-tippy`,
             title: 'Download layer',
             attributes: {
                 type: 'button'
@@ -514,7 +514,7 @@ class LayerTool extends Control {
                             featureProjection: CONFIG.projection.default
                         });
                     
-                        const fileName = layerWrapper.name + '.' + result.format.toLowerCase();
+                        const fileName = `${layerWrapper.name}.${result.format.toLowerCase()}`;
                         download(fileName, formatString);
         
                         // Note: User defined callback from constructor
@@ -532,7 +532,7 @@ class LayerTool extends Control {
     createEditButton(layerWrapper, callback, layerName) {
         const editButton = DOM.createElement({
             element: 'button',
-            class: LAYER_BUTTON_DEFAULT_CLASSES + ' oltb-func-btn--edit oltb-tippy',
+            class: `${LAYER_BUTTON_DEFAULT_CLASSES} oltb-func-btn--edit oltb-tippy`,
             title: 'Rename layer',
             attributes: {
                 type: 'button'
@@ -568,7 +568,7 @@ class LayerTool extends Control {
 
         const visibilityButton = DOM.createElement({
             element: 'button',
-            class: LAYER_BUTTON_DEFAULT_CLASSES + ' oltb-func-btn--visibility oltb-tippy',
+            class: `${LAYER_BUTTON_DEFAULT_CLASSES} oltb-func-btn--visibility oltb-tippy`,
             title: 'Toggle visibility',
             attributes: {
                 type: 'button'

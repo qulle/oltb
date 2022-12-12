@@ -73,7 +73,7 @@ class NotificationTool extends Control {
 
         const timestamp = new Date().getTime().toString();
 
-        fetch(NOTIFICATION_URL + '?cache=' + timestamp)
+        fetch(`${NOTIFICATION_URL}?cache=${timestamp}`)
             .then((response) => {
                 if(!response.ok) {
                     throw new Error(`Fetch error [${response.status}] [${response.statusText}]`);

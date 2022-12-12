@@ -40,7 +40,7 @@ class DialogBase {
         }
 
         const dialog = this.dialogBackdrop.firstElementChild;
-        DOM.rerunAnimation(dialog, ANIMATION_CLASS);
+        DOM.runAnimation(dialog, ANIMATION_CLASS);
     }
 
     close() {

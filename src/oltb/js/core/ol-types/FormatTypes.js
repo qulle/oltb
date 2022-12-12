@@ -14,4 +14,7 @@ const instantiateFormat = function(name, options) {
     return new FORMAT_TYPES[name](options);
 }
 
-export { FORMAT_TYPES as default, instantiateFormat };
+export { 
+    FORMAT_TYPES as default, 
+    instantiateFormat 
+};

@@ -78,7 +78,7 @@ class ModalBase {
         }
 
         const modal = this.modalBackdrop.firstElementChild;
-        DOM.rerunAnimation(modal, ANIMATION_CLASS);
+        DOM.runAnimation(modal, ANIMATION_CLASS);
     }
 
     show(modalContent) {

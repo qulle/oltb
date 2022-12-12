@@ -11,7 +11,7 @@ const DEFAULT_OPTIONS = {
     spinner: false
 };
 
-class Toaster {
+class ToastBase {
     constructor(options = {}) {
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
@@ -72,4 +72,4 @@ class Toaster {
     static get Success() { return 'success'; }
 }
 
-export default Toaster;
+export default ToastBase;

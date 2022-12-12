@@ -14,4 +14,7 @@ const instantiateLayer = function(name, options) {
     return new LAYER_TYPES[name](options);
 }
 
-export { LAYER_TYPES as default, instantiateLayer };
+export { 
+    LAYER_TYPES as default, 
+    instantiateLayer 
+};
