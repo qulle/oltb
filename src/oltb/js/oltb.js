@@ -33,7 +33,7 @@ import ALL_TOOLS from './tools/index';
 // Additional toolbar helpers
 import './core/Tooltips';
 import './epsg/Registrate';
-import './helpers/SlideToggle';
+import './helpers/browser/SlideToggle';
 import './helpers/Accessibility';
 import './helpers/Browser/Prototypes';
 
