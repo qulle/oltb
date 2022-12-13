@@ -44,7 +44,7 @@ class TooltipManager {
 
         if(this.isEmpty()) {
             this.#map.addOverlay(this.#tooltipOverlay);
-            this.onPointerMoveListener = this.#map.on(EVENTS.Ol.PointerMove, this.onPointerMove.bind(this));
+            this.onPointerMoveListener = this.#map.on(EVENTS.ol.pointerMove, this.onPointerMove.bind(this));
         }
 
         this.#tooltips[key] = tooltipItemElement;

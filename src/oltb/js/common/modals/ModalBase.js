@@ -59,7 +59,7 @@ class ModalBase {
 
         this.onClose = onClose;
 
-        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(EVENTS.browser.keyUp, this.onWindowKeyUp.bind(this));
     }
 
     onWindowKeyUp(event) {
@@ -88,10 +88,10 @@ class ModalBase {
     }
 
     close() {
-        this.modalBackdrop.removeEventListener(EVENTS.Browser.KeyDown, trapFocusKeyListener);
+        this.modalBackdrop.removeEventListener(EVENTS.browser.keyDown, trapFocusKeyListener);
         this.modalBackdrop.remove();
 
-        // Note: User defined callback from constructor
+        // User defined callback from constructor
         if(typeof this.onClose === 'function') {
             this.onClose();
         }

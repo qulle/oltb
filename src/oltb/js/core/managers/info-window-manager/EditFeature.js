@@ -70,7 +70,7 @@ const editFeature = function(InfoWindowManager, feature) {
         layerWrapper.layer.getSource().addFeature(marker);
 
         // Dispatch event to trigger callback
-        window.dispatchEvent(new CustomEvent(EVENTS.Custom.FeatureEdited, {
+        window.dispatchEvent(new CustomEvent(EVENTS.custom.featureEdited, {
             detail: {
                 before: feature,
                 after: marker

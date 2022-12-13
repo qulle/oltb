@@ -8,18 +8,18 @@ document.documentElement.setAttribute('oltb-version', CONFIG.version);
 
 // Remove default contextmenu, show if the get parameter ?debug=true exists
 const debugParameter = URLManager.getParameter('debug') === 'true';
-MAP_ELEMENT.addEventListener(EVENTS.Browser.ContextMenu, function(event) {
+MAP_ELEMENT.addEventListener(EVENTS.browser.contextMenu, function(event) {
     if(!debugParameter) {
         event.preventDefault();
     }
 });
 
 // Toggle class to be used in the SCSS to apply custom style only when the user uses the keyboard
-document.body.addEventListener(EVENTS.Browser.MouseDown, function(event) {
+document.body.addEventListener(EVENTS.browser.mouseDown, function(event) {
     document.body.classList.remove('oltb-using-keyboard');
 });
 
-document.body.addEventListener(EVENTS.Browser.KeyDown, function(event) {
+document.body.addEventListener(EVENTS.browser.keyDown, function(event) {
     if(event.key.toLowerCase() === 'tab') {
         document.body.classList.add('oltb-using-keyboard');
     }
@@ -38,6 +38,6 @@ const collisionDetection = function(event) {
     }
 }
 
-window.addEventListener(EVENTS.Browser.Resize, collisionDetection);
-window.addEventListener(EVENTS.Browser.DOMContentLoaded, collisionDetection);
-window.addEventListener(EVENTS.Custom.ToolbarDirectionChange, collisionDetection);
+window.addEventListener(EVENTS.browser.resize, collisionDetection);
+window.addEventListener(EVENTS.browser.contentLoaded, collisionDetection);
+window.addEventListener(EVENTS.custom.toolbarDirectionChange, collisionDetection);

@@ -32,7 +32,7 @@ class ResetNorthTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Reset North (${SHORTCUT_KEYS.ResetNorth})`
+                'data-tippy-content': `Reset North (${SHORTCUT_KEYS.resetNorth})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -42,17 +42,17 @@ class ResetNorthTool extends Control {
         this.element.appendChild(button);
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
-        addContextMenuItem(CONTEXT_MENUS.MainMap, {
+        addContextMenuItem(CONTEXT_MENUS.mainMap, {
             icon: icon, 
             name: 'Set rotation by degrees', 
             fn: this.onContextMenuSetRotation.bind(this)
         });
 
-        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(EVENTS.browser.keyUp, this.onWindowKeyUp.bind(this));
     }
 
     onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.ResetNorth)) {
+        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.resetNorth)) {
             this.handleClick(event);
         }
     }
@@ -60,13 +60,12 @@ class ResetNorthTool extends Control {
     onContextMenuSetRotation(map, coordinates, target) {
         const view = map.getView();
 
-        // Get current rotation and convert to normalized degree value
-        let rotation = radiansToDegrees(view.getRotation());
-        rotation = rotation < 0 ? rotation + 360 : rotation;
+        const rotation = radiansToDegrees(view.getRotation());
+        const normalizedRotation = rotation < 0 ? rotation + 360 : rotation;
 
         Dialog.prompt({
             text: 'Set rotation by degrees',
-            value: Math.round(rotation),
+            value: Math.round(normalizedRotation),
             confirmText: 'Rotate map',
             onConfirm: (result) => {
                 if(result.isDigitsOnly()) {
@@ -76,14 +75,14 @@ class ResetNorthTool extends Control {
                         easing: easeOut
                     });
                 }else {
-                    Toast.error({text: 'Failed to rotate map, only digits are allowed', autoremove: 4000});
+                    Toast.error({text: 'Only digits are allowed', autoremove: 4000});
                 }
             }
         });
     }
 
     handleClick() {
-        // Note: User defined callback from constructor
+        // User defined callback from constructor
         if(typeof this.options.click === 'function') {
             this.options.click();
         }
@@ -105,7 +104,7 @@ class ResetNorthTool extends Control {
         });
 
         setTimeout(() => {
-            // Note: User defined callback from constructor
+            // User defined callback from constructor
             if(typeof this.options.reset === 'function') {
                 this.options.reset();
             }

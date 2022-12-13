@@ -9,6 +9,7 @@ Some of the changes done in this version are:
 - Deployed the project on NPM and jsdelivr (CDN)
 - Added examples for both NPM and CDN usage
 - Added more options and callbacks to Modal, Toast and Dialog
+- Added more options to the ExportPNGTool
 - Removed data projection from both export and import of vector layers. Default value from OL will be used. In later versions, this may be allowed to be selected by the user
 - Fixed the opacity and position issue of InfoWindow when exporting map as PNG
 - Fixed Alert dialog, undefined text property

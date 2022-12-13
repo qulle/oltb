@@ -3,8 +3,8 @@ import StateManager from "../managers/StateManager";
 import { EVENTS } from "../../helpers/constants/Events";
 import { LOCAL_STORAGE_KEYS } from '../../helpers/constants/LocalStorageKeys';
 
-const DIRECTION_KEY = LOCAL_STORAGE_KEYS.DirectionTool;
-const THEME_KEY = LOCAL_STORAGE_KEYS.ThemeTool;
+const DIRECTION_KEY = LOCAL_STORAGE_KEYS.directionTool;
+const THEME_KEY = LOCAL_STORAGE_KEYS.themeTool;
 
 const TOOLBAR_ELEMENT = document.getElementById('oltb');
 TOOLBAR_ELEMENT.setAttribute('data-html2canvas-ignore', 'true');
@@ -44,7 +44,7 @@ if(TOOLBAR_ELEMENT.classList.contains('row')) {
 }
 
 // Change how the scrollwheel behaves when toolbar is in horizontal mode
-TOOLBAR_ELEMENT.addEventListener(EVENTS.Browser.Wheel, function(event) {
+TOOLBAR_ELEMENT.addEventListener(EVENTS.browser.wheel, function(event) {
     if(!event.ctrlKey) {
         const distance = CONFIG.scrollDistance;
         this.scrollLeft += event.deltaY > 0 ? distance : -distance;

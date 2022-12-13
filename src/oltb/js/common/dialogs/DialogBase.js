@@ -21,7 +21,7 @@ class DialogBase {
 
         this.isDark = isDarkTheme();
 
-        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(EVENTS.browser.keyUp, this.onWindowKeyUp.bind(this));
     }
 
     onWindowKeyUp(event) {
@@ -44,7 +44,7 @@ class DialogBase {
     }
 
     close() {
-        this.dialogBackdrop.removeEventListener(EVENTS.Browser.KeyDown, trapFocusKeyListener);
+        this.dialogBackdrop.removeEventListener(EVENTS.browser.keyDown, trapFocusKeyListener);
         this.dialogBackdrop.remove();
     }
 }

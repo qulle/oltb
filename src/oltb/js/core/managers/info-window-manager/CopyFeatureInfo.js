@@ -6,7 +6,8 @@ const copyFeatureInfo = async function(InfoWindowManager, dataToCopy) {
         .then(() => {
             Toast.success({text: 'Data copied to clipboard', autoremove: 4000});
         })
-        .catch(() => {
+        .catch((error) => {
+            console.error('Error copying feature info', error);
             Toast.error({text: 'Failed to copy data'});
         });
 }

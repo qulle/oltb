@@ -41,7 +41,7 @@ class FullscreenTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': (isFullScreen() ? 'Exit fullscreen' : 'Enter fullscreen') + ` (${SHORTCUT_KEYS.FullScreen})`
+                'data-tippy-content': `${(isFullScreen() ? 'Exit fullscreen' : 'Enter fullscreen')} (${SHORTCUT_KEYS.fullScreen})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -53,18 +53,18 @@ class FullscreenTool extends Control {
         this.active = false;
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
-        document.addEventListener(EVENTS.Browser.FullScreenChange, this.onFullScreenChange.bind(this));
-        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
+        document.addEventListener(EVENTS.browser.fullScreenChange, this.onFullScreenChange.bind(this));
+        window.addEventListener(EVENTS.browser.keyUp, this.onWindowKeyUp.bind(this));
     }
 
     onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.FullScreen)) {
+        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.fullScreen)) {
             this.handleClick(event);
         }
     }
 
     handleClick() {
-        // Note: User defined callback from constructor
+        // User defined callback from constructor
         if(typeof this.options.click === 'function') {
             this.options.click();
         }
@@ -93,16 +93,16 @@ class FullscreenTool extends Control {
 
     onFullScreenChange(event) {
         if(document.fullscreenElement) {
-            this.button._tippy.setContent(`Exit fullscreen (${SHORTCUT_KEYS.FullScreen})`);
+            this.button._tippy.setContent(`Exit fullscreen (${SHORTCUT_KEYS.fullScreen})`);
 
-            // Note: User defined callback from constructor
+            // User defined callback from constructor
             if(typeof this.options.enter === 'function') {
                 this.options.enter(event);
             }
         }else {
-            this.button._tippy.setContent(`Enter fullscreen (${SHORTCUT_KEYS.FullScreen})`);
+            this.button._tippy.setContent(`Enter fullscreen (${SHORTCUT_KEYS.fullScreen})`);
 
-            // Note: User defined callback from constructor
+            // User defined callback from constructor
             if(typeof this.options.leave === 'function') {
                 this.options.leave(event);
             }

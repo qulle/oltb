@@ -1,6 +1,7 @@
 import DOM from '../helpers/Browser/DOM';
 import Draw from 'ol/interaction/Draw';
 import Toast from '../common/Toast';
+import CONFIG from '../core/Config';
 import ToolManager from '../core/managers/ToolManager';
 import StateManager from '../core/managers/StateManager';
 import LayerManager from '../core/managers/LayerManager';
@@ -21,8 +22,9 @@ import { createBox, createRegularPolygon } from 'ol/interaction/Draw';
 import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT } from '../core/elements/index';
 
 const ID_PREFIX = 'oltb-draw';
+const DEFAULT_OPTIONS = {};
 
-const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.DrawTool;
+const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.drawTool;
 const LOCAL_STORAGE_DEFAULTS = {
     active: false,
     collapsed: false,
@@ -31,8 +33,6 @@ const LOCAL_STORAGE_DEFAULTS = {
     strokeColor: '#4A86B8',
     fillColor: '#D7E3FA80'
 };
-
-const DEFAULT_OPTIONS = {};
 
 class DrawTool extends Control {
     constructor(options = {}) {
@@ -51,7 +51,7 @@ class DrawTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Draw (${SHORTCUT_KEYS.Draw})`
+                'data-tippy-content': `Draw (${SHORTCUT_KEYS.draw})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -133,43 +133,42 @@ class DrawTool extends Control {
 
         const toggleableTriggers = this.drawToolbox.querySelectorAll('.oltb-toggleable');
         toggleableTriggers.forEach((toggle) => {
-            toggle.addEventListener(EVENTS.Browser.Click, this.onToggleToolbox.bind(this, toggle));
+            toggle.addEventListener(EVENTS.browser.click, this.onToggleToolbox.bind(this, toggle));
         });
 
         this.toolType = this.drawToolbox.querySelector(`#${ID_PREFIX}-type`);
-        this.toolType.addEventListener(EVENTS.Browser.Change, this.updateTool.bind(this));
+        this.toolType.addEventListener(EVENTS.browser.change, this.updateTool.bind(this));
 
         this.intersectionEnable = this.drawToolbox.querySelector(`#${ID_PREFIX}-intersection-enable`);
-        this.intersectionEnable.addEventListener(EVENTS.Browser.Change, this.updateTool.bind(this));
+        this.intersectionEnable.addEventListener(EVENTS.browser.change, this.updateTool.bind(this));
 
         this.fillColor = this.drawToolbox.querySelector(`#${ID_PREFIX}-fill-color`);
-        this.fillColor.addEventListener(EVENTS.Custom.ColorChange, this.updateTool.bind(this));
+        this.fillColor.addEventListener(EVENTS.custom.colorChange, this.updateTool.bind(this));
 
         this.strokeWidth = this.drawToolbox.querySelector(`#${ID_PREFIX}-stroke-width`);
-        this.strokeWidth.addEventListener(EVENTS.Browser.Change, this.updateTool.bind(this));
+        this.strokeWidth.addEventListener(EVENTS.browser.change, this.updateTool.bind(this));
 
         this.strokeColor = this.drawToolbox.querySelector(`#${ID_PREFIX}-stroke-color`);
-        this.strokeColor.addEventListener(EVENTS.Custom.ColorChange, this.updateTool.bind(this));
+        this.strokeColor.addEventListener(EVENTS.custom.colorChange, this.updateTool.bind(this));
 
         // Set default selected values
         this.toolType.selectedIndex = this.localStorage.toolTypeIndex;
         this.strokeWidth.selectedIndex  = this.localStorage.strokeWidthIndex;
 
-        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
-        window.addEventListener(EVENTS.Custom.SettingsCleared, this.onWindowSettingsCleared.bind(this));
-        window.addEventListener(EVENTS.Browser.DOMContentLoaded, this.onDOMContentLoaded.bind(this));
+        window.addEventListener(EVENTS.browser.keyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(EVENTS.custom.settingsCleared, this.onWindowSettingsCleared.bind(this));
+        window.addEventListener(EVENTS.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
     }
 
     onToggleToolbox(toggle) {
         const targetName = toggle.dataset.oltbToggleableTarget;
-        document.getElementById(targetName).slideToggle(200, (collapsed) => {
+        document.getElementById(targetName).slideToggle(CONFIG.animationDuration.fast, (collapsed) => {
             this.localStorage.collapsed = collapsed;
-            StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+            StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
         });
     }
 
     onDOMContentLoaded() {
-        // Re-activate tool if it was active before the application was reloaded
         if(this.localStorage.active) {
             this.activateTool();
         }
@@ -190,7 +189,7 @@ class DrawTool extends Control {
             if(this.interaction) {
                 this.interaction.removeLastPoint();
             }
-        }else if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Draw)) {
+        }else if(isShortcutKeyOnly(event, SHORTCUT_KEYS.draw)) {
             this.handleClick(event);
         }
     }
@@ -219,10 +218,13 @@ class DrawTool extends Control {
         this.localStorage.fillColor = this.fillColor.getAttribute('data-oltb-color');
         this.localStorage.strokeColor = this.strokeColor.getAttribute('data-oltb-color');;
 
-        StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
 
         // IntersectionMode doesn't play well when tool is LineString or Point
-        if(this.toolType.value === 'LineString' || this.toolType.value === 'Point') {
+        if(
+            this.toolType.value === 'LineString' || 
+            this.toolType.value === 'Point'
+        ) {
             this.intersectionEnable.selectedIndex = 0;
             this.intersectionEnable.disabled = true;
         }else {
@@ -243,7 +245,7 @@ class DrawTool extends Control {
     }
 
     handleClick() {
-        // Note: User defined callback from constructor
+        // User defined callback from constructor
         if(typeof this.options.click === 'function') {
             this.options.click();
         }
@@ -262,15 +264,15 @@ class DrawTool extends Control {
 
         ToolManager.setActiveTool(this);
 
-        if(SettingsManager.getSetting(SETTINGS.AlwaysNewLayers)) {
+        if(SettingsManager.getSetting(SETTINGS.alwaysNewLayers)) {
             LayerManager.addFeatureLayer('Drawing layer');
         }
 
-        // Triggers activation of the draw tool
-        eventDispatcher([this.toolType], EVENTS.Browser.Change);
+        // Triggers activation of the tool
+        eventDispatcher([this.toolType], EVENTS.browser.change);
 
         this.localStorage.active = true;
-        StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
     }
 
     deActivateTool() {
@@ -284,7 +286,7 @@ class DrawTool extends Control {
         ToolManager.removeActiveTool();
 
         this.localStorage.active = false;
-        StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
     }
 
     selectDraw(toolType, strokeWidth, fillColor, strokeColor) {
@@ -315,7 +317,7 @@ class DrawTool extends Control {
             })
         });
 
-        // Note: A normal circle can not be serialized to json, approximated circle as polygon instead. 
+        // A normal circle can not be serialized to json, approximated circle as polygon instead. 
         // Also use circle to create square and rectangle
         let geometryFunction = null;
         if(toolType === 'Square') {
@@ -337,14 +339,14 @@ class DrawTool extends Control {
 
         map.addInteraction(this.interaction);
 
-        this.interaction.on(EVENTS.Ol.DrawStart, this.onDrawStart.bind(this));
-        this.interaction.on(EVENTS.Ol.DrawEnd, this.onDrawEnd.bind(this));
-        this.interaction.on(EVENTS.Ol.DrawAbort, this.onDrawAbort.bind(this));
-        this.interaction.on(EVENTS.Ol.Error, this.onDrawError.bind(this));
+        this.interaction.on(EVENTS.ol.drawStart, this.onDrawStart.bind(this));
+        this.interaction.on(EVENTS.ol.drawEnd, this.onDrawEnd.bind(this));
+        this.interaction.on(EVENTS.ol.drawAbort, this.onDrawAbort.bind(this));
+        this.interaction.on(EVENTS.ol.error, this.onDrawError.bind(this));
     }
 
     onDrawStart(event) {
-        // Note: User defined callback from constructor
+        // User defined callback from constructor
         if(typeof this.options.start === 'function') {
             this.options.start(event);
         }
@@ -380,7 +382,7 @@ class DrawTool extends Control {
 
         source.addFeature(feature);
 
-        // Note: User defined callback from constructor
+        // User defined callback from constructor
         if(typeof this.options.end === 'function') {
             this.options.end(event);
         }
@@ -412,7 +414,7 @@ class DrawTool extends Control {
             Toast.info({text: 'No intersecting objects found', autoremove: 4000});
         }
 
-        // Note: User defined callback from constructor
+        // User defined callback from constructor
         if(typeof this.options.intersected === 'function') {
             this.options.intersected(event, this.intersectedFeatures);
         }
@@ -421,14 +423,14 @@ class DrawTool extends Control {
     }
 
     onDrawAbort(event) {
-        // Note: User defined callback from constructor
+        // User defined callback from constructor
         if(typeof this.options.abort === 'function') {
             this.options.abort(event);
         }
     }
 
     onDrawError(event) {
-        // Note: User defined callback from constructor
+        // User defined callback from constructor
         if(typeof this.options.error === 'function') {
             this.options.error(event);
         }

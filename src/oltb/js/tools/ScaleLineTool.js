@@ -8,7 +8,7 @@ import { Control, ScaleLine } from 'ol/control';
 import { SVG_PATHS, getIcon } from '../core/icons/SVGIcons';
 import { LOCAL_STORAGE_KEYS } from '../helpers/constants/LocalStorageKeys';
 
-const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.ScaleLineTool;
+const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.scaleLineTool;
 const LOCAL_STORAGE_DEFAULTS = {
     active: false
 };
@@ -34,7 +34,7 @@ class ScaleLineTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Scale line (${SHORTCUT_KEYS.ScaleLine})`
+                'data-tippy-content': `Scale line (${SHORTCUT_KEYS.scaleLine})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -51,25 +51,24 @@ class ScaleLineTool extends Control {
         const localStorageState = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
         this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
         
-        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
-        window.addEventListener(EVENTS.Browser.DOMContentLoaded, this.onDOMContentLoaded.bind(this));
+        window.addEventListener(EVENTS.browser.keyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(EVENTS.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
     }
 
     onDOMContentLoaded() {
-        // Re-activate tool if it was active before the application was reloaded
         if(this.localStorage.active) {
             this.activateTool();
         }
     }
 
     onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.ScaleLine)) {
+        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.scaleLine)) {
             this.handleClick(event);
         }
     }
 
     handleClick() {
-        // Note: User defined callback from constructor
+        // User defined callback from constructor
         if(typeof this.options.click === 'function') {
             this.options.click();
         }
@@ -88,7 +87,7 @@ class ScaleLineTool extends Control {
         this.button.classList.add('oltb-tool-button--active');
 
         this.localStorage.active = true;
-        StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
     }
 
     deActivateTool() {
@@ -98,7 +97,7 @@ class ScaleLineTool extends Control {
         this.button.classList.remove('oltb-tool-button--active');
 
         this.localStorage.active = false;
-        StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
     }
 }
 

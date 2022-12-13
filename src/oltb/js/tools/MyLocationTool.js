@@ -40,7 +40,7 @@ class MyLocationTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `My location (${SHORTCUT_KEYS.MyLocation})`
+                'data-tippy-content': `My location (${SHORTCUT_KEYS.myLocation})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -50,17 +50,17 @@ class MyLocationTool extends Control {
         this.element.appendChild(button);
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
-        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(EVENTS.browser.keyUp, this.onWindowKeyUp.bind(this));
     }
 
     onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.MyLocation)) {
+        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.myLocation)) {
             this.handleClick(event);
         }
     }
 
     handleClick() {
-        // Note: User defined callback from constructor
+        // User defined callback from constructor
         if(typeof this.options.click === 'function') {
             this.options.click();
         }
@@ -113,7 +113,7 @@ class MyLocationTool extends Control {
                 }
             );
         }else { 
-            this.onError({message: 'Geolocation is not supported by this browser.'}, Toast.error);
+            this.onError({message: 'Geolocation is not supported'}, Toast.error);
         }
     }
 
@@ -137,8 +137,6 @@ class MyLocationTool extends Control {
                 <button class="oltb-func-btn oltb-func-btn--copy oltb-tippy" title="Copy marker text" id="${ID_PREFIX}-copy-location" data-copy="My location ${prettyCoords}"></button>
             </div>
         `;
-
-        const layerWrapper = LayerManager.addFeatureLayer('My location');
         
         const marker = new generateMarker({
             lat: lat,
@@ -148,6 +146,7 @@ class MyLocationTool extends Control {
             infoWindow: infoWindow
         });
 
+        const layerWrapper = LayerManager.addFeatureLayer('My location');
         layerWrapper.layer.getSource().addFeature(marker);
 
         // Center map over location
@@ -169,7 +168,7 @@ class MyLocationTool extends Control {
             InfoWindowManager.showOverly(marker, fromLonLat([lon, lat]));
         }, CONFIG.animationDuration.normal);
 
-        // Note: User defined callback from constructor
+        // User defined callback from constructor
         if(typeof this.options.location === 'function') {
             this.options.location(location);
         }
@@ -180,7 +179,7 @@ class MyLocationTool extends Control {
     onError(error, ptrToast = Toast.error) {
         ptrToast({text: error.message});
         
-        // Note: User defined callback from constructor
+        // User defined callback from constructor
         if(typeof this.options.error === 'function') {
             this.options.error(error);
         }

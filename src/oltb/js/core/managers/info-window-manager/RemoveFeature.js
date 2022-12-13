@@ -11,7 +11,7 @@ const removeFeature = function(InfoWindowManager, feature) {
             this.hideOverlay();
 
             // Dispatch event to trigger callback
-            window.dispatchEvent(new CustomEvent(EVENTS.Custom.FeatureRemoved, {
+            window.dispatchEvent(new CustomEvent(EVENTS.custom.featureRemoved, {
                 detail: {
                     feature: feature
                 }

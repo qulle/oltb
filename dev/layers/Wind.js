@@ -23,7 +23,7 @@ const CONTINENT_DIRECTION = {
 
 const LAYER_WRAPPER = LayerManager.addFeatureLayer('Windbarbs', false, true);
 
-fetch(urlCapitalsGeoJSON)
+const geoJsonPromise = fetch(urlCapitalsGeoJSON)
     .then((response) => {
         if(!response.ok) {
             throw new Error(`Fetch error [${response.status}] [${response.statusText}]`);

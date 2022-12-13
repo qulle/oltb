@@ -402,6 +402,8 @@ controls: defaultControls({
         }
     }),
     new ExportPNGTool({
+        filename: 'map-image-export',
+        appendTime: true,
         click: function() {
             console.log('ExportPNGTool clicked');
         },
@@ -663,7 +665,7 @@ controls: defaultControls({
     }),
     new HiddenAboutTool(),
     new ContextMenu({
-        name: CONTEXT_MENUS.MainMap, 
+        name: CONTEXT_MENUS.mainMap, 
         selector: '#map canvas'
     })
 ])
@@ -893,7 +895,7 @@ import ContextMenu from './modules/common/ContextMenu';
 To create a context menu call the constructor and give a unique name as the first argument and a selector to trigger the menu. The context menu class extends the Control-class from OpenLayers.
 ```javascript
 map.addControl(new ContextMenu({
-    name: CONTEXT_MENUS.MainMap, 
+    name: CONTEXT_MENUS.mainMap, 
     selector: '#map canvas'
 });
 ```
@@ -907,7 +909,7 @@ const CONTEXT_MENUS = {
 
 To add items to the context menu use the function `addContextMenuItem` and give the name that matches the context menu aswell as the name/label of the item, the icon and a function to call when the item is clicked.
 ```javascript
-addContextMenuItem(CONTEXT_MENUS.MainMap, {
+addContextMenuItem(CONTEXT_MENUS.mainMap, {
     icon: '<svg>...</svg>', 
     name: 'Zoom home', 
     fn: this.handleResetToHome.bind(this)
@@ -916,7 +918,7 @@ addContextMenuItem(CONTEXT_MENUS.MainMap, {
 
 The callback function recieves a references to the map, the clicked coordinates and the target element (the canvas).
 ```javascript
-addContextMenuItem(CONTEXT_MENUS.MainMap, {
+addContextMenuItem(CONTEXT_MENUS.mainMap, {
     icon: '<svg>...</svg>', 
     name: 'Clear settings', 
     fn: function(map, coordinates, target) {
@@ -934,7 +936,7 @@ It is not important in what order the menu or its items are created. If no menu 
 
 To insert a separator in the menu add an empty object.
 ```javascript
-addContextMenuItem(CONTEXT_MENUS.MainMap, {});
+addContextMenuItem(CONTEXT_MENUS.mainMap, {});
 ```
 
 ### State Management

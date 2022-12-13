@@ -31,7 +31,8 @@ class DebugInfoModal extends ModalBase {
                         .then(() => {
                             Toast.success({text: 'Debug info copied to clipboard', autoremove: 4000});
                         })
-                        .catch(() => {
+                        .catch((error) => {
+                            console.error('Error copying debug info', error);
                             Toast.error({text: 'Failed to copy debug info'});
                         });
                 }

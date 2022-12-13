@@ -19,7 +19,7 @@ LayerManager.addMapLayers([
                     featureProjection: CONFIG.projection
                 }),
                 loader: function(extent, resolution, projection, success, failure) {
-                    fetch(urlCountriesGeoJSON)
+                    const geoJsonPromise = fetch(urlCountriesGeoJSON)
                         .then((response) => {
                             if(!response.ok) {
                                 throw new Error(`Fetch error [${response.status}] [${response.statusText}]`);

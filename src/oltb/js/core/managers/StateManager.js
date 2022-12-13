@@ -5,7 +5,7 @@ class StateManager {
 
     static init(map) { }
 
-    static updateStateObject(name, value) {
+    static setStateObject(name, value) {
         this.#runtimeState[name] = value;
         this.saveState();
     }

@@ -20,15 +20,15 @@ import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT } from '../core/elements/index';
 const BOOKMARK_BUTTON_DEFAULT_CLASSES = 'oltb-func-btn';
 const ID_PREFIX = 'oltb-bookmark';
 
-const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.BookmarkTool;
+const DEFAULT_OPTIONS = {
+    storeDataInLocalStorage: false
+};
+
+const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.bookmarkTool;
 const LOCAL_STORAGE_DEFAULTS = {
     active: false,
     collapsed: false,
     bookmarks: []
-};
-
-const DEFAULT_OPTIONS = {
-    storeDataInLocalStorage: false
 };
 
 class BookmarkTool extends Control {
@@ -48,7 +48,7 @@ class BookmarkTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Bookmarks (${SHORTCUT_KEYS.Bookmark})`
+                'data-tippy-content': `Bookmarks (${SHORTCUT_KEYS.bookmark})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -96,18 +96,17 @@ class BookmarkTool extends Control {
         `);
 
         this.bookmarkToolbox = document.querySelector(`#${ID_PREFIX}-toolbox`);
-
         this.bookmarkStack = this.bookmarkToolbox.querySelector(`#${ID_PREFIX}-stack`);
 
-        this.addBookmarkBtn = this.bookmarkToolbox.querySelector(`#${ID_PREFIX}-add-btn`);
-        this.addBookmarkTxt = this.bookmarkToolbox.querySelector(`#${ID_PREFIX}-add-txt`);
+        this.addBookmarkButton = this.bookmarkToolbox.querySelector(`#${ID_PREFIX}-add-btn`);
+        this.addBookmarkText = this.bookmarkToolbox.querySelector(`#${ID_PREFIX}-add-txt`);
 
-        this.addBookmarkBtn.addEventListener(EVENTS.Browser.Click, this.onBookmarkAdd.bind(this));
-        this.addBookmarkTxt.addEventListener(EVENTS.Browser.KeyUp, this.onBookmarkAdd.bind(this));
+        this.addBookmarkButton.addEventListener(EVENTS.browser.click, this.onBookmarkAdd.bind(this));
+        this.addBookmarkText.addEventListener(EVENTS.browser.keyUp, this.onBookmarkAdd.bind(this));
 
         const toggleableTriggers = this.bookmarkToolbox.querySelectorAll('.oltb-toggleable');
         toggleableTriggers.forEach((toggle) => {
-            toggle.addEventListener(EVENTS.Browser.Click, this.onToggleToolbox.bind(this, toggle));
+            toggle.addEventListener(EVENTS.browser.click, this.onToggleToolbox.bind(this, toggle));
         });
 
         // Add all saved bookmarks from localstorage
@@ -115,33 +114,32 @@ class BookmarkTool extends Control {
             this.createBookmark(bookmark);
         });
 
-        addContextMenuItem(CONTEXT_MENUS.MainMap, {
+        addContextMenuItem(CONTEXT_MENUS.mainMap, {
             icon: icon, 
             name: 'Add location as bookmark', 
             fn: this.onContextMenuBookmarkAdd.bind(this)
         });
 
-        addContextMenuItem(CONTEXT_MENUS.MainMap, {
+        addContextMenuItem(CONTEXT_MENUS.mainMap, {
             icon: icon, 
             name: 'Clear all bookmarks', 
             fn: this.onContextMenuBookmarksClear.bind(this)
         });
 
-        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
-        window.addEventListener(EVENTS.Custom.SettingsCleared, this.onWindowSettingsCleared.bind(this));
-        window.addEventListener(EVENTS.Browser.DOMContentLoaded, this.onDOMContentLoaded.bind(this));
+        window.addEventListener(EVENTS.browser.keyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(EVENTS.custom.settingsCleared, this.onWindowSettingsCleared.bind(this));
+        window.addEventListener(EVENTS.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
     }
 
     onToggleToolbox(toggle) {
         const targetName = toggle.dataset.oltbToggleableTarget;
-        document.getElementById(targetName).slideToggle(200, (collapsed) => {
+        document.getElementById(targetName).slideToggle(CONFIG.animationDuration.fast, (collapsed) => {
             this.localStorage.collapsed = collapsed;
-            StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+            StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
         });
     }
 
     onDOMContentLoaded() {
-        // Re-activate tool if it was active before the application was reloaded
         if(this.localStorage.active) {
             this.activateTool();
         }
@@ -163,7 +161,7 @@ class BookmarkTool extends Control {
     }
 
     onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Bookmark)) {
+        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.bookmark)) {
             this.handleClick(event);
         }
     }
@@ -173,16 +171,19 @@ class BookmarkTool extends Control {
     }
 
     onBookmarkAdd(event) {
-        if(event.type === 'keyup' && event.key.toLowerCase() !== 'enter') {
+        if(
+            event.type === 'keyup' && 
+            event.key.toLowerCase() !== 'enter'
+        ) {
             return;
         }
 
-        this.addBookmark(this.addBookmarkTxt.value);
-        this.addBookmarkTxt.value = '';
+        this.addBookmark(this.addBookmarkText.value);
+        this.addBookmarkText.value = '';
     }
 
     handleClick() {
-        // Note: User defined callback from constructor
+        // User defined callback from constructor
         if(typeof this.options.click === 'function') {
             this.options.click();
         }
@@ -200,7 +201,7 @@ class BookmarkTool extends Control {
         this.button.classList.add('oltb-tool-button--active');
 
         this.localStorage.active = true;
-        StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
     }
 
     deActivateTool() {
@@ -209,7 +210,7 @@ class BookmarkTool extends Control {
         this.button.classList.remove('oltb-tool-button--active');
 
         this.localStorage.active = false;
-        StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
     }
 
     addBookmark(bookmarkName) {
@@ -232,7 +233,7 @@ class BookmarkTool extends Control {
 
         if(this.options.storeDataInLocalStorage) {
             this.localStorage.bookmarks.push(bookmark);
-            StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+            StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
         }        
 
         // Create the bookmark UI element
@@ -242,17 +243,17 @@ class BookmarkTool extends Control {
             Toast.success({text: 'Bookmark created', autoremove: 4000});
         }
 
-        // Note: User defined callback from constructor
+        // User defined callback from constructor
         if(typeof this.options.added === 'function') {
             this.options.added(bookmark);
         }
     }
 
     clearBookmarks() {
-        StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(LOCAL_STORAGE_DEFAULTS));
+        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(LOCAL_STORAGE_DEFAULTS));
         this.bookmarkStack.innerHTML = '';
 
-        // Note: User defined callback from constructor
+        // User defined callback from constructor
         if(typeof this.options.cleared === 'function') {
             this.options.cleared();
         }
@@ -365,7 +366,7 @@ class BookmarkTool extends Control {
             easing: easeOut
         });
 
-        // Note: User defined callback from constructor
+        // User defined callback from constructor
         if(typeof this.options.zoomedTo === 'function') {
             this.options.zoomedTo(bookmark);
         }
@@ -382,9 +383,9 @@ class BookmarkTool extends Control {
                     return item.id !== bookmark.id;
                 });
 
-                StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+                StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
 
-                // Note: User defined callback from constructor
+                // User defined callback from constructor
                 if(typeof this.options.removed === 'function') {
                     this.options.removed(bookmark);
                 }
@@ -403,9 +404,9 @@ class BookmarkTool extends Control {
                     bookmarkName.innerText = result.ellipsis(20);
                     bookmarkName._tippy.setContent(result);
 
-                    StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+                    StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
 
-                    // Note: User defined callback from constructor
+                    // User defined callback from constructor
                     if(typeof this.options.renamed === 'function') {
                         this.options.renamed(bookmark);
                     }

@@ -1,6 +1,7 @@
 import DOM from '../helpers/Browser/DOM';
 import Draw from 'ol/interaction/Draw';
 import Toast from '../common/Toast';
+import CONFIG from '../core/Config';
 import ToolManager from '../core/managers/ToolManager';
 import LayerManager from '../core/managers/LayerManager';
 import StateManager from '../core/managers/StateManager';
@@ -22,8 +23,9 @@ import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT } from '../core/elements/index';
 import { getMeasureCoordinates, getMeasureValue } from '../helpers/Measurements';
 
 const ID_PREFIX = 'oltb-measure';
+const DEFAULT_OPTIONS = {};
 
-const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.MeasureTool;
+const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.measureTool;
 const LOCAL_STORAGE_DEFAULTS = {
     active: false,
     collapsed: false,
@@ -31,8 +33,6 @@ const LOCAL_STORAGE_DEFAULTS = {
     strokeColor: '#3B4352',
     fillColor: '#D7E3FA80'
 };
-
-const DEFAULT_OPTIONS = {};
 
 class MeasureTool extends Control {
     constructor(options = {}) {
@@ -51,7 +51,7 @@ class MeasureTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Measure (${SHORTCUT_KEYS.Measure})`
+                'data-tippy-content': `Measure (${SHORTCUT_KEYS.measure})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -103,36 +103,35 @@ class MeasureTool extends Control {
 
         const toggleableTriggers = this.measureToolbox.querySelectorAll('.oltb-toggleable');
         toggleableTriggers.forEach((toggle) => {
-            toggle.addEventListener(EVENTS.Browser.Click, this.onToggleToolbox.bind(this, toggle));
+            toggle.addEventListener(EVENTS.browser.click, this.onToggleToolbox.bind(this, toggle));
         });
 
         this.toolType = this.measureToolbox.querySelector(`#${ID_PREFIX}-type`);
-        this.toolType.addEventListener(EVENTS.Browser.Change, this.updateTool.bind(this));
+        this.toolType.addEventListener(EVENTS.browser.change, this.updateTool.bind(this));
 
         this.fillColor = this.measureToolbox.querySelector(`#${ID_PREFIX}-fill-color`);
-        this.fillColor.addEventListener(EVENTS.Custom.ColorChange, this.updateTool.bind(this));
+        this.fillColor.addEventListener(EVENTS.custom.colorChange, this.updateTool.bind(this));
 
         this.strokeColor = this.measureToolbox.querySelector(`#${ID_PREFIX}-stroke-color`);
-        this.strokeColor.addEventListener(EVENTS.Custom.ColorChange, this.updateTool.bind(this));
+        this.strokeColor.addEventListener(EVENTS.custom.colorChange, this.updateTool.bind(this));
 
         // Set default selected values
         this.toolType.selectedIndex = this.localStorage.toolTypeIndex; 
 
-        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
-        window.addEventListener(EVENTS.Custom.SettingsCleared, this.onWindowSettingsCleared.bind(this));
-        window.addEventListener(EVENTS.Browser.DOMContentLoaded, this.onDOMContentLoaded.bind(this));
+        window.addEventListener(EVENTS.browser.keyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(EVENTS.custom.settingsCleared, this.onWindowSettingsCleared.bind(this));
+        window.addEventListener(EVENTS.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
     }
 
     onToggleToolbox(toggle) {
         const targetName = toggle.dataset.oltbToggleableTarget;
-        document.getElementById(targetName).slideToggle(200, (collapsed) => {
+        document.getElementById(targetName).slideToggle(CONFIG.animationDuration.fast, (collapsed) => {
             this.localStorage.collapsed = collapsed;
-            StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+            StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
         });
     }
 
     onDOMContentLoaded() {
-        // Re-activate tool if it was active before the application was reloaded
         if(this.localStorage.active) {
             this.activateTool();
         }
@@ -149,7 +148,7 @@ class MeasureTool extends Control {
             if(this.interaction) {
                 this.interaction.removeLastPoint();
             }
-        }else if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Measure)) {
+        }else if(isShortcutKeyOnly(event, SHORTCUT_KEYS.measure)) {
             this.handleClick(event);
         }
     }
@@ -177,7 +176,7 @@ class MeasureTool extends Control {
         this.localStorage.fillColor = this.fillColor.getAttribute('data-oltb-color');
         this.localStorage.strokeColor = this.strokeColor.getAttribute('data-oltb-color');;
 
-        StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
 
         this.selectMeasure(
             this.toolType.value,
@@ -191,7 +190,7 @@ class MeasureTool extends Control {
     }
 
     handleClick() {
-        // Note: User defined callback from constructor
+        // User defined callback from constructor
         if(typeof this.options.click === 'function') {
             this.options.click();
         }
@@ -210,15 +209,15 @@ class MeasureTool extends Control {
 
         ToolManager.setActiveTool(this);
 
-        if(SettingsManager.getSetting(SETTINGS.AlwaysNewLayers)) {
+        if(SettingsManager.getSetting(SETTINGS.alwaysNewLayers)) {
             LayerManager.addFeatureLayer('Measurements layer');
         }
 
         // Triggers activation of the measure tool
-        eventDispatcher([this.toolType], EVENTS.Browser.Change);
+        eventDispatcher([this.toolType], EVENTS.browser.change);
 
         this.localStorage.active = true;
-        StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
     }
 
     deActivateTool() {
@@ -232,7 +231,7 @@ class MeasureTool extends Control {
         ToolManager.removeActiveTool();
 
         this.localStorage.active = false;
-        StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
     }
 
     selectMeasure(toolType, fillColor, strokeColor) {
@@ -274,21 +273,21 @@ class MeasureTool extends Control {
 
         map.addInteraction(this.interaction);
 
-        this.interaction.on(EVENTS.Ol.DrawStart, this.onDrawStart.bind(this));
-        this.interaction.on(EVENTS.Ol.DrawEnd, this.onDrawEnd.bind(this));
-        this.interaction.on(EVENTS.Ol.DrawAbort, this.onDrawAbort.bind(this));
-        this.interaction.on(EVENTS.Ol.Error, this.onDrawEnd.bind(this));
+        this.interaction.on(EVENTS.ol.drawStart, this.onDrawStart.bind(this));
+        this.interaction.on(EVENTS.ol.drawEnd, this.onDrawEnd.bind(this));
+        this.interaction.on(EVENTS.ol.drawAbort, this.onDrawAbort.bind(this));
+        this.interaction.on(EVENTS.ol.error, this.onDrawEnd.bind(this));
     }
 
     onDrawStart(event) {
         const feature = event.feature;
         const tooltipItem = TooltipManager.push('measure');
         
-        this.onChangeListener = feature.getGeometry().on(EVENTS.Ol.Change, (event) => {
+        this.onChangeListener = feature.getGeometry().on(EVENTS.ol.change, (event) => {
             tooltipItem.innerHTML = getMeasureValue(event.target);
         });
 
-        // Note: User defined callback from constructor
+        // User defined callback from constructor
         if(typeof this.options.start === 'function') {
             this.options.start(event);
         }
@@ -334,7 +333,7 @@ class MeasureTool extends Control {
             tooltip.getOverlay().setMap(null);
         }
 
-        // Note: User defined callback from constructor
+        // User defined callback from constructor
         if(typeof this.options.end === 'function') {
             this.options.end(event);
         }
@@ -345,14 +344,14 @@ class MeasureTool extends Control {
         
         const tooltipItem = TooltipManager.pop('measure');
 
-        // Note: User defined callback from constructor
+        // User defined callback from constructor
         if(typeof this.options.abort === 'function') {
             this.options.abort(event);
         }
     }
 
     onDrawError(event) {
-        // Note: User defined callback from constructor
+        // User defined callback from constructor
         if(typeof this.options.error === 'function') {
             this.options.error(event);
         }

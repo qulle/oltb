@@ -27,7 +27,7 @@ class ZoomOutTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Zoom out (${SHORTCUT_KEYS.ZoomOut})`
+                'data-tippy-content': `Zoom out (${SHORTCUT_KEYS.zoomOut})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -38,17 +38,17 @@ class ZoomOutTool extends Control {
         this.options = { ...DEFAULT_OPTIONS, ...options };
         this.delta = -1;
 
-        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(EVENTS.browser.keyUp, this.onWindowKeyUp.bind(this));
     }
 
     onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.ZoomOut)) {
+        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.zoomOut)) {
             this.handleClick(event);
         }
     }
 
     handleClick() {
-        // Note: User defined callback from constructor
+        // User defined callback from constructor
         if(typeof this.options.click === 'function') {
             this.options.click();
         }
@@ -73,7 +73,7 @@ class ZoomOutTool extends Control {
         });
 
         setTimeout(() => {
-            // Note: User defined callback from constructor
+            // User defined callback from constructor
             if(typeof this.options.zoomed === 'function') {
                 this.options.zoomed();
             }

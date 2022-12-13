@@ -9,7 +9,6 @@ import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
 import { SVG_PATHS, getIcon } from '../core/icons/SVGIcons';
 
 const NOTIFICATION_URL = 'https://raw.githubusercontent.com/qulle/notification-endpoints/main/endpoints/oltb.json';
-
 const DEFAULT_OPTIONS = {};
 
 class NotificationTool extends Control {
@@ -29,7 +28,7 @@ class NotificationTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Notifications (${SHORTCUT_KEYS.Notifications})`
+                'data-tippy-content': `Notifications (${SHORTCUT_KEYS.notifications})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -40,17 +39,17 @@ class NotificationTool extends Control {
         this.notificationModal = undefined;
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
-        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(EVENTS.browser.keyUp, this.onWindowKeyUp.bind(this));
     }
 
     onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Notifications)) {
+        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.notifications)) {
             this.handleClick(event);
         }
     }
 
     handleClick() {
-        // Note: User defined callback from constructor
+        // User defined callback from constructor
         if(typeof this.options.click === 'function') {
             this.options.click();
         }
@@ -72,8 +71,7 @@ class NotificationTool extends Control {
         });
 
         const timestamp = new Date().getTime().toString();
-
-        fetch(`${NOTIFICATION_URL}?cache=${timestamp}`)
+        const notificationPromise = fetch(`${NOTIFICATION_URL}?cache=${timestamp}`)
             .then((response) => {
                 if(!response.ok) {
                     throw new Error(`Fetch error [${response.status}] [${response.statusText}]`);

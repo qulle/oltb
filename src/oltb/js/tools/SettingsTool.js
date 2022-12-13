@@ -31,7 +31,7 @@ class SettingsTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Settings (${SHORTCUT_KEYS.Settings})`
+                'data-tippy-content': `Settings (${SHORTCUT_KEYS.settings})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -42,17 +42,17 @@ class SettingsTool extends Control {
         this.settingsModal = undefined;
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
-        addContextMenuItem(CONTEXT_MENUS.MainMap, {
+        addContextMenuItem(CONTEXT_MENUS.mainMap, {
             icon: icon, 
             name: 'Clear settings', 
             fn: this.onContextMenuSettingsClear.bind(this)
         });
 
-        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(EVENTS.browser.keyUp, this.onWindowKeyUp.bind(this));
     }
 
     onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Settings)) {
+        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.settings)) {
             this.handleClick(event);
         }
     }
@@ -71,17 +71,17 @@ class SettingsTool extends Control {
     clearSettings() {
         StateManager.clear();
 
-        // Note: User defined callback from constructor
+        // User defined callback from constructor
         if(typeof this.options.cleared === 'function') {
             this.options.cleared();
         }
 
         // Emit event so that any tool can clean up
-        window.dispatchEvent(new CustomEvent(EVENTS.Custom.SettingsCleared));
+        window.dispatchEvent(new CustomEvent(EVENTS.custom.settingsCleared));
     }
 
     handleClick() {
-        // Note: User defined callback from constructor
+        // User defined callback from constructor
         if(typeof this.options.click === 'function') {
             this.options.click();
         }

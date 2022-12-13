@@ -66,7 +66,7 @@ class DOM {
         void element.offsetWidth;
         element.classList.add(className);
 
-        // Note: CONFIG.animationDuration.fast matches the time given in _animations.scss
+        // CONFIG.animationDuration.fast matches the time given in _animations.scss
         // With the animation-class the html2canvas fails to render the exported PNG correctly
         setTimeout(() => {
             element.classList.remove(className);

@@ -1,5 +1,6 @@
 import DOM from '../helpers/Browser/DOM';
 import Toast from '../common/Toast';
+import CONFIG from '../core/Config';
 import URLManager from '../core/managers/URLManager';
 import html2canvas from 'html2canvas';
 import { EVENTS } from '../helpers/constants/Events';
@@ -10,8 +11,10 @@ import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
 import { SVG_PATHS, getIcon } from '../core/icons/SVGIcons';
 import { MAP_ELEMENT, TOOLBAR_ELEMENT } from '../core/elements/index';
 
-const DEFAULT_OPTIONS = {};
-const FILE_NAME = 'map.png';
+const DEFAULT_OPTIONS = {
+    filename: 'map-image-export',
+    appendTime: false
+};
 
 class ExportPNGTool extends Control {
     constructor(options = {}) {
@@ -30,7 +33,7 @@ class ExportPNGTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Export PNG (${SHORTCUT_KEYS.ExportPNG})`
+                'data-tippy-content': `Export PNG (${SHORTCUT_KEYS.exportPNG})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -43,17 +46,17 @@ class ExportPNGTool extends Control {
         // If the tool should activate detailed logging in the html2canvas process (?debug=true)
         this.isDebug = URLManager.getParameter('debug') === 'true';
         
-        window.addEventListener(EVENTS.Browser.DOMContentLoaded, this.onWindowLoaded.bind(this));
-        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(EVENTS.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
+        window.addEventListener(EVENTS.browser.keyUp, this.onWindowKeyUp.bind(this));
     }
 
     onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.ExportPNG)) {
+        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.exportPNG)) {
             this.handleClick(event);
         }
     }
 
-    onWindowLoaded() {
+    onDOMContentLoaded() {
         const attributions = MAP_ELEMENT.querySelector('.ol-attribution');
 
         if(attributions) {
@@ -62,7 +65,7 @@ class ExportPNGTool extends Control {
     }
 
     handleClick() {
-        // Note: User defined callback from constructor
+        // User defined callback from constructor
         if(typeof this.options.click === 'function') {
             this.options.click();
         }
@@ -74,7 +77,7 @@ class ExportPNGTool extends Control {
         const map = this.getMap();
 
         // RenderSync will trigger the export the png
-        map.once(EVENTS.Ol.RenderComplete, this.onRenderComplete.bind(this));
+        map.once(EVENTS.ol.renderComplete, this.onRenderComplete.bind(this));
         map.renderSync();
     }
 
@@ -123,13 +126,17 @@ class ExportPNGTool extends Control {
     }
 
     downloadCanvas(pngCanvas) {
+        const timestamp = this.options.appendTime 
+            ? `-${new Date().toLocaleDateString(CONFIG.locale)}`
+            : '';
+
         if(navigator.msSaveBlob) {
-            navigator.msSaveBlob(pngCanvas.msToBlob(), FILE_NAME);
+            navigator.msSaveBlob(pngCanvas.msToBlob(), `${this.options.filename}${timestamp}.png`);
         }else {
-            download(FILE_NAME, pngCanvas.toDataURL());
+            download(`${this.options.filename}${timestamp}.png`, pngCanvas.toDataURL());
         }
 
-        // Note: User defined callback from constructor
+        // User defined callback from constructor
         if(typeof this.options.exported === 'function') {
             this.options.exported();
         }

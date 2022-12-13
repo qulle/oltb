@@ -9,8 +9,7 @@ import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
 import { SVG_PATHS, getIcon } from '../core/icons/SVGIcons';
 import { LOCAL_STORAGE_KEYS } from '../helpers/constants/LocalStorageKeys';
 
-const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.ThemeTool;
-
+const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.themeTool;
 const DEFAULT_OPTIONS = {};
 
 class ThemeTool extends Control {
@@ -35,7 +34,7 @@ class ThemeTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': (isDarkTheme() ? 'Light theme' : 'Dark theme') + ` (${SHORTCUT_KEYS.ToolbarTheme})`
+                'data-tippy-content': `${(isDarkTheme() ? 'Light theme' : 'Dark theme')} (${SHORTCUT_KEYS.toolbarTheme})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -47,18 +46,18 @@ class ThemeTool extends Control {
         this.active = false;
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
-        window.addEventListener(EVENTS.Custom.SettingsCleared, this.onWindowClearTheme.bind(this));
-        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(EVENTS.custom.settingsCleared, this.onWindowClearTheme.bind(this));
+        window.addEventListener(EVENTS.browser.keyUp, this.onWindowKeyUp.bind(this));
     }
 
     onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.ToolbarTheme)) {
+        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.toolbarTheme)) {
             this.handleClick(event);
         }
     }
 
     handleClick() {
-        // Note: User defined callback from constructor
+        // User defined callback from constructor
         if(typeof this.options.click === 'function') {
             this.options.click();
         }
@@ -74,31 +73,31 @@ class ThemeTool extends Control {
         }else {
             theme = 'dark';
 
-            StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, 'dark');
+            StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, 'dark');
             TOOLBAR_ELEMENT.classList.add('dark');
             document.body.classList.add('oltb-dark');
 
             // Update toolbar icon
             this.button.removeChild(this.button.firstElementChild);
             this.button.insertAdjacentHTML('afterbegin', this.lightThemeIcon);
-            this.button._tippy.setContent(`Light theme (${SHORTCUT_KEYS.ToolbarTheme})`);
+            this.button._tippy.setContent(`Light theme (${SHORTCUT_KEYS.toolbarTheme})`);
         }
 
-        // Note: User defined callback from constructor
+        // User defined callback from constructor
         if(typeof this.options.changed === 'function') {
             this.options.changed(theme);
         }
     }
 
     onWindowClearTheme() {
-        StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, 'light');
+        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, 'light');
         TOOLBAR_ELEMENT.classList.remove('dark');
         document.body.classList.remove('oltb-dark');
 
         // Update toolbar icon
         this.button.removeChild(this.button.firstElementChild);
         this.button.insertAdjacentHTML('afterbegin', this.darkThemeIcon);
-        this.button._tippy.setContent(`Dark theme (${SHORTCUT_KEYS.ToolbarTheme})`);
+        this.button._tippy.setContent(`Dark theme (${SHORTCUT_KEYS.toolbarTheme})`);
     }
 }
 

@@ -89,6 +89,7 @@ const toolbar = new OLTB({
             }
         },
         ExportPNGTool: {
+            filename: 'map-image-export',
             click: function() {
                 console.log('ExportPNGTool clicked');
             },

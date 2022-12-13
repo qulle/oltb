@@ -29,7 +29,7 @@ class HelpTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Help (${SHORTCUT_KEYS.Help})`
+                'data-tippy-content': `Help (${SHORTCUT_KEYS.help})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -39,17 +39,17 @@ class HelpTool extends Control {
         this.element.appendChild(button);
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
-        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(EVENTS.browser.keyUp, this.onWindowKeyUp.bind(this));
     }
 
     onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Help)) {
+        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.help)) {
             this.handleClick(event);
         }
     }
 
     handleClick() {
-        // Note: User defined callback from constructor
+        // User defined callback from constructor
         if(typeof this.options.click === 'function') {
             this.options.click();
         }

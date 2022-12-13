@@ -1,5 +1,6 @@
 import OSM from 'ol/source/OSM';
 import DOM from '../helpers/Browser/DOM';
+import CONFIG from '../core/Config';
 import TileLayer from 'ol/layer/Tile';
 import StateManager from '../core/managers/StateManager';
 import { EVENTS } from '../helpers/constants/Events';
@@ -11,14 +12,13 @@ import { Control, OverviewMap } from 'ol/control';
 import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT } from '../core/elements/index';
 
 const ID_PREFIX = 'oltb-overview';
+const DEFAULT_OPTIONS = {};
 
-const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.OverviewTool;
+const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.overviewTool;
 const LOCAL_STORAGE_DEFAULTS = {
     active: false,
     collapsed: false
 };
-
-const DEFAULT_OPTIONS = {};
 
 class OverviewTool extends Control {
     constructor(options = {}) {
@@ -37,7 +37,7 @@ class OverviewTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Area overview (${SHORTCUT_KEYS.AreaOverview})`
+                'data-tippy-content': `Area overview (${SHORTCUT_KEYS.overview})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -71,7 +71,7 @@ class OverviewTool extends Control {
 
         const toggleableTriggers = this.overviewToolbox.querySelectorAll('.oltb-toggleable');
         toggleableTriggers.forEach((toggle) => {
-            toggle.addEventListener(EVENTS.Browser.Click, this.onToggleToolbox.bind(this, toggle));
+            toggle.addEventListener(EVENTS.browser.click, this.onToggleToolbox.bind(this, toggle));
         });
 
         this.overviewMap = new OverviewMap({
@@ -85,32 +85,32 @@ class OverviewTool extends Control {
             ]
         });
 
-        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
-        window.addEventListener(EVENTS.Custom.SettingsCleared, this.onWindowSettingsCleared.bind(this));
-        window.addEventListener(EVENTS.Browser.DOMContentLoaded, this.onDOMContentLoaded.bind(this));
+        window.addEventListener(EVENTS.browser.keyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(EVENTS.custom.settingsCleared, this.onWindowSettingsCleared.bind(this));
+        window.addEventListener(EVENTS.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
     }
 
     onToggleToolbox(toggle) {
         const targetName = toggle.dataset.oltbToggleableTarget;
-        document.getElementById(targetName).slideToggle(200, (collapsed) => {
+        document.getElementById(targetName).slideToggle(CONFIG.animationDuration.fast, (collapsed) => {
             this.localStorage.collapsed = collapsed;
-            StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+            StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
         
-            // Force render of overview, other solutions will not render the dashed box correctly until the map is moved
+            // Force render of overview, 
+            // Other solutions will not render the dashed box correctly until the map is moved
             this.overviewMap.setMap(null);
             this.overviewMap.setMap(this.getMap());
         });
     }
 
     onDOMContentLoaded() {
-        // Re-activate tool if it was active before the application was reloaded
         if(this.localStorage.active) {
             this.activateTool();
         }
     }
 
     onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.AreaOverview)) {
+        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.overview)) {
             this.handleClick(event);
         }
     }
@@ -120,7 +120,7 @@ class OverviewTool extends Control {
     }
 
     handleClick() {
-        // Note: User defined callback from constructor
+        // User defined callback from constructor
         if(typeof this.options.click === 'function') {
             this.options.click();
         }
@@ -133,7 +133,7 @@ class OverviewTool extends Control {
     }
 
     activateTool() {
-        // Note: Add --show class before setMap or the overview will not render correctly
+        // The class must be added before setMap or the overview will not render correctly
         this.overviewToolbox.classList.add('oltb-toolbox-section--show');
         this.overviewMap.setMap(this.getMap());
 
@@ -141,7 +141,7 @@ class OverviewTool extends Control {
         this.button.classList.add('oltb-tool-button--active');
 
         this.localStorage.active = true;
-        StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
     }
 
     deActivateTool() {
@@ -152,7 +152,7 @@ class OverviewTool extends Control {
         this.overviewToolbox.classList.remove('oltb-toolbox-section--show');
 
         this.localStorage.active = false;
-        StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
     }
 }
 

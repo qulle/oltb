@@ -11,8 +11,7 @@ import { SVG_PATHS, getIcon } from '../core/icons/SVGIcons';
 import { LOCAL_STORAGE_KEYS } from '../helpers/constants/LocalStorageKeys';
 import { toolButtonsTippySingleton } from '../core/Tooltips';
 
-const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.DirectionTool;
-
+const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.directionTool;
 const DEFAULT_OPTIONS = {};
 
 class DirectionTool extends Control {
@@ -37,7 +36,7 @@ class DirectionTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': (isHorizontal() ? 'Vertical toolbar' : 'Horizontal toolbar') + ` (${SHORTCUT_KEYS.ToolbarDirection})`
+                'data-tippy-content': `${(isHorizontal() ? 'Vertical toolbar' : 'Horizontal toolbar')} (${SHORTCUT_KEYS.toolbarDirection})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -51,13 +50,13 @@ class DirectionTool extends Control {
         
         this.onWindowDeviceCheck();
 
-        window.addEventListener(EVENTS.Browser.Resize, this.onWindowDeviceCheck.bind(this));
-        window.addEventListener(EVENTS.Custom.SettingsCleared, this.onWindowClearDirection.bind(this));
-        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(EVENTS.browser.resize, this.onWindowDeviceCheck.bind(this));
+        window.addEventListener(EVENTS.custom.settingsCleared, this.onWindowClearDirection.bind(this));
+        window.addEventListener(EVENTS.browser.keyUp, this.onWindowKeyUp.bind(this));
     }
 
     onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.ToolbarDirection)) {
+        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.toolbarDirection)) {
             this.handleClick(event);
         }
     }
@@ -71,19 +70,19 @@ class DirectionTool extends Control {
     }
 
     onWindowClearDirection() {
-        StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, 'col');
+        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, 'col');
         TOOLBAR_ELEMENT.classList.remove('row');
         document.body.classList.remove('oltb-row');
 
         // Update toolbar icon
         this.button.removeChild(this.button.firstElementChild);
         this.button.insertAdjacentHTML('afterbegin', this.horizontalIcon);
-        this.button._tippy.setContent(`Horizontal toolbar (${SHORTCUT_KEYS.ToolbarDirection})`);
+        this.button._tippy.setContent(`Horizontal toolbar (${SHORTCUT_KEYS.toolbarDirection})`);
         toolButtonsTippySingleton.setProps({placement: 'right'});
     }
 
     handleClick() {
-        // Note: User defined callback from constructor
+        // User defined callback from constructor
         if(typeof this.options.click === 'function') {
             this.options.click();
         }
@@ -101,25 +100,25 @@ class DirectionTool extends Control {
             direction = 'row';
             tooltipDirection = 'bottom';
 
-            StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, 'row');
+            StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, 'row');
             TOOLBAR_ELEMENT.classList.add('row');
             document.body.classList.add('oltb-row');
 
             // Update toolbar icon
             this.button.removeChild(this.button.firstElementChild);
             this.button.insertAdjacentHTML('afterbegin', this.verticalIcon);
-            this.button._tippy.setContent(`Vertical  toolbar (${SHORTCUT_KEYS.ToolbarDirection})`);
+            this.button._tippy.setContent(`Vertical  toolbar (${SHORTCUT_KEYS.toolbarDirection})`);
             toolButtonsTippySingleton.setProps({placement: 'bottom'});
         }
 
         // This will trigger collision detection for the toolbar vs toolbox
-        window.dispatchEvent(new CustomEvent(EVENTS.Custom.ToolbarDirectionChange, {
+        window.dispatchEvent(new CustomEvent(EVENTS.custom.toolbarDirectionChange, {
             detail: {
                 direction: tooltipDirection
             }
         }));
 
-        // Note: User defined callback from constructor
+        // User defined callback from constructor
         if(typeof this.options.changed === 'function') {
             this.options.changed(direction);
         }

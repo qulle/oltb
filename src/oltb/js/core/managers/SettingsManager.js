@@ -2,7 +2,7 @@ import StateManager from "./StateManager";
 import { SETTINGS } from "../../helpers/constants/Settings";
 import { LOCAL_STORAGE_KEYS } from "../../helpers/constants/LocalStorageKeys";
 
-const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.SettingsManager;
+const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.settingsManager;
 const LOCAL_STORAGE_DEFAULTS = {};
 
 class SettingsManager {
@@ -11,37 +11,37 @@ class SettingsManager {
 
     static #settings = new Map([
         [
-            SETTINGS.MouseWheelZoom, {
+            SETTINGS.mouseWheelZoom, {
                 state: false, 
                 text: 'Enable zooming using mousewheel only'
             }
         ], [
-            SETTINGS.AltShiftDragRotate, {
+            SETTINGS.altShiftDragRotate, {
                 state: true, 
                 text: 'Enable rotate of map using Shift + Alt + Drag'
             }
         ], [
-            SETTINGS.DragPan, {
+            SETTINGS.dragPan, {
                 state: true, 
                 text: 'Enable dragging using mouse only'
             }
         ], [
-            SETTINGS.KeyboardZoom, {
+            SETTINGS.keyboardZoom, {
                 state: true, 
                 text: 'Enable zooming using keyboard'
             }
         ], [
-            SETTINGS.KeyboardPan, {
+            SETTINGS.keyboardPan, {
                 state: true, 
                 text: 'Enable panning using keyboard'
             }
         ], [
-            SETTINGS.SelectVectorMapShapes, {
+            SETTINGS.selectVectorMapShapes, {
                 state: false, 
                 text: 'Enable select of shapes in vector map layers'
             }
         ], [
-            SETTINGS.AlwaysNewLayers, {
+            SETTINGS.alwaysNewLayers, {
                 state: false, 
                 text: 'Always create new layer when selecting tool'
             }
@@ -69,7 +69,7 @@ class SettingsManager {
         this.#settings.get(key).state = state;
         this.#localStorage[key] = state;
 
-        StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.#localStorage));
+        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.#localStorage));
     }
 
     static getSetting(key) {

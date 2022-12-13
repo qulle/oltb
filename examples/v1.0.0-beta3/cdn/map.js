@@ -70,6 +70,7 @@ const toolbar = new oltb({
             }
         },
         ExportPNGTool: {
+            filename: 'map-image-export',
             click: function() {
                 console.log('ExportPNGTool clicked');
             },

@@ -30,7 +30,7 @@ class ImportVectorLayerTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Import Vector layer (${SHORTCUT_KEYS.ImportVectorLayer})`
+                'data-tippy-content': `Import Vector layer (${SHORTCUT_KEYS.importVectorLayer})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -52,17 +52,17 @@ class ImportVectorLayerTool extends Control {
             }
         });
         
-        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(EVENTS.browser.keyUp, this.onWindowKeyUp.bind(this));
     }
 
     onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.ImportVectorLayer)) {
+        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.importVectorLayer)) {
             this.handleClick(event);
         }
     }
 
     handleClick() {
-        // Note: User defined callback from constructor
+        // User defined callback from constructor
         if(typeof this.options.click === 'function') {
             this.options.click();
         }
@@ -78,7 +78,7 @@ class ImportVectorLayerTool extends Control {
         const fileDialog = event.target;
 
         this.fileReader = new FileReader();
-        this.fileReader.addEventListener(EVENTS.Browser.Load, this.parseLayer.bind(this, fileDialog));
+        this.fileReader.addEventListener(EVENTS.browser.load, this.parseLayer.bind(this, fileDialog));
         this.fileReader.readAsText(fileDialog.files[0]);
     }
 
@@ -109,15 +109,15 @@ class ImportVectorLayerTool extends Control {
             
             layerWrapper.layer.getSource().addFeatures(features);
 
-            // Note: User defined callback from constructor
+            // User defined callback from constructor
             if(typeof this.options.imported === 'function') {
                 this.options.imported(features);
             }
         }catch(error) {
             console.error(`Error importing vector layer [${error}]`);
-            Toast.error({text: 'Error when parsing layer - check syntax'});
+            Toast.error({text: 'Error when parsing file'});
 
-            // Note: User defined callback from constructor
+            // User defined callback from constructor
             if(typeof this.options.error === 'function') {
                 this.options.error(file, error);
             }

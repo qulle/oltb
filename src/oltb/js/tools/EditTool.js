@@ -2,6 +2,7 @@ import jsts from 'jsts/dist/jsts.min';
 import DOM from '../helpers/Browser/DOM';
 import Toast from '../common/Toast';
 import Dialog from '../common/Dialog';
+import CONFIG from '../core/Config';
 import ToolManager from '../core/managers/ToolManager';
 import LayerManager from '../core/managers/LayerManager';
 import StateManager from '../core/managers/StateManager';
@@ -28,7 +29,7 @@ import { getMeasureCoordinates, getMeasureValue } from '../helpers/Measurements'
 import { GeometryCollection, LinearRing, LineString, MultiLineString, MultiPoint, MultiPolygon, Point, Polygon } from 'ol/geom';
 
 /*!
- *  Note: JSTS
+ *  JSTS
  *  To avoid circular dependencies i include the full dist
  *  This increases the bundle size but removes errors/warnings in Rollup build process
  *  Also more features can be used from this lib in the future
@@ -37,8 +38,9 @@ import { GeometryCollection, LinearRing, LineString, MultiLineString, MultiPoint
  */
 
 const ID_PREFIX = 'oltb-edit';
+const DEFAULT_OPTIONS = {};
 
-const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.EditTool;
+const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.editTool;
 const LOCAL_STORAGE_DEFAULTS = {
     active: false,
     collapsed: false,
@@ -47,7 +49,6 @@ const LOCAL_STORAGE_DEFAULTS = {
     fillColor: '#D7E3FA80'
 };
 
-const DEFAULT_OPTIONS = {};
 const DEFAULT_BUTTON_PROPS = {
     width: 20,
     height: 20,
@@ -94,7 +95,7 @@ class EditTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Edit (${SHORTCUT_KEYS.Edit})`
+                'data-tippy-content': `Edit (${SHORTCUT_KEYS.edit})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -164,29 +165,29 @@ class EditTool extends Control {
         this.editToolbox = document.querySelector(`#${ID_PREFIX}-toolbox`);
 
         this.deleteSelectedButton = this.editToolbox.querySelector(`#${ID_PREFIX}-delete-selected-btn`);
-        this.deleteSelectedButton.addEventListener(EVENTS.Browser.Click, this.onDeleteSelectedFeatures.bind(this));
+        this.deleteSelectedButton.addEventListener(EVENTS.browser.click, this.onDeleteSelectedFeatures.bind(this));
 
         this.unionSelectedButton = this.editToolbox.querySelector(`#${ID_PREFIX}-union-selected-btn`);
-        this.unionSelectedButton.addEventListener(EVENTS.Browser.Click, this.onShapeOperator.bind(this, this.unionFeatures, 'union'));
+        this.unionSelectedButton.addEventListener(EVENTS.browser.click, this.onShapeOperator.bind(this, this.unionFeatures, 'union'));
 
         this.intersectSelectedButton = this.editToolbox.querySelector(`#${ID_PREFIX}-intersect-selected-btn`);
-        this.intersectSelectedButton.addEventListener(EVENTS.Browser.Click, this.onShapeOperator.bind(this, this.intersectFeatures, 'intersect'));
+        this.intersectSelectedButton.addEventListener(EVENTS.browser.click, this.onShapeOperator.bind(this, this.intersectFeatures, 'intersect'));
 
         this.excludeSelectedButton = this.editToolbox.querySelector(`#${ID_PREFIX}-exclude-selected-btn`);
-        this.excludeSelectedButton.addEventListener(EVENTS.Browser.Click, this.onShapeOperator.bind(this, this.excludeFeatures, 'exclude'));
+        this.excludeSelectedButton.addEventListener(EVENTS.browser.click, this.onShapeOperator.bind(this, this.excludeFeatures, 'exclude'));
 
         this.differenceSelectedButton = this.editToolbox.querySelector(`#${ID_PREFIX}-difference-selected-btn`);
-        this.differenceSelectedButton.addEventListener(EVENTS.Browser.Click, this.onShapeOperator.bind(this, this.differenceFeatures, 'difference'));
+        this.differenceSelectedButton.addEventListener(EVENTS.browser.click, this.onShapeOperator.bind(this, this.differenceFeatures, 'difference'));
 
         this.fillColor = this.editToolbox.querySelector(`#${ID_PREFIX}-fill-color`);
-        this.fillColor.addEventListener(EVENTS.Custom.ColorChange, this.onFeatureColorChange.bind(this));
+        this.fillColor.addEventListener(EVENTS.custom.colorChange, this.onFeatureColorChange.bind(this));
 
         this.strokeColor = this.editToolbox.querySelector(`#${ID_PREFIX}-stroke-color`);
-        this.strokeColor.addEventListener(EVENTS.Custom.ColorChange, this.onFeatureColorChange.bind(this));
+        this.strokeColor.addEventListener(EVENTS.custom.colorChange, this.onFeatureColorChange.bind(this));
 
         const toggleableTriggers = this.editToolbox.querySelectorAll('.oltb-toggleable');
         toggleableTriggers.forEach((toggle) => {
-            toggle.addEventListener(EVENTS.Browser.Click, this.onToggleToolbox.bind(this, toggle));
+            toggle.addEventListener(EVENTS.browser.click, this.onToggleToolbox.bind(this, toggle));
         });
 
         this.select = new Select({
@@ -199,7 +200,7 @@ class EditTool extends Control {
                 
                 return (
                     selectable && 
-                    (isFeatureLayer || SettingsManager.getSetting(SETTINGS.SelectVectorMapShapes))
+                    (isFeatureLayer || SettingsManager.getSetting(SETTINGS.selectVectorMapShapes))
                 );
             },
             style: this.lastStyle
@@ -216,30 +217,29 @@ class EditTool extends Control {
             features: this.select.getFeatures(),
         });
 
-        this.select.getFeatures().on(EVENTS.Ol.Add, this.onSelectFeatureAdd.bind(this));
-        this.select.getFeatures().on(EVENTS.Ol.Remove, this.onSelectFeatureRemove.bind(this));
+        this.select.getFeatures().on(EVENTS.ol.add, this.onSelectFeatureAdd.bind(this));
+        this.select.getFeatures().on(EVENTS.ol.remove, this.onSelectFeatureRemove.bind(this));
 
-        this.modify.addEventListener(EVENTS.Ol.ModifyStart, this.onModifyStart.bind(this));
-        this.modify.addEventListener(EVENTS.Ol.ModifyEnd, this.onModifyEnd.bind(this));
+        this.modify.addEventListener(EVENTS.ol.modifyStart, this.onModifyStart.bind(this));
+        this.modify.addEventListener(EVENTS.ol.modifyEnd, this.onModifyEnd.bind(this));
 
-        this.translate.addEventListener(EVENTS.Ol.TranslateStart, this.onTranslateStart.bind(this));
-        this.translate.addEventListener(EVENTS.Ol.TranslateEnd, this.onTranslateEnd.bind(this));
+        this.translate.addEventListener(EVENTS.ol.translateStart, this.onTranslateStart.bind(this));
+        this.translate.addEventListener(EVENTS.ol.translateEnd, this.onTranslateEnd.bind(this));
 
-        window.addEventListener(EVENTS.Custom.FeatureLayerRemoved, this.onWindowFeatureLayerRemoved.bind(this));
-        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
-        window.addEventListener(EVENTS.Custom.SettingsCleared, this.onWindowSettingsCleared.bind(this));
-        window.addEventListener(EVENTS.Browser.DOMContentLoaded, this.onDOMContentLoaded.bind(this));
+        window.addEventListener(EVENTS.custom.featureLayerRemoved, this.onWindowFeatureLayerRemoved.bind(this));
+        window.addEventListener(EVENTS.browser.keyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(EVENTS.custom.settingsCleared, this.onWindowSettingsCleared.bind(this));
+        window.addEventListener(EVENTS.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
     }
 
     onSelectFeatureAdd(event) {
-        // Note: User defined callback from constructor
+        // User defined callback from constructor
         if(typeof this.options.selectadd === 'function') {
             this.options.selectadd(event);
         }
     }
 
     onDOMContentLoaded() {
-        // Re-activate tool if it was active before the application was reloaded
         if(this.localStorage.active) {
             this.activateTool();
         }
@@ -248,14 +248,14 @@ class EditTool extends Control {
     onSelectFeatureRemove(event) {
         const feature = event.element;
 
-        // Note: The setTimeout must be used, if not, the style will be reset to the style used before the feature was selected
+        // The setTimeout must be used, if not, the style will be reset to the style used before the feature was selected
         setTimeout(() => {
             if(this.colorHasChanged) {
                 // Set the lastStyle as the default style
                 feature.setStyle(this.lastStyle);
 
                 if(getCustomFeatureProperty(feature.getProperties(), 'type') === FEATURE_PROPERTIES.type.measurement) {
-                    // Note: To add lineDash, a new Style object must be used
+                    // To add lineDash, a new Style object must be used
                     // If the lastStyle is used all object that is referenced with that object will get a dashed line
                     const style = new Style({
                         fill: new Fill({
@@ -271,7 +271,7 @@ class EditTool extends Control {
                     feature.setStyle(style);
                 }
 
-                // Note: User defined callback from constructor
+                // User defined callback from constructor
                 if(typeof this.options.styleChange === 'function') {
                     this.options.styleChange(event, this.lastStyle);
                 }
@@ -283,7 +283,7 @@ class EditTool extends Control {
             }
         });
 
-        // Note: User defined callback from constructor
+        // User defined callback from constructor
         if(typeof this.options.selectremove === 'function') {
             this.options.selectremove(event);
         }
@@ -298,7 +298,7 @@ class EditTool extends Control {
             }
         });
 
-        // Note: User defined callback from constructor
+        // User defined callback from constructor
         if(typeof this.options.modifystart === 'function') {
             this.options.modifystart(event);
         }
@@ -313,7 +313,7 @@ class EditTool extends Control {
             }
         });
 
-        // Note: User defined callback from constructor
+        // User defined callback from constructor
         if(typeof this.options.modifyend === 'function') {
             this.options.modifyend(event);
         }
@@ -328,7 +328,7 @@ class EditTool extends Control {
             }
         });
 
-        // Note: User defined callback from constructor
+        // User defined callback from constructor
         if(typeof this.options.translatestart === 'function') {
             this.options.translatestart(event);
         }
@@ -343,7 +343,7 @@ class EditTool extends Control {
             }
         });
 
-        // Note: User defined callback from constructor
+        // User defined callback from constructor
         if(typeof this.options.translateend === 'function') {
             this.options.translateend(event);
         }
@@ -351,14 +351,14 @@ class EditTool extends Control {
 
     onToggleToolbox(toggle) {
         const targetName = toggle.dataset.oltbToggleableTarget;
-        document.getElementById(targetName).slideToggle(200, (collapsed) => {
+        document.getElementById(targetName).slideToggle(CONFIG.animationDuration.fast, (collapsed) => {
             this.localStorage.collapsed = collapsed;
-            StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+            StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
         });
     }
 
     onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Edit)) {
+        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.edit)) {
             this.handleClick(event);
         }else if(event.key.toLowerCase() === 'delete' && this.active) {
             this.onDeleteSelectedFeatures();
@@ -395,7 +395,8 @@ class EditTool extends Control {
     deleteFeatures(features) {
         const layerWrappers = LayerManager.getFeatureLayers();
 
-        // The user can select features from any layer. Each feature needs to be removed from its associated layer. 
+        // The user can select features from any layer
+        // Each feature needs to be removed from its associated layer
         features.forEach((feature) => {
             layerWrappers.forEach((layerWrapper) => {
                 const source = layerWrapper.layer.getSource();
@@ -406,12 +407,12 @@ class EditTool extends Control {
                     // Remove feature from selected collection
                     this.select.getFeatures().remove(feature);
 
-                    // Remove potential overlays associated with the feature
+                    // Remove overlays associated with the feature
                     if(hasCustomFeatureProperty(feature.getProperties(), FEATURE_PROPERTIES.tooltip)) {
                         this.getMap().removeOverlay(feature.getProperties().oltb.tooltip);
                     }
 
-                    // Note: User defined callback from constructor
+                    // User defined callback from constructor
                     if(typeof this.options.removedfeature === 'function') {
                         this.options.removedfeature(feature);
                     }
@@ -445,7 +446,7 @@ class EditTool extends Control {
         this.localStorage.fillColor = this.lastStyle.getFill().getColor();
         this.localStorage.strokeColor = this.lastStyle.getStroke().getColor();
 
-        StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
     }
 
     onShapeOperator(operation, type) {
@@ -507,7 +508,7 @@ class EditTool extends Control {
             // Remove two original shapes
             this.deleteFeatures(features);
 
-            // Note: User defined callback from constructor
+            // User defined callback from constructor
             if(typeof this.options.shapeOperation === 'function') {
                 this.options.shapeOperation(type, a, b, feature);
             }
@@ -517,7 +518,7 @@ class EditTool extends Control {
             console.error(`${errorMessage} [${error}]`);
             Toast.error({text: errorMessage}); 
 
-            // Note: User defined callback from constructor
+            // User defined callback from constructor
             if(typeof this.options.error === 'function') {
                 this.options.error(error);
             }
@@ -556,7 +557,7 @@ class EditTool extends Control {
         const hiddenTooltip = hasOtherTooltip && selectedFeatures.length === 1;
 
         properties.oltb.tooltip.getElement().className = `oltb-overlay-tooltip ${hiddenTooltip ? 'oltb-overlay-tooltip--hidden' : ''}`;
-        properties.oltb.onChangeListener = feature.getGeometry().on(EVENTS.Ol.Change, this.onFeatureChange.bind(this, feature));
+        properties.oltb.onChangeListener = feature.getGeometry().on(EVENTS.ol.change, this.onFeatureChange.bind(this, feature));
     }
 
     detachOnChange(feature) {
@@ -601,7 +602,7 @@ class EditTool extends Control {
     }
 
     handleClick() {
-        // Note: User defined callback from constructor
+        // User defined callback from constructor
         if(typeof this.options.click === 'function') {
             this.options.click();
         }
@@ -629,7 +630,7 @@ class EditTool extends Control {
         this.button.classList.add('oltb-tool-button--active');
 
         this.localStorage.active = true;
-        StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
     }
 
     deActivateTool() {
@@ -648,7 +649,7 @@ class EditTool extends Control {
         this.button.classList.remove('oltb-tool-button--active');
 
         this.localStorage.active = false;
-        StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
     }
 }
 

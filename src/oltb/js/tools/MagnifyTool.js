@@ -11,7 +11,7 @@ import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
 import { SVG_PATHS, getIcon } from '../core/icons/SVGIcons';
 import { LOCAL_STORAGE_KEYS } from '../helpers/constants/LocalStorageKeys';
 
-const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.MagnifyTool;
+const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.magnifyTool;
 const LOCAL_STORAGE_DEFAULTS = {
     active: false
 };
@@ -35,7 +35,7 @@ class MagnifyTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Magnifier (${SHORTCUT_KEYS.Magnify})`
+                'data-tippy-content': `Magnifier (${SHORTCUT_KEYS.magnify})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -51,25 +51,24 @@ class MagnifyTool extends Control {
         const localStorageState = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
         this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
 
-        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
-        window.addEventListener(EVENTS.Browser.DOMContentLoaded, this.onDOMContentLoaded.bind(this));
+        window.addEventListener(EVENTS.browser.keyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(EVENTS.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
     }
 
     onDOMContentLoaded() {
-        // Re-activate tool if it was active before the application was reloaded
         if(this.localStorage.active) {
             this.activateTool();
         }
     }
 
     onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Magnify)) {
+        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.magnify)) {
             this.handleClick(event);
         }
     }
 
     handleClick() {
-        // Note: User defined callback from constructor
+        // User defined callback from constructor
         if(typeof this.options.click === 'function') {
             this.options.click();
         }
@@ -86,24 +85,24 @@ class MagnifyTool extends Control {
         const mapContainer = map.getTarget();
     
         this.onMousemoveListenert = this.onMousemove.bind(this);
-        mapContainer.addEventListener(EVENTS.Browser.MouseMove, this.onMousemoveListenert);
+        mapContainer.addEventListener(EVENTS.browser.mouseMove, this.onMousemoveListenert);
 
         this.onMouseoutListenert = this.onMouseout.bind(this);
-        mapContainer.addEventListener(EVENTS.Browser.MouseOut, this.onMouseoutListenert);
+        mapContainer.addEventListener(EVENTS.browser.mouseOut, this.onMouseoutListenert);
 
         this.onKeydownListener = this.onKeydown.bind(this);
-        document.addEventListener(EVENTS.Browser.KeyDown, this.onKeydownListener);
+        document.addEventListener(EVENTS.browser.keyDown, this.onKeydownListener);
 
         this.onPostrenderListeners = [];
         map.getLayers().getArray().forEach((layer) => {
-            this.onPostrenderListeners.push(layer.on(EVENTS.Ol.PostRender, this.onPostrender.bind(this)));
+            this.onPostrenderListeners.push(layer.on(EVENTS.ol.postRender, this.onPostrender.bind(this)));
         });
 
         this.active = true;
         this.button.classList.add('oltb-tool-button--active');
 
         this.localStorage.active = true;
-        StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
     }
 
     deActivateTool() {
@@ -111,22 +110,22 @@ class MagnifyTool extends Control {
         const mapContainer = map.getTarget();
 
         // Remove the eventlisteners
-        mapContainer.removeEventListener(EVENTS.Browser.MouseMove, this.onMousemoveListenert);
-        mapContainer.removeEventListener(EVENTS.Browser.MouseOut, this.onMouseoutListenert);
-        document.removeEventListener(EVENTS.Browser.KeyDown, this.onKeydownListener);
+        mapContainer.removeEventListener(EVENTS.browser.mouseMove, this.onMousemoveListenert);
+        mapContainer.removeEventListener(EVENTS.browser.mouseOut, this.onMouseoutListenert);
+        document.removeEventListener(EVENTS.browser.keyDown, this.onKeydownListener);
 
         this.onPostrenderListeners.forEach((listener) => {
             unByKey(listener);
         });
 
-        // Update the map to remove the last rendering of the magnifier
+        // Render to remove the magnifier
         map.render();
 
         this.active = false;
         this.button.classList.remove('oltb-tool-button--active');
 
         this.localStorage.active = false;
-        StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
     }
 
     onKeydown(event) {
@@ -177,8 +176,7 @@ class MagnifyTool extends Control {
             const originY = centerY - half;
             const size = Math.round(2 * half + 1);
 
-            try
-            {
+            try {
                 const sourceData = context.getImageData(originX, originY, size, size).data;
                 const dest = context.createImageData(size, size);
                 const destData = dest.data;
@@ -218,9 +216,9 @@ class MagnifyTool extends Control {
                 this.button.click();
 
                 if(error.name == 'SecurityError') {
-                    Toast.error({text: 'A CORS error with one of the layers occurred'});
+                    Toast.error({text: 'CORS error with one of the layers'});
                 }else {
-                    Toast.error({text: 'A unknown error occurred with the magnifyer'});
+                    Toast.error({text: 'Unknown magnifyer error'});
                 }
 
                 console.error(`Error using magnifyer [${error}]`);

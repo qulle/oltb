@@ -45,7 +45,7 @@ const colorTippyDelegate = delegate(MAP_ELEMENT, {
         onColorPickerTooltipShow(instance);
     },
     onHide(instance) {
-        colorPicker.off(EVENTS.Browser.Change);
+        colorPicker.off(EVENTS.browser.change);
     },
     onHidden(instance) {
         instance.setContent(null);
@@ -63,9 +63,9 @@ const onDOMContentLoaded = function(event) {
     onPlacementChange(event);
 }
 
-window.addEventListener(EVENTS.Custom.ToolbarDirectionChange, onPlacementChange);
-window.addEventListener(EVENTS.Browser.Resize, onPlacementChange);
-window.addEventListener(EVENTS.Browser.DOMContentLoaded, onDOMContentLoaded);
+window.addEventListener(EVENTS.custom.toolbarDirectionChange, onPlacementChange);
+window.addEventListener(EVENTS.browser.resize, onPlacementChange);
+window.addEventListener(EVENTS.browser.contentLoaded, onDOMContentLoaded);
 
 export {
     toolButtonsTippySingleton, 

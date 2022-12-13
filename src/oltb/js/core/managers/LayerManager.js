@@ -69,7 +69,7 @@ class LayerManager {
         this.#map.addLayer(layerWrapper.layer);
             
         // Dispatch event, the layer-tool updates the UI
-        window.dispatchEvent(new CustomEvent(EVENTS.Custom.MapLayerAdded, {
+        window.dispatchEvent(new CustomEvent(EVENTS.custom.mapLayerAdded, {
             detail: {
                 layerWrapper: layerWrapper, 
                 silent: silent
@@ -87,7 +87,7 @@ class LayerManager {
         this.#map.removeLayer(targetLayer.layer);
 
         // Dispatch event, the layer-tool, updates the UI
-        window.dispatchEvent(new CustomEvent(EVENTS.Custom.MapLayerRemoved, {
+        window.dispatchEvent(new CustomEvent(EVENTS.custom.mapLayerRemoved, {
             detail: {
                 layerWrapper: targetLayer, 
                 silent: silent
@@ -173,7 +173,7 @@ class LayerManager {
         this.#map.addLayer(layerWrapper.layer);
 
         // Dispatch event, the layer-tool, updates the UI
-        window.dispatchEvent(new CustomEvent(EVENTS.Custom.FeatureLayerAdded, {
+        window.dispatchEvent(new CustomEvent(EVENTS.custom.featureLayerAdded, {
             detail: {
                 layerWrapper: layerWrapper, 
                 silent: silent
@@ -187,7 +187,7 @@ class LayerManager {
             return layer.id !== targetLayer.id;
         }); 
 
-        // Remove potential overlays associated with each feature
+        // Remove overlays associated with each feature
         targetLayer.layer.getSource().getFeatures().forEach((feature) => {
             if(hasCustomFeatureProperty(feature.getProperties(), FEATURE_PROPERTIES.tooltip)) {
                 this.#map.removeOverlay(feature.getProperties().oltb.tooltip);
@@ -203,7 +203,7 @@ class LayerManager {
             : null;
 
         // Dispatch event, the layer-tool, updates the UI
-        window.dispatchEvent(new CustomEvent(EVENTS.Custom.FeatureLayerRemoved, {
+        window.dispatchEvent(new CustomEvent(EVENTS.custom.featureLayerRemoved, {
             detail: {
                 layerWrapper: targetLayer, 
                 silent: silent

@@ -3,8 +3,7 @@ import ModalBase from '../../common/modals/ModalBase';
 import { SVG_PATHS } from '../../core/icons/SVGIcons';
 import { isDarkTheme } from '../../helpers/IsDarkTheme';
 
-const PREFIX_MARKER_ID = 'oltb-marker-modal';
-
+const ID_PREFIX = 'oltb-marker-modal';
 const DEFAULT_OPTIONS = {};
 
 class MarkerModal extends ModalBase {
@@ -26,13 +25,13 @@ class MarkerModal extends ModalBase {
             text: 'Name',
             class: 'oltb-label', 
             attributes: {
-                for: `${PREFIX_MARKER_ID}-marker-name`
+                for: `${ID_PREFIX}-marker-name`
             }
         }));
 
         const nameText = DOM.createElement({
             element: 'input', 
-            id: `${PREFIX_MARKER_ID}-marker-name`,
+            id: `${ID_PREFIX}-marker-name`,
             class: 'oltb-input',
             value: isEdit && this.options.name.length ? this.options.name : 'Marker',
             attributes: {
@@ -53,13 +52,13 @@ class MarkerModal extends ModalBase {
             text: 'Info text',
             class: 'oltb-label', 
             attributes: {
-                for: `${PREFIX_MARKER_ID}-marker-info`
+                for: `${ID_PREFIX}-marker-info`
             }
         }));
 
         const infoText = DOM.createElement({
             element: 'input', 
-            id: `${PREFIX_MARKER_ID}-marker-info`,
+            id: `${ID_PREFIX}-marker-info`,
             class: 'oltb-input',
             value: isEdit && this.options.info.length ? this.options.info : '',
             attributes: {
@@ -81,13 +80,13 @@ class MarkerModal extends ModalBase {
             text: 'Icon',
             class: 'oltb-label', 
             attributes: {
-                for: `${PREFIX_MARKER_ID}-icon`
+                for: `${ID_PREFIX}-icon`
             }
         }));
 
         const iconSelect = DOM.createElement({
             element: 'select',
-            id: `${PREFIX_MARKER_ID}-icon`, 
+            id: `${ID_PREFIX}-icon`, 
             class: 'oltb-select'
         });
  
@@ -124,13 +123,13 @@ class MarkerModal extends ModalBase {
             text: 'Latitud',
             class: 'oltb-label', 
             attributes: {
-                for: `${PREFIX_MARKER_ID}-marker-lat`
+                for: `${ID_PREFIX}-marker-lat`
             }
         }));
 
         const latText = DOM.createElement({
             element: 'input',
-            id: `${PREFIX_MARKER_ID}-marker-lat`,
+            id: `${ID_PREFIX}-marker-lat`,
             class: 'oltb-input',
             value: this.options.coordinates[1],
             attributes: {
@@ -151,13 +150,13 @@ class MarkerModal extends ModalBase {
             text: 'Longitud', 
             class: 'oltb-label',
             attributes: {
-                for: `${PREFIX_MARKER_ID}-marker-lon`
+                for: `${ID_PREFIX}-marker-lon`
             }
         }));
 
         const lonText = DOM.createElement({
             element: 'input',
-            id: `${PREFIX_MARKER_ID}-marker-lon`,
+            id: `${ID_PREFIX}-marker-lon`,
             class: 'oltb-input',
             value: this.options.coordinates[0],
             attributes: {
@@ -178,7 +177,7 @@ class MarkerModal extends ModalBase {
             text: 'Background color',
             class: 'oltb-label', 
             attributes: {
-                for: `${PREFIX_MARKER_ID}-marker-background`
+                for: `${ID_PREFIX}-marker-background`
             }
         }));
 
@@ -186,11 +185,11 @@ class MarkerModal extends ModalBase {
 
         const backgroundColorInput = DOM.createElement({
             element: 'div',
-            id: `${PREFIX_MARKER_ID}-marker-background`,
+            id: `${ID_PREFIX}-marker-background`,
             class: 'oltb-color-input oltb-color-tippy',
             attributes: {
                 tabindex: 0,
-                'data-oltb-color-target': `#${PREFIX_MARKER_ID}-marker-background`,
+                'data-oltb-color-target': `#${ID_PREFIX}-marker-background`,
                 'data-oltb-color': backgroundColor
             }
         });
@@ -214,7 +213,7 @@ class MarkerModal extends ModalBase {
             text: 'Color',
             class: 'oltb-label', 
             attributes: {
-                for: `${PREFIX_MARKER_ID}-marker-color`
+                for: `${ID_PREFIX}-marker-color`
             }
         }));
 
@@ -222,11 +221,11 @@ class MarkerModal extends ModalBase {
 
         const colorInput = DOM.createElement({
             element: 'div',
-            id: `${PREFIX_MARKER_ID}-marker-color`,
+            id: `${ID_PREFIX}-marker-color`,
             class: 'oltb-color-input oltb-color-tippy',
             attributes: {
                 tabindex: 0,
-                'data-oltb-color-target': `#${PREFIX_MARKER_ID}-marker-color`,
+                'data-oltb-color-target': `#${ID_PREFIX}-marker-color`,
                 'data-oltb-color': color
             }
         });

@@ -18,7 +18,7 @@ import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
 import { SVG_PATHS, getIcon } from '../core/icons/SVGIcons';
 import { LOCAL_STORAGE_KEYS } from '../helpers/constants/LocalStorageKeys';
 
-const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.CoordinateTool;
+const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.coordinateTool;
 const LOCAL_STORAGE_DEFAULTS = {
     active: false
 };
@@ -42,7 +42,7 @@ class CoordinateTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Show coordinates (${SHORTCUT_KEYS.Coordinate})`
+                'data-tippy-content': `Show coordinates (${SHORTCUT_KEYS.coordinate})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -59,30 +59,29 @@ class CoordinateTool extends Control {
         const localStorageState = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
         this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
 
-        SettingsManager.addSetting(SETTINGS.CopyCoordinateOnClick, {
+        SettingsManager.addSetting(SETTINGS.copyCoordinateOnClick, {
             state: true, 
             text: 'Coordinate tool - Copy coordinates on click'
         });
 
-        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
-        window.addEventListener(EVENTS.Browser.DOMContentLoaded, this.onDOMContentLoaded.bind(this));
+        window.addEventListener(EVENTS.browser.keyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(EVENTS.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
     }
 
     onDOMContentLoaded() {
-        // Re-activate tool if it was active before the application was reloaded
         if(this.localStorage.active) {
             this.activateTool();
         }
     }
 
     onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Coordinate)) {
+        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.coordinate)) {
             this.handleClick(event);
         }
     }
 
     handleClick() {
-        // Note: User defined callback from constructor
+        // User defined callback from constructor
         if(typeof this.options.click === 'function') {
             this.options.click();
         }
@@ -98,14 +97,14 @@ class CoordinateTool extends Control {
         const map = this.getMap();
 
         this.tooltipItem = TooltipManager.push('coordinates');
-        this.onPointerMoveListener = map.on(EVENTS.Ol.PointerMove, this.onPointerMove.bind(this));
-        this.onMapClickListener = map.on(EVENTS.Browser.Click, this.onMapClick.bind(this));
+        this.onPointerMoveListener = map.on(EVENTS.ol.pointerMove, this.onPointerMove.bind(this));
+        this.onMapClickListener = map.on(EVENTS.browser.click, this.onMapClick.bind(this));
 
         this.active = true;
         this.button.classList.add('oltb-tool-button--active');
 
         this.localStorage.active = true;
-        StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
     }
 
     deActivateTool() {
@@ -118,7 +117,7 @@ class CoordinateTool extends Control {
         this.button.classList.remove('oltb-tool-button--active');
 
         this.localStorage.active = false;
-        StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
     }
 
     onPointerMove(event) {
@@ -129,12 +128,14 @@ class CoordinateTool extends Control {
         );
         
         const prettyCoords = toStringHDMS(lonlat);
-
         this.tooltipItem.innerHTML = prettyCoords;
     }
 
     async onMapClick(event) {
-        if(!SettingsManager.getSetting(SETTINGS.CopyCoordinateOnClick) || ToolManager.hasActiveTool()) {
+        if(
+            !SettingsManager.getSetting(SETTINGS.copyCoordinateOnClick) || 
+            ToolManager.hasActiveTool()
+        ) {
             return;
         }
 
@@ -160,11 +161,12 @@ class CoordinateTool extends Control {
             .then(() => {
                 Toast.success({text: 'Coordinate copied to clipboard', autoremove: 4000});
             })
-            .catch(() => {
+            .catch((error) => {
+                console.error('Error copying coordinates', error);
                 Toast.error({text: 'Failed to copy coordinates'});
             });
         
-        // Note: User defined callback from constructor
+        // User defined callback from constructor
         if(typeof this.options.mapClicked === 'function') {
             this.options.mapClicked(coordinate);
         }

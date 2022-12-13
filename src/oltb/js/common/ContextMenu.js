@@ -123,7 +123,7 @@ class ContextMenu extends Control {
     }
 }
 
-MAP_ELEMENT.addEventListener(EVENTS.Browser.ContextMenu, (event) => {
+MAP_ELEMENT.addEventListener(EVENTS.browser.contextMenu, (event) => {
     MENU_INSTANCES.forEach((menu) => {
         if(event.target.matches(menu.options.selector)) {
             menu.show(event);
@@ -131,7 +131,7 @@ MAP_ELEMENT.addEventListener(EVENTS.Browser.ContextMenu, (event) => {
     });
 });
 
-MAP_ELEMENT.addEventListener(EVENTS.Browser.Click, (event) => {
+MAP_ELEMENT.addEventListener(EVENTS.browser.click, (event) => {
     MENU_INSTANCES.forEach((menu) => {
         menu.hide();
     });

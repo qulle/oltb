@@ -17,9 +17,9 @@ class HiddenAboutTool extends Control {
             path: SVG_PATHS.GitHub
         });
 
-        addContextMenuItem(CONTEXT_MENUS.MainMap, {});
+        addContextMenuItem(CONTEXT_MENUS.mainMap, {});
         
-        addContextMenuItem(CONTEXT_MENUS.MainMap, {
+        addContextMenuItem(CONTEXT_MENUS.mainMap, {
             icon: icon, 
             name: 'About OLTB', 
             fn: this.onContextMenuAbout.bind(this)
@@ -27,11 +27,14 @@ class HiddenAboutTool extends Control {
     }
 
     onContextMenuAbout(map, coordinates, target) {
-        Dialog.alert({confirmText: 'Got it!', html: `
-            <h3>Version ${CONFIG.version}</h3>
-            <p>Developed by Qulle <a href="//github.com/qulle/oltb" target="_blank" class="oltb-link">github.com/qulle/oltb</a></p>
-            <p>Using OpenLayers <a href="//openlayers.org/en/v${VERSION}/apidoc/" target="_blank" class="oltb-link">${VERSION}</a></p>
-        `});
+        Dialog.alert({
+            confirmText: 'Got it!', 
+            html: (`
+                <h3>Version ${CONFIG.version}</h3>
+                <p>Developed by Qulle <a href="//github.com/qulle/oltb" target="_blank" class="oltb-link">github.com/qulle/oltb</a></p>
+                <p>Using OpenLayers <a href="//openlayers.org/en/v${VERSION}/apidoc/" target="_blank" class="oltb-link">${VERSION}</a></p>
+            `)
+        });
     }
 }
 

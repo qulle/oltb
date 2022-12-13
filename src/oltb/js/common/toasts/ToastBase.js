@@ -24,7 +24,7 @@ class ToastBase {
         
         if(this.options.clickToRemove) {
             toast.classList.add('oltb-toast--clickable');
-            toast.addEventListener(EVENTS.Browser.Click, this.remove.bind(this));
+            toast.addEventListener(EVENTS.browser.click, this.remove.bind(this));
         }
 
         if(this.options.spinner) {

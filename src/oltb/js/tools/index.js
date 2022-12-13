@@ -29,7 +29,7 @@ import HiddenMarkerTool from './hidden-tools/MarkerTool';
 import ImportVectorLayerTool from './ImportVectorLayerTool';
 import HiddenMapNavigationTool from './hidden-tools/MapNavigationTool';
 
-// Note: The order decides order in the Toolbar
+// The order decides order in the Toolbar
 const ALL_TOOLS = {
     HiddenMarkerTool,
     HiddenMapNavigationTool,

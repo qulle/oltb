@@ -24,16 +24,16 @@ class HiddenMarkerTool extends Control {
             path: SVG_PATHS.Plus
         });
 
-        addContextMenuItem(CONTEXT_MENUS.MainMap, {
+        addContextMenuItem(CONTEXT_MENUS.mainMap, {
             icon: createIcon, 
             name: 'Create marker', 
             fn: this.onContextMenuCreateMarker.bind(this)
         });
         
-        addContextMenuItem(CONTEXT_MENUS.MainMap, {});
+        addContextMenuItem(CONTEXT_MENUS.mainMap, {});
 
-        window.addEventListener(EVENTS.Custom.FeatureEdited, this.onWindowFeatureEdited.bind(this));
-        window.addEventListener(EVENTS.Custom.FeatureRemoved, this.onWindowFeatureRemoved.bind(this));
+        window.addEventListener(EVENTS.custom.featureEdited, this.onWindowFeatureEdited.bind(this));
+        window.addEventListener(EVENTS.custom.featureRemoved, this.onWindowFeatureRemoved.bind(this));
     }
 
     onContextMenuCreateMarker(map, coordinates, target) {
@@ -77,7 +77,7 @@ class HiddenMarkerTool extends Control {
             
             layerWrapper.layer.getSource().addFeature(marker);
 
-            // Note: User defined callback from constructor
+            // User defined callback from constructor
             if(typeof this.options.added === 'function') {
                 this.options.added(marker);
             }
@@ -85,7 +85,7 @@ class HiddenMarkerTool extends Control {
     }
 
     onWindowFeatureEdited(event) {
-        // Note: User defined callback from constructor
+        // User defined callback from constructor
         if(typeof this.options.edited === 'function') {
             this.options.edited(
                 event.detail.before, 
@@ -95,7 +95,7 @@ class HiddenMarkerTool extends Control {
     }
 
     onWindowFeatureRemoved(event) {
-        // Note: User defined callback from constructor
+        // User defined callback from constructor
         if(typeof this.options.removed === 'function') {
             this.options.removed(event.detail.feature);
         }

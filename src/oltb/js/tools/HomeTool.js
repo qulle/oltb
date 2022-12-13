@@ -35,7 +35,7 @@ class HomeTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Zoom home (${SHORTCUT_KEYS.Home})`
+                'data-tippy-content': `Zoom home (${SHORTCUT_KEYS.home})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -51,24 +51,24 @@ class HomeTool extends Control {
         this.userDefinedHomeLocation = null;
         this.userDefinedHomeZoom = null;
 
-        addContextMenuItem(CONTEXT_MENUS.MainMap, {
+        addContextMenuItem(CONTEXT_MENUS.mainMap, {
             icon: icon, 
             name: 'Set as home', 
             fn: this.onContextMenuSetHomeLocation.bind(this)
         });
 
-        window.addEventListener(EVENTS.Custom.SettingsCleared, this.onWindowClearHomeLocation.bind(this));
-        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(EVENTS.custom.settingsCleared, this.onWindowClearHomeLocation.bind(this));
+        window.addEventListener(EVENTS.browser.keyUp, this.onWindowKeyUp.bind(this));
     }
 
     onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Home)) {
+        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.home)) {
             this.handleClick(event);
         }
     }
 
     handleClick() {
-        // Note: User defined callback from constructor
+        // User defined callback from constructor
         if(typeof this.options.click === 'function') {
             this.options.click();
         }
@@ -83,15 +83,18 @@ class HomeTool extends Control {
             view.cancelAnimations();
         }
 
+        const zoom = this.userDefinedHomeZoom ? this.userDefinedHomeZoom : this.homeZoom;
+        const center = this.userDefinedHomeLocation ? this.userDefinedHomeLocation : this.homeLocation;
+
         view.animate({
-            zoom: this.userDefinedHomeZoom ? this.userDefinedHomeZoom : this.homeZoom,
-            center: this.userDefinedHomeLocation ? this.userDefinedHomeLocation : this.homeLocation,
+            zoom: zoom,
+            center: center,
             duration: CONFIG.animationDuration.normal,
             easing: easeOut
         });
 
         setTimeout(() => {
-            // Note: User defined callback from constructor
+            // User defined callback from constructor
             if(typeof this.options.home === 'function') {
                 this.options.home();
             }

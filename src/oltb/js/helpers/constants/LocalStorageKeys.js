@@ -1,19 +1,19 @@
 const LOCAL_STORAGE_KEYS = {
-    MapData: 'general.mapdata',
-    DrawTool: 'tool.draw',
-    EditTool: 'tool.edit',
-    LayerTool: 'tool.layer',
-    ThemeTool: 'tool.theme',
-    MagnifyTool: 'tool.magnify',
-    MeasureTool: 'tool.measure',
-    OverviewTool: 'tool.overview',
-    BookmarkTool: 'tool.bookmark',
-    DirectionTool: 'tool.direction',
-    SplitViewTool: 'tool.splitview',
-    GraticuleTool: 'tool.graticule',
-    ScaleLineTool: 'tool.scaleline',
-    CoordinateTool: 'tool.coordinate',
-    SettingsManager: 'manager.settings'
+    mapData: 'common.mapdata',
+    drawTool: 'tool.draw',
+    editTool: 'tool.edit',
+    layerTool: 'tool.layer',
+    themeTool: 'tool.theme',
+    magnifyTool: 'tool.magnify',
+    measureTool: 'tool.measure',
+    overviewTool: 'tool.overview',
+    bookmarkTool: 'tool.bookmark',
+    directionTool: 'tool.direction',
+    splitViewTool: 'tool.splitview',
+    graticuleTool: 'tool.graticule',
+    scaleLineTool: 'tool.scaleline',
+    coordinateTool: 'tool.coordinate',
+    settingsManager: 'manager.settings'
 };
 
 export { LOCAL_STORAGE_KEYS };

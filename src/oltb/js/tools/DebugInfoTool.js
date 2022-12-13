@@ -31,7 +31,7 @@ class DebugInfoTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Debug info (${SHORTCUT_KEYS.DebugInfo})`
+                'data-tippy-content': `Debug info (${SHORTCUT_KEYS.debugInfo})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -51,17 +51,17 @@ class DebugInfoTool extends Control {
             }
         }
 
-        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(EVENTS.browser.keyUp, this.onWindowKeyUp.bind(this));
     }
 
     onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.DebugInfo)) {
+        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.debugInfo)) {
             this.handleClick(event);
         }
     }
 
     handleClick() {
-        // Note: User defined callback from constructor
+        // User defined callback from constructor
         if(typeof this.options.click === 'function') {
             this.options.click();
         }

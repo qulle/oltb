@@ -10,8 +10,8 @@ import { SVG_PATHS, getIcon } from '../../core/icons/SVGIcons';
 import { LOCAL_STORAGE_KEYS } from '../../helpers/constants/LocalStorageKeys';
 import { fromLonLat, toLonLat } from 'ol/proj';
 
-// Note: This is the same NODE_NAME and PROPS that the map.js file is using
-const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.MapData;
+// This is the same NODE_NAME and PROPS that the map.js file is using
+const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.mapData;
 const LOCAL_STORAGE_DEFAULTS = {
     lon: 18.6435,
     lat: 60.1282,
@@ -43,30 +43,30 @@ class HiddenMapNavigationTool extends Control {
             path: SVG_PATHS.FocusHere
         });
 
-        addContextMenuItem(CONTEXT_MENUS.MainMap, {
+        addContextMenuItem(CONTEXT_MENUS.mainMap, {
             icon: moveCenterIcon, 
             name: 'Center map here', 
             fn: this.onContextMenuCenterMap.bind(this)
         });
 
-        addContextMenuItem(CONTEXT_MENUS.MainMap, {
+        addContextMenuItem(CONTEXT_MENUS.mainMap, {
             icon: focusHereIcon, 
             name: 'Focus here', 
             fn: this.onContextMenuFocusHere.bind(this)
         });
         
-        addContextMenuItem(CONTEXT_MENUS.MainMap, {});
+        addContextMenuItem(CONTEXT_MENUS.mainMap, {});
 
         // Track changes to zoom, paning etc. store in localStorage
-        // The event needs to be delayed and wrapped in order for the getMap() to return the correct object
-        window.addEventListener(EVENTS.Browser.DOMContentLoaded, this.onDOMContentLoaded.bind(this));
+        // Must wait until DOM is loaded before the reference to the map can be used
+        window.addEventListener(EVENTS.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
     }
 
     onDOMContentLoaded(event) {
         const map = this.getMap();
 
         if(map) {
-            map.on(EVENTS.Ol.MoveEnd, this.onMoveEnd.bind(this));
+            map.on(EVENTS.ol.moveEnd, this.onMoveEnd.bind(this));
         }
     }
 
@@ -108,7 +108,7 @@ class HiddenMapNavigationTool extends Control {
         this.localStorage.zoom = view.getZoom();
         this.localStorage.rotation = view.getRotation();
 
-        StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
     }
 }
 
