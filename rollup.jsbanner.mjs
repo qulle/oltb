@@ -11,16 +11,16 @@ export const banner = `/*!
  * | (+) Bootstrap Icons                    - (https://icons.getbootstrap.com/)                                      |
  * | (+) A Color Picker 1.2.1               - (https://github.com/narsenico/a-color-picker)                          |
  * | (+) Plain JS Slidetoggle 2.0.0         - (https://github.com/ericbutler555/plain-js-slidetoggle)                |
- * | (+) JSTS 2.9.2                         - (https://github.com/bjornharrtell/jsts)                                |
- * | (+) Parcel 2.7.0                       - (https://parceljs.org/)                                                |
- * | (+) @parcel/transformer-sass 2.7.0     - (https://github.com/parcel-bundler/parcel)                             |
- * | (+) Rollup 3.2.5                       - (https://github.com/rollup/rollup)                                     |
- * | (+) @rollup/plugin-commonjs 23.0.2     - (https://github.com/rollup/plugins/tree/master/packages/commonjs)      |
- * | (+) @rollup/plugin-json 5.0.1          - (https://github.com/rollup/plugins/tree/master/packages/json)          |
+ * | (+) JSTS 2.9.3                         - (https://github.com/bjornharrtell/jsts)                                |
+ * | (+) Parcel 2.8.1                       - (https://parceljs.org/)                                                |
+ * | (+) @parcel/transformer-sass 2.8.1     - (https://github.com/parcel-bundler/parcel)                             |
+ * | (+) Rollup 3.7.1                       - (https://github.com/rollup/rollup)                                     |
+ * | (+) @rollup/plugin-commonjs 23.0.4     - (https://github.com/rollup/plugins/tree/master/packages/commonjs)      |
+ * | (+) @rollup/plugin-json 5.0.2          - (https://github.com/rollup/plugins/tree/master/packages/json)          |
  * | (+) @rollup/plugin-node-resolve 15.0.1 - (https://github.com/rollup/plugins/tree/master/packages/node-resolve)  |
  * | (+) @rollup-plugin-replace 5.0.1       - (https://github.com/rollup/plugins/tree/master/packages/replace)       |
  * | (+) @rollup/plugin-terser 0.1.0        - (https://github.com/rollup/plugins/tree/master/packages/terser)        |
  * | (+) rollup-plugin-license 3.0.1        - (https://github.com/mjeanroy/rollup-plugin-license)                    |
- * | (+) rollup-plugin-scss 3.0.0           - (https://github.com/thgh/rollup-plugin-scss)                           |
+ * | (+) rollup-plugin-scss 4.0.0           - (https://github.com/thgh/rollup-plugin-scss)                           |
  * +-----------------------------------------------------------------------------------------------------------------+
  */`;
