@@ -683,9 +683,9 @@ Tools refered to as hidden tools are tools that only add functionality via the c
 All tools have a shortcut key for ease of use and speeds up the handling of the toolbar. The shortcut key is displayed in the tooltip on the corresponding tool. All shortcut keys are stored in the module `./modules/helpers/Constants/ShortcutKeys`.
 ```javascript
 const SHORTCUT_KEYS = {
-    AreaOverview: 'A',
-    Bookmark: 'B',
-    Coordinates: 'C'
+    areaOverview: 'A',
+    bookmark: 'B',
+    coordinates: 'C'
     ...
 };
 ```
@@ -859,7 +859,7 @@ There are two modules for using SVG icons. One is for basic icons and the other 
 #### Basic icons
 Most of the icons are from the excellent [icons.getbootstrap.com](https://icons.getbootstrap.com/). Icons have been added on a as needed basis and far from all icons have been added.
 ```javascript
-import { getIcon, SVG_PATHS } from './modules/core/SVGIcons';
+import { getIcon, SVG_PATHS } from './modules/core/GetIcon';
 
 const icon = getIcon({
     path: SVG_PATHS.GeoMarkerFilled,
@@ -874,7 +874,7 @@ const icon = getIcon({
 #### Windbarb icons
 The windbarbs are available from 0 to 190 knots (0 to 97.5m/s). To get more information about the windbarbs visit my other project [github.com/qulle/svg-wind-barbs](https://github.com/qulle/svg-wind-barbs).
 ```javascript
-import { getWindBarb } from './modules/core/SVGWindbarbs';
+import { getWindBarb } from './modules/core/GetWindBarb';
 
 const icon = getWindBarb({
     windSpeed: 25,
@@ -903,7 +903,7 @@ map.addControl(new ContextMenu({
 There is a module for storing context menu names located in `./modules/helpers/Constants/ContextMenus`.
 ```javascript
 const CONTEXT_MENUS = {
-    MainMap: 'main.map.context.menu'
+    mainMap: 'main.map.context.menu'
 };
 ```
 

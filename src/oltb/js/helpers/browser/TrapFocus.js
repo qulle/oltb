@@ -1,24 +1,26 @@
+import { KEYS } from "../constants/Keys";
+
 const FOCUSABLE_ELEMENTS = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
 
 const trapFocusKeyListener = function(event) {
-    const isTabPressed = event.key.toLowerCase() === 'tab';
+    const isTabKey = event.key.toLowerCase() === KEYS.tab;
 
-    if(!isTabPressed) {
+    if(!isTabKey) {
         return;
     }
     
-    const firstFocusableElement = this.querySelectorAll(FOCUSABLE_ELEMENTS)[0];
-    const focusableContent = this.querySelectorAll(FOCUSABLE_ELEMENTS);
-    const lastFocusableElement = focusableContent[focusableContent.length - 1];
+    const firstElement = this.querySelectorAll(FOCUSABLE_ELEMENTS)[0];
+    const content = this.querySelectorAll(FOCUSABLE_ELEMENTS);
+    const lastElement = content[content.length - 1];
 
     if(event.shiftKey) {
-        if(document.activeElement === firstFocusableElement) {
-            lastFocusableElement.focus();
+        if(document.activeElement === firstElement) {
+            lastElement.focus();
             event.preventDefault();
         }
     }else {
-        if(document.activeElement === lastFocusableElement) {
-            firstFocusableElement.focus();
+        if(document.activeElement === lastElement) {
+            firstElement.focus();
             event.preventDefault();
         }
     }

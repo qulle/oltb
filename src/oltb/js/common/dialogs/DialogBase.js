@@ -1,4 +1,5 @@
 import DOM from '../../helpers/browser/DOM';
+import { KEYS } from '../../helpers/constants/Keys';
 import { EVENTS } from '../../helpers/constants/Events';
 import { isDarkTheme } from '../../helpers/IsDarkTheme';
 import { trapFocusKeyListener } from '../../helpers/browser/TrapFocus';
@@ -25,7 +26,7 @@ class DialogBase {
     }
 
     onWindowKeyUp(event) {
-        if(event.key.toLowerCase() === 'escape') {
+        if(event.key.toLowerCase() === KEYS.escape) {
             this.close();
         }
     }

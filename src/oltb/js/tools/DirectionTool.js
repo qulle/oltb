@@ -1,4 +1,4 @@
-import DOM from '../helpers/Browser/DOM';
+import DOM from '../helpers/browser/DOM';
 import CONFIG from '../core/Config';
 import StateManager from '../core/managers/StateManager';
 import { EVENTS } from '../helpers/constants/Events';
@@ -7,7 +7,7 @@ import { isHorizontal } from '../helpers/IsRowDirection';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { TOOLBAR_ELEMENT } from '../core/elements/index';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
-import { SVG_PATHS, getIcon } from '../core/icons/SVGIcons';
+import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 import { LOCAL_STORAGE_KEYS } from '../helpers/constants/LocalStorageKeys';
 import { toolButtonsTippySingleton } from '../core/Tooltips';
 
@@ -21,12 +21,12 @@ class DirectionTool extends Control {
         });
         
         this.horizontalIcon = getIcon({
-            path: SVG_PATHS.DirectionHorizontal,
+            path: SVG_PATHS.directionHorizontal,
             class: 'oltb-tool-button__icon'
         });
 
         this.verticalIcon = getIcon({
-            path: SVG_PATHS.DirectionVertical,
+            path: SVG_PATHS.directionVertical,
             class: 'oltb-tool-button__icon'
         });
 

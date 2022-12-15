@@ -1,4 +1,4 @@
-import DOM from "../../helpers/Browser/DOM";
+import DOM from "../../helpers/browser/DOM";
 import CONFIG from "../Config";
 import Overlay from 'ol/Overlay';
 import { EVENTS } from '../../helpers/constants/Events';

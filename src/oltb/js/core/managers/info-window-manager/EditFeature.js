@@ -5,7 +5,7 @@ import { EVENTS } from '../../../helpers/constants/Events';
 import { transform } from 'ol/proj';
 import { toStringHDMS } from 'ol/coordinate';
 import { generateMarker } from '../../../generators/GenerateMarker';
-import { SVG_PATHS, getIcon } from '../../icons/SVGIcons';
+import { SVG_PATHS, getIcon } from '../../icons/GetIcon';
 
 const ID_PREFIX = 'oltb-info-window-marker';
 

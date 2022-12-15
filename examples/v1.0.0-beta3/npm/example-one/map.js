@@ -5,17 +5,13 @@ import { get as getProjection } from 'ol/proj';
 import { defaults as defaultControls } from 'ol/control';
 import { defaults as defaultInterctions } from 'ol/interaction';
 
-// Add layers
-import '../shared/layers/Maps';
-import '../shared/layers/Wind';
-import '../shared/layers/Capitals';
-import '../shared/layers/Countries';
-import '../shared/layers/Continents';
+// Layers
+import '../shared/Maps';
 
-// The Toolbar
+// Toolbar
 import OLTB from '../../../../src/oltb/js/oltb';
 
-// Create Map instance
+// Create Map
 const map = new Map({
     interactions: defaultInterctions({
         mouseWheelZoom: false,
@@ -32,7 +28,7 @@ const map = new Map({
     })
 });
 
-// Create Toolbar instance
+// Create Toolbar
 const toolbar = new OLTB({
     map: map,
     tools: {
@@ -90,6 +86,7 @@ const toolbar = new OLTB({
         },
         ExportPNGTool: {
             filename: 'map-image-export',
+            appendTime: true,
             click: function() {
                 console.log('ExportPNGTool clicked');
             },

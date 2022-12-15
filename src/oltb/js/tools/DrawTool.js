@@ -1,4 +1,4 @@
-import DOM from '../helpers/Browser/DOM';
+import DOM from '../helpers/browser/DOM';
 import Draw from 'ol/interaction/Draw';
 import Toast from '../common/Toast';
 import CONFIG from '../core/Config';
@@ -6,14 +6,15 @@ import ToolManager from '../core/managers/ToolManager';
 import StateManager from '../core/managers/StateManager';
 import LayerManager from '../core/managers/LayerManager';
 import SettingsManager from '../core/managers/SettingsManager';
+import { KEYS } from '../helpers/constants/Key';
 import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { SETTINGS } from '../helpers/constants/Settings';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
-import { eventDispatcher } from '../helpers/Browser/EventDispatcher';
+import { eventDispatcher } from '../helpers/browser/EventDispatcher';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
 import { FEATURE_PROPERTIES } from '../helpers/constants/FeatureProperties';
-import { SVG_PATHS, getIcon } from '../core/icons/SVGIcons';
+import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 import { LOCAL_STORAGE_KEYS } from '../helpers/constants/LocalStorageKeys';
 import { LinearRing, Polygon } from 'ol/geom';
 import { isFeatureIntersectable } from '../helpers/IsFeatureIntersectable';
@@ -41,7 +42,7 @@ class DrawTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.Pen,
+            path: SVG_PATHS.pen,
             class: 'oltb-tool-button__icon'
         });
 
@@ -181,11 +182,11 @@ class DrawTool extends Control {
     onWindowKeyUp(event) {
         const key = event.key.toLowerCase();
 
-        if(key === 'escape') {
+        if(key === KEYS.escape) {
             if(this.interaction) {
                 this.interaction.abortDrawing();
             }
-        }else if(event.ctrlKey && key === 'z') {
+        }else if(event.ctrlKey && key === KEYS.z) {
             if(this.interaction) {
                 this.interaction.removeLastPoint();
             }

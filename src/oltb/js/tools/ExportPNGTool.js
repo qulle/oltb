@@ -1,14 +1,14 @@
-import DOM from '../helpers/Browser/DOM';
+import DOM from '../helpers/browser/DOM';
 import Toast from '../common/Toast';
 import CONFIG from '../core/Config';
 import URLManager from '../core/managers/URLManager';
 import html2canvas from 'html2canvas';
 import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
-import { download } from '../helpers/Browser/Download';
+import { download } from '../helpers/browser/Download';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
-import { SVG_PATHS, getIcon } from '../core/icons/SVGIcons';
+import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 import { MAP_ELEMENT, TOOLBAR_ELEMENT } from '../core/elements/index';
 
 const DEFAULT_OPTIONS = {
@@ -23,7 +23,7 @@ class ExportPNGTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.Export,
+            path: SVG_PATHS.export,
             class: 'oltb-tool-button__icon'
         });
 

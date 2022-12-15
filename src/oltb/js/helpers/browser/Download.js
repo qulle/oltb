@@ -1,4 +1,4 @@
-import DOM from '../../helpers/Browser/DOM';
+import DOM from '../../helpers/browser/DOM';
 
 const download = function(filename, content) {
     const downloadTrigger = DOM.createElement({

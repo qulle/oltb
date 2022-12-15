@@ -2,14 +2,14 @@ import Toast from "../../src/oltb/js/common/Toast";
 import LayerManager from "../../src/oltb/js/core/managers/LayerManager";
 import { toStringHDMS } from "ol/coordinate";
 import { generateMarker } from '../../src/oltb/js/generators/GenerateMarker';
-import { getIcon, SVG_PATHS } from "../../src/oltb/js/core/icons/SVGIcons";
+import { getIcon, SVG_PATHS } from "../../src/oltb/js/core/icons/GetIcon";
 
 import urlCapitalsGeoJSON from 'url:../geojson/capitals.geojson';
 
 const ID_PREFIX = 'oltb-info-window-marker';
 
 const ICON = getIcon({
-    path: SVG_PATHS.GeoMarkerFilled,
+    path: SVG_PATHS.geoMarkerFilled,
     width: 20,
     height: 20,
     fill: 'rgb(255, 255, 255)'

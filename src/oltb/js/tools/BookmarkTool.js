@@ -1,9 +1,10 @@
-import DOM from '../helpers/Browser/DOM';
+import DOM from '../helpers/browser/DOM';
 import tippy from 'tippy.js';
 import Toast from '../common/Toast';
 import CONFIG from '../core/Config';
 import Dialog from '../common/Dialog';
 import StateManager from '../core/managers/StateManager';
+import { KEYS } from '../helpers/constants/Keys';
 import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { easeOut } from 'ol/easing';
@@ -11,7 +12,7 @@ import { randomNumber } from '../helpers/browser/Random';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { CONTEXT_MENUS } from '../helpers/constants/ContextMenus';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
-import { SVG_PATHS, getIcon } from '../core/icons/SVGIcons';
+import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 import { addContextMenuItem } from '../common/ContextMenu';
 import { LOCAL_STORAGE_KEYS } from '../helpers/constants/LocalStorageKeys';
 import { generateAnimalName } from '../helpers/name-generator/NameGenerator';
@@ -38,7 +39,7 @@ class BookmarkTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.Bookmark,
+            path: SVG_PATHS.bookmark,
             class: 'oltb-tool-button__icon'
         });
 
@@ -78,7 +79,7 @@ class BookmarkTool extends Control {
                             <input type="text" id="${ID_PREFIX}-add-txt" class="oltb-input" placeholder="Bookmark name">
                             <button type="button" id="${ID_PREFIX}-add-btn" class="oltb-btn oltb-btn--green-mid oltb-tippy" title="Add Bookmark">
                                 ${getIcon({
-                                    path: SVG_PATHS.PlusSmall,
+                                    path: SVG_PATHS.plusSmall,
                                     width: 20,
                                     height: 20,
                                     fill: 'none',
@@ -172,8 +173,8 @@ class BookmarkTool extends Control {
 
     onBookmarkAdd(event) {
         if(
-            event.type === 'keyup' && 
-            event.key.toLowerCase() !== 'enter'
+            event.type === EVENTS.browser.keyUp && 
+            event.key.toLowerCase() !== KEYS.enter
         ) {
             return;
         }

@@ -1,4 +1,4 @@
-import DOM from '../helpers/Browser/DOM';
+import DOM from '../helpers/browser/DOM';
 import Toast from '../common/Toast';
 import Dialog from '../common/Dialog';
 import CONFIG from '../core/Config';
@@ -10,7 +10,7 @@ import { CONTEXT_MENUS } from '../helpers/constants/ContextMenus';
 import { TOOLBAR_ELEMENT } from '../core/elements/index';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
 import { addContextMenuItem } from '../common/ContextMenu';
-import { SVG_PATHS, getIcon } from '../core/icons/SVGIcons';
+import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 import { degreesToRadians, radiansToDegrees } from '../helpers/Conversions';
 
 const DEFAULT_OPTIONS = {};
@@ -22,7 +22,7 @@ class ResetNorthTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.Compass,
+            path: SVG_PATHS.compass,
             class: 'oltb-tool-button__icon'
         });
 

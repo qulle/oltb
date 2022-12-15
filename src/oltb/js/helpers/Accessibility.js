@@ -1,5 +1,6 @@
 import CONFIG from '../core/Config';
 import URLManager from '../core/managers/URLManager';
+import { KEYS } from './constants/Key';
 import { EVENTS } from './constants/Events';
 import { TOOLBAR_ELEMENT, TOOLBOX_ELEMENT, MAP_ELEMENT } from '../core/elements/index';
 
@@ -20,7 +21,7 @@ document.body.addEventListener(EVENTS.browser.mouseDown, function(event) {
 });
 
 document.body.addEventListener(EVENTS.browser.keyDown, function(event) {
-    if(event.key.toLowerCase() === 'tab') {
+    if(event.key.toLowerCase() === KEYS.tab) {
         document.body.classList.add('oltb-using-keyboard');
     }
 });

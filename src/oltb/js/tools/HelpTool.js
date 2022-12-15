@@ -1,11 +1,11 @@
-import DOM from '../helpers/Browser/DOM';
+import DOM from '../helpers/browser/DOM';
 import Toast from '../common/Toast';
 import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { TOOLBAR_ELEMENT } from '../core/elements/index';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
-import { SVG_PATHS, getIcon } from '../core/icons/SVGIcons';
+import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 
 const DEFAULT_OPTIONS = {
     url: 'https://github.com/qulle/oltb',
@@ -19,7 +19,7 @@ class HelpTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.Help,
+            path: SVG_PATHS.help,
             class: 'oltb-tool-button__icon'
         });
 

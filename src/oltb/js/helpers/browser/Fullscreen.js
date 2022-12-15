@@ -5,8 +5,8 @@ const FULL_SCREEN_EVENTS = [
 ];
   
 const FULL_SCREEN_EVENT_TYPE = {
-    EnterFullScreen: 'enterfullscreen',
-    LeaveFullScreen: 'leavefullscreen'
+    enterFullScreen: 'enterfullscreen',
+    leaveFullScreen: 'leavefullscreen'
 };
 
 const isFullScreenSupported = function() {

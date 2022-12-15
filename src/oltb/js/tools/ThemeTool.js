@@ -1,4 +1,4 @@
-import DOM from '../helpers/Browser/DOM';
+import DOM from '../helpers/browser/DOM';
 import StateManager from '../core/managers/StateManager';
 import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
@@ -6,7 +6,7 @@ import { isDarkTheme } from '../helpers/IsDarkTheme';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { TOOLBAR_ELEMENT } from '../core/elements/index';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
-import { SVG_PATHS, getIcon } from '../core/icons/SVGIcons';
+import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 import { LOCAL_STORAGE_KEYS } from '../helpers/constants/LocalStorageKeys';
 
 const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.themeTool;
@@ -19,12 +19,12 @@ class ThemeTool extends Control {
         });
         
         this.lightThemeIcon = getIcon({
-            path: SVG_PATHS.LightOn,
+            path: SVG_PATHS.lightOn,
             class: 'oltb-tool-button__icon'
         });
 
         this.darkThemeIcon = getIcon({
-            path: SVG_PATHS.LightOff,
+            path: SVG_PATHS.lightOff,
             class: 'oltb-tool-button__icon'
         });
         

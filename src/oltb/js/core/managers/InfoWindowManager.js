@@ -1,4 +1,4 @@
-import DOM from '../../helpers/Browser/DOM';
+import DOM from '../../helpers/browser/DOM';
 import CONFIG from '../Config';
 import Overlay from 'ol/Overlay';
 import { EVENTS } from '../../helpers/Constants/Events';
@@ -6,7 +6,7 @@ import { getCenter } from 'ol/extent';
 import { editFeature } from './info-window-manager/EditFeature';
 import { removeFeature } from './info-window-manager/RemoveFeature';
 import { copyFeatureInfo } from './info-window-manager/CopyFeatureInfo';
-import { SVG_PATHS, getIcon } from '../icons/SVGIcons';
+import { SVG_PATHS, getIcon } from '../icons/GetIcon';
 import { Fill, Stroke, Style } from 'ol/style';
 import { trapFocusKeyListener } from '../../helpers/browser/TrapFocus';
 
@@ -46,7 +46,7 @@ class InfoWindowManager {
         const closeButton = DOM.createElement({
             element: 'button', 
             html: getIcon({
-                path: SVG_PATHS.Close,
+                path: SVG_PATHS.close,
                 fill: 'none',
                 stroke: 'currentColor'
             }),

@@ -7,7 +7,7 @@ import { CONTEXT_MENUS } from '../../helpers/constants/ContextMenus';
 import { generateMarker } from '../../generators/GenerateMarker';
 import { TOOLBAR_ELEMENT } from '../../core/elements/index';
 import { addContextMenuItem } from '../../common/ContextMenu';
-import { SVG_PATHS, getIcon } from '../../core/icons/SVGIcons';
+import { SVG_PATHS, getIcon } from '../../core/icons/GetIcon';
 
 const ID_PREFIX = 'oltb-info-window';
 const DEFAULT_OPTIONS = {};
@@ -21,7 +21,7 @@ class HiddenMarkerTool extends Control {
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
         const createIcon = getIcon({
-            path: SVG_PATHS.Plus
+            path: SVG_PATHS.plus
         });
 
         addContextMenuItem(CONTEXT_MENUS.mainMap, {

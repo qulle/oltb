@@ -6,7 +6,7 @@ import { easeOut } from 'ol/easing';
 import { CONTEXT_MENUS } from '../../helpers/constants/ContextMenus';
 import { TOOLBAR_ELEMENT } from '../../core/elements/index';
 import { addContextMenuItem } from '../../common/ContextMenu';
-import { SVG_PATHS, getIcon } from '../../core/icons/SVGIcons';
+import { SVG_PATHS, getIcon } from '../../core/icons/GetIcon';
 import { LOCAL_STORAGE_KEYS } from '../../helpers/constants/LocalStorageKeys';
 import { fromLonLat, toLonLat } from 'ol/proj';
 
@@ -36,11 +36,11 @@ class HiddenMapNavigationTool extends Control {
         this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
 
         const moveCenterIcon = getIcon({
-            path: SVG_PATHS.MoveCenter
+            path: SVG_PATHS.moveCenter
         });
         
         const focusHereIcon = getIcon({
-            path: SVG_PATHS.FocusHere
+            path: SVG_PATHS.focusHere
         });
 
         addContextMenuItem(CONTEXT_MENUS.mainMap, {

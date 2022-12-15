@@ -1,4 +1,4 @@
-import DOM from '../helpers/Browser/DOM';
+import DOM from '../helpers/browser/DOM';
 import Toast from '../common/Toast';
 import CONFIG from '../core/Config';
 import { EVENTS } from '../helpers/constants/Events';
@@ -9,7 +9,7 @@ import { CONTEXT_MENUS } from '../helpers/constants/ContextMenus';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { TOOLBAR_ELEMENT } from '../core/elements/index';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
-import { SVG_PATHS, getIcon } from '../core/icons/SVGIcons';
+import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 import { addContextMenuItem } from '../common/ContextMenu';
 
 const DEFAULT_OPTIONS = {
@@ -25,7 +25,7 @@ class HomeTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.Home,
+            path: SVG_PATHS.home,
             class: 'oltb-tool-button__icon'
         });
 

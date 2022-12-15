@@ -1,4 +1,4 @@
-import DOM from '../helpers/Browser/DOM';
+import DOM from '../helpers/browser/DOM';
 import Toast from '../common/Toast';
 import CONFIG from '../core/Config';
 import ToolManager from '../core/managers/ToolManager';
@@ -13,9 +13,9 @@ import { transform } from 'ol/proj';
 import { toStringHDMS } from 'ol/coordinate';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { TOOLBAR_ELEMENT } from '../core/elements/index';
-import { copyToClipboard } from '../helpers/Browser/CopyToClipboard';
+import { copyToClipboard } from '../helpers/browser/CopyToClipboard';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
-import { SVG_PATHS, getIcon } from '../core/icons/SVGIcons';
+import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 import { LOCAL_STORAGE_KEYS } from '../helpers/constants/LocalStorageKeys';
 
 const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.coordinateTool;
@@ -32,7 +32,7 @@ class CoordinateTool extends Control {
         });
 
         const icon = getIcon({
-            path: SVG_PATHS.Coordinate,
+            path: SVG_PATHS.coordinate,
             class: 'oltb-tool-button__icon'
         });
 

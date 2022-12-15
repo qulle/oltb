@@ -1,4 +1,4 @@
-import DOM from '../helpers/Browser/DOM';
+import DOM from '../helpers/browser/DOM';
 import Toast from '../common/Toast';
 import CONFIG from '../core/Config';
 import Dialog from '../common/Dialog';
@@ -13,8 +13,8 @@ import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { generateMarker } from '../generators/GenerateMarker';
 import { TOOLBAR_ELEMENT } from '../core/elements/index';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
-import { SVG_PATHS, getIcon } from '../core/icons/SVGIcons';
-import { isFullScreen, exitFullScreen } from '../helpers/Browser/Fullscreen';
+import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
+import { isFullScreen, exitFullScreen } from '../helpers/browser/Fullscreen';
 
 const ID_PREFIX = 'oltb-info-window-marker';
 
@@ -30,7 +30,7 @@ class MyLocationTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.GeoMarker,
+            path: SVG_PATHS.geoMarker,
             class: 'oltb-tool-button__icon'
         });
 
@@ -123,7 +123,7 @@ class MyLocationTool extends Control {
         const prettyCoords = toStringHDMS([lon, lat]);
 
         const icon = getIcon({
-            path: SVG_PATHS.GeoMarkerFilled,
+            path: SVG_PATHS.geoMarkerFilled,
             width: 20,
             height: 20,
             fill: 'rgb(255, 255, 255)'

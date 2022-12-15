@@ -1,4 +1,4 @@
-import DOM from '../helpers/Browser/DOM';
+import DOM from '../helpers/browser/DOM';
 import Toast from '../common/Toast';
 import { EVENTS } from '../helpers/constants/Events';
 import { listen } from 'ol/events';
@@ -6,7 +6,7 @@ import { Control } from 'ol/control';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { TOOLBAR_ELEMENT } from '../core/elements/index';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
-import { SVG_PATHS, getIcon } from '../core/icons/SVGIcons';
+import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 import {
     FULL_SCREEN_EVENTS,
     FULL_SCREEN_EVENT_TYPE,
@@ -15,7 +15,7 @@ import {
     requestFullScreen,
     requestFullScreenWithKeys,
     exitFullScreen
-} from '../helpers/Browser/Fullscreen';
+} from '../helpers/browser/Fullscreen';
 
 const DEFAULT_OPTIONS = {};
 
@@ -26,12 +26,12 @@ class FullscreenTool extends Control {
         });
 
         this.enterFullscreenIcon = getIcon({
-            path: SVG_PATHS.EnterFullScreen,
+            path: SVG_PATHS.enterFullScreen,
             class: 'oltb-tool-button__icon'
         });
 
         this.exitFullscreenIcon = getIcon({
-            path: SVG_PATHS.ExitFullScreen,
+            path: SVG_PATHS.exitFullScreen,
             class: 'oltb-tool-button__icon'
         });
 
@@ -113,11 +113,11 @@ class FullscreenTool extends Control {
         if(isFullScreen()) {
             this.button.removeChild(this.button.firstElementChild);
             this.button.insertAdjacentHTML('afterbegin', this.exitFullscreenIcon);
-            this.dispatchEvent(FULL_SCREEN_EVENT_TYPE.EnterFullScreen);
+            this.dispatchEvent(FULL_SCREEN_EVENT_TYPE.enterFullScreen);
         }else {
             this.button.removeChild(this.button.firstElementChild);
             this.button.insertAdjacentHTML('afterbegin', this.enterFullscreenIcon);
-            this.dispatchEvent(FULL_SCREEN_EVENT_TYPE.LeaveFullScreen);
+            this.dispatchEvent(FULL_SCREEN_EVENT_TYPE.leaveFullScreen);
         }
 
         this.getMap().updateSize();

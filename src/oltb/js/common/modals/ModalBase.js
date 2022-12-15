@@ -1,7 +1,8 @@
-import DOM from '../../helpers/Browser/DOM';
+import DOM from '../../helpers/browser/DOM';
+import { KEYS } from '../../helpers/constants/Keys';
 import { EVENTS } from '../../helpers/constants/Events';
 import { MAP_ELEMENT } from '../../core/elements/index';
-import { SVG_PATHS, getIcon } from '../../core/icons/SVGIcons';
+import { SVG_PATHS, getIcon } from '../../core/icons/GetIcon';
 import { trapFocusKeyListener } from '../../helpers/browser/TrapFocus';
 
 const ANIMATION_CLASS = 'oltb-animation--bounce';
@@ -39,7 +40,7 @@ class ModalBase {
         const modalClose = DOM.createElement({
             element: 'button', 
             html: getIcon({
-                path: SVG_PATHS.Close, 
+                path: SVG_PATHS.close, 
                 fill: 'none', 
                 stroke: 'currentColor'
             }),
@@ -63,7 +64,7 @@ class ModalBase {
     }
 
     onWindowKeyUp(event) {
-        if(event.key.toLowerCase() === 'escape') {
+        if(event.key.toLowerCase() === KEYS.escape) {
             this.close();
         }
     }

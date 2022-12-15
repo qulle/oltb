@@ -7,19 +7,19 @@ import { defaults as defaultControls } from 'ol/control';
 import { platformModifierKeyOnly, altShiftKeysOnly, shiftKeyOnly, targetNotEditable } from 'ol/events/condition';
 import { defaults as defaultInterctions, MouseWheelZoom, DragPan, DragRotate, KeyboardZoom, KeyboardPan } from 'ol/interaction';
 
-// Add layers
+// Layers
 import './layers/Maps';
 import './layers/Wind';
 import './layers/Capitals';
 import './layers/Countries';
 import './layers/Continents';
 
-// Additional toolbar helpers
+// Toolbar helpers
 import '../src/oltb/js/core/Tooltips';
 import '../src/oltb/js/epsg/Registrate';
-import '../src/oltb/js/helpers/browser/SlideToggle';
 import '../src/oltb/js/helpers/Accessibility';
-import '../src/oltb/js/helpers/Browser/Prototypes';
+import '../src/oltb/js/helpers/browser/Prototypes';
+import '../src/oltb/js/helpers/browser/SlideToggle';
 
 // Core Toolbar
 import '../src/oltb/scss/oltb.scss';
@@ -37,7 +37,7 @@ import TooltipManager from '../src/oltb/js/core/managers/TooltipManager';
 import SettingsManager from '../src/oltb/js/core/managers/SettingsManager';
 import InfoWindowManager from '../src/oltb/js/core/managers/InfoWindowManager';
 
-// Import individual tools
+// Toolbar tools
 import HomeTool from '../src/oltb/js/tools/HomeTool';
 import DrawTool from '../src/oltb/js/tools/DrawTool';
 import EditTool from '../src/oltb/js/tools/EditTool';
@@ -82,7 +82,7 @@ const LOCAL_STORAGE_DEFAULTS = {
 const LOCAL_STORAGE_STATE = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
 const LOCAL_STORAGE = { ...LOCAL_STORAGE_DEFAULTS, ...LOCAL_STORAGE_STATE };
 
-// Create Map instance
+// Create Map
 const map = new Map({
     interactions: defaultInterctions({
         mouseWheelZoom: false,

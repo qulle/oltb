@@ -1,4 +1,4 @@
-import DOM from '../helpers/Browser/DOM';
+import DOM from '../helpers/browser/DOM';
 import Toast from '../common/Toast';
 import StateManager from '../core/managers/StateManager';
 import { EVENTS } from '../helpers/constants/Events';
@@ -8,7 +8,7 @@ import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { getRenderPixel } from 'ol/render';
 import { TOOLBAR_ELEMENT } from '../core/elements/index';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
-import { SVG_PATHS, getIcon } from '../core/icons/SVGIcons';
+import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 import { LOCAL_STORAGE_KEYS } from '../helpers/constants/LocalStorageKeys';
 
 const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.magnifyTool;
@@ -25,7 +25,7 @@ class MagnifyTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.Magnify,
+            path: SVG_PATHS.magnify,
             class: 'oltb-tool-button__icon'
         });
 

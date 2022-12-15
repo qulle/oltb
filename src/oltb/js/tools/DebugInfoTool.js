@@ -1,4 +1,4 @@
-import DOM from '../helpers/Browser/DOM';
+import DOM from '../helpers/browser/DOM';
 import CONFIG from '../core/Config';
 import URLManager from '../core/managers/URLManager';
 import DebugInfoModal from './modal-extensions/DebugInfoModal';
@@ -8,7 +8,7 @@ import { PROJECTIONS } from '../epsg/Projections';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { TOOLBAR_ELEMENT } from '../core/elements/index';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
-import { SVG_PATHS, getIcon } from '../core/icons/SVGIcons';
+import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 
 const DEFAULT_OPTIONS = {
     onlyWhenGetParameter: false
@@ -21,7 +21,7 @@ class DebugInfoTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.Debug,
+            path: SVG_PATHS.debug,
             class: 'oltb-tool-button__icon'
         });
 

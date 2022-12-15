@@ -1,4 +1,4 @@
-import DOM from '../helpers/Browser/DOM';
+import DOM from '../helpers/browser/DOM';
 import tippy from 'tippy.js';
 import Toast from '../common/Toast';
 import Dialog from '../common/Dialog';
@@ -8,9 +8,10 @@ import StateManager from '../core/managers/StateManager';
 import LayerManager from '../core/managers/LayerManager';
 import InfoWindowManager from '../core/managers/InfoWindowManager';
 import DownloadLayerModal from './modal-extensions/DownloadLayerModal';
+import { KEYS } from '../helpers/constants/Keys';
 import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
-import { download } from '../helpers/Browser/Download';
+import { download } from '../helpers/browser/Download';
 import { CONTEXT_MENUS } from '../helpers/constants/ContextMenus';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { instantiateLayer } from '../core/ol-types/LayerTypes';
@@ -18,7 +19,7 @@ import { instantiateSource } from '../core/ol-types/SourceTypes';
 import { instantiateFormat } from '../core/ol-types/FormatTypes';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
 import { addContextMenuItem } from '../common/ContextMenu';
-import { SVG_PATHS, getIcon } from '../core/icons/SVGIcons';
+import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 import { LOCAL_STORAGE_KEYS } from '../helpers/constants/LocalStorageKeys';
 import { FEATURE_PROPERTIES } from '../helpers/constants/FeatureProperties';
 import { hasCustomFeatureProperty } from '../helpers/browser/HasNestedProperty';
@@ -57,7 +58,7 @@ class LayerTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.Layers,
+            path: SVG_PATHS.layers,
             class: 'oltb-tool-button__icon'
         });
 
@@ -119,7 +120,7 @@ class LayerTool extends Control {
                                     <input type="text" id="${ID_PREFIX}-feature-stack-add-txt" class="oltb-input" placeholder="Layer name">
                                     <button type="button" id="${ID_PREFIX}-feature-stack-add-btn" class="oltb-btn oltb-btn--green-mid oltb-tippy" title="Create feature layer">
                                         ${getIcon({
-                                            path: SVG_PATHS.PlusSmall,
+                                            path: SVG_PATHS.plusSmall,
                                             width: 20,
                                             height: 20,
                                             fill: 'none',
@@ -206,8 +207,8 @@ class LayerTool extends Control {
 
     onFeatureLayerAdd(event) {
         if(
-            event.type === 'keyup' && 
-            event.key.toLowerCase() !== 'enter'
+            event.type === EVENTS.browser.keyUp && 
+            event.key.toLowerCase() !== KEYS.enter
         ) {
             return;
         }

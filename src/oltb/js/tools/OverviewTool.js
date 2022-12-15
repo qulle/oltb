@@ -1,12 +1,12 @@
 import OSM from 'ol/source/OSM';
-import DOM from '../helpers/Browser/DOM';
+import DOM from '../helpers/browser/DOM';
 import CONFIG from '../core/Config';
 import TileLayer from 'ol/layer/Tile';
 import StateManager from '../core/managers/StateManager';
 import { EVENTS } from '../helpers/constants/Events';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
-import { SVG_PATHS, getIcon } from '../core/icons/SVGIcons';
+import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 import { LOCAL_STORAGE_KEYS } from '../helpers/constants/LocalStorageKeys';
 import { Control, OverviewMap } from 'ol/control';
 import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT } from '../core/elements/index';
@@ -27,7 +27,7 @@ class OverviewTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.AspectRation,
+            path: SVG_PATHS.aspectRation,
             class: 'oltb-tool-button__icon'
         });
 

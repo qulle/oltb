@@ -22,7 +22,7 @@ import TooltipManager from './core/managers/TooltipManager';
 import SettingsManager from './core/managers/SettingsManager';
 import InfoWindowManager from './core/managers/InfoWindowManager';
 
-// Custom OL generator functions
+// Generator functions
 import { generateMarker } from './generators/GenerateMarker';
 import { generateTooltip } from './generators/GenerateTooltip';
 import { generateWindbarb } from './generators/GenerateWindbarb';
@@ -30,12 +30,12 @@ import { generateWindbarb } from './generators/GenerateWindbarb';
 // Toolbar tools
 import ALL_TOOLS from './tools/index';
 
-// Additional toolbar helpers
+// Toolbar helpers
 import './core/Tooltips';
 import './epsg/Registrate';
-import './helpers/browser/SlideToggle';
 import './helpers/Accessibility';
-import './helpers/Browser/Prototypes';
+import './helpers/browser/Prototypes';
+import './helpers/browser/SlideToggle';
 
 // This is the same NODE_NAME and PROPS that the MapNavigationTool.js is using
 const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.mapData;
@@ -55,18 +55,18 @@ class OLTB {
 
     static CONFIG = CONFIG;
 
-    static StateManager      = StateManager;
-    static LayerManager      = LayerManager;
-    static TooltipManager    = TooltipManager;
-    static SettingsManager   = SettingsManager;
+    static StateManager = StateManager;
+    static LayerManager = LayerManager;
+    static TooltipManager = TooltipManager;
+    static SettingsManager = SettingsManager;
     static InfoWindowManager = InfoWindowManager;
     
-    static Toast  = Toast;
-    static Modal  = Modal;
+    static Toast = Toast;
+    static Modal = Modal;
     static Dialog = Dialog;
 
-    generateMarker   = generateMarker;
-    generateTooltip  = generateTooltip;
+    generateMarker = generateMarker;
+    generateTooltip = generateTooltip;
     generateWindbarb = generateWindbarb;
 
     constructor(options = {}) {
@@ -114,7 +114,6 @@ class OLTB {
         });
 
         map.setTarget(MAP_ELEMENT);
-
         map.getInteractions().extend([
             new MouseWheelZoom({
                 condition: function(event) { 

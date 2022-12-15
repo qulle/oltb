@@ -1,5 +1,5 @@
 import jsts from 'jsts/dist/jsts.min';
-import DOM from '../helpers/Browser/DOM';
+import DOM from '../helpers/browser/DOM';
 import Toast from '../common/Toast';
 import Dialog from '../common/Dialog';
 import CONFIG from '../core/Config';
@@ -8,6 +8,7 @@ import LayerManager from '../core/managers/LayerManager';
 import StateManager from '../core/managers/StateManager';
 import TooltipManager from '../core/managers/TooltipManager';
 import SettingsManager from '../core/managers/SettingsManager';
+import { KEYS } from '../helpers/constants/Key';
 import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { Feature } from 'ol';
@@ -17,7 +18,7 @@ import { shiftKeyOnly } from 'ol/events/condition';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { generateTooltip } from '../generators/GenerateTooltip';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
-import { SVG_PATHS, getIcon } from '../core/icons/SVGIcons';
+import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 import { LOCAL_STORAGE_KEYS } from '../helpers/constants/LocalStorageKeys';
 import { FEATURE_PROPERTIES } from '../helpers/constants/FeatureProperties';
 import { Fill, Stroke, Style } from 'ol/style';
@@ -85,7 +86,7 @@ class EditTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.Edit,
+            path: SVG_PATHS.edit,
             class: 'oltb-tool-button__icon'
         });
 
@@ -128,22 +129,22 @@ class EditTool extends Control {
                     <div class="oltb-toolbox-section__group">
                         <label class="oltb-label">Misc</label>
                         <button type="button" id="${ID_PREFIX}-delete-selected-btn" class="oltb-btn oltb-btn--blue-mid oltb-tippy" title="Delete">
-                            ${getIcon({ ...DEFAULT_BUTTON_PROPS, path: SVG_PATHS.Trash })}
+                            ${getIcon({ ...DEFAULT_BUTTON_PROPS, path: SVG_PATHS.trash })}
                         </button>
                     </div>
                     <div class="oltb-toolbox-section__group oltb-toolbox-section__group--sub-toolbar">
                         <label class="oltb-label">Shapes</label>
                         <button type="button" id="${ID_PREFIX}-union-selected-btn" class="oltb-btn oltb-btn--blue-mid oltb-tippy" title="Union">
-                            ${getIcon({ ...DEFAULT_BUTTON_PROPS, path: SVG_PATHS.Union })}
+                            ${getIcon({ ...DEFAULT_BUTTON_PROPS, path: SVG_PATHS.union })}
                         </button>
                         <button type="button" id="${ID_PREFIX}-intersect-selected-btn" class="oltb-btn oltb-btn--blue-mid oltb-tippy" title="Intersect">
-                            ${getIcon({ ...DEFAULT_BUTTON_PROPS, path: SVG_PATHS.Intersect })}
+                            ${getIcon({ ...DEFAULT_BUTTON_PROPS, path: SVG_PATHS.intersect })}
                         </button>
                         <button type="button" id="${ID_PREFIX}-exclude-selected-btn" class="oltb-btn oltb-btn--blue-mid oltb-tippy" title="Exclude">
-                            ${getIcon({ ...DEFAULT_BUTTON_PROPS, path: SVG_PATHS.Exclude })}
+                            ${getIcon({ ...DEFAULT_BUTTON_PROPS, path: SVG_PATHS.exclude })}
                         </button>
                         <button type="button" id="${ID_PREFIX}-difference-selected-btn" class="oltb-btn oltb-btn--blue-mid oltb-tippy" title="Difference">
-                            ${getIcon({ ...DEFAULT_BUTTON_PROPS, path: SVG_PATHS.Difference })}
+                            ${getIcon({ ...DEFAULT_BUTTON_PROPS, path: SVG_PATHS.difference })}
                         </button>
                     </div>
                     <div class="oltb-toolbox-section__group">
@@ -360,7 +361,7 @@ class EditTool extends Control {
     onWindowKeyUp(event) {
         if(isShortcutKeyOnly(event, SHORTCUT_KEYS.edit)) {
             this.handleClick(event);
-        }else if(event.key.toLowerCase() === 'delete' && this.active) {
+        }else if(event.key.toLowerCase() === KEYS.delete && this.active) {
             this.onDeleteSelectedFeatures();
         }
     }

@@ -1,4 +1,4 @@
-import DOM from '../helpers/Browser/DOM';
+import DOM from '../helpers/browser/DOM';
 import Modal from '../common/Modal';
 import CONFIG from '../core/Config';
 import { EVENTS } from '../helpers/constants/Events';
@@ -6,7 +6,7 @@ import { Control } from 'ol/control';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { TOOLBAR_ELEMENT } from '../core/elements/index';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
-import { SVG_PATHS, getIcon } from '../core/icons/SVGIcons';
+import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 
 const NOTIFICATION_URL = 'https://raw.githubusercontent.com/qulle/notification-endpoints/main/endpoints/oltb.json';
 const DEFAULT_OPTIONS = {};
@@ -18,7 +18,7 @@ class NotificationTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.Bell,
+            path: SVG_PATHS.bell,
             class: 'oltb-tool-button__icon'
         });
 

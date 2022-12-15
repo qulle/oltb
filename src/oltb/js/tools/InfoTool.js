@@ -1,11 +1,11 @@
-import DOM from '../helpers/Browser/DOM';
+import DOM from '../helpers/browser/DOM';
 import Modal from '../common/Modal';
 import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { TOOLBAR_ELEMENT } from '../core/elements/index';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
-import { SVG_PATHS, getIcon } from '../core/icons/SVGIcons';
+import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 
 const DEFAULT_OPTIONS = {
     title: 'Hey!',
@@ -19,7 +19,7 @@ class InfoTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.Info,
+            path: SVG_PATHS.info,
             class: 'oltb-tool-button__icon'
         });
 

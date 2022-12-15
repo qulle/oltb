@@ -1,7 +1,7 @@
-import DOM from '../../helpers/Browser/DOM';
+import DOM from '../../helpers/browser/DOM';
 import Toast from '../../common/Toast';
 import ModalBase from '../../common/modals/ModalBase';
-import { copyToClipboard } from '../../helpers/Browser/CopyToClipboard';
+import { copyToClipboard } from '../../helpers/browser/CopyToClipboard';
 
 class DebugInfoModal extends ModalBase {
     constructor(options = {}) {

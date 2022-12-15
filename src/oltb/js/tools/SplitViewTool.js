@@ -1,4 +1,4 @@
-import DOM from '../helpers/Browser/DOM';
+import DOM from '../helpers/browser/DOM';
 import Toast from '../common/Toast';
 import CONFIG from '../core/Config';
 import LayerManager from '../core/managers/LayerManager';
@@ -8,9 +8,9 @@ import { Control } from 'ol/control';
 import { unByKey } from 'ol/Observable';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { getRenderPixel } from 'ol/render';
-import { eventDispatcher } from '../helpers/Browser/EventDispatcher';
+import { eventDispatcher } from '../helpers/browser/EventDispatcher';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
-import { SVG_PATHS, getIcon } from '../core/icons/SVGIcons';
+import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 import { LOCAL_STORAGE_KEYS } from '../helpers/constants/LocalStorageKeys';
 import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT, MAP_ELEMENT } from '../core/elements/index';
 
@@ -31,7 +31,7 @@ class SplitViewTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.SplitView,
+            path: SVG_PATHS.splitView,
             class: 'oltb-tool-button__icon'
         });
 

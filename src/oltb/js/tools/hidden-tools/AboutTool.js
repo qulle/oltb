@@ -5,7 +5,7 @@ import { Control } from 'ol/control';
 import { CONTEXT_MENUS } from '../../helpers/constants/ContextMenus';
 import { TOOLBAR_ELEMENT } from '../../core/elements/index';
 import { addContextMenuItem } from '../../common/ContextMenu';
-import { SVG_PATHS, getIcon } from '../../core/icons/SVGIcons';
+import { SVG_PATHS, getIcon } from '../../core/icons/GetIcon';
 
 class HiddenAboutTool extends Control {
     constructor() {
@@ -14,7 +14,7 @@ class HiddenAboutTool extends Control {
         });
 
         const icon = getIcon({
-            path: SVG_PATHS.GitHub
+            path: SVG_PATHS.gitHub
         });
 
         addContextMenuItem(CONTEXT_MENUS.mainMap, {});

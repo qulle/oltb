@@ -1,4 +1,4 @@
-import DOM from '../helpers/Browser/DOM';
+import DOM from '../helpers/browser/DOM';
 import Toast from '../common/Toast';
 import CONFIG from '../core/Config';
 import LayerManager from '../core/managers/LayerManager';
@@ -9,7 +9,7 @@ import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { TOOLBAR_ELEMENT } from '../core/elements/index';
 import { instantiateFormat } from '../core/ol-types/FormatTypes';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
-import { SVG_PATHS, getIcon } from '../core/icons/SVGIcons';
+import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 
 const DEFAULT_OPTIONS = {};
 
@@ -20,7 +20,7 @@ class ImportVectorLayerTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.Open,
+            path: SVG_PATHS.open,
             class: 'oltb-tool-button__icon'
         });
 

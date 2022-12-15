@@ -1,4 +1,4 @@
-import DOM from '../helpers/Browser/DOM';
+import DOM from '../helpers/browser/DOM';
 import Toast from '../common/Toast';
 import Dialog from '../common/Dialog';
 import StateManager from '../core/managers/StateManager';
@@ -10,7 +10,7 @@ import { CONTEXT_MENUS } from '../helpers/constants/ContextMenus';
 import { TOOLBAR_ELEMENT } from '../core/elements/index';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
 import { addContextMenuItem } from '../common/ContextMenu';
-import { SVG_PATHS, getIcon } from '../core/icons/SVGIcons';
+import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 
 const DEFAULT_OPTIONS = {};
 
@@ -21,7 +21,7 @@ class SettingsTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.Settings,
+            path: SVG_PATHS.settings,
             class: 'oltb-tool-button__icon'
         });
 

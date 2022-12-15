@@ -1,4 +1,4 @@
-import DOM from '../helpers/Browser/DOM';
+import DOM from '../helpers/browser/DOM';
 import CONFIG from '../core/Config';
 import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
@@ -6,7 +6,7 @@ import { easeOut } from 'ol/easing';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { TOOLBAR_ELEMENT } from '../core/elements/index';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
-import { SVG_PATHS, getIcon } from '../core/icons/SVGIcons';
+import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 
 const DEFAULT_OPTIONS = {};
 
@@ -17,7 +17,7 @@ class ZoomInTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.ZoomIn,
+            path: SVG_PATHS.zoomIn,
             class: 'oltb-tool-button__icon'
         });
 

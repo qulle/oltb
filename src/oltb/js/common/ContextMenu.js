@@ -1,6 +1,7 @@
-import DOM from '../helpers/Browser/DOM';
+import DOM from '../helpers/browser/DOM';
 import CONFIG from '../core/Config';
 import Control from "ol/control/Control";
+import { KEYS } from '../helpers/constants/Keys';
 import { EVENTS } from "../helpers/constants/Events";
 import { transform } from 'ol/proj';
 import { MAP_ELEMENT } from "../core/elements/index";
@@ -66,9 +67,10 @@ class ContextMenu extends Control {
                     'click': this.click.bind(this),
                     'keyup': (event) => {
                         const key = event.key.toLowerCase();
-                        if(key === 'enter') {
+
+                        if(key === KEYS.enter) {
                             this.click(event);
-                        }else if(key === 'escape') {
+                        }else if(key === KEYS.escape) {
                             this.hide();
                         }
                     }

@@ -1,10 +1,10 @@
-import DOM from '../helpers/Browser/DOM';
+import DOM from '../helpers/browser/DOM';
 import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { TOOLBAR_ELEMENT } from '../core/elements/index';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
-import { SVG_PATHS, getIcon } from '../core/icons/SVGIcons';
+import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 
 const DEFAULT_OPTIONS = {};
 
@@ -15,7 +15,7 @@ class RefreshTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.Refresh,
+            path: SVG_PATHS.refresh,
             class: 'oltb-tool-button__icon'
         });
 
