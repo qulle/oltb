@@ -1,10 +1,10 @@
 import KML from 'ol/format/KML';
 import GeoJSON from 'ol/format/GeoJSON';
 
-const FORMAT_TYPES = {
+const FORMAT_TYPES = Object.freeze({
     'GeoJSON': GeoJSON,
     'KML': KML
-};
+});
 
 const instantiateFormat = function(name, options) {
     if(!(name in FORMAT_TYPES)) {

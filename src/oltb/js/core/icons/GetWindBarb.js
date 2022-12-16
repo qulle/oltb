@@ -1,4 +1,4 @@
-const WIND_BARB = {
+const WIND_BARB = Object.freeze({
     _0: '<path fill="#1A232D" d="M125,120c2.762,0,5,2.239,5,5c0,2.762-2.238,5-5,5c-2.761,0-5-2.238-5-5C120,122.239,122.239,120,125,120z"/><path fill="none" stroke="#1A232D" stroke-width="2" d="M125,115c5.523,0,10,4.477,10,10c0,5.523-4.477,10-10,10 c-5.523,0-10-4.477-10-10C115,119.477,119.477,115,125,115z "/>',
     _2: '<path class="svg-wb" d="M125,112V76 M125,125l7-12.1h-14L125,125z"/>',
     _5: '<path class="svg-wb" d="M125,112V76 M125,89l7-7 M125,125l7-12.1h-14L125,125z"/>',
@@ -39,7 +39,7 @@ const WIND_BARB = {
     _180: '<path class="svg-wb" d="M125,112V28 M125,28h14l-14,14V28z M125,42h14l-14,14V42z M125,56h14l-14,14V56z M125,80l14-14 M125,90l14-14 M125,100l14-14 M125,125l7-12.1h-14L125,125z"/>',
     _185: '<path class="svg-wb" d="M125,112V18 M125,18h14l-14,14V18z M125,32h14l-14,14V32z M125,46h14l-14,14V46z M125,70l14-14 M125,80l14-14 M125,90l14-14 M125,100l7-7 M125,125l7-12.1h-14L125,125z"/>',
     _190: '<path class="svg-wb" d="M125,112V18 M125,18h14l-14,14V18z M125,32h14l-14,14V32z M125,46h14l-14,14V46z M125,70l14-14 M125,80l14-14 M125,90l14-14 M125,100l14-14 M125,125l7-12.1h-14L125,125z"/>'
-};
+});
 
 const getSVGPath = function(windSpeed) {
          if(windSpeed >= 0.0  && windSpeed < 1.0)  return WIND_BARB._0;
@@ -85,14 +85,14 @@ const getSVGPath = function(windSpeed) {
     else return WIND_BARB._0;
 }
 
-const DEFAULT_OPTIONS = {
+const DEFAULT_OPTIONS = Object.freeze({
     windSpeed: 0,
     width: 250,
     height: 250,
     fill: 'rgba(59, 67, 82)',
     stroke: 'rgba(59, 67, 82)',
     strokeWidth: 3
-};
+});
 
 const getWindBarb = function(options = {}) {
     options = { ...DEFAULT_OPTIONS, ...options };

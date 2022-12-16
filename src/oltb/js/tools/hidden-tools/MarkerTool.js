@@ -10,7 +10,7 @@ import { addContextMenuItem } from '../../common/ContextMenu';
 import { SVG_PATHS, getIcon } from '../../core/icons/GetIcon';
 
 const ID_PREFIX = 'oltb-info-window';
-const DEFAULT_OPTIONS = {};
+const DEFAULT_OPTIONS = Object.freeze({});
 
 class HiddenMarkerTool extends Control {
     constructor(options = {}) {
@@ -21,19 +21,19 @@ class HiddenMarkerTool extends Control {
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
         const createIcon = getIcon({
-            path: SVG_PATHS.plus
+            path: SVG_PATHS.Plus
         });
 
-        addContextMenuItem(CONTEXT_MENUS.mainMap, {
+        addContextMenuItem(CONTEXT_MENUS.MainMap, {
             icon: createIcon, 
             name: 'Create marker', 
             fn: this.onContextMenuCreateMarker.bind(this)
         });
         
-        addContextMenuItem(CONTEXT_MENUS.mainMap, {});
+        addContextMenuItem(CONTEXT_MENUS.MainMap, {});
 
-        window.addEventListener(EVENTS.custom.featureEdited, this.onWindowFeatureEdited.bind(this));
-        window.addEventListener(EVENTS.custom.featureRemoved, this.onWindowFeatureRemoved.bind(this));
+        window.addEventListener(EVENTS.Custom.FeatureEdited, this.onWindowFeatureEdited.bind(this));
+        window.addEventListener(EVENTS.Custom.FeatureRemoved, this.onWindowFeatureRemoved.bind(this));
     }
 
     onContextMenuCreateMarker(map, coordinates, target) {

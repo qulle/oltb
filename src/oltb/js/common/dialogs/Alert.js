@@ -2,12 +2,12 @@ import DOM from '../../helpers/browser/DOM';
 import DialogBase from './DialogBase';
 import { MAP_ELEMENT } from '../../core/elements/index';
 
-const DEFAULT_OPTIONS = {
+const DEFAULT_OPTIONS = Object.freeze({
     text: 'Default alert text',
     html: undefined,
     onCancel: undefined,
     confirmText: 'Ok'
-};
+});
 
 class Alert extends DialogBase {
     constructor(options = {}) {

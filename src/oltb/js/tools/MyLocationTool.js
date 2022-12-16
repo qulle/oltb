@@ -18,10 +18,10 @@ import { isFullScreen, exitFullScreen } from '../helpers/browser/Fullscreen';
 
 const ID_PREFIX = 'oltb-info-window-marker';
 
-const DEFAULT_OPTIONS = {
+const DEFAULT_OPTIONS = Object.freeze({
     enableHighAccuracy: true,
     timeout: 10000
-};
+});
 
 class MyLocationTool extends Control {
     constructor(options = {}) {
@@ -30,7 +30,7 @@ class MyLocationTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.geoMarker,
+            path: SVG_PATHS.GeoMarker,
             class: 'oltb-tool-button__icon'
         });
 
@@ -40,7 +40,7 @@ class MyLocationTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `My location (${SHORTCUT_KEYS.myLocation})`
+                'data-tippy-content': `My location (${SHORTCUT_KEYS.MyLocation})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -50,11 +50,11 @@ class MyLocationTool extends Control {
         this.element.appendChild(button);
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
-        window.addEventListener(EVENTS.browser.keyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
     }
 
     onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.myLocation)) {
+        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.MyLocation)) {
             this.handleClick(event);
         }
     }
@@ -123,7 +123,7 @@ class MyLocationTool extends Control {
         const prettyCoords = toStringHDMS([lon, lat]);
 
         const icon = getIcon({
-            path: SVG_PATHS.geoMarkerFilled,
+            path: SVG_PATHS.GeoMarkerFilled,
             width: 20,
             height: 20,
             fill: 'rgb(255, 255, 255)'

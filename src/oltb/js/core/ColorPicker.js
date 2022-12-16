@@ -34,7 +34,7 @@ const onColorPickerTooltipShow = function(instance) {
     instance.setContent(colorPickerElement);
 
     colorPicker.setColor(instance.reference.getAttribute('data-oltb-color'));
-    colorPicker.on(EVENTS.browser.change, (picker, color) => {
+    colorPicker.on(EVENTS.Browser.Change, (picker, color) => {
         // Important to always be HEX with Alpha value
         // Sometimes the two last digits are replaced with fixed alpha value
         color = AColorPicker.parseColor(color, 'hexcss4');
@@ -44,7 +44,7 @@ const onColorPickerTooltipShow = function(instance) {
         target.firstElementChild.style.backgroundColor = color;
 
         // Dispatch event to let tools know that color has changed.
-        eventDispatcher([instance.reference], EVENTS.custom.colorChange);
+        eventDispatcher([instance.reference], EVENTS.Custom.ColorChange);
     });
 }
 

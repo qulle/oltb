@@ -69,7 +69,7 @@ class LayerManager {
         this.#map.addLayer(layerWrapper.layer);
             
         // Dispatch event, the layer-tool updates the UI
-        window.dispatchEvent(new CustomEvent(EVENTS.custom.mapLayerAdded, {
+        window.dispatchEvent(new CustomEvent(EVENTS.Custom.MapLayerAdded, {
             detail: {
                 layerWrapper: layerWrapper, 
                 silent: silent
@@ -87,7 +87,7 @@ class LayerManager {
         this.#map.removeLayer(targetLayer.layer);
 
         // Dispatch event, the layer-tool, updates the UI
-        window.dispatchEvent(new CustomEvent(EVENTS.custom.mapLayerRemoved, {
+        window.dispatchEvent(new CustomEvent(EVENTS.Custom.MapLayerRemoved, {
             detail: {
                 layerWrapper: targetLayer, 
                 silent: silent
@@ -173,7 +173,7 @@ class LayerManager {
         this.#map.addLayer(layerWrapper.layer);
 
         // Dispatch event, the layer-tool, updates the UI
-        window.dispatchEvent(new CustomEvent(EVENTS.custom.featureLayerAdded, {
+        window.dispatchEvent(new CustomEvent(EVENTS.Custom.FeatureLayerAdded, {
             detail: {
                 layerWrapper: layerWrapper, 
                 silent: silent
@@ -203,7 +203,7 @@ class LayerManager {
             : null;
 
         // Dispatch event, the layer-tool, updates the UI
-        window.dispatchEvent(new CustomEvent(EVENTS.custom.featureLayerRemoved, {
+        window.dispatchEvent(new CustomEvent(EVENTS.Custom.FeatureLayerRemoved, {
             detail: {
                 layerWrapper: targetLayer, 
                 silent: silent

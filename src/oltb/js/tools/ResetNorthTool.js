@@ -13,7 +13,7 @@ import { addContextMenuItem } from '../common/ContextMenu';
 import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 import { degreesToRadians, radiansToDegrees } from '../helpers/Conversions';
 
-const DEFAULT_OPTIONS = {};
+const DEFAULT_OPTIONS = Object.freeze({});
 
 class ResetNorthTool extends Control {
     constructor(options = {}) {
@@ -22,7 +22,7 @@ class ResetNorthTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.compass,
+            path: SVG_PATHS.Compass,
             class: 'oltb-tool-button__icon'
         });
 
@@ -32,7 +32,7 @@ class ResetNorthTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Reset North (${SHORTCUT_KEYS.resetNorth})`
+                'data-tippy-content': `Reset North (${SHORTCUT_KEYS.ResetNorth})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -42,17 +42,17 @@ class ResetNorthTool extends Control {
         this.element.appendChild(button);
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
-        addContextMenuItem(CONTEXT_MENUS.mainMap, {
+        addContextMenuItem(CONTEXT_MENUS.MainMap, {
             icon: icon, 
             name: 'Set rotation by degrees', 
             fn: this.onContextMenuSetRotation.bind(this)
         });
 
-        window.addEventListener(EVENTS.browser.keyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
     }
 
     onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.resetNorth)) {
+        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.ResetNorth)) {
             this.handleClick(event);
         }
     }

@@ -3,13 +3,13 @@ import CONFIG from '../../core/Config';
 import { EVENTS } from '../../helpers/constants/Events';
 import { TOAST_ELEMENT } from '../../core/elements/index';
 
-const DEFAULT_OPTIONS = {
+const DEFAULT_OPTIONS = Object.freeze({
     text: 'Default toast',
     type: 'info',
     autoremove: undefined,
     clickToRemove: true,
     spinner: false
-};
+});
 
 class ToastBase {
     constructor(options = {}) {
@@ -24,7 +24,7 @@ class ToastBase {
         
         if(this.options.clickToRemove) {
             toast.classList.add('oltb-toast--clickable');
-            toast.addEventListener(EVENTS.browser.click, this.remove.bind(this));
+            toast.addEventListener(EVENTS.Browser.Click, this.remove.bind(this));
         }
 
         if(this.options.spinner) {

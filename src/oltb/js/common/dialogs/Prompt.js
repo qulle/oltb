@@ -2,7 +2,7 @@ import DOM from '../../helpers/browser/DOM';
 import DialogBase from './DialogBase';
 import { MAP_ELEMENT } from '../../core/elements/index';
 
-const DEFAULT_OPTIONS = {
+const DEFAULT_OPTIONS = Object.freeze({
     text: 'Default prompt text',
     placeholder: undefined,
     value: undefined,
@@ -11,7 +11,7 @@ const DEFAULT_OPTIONS = {
     confirmClass: 'oltb-btn--green-mid',
     confirmText: 'Confirm',
     cancelText: 'Cancel'
-};
+});
 
 class Prompt extends DialogBase {
     constructor(options = {}) {

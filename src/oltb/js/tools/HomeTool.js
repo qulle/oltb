@@ -12,11 +12,11 @@ import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
 import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 import { addContextMenuItem } from '../common/ContextMenu';
 
-const DEFAULT_OPTIONS = {
+const DEFAULT_OPTIONS = Object.freeze({
     zoom: 3,
     lon: 0,
     lat: 0
-};
+});
 
 class HomeTool extends Control {
     constructor(options = {}) {
@@ -25,7 +25,7 @@ class HomeTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.home,
+            path: SVG_PATHS.Home,
             class: 'oltb-tool-button__icon'
         });
 
@@ -35,7 +35,7 @@ class HomeTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Zoom home (${SHORTCUT_KEYS.home})`
+                'data-tippy-content': `Zoom home (${SHORTCUT_KEYS.Home})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -51,18 +51,18 @@ class HomeTool extends Control {
         this.userDefinedHomeLocation = null;
         this.userDefinedHomeZoom = null;
 
-        addContextMenuItem(CONTEXT_MENUS.mainMap, {
+        addContextMenuItem(CONTEXT_MENUS.MainMap, {
             icon: icon, 
             name: 'Set as home', 
             fn: this.onContextMenuSetHomeLocation.bind(this)
         });
 
-        window.addEventListener(EVENTS.custom.settingsCleared, this.onWindowClearHomeLocation.bind(this));
-        window.addEventListener(EVENTS.browser.keyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(EVENTS.Custom.SettingsCleared, this.onWindowClearHomeLocation.bind(this));
+        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
     }
 
     onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.home)) {
+        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Home)) {
             this.handleClick(event);
         }
     }

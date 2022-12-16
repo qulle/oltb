@@ -11,7 +11,7 @@ import { instantiateFormat } from '../core/ol-types/FormatTypes';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
 import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 
-const DEFAULT_OPTIONS = {};
+const DEFAULT_OPTIONS = Object.freeze({});
 
 class ImportVectorLayerTool extends Control {
     constructor(options = {}) {
@@ -20,7 +20,7 @@ class ImportVectorLayerTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.open,
+            path: SVG_PATHS.Open,
             class: 'oltb-tool-button__icon'
         });
 
@@ -30,7 +30,7 @@ class ImportVectorLayerTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Import Vector layer (${SHORTCUT_KEYS.importVectorLayer})`
+                'data-tippy-content': `Import Vector layer (${SHORTCUT_KEYS.ImportVectorLayer})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -52,11 +52,11 @@ class ImportVectorLayerTool extends Control {
             }
         });
         
-        window.addEventListener(EVENTS.browser.keyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
     }
 
     onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.importVectorLayer)) {
+        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.ImportVectorLayer)) {
             this.handleClick(event);
         }
     }
@@ -78,7 +78,7 @@ class ImportVectorLayerTool extends Control {
         const fileDialog = event.target;
 
         this.fileReader = new FileReader();
-        this.fileReader.addEventListener(EVENTS.browser.load, this.parseLayer.bind(this, fileDialog));
+        this.fileReader.addEventListener(EVENTS.Browser.Load, this.parseLayer.bind(this, fileDialog));
         this.fileReader.readAsText(fileDialog.files[0]);
     }
 

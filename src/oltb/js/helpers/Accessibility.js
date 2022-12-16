@@ -1,6 +1,6 @@
 import CONFIG from '../core/Config';
 import URLManager from '../core/managers/URLManager';
-import { KEYS } from './constants/Key';
+import { KEYS } from './constants/Keys';
 import { EVENTS } from './constants/Events';
 import { TOOLBAR_ELEMENT, TOOLBOX_ELEMENT, MAP_ELEMENT } from '../core/elements/index';
 
@@ -9,19 +9,19 @@ document.documentElement.setAttribute('oltb-version', CONFIG.version);
 
 // Remove default contextmenu, show if the get parameter ?debug=true exists
 const debugParameter = URLManager.getParameter('debug') === 'true';
-MAP_ELEMENT.addEventListener(EVENTS.browser.contextMenu, function(event) {
+MAP_ELEMENT.addEventListener(EVENTS.Browser.ContextMenu, function(event) {
     if(!debugParameter) {
         event.preventDefault();
     }
 });
 
 // Toggle class to be used in the SCSS to apply custom style only when the user uses the keyboard
-document.body.addEventListener(EVENTS.browser.mouseDown, function(event) {
+document.body.addEventListener(EVENTS.Browser.MouseDown, function(event) {
     document.body.classList.remove('oltb-using-keyboard');
 });
 
-document.body.addEventListener(EVENTS.browser.keyDown, function(event) {
-    if(event.key.toLowerCase() === KEYS.tab) {
+document.body.addEventListener(EVENTS.Browser.KeyDown, function(event) {
+    if(event.key.toLowerCase() === KEYS.Tab) {
         document.body.classList.add('oltb-using-keyboard');
     }
 });
@@ -39,6 +39,6 @@ const collisionDetection = function(event) {
     }
 }
 
-window.addEventListener(EVENTS.browser.resize, collisionDetection);
-window.addEventListener(EVENTS.browser.contentLoaded, collisionDetection);
-window.addEventListener(EVENTS.custom.toolbarDirectionChange, collisionDetection);
+window.addEventListener(EVENTS.Browser.Resize, collisionDetection);
+window.addEventListener(EVENTS.Browser.ContentLoaded, collisionDetection);
+window.addEventListener(EVENTS.Custom.ToolbarDirectionChange, collisionDetection);

@@ -1,4 +1,4 @@
-const PROJECTIONS = [
+const PROJECTIONS = Object.freeze([
     {
         code: '3857',
         name: 'WGS 84 / Pseudo-Mercator',
@@ -20,7 +20,7 @@ const PROJECTIONS = [
         proj4def: '+proj=utm +zone=33 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs +type=crs',
         bbox: '69.07,10.03,54.96,24.17'
     }
-];
+]);
 
 const getProj4Defs = function() {
     const result = [];

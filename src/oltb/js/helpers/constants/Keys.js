@@ -1,9 +1,9 @@
-const KEYS = {
-    tab: 'tab',
-    enter: 'enter',
-    escape: 'escape',
-    delete: 'delete',
-    z: 'z'
-};
+const KEYS = Object.freeze({
+    Tab: 'tab',
+    Enter: 'enter',
+    Escape: 'escape',
+    Delete: 'delete',
+    Z: 'z'
+});
 
 export { KEYS };

@@ -1,16 +1,16 @@
 import { KEYS } from "../constants/Keys";
 
-const FOCUSABLE_ELEMENTS = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+const ELEMENTS = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
 
 const trapFocusKeyListener = function(event) {
-    const isTabKey = event.key.toLowerCase() === KEYS.tab;
+    const isTabKey = event.key.toLowerCase() === KEYS.Tab;
 
     if(!isTabKey) {
         return;
     }
     
-    const firstElement = this.querySelectorAll(FOCUSABLE_ELEMENTS)[0];
-    const content = this.querySelectorAll(FOCUSABLE_ELEMENTS);
+    const firstElement = this.querySelectorAll(ELEMENTS)[0];
+    const content = this.querySelectorAll(ELEMENTS);
     const lastElement = content[content.length - 1];
 
     if(event.shiftKey) {

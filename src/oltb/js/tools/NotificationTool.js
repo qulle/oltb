@@ -9,7 +9,7 @@ import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
 import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 
 const NOTIFICATION_URL = 'https://raw.githubusercontent.com/qulle/notification-endpoints/main/endpoints/oltb.json';
-const DEFAULT_OPTIONS = {};
+const DEFAULT_OPTIONS = Object.freeze({});
 
 class NotificationTool extends Control {
     constructor(options = {}) {
@@ -18,7 +18,7 @@ class NotificationTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.bell,
+            path: SVG_PATHS.Bell,
             class: 'oltb-tool-button__icon'
         });
 
@@ -28,7 +28,7 @@ class NotificationTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Notifications (${SHORTCUT_KEYS.notifications})`
+                'data-tippy-content': `Notifications (${SHORTCUT_KEYS.Notifications})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -39,11 +39,11 @@ class NotificationTool extends Control {
         this.notificationModal = undefined;
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
-        window.addEventListener(EVENTS.browser.keyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
     }
 
     onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.notifications)) {
+        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Notifications)) {
             this.handleClick(event);
         }
     }

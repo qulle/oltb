@@ -38,13 +38,13 @@ import './helpers/browser/Prototypes';
 import './helpers/browser/SlideToggle';
 
 // This is the same NODE_NAME and PROPS that the MapNavigationTool.js is using
-const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.mapData;
-const LOCAL_STORAGE_DEFAULTS = {
+const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.MapData;
+const LOCAL_STORAGE_DEFAULTS = Object.freeze({
     lon: 25.5809,
     lat: 23.7588,
     zoom: 3,
     rotation: 0
-};
+});
 
 // Load stored data from localStorage
 const LOCAL_STORAGE_STATE = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
@@ -89,7 +89,7 @@ class OLTB {
 
         // Always add the ContextMenu
         this.#tools['ContextMenu'] = new ContextMenu({
-            name: CONTEXT_MENUS.mainMap, 
+            name: CONTEXT_MENUS.MainMap, 
             selector: `#${MAP_ELEMENT.id} canvas`
         });
 
@@ -117,27 +117,27 @@ class OLTB {
         map.getInteractions().extend([
             new MouseWheelZoom({
                 condition: function(event) { 
-                    return platformModifierKeyOnly(event) || SettingsManager.getSetting(SETTINGS.mouseWheelZoom); 
+                    return platformModifierKeyOnly(event) || SettingsManager.getSetting(SETTINGS.MouseWheelZoom); 
                 }
             }),
             new DragRotate({
                 condition: function(event) {
-                    return altShiftKeysOnly(event) && SettingsManager.getSetting(SETTINGS.altShiftDragRotate);
+                    return altShiftKeysOnly(event) && SettingsManager.getSetting(SETTINGS.AltShiftDragRotate);
                 }
             }),
             new DragPan({
                 condition: function(event) {
-                    return (platformModifierKeyOnly(event) || SettingsManager.getSetting(SETTINGS.dragPan)) && !altShiftKeysOnly(event) && !shiftKeyOnly(event);
+                    return (platformModifierKeyOnly(event) || SettingsManager.getSetting(SETTINGS.DragPan)) && !altShiftKeysOnly(event) && !shiftKeyOnly(event);
                 }
             }),
             new KeyboardZoom({
                 condition: function(event) {
-                    return SettingsManager.getSetting(SETTINGS.keyboardZoom) && targetNotEditable(event);
+                    return SettingsManager.getSetting(SETTINGS.KeyboardZoom) && targetNotEditable(event);
                 }
             }),
             new KeyboardPan({
                 condition: function(event) {
-                    return SettingsManager.getSetting(SETTINGS.keyboardPan) && targetNotEditable(event);
+                    return SettingsManager.getSetting(SETTINGS.KeyboardPan) && targetNotEditable(event);
                 }
             })
         ]);

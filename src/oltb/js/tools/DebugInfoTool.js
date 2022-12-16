@@ -10,9 +10,9 @@ import { TOOLBAR_ELEMENT } from '../core/elements/index';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
 import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 
-const DEFAULT_OPTIONS = {
+const DEFAULT_OPTIONS = Object.freeze({
     onlyWhenGetParameter: false
-};
+});
 
 class DebugInfoTool extends Control {
     constructor(options = {}) {
@@ -21,7 +21,7 @@ class DebugInfoTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.debug,
+            path: SVG_PATHS.Debug,
             class: 'oltb-tool-button__icon'
         });
 
@@ -31,7 +31,7 @@ class DebugInfoTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Debug info (${SHORTCUT_KEYS.debugInfo})`
+                'data-tippy-content': `Debug info (${SHORTCUT_KEYS.DebugInfo})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -51,11 +51,11 @@ class DebugInfoTool extends Control {
             }
         }
 
-        window.addEventListener(EVENTS.browser.keyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
     }
 
     onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.debugInfo)) {
+        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.DebugInfo)) {
             this.handleClick(event);
         }
     }

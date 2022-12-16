@@ -21,16 +21,16 @@ import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT } from '../core/elements/index';
 const BOOKMARK_BUTTON_DEFAULT_CLASSES = 'oltb-func-btn';
 const ID_PREFIX = 'oltb-bookmark';
 
-const DEFAULT_OPTIONS = {
+const DEFAULT_OPTIONS = Object.freeze({
     storeDataInLocalStorage: false
-};
+});
 
-const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.bookmarkTool;
-const LOCAL_STORAGE_DEFAULTS = {
+const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.BookmarkTool;
+const LOCAL_STORAGE_DEFAULTS = Object.freeze({
     active: false,
     collapsed: false,
-    bookmarks: []
-};
+    bookmarks: Object.freeze([])
+});
 
 class BookmarkTool extends Control {
     constructor(options = {}) {
@@ -39,7 +39,7 @@ class BookmarkTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.bookmark,
+            path: SVG_PATHS.Bookmark,
             class: 'oltb-tool-button__icon'
         });
 
@@ -49,7 +49,7 @@ class BookmarkTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Bookmarks (${SHORTCUT_KEYS.bookmark})`
+                'data-tippy-content': `Bookmarks (${SHORTCUT_KEYS.Bookmark})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -79,7 +79,7 @@ class BookmarkTool extends Control {
                             <input type="text" id="${ID_PREFIX}-add-txt" class="oltb-input" placeholder="Bookmark name">
                             <button type="button" id="${ID_PREFIX}-add-btn" class="oltb-btn oltb-btn--green-mid oltb-tippy" title="Add Bookmark">
                                 ${getIcon({
-                                    path: SVG_PATHS.plusSmall,
+                                    path: SVG_PATHS.PlusSmall,
                                     width: 20,
                                     height: 20,
                                     fill: 'none',
@@ -102,12 +102,12 @@ class BookmarkTool extends Control {
         this.addBookmarkButton = this.bookmarkToolbox.querySelector(`#${ID_PREFIX}-add-btn`);
         this.addBookmarkText = this.bookmarkToolbox.querySelector(`#${ID_PREFIX}-add-txt`);
 
-        this.addBookmarkButton.addEventListener(EVENTS.browser.click, this.onBookmarkAdd.bind(this));
-        this.addBookmarkText.addEventListener(EVENTS.browser.keyUp, this.onBookmarkAdd.bind(this));
+        this.addBookmarkButton.addEventListener(EVENTS.Browser.Click, this.onBookmarkAdd.bind(this));
+        this.addBookmarkText.addEventListener(EVENTS.Browser.KeyUp, this.onBookmarkAdd.bind(this));
 
         const toggleableTriggers = this.bookmarkToolbox.querySelectorAll('.oltb-toggleable');
         toggleableTriggers.forEach((toggle) => {
-            toggle.addEventListener(EVENTS.browser.click, this.onToggleToolbox.bind(this, toggle));
+            toggle.addEventListener(EVENTS.Browser.Click, this.onToggleToolbox.bind(this, toggle));
         });
 
         // Add all saved bookmarks from localstorage
@@ -115,21 +115,21 @@ class BookmarkTool extends Control {
             this.createBookmark(bookmark);
         });
 
-        addContextMenuItem(CONTEXT_MENUS.mainMap, {
+        addContextMenuItem(CONTEXT_MENUS.MainMap, {
             icon: icon, 
             name: 'Add location as bookmark', 
             fn: this.onContextMenuBookmarkAdd.bind(this)
         });
 
-        addContextMenuItem(CONTEXT_MENUS.mainMap, {
+        addContextMenuItem(CONTEXT_MENUS.MainMap, {
             icon: icon, 
             name: 'Clear all bookmarks', 
             fn: this.onContextMenuBookmarksClear.bind(this)
         });
 
-        window.addEventListener(EVENTS.browser.keyUp, this.onWindowKeyUp.bind(this));
-        window.addEventListener(EVENTS.custom.settingsCleared, this.onWindowSettingsCleared.bind(this));
-        window.addEventListener(EVENTS.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
+        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(EVENTS.Custom.SettingsCleared, this.onWindowSettingsCleared.bind(this));
+        window.addEventListener(EVENTS.Browser.ContentLoaded, this.onDOMContentLoaded.bind(this));
     }
 
     onToggleToolbox(toggle) {
@@ -162,7 +162,7 @@ class BookmarkTool extends Control {
     }
 
     onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.bookmark)) {
+        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Bookmark)) {
             this.handleClick(event);
         }
     }
@@ -173,8 +173,8 @@ class BookmarkTool extends Control {
 
     onBookmarkAdd(event) {
         if(
-            event.type === EVENTS.browser.keyUp && 
-            event.key.toLowerCase() !== KEYS.enter
+            event.type === EVENTS.Browser.KeyUp && 
+            event.key.toLowerCase() !== KEYS.Enter
         ) {
             return;
         }

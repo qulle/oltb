@@ -46,7 +46,7 @@ class InfoWindowManager {
         const closeButton = DOM.createElement({
             element: 'button', 
             html: getIcon({
-                path: SVG_PATHS.close,
+                path: SVG_PATHS.Close,
                 fill: 'none',
                 stroke: 'currentColor'
             }),
@@ -74,8 +74,8 @@ class InfoWindowManager {
         });
 
         this.#map.addOverlay(this.#overlay);
-        this.#map.on(EVENTS.ol.singleClick, this.onSingleClick.bind(this));
-        this.#map.on(EVENTS.ol.pointerMove, this.onPointerMove.bind(this));
+        this.#map.on(EVENTS.OpenLayers.SingleClick, this.onSingleClick.bind(this));
+        this.#map.on(EVENTS.OpenLayers.PointerMove, this.onPointerMove.bind(this));
     }
 
     static onSingleClick(event) {
@@ -146,17 +146,17 @@ class InfoWindowManager {
 
         const removeFeatureButton = this.#content.querySelector(`#${ID_PREFIX}-remove`);
         if(removeFeatureButton) {
-            removeFeatureButton.addEventListener(EVENTS.browser.click, removeFeature.bind(this, InfoWindowManager, feature));
+            removeFeatureButton.addEventListener(EVENTS.Browser.Click, removeFeature.bind(this, InfoWindowManager, feature));
         }
 
         const copyFeatureInfoButton = this.#content.querySelector(`#${ID_PREFIX}-copy-location`);
         if(copyFeatureInfoButton) {
-            copyFeatureInfoButton.addEventListener(EVENTS.browser.click, copyFeatureInfo.bind(this, InfoWindowManager, copyFeatureInfoButton.getAttribute('data-copy')));
+            copyFeatureInfoButton.addEventListener(EVENTS.Browser.Click, copyFeatureInfo.bind(this, InfoWindowManager, copyFeatureInfoButton.getAttribute('data-copy')));
         }
 
         const editFeatureButton = this.#content.querySelector(`#${ID_PREFIX}-edit`);
         if(editFeatureButton) {
-            editFeatureButton.addEventListener(EVENTS.browser.click, editFeature.bind(this, InfoWindowManager, feature));
+            editFeatureButton.addEventListener(EVENTS.Browser.Click, editFeature.bind(this, InfoWindowManager, feature));
         }
     }
 

@@ -6,14 +6,14 @@ import { FEATURE_PROPERTIES } from '../helpers/constants/FeatureProperties';
 import { Circle, Fill, Icon, Stroke, Style } from 'ol/style';
 
 const DEFAULT_ICON = getIcon({
-    path: SVG_PATHS.geoPin,
+    path: SVG_PATHS.GeoPin,
     width: 20,
     height: 20,
     fill: 'rgb(255, 255, 255)',
     stroke: 'none'
 });
 
-const DEFAULT_OPTIONS = {
+const DEFAULT_OPTIONS = Object.freeze({
     name: undefined,
     info: undefined,
     lat: undefined,
@@ -27,7 +27,7 @@ const DEFAULT_OPTIONS = {
     scale: .7,
     notSelectable: false,
     infoWindow: undefined
-};
+});
 
 const generateMarker = function(options = {}) {
     options = { ...DEFAULT_OPTIONS, ...options };

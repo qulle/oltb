@@ -17,7 +17,7 @@ import {
     exitFullScreen
 } from '../helpers/browser/Fullscreen';
 
-const DEFAULT_OPTIONS = {};
+const DEFAULT_OPTIONS = Object.freeze({});
 
 class FullscreenTool extends Control {
     constructor(options = {}) {
@@ -26,12 +26,12 @@ class FullscreenTool extends Control {
         });
 
         this.enterFullscreenIcon = getIcon({
-            path: SVG_PATHS.enterFullScreen,
+            path: SVG_PATHS.EnterFullScreen,
             class: 'oltb-tool-button__icon'
         });
 
         this.exitFullscreenIcon = getIcon({
-            path: SVG_PATHS.exitFullScreen,
+            path: SVG_PATHS.ExitFullScreen,
             class: 'oltb-tool-button__icon'
         });
 
@@ -41,7 +41,11 @@ class FullscreenTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `${(isFullScreen() ? 'Exit fullscreen' : 'Enter fullscreen')} (${SHORTCUT_KEYS.fullScreen})`
+                'data-tippy-content': `${(
+                    isFullScreen() 
+                        ? 'Exit fullscreen' 
+                        : 'Enter fullscreen'
+                )} (${SHORTCUT_KEYS.FullScreen})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -53,12 +57,12 @@ class FullscreenTool extends Control {
         this.active = false;
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
-        document.addEventListener(EVENTS.browser.fullScreenChange, this.onFullScreenChange.bind(this));
-        window.addEventListener(EVENTS.browser.keyUp, this.onWindowKeyUp.bind(this));
+        document.addEventListener(EVENTS.Browser.FullScreenChange, this.onFullScreenChange.bind(this));
+        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
     }
 
     onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.fullScreen)) {
+        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.FullScreen)) {
             this.handleClick(event);
         }
     }
@@ -93,14 +97,14 @@ class FullscreenTool extends Control {
 
     onFullScreenChange(event) {
         if(document.fullscreenElement) {
-            this.button._tippy.setContent(`Exit fullscreen (${SHORTCUT_KEYS.fullScreen})`);
+            this.button._tippy.setContent(`Exit fullscreen (${SHORTCUT_KEYS.FullScreen})`);
 
             // User defined callback from constructor
             if(typeof this.options.enter === 'function') {
                 this.options.enter(event);
             }
         }else {
-            this.button._tippy.setContent(`Enter fullscreen (${SHORTCUT_KEYS.fullScreen})`);
+            this.button._tippy.setContent(`Enter fullscreen (${SHORTCUT_KEYS.FullScreen})`);
 
             // User defined callback from constructor
             if(typeof this.options.leave === 'function') {
@@ -113,11 +117,11 @@ class FullscreenTool extends Control {
         if(isFullScreen()) {
             this.button.removeChild(this.button.firstElementChild);
             this.button.insertAdjacentHTML('afterbegin', this.exitFullscreenIcon);
-            this.dispatchEvent(FULL_SCREEN_EVENT_TYPE.enterFullScreen);
+            this.dispatchEvent(FULL_SCREEN_EVENT_TYPE.EnterFullScreen);
         }else {
             this.button.removeChild(this.button.firstElementChild);
             this.button.insertAdjacentHTML('afterbegin', this.enterFullscreenIcon);
-            this.dispatchEvent(FULL_SCREEN_EVENT_TYPE.leaveFullScreen);
+            this.dispatchEvent(FULL_SCREEN_EVENT_TYPE.LeaveFullScreen);
         }
 
         this.getMap().updateSize();

@@ -665,7 +665,7 @@ controls: defaultControls({
     }),
     new HiddenAboutTool(),
     new ContextMenu({
-        name: CONTEXT_MENUS.mainMap, 
+        name: CONTEXT_MENUS.MainMap, 
         selector: '#map canvas'
     })
 ])
@@ -683,9 +683,9 @@ Tools refered to as hidden tools are tools that only add functionality via the c
 All tools have a shortcut key for ease of use and speeds up the handling of the toolbar. The shortcut key is displayed in the tooltip on the corresponding tool. All shortcut keys are stored in the module `./modules/helpers/Constants/ShortcutKeys`.
 ```javascript
 const SHORTCUT_KEYS = {
-    areaOverview: 'A',
-    bookmark: 'B',
-    coordinates: 'C'
+    AreaOverview: 'A',
+    Bookmark: 'B',
+    Coordinates: 'C'
     ...
 };
 ```
@@ -895,7 +895,7 @@ import ContextMenu from './modules/common/ContextMenu';
 To create a context menu call the constructor and give a unique name as the first argument and a selector to trigger the menu. The context menu class extends the Control-class from OpenLayers.
 ```javascript
 map.addControl(new ContextMenu({
-    name: CONTEXT_MENUS.mainMap, 
+    name: CONTEXT_MENUS.MainMap, 
     selector: '#map canvas'
 });
 ```
@@ -903,13 +903,13 @@ map.addControl(new ContextMenu({
 There is a module for storing context menu names located in `./modules/helpers/Constants/ContextMenus`.
 ```javascript
 const CONTEXT_MENUS = {
-    mainMap: 'main.map.context.menu'
+    MainMap: 'main.map.context.menu'
 };
 ```
 
 To add items to the context menu use the function `addContextMenuItem` and give the name that matches the context menu aswell as the name/label of the item, the icon and a function to call when the item is clicked.
 ```javascript
-addContextMenuItem(CONTEXT_MENUS.mainMap, {
+addContextMenuItem(CONTEXT_MENUS.MainMap, {
     icon: '<svg>...</svg>', 
     name: 'Zoom home', 
     fn: this.handleResetToHome.bind(this)
@@ -918,7 +918,7 @@ addContextMenuItem(CONTEXT_MENUS.mainMap, {
 
 The callback function recieves a references to the map, the clicked coordinates and the target element (the canvas).
 ```javascript
-addContextMenuItem(CONTEXT_MENUS.mainMap, {
+addContextMenuItem(CONTEXT_MENUS.MainMap, {
     icon: '<svg>...</svg>', 
     name: 'Clear settings', 
     fn: function(map, coordinates, target) {
@@ -936,7 +936,7 @@ It is not important in what order the menu or its items are created. If no menu 
 
 To insert a separator in the menu add an empty object.
 ```javascript
-addContextMenuItem(CONTEXT_MENUS.mainMap, {});
+addContextMenuItem(CONTEXT_MENUS.MainMap, {});
 ```
 
 ### State Management
@@ -947,7 +947,7 @@ import StateManager from './modules/core/managers/StateManager';
 
 State management is done through localStorage. First add a node name and an object to store default values.
 ```javascript
-const LOCAL_STORAGE_NODE_NAME = 'drawTool';
+const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.DrawTool;
 const LOCAL_STORAGE_DEFAULTS = {
     active: false,
     collapsed: false,

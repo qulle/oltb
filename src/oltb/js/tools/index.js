@@ -30,7 +30,7 @@ import ImportVectorLayerTool from './ImportVectorLayerTool';
 import HiddenMapNavigationTool from './hidden-tools/MapNavigationTool';
 
 // The order decides order in the Toolbar
-const ALL_TOOLS = {
+const ALL_TOOLS = Object.freeze({
     HiddenMarkerTool,
     HiddenMapNavigationTool,
     HomeTool,
@@ -61,6 +61,6 @@ const ALL_TOOLS = {
     SettingsTool,
     DebugInfoTool,
     HiddenAboutTool
-};
+});
 
 export default ALL_TOOLS;

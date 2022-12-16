@@ -6,7 +6,7 @@ import { TOOLBAR_ELEMENT } from '../core/elements/index';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
 import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 
-const DEFAULT_OPTIONS = {};
+const DEFAULT_OPTIONS = Object.freeze({});
 
 class RefreshTool extends Control {
     constructor(options = {}) {
@@ -15,7 +15,7 @@ class RefreshTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.refresh,
+            path: SVG_PATHS.Refresh,
             class: 'oltb-tool-button__icon'
         });
 
@@ -25,7 +25,7 @@ class RefreshTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Refresh page (${SHORTCUT_KEYS.refreshPage})`
+                'data-tippy-content': `Refresh page (${SHORTCUT_KEYS.RefreshPage})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -35,11 +35,11 @@ class RefreshTool extends Control {
         this.element.appendChild(button);
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
-        window.addEventListener(EVENTS.browser.keyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
     }
 
     onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.refreshPage)) {
+        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.RefreshPage)) {
             this.handleClick(event);
         }
     }

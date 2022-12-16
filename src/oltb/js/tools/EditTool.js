@@ -8,7 +8,7 @@ import LayerManager from '../core/managers/LayerManager';
 import StateManager from '../core/managers/StateManager';
 import TooltipManager from '../core/managers/TooltipManager';
 import SettingsManager from '../core/managers/SettingsManager';
-import { KEYS } from '../helpers/constants/Key';
+import { KEYS } from '../helpers/constants/Keys';
 import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { Feature } from 'ol';
@@ -39,24 +39,24 @@ import { GeometryCollection, LinearRing, LineString, MultiLineString, MultiPoint
  */
 
 const ID_PREFIX = 'oltb-edit';
-const DEFAULT_OPTIONS = {};
+const DEFAULT_OPTIONS = Object.freeze({});
 
-const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.editTool;
-const LOCAL_STORAGE_DEFAULTS = {
+const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.EditTool;
+const LOCAL_STORAGE_DEFAULTS = Object.freeze({
     active: false,
     collapsed: false,
     hitTolerance: 5,
     strokeColor: '#4A86B8',
     fillColor: '#D7E3FA80'
-};
+});
 
-const DEFAULT_BUTTON_PROPS = {
+const DEFAULT_BUTTON_PROPS = Object.freeze({
     width: 20,
     height: 20,
     fill: 'rgb(255, 255, 255)',
     stroke: 'none',
     class: 'oltb-btn__icon'
-};
+});
 
 const DEFAULT_DRAWING_STYLE = new Style({
     fill: new Fill({
@@ -86,7 +86,7 @@ class EditTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.edit,
+            path: SVG_PATHS.Edit,
             class: 'oltb-tool-button__icon'
         });
 
@@ -96,7 +96,7 @@ class EditTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Edit (${SHORTCUT_KEYS.edit})`
+                'data-tippy-content': `Edit (${SHORTCUT_KEYS.Edit})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -129,22 +129,22 @@ class EditTool extends Control {
                     <div class="oltb-toolbox-section__group">
                         <label class="oltb-label">Misc</label>
                         <button type="button" id="${ID_PREFIX}-delete-selected-btn" class="oltb-btn oltb-btn--blue-mid oltb-tippy" title="Delete">
-                            ${getIcon({ ...DEFAULT_BUTTON_PROPS, path: SVG_PATHS.trash })}
+                            ${getIcon({ ...DEFAULT_BUTTON_PROPS, path: SVG_PATHS.Trash })}
                         </button>
                     </div>
                     <div class="oltb-toolbox-section__group oltb-toolbox-section__group--sub-toolbar">
                         <label class="oltb-label">Shapes</label>
                         <button type="button" id="${ID_PREFIX}-union-selected-btn" class="oltb-btn oltb-btn--blue-mid oltb-tippy" title="Union">
-                            ${getIcon({ ...DEFAULT_BUTTON_PROPS, path: SVG_PATHS.union })}
+                            ${getIcon({ ...DEFAULT_BUTTON_PROPS, path: SVG_PATHS.Union })}
                         </button>
                         <button type="button" id="${ID_PREFIX}-intersect-selected-btn" class="oltb-btn oltb-btn--blue-mid oltb-tippy" title="Intersect">
-                            ${getIcon({ ...DEFAULT_BUTTON_PROPS, path: SVG_PATHS.intersect })}
+                            ${getIcon({ ...DEFAULT_BUTTON_PROPS, path: SVG_PATHS.Intersect })}
                         </button>
                         <button type="button" id="${ID_PREFIX}-exclude-selected-btn" class="oltb-btn oltb-btn--blue-mid oltb-tippy" title="Exclude">
-                            ${getIcon({ ...DEFAULT_BUTTON_PROPS, path: SVG_PATHS.exclude })}
+                            ${getIcon({ ...DEFAULT_BUTTON_PROPS, path: SVG_PATHS.Exclude })}
                         </button>
                         <button type="button" id="${ID_PREFIX}-difference-selected-btn" class="oltb-btn oltb-btn--blue-mid oltb-tippy" title="Difference">
-                            ${getIcon({ ...DEFAULT_BUTTON_PROPS, path: SVG_PATHS.difference })}
+                            ${getIcon({ ...DEFAULT_BUTTON_PROPS, path: SVG_PATHS.Difference })}
                         </button>
                     </div>
                     <div class="oltb-toolbox-section__group">
@@ -166,29 +166,29 @@ class EditTool extends Control {
         this.editToolbox = document.querySelector(`#${ID_PREFIX}-toolbox`);
 
         this.deleteSelectedButton = this.editToolbox.querySelector(`#${ID_PREFIX}-delete-selected-btn`);
-        this.deleteSelectedButton.addEventListener(EVENTS.browser.click, this.onDeleteSelectedFeatures.bind(this));
+        this.deleteSelectedButton.addEventListener(EVENTS.Browser.Click, this.onDeleteSelectedFeatures.bind(this));
 
         this.unionSelectedButton = this.editToolbox.querySelector(`#${ID_PREFIX}-union-selected-btn`);
-        this.unionSelectedButton.addEventListener(EVENTS.browser.click, this.onShapeOperator.bind(this, this.unionFeatures, 'union'));
+        this.unionSelectedButton.addEventListener(EVENTS.Browser.Click, this.onShapeOperator.bind(this, this.unionFeatures, 'union'));
 
         this.intersectSelectedButton = this.editToolbox.querySelector(`#${ID_PREFIX}-intersect-selected-btn`);
-        this.intersectSelectedButton.addEventListener(EVENTS.browser.click, this.onShapeOperator.bind(this, this.intersectFeatures, 'intersect'));
+        this.intersectSelectedButton.addEventListener(EVENTS.Browser.Click, this.onShapeOperator.bind(this, this.intersectFeatures, 'intersect'));
 
         this.excludeSelectedButton = this.editToolbox.querySelector(`#${ID_PREFIX}-exclude-selected-btn`);
-        this.excludeSelectedButton.addEventListener(EVENTS.browser.click, this.onShapeOperator.bind(this, this.excludeFeatures, 'exclude'));
+        this.excludeSelectedButton.addEventListener(EVENTS.Browser.Click, this.onShapeOperator.bind(this, this.excludeFeatures, 'exclude'));
 
         this.differenceSelectedButton = this.editToolbox.querySelector(`#${ID_PREFIX}-difference-selected-btn`);
-        this.differenceSelectedButton.addEventListener(EVENTS.browser.click, this.onShapeOperator.bind(this, this.differenceFeatures, 'difference'));
+        this.differenceSelectedButton.addEventListener(EVENTS.Browser.Click, this.onShapeOperator.bind(this, this.differenceFeatures, 'difference'));
 
         this.fillColor = this.editToolbox.querySelector(`#${ID_PREFIX}-fill-color`);
-        this.fillColor.addEventListener(EVENTS.custom.colorChange, this.onFeatureColorChange.bind(this));
+        this.fillColor.addEventListener(EVENTS.Custom.ColorChange, this.onFeatureColorChange.bind(this));
 
         this.strokeColor = this.editToolbox.querySelector(`#${ID_PREFIX}-stroke-color`);
-        this.strokeColor.addEventListener(EVENTS.custom.colorChange, this.onFeatureColorChange.bind(this));
+        this.strokeColor.addEventListener(EVENTS.Custom.ColorChange, this.onFeatureColorChange.bind(this));
 
         const toggleableTriggers = this.editToolbox.querySelectorAll('.oltb-toggleable');
         toggleableTriggers.forEach((toggle) => {
-            toggle.addEventListener(EVENTS.browser.click, this.onToggleToolbox.bind(this, toggle));
+            toggle.addEventListener(EVENTS.Browser.Click, this.onToggleToolbox.bind(this, toggle));
         });
 
         this.select = new Select({
@@ -201,7 +201,10 @@ class EditTool extends Control {
                 
                 return (
                     selectable && 
-                    (isFeatureLayer || SettingsManager.getSetting(SETTINGS.selectVectorMapShapes))
+                    (
+                        isFeatureLayer || 
+                        SettingsManager.getSetting(SETTINGS.SelectVectorMapShapes)
+                    )
                 );
             },
             style: this.lastStyle
@@ -218,19 +221,19 @@ class EditTool extends Control {
             features: this.select.getFeatures(),
         });
 
-        this.select.getFeatures().on(EVENTS.ol.add, this.onSelectFeatureAdd.bind(this));
-        this.select.getFeatures().on(EVENTS.ol.remove, this.onSelectFeatureRemove.bind(this));
+        this.select.getFeatures().on(EVENTS.OpenLayers.Add, this.onSelectFeatureAdd.bind(this));
+        this.select.getFeatures().on(EVENTS.OpenLayers.Remove, this.onSelectFeatureRemove.bind(this));
 
-        this.modify.addEventListener(EVENTS.ol.modifyStart, this.onModifyStart.bind(this));
-        this.modify.addEventListener(EVENTS.ol.modifyEnd, this.onModifyEnd.bind(this));
+        this.modify.addEventListener(EVENTS.OpenLayers.ModifyStart, this.onModifyStart.bind(this));
+        this.modify.addEventListener(EVENTS.OpenLayers.ModifyEnd, this.onModifyEnd.bind(this));
 
-        this.translate.addEventListener(EVENTS.ol.translateStart, this.onTranslateStart.bind(this));
-        this.translate.addEventListener(EVENTS.ol.translateEnd, this.onTranslateEnd.bind(this));
+        this.translate.addEventListener(EVENTS.OpenLayers.TranslateStart, this.onTranslateStart.bind(this));
+        this.translate.addEventListener(EVENTS.OpenLayers.TranslateEnd, this.onTranslateEnd.bind(this));
 
-        window.addEventListener(EVENTS.custom.featureLayerRemoved, this.onWindowFeatureLayerRemoved.bind(this));
-        window.addEventListener(EVENTS.browser.keyUp, this.onWindowKeyUp.bind(this));
-        window.addEventListener(EVENTS.custom.settingsCleared, this.onWindowSettingsCleared.bind(this));
-        window.addEventListener(EVENTS.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
+        window.addEventListener(EVENTS.Custom.FeatureLayerRemoved, this.onWindowFeatureLayerRemoved.bind(this));
+        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(EVENTS.Custom.SettingsCleared, this.onWindowSettingsCleared.bind(this));
+        window.addEventListener(EVENTS.Browser.ContentLoaded, this.onDOMContentLoaded.bind(this));
     }
 
     onSelectFeatureAdd(event) {
@@ -359,9 +362,9 @@ class EditTool extends Control {
     }
 
     onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.edit)) {
+        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Edit)) {
             this.handleClick(event);
-        }else if(event.key.toLowerCase() === KEYS.delete && this.active) {
+        }else if(event.key.toLowerCase() === KEYS.Delete && this.active) {
             this.onDeleteSelectedFeatures();
         }
     }
@@ -558,7 +561,7 @@ class EditTool extends Control {
         const hiddenTooltip = hasOtherTooltip && selectedFeatures.length === 1;
 
         properties.oltb.tooltip.getElement().className = `oltb-overlay-tooltip ${hiddenTooltip ? 'oltb-overlay-tooltip--hidden' : ''}`;
-        properties.oltb.onChangeListener = feature.getGeometry().on(EVENTS.ol.change, this.onFeatureChange.bind(this, feature));
+        properties.oltb.onChangeListener = feature.getGeometry().on(EVENTS.OpenLayers.Change, this.onFeatureChange.bind(this, feature));
     }
 
     detachOnChange(feature) {

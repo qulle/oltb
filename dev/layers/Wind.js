@@ -7,8 +7,7 @@ import { generateWindbarb } from "../../src/oltb/js/generators/GenerateWindbarb"
 import urlCapitalsGeoJSON from 'url:../geojson/capitals.geojson';
 
 const ID_PREFIX = 'oltb-info-window-marker';
-
-const CONTINENT_DIRECTION = {
+const CONTINENT_DIRECTION = Object.freeze({
     'Europe': 5,
     'Africa': 110,
     'Antarctica': 65,
@@ -19,7 +18,7 @@ const CONTINENT_DIRECTION = {
     'South America': 210,
     'UM': 210,
     'US': 210
-};
+});
 
 const LAYER_WRAPPER = LayerManager.addFeatureLayer('Windbarbs', false, true);
 

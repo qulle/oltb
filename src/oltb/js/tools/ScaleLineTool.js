@@ -8,14 +8,14 @@ import { Control, ScaleLine } from 'ol/control';
 import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 import { LOCAL_STORAGE_KEYS } from '../helpers/constants/LocalStorageKeys';
 
-const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.scaleLineTool;
-const LOCAL_STORAGE_DEFAULTS = {
+const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.ScaleLineTool;
+const LOCAL_STORAGE_DEFAULTS = Object.freeze({
     active: false
-};
+});
 
-const DEFAULT_OPTIONS = {
+const DEFAULT_OPTIONS = Object.freeze({
     units: 'metric'
-};
+});
 
 class ScaleLineTool extends Control {
     constructor(options = {}) {
@@ -24,7 +24,7 @@ class ScaleLineTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.scaleLine,
+            path: SVG_PATHS.ScaleLine,
             class: 'oltb-tool-button__icon'
         });
 
@@ -34,7 +34,7 @@ class ScaleLineTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Scale line (${SHORTCUT_KEYS.scaleLine})`
+                'data-tippy-content': `Scale line (${SHORTCUT_KEYS.ScaleLine})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -51,8 +51,8 @@ class ScaleLineTool extends Control {
         const localStorageState = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
         this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
         
-        window.addEventListener(EVENTS.browser.keyUp, this.onWindowKeyUp.bind(this));
-        window.addEventListener(EVENTS.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
+        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(EVENTS.Browser.ContentLoaded, this.onDOMContentLoaded.bind(this));
     }
 
     onDOMContentLoaded() {
@@ -62,7 +62,7 @@ class ScaleLineTool extends Control {
     }
 
     onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.scaleLine)) {
+        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.ScaleLine)) {
             this.handleClick(event);
         }
     }

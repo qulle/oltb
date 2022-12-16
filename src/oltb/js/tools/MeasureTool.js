@@ -7,7 +7,7 @@ import LayerManager from '../core/managers/LayerManager';
 import StateManager from '../core/managers/StateManager';
 import TooltipManager from '../core/managers/TooltipManager';
 import SettingsManager from '../core/managers/SettingsManager';
-import { KEYS } from '../helpers/constants/Key';
+import { KEYS } from '../helpers/constants/Keys';
 import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { unByKey } from 'ol/Observable';
@@ -24,16 +24,16 @@ import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT } from '../core/elements/index';
 import { getMeasureCoordinates, getMeasureValue } from '../helpers/Measurements';
 
 const ID_PREFIX = 'oltb-measure';
-const DEFAULT_OPTIONS = {};
+const DEFAULT_OPTIONS = Object.freeze({});
 
-const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.measureTool;
-const LOCAL_STORAGE_DEFAULTS = {
+const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.MeasureTool;
+const LOCAL_STORAGE_DEFAULTS = Object.freeze({
     active: false,
     collapsed: false,
     toolTypeIndex: 0,
     strokeColor: '#3B4352',
     fillColor: '#D7E3FA80'
-};
+});
 
 class MeasureTool extends Control {
     constructor(options = {}) {
@@ -42,7 +42,7 @@ class MeasureTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.measure,
+            path: SVG_PATHS.Measure,
             class: 'oltb-tool-button__icon'
         });
 
@@ -52,7 +52,7 @@ class MeasureTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Measure (${SHORTCUT_KEYS.measure})`
+                'data-tippy-content': `Measure (${SHORTCUT_KEYS.Measure})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -104,24 +104,24 @@ class MeasureTool extends Control {
 
         const toggleableTriggers = this.measureToolbox.querySelectorAll('.oltb-toggleable');
         toggleableTriggers.forEach((toggle) => {
-            toggle.addEventListener(EVENTS.browser.click, this.onToggleToolbox.bind(this, toggle));
+            toggle.addEventListener(EVENTS.Browser.Click, this.onToggleToolbox.bind(this, toggle));
         });
 
         this.toolType = this.measureToolbox.querySelector(`#${ID_PREFIX}-type`);
-        this.toolType.addEventListener(EVENTS.browser.change, this.updateTool.bind(this));
+        this.toolType.addEventListener(EVENTS.Browser.Change, this.updateTool.bind(this));
 
         this.fillColor = this.measureToolbox.querySelector(`#${ID_PREFIX}-fill-color`);
-        this.fillColor.addEventListener(EVENTS.custom.colorChange, this.updateTool.bind(this));
+        this.fillColor.addEventListener(EVENTS.Custom.ColorChange, this.updateTool.bind(this));
 
         this.strokeColor = this.measureToolbox.querySelector(`#${ID_PREFIX}-stroke-color`);
-        this.strokeColor.addEventListener(EVENTS.custom.colorChange, this.updateTool.bind(this));
+        this.strokeColor.addEventListener(EVENTS.Custom.ColorChange, this.updateTool.bind(this));
 
         // Set default selected values
         this.toolType.selectedIndex = this.localStorage.toolTypeIndex; 
 
-        window.addEventListener(EVENTS.browser.keyUp, this.onWindowKeyUp.bind(this));
-        window.addEventListener(EVENTS.custom.settingsCleared, this.onWindowSettingsCleared.bind(this));
-        window.addEventListener(EVENTS.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
+        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(EVENTS.Custom.SettingsCleared, this.onWindowSettingsCleared.bind(this));
+        window.addEventListener(EVENTS.Browser.ContentLoaded, this.onDOMContentLoaded.bind(this));
     }
 
     onToggleToolbox(toggle) {
@@ -141,15 +141,15 @@ class MeasureTool extends Control {
     onWindowKeyUp(event) {
         const key = event.key.toLowerCase();
 
-        if(key === KEYS.escape) {
+        if(key === KEYS.Escape) {
             if(this.interaction) {
                 this.interaction.abortDrawing();
             }
-        }else if(event.ctrlKey && key === KEYS.z) {
+        }else if(event.ctrlKey && key === KEYS.Z) {
             if(this.interaction) {
                 this.interaction.removeLastPoint();
             }
-        }else if(isShortcutKeyOnly(event, SHORTCUT_KEYS.measure)) {
+        }else if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Measure)) {
             this.handleClick(event);
         }
     }
@@ -210,12 +210,12 @@ class MeasureTool extends Control {
 
         ToolManager.setActiveTool(this);
 
-        if(SettingsManager.getSetting(SETTINGS.alwaysNewLayers)) {
+        if(SettingsManager.getSetting(SETTINGS.AlwaysNewLayers)) {
             LayerManager.addFeatureLayer('Measurements layer');
         }
 
         // Triggers activation of the measure tool
-        eventDispatcher([this.toolType], EVENTS.browser.change);
+        eventDispatcher([this.toolType], EVENTS.Browser.Change);
 
         this.localStorage.active = true;
         StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
@@ -274,17 +274,17 @@ class MeasureTool extends Control {
 
         map.addInteraction(this.interaction);
 
-        this.interaction.on(EVENTS.ol.drawStart, this.onDrawStart.bind(this));
-        this.interaction.on(EVENTS.ol.drawEnd, this.onDrawEnd.bind(this));
-        this.interaction.on(EVENTS.ol.drawAbort, this.onDrawAbort.bind(this));
-        this.interaction.on(EVENTS.ol.error, this.onDrawEnd.bind(this));
+        this.interaction.on(EVENTS.OpenLayers.DrawStart, this.onDrawStart.bind(this));
+        this.interaction.on(EVENTS.OpenLayers.DrawEnd, this.onDrawEnd.bind(this));
+        this.interaction.on(EVENTS.OpenLayers.DrawAbort, this.onDrawAbort.bind(this));
+        this.interaction.on(EVENTS.OpenLayers.Error, this.onDrawEnd.bind(this));
     }
 
     onDrawStart(event) {
         const feature = event.feature;
         const tooltipItem = TooltipManager.push('measure');
         
-        this.onChangeListener = feature.getGeometry().on(EVENTS.ol.change, (event) => {
+        this.onChangeListener = feature.getGeometry().on(EVENTS.OpenLayers.Change, (event) => {
             tooltipItem.innerHTML = getMeasureValue(event.target);
         });
 

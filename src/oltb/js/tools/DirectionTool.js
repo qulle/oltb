@@ -11,8 +11,8 @@ import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 import { LOCAL_STORAGE_KEYS } from '../helpers/constants/LocalStorageKeys';
 import { toolButtonsTippySingleton } from '../core/Tooltips';
 
-const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.directionTool;
-const DEFAULT_OPTIONS = {};
+const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.DirectionTool;
+const DEFAULT_OPTIONS = Object.freeze({});
 
 class DirectionTool extends Control {
     constructor(options = {}) {
@@ -21,12 +21,12 @@ class DirectionTool extends Control {
         });
         
         this.horizontalIcon = getIcon({
-            path: SVG_PATHS.directionHorizontal,
+            path: SVG_PATHS.DirectionHorizontal,
             class: 'oltb-tool-button__icon'
         });
 
         this.verticalIcon = getIcon({
-            path: SVG_PATHS.directionVertical,
+            path: SVG_PATHS.DirectionVertical,
             class: 'oltb-tool-button__icon'
         });
 
@@ -36,7 +36,11 @@ class DirectionTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `${(isHorizontal() ? 'Vertical toolbar' : 'Horizontal toolbar')} (${SHORTCUT_KEYS.toolbarDirection})`
+                'data-tippy-content': `${(
+                    isHorizontal() 
+                        ? 'Vertical toolbar' 
+                        : 'Horizontal toolbar'
+                )} (${SHORTCUT_KEYS.ToolbarDirection})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -50,13 +54,13 @@ class DirectionTool extends Control {
         
         this.onWindowDeviceCheck();
 
-        window.addEventListener(EVENTS.browser.resize, this.onWindowDeviceCheck.bind(this));
-        window.addEventListener(EVENTS.custom.settingsCleared, this.onWindowClearDirection.bind(this));
-        window.addEventListener(EVENTS.browser.keyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(EVENTS.Browser.Resize, this.onWindowDeviceCheck.bind(this));
+        window.addEventListener(EVENTS.Custom.SettingsCleared, this.onWindowClearDirection.bind(this));
+        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
     }
 
     onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.toolbarDirection)) {
+        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.ToolbarDirection)) {
             this.handleClick(event);
         }
     }
@@ -77,7 +81,7 @@ class DirectionTool extends Control {
         // Update toolbar icon
         this.button.removeChild(this.button.firstElementChild);
         this.button.insertAdjacentHTML('afterbegin', this.horizontalIcon);
-        this.button._tippy.setContent(`Horizontal toolbar (${SHORTCUT_KEYS.toolbarDirection})`);
+        this.button._tippy.setContent(`Horizontal toolbar (${SHORTCUT_KEYS.ToolbarDirection})`);
         toolButtonsTippySingleton.setProps({placement: 'right'});
     }
 
@@ -107,12 +111,12 @@ class DirectionTool extends Control {
             // Update toolbar icon
             this.button.removeChild(this.button.firstElementChild);
             this.button.insertAdjacentHTML('afterbegin', this.verticalIcon);
-            this.button._tippy.setContent(`Vertical  toolbar (${SHORTCUT_KEYS.toolbarDirection})`);
+            this.button._tippy.setContent(`Vertical  toolbar (${SHORTCUT_KEYS.ToolbarDirection})`);
             toolButtonsTippySingleton.setProps({placement: 'bottom'});
         }
 
         // This will trigger collision detection for the toolbar vs toolbox
-        window.dispatchEvent(new CustomEvent(EVENTS.custom.toolbarDirectionChange, {
+        window.dispatchEvent(new CustomEvent(EVENTS.Custom.ToolbarDirectionChange, {
             detail: {
                 direction: tooltipDirection
             }

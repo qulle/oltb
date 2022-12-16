@@ -12,7 +12,8 @@ const toolButtonsTippySingleton = createSingleton([], {
     placement: 'right',
     appendTo: MAP_ELEMENT,
     offset: [0, 12],
-    theme: 'oltb'
+    theme: 'oltb',
+    touch: false
 });
 
 // Create delegate tippy instances for static and dynamic elements inside the MAP_ELEMENT
@@ -27,7 +28,8 @@ const mapTippyDelegate = delegate(MAP_ELEMENT, {
     placement: 'top',
     appendTo: MAP_ELEMENT,
     theme: 'oltb oltb-themed',
-    delay: [600, 100]
+    delay: [600, 100],
+    touch: false
 });
 
 // Create delegate tippy instances for triggering a color-picker (ACP) inside the MAP_ELEMENT
@@ -41,11 +43,12 @@ const colorTippyDelegate = delegate(MAP_ELEMENT, {
     theme: 'oltb oltb-inverted-themed',
     interactive: true,
     allowHTML: true,
+    touch: false,
     onShow(instance) {
         onColorPickerTooltipShow(instance);
     },
     onHide(instance) {
-        colorPicker.off(EVENTS.browser.change);
+        colorPicker.off(EVENTS.Browser.Change);
     },
     onHidden(instance) {
         instance.setContent(null);
@@ -63,9 +66,9 @@ const onDOMContentLoaded = function(event) {
     onPlacementChange(event);
 }
 
-window.addEventListener(EVENTS.custom.toolbarDirectionChange, onPlacementChange);
-window.addEventListener(EVENTS.browser.resize, onPlacementChange);
-window.addEventListener(EVENTS.browser.contentLoaded, onDOMContentLoaded);
+window.addEventListener(EVENTS.Custom.ToolbarDirectionChange, onPlacementChange);
+window.addEventListener(EVENTS.Browser.Resize, onPlacementChange);
+window.addEventListener(EVENTS.Browser.ContentLoaded, onDOMContentLoaded);
 
 export {
     toolButtonsTippySingleton, 

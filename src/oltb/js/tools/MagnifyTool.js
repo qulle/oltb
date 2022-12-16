@@ -11,12 +11,12 @@ import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
 import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 import { LOCAL_STORAGE_KEYS } from '../helpers/constants/LocalStorageKeys';
 
-const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.magnifyTool;
-const LOCAL_STORAGE_DEFAULTS = {
+const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.MagnifyTool;
+const LOCAL_STORAGE_DEFAULTS = Object.freeze({
     active: false
-};
+});
 
-const DEFAULT_OPTIONS = {};
+const DEFAULT_OPTIONS = Object.freeze({});
 
 class MagnifyTool extends Control {
     constructor(options = {}) {
@@ -25,7 +25,7 @@ class MagnifyTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.magnify,
+            path: SVG_PATHS.Magnify,
             class: 'oltb-tool-button__icon'
         });
 
@@ -35,7 +35,7 @@ class MagnifyTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Magnifier (${SHORTCUT_KEYS.magnify})`
+                'data-tippy-content': `Magnifier (${SHORTCUT_KEYS.Magnify})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -51,8 +51,8 @@ class MagnifyTool extends Control {
         const localStorageState = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
         this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
 
-        window.addEventListener(EVENTS.browser.keyUp, this.onWindowKeyUp.bind(this));
-        window.addEventListener(EVENTS.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
+        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(EVENTS.Browser.ContentLoaded, this.onDOMContentLoaded.bind(this));
     }
 
     onDOMContentLoaded() {
@@ -62,7 +62,7 @@ class MagnifyTool extends Control {
     }
 
     onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.magnify)) {
+        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Magnify)) {
             this.handleClick(event);
         }
     }
@@ -85,17 +85,17 @@ class MagnifyTool extends Control {
         const mapContainer = map.getTarget();
     
         this.onMousemoveListenert = this.onMousemove.bind(this);
-        mapContainer.addEventListener(EVENTS.browser.mouseMove, this.onMousemoveListenert);
+        mapContainer.addEventListener(EVENTS.Browser.MouseMove, this.onMousemoveListenert);
 
         this.onMouseoutListenert = this.onMouseout.bind(this);
-        mapContainer.addEventListener(EVENTS.browser.mouseOut, this.onMouseoutListenert);
+        mapContainer.addEventListener(EVENTS.Browser.MouseOut, this.onMouseoutListenert);
 
         this.onKeydownListener = this.onKeydown.bind(this);
-        document.addEventListener(EVENTS.browser.keyDown, this.onKeydownListener);
+        document.addEventListener(EVENTS.Browser.KeyDown, this.onKeydownListener);
 
         this.onPostrenderListeners = [];
         map.getLayers().getArray().forEach((layer) => {
-            this.onPostrenderListeners.push(layer.on(EVENTS.ol.postRender, this.onPostrender.bind(this)));
+            this.onPostrenderListeners.push(layer.on(EVENTS.OpenLayers.PostRender, this.onPostrender.bind(this)));
         });
 
         this.active = true;
@@ -110,9 +110,9 @@ class MagnifyTool extends Control {
         const mapContainer = map.getTarget();
 
         // Remove the eventlisteners
-        mapContainer.removeEventListener(EVENTS.browser.mouseMove, this.onMousemoveListenert);
-        mapContainer.removeEventListener(EVENTS.browser.mouseOut, this.onMouseoutListenert);
-        document.removeEventListener(EVENTS.browser.keyDown, this.onKeydownListener);
+        mapContainer.removeEventListener(EVENTS.Browser.MouseMove, this.onMousemoveListenert);
+        mapContainer.removeEventListener(EVENTS.Browser.MouseOut, this.onMouseoutListenert);
+        document.removeEventListener(EVENTS.Browser.KeyDown, this.onKeydownListener);
 
         this.onPostrenderListeners.forEach((listener) => {
             unByKey(listener);

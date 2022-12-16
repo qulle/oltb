@@ -11,10 +11,10 @@ import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
 import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 import { MAP_ELEMENT, TOOLBAR_ELEMENT } from '../core/elements/index';
 
-const DEFAULT_OPTIONS = {
+const DEFAULT_OPTIONS = Object.freeze({
     filename: 'map-image-export',
     appendTime: false
-};
+});
 
 class ExportPNGTool extends Control {
     constructor(options = {}) {
@@ -23,7 +23,7 @@ class ExportPNGTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.export,
+            path: SVG_PATHS.Export,
             class: 'oltb-tool-button__icon'
         });
 
@@ -33,7 +33,7 @@ class ExportPNGTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Export PNG (${SHORTCUT_KEYS.exportPNG})`
+                'data-tippy-content': `Export PNG (${SHORTCUT_KEYS.ExportPNG})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -46,12 +46,12 @@ class ExportPNGTool extends Control {
         // If the tool should activate detailed logging in the html2canvas process (?debug=true)
         this.isDebug = URLManager.getParameter('debug') === 'true';
         
-        window.addEventListener(EVENTS.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
-        window.addEventListener(EVENTS.browser.keyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(EVENTS.Browser.ContentLoaded, this.onDOMContentLoaded.bind(this));
+        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
     }
 
     onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.exportPNG)) {
+        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.ExportPNG)) {
             this.handleClick(event);
         }
     }
@@ -77,7 +77,7 @@ class ExportPNGTool extends Control {
         const map = this.getMap();
 
         // RenderSync will trigger the export the png
-        map.once(EVENTS.ol.renderComplete, this.onRenderComplete.bind(this));
+        map.once(EVENTS.OpenLayers.RenderComplete, this.onRenderComplete.bind(this));
         map.renderSync();
     }
 

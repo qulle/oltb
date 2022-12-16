@@ -7,10 +7,10 @@ import { TOOLBAR_ELEMENT } from '../core/elements/index';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
 import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 
-const DEFAULT_OPTIONS = {
+const DEFAULT_OPTIONS = Object.freeze({
     url: 'https://github.com/qulle/oltb',
     target: '_blank'
-};
+});
 
 class HelpTool extends Control {
     constructor(options = {}) {
@@ -19,7 +19,7 @@ class HelpTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.help,
+            path: SVG_PATHS.Help,
             class: 'oltb-tool-button__icon'
         });
 
@@ -29,7 +29,7 @@ class HelpTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Help (${SHORTCUT_KEYS.help})`
+                'data-tippy-content': `Help (${SHORTCUT_KEYS.Help})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -39,11 +39,11 @@ class HelpTool extends Control {
         this.element.appendChild(button);
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
-        window.addEventListener(EVENTS.browser.keyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
     }
 
     onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.help)) {
+        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Help)) {
             this.handleClick(event);
         }
     }

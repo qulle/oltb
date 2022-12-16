@@ -18,12 +18,12 @@ import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
 import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 import { LOCAL_STORAGE_KEYS } from '../helpers/constants/LocalStorageKeys';
 
-const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.coordinateTool;
-const LOCAL_STORAGE_DEFAULTS = {
+const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.CoordinateTool;
+const LOCAL_STORAGE_DEFAULTS = Object.freeze({
     active: false
-};
+});
 
-const DEFAULT_OPTIONS = {};
+const DEFAULT_OPTIONS = Object.freeze({});
 
 class CoordinateTool extends Control {
     constructor(options = {}) {
@@ -32,7 +32,7 @@ class CoordinateTool extends Control {
         });
 
         const icon = getIcon({
-            path: SVG_PATHS.coordinate,
+            path: SVG_PATHS.Coordinate,
             class: 'oltb-tool-button__icon'
         });
 
@@ -42,7 +42,7 @@ class CoordinateTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Show coordinates (${SHORTCUT_KEYS.coordinate})`
+                'data-tippy-content': `Show coordinates (${SHORTCUT_KEYS.Coordinate})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -59,13 +59,13 @@ class CoordinateTool extends Control {
         const localStorageState = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
         this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
 
-        SettingsManager.addSetting(SETTINGS.copyCoordinateOnClick, {
+        SettingsManager.addSetting(SETTINGS.CopyCoordinateOnClick, {
             state: true, 
             text: 'Coordinate tool - Copy coordinates on click'
         });
 
-        window.addEventListener(EVENTS.browser.keyUp, this.onWindowKeyUp.bind(this));
-        window.addEventListener(EVENTS.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
+        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(EVENTS.Browser.ContentLoaded, this.onDOMContentLoaded.bind(this));
     }
 
     onDOMContentLoaded() {
@@ -75,7 +75,7 @@ class CoordinateTool extends Control {
     }
 
     onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.coordinate)) {
+        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Coordinate)) {
             this.handleClick(event);
         }
     }
@@ -97,8 +97,8 @@ class CoordinateTool extends Control {
         const map = this.getMap();
 
         this.tooltipItem = TooltipManager.push('coordinates');
-        this.onPointerMoveListener = map.on(EVENTS.ol.pointerMove, this.onPointerMove.bind(this));
-        this.onMapClickListener = map.on(EVENTS.browser.click, this.onMapClick.bind(this));
+        this.onPointerMoveListener = map.on(EVENTS.OpenLayers.PointerMove, this.onPointerMove.bind(this));
+        this.onMapClickListener = map.on(EVENTS.Browser.Click, this.onMapClick.bind(this));
 
         this.active = true;
         this.button.classList.add('oltb-tool-button--active');
@@ -133,7 +133,7 @@ class CoordinateTool extends Control {
 
     async onMapClick(event) {
         if(
-            !SettingsManager.getSetting(SETTINGS.copyCoordinateOnClick) || 
+            !SettingsManager.getSetting(SETTINGS.CopyCoordinateOnClick) || 
             ToolManager.hasActiveTool()
         ) {
             return;
@@ -150,11 +150,11 @@ class CoordinateTool extends Control {
         const prettyCoords = toStringHDMS(lonlat);
 
         const coordinate = {
-            decimal: {
+            data: {
                 lon: lon, 
                 lat: lat
             },
-            degree: prettyCoords
+            pretty: prettyCoords
         };
 
         copyToClipboard(prettyCoords)

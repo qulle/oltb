@@ -1,11 +1,11 @@
 import { TileWMS, XYZ, OSM, Vector } from 'ol/source';
 
-const SOURCE_TYPES = {
+const SOURCE_TYPES = Object.freeze({
     'TileWMS': TileWMS,
     'XYZ': XYZ,
     'OSM': OSM,
     'Vector': Vector
-};
+});
 
 const instantiateSource = function(name, options) {
     if(!(name in SOURCE_TYPES)) {

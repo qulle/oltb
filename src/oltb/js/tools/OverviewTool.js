@@ -12,13 +12,13 @@ import { Control, OverviewMap } from 'ol/control';
 import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT } from '../core/elements/index';
 
 const ID_PREFIX = 'oltb-overview';
-const DEFAULT_OPTIONS = {};
+const DEFAULT_OPTIONS = Object.freeze({});
 
-const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.overviewTool;
-const LOCAL_STORAGE_DEFAULTS = {
+const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.OverviewTool;
+const LOCAL_STORAGE_DEFAULTS = Object.freeze({
     active: false,
     collapsed: false
-};
+});
 
 class OverviewTool extends Control {
     constructor(options = {}) {
@@ -27,7 +27,7 @@ class OverviewTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.aspectRation,
+            path: SVG_PATHS.AspectRation,
             class: 'oltb-tool-button__icon'
         });
 
@@ -37,7 +37,7 @@ class OverviewTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Area overview (${SHORTCUT_KEYS.overview})`
+                'data-tippy-content': `Area overview (${SHORTCUT_KEYS.Overview})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -71,7 +71,7 @@ class OverviewTool extends Control {
 
         const toggleableTriggers = this.overviewToolbox.querySelectorAll('.oltb-toggleable');
         toggleableTriggers.forEach((toggle) => {
-            toggle.addEventListener(EVENTS.browser.click, this.onToggleToolbox.bind(this, toggle));
+            toggle.addEventListener(EVENTS.Browser.Click, this.onToggleToolbox.bind(this, toggle));
         });
 
         this.overviewMap = new OverviewMap({
@@ -85,9 +85,9 @@ class OverviewTool extends Control {
             ]
         });
 
-        window.addEventListener(EVENTS.browser.keyUp, this.onWindowKeyUp.bind(this));
-        window.addEventListener(EVENTS.custom.settingsCleared, this.onWindowSettingsCleared.bind(this));
-        window.addEventListener(EVENTS.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
+        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(EVENTS.Custom.SettingsCleared, this.onWindowSettingsCleared.bind(this));
+        window.addEventListener(EVENTS.Browser.ContentLoaded, this.onDOMContentLoaded.bind(this));
     }
 
     onToggleToolbox(toggle) {
@@ -110,7 +110,7 @@ class OverviewTool extends Control {
     }
 
     onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.overview)) {
+        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Overview)) {
             this.handleClick(event);
         }
     }

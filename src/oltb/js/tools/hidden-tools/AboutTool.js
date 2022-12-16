@@ -14,12 +14,12 @@ class HiddenAboutTool extends Control {
         });
 
         const icon = getIcon({
-            path: SVG_PATHS.gitHub
+            path: SVG_PATHS.GitHub
         });
 
-        addContextMenuItem(CONTEXT_MENUS.mainMap, {});
+        addContextMenuItem(CONTEXT_MENUS.MainMap, {});
         
-        addContextMenuItem(CONTEXT_MENUS.mainMap, {
+        addContextMenuItem(CONTEXT_MENUS.MainMap, {
             icon: icon, 
             name: 'About OLTB', 
             fn: this.onContextMenuAbout.bind(this)

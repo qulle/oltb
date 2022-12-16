@@ -10,18 +10,18 @@ import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
 import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 import { LOCAL_STORAGE_KEYS } from '../helpers/constants/LocalStorageKeys';
 
-const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.graticuleTool;
-const LOCAL_STORAGE_DEFAULTS = {
+const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.GraticuleTool;
+const LOCAL_STORAGE_DEFAULTS = Object.freeze({
     active: false
-};
+});
 
-const DEFAULT_OPTIONS = {
+const DEFAULT_OPTIONS = Object.freeze({
     color: 'rgba(59, 67, 82, 0.9)',
     dashed: true,
     width: 2,
     showLabels: true,
     wrapX: true
-};
+});
 
 class GraticuleTool extends Control {
     constructor(options = {}) {
@@ -30,7 +30,7 @@ class GraticuleTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.globe,
+            path: SVG_PATHS.Globe,
             class: 'oltb-tool-button__icon'
         });
 
@@ -40,7 +40,7 @@ class GraticuleTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Show graticule (${SHORTCUT_KEYS.graticule})`
+                'data-tippy-content': `Show graticule (${SHORTCUT_KEYS.Graticule})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -67,8 +67,8 @@ class GraticuleTool extends Control {
             wrapX: this.options.wrapX,
         });
 
-        window.addEventListener(EVENTS.browser.keyUp, this.onWindowKeyUp.bind(this));
-        window.addEventListener(EVENTS.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
+        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(EVENTS.Browser.ContentLoaded, this.onDOMContentLoaded.bind(this));
     }
 
     onDOMContentLoaded() {
@@ -78,7 +78,7 @@ class GraticuleTool extends Control {
     }
 
     onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.graticule)) {
+        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Graticule)) {
             this.handleClick(event);
         }
     }    

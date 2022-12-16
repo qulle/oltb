@@ -9,8 +9,8 @@ import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
 import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 import { LOCAL_STORAGE_KEYS } from '../helpers/constants/LocalStorageKeys';
 
-const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.themeTool;
-const DEFAULT_OPTIONS = {};
+const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.ThemeTool;
+const DEFAULT_OPTIONS = Object.freeze({});
 
 class ThemeTool extends Control {
     constructor(options = {}) {
@@ -19,12 +19,12 @@ class ThemeTool extends Control {
         });
         
         this.lightThemeIcon = getIcon({
-            path: SVG_PATHS.lightOn,
+            path: SVG_PATHS.LightOn,
             class: 'oltb-tool-button__icon'
         });
 
         this.darkThemeIcon = getIcon({
-            path: SVG_PATHS.lightOff,
+            path: SVG_PATHS.LightOff,
             class: 'oltb-tool-button__icon'
         });
         
@@ -34,7 +34,11 @@ class ThemeTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `${(isDarkTheme() ? 'Light theme' : 'Dark theme')} (${SHORTCUT_KEYS.toolbarTheme})`
+                'data-tippy-content': `${(
+                    isDarkTheme() 
+                        ? 'Light theme' 
+                        : 'Dark theme'
+                )} (${SHORTCUT_KEYS.ToolbarTheme})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -46,12 +50,12 @@ class ThemeTool extends Control {
         this.active = false;
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
-        window.addEventListener(EVENTS.custom.settingsCleared, this.onWindowClearTheme.bind(this));
-        window.addEventListener(EVENTS.browser.keyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(EVENTS.Custom.SettingsCleared, this.onWindowClearTheme.bind(this));
+        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
     }
 
     onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.toolbarTheme)) {
+        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.ToolbarTheme)) {
             this.handleClick(event);
         }
     }
@@ -80,7 +84,7 @@ class ThemeTool extends Control {
             // Update toolbar icon
             this.button.removeChild(this.button.firstElementChild);
             this.button.insertAdjacentHTML('afterbegin', this.lightThemeIcon);
-            this.button._tippy.setContent(`Light theme (${SHORTCUT_KEYS.toolbarTheme})`);
+            this.button._tippy.setContent(`Light theme (${SHORTCUT_KEYS.ToolbarTheme})`);
         }
 
         // User defined callback from constructor
@@ -97,7 +101,7 @@ class ThemeTool extends Control {
         // Update toolbar icon
         this.button.removeChild(this.button.firstElementChild);
         this.button.insertAdjacentHTML('afterbegin', this.darkThemeIcon);
-        this.button._tippy.setContent(`Dark theme (${SHORTCUT_KEYS.toolbarTheme})`);
+        this.button._tippy.setContent(`Dark theme (${SHORTCUT_KEYS.ToolbarTheme})`);
     }
 }
 

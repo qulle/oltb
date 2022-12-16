@@ -2,8 +2,8 @@ import StateManager from "./StateManager";
 import { SETTINGS } from "../../helpers/constants/Settings";
 import { LOCAL_STORAGE_KEYS } from "../../helpers/constants/LocalStorageKeys";
 
-const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.settingsManager;
-const LOCAL_STORAGE_DEFAULTS = {};
+const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.SettingsManager;
+const LOCAL_STORAGE_DEFAULTS = Object.freeze({});
 
 class SettingsManager {
     static #localStorageState = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
@@ -11,37 +11,37 @@ class SettingsManager {
 
     static #settings = new Map([
         [
-            SETTINGS.mouseWheelZoom, {
+            SETTINGS.MouseWheelZoom, {
                 state: false, 
                 text: 'Enable zooming using mousewheel only'
             }
         ], [
-            SETTINGS.altShiftDragRotate, {
+            SETTINGS.AltShiftDragRotate, {
                 state: true, 
                 text: 'Enable rotate of map using Shift + Alt + Drag'
             }
         ], [
-            SETTINGS.dragPan, {
+            SETTINGS.DragPan, {
                 state: true, 
                 text: 'Enable dragging using mouse only'
             }
         ], [
-            SETTINGS.keyboardZoom, {
+            SETTINGS.KeyboardZoom, {
                 state: true, 
                 text: 'Enable zooming using keyboard'
             }
         ], [
-            SETTINGS.keyboardPan, {
+            SETTINGS.KeyboardPan, {
                 state: true, 
                 text: 'Enable panning using keyboard'
             }
         ], [
-            SETTINGS.selectVectorMapShapes, {
+            SETTINGS.SelectVectorMapShapes, {
                 state: false, 
                 text: 'Enable select of shapes in vector map layers'
             }
         ], [
-            SETTINGS.alwaysNewLayers, {
+            SETTINGS.AlwaysNewLayers, {
                 state: false, 
                 text: 'Always create new layer when selecting tool'
             }

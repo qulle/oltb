@@ -8,7 +8,7 @@ import { TOOLBAR_ELEMENT } from '../core/elements/index';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
 import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 
-const DEFAULT_OPTIONS = {};
+const DEFAULT_OPTIONS = Object.freeze({});
 
 class ZoomInTool extends Control {
     constructor(options = {}) {
@@ -17,7 +17,7 @@ class ZoomInTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.zoomIn,
+            path: SVG_PATHS.ZoomIn,
             class: 'oltb-tool-button__icon'
         });
 
@@ -27,7 +27,7 @@ class ZoomInTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Zoom in (${SHORTCUT_KEYS.zoomIn})`
+                'data-tippy-content': `Zoom in (${SHORTCUT_KEYS.ZoomIn})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -38,11 +38,11 @@ class ZoomInTool extends Control {
         this.options = { ...DEFAULT_OPTIONS, ...options };
         this.delta = 1;
 
-        window.addEventListener(EVENTS.browser.keyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
     }
 
     onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.zoomIn)) {
+        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.ZoomIn)) {
             this.handleClick(event);
         }
     }

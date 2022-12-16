@@ -1,34 +1,34 @@
 import { version } from '../../../../package.json';
 
-const CONFIG = {
+const CONFIG = Object.freeze({
     version: version,
     locale: 'en-us',
     scrollDistance: 100,
     rem: 16,
-    localStorage: {
+    localStorage: Object.freeze({
         key: 'oltb-state'
-    },
-    projection: {
+    }),
+    projection: Object.freeze({
         default: 'EPSG:3857',
         wgs84: 'EPSG:4326'
-    },
-    overlayOffset: {
+    }),
+    overlayOffset: Object.freeze({
         horizontal: 0,
         vertical: -8
-    },
-    deviceWidth: {
+    }),
+    deviceWidth: Object.freeze({
         xs: '0',
         sm: '576',
         md: '768',
         lg: '992',
         xl: '1200',
         xxl: '1400'
-    },
-    animationDuration: {
+    }),
+    animationDuration: Object.freeze({
         slow: 450,
         normal: 350,
         fast: 250
-    }
-};
+    })
+});
 
 export default CONFIG;

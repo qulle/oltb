@@ -1,10 +1,10 @@
 import DOM from '../../helpers/browser/DOM';
 import ModalBase from './ModalBase';
 
-const DEFAULT_OPTIONS = {
+const DEFAULT_OPTIONS = Object.freeze({
     title: 'Default modal title',
     content: 'Default modal content'
-};
+});
 
 class ModalWindow extends ModalBase {
     constructor(options = {}) {

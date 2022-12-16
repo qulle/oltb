@@ -8,7 +8,7 @@ import { MAP_ELEMENT } from "../core/elements/index";
 import { hasNestedProperty } from "../helpers/browser/HasNestedProperty";
 import { trapFocusKeyListener } from '../helpers/browser/TrapFocus';
 
-const DEFAULT_OPTIONS = {};
+const DEFAULT_OPTIONS = Object.freeze({});
 
 const MENU_ITEMS = new Map();
 const MENU_INSTANCES = new Map();
@@ -68,9 +68,9 @@ class ContextMenu extends Control {
                     'keyup': (event) => {
                         const key = event.key.toLowerCase();
 
-                        if(key === KEYS.enter) {
+                        if(key === KEYS.Enter) {
                             this.click(event);
-                        }else if(key === KEYS.escape) {
+                        }else if(key === KEYS.Escape) {
                             this.hide();
                         }
                     }
@@ -125,7 +125,7 @@ class ContextMenu extends Control {
     }
 }
 
-MAP_ELEMENT.addEventListener(EVENTS.browser.contextMenu, (event) => {
+MAP_ELEMENT.addEventListener(EVENTS.Browser.ContextMenu, (event) => {
     MENU_INSTANCES.forEach((menu) => {
         if(event.target.matches(menu.options.selector)) {
             menu.show(event);
@@ -133,7 +133,7 @@ MAP_ELEMENT.addEventListener(EVENTS.browser.contextMenu, (event) => {
     });
 });
 
-MAP_ELEMENT.addEventListener(EVENTS.browser.click, (event) => {
+MAP_ELEMENT.addEventListener(EVENTS.Browser.Click, (event) => {
     MENU_INSTANCES.forEach((menu) => {
         menu.hide();
     });

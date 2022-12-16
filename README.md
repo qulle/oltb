@@ -42,9 +42,9 @@ Have a look at the [Internal Development Documentation](README_INTERNAL.md).
 3. [Bootstrap Icons](https://icons.getbootstrap.com/)
 4. [A Color Picker 1.2.1](https://github.com/narsenico/a-color-picker)
 5. [Plain JS Slidetoggle 2.0.0](https://github.com/ericbutler555/plain-js-slidetoggle)
-6. [JSTS 2.9.2](https://github.com/bjornharrtell/jsts)
-7. [Parcel 2.7.0](https://parceljs.org/)
-8. [Rollup 3.2.5](https://github.com/rollup/rollup)
+6. [JSTS 2.9.3](https://github.com/bjornharrtell/jsts)
+7. [Parcel 2.8.1](https://parceljs.org/)
+8. [Rollup 3.7.1](https://github.com/rollup/rollup)
 
 ## Maps used in the demo
 1. [OpenStreetMap](https://www.openstreetmap.org/)

@@ -7,10 +7,10 @@ import { TOOLBAR_ELEMENT } from '../core/elements/index';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
 import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 
-const DEFAULT_OPTIONS = {
+const DEFAULT_OPTIONS = Object.freeze({
     title: 'Hey!',
     content: 'This is the default content, try adding some content of your own.'
-};
+});
 
 class InfoTool extends Control {
     constructor(options = {}) {
@@ -19,7 +19,7 @@ class InfoTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.info,
+            path: SVG_PATHS.Info,
             class: 'oltb-tool-button__icon'
         });
 
@@ -29,7 +29,7 @@ class InfoTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Info (${SHORTCUT_KEYS.info})`
+                'data-tippy-content': `Info (${SHORTCUT_KEYS.Info})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -40,11 +40,11 @@ class InfoTool extends Control {
         this.infoModal = undefined;
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
-        window.addEventListener(EVENTS.browser.keyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
     }
 
     onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.info)) {
+        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Info)) {
             this.handleClick(event);
         }
     }    

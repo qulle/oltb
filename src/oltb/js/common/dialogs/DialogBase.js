@@ -22,11 +22,11 @@ class DialogBase {
 
         this.isDark = isDarkTheme();
 
-        window.addEventListener(EVENTS.browser.keyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
     }
 
     onWindowKeyUp(event) {
-        if(event.key.toLowerCase() === KEYS.escape) {
+        if(event.key.toLowerCase() === KEYS.Escape) {
             this.close();
         }
     }
@@ -45,7 +45,7 @@ class DialogBase {
     }
 
     close() {
-        this.dialogBackdrop.removeEventListener(EVENTS.browser.keyDown, trapFocusKeyListener);
+        this.dialogBackdrop.removeEventListener(EVENTS.Browser.KeyDown, trapFocusKeyListener);
         this.dialogBackdrop.remove();
     }
 }

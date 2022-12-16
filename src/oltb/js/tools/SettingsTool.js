@@ -12,7 +12,7 @@ import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
 import { addContextMenuItem } from '../common/ContextMenu';
 import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 
-const DEFAULT_OPTIONS = {};
+const DEFAULT_OPTIONS = Object.freeze({});
 
 class SettingsTool extends Control {
     constructor(options = {}) {
@@ -21,7 +21,7 @@ class SettingsTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.settings,
+            path: SVG_PATHS.Settings,
             class: 'oltb-tool-button__icon'
         });
 
@@ -31,7 +31,7 @@ class SettingsTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Settings (${SHORTCUT_KEYS.settings})`
+                'data-tippy-content': `Settings (${SHORTCUT_KEYS.Settings})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -42,17 +42,17 @@ class SettingsTool extends Control {
         this.settingsModal = undefined;
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
-        addContextMenuItem(CONTEXT_MENUS.mainMap, {
+        addContextMenuItem(CONTEXT_MENUS.MainMap, {
             icon: icon, 
             name: 'Clear settings', 
             fn: this.onContextMenuSettingsClear.bind(this)
         });
 
-        window.addEventListener(EVENTS.browser.keyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
     }
 
     onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.settings)) {
+        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Settings)) {
             this.handleClick(event);
         }
     }
@@ -77,7 +77,7 @@ class SettingsTool extends Control {
         }
 
         // Emit event so that any tool can clean up
-        window.dispatchEvent(new CustomEvent(EVENTS.custom.settingsCleared));
+        window.dispatchEvent(new CustomEvent(EVENTS.Custom.SettingsCleared));
     }
 
     handleClick() {

@@ -4,7 +4,7 @@ import { SVG_PATHS } from '../../core/icons/GetIcon';
 import { isDarkTheme } from '../../helpers/IsDarkTheme';
 
 const ID_PREFIX = 'oltb-marker-modal';
-const DEFAULT_OPTIONS = {};
+const DEFAULT_OPTIONS = Object.freeze({});
 
 class MarkerModal extends ModalBase {
     constructor(options, onCreate, onCancel) {

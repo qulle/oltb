@@ -6,7 +6,7 @@ import { getWindBarb } from '../core/icons/GetWindBarb';
 import { degreesToRadians } from '../helpers/Conversions';
 import { FEATURE_PROPERTIES } from '../helpers/constants/FeatureProperties';
 
-const DEFAULT_OPTIONS = {
+const DEFAULT_OPTIONS = Object.freeze({
     lat: undefined,
     lon: undefined,
     windSpeed: 0,
@@ -19,7 +19,7 @@ const DEFAULT_OPTIONS = {
     scale: 1,
     notSelectable: false,
     infoWindow: undefined
-};
+});
 
 const generateWindbarb = function(options = {}) {
     options = { ...DEFAULT_OPTIONS, ...options };

@@ -1,13 +1,13 @@
-const FULL_SCREEN_EVENTS = [
+const FULL_SCREEN_EVENTS = Object.freeze([
     'fullscreenchange',
     'webkitfullscreenchange',
     'MSFullscreenChange'
-];
+]);
   
-const FULL_SCREEN_EVENT_TYPE = {
-    enterFullScreen: 'enterfullscreen',
-    leaveFullScreen: 'leavefullscreen'
-};
+const FULL_SCREEN_EVENT_TYPE = Object.freeze({
+    EnterFullScreen: 'enterfullscreen',
+    LeaveFullScreen: 'leavefullscreen'
+});
 
 const isFullScreenSupported = function() {
     const body = document.body;

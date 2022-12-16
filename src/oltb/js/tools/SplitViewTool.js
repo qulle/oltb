@@ -16,13 +16,13 @@ import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT, MAP_ELEMENT } from '../core/elements/
 
 const RADIX = 10;
 const ID_PREFIX = 'oltb-split-view';
-const DEFAULT_OPTIONS = {};
+const DEFAULT_OPTIONS = Object.freeze({});
 
-const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.splitViewTool;
-const LOCAL_STORAGE_DEFAULTS = {
+const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.SplitViewTool;
+const LOCAL_STORAGE_DEFAULTS = Object.freeze({
     active: false,
     collapsed: false
-};
+});
 
 class SplitViewTool extends Control {
     constructor(options = {}) {
@@ -31,7 +31,7 @@ class SplitViewTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.splitView,
+            path: SVG_PATHS.SplitView,
             class: 'oltb-tool-button__icon'
         });
 
@@ -41,7 +41,7 @@ class SplitViewTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Split view (${SHORTCUT_KEYS.splitView})`
+                'data-tippy-content': `Split view (${SHORTCUT_KEYS.SplitView})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -88,31 +88,31 @@ class SplitViewTool extends Control {
         this.splitViewToolbox = document.querySelector(`#${ID_PREFIX}-toolbox`);
 
         this.leftSrc = this.splitViewToolbox.querySelector(`#${ID_PREFIX}-left-src`);
-        this.leftSrc.addEventListener(EVENTS.browser.change, this.updateTool.bind(this));
+        this.leftSrc.addEventListener(EVENTS.Browser.Change, this.updateTool.bind(this));
 
         this.rightSrc = this.splitViewToolbox.querySelector(`#${ID_PREFIX}-right-src`);
-        this.rightSrc.addEventListener(EVENTS.browser.change, this.updateTool.bind(this));
+        this.rightSrc.addEventListener(EVENTS.Browser.Change, this.updateTool.bind(this));
 
         const toggleableTriggers = this.splitViewToolbox.querySelectorAll('.oltb-toggleable');
         toggleableTriggers.forEach((toggle) => {
-            toggle.addEventListener(EVENTS.browser.click, this.onToggleToolbox.bind(this, toggle));
+            toggle.addEventListener(EVENTS.Browser.Click, this.onToggleToolbox.bind(this, toggle));
         });
 
         const swapSidesButton = this.splitViewToolbox.querySelector(`#${ID_PREFIX}-swap-btn`);
-        swapSidesButton.addEventListener(EVENTS.browser.click, (event) => {
+        swapSidesButton.addEventListener(EVENTS.Browser.Click, (event) => {
             this.swapSides();
         });
         
         this.splitViewSlider = MAP_ELEMENT.querySelector(`#${ID_PREFIX}-slider`);
-        this.splitViewSlider.addEventListener(EVENTS.browser.input, (event) => {
+        this.splitViewSlider.addEventListener(EVENTS.Browser.Input, (event) => {
             this.getMap().render();
         });
 
-        window.addEventListener(EVENTS.custom.mapLayerAdded, this.onWindowMapLayerAdded.bind(this));
-        window.addEventListener(EVENTS.custom.mapLayerRemoved, this.onWindowMapLayerRemoved.bind(this));
-        window.addEventListener(EVENTS.browser.keyUp, this.onWindowKeyUp.bind(this));
-        window.addEventListener(EVENTS.custom.settingsCleared, this.onWindowSettingsCleared.bind(this));
-        window.addEventListener(EVENTS.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
+        window.addEventListener(EVENTS.Custom.MapLayerAdded, this.onWindowMapLayerAdded.bind(this));
+        window.addEventListener(EVENTS.Custom.MapLayerRemoved, this.onWindowMapLayerRemoved.bind(this));
+        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(EVENTS.Custom.SettingsCleared, this.onWindowSettingsCleared.bind(this));
+        window.addEventListener(EVENTS.Browser.ContentLoaded, this.onDOMContentLoaded.bind(this));
     }
 
     onToggleToolbox(toggle) {
@@ -130,7 +130,7 @@ class SplitViewTool extends Control {
     }
 
     onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.splitView)) {
+        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.SplitView)) {
             this.handleClick(event);
         }
     }
@@ -174,7 +174,7 @@ class SplitViewTool extends Control {
         });
 
         // Dispatch event so the map can update if an active layer was removed
-        eventDispatcher([this.leftSrc, this.rightSrc], EVENTS.browser.change);
+        eventDispatcher([this.leftSrc, this.rightSrc], EVENTS.Browser.Change);
     }
 
     updateTool() {
@@ -205,7 +205,7 @@ class SplitViewTool extends Control {
     activateTool() {
         this.rightSrc.selectedIndex = '1';
 
-        eventDispatcher([this.rightSrc], EVENTS.browser.change);
+        eventDispatcher([this.rightSrc], EVENTS.Browser.Change);
 
         if(this.layerLoadingError) {
             return;
@@ -256,7 +256,7 @@ class SplitViewTool extends Control {
         this.leftSrc.value = currentRightId;
 
         // Dispatch event so the map can update
-        eventDispatcher([this.leftSrc, this.rightSrc], EVENTS.browser.change);
+        eventDispatcher([this.leftSrc, this.rightSrc], EVENTS.Browser.Change);
     }
 
     sourceChange(leftSrcId, rightSrcId) {
@@ -298,8 +298,8 @@ class SplitViewTool extends Control {
 
             // Attach listeners to the right layer. 
             // Pre/Post render will only show part of the right map
-            this.onPreRenderListener = rightLayer.on(EVENTS.ol.preRender, this.onPreRender.bind(this));
-            this.onPostRenderListener = rightLayer.on(EVENTS.ol.postRender, this.onPostRender.bind(this));
+            this.onPreRenderListener = rightLayer.on(EVENTS.OpenLayers.PreRender, this.onPreRender.bind(this));
+            this.onPostRenderListener = rightLayer.on(EVENTS.OpenLayers.PostRender, this.onPostRender.bind(this));
         }
 
         map.render();

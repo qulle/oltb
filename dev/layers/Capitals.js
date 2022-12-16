@@ -7,15 +7,14 @@ import { getIcon, SVG_PATHS } from "../../src/oltb/js/core/icons/GetIcon";
 import urlCapitalsGeoJSON from 'url:../geojson/capitals.geojson';
 
 const ID_PREFIX = 'oltb-info-window-marker';
-
 const ICON = getIcon({
-    path: SVG_PATHS.geoMarkerFilled,
+    path: SVG_PATHS.GeoMarkerFilled,
     width: 20,
     height: 20,
     fill: 'rgb(255, 255, 255)'
 });
 
-const CONTINENT_COLORS = {
+const CONTINENT_COLORS = Object.freeze({
     'Europe': '#0166A5FF',
     'Africa': '#007C70FF',
     'Antarctica': '#F67D2CFF',
@@ -26,7 +25,7 @@ const CONTINENT_COLORS = {
     'South America': '#3B4352FF',
     'UM': '#3B4352FF',
     'US': '#3B4352FF'
-};
+});
 
 const LAYER_WRAPPER = LayerManager.addFeatureLayer('Capitals', true, true);
 

@@ -40,7 +40,7 @@ class ModalBase {
         const modalClose = DOM.createElement({
             element: 'button', 
             html: getIcon({
-                path: SVG_PATHS.close, 
+                path: SVG_PATHS.Close, 
                 fill: 'none', 
                 stroke: 'currentColor'
             }),
@@ -60,11 +60,11 @@ class ModalBase {
 
         this.onClose = onClose;
 
-        window.addEventListener(EVENTS.browser.keyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
     }
 
     onWindowKeyUp(event) {
-        if(event.key.toLowerCase() === KEYS.escape) {
+        if(event.key.toLowerCase() === KEYS.Escape) {
             this.close();
         }
     }
@@ -89,7 +89,7 @@ class ModalBase {
     }
 
     close() {
-        this.modalBackdrop.removeEventListener(EVENTS.browser.keyDown, trapFocusKeyListener);
+        this.modalBackdrop.removeEventListener(EVENTS.Browser.KeyDown, trapFocusKeyListener);
         this.modalBackdrop.remove();
 
         // User defined callback from constructor
