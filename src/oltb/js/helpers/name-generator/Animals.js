@@ -1,4 +1,4 @@
-const ANIMALS = [
+const ANIMALS = Object.freeze([
     'Badger',
     'Bear',
     'Cat',
@@ -23,6 +23,6 @@ const ANIMALS = [
     'Puma',
     'Rabbit',
     'Snow leopard'
-];
+]);
 
 export default ANIMALS;

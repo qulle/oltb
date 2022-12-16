@@ -1,4 +1,4 @@
-const ADJECTIVES = [
+const ADJECTIVES = Object.freeze([
     'Adorable',
     'Adored',
     'Angry',
@@ -24,6 +24,6 @@ const ADJECTIVES = [
     'Triumphant',
     'Upset',
     'Yummy'
-];
+]);
 
 export default ADJECTIVES;
