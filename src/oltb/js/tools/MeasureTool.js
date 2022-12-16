@@ -306,7 +306,7 @@ class MeasureTool extends Control {
 
         feature.setProperties({
             oltb: {
-                type: FEATURE_PROPERTIES.type.measurement,
+                type: FEATURE_PROPERTIES.Type.Measurement,
                 tooltip: tooltip.getOverlay()
             }
         });

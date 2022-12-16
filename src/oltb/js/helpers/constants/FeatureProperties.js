@@ -1,15 +1,15 @@
 const FEATURE_PROPERTIES = Object.freeze({
-    type: Object.freeze({
-        layer: 'layer',
-        marker: 'marker',
-        windbarb: 'windbarb',
-        measurement: 'measurement',
-        drawing: 'drawing'
+    Type: Object.freeze({
+        Layer: 'layer',
+        Marker: 'marker',
+        Windbarb: 'windBarb',
+        Measurement: 'measurement',
+        Drawing: 'drawing'
     }),
-    tooltip: 'tooltip',
-    infoWindow: 'infoWindow',
-    notSelectable: 'notSelectable',
-    highlightOnHover: 'highlightOnHover'
+    Tooltip: 'tooltip',
+    InfoWindow: 'infoWindow',
+    NotSelectable: 'notSelectable',
+    HighlightOnHover: 'highlightOnHover'
 });
 
 export { FEATURE_PROPERTIES };

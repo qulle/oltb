@@ -51,7 +51,7 @@ const generateWindbarb = function(options = {}) {
 
     windbarb.setProperties({
         oltb: {
-            type: FEATURE_PROPERTIES.type.windbarb,
+            type: FEATURE_PROPERTIES.Type.Windbarb,
             notSelectable: options.notSelectable, 
             infoWindow: options.infoWindow
         }

@@ -584,7 +584,7 @@ class LayerTool extends Control {
                     const hasFeatures = typeof layerWrapper.layer.getSource().getFeatures === 'function';
                     if(hasFeatures) {
                         layerWrapper.layer.getSource().getFeatures().forEach((feature) => {
-                            if(hasCustomFeatureProperty(feature.getProperties(), FEATURE_PROPERTIES.tooltip)) {
+                            if(hasCustomFeatureProperty(feature.getProperties(), FEATURE_PROPERTIES.Tooltip)) {
                                 feature.getProperties().oltb.tooltip.setMap(flippedVisibility ? map : null)
                             }
                         });

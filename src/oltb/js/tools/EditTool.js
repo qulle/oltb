@@ -194,7 +194,7 @@ class EditTool extends Control {
         this.select = new Select({
             hitTolerance: this.options.hitTolerance,
             filter: function(feature, layer) {
-                const selectable = !hasCustomFeatureProperty(feature.getProperties(), FEATURE_PROPERTIES.notSelectable);
+                const selectable = !hasCustomFeatureProperty(feature.getProperties(), FEATURE_PROPERTIES.NotSelectable);
                 const isFeatureLayer = LayerManager.getFeatureLayers().find((layerWrapper) => {
                     return layerWrapper.layer.getSource().hasFeature(feature);
                 });
@@ -258,7 +258,7 @@ class EditTool extends Control {
                 // Set the lastStyle as the default style
                 feature.setStyle(this.lastStyle);
 
-                if(getCustomFeatureProperty(feature.getProperties(), 'type') === FEATURE_PROPERTIES.type.measurement) {
+                if(getCustomFeatureProperty(feature.getProperties(), 'type') === FEATURE_PROPERTIES.Type.Measurement) {
                     // To add lineDash, a new Style object must be used
                     // If the lastStyle is used all object that is referenced with that object will get a dashed line
                     const style = new Style({
@@ -297,7 +297,7 @@ class EditTool extends Control {
         const features = event.features;
 
         features.forEach((feature) => {
-            if(hasCustomFeatureProperty(feature.getProperties(), FEATURE_PROPERTIES.tooltip)) {
+            if(hasCustomFeatureProperty(feature.getProperties(), FEATURE_PROPERTIES.Tooltip)) {
                 this.attachOnChange(feature);
             }
         });
@@ -312,7 +312,7 @@ class EditTool extends Control {
         const features = event.features;
 
         features.forEach((feature) => {
-            if(hasCustomFeatureProperty(feature.getProperties(), FEATURE_PROPERTIES.tooltip)) {
+            if(hasCustomFeatureProperty(feature.getProperties(), FEATURE_PROPERTIES.Tooltip)) {
                 this.detachOnChange(feature);
             }
         });
@@ -327,7 +327,7 @@ class EditTool extends Control {
         const features = event.features;
 
         features.forEach((feature) => {
-            if(hasCustomFeatureProperty(feature.getProperties(), FEATURE_PROPERTIES.tooltip)) {
+            if(hasCustomFeatureProperty(feature.getProperties(), FEATURE_PROPERTIES.Tooltip)) {
                 this.attachOnChange(feature);
             }
         });
@@ -342,7 +342,7 @@ class EditTool extends Control {
         const features = event.features;
 
         features.forEach((feature) => {
-            if(hasCustomFeatureProperty(feature.getProperties(), FEATURE_PROPERTIES.tooltip)) {
+            if(hasCustomFeatureProperty(feature.getProperties(), FEATURE_PROPERTIES.Tooltip)) {
                 this.detachOnChange(feature);
             }
         });
@@ -412,7 +412,7 @@ class EditTool extends Control {
                     this.select.getFeatures().remove(feature);
 
                     // Remove overlays associated with the feature
-                    if(hasCustomFeatureProperty(feature.getProperties(), FEATURE_PROPERTIES.tooltip)) {
+                    if(hasCustomFeatureProperty(feature.getProperties(), FEATURE_PROPERTIES.Tooltip)) {
                         this.getMap().removeOverlay(feature.getProperties().oltb.tooltip);
                     }
 
@@ -479,14 +479,14 @@ class EditTool extends Control {
 
             // Check if a or b was a measurement, if so, create a new tooltip
             if(
-                getCustomFeatureProperty(a.getProperties(), 'type') === FEATURE_PROPERTIES.type.measurement ||
-                getCustomFeatureProperty(b.getProperties(), 'type') === FEATURE_PROPERTIES.type.measurement
+                getCustomFeatureProperty(a.getProperties(), 'type') === FEATURE_PROPERTIES.Type.Measurement ||
+                getCustomFeatureProperty(b.getProperties(), 'type') === FEATURE_PROPERTIES.Type.Measurement
             ) {
                 const tooltip = generateTooltip();
 
                 feature.setProperties({
                     oltb: {
-                        type: FEATURE_PROPERTIES.type.measurement,
+                        type: FEATURE_PROPERTIES.Type.Measurement,
                         tooltip: tooltip.getOverlay()
                     }
                 });

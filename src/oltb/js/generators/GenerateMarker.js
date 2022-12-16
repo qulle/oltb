@@ -61,7 +61,7 @@ const generateMarker = function(options = {}) {
 
     marker.setProperties({
         oltb: {
-            type: FEATURE_PROPERTIES.type.marker,
+            type: FEATURE_PROPERTIES.Type.Marker,
             notSelectable: options.notSelectable, 
             infoWindow: options.infoWindow,
             name: options.name,
