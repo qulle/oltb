@@ -117,7 +117,7 @@ class SplitViewTool extends Control {
 
     onToggleToolbox(toggle) {
         const targetName = toggle.dataset.oltbToggleableTarget;
-        document.getElementById(targetName).slideToggle(CONFIG.animationDuration.fast, (collapsed) => {
+        document.getElementById(targetName).slideToggle(CONFIG.AnimationDuration.Fast, (collapsed) => {
             this.localStorage.collapsed = collapsed;
             StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
         });
@@ -311,12 +311,12 @@ class SplitViewTool extends Control {
 
         // Calculate offset for the handlebar. 
         // The range slider is not perfectly linear towards the edges. 
-        const halfHandleWidth = CONFIG.rem;
+        const halfHandleWidth = CONFIG.Rem;
         const sliderWidth = this.splitViewSlider.offsetWidth;
         const sliderCenter = sliderWidth / 2;
         const percentOfRange = (this.splitViewSlider.value / (this.splitViewSlider.max - this.splitViewSlider.min));
-        const valuePXPosition = percentOfRange * sliderWidth;
-        const distFromCenter = valuePXPosition - sliderCenter;
+        const valuePxPosition = percentOfRange * sliderWidth;
+        const distFromCenter = valuePxPosition - sliderCenter;
         const percentDistFromCenter = distFromCenter / sliderCenter;
         const offset = percentDistFromCenter * halfHandleWidth;
 

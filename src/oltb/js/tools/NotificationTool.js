@@ -94,14 +94,14 @@ class NotificationTool extends Control {
                     <p>${json.qulle}</p>
                     <h3>🔭 Your version</h3>
                     <p>
-                        <a href="https://github.com/qulle/oltb/releases/tag/v${CONFIG.version}" target="_blank" class="oltb-link">
-                            v${CONFIG.version}
+                        <a href="https://github.com/qulle/oltb/releases/tag/v${CONFIG.Version}" target="_blank" class="oltb-link">
+                            v${CONFIG.Version}
                         </a>
                     </p>
                     <h3>🚀 Latest version</h3>
                     <p>
                         <a href="https://github.com/qulle/oltb/releases/tag/v${json.latest}" target="_blank" class="oltb-link">
-                            v${json.latest} - ${new Date(json.released).toLocaleDateString(CONFIG.locale)}
+                            v${json.latest} - ${new Date(json.released).toLocaleDateString(CONFIG.Locale)}
                         </a>
                     </p>
                     <h3>💡 New features under development</h3>
@@ -116,8 +116,8 @@ class NotificationTool extends Control {
                     <p>Glad you are using my App, hope you find it useful!</p>
                     <h3>🔭 Your version</h3>
                     <p>
-                        <a href="https://github.com/qulle/oltb/releases/tag/v${CONFIG.version}" target="_blank" class="oltb-link">
-                            v${CONFIG.version}
+                        <a href="https://github.com/qulle/oltb/releases/tag/v${CONFIG.Version}" target="_blank" class="oltb-link">
+                            v${CONFIG.Version}
                         </a>
                     </p>
                     <h3>📡 Fetch error</h3>

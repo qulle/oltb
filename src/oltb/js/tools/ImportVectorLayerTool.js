@@ -102,7 +102,7 @@ class ImportVectorLayerTool extends Control {
             }
                 
             const features = instantiateFormat(format).readFeatures(this.fileReader.result, {
-                featureProjection: CONFIG.projection.default
+                featureProjection: CONFIG.Projection.Default
             });
 
             const layerWrapper = LayerManager.addFeatureLayer(`Import : ${filename}`);

@@ -23,7 +23,6 @@ import CONFIG from '../../../../src/oltb/js/core/Config';
 import ContextMenu from '../../../../src/oltb/js/common/ContextMenu';
 import { SETTINGS } from '../../../../src/oltb/js/helpers/constants/Settings';
 import { MAP_ELEMENT } from '../../../../src/oltb/js/core/elements/index';
-import { CONTEXT_MENUS } from '../../../../src/oltb/js/helpers/constants/ContextMenus';
 import { LOCAL_STORAGE_KEYS } from '../../../../src/oltb/js/helpers/constants/LocalStorageKeys';
 
 // Core Managers
@@ -431,18 +430,15 @@ const map = new Map({
             }
         }),
         new HiddenAboutTool(),
-        new ContextMenu({
-            name: CONTEXT_MENUS.MainMap, 
-            selector: '#map canvas'
-        })
+        new ContextMenu()
     ]),
     target: MAP_ELEMENT,
     view: new View({
-        projection: getProjection(CONFIG.projection.default),
+        projection: getProjection(CONFIG.Projection.Default),
         center: fromLonLat([
             LOCAL_STORAGE.lon, 
             LOCAL_STORAGE.lat
-        ], CONFIG.projection.default),
+        ], CONFIG.Projection.Default),
         zoom: LOCAL_STORAGE.zoom,
         rotation: LOCAL_STORAGE.rotation
     })

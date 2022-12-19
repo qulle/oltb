@@ -5,7 +5,7 @@ import { EVENTS } from './constants/Events';
 import { TOOLBAR_ELEMENT, TOOLBOX_ELEMENT, MAP_ELEMENT } from '../core/elements/index';
 
 // Set version as custom attribute to the html element
-document.documentElement.setAttribute('oltb-version', CONFIG.version);
+document.documentElement.setAttribute('oltb-version', CONFIG.Version);
 
 // Remove default contextmenu, show if the get parameter ?debug=true exists
 const debugParameter = URLManager.getParameter('debug') === 'true';
@@ -32,7 +32,7 @@ const collisionDetection = function(event) {
     const toolbarWidth = TOOLBAR_ELEMENT.offsetWidth;
     const toolboxWidth = TOOLBOX_ELEMENT.offsetWidth;
     
-    if(windowWidth - ((3 * CONFIG.rem) + toolbarWidth + toolboxWidth) <= 0) {
+    if(windowWidth - ((3 * CONFIG.Rem) + toolbarWidth + toolboxWidth) <= 0) {
         TOOLBOX_ELEMENT.classList.add('oltb-toolbox-container--collision');
     }else {
         TOOLBOX_ELEMENT.classList.remove('oltb-toolbox-container--collision');

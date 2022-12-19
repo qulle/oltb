@@ -20,8 +20,8 @@ const generateTooltip = function(data = '') {
         element: wrapper,
         positioning: 'bottom-center',
         offset: [
-            CONFIG.overlayOffset.horizontal,
-            CONFIG.overlayOffset.vertical
+            CONFIG.OverlayOffset.Horizontal,
+            CONFIG.OverlayOffset.Vertical
         ]
     });
 

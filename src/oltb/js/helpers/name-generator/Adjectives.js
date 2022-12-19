@@ -26,4 +26,4 @@ const ADJECTIVES = Object.freeze([
     'Yummy'
 ]);
 
-export default ADJECTIVES;
+export { ADJECTIVES };

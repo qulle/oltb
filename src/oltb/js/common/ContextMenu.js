@@ -10,10 +10,13 @@ import { trapFocusKeyListener } from '../helpers/browser/TrapFocus';
 
 const DEFAULT_OPTIONS = Object.freeze({});
 
-const MENU_ITEMS = new Map();
-const MENU_INSTANCES = new Map();
-
 class ContextMenu extends Control {
+    static #items = [];
+
+    static addItem(item) {
+        this.#items.push(item);
+    }
+
     constructor(options = {}) {
         super({
             element: DOM.createElement({
@@ -28,25 +31,20 @@ class ContextMenu extends Control {
                 }
             })
         });
-        
-        this.menu = this.element;
+
         this.options = { ...DEFAULT_OPTIONS, ...options };
-        this.MENU_ITEMS = MENU_ITEMS.get(this.options.name) || [];
-        this.target = null;
+        this.menu = this.element;
 
-        this.create();
-        MENU_INSTANCES.set(this.options.name, this);
-    }
-
-    create() {
-        this.MENU_ITEMS.forEach((item, index) => {
-            this.addMenuItem(item, index);
+        ContextMenu.#items.forEach((item) => {
+            this.addMenuItem(item);
         });
 
         MAP_ELEMENT.appendChild(this.menu);
+        MAP_ELEMENT.addEventListener(EVENTS.Browser.ContextMenu, this.show.bind(this));
+        MAP_ELEMENT.addEventListener(EVENTS.Browser.Click, this.hide.bind(this));
     }
 
-    addMenuItem(item, index) {
+    addMenuItem(item) {
         if(!hasNestedProperty(item, 'name')) {
             const li = DOM.createElement({
                 element: 'li',
@@ -57,14 +55,13 @@ class ContextMenu extends Control {
         }else {
             const li = DOM.createElement({
                 element: 'li',
-                text: item.name,
                 class: 'oltb-context-menu__item',
+                text: item.name,
                 attributes: {
-                    tabindex: '0',
-                    'data-contextmenuitem': index
+                    tabindex: '0'
                 },
                 listeners: {
-                    'click': this.click.bind(this),
+                    'click': this.click.bind(this, item),
                     'keyup': (event) => {
                         const key = event.key.toLowerCase();
 
@@ -76,14 +73,13 @@ class ContextMenu extends Control {
                     }
                 }
             });
-
-            const icon = DOM.createElement({
+            
+            li.prepend(DOM.createElement({
                 element: 'span',
                 html: item.icon,
                 class: 'oltb-context-menu__icon'
-            });
-            
-            li.prepend(icon);
+            }));
+
             this.menu.appendChild(li);
         }
     }
@@ -91,14 +87,13 @@ class ContextMenu extends Control {
     show(event) {
         this.coordinates = transform(
             this.getMap().getEventCoordinate(event), 
-            CONFIG.projection.default, 
-            CONFIG.projection.wgs84
+            CONFIG.Projection.Default, 
+            CONFIG.Projection.WGS84
         );
         
         this.menu.style.left = `${event.clientX}px`;
         this.menu.style.top = `${event.clientY}px`;
         this.menu.classList.add('oltb-context-menu--show');
-        this.target = event.target;
         this.menu.focus();
 
         // Disable native context menu
@@ -107,63 +102,12 @@ class ContextMenu extends Control {
 
     hide() {
         this.menu.classList.remove('oltb-context-menu--show');
-        this.target = null;
     }
 
-    click(event) {
-        const id = event.target.getAttribute('data-contextmenuitem');
-        const contextItem = this.MENU_ITEMS[id];
-        if(contextItem) {
-            contextItem.fn(
-                this.getMap(), 
-                this.coordinates, 
-                this.target
-            );
-        }
-
+    click(item) {
+        item.fn(this.getMap(), this.coordinates, this.target);
         this.hide();
     }
 }
 
-MAP_ELEMENT.addEventListener(EVENTS.Browser.ContextMenu, (event) => {
-    MENU_INSTANCES.forEach((menu) => {
-        if(event.target.matches(menu.options.selector)) {
-            menu.show(event);
-        }
-    });
-});
-
-MAP_ELEMENT.addEventListener(EVENTS.Browser.Click, (event) => {
-    MENU_INSTANCES.forEach((menu) => {
-        menu.hide();
-    });
-});
-
-const addContextMenuItems = function(name, items) {
-    items.forEach((item) => {
-        addContextMenuItem(name, item);
-    });
-}
-
-const addContextMenuItem = function(name, item) {
-    // Keep track of all menu items for this named instance
-    if(!MENU_ITEMS.has(name)) {
-        MENU_ITEMS.set(name, []);
-    }
-        
-    MENU_ITEMS.get(name).push(item);
-
-    // Check if context menu already is created, if so the item must be added directly
-    if(MENU_INSTANCES.has(name)) {
-        const menu = MENU_INSTANCES.get(name);
-        const index = MENU_ITEMS.get(name).length - 1;
-
-        menu.addMenuItem(item, 0);
-    }
-}
-
-export { 
-    ContextMenu as default, 
-    addContextMenuItems, 
-    addContextMenuItem 
-};
+export default ContextMenu; 

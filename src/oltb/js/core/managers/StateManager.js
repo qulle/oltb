@@ -1,7 +1,7 @@
 import CONFIG from "../Config";
 
 class StateManager {
-    static #runtimeState = JSON.parse(localStorage.getItem(CONFIG.localStorage.key)) || {};
+    static #runtimeState = JSON.parse(localStorage.getItem(CONFIG.LocalStorage.Key)) || {};
 
     static init(map) { }
 
@@ -19,7 +19,7 @@ class StateManager {
     }
 
     static saveState() {
-        localStorage.setItem(CONFIG.localStorage.key, JSON.stringify(this.#runtimeState));
+        localStorage.setItem(CONFIG.LocalStorage.Key, JSON.stringify(this.#runtimeState));
     }
 
     static clear() {

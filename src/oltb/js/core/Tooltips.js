@@ -43,7 +43,6 @@ const colorTippyDelegate = delegate(MAP_ELEMENT, {
     theme: 'oltb oltb-inverted-themed',
     interactive: true,
     allowHTML: true,
-    touch: false,
     onShow(instance) {
         onColorPickerTooltipShow(instance);
     },
@@ -57,7 +56,7 @@ const colorTippyDelegate = delegate(MAP_ELEMENT, {
 
 const onPlacementChange = function(event) {
     toolButtonsTippySingleton.setProps({
-        placement: (window.innerWidth <= CONFIG.deviceWidth.sm || isHorizontal()) ? 'bottom' : 'right'
+        placement: (window.innerWidth <= CONFIG.DeviceWidth.SM || isHorizontal()) ? 'bottom' : 'right'
     });
 }
 

@@ -66,7 +66,7 @@ class DirectionTool extends Control {
     }
 
     onWindowDeviceCheck(event) {
-        if(window.innerWidth <= CONFIG.deviceWidth.sm) {
+        if(window.innerWidth <= CONFIG.DeviceWidth.SM) {
             this.button.classList.add('oltb-tool-button--hidden');
         }else {
             this.button.classList.remove('oltb-tool-button--hidden');

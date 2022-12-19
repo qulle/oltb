@@ -1,11 +1,10 @@
 import CONFIG from '../../core/Config';
+import ContextMenu from '../../common/ContextMenu';
 import StateManager from '../../core/managers/StateManager';
 import { EVENTS } from '../../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { easeOut } from 'ol/easing';
-import { CONTEXT_MENUS } from '../../helpers/constants/ContextMenus';
 import { TOOLBAR_ELEMENT } from '../../core/elements/index';
-import { addContextMenuItem } from '../../common/ContextMenu';
 import { SVG_PATHS, getIcon } from '../../core/icons/GetIcon';
 import { LOCAL_STORAGE_KEYS } from '../../helpers/constants/LocalStorageKeys';
 import { fromLonLat, toLonLat } from 'ol/proj';
@@ -43,19 +42,19 @@ class HiddenMapNavigationTool extends Control {
             path: SVG_PATHS.FocusHere
         });
 
-        addContextMenuItem(CONTEXT_MENUS.MainMap, {
+        ContextMenu.addItem({
             icon: moveCenterIcon, 
             name: 'Center map here', 
             fn: this.onContextMenuCenterMap.bind(this)
         });
 
-        addContextMenuItem(CONTEXT_MENUS.MainMap, {
+        ContextMenu.addItem({
             icon: focusHereIcon, 
             name: 'Focus here', 
             fn: this.onContextMenuFocusHere.bind(this)
         });
         
-        addContextMenuItem(CONTEXT_MENUS.MainMap, {});
+        ContextMenu.addItem({});
 
         // Track changes to zoom, paning etc. store in localStorage
         // Must wait until DOM is loaded before the reference to the map can be used
@@ -79,7 +78,7 @@ class HiddenMapNavigationTool extends Control {
     
         view.animate({
             center: fromLonLat(coordinates),
-            duration: CONFIG.animationDuration.normal,
+            duration: CONFIG.AnimationDuration.Normal,
             easing: easeOut
         });
     }
@@ -94,7 +93,7 @@ class HiddenMapNavigationTool extends Control {
         view.animate({
             center: fromLonLat(coordinates),
             zoom: this.options.focusZoom,
-            duration: CONFIG.animationDuration.normal,
+            duration: CONFIG.AnimationDuration.Normal,
             easing: easeOut
         });
     }

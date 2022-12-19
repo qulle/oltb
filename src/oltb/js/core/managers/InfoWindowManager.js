@@ -64,12 +64,12 @@ class InfoWindowManager {
             element: this.infoWindow,
             positioning: 'bottom-center',
             offset: [
-                CONFIG.overlayOffset.horizontal,
-                CONFIG.overlayOffset.vertical
+                CONFIG.OverlayOffset.Horizontal,
+                CONFIG.OverlayOffset.Vertical
             ],
             autoPan: true,
             autoPanAnimation: {
-                duration: CONFIG.animationDuration.normal
+                duration: CONFIG.AnimationDuration.Normal
             }
         });
 

@@ -16,8 +16,8 @@ const editFeature = function(InfoWindowManager, feature) {
         edit: true,
         coordinates: transform(
             feature.getGeometry().getCoordinates(), 
-            CONFIG.projection.default, 
-            CONFIG.projection.wgs84
+            CONFIG.Projection.Default, 
+            CONFIG.Projection.WGS84
         ),
         name: properties.name,
         info: properties.info,

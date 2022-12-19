@@ -1,10 +1,9 @@
 import CONFIG from '../../core/Config';
 import Dialog from '../../common/Dialog';
+import ContextMenu from '../../common/ContextMenu';
 import { VERSION } from 'ol';
 import { Control } from 'ol/control';
-import { CONTEXT_MENUS } from '../../helpers/constants/ContextMenus';
 import { TOOLBAR_ELEMENT } from '../../core/elements/index';
-import { addContextMenuItem } from '../../common/ContextMenu';
 import { SVG_PATHS, getIcon } from '../../core/icons/GetIcon';
 
 class HiddenAboutTool extends Control {
@@ -17,9 +16,9 @@ class HiddenAboutTool extends Control {
             path: SVG_PATHS.GitHub
         });
 
-        addContextMenuItem(CONTEXT_MENUS.MainMap, {});
+        ContextMenu.addItem({});
         
-        addContextMenuItem(CONTEXT_MENUS.MainMap, {
+        ContextMenu.addItem({
             icon: icon, 
             name: 'About OLTB', 
             fn: this.onContextMenuAbout.bind(this)
@@ -30,7 +29,7 @@ class HiddenAboutTool extends Control {
         Dialog.alert({
             confirmText: 'Got it!', 
             html: (`
-                <h3>Version ${CONFIG.version}</h3>
+                <h3>Version ${CONFIG.Version}</h3>
                 <p>Developed by Qulle <a href="//github.com/qulle/oltb" target="_blank" class="oltb-link">github.com/qulle/oltb</a></p>
                 <p>Using OpenLayers <a href="//openlayers.org/en/v${VERSION}/apidoc/" target="_blank" class="oltb-link">${VERSION}</a></p>
             `)

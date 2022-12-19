@@ -159,14 +159,14 @@ class MyLocationTool extends Control {
         view.animate({
             center: fromLonLat([lon, lat]),
             zoom: 6,
-            duration: CONFIG.animationDuration.normal,
+            duration: CONFIG.AnimationDuration.Normal,
             easing: easeOut
         });
 
         // Trigger InfoWindow to show
         setTimeout(() => {
             InfoWindowManager.showOverly(marker, fromLonLat([lon, lat]));
-        }, CONFIG.animationDuration.normal);
+        }, CONFIG.AnimationDuration.Normal);
 
         // User defined callback from constructor
         if(typeof this.options.location === 'function') {

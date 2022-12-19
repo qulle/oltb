@@ -63,7 +63,7 @@ class ToastBase {
             if(typeof this.options.onRemove === 'function') {
                 this.options.onRemove();
             }
-        }, CONFIG.animationDuration.fast);
+        }, CONFIG.AnimationDuration.Fast);
     }
 
     static get Info()    { return 'info'; }

@@ -4,6 +4,7 @@ import Toast from '../common/Toast';
 import Dialog from '../common/Dialog';
 import CONFIG from '../core/Config';
 import LayerModal from './modal-extensions/LayerModal';
+import ContextMenu from '../common/ContextMenu';
 import StateManager from '../core/managers/StateManager';
 import LayerManager from '../core/managers/LayerManager';
 import InfoWindowManager from '../core/managers/InfoWindowManager';
@@ -12,13 +13,11 @@ import { KEYS } from '../helpers/constants/Keys';
 import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { download } from '../helpers/browser/Download';
-import { CONTEXT_MENUS } from '../helpers/constants/ContextMenus';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { instantiateLayer } from '../core/ol-types/LayerTypes';
 import { instantiateSource } from '../core/ol-types/SourceTypes';
 import { instantiateFormat } from '../core/ol-types/FormatTypes';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
-import { addContextMenuItem } from '../common/ContextMenu';
 import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 import { LOCAL_STORAGE_KEYS } from '../helpers/constants/LocalStorageKeys';
 import { FEATURE_PROPERTIES } from '../helpers/constants/FeatureProperties';
@@ -166,7 +165,7 @@ class LayerTool extends Control {
         }
 
         if(!this.options.disableMapCreateLayerButton) {
-            addContextMenuItem(CONTEXT_MENUS.MainMap, {
+            ContextMenu.addItem({
                 icon: icon, 
                 name: 'Add map layer', 
                 fn: this.onContextMenuAddMapLayerModal.bind(this)
@@ -183,7 +182,7 @@ class LayerTool extends Control {
 
     onToggleToolbox(toggle) {
         const targetName = toggle.dataset.oltbToggleableTarget;
-        document.getElementById(targetName).slideToggle(CONFIG.animationDuration.fast, (collapsed) => {
+        document.getElementById(targetName).slideToggle(CONFIG.AnimationDuration.Fast, (collapsed) => {
             this.localStorage[targetName] = collapsed;
             StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
         });
@@ -254,7 +253,7 @@ class LayerTool extends Control {
                 LayerManager.addMapLayer({
                     name: result.name,
                     layer: instantiateLayer(result.layer, {
-                        projection: result.projection || CONFIG.projection.default,
+                        projection: result.projection || CONFIG.Projection.Default,
                         source: instantiateSource(result.source, {
                             url: result.url,
                             params: JSON.parse(result.parameters),
@@ -511,7 +510,7 @@ class LayerTool extends Control {
         
                         const features = layerWrapper.layer.getSource().getFeatures();
                         const formatString = format.writeFeatures(features, {
-                            featureProjection: CONFIG.projection.default
+                            featureProjection: CONFIG.Projection.Default
                         });
                     
                         const fileName = `${layerWrapper.name}.${result.format.toLowerCase()}`;

@@ -1,33 +1,33 @@
 import { version } from '../../../../package.json';
 
 const CONFIG = Object.freeze({
-    version: version,
-    locale: 'en-us',
-    scrollDistance: 100,
-    rem: 16,
-    localStorage: Object.freeze({
-        key: 'oltb-state'
+    Version: version,
+    Locale: 'en-us',
+    ScrollDistance: 100,
+    Rem: 16,
+    LocalStorage: Object.freeze({
+        Key: 'oltb-state'
     }),
-    projection: Object.freeze({
-        default: 'EPSG:3857',
-        wgs84: 'EPSG:4326'
+    Projection: Object.freeze({
+        Default: 'EPSG:3857',
+        WGS84: 'EPSG:4326'
     }),
-    overlayOffset: Object.freeze({
-        horizontal: 0,
-        vertical: -8
+    OverlayOffset: Object.freeze({
+        Horizontal: 0,
+        Vertical: -8
     }),
-    deviceWidth: Object.freeze({
-        xs: '0',
-        sm: '576',
-        md: '768',
-        lg: '992',
-        xl: '1200',
-        xxl: '1400'
+    DeviceWidth: Object.freeze({
+        XS: '0',
+        SM: '576',
+        MD: '768',
+        LG: '992',
+        XL: '1200',
+        XXL: '1400'
     }),
-    animationDuration: Object.freeze({
-        slow: 450,
-        normal: 350,
-        fast: 250
+    AnimationDuration: Object.freeze({
+        Slow: 450,
+        Normal: 350,
+        Fast: 250
     })
 });
 

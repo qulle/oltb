@@ -3,6 +3,7 @@ import tippy from 'tippy.js';
 import Toast from '../common/Toast';
 import CONFIG from '../core/Config';
 import Dialog from '../common/Dialog';
+import ContextMenu from '../common/ContextMenu';
 import StateManager from '../core/managers/StateManager';
 import { KEYS } from '../helpers/constants/Keys';
 import { EVENTS } from '../helpers/constants/Events';
@@ -10,10 +11,8 @@ import { Control } from 'ol/control';
 import { easeOut } from 'ol/easing';
 import { randomNumber } from '../helpers/browser/Random';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
-import { CONTEXT_MENUS } from '../helpers/constants/ContextMenus';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
 import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
-import { addContextMenuItem } from '../common/ContextMenu';
 import { LOCAL_STORAGE_KEYS } from '../helpers/constants/LocalStorageKeys';
 import { generateAnimalName } from '../helpers/name-generator/NameGenerator';
 import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT } from '../core/elements/index';
@@ -115,13 +114,13 @@ class BookmarkTool extends Control {
             this.createBookmark(bookmark);
         });
 
-        addContextMenuItem(CONTEXT_MENUS.MainMap, {
+        ContextMenu.addItem({
             icon: icon, 
             name: 'Add location as bookmark', 
             fn: this.onContextMenuBookmarkAdd.bind(this)
         });
 
-        addContextMenuItem(CONTEXT_MENUS.MainMap, {
+        ContextMenu.addItem({
             icon: icon, 
             name: 'Clear all bookmarks', 
             fn: this.onContextMenuBookmarksClear.bind(this)
@@ -134,7 +133,7 @@ class BookmarkTool extends Control {
 
     onToggleToolbox(toggle) {
         const targetName = toggle.dataset.oltbToggleableTarget;
-        document.getElementById(targetName).slideToggle(CONFIG.animationDuration.fast, (collapsed) => {
+        document.getElementById(targetName).slideToggle(CONFIG.AnimationDuration.Fast, (collapsed) => {
             this.localStorage.collapsed = collapsed;
             StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
         });
@@ -363,7 +362,7 @@ class BookmarkTool extends Control {
         view.animate({
             zoom: bookmark.zoom,
             center: bookmark.location,
-            duration: CONFIG.animationDuration.normal,
+            duration: CONFIG.AnimationDuration.Normal,
             easing: easeOut
         });
 

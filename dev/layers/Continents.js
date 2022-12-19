@@ -13,7 +13,7 @@ LayerManager.addMapLayers([
             source: new VectorSource({
                 url: urlContinentsGeoJSON,
                 format: new GeoJSON({
-                    featureProjection: CONFIG.projection
+                    featureProjection: CONFIG.Projection.Default
                 })
             }),
             visible: true

@@ -2,14 +2,13 @@ import DOM from '../helpers/browser/DOM';
 import Toast from '../common/Toast';
 import Dialog from '../common/Dialog';
 import CONFIG from '../core/Config';
+import ContextMenu from '../common/ContextMenu';
 import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { easeOut } from 'ol/easing';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
-import { CONTEXT_MENUS } from '../helpers/constants/ContextMenus';
 import { TOOLBAR_ELEMENT } from '../core/elements/index';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
-import { addContextMenuItem } from '../common/ContextMenu';
 import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 import { degreesToRadians, radiansToDegrees } from '../helpers/Conversions';
 
@@ -42,7 +41,7 @@ class ResetNorthTool extends Control {
         this.element.appendChild(button);
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
-        addContextMenuItem(CONTEXT_MENUS.MainMap, {
+        ContextMenu.addItem({
             icon: icon, 
             name: 'Set rotation by degrees', 
             fn: this.onContextMenuSetRotation.bind(this)
@@ -71,7 +70,7 @@ class ResetNorthTool extends Control {
                 if(result.isDigitsOnly()) {
                     view.animate({
                         rotation: degreesToRadians(result),
-                        duration: CONFIG.animationDuration.normal,
+                        duration: CONFIG.AnimationDuration.Normal,
                         easing: easeOut
                     });
                 }else {
@@ -99,7 +98,7 @@ class ResetNorthTool extends Control {
 
         view.animate({
             rotation: 0,
-            duration: CONFIG.animationDuration.normal,
+            duration: CONFIG.AnimationDuration.Normal,
             easing: easeOut
         });
 
@@ -108,7 +107,7 @@ class ResetNorthTool extends Control {
             if(typeof this.options.reset === 'function') {
                 this.options.reset();
             }
-        }, CONFIG.animationDuration.normal);
+        }, CONFIG.AnimationDuration.Normal);
     }
 }
 

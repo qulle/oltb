@@ -25,4 +25,4 @@ const ANIMALS = Object.freeze([
     'Snow leopard'
 ]);
 
-export default ANIMALS;
+export { ANIMALS };

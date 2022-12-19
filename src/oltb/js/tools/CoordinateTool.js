@@ -123,8 +123,8 @@ class CoordinateTool extends Control {
     onPointerMove(event) {
         const lonlat = transform(
             event.coordinate, 
-            CONFIG.projection.default, 
-            CONFIG.projection.wgs84
+            CONFIG.Projection.Default, 
+            CONFIG.Projection.WGS84
         );
         
         const prettyCoords = toStringHDMS(lonlat);
@@ -141,8 +141,8 @@ class CoordinateTool extends Control {
 
         const lonlat = transform(
             event.coordinate, 
-            CONFIG.projection.default, 
-            CONFIG.projection.wgs84
+            CONFIG.projection.Default, 
+            CONFIG.projection.WGS84
         );
 
         const lon = lonlat[0];

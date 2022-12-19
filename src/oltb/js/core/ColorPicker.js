@@ -25,7 +25,7 @@ const colorPicker = AColorPicker.createPicker(colorPickerElement);
 
 const onColorPickerTooltipShow = function(instance) {
     instance.setProps({
-        placement: (window.innerWidth <= CONFIG.deviceWidth.sm || isHorizontal()) ? 'bottom' : 'left'
+        placement: (window.innerWidth <= CONFIG.DeviceWidth.SM || isHorizontal()) ? 'bottom' : 'left'
     });
 
     const selector = instance.reference.getAttribute('data-oltb-color-target');

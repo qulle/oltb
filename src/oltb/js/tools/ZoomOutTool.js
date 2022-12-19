@@ -68,7 +68,7 @@ class ZoomOutTool extends Control {
 
         view.animate({
             zoom: newZoom,
-            duration: CONFIG.animationDuration.normal,
+            duration: CONFIG.AnimationDuration.Normal,
             easing: easeOut
         });
 
@@ -77,7 +77,7 @@ class ZoomOutTool extends Control {
             if(typeof this.options.zoomed === 'function') {
                 this.options.zoomed();
             }
-        }, CONFIG.animationDuration.normal);
+        }, CONFIG.AnimationDuration.Normal);
     }
 }
 

@@ -12,7 +12,6 @@ import CONFIG from './core/Config';
 import ContextMenu from './common/ContextMenu';
 import { SETTINGS } from './helpers/constants/Settings';
 import { MAP_ELEMENT } from './core/elements/index';
-import { CONTEXT_MENUS } from './helpers/constants/ContextMenus';
 import { LOCAL_STORAGE_KEYS } from './helpers/constants/LocalStorageKeys';
 
 // Core Managers
@@ -88,10 +87,7 @@ class OLTB {
         });
 
         // Always add the ContextMenu
-        this.#tools['ContextMenu'] = new ContextMenu({
-            name: CONTEXT_MENUS.MainMap, 
-            selector: `#${MAP_ELEMENT.id} canvas`
-        });
+        this.#tools['ContextMenu'] = new ContextMenu({});
 
         if(options.map) {
             this.setMap(options.map);
@@ -146,7 +142,7 @@ class OLTB {
         const coordinate = fromLonLat([
             LOCAL_STORAGE.lon,
             LOCAL_STORAGE.lat
-        ], CONFIG.projection.default);
+        ], CONFIG.Projection.Default);
 
         view.setCenter(coordinate);
         view.setZoom(LOCAL_STORAGE.zoom);

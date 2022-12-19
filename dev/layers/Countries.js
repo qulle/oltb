@@ -16,7 +16,7 @@ LayerManager.addMapLayers([
         layer: new VectorLayer({
             source: new VectorSource({
                 format: new GeoJSON({
-                    featureProjection: CONFIG.projection
+                    featureProjection: CONFIG.Projection.Default
                 }),
                 loader: function(extent, resolution, projection, success, failure) {
                     const geoJsonPromise = fetch(urlCountriesGeoJSON)

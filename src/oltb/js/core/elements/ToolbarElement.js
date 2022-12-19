@@ -46,7 +46,7 @@ if(TOOLBAR_ELEMENT.classList.contains('row')) {
 // Change how the scrollwheel behaves when toolbar is in horizontal mode
 TOOLBAR_ELEMENT.addEventListener(EVENTS.Browser.Wheel, function(event) {
     if(!event.ctrlKey) {
-        const distance = CONFIG.scrollDistance;
+        const distance = CONFIG.ScrollDistance;
         this.scrollLeft += event.deltaY > 0 ? distance : -distance;
     }
 });

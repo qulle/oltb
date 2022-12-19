@@ -1,15 +1,14 @@
 import DOM from '../helpers/browser/DOM';
 import Toast from '../common/Toast';
 import Dialog from '../common/Dialog';
+import ContextMenu from '../common/ContextMenu';
 import StateManager from '../core/managers/StateManager';
 import SettingsModal from './modal-extensions/SettingsModal';
 import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
-import { CONTEXT_MENUS } from '../helpers/constants/ContextMenus';
 import { TOOLBAR_ELEMENT } from '../core/elements/index';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
-import { addContextMenuItem } from '../common/ContextMenu';
 import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 
 const DEFAULT_OPTIONS = Object.freeze({});
@@ -42,7 +41,7 @@ class SettingsTool extends Control {
         this.settingsModal = undefined;
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
-        addContextMenuItem(CONTEXT_MENUS.MainMap, {
+        ContextMenu.addItem({
             icon: icon, 
             name: 'Clear settings', 
             fn: this.onContextMenuSettingsClear.bind(this)

@@ -664,10 +664,7 @@ controls: defaultControls({
         }
     }),
     new HiddenAboutTool(),
-    new ContextMenu({
-        name: CONTEXT_MENUS.MainMap, 
-        selector: '#map canvas'
-    })
+    new ContextMenu()
 ])
 ```
 
@@ -892,24 +889,14 @@ To use the context menu start by importing the following module.
 import ContextMenu from './modules/common/ContextMenu';
 ```
 
-To create a context menu call the constructor and give a unique name as the first argument and a selector to trigger the menu. The context menu class extends the Control-class from OpenLayers.
+To create a context menu in the map call the constructor as any other tool. The context menu class extends the Control-class from OpenLayers.
 ```javascript
-map.addControl(new ContextMenu({
-    name: CONTEXT_MENUS.MainMap, 
-    selector: '#map canvas'
-});
+map.addControl(new ContextMenu());
 ```
 
-There is a module for storing context menu names located in `./modules/helpers/Constants/ContextMenus`.
+To add items to the context menu use the static method `ContextMenu.addItem` and give a name and icon as well as a function to call when the item is clicked.
 ```javascript
-const CONTEXT_MENUS = {
-    MainMap: 'main.map.context.menu'
-};
-```
-
-To add items to the context menu use the function `addContextMenuItem` and give the name that matches the context menu aswell as the name/label of the item, the icon and a function to call when the item is clicked.
-```javascript
-addContextMenuItem(CONTEXT_MENUS.MainMap, {
+ContextMenu.addItem({
     icon: '<svg>...</svg>', 
     name: 'Zoom home', 
     fn: this.handleResetToHome.bind(this)
@@ -918,7 +905,7 @@ addContextMenuItem(CONTEXT_MENUS.MainMap, {
 
 The callback function recieves a references to the map, the clicked coordinates and the target element (the canvas).
 ```javascript
-addContextMenuItem(CONTEXT_MENUS.MainMap, {
+ContextMenu.addItem({
     icon: '<svg>...</svg>', 
     name: 'Clear settings', 
     fn: function(map, coordinates, target) {
@@ -932,11 +919,11 @@ addContextMenuItem(CONTEXT_MENUS.MainMap, {
 });
 ```
 
-It is not important in what order the menu or its items are created. If no menu exist with the given name all menu items will be queued and added once the menu is created.
+It is not important in what order the menu or its items are added. If no menu exist all menu items will be queued and added once the menu is created.
 
 To insert a separator in the menu add an empty object.
 ```javascript
-addContextMenuItem(CONTEXT_MENUS.MainMap, {});
+ContextMenu.addItem({});
 ```
 
 ### State Management
@@ -964,9 +951,9 @@ const localStorageState = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_N
 this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
 ```
 
-To update the state in localStorage, call the `updateStateObject` method and pass in the node name along with the updated state object.
+To update the state in localStorage, call the `setStateObject` method and pass in the node name along with the updated state object.
 ```javascript
-StateManager.updateStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
 ```
 
 ### Debug tool

@@ -1,16 +1,15 @@
 import DOM from '../helpers/browser/DOM';
 import Toast from '../common/Toast';
 import CONFIG from '../core/Config';
+import ContextMenu from '../common/ContextMenu';
 import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { easeOut } from 'ol/easing';
 import { fromLonLat } from 'ol/proj';
-import { CONTEXT_MENUS } from '../helpers/constants/ContextMenus';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { TOOLBAR_ELEMENT } from '../core/elements/index';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
 import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
-import { addContextMenuItem } from '../common/ContextMenu';
 
 const DEFAULT_OPTIONS = Object.freeze({
     zoom: 3,
@@ -51,7 +50,7 @@ class HomeTool extends Control {
         this.userDefinedHomeLocation = null;
         this.userDefinedHomeZoom = null;
 
-        addContextMenuItem(CONTEXT_MENUS.MainMap, {
+        ContextMenu.addItem({
             icon: icon, 
             name: 'Set as home', 
             fn: this.onContextMenuSetHomeLocation.bind(this)
@@ -89,7 +88,7 @@ class HomeTool extends Control {
         view.animate({
             zoom: zoom,
             center: center,
-            duration: CONFIG.animationDuration.normal,
+            duration: CONFIG.AnimationDuration.Normal,
             easing: easeOut
         });
 
@@ -98,7 +97,7 @@ class HomeTool extends Control {
             if(typeof this.options.home === 'function') {
                 this.options.home();
             }
-        }, CONFIG.animationDuration.normal);
+        }, CONFIG.AnimationDuration.Normal);
     }
 
     onWindowClearHomeLocation() {

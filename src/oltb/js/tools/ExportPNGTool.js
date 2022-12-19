@@ -127,7 +127,7 @@ class ExportPNGTool extends Control {
 
     downloadCanvas(pngCanvas) {
         const timestamp = this.options.appendTime 
-            ? `-${new Date().toLocaleDateString(CONFIG.locale)}`
+            ? `-${new Date().toLocaleDateString(CONFIG.Locale)}`
             : '';
 
         if(navigator.msSaveBlob) {
