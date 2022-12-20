@@ -1,7 +1,7 @@
-import DOM from '../../helpers/browser/DOM';
-import CONFIG from '../Config';
-import Overlay from 'ol/Overlay';
+import { DOM } from '../../helpers/browser/DOM';
+import { CONFIG } from '../Config';
 import { EVENTS } from '../../helpers/Constants/Events';
+import { Overlay } from 'ol';
 import { getCenter } from 'ol/extent';
 import { editFeature } from './info-window-manager/EditFeature';
 import { removeFeature } from './info-window-manager/RemoveFeature';
@@ -166,4 +166,4 @@ class InfoWindowManager {
     }
 }
 
-export default InfoWindowManager;
+export { InfoWindowManager };

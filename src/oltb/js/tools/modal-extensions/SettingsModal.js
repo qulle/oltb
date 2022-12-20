@@ -1,6 +1,6 @@
-import DOM from '../../helpers/browser/DOM';
-import ModalBase from '../../common/modals/ModalBase';
-import SettingsManager from '../../core/managers/SettingsManager';
+import { DOM } from '../../helpers/browser/DOM';
+import { ModalBase } from '../../common/modals/ModalBase';
+import { SettingsManager } from '../../core/managers/SettingsManager';
 
 class SettingsModal extends ModalBase {
     constructor(options = {}) {
@@ -56,4 +56,4 @@ class SettingsModal extends ModalBase {
     }
 }
 
-export default SettingsModal;
+export { SettingsModal };

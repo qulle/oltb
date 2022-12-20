@@ -1,12 +1,12 @@
-import resolve from '@rollup/plugin-node-resolve';
-import commonjs from '@rollup/plugin-commonjs';
+import scss from 'rollup-plugin-scss';
 import json from '@rollup/plugin-json';
 import terser from '@rollup/plugin-terser';
-import replace from '@rollup/plugin-replace';
-import scss from 'rollup-plugin-scss';
 import license from 'rollup-plugin-license';
+import replace from '@rollup/plugin-replace';
+import resolve from '@rollup/plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs';
 
-const jsBanner  = await import('./rollup.jsbanner.mjs');
+const jsBanner = await import('./rollup.jsbanner.mjs');
 const cssBanner = await import('./rollup.cssbanner.mjs');
 
 export default {

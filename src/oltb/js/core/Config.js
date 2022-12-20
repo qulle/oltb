@@ -4,7 +4,9 @@ const CONFIG = Object.freeze({
     Version: version,
     Locale: 'en-us',
     ScrollDistance: 100,
-    Rem: 16,
+    Browser: Object.freeze({
+        REM: 16
+    }),
     LocalStorage: Object.freeze({
         Key: 'oltb-state'
     }),
@@ -31,4 +33,4 @@ const CONFIG = Object.freeze({
     })
 });
 
-export default CONFIG;
+export { CONFIG };

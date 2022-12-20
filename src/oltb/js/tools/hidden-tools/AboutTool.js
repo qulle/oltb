@@ -1,8 +1,8 @@
-import CONFIG from '../../core/Config';
-import Dialog from '../../common/Dialog';
-import ContextMenu from '../../common/ContextMenu';
+import { CONFIG } from '../../core/Config';
+import { Dialog } from '../../common/Dialog';
 import { VERSION } from 'ol';
 import { Control } from 'ol/control';
+import { ContextMenu } from '../../common/ContextMenu';
 import { TOOLBAR_ELEMENT } from '../../core/elements/index';
 import { SVG_PATHS, getIcon } from '../../core/icons/GetIcon';
 
@@ -37,4 +37,4 @@ class HiddenAboutTool extends Control {
     }
 }
 
-export default HiddenAboutTool;
+export { HiddenAboutTool };

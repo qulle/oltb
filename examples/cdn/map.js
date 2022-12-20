@@ -10,7 +10,7 @@ const map = new ol.Map({
         rotate: false
     }),
     view: new ol.View({
-        projection: 'EPSG:3857'
+        projection: ol.proj.get(oltb.CONFIG.Projection.Default)
     })
 });
 

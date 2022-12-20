@@ -1,4 +1,4 @@
-import DOM from '../../helpers/browser/DOM';
+import { DOM } from '../../helpers/browser/DOM';
 import { MAP_ELEMENT } from './MapElement';
 
 const TOAST_ELEMENT = DOM.createElement({

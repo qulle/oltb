@@ -1,12 +1,12 @@
-import Toast from "../../src/oltb/js/common/Toast";
-import CONFIG from '../../src/oltb/js/core/Config';
-import GeoJSON from 'ol/format/GeoJSON';
-import VectorLayer from 'ol/layer/Vector';
-import VectorSource from 'ol/source/Vector';
-import LayerManager from "../../src/oltb/js/core/managers/LayerManager";
 import { bbox } from 'ol/loadingstrategy';
+import { Toast } from "../../src/oltb/js/common/Toast";
+import { CONFIG } from '../../src/oltb/js/core/Config';
+import { GeoJSON } from 'ol/format';
+import { LayerManager } from "../../src/oltb/js/core/managers/LayerManager";
 import { getMeasureValue } from "../../src/oltb/js/helpers/Measurements";
 import { FEATURE_PROPERTIES } from "../../src/oltb/js/helpers/constants/FeatureProperties";
+import { Vector as VectorLayer } from 'ol/layer';
+import { Vector as VectorSource } from 'ol/source';
 
 import urlCountriesGeoJSON from 'url:../geojson/countries.geojson';
 
@@ -35,7 +35,7 @@ LayerManager.addMapLayers([
                             features.forEach((feature) => {
                                 feature.setProperties({
                                     oltb: {
-                                        type: FEATURE_PROPERTIES.type.layer,
+                                        type: FEATURE_PROPERTIES.Type.Layer,
                                         highlightOnHover: true,
                                         infoWindow: `
                                             <h3 class="oltb-text-center">${feature.getProperties().name}</h3>

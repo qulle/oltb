@@ -1,7 +1,7 @@
-import CONFIG from '../core/Config';
-import URLManager from '../core/managers/URLManager';
 import { KEYS } from './constants/Keys';
+import { CONFIG } from '../core/Config';
 import { EVENTS } from './constants/Events';
+import { URLManager } from '../core/managers/URLManager';
 import { TOOLBAR_ELEMENT, TOOLBOX_ELEMENT, MAP_ELEMENT } from '../core/elements/index';
 
 // Set version as custom attribute to the html element
@@ -32,7 +32,7 @@ const collisionDetection = function(event) {
     const toolbarWidth = TOOLBAR_ELEMENT.offsetWidth;
     const toolboxWidth = TOOLBOX_ELEMENT.offsetWidth;
     
-    if(windowWidth - ((3 * CONFIG.Rem) + toolbarWidth + toolboxWidth) <= 0) {
+    if(windowWidth - ((3 * CONFIG.Browser.REM) + toolbarWidth + toolboxWidth) <= 0) {
         TOOLBOX_ELEMENT.classList.add('oltb-toolbox-container--collision');
     }else {
         TOOLBOX_ELEMENT.classList.remove('oltb-toolbox-container--collision');

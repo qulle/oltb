@@ -1,16 +1,16 @@
-import DOM from '../helpers/browser/DOM';
-import Draw from 'ol/interaction/Draw';
-import Toast from '../common/Toast';
-import CONFIG from '../core/Config';
-import ToolManager from '../core/managers/ToolManager';
-import StateManager from '../core/managers/StateManager';
-import LayerManager from '../core/managers/LayerManager';
-import SettingsManager from '../core/managers/SettingsManager';
+import { DOM } from '../helpers/browser/DOM';
+import { Draw } from 'ol/interaction';
 import { KEYS } from '../helpers/constants/Keys';
+import { Toast } from '../common/Toast';
+import { CONFIG } from '../core/Config';
 import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { SETTINGS } from '../helpers/constants/Settings';
+import { ToolManager } from '../core/managers/ToolManager';
+import { StateManager } from '../core/managers/StateManager';
+import { LayerManager } from '../core/managers/LayerManager';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
+import { SettingsManager } from '../core/managers/SettingsManager';
 import { eventDispatcher } from '../helpers/browser/EventDispatcher';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
 import { FEATURE_PROPERTIES } from '../helpers/constants/FeatureProperties';
@@ -438,4 +438,4 @@ class DrawTool extends Control {
     }
 }
 
-export default DrawTool;
+export { DrawTool };

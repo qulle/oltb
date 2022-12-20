@@ -1,14 +1,14 @@
-import DOM from '../helpers/browser/DOM';
 import tippy from 'tippy.js';
-import Toast from '../common/Toast';
-import CONFIG from '../core/Config';
-import Dialog from '../common/Dialog';
-import ContextMenu from '../common/ContextMenu';
-import StateManager from '../core/managers/StateManager';
+import { DOM } from '../helpers/browser/DOM';
 import { KEYS } from '../helpers/constants/Keys';
+import { Toast } from '../common/Toast';
+import { CONFIG } from '../core/Config';
+import { Dialog } from '../common/Dialog';
 import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { easeOut } from 'ol/easing';
+import { ContextMenu } from '../common/ContextMenu';
+import { StateManager } from '../core/managers/StateManager';
 import { randomNumber } from '../helpers/browser/Random';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
@@ -416,4 +416,4 @@ class BookmarkTool extends Control {
     }
 }
 
-export default BookmarkTool;
+export { BookmarkTool };

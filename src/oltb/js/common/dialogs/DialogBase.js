@@ -1,4 +1,4 @@
-import DOM from '../../helpers/browser/DOM';
+import { DOM } from '../../helpers/browser/DOM';
 import { KEYS } from '../../helpers/constants/Keys';
 import { EVENTS } from '../../helpers/constants/Events';
 import { isDarkTheme } from '../../helpers/IsDarkTheme';
@@ -50,4 +50,4 @@ class DialogBase {
     }
 }
 
-export default DialogBase;
+export { DialogBase };

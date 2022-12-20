@@ -1,4 +1,4 @@
-import ModalWindow from './modals/ModalWindow';
+import { ModalWindow } from './modals/ModalWindow';
 
 class Modal {
     static create(options) {
@@ -6,4 +6,4 @@ class Modal {
     }
 }
 
-export default Modal;
+export { Modal };

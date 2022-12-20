@@ -1,5 +1,5 @@
-import DOM from '../helpers/browser/DOM';
-import Toast from '../common/Toast';
+import { DOM } from '../helpers/browser/DOM';
+import { Toast } from '../common/Toast';
 import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
@@ -67,4 +67,4 @@ class HelpTool extends Control {
     }
 }
 
-export default HelpTool;
+export { HelpTool };

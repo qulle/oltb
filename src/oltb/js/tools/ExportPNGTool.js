@@ -1,11 +1,11 @@
-import DOM from '../helpers/browser/DOM';
-import Toast from '../common/Toast';
-import CONFIG from '../core/Config';
-import URLManager from '../core/managers/URLManager';
 import html2canvas from 'html2canvas';
+import { DOM } from '../helpers/browser/DOM';
+import { Toast } from '../common/Toast';
+import { CONFIG } from '../core/Config';
 import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { download } from '../helpers/browser/Download';
+import { URLManager } from '../core/managers/URLManager';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
 import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
@@ -127,7 +127,7 @@ class ExportPNGTool extends Control {
 
     downloadCanvas(pngCanvas) {
         const timestamp = this.options.appendTime 
-            ? `-${new Date().toLocaleDateString(CONFIG.Locale)}`
+            ? `-${new Date().toLocaleString(CONFIG.Locale)}`
             : '';
 
         if(navigator.msSaveBlob) {
@@ -143,4 +143,4 @@ class ExportPNGTool extends Control {
     }
 }
 
-export default ExportPNGTool;
+export { ExportPNGTool };

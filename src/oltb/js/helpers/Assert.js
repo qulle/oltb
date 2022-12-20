@@ -46,4 +46,4 @@ class Assert {
     }
 }
 
-export default Assert;
+export { Assert };

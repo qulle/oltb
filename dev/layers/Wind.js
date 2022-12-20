@@ -1,7 +1,7 @@
-import Toast from "../../src/oltb/js/common/Toast";
-import LayerManager from "../../src/oltb/js/core/managers/LayerManager";
+import { Toast } from "../../src/oltb/js/common/Toast";
 import { toStringHDMS } from "ol/coordinate";
 import { randomNumber } from "../../src/oltb/js/helpers/browser/Random";
+import { LayerManager } from "../../src/oltb/js/core/managers/LayerManager";
 import { generateWindbarb } from "../../src/oltb/js/generators/GenerateWindbarb";
 
 import urlCapitalsGeoJSON from 'url:../geojson/capitals.geojson';
@@ -20,8 +20,7 @@ const CONTINENT_DIRECTION = Object.freeze({
     'US': 210
 });
 
-const LAYER_WRAPPER = LayerManager.addFeatureLayer('Windbarbs', false, true);
-
+const layerWrapper = LayerManager.addFeatureLayer('Windbarbs', false, true);
 const geoJsonPromise = fetch(urlCapitalsGeoJSON)
     .then((response) => {
         if(!response.ok) {
@@ -52,7 +51,7 @@ const geoJsonPromise = fetch(urlCapitalsGeoJSON)
                 </div>
             `;
 
-            LAYER_WRAPPER.layer.getSource().addFeature(
+            layerWrapper.layer.getSource().addFeature(
                 new generateWindbarb({
                     lat: lat,
                     lon: lon,

@@ -1,25 +1,25 @@
-import DOM from '../helpers/browser/DOM';
 import tippy from 'tippy.js';
-import Toast from '../common/Toast';
-import Dialog from '../common/Dialog';
-import CONFIG from '../core/Config';
-import LayerModal from './modal-extensions/LayerModal';
-import ContextMenu from '../common/ContextMenu';
-import StateManager from '../core/managers/StateManager';
-import LayerManager from '../core/managers/LayerManager';
-import InfoWindowManager from '../core/managers/InfoWindowManager';
-import DownloadLayerModal from './modal-extensions/DownloadLayerModal';
+import { DOM } from '../helpers/browser/DOM';
 import { KEYS } from '../helpers/constants/Keys';
+import { Toast } from '../common/Toast';
+import { CONFIG } from '../core/Config';
+import { Dialog } from '../common/Dialog';
 import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { download } from '../helpers/browser/Download';
+import { LayerModal } from './modal-extensions/LayerModal';
+import { ContextMenu } from '../common/ContextMenu';
+import { StateManager } from '../core/managers/StateManager';
+import { LayerManager } from '../core/managers/LayerManager';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { instantiateLayer } from '../core/ol-types/LayerTypes';
+import { InfoWindowManager } from '../core/managers/InfoWindowManager';
 import { instantiateSource } from '../core/ol-types/SourceTypes';
 import { instantiateFormat } from '../core/ol-types/FormatTypes';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
 import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 import { LOCAL_STORAGE_KEYS } from '../helpers/constants/LocalStorageKeys';
+import { DownloadLayerModal } from './modal-extensions/DownloadLayerModal';
 import { FEATURE_PROPERTIES } from '../helpers/constants/FeatureProperties';
 import { hasCustomFeatureProperty } from '../helpers/browser/HasNestedProperty';
 import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT } from '../core/elements/index';
@@ -601,4 +601,4 @@ class LayerTool extends Control {
     }
 }
 
-export default LayerTool;
+export { LayerTool };

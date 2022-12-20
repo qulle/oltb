@@ -1,21 +1,21 @@
 import jsts from 'jsts/dist/jsts.min';
-import DOM from '../helpers/browser/DOM';
-import Toast from '../common/Toast';
-import Dialog from '../common/Dialog';
-import CONFIG from '../core/Config';
-import ToolManager from '../core/managers/ToolManager';
-import LayerManager from '../core/managers/LayerManager';
-import StateManager from '../core/managers/StateManager';
-import TooltipManager from '../core/managers/TooltipManager';
-import SettingsManager from '../core/managers/SettingsManager';
+import { DOM } from '../helpers/browser/DOM';
 import { KEYS } from '../helpers/constants/Keys';
+import { Toast } from '../common/Toast';
+import { Dialog } from '../common/Dialog';
+import { CONFIG } from '../core/Config';
 import { EVENTS } from '../helpers/constants/Events';
-import { Control } from 'ol/control';
 import { Feature } from 'ol';
+import { Control } from 'ol/control';
 import { unByKey } from 'ol/Observable';
 import { SETTINGS } from '../helpers/constants/Settings';
+import { ToolManager } from '../core/managers/ToolManager';
 import { shiftKeyOnly } from 'ol/events/condition';
+import { LayerManager } from '../core/managers/LayerManager';
+import { StateManager } from '../core/managers/StateManager';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
+import { TooltipManager } from '../core/managers/TooltipManager';
+import { SettingsManager } from '../core/managers/SettingsManager';
 import { generateTooltip } from '../generators/GenerateTooltip';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
 import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
@@ -657,4 +657,4 @@ class EditTool extends Control {
     }
 }
 
-export default EditTool;
+export { EditTool };

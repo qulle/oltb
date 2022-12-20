@@ -1,4 +1,4 @@
-import CONFIG from "../../core/Config";
+import { CONFIG } from "../../core/Config";
 
 class DOM {
     static createElement(options = {}) {
@@ -74,4 +74,4 @@ class DOM {
     }
 }
 
-export default DOM;
+export { DOM };

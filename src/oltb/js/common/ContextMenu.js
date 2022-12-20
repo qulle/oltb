@@ -1,8 +1,8 @@
-import DOM from '../helpers/browser/DOM';
-import CONFIG from '../core/Config';
-import Control from "ol/control/Control";
+import { DOM } from '../helpers/browser/DOM';
 import { KEYS } from '../helpers/constants/Keys';
+import { CONFIG } from '../core/Config';
 import { EVENTS } from "../helpers/constants/Events";
+import { Control } from "ol/control";
 import { transform } from 'ol/proj';
 import { MAP_ELEMENT } from "../core/elements/index";
 import { hasNestedProperty } from "../helpers/browser/HasNestedProperty";
@@ -110,4 +110,4 @@ class ContextMenu extends Control {
     }
 }
 
-export default ContextMenu; 
+export { ContextMenu }; 

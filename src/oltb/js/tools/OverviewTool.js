@@ -1,9 +1,9 @@
-import OSM from 'ol/source/OSM';
-import DOM from '../helpers/browser/DOM';
-import CONFIG from '../core/Config';
-import TileLayer from 'ol/layer/Tile';
-import StateManager from '../core/managers/StateManager';
+import { OSM } from 'ol/source';
+import { DOM } from '../helpers/browser/DOM';
+import { Tile } from 'ol/layer';
+import { CONFIG } from '../core/Config';
 import { EVENTS } from '../helpers/constants/Events';
+import { StateManager } from '../core/managers/StateManager';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
 import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
@@ -79,7 +79,7 @@ class OverviewTool extends Control {
             collapsed: false,
             collapsible: false,
             layers: [
-                new TileLayer({
+                new Tile({
                     source: new OSM(),
                 }),
             ]
@@ -156,4 +156,4 @@ class OverviewTool extends Control {
     }
 }
 
-export default OverviewTool;
+export { OverviewTool };

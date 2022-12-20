@@ -24,4 +24,4 @@ class ToolManager {
     }
 }
 
-export default ToolManager;
+export { ToolManager };

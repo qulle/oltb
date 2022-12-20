@@ -1,6 +1,6 @@
-import DOM from '../../helpers/browser/DOM';
-import ModalBase from '../../common/modals/ModalBase';
+import { DOM } from '../../helpers/browser/DOM';
 import { SVG_PATHS } from '../../core/icons/GetIcon';
+import { ModalBase } from '../../common/modals/ModalBase';
 import { isDarkTheme } from '../../helpers/IsDarkTheme';
 
 const ID_PREFIX = 'oltb-marker-modal';
@@ -15,12 +15,12 @@ class MarkerModal extends ModalBase {
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
         // Create textbox for marker name
-        const nameDiv = DOM.createElement({
+        const nameWrapper = DOM.createElement({
             element: 'div',
             class: 'oltb-m-0'
         });
 
-        nameDiv.appendChild(DOM.createElement({
+        nameWrapper.appendChild(DOM.createElement({
             element: 'label', 
             text: 'Name',
             class: 'oltb-label', 
@@ -39,15 +39,15 @@ class MarkerModal extends ModalBase {
             }
         });
 
-        nameDiv.appendChild(nameText);
+        nameWrapper.appendChild(nameText);
 
         // Create textbox for marker info
-        const infoDiv = DOM.createElement({
+        const infoWrapper = DOM.createElement({
             element: 'div',
             class: 'oltb-mt-0625'
         });
 
-        infoDiv.appendChild(DOM.createElement({
+        infoWrapper.appendChild(DOM.createElement({
             element: 'label', 
             text: 'Info text',
             class: 'oltb-label', 
@@ -67,15 +67,15 @@ class MarkerModal extends ModalBase {
             }
         });
 
-        infoDiv.appendChild(infoText);
+        infoWrapper.appendChild(infoText);
 
         // Create and populate select element with all icons
-        const iconDiv = DOM.createElement({
+        const iconWrapper = DOM.createElement({
             element: 'div',
             class: 'oltb-mt-0625'
         });
 
-        iconDiv.appendChild(DOM.createElement({
+        iconWrapper.appendChild(DOM.createElement({
             element: 'label', 
             text: 'Icon',
             class: 'oltb-label', 
@@ -110,15 +110,15 @@ class MarkerModal extends ModalBase {
             }
         }
  
-        iconDiv.appendChild(iconSelect);
+        iconWrapper.appendChild(iconSelect);
 
         // Create textbox for marker latitude
-        const latDiv = DOM.createElement({
+        const latWrapper = DOM.createElement({
             element: 'div',
             class: 'oltb-mt-0625'
         });
 
-        latDiv.appendChild(DOM.createElement({
+        latWrapper.appendChild(DOM.createElement({
             element: 'label', 
             text: 'Latitud',
             class: 'oltb-label', 
@@ -137,15 +137,15 @@ class MarkerModal extends ModalBase {
             }
         });
 
-        latDiv.appendChild(latText);
+        latWrapper.appendChild(latText);
 
         // Create textbox for marker longitude
-        const lonDiv = DOM.createElement({
+        const lonWrapper = DOM.createElement({
             element: 'div',
             class: 'oltb-mt-0625'
         });
 
-        lonDiv.appendChild(DOM.createElement({
+        lonWrapper.appendChild(DOM.createElement({
             element: 'label', 
             text: 'Longitud', 
             class: 'oltb-label',
@@ -164,15 +164,15 @@ class MarkerModal extends ModalBase {
             }
         });
 
-        lonDiv.appendChild(lonText);
+        lonWrapper.appendChild(lonText);
 
         // Create color picker for background
-        const backgroundColorDiv = DOM.createElement({
+        const backgroundColorWrapper = DOM.createElement({
             element: 'div',
             class: 'oltb-mt-0625'
         });
 
-        backgroundColorDiv.appendChild(DOM.createElement({
+        backgroundColorWrapper.appendChild(DOM.createElement({
             element: 'label', 
             text: 'Background color',
             class: 'oltb-label', 
@@ -200,15 +200,15 @@ class MarkerModal extends ModalBase {
             class: 'oltb-color-input__inner'
         }));
 
-        backgroundColorDiv.appendChild(backgroundColorInput);
+        backgroundColorWrapper.appendChild(backgroundColorInput);
 
         // Create color picker for color
-        const colorDiv = DOM.createElement({
+        const colorWrapper = DOM.createElement({
             element: 'div',
             class: 'oltb-mt-0625' 
         });
 
-        colorDiv.appendChild(DOM.createElement({
+        colorWrapper.appendChild(DOM.createElement({
             element: 'label', 
             text: 'Color',
             class: 'oltb-label', 
@@ -236,10 +236,10 @@ class MarkerModal extends ModalBase {
             class: 'oltb-color-input__inner'
         }));
 
-        colorDiv.appendChild(colorInput);
+        colorWrapper.appendChild(colorInput);
 
         // Create buttons for create and cancel
-        const buttonsDiv = DOM.createElement({
+        const buttonsWrapper = DOM.createElement({
             element: 'div',
             class: 'oltb-d-flex oltb-justify-content-between oltb-mt-1'
         });
@@ -284,28 +284,29 @@ class MarkerModal extends ModalBase {
             }
         });
 
-        buttonsDiv.appendChild(cancelButton);
-        buttonsDiv.appendChild(createButton);
+        DOM.appendChildren(buttonsWrapper, [
+            cancelButton,
+            createButton
+        ]);
 
-        // Add all DOM elements to the modalContent
         const modalContent = DOM.createElement({
             element: 'div',
             class: 'oltb-modal__content'
         });
         
         DOM.appendChildren(modalContent, [
-            nameDiv,
-            infoDiv,
-            iconDiv,
-            latDiv,
-            lonDiv,
-            backgroundColorDiv,
-            colorDiv,
-            buttonsDiv
+            nameWrapper,
+            infoWrapper,
+            iconWrapper,
+            latWrapper,
+            lonWrapper,
+            backgroundColorWrapper,
+            colorWrapper,
+            buttonsWrapper
         ]);
 
         this.show(modalContent);
     }
 }
 
-export default MarkerModal;
+export { MarkerModal };

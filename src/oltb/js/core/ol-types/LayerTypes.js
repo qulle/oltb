@@ -1,9 +1,8 @@
-import TileLayer from 'ol/layer/Tile';
-import VectorLayer from 'ol/layer/Vector';
+import { Tile, Vector } from 'ol/layer';
 
 const LAYER_TYPES = Object.freeze({
-    'Tile': TileLayer,
-    'Vector': VectorLayer
+    'Tile': Tile,
+    'Vector': Vector
 });
 
 const instantiateLayer = function(name, options) {
@@ -14,7 +13,4 @@ const instantiateLayer = function(name, options) {
     return new LAYER_TYPES[name](options);
 }
 
-export { 
-    LAYER_TYPES as default, 
-    instantiateLayer 
-};
+export { LAYER_TYPES, instantiateLayer };

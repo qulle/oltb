@@ -1,6 +1,6 @@
-import DOM from '../../helpers/browser/DOM';
-import CONFIG from '../../core/Config';
-import ModalBase from '../../common/modals/ModalBase';
+import { DOM } from '../../helpers/browser/DOM';
+import { CONFIG } from '../../core/Config';
+import { ModalBase } from '../../common/modals/ModalBase';
 import { isDarkTheme } from '../../helpers/IsDarkTheme';
 
 const PREFIX_LAYER_ID = 'oltb-layer-modal';
@@ -10,12 +10,12 @@ class LayerModal extends ModalBase {
         super('Create map layer');
 
         // Create textbox for layer name
-        const nameDiv = DOM.createElement({
+        const nameWrapper = DOM.createElement({
             element: 'div',
             class: 'oltb-m-0'
         });
 
-        nameDiv.appendChild(DOM.createElement({
+        nameWrapper.appendChild(DOM.createElement({
             element: 'label', 
             text: 'Name',
             class: 'oltb-label', 
@@ -34,15 +34,15 @@ class LayerModal extends ModalBase {
             }
         });
 
-        nameDiv.appendChild(nameText);
+        nameWrapper.appendChild(nameText);
 
         // Create and populate select element with the layer types
-        const typeDiv = DOM.createElement({
+        const typeWrapper = DOM.createElement({
             element: 'div',
             class: 'oltb-mt-0625'
         });
 
-        typeDiv.appendChild(DOM.createElement({
+        typeWrapper.appendChild(DOM.createElement({
             element: 'label', 
             text: 'Layer',
             class: 'oltb-label', 
@@ -67,15 +67,15 @@ class LayerModal extends ModalBase {
             ));
         });
 
-        typeDiv.appendChild(typeSelect);
+        typeWrapper.appendChild(typeSelect);
 
         // Create and populate select element with the source types
-        const sourceDiv = DOM.createElement({
+        const sourceWrapper = DOM.createElement({
             element: 'div',
             class: 'oltb-mt-0625' 
         });
 
-        sourceDiv.appendChild(DOM.createElement({
+        sourceWrapper.appendChild(DOM.createElement({
             element: 'label', 
             text: 'Source',
             class: 'oltb-label', 
@@ -100,15 +100,15 @@ class LayerModal extends ModalBase {
             ));
         });
 
-        sourceDiv.appendChild(sourceSelect);
+        sourceWrapper.appendChild(sourceSelect);
 
         // Create textbox for projection
-        const projectionDiv = DOM.createElement({
+        const projectionWrapper = DOM.createElement({
             element: 'div',
             class: 'oltb-mt-0625' 
         });
 
-        projectionDiv.appendChild(DOM.createElement({
+        projectionWrapper.appendChild(DOM.createElement({
             element: 'label', 
             text: 'Projection',
             class: 'oltb-label', 
@@ -127,15 +127,15 @@ class LayerModal extends ModalBase {
             }
         });
 
-        projectionDiv.appendChild(projectionText);
+        projectionWrapper.appendChild(projectionText);
 
         // Create textbox for layer URL
-        const urlDiv = DOM.createElement({
+        const urlWrapper = DOM.createElement({
             element: 'div',
             class: 'oltb-mt-0625'
         });
 
-        urlDiv.appendChild(DOM.createElement({
+        urlWrapper.appendChild(DOM.createElement({
             element: 'label', 
             text: 'URL', 
             class: 'oltb-label',
@@ -153,15 +153,15 @@ class LayerModal extends ModalBase {
             }
         });
 
-        urlDiv.appendChild(urlText);
+        urlWrapper.appendChild(urlText);
 
         // Create textbox for parameters
-        const parametersDiv = DOM.createElement({
+        const parametersWrapper = DOM.createElement({
             element: 'div',
             class: 'oltb-mt-0625'
         });
 
-        parametersDiv.appendChild(DOM.createElement({
+        parametersWrapper.appendChild(DOM.createElement({
             element: 'label', 
             text: 'Parameters (JSON)', 
             class: 'oltb-label',
@@ -180,15 +180,15 @@ class LayerModal extends ModalBase {
             }
         });
 
-        parametersDiv.appendChild(parametersText);
+        parametersWrapper.appendChild(parametersText);
 
         // Create and populate select element with layer wrapX values
-        const wrapXDiv = DOM.createElement({
+        const wrapXWrapper = DOM.createElement({
             element: 'div',
             class: 'oltb-mt-0625'
         });
 
-        wrapXDiv.appendChild(DOM.createElement({
+        wrapXWrapper.appendChild(DOM.createElement({
             element: 'label', 
             text: 'WrapX',
             class: 'oltb-label', 
@@ -213,15 +213,15 @@ class LayerModal extends ModalBase {
             ));
         });
 
-        wrapXDiv.appendChild(wrapXSelect);
+        wrapXWrapper.appendChild(wrapXSelect);
 
         // Create textbox for layer attributions
-        const attributionsDiv = DOM.createElement({
+        const attributionsWrapper = DOM.createElement({
             element: 'div',
             class: 'oltb-mt-0625'
         });
 
-        attributionsDiv.appendChild(DOM.createElement({
+        attributionsWrapper.appendChild(DOM.createElement({
             element: 'label', 
             text: 'Attributions', 
             class: 'oltb-label',
@@ -239,10 +239,10 @@ class LayerModal extends ModalBase {
             }
         });
 
-        attributionsDiv.appendChild(attributionsText);
+        attributionsWrapper.appendChild(attributionsText);
 
         // Create buttons for create and cancel
-        const buttonsDiv = DOM.createElement({
+        const buttonsWrapper = DOM.createElement({
             element: 'div',
             class: 'oltb-d-flex oltb-justify-content-between oltb-mt-1'
         });
@@ -287,29 +287,30 @@ class LayerModal extends ModalBase {
             }
         });
 
-        buttonsDiv.appendChild(cancelButton);
-        buttonsDiv.appendChild(createButton);
+        DOM.appendChildren(buttonsWrapper, [
+            cancelButton,
+            createButton
+        ]);
 
-        // Add all DOM elements to the modalContent
         const modalContent = DOM.createElement({
             element: 'div',
             class: 'oltb-modal__content'
         });
         
         DOM.appendChildren(modalContent, [
-            nameDiv,
-            typeDiv,
-            sourceDiv,
-            projectionDiv,
-            urlDiv,
-            parametersDiv,
-            wrapXDiv,
-            attributionsDiv,
-            buttonsDiv
+            nameWrapper,
+            typeWrapper,
+            sourceWrapper,
+            projectionWrapper,
+            urlWrapper,
+            parametersWrapper,
+            wrapXWrapper,
+            attributionsWrapper,
+            buttonsWrapper
         ]);
 
         this.show(modalContent);
     }
 }
 
-export default LayerModal;
+export { LayerModal };

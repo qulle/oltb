@@ -1,8 +1,8 @@
-import CONFIG from '../../../core/Config';
-import MarkerModal from "../../../tools/modal-extensions/MarkerModal";
-import LayerManager from '../LayerManager';
+import { CONFIG } from '../../../core/Config';
 import { EVENTS } from '../../../helpers/constants/Events';
 import { transform } from 'ol/proj';
+import { MarkerModal } from "../../../tools/modal-extensions/MarkerModal";
+import { LayerManager } from '../LayerManager';
 import { toStringHDMS } from 'ol/coordinate';
 import { generateMarker } from '../../../generators/GenerateMarker';
 import { SVG_PATHS, getIcon } from '../../icons/GetIcon';

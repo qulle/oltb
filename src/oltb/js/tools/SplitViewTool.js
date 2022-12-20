@@ -1,11 +1,11 @@
-import DOM from '../helpers/browser/DOM';
-import Toast from '../common/Toast';
-import CONFIG from '../core/Config';
-import LayerManager from '../core/managers/LayerManager';
-import StateManager from '../core/managers/StateManager';
+import { DOM } from '../helpers/browser/DOM';
+import { Toast } from '../common/Toast';
+import { CONFIG } from '../core/Config';
 import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { unByKey } from 'ol/Observable';
+import { LayerManager } from '../core/managers/LayerManager';
+import { StateManager } from '../core/managers/StateManager';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { getRenderPixel } from 'ol/render';
 import { eventDispatcher } from '../helpers/browser/EventDispatcher';
@@ -311,7 +311,7 @@ class SplitViewTool extends Control {
 
         // Calculate offset for the handlebar. 
         // The range slider is not perfectly linear towards the edges. 
-        const halfHandleWidth = CONFIG.Rem;
+        const halfHandleWidth = CONFIG.Browser.REM;
         const sliderWidth = this.splitViewSlider.offsetWidth;
         const sliderCenter = sliderWidth / 2;
         const percentOfRange = (this.splitViewSlider.value / (this.splitViewSlider.max - this.splitViewSlider.min));
@@ -345,4 +345,4 @@ class SplitViewTool extends Control {
     }
 }
 
-export default SplitViewTool;
+export { SplitViewTool };

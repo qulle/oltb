@@ -1,6 +1,6 @@
-import DOM from '../helpers/browser/DOM';
-import Modal from '../common/Modal';
-import CONFIG from '../core/Config';
+import { DOM } from '../helpers/browser/DOM';
+import { Modal } from '../common/Modal';
+import { CONFIG } from '../core/Config';
 import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
@@ -130,4 +130,4 @@ class NotificationTool extends Control {
     }
 }
 
-export default NotificationTool;
+export { NotificationTool };

@@ -1,17 +1,17 @@
-import DOM from '../helpers/browser/DOM';
-import Toast from '../common/Toast';
-import CONFIG from '../core/Config';
-import ToolManager from '../core/managers/ToolManager';
-import StateManager from '../core/managers/StateManager';
-import TooltipManager from '../core/managers/TooltipManager';
-import SettingsManager from '../core/managers/SettingsManager';
+import { DOM } from '../helpers/browser/DOM';
+import { Toast } from '../common/Toast';
+import { CONFIG } from '../core/Config';
 import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { unByKey } from 'ol/Observable';
 import { SETTINGS } from '../helpers/constants/Settings';
 import { transform } from 'ol/proj';
+import { ToolManager } from '../core/managers/ToolManager';
 import { toStringHDMS } from 'ol/coordinate';
+import { StateManager } from '../core/managers/StateManager';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
+import { TooltipManager } from '../core/managers/TooltipManager';
+import { SettingsManager } from '../core/managers/SettingsManager';
 import { TOOLBAR_ELEMENT } from '../core/elements/index';
 import { copyToClipboard } from '../helpers/browser/CopyToClipboard';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
@@ -173,4 +173,4 @@ class CoordinateTool extends Control {
     }
 }
 
-export default CoordinateTool;
+export { CoordinateTool };

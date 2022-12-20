@@ -1,6 +1,6 @@
-import DOM from '../../helpers/browser/DOM';
-import Toast from '../../common/Toast';
-import ModalBase from '../../common/modals/ModalBase';
+import { DOM } from '../../helpers/browser/DOM';
+import { Toast } from '../../common/Toast';
+import { ModalBase } from '../../common/modals/ModalBase';
 import { copyToClipboard } from '../../helpers/browser/CopyToClipboard';
 
 class DebugInfoModal extends ModalBase {
@@ -54,17 +54,16 @@ class DebugInfoModal extends ModalBase {
             }
         });
         
-        const buttonWrapper = DOM.createElement({
+        const buttonsWrapper = DOM.createElement({
             element: 'div',
             class: 'oltb-modal__button-wrapper'
         }); 
 
-        DOM.appendChildren(buttonWrapper, [
+        DOM.appendChildren(buttonsWrapper, [
             copyButton, 
             logFullMapButton
         ]);
 
-        // Add all DOM elements to the modalContent
         const modalContent = DOM.createElement({
             element: 'div',
             class: 'oltb-modal__content oltb-flex-content-center' 
@@ -72,11 +71,11 @@ class DebugInfoModal extends ModalBase {
         
         DOM.appendChildren(modalContent, [
             textArea, 
-            buttonWrapper
+            buttonsWrapper
         ]);
         
         this.show(modalContent);
     }
 }
 
-export default DebugInfoModal;
+export { DebugInfoModal };

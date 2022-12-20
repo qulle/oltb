@@ -15,8 +15,13 @@ HTMLElement.prototype.slideDown = function (duration, callback) {
 };
 
 function slideToggle(el, duration, callback, isDown) {
-    if(typeof duration === 'undefined') duration = 200;
-    if(typeof isDown === 'undefined') isDown = false;
+    if(typeof duration === 'undefined') {
+        duration = 200;
+    }
+
+    if(typeof isDown === 'undefined') {
+        isDown = false;
+    }
   
     // Fix to avoid jumping behaviour if no content is present
     const hasContentHeight = parseFloat(window.getComputedStyle(el).getPropertyValue('height'));
@@ -25,6 +30,7 @@ function slideToggle(el, duration, callback, isDown) {
     }
 
     el.style.overflow = 'hidden';
+    
     if(isDown) {
         el.style.display = 'block';
     }

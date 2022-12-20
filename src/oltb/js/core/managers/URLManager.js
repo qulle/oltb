@@ -38,4 +38,4 @@ class URLManager {
     }
 }
 
-export default URLManager;
+export { URLManager };

@@ -1,11 +1,11 @@
-import DOM from '../helpers/browser/DOM';
-import Toast from '../common/Toast';
-import Dialog from '../common/Dialog';
-import ContextMenu from '../common/ContextMenu';
-import StateManager from '../core/managers/StateManager';
-import SettingsModal from './modal-extensions/SettingsModal';
+import { DOM } from '../helpers/browser/DOM';
+import { Toast } from '../common/Toast';
+import { Dialog } from '../common/Dialog';
 import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
+import { ContextMenu } from '../common/ContextMenu';
+import { StateManager } from '../core/managers/StateManager';
+import { SettingsModal } from './modal-extensions/SettingsModal';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { TOOLBAR_ELEMENT } from '../core/elements/index';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
@@ -101,4 +101,4 @@ class SettingsTool extends Control {
     }
 }
 
-export default SettingsTool;
+export { SettingsTool };

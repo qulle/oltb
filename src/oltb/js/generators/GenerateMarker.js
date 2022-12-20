@@ -1,5 +1,5 @@
-import Point from 'ol/geom/Point';
-import Feature from 'ol/Feature';
+import { Point } from 'ol/geom';
+import { Feature } from 'ol';
 import { fromLonLat } from 'ol/proj';
 import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 import { FEATURE_PROPERTIES } from '../helpers/constants/FeatureProperties';

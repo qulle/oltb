@@ -1,6 +1,6 @@
-import Toast from "../../src/oltb/js/common/Toast";
-import LayerManager from "../../src/oltb/js/core/managers/LayerManager";
+import { Toast } from "../../src/oltb/js/common/Toast";
 import { toStringHDMS } from "ol/coordinate";
+import { LayerManager } from "../../src/oltb/js/core/managers/LayerManager";
 import { generateMarker } from '../../src/oltb/js/generators/GenerateMarker';
 import { getIcon, SVG_PATHS } from "../../src/oltb/js/core/icons/GetIcon";
 
@@ -27,8 +27,7 @@ const CONTINENT_COLORS = Object.freeze({
     'US': '#3B4352FF'
 });
 
-const LAYER_WRAPPER = LayerManager.addFeatureLayer('Capitals', true, true);
-
+const layerWrapper = LayerManager.addFeatureLayer('Capitals', true, true);
 const geoJsonPromise = fetch(urlCapitalsGeoJSON)
     .then((response) => {
         if(!response.ok) {
@@ -55,7 +54,7 @@ const geoJsonPromise = fetch(urlCapitalsGeoJSON)
         
             const backgroundColor = CONTINENT_COLORS[capital.properties.continentName] || '#223344FF';
         
-            LAYER_WRAPPER.layer.getSource().addFeature(
+            layerWrapper.layer.getSource().addFeature(
                 new generateMarker({
                     lat: lat,
                     lon: lon,

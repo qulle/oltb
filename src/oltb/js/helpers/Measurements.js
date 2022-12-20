@@ -33,7 +33,4 @@ const formatArea = function(polygon) {
     return `${Math.round(area * 100) / 100} m<sup>2</sup>`;
 };
 
-export {
-    getMeasureValue,
-    getMeasureCoordinates
-};
+export { getMeasureValue, getMeasureCoordinates };

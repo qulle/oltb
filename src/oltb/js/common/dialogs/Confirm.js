@@ -1,5 +1,5 @@
-import DOM from '../../helpers/browser/DOM';
-import DialogBase from './DialogBase';
+import { DOM } from '../../helpers/browser/DOM';
+import { DialogBase } from './DialogBase';
 import { MAP_ELEMENT } from '../../core/elements/index';
 
 const DEFAULT_OPTIONS = Object.freeze({
@@ -82,4 +82,4 @@ class Confirm extends DialogBase {
     }
 }
 
-export default Confirm;
+export { Confirm };

@@ -1,9 +1,9 @@
-import DOM from '../helpers/browser/DOM';
-import Toast from '../common/Toast';
-import StateManager from '../core/managers/StateManager';
+import { DOM } from '../helpers/browser/DOM';
+import { Toast } from '../common/Toast';
 import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { unByKey } from 'ol/Observable';
+import { StateManager } from '../core/managers/StateManager';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { getRenderPixel } from 'ol/render';
 import { TOOLBAR_ELEMENT } from '../core/elements/index';
@@ -227,4 +227,4 @@ class MagnifyTool extends Control {
     }
 }
 
-export default MagnifyTool;
+export { MagnifyTool };

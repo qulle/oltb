@@ -1,5 +1,5 @@
-import DOM from '../../helpers/browser/DOM';
-import ModalBase from '../../common/modals/ModalBase';
+import { DOM } from '../../helpers/browser/DOM';
+import { ModalBase } from '../../common/modals/ModalBase';
 import { isDarkTheme } from '../../helpers/IsDarkTheme';
 
 const PREFIX_LAYER_ID = 'oltb-download-layer-modal';
@@ -9,12 +9,12 @@ class DownloadLayerModal extends ModalBase {
         super('Download layer');
 
         // Create and populate select element with layer format values
-        const formatDiv = DOM.createElement({
+        const formatWrapper = DOM.createElement({
             element: 'div',
             class: 'oltb-mt-0625'
         });
 
-        formatDiv.appendChild(DOM.createElement({
+        formatWrapper.appendChild(DOM.createElement({
             element: 'label', 
             text: 'Layer format',
             class: 'oltb-label', 
@@ -39,10 +39,10 @@ class DownloadLayerModal extends ModalBase {
             ));
         });
 
-        formatDiv.appendChild(formatSelect);
+        formatWrapper.appendChild(formatSelect);
 
         // Create buttons for download and cancel
-        const buttonsDiv = DOM.createElement({
+        const buttonsWrapper = DOM.createElement({
             element: 'div',
             class: 'oltb-d-flex oltb-justify-content-between oltb-mt-1' 
         });
@@ -81,22 +81,23 @@ class DownloadLayerModal extends ModalBase {
             }
         });
 
-        buttonsDiv.appendChild(cancelButton);
-        buttonsDiv.appendChild(downloadButton);
+        DOM.appendChildren(buttonsWrapper, [
+            cancelButton, 
+            downloadButton
+        ]);
 
-        // Add all DOM elements to the modalContent
         const modalContent = DOM.createElement({
             element: 'div',
             class: 'oltb-modal__content'
         });
         
         DOM.appendChildren(modalContent, [
-            formatDiv,
-            buttonsDiv
+            formatWrapper,
+            buttonsWrapper
         ]);
 
         this.show(modalContent);
     }
 }
 
-export default DownloadLayerModal;
+export { DownloadLayerModal };

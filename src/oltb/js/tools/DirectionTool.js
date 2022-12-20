@@ -1,9 +1,9 @@
-import DOM from '../helpers/browser/DOM';
-import CONFIG from '../core/Config';
-import StateManager from '../core/managers/StateManager';
+import { DOM } from '../helpers/browser/DOM';
+import { CONFIG } from '../core/Config';
 import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { isHorizontal } from '../helpers/IsRowDirection';
+import { StateManager } from '../core/managers/StateManager';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { TOOLBAR_ELEMENT } from '../core/elements/index';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
@@ -129,4 +129,4 @@ class DirectionTool extends Control {
     }
 }
 
-export default DirectionTool;
+export { DirectionTool };

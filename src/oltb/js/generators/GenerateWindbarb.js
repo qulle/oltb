@@ -1,5 +1,5 @@
-import Point from 'ol/geom/Point';
-import Feature from 'ol/Feature';
+import { Point } from 'ol/geom';
+import { Feature } from 'ol';
 import { fromLonLat } from 'ol/proj';
 import { Icon, Style } from 'ol/style';
 import { getWindBarb } from '../core/icons/GetWindBarb';

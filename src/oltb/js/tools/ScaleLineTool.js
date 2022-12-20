@@ -1,6 +1,6 @@
-import DOM from '../helpers/browser/DOM';
-import StateManager from '../core/managers/StateManager';
+import { DOM } from '../helpers/browser/DOM';
 import { EVENTS } from '../helpers/constants/Events';
+import { StateManager } from '../core/managers/StateManager';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { TOOLBAR_ELEMENT } from '../core/elements/index';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
@@ -101,4 +101,4 @@ class ScaleLineTool extends Control {
     }
 }
 
-export default ScaleLineTool;
+export { ScaleLineTool };

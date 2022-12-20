@@ -1,10 +1,10 @@
-import DOM from '../helpers/browser/DOM';
-import Toast from '../common/Toast';
-import CONFIG from '../core/Config';
-import LayerManager from '../core/managers/LayerManager';
-import FORMAT_TYPES from '../core/ol-types/FormatTypes';
+import { DOM } from '../helpers/browser/DOM';
+import { Toast } from '../common/Toast';
+import { CONFIG } from '../core/Config';
 import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
+import { FORMAT_TYPES } from '../core/ol-types/FormatTypes';
+import { LayerManager } from '../core/managers/LayerManager';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { TOOLBAR_ELEMENT } from '../core/elements/index';
 import { instantiateFormat } from '../core/ol-types/FormatTypes';
@@ -125,4 +125,4 @@ class ImportVectorLayerTool extends Control {
     }
 }
 
-export default ImportVectorLayerTool;
+export { ImportVectorLayerTool };

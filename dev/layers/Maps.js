@@ -1,19 +1,17 @@
-import OSM from 'ol/source/OSM';
-import Stamen from 'ol/source/Stamen';
-import TileLayer from 'ol/layer/Tile';
-import LayerManager from "../../src/oltb/js/core/managers/LayerManager";
-import { XYZ } from 'ol/source';
+import { Tile } from 'ol/layer';
+import { LayerManager } from "../../src/oltb/js/core/managers/LayerManager";
+import { OSM, XYZ, Stamen } from 'ol/source';
 
 LayerManager.addMapLayers([
     {
         name: 'Open Street Map',
-        layer: new TileLayer({
+        layer: new Tile({
             source: new OSM(),
             visible: true
         })
     }, {
         name: 'ArcGIS World Topo',
-        layer: new TileLayer({
+        layer: new Tile({
             source: new XYZ({
                 attributions: 'Tiles © <a href="https://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer">ArcGIS</a>',
                 url:'https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}',
@@ -22,7 +20,7 @@ LayerManager.addMapLayers([
         })
     }, {
         name: 'Stamen Watercolor',
-        layer: new TileLayer({
+        layer: new Tile({
             maxZoom: 12,
             source: new Stamen({
                 layer: 'watercolor',
@@ -32,7 +30,7 @@ LayerManager.addMapLayers([
         })
     }, {
         name: 'Stamen Terrain',
-        layer: new TileLayer({
+        layer: new Tile({
             maxZoom: 12,
             source: new Stamen({
                 layer: 'terrain',

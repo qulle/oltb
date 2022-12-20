@@ -1,7 +1,7 @@
-import DOM from "../../helpers/browser/DOM";
-import CONFIG from "../Config";
-import Overlay from 'ol/Overlay';
+import { DOM } from "../../helpers/browser/DOM";
+import { CONFIG } from "../Config";
 import { EVENTS } from '../../helpers/constants/Events';
+import { Overlay } from 'ol';
 import { unByKey } from 'ol/Observable';
 
 class TooltipManager {
@@ -73,4 +73,4 @@ class TooltipManager {
     }
 }
 
-export default TooltipManager;
+export { TooltipManager };

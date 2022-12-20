@@ -19,50 +19,50 @@ import '../../../../src/oltb/js/helpers/browser/SlideToggle';
 
 // Core Toolbar
 import '../../../../src/oltb/scss/oltb.scss';
-import CONFIG from '../../../../src/oltb/js/core/Config';
-import ContextMenu from '../../../../src/oltb/js/common/ContextMenu';
+import { CONFIG } from '../../../../src/oltb/js/core/Config';
 import { SETTINGS } from '../../../../src/oltb/js/helpers/constants/Settings';
+import { ContextMenu } from '../../../../src/oltb/js/common/ContextMenu';
 import { MAP_ELEMENT } from '../../../../src/oltb/js/core/elements/index';
 import { LOCAL_STORAGE_KEYS } from '../../../../src/oltb/js/helpers/constants/LocalStorageKeys';
 
 // Core Managers
-import LayerManager from '../../../../src/oltb/js/core/managers/LayerManager';
-import StateManager from '../../../../src/oltb/js/core/managers/StateManager';
-import TooltipManager from '../../../../src/oltb/js/core/managers/TooltipManager';
-import SettingsManager from '../../../../src/oltb/js/core/managers/SettingsManager';
-import InfoWindowManager from '../../../../src/oltb/js/core/managers/InfoWindowManager';
+import { LayerManager } from '../../../../src/oltb/js/core/managers/LayerManager';
+import { StateManager } from '../../../../src/oltb/js/core/managers/StateManager';
+import { TooltipManager } from '../../../../src/oltb/js/core/managers/TooltipManager';
+import { SettingsManager } from '../../../../src/oltb/js/core/managers/SettingsManager';
+import { InfoWindowManager } from '../../../../src/oltb/js/core/managers/InfoWindowManager';
 
 // Toolbar tools
-import HomeTool from '../../../../src/oltb/js/tools/HomeTool';
-import DrawTool from '../../../../src/oltb/js/tools/DrawTool';
-import EditTool from '../../../../src/oltb/js/tools/EditTool';
-import InfoTool from '../../../../src/oltb/js/tools/InfoTool';
-import HelpTool from '../../../../src/oltb/js/tools/HelpTool';
-import ThemeTool from '../../../../src/oltb/js/tools/ThemeTool';
-import LayerTool from '../../../../src/oltb/js/tools/LayerTool';
-import ZoomInTool from '../../../../src/oltb/js/tools/ZoomInTool';
-import MeasureTool from '../../../../src/oltb/js/tools/MeasureTool';
-import MagnifyTool from '../../../../src/oltb/js/tools/MagnifyTool';
-import ZoomOutTool from '../../../../src/oltb/js/tools/ZoomOutTool';
-import RefreshTool from '../../../../src/oltb/js/tools/RefreshTool';
-import SettingsTool from '../../../../src/oltb/js/tools/SettingsTool';
-import OverviewTool from '../../../../src/oltb/js/tools/OverviewTool';
-import BookmarkTool from '../../../../src/oltb/js/tools/BookmarkTool';
-import DirectionTool from '../../../../src/oltb/js/tools/DirectionTool';
-import DebugInfoTool from '../../../../src/oltb/js/tools/DebugInfoTool';
-import SplitViewTool from '../../../../src/oltb/js/tools/SplitViewTool';
-import ExportPNGTool from '../../../../src/oltb/js/tools/ExportPNGTool';
-import ScaleLineTool from '../../../../src/oltb/js/tools/ScaleLineTool';
-import GraticuleTool from '../../../../src/oltb/js/tools/GraticuleTool';
-import MyLocationTool from '../../../../src/oltb/js/tools/MyLocationTool';
-import ResetNorthTool from '../../../../src/oltb/js/tools/ResetNorthTool';
-import FullscreenTool from '../../../../src/oltb/js/tools/FullscreenTool';
-import CoordinateTool from '../../../../src/oltb/js/tools/CoordinateTool';
-import HiddenAboutTool from '../../../../src/oltb/js/tools/hidden-tools/AboutTool';
-import NotificationTool from '../../../../src/oltb/js/tools/NotificationTool';
-import HiddenMarkerTool from '../../../../src/oltb/js/tools/hidden-tools/MarkerTool';
-import ImportVectorLayerTool from '../../../../src/oltb/js/tools/ImportVectorLayerTool';
-import HiddenMapNavigationTool from '../../../../src/oltb/js/tools/hidden-tools/MapNavigationTool';
+import { HomeTool } from '../../../../src/oltb/js/tools/HomeTool';
+import { DrawTool } from '../../../../src/oltb/js/tools/DrawTool';
+import { EditTool } from '../../../../src/oltb/js/tools/EditTool';
+import { InfoTool } from '../../../../src/oltb/js/tools/InfoTool';
+import { HelpTool } from '../../../../src/oltb/js/tools/HelpTool';
+import { ThemeTool } from '../../../../src/oltb/js/tools/ThemeTool';
+import { LayerTool } from '../../../../src/oltb/js/tools/LayerTool';
+import { ZoomInTool } from '../../../../src/oltb/js/tools/ZoomInTool';
+import { MeasureTool } from '../../../../src/oltb/js/tools/MeasureTool';
+import { MagnifyTool } from '../../../../src/oltb/js/tools/MagnifyTool';
+import { ZoomOutTool } from '../../../../src/oltb/js/tools/ZoomOutTool';
+import { RefreshTool } from '../../../../src/oltb/js/tools/RefreshTool';
+import { SettingsTool } from '../../../../src/oltb/js/tools/SettingsTool';
+import { OverviewTool } from '../../../../src/oltb/js/tools/OverviewTool';
+import { BookmarkTool } from '../../../../src/oltb/js/tools/BookmarkTool';
+import { DirectionTool } from '../../../../src/oltb/js/tools/DirectionTool';
+import { DebugInfoTool } from '../../../../src/oltb/js/tools/DebugInfoTool';
+import { SplitViewTool } from '../../../../src/oltb/js/tools/SplitViewTool';
+import { ExportPNGTool } from '../../../../src/oltb/js/tools/ExportPNGTool';
+import { ScaleLineTool } from '../../../../src/oltb/js/tools/ScaleLineTool';
+import { GraticuleTool } from '../../../../src/oltb/js/tools/GraticuleTool';
+import { MyLocationTool } from '../../../../src/oltb/js/tools/MyLocationTool';
+import { ResetNorthTool } from '../../../../src/oltb/js/tools/ResetNorthTool';
+import { FullscreenTool } from '../../../../src/oltb/js/tools/FullscreenTool';
+import { CoordinateTool } from '../../../../src/oltb/js/tools/CoordinateTool';
+import { HiddenAboutTool } from '../../../../src/oltb/js/tools/hidden-tools/AboutTool';
+import { NotificationTool } from '../../../../src/oltb/js/tools/NotificationTool';
+import { HiddenMarkerTool } from '../../../../src/oltb/js/tools/hidden-tools/MarkerTool';
+import { ImportVectorLayerTool } from '../../../../src/oltb/js/tools/ImportVectorLayerTool';
+import { HiddenMapNavigationTool } from '../../../../src/oltb/js/tools/hidden-tools/MapNavigationTool';
 
 // This is the same NODE_NAME and PROPS that the MapNavigationTool.js is using
 const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.MapData;

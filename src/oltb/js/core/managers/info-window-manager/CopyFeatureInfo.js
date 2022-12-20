@@ -1,4 +1,4 @@
-import Toast from '../../../common/Toast';
+import { Toast } from '../../../common/Toast';
 import { copyToClipboard } from '../../../helpers/browser/CopyToClipboard';
 
 const copyFeatureInfo = async function(InfoWindowManager, dataToCopy) {

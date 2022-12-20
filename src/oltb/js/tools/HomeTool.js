@@ -1,11 +1,11 @@
-import DOM from '../helpers/browser/DOM';
-import Toast from '../common/Toast';
-import CONFIG from '../core/Config';
-import ContextMenu from '../common/ContextMenu';
+import { DOM } from '../helpers/browser/DOM';
+import { Toast } from '../common/Toast';
+import { CONFIG } from '../core/Config';
 import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { easeOut } from 'ol/easing';
 import { fromLonLat } from 'ol/proj';
+import { ContextMenu } from '../common/ContextMenu';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { TOOLBAR_ELEMENT } from '../core/elements/index';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
@@ -115,4 +115,4 @@ class HomeTool extends Control {
     }
 }
 
-export default HomeTool;
+export { HomeTool };

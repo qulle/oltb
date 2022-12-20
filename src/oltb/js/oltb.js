@@ -3,23 +3,30 @@ import { fromLonLat } from 'ol/proj';
 import { MouseWheelZoom, DragPan, DragRotate, KeyboardZoom, KeyboardPan } from 'ol/interaction';
 import { platformModifierKeyOnly, altShiftKeysOnly, shiftKeyOnly, targetNotEditable } from 'ol/events/condition';
 
+// Toolbar helpers
+import './core/Tooltips';
+import './epsg/Registrate';
+import './helpers/Accessibility';
+import './helpers/browser/Prototypes';
+import './helpers/browser/SlideToggle';
+
 // Core Toolbar
 import '../scss/oltb.scss';
-import Toast from './common/Toast';
-import Modal from './common/Modal';
-import Dialog from './common/Dialog';
-import CONFIG from './core/Config';
-import ContextMenu from './common/ContextMenu';
+import { Toast } from './common/Toast';
+import { Modal } from './common/Modal';
+import { CONFIG } from './core/Config';
+import { Dialog } from './common/Dialog';
 import { SETTINGS } from './helpers/constants/Settings';
+import { ContextMenu } from './common/ContextMenu';
 import { MAP_ELEMENT } from './core/elements/index';
 import { LOCAL_STORAGE_KEYS } from './helpers/constants/LocalStorageKeys';
 
 // Core Managers
-import LayerManager from './core/managers/LayerManager';
-import StateManager from './core/managers/StateManager';
-import TooltipManager from './core/managers/TooltipManager';
-import SettingsManager from './core/managers/SettingsManager';
-import InfoWindowManager from './core/managers/InfoWindowManager';
+import { LayerManager } from './core/managers/LayerManager';
+import { StateManager } from './core/managers/StateManager';
+import { TooltipManager } from './core/managers/TooltipManager';
+import { SettingsManager } from './core/managers/SettingsManager';
+import { InfoWindowManager } from './core/managers/InfoWindowManager';
 
 // Generator functions
 import { generateMarker } from './generators/GenerateMarker';
@@ -27,14 +34,7 @@ import { generateTooltip } from './generators/GenerateTooltip';
 import { generateWindbarb } from './generators/GenerateWindbarb';
 
 // Toolbar tools
-import ALL_TOOLS from './tools/index';
-
-// Toolbar helpers
-import './core/Tooltips';
-import './epsg/Registrate';
-import './helpers/Accessibility';
-import './helpers/browser/Prototypes';
-import './helpers/browser/SlideToggle';
+import { ALL_TOOLS } from './tools/index';
 
 // This is the same NODE_NAME and PROPS that the MapNavigationTool.js is using
 const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.MapData;

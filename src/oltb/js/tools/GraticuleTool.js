@@ -1,9 +1,9 @@
-import DOM from '../helpers/browser/DOM';
-import Stroke from 'ol/style/Stroke';
-import Graticule from 'ol/layer/Graticule';
-import StateManager from '../core/managers/StateManager';
+import { DOM } from '../helpers/browser/DOM';
+import { Stroke } from 'ol/style';
 import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
+import { Graticule } from 'ol/layer';
+import { StateManager } from '../core/managers/StateManager';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { TOOLBAR_ELEMENT } from '../core/elements/index';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
@@ -117,4 +117,4 @@ class GraticuleTool extends Control {
     }
 }
 
-export default GraticuleTool;
+export { GraticuleTool };

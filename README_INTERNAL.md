@@ -17,26 +17,27 @@ Detailed documentation how the toolbar is structured, internal dependencies and 
 5. [About the code](#about-the-code)
     1. [HTML](#html)
     2. [SCSS](#scss)
-    3. [JavaScript](#javascript)
-    4. [Callback functions and constructor parameters](#callback-functions-and-constructor-parameters)
-    5. [Store data locally instead of via API](#store-data-locally-instead-of-via-api)
-    6. [Hidden tools](#hidden-tools)
-    7. [Shortcut keys](#shortcut-keys)
-    8. [Custom projections](#custom-projections)
-    9. [Layers](#layers)
-    10. [Dialogs](#dialogs)
+    3. [Import and Export](#import-and-export)
+    4. [JavaScript](#javascript)
+    5. [Callback functions and constructor parameters](#callback-functions-and-constructor-parameters)
+    6. [Store data locally instead of via API](#store-data-locally-instead-of-via-api)
+    7. [Hidden tools](#hidden-tools)
+    8. [Shortcut keys](#shortcut-keys)
+    9. [Custom projections](#custom-projections)
+    10. [Layers](#layers)
+    11. [Dialogs](#dialogs)
         1. [Alert](#alert)
         2. [Confirm](#confirm)
         3. [Prompt](#prompt)
-    11. [Modal](#modal)
-    12. [Toast](#toast)
-    13. [Icons](#icons)
+    12. [Modal](#modal)
+    13. [Toast](#toast)
+    14. [Icons](#icons)
         1. [Basic icons](#basic-icons)
         2. [Windbarb icons](#windbarb-icons)
-    14. [Context menu](#context-menu)
-    15. [State Management](#state-management)
-    16. [Debug tool](#debug-tool)
-    17. [OLTB namespace](#oltb-namespace)
+    15. [Context menu](#context-menu)
+    16. [State Management](#state-management)
+    17. [Debug tool](#debug-tool)
+    18. [OLTB namespace](#oltb-namespace)
 6. [External GitHub projects](#external-github-projects)
 7. [Maps used in the demo](#maps-used-in-the-demo)
 8. [License](#license)
@@ -88,7 +89,7 @@ Install dependency updates.
 $ npm update --save
 ```
 
-**Note** that from npm version `7.0.0` the command `$ npm update` does not longer update the `package.json` file. From npm version `8.3.2` the command to run is `$ npm update --save` or to always apply the save option add `save=true` to the `.npmrc` file.
+**Note:** that from npm version `7.0.0` the command `$ npm update` does not longer update the `package.json` file. From npm version `8.3.2` the command to run is `$ npm update --save` or to always apply the save option add `save=true` to the `.npmrc` file.
 
 ## Making a Release
 ```bash
@@ -261,6 +262,9 @@ SCSS and HTML is written with [BEM](http://getbem.com/introduction/) naming conv
 .block__element--modifier {}
 ```
 
+### Import and Export
+All modules uses named exports exclusively throughout the project. The one exception is the oltb.js file which is the main entry for Rollup to create the portable CDN version.
+
 ### JavaScript
 The tools are located in the directory `src/oltb/js/modules/tools`. Every tool has its own class and extend the Control-class from OpenLayers.
 ```javascript
@@ -269,36 +273,36 @@ class Coordinates extends Control {}
 
 When using the custom tools, all that is needed is to import the module(s) you want to have in your toolbar.
 ```javascript
-import HomeTool from './modules/tools/HomeTool';
-import DrawTool from './modules/tools/DrawTool';
-import EditTool from './modules/tools/EditTool';
-import InfoTool from './modules/tools/InfoTool';
-import HelpTool from './modules/tools/HelpTool';
-import ThemeTool from './modules/tools/ThemeTool';
-import LayerTool from './modules/tools/LayerTool';
-import ZoomInTool from './modules/tools/ZoomInTool';
-import MeasureTool from './modules/tools/MeasureTool';
-import MagnifyTool from './modules/tools/MagnifyTool';
-import ZoomOutTool from './modules/tools/ZoomOutTool';
-import RefreshTool from './modules/tools/RefreshTool';
-import SettingsTool from './modules/tools/SettingsTool';
-import OverviewTool from './modules/tools/OverviewTool';
-import BookmarkTool from './modules/tools/BookmarkTool';
-import DirectionTool from './modules/tools/DirectionTool';
-import DebugInfoTool from './modules/tools/DebugInfoTool';
-import SplitViewTool from './modules/tools/SplitViewTool';
-import ExportPNGTool from './modules/tools/ExportPNGTool';
-import ScaleLineTool from './modules/tools/ScaleLineTool';
-import GraticuleTool from './modules/tools/GraticuleTool';
-import MyLocationTool from './modules/tools/MyLocationTool';
-import ResetNorthTool from './modules/tools/ResetNorthTool';
-import FullscreenTool from './modules/tools/FullscreenTool';
-import CoordinateTool from './modules/tools/CoordinateTool';
-import HiddenAboutTool from './modules/tools/hidden-tools/AboutTool';
-import NotificationTool from './modules/tools/NotificationTool';
-import HiddenMarkerTool from './modules/tools/hidden-tools/MarkerTool';
-import ImportVectorLayerTool from './modules/tools/ImportVectorLayerTool';
-import HiddenMapNavigationTool from './modules/tools/hidden-tools/MapNavigationTool';
+import { HomeTool } from './modules/tools/HomeTool';
+import { DrawTool } from './modules/tools/DrawTool';
+import { EditTool } from './modules/tools/EditTool';
+import { InfoTool } from './modules/tools/InfoTool';
+import { HelpTool } from './modules/tools/HelpTool';
+import { ThemeTool } from './modules/tools/ThemeTool';
+import { LayerTool } from './modules/tools/LayerTool';
+import { ZoomInTool } from './modules/tools/ZoomInTool';
+import { MeasureTool } from './modules/tools/MeasureTool';
+import { MagnifyTool } from './modules/tools/MagnifyTool';
+import { ZoomOutTool } from './modules/tools/ZoomOutTool';
+import { RefreshTool } from './modules/tools/RefreshTool';
+import { SettingsTool } from './modules/tools/SettingsTool';
+import { OverviewTool } from './modules/tools/OverviewTool';
+import { BookmarkTool } from './modules/tools/BookmarkTool';
+import { DirectionTool } from './modules/tools/DirectionTool';
+import { DebugInfoTool } from './modules/tools/DebugInfoTool';
+import { SplitViewTool } from './modules/tools/SplitViewTool';
+import { ExportPNGTool } from './modules/tools/ExportPNGTool';
+import { ScaleLineTool } from './modules/tools/ScaleLineTool';
+import { GraticuleTool } from './modules/tools/GraticuleTool';
+import { MyLocationTool } from './modules/tools/MyLocationTool';
+import { ResetNorthTool } from './modules/tools/ResetNorthTool';
+import { FullscreenTool } from './modules/tools/FullscreenTool';
+import { CoordinateTool } from './modules/tools/CoordinateTool';
+import { HiddenAboutTool } from './modules/tools/hidden-tools/AboutTool';
+import { NotificationTool } from './modules/tools/NotificationTool';
+import { HiddenMarkerTool } from './modules/tools/hidden-tools/MarkerTool';
+import { ImportVectorLayerTool } from './modules/tools/ImportVectorLayerTool';
+import { HiddenMapNavigationTool } from './modules/tools/hidden-tools/MapNavigationTool';
 ```
 
 Then call the constructor for each tool in the extend method. The tools are added to the toolbar in the order you include them in the array.
@@ -671,7 +675,7 @@ controls: defaultControls({
 ### Store data locally instead of via API
 Tools that create objects at runtime, for example the BookmarkTool, LayerTool etc. returns data via the callback functions. There is also the possibility for these tools to store the created objects in localStorage instead. This is done by setting the constructor parameter `storeDataInLocalStorage: true`. This can be useful if you want to create a map-viewer that can persists data between page load but have no need for an additionall long-term storage via API. 
 
-**Note** At the moment only the BookmarkTool has this feature implemented. The Map also stores base data (zoom, lon, lat) in localStorage. You can read more about the State Management [here](#state-management). 
+**Note:** At the moment only the BookmarkTool has this feature implemented. The Map also stores base data (zoom, lon, lat) in localStorage. You can read more about the State Management [here](#state-management). 
 
 ### Hidden tools
 Tools refered to as hidden tools are tools that only add functionality via the context menu. The hidden tools are used to enable the same type of callback functions that exists on all other tools. 
@@ -700,7 +704,7 @@ There are two types of layers, `map`- and `feature`-layers. Exampels of adding d
 ### Dialogs
 To use the custom dialogs in the map, include the following module. All the dialogs uses trap focus and circles the tab-key to always stay in the opened dialog.
 ```javascript
-import Dialog from './modules/common/Dialog';
+import { Dialog } from './modules/common/Dialog';
 ```
 
 #### Alert
@@ -768,7 +772,7 @@ Other properties that you can add are:
 ### Modal
 To use the custom modal in the map, include the following module.
 ```javascript
-import Modal from './modules/common/Modal';
+import { Modal } from './modules/common/Modal';
 ```
 
 The modal uses trap focus to circle the tab-key.
@@ -802,7 +806,7 @@ infoToolClick() {
 ### Toast
 To use the custom toasts in the map, include the following module.
 ```javascript
-import Toast from './modules/common/Toast';
+import { Toast } from './modules/common/Toast';
 ```
 
 There are four types of toast messages.
@@ -886,7 +890,7 @@ const icon = getWindBarb({
 ### Context menu
 To use the context menu start by importing the following module.
 ```javascript
-import ContextMenu from './modules/common/ContextMenu';
+import { ContextMenu } from './modules/common/ContextMenu';
 ```
 
 To create a context menu in the map call the constructor as any other tool. The context menu class extends the Control-class from OpenLayers.
@@ -929,7 +933,7 @@ ContextMenu.addItem({});
 ### State Management
 To use state management start by importing the following module.
 ```javascript
-import StateManager from './modules/core/managers/StateManager';
+import { StateManager } from './modules/core/managers/StateManager';
 ```
 
 State management is done through localStorage. First add a node name and an object to store default values.

@@ -1,6 +1,6 @@
-import Dialog from '../../../common/Dialog';
-import LayerManager from '../LayerManager';
+import { Dialog } from '../../../common/Dialog';
 import { EVENTS } from '../../../helpers/constants/Events';
+import { LayerManager } from '../LayerManager';
 
 const removeFeature = function(InfoWindowManager, feature) {
     Dialog.confirm({

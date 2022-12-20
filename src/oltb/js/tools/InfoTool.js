@@ -1,5 +1,5 @@
-import DOM from '../helpers/browser/DOM';
-import Modal from '../common/Modal';
+import { DOM } from '../helpers/browser/DOM';
+import { Modal } from '../common/Modal';
 import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
@@ -73,4 +73,4 @@ class InfoTool extends Control {
     }
 }
 
-export default InfoTool;
+export { InfoTool };

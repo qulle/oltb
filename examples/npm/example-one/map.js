@@ -9,7 +9,7 @@ import { defaults as defaultInterctions } from 'ol/interaction';
 import '../shared/Maps';
 
 // Toolbar
-import OLTB from '../../../../src/oltb/js/oltb';
+import { OLTB } from '../../../../src/oltb/js/oltb';
 
 // Create Map
 const map = new Map({
@@ -24,7 +24,7 @@ const map = new Map({
         rotate: false
     }),
     view: new View({
-        projection: getProjection('EPSG:3857')
+        projection: getProjection(OLTB.CONFIG.Projection.Default)
     })
 });
 

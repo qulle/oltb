@@ -1,4 +1,4 @@
-import CONFIG from "../Config";
+import { CONFIG } from "../Config";
 
 class StateManager {
     static #runtimeState = JSON.parse(localStorage.getItem(CONFIG.LocalStorage.Key)) || {};
@@ -28,4 +28,4 @@ class StateManager {
     }
 }
 
-export default StateManager;
+export { StateManager };

@@ -1,8 +1,8 @@
-import CONFIG from "../../src/oltb/js/core/Config";
-import GeoJSON from 'ol/format/GeoJSON';
-import VectorLayer from 'ol/layer/Vector';
-import VectorSource from 'ol/source/Vector';
-import LayerManager from "../../src/oltb/js/core/managers/LayerManager";
+import { CONFIG } from "../../src/oltb/js/core/Config";
+import { GeoJSON } from 'ol/format';
+import { LayerManager } from "../../src/oltb/js/core/managers/LayerManager";
+import { Vector as VectorLayer } from 'ol/layer';
+import { Vector as VectorSource } from 'ol/source';
 
 import urlContinentsGeoJSON from 'url:../geojson/continents.geojson';
 

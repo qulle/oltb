@@ -1,11 +1,11 @@
-import DOM from '../helpers/browser/DOM';
-import CONFIG from '../core/Config';
-import URLManager from '../core/managers/URLManager';
-import DebugInfoModal from './modal-extensions/DebugInfoModal';
+import { DOM } from '../helpers/browser/DOM';
+import { CONFIG } from '../core/Config';
 import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
+import { URLManager } from '../core/managers/URLManager';
 import { PROJECTIONS } from '../epsg/Projections';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
+import { DebugInfoModal } from './modal-extensions/DebugInfoModal';
 import { TOOLBAR_ELEMENT } from '../core/elements/index';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
 import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
@@ -96,4 +96,4 @@ class DebugInfoTool extends Control {
     }
 }
 
-export default DebugInfoTool;
+export { DebugInfoTool };

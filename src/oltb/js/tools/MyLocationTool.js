@@ -1,18 +1,18 @@
-import DOM from '../helpers/browser/DOM';
-import Toast from '../common/Toast';
-import CONFIG from '../core/Config';
-import Dialog from '../common/Dialog';
-import LayerManager from '../core/managers/LayerManager';
-import InfoWindowManager from '../core/managers/InfoWindowManager';
+import { DOM } from '../helpers/browser/DOM';
+import { Toast } from '../common/Toast';
+import { CONFIG } from '../core/Config';
+import { Dialog } from '../common/Dialog';
 import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { easeOut } from 'ol/easing';
 import { fromLonLat } from 'ol/proj';
 import { toStringHDMS } from 'ol/coordinate';
+import { LayerManager } from '../core/managers/LayerManager';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { generateMarker } from '../generators/GenerateMarker';
 import { TOOLBAR_ELEMENT } from '../core/elements/index';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
+import { InfoWindowManager } from '../core/managers/InfoWindowManager';
 import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 import { isFullScreen, exitFullScreen } from '../helpers/browser/Fullscreen';
 
@@ -188,4 +188,4 @@ class MyLocationTool extends Control {
     }
 }
 
-export default MyLocationTool;
+export { MyLocationTool };

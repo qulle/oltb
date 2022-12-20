@@ -1,6 +1,6 @@
 import 'tippy.js/dist/tippy.css';
 import tippy from 'tippy.js';
-import CONFIG from './Config';
+import { CONFIG } from './Config';
 import { EVENTS } from '../helpers/constants/Events';
 import { MAP_ELEMENT } from './elements/index';
 import { isHorizontal } from '../helpers/IsRowDirection';

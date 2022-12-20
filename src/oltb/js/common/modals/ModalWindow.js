@@ -1,5 +1,5 @@
-import DOM from '../../helpers/browser/DOM';
-import ModalBase from './ModalBase';
+import { DOM } from '../../helpers/browser/DOM';
+import { ModalBase } from './ModalBase';
 
 const DEFAULT_OPTIONS = Object.freeze({
     title: 'Default modal title',
@@ -33,4 +33,4 @@ class ModalWindow extends ModalBase {
     }
 }
 
-export default ModalWindow;
+export { ModalWindow };

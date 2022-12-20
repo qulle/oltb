@@ -1,6 +1,6 @@
-import CONFIG from "../Config";
-import StateManager from "../managers/StateManager";
+import { CONFIG } from "../Config";
 import { EVENTS } from "../../helpers/constants/Events";
+import { StateManager } from "../managers/StateManager";
 import { LOCAL_STORAGE_KEYS } from '../../helpers/constants/LocalStorageKeys';
 
 const DIRECTION_KEY = LOCAL_STORAGE_KEYS.DirectionTool;

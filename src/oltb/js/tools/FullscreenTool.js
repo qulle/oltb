@@ -1,5 +1,5 @@
-import DOM from '../helpers/browser/DOM';
-import Toast from '../common/Toast';
+import { DOM } from '../helpers/browser/DOM';
+import { Toast } from '../common/Toast';
 import { EVENTS } from '../helpers/constants/Events';
 import { listen } from 'ol/events';
 import { Control } from 'ol/control';
@@ -144,4 +144,4 @@ class FullscreenTool extends Control {
     }
 }
 
-export default FullscreenTool;
+export { FullscreenTool };

@@ -1,4 +1,4 @@
-import DOM from '../../helpers/browser/DOM';
+import { DOM } from '../../helpers/browser/DOM';
 
 const download = function(filename, content) {
     const downloadTrigger = DOM.createElement({
@@ -22,4 +22,4 @@ const isImage = function(filename) {
     return filename.split('.').pop().match(/jpg|jpeg|png|gif|svg/i) !== null;
 }
 
-export { download };
+export { download, isImage };

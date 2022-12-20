@@ -1,4 +1,4 @@
-import DOM from '../helpers/browser/DOM';
+import { DOM } from '../helpers/browser/DOM';
 import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
@@ -58,4 +58,4 @@ class RefreshTool extends Control {
     }
 }
 
-export default RefreshTool;
+export { RefreshTool };

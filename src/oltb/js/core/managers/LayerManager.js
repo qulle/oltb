@@ -1,7 +1,7 @@
-import VectorLayer from 'ol/layer/Vector'; 
-import VectorSource from 'ol/source/Vector';
 import { EVENTS } from '../../helpers/constants/Events';
 import { FEATURE_PROPERTIES } from '../../helpers/constants/FeatureProperties';
+import { Vector as VectorLayer } from 'ol/layer';
+import { Vector as VectorSource } from 'ol/source';
 import { hasCustomFeatureProperty } from '../../helpers/browser/HasNestedProperty';
 
 const DEFAULT_LAYER_NAME = 'New layer';
@@ -67,7 +67,7 @@ class LayerManager {
     static addMapLayerToMap(layerWrapper, silent = false) {
         this.#layers.mapLayers.push(layerWrapper);
         this.#map.addLayer(layerWrapper.layer);
-            
+
         // Dispatch event, the layer-tool updates the UI
         window.dispatchEvent(new CustomEvent(EVENTS.Custom.MapLayerAdded, {
             detail: {
@@ -242,4 +242,4 @@ class LayerManager {
     }
 }
 
-export default LayerManager;
+export { LayerManager };

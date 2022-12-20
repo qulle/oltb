@@ -1,4 +1,4 @@
-import DOM from '../../helpers/browser/DOM';
+import { DOM } from '../../helpers/browser/DOM';
 import { KEYS } from '../../helpers/constants/Keys';
 import { EVENTS } from '../../helpers/constants/Events';
 import { MAP_ELEMENT } from '../../core/elements/index';
@@ -99,4 +99,4 @@ class ModalBase {
     }
 }
 
-export default ModalBase;
+export { ModalBase };

@@ -1,6 +1,6 @@
 import * as AColorPicker from 'a-color-picker';
-import DOM from '../helpers/browser/DOM';
-import CONFIG from './Config';
+import { DOM } from '../helpers/browser/DOM';
+import { CONFIG } from './Config';
 import { EVENTS } from '../helpers/constants/Events';
 import { isHorizontal } from '../helpers/IsRowDirection';
 import { eventDispatcher } from '../helpers/browser/EventDispatcher';
@@ -48,7 +48,4 @@ const onColorPickerTooltipShow = function(instance) {
     });
 }
 
-export {
-    colorPicker,
-    onColorPickerTooltipShow
-};
+export { colorPicker, onColorPickerTooltipShow };

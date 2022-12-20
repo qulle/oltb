@@ -1,9 +1,9 @@
-import CONFIG from '../../core/Config';
-import ContextMenu from '../../common/ContextMenu';
-import StateManager from '../../core/managers/StateManager';
+import { CONFIG } from '../../core/Config';
 import { EVENTS } from '../../helpers/constants/Events';
-import { Control } from 'ol/control';
 import { easeOut } from 'ol/easing';
+import { Control } from 'ol/control';
+import { ContextMenu } from '../../common/ContextMenu';
+import { StateManager } from '../../core/managers/StateManager';
 import { TOOLBAR_ELEMENT } from '../../core/elements/index';
 import { SVG_PATHS, getIcon } from '../../core/icons/GetIcon';
 import { LOCAL_STORAGE_KEYS } from '../../helpers/constants/LocalStorageKeys';
@@ -111,4 +111,4 @@ class HiddenMapNavigationTool extends Control {
     }
 }
 
-export default HiddenMapNavigationTool;
+export { HiddenMapNavigationTool };
