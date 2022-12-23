@@ -141,8 +141,8 @@ class CoordinateTool extends Control {
 
         const lonlat = transform(
             event.coordinate, 
-            CONFIG.projection.Default, 
-            CONFIG.projection.WGS84
+            CONFIG.Projection.Default, 
+            CONFIG.Projection.WGS84
         );
 
         const lon = lonlat[0];

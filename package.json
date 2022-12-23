@@ -25,9 +25,11 @@
     "scripts": {
         "start": "parcel serve ./dev/index.html --open --dist-dir serve/",
         "build": "npm run build:demo && npm run build:lib",
-        "build:demo": "parcel build --public-url . ./dev/index.html --dist-dir demo/",
         "build:lib": "rollup --config",
-        "examples": "parcel serve ./examples/index.html --open --dist-dir serve/",
+        "build:demo": "parcel build --public-url . ./dev/index.html --dist-dir demo/",
+        "example:one": "start firefox -url",
+        "example:two": "parcel serve ./examples/npm/example-one/index.html --open --dist-dir serve/",
+        "example:three": "parcel serve ./examples/npm/example-two/index.html --open --dist-dir serve/",
         "clean": "rm -rf serve/ dist/ demo/ .parcel-cache/"
     },
     "files": [

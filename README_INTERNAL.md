@@ -107,23 +107,26 @@ $ npm run clean
 #      - rollup.cssbanner.mjs
 #      - rollup.jsbanner.mjs
 
-# (5). Create new dist, this will build the portable IIFE lib and move the source-modules to the dist directory 
+# (5). Create new dist directory
 $ bash tasks/npm-dist.sh
 
-# (6). Clean package.json
+# (6). Clean package.json in dist:
 #      - scripts
 #      - files
 #      - devDependencies
 
-# (7). Create new example structure
-$ bash tasks/dist-examples-setup.sh -v x.y.z
-
-# (8). Manually add example code for:
+# (7). Manually update examples:
 #      - NPM x 2
 #      - CDN
 
-# (9). Clean up linked example
-$ bash tasks/dist-examples-cleanup.sh -v x.y.z
+# (8). Verify examples
+$ bash task/dist-examples-setup.sh
+$ npm run example:one
+$ npm run example:two
+$ npm run example:three
+
+# (9). Cleanup examples
+$ bash task/dist-examples-cleanup.sh
 
 # (10). Publish package to NPM
 $ bash tasks/npm-publish.sh
