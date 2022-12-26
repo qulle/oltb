@@ -35,11 +35,11 @@ class HiddenMapNavigationTool extends Control {
         this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
 
         const moveCenterIcon = getIcon({
-            path: SVG_PATHS.MoveCenter
+            path: SVG_PATHS.ArrowsMove.Stroke
         });
         
         const focusHereIcon = getIcon({
-            path: SVG_PATHS.FocusHere
+            path: SVG_PATHS.AspectRatio.Stroke
         });
 
         ContextMenu.addItem({

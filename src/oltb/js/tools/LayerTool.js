@@ -57,7 +57,7 @@ class LayerTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.Layers,
+            path: SVG_PATHS.Layers.Stroke,
             class: 'oltb-tool-button__icon'
         });
 
@@ -119,7 +119,7 @@ class LayerTool extends Control {
                                     <input type="text" id="${ID_PREFIX}-feature-stack-add-txt" class="oltb-input" placeholder="Layer name">
                                     <button type="button" id="${ID_PREFIX}-feature-stack-add-btn" class="oltb-btn oltb-btn--green-mid oltb-tippy" title="Create feature layer">
                                         ${getIcon({
-                                            path: SVG_PATHS.PlusSmall,
+                                            path: SVG_PATHS.Plus.Stroke,
                                             width: 20,
                                             height: 20,
                                             fill: 'none',

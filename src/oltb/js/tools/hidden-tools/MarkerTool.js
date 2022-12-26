@@ -20,7 +20,7 @@ class HiddenMarkerTool extends Control {
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
         const createIcon = getIcon({
-            path: SVG_PATHS.Plus
+            path: SVG_PATHS.PlusLarge.Stroke
         });
 
         ContextMenu.addItem({
@@ -49,8 +49,9 @@ class HiddenMarkerTool extends Control {
                 </div>
             `;
             
+            const [ iconName, iconVersion ] = result.icon.split('.');
             const icon = getIcon({
-                path: SVG_PATHS[result.icon],
+                path: SVG_PATHS[iconName][iconVersion],
                 width: 20,
                 height: 20,
                 fill: 'rgb(255, 255, 255)',

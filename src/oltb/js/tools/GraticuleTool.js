@@ -30,7 +30,7 @@ class GraticuleTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.Globe,
+            path: SVG_PATHS.Globe.Stroke,
             class: 'oltb-tool-button__icon'
         });
 

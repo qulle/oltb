@@ -15,7 +15,7 @@ class RefreshTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.Refresh,
+            path: SVG_PATHS.ArrowClockwise.Stroke,
             class: 'oltb-tool-button__icon'
         });
 

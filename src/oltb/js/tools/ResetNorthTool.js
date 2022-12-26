@@ -21,7 +21,7 @@ class ResetNorthTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.Compass,
+            path: SVG_PATHS.Compass.Stroke,
             class: 'oltb-tool-button__icon'
         });
 

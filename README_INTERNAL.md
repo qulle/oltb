@@ -866,13 +866,20 @@ Most of the icons are from the excellent [icons.getbootstrap.com](https://icons.
 import { getIcon, SVG_PATHS } from './modules/core/GetIcon';
 
 const icon = getIcon({
-    path: SVG_PATHS.GeoMarkerFilled,
+    path: SVG_PATHS.GeoMarker.Fill,
     class: 'some-class',
     width: 20,
     height: 20,
     fill: 'rgb(255, 255, 255)',
     stroke: 'none'
 });
+```
+
+In general, two version of each icon exists. A outlined one (stroked) and a solid one (filled). Some icons don't have a filled version and some icons have a combination of both stroked and filled, these are called mixed.
+```javascript
+const name = 'GeoPin';
+const version = 'Fill'; 
+const path = SVG_PATHS[name][version];
 ```
 
 #### Windbarb icons

@@ -19,7 +19,7 @@ class InfoTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.Info,
+            path: SVG_PATHS.InfoCircle.Stroke,
             class: 'oltb-tool-button__icon'
         });
 

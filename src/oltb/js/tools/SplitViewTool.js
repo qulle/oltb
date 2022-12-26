@@ -31,7 +31,7 @@ class SplitViewTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.SplitView,
+            path: SVG_PATHS.ArrowsExpandVertical.Stroke,
             class: 'oltb-tool-button__icon'
         });
 

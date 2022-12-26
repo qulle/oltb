@@ -17,7 +17,7 @@ class ZoomOutTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.ZoomOut,
+            path: SVG_PATHS.ZoomOut.Stroke,
             class: 'oltb-tool-button__icon'
         });
 

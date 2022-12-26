@@ -24,7 +24,7 @@ class HomeTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.Home,
+            path: SVG_PATHS.House.Stroke,
             class: 'oltb-tool-button__icon'
         });
 

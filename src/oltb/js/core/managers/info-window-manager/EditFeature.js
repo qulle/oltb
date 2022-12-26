@@ -42,8 +42,9 @@ const editFeature = function(InfoWindowManager, feature) {
             </div>
         `;
         
+        const [ iconName, iconVersion ] = result.icon.split('.');
         const icon = getIcon({
-            path: SVG_PATHS[result.icon],
+            path: SVG_PATHS[iconName][iconVersion],
             width: 20,
             height: 20,
             fill: 'rgb(255, 255, 255)',

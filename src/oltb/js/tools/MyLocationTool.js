@@ -30,7 +30,7 @@ class MyLocationTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.GeoMarker,
+            path: SVG_PATHS.GeoMarker.Stroke,
             class: 'oltb-tool-button__icon'
         });
 
@@ -123,7 +123,7 @@ class MyLocationTool extends Control {
         const prettyCoords = toStringHDMS([lon, lat]);
 
         const icon = getIcon({
-            path: SVG_PATHS.GeoMarkerFilled,
+            path: SVG_PATHS.GeoMarker.Fill,
             width: 20,
             height: 20,
             fill: 'rgb(255, 255, 255)'

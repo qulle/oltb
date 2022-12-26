@@ -17,7 +17,7 @@ class ZoomInTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.ZoomIn,
+            path: SVG_PATHS.ZoomIn.Stroke,
             class: 'oltb-tool-button__icon'
         });
 

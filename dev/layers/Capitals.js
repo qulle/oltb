@@ -8,7 +8,7 @@ import urlCapitalsGeoJSON from 'url:../geojson/capitals.geojson';
 
 const ID_PREFIX = 'oltb-info-window-marker';
 const ICON = getIcon({
-    path: SVG_PATHS.GeoMarkerFilled,
+    path: SVG_PATHS.GeoMarker.Fill,
     width: 20,
     height: 20,
     fill: 'rgb(255, 255, 255)'

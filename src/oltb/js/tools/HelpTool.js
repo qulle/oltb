@@ -19,7 +19,7 @@ class HelpTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.Help,
+            path: SVG_PATHS.QuestionCircle.Stroke,
             class: 'oltb-tool-button__icon'
         });
 

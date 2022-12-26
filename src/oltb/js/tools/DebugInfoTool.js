@@ -21,7 +21,7 @@ class DebugInfoTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.Debug,
+            path: SVG_PATHS.Bug.Stroke,
             class: 'oltb-tool-button__icon'
         });
 

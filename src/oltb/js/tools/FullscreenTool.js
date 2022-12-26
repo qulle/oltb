@@ -26,12 +26,12 @@ class FullscreenTool extends Control {
         });
 
         this.enterFullscreenIcon = getIcon({
-            path: SVG_PATHS.EnterFullScreen,
+            path: SVG_PATHS.Fullscreen.Stroke,
             class: 'oltb-tool-button__icon'
         });
 
         this.exitFullscreenIcon = getIcon({
-            path: SVG_PATHS.ExitFullScreen,
+            path: SVG_PATHS.FullscreenExit.Stroke,
             class: 'oltb-tool-button__icon'
         });
 

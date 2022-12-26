@@ -40,7 +40,7 @@ class ModalBase {
         const modalClose = DOM.createElement({
             element: 'button', 
             html: getIcon({
-                path: SVG_PATHS.Close, 
+                path: SVG_PATHS.Close.Stroke, 
                 fill: 'none', 
                 stroke: 'currentColor'
             }),

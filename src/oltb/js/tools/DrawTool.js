@@ -42,7 +42,7 @@ class DrawTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.Pen,
+            path: SVG_PATHS.VectorPen.Mix,
             class: 'oltb-tool-button__icon'
         });
 

@@ -91,16 +91,18 @@ class MarkerModal extends ModalBase {
         });
  
         for(const path in SVG_PATHS) {
-            iconSelect.appendChild(
-                DOM.createElement({
-                    element: 'option', 
-                    text: path, 
-                    value: path
-                }
-            ));
+            for(const version in SVG_PATHS[path]) {
+                iconSelect.appendChild(
+                    DOM.createElement({
+                        element: 'option', 
+                        text: `${path} (${version})`, 
+                        value: `${path}.${version}`
+                    }
+                ));
+            }
         }
 
-        const targetIcon = isEdit ? this.options.icon : 'GeoPin';
+        const targetIcon = isEdit ? this.options.icon : 'GeoPin.Fill';
 
         // Select the GeoPin icon as default
         for(var i = 0; i < iconSelect.length; i++) {

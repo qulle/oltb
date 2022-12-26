@@ -113,4 +113,4 @@ const getWindBarb = function(options = {}) {
     `);
 }
 
-export { getWindBarb };
+export { WIND_BARB, getWindBarb };

@@ -20,7 +20,7 @@ class ImportVectorLayerTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.Open,
+            path: SVG_PATHS.FolderOpen.Stroke,
             class: 'oltb-tool-button__icon'
         });
 
