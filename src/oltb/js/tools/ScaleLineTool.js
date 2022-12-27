@@ -24,7 +24,7 @@ class ScaleLineTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.ScaleLine.Stroke,
+            path: SVG_PATHS.ScaleLine.Stroked,
             class: 'oltb-tool-button__icon'
         });
 

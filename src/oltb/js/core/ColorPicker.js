@@ -43,7 +43,6 @@ const onColorPickerTooltipShow = function(instance) {
         target.setAttribute('data-oltb-color', color);
         target.firstElementChild.style.backgroundColor = color;
 
-        // Dispatch event to let tools know that color has changed.
         eventDispatcher([instance.reference], EVENTS.Custom.ColorChange);
     });
 }

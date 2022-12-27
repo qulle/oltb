@@ -31,7 +31,7 @@ class SplitViewTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.ArrowsExpandVertical.Stroke,
+            path: SVG_PATHS.ArrowsExpandVertical.Stroked,
             class: 'oltb-tool-button__icon'
         });
 
@@ -173,7 +173,6 @@ class SplitViewTool extends Control {
             }
         });
 
-        // Dispatch event so the map can update if an active layer was removed
         eventDispatcher([this.leftSrc, this.rightSrc], EVENTS.Browser.Change);
     }
 
@@ -255,7 +254,6 @@ class SplitViewTool extends Control {
         this.rightSrc.value = this.leftSrc.value;
         this.leftSrc.value = currentRightId;
 
-        // Dispatch event so the map can update
         eventDispatcher([this.leftSrc, this.rightSrc], EVENTS.Browser.Change);
     }
 

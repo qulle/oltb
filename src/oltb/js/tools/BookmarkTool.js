@@ -38,7 +38,7 @@ class BookmarkTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.BookmarkStar.Stroke,
+            path: SVG_PATHS.BookmarkStar.Stroked,
             class: 'oltb-tool-button__icon'
         });
 
@@ -78,7 +78,7 @@ class BookmarkTool extends Control {
                             <input type="text" id="${ID_PREFIX}-add-txt" class="oltb-input" placeholder="Bookmark name">
                             <button type="button" id="${ID_PREFIX}-add-btn" class="oltb-btn oltb-btn--green-mid oltb-tippy" title="Add Bookmark">
                                 ${getIcon({
-                                    path: SVG_PATHS.Plus.Stroke,
+                                    path: SVG_PATHS.Plus.Stroked,
                                     width: 20,
                                     height: 20,
                                     fill: 'none',

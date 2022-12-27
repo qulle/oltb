@@ -4,14 +4,22 @@ import { ModalBase } from '../../common/modals/ModalBase';
 import { isDarkTheme } from '../../helpers/IsDarkTheme';
 
 const ID_PREFIX = 'oltb-marker-modal';
-const DEFAULT_OPTIONS = Object.freeze({});
+const DEFAULT_OPTIONS = Object.freeze({
+    edit: false,
+    coordinates: [0, 0],
+    name: 'Marker',
+    info: '',
+    backgroundColor: '#0166A5FF',
+    color: '#FFFFFFFF',
+    icon: 'GeoPin.Filled',
+    onClose: undefined,
+    onCreate: undefined,
+    onCancel: undefined
+});
 
 class MarkerModal extends ModalBase {
-    constructor(options, onCreate, onCancel) {
-        const isEdit = options.edit ?? false;
-        
-        super(`${isEdit ? 'Edit' : 'Create'} marker`);
-
+    constructor(options = {}) {
+        super('Marker configuration', options.onClose);
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
         // Create textbox for marker name
@@ -33,7 +41,7 @@ class MarkerModal extends ModalBase {
             element: 'input', 
             id: `${ID_PREFIX}-marker-name`,
             class: 'oltb-input',
-            value: isEdit && this.options.name.length ? this.options.name : 'Marker',
+            value: this.options.name,
             attributes: {
                 type: 'text'
             }
@@ -60,7 +68,7 @@ class MarkerModal extends ModalBase {
             element: 'input', 
             id: `${ID_PREFIX}-marker-info`,
             class: 'oltb-input',
-            value: isEdit && this.options.info.length ? this.options.info : '',
+            value: this.options.info,
             attributes: {
                 type: 'text',
                 placeholder: 'Some information about the marker'
@@ -102,7 +110,7 @@ class MarkerModal extends ModalBase {
             }
         }
 
-        const targetIcon = isEdit ? this.options.icon : 'GeoPin.Fill';
+        const targetIcon = this.options.icon;
 
         // Select the GeoPin icon as default
         for(var i = 0; i < iconSelect.length; i++) {
@@ -183,8 +191,6 @@ class MarkerModal extends ModalBase {
             }
         }));
 
-        const backgroundColor = isEdit ? this.options.backgroundColor : '#0166A5FF';
-
         const backgroundColorInput = DOM.createElement({
             element: 'div',
             id: `${ID_PREFIX}-marker-background`,
@@ -192,13 +198,13 @@ class MarkerModal extends ModalBase {
             attributes: {
                 tabindex: 0,
                 'data-oltb-color-target': `#${ID_PREFIX}-marker-background`,
-                'data-oltb-color': backgroundColor
+                'data-oltb-color': this.options.backgroundColor
             }
         });
 
         backgroundColorInput.appendChild(DOM.createElement({
             element: 'div',
-            style: `background-color: ${backgroundColor}`,
+            style: `background-color: ${this.options.backgroundColor}`,
             class: 'oltb-color-input__inner'
         }));
 
@@ -219,8 +225,6 @@ class MarkerModal extends ModalBase {
             }
         }));
 
-        const color = isEdit ? this.options.color : '#FFFFFFFF';
-
         const colorInput = DOM.createElement({
             element: 'div',
             id: `${ID_PREFIX}-marker-color`,
@@ -228,13 +232,13 @@ class MarkerModal extends ModalBase {
             attributes: {
                 tabindex: 0,
                 'data-oltb-color-target': `#${ID_PREFIX}-marker-color`,
-                'data-oltb-color': color
+                'data-oltb-color': this.options.color
             }
         });
 
         colorInput.appendChild(DOM.createElement({
             element: 'div',
-            style: `background-color: ${color}`,
+            style: `background-color: ${this.options.color}`,
             class: 'oltb-color-input__inner'
         }));
 
@@ -248,7 +252,7 @@ class MarkerModal extends ModalBase {
 
         const createButton = DOM.createElement({
             element: 'button', 
-            text: `${isEdit ? 'Save changes' : 'Create marker'}`, 
+            text: `${this.options.edit ? 'Save changes' : 'Create marker'}`, 
             class: 'oltb-dialog__btn oltb-btn oltb-btn--green-mid',
             attributes: {
                 type: 'button',
@@ -266,7 +270,7 @@ class MarkerModal extends ModalBase {
                     };
         
                     this.close();
-                    typeof onCreate === 'function' && onCreate(response);
+                    typeof this.options.onCreate === 'function' && this.options.onCreate(response);
                 }
             }
         });
@@ -281,7 +285,7 @@ class MarkerModal extends ModalBase {
             listeners: {
                 'click': () => {
                     this.close();
-                    typeof onCancel === 'function' && onCancel();
+                    typeof this.options.onCancel === 'function' && this.options.onCancel();
                 }
             }
         });

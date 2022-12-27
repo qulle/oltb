@@ -42,7 +42,7 @@ class MeasureTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.Rulers.Mix,
+            path: SVG_PATHS.Rulers.Mixed,
             class: 'oltb-tool-button__icon'
         });
 

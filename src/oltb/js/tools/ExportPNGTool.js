@@ -23,7 +23,7 @@ class ExportPNGTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.Image.Mix,
+            path: SVG_PATHS.Image.Mixed,
             class: 'oltb-tool-button__icon'
         });
 

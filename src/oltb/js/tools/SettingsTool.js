@@ -20,7 +20,7 @@ class SettingsTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.Gear.Stroke,
+            path: SVG_PATHS.Gear.Stroked,
             class: 'oltb-tool-button__icon'
         });
 

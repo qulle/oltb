@@ -15,6 +15,7 @@ const ID_PREFIX = 'oltb-info-window-marker';
 
 class InfoWindowManager {
     static #map;
+    static #infoWindow;
     static #overlay;
     static #content;
     static #lastFeature;
@@ -27,7 +28,7 @@ class InfoWindowManager {
         this.#map = map;
 
         // Create DOM element representing infoWindow
-        this.infoWindow = DOM.createElement({
+        this.#infoWindow = DOM.createElement({
             element: 'div',
             class: 'oltb-info-window oltb-animation',
             attributes: {
@@ -46,7 +47,7 @@ class InfoWindowManager {
         const closeButton = DOM.createElement({
             element: 'button', 
             html: getIcon({
-                path: SVG_PATHS.Close.Stroke,
+                path: SVG_PATHS.Close.Stroked,
                 fill: 'none',
                 stroke: 'currentColor'
             }),
@@ -56,12 +57,12 @@ class InfoWindowManager {
             }
         });
 
-        this.infoWindow.appendChild(closeButton);
-        this.infoWindow.appendChild(this.#content);
+        this.#infoWindow.appendChild(closeButton);
+        this.#infoWindow.appendChild(this.#content);
 
         // Create ol overlay to host infoWindow
         this.#overlay = new Overlay({
-            element: this.infoWindow,
+            element: this.#infoWindow,
             positioning: 'bottom-center',
             offset: [
                 CONFIG.OverlayOffset.Horizontal,
@@ -142,8 +143,11 @@ class InfoWindowManager {
             ));
         }
 
-        DOM.runAnimation(this.infoWindow, ANIMATION_CLASS);
+        this.#infoWindow.focus();
+        
+        DOM.runAnimation(this.#infoWindow, ANIMATION_CLASS);
 
+        // Attach listeners to the function-buttons inside the infoWindow
         const removeFeatureButton = this.#content.querySelector(`#${ID_PREFIX}-remove`);
         if(removeFeatureButton) {
             removeFeatureButton.addEventListener(EVENTS.Browser.Click, removeFeature.bind(this, InfoWindowManager, feature));

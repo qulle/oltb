@@ -6,7 +6,7 @@ import { FEATURE_PROPERTIES } from '../helpers/constants/FeatureProperties';
 import { Circle, Fill, Icon, Stroke, Style } from 'ol/style';
 
 const DEFAULT_ICON = getIcon({
-    path: SVG_PATHS.GeoPin.Stroke,
+    path: SVG_PATHS.GeoPin.Stroked,
     width: 20,
     height: 20,
     fill: 'rgb(255, 255, 255)',

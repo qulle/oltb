@@ -13,7 +13,7 @@ class HiddenAboutTool extends Control {
         });
 
         const icon = getIcon({
-            path: SVG_PATHS.GitHub.Mix
+            path: SVG_PATHS.GitHub.Mixed
         });
 
         ContextMenu.addItem({});

@@ -40,7 +40,7 @@ class ModalBase {
         const modalClose = DOM.createElement({
             element: 'button', 
             html: getIcon({
-                path: SVG_PATHS.Close.Stroke, 
+                path: SVG_PATHS.Close.Stroked, 
                 fill: 'none', 
                 stroke: 'currentColor'
             }),
@@ -53,10 +53,13 @@ class ModalBase {
             }
         });
 
+        DOM.appendChildren(modalHeader, [
+            modalTitle, 
+            modalClose
+        ]);
+
         this.modalBackdrop.appendChild(this.modal);
         this.modal.appendChild(modalHeader);
-        modalHeader.appendChild(modalTitle);
-        modalHeader.appendChild(modalClose);
 
         this.onClose = onClose;
 

@@ -20,7 +20,7 @@ class HiddenMarkerTool extends Control {
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
         const createIcon = getIcon({
-            path: SVG_PATHS.PlusLarge.Stroke
+            path: SVG_PATHS.PlusLarge.Stroked
         });
 
         ContextMenu.addItem({
@@ -36,50 +36,53 @@ class HiddenMarkerTool extends Control {
     }
 
     onContextMenuCreateMarker(map, coordinates, target) {
-        const markerModal = new MarkerModal({coordinates: coordinates}, (result) => {
-            const prettyCoords = toStringHDMS([result.longitude, result.latitude]);
-            const infoWindow = `
-                <h3 class="oltb-text-center">${result.name}</h3>
-                <p class="oltb-text-center">${result.info}</p>
-                <p class="oltb-text-center">${prettyCoords}</p>
-                <div class="oltb-d-flex oltb-justify-content-center">
-                    <button class="oltb-func-btn oltb-func-btn--delete oltb-tippy" title="Delete marker" id="${ID_PREFIX}-marker-remove"></button>
-                    <button class="oltb-func-btn oltb-func-btn--copy oltb-tippy" title="Copy marker text" id="${ID_PREFIX}-marker-copy-location" data-copy="${result.name} ${result.info}"></button>
-                    <button class="oltb-func-btn oltb-func-btn--edit oltb-tippy" title="Edit marker" id="${ID_PREFIX}-marker-edit"></button>
-                </div>
-            `;
-            
-            const [ iconName, iconVersion ] = result.icon.split('.');
-            const icon = getIcon({
-                path: SVG_PATHS[iconName][iconVersion],
-                width: 20,
-                height: 20,
-                fill: 'rgb(255, 255, 255)',
-                stroke: 'none'
-            });
-            
-            const marker = new generateMarker({
-                name: result.name,
-                info: result.info,
-                lat: result.latitude,
-                lon: result.longitude,
-                iconName: result.icon,
-                icon: icon,
-                backgroundColor: result.backgroundColor,
-                color: result.color,
-                notSelectable: true,
-                infoWindow: infoWindow
-            });
-
-            const layerWrapper = LayerManager.getActiveFeatureLayer({
-                fallback: 'Markers'
-            });
-            
-            layerWrapper.layer.getSource().addFeature(marker);
-
-            // User defined callback from constructor
-            if(typeof this.options.added === 'function') {
-                this.options.added(marker);
+        const markerModal = new MarkerModal({
+            coordinates: coordinates,
+            onCreate: (result) => {
+                const prettyCoords = toStringHDMS([result.longitude, result.latitude]);
+                const infoWindow = `
+                    <h3 class="oltb-text-center">${result.name}</h3>
+                    <p class="oltb-text-center">${result.info}</p>
+                    <p class="oltb-text-center">${prettyCoords}</p>
+                    <div class="oltb-d-flex oltb-justify-content-center">
+                        <button class="oltb-func-btn oltb-func-btn--delete oltb-tippy" title="Delete marker" id="${ID_PREFIX}-marker-remove"></button>
+                        <button class="oltb-func-btn oltb-func-btn--copy oltb-tippy" title="Copy marker text" id="${ID_PREFIX}-marker-copy-location" data-copy="${result.name} ${result.info}"></button>
+                        <button class="oltb-func-btn oltb-func-btn--edit oltb-tippy" title="Edit marker" id="${ID_PREFIX}-marker-edit"></button>
+                    </div>
+                `;
+                
+                const [ iconName, iconVersion ] = result.icon.split('.');
+                const icon = getIcon({
+                    path: SVG_PATHS[iconName][iconVersion],
+                    width: 20,
+                    height: 20,
+                    fill: 'rgb(255, 255, 255)',
+                    stroke: 'none'
+                });
+                
+                const marker = new generateMarker({
+                    name: result.name,
+                    info: result.info,
+                    lat: result.latitude,
+                    lon: result.longitude,
+                    iconName: result.icon,
+                    icon: icon,
+                    backgroundColor: result.backgroundColor,
+                    color: result.color,
+                    notSelectable: true,
+                    infoWindow: infoWindow
+                });
+    
+                const layerWrapper = LayerManager.getActiveFeatureLayer({
+                    fallback: 'Markers'
+                });
+                
+                layerWrapper.layer.getSource().addFeature(marker);
+    
+                // User defined callback from constructor
+                if(typeof this.options.added === 'function') {
+                    this.options.added(marker);
+                }
             }
         });
     }

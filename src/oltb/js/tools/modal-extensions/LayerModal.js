@@ -4,10 +4,16 @@ import { ModalBase } from '../../common/modals/ModalBase';
 import { isDarkTheme } from '../../helpers/IsDarkTheme';
 
 const PREFIX_LAYER_ID = 'oltb-layer-modal';
+const DEFAULT_OPTIONS = Object.freeze({
+    onClose: undefined,
+    onCreate: undefined,
+    onCancel: undefined
+});
 
 class LayerModal extends ModalBase {
-    constructor(onCreate, onCancel) {
-        super('Create map layer');
+    constructor(options = {}) {
+        super('Create map layer', options.onClose);
+        this.options = { ...DEFAULT_OPTIONS, ...options };
 
         // Create textbox for layer name
         const nameWrapper = DOM.createElement({
@@ -267,7 +273,7 @@ class LayerModal extends ModalBase {
                     };
         
                     this.close();
-                    typeof onCreate === 'function' && onCreate(layer);
+                    typeof this.options.onCreate === 'function' && this.options.onCreate(layer);
                 }
             }
         });
@@ -282,7 +288,7 @@ class LayerModal extends ModalBase {
             listeners: {
                 'click': () => {
                     this.close();
-                    typeof onCancel === 'function' && onCancel();
+                    typeof this.options.onCancel === 'function' && this.options.onCancel();
                 }
             }
         });

@@ -1,9 +1,7 @@
 import { DOM } from '../helpers/browser/DOM';
-import { CONFIG } from '../core/Config';
 import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { URLManager } from '../core/managers/URLManager';
-import { PROJECTIONS } from '../epsg/Projections';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { DebugInfoModal } from './modal-extensions/DebugInfoModal';
 import { TOOLBAR_ELEMENT } from '../core/elements/index';
@@ -21,7 +19,7 @@ class DebugInfoTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.Bug.Stroke,
+            path: SVG_PATHS.Bug.Stroked,
             class: 'oltb-tool-button__icon'
         });
 
@@ -74,21 +72,8 @@ class DebugInfoTool extends Control {
             return;
         }
 
-        const map = this.getMap();
-        const view = map.getView();
-
-        const information = {
-            zoom: view.getZoom(),
-            location: view.getCenter(),
-            rotation: view.getRotation(),
-            projection: view.getProjection(),
-            proj4Defs: PROJECTIONS,
-            defaultConfig: CONFIG
-        };
-
         this.debugInfoModal = new DebugInfoModal({
-            map: map,
-            information: information,
+            map: this.getMap(),
             onClose: () => {
                 this.debugInfoModal = undefined;
             }

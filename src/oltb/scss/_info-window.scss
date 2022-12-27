@@ -1,7 +1,7 @@
 .oltb-info-window {
     display: block;
     min-width: 320px;
-    padding: 1rem;
+    padding: $top-level-padding;
     background-color: $background-theme-light;
     color: $color-light;
     border-radius: $border-radius;
@@ -28,8 +28,8 @@
         position: absolute;
         font-size: 1.5rem;
         color: $color-gray-dark;
-        top: .313rem;
-        right: .313rem;
+        top: .5rem;
+        right: .5rem;
     }
 
     &__content {

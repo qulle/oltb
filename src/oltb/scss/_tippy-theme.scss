@@ -13,7 +13,7 @@
 
 .tippy-box[data-theme~='oltb'][data-placement^='top'] > .tippy-arrow::before {
     border-top-color: $background-theme-dark;
-    filter: $drop-shadow-filter-light;
+    filter: $drop-shadow-filter-mid;
 }
 
 .tippy-box[data-theme~='oltb'][data-placement^='bottom'] > .tippy-arrow::before {
@@ -23,7 +23,7 @@
   
 .tippy-box[data-theme~='oltb'][data-placement^='left'] > .tippy-arrow::before {
     border-left-color: $background-theme-dark;
-    filter: $drop-shadow-filter-light;
+    filter: $drop-shadow-filter-mid;
 }
   
 .tippy-box[data-theme~='oltb'][data-placement^='right'] > .tippy-arrow::before {

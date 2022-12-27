@@ -18,7 +18,7 @@ class NotificationTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.Bell.Stroke,
+            path: SVG_PATHS.Bell.Stroked,
             class: 'oltb-tool-button__icon'
         });
 

@@ -2,9 +2,14 @@ import { DOM } from '../../helpers/browser/DOM';
 import { ModalBase } from '../../common/modals/ModalBase';
 import { SettingsManager } from '../../core/managers/SettingsManager';
 
+const DEFAULT_OPTIONS = Object.freeze({
+    onClose: undefined
+});
+
 class SettingsModal extends ModalBase {
     constructor(options = {}) {
         super('Settings', options.onClose);
+        this.options = { ...DEFAULT_OPTIONS, ...options };
 
         const modalContent = DOM.createElement({
             element: 'div',

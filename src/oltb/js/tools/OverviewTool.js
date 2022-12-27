@@ -27,7 +27,7 @@ class OverviewTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.AspectRatio.Stroke,
+            path: SVG_PATHS.AspectRatio.Stroked,
             class: 'oltb-tool-button__icon'
         });
 

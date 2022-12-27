@@ -86,7 +86,7 @@ class EditTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.Cursor.Stroke,
+            path: SVG_PATHS.Cursor.Stroked,
             class: 'oltb-tool-button__icon'
         });
 
@@ -129,22 +129,22 @@ class EditTool extends Control {
                     <div class="oltb-toolbox-section__group">
                         <label class="oltb-label">Misc</label>
                         <button type="button" id="${ID_PREFIX}-delete-selected-btn" class="oltb-btn oltb-btn--blue-mid oltb-tippy" title="Delete">
-                            ${getIcon({ ...DEFAULT_BUTTON_PROPS, path: SVG_PATHS.Trash.Stroke })}
+                            ${getIcon({ ...DEFAULT_BUTTON_PROPS, path: SVG_PATHS.Trash.Stroked })}
                         </button>
                     </div>
                     <div class="oltb-toolbox-section__group oltb-toolbox-section__group--sub-toolbar">
                         <label class="oltb-label">Shapes</label>
                         <button type="button" id="${ID_PREFIX}-union-selected-btn" class="oltb-btn oltb-btn--blue-mid oltb-tippy" title="Union">
-                            ${getIcon({ ...DEFAULT_BUTTON_PROPS, path: SVG_PATHS.Union.Mix })}
+                            ${getIcon({ ...DEFAULT_BUTTON_PROPS, path: SVG_PATHS.Union.Mixed })}
                         </button>
                         <button type="button" id="${ID_PREFIX}-intersect-selected-btn" class="oltb-btn oltb-btn--blue-mid oltb-tippy" title="Intersect">
-                            ${getIcon({ ...DEFAULT_BUTTON_PROPS, path: SVG_PATHS.Intersect.Mix })}
+                            ${getIcon({ ...DEFAULT_BUTTON_PROPS, path: SVG_PATHS.Intersect.Mixed })}
                         </button>
                         <button type="button" id="${ID_PREFIX}-exclude-selected-btn" class="oltb-btn oltb-btn--blue-mid oltb-tippy" title="Exclude">
-                            ${getIcon({ ...DEFAULT_BUTTON_PROPS, path: SVG_PATHS.Exclude.Mix })}
+                            ${getIcon({ ...DEFAULT_BUTTON_PROPS, path: SVG_PATHS.Exclude.Mixed })}
                         </button>
                         <button type="button" id="${ID_PREFIX}-difference-selected-btn" class="oltb-btn oltb-btn--blue-mid oltb-tippy" title="Difference">
-                            ${getIcon({ ...DEFAULT_BUTTON_PROPS, path: SVG_PATHS.Subtract.Mix })}
+                            ${getIcon({ ...DEFAULT_BUTTON_PROPS, path: SVG_PATHS.Subtract.Mixed })}
                         </button>
                     </div>
                     <div class="oltb-toolbox-section__group">

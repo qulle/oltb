@@ -21,12 +21,12 @@ class DirectionTool extends Control {
         });
         
         this.horizontalIcon = getIcon({
-            path: SVG_PATHS.SymmetryHorizontal.Stroke,
+            path: SVG_PATHS.SymmetryHorizontal.Stroked,
             class: 'oltb-tool-button__icon'
         });
 
         this.verticalIcon = getIcon({
-            path: SVG_PATHS.SymmetryVertical.Stroke,
+            path: SVG_PATHS.SymmetryVertical.Stroked,
             class: 'oltb-tool-button__icon'
         });
 

@@ -32,7 +32,7 @@ class CoordinateTool extends Control {
         });
 
         const icon = getIcon({
-            path: SVG_PATHS.Crosshair.Stroke,
+            path: SVG_PATHS.Crosshair.Stroked,
             class: 'oltb-tool-button__icon'
         });
 

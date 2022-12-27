@@ -68,7 +68,6 @@ class LayerManager {
         this.#layers.mapLayers.push(layerWrapper);
         this.#map.addLayer(layerWrapper.layer);
 
-        // Dispatch event, the layer-tool updates the UI
         window.dispatchEvent(new CustomEvent(EVENTS.Custom.MapLayerAdded, {
             detail: {
                 layerWrapper: layerWrapper, 
@@ -86,7 +85,6 @@ class LayerManager {
         // Remove the actual ol layer
         this.#map.removeLayer(targetLayer.layer);
 
-        // Dispatch event, the layer-tool, updates the UI
         window.dispatchEvent(new CustomEvent(EVENTS.Custom.MapLayerRemoved, {
             detail: {
                 layerWrapper: targetLayer, 
@@ -172,7 +170,6 @@ class LayerManager {
         this.#layers.featureLayers.push(layerWrapper);
         this.#map.addLayer(layerWrapper.layer);
 
-        // Dispatch event, the layer-tool, updates the UI
         window.dispatchEvent(new CustomEvent(EVENTS.Custom.FeatureLayerAdded, {
             detail: {
                 layerWrapper: layerWrapper, 
@@ -202,7 +199,6 @@ class LayerManager {
             ? this.#layers.featureLayers[this.#layers.featureLayers.length - 1] 
             : null;
 
-        // Dispatch event, the layer-tool, updates the UI
         window.dispatchEvent(new CustomEvent(EVENTS.Custom.FeatureLayerRemoved, {
             detail: {
                 layerWrapper: targetLayer, 

@@ -1,15 +1,36 @@
 import { DOM } from '../../helpers/browser/DOM';
 import { Toast } from '../../common/Toast';
+import { CONFIG } from '../../core/Config';
 import { ModalBase } from '../../common/modals/ModalBase';
+import { PROJECTIONS } from '../../epsg/Projections';
 import { copyToClipboard } from '../../helpers/browser/CopyToClipboard';
+
+const DEFAULT_OPTIONS = Object.freeze({
+    map: undefined,
+    onClose: undefined
+});
 
 class DebugInfoModal extends ModalBase {
     constructor(options = {}) {
         super('Debug information', options.onClose);
+        this.options = { ...DEFAULT_OPTIONS, ...options };
 
+        const view = this.options.map?.getView();
+        const content = view ? {
+            zoom: view.getZoom(),
+            location: view.getCenter(),
+            rotation: view.getRotation(),
+            projection: view.getProjection(),
+            proj4Defs: PROJECTIONS,
+            defaultConfig: CONFIG
+        } : {
+            info: 'No map reference found'
+        };
+
+        const indentation = 4;
         const textArea = DOM.createElement({
             element: 'textarea', 
-            value: JSON.stringify(options.information, undefined, 4),
+            value: JSON.stringify(content, undefined, indentation),
             class: 'oltb-input oltb-thin-scrollbars',
             attributes: {
                 rows: 15,
@@ -48,7 +69,7 @@ class DebugInfoModal extends ModalBase {
             },
             listeners: {
                 'click': () => {
-                    console.log(options.map);
+                    console.log(this.options.map);
                     Toast.success({text: 'Map object logged to console (F12)', autoremove: 4000});
                 }
             }

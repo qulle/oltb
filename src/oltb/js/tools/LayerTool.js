@@ -57,7 +57,7 @@ class LayerTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.Layers.Stroke,
+            path: SVG_PATHS.Layers.Stroked,
             class: 'oltb-tool-button__icon'
         });
 
@@ -119,7 +119,7 @@ class LayerTool extends Control {
                                     <input type="text" id="${ID_PREFIX}-feature-stack-add-txt" class="oltb-input" placeholder="Layer name">
                                     <button type="button" id="${ID_PREFIX}-feature-stack-add-btn" class="oltb-btn oltb-btn--green-mid oltb-tippy" title="Create feature layer">
                                         ${getIcon({
-                                            path: SVG_PATHS.Plus.Stroke,
+                                            path: SVG_PATHS.Plus.Stroked,
                                             width: 20,
                                             height: 20,
                                             fill: 'none',
@@ -248,25 +248,27 @@ class LayerTool extends Control {
     }
 
     showAddMapLayerModal() {
-        const layerModal = new LayerModal(function(result) {
-            try {
-                LayerManager.addMapLayer({
-                    name: result.name,
-                    layer: instantiateLayer(result.layer, {
-                        projection: result.projection || CONFIG.Projection.Default,
-                        source: instantiateSource(result.source, {
-                            url: result.url,
-                            params: JSON.parse(result.parameters),
-                            wrapX: result.wrapX,
-                            attributions: result.attributions,
-                            format: instantiateFormat(result.source)
+        const layerModal = new LayerModal({
+            onCreate: (result) => {
+                try {
+                    LayerManager.addMapLayer({
+                        name: result.name,
+                        layer: instantiateLayer(result.layer, {
+                            projection: result.projection || CONFIG.Projection.Default,
+                            source: instantiateSource(result.source, {
+                                url: result.url,
+                                params: JSON.parse(result.parameters),
+                                wrapX: result.wrapX,
+                                attributions: result.attributions,
+                                format: instantiateFormat(result.source)
+                            })
                         })
-                    })
-                });
-            }catch(error) {
-                console.error(`Error adding layer [${error}]`);
-                Toast.error({text: 'Something went wrong adding the layer'});
-            }
+                    });
+                }catch(error) {
+                    console.error(`Error adding layer [${error}]`);
+                    Toast.error({text: 'Something went wrong adding the layer'});
+                }
+            },
         });
     }
 
@@ -500,25 +502,27 @@ class LayerTool extends Control {
             },
             listeners: {
                 'click': () => {
-                    const downloadModal = new DownloadLayerModal(function(result) {   
-                        const format = instantiateFormat(result.format);
-        
-                        if(!format) {
-                            Toast.error({text: 'Unsupported layer format'});
-                            return;
-                        }
-        
-                        const features = layerWrapper.layer.getSource().getFeatures();
-                        const formatString = format.writeFeatures(features, {
-                            featureProjection: CONFIG.Projection.Default
-                        });
-                    
-                        const fileName = `${layerWrapper.name}.${result.format.toLowerCase()}`;
-                        download(fileName, formatString);
-        
-                        // User defined callback from constructor
-                        if(typeof callback === 'function') {
-                            callback(layerWrapper);
+                    const downloadModal = new DownloadLayerModal({
+                        onDownload: (result) => {   
+                            const format = instantiateFormat(result.format);
+            
+                            if(!format) {
+                                Toast.error({text: 'Unsupported layer format'});
+                                return;
+                            }
+            
+                            const features = layerWrapper.layer.getSource().getFeatures();
+                            const formatString = format.writeFeatures(features, {
+                                featureProjection: CONFIG.Projection.Default
+                            });
+                        
+                            const fileName = `${layerWrapper.name}.${result.format.toLowerCase()}`;
+                            download(fileName, formatString);
+            
+                            // User defined callback from constructor
+                            if(typeof callback === 'function') {
+                                callback(layerWrapper);
+                            }
                         }
                     });
                 }

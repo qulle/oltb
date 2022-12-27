@@ -25,7 +25,7 @@ class MagnifyTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.Search.Stroke,
+            path: SVG_PATHS.Search.Stroked,
             class: 'oltb-tool-button__icon'
         });
 

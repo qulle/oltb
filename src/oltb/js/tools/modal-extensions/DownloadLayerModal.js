@@ -3,10 +3,16 @@ import { ModalBase } from '../../common/modals/ModalBase';
 import { isDarkTheme } from '../../helpers/IsDarkTheme';
 
 const PREFIX_LAYER_ID = 'oltb-download-layer-modal';
+const DEFAULT_OPTIONS = Object.freeze({
+    onClose: undefined,
+    onDownload: undefined,
+    onCancel: undefined
+});
 
 class DownloadLayerModal extends ModalBase {
-    constructor(onCreate, onCancel) {
-        super('Download layer');
+    constructor(options = {}) {
+        super('Download layer', options.onClose);
+        this.options = { DEFAULT_OPTIONS, ...options };
 
         // Create and populate select element with layer format values
         const formatWrapper = DOM.createElement({
@@ -61,7 +67,7 @@ class DownloadLayerModal extends ModalBase {
                     };
         
                     this.close();
-                    typeof onCreate === 'function' && onCreate(result);
+                    typeof this.options.onDownload === 'function' && this.options.onDownload(result);
                 }
             }
         });
@@ -76,7 +82,7 @@ class DownloadLayerModal extends ModalBase {
             listeners: {
                 'click': () => {
                     this.close();
-                    typeof onCancel === 'function' && onCancel();
+                    typeof this.options.onCancel === 'function' && this.options.onCancel();
                 }
             }
         });
