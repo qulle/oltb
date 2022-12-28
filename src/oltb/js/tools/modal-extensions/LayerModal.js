@@ -250,7 +250,7 @@ class LayerModal extends ModalBase {
         // Create buttons for create and cancel
         const buttonsWrapper = DOM.createElement({
             element: 'div',
-            class: 'oltb-d-flex oltb-justify-content-between oltb-mt-1'
+            class: 'oltb-d-flex oltb-justify-content-between oltb-mt-15'
         });
 
         const createButton = DOM.createElement({

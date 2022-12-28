@@ -58,7 +58,9 @@ class SettingsTool extends Control {
 
     onContextMenuSettingsClear(map, coordinates, target) {
         Dialog.confirm({
-            text: 'Do you want to clear all settings?',
+            title: 'Clear settings',
+            message: 'Do you want to clear and reset all settings?',
+            confirmText: 'Clear',
             onConfirm: () => {
                 this.clearSettings();
 

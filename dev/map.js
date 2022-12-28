@@ -402,7 +402,7 @@ const map = new Map({
         }),
         new InfoTool({
             title: 'Hey!', 
-            content: '<p>This is a <em>modal window</em>, here you can place some text about your application or links to external resources.</p>',
+            content: '<p>This is a <strong>modal window</strong>, here you can place some text about your application or links to external resources.</p>',
             click: function() {
                 console.log('InfoTool clicked');
             }

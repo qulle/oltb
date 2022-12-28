@@ -71,7 +71,8 @@ class MyLocationTool extends Control {
     momentaryActivation() {
         if(isFullScreen()) {
             Dialog.confirm({
-                text: 'To use geolocation you must exit fullscreen',
+                title: 'Exit fullscreen',
+                message: 'To use geolocation you must exit fullscreen',
                 confirmClass: Dialog.Success,
                 confirmText: 'Exit fullscreen',
                 onConfirm: () => {

@@ -1,7 +1,8 @@
 .oltb-dialog {
     background-color: $background-theme-light;
     display: inline-block;
-    max-width: 90%;
+    min-width: 400px;
+    max-width: 400px;
     margin: 2rem auto;
     padding: $top-level-padding;
     border-radius: $border-radius;
@@ -23,9 +24,17 @@
         }
     }
 
-    &__input {
-        margin-bottom: 1rem;
-        width: 250px;
+    &__title {
+        text-align: left;
+    }
+
+    &__message {
+        text-align: left;
+    }
+
+    &__button-wrapper {
+        text-align: right;
+        margin-top: 1.5rem;
     }
 
     &__btn {
@@ -44,4 +53,11 @@
 body.oltb-dark .oltb-dialog {
     background-color: $background-theme-dark;
     color: $color-light;
+}
+
+@media only screen and (max-width: $breakpoint-sm) {
+    .oltb-dialog {
+        min-width: calc(100% - 2rem);
+        max-width: calc(100% - 2rem);
+    }
 }

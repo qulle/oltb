@@ -713,8 +713,9 @@ import { Dialog } from './modules/common/Dialog';
 #### Alert
 ```javascript
 Dialog.alert({
-    text: 'This is a custom alert message',
-    onClose: () => {
+    title: 'Information',
+    message: 'This is a custom alert message to inform the user',
+    onConfirm: () => {
         console.log('Alert closed');
     }
 });
@@ -723,14 +724,15 @@ Dialog.alert({
 Other properties that you can add are:
 ```javascript
 ({
-    confirmText: 'Your text' // Changes text on ok button
+    confirmText: 'Your text' // Changes text on the confirm button
 });
 ```
 
 #### Confirm
 ```javascript
 Dialog.confirm({
-    text: 'Do you want to delete this layer?',
+    title: 'Delete layer',
+    message: 'Do you want to delete the selected layer?',
     onConfirm: function() {
         console.log('Confirm button clicked');
     },
@@ -743,16 +745,17 @@ Dialog.confirm({
 Other properties that you can add are:
 ```javascript
 ({
-    confirmClass: Dialog.Success, // Changes to success dialog
-    confirmText: 'Your text',     // Changes text on confirm button
-    cancelText: 'Your text'       // Changes text on cancel button
+    confirmClass: Dialog.Success, // Changes to a success dialog
+    confirmText: 'Your text',     // Changes text on the confirm button
+    cancelText: 'Your text'       // Changes text on the cancel button
 });
 ```
 
 #### Prompt
 ```javascript
 Dialog.prompt({
-    text: 'Change name of layer',
+    title: 'Edit name',
+    message: 'Change name of layer',
     value: 'Current name',
     onConfirm: function(result) {
         console.log(result);
@@ -766,9 +769,9 @@ Dialog.prompt({
 Other properties that you can add are:
 ```javascript
 ({
-    confirmClass: Dialog.Danger,  // Changes to danger dialog
-    confirmText: 'Your text',     // Changes text on confirm button
-    cancelText: 'Your text'       // Changes text on cancel button
+    confirmClass: Dialog.Danger,  // Changes to a danger dialog
+    confirmText: 'Your text',     // Changes text on the confirm button
+    cancelText: 'Your text'       // Changes text on the cancel button
 });
 ```
 
@@ -879,7 +882,7 @@ In general, two version of each icon exists (stroked and filled). Some icons don
 ```javascript
 const name = 'GeoPin';                 // https://icons.getbootstrap.com/
 const version = 'Filled';              // Stroked | Filled | Mixed
-const path = SVG_PATHS[name][version]; // The svg element wrapper is added by the getIcon function
+const path = SVG_PATHS[name][version]; // The 'getIcon' function wrapps the path with an svg element
 ```
 
 #### Windbarb icons

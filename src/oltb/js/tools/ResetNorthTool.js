@@ -43,7 +43,7 @@ class ResetNorthTool extends Control {
 
         ContextMenu.addItem({
             icon: icon, 
-            name: 'Set rotation by degrees', 
+            name: 'Rotate map', 
             fn: this.onContextMenuSetRotation.bind(this)
         });
 
@@ -63,7 +63,8 @@ class ResetNorthTool extends Control {
         const normalizedRotation = rotation < 0 ? rotation + 360 : rotation;
 
         Dialog.prompt({
-            text: 'Set rotation by degrees',
+            title: 'Rotate map',
+            message: 'Set map rotation by degrees',
             value: Math.round(normalizedRotation),
             confirmText: 'Rotate map',
             onConfirm: (result) => {

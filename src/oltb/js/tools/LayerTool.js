@@ -480,7 +480,9 @@ class LayerTool extends Control {
             listeners: {
                 'click': () => {
                     Dialog.confirm({
-                        html: `Do you want to delete layer <strong>${layerWrapper.name}</strong>?`,
+                        title: 'Delete layer',
+                        message: `Do you want to delete the <strong>${layerWrapper.name}</strong> layer?`,
+                        confirmText: 'Delete',
                         onConfirm: function() {
                             callback(layerWrapper);
                         }
@@ -543,7 +545,8 @@ class LayerTool extends Control {
             listeners: {
                 'click': () => {
                     Dialog.prompt({
-                        text: 'Edit layer name',
+                        title: 'Edit name',
+                        message: `You are editing the <strong>${layerWrapper.name}</strong> layer`,
                         value: layerWrapper.name,
                         confirmText: 'Rename',
                         onConfirm: function(result) {

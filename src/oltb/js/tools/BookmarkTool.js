@@ -151,7 +151,9 @@ class BookmarkTool extends Control {
 
     onContextMenuBookmarksClear(map, coordinates, target) {
         Dialog.confirm({
-            text: 'Do you want to clear all bookmarks?',
+            title: 'Clear bookmarks',
+            message: 'Do you want to clear all stored bookmarks?',
+            confirmText: 'Clear',
             onConfirm: () => {
                 this.clearBookmarks();
 
@@ -374,7 +376,9 @@ class BookmarkTool extends Control {
 
     deleteBookmark(bookmark, bookmarkElement) {
         Dialog.confirm({
-            html: `Do you want to delete bookmark <strong>${bookmark.name}</strong>?`,
+            title: 'Delete bookmark',
+            message: `Do you want to delete the <strong>${bookmark.name}</strong> bookmark?`,
+            confirmText: 'Delete',
             onConfirm: () => {
                 bookmarkElement.remove();
 
@@ -395,7 +399,8 @@ class BookmarkTool extends Control {
 
     editBookmark(bookmark, bookmarkName) {
         Dialog.prompt({
-            text: 'Edit bookmark name',
+            title: 'Edit name',
+            message: `You are editing the <strong>${bookmark.name}</strong> bookmark`,
             value: bookmark.name,
             confirmText: 'Rename',
             onConfirm: (result) => {

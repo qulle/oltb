@@ -1,5 +1,5 @@
+import { Modal } from '../../common/Modal';
 import { CONFIG } from '../../core/Config';
-import { Dialog } from '../../common/Dialog';
 import { VERSION } from 'ol';
 import { Control } from 'ol/control';
 import { ContextMenu } from '../../common/ContextMenu';
@@ -16,6 +16,8 @@ class HiddenAboutTool extends Control {
             path: SVG_PATHS.GitHub.Mixed
         });
 
+        this.aboutInfoModal = undefined;
+
         ContextMenu.addItem({});
         
         ContextMenu.addItem({
@@ -25,14 +27,23 @@ class HiddenAboutTool extends Control {
         });
     }
 
-    onContextMenuAbout(map, coordinates, target) {
-        Dialog.alert({
-            confirmText: 'Got it!', 
-            html: (`
-                <h3>Version ${CONFIG.Version}</h3>
-                <p>Developed by Qulle <a href="//github.com/qulle/oltb" target="_blank" class="oltb-link">github.com/qulle/oltb</a></p>
-                <p>Using OpenLayers <a href="//openlayers.org/en/v${VERSION}/apidoc/" target="_blank" class="oltb-link">${VERSION}</a></p>
-            `)
+    onContextMenuAbout(map, coordinates, target) {        
+        if(this.aboutInfoModal) {
+            return;
+        }
+
+        const content = (`
+            <p>Version ${CONFIG.Version}</p>
+            <p>Developed by Qulle <a href="//github.com/qulle/oltb" target="_blank" class="oltb-link">github.com/qulle/oltb</a></p>
+            <p>Using OpenLayers <a href="//openlayers.org/en/v${VERSION}/apidoc/" target="_blank" class="oltb-link">${VERSION}</a></p>
+        `);
+
+        this.aboutInfoModal = Modal.create({
+            title: 'About OLTB',
+            content: content,
+            onClose: () => {
+                this.aboutInfoModal = undefined;
+            }
         });
     }
 }

@@ -3,9 +3,9 @@ import { DialogBase } from './DialogBase';
 import { MAP_ELEMENT } from '../../core/elements/index';
 
 const DEFAULT_OPTIONS = Object.freeze({
-    text: 'Default alert text',
-    html: undefined,
-    onCancel: undefined,
+    title: 'Alert',
+    message: 'Default alert message',
+    onConfirm: undefined,
     confirmText: 'Ok'
 });
 
@@ -20,18 +20,17 @@ class Alert extends DialogBase {
             class: 'oltb-dialog oltb-dialog--alert oltb-animation oltb-animation--bounce'
         });
 
-        if(this.options.text) {
-            const message = DOM.createElement({
-                element: 'p', 
-                text: this.options.text
-            });
+        const title = DOM.createElement({
+            element: 'h2',
+            class: 'oltb-dialog__title',
+            text: this.options.title
+        });
 
-            dialog.appendChild(message);
-        }
-
-        if(this.options.html) {
-            dialog.innerHTML = this.options.html;
-        }
+        const message = DOM.createElement({
+            element: 'p',
+            class: 'oltb-dialog__message',
+            html: this.options.message
+        });
 
         const buttonWrapper = DOM.createElement({
             element: 'div', 
@@ -48,13 +47,20 @@ class Alert extends DialogBase {
             listeners: {
                 'click': () => {
                     this.close();
-                    typeof this.options.onClose === 'function' && this.options.onClose();
+                    typeof this.options.onConfirm === 'function' && this.options.onConfirm();
                 }
             }
         });
 
-        buttonWrapper.appendChild(okButton);
-        dialog.appendChild(buttonWrapper);
+        DOM.appendChildren(buttonWrapper, [
+            okButton
+        ]);
+
+        DOM.appendChildren(dialog, [
+            title,
+            message,
+            buttonWrapper
+        ]);
 
         this.dialogBackdrop.appendChild(dialog);
         MAP_ELEMENT.appendChild(this.dialogBackdrop);

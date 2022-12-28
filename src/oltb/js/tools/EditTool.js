@@ -388,7 +388,9 @@ class EditTool extends Control {
         }
 
         Dialog.confirm({
-            text: `Delete ${featureLength} selected feature${featureLength > 1 ? 's': ''}?`,
+            title: 'Delete feature',
+            message: `Delete ${featureLength} selected feature${featureLength > 1 ? 's': ''}?`,
+            confirmText: 'Delete',
             onConfirm: () => {
                 const features = [ ...this.select.getFeatures().getArray() ];
                 this.deleteFeatures(features);

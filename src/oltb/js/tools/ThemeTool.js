@@ -19,12 +19,12 @@ class ThemeTool extends Control {
         });
         
         this.lightThemeIcon = getIcon({
-            path: SVG_PATHS.Lightbulb.Stroked,
+            path: SVG_PATHS.Sun.Stroked,
             class: 'oltb-tool-button__icon'
         });
 
         this.darkThemeIcon = getIcon({
-            path: SVG_PATHS.LightbulbOff.Stroked,
+            path: SVG_PATHS.MoonStars.Stroked,
             class: 'oltb-tool-button__icon'
         });
         

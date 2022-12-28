@@ -1,7 +1,6 @@
 .oltb-modal {
     background-color: $background-theme-light;
     display: inline-block;
-    text-align: left;
     max-width: 1350px;
     min-width: 400px;
     margin: 2rem 1rem;
@@ -50,6 +49,7 @@
     }
     
     &__content {
+        text-align: left;
         color: $color-gray-dark;
 
         > :last-child {

@@ -3,8 +3,8 @@ import { DialogBase } from './DialogBase';
 import { MAP_ELEMENT } from '../../core/elements/index';
 
 const DEFAULT_OPTIONS = Object.freeze({
-    text: 'Default confirm text',
-    html: undefined,
+    title: 'Confirm',
+    message: 'Default confirm message',
     onConfirm: undefined,
     onCancel: undefined,
     confirmClass: 'oltb-btn--red-mid',
@@ -23,17 +23,17 @@ class Confirm extends DialogBase {
             class: 'oltb-dialog oltb-dialog--confirm oltb-animation oltb-animation--bounce'
         });
 
-        const message = DOM.createElement({
-            element: 'p'
+        const title = DOM.createElement({
+            element: 'h2',
+            class: 'oltb-dialog__title',
+            text: this.options.title
         });
 
-        if(this.options.text) {
-            message.innerText = this.options.text;
-        }
-
-        if(this.options.html) {
-            message.innerHTML = this.options.html;
-        }
+        const message = DOM.createElement({
+            element: 'p',
+            class: 'oltb-dialog__message',
+            html: this.options.message
+        });
 
         const buttonWrapper = DOM.createElement({
             element: 'div', 
@@ -70,11 +70,16 @@ class Confirm extends DialogBase {
             }
         });
 
-        buttonWrapper.appendChild(cancelButton);
-        buttonWrapper.appendChild(confirmButton);
+        DOM.appendChildren(buttonWrapper, [
+            cancelButton,
+            confirmButton
+        ]);
 
-        dialog.appendChild(message);
-        dialog.appendChild(buttonWrapper);
+        DOM.appendChildren(dialog, [
+            title,
+            message,
+            buttonWrapper
+        ]);
 
         this.dialogBackdrop.appendChild(dialog);
         MAP_ELEMENT.appendChild(this.dialogBackdrop);

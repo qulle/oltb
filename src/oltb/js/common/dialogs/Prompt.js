@@ -3,7 +3,8 @@ import { DialogBase } from './DialogBase';
 import { MAP_ELEMENT } from '../../core/elements/index';
 
 const DEFAULT_OPTIONS = Object.freeze({
-    text: 'Default prompt text',
+    title: 'Prompt',
+    message: 'Default prompt text',
     placeholder: undefined,
     value: undefined,
     onConfirm: undefined,
@@ -24,9 +25,16 @@ class Prompt extends DialogBase {
             class: 'oltb-dialog oltb-dialog--prompt oltb-animation oltb-animation--bounce'
         });
 
+        const title = DOM.createElement({
+            element: 'h2',
+            class: 'oltb-dialog__title',
+            text: this.options.title
+        });
+
         const message = DOM.createElement({
-            element: 'p', 
-            text: this.options.text
+            element: 'p',
+            class: 'oltb-dialog__message',
+            html: this.options.message
         });
 
         const inputBox = DOM.createElement({
@@ -86,12 +94,17 @@ class Prompt extends DialogBase {
             }
         });
 
-        buttonWrapper.appendChild(cancelButton);
-        buttonWrapper.appendChild(confirmButton);
+        DOM.appendChildren(buttonWrapper, [
+            cancelButton,
+            confirmButton
+        ]);
 
-        dialog.appendChild(message);
-        dialog.appendChild(inputBox);
-        dialog.appendChild(buttonWrapper);
+        DOM.appendChildren(dialog, [
+            title,
+            message,
+            inputBox,
+            buttonWrapper
+        ]);
 
         this.dialogBackdrop.appendChild(dialog);
         MAP_ELEMENT.appendChild(this.dialogBackdrop);
