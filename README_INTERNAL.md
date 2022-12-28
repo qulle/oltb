@@ -755,7 +755,7 @@ Other properties that you can add are:
 ```javascript
 Dialog.prompt({
     title: 'Edit name',
-    message: 'Change name of layer',
+    message: 'You are editing the main layer name',
     value: 'Current name',
     onConfirm: function(result) {
         console.log(result);

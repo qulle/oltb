@@ -209,12 +209,12 @@ class LayerModal extends ModalBase {
             class: 'oltb-select'
         });
 
-        ['False', 'True'].forEach((value) => {
+        ['False', 'True'].forEach((item) => {
             wrapXSelect.appendChild(
                 DOM.createElement({
                     element: 'option', 
-                    text: value, 
-                    value: value
+                    text: item, 
+                    value: item
                 }
             ));
         });

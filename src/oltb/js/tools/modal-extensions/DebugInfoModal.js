@@ -22,13 +22,14 @@ class DebugInfoModal extends ModalBase {
             rotation: view.getRotation(),
             projection: view.getProjection(),
             proj4Defs: PROJECTIONS,
-            defaultConfig: CONFIG
+            defaultConfig: CONFIG,
+            localStorage: JSON.parse(localStorage.getItem(CONFIG.LocalStorage.Key) || {})
         } : {
             info: 'No map reference found'
         };
 
         const indentation = 4;
-        const textArea = DOM.createElement({
+        const debugInformationText = DOM.createElement({
             element: 'textarea', 
             value: JSON.stringify(content, undefined, indentation),
             class: 'oltb-input oltb-thin-scrollbars',
@@ -39,63 +40,95 @@ class DebugInfoModal extends ModalBase {
             }
         });
 
-        const copyButton = DOM.createElement({
-            element: 'button',
-            text: 'Copy debug info',
-            class: 'oltb-btn oltb-btn--green-mid oltb-mt-1',
-            attributes: {
-                type: 'button'
-            },
-            listeners: {
-                'click': async () => {
-                    copyToClipboard(textArea.value)
-                        .then(() => {
-                            Toast.success({text: 'Debug info copied to clipboard', autoremove: 4000});
-                        })
-                        .catch((error) => {
-                            console.error('Error copying debug info', error);
-                            Toast.error({text: 'Failed to copy debug info'});
-                        });
-                }
-            }
+        const actionSelect = DOM.createElement({
+            element: 'select',
+            class: 'oltb-select'
         });
 
-        const logFullMapButton = DOM.createElement({
+        [
+            {
+                name: 'Copy debug information',
+                action: 'copy.debug.information'
+            }, {
+                name: 'Log map to browser console',
+                action: 'log.map.to.console'
+            }
+        ].forEach((item) => {
+            actionSelect.appendChild(
+                DOM.createElement({
+                    element: 'option', 
+                    text: item.name, 
+                    value: item.action
+                }
+            ));
+        });
+
+        const actionButton = DOM.createElement({
             element: 'button',
-            text: 'Log map object',
-            class: 'oltb-btn oltb-btn--green-mid oltb-mt-1 oltb-ml-0625',
+            text: 'Do action',
+            class: 'oltb-btn oltb-btn--blue-mid oltb-ml-05',
             attributes: {
                 type: 'button'
             },
             listeners: {
-                'click': () => {
-                    console.log(this.options.map);
-                    Toast.success({text: 'Map object logged to console (F12)', autoremove: 4000});
-                }
+                'click': this.onDoAction.bind(this)
             }
         });
         
         const buttonsWrapper = DOM.createElement({
             element: 'div',
-            class: 'oltb-modal__button-wrapper'
+            class: 'oltb-d-flex oltb-justify-content-between oltb-mt-15'
         }); 
 
         DOM.appendChildren(buttonsWrapper, [
-            copyButton, 
-            logFullMapButton
+            actionSelect,
+            actionButton
         ]);
 
         const modalContent = DOM.createElement({
             element: 'div',
-            class: 'oltb-modal__content oltb-flex-content-center' 
+            class: 'oltb-modal__content' 
         });
         
         DOM.appendChildren(modalContent, [
-            textArea, 
+            debugInformationText, 
             buttonsWrapper
         ]);
         
+        this.debugInformationText = debugInformationText;
+        this.actionSelect = actionSelect;
+        
         this.show(modalContent);
+    }
+
+    onDoAction() {
+        const action = this.actionSelect.value;
+        const actions = {
+            'copy.debug.information': this.actionCopyDebugInfo.bind(this),
+            'log.map.to.console': this.actionLoggingMap.bind(this)
+        };
+
+        const actionMethod = actions[action];
+
+        if(actionMethod) {
+            actionMethod.call();
+        }
+    }
+
+    actionLoggingMap() {
+        console.dir(this.options.map);
+        Toast.success({text: 'Map object logged to console (F12)', autoremove: 4000});
+    }
+
+    actionCopyDebugInfo() {
+        copyToClipboard(this.debugInformationText.value)
+            .then(() => {
+                Toast.success({text: 'Debug info copied to clipboard', autoremove: 4000});
+            })
+            .catch((error) => {
+                console.error('Error copying debug info', error);
+                Toast.error({text: 'Failed to copy debug info'});
+            });
     }
 }
 
