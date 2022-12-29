@@ -273,7 +273,7 @@ class LayerTool extends Control {
                         message: errorMessage
                     });
                 }
-            },
+            }
         });
     }
 

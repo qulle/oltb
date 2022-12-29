@@ -817,16 +817,32 @@ import { Toast } from './modules/common/Toast';
 
 There are four types of toast messages.
 ```javascript
-Toast.info({text: 'Item were removed from collection'});
-Toast.warning({text: 'Request took longer than expected'});
-Toast.success({text: 'Changes were saved to database'});
-Toast.error({text: 'Failed to contact database'});
+Toast.info({
+    title: 'Info',
+    message: 'Item were removed from collection'
+});
+
+Toast.warning({
+    title: 'Warning',
+    message: 'Request took longer than expected'
+});
+
+Toast.success({
+    title: 'Success',
+    message: 'Changes were saved to database'
+});
+
+Toast.error({
+    title: 'Error',
+    message: 'Failed to contact database'
+});
 ```
 
 To remove the toast after a specific time (ms), add the `autoremove` property.
 ```javascript
 Toast.success({
-    text: 'Changes were saved to database', 
+    title: 'Success',
+    message: 'Changes were saved to database', 
     autoremove: 4000
 });
 ```
@@ -834,7 +850,8 @@ Toast.success({
 To close the toast from the code, store a reference to the toast and then call the remove method. The attribute `clickToRemove` is set to false, this means that the user can't click on the toast to remove it. The `spinner` attribute adds a loading animation to the toast.
 ```javascript
 this.loadingToast = Toast.info({
-    text: 'Trying to find your location...', 
+    title: 'Info',
+    message: 'Trying to find your location...', 
     clickToRemove: false,
     spinner: true,
 });
@@ -850,7 +867,8 @@ myLocationToolClick() {
     }
 
     this.loadingToast = Toast.info({
-        text: 'Trying to find your location...', 
+        title: 'Info',
+        message: 'Trying to find your location...', 
         clickToRemove: false, 
         spinner: true,
         onRemove: () => {

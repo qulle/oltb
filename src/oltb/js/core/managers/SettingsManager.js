@@ -5,48 +5,50 @@ import { LOCAL_STORAGE_KEYS } from "../../helpers/constants/LocalStorageKeys";
 const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.SettingsManager;
 const LOCAL_STORAGE_DEFAULTS = Object.freeze({});
 
+const DEFAULT_SETTINGS = new Map([
+    [
+        SETTINGS.MouseWheelZoom, {
+            state: false, 
+            text: 'Enable zooming using mousewheel only'
+        }
+    ], [
+        SETTINGS.AltShiftDragRotate, {
+            state: true, 
+            text: 'Enable rotate of map using Shift + Alt + Drag'
+        }
+    ], [
+        SETTINGS.DragPan, {
+            state: true, 
+            text: 'Enable dragging using mouse only'
+        }
+    ], [
+        SETTINGS.KeyboardZoom, {
+            state: true, 
+            text: 'Enable zooming using keyboard'
+        }
+    ], [
+        SETTINGS.KeyboardPan, {
+            state: true, 
+            text: 'Enable panning using keyboard'
+        }
+    ], [
+        SETTINGS.SelectVectorMapShapes, {
+            state: false, 
+            text: 'Enable select of shapes in vector map layers'
+        }
+    ], [
+        SETTINGS.AlwaysNewLayers, {
+            state: false, 
+            text: 'Always create new layer when selecting tool'
+        }
+    ],
+]);
+
 class SettingsManager {
     static #localStorageState = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
     static #localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...this.#localStorageState };
 
-    static #settings = new Map([
-        [
-            SETTINGS.MouseWheelZoom, {
-                state: false, 
-                text: 'Enable zooming using mousewheel only'
-            }
-        ], [
-            SETTINGS.AltShiftDragRotate, {
-                state: true, 
-                text: 'Enable rotate of map using Shift + Alt + Drag'
-            }
-        ], [
-            SETTINGS.DragPan, {
-                state: true, 
-                text: 'Enable dragging using mouse only'
-            }
-        ], [
-            SETTINGS.KeyboardZoom, {
-                state: true, 
-                text: 'Enable zooming using keyboard'
-            }
-        ], [
-            SETTINGS.KeyboardPan, {
-                state: true, 
-                text: 'Enable panning using keyboard'
-            }
-        ], [
-            SETTINGS.SelectVectorMapShapes, {
-                state: false, 
-                text: 'Enable select of shapes in vector map layers'
-            }
-        ], [
-            SETTINGS.AlwaysNewLayers, {
-                state: false, 
-                text: 'Always create new layer when selecting tool'
-            }
-        ],
-    ]);
+    static #settings = structuredClone(DEFAULT_SETTINGS);
 
     static init(map) {
         // Update the states of the settings with values from localStorage
@@ -57,12 +59,17 @@ class SettingsManager {
         });
     }
 
-    static addSetting(key, valueObj) {
-        this.#settings.set(key, valueObj);
-    }
-
     static getSettings() {
         return this.#settings;
+    }
+
+    static clear() {
+        this.#settings = structuredClone(DEFAULT_SETTINGS);
+    }
+
+    static addSetting(key, valueObj) {
+        DEFAULT_SETTINGS.set(key, structuredClone(valueObj));
+        this.#settings.set(key, valueObj);
     }
 
     static setSetting(key, state) {

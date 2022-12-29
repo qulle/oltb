@@ -10,6 +10,7 @@ import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { TOOLBAR_ELEMENT } from '../core/elements/index';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
 import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
+import { SettingsManager } from '../core/managers/SettingsManager';
 
 const DEFAULT_OPTIONS = Object.freeze({});
 
@@ -74,7 +75,12 @@ class SettingsTool extends Control {
     }
 
     clearSettings() {
-        StateManager.clear();
+        [
+            SettingsManager, 
+            StateManager
+        ].forEach((manager) => {
+            manager.clear();
+        });
 
         // User defined callback from constructor
         if(typeof this.options.cleared === 'function') {
