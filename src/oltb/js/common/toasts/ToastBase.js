@@ -4,7 +4,8 @@ import { EVENTS } from '../../helpers/constants/Events';
 import { TOAST_ELEMENT } from '../../core/elements/index';
 
 const DEFAULT_OPTIONS = Object.freeze({
-    text: 'Default toast',
+    title: 'Toast',
+    message: '',
     type: 'info',
     autoremove: undefined,
     clickToRemove: true,
@@ -36,14 +37,32 @@ class ToastBase {
             toast.appendChild(spinnerElement);
         }
 
+        const container = DOM.createElement({
+            element: 'div',
+            class: `oltb-toast__container ${this.options.spinner ? 'oltb-ml-0625' : ''}`
+        });
+
+        const title = DOM.createElement({
+            element: 'h4',
+            text: this.options.title,
+            class: 'oltb-toast__title'
+        });
+
         const message = DOM.createElement({
             element: 'p', 
-            text: this.options.text,
-            class: `oltb-toast__message ${this.options.spinner ? 'oltb-ml-0625' : ''}`
+            html: this.options.message,
+            class: 'oltb-toast__message'
         });
     
-        toast.appendChild(message);
+        DOM.appendChildren(container, [
+            title,
+            message
+        ]);
         
+        DOM.appendChildren(toast, [
+            container
+        ]);
+
         TOAST_ELEMENT.prepend(toast);
 
         if(this.options.autoremove) {
@@ -66,10 +85,21 @@ class ToastBase {
         }, CONFIG.AnimationDuration.Fast);
     }
 
-    static get Info()    { return 'info'; }
-    static get Warning() { return 'warning'; }
-    static get Error()   { return 'error'; }
-    static get Success() { return 'success'; }
+    static get Info() { 
+        return 'info'; 
+    }
+
+    static get Warning() { 
+        return 'warning'; 
+    }
+
+    static get Error() { 
+        return 'error'; 
+    }
+
+    static get Success() { 
+        return 'success'; 
+    }
 }
 
 export { ToastBase };

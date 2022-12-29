@@ -265,8 +265,13 @@ class LayerTool extends Control {
                         })
                     });
                 }catch(error) {
-                    console.error(`Error adding layer [${error}]`);
-                    Toast.error({text: 'Something went wrong adding the layer'});
+                    const errorMessage = 'Failed to generate new layer';
+
+                    console.error(errorMessage, error);
+                    Toast.error({
+                        title: 'Error',
+                        message: errorMessage
+                    });
                 }
             },
         });
@@ -509,7 +514,11 @@ class LayerTool extends Control {
                             const format = instantiateFormat(result.format);
             
                             if(!format) {
-                                Toast.error({text: 'Unsupported layer format'});
+                                Toast.error({
+                                    title: 'Error',
+                                    message: 'This layer format is not supported'
+                                });
+                                
                                 return;
                             }
             

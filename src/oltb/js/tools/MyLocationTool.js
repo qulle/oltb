@@ -97,7 +97,8 @@ class MyLocationTool extends Control {
 
         if(navigator.geolocation) {
             this.loadingToast = Toast.info({
-                text: 'Trying to find your location...', 
+                title: 'Searching',
+                message: 'Trying to find your location...', 
                 clickToRemove: false,
                 spinner: true,
                 onRemove: () => {
@@ -114,7 +115,9 @@ class MyLocationTool extends Control {
                 }
             );
         }else { 
-            this.onError({message: 'Geolocation is not supported'}, Toast.error);
+            this.onError({
+                message: 'Geolocation is not supported'
+            }, Toast.error);
         }
     }
 
@@ -178,7 +181,10 @@ class MyLocationTool extends Control {
     }
 
     onError(error, ptrToast = Toast.error) {
-        ptrToast({text: error.message});
+        ptrToast({
+            title: 'Error',
+            message: error.message
+        });
         
         // User defined callback from constructor
         if(typeof this.options.error === 'function') {

@@ -117,17 +117,30 @@ class DebugInfoModal extends ModalBase {
 
     actionLoggingMap() {
         console.dir(this.options.map);
-        Toast.success({text: 'Map object logged to console (F12)', autoremove: 4000});
+        Toast.success({
+            title: 'Logged',
+            message: 'Map object logged to console (F12)', 
+            autoremove: 4000
+        });
     }
 
     actionCopyDebugInfo() {
         copyToClipboard(this.debugInformationText.value)
             .then(() => {
-                Toast.success({text: 'Debug info copied to clipboard', autoremove: 4000});
+                Toast.success({
+                    title: 'Copied',
+                    message: 'Debug info copied to clipboard', 
+                    autoremove: 4000
+                });
             })
             .catch((error) => {
-                console.error('Error copying debug info', error);
-                Toast.error({text: 'Failed to copy debug info'});
+                const errorMassage = 'Failed to copy debug information';
+
+                console.error(errorMassage, error);
+                Toast.error({
+                    title: 'Error',
+                    message: errorMassage
+                });
             });
     }
 }

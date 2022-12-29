@@ -78,7 +78,11 @@ class FullscreenTool extends Control {
 
     momentaryActivation() {
         if(!isFullScreenSupported()) {
-            Toast.info({text: 'Fullscreen is not supported'});
+            Toast.error({
+                title: 'Error',
+                message: 'Fullscreen is not supported by this browser'
+            });
+            
             return;
         }
         

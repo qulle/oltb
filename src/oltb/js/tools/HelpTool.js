@@ -61,8 +61,13 @@ class HelpTool extends Control {
         try {
             window.open(this.options.url, this.options.target).focus();
         }catch(error) {
-            console.error(`Error opening Help [${error}]`);
-            Toast.info({text: 'Action was blocked by browser, try open with mouse'});
+            const errorMessage = 'Action was blocked by browser, try open with mouse';
+
+            console.error(errorMessage, error);
+            Toast.error({
+                title: 'Error',
+                message: errorMessage
+            });
         }
     }
 }

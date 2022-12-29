@@ -383,7 +383,12 @@ class EditTool extends Control {
         const featureLength = this.select.getFeatures().getArray().length;
 
         if(featureLength === 0) {
-            Toast.info({text: 'No features selected to delete', autoremove: 4000});
+            Toast.info({
+                title: 'Whoops',
+                message: 'No features selected to delete', 
+                autoremove: 4000
+            });
+
             return;
         }
 
@@ -460,7 +465,12 @@ class EditTool extends Control {
 
         // Only allow two shapes at the time to be unioned
         if(features.length !== 2) {
-            Toast.info({text: 'Two overlapping features must be selected', autoremove: 4000});
+            Toast.info({
+                title: 'Whoops',
+                message: 'Strict two overlapping features must be selected', 
+                autoremove: 4000
+            });
+
             return;
         }
 
@@ -519,10 +529,13 @@ class EditTool extends Control {
                 this.options.shapeOperation(type, a, b, feature);
             }
         }catch(error) {
-            const errorMessage = 'Could not perform shape operation';
+            const errorMessage = 'Failed to perform shape operation';
 
-            console.error(`${errorMessage} [${error}]`);
-            Toast.error({text: errorMessage}); 
+            console.error(errorMessage, error);
+            Toast.error({
+                title: 'Error',
+                message: errorMessage
+            }); 
 
             // User defined callback from constructor
             if(typeof this.options.error === 'function') {

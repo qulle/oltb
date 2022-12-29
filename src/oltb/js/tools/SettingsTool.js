@@ -64,7 +64,11 @@ class SettingsTool extends Control {
             onConfirm: () => {
                 this.clearSettings();
 
-                Toast.success({text: "All settings was cleared", autoremove: 4000});
+                Toast.success({
+                    title: 'Cleared',
+                    message: "All stored settings was cleared", 
+                    autoremove: 4000
+                });
             }
         });
     }

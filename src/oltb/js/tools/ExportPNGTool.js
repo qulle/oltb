@@ -120,8 +120,13 @@ class ExportPNGTool extends Control {
 
             this.downloadCanvas(pngCanvas);
         }catch(error) {
-            console.error(`Error exporting PNG [${error}]`);
-            Toast.error({text: 'Could not export the PNG'});
+            const errorMessage = 'Failed to export canvas image';
+
+            console.error(errorMessage, error);
+            Toast.error({
+                title: 'Error',
+                message: errorMessage
+            });
         }
     }
 

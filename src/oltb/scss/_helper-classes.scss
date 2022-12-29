@@ -1,16 +1,20 @@
-/* 
-    Don't create a bunch of classes. 
-    These are to be used for changing some minor detail.
-    Follow the "create-when-needed" principle.
-*/
-
 .oltb {
+    // Margin all sides
     &-m-0 {
         margin: 0 !important;
     }
 
+    // Margin Top
+    &-mt-025 {
+        margin-top: .25rem !important;
+    }
+
     &-mt-0313 {
         margin-top: .313rem !important;
+    }
+
+    &-mt-05 {
+        margin-top: .5rem !important;
     }
 
     &-mt-0625 {
@@ -25,8 +29,38 @@
         margin-top: 1.5rem !important;
     }
 
+    // Margin Bottom
+    &-mb-025 {
+        margin-bottom: .25rem !important;
+    }
+
     &-mb-0313 {
         margin-bottom: .313rem !important;
+    }
+
+    &-mb-05 {
+        margin-bottom: .5rem !important;
+    }
+
+    &-mb-0625 {
+        margin-bottom: .625rem !important;
+    }
+
+    &-mb-1 {
+        margin-bottom: 1rem !important;
+    }
+
+    &-mb-15 {
+        margin-bottom: 1.5rem !important;
+    }
+
+    // Margin Left
+    &-ml-025 {
+        margin-left: .25rem !important;
+    }
+
+    &-ml-0313 {
+        margin-left: .313rem !important;
     }
 
     &-ml-05 {
@@ -37,6 +71,40 @@
         margin-left: .625rem !important;
     }
 
+    &-ml-1 {
+        margin-left: 1rem !important;
+    }
+
+    &-ml-15 {
+        margin-left: 1.5rem !important;
+    }
+
+    // Margin Right
+    &-mr-025 {
+        margin-right: .25rem !important;
+    }
+
+    &-mr-0313 {
+        margin-right: .313rem !important;
+    }
+
+    &-mr-05 {
+        margin-right: .5rem !important;
+    }
+
+    &-mr-0625 {
+        margin-right: .625rem !important;
+    }
+
+    &-mr-1 {
+        margin-right: 1rem !important;
+    }
+
+    &-mr-15 {
+        margin-right: 1.5rem !important;
+    }
+
+    // Misc
     &-w-100 {
         width: 100%;
     }

@@ -159,11 +159,20 @@ class CoordinateTool extends Control {
 
         copyToClipboard(prettyCoords)
             .then(() => {
-                Toast.success({text: 'Coordinate copied to clipboard', autoremove: 4000});
+                Toast.success({
+                    title: 'Copied',
+                    message: 'Coordinate copied to clipboard', 
+                    autoremove: 4000
+                });
             })
             .catch((error) => {
-                console.error('Error copying coordinates', error);
-                Toast.error({text: 'Failed to copy coordinates'});
+                const errorMessage = 'Failed to copy coordinates';
+
+                console.error(errorMessage, error);
+                Toast.error({
+                    title: 'Error',
+                    message: errorMessage
+                });
             });
         
         // User defined callback from constructor

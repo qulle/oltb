@@ -322,7 +322,11 @@ class MeasureTool extends Control {
         layerWrapper.layer.getSource().addFeature(feature);
         
         if(!layerWrapper.layer.getVisible()) {
-            Toast.info({text: 'You are measuring in a hidden layer', autoremove: 4000});
+            Toast.info({
+                title: 'Tip',
+                message: 'You are measuring in a hidden layer', 
+                autoremove: 4000
+            });
         }
 
         map.addOverlay(tooltip.getOverlay());

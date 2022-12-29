@@ -1,26 +1,42 @@
-.oltb-toast-container {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    overflow-x: hidden;
-    z-index: 1000;
-}
-
 .oltb-toast {
     cursor: default;
     padding: .75rem .875rem;
     border-radius: $border-radius;
     box-shadow: $box-shadow-mid;
     margin: 0 1rem 1rem 1rem;
+    background-color: $background-theme-light;
+    color: $color-dark;
+    border-left: 4px solid;
     display: flex;
     align-items: center;
 
-    &__message {
-        color: $color-light;
-        font-size: 1rem;
-        font-weight: 500;
-        margin-bottom: 0;
+    &-container {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        overflow-x: hidden;
+        z-index: 1000;
+    }
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    &__title {
         text-shadow: $text-shadow-light;
+        margin: 0;
+    }
+
+    &__message {
+        font-size: 1rem;
+        margin: .5rem 0 0 0;
+        text-shadow: $text-shadow-light;
+
+        &:empty {
+            display: none;
+        }
     }
 
     &--clickable {
@@ -32,18 +48,23 @@
     }
 
     &--info {
-        background-color: $color-gray-dark;
+        border-left-color: $color-blue-mid;
     }
 
     &--warning {
-        background-color: $color-orange-mid;
+        border-left-color: $color-orange-mid;
     }
 
     &--error {
-        background-color: $color-red-mid;
+        border-left-color: $color-red-mid;
     }
 
     &--success {
-        background-color: $color-green-mid;
+        border-left-color: $color-green-mid;
     }
+}
+
+body.oltb-dark .oltb-toast {
+    background-color: $background-theme-dark;
+    color: $color-light;
 }

@@ -111,7 +111,11 @@ class HomeTool extends Control {
         this.userDefinedHomeZoom = view.getZoom();
         this.userDefinedHomeLocation = view.getCenter();
 
-        Toast.success({text: 'Home location successfully set'});
+        Toast.success({
+            title: 'New home',
+            message: 'New location was set as home',
+            autoremove: 4000
+        });
     }
 }
 

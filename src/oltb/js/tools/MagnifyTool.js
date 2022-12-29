@@ -215,13 +215,16 @@ class MagnifyTool extends Control {
                 // Click the tool-button to deactivate
                 this.button.click();
 
-                if(error.name == 'SecurityError') {
-                    Toast.error({text: 'CORS error with one of the layers'});
-                }else {
-                    Toast.error({text: 'Unknown magnifyer error'});
-                }
-
-                console.error(`Error using magnifyer [${error}]`);
+                const errorMessage = 'Unexpected error using magnifyer';
+                
+                console.error(errorMessage, error);
+                Toast.error({
+                    title: 'Error',
+                    message: (error.name === 'SecurityError' 
+                        ? 'CORS error with one of the layers'
+                        : errorMessage
+                    )
+                });
             }
         }
     }

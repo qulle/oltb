@@ -190,7 +190,11 @@ class SplitViewTool extends Control {
         }
 
         if(LayerManager.getMapLayerSize() <= 1) {
-            Toast.info({text: 'You must have more then one layer'});
+            Toast.info({
+                title: 'Tip',
+                message: 'You must have more then one layer'
+            });
+            
             return;
         }
 
@@ -277,8 +281,12 @@ class SplitViewTool extends Control {
 
         // This should not happen, but just in case
         if(!leftlayerWrapper || !rightlayerWrapper) {
-            Toast.error({text: 'One or both of the selected layers could not be loaded'});
             this.layerLoadingError = true;
+            Toast.error({
+                title: 'Error',
+                message: 'One or both of the layers could not be loaded'
+            });
+
             return;
         }
 

@@ -97,7 +97,11 @@ class ImportVectorLayerTool extends Control {
 
             // This should not happen since the format is set in the dialog
             if(!format) {
-                Toast.error({text: 'Unsupported layer format'});
+                Toast.error({
+                    title: 'Error',
+                    message: 'This layer format is not supported'
+                });
+
                 return;
             }
                 
@@ -114,8 +118,13 @@ class ImportVectorLayerTool extends Control {
                 this.options.imported(features);
             }
         }catch(error) {
-            console.error(`Error importing vector layer [${error}]`);
-            Toast.error({text: 'Error when parsing file'});
+            const errorMessage = 'Failed to import vector layer';
+
+            console.error(errorMessage, error);
+            Toast.error({
+                title: 'Error',
+                message: errorMessage
+            });
 
             // User defined callback from constructor
             if(typeof this.options.error === 'function') {

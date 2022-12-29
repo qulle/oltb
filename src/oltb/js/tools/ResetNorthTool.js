@@ -75,7 +75,10 @@ class ResetNorthTool extends Control {
                         easing: easeOut
                     });
                 }else {
-                    Toast.error({text: 'Only digits are allowed', autoremove: 4000});
+                    Toast.error({
+                        title: 'Error',
+                        message: 'Only digits are allowed as input'
+                    });
                 }
             }
         });

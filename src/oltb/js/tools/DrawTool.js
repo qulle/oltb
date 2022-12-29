@@ -367,7 +367,11 @@ class DrawTool extends Control {
         }
 
         if(!layerWrapper.layer.getVisible()) {
-            Toast.info({text: 'You are drawing in a hidden layer', autoremove: 4000});
+            Toast.info({
+                title: 'Tip',
+                message: 'You are drawing in a hidden layer', 
+                autoremove: 4000
+            });
         }
     }
 
@@ -412,7 +416,11 @@ class DrawTool extends Control {
         });
 
         if(this.intersectedFeatures.length === 0) {
-            Toast.info({text: 'No intersecting objects found', autoremove: 4000});
+            Toast.info({
+                title: 'Whoops',
+                message: 'No intersecting objects found', 
+                autoremove: 4000
+            });
         }
 
         // User defined callback from constructor
