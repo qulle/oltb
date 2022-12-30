@@ -15,16 +15,16 @@ const ICON = getIcon({
 });
 
 const CONTINENT_COLORS = Object.freeze({
-    'Europe': '#0166A5FF',
-    'Africa': '#007C70FF',
-    'Antarctica': '#F67D2CFF',
-    'Asia': '#FBBD02FF',
-    'Australia': '#EB4542FF',
-    'Central America': '#3B4352FF',
-    'North America': '#3B4352FF',
-    'South America': '#3B4352FF',
-    'UM': '#3B4352FF',
-    'US': '#3B4352FF'
+    'Europe': '#5B88D6FF',
+    'Africa': '#68B9E5FF',
+    'Antarctica': '#3CAEA3FF',
+    'Asia': '#56BABDFF',
+    'Australia': '#6397C2FF',
+    'Central America': '#9085E4FF',
+    'North America': '#9085E4FF',
+    'South America': '#9085E4FF',
+    'UM': '#9085E4FF',
+    'US': '#9085E4FF'
 });
 
 const layerWrapper = LayerManager.addFeatureLayer('Capitals', true, true);

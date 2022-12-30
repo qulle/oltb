@@ -197,19 +197,19 @@ The full color palette is displayed below.
         <th>Indigo</th>
         <td><img valign="middle" src="./images/colors/indigo-light.svg"> #B1CAF6 - $color-indigo-light</td>
         <td><img valign="middle" src="./images/colors/indigo-mid.svg"> #5B88D6 - $color-indigo-mid</td>
-        <td><img valign="middle" src="./images/colors/indigo-dark.svg"> #1155CA - $color-indigo-dark</td>
+        <td><img valign="middle" src="./images/colors/indigo-dark.svg"> #2357B1 - $color-indigo-dark</td>
     </tr>
     <tr>
         <th>Purple</th>
         <td><img valign="middle" src="./images/colors/purple-light.svg"> #D0CAFF - $color-purple-light</td>
-        <td><img valign="middle" src="./images/colors/purple-mid.svg"> #8273FC - $color-purple-mid</td>
+        <td><img valign="middle" src="./images/colors/purple-mid.svg"> #9085E4 - $color-purple-mid</td>
         <td><img valign="middle" src="./images/colors/purple-dark.svg"> #493E9C - $color-purple-dark</td>
     </tr>
     <tr>
         <th>Pink</th>
         <td><img valign="middle" src="./images/colors/pink-light.svg"> #FEE6FF - $color-pink-light</td>
-        <td><img valign="middle" src="./images/colors/pink-mid.svg"> #F19FF4 - $color-pink-mid</td>
-        <td><img valign="middle" src="./images/colors/pink-dark.svg"> #903F93 - $color-pink-dark</td>
+        <td><img valign="middle" src="./images/colors/pink-mid.svg"> #E8A2EA - $color-pink-mid</td>
+        <td><img valign="middle" src="./images/colors/pink-dark.svg"> #914594 - $color-pink-dark</td>
     </tr>
     <tr>
         <th>Teal</th>
@@ -220,7 +220,7 @@ The full color palette is displayed below.
     <tr>
         <th>Cyan</th>
         <td><img valign="middle" src="./images/colors/cyan-light.svg"> #CEEEFF - $color-cyan-light</td>
-        <td><img valign="middle" src="./images/colors/cyan-mid.svg"> #6ACAFE - $color-cyan-mid</td>
+        <td><img valign="middle" src="./images/colors/cyan-mid.svg"> #68B9E5 - $color-cyan-mid</td>
         <td><img valign="middle" src="./images/colors/cyan-dark.svg"> #0080C5 - $color-cyan-dark</td>
     </tr>
     <tr>
