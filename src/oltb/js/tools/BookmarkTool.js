@@ -42,6 +42,10 @@ class BookmarkTool extends Control {
             class: 'oltb-tool-button__icon'
         });
 
+        const clearBookmarksIcon = getIcon({
+            path: SVG_PATHS.BookmarkX.Stroked
+        });
+
         const button = DOM.createElement({
             element: 'button',
             html: icon,
@@ -121,7 +125,7 @@ class BookmarkTool extends Control {
         });
 
         ContextMenu.addItem({
-            icon: icon, 
+            icon: clearBookmarksIcon, 
             name: 'Clear all bookmarks', 
             fn: this.onContextMenuBookmarksClear.bind(this)
         });

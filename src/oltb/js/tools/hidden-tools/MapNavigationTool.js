@@ -8,6 +8,7 @@ import { TOOLBAR_ELEMENT } from '../../core/elements/index';
 import { SVG_PATHS, getIcon } from '../../core/icons/GetIcon';
 import { LOCAL_STORAGE_KEYS } from '../../helpers/constants/LocalStorageKeys';
 import { fromLonLat, toLonLat } from 'ol/proj';
+import { CoordinateModal } from '../modal-extensions/CoordinateModal';
 
 // This is the same NODE_NAME and PROPS that the map.js file is using
 const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.MapData;
@@ -29,10 +30,15 @@ class HiddenMapNavigationTool extends Control {
         });
 
         this.options = { ...DEFAULT_OPTIONS, ...options };
+        this.coordinateModal = undefined;
 
         // Load stored data from localStorage
         const localStorageState = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
         this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
+
+        const coordinateIcon = getIcon({
+            path: SVG_PATHS.Crosshair.Stroked
+        });
 
         const moveCenterIcon = getIcon({
             path: SVG_PATHS.ArrowsMove.Stroked
@@ -41,6 +47,12 @@ class HiddenMapNavigationTool extends Control {
         const focusHereIcon = getIcon({
             path: SVG_PATHS.AspectRatio.Stroked
         });
+
+        ContextMenu.addItem({
+            icon: coordinateIcon,
+            name: 'Navigate to coordinate',
+            fn: this.onContextMenuCenterAtCoordinate.bind(this)
+        })
 
         ContextMenu.addItem({
             icon: moveCenterIcon, 
@@ -69,21 +81,30 @@ class HiddenMapNavigationTool extends Control {
         }
     }
 
-    onContextMenuCenterMap(map, coordinates, target) {
-        const view = map.getView();
-        
-        if(view.getAnimating()) {
-            view.cancelAnimations();
+    onContextMenuCenterAtCoordinate(map, coordinates, target) {
+        if(this.coordinateModal) {
+            return;
         }
-    
-        view.animate({
-            center: fromLonLat(coordinates),
-            duration: CONFIG.AnimationDuration.Normal,
-            easing: easeOut
+
+        this.coordinateModal = new CoordinateModal({
+            onNavigate: (coordinates) => {
+                this.goToView(map, coordinates, map.getView().getZoom());
+            },
+            onClose: () => {
+                this.coordinateModal = undefined;
+            }
         });
     }
 
+    onContextMenuCenterMap(map, coordinates, target) {
+        this.goToView(map, coordinates, map.getView().getZoom());
+    }
+
     onContextMenuFocusHere(map, coordinates, target) {
+        this.goToView(map, coordinates, this.options.focusZoom);
+    }
+
+    goToView(map, coordinates, zoom) {
         const view = map.getView();
         
         if(view.getAnimating()) {
@@ -92,7 +113,7 @@ class HiddenMapNavigationTool extends Control {
     
         view.animate({
             center: fromLonLat(coordinates),
-            zoom: this.options.focusZoom,
+            zoom: zoom,
             duration: CONFIG.AnimationDuration.Normal,
             easing: easeOut
         });
