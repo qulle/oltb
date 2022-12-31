@@ -64,7 +64,7 @@ class CoordinateTool extends Control {
             text: 'Coordinate tool - Copy coordinates on click'
         });
 
-        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(EVENTS.Browser.KeyDown, this.onWindowKeyDown.bind(this));
         window.addEventListener(EVENTS.Browser.ContentLoaded, this.onDOMContentLoaded.bind(this));
     }
 
@@ -74,7 +74,7 @@ class CoordinateTool extends Control {
         }
     }
 
-    onWindowKeyUp(event) {
+    onWindowKeyDown(event) {
         if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Coordinate)) {
             this.handleClick(event);
         }
@@ -121,14 +121,14 @@ class CoordinateTool extends Control {
     }
 
     onPointerMove(event) {
-        const lonlat = transform(
+        const coordinates = transform(
             event.coordinate, 
             CONFIG.Projection.Default, 
             CONFIG.Projection.WGS84
         );
         
-        const prettyCoords = toStringHDMS(lonlat);
-        this.tooltipItem.innerHTML = prettyCoords;
+        const prettyCoordinates = toStringHDMS(coordinates);
+        this.tooltipItem.innerHTML = prettyCoordinates;
     }
 
     async onMapClick(event) {
@@ -139,25 +139,25 @@ class CoordinateTool extends Control {
             return;
         }
 
-        const lonlat = transform(
+        const coordinates = transform(
             event.coordinate, 
             CONFIG.Projection.Default, 
             CONFIG.Projection.WGS84
         );
 
-        const lon = lonlat[0];
-        const lat = lonlat[1];
-        const prettyCoords = toStringHDMS(lonlat);
+        const lon = coordinates[0];
+        const lat = coordinates[1];
+        const prettyCoordinates = toStringHDMS(coordinates);
 
         const coordinate = {
             data: {
                 lon: lon, 
                 lat: lat
             },
-            pretty: prettyCoords
+            pretty: prettyCoordinates
         };
 
-        copyToClipboard(prettyCoords)
+        copyToClipboard(prettyCoordinates)
             .then(() => {
                 Toast.success({
                     title: 'Copied',

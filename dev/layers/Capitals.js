@@ -40,19 +40,29 @@ const geoJsonPromise = fetch(urlCapitalsGeoJSON)
         json.features.forEach((capital) => {
             const lon = capital.geometry.coordinates[0];
             const lat = capital.geometry.coordinates[1];
-            const prettyCoords = toStringHDMS([lon, lat]);
+            const prettyCoordinates = toStringHDMS([lon, lat]);
         
-            const infoWindow = `
-                <h3 class="oltb-text-center">${capital.properties.countryName} - ${capital.properties.countryCode}</h3>
-                <p class="oltb-text-center">${capital.properties.capitalName} - ${capital.properties.continentName}</p>
-                <p class="oltb-text-center">${prettyCoords}</p>
-                <div class="oltb-d-flex oltb-justify-content-center">
-                    <button class="oltb-func-btn oltb-func-btn--delete oltb-tippy" title="Delete marker" id="${ID_PREFIX}-remove"></button>
-                    <button class="oltb-func-btn oltb-func-btn--copy oltb-tippy" title="Copy marker text" id="${ID_PREFIX}-copy-location" data-copy="Country ${capital.properties.countryName} Capital ${capital.properties.capitalName} Coordinates ${prettyCoords}"></button>
-                </div>
-            `;
+            const infoWindow = {
+                title: capital.properties.countryName,
+                content: `
+                    <p>
+                        <strong>${capital.properties.countryName}</strong> is a country located in <strong>${capital.properties.continentName}</strong>.
+                        Its capital is <strong>${capital.properties.capitalName}</strong> and its country code is <strong>${capital.properties.countryCode}</strong>.
+                    </p>
+                    <p>
+                        Google has more information about <a href="//www.google.com/search?q=${capital.properties.countryName}" target="_blank" class="oltb-link">${capital.properties.countryName}</a> 
+                    </p>
+                `,
+                footer: `
+                    <span class="oltb-info-window__coordinates">${prettyCoordinates}</span>
+                    <div class="oltb-info-window__button-wrapper">
+                        <button class="oltb-func-btn oltb-func-btn--delete oltb-tippy" title="Delete marker" id="${ID_PREFIX}-remove"></button>
+                        <button class="oltb-func-btn oltb-func-btn--copy oltb-tippy" title="Copy marker text" id="${ID_PREFIX}-copy-location" data-copy="Country ${capital.properties.countryName} Capital ${capital.properties.capitalName} Coordinates ${prettyCoordinates}"></button>
+                    </div>
+                `
+            };
         
-            const backgroundColor = CONTINENT_COLORS[capital.properties.continentName] || '#223344FF';
+            const backgroundColor = CONTINENT_COLORS[capital.properties.continentName] || '#6397C2FF';
         
             layerWrapper.layer.getSource().addFeature(
                 new generateMarker({
@@ -67,8 +77,11 @@ const geoJsonPromise = fetch(urlCapitalsGeoJSON)
         });
     })
     .catch((error) => {
-        const errorMessage = 'Error loading Capitals layer';
+        const errorMessage = 'Failed to load Capitals layer';
 
         console.error(`${errorMessage} [${error}]`);
-        Toast.error({text: errorMessage});
+        Toast.error({
+            title: 'Error',
+            message: errorMessage
+        });
     });

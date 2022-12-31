@@ -20,7 +20,8 @@ const ID_PREFIX = 'oltb-info-window-marker';
 
 const DEFAULT_OPTIONS = Object.freeze({
     enableHighAccuracy: true,
-    timeout: 10000
+    timeout: 10000,
+    infoWindowContent: 'This is the location that the browser was able to find. It might not be your actual location.'
 });
 
 class MyLocationTool extends Control {
@@ -124,7 +125,7 @@ class MyLocationTool extends Control {
     onSuccess(location) {
         const lat = location.coords.latitude;
         const lon = location.coords.longitude;
-        const prettyCoords = toStringHDMS([lon, lat]);
+        const prettyCoordinates = toStringHDMS([lon, lat]);
 
         const icon = getIcon({
             path: SVG_PATHS.Person.Filled,
@@ -133,14 +134,19 @@ class MyLocationTool extends Control {
             fill: 'rgb(255, 255, 255)'
         });
 
-        const infoWindow = `
-            <h3 class="oltb-text-center">My location</h3>
-            <p class="oltb-text-center">${prettyCoords}</p>
-            <div class="oltb-d-flex oltb-justify-content-center">
-                <button class="oltb-func-btn oltb-func-btn--delete oltb-tippy" title="Delete marker" id="${ID_PREFIX}-remove"></button>
-                <button class="oltb-func-btn oltb-func-btn--copy oltb-tippy" title="Copy marker text" id="${ID_PREFIX}-copy-location" data-copy="My location ${prettyCoords}"></button>
-            </div>
-        `;
+        const infoWindow = {
+            title: 'My location',
+            content: `
+                <p>${this.options.infoWindowContent}</p>
+            `,
+            footer: `
+                <span class="oltb-info-window__coordinates">${prettyCoordinates}</span>
+                <div class="oltb-info-window__button-wrapper">
+                    <button class="oltb-func-btn oltb-func-btn--delete oltb-tippy" title="Delete marker" id="${ID_PREFIX}-remove"></button>
+                    <button class="oltb-func-btn oltb-func-btn--copy oltb-tippy" title="Copy marker text" id="${ID_PREFIX}-copy-location" data-copy="My location ${prettyCoordinates}"></button>
+                </div>
+            `
+        };
         
         const marker = new generateMarker({
             lat: lat,

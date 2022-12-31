@@ -17,7 +17,9 @@ class InfoWindowManager {
     static #map;
     static #infoWindow;
     static #overlay;
+    static #title;
     static #content;
+    static #footer;
     static #lastFeature;
 
     static init(map) {
@@ -39,9 +41,14 @@ class InfoWindowManager {
             }
         });
 
-        this.#content = DOM.createElement({
+        const header = DOM.createElement({
             element: 'div',
-            class: 'oltb-info-window__content'
+            class: 'oltb-info-window__header'
+        });
+
+        this.#title = DOM.createElement({
+            element: 'h3',
+            class: 'oltb-info-window__title'
         });
 
         const closeButton = DOM.createElement({
@@ -57,8 +64,26 @@ class InfoWindowManager {
             }
         });
 
-        this.#infoWindow.appendChild(closeButton);
-        this.#infoWindow.appendChild(this.#content);
+        this.#content = DOM.createElement({
+            element: 'div',
+            class: 'oltb-info-window__content'
+        });
+
+        this.#footer = DOM.createElement({
+            element: 'div',
+            class: 'oltb-info-window__footer'
+        });
+
+        DOM.appendChildren(header, [
+            this.#title,
+            closeButton
+        ]);
+
+        DOM.appendChildren(this.#infoWindow, [
+            header, 
+            this.#content,
+            this.#footer
+        ]);
 
         // Create ol overlay to host infoWindow
         this.#overlay = new Overlay({
@@ -133,7 +158,9 @@ class InfoWindowManager {
     static showOverly(feature, position) {
         const infoWindow = feature.getProperties().oltb.infoWindow;
 
-        this.#content.innerHTML = infoWindow;
+        this.#title.innerHTML = infoWindow.title;
+        this.#content.innerHTML = infoWindow.content;
+        this.#footer.innerHTML = infoWindow.footer;
 
         if(position) {
             this.#overlay.setPosition(position);
@@ -148,24 +175,27 @@ class InfoWindowManager {
         DOM.runAnimation(this.#infoWindow, ANIMATION_CLASS);
 
         // Attach listeners to the function-buttons inside the infoWindow
-        const removeFeatureButton = this.#content.querySelector(`#${ID_PREFIX}-remove`);
+        const removeFeatureButton = this.#footer.querySelector(`#${ID_PREFIX}-remove`);
         if(removeFeatureButton) {
             removeFeatureButton.addEventListener(EVENTS.Browser.Click, removeFeature.bind(this, InfoWindowManager, feature));
         }
 
-        const copyFeatureInfoButton = this.#content.querySelector(`#${ID_PREFIX}-copy-location`);
+        const copyFeatureInfoButton = this.#footer.querySelector(`#${ID_PREFIX}-copy-location`);
         if(copyFeatureInfoButton) {
             copyFeatureInfoButton.addEventListener(EVENTS.Browser.Click, copyFeatureInfo.bind(this, InfoWindowManager, copyFeatureInfoButton.getAttribute('data-copy')));
         }
 
-        const editFeatureButton = this.#content.querySelector(`#${ID_PREFIX}-edit`);
+        const editFeatureButton = this.#footer.querySelector(`#${ID_PREFIX}-edit`);
         if(editFeatureButton) {
             editFeatureButton.addEventListener(EVENTS.Browser.Click, editFeature.bind(this, InfoWindowManager, feature));
         }
     }
 
     static hideOverlay() {
+        this.#title.innerHTML = '';
         this.#content.innerHTML = '';
+        this.#footer.innerHTML = '';
+        
         this.#overlay.setPosition(undefined);
     }
 }

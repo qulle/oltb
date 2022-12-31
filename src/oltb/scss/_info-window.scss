@@ -1,5 +1,8 @@
 .oltb-info-window {
-    display: block;
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: scale(1.0) translateX(-50%);
     min-width: 320px;
     padding: $top-level-padding;
     background-color: $background-theme-light;
@@ -7,10 +10,6 @@
     border-radius: $border-radius;
     -webkit-filter: drop-shadow(0 0 .25rem rgba(0, 0, 0, .4));
     filter: drop-shadow(0 0 .25rem rgba(0, 0, 0, .4));
-    position: absolute;
-    left: 50%;
-    bottom: 0;
-    transform: scale(1.0) translateX(-50%);
 
     &::after {
         content: '';
@@ -23,13 +22,20 @@
         border-right: .625rem solid transparent;
     }
 
-    &__close {
-        text-decoration: none;
-        position: absolute;
-        font-size: 1.5rem;
+    &__header{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 0 0 1rem 0;
+    }
+
+    &__title {
         color: $color-gray-dark;
-        top: .5rem;
-        right: .5rem;
+        margin: 0;
+    }
+
+    &__close {
+        color: $color-gray-dark;
     }
 
     &__content {
@@ -38,6 +44,25 @@
         p {
             font-size: 1rem;
         }
+    }
+
+    &__coordinates {
+        margin: 0;
+        font-size: .8rem;
+        white-space: nowrap;
+    }
+
+    &__button-wrapper {
+        margin-left: 1rem;
+        flex-shrink: 0;
+    }
+
+    &__footer {
+        color: $color-gray-dark;
+        margin: 1.5rem 0 0 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
     }
 }
 
@@ -48,8 +73,10 @@ body.oltb-dark .oltb-info-window {
         border-top: .625rem solid $background-theme-dark;
     }
 
+    &__title,
     &__close,
-    &__content {
+    &__content,
+    &__footer {
         color: $background-theme-light;
     }
 }

@@ -348,6 +348,7 @@ const map = new Map({
         new MyLocationTool({
             enableHighAccuracy: true,
             timeout: 10000,
+            infoWindowContent: 'This is the location that the browser was able to find. It might not be your actual location.',
             click: function() {
                 console.log('MyLocationTool clicked');
             },

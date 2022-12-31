@@ -31,17 +31,21 @@ const editFeature = function(InfoWindowManager, feature) {
             // Easier then updating the existing marker with new data.
             LayerManager.removeFeatureFromLayer(feature);
     
-            const prettyCoords = toStringHDMS([result.longitude, result.latitude]);
-            const infoWindow = `
-                <h3 class="oltb-text-center">${result.name}</h3>
-                <p class="oltb-text-center">${result.info}</p>
-                <p class="oltb-text-center">${prettyCoords}</p>
-                <div class="oltb-d-flex oltb-justify-content-center">
-                    <button class="oltb-func-btn oltb-func-btn--delete oltb-tippy" title="Delete marker" id="${ID_PREFIX}-remove"></button>
-                    <button class="oltb-func-btn oltb-func-btn--copy oltb-tippy" title="Copy marker text" id="${ID_PREFIX}-copy-location" data-copy="${result.name} ${result.info} Coordinates ${prettyCoords}"></button>
-                    <button class="oltb-func-btn oltb-func-btn--edit oltb-tippy" title="Edit marker" id="${ID_PREFIX}-edit"></button>
-                </div>
-            `;
+            const prettyCoordinates = toStringHDMS([result.longitude, result.latitude]);
+            const infoWindow = {
+                title: result.name,
+                content: `
+                    <p>${result.info}</p>
+                `,
+                footer: `
+                    <span class="oltb-info-window__coordinates">${prettyCoordinates}</span>
+                    <div class="oltb-info-window__button-wrapper">
+                        <button class="oltb-func-btn oltb-func-btn--delete oltb-tippy" title="Delete marker" id="${ID_PREFIX}-remove"></button>
+                        <button class="oltb-func-btn oltb-func-btn--copy oltb-tippy" title="Copy marker text" id="${ID_PREFIX}-copy-location" data-copy="${result.name} ${result.info} Coordinates ${prettyCoordinates}"></button>
+                        <button class="oltb-func-btn oltb-func-btn--edit oltb-tippy" title="Edit marker" id="${ID_PREFIX}-edit"></button>
+                    </div>
+                `
+            };
             
             const [ iconName, iconVersion ] = result.icon.split('.');
             const icon = getIcon({

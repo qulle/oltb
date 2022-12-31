@@ -2,6 +2,9 @@ import { bbox } from 'ol/loadingstrategy';
 import { Toast } from "../../src/oltb/js/common/Toast";
 import { CONFIG } from '../../src/oltb/js/core/Config';
 import { GeoJSON } from 'ol/format';
+import { transform } from 'ol/proj';
+import { getCenter } from 'ol/extent';
+import { toStringHDMS } from "ol/coordinate";
 import { LayerManager } from "../../src/oltb/js/core/managers/LayerManager";
 import { getMeasureValue } from "../../src/oltb/js/helpers/Measurements";
 import { FEATURE_PROPERTIES } from "../../src/oltb/js/helpers/constants/FeatureProperties";
@@ -10,6 +13,7 @@ import { Vector as VectorSource } from 'ol/source';
 
 import urlCountriesGeoJSON from 'url:../geojson/countries.geojson';
 
+const ID_PREFIX = 'oltb-info-window-marker';
 LayerManager.addMapLayers([
     {
         name: 'Countries overlay',
@@ -33,14 +37,32 @@ LayerManager.addMapLayers([
                             }).readFeatures(json);
 
                             features.forEach((feature) => {
+                                const coordinates = transform(
+                                    getCenter(feature.getGeometry().getExtent()), 
+                                    CONFIG.Projection.Default, 
+                                    CONFIG.Projection.WGS84
+                                );
+
+                                const prettyCoordinates = toStringHDMS(coordinates);
+
                                 feature.setProperties({
                                     oltb: {
                                         type: FEATURE_PROPERTIES.Type.Layer,
                                         highlightOnHover: true,
-                                        infoWindow: `
-                                            <h3 class="oltb-text-center">${feature.getProperties().name}</h3>
-                                            <p class="oltb-text-center">Approximate <strong>${getMeasureValue(feature.getGeometry())}</strong></p>
-                                        `
+                                        infoWindow: {
+                                            title: feature.getProperties().name,
+                                            content: `
+                                                <p>
+                                                    Based on the geometric data, we estimate the area to be <strong>${getMeasureValue(feature.getGeometry())}</strong>.
+                                                </p>
+                                            `,
+                                            footer: `
+                                                <span class="oltb-info-window__coordinates">${prettyCoordinates}</span>
+                                                <div class="oltb-info-window__button-wrapper">
+                                                    <button class="oltb-func-btn oltb-func-btn--copy oltb-tippy" title="Copy marker text" id="${ID_PREFIX}-copy-location" data-copy="${feature.getProperties().name} is approximate ${getMeasureValue(feature.getGeometry())}"></button>
+                                                </div>
+                                            `
+                                        }
                                     }
                                 });
                             });
@@ -49,10 +71,13 @@ LayerManager.addMapLayers([
                             success(features);
                         })
                         .catch((error) => {
-                            const errorMessage = 'Error loading Capitals layer';
+                            const errorMessage = 'Failed to load Countries layer';
 
                             console.error(`${errorMessage} [${error}]`);
-                            Toast.error({text: errorMessage});
+                            Toast.error({
+                                title: 'Error',
+                                message: errorMessage
+                            });
 
                             failure();
                         });
