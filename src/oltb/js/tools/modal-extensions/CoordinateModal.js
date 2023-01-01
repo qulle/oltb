@@ -2,7 +2,7 @@ import { DOM } from '../../helpers/browser/DOM';
 import { ModalBase } from '../../common/modals/ModalBase';
 import { isDarkTheme } from '../../helpers/IsDarkTheme';
 
-const ID_PREFIX = 'oltb-coordinate-modal';
+const ID_PREFIX = 'oltb-coordinates-modal';
 const DEFAULT_OPTIONS = Object.freeze({
     onClose: undefined,
     onNavigate: undefined,

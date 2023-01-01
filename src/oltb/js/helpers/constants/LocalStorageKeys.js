@@ -12,7 +12,7 @@ const LOCAL_STORAGE_KEYS = Object.freeze({
     SplitViewTool: 'tool.splitview',
     GraticuleTool: 'tool.graticule',
     ScaleLineTool: 'tool.scaleline',
-    CoordinateTool: 'tool.coordinate',
+    CoordinatesTool: 'tool.coordinates',
     SettingsManager: 'manager.settings'
 });
 

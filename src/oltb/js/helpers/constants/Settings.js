@@ -6,7 +6,7 @@ const SETTINGS = Object.freeze({
     AlwaysNewLayers: 'always.new.layers',
     AltShiftDragRotate: 'alt.shift.drag.rotate',
     SelectVectorMapShapes: 'select.vector.map.shapes',
-    CopyCoordinateOnClick: 'copy.coordinate.on.click'
+    CopyCoordinatesOnClick: 'copy.coordinates.on.click'
 });
 
 export { SETTINGS };

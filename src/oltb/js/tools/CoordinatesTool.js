@@ -18,14 +18,14 @@ import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
 import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 import { LOCAL_STORAGE_KEYS } from '../helpers/constants/LocalStorageKeys';
 
-const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.CoordinateTool;
+const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.CoordinatesTool;
 const LOCAL_STORAGE_DEFAULTS = Object.freeze({
     active: false
 });
 
 const DEFAULT_OPTIONS = Object.freeze({});
 
-class CoordinateTool extends Control {
+class CoordinatesTool extends Control {
     constructor(options = {}) {
         super({
             element: TOOLBAR_ELEMENT
@@ -42,7 +42,7 @@ class CoordinateTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Show coordinates (${SHORTCUT_KEYS.Coordinate})`
+                'data-tippy-content': `Show coordinates (${SHORTCUT_KEYS.Coordinates})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -59,9 +59,9 @@ class CoordinateTool extends Control {
         const localStorageState = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
         this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
 
-        SettingsManager.addSetting(SETTINGS.CopyCoordinateOnClick, {
+        SettingsManager.addSetting(SETTINGS.CopyCoordinatesOnClick, {
             state: true, 
-            text: 'Coordinate tool - Copy coordinates on click'
+            text: 'Coordinates tool - Copy coordinates on click'
         });
 
         window.addEventListener(EVENTS.Browser.KeyDown, this.onWindowKeyDown.bind(this));
@@ -75,7 +75,7 @@ class CoordinateTool extends Control {
     }
 
     onWindowKeyDown(event) {
-        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Coordinate)) {
+        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Coordinates)) {
             this.handleClick(event);
         }
     }
@@ -133,7 +133,7 @@ class CoordinateTool extends Control {
 
     async onMapClick(event) {
         if(
-            !SettingsManager.getSetting(SETTINGS.CopyCoordinateOnClick) || 
+            !SettingsManager.getSetting(SETTINGS.CopyCoordinatesOnClick) || 
             ToolManager.hasActiveTool()
         ) {
             return;
@@ -145,23 +145,13 @@ class CoordinateTool extends Control {
             CONFIG.Projection.WGS84
         );
 
-        const lon = coordinates[0];
-        const lat = coordinates[1];
         const prettyCoordinates = toStringHDMS(coordinates);
-
-        const coordinate = {
-            data: {
-                lon: lon, 
-                lat: lat
-            },
-            pretty: prettyCoordinates
-        };
 
         copyToClipboard(prettyCoordinates)
             .then(() => {
                 Toast.success({
                     title: 'Copied',
-                    message: 'Coordinate copied to clipboard', 
+                    message: 'Coordinates copied to clipboard', 
                     autoremove: 4000
                 });
             })
@@ -175,11 +165,21 @@ class CoordinateTool extends Control {
                 });
             });
         
+        const lon = coordinates[0];
+        const lat = coordinates[1];
+        const response = {
+            data: {
+                lon: lon, 
+                lat: lat
+            },
+            pretty: prettyCoordinates
+        };
+
         // User defined callback from constructor
         if(typeof this.options.mapClicked === 'function') {
-            this.options.mapClicked(coordinate);
+            this.options.mapClicked(response);
         }
     }
 }
 
-export { CoordinateTool };
+export { CoordinatesTool };

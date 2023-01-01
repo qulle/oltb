@@ -34,7 +34,7 @@ class Alert extends DialogBase {
 
         const buttonWrapper = DOM.createElement({
             element: 'div', 
-            class: 'oltb-dialog__button-wrapper'
+            class: 'oltb-dialog__buttons-wrapper'
         });
 
         const okButton = DOM.createElement({

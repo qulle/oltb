@@ -57,7 +57,7 @@ import { GraticuleTool } from 'oltb/dist/src/oltb/js/tools/GraticuleTool';
 import { MyLocationTool } from 'oltb/dist/src/oltb/js/tools/MyLocationTool';
 import { ResetNorthTool } from 'oltb/dist/src/oltb/js/tools/ResetNorthTool';
 import { FullscreenTool } from 'oltb/dist/src/oltb/js/tools/FullscreenTool';
-import { CoordinateTool } from 'oltb/dist/src/oltb/js/tools/CoordinateTool';
+import { CoordinatesTool } from 'oltb/dist/src/oltb/js/tools/CoordinateTool';
 import { HiddenAboutTool } from 'oltb/dist/src/oltb/js/tools/hidden-tools/AboutTool';
 import { NotificationTool } from 'oltb/dist/src/oltb/js/tools/NotificationTool';
 import { HiddenMarkerTool } from 'oltb/dist/src/oltb/js/tools/hidden-tools/MarkerTool';
@@ -337,7 +337,7 @@ const map = new Map({
                 console.log('Map north reset');
             }
         }),
-        new CoordinateTool({
+        new CoordinatesTool({
             click: function() {
                 console.log('CoordinateTool clicked');
             },

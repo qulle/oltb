@@ -30,13 +30,13 @@ class HiddenMapNavigationTool extends Control {
         });
 
         this.options = { ...DEFAULT_OPTIONS, ...options };
-        this.coordinateModal = undefined;
+        this.coordinatesModal = undefined;
 
         // Load stored data from localStorage
         const localStorageState = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
         this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
 
-        const coordinateIcon = getIcon({
+        const coordinatesIcon = getIcon({
             path: SVG_PATHS.Crosshair.Stroked
         });
 
@@ -49,8 +49,8 @@ class HiddenMapNavigationTool extends Control {
         });
 
         ContextMenu.addItem({
-            icon: coordinateIcon,
-            name: 'Navigate to coordinate',
+            icon: coordinatesIcon,
+            name: 'Navigate to coordinates',
             fn: this.onContextMenuCenterAtCoordinate.bind(this)
         })
 
@@ -82,16 +82,16 @@ class HiddenMapNavigationTool extends Control {
     }
 
     onContextMenuCenterAtCoordinate(map, coordinates, target) {
-        if(this.coordinateModal) {
+        if(this.coordinatesModal) {
             return;
         }
 
-        this.coordinateModal = new CoordinateModal({
+        this.coordinatesModal = new CoordinateModal({
             onNavigate: (coordinates) => {
                 this.goToView(map, coordinates, map.getView().getZoom());
             },
             onClose: () => {
-                this.coordinateModal = undefined;
+                this.coordinatesModal = undefined;
             }
         });
     }

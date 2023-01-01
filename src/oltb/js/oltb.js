@@ -139,12 +139,12 @@ class OLTB {
         ]);
 
         const view = map.getView();
-        const coordinate = fromLonLat([
+        const coordinates = fromLonLat([
             LOCAL_STORAGE.lon,
             LOCAL_STORAGE.lat
         ], CONFIG.Projection.Default);
 
-        view.setCenter(coordinate);
+        view.setCenter(coordinates);
         view.setZoom(LOCAL_STORAGE.zoom);
         view.setRotation(LOCAL_STORAGE.rotation);
     }

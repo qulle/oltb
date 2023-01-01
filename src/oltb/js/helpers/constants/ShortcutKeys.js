@@ -1,7 +1,7 @@
 const SHORTCUT_KEYS = Object.freeze({
     Overview: 'A',
     Bookmark: 'B',
-    Coordinate: 'C',
+    Coordinates: 'C',
     ToolbarDirection: 'D',
     ExportPNG: 'E',
     FullScreen: 'F',

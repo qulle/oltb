@@ -55,7 +55,7 @@ const geoJsonPromise = fetch(urlCapitalsGeoJSON)
                 `,
                 footer: `
                     <span class="oltb-info-window__coordinates">${prettyCoordinates}</span>
-                    <div class="oltb-info-window__button-wrapper">
+                    <div class="oltb-info-window__buttons-wrapper">
                         <button class="oltb-func-btn oltb-func-btn--delete oltb-tippy" title="Delete marker" id="${ID_PREFIX}-remove"></button>
                         <button class="oltb-func-btn oltb-func-btn--copy oltb-tippy" title="Copy marker text" id="${ID_PREFIX}-copy-location" data-copy="Country ${capital.properties.countryName} Capital ${capital.properties.capitalName} Coordinates ${prettyCoordinates}"></button>
                     </div>

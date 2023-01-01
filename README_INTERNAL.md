@@ -301,7 +301,7 @@ All modules uses named exports exclusively throughout the project. The one excep
 ### JavaScript
 The tools are located in the directory `src/oltb/js/modules/tools`. Every tool has its own class and extend the Control-class from OpenLayers.
 ```javascript
-class Coordinates extends Control {}
+class CoordinatesTool extends Control {}
 ```
 
 When using the custom tools, all that is needed is to import the module(s) you want to have in your toolbar.
@@ -330,7 +330,7 @@ import { GraticuleTool } from './modules/tools/GraticuleTool';
 import { MyLocationTool } from './modules/tools/MyLocationTool';
 import { ResetNorthTool } from './modules/tools/ResetNorthTool';
 import { FullscreenTool } from './modules/tools/FullscreenTool';
-import { CoordinateTool } from './modules/tools/CoordinateTool';
+import { CoordinatesTool } from './modules/tools/CoordinatesTool';
 import { HiddenAboutTool } from './modules/tools/hidden-tools/AboutTool';
 import { NotificationTool } from './modules/tools/NotificationTool';
 import { HiddenMarkerTool } from './modules/tools/hidden-tools/MarkerTool';
@@ -362,7 +362,7 @@ controls: defaultControls({
     new GraticuleTool(),
     new MagnifyTool(),
     new ResetNorthTool(),
-    new CoordinateTool(),
+    new CoordinatesTool(),
     new MyLocationTool(),
     new ImportVectorLayerTool(),
     new ScaleLineTool(),
@@ -608,9 +608,9 @@ controls: defaultControls({
             console.log('Map north reset');
         }
     }),
-    new CoordinateTool({
+    new CoordinatesTool({
         click: function() {
-            console.log('CoordinateTool clicked');
+            console.log('CoordinatesTool clicked');
         },
         mapClicked: function(coordinates) {
             console.log('You clicked at', coordinates);

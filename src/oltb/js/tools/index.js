@@ -22,7 +22,7 @@ import { GraticuleTool } from './GraticuleTool';
 import { MyLocationTool } from './MyLocationTool';
 import { ResetNorthTool } from './ResetNorthTool';
 import { FullscreenTool } from './FullscreenTool';
-import { CoordinateTool } from './CoordinateTool';
+import { CoordinatesTool } from './CoordinatesTool';
 import { HiddenAboutTool } from './hidden-tools/AboutTool';
 import { NotificationTool } from './NotificationTool';
 import { HiddenMarkerTool } from './hidden-tools/MarkerTool';
@@ -48,7 +48,7 @@ const ALL_TOOLS = Object.freeze({
     GraticuleTool,
     MagnifyTool,
     ResetNorthTool,
-    CoordinateTool,
+    CoordinatesTool,
     MyLocationTool,
     ImportVectorLayerTool,
     ScaleLineTool,

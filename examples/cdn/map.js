@@ -277,7 +277,7 @@ const toolbar = new oltb({
                 console.log('Map north reset');
             }
         },
-        CoordinateTool: {
+        CoordinatesTool: {
             click: function() {
                 console.log('CoordinateTool clicked');
             },
