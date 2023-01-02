@@ -2,18 +2,10 @@ import { Toast } from "../../src/oltb/js/common/Toast";
 import { toStringHDMS } from "ol/coordinate";
 import { LayerManager } from "../../src/oltb/js/core/managers/LayerManager";
 import { generateMarker } from '../../src/oltb/js/generators/GenerateMarker';
-import { getIcon, SVG_PATHS } from "../../src/oltb/js/core/icons/GetIcon";
 
 import urlCapitalsGeoJSON from 'url:../geojson/capitals.geojson';
 
 const ID_PREFIX = 'oltb-info-window-marker';
-const ICON = getIcon({
-    path: SVG_PATHS.GeoMarker.Filled,
-    width: 20,
-    height: 20,
-    fill: 'rgb(255, 255, 255)'
-});
-
 const CONTINENT_COLORS = Object.freeze({
     'Europe': '#5B88D6FF',
     'Africa': '#68B9E5FF',
@@ -68,7 +60,7 @@ const geoJsonPromise = fetch(urlCapitalsGeoJSON)
                 new generateMarker({
                     lat: lat,
                     lon: lon,
-                    icon: ICON,
+                    icon: 'GeoMarker.Filled',
                     backgroundColor: backgroundColor,
                     notSelectable: true,
                     infoWindow: infoWindow

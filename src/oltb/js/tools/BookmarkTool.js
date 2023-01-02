@@ -79,8 +79,8 @@ class BookmarkTool extends Control {
                 <div class="oltb-toolbox-section__groups" id="${ID_PREFIX}-toolbox-collapsed" style="display: ${this.localStorage.collapsed ? 'none' : 'block'}">
                     <div class="oltb-toolbox-section__group">
                         <div class="oltb-input-button-group">
-                            <input type="text" id="${ID_PREFIX}-add-txt" class="oltb-input" placeholder="Bookmark name">
-                            <button type="button" id="${ID_PREFIX}-add-btn" class="oltb-btn oltb-btn--green-mid oltb-tippy" title="Add Bookmark">
+                            <input type="text" id="${ID_PREFIX}-add-text" class="oltb-input" placeholder="Bookmark name">
+                            <button type="button" id="${ID_PREFIX}-add-button" class="oltb-btn oltb-btn--green-mid oltb-tippy" title="Add Bookmark">
                                 ${getIcon({
                                     path: SVG_PATHS.Plus.Stroked,
                                     width: 20,
@@ -102,8 +102,8 @@ class BookmarkTool extends Control {
         this.bookmarkToolbox = document.querySelector(`#${ID_PREFIX}-toolbox`);
         this.bookmarkStack = this.bookmarkToolbox.querySelector(`#${ID_PREFIX}-stack`);
 
-        this.addBookmarkButton = this.bookmarkToolbox.querySelector(`#${ID_PREFIX}-add-btn`);
-        this.addBookmarkText = this.bookmarkToolbox.querySelector(`#${ID_PREFIX}-add-txt`);
+        this.addBookmarkButton = this.bookmarkToolbox.querySelector(`#${ID_PREFIX}-add-button`);
+        this.addBookmarkText = this.bookmarkToolbox.querySelector(`#${ID_PREFIX}-add-text`);
 
         this.addBookmarkButton.addEventListener(EVENTS.Browser.Click, this.onBookmarkAdd.bind(this));
         this.addBookmarkText.addEventListener(EVENTS.Browser.KeyUp, this.onBookmarkAdd.bind(this));

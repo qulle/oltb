@@ -128,22 +128,22 @@ class EditTool extends Control {
                 <div class="oltb-toolbox-section__groups" id="${ID_PREFIX}-toolbox-collapsed" style="display: ${this.localStorage.collapsed ? 'none' : 'block'}">
                     <div class="oltb-toolbox-section__group">
                         <label class="oltb-label">Misc</label>
-                        <button type="button" id="${ID_PREFIX}-delete-selected-btn" class="oltb-btn oltb-btn--blue-mid oltb-tippy" title="Delete">
+                        <button type="button" id="${ID_PREFIX}-delete-selected-button" class="oltb-btn oltb-btn--blue-mid oltb-tippy" title="Delete">
                             ${getIcon({ ...DEFAULT_BUTTON_PROPS, path: SVG_PATHS.Trash.Stroked })}
                         </button>
                     </div>
                     <div class="oltb-toolbox-section__group oltb-toolbox-section__group--sub-toolbar">
                         <label class="oltb-label">Shapes</label>
-                        <button type="button" id="${ID_PREFIX}-union-selected-btn" class="oltb-btn oltb-btn--blue-mid oltb-tippy" title="Union">
+                        <button type="button" id="${ID_PREFIX}-union-selected-button" class="oltb-btn oltb-btn--blue-mid oltb-tippy" title="Union">
                             ${getIcon({ ...DEFAULT_BUTTON_PROPS, path: SVG_PATHS.Union.Mixed })}
                         </button>
-                        <button type="button" id="${ID_PREFIX}-intersect-selected-btn" class="oltb-btn oltb-btn--blue-mid oltb-tippy" title="Intersect">
+                        <button type="button" id="${ID_PREFIX}-intersect-selected-button" class="oltb-btn oltb-btn--blue-mid oltb-tippy" title="Intersect">
                             ${getIcon({ ...DEFAULT_BUTTON_PROPS, path: SVG_PATHS.Intersect.Mixed })}
                         </button>
-                        <button type="button" id="${ID_PREFIX}-exclude-selected-btn" class="oltb-btn oltb-btn--blue-mid oltb-tippy" title="Exclude">
+                        <button type="button" id="${ID_PREFIX}-exclude-selected-button" class="oltb-btn oltb-btn--blue-mid oltb-tippy" title="Exclude">
                             ${getIcon({ ...DEFAULT_BUTTON_PROPS, path: SVG_PATHS.Exclude.Mixed })}
                         </button>
-                        <button type="button" id="${ID_PREFIX}-difference-selected-btn" class="oltb-btn oltb-btn--blue-mid oltb-tippy" title="Difference">
+                        <button type="button" id="${ID_PREFIX}-difference-selected-button" class="oltb-btn oltb-btn--blue-mid oltb-tippy" title="Difference">
                             ${getIcon({ ...DEFAULT_BUTTON_PROPS, path: SVG_PATHS.Subtract.Mixed })}
                         </button>
                     </div>
@@ -165,19 +165,19 @@ class EditTool extends Control {
 
         this.editToolbox = document.querySelector(`#${ID_PREFIX}-toolbox`);
 
-        this.deleteSelectedButton = this.editToolbox.querySelector(`#${ID_PREFIX}-delete-selected-btn`);
+        this.deleteSelectedButton = this.editToolbox.querySelector(`#${ID_PREFIX}-delete-selected-button`);
         this.deleteSelectedButton.addEventListener(EVENTS.Browser.Click, this.onDeleteSelectedFeatures.bind(this));
 
-        this.unionSelectedButton = this.editToolbox.querySelector(`#${ID_PREFIX}-union-selected-btn`);
+        this.unionSelectedButton = this.editToolbox.querySelector(`#${ID_PREFIX}-union-selected-button`);
         this.unionSelectedButton.addEventListener(EVENTS.Browser.Click, this.onShapeOperator.bind(this, this.unionFeatures, 'union'));
 
-        this.intersectSelectedButton = this.editToolbox.querySelector(`#${ID_PREFIX}-intersect-selected-btn`);
+        this.intersectSelectedButton = this.editToolbox.querySelector(`#${ID_PREFIX}-intersect-selected-button`);
         this.intersectSelectedButton.addEventListener(EVENTS.Browser.Click, this.onShapeOperator.bind(this, this.intersectFeatures, 'intersect'));
 
-        this.excludeSelectedButton = this.editToolbox.querySelector(`#${ID_PREFIX}-exclude-selected-btn`);
+        this.excludeSelectedButton = this.editToolbox.querySelector(`#${ID_PREFIX}-exclude-selected-button`);
         this.excludeSelectedButton.addEventListener(EVENTS.Browser.Click, this.onShapeOperator.bind(this, this.excludeFeatures, 'exclude'));
 
-        this.differenceSelectedButton = this.editToolbox.querySelector(`#${ID_PREFIX}-difference-selected-btn`);
+        this.differenceSelectedButton = this.editToolbox.querySelector(`#${ID_PREFIX}-difference-selected-button`);
         this.differenceSelectedButton.addEventListener(EVENTS.Browser.Click, this.onShapeOperator.bind(this, this.differenceFeatures, 'difference'));
 
         this.fillColor = this.editToolbox.querySelector(`#${ID_PREFIX}-fill-color`);

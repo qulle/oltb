@@ -5,13 +5,11 @@ import { MarkerModal } from "../../../tools/modal-extensions/MarkerModal";
 import { LayerManager } from '../LayerManager';
 import { toStringHDMS } from 'ol/coordinate';
 import { generateMarker } from '../../../generators/GenerateMarker';
-import { SVG_PATHS, getIcon } from '../../icons/GetIcon';
 
 const ID_PREFIX = 'oltb-info-window-marker';
 
 const editFeature = function(InfoWindowManager, feature) {
     const properties = feature.getProperties().oltb;
-
     const markerModal = new MarkerModal({
         edit: true,
         coordinates: transform(
@@ -19,8 +17,8 @@ const editFeature = function(InfoWindowManager, feature) {
             CONFIG.Projection.Default, 
             CONFIG.Projection.WGS84
         ),
-        name: properties.name,
-        info: properties.info,
+        title: properties.title,
+        description: properties.description,
         backgroundColor: properties.backgroundColor,
         color: properties.color,
         icon: properties.icon,
@@ -33,9 +31,9 @@ const editFeature = function(InfoWindowManager, feature) {
     
             const prettyCoordinates = toStringHDMS([result.longitude, result.latitude]);
             const infoWindow = {
-                title: result.name,
+                title: result.title,
                 content: `
-                    <p>${result.info}</p>
+                    <p>${result.description}</p>
                 `,
                 footer: `
                     <span class="oltb-info-window__coordinates">${prettyCoordinates}</span>
@@ -47,22 +45,12 @@ const editFeature = function(InfoWindowManager, feature) {
                 `
             };
             
-            const [ iconName, iconVersion ] = result.icon.split('.');
-            const icon = getIcon({
-                path: SVG_PATHS[iconName][iconVersion],
-                width: 20,
-                height: 20,
-                fill: 'rgb(255, 255, 255)',
-                stroke: 'none'
-            });
-            
             const marker = new generateMarker({
-                name: result.name,
-                info: result.info,
+                title: result.title,
+                description: result.description,
                 lat: result.latitude,
                 lon: result.longitude,
-                iconName: result.icon,
-                icon: icon,
+                icon: result.icon,
                 backgroundColor: result.backgroundColor,
                 color: result.color,
                 notSelectable: true,

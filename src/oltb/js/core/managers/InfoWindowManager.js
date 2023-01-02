@@ -144,7 +144,9 @@ class InfoWindowManager {
 
     static hightlightVectorSection(feature) {
         const style = new Style({
-            fill: new Fill({color: '#254372AA'}),
+            fill: new Fill({
+                color: '#254372AA'
+            }),
             stroke: new Stroke({
                 color: '#369ACDFF',
                 width: 1.5

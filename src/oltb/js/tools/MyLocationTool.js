@@ -127,13 +127,6 @@ class MyLocationTool extends Control {
         const lon = location.coords.longitude;
         const prettyCoordinates = toStringHDMS([lon, lat]);
 
-        const icon = getIcon({
-            path: SVG_PATHS.Person.Filled,
-            width: 20,
-            height: 20,
-            fill: 'rgb(255, 255, 255)'
-        });
-
         const infoWindow = {
             title: 'My location',
             content: `
@@ -151,7 +144,7 @@ class MyLocationTool extends Control {
         const marker = new generateMarker({
             lat: lat,
             lon: lon,
-            icon: icon,
+            icon: 'Person.Filled',
             notSelectable: true,
             infoWindow: infoWindow
         });

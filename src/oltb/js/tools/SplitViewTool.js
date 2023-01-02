@@ -75,7 +75,7 @@ class SplitViewTool extends Control {
                         <select id="${ID_PREFIX}-right-src" class="oltb-select"></select>
                     </div>
                     <div class="oltb-toolbox-section__group">
-                        <button type="button" id="${ID_PREFIX}-swap-btn" class="oltb-btn oltb-btn--green-mid oltb-w-100">Swap sides</button>
+                        <button type="button" id="${ID_PREFIX}-swap-button" class="oltb-btn oltb-btn--green-mid oltb-w-100">Swap sides</button>
                     </div>
                 </div>
             </div>
@@ -98,7 +98,7 @@ class SplitViewTool extends Control {
             toggle.addEventListener(EVENTS.Browser.Click, this.onToggleToolbox.bind(this, toggle));
         });
 
-        const swapSidesButton = this.splitViewToolbox.querySelector(`#${ID_PREFIX}-swap-btn`);
+        const swapSidesButton = this.splitViewToolbox.querySelector(`#${ID_PREFIX}-swap-button`);
         swapSidesButton.addEventListener(EVENTS.Browser.Click, (event) => {
             this.swapSides();
         });

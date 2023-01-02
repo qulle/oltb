@@ -32,13 +32,13 @@ class CoordinateModal extends ModalBase {
             text: 'Latitud',
             class: 'oltb-label', 
             attributes: {
-                for: `${ID_PREFIX}-marker-lat`
+                for: `${ID_PREFIX}-lat`
             }
         }));
 
         const latText = DOM.createElement({
             element: 'input',
-            id: `${ID_PREFIX}-marker-lat`,
+            id: `${ID_PREFIX}-lat`,
             class: 'oltb-input',
             value: '',
             attributes: {
@@ -60,13 +60,13 @@ class CoordinateModal extends ModalBase {
             text: 'Longitud', 
             class: 'oltb-label',
             attributes: {
-                for: `${ID_PREFIX}-marker-lon`
+                for: `${ID_PREFIX}-lon`
             }
         }));
 
         const lonText = DOM.createElement({
             element: 'input',
-            id: `${ID_PREFIX}-marker-lon`,
+            id: `${ID_PREFIX}-lon`,
             class: 'oltb-input',
             value: '',
             attributes: {

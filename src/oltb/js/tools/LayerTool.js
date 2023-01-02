@@ -96,7 +96,7 @@ class LayerTool extends Control {
                         !this.options.disableMapCreateLayerButton ? 
                         `
                             <div class="oltb-toolbox-section__group">
-                                <button type="button" id="${ID_PREFIX}-map-stack-add-btn" class="oltb-btn oltb-btn--green-mid oltb-w-100">Create map layer</button>
+                                <button type="button" id="${ID_PREFIX}-map-stack-add-button" class="oltb-btn oltb-btn--green-mid oltb-w-100">Create map layer</button>
                             </div>
                         ` : ''
                     }
@@ -116,8 +116,8 @@ class LayerTool extends Control {
                             !this.options.disableFeatureCreateLayerButton ? 
                             `
                                 <div class="oltb-input-button-group">
-                                    <input type="text" id="${ID_PREFIX}-feature-stack-add-txt" class="oltb-input" placeholder="Layer name">
-                                    <button type="button" id="${ID_PREFIX}-feature-stack-add-btn" class="oltb-btn oltb-btn--green-mid oltb-tippy" title="Create feature layer">
+                                    <input type="text" id="${ID_PREFIX}-feature-stack-add-text" class="oltb-input" placeholder="Layer name">
+                                    <button type="button" id="${ID_PREFIX}-feature-stack-add-button" class="oltb-btn oltb-btn--green-mid oltb-tippy" title="Create feature layer">
                                         ${getIcon({
                                             path: SVG_PATHS.Plus.Stroked,
                                             width: 20,
@@ -148,8 +148,8 @@ class LayerTool extends Control {
         this.mapLayerStack = this.layersToolbox.querySelector(`#${ID_PREFIX}-map-stack`);
         this.featureLayerStack = this.layersToolbox.querySelector(`#${ID_PREFIX}-feature-stack`);
 
-        this.addFeatureLayerButton = this.layersToolbox.querySelector(`#${ID_PREFIX}-feature-stack-add-btn`);
-        this.addFeatureLayerText = this.layersToolbox.querySelector(`#${ID_PREFIX}-feature-stack-add-txt`);
+        this.addFeatureLayerButton = this.layersToolbox.querySelector(`#${ID_PREFIX}-feature-stack-add-button`);
+        this.addFeatureLayerText = this.layersToolbox.querySelector(`#${ID_PREFIX}-feature-stack-add-text`);
 
         if(this.addFeatureLayerButton) {
             this.addFeatureLayerButton.addEventListener(EVENTS.Browser.Click, this.onFeatureLayerAdd.bind(this));
@@ -159,7 +159,7 @@ class LayerTool extends Control {
             this.addFeatureLayerText.addEventListener(EVENTS.Browser.KeyUp, this.onFeatureLayerAdd.bind(this));
         }
 
-        const addMapLayerButton = this.layersToolbox.querySelector(`#${ID_PREFIX}-map-stack-add-btn`);
+        const addMapLayerButton = this.layersToolbox.querySelector(`#${ID_PREFIX}-map-stack-add-button`);
         if(addMapLayerButton) {
             addMapLayerButton.addEventListener(EVENTS.Browser.Click, this.showAddMapLayerModal.bind(this));
         }
