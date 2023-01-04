@@ -16,12 +16,6 @@ class CoordinateModal extends ModalBase {
         super('Coordinates', options.onClose);
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
-        const modalContent = DOM.createElement({
-            element: 'div',
-            class: 'oltb-modal__content'
-        });
-
-        // Create textbox for marker latitude
         const latWrapper = DOM.createElement({
             element: 'div',
             class: 'oltb-mt-0625'
@@ -49,7 +43,6 @@ class CoordinateModal extends ModalBase {
 
         latWrapper.appendChild(latText);
 
-        // Create textbox for marker longitude
         const lonWrapper = DOM.createElement({
             element: 'div',
             class: 'oltb-mt-0625'
@@ -76,9 +69,7 @@ class CoordinateModal extends ModalBase {
         });
 
         lonWrapper.appendChild(lonText);
-
         
-        // Create buttons for create and cancel
         const buttonsWrapper = DOM.createElement({
             element: 'div',
             class: 'oltb-d-flex oltb-justify-content-between oltb-mt-15'
@@ -121,6 +112,11 @@ class CoordinateModal extends ModalBase {
             cancelButton,
             navigateButton
         ]);
+
+        const modalContent = DOM.createElement({
+            element: 'div',
+            class: 'oltb-modal__content'
+        });
 
         DOM.appendChildren(modalContent, [
             latWrapper,

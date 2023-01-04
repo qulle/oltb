@@ -22,7 +22,6 @@ class MarkerModal extends ModalBase {
         super('Marker configuration', options.onClose);
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
-        // Create textbox for marker title
         const titleWrapper = DOM.createElement({
             element: 'div',
             class: 'oltb-m-0'
@@ -49,7 +48,6 @@ class MarkerModal extends ModalBase {
 
         titleWrapper.appendChild(titleText);
 
-        // Create textbox for marker description
         const descriptionWrapper = DOM.createElement({
             element: 'div',
             class: 'oltb-mt-0625'
@@ -77,7 +75,6 @@ class MarkerModal extends ModalBase {
 
         descriptionWrapper.appendChild(descriptionText);
 
-        // Create and populate select element with all icons
         const iconWrapper = DOM.createElement({
             element: 'div',
             class: 'oltb-mt-0625'
@@ -122,7 +119,6 @@ class MarkerModal extends ModalBase {
  
         iconWrapper.appendChild(iconSelect);
 
-        // Create textbox for marker latitude
         const latWrapper = DOM.createElement({
             element: 'div',
             class: 'oltb-mt-0625'
@@ -149,7 +145,6 @@ class MarkerModal extends ModalBase {
 
         latWrapper.appendChild(latText);
 
-        // Create textbox for marker longitude
         const lonWrapper = DOM.createElement({
             element: 'div',
             class: 'oltb-mt-0625'
@@ -176,7 +171,6 @@ class MarkerModal extends ModalBase {
 
         lonWrapper.appendChild(lonText);
 
-        // Create color picker for background
         const backgroundColorWrapper = DOM.createElement({
             element: 'div',
             class: 'oltb-mt-0625'
@@ -210,7 +204,6 @@ class MarkerModal extends ModalBase {
 
         backgroundColorWrapper.appendChild(backgroundColorInput);
 
-        // Create color picker for color
         const colorWrapper = DOM.createElement({
             element: 'div',
             class: 'oltb-mt-0625' 
@@ -244,7 +237,6 @@ class MarkerModal extends ModalBase {
 
         colorWrapper.appendChild(colorInput);
 
-        // Create buttons for create and cancel
         const buttonsWrapper = DOM.createElement({
             element: 'div',
             class: 'oltb-d-flex oltb-justify-content-between oltb-mt-15'

@@ -246,7 +246,6 @@ class BookmarkTool extends Control {
             StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
         }        
 
-        // Create the bookmark UI element
         this.createBookmark(bookmark);
 
         if(!this.active) {
@@ -274,14 +273,12 @@ class BookmarkTool extends Control {
     }
 
     createBookmark(bookmark) {
-        // Create bookmark item
         const bookmarkElement = DOM.createElement({
             element: 'li', 
             id: `oltb-bookmark-${bookmark.id}`,
             class: 'oltb-toolbox-list__item'
         });
 
-        // Create bookmark name label
         const bookmarkName = DOM.createElement({
             element: 'span', 
             text: bookmark.name.ellipsis(20),
@@ -302,7 +299,6 @@ class BookmarkTool extends Control {
             delay: [600, 100]
         });
 
-        // Create div for holding left side of bookmark item
         const leftButtonWrapper = DOM.createElement({
             element: 'div', 
             class: 'oltb-toolbox-list__wrapper'
@@ -311,13 +307,11 @@ class BookmarkTool extends Control {
         leftButtonWrapper.appendChild(bookmarkName);
         bookmarkElement.appendChild(leftButtonWrapper);
 
-        // Create div for holding right side of bookmark item
         const rightButtonWrapper = DOM.createElement({
             element: 'div', 
             class: 'oltb-toolbox-list__wrapper'
         });
 
-        // Add all buttons to the bookmark
         const zoomToButton = DOM.createElement({
             element: 'button',
             class: `${BOOKMARK_BUTTON_DEFAULT_CLASSES} oltb-func-btn--geo-pin oltb-tippy`,

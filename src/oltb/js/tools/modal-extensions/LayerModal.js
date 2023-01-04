@@ -15,7 +15,6 @@ class LayerModal extends ModalBase {
         super('Create map layer', options.onClose);
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
-        // Create textbox for layer name
         const nameWrapper = DOM.createElement({
             element: 'div',
             class: 'oltb-m-0'
@@ -42,7 +41,6 @@ class LayerModal extends ModalBase {
 
         nameWrapper.appendChild(nameText);
 
-        // Create and populate select element with the layer types
         const typeWrapper = DOM.createElement({
             element: 'div',
             class: 'oltb-mt-0625'
@@ -75,7 +73,6 @@ class LayerModal extends ModalBase {
 
         typeWrapper.appendChild(typeSelect);
 
-        // Create and populate select element with the source types
         const sourceWrapper = DOM.createElement({
             element: 'div',
             class: 'oltb-mt-0625' 
@@ -108,7 +105,6 @@ class LayerModal extends ModalBase {
 
         sourceWrapper.appendChild(sourceSelect);
 
-        // Create textbox for projection
         const projectionWrapper = DOM.createElement({
             element: 'div',
             class: 'oltb-mt-0625' 
@@ -135,7 +131,6 @@ class LayerModal extends ModalBase {
 
         projectionWrapper.appendChild(projectionText);
 
-        // Create textbox for layer URL
         const urlWrapper = DOM.createElement({
             element: 'div',
             class: 'oltb-mt-0625'
@@ -161,7 +156,6 @@ class LayerModal extends ModalBase {
 
         urlWrapper.appendChild(urlText);
 
-        // Create textbox for parameters
         const parametersWrapper = DOM.createElement({
             element: 'div',
             class: 'oltb-mt-0625'
@@ -188,7 +182,6 @@ class LayerModal extends ModalBase {
 
         parametersWrapper.appendChild(parametersText);
 
-        // Create and populate select element with layer wrapX values
         const wrapXWrapper = DOM.createElement({
             element: 'div',
             class: 'oltb-mt-0625'
@@ -221,7 +214,6 @@ class LayerModal extends ModalBase {
 
         wrapXWrapper.appendChild(wrapXSelect);
 
-        // Create textbox for layer attributions
         const attributionsWrapper = DOM.createElement({
             element: 'div',
             class: 'oltb-mt-0625'
@@ -247,7 +239,6 @@ class LayerModal extends ModalBase {
 
         attributionsWrapper.appendChild(attributionsText);
 
-        // Create buttons for create and cancel
         const buttonsWrapper = DOM.createElement({
             element: 'div',
             class: 'oltb-d-flex oltb-justify-content-between oltb-mt-15'

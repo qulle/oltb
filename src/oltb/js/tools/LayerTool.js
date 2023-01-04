@@ -393,7 +393,6 @@ class LayerTool extends Control {
             layer.classList.remove('oltb-toolbox-list__item--active');
         });
 
-        // Create layer baser item - li
         const layerElement = DOM.createElement({
             element: 'li', 
             id: `${options.idPrefix}-${layerWrapper.id}`,
@@ -408,7 +407,6 @@ class LayerTool extends Control {
             }
         });
 
-        // Create layer name label
         const layerName = DOM.createElement({
             element: 'span', 
             text: layerWrapper.name.ellipsis(20),
@@ -443,7 +441,6 @@ class LayerTool extends Control {
             });
         }
 
-        // Create div for holding left side of layer item
         const leftButtonWrapper = DOM.createElement({
             element: 'div',
             class: 'oltb-toolbox-list__wrapper' 
@@ -452,7 +449,6 @@ class LayerTool extends Control {
         leftButtonWrapper.appendChild(layerName);
         layerElement.appendChild(leftButtonWrapper);
 
-        // Create div for holding right side of layer item
         const rightButtonWrapper = DOM.createElement({
             element: 'div',
             class: 'oltb-toolbox-list__wrapper'

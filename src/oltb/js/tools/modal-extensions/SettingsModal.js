@@ -16,11 +16,7 @@ class SettingsModal extends ModalBase {
         super('Settings', options.onClose);
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
-        const modalContent = DOM.createElement({
-            element: 'div',
-            class: 'oltb-modal__content'
-        });
-
+        const settingsFragment = document.createDocumentFragment();
         const settings = SettingsManager.getSettings();
         
         settings.forEach((settingObj, key) => {
@@ -66,10 +62,9 @@ class SettingsModal extends ModalBase {
                 label
             ]);
             
-            modalContent.appendChild(checkboxWrapper);
+            settingsFragment.appendChild(checkboxWrapper);
         });
 
-        // Create buttons for create and cancel
         const buttonsWrapper = DOM.createElement({
             element: 'div',
             class: 'oltb-d-flex oltb-justify-content-between oltb-mt-15'
@@ -116,7 +111,13 @@ class SettingsModal extends ModalBase {
             saveButton
         ]);
 
+        const modalContent = DOM.createElement({
+            element: 'div',
+            class: 'oltb-modal__content'
+        });
+
         DOM.appendChildren(modalContent, [
+            settingsFragment,
             buttonsWrapper,
         ]);
 

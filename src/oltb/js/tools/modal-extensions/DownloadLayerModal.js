@@ -14,7 +14,6 @@ class DownloadLayerModal extends ModalBase {
         super('Download layer', options.onClose);
         this.options = { DEFAULT_OPTIONS, ...options };
 
-        // Create and populate select element with layer format values
         const formatWrapper = DOM.createElement({
             element: 'div',
             class: 'oltb-mt-0625'
@@ -47,7 +46,6 @@ class DownloadLayerModal extends ModalBase {
 
         formatWrapper.appendChild(formatSelect);
 
-        // Create buttons for download and cancel
         const buttonsWrapper = DOM.createElement({
             element: 'div',
             class: 'oltb-d-flex oltb-justify-content-between oltb-mt-15' 

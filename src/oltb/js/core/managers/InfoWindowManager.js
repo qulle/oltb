@@ -29,7 +29,7 @@ class InfoWindowManager {
 
         this.#map = map;
 
-        // Create DOM element representing infoWindow
+        // Create infoWindow
         this.#infoWindow = DOM.createElement({
             element: 'div',
             class: 'oltb-info-window oltb-animation',
@@ -134,8 +134,12 @@ class InfoWindowManager {
         }
 
         const infoWindow = feature?.getProperties()?.oltb?.infoWindow;
+        const nodeName = event.originalEvent.target.nodeName;
 
-        if(infoWindow) {
+        if(
+            infoWindow && 
+            nodeName === 'CANVAS'
+        ) {
             this.#map.getViewport().style.cursor = 'pointer';
         }else {
             this.#map.getViewport().style.cursor = 'default';
