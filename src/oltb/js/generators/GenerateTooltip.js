@@ -3,7 +3,7 @@ import { CONFIG } from '../core/Config';
 import { Overlay } from 'ol';
 
 const generateTooltip = function(data = '') {
-    const wrapper = DOM.createElement({
+    const tooltip = DOM.createElement({
         element: 'div',
         class: 'oltb-overlay-tooltip'
     });
@@ -14,10 +14,10 @@ const generateTooltip = function(data = '') {
         class: 'oltb-overlay-tooltip__item'
     });
 
-    wrapper.appendChild(item);
+    tooltip.appendChild(item);
 
     const overlay = new Overlay({
-        element: wrapper,
+        element: tooltip,
         positioning: 'bottom-center',
         offset: [
             CONFIG.OverlayOffset.Horizontal,

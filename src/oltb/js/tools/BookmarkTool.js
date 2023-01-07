@@ -21,14 +21,15 @@ const BOOKMARK_BUTTON_DEFAULT_CLASSES = 'oltb-func-btn';
 const ID_PREFIX = 'oltb-bookmark';
 
 const DEFAULT_OPTIONS = Object.freeze({
-    storeDataInLocalStorage: false
+    storeDataInLocalStorage: false,
+    bookmarks: []
 });
 
 const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.BookmarkTool;
 const LOCAL_STORAGE_DEFAULTS = Object.freeze({
     active: false,
     collapsed: false,
-    bookmarks: Object.freeze([])
+    bookmarks: []
 });
 
 class BookmarkTool extends Control {
@@ -111,6 +112,11 @@ class BookmarkTool extends Control {
         const toggleableTriggers = this.bookmarkToolbox.querySelectorAll('.oltb-toggleable');
         toggleableTriggers.forEach((toggle) => {
             toggle.addEventListener(EVENTS.Browser.Click, this.onToggleToolbox.bind(this, toggle));
+        });
+
+        // Add all bookmarks that is passed through constructor
+        this.options.bookmarks.forEach((bookmark) => {
+            this.createBookmark(bookmark);
         });
 
         // Add all saved bookmarks from localstorage

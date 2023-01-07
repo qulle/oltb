@@ -85,54 +85,6 @@
         }
     }
 
-    &--yellow-light {
-        background-color: $color-yellow-light;
-
-        &:focus {
-            box-shadow: 0 0 0 $shadow-focus-width rgba($color-yellow-light, .5);
-        }
-    }
-
-    &--yellow-mid {
-        background-color: $color-yellow-mid;
-
-        &:focus {
-            box-shadow: 0 0 0 $shadow-focus-width rgba($color-yellow-mid, .5);
-        }
-    }
-
-    &--yellow-dark {
-        background-color: $color-yellow-dark;
-
-        &:focus {
-            box-shadow: 0 0 0 $shadow-focus-width rgba($color-yellow-dark, .5);
-        }
-    }
-
-    &--orange-light {
-        background-color: $color-orange-light;
-
-        &:focus {
-            box-shadow: 0 0 0 $shadow-focus-width rgba($color-orange-light, .5);
-        }
-    }
-
-    &--orange-mid {
-        background-color: $color-orange-mid;
-
-        &:focus {
-            box-shadow: 0 0 0 $shadow-focus-width rgba($color-orange-mid, .5);
-        }
-    }
-
-    &--orange-dark {
-        background-color: $color-orange-dark;
-
-        &:focus {
-            box-shadow: 0 0 0 $shadow-focus-width rgba($color-orange-dark, .5);
-        }
-    }
-
     &--red-light {
         background-color: $color-red-light;
 
