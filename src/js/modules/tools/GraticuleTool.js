@@ -1,6 +1,6 @@
 import Graticule from 'ol/layer/Graticule';
 import Stroke from 'ol/style/Stroke';
-import DOM from '../helpers/Browser/DOM';
+import DOM from '../helpers/browser/DOM';
 import StateManager from '../core/managers/StateManager';
 import { Control } from 'ol/control';
 import { TOOLBAR_ELEMENT } from '../core/ElementReferences';

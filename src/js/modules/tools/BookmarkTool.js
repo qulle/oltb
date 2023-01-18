@@ -1,6 +1,6 @@
 import Dialog from '../common/Dialog';
 import Toast from '../common/Toast';
-import DOM from '../helpers/Browser/DOM';
+import DOM from '../helpers/browser/DOM';
 import CONFIG from '../core/Config';
 import StateManager from '../core/managers/StateManager';
 import tippy from 'tippy.js';

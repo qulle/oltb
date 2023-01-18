@@ -4,7 +4,7 @@ import SettingsManager from '../core/managers/SettingsManager';
 import StateManager from '../core/managers/StateManager';
 import TooltipManager from '../core/managers/TooltipManager';
 import ToolManager from '../core/managers/ToolManager';
-import DOM from '../helpers/Browser/DOM';
+import DOM from '../helpers/browser/DOM';
 import Toast from '../common/Toast';
 import { Control } from 'ol/control';
 import { Select, Modify, Translate } from 'ol/interaction';

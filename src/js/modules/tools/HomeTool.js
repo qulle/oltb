@@ -1,5 +1,5 @@
 import CONFIG from '../core/Config';
-import DOM from '../helpers/Browser/DOM';
+import DOM from '../helpers/browser/DOM';
 import Toast from '../common/Toast';
 import { Control } from 'ol/control';
 import { fromLonLat } from 'ol/proj';

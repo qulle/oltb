@@ -1,5 +1,5 @@
 import Toast from '../common/Toast';
-import DOM from '../helpers/Browser/DOM';
+import DOM from '../helpers/browser/DOM';
 import StateManager from '../core/managers/StateManager';
 import { Control } from 'ol/control';
 import { getRenderPixel } from 'ol/render';

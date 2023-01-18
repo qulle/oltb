@@ -1,5 +1,5 @@
 import Toast from '../common/Toast';
-import DOM from '../helpers/Browser/DOM';
+import DOM from '../helpers/browser/DOM';
 import { Control } from 'ol/control';
 import { listen } from 'ol/events';
 import { TOOLBAR_ELEMENT } from '../core/ElementReferences';
@@ -15,7 +15,7 @@ import {
     requestFullScreen,
     requestFullScreenWithKeys,
     exitFullScreen
-} from '../helpers/Browser/Fullscreen';
+} from '../helpers/browser/Fullscreen';
 
 const DEFAULT_OPTIONS = {};
 

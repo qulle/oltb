@@ -1,5 +1,5 @@
 import StateManager from '../core/managers/StateManager';
-import DOM from '../helpers/Browser/DOM';
+import DOM from '../helpers/browser/DOM';
 import { Control } from 'ol/control';
 import { TOOLBAR_ELEMENT } from '../core/ElementReferences';
 import { SVG_PATHS, getIcon } from '../core/SVGIcons';

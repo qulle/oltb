@@ -1,5 +1,5 @@
 import ModalBase from '../../common/modals/ModalBase';
-import DOM from '../../helpers/Browser/DOM';
+import DOM from '../../helpers/browser/DOM';
 import { isDarkTheme } from '../../helpers/IsDarkTheme';
 
 const PREFIX_LAYER_ID = 'oltb-download-layer-modal';

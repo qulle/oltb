@@ -2,7 +2,7 @@ import CONFIG from './Config';
 import DOM from '../helpers/browser/DOM';
 import { isHorizontal } from '../helpers/IsRowDirection';
 import { EVENTS } from '../helpers/constants/Events';
-import { eventDispatcher } from '../helpers/Browser/EventDispatcher';
+import { eventDispatcher } from '../helpers/browser/EventDispatcher';
 
 const AColorPicker = require('a-color-picker');
 

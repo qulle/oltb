@@ -1,7 +1,7 @@
 import LayerManager from '../core/managers/LayerManager';
 import Dialog from '../common/Dialog';
 import LayerModal from './modal-extensions/LayerModal';
-import DOM from '../helpers/Browser/DOM';
+import DOM from '../helpers/browser/DOM';
 import CONFIG from '../core/Config';
 import InfoWindowManager from '../core/managers/InfoWindowManager';
 import StateManager from '../core/managers/StateManager';
@@ -10,7 +10,7 @@ import DownloadLayerModal from './modal-extensions/DownloadLayerModal';
 import tippy from 'tippy.js';
 import { Control } from 'ol/control';
 import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT } from '../core/ElementReferences';
-import { download } from '../helpers/Browser/Download';
+import { download } from '../helpers/browser/Download';
 import { addContextMenuItem } from '../common/ContextMenu';
 import { SVG_PATHS, getIcon } from '../core/SVGIcons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';

@@ -1,5 +1,5 @@
 import ModalBase from '../../common/modals/ModalBase';
-import DOM from '../../helpers/Browser/DOM';
+import DOM from '../../helpers/browser/DOM';
 import CONFIG from '../../core/Config';
 import { isDarkTheme } from '../../helpers/IsDarkTheme';
 

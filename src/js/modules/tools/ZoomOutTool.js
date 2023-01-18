@@ -1,5 +1,5 @@
 import CONFIG from '../core/Config';
-import DOM from '../helpers/Browser/DOM';
+import DOM from '../helpers/browser/DOM';
 import { Control } from 'ol/control';
 import { easeOut } from 'ol/easing';
 import { TOOLBAR_ELEMENT } from '../core/ElementReferences';

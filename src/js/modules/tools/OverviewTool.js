@@ -1,7 +1,7 @@
 import OSM from 'ol/source/OSM';
 import TileLayer from 'ol/layer/Tile';
 import StateManager from '../core/managers/StateManager';
-import DOM from '../helpers/Browser/DOM';
+import DOM from '../helpers/browser/DOM';
 import { Control, OverviewMap } from 'ol/control';
 import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT } from '../core/ElementReferences';
 import { SVG_PATHS, getIcon } from '../core/SVGIcons';

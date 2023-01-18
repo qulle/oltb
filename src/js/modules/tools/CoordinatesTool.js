@@ -1,6 +1,6 @@
 import CONFIG from '../core/Config';
 import Toast from '../common/Toast';
-import DOM from '../helpers/Browser/DOM';
+import DOM from '../helpers/browser/DOM';
 import SettingsManager from '../core/managers/SettingsManager';
 import TooltipManager from '../core/managers/TooltipManager';
 import ToolManager from '../core/managers/ToolManager';
@@ -9,7 +9,7 @@ import { Control } from 'ol/control';
 import { transform } from 'ol/proj';
 import { unByKey } from 'ol/Observable';
 import { TOOLBAR_ELEMENT } from '../core/ElementReferences';
-import { copyToClipboard } from '../helpers/Browser/CopyToClipboard';
+import { copyToClipboard } from '../helpers/browser/CopyToClipboard';
 import { SVG_PATHS, getIcon } from '../core/SVGIcons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { toStringHDMS } from 'ol/coordinate';

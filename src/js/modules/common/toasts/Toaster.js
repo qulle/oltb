@@ -1,4 +1,4 @@
-import DOM from '../../helpers/Browser/DOM';
+import DOM from '../../helpers/browser/DOM';
 import CONFIG from '../../core/Config';
 import { TOAST_ELEMENT } from '../../core/ElementReferences';
 import { EVENTS } from '../../helpers/constants/Events';

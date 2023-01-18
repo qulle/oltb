@@ -1,8 +1,8 @@
 import html2canvas from 'html2canvas';
-import DOM from '../helpers/Browser/DOM';
+import DOM from '../helpers/browser/DOM';
 import Toast from '../common/Toast';
 import { Control } from 'ol/control';
-import { download } from '../helpers/Browser/Download';
+import { download } from '../helpers/browser/Download';
 import { MAP_ELEMENT, TOOLBAR_ELEMENT } from '../core/ElementReferences';
 import { SVG_PATHS, getIcon } from '../core/SVGIcons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';

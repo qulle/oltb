@@ -1,4 +1,4 @@
-import DOM from '../../helpers/Browser/DOM';
+import DOM from '../../helpers/browser/DOM';
 import { MAP_ELEMENT } from '../../core/ElementReferences';
 import { SVG_PATHS, getIcon } from '../../core/SVGIcons';
 import { trapFocusKeyListener } from '../../helpers/TrapFocus';

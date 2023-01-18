@@ -1,4 +1,4 @@
-import DOM from '../helpers/Browser/DOM';
+import DOM from '../helpers/browser/DOM';
 import StateManager from '../core/managers/StateManager';
 import { Control, ScaleLine } from 'ol/control';
 import { TOOLBAR_ELEMENT } from '../core/ElementReferences';

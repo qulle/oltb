@@ -2,7 +2,7 @@ import Dialog from '../common/Dialog';
 import Toast from '../common/Toast';
 import SettingsModal from './modal-extensions/SettingsModal';
 import StateManager from '../core/managers/StateManager';
-import DOM from '../helpers/Browser/DOM';
+import DOM from '../helpers/browser/DOM';
 import { Control } from 'ol/control';
 import { TOOLBAR_ELEMENT } from '../core/ElementReferences';
 import { addContextMenuItem } from '../common/ContextMenu';

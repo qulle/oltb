@@ -1,12 +1,12 @@
 import LayerManager from '../core/managers/LayerManager';
 import StateManager from '../core/managers/StateManager';
 import Toast from '../common/Toast';
-import DOM from '../helpers/Browser/DOM';
+import DOM from '../helpers/browser/DOM';
 import { Control } from 'ol/control';
 import { getRenderPixel } from 'ol/render';
 import { unByKey } from 'ol/Observable';
 import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT, MAP_ELEMENT } from '../core/ElementReferences';
-import { eventDispatcher } from '../helpers/Browser/EventDispatcher';
+import { eventDispatcher } from '../helpers/browser/EventDispatcher';
 import { SVG_PATHS, getIcon } from '../core/SVGIcons';
 import { isShortcutKeyOnly } from '../helpers/ShortcutKeyOnly';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';

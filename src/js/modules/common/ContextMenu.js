@@ -1,6 +1,6 @@
 import Control from "ol/control/Control";
 import CONFIG from '../core/Config';
-import DOM from '../helpers/Browser/DOM';
+import DOM from '../helpers/browser/DOM';
 import { trapFocusKeyListener } from '../helpers/TrapFocus';
 import { transform } from 'ol/proj';
 import { MAP_ELEMENT } from "../core/ElementReferences";

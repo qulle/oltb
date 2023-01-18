@@ -13,7 +13,7 @@ import HiddenMapNavigationTool from './modules/tools/hidden-tools/MapNavigationT
 import HomeTool from './modules/tools/HomeTool';
 import ZoomInTool from './modules/tools/ZoomInTool';
 import ZoomOutTool from './modules/tools/ZoomOutTool';
-import FullScreenTool from './modules/tools/FullScreenTool';
+import FullScreenTool from './modules/tools/FullscreenTool';
 import ExportPNGTool from './modules/tools/ExportPNGTool';
 import DrawTool from './modules/tools/DrawTool';
 import MeasureTool from './modules/tools/MeasureTool';
@@ -52,7 +52,7 @@ import { CONTEXT_MENUS } from './modules/helpers/constants/ContextMenus';
 import { SETTINGS } from './modules/helpers/constants/Settings';
 import './modules/core/Tooltips';
 import './modules/epsg/Registrate';
-import './modules/helpers/Browser/Prototypes';
+import './modules/helpers/browser/Prototypes';
 import './modules/helpers/Accessibility';
 import './modules/helpers/SlideToggle';
 

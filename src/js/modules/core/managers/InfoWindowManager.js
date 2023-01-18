@@ -1,13 +1,13 @@
 import Overlay from 'ol/Overlay';
 import CONFIG from '../Config';
-import DOM from '../../helpers/Browser/DOM';
+import DOM from '../../helpers/browser/DOM';
 import { getCenter } from 'ol/extent';
 import { SVG_PATHS, getIcon } from '../SVGIcons';
 import { copyFeatureInfo } from './info-window-manager/CopyFeatureInfo';
 import { removeFeature } from './info-window-manager/RemoveFeature';
 import { editFeature } from './info-window-manager/EditFeature';
 import { trapFocusKeyListener } from '../../helpers/TrapFocus';
-import { EVENTS } from '../../helpers/Constants/Events';
+import { EVENTS } from '../../helpers/constants/Events';
 import { Fill, Stroke, Style } from 'ol/style';
 
 const ANIMATION_CLASS = 'oltb-animations--centered-bounce';
