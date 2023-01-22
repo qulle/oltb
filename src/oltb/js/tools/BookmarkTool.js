@@ -7,10 +7,13 @@ import { Dialog } from '../common/Dialog';
 import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { easeOut } from 'ol/easing';
+import { transform } from 'ol/proj';
 import { ContextMenu } from '../common/ContextMenu';
+import { toStringHDMS } from 'ol/coordinate';
 import { StateManager } from '../core/managers/StateManager';
 import { randomNumber } from '../helpers/browser/Random';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
+import { copyToClipboard } from '../helpers/browser/CopyToClipboard';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
 import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 import { LOCAL_STORAGE_KEYS } from '../helpers/constants/LocalStorageKeys';
@@ -329,6 +332,18 @@ class BookmarkTool extends Control {
                 'click': this.zoomToBookmark.bind(this, bookmark)
             }
         });
+
+        const copyCoordinatesButton = DOM.createElement({
+            element: 'button',
+            class: `${BOOKMARK_BUTTON_DEFAULT_CLASSES} oltb-func-btn--crosshair oltb-tippy`,
+            title: 'Copy coordinates',
+            attributes: {
+                type: 'button'
+            },
+            listeners: {
+                'click': this.coopyBookmarkCoordinates.bind(this, bookmark)
+            }
+        });
         
         const editButton = DOM.createElement({
             element: 'button',
@@ -355,7 +370,8 @@ class BookmarkTool extends Control {
         });
         
         DOM.appendChildren(rightButtonWrapper, [
-            zoomToButton, 
+            zoomToButton,
+            copyCoordinatesButton,
             editButton, 
             deleteButton
         ]);
@@ -384,6 +400,34 @@ class BookmarkTool extends Control {
         if(typeof this.options.zoomedTo === 'function') {
             this.options.zoomedTo(bookmark);
         }
+    }
+    
+    coopyBookmarkCoordinates(bookmark) {
+        const coordinates = transform(
+            bookmark.location, 
+            CONFIG.Projection.Default, 
+            CONFIG.Projection.WGS84
+        );
+
+        const prettyCoordinates = toStringHDMS(coordinates);
+
+        copyToClipboard(prettyCoordinates)
+            .then(() => {
+                Toast.success({
+                    title: 'Copied',
+                    message: 'Coordinates copied to clipboard', 
+                    autoremove: 4000
+                });
+            })
+            .catch((error) => {
+                const errorMessage = 'Failed to copy coordinates';
+
+                console.error(errorMessage, error);
+                Toast.error({
+                    title: 'Error',
+                    message: errorMessage
+                });
+            });
     }
 
     deleteBookmark(bookmark, bookmarkElement) {
