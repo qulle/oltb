@@ -136,7 +136,8 @@ class MyLocationTool extends Control {
                 <span class="oltb-info-window__coordinates">${prettyCoordinates}</span>
                 <div class="oltb-info-window__buttons-wrapper">
                     <button class="oltb-func-btn oltb-func-btn--delete oltb-tippy" title="Delete marker" id="${ID_PREFIX}-remove"></button>
-                    <button class="oltb-func-btn oltb-func-btn--copy oltb-tippy" title="Copy marker text" id="${ID_PREFIX}-copy-location" data-copy="My location ${prettyCoordinates}"></button>
+                    <button class="oltb-func-btn oltb-func-btn--crosshair oltb-tippy" title="Copy marker coordinates" id="${ID_PREFIX}-copy-coordinates" data-coordinates="${prettyCoordinates}"></button>
+                    <button class="oltb-func-btn oltb-func-btn--copy oltb-tippy" title="Copy marker text" id="${ID_PREFIX}-copy-text" data-copy="${this.options.infoWindowContent}"></button>
                 </div>
             `
         };

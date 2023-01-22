@@ -9,6 +9,7 @@ import { copyFeatureInfo } from './info-window-manager/CopyFeatureInfo';
 import { SVG_PATHS, getIcon } from '../icons/GetIcon';
 import { Fill, Stroke, Style } from 'ol/style';
 import { trapFocusKeyListener } from '../../helpers/browser/TrapFocus';
+import { copyFeatureCoordinates } from './info-window-manager/CopyFeatureCoordinates';
 
 const ANIMATION_CLASS = 'oltb-animation--centered-bounce';
 const ID_PREFIX = 'oltb-info-window-marker';
@@ -186,7 +187,12 @@ class InfoWindowManager {
             removeFeatureButton.addEventListener(EVENTS.Browser.Click, removeFeature.bind(this, InfoWindowManager, feature));
         }
 
-        const copyFeatureInfoButton = this.#footer.querySelector(`#${ID_PREFIX}-copy-location`);
+        const copyFeatureCoordinatesButton = this.#footer.querySelector(`#${ID_PREFIX}-copy-coordinates`);
+        if(copyFeatureCoordinatesButton) {
+            copyFeatureCoordinatesButton.addEventListener(EVENTS.Browser.Click, copyFeatureCoordinates.bind(this, InfoWindowManager, copyFeatureCoordinatesButton.getAttribute('data-coordinates')));
+        }
+
+        const copyFeatureInfoButton = this.#footer.querySelector(`#${ID_PREFIX}-copy-text`);
         if(copyFeatureInfoButton) {
             copyFeatureInfoButton.addEventListener(EVENTS.Browser.Click, copyFeatureInfo.bind(this, InfoWindowManager, copyFeatureInfoButton.getAttribute('data-copy')));
         }

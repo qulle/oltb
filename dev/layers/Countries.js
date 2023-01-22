@@ -59,7 +59,7 @@ LayerManager.addMapLayers([
                                             footer: `
                                                 <span class="oltb-info-window__coordinates">${prettyCoordinates}</span>
                                                 <div class="oltb-info-window__buttons-wrapper">
-                                                    <button class="oltb-func-btn oltb-func-btn--copy oltb-tippy" title="Copy marker text" id="${ID_PREFIX}-copy-location" data-copy="${feature.getProperties().name} is approximate ${getMeasureValue(feature.getGeometry())}"></button>
+                                                    <button class="oltb-func-btn oltb-func-btn--copy oltb-tippy" title="Copy marker text" id="${ID_PREFIX}-copy-text" data-copy="Based on the geometric data, we estimate the area to be ${getMeasureValue(feature.getGeometry())}"></button>
                                                 </div>
                                             `
                                         }
