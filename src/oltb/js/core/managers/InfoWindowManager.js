@@ -1,6 +1,6 @@
 import { DOM } from '../../helpers/browser/DOM';
 import { CONFIG } from '../Config';
-import { EVENTS } from '../../helpers/Constants/Events';
+import { EVENTS } from '../../helpers/constants/Events';
 import { Overlay } from 'ol';
 import { getCenter } from 'ol/extent';
 import { editFeature } from './info-window-manager/EditFeature';
