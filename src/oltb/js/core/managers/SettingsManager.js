@@ -45,7 +45,7 @@ const DEFAULT_SETTINGS = new Map([
 ]);
 
 class SettingsManager {
-    static #localStorageState = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
+    static #localStorageState = StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME);
     static #localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...this.#localStorageState };
 
     static #settings = structuredClone(DEFAULT_SETTINGS);
@@ -76,7 +76,7 @@ class SettingsManager {
         this.#settings.get(key).state = state;
         this.#localStorage[key] = state;
 
-        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.#localStorage));
+        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, this.#localStorage);
     }
 
     static getSetting(key) {

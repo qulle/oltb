@@ -15,6 +15,11 @@ class DebugInfoModal extends ModalBase {
         super('Debug information', options.onClose);
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
+        const storage = {};
+        Object.keys(localStorage).forEach((key) => {
+            storage[key] = JSON.parse(localStorage.getItem(key) || '{}');
+        });
+
         const view = this.options.map?.getView();
         const content = view ? {
             zoom: view.getZoom(),
@@ -23,7 +28,7 @@ class DebugInfoModal extends ModalBase {
             projection: view.getProjection(),
             proj4Defs: PROJECTIONS,
             defaultConfig: CONFIG,
-            localStorage: JSON.parse(localStorage.getItem(CONFIG.LocalStorage.Key) || {})
+            localStorage: storage
         } : {
             info: 'No map reference found'
         };

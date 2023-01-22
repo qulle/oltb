@@ -66,7 +66,7 @@ class BookmarkTool extends Control {
         this.options = { ...DEFAULT_OPTIONS, ...options };
         
         // Load stored data from localStorage
-        const localStorageState = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
+        const localStorageState = StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME);
         this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
 
         TOOLBOX_ELEMENT.insertAdjacentHTML('beforeend', `
@@ -145,7 +145,7 @@ class BookmarkTool extends Control {
         const targetName = toggle.dataset.oltbToggleableTarget;
         document.getElementById(targetName).slideToggle(CONFIG.AnimationDuration.Fast, (collapsed) => {
             this.localStorage.collapsed = collapsed;
-            StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+            StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, this.localStorage);
         });
     }
 
@@ -217,7 +217,7 @@ class BookmarkTool extends Control {
         this.button.classList.add('oltb-tool-button--active');
 
         this.localStorage.active = true;
-        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, this.localStorage);
     }
 
     deActivateTool() {
@@ -226,7 +226,7 @@ class BookmarkTool extends Control {
         this.button.classList.remove('oltb-tool-button--active');
 
         this.localStorage.active = false;
-        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, this.localStorage);
     }
 
     addBookmark(bookmarkName) {
@@ -249,7 +249,7 @@ class BookmarkTool extends Control {
 
         if(this.options.storeDataInLocalStorage) {
             this.localStorage.bookmarks.push(bookmark);
-            StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+            StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, this.localStorage);
         }        
 
         this.createBookmark(bookmark);
@@ -269,7 +269,7 @@ class BookmarkTool extends Control {
     }
 
     clearBookmarks() {
-        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(LOCAL_STORAGE_DEFAULTS));
+        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, LOCAL_STORAGE_DEFAULTS);
         this.bookmarkStack.innerHTML = '';
 
         // User defined callback from constructor
@@ -399,7 +399,7 @@ class BookmarkTool extends Control {
                     return item.id !== bookmark.id;
                 });
 
-                StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+                StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, this.localStorage);
 
                 // User defined callback from constructor
                 if(typeof this.options.removed === 'function') {
@@ -421,7 +421,7 @@ class BookmarkTool extends Control {
                     bookmarkName.innerText = result.ellipsis(20);
                     bookmarkName._tippy.setContent(result);
 
-                    StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+                    StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, this.localStorage);
 
                     // User defined callback from constructor
                     if(typeof this.options.renamed === 'function') {

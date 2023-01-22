@@ -65,7 +65,7 @@ class MeasureTool extends Control {
         this.options = { ...DEFAULT_OPTIONS, ...options };
         
         // Load stored data from localStorage
-        const localStorageState = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
+        const localStorageState = StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME);
         this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
 
         TOOLBOX_ELEMENT.insertAdjacentHTML('beforeend', `
@@ -128,7 +128,7 @@ class MeasureTool extends Control {
         const targetName = toggle.dataset.oltbToggleableTarget;
         document.getElementById(targetName).slideToggle(CONFIG.AnimationDuration.Fast, (collapsed) => {
             this.localStorage.collapsed = collapsed;
-            StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+            StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, this.localStorage);
         });
     }
 
@@ -177,7 +177,7 @@ class MeasureTool extends Control {
         this.localStorage.fillColor = this.fillColor.getAttribute('data-oltb-color');
         this.localStorage.strokeColor = this.strokeColor.getAttribute('data-oltb-color');;
 
-        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, this.localStorage);
 
         this.selectMeasure(
             this.toolType.value,
@@ -218,7 +218,7 @@ class MeasureTool extends Control {
         eventDispatcher([this.toolType], EVENTS.Browser.Change);
 
         this.localStorage.active = true;
-        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, this.localStorage);
     }
 
     deActivateTool() {
@@ -232,7 +232,7 @@ class MeasureTool extends Control {
         ToolManager.removeActiveTool();
 
         this.localStorage.active = false;
-        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, this.localStorage);
     }
 
     selectMeasure(toolType, fillColor, strokeColor) {

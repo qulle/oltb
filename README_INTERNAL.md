@@ -1017,15 +1017,15 @@ const LOCAL_STORAGE_DEFAULTS = {
 };
 ```
 
-These two nextcomming lines merges potential stored data into a runtime copy of the default properties located in `LOCAL_STORAGE_DEFAULTS`. The spread operator is a really nice feature for this operation.
+These two nextcomming lines merges stored data into a runtime copy of the default properties located in `LOCAL_STORAGE_DEFAULTS`. The spread operator is a really nice feature for this operation.
 ```javascript
-const localStorageState = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
+const localStorageState = StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME);
 this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
 ```
 
 To update the state in localStorage, call the `setStateObject` method and pass in the node name along with the updated state object.
 ```javascript
-StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, this.localStorage);
 ```
 
 ### Debug tool

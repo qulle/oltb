@@ -50,7 +50,7 @@ class OverviewTool extends Control {
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
         // Load stored data from localStorage
-        const localStorageState = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
+        const localStorageState = StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME);
         this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
 
         TOOLBOX_ELEMENT.insertAdjacentHTML('beforeend', `
@@ -94,7 +94,7 @@ class OverviewTool extends Control {
         const targetName = toggle.dataset.oltbToggleableTarget;
         document.getElementById(targetName).slideToggle(CONFIG.AnimationDuration.fast, (collapsed) => {
             this.localStorage.collapsed = collapsed;
-            StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+            StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, this.localStorage);
         
             // Force render of overview, 
             // Other solutions will not render the dashed box correctly until the map is moved
@@ -141,7 +141,7 @@ class OverviewTool extends Control {
         this.button.classList.add('oltb-tool-button--active');
 
         this.localStorage.active = true;
-        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, this.localStorage);
     }
 
     deActivateTool() {
@@ -152,7 +152,7 @@ class OverviewTool extends Control {
         this.overviewToolbox.classList.remove('oltb-toolbox-section--show');
 
         this.localStorage.active = false;
-        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, this.localStorage);
     }
 }
 

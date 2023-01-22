@@ -15,7 +15,7 @@ class StateManager {
             return this.#runtimeState[name];
         }
         
-        return null;
+        return {};
     }
 
     static saveState() {

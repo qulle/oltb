@@ -114,7 +114,7 @@ class EditTool extends Control {
         this.parser.inject(Point, LineString, LinearRing, Polygon, MultiPoint, MultiLineString, MultiPolygon, GeometryCollection);
 
         // Load stored data from localStorage
-        const localStorageState = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
+        const localStorageState = StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME);
         this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
         
         TOOLBOX_ELEMENT.insertAdjacentHTML('beforeend', `
@@ -357,7 +357,7 @@ class EditTool extends Control {
         const targetName = toggle.dataset.oltbToggleableTarget;
         document.getElementById(targetName).slideToggle(CONFIG.AnimationDuration.Fast, (collapsed) => {
             this.localStorage.collapsed = collapsed;
-            StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+            StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, this.localStorage);
         });
     }
 
@@ -457,7 +457,7 @@ class EditTool extends Control {
         this.localStorage.fillColor = this.lastStyle.getFill().getColor();
         this.localStorage.strokeColor = this.lastStyle.getStroke().getColor();
 
-        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, this.localStorage);
     }
 
     onShapeOperator(operation, type) {
@@ -649,7 +649,7 @@ class EditTool extends Control {
         this.button.classList.add('oltb-tool-button--active');
 
         this.localStorage.active = true;
-        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, this.localStorage);
     }
 
     deActivateTool() {
@@ -668,7 +668,7 @@ class EditTool extends Control {
         this.button.classList.remove('oltb-tool-button--active');
 
         this.localStorage.active = false;
-        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, this.localStorage);
     }
 }
 

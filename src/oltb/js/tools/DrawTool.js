@@ -66,7 +66,7 @@ class DrawTool extends Control {
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
         // Load stored data from localStorage
-        const localStorageState = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
+        const localStorageState = StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME);
         this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
 
         TOOLBOX_ELEMENT.insertAdjacentHTML('beforeend', `
@@ -165,7 +165,7 @@ class DrawTool extends Control {
         const targetName = toggle.dataset.oltbToggleableTarget;
         document.getElementById(targetName).slideToggle(CONFIG.AnimationDuration.Fast, (collapsed) => {
             this.localStorage.collapsed = collapsed;
-            StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+            StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, this.localStorage);
         });
     }
 
@@ -219,7 +219,7 @@ class DrawTool extends Control {
         this.localStorage.fillColor = this.fillColor.getAttribute('data-oltb-color');
         this.localStorage.strokeColor = this.strokeColor.getAttribute('data-oltb-color');;
 
-        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, this.localStorage);
 
         // IntersectionMode doesn't play well when tool is LineString or Point
         if(
@@ -273,7 +273,7 @@ class DrawTool extends Control {
         eventDispatcher([this.toolType], EVENTS.Browser.Change);
 
         this.localStorage.active = true;
-        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, this.localStorage);
     }
 
     deActivateTool() {
@@ -287,7 +287,7 @@ class DrawTool extends Control {
         ToolManager.removeActiveTool();
 
         this.localStorage.active = false;
-        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, this.localStorage);
     }
 
     selectDraw(toolType, strokeWidth, fillColor, strokeColor) {

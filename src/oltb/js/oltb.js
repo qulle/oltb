@@ -46,7 +46,7 @@ const LOCAL_STORAGE_DEFAULTS = Object.freeze({
 });
 
 // Load stored data from localStorage
-const LOCAL_STORAGE_STATE = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
+const LOCAL_STORAGE_STATE = StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME);
 const LOCAL_STORAGE = { ...LOCAL_STORAGE_DEFAULTS, ...LOCAL_STORAGE_STATE };
 
 class OLTB {

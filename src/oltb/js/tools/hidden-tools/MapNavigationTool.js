@@ -33,7 +33,7 @@ class HiddenMapNavigationTool extends Control {
         this.coordinatesModal = undefined;
 
         // Load stored data from localStorage
-        const localStorageState = JSON.parse(StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME)) || {};
+        const localStorageState = StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME);
         this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
 
         const coordinatesIcon = getIcon({
@@ -128,7 +128,7 @@ class HiddenMapNavigationTool extends Control {
         this.localStorage.zoom = view.getZoom();
         this.localStorage.rotation = view.getRotation();
 
-        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, JSON.stringify(this.localStorage));
+        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, this.localStorage);
     }
 }
 
