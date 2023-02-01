@@ -184,22 +184,34 @@ class InfoWindowManager {
         // Attach listeners to the function-buttons inside the infoWindow
         const removeFeatureButton = this.#footer.querySelector(`#${ID_PREFIX}-remove`);
         if(removeFeatureButton) {
-            removeFeatureButton.addEventListener(EVENTS.Browser.Click, removeFeature.bind(this, InfoWindowManager, feature));
+            removeFeatureButton.addEventListener(
+                EVENTS.Browser.Click, 
+                removeFeature.bind(this, InfoWindowManager, feature)
+            );
         }
 
         const copyFeatureCoordinatesButton = this.#footer.querySelector(`#${ID_PREFIX}-copy-coordinates`);
         if(copyFeatureCoordinatesButton) {
-            copyFeatureCoordinatesButton.addEventListener(EVENTS.Browser.Click, copyFeatureCoordinates.bind(this, InfoWindowManager, copyFeatureCoordinatesButton.getAttribute('data-coordinates')));
+            copyFeatureCoordinatesButton.addEventListener(
+                EVENTS.Browser.Click, 
+                copyFeatureCoordinates.bind(this, InfoWindowManager, copyFeatureCoordinatesButton.getAttribute('data-coordinates'))
+            );
         }
 
         const copyFeatureInfoButton = this.#footer.querySelector(`#${ID_PREFIX}-copy-text`);
         if(copyFeatureInfoButton) {
-            copyFeatureInfoButton.addEventListener(EVENTS.Browser.Click, copyFeatureInfo.bind(this, InfoWindowManager, copyFeatureInfoButton.getAttribute('data-copy')));
+            copyFeatureInfoButton.addEventListener(
+                EVENTS.Browser.Click, 
+                copyFeatureInfo.bind(this, InfoWindowManager, copyFeatureInfoButton.getAttribute('data-copy'))
+            );
         }
 
         const editFeatureButton = this.#footer.querySelector(`#${ID_PREFIX}-edit`);
         if(editFeatureButton) {
-            editFeatureButton.addEventListener(EVENTS.Browser.Click, editFeature.bind(this, InfoWindowManager, feature));
+            editFeatureButton.addEventListener(
+                EVENTS.Browser.Click, 
+                editFeature.bind(this, InfoWindowManager, feature)
+            );
         }
     }
 
