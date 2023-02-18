@@ -66,12 +66,12 @@ $ npm start
 
 Make GitHub demo build.
 ```
-$ bash github_demo.sh
+$ bash tasks/github_demo.sh
 ```
 
 Make NPM library build.
 ```
-$ bash npm_dist.sh
+$ bash tasks/npm_dist.sh
 ```
 
 Use the following command clean all.
@@ -82,6 +82,11 @@ $ npm run clean
 Check for dependency updates.
 ```
 $ npm outdated
+```
+
+Check for dependency security issues.
+```
+$ npm audit
 ```
 
 Install dependency updates.
@@ -811,9 +816,9 @@ Dialog.prompt({
 Other properties that you can add are:
 ```javascript
 ({
-    confirmClass: Dialog.Danger,  // Changes to a danger dialog
-    confirmText: 'Your text',     // Changes text on the confirm button
-    cancelText: 'Your text'       // Changes text on the cancel button
+    confirmClass: Dialog.Danger, // Changes to a danger dialog
+    confirmText: 'Your text',    // Changes text on the confirm button
+    cancelText: 'Your text'      // Changes text on the cancel button
 });
 ```
 
