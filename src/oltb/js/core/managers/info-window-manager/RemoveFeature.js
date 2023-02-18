@@ -8,10 +8,10 @@ const removeFeature = function(InfoWindowManager, feature) {
         message: 'Do you want to delete this marker?',
         confirmText: 'Delete',
         onConfirm: () => {
-            LayerManager.removeFeatureFromLayer(feature);
-
             this.hideOverlay();
 
+            LayerManager.removeFeatureFromLayer(feature);
+            
             window.dispatchEvent(new CustomEvent(EVENTS.Custom.FeatureRemoved, {
                 detail: {
                     feature: feature
