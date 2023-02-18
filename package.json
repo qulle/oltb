@@ -27,7 +27,7 @@
         "build": "npm run build:demo && npm run build:lib",
         "build:lib": "rollup --config",
         "build:demo": "parcel build --public-url . ./dev/index.html --dist-dir demo/",
-        "example:one": "start firefox -url",
+        "example:one": "sh -c 'start firefox -url \"file://C:$(cut -c3- <<< $(readlink -m ./examples/cdn/index.html))\"'",
         "example:two": "parcel serve ./examples/npm/example-one/index.html --open --dist-dir serve/",
         "example:three": "parcel serve ./examples/npm/example-two/index.html --open --dist-dir serve/",
         "clean": "rm -rf serve/ dist/ demo/ .parcel-cache/"
