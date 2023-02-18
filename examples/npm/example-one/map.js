@@ -262,7 +262,7 @@ const toolbar = new OLTB({
         },
         CoordinatesTool: {
             click: function() {
-                console.log('CoordinateTool clicked');
+                console.log('CoordinatesTool clicked');
             },
             mapClicked: function(coordinates) {
                 console.log('You clicked at', coordinates);

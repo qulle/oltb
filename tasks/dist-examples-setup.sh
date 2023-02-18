@@ -1,12 +1,16 @@
 #!/bin/bash
-echo -e "\n[0/3]. Examples setup \n";
+TReset='\033[0m';
+TCyan='\033[0;36m';
+
+echo -e "\n$TCyan[0/3]$TReset. Examples setup";
+
+cp ./dist/dist/* ./examples/cdn/
+echo -e "\n$TCyan[1/3]$TReset. Copied CDN lib to examples";
 
 npm link
-echo -e "\n[1/3]. Created global symlink";
+echo -e "\n$TCyan[2/3]$TReset. Created global symlink";
 
 cd ./examples/npm
 npm link oltb
-echo -e "\n[2/3]. Linked oltb to examples";
-
-cp ./dist/dist/* ./examples/cdn/
-echo -e "\n[3/3]. Copied CDN lib to examples";
+ls -al $(npm root -g) | grep "\->"
+echo -e "\n$TCyan[3/3]$TReset. Linked oltb to examples";

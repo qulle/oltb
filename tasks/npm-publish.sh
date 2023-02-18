@@ -1,12 +1,15 @@
 #!/bin/bash
-echo -e "\n[0/3]. Publishing package to npmjs.org \n";
+TReset='\033[0m';
+TCyan='\033[0;36m';
+
+echo -e "\n$TCyan[0/3]$TReset. Publishing package to npmjs.org";
 
 npm login
 user=$(npm whoami)
-echo -e "\n[1/2]. Session created for [$user]";
+echo -e "\n$TCyan[1/2]$TReset. Session created for [$user]";
 
 # npm push
-echo -e "\n[2/3]. Pushed package";
+echo -e "\n$TCyan[2/3]$TReset. Pushed package";
 
 npm logout
-echo -e "\n[3/3]. Session terminated for [$user]";
+echo -e "\n$TCyan[3/3]$TReset. Session terminated for [$user]";
