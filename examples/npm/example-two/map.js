@@ -57,7 +57,7 @@ import { GraticuleTool } from 'oltb/dist/src/oltb/js/tools/GraticuleTool';
 import { MyLocationTool } from 'oltb/dist/src/oltb/js/tools/MyLocationTool';
 import { ResetNorthTool } from 'oltb/dist/src/oltb/js/tools/ResetNorthTool';
 import { FullscreenTool } from 'oltb/dist/src/oltb/js/tools/FullscreenTool';
-import { CoordinatesTool } from 'oltb/dist/src/oltb/js/tools/CoordinateTool';
+import { CoordinatesTool } from 'oltb/dist/src/oltb/js/tools/CoordinatesTool';
 import { HiddenAboutTool } from 'oltb/dist/src/oltb/js/tools/hidden-tools/AboutTool';
 import { NotificationTool } from 'oltb/dist/src/oltb/js/tools/NotificationTool';
 import { HiddenMarkerTool } from 'oltb/dist/src/oltb/js/tools/hidden-tools/MarkerTool';
@@ -253,6 +253,12 @@ const map = new Map({
         }),
         new BookmarkTool({
             storeDataInLocalStorage: true,
+            bookmarks: [{
+                id: 123456,
+                name: 'Custom bookmark',
+                zoom: 5,
+                location: [57.123, 16.456]
+            }],
             click: function() {
                 console.log('BookmarkTool clicked');
             },

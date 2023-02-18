@@ -170,6 +170,12 @@ const toolbar = new OLTB({
         },
         BookmarkTool: {
             storeDataInLocalStorage: true,
+            bookmarks: [{
+                id: 123456,
+                name: 'Custom bookmark',
+                zoom: 5,
+                location: [57.123, 16.456]
+            }],
             click: function() {
                 console.log('BookmarkTool clicked');
             },

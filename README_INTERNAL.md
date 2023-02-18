@@ -111,46 +111,51 @@ $ npm run clean
 $ bash tasks/npm-dist.sh
 
 # (6). Clean package.json in dist:
+#      - repository
 #      - scripts
 #      - files
 #      - devDependencies
 
-# (7). Manually update examples:
+# (7). Setup examples
+$ bash tasks/dist-examples-setup.sh
+
+# (8). Manually update examples:
 #      - NPM x 2
 #      - CDN
 
-# (8). Verify examples
-$ bash task/dist-examples-setup.sh
+# (9). Verify examples
 $ npm run example:one
 $ npm run example:two
 $ npm run example:three
 
-# (9). Cleanup examples
-$ bash task/dist-examples-cleanup.sh
+# (10). Cleanup examples
+$ bash tasks/dist-examples-cleanup.sh
 
-# (10). Publish package to NPM
+# (11). Publish package to NPM
 $ bash tasks/npm-publish.sh
 
-# (11). Commit and push updated examples to GitHub
+# (12). Commit and push updated examples to GitHub
 $ git add .
 $ git commit -m "New release x.y.z"
 $ git push
 
-# (12). Create new demo, this will build the GitHub demo using the NPM version
+# (13). Create new demo, this will build the GitHub demo using the NPM version
 $ bash tasks/github-demo.sh
 
-# (13). Commit and push demo to GitHub
+# (14). Commit and push demo to GitHub
 $ git push origin --delete gh-pages
 $ git add dist -f
 $ git commit -m "gh-pages demo release x.y.z"
 $ git subtree push --prefix dist origin gh-pages
 
-# (14). Clean temp demo commit
+# (15). Clean temp demo commit
 $ git reset --hard HEAD~1
 
-# (15). Tag the release
+# (16). Tag the release
 git tag -a vx.y.x -m "vx.y.x"
 git push origin --tags
+
+# (17). Clean github.com/qulle/notification-endpoints
 ```
 
 ## Browser support 

@@ -1,5 +1,5 @@
 #!/bin/bash
-echo -e "\n[0/5]. Starting new lib-build \n";
+echo -e "\n[0/5]. Starting new dist-build \n";
 
 rm -rf ./dist
 echo -e "[1/5]. Old dist removed \n";
