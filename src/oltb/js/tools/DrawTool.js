@@ -370,7 +370,7 @@ class DrawTool extends Control {
             Toast.info({
                 title: 'Tip',
                 message: 'You are drawing in a hidden layer', 
-                autoremove: 4000
+                autoremove: CONFIG.AutoRemovalDuation.Normal
             });
         }
     }
@@ -419,7 +419,7 @@ class DrawTool extends Control {
             Toast.info({
                 title: 'Whoops',
                 message: 'No intersecting objects found', 
-                autoremove: 4000
+                autoremove: CONFIG.AutoRemovalDuation.Normal
             });
         }
 

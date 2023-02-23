@@ -1,5 +1,6 @@
 import { DOM } from '../helpers/browser/DOM';
 import { Toast } from '../common/Toast';
+import { CONFIG } from '../core/Config';
 import { Dialog } from '../common/Dialog';
 import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
@@ -8,9 +9,9 @@ import { StateManager } from '../core/managers/StateManager';
 import { SettingsModal } from './modal-extensions/SettingsModal';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { TOOLBAR_ELEMENT } from '../core/elements/index';
+import { SettingsManager } from '../core/managers/SettingsManager';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
 import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
-import { SettingsManager } from '../core/managers/SettingsManager';
 
 const DEFAULT_OPTIONS = Object.freeze({});
 
@@ -68,7 +69,7 @@ class SettingsTool extends Control {
                 Toast.success({
                     title: 'Cleared',
                     message: "All stored settings was cleared", 
-                    autoremove: 4000
+                    autoremove: CONFIG.AutoRemovalDuation.Normal
                 });
             }
         });

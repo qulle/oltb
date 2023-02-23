@@ -8,7 +8,7 @@ const ANIMATION_CLASS = 'oltb-animation--bounce';
 
 class DialogBase {
     constructor() {
-        this.dialogBackdrop = DOM.createElement({
+        this.backdrop = DOM.createElement({
             element: 'div', 
             class: 'oltb-dialog-backdrop oltb-dialog-backdrop--fixed',
             attributes: {
@@ -32,7 +32,7 @@ class DialogBase {
     }
 
     isBackdropClicked(event) {
-        return event.target === this.dialogBackdrop;
+        return event.target === this.backdrop;
     }
 
     bounceAnimation(event) {
@@ -40,13 +40,13 @@ class DialogBase {
             return;
         }
 
-        const dialog = this.dialogBackdrop.firstElementChild;
+        const dialog = this.backdrop.firstElementChild;
         DOM.runAnimation(dialog, ANIMATION_CLASS);
     }
 
     close() {
-        this.dialogBackdrop.removeEventListener(EVENTS.Browser.KeyDown, trapFocusKeyListener);
-        this.dialogBackdrop.remove();
+        this.backdrop.removeEventListener(EVENTS.Browser.KeyDown, trapFocusKeyListener);
+        this.backdrop.remove();
     }
 }
 

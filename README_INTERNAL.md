@@ -833,6 +833,7 @@ The modal uses trap focus to circle the tab-key.
 Modal.create({
     title: 'Title', 
     content: 'Text/HTML content',
+    maximized: false,
     onClose: () => {
         console.log('Modal closed');
     }

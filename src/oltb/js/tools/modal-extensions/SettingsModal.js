@@ -4,6 +4,7 @@ import { isDarkTheme } from '../../helpers/IsDarkTheme';
 import { SettingsManager } from '../../core/managers/SettingsManager';
 
 const DEFAULT_OPTIONS = Object.freeze({
+    maximized: false,
     onClose: undefined,
     onSave: undefined,
     onCancel: undefined
@@ -13,7 +14,7 @@ class SettingsModal extends ModalBase {
     #state = new Map();
 
     constructor(options = {}) {
-        super('Settings', options.onClose);
+        super('Settings', options.maximized, options.onClose);
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
         const settingsFragment = document.createDocumentFragment();

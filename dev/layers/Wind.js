@@ -1,4 +1,5 @@
 import { Toast } from "../../src/oltb/js/common/Toast";
+import { LogManager } from "../../src/oltb/js/core/managers/LogManager";
 import { toStringHDMS } from "ol/coordinate";
 import { randomNumber } from "../../src/oltb/js/helpers/browser/Random";
 import { LayerManager } from "../../src/oltb/js/core/managers/LayerManager";
@@ -6,6 +7,7 @@ import { generateWindbarb } from "../../src/oltb/js/generators/GenerateWindbarb"
 
 import urlCapitalsGeoJSON from 'url:../geojson/capitals.geojson';
 
+const LOG_ORIGIN = 'Wind.js';
 const ID_PREFIX = 'oltb-info-window-marker';
 const CONTINENT_DIRECTION = Object.freeze({
     'Europe': 5,
@@ -76,7 +78,7 @@ const geoJsonPromise = fetch(urlCapitalsGeoJSON)
     .catch((error) => {
         const errorMessage = 'Failed to load Windbarb layer';
 
-        console.error(`${errorMessage} [${error}]`);
+        LogManager.logError(LOG_ORIGIN, 'geoJsonPromise', `${errorMessage} [${error}]`);
         Toast.error({
             title: 'Error',
             message: errorMessage

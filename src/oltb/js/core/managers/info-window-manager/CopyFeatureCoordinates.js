@@ -1,4 +1,5 @@
 import { Toast } from '../../../common/Toast';
+import { CONFIG } from '../../Config';
 import { copyToClipboard } from '../../../helpers/browser/CopyToClipboard';
 
 const copyFeatureCoordinates = async function(InfoWindowManager, data) {
@@ -7,7 +8,7 @@ const copyFeatureCoordinates = async function(InfoWindowManager, data) {
             Toast.success({
                 title: 'Copied',
                 message: 'Feature coordinates copied to clipboard', 
-                autoremove: 4000
+                autoremove: CONFIG.AutoRemovalDuation.Normal
             });
         })
         .catch((error) => {

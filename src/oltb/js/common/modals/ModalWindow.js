@@ -10,6 +10,7 @@ class ModalWindow extends ModalBase {
     constructor(options = {}) {
         super(
             options.title || DEFAULT_OPTIONS.title,
+            options.maximized,
             options.onClose
         );
 

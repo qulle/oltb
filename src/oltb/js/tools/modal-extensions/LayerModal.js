@@ -5,6 +5,7 @@ import { isDarkTheme } from '../../helpers/IsDarkTheme';
 
 const PREFIX_LAYER_ID = 'oltb-layer-modal';
 const DEFAULT_OPTIONS = Object.freeze({
+    maximized: false,
     onClose: undefined,
     onCreate: undefined,
     onCancel: undefined
@@ -12,7 +13,7 @@ const DEFAULT_OPTIONS = Object.freeze({
 
 class LayerModal extends ModalBase {
     constructor(options = {}) {
-        super('Create map layer', options.onClose);
+        super('Create map layer', options.maximized, options.onClose);
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
         const nameWrapper = DOM.createElement({

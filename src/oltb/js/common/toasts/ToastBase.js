@@ -66,7 +66,7 @@ class ToastBase {
         TOAST_ELEMENT.prepend(toast);
 
         if(this.options.autoremove) {
-            setTimeout(() => {
+            window.setTimeout(() => {
                 this.remove();
             }, this.options.autoremove);
         }
@@ -76,7 +76,7 @@ class ToastBase {
         this.toast.classList.add('oltb-toast--remove', 'oltb-animation--slide-out');
     
         // Remove the toast from DOM after animation finishes
-        setTimeout(() => {
+        window.setTimeout(() => {
             this.toast.remove();
             
             if(typeof this.options.onRemove === 'function') {

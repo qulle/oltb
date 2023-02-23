@@ -12,6 +12,7 @@ const DEFAULT_OPTIONS = Object.freeze({
     backgroundColor: '#0166A5FF',
     color: '#FFFFFFFF',
     icon: 'GeoPin.Filled',
+    maximized: false,
     onClose: undefined,
     onCreate: undefined,
     onCancel: undefined
@@ -19,7 +20,7 @@ const DEFAULT_OPTIONS = Object.freeze({
 
 class MarkerModal extends ModalBase {
     constructor(options = {}) {
-        super('Marker configuration', options.onClose);
+        super('Marker configuration', options.maximized, options.onClose);
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
         const titleWrapper = DOM.createElement({

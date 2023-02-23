@@ -253,7 +253,7 @@ class EditTool extends Control {
         const feature = event.element;
 
         // The setTimeout must be used, if not, the style will be reset to the style used before the feature was selected
-        setTimeout(() => {
+        window.setTimeout(() => {
             if(this.colorHasChanged) {
                 // Set the lastStyle as the default style
                 feature.setStyle(this.lastStyle);
@@ -386,7 +386,7 @@ class EditTool extends Control {
             Toast.info({
                 title: 'Whoops',
                 message: 'No features selected to delete', 
-                autoremove: 4000
+                autoremove: CONFIG.AutoRemovalDuation.Normal
             });
 
             return;
@@ -468,7 +468,7 @@ class EditTool extends Control {
             Toast.info({
                 title: 'Whoops',
                 message: 'Strict two overlapping features must be selected', 
-                autoremove: 4000
+                autoremove: CONFIG.AutoRemovalDuation.Normal
             });
 
             return;

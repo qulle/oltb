@@ -173,7 +173,7 @@ class BookmarkTool extends Control {
                 Toast.info({
                     title: 'Cleared',
                     message: "All stored bookmarks was cleared", 
-                    autoremove: 4000
+                    autoremove: CONFIG.AutoRemovalDuation.Normal
                 });
             }
         });
@@ -261,7 +261,7 @@ class BookmarkTool extends Control {
             Toast.success({
                 title: 'New bookmark',
                 message: `A new bookmark created <strong>${bookmarkName}</strong>`, 
-                autoremove: 4000
+                autoremove: CONFIG.AutoRemovalDuation.Normal
             });
         }
 
@@ -416,7 +416,7 @@ class BookmarkTool extends Control {
                 Toast.success({
                     title: 'Copied',
                     message: 'Coordinates copied to clipboard', 
-                    autoremove: 4000
+                    autoremove: CONFIG.AutoRemovalDuation.Normal
                 });
             })
             .catch((error) => {

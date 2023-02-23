@@ -1,0 +1,40 @@
+.oltb-debug {
+    border-bottom: 1px dashed $color-gray-mid;
+    padding: .5rem 0;
+
+    &:first-child {
+        padding-top: 0;
+    }
+
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        align-content: center;
+        cursor: pointer;
+    }
+
+    &__title {
+        margin: 0;
+    }
+
+    &__toggle {
+        color: $color-gray-dark;
+    }
+
+    &__json {
+        padding: .5rem;
+        border-radius: $border-radius;
+        background-color: $color-gray-light;
+        overflow-x: auto;
+    }
+}
+
+body.oltb-dark .oltb-debug {
+    &__toggle {
+        color: $color-light;
+    }
+
+    &__json {
+        color: $color-gray-dark;
+    }
+}

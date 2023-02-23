@@ -81,9 +81,9 @@ class Confirm extends DialogBase {
             buttonWrapper
         ]);
 
-        this.dialogBackdrop.appendChild(dialog);
-        MAP_ELEMENT.appendChild(this.dialogBackdrop);
-        this.dialogBackdrop.focus();
+        this.backdrop.appendChild(dialog);
+        MAP_ELEMENT.appendChild(this.backdrop);
+        this.backdrop.focus();
     }
 }
 

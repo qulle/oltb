@@ -8,8 +8,8 @@ import { trapFocusKeyListener } from '../../helpers/browser/TrapFocus';
 const ANIMATION_CLASS = 'oltb-animation--bounce';
 
 class ModalBase {
-    constructor(title, onClose) {
-        this.modalBackdrop = DOM.createElement({
+    constructor(title, maximized, onClose) {
+        this.backdrop = DOM.createElement({
             element: 'div', 
             class: 'oltb-modal-backdrop oltb-modal-backdrop--fixed',
             attributes: {
@@ -23,7 +23,7 @@ class ModalBase {
 
         this.modal = DOM.createElement({
             element: 'div', 
-            class: 'oltb-modal oltb-animation oltb-animation--bounce'
+            class: `oltb-modal ${maximized ? 'oltb-modal--maximized' : ''} oltb-animation oltb-animation--bounce`
         });
 
         const modalHeader = DOM.createElement({
@@ -58,7 +58,7 @@ class ModalBase {
             modalClose
         ]);
 
-        this.modalBackdrop.appendChild(this.modal);
+        this.backdrop.appendChild(this.modal);
         this.modal.appendChild(modalHeader);
 
         this.onClose = onClose;
@@ -73,7 +73,7 @@ class ModalBase {
     }
 
     isBackdropClicked(event) {
-        return event.target === this.modalBackdrop;
+        return event.target === this.backdrop;
     }
 
     bounceAnimation(event) {
@@ -81,19 +81,19 @@ class ModalBase {
             return;
         }
 
-        const modal = this.modalBackdrop.firstElementChild;
+        const modal = this.backdrop.firstElementChild;
         DOM.runAnimation(modal, ANIMATION_CLASS);
     }
 
     show(modalContent) {
         this.modal.appendChild(modalContent);
-        MAP_ELEMENT.appendChild(this.modalBackdrop);
-        this.modalBackdrop.focus();
+        MAP_ELEMENT.appendChild(this.backdrop);
+        this.backdrop.focus();
     }
 
     close() {
-        this.modalBackdrop.removeEventListener(EVENTS.Browser.KeyDown, trapFocusKeyListener);
-        this.modalBackdrop.remove();
+        this.backdrop.removeEventListener(EVENTS.Browser.KeyDown, trapFocusKeyListener);
+        this.backdrop.remove();
 
         // User defined callback from constructor
         if(typeof this.onClose === 'function') {

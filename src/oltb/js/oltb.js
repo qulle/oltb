@@ -24,6 +24,7 @@ import { LOCAL_STORAGE_KEYS } from './helpers/constants/LocalStorageKeys';
 // Core Managers
 import { LayerManager } from './core/managers/LayerManager';
 import { StateManager } from './core/managers/StateManager';
+import { LoggerManager } from './core/managers/LoggerManager';
 import { TooltipManager } from './core/managers/TooltipManager';
 import { SettingsManager } from './core/managers/SettingsManager';
 import { InfoWindowManager } from './core/managers/InfoWindowManager';
@@ -56,6 +57,7 @@ class OLTB {
 
     static StateManager = StateManager;
     static LayerManager = LayerManager;
+    static LoggerManager = LoggerManager;
     static TooltipManager = TooltipManager;
     static SettingsManager = SettingsManager;
     static InfoWindowManager = InfoWindowManager;

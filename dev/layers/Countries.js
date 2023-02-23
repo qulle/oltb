@@ -4,6 +4,7 @@ import { CONFIG } from '../../src/oltb/js/core/Config';
 import { GeoJSON } from 'ol/format';
 import { transform } from 'ol/proj';
 import { getCenter } from 'ol/extent';
+import { LogManager } from '../../src/oltb/js/core/managers/LogManager';
 import { toStringHDMS } from "ol/coordinate";
 import { LayerManager } from "../../src/oltb/js/core/managers/LayerManager";
 import { getMeasureValue } from "../../src/oltb/js/helpers/Measurements";
@@ -13,6 +14,7 @@ import { Vector as VectorSource } from 'ol/source';
 
 import urlCountriesGeoJSON from 'url:../geojson/countries.geojson';
 
+const LOG_ORIGIN = 'Countries.js';
 const ID_PREFIX = 'oltb-info-window-marker';
 LayerManager.addMapLayers([
     {
@@ -73,7 +75,7 @@ LayerManager.addMapLayers([
                         .catch((error) => {
                             const errorMessage = 'Failed to load Countries layer';
 
-                            console.error(`${errorMessage} [${error}]`);
+                            LogManager.logError(LOG_ORIGIN, 'addMapLayers', `${errorMessage} [${error}]`);
                             Toast.error({
                                 title: 'Error',
                                 message: errorMessage

@@ -72,7 +72,7 @@ class ZoomOutTool extends Control {
             easing: easeOut
         });
 
-        setTimeout(() => {
+        window.setTimeout(() => {
             // User defined callback from constructor
             if(typeof this.options.zoomed === 'function') {
                 this.options.zoomed();

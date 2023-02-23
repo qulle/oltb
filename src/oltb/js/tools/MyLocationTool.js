@@ -168,7 +168,7 @@ class MyLocationTool extends Control {
         });
 
         // Trigger InfoWindow to show
-        setTimeout(() => {
+        window.setTimeout(() => {
             InfoWindowManager.showOverly(marker, fromLonLat([lon, lat]));
         }, CONFIG.AnimationDuration.Normal);
 

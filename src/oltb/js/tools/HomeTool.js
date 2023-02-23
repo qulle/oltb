@@ -92,7 +92,7 @@ class HomeTool extends Control {
             easing: easeOut
         });
 
-        setTimeout(() => {
+        window.setTimeout(() => {
             // User defined callback from constructor
             if(typeof this.options.home === 'function') {
                 this.options.home();
@@ -114,7 +114,7 @@ class HomeTool extends Control {
         Toast.success({
             title: 'New home',
             message: 'New location was set as home',
-            autoremove: 4000
+            autoremove: CONFIG.AutoRemovalDuation.Normal
         });
     }
 }

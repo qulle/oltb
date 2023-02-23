@@ -8,6 +8,10 @@
     border-radius: $border-radius;
     box-shadow: $box-shadow-dark;
 
+    &--maximized {
+        width: calc(100% - 3rem);
+    }
+
     &-backdrop {
         display: block;
         overflow-y: auto;

@@ -152,7 +152,7 @@ class CoordinatesTool extends Control {
                 Toast.success({
                     title: 'Copied',
                     message: 'Coordinates copied to clipboard', 
-                    autoremove: 4000
+                    autoremove: CONFIG.AutoRemovalDuation.Normal
                 });
             })
             .catch((error) => {

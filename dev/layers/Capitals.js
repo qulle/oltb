@@ -1,10 +1,12 @@
 import { Toast } from "../../src/oltb/js/common/Toast";
+import { LogManager } from "../../src/oltb/js/core/managers/LogManager";
 import { toStringHDMS } from "ol/coordinate";
 import { LayerManager } from "../../src/oltb/js/core/managers/LayerManager";
 import { generateMarker } from '../../src/oltb/js/generators/GenerateMarker';
 
 import urlCapitalsGeoJSON from 'url:../geojson/capitals.geojson';
 
+const LOG_ORIGIN = 'Capitals.js';
 const ID_PREFIX = 'oltb-info-window-marker';
 const CONTINENT_COLORS = Object.freeze({
     'Europe': '#5B88D6FF',
@@ -72,7 +74,7 @@ const geoJsonPromise = fetch(urlCapitalsGeoJSON)
     .catch((error) => {
         const errorMessage = 'Failed to load Capitals layer';
 
-        console.error(`${errorMessage} [${error}]`);
+        LogManager.logError(LOG_ORIGIN, 'geoJsonPromise', `${errorMessage} [${error}]`);
         Toast.error({
             title: 'Error',
             message: errorMessage

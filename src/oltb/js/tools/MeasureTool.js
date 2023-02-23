@@ -325,7 +325,7 @@ class MeasureTool extends Control {
             Toast.info({
                 title: 'Tip',
                 message: 'You are measuring in a hidden layer', 
-                autoremove: 4000
+                autoremove: CONFIG.AutoRemovalDuation.Normal
             });
         }
 

@@ -30,6 +30,7 @@ import { MAP_ELEMENT } from '../src/oltb/js/core/elements/index';
 import { LOCAL_STORAGE_KEYS } from '../src/oltb/js/helpers/constants/LocalStorageKeys';
 
 // Core Managers
+import { LogManager } from '../src/oltb/js/core/managers/LogManager';
 import { LayerManager } from '../src/oltb/js/core/managers/LayerManager';
 import { StateManager } from '../src/oltb/js/core/managers/StateManager';
 import { TooltipManager } from '../src/oltb/js/core/managers/TooltipManager';
@@ -457,6 +458,7 @@ const map = new Map({
 
 // Initialize static managers
 [
+    LogManager,
     LayerManager,
     StateManager,
     TooltipManager,

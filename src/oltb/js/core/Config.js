@@ -26,6 +26,11 @@ const CONFIG = Object.freeze({
         XL: '1200',
         XXL: '1400'
     }),
+    AutoRemovalDuation: Object.freeze({
+        Slow: 6000,
+        Normal: 4000,
+        Fast: 2000
+    }),
     AnimationDuration: Object.freeze({
         Slow: 450,
         Normal: 350,

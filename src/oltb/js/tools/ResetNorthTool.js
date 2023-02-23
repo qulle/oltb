@@ -106,7 +106,7 @@ class ResetNorthTool extends Control {
             easing: easeOut
         });
 
-        setTimeout(() => {
+        window.setTimeout(() => {
             // User defined callback from constructor
             if(typeof this.options.reset === 'function') {
                 this.options.reset();

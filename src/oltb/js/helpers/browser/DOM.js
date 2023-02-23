@@ -68,7 +68,7 @@ class DOM {
 
         // CONFIG.AnimationDuration.Fast matches the time given in _animations.scss
         // With the animation-class the html2canvas fails to render the exported PNG correctly
-        setTimeout(() => {
+        window.setTimeout(() => {
             element.classList.remove(className);
         }, CONFIG.AnimationDuration.Fast);
     }
