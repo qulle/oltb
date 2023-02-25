@@ -9,6 +9,7 @@ import { Feature } from 'ol';
 import { Control } from 'ol/control';
 import { unByKey } from 'ol/Observable';
 import { SETTINGS } from '../helpers/constants/Settings';
+import { LogManager } from '../core/managers/LogManager';
 import { ToolManager } from '../core/managers/ToolManager';
 import { shiftKeyOnly } from 'ol/events/condition';
 import { LayerManager } from '../core/managers/LayerManager';
@@ -530,8 +531,10 @@ class EditTool extends Control {
             }
         }catch(error) {
             const errorMessage = 'Failed to perform shape operation';
-
-            console.error(errorMessage, error);
+            LogManager.logError('EditTool.js', 'onShapeOperator', {
+                message: errorMessage,
+                error: error
+            });
             Toast.error({
                 title: 'Error',
                 message: errorMessage

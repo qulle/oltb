@@ -3,6 +3,7 @@ import { Toast } from '../../common/Toast';
 import { CONFIG } from '../../core/Config';
 import { EVENTS } from '../../helpers/constants/Events';
 import { ModalBase } from '../../common/modals/ModalBase';
+import { LogManager } from '../../core/managers/LogManager';
 import { PROJECTIONS } from '../../epsg/Projections';
 import { getIcon, SVG_PATHS } from '../../core/icons/GetIcon';
 
@@ -23,13 +24,59 @@ class DebugInfoModal extends ModalBase {
         
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
+        // Executable commands
+        const actionSelect = DOM.createElement({
+            element: 'select',
+            class: 'oltb-select'
+        });
+
+        [
+            {
+                name: 'Log map to browser console',
+                action: 'log.map.to.console'
+            }
+        ].forEach((item) => {
+            actionSelect.appendChild(
+                DOM.createElement({
+                    element: 'option', 
+                    text: item.name, 
+                    value: item.action
+                }
+            ));
+        });
+
+        const actionButton = DOM.createElement({
+            element: 'button',
+            text: 'Do action',
+            class: 'oltb-btn oltb-btn--blue-mid oltb-ml-05',
+            attributes: {
+                type: 'button'
+            },
+            listeners: {
+                'click': this.onDoAction.bind(this)
+            }
+        });
+        
+        const commandsWrapper = DOM.createElement({
+            element: 'div',
+            class: 'oltb-debug__commands oltb-d-flex oltb-justify-content-between oltb-mt-15'
+        }); 
+
+        DOM.appendChildren(commandsWrapper, [
+            actionSelect,
+            actionButton
+        ]);
+
         // Browser LocalStorage
         const localStorageContent = {};
         Object.keys(localStorage).forEach((key) => {
             try {
                 localStorageContent[key] = JSON.parse(localStorage.getItem(key) || '{}');
             }catch (error) {
-                console.error('Error parsing localstorage', error);
+                LogManager.logError('DebugInfoModal.js', 'constructor', {
+                    message: 'Error parsing localstorage',
+                    error: error
+                });
             }
         });
 
@@ -39,7 +86,10 @@ class DebugInfoModal extends ModalBase {
             try {
                 sessionStorageContent[key] = JSON.parse(localStorage.getItem(key) || '{}');
             } catch (error) {
-                console.error('Error parsing sessionStorage', error);
+                LogManager.logError('DebugInfoModal.js', 'constructor', {
+                    message: 'Error parsing sessionStorage',
+                    error: error
+                });
             }
         });
 
@@ -156,57 +206,14 @@ class DebugInfoModal extends ModalBase {
             ]);
         });
 
-        // Executable commands
-        const actionSelect = DOM.createElement({
-            element: 'select',
-            class: 'oltb-select'
-        });
-
-        [
-            {
-                name: 'Log map to browser console',
-                action: 'log.map.to.console'
-            }
-        ].forEach((item) => {
-            actionSelect.appendChild(
-                DOM.createElement({
-                    element: 'option', 
-                    text: item.name, 
-                    value: item.action
-                }
-            ));
-        });
-
-        const actionButton = DOM.createElement({
-            element: 'button',
-            text: 'Do action',
-            class: 'oltb-btn oltb-btn--blue-mid oltb-ml-05',
-            attributes: {
-                type: 'button'
-            },
-            listeners: {
-                'click': this.onDoAction.bind(this)
-            }
-        });
-        
-        const buttonsWrapper = DOM.createElement({
-            element: 'div',
-            class: 'oltb-d-flex oltb-justify-content-between oltb-mt-15'
-        }); 
-
-        DOM.appendChildren(buttonsWrapper, [
-            actionSelect,
-            actionButton
-        ]);
-
         const modalContent = DOM.createElement({
             element: 'div',
             class: 'oltb-modal__content' 
         });
         
         DOM.appendChildren(modalContent, [
-            sectionFragment, 
-            buttonsWrapper
+            commandsWrapper,
+            sectionFragment
         ]);
         
         this.actionSelect = actionSelect;

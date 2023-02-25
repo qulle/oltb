@@ -3,6 +3,7 @@ import { Modal } from '../common/Modal';
 import { CONFIG } from '../core/Config';
 import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
+import { LogManager } from '../core/managers/LogManager';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { TOOLBAR_ELEMENT } from '../core/elements/index';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
@@ -125,7 +126,10 @@ class NotificationTool extends Control {
                 `;
 
                 this.notificationModal.setContent(content);
-                console.error(`Fetch error [${error}]`);
+                LogManager.logError('NotificationTool.js', 'momentaryActivation', {
+                    message: 'Fetch error',
+                    error: error
+                });
             });
     }
 }

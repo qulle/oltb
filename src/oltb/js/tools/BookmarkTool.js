@@ -8,6 +8,7 @@ import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { easeOut } from 'ol/easing';
 import { transform } from 'ol/proj';
+import { LogManager } from '../core/managers/LogManager';
 import { ContextMenu } from '../common/ContextMenu';
 import { toStringHDMS } from 'ol/coordinate';
 import { StateManager } from '../core/managers/StateManager';
@@ -421,8 +422,10 @@ class BookmarkTool extends Control {
             })
             .catch((error) => {
                 const errorMessage = 'Failed to copy coordinates';
-
-                console.error(errorMessage, error);
+                LogManager.logError('BookmarkTool.js', 'coopyBookmarkCoordinates', {
+                    message: errorMessage,
+                    error: error
+                });
                 Toast.error({
                     title: 'Error',
                     message: errorMessage

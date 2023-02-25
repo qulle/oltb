@@ -6,6 +6,7 @@ import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { easeOut } from 'ol/easing';
 import { fromLonLat } from 'ol/proj';
+import { LogManager } from '../core/managers/LogManager';
 import { toStringHDMS } from 'ol/coordinate';
 import { LayerManager } from '../core/managers/LayerManager';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
@@ -82,7 +83,10 @@ class MyLocationTool extends Control {
                             this.getGEOLocation();
                         })
                         .catch((error) => {
-                            console.error(`Error exiting fullscreen [${error}]`);
+                            LogManager.logError('MyLocationTool.js', 'momentaryActivation', {
+                                message: 'Error exiting fullscreen',
+                                error: error
+                            });
                         });
                 }
             });

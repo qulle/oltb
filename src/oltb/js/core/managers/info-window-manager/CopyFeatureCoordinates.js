@@ -1,5 +1,6 @@
 import { Toast } from '../../../common/Toast';
 import { CONFIG } from '../../Config';
+import { LogManager } from '../LogManager';
 import { copyToClipboard } from '../../../helpers/browser/CopyToClipboard';
 
 const copyFeatureCoordinates = async function(InfoWindowManager, data) {
@@ -13,8 +14,10 @@ const copyFeatureCoordinates = async function(InfoWindowManager, data) {
         })
         .catch((error) => {
             const errorMessage = 'Failed to copy feature coordinates';
-
-            console.error(errorMessage, error);
+            LogManager.logError('CopyFeatureCoordinages.js', 'copyFeatureCoordinates', {
+                message: errorMessage,
+                error: error
+            });
             Toast.error({
                 title: 'Error',
                 message: errorMessage

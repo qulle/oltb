@@ -3,6 +3,7 @@ import { Toast } from '../common/Toast';
 import { CONFIG } from '../core/Config';
 import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
+import { LogManager } from '../core/managers/LogManager';
 import { FORMAT_TYPES } from '../core/ol-types/FormatTypes';
 import { LayerManager } from '../core/managers/LayerManager';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
@@ -119,8 +120,10 @@ class ImportVectorLayerTool extends Control {
             }
         }catch(error) {
             const errorMessage = 'Failed to import vector layer';
-
-            console.error(errorMessage, error);
+            LogManager.logError('ImportVectorLayerTool.js', 'parseLayer', {
+                message: errorMessage,
+                error: error
+            });
             Toast.error({
                 title: 'Error',
                 message: errorMessage

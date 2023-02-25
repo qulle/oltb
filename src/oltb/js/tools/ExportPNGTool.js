@@ -5,6 +5,7 @@ import { CONFIG } from '../core/Config';
 import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { download } from '../helpers/browser/Download';
+import { LogManager } from '../core/managers/LogManager';
 import { URLManager } from '../core/managers/URLManager';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
@@ -121,8 +122,10 @@ class ExportPNGTool extends Control {
             this.downloadCanvas(pngCanvas);
         }catch(error) {
             const errorMessage = 'Failed to export canvas image';
-
-            console.error(errorMessage, error);
+            LogManager.logError('ExportPNGTool.js', 'onRenderComplete', {
+                message: errorMessage,
+                error: error
+            });
             Toast.error({
                 title: 'Error',
                 message: errorMessage

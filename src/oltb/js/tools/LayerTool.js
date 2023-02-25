@@ -7,6 +7,7 @@ import { Dialog } from '../common/Dialog';
 import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { download } from '../helpers/browser/Download';
+import { LogManager } from '../core/managers/LogManager';
 import { LayerModal } from './modal-extensions/LayerModal';
 import { ContextMenu } from '../common/ContextMenu';
 import { StateManager } from '../core/managers/StateManager';
@@ -266,8 +267,10 @@ class LayerTool extends Control {
                     });
                 }catch(error) {
                     const errorMessage = 'Failed to generate new layer';
-
-                    console.error(errorMessage, error);
+                    LogManager.logError('LayerTool.js', 'showAddMapLayerModal', {
+                        message: errorMessage,
+                        error: error
+                    });
                     Toast.error({
                         title: 'Error',
                         message: errorMessage

@@ -3,6 +3,7 @@ import { Toast } from '../common/Toast';
 import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { unByKey } from 'ol/Observable';
+import { LogManager } from '../core/managers/LogManager';
 import { StateManager } from '../core/managers/StateManager';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { getRenderPixel } from 'ol/render';
@@ -216,8 +217,10 @@ class MagnifyTool extends Control {
                 this.button.click();
 
                 const errorMessage = 'Unexpected error using magnifyer';
-                
-                console.error(errorMessage, error);
+                LogManager.logError('MagnifyTool.js', 'onPostrender', {
+                    message: errorMessage,
+                    error: error
+                });
                 Toast.error({
                     title: 'Error',
                     message: (error.name === 'SecurityError' 

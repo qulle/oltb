@@ -2,8 +2,9 @@
     border-bottom: 1px dashed $color-gray-mid;
     padding: .5rem 0;
 
-    &:first-child {
-        padding-top: 0;
+    &__commands {
+        padding-bottom: 1rem;
+        border-bottom: 1px dashed $color-gray-mid;
     }
 
     &__header {

@@ -2,6 +2,7 @@ import { DOM } from '../helpers/browser/DOM';
 import { Toast } from '../common/Toast';
 import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
+import { LogManager } from '../core/managers/LogManager';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { TOOLBAR_ELEMENT } from '../core/elements/index';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
@@ -62,8 +63,10 @@ class HelpTool extends Control {
             window.open(this.options.url, this.options.target).focus();
         }catch(error) {
             const errorMessage = 'Action was blocked by browser, try open with mouse';
-
-            console.error(errorMessage, error);
+            LogManager.logError('HelpTool.js', 'momentaryActivation', {
+                message: errorMessage,
+                error: error
+            });
             Toast.error({
                 title: 'Error',
                 message: errorMessage

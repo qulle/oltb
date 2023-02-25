@@ -6,6 +6,7 @@ import { Control } from 'ol/control';
 import { unByKey } from 'ol/Observable';
 import { SETTINGS } from '../helpers/constants/Settings';
 import { transform } from 'ol/proj';
+import { LogManager } from '../core/managers/LogManager';
 import { ToolManager } from '../core/managers/ToolManager';
 import { toStringHDMS } from 'ol/coordinate';
 import { StateManager } from '../core/managers/StateManager';
@@ -157,8 +158,10 @@ class CoordinatesTool extends Control {
             })
             .catch((error) => {
                 const errorMessage = 'Failed to copy coordinates';
-
-                console.error(errorMessage, error);
+                LogManager.logError('CoordaintesTool.js', 'onMapClick', {
+                    message: errorMessage,
+                    error: error
+                });
                 Toast.error({
                     title: 'Error',
                     message: errorMessage
