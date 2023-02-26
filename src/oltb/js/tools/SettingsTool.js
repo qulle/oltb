@@ -4,6 +4,7 @@ import { CONFIG } from '../core/Config';
 import { Dialog } from '../common/Dialog';
 import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
+import { LogManager } from '../core/managers/LogManager';
 import { ContextMenu } from '../common/ContextMenu';
 import { StateManager } from '../core/managers/StateManager';
 import { SettingsModal } from './modal-extensions/SettingsModal';
@@ -94,6 +95,8 @@ class SettingsTool extends Control {
     }
 
     handleClick() {
+        LogManager.logDebug(FILENAME, 'handleClick', 'User clicked tool');
+
         // User defined callback from constructor
         if(typeof this.options.click === 'function') {
             this.options.click();

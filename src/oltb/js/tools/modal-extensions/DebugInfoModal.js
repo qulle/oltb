@@ -25,7 +25,17 @@ class DebugInfoModal extends ModalBase {
         
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
-        // Executable commands
+        const modalContent = this.#generateModalContent();
+
+        this.show(modalContent);
+
+        const toggleableTriggers = modalContent.querySelectorAll('.oltb-toggleable');
+        toggleableTriggers.forEach((toggle) => {
+            toggle.addEventListener(EVENTS.Browser.Click, this.onToggleSection.bind(this, toggle));
+        });
+    }
+
+    #generateCommandSection() {
         const actionSelect = DOM.createElement({
             element: 'select',
             class: 'oltb-select'
@@ -68,6 +78,121 @@ class DebugInfoModal extends ModalBase {
             actionButton
         ]);
 
+        this.actionSelect = actionSelect;
+
+        return commandsWrapper;
+    }
+
+    #generateSection(section, index) {
+        const sectionWrapper = DOM.createElement({
+            element: 'div',
+            class: 'oltb-debug'
+        });
+
+        const sectionHeader = DOM.createElement({
+            element: 'div',
+            class: 'oltb-debug__header oltb-toggleable',
+            attributes: {
+                'data-oltb-toggleable-target': `${ID_PREFIX}-section-${index}`
+            }
+        });
+
+        const sectionTitle = DOM.createElement({
+            element: 'h4',
+            class: 'oltb-debug__title',
+            text: section.title
+        });
+
+        const sectionToggle = DOM.createElement({
+            element: 'button', 
+            html: getIcon({
+                path: SVG_PATHS.ChevronExpand.Stroked, 
+                fill: 'none', 
+                stroke: 'currentColor',
+                width: 16,
+                height: 16,
+            }),
+            title: 'Toggle section',
+            class: 'oltb-debug__toggle oltb-btn oltb-btn--blank oltb-tippy',
+            attributes: {
+                type: 'button'
+            }
+        });
+
+        const sectionContent = DOM.createElement({
+            element: 'div',
+            class: 'oltb-debug__content',
+            style: `display: ${section.display};`,
+            id: `${ID_PREFIX}-section-${index}`
+        });
+
+        if(section.json) {
+            const jsonSection = this.#generateJSONSection(section);
+            DOM.appendChildren(sectionContent, [
+                jsonSection
+            ]);
+        }else {
+            const logSection = this.#generateLogSection(section);
+            DOM.appendChildren(sectionContent, [
+                logSection
+            ]);
+        }
+
+        DOM.appendChildren(sectionHeader, [
+            sectionTitle, 
+            sectionToggle
+        ]);
+
+        DOM.appendChildren(sectionWrapper, [
+            sectionHeader, 
+            sectionContent
+        ]);
+
+        return sectionWrapper;
+    }
+
+    #generateJSONSection(section) {
+        const sectionPre = DOM.createElement({
+            element: 'pre',
+            class: 'oltb-debug__json oltb-thin-scrollbars'
+        });
+
+        const sectionCode = DOM.createElement({
+            element: 'code',
+            text: JSON.stringify(section.content, undefined, 4),
+        });
+
+        DOM.appendChildren(sectionPre, [
+            sectionCode
+        ]);
+
+        return sectionPre;
+    }
+
+    #generateLogSection(section) {
+        const eventlogList = DOM.createElement({
+            element: 'ul',
+            class: 'oltb-debug__log'
+        });
+
+        section.content.forEach((entry) => {
+            const logItem = DOM.createElement({
+                element: 'li',
+                html: entry.level.icon + entry.origin + entry.method + entry.value,
+                class: 'oltb-debug__log-item'
+            });
+
+            DOM.appendChildren(eventlogList, [
+                logItem
+            ]);
+        });
+
+        return eventlogList;
+    }
+
+    #generateModalContent() {
+        const commandsWrapper = this.#generateCommandSection();
+
         // Browser LocalStorage
         const localStorageContent = {};
         Object.keys(localStorage).forEach((key) => {
@@ -99,6 +224,9 @@ class DebugInfoModal extends ModalBase {
             return c.split('=');
         }));
 
+        // Eventlog
+        const eventlog = LogManager.getLog();
+
         // OL Information
         const view = this.options.map?.getView();
         const debugContent = view ? {
@@ -117,91 +245,33 @@ class DebugInfoModal extends ModalBase {
         [
             {
                 title: 'Local Storage',
-                content: localStorageContent
+                content: localStorageContent,
+                display: 'none',
+                json: true
             },
             {
                 title: 'Session Storage',
-                content: sessionStorageContent
+                content: sessionStorageContent,
+                display: 'none',
+                json: true
             }, {
                 title: 'Cookies',
-                content: cookiesContent
+                content: cookiesContent,
+                display: 'none',
+                json: true
             }, {
                 title: 'App data',
-                content: debugContent
+                content: debugContent,
+                display: 'none',
+                json: true
             }, {
-                title: 'Log',
-                content: 'Test of Log content'
+                title: 'Eventlog',
+                content: eventlog,
+                display: 'block',
+                json: false
             }
         ].forEach((section, index) => {
-            const sectionWrapper = DOM.createElement({
-                element: 'div',
-                class: 'oltb-debug'
-            });
-    
-            const sectionHeader = DOM.createElement({
-                element: 'div',
-                class: 'oltb-debug__header oltb-toggleable',
-                attributes: {
-                    'data-oltb-toggleable-target': `${ID_PREFIX}-section-${index}`
-                }
-            });
-
-            const sectionTitle = DOM.createElement({
-                element: 'h4',
-                class: 'oltb-debug__title',
-                text: section.title
-            });
-
-            const sectionToggle = DOM.createElement({
-                element: 'button', 
-                html: getIcon({
-                    path: SVG_PATHS.ChevronExpand.Stroked, 
-                    fill: 'none', 
-                    stroke: 'currentColor',
-                    width: 16,
-                    height: 16,
-                }),
-                title: 'Toggle section',
-                class: 'oltb-debug__toggle oltb-btn oltb-btn--blank oltb-tippy',
-                attributes: {
-                    type: 'button'
-                }
-            });
-
-            const sectionContent = DOM.createElement({
-                element: 'div',
-                class: 'oltb-debug__content',
-                id: `${ID_PREFIX}-section-${index}`
-            });
-
-            const sectionPre = DOM.createElement({
-                element: 'pre',
-                class: 'oltb-debug__json oltb-thin-scrollbars'
-            });
-
-            const sectionCode = DOM.createElement({
-                element: 'code',
-                text: JSON.stringify(section.content, undefined, 4),
-            });
-
-            DOM.appendChildren(sectionPre, [
-                sectionCode
-            ]);
-
-            DOM.appendChildren(sectionHeader, [
-                sectionTitle, 
-                sectionToggle
-            ]);
-
-            DOM.appendChildren(sectionContent, [
-                sectionPre
-            ]);
-
-            DOM.appendChildren(sectionWrapper, [
-                sectionHeader, 
-                sectionContent
-            ]);
-
+            const sectionWrapper = this.#generateSection(section, index);
             DOM.appendChildren(sectionFragment, [
                 sectionWrapper
             ]);
@@ -216,15 +286,8 @@ class DebugInfoModal extends ModalBase {
             commandsWrapper,
             sectionFragment
         ]);
-        
-        this.actionSelect = actionSelect;
-        
-        this.show(modalContent);
 
-        const toggleableTriggers = modalContent.querySelectorAll('.oltb-toggleable');
-        toggleableTriggers.forEach((toggle) => {
-            toggle.addEventListener(EVENTS.Browser.Click, this.onToggleSection.bind(this, toggle));
-        });
+        return modalContent;
     }
 
     onToggleSection(toggle) {

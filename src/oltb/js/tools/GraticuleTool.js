@@ -3,6 +3,7 @@ import { Stroke } from 'ol/style';
 import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { Graticule } from 'ol/layer';
+import { LogManager } from '../core/managers/LogManager';
 import { StateManager } from '../core/managers/StateManager';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { TOOLBAR_ELEMENT } from '../core/elements/index';
@@ -85,6 +86,8 @@ class GraticuleTool extends Control {
     }    
 
     handleClick() {
+        LogManager.logDebug(FILENAME, 'handleClick', 'User clicked tool');
+
         // User defined callback from constructor
         if(typeof this.options.click === 'function') {
             this.options.click();

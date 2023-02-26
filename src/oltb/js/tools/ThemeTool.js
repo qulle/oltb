@@ -1,6 +1,7 @@
 import { DOM } from '../helpers/browser/DOM';
 import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
+import { LogManager } from '../core/managers/LogManager';
 import { isDarkTheme } from '../helpers/IsDarkTheme';
 import { StateManager } from '../core/managers/StateManager';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
@@ -62,6 +63,8 @@ class ThemeTool extends Control {
     }
 
     handleClick() {
+        LogManager.logDebug(FILENAME, 'handleClick', 'User clicked tool');
+
         // User defined callback from constructor
         if(typeof this.options.click === 'function') {
             this.options.click();

@@ -2,6 +2,7 @@ import { DOM } from '../helpers/browser/DOM';
 import { Modal } from '../common/Modal';
 import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
+import { LogManager } from '../core/managers/LogManager';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { TOOLBAR_ELEMENT } from '../core/elements/index';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
@@ -51,6 +52,8 @@ class InfoTool extends Control {
     }    
 
     handleClick() {
+        LogManager.logDebug(FILENAME, 'handleClick', 'User clicked tool');
+
         // User defined callback from constructor
         if(typeof this.options.click === 'function') {
             this.options.click();

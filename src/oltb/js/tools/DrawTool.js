@@ -6,6 +6,7 @@ import { CONFIG } from '../core/Config';
 import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { SETTINGS } from '../helpers/constants/Settings';
+import { LogManager } from '../core/managers/LogManager';
 import { ToolManager } from '../core/managers/ToolManager';
 import { StateManager } from '../core/managers/StateManager';
 import { LayerManager } from '../core/managers/LayerManager';
@@ -247,6 +248,8 @@ class DrawTool extends Control {
     }
 
     handleClick() {
+        LogManager.logDebug(FILENAME, 'handleClick', 'User clicked tool');
+
         // User defined callback from constructor
         if(typeof this.options.click === 'function') {
             this.options.click();

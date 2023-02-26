@@ -3,6 +3,7 @@ import { DOM } from '../helpers/browser/DOM';
 import { Tile } from 'ol/layer';
 import { CONFIG } from '../core/Config';
 import { EVENTS } from '../helpers/constants/Events';
+import { LogManager } from '../core/managers/LogManager';
 import { StateManager } from '../core/managers/StateManager';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
@@ -121,6 +122,8 @@ class OverviewTool extends Control {
     }
 
     handleClick() {
+        LogManager.logDebug(FILENAME, 'handleClick', 'User clicked tool');
+
         // User defined callback from constructor
         if(typeof this.options.click === 'function') {
             this.options.click();

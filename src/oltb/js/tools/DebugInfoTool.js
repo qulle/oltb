@@ -1,6 +1,7 @@
 import { DOM } from '../helpers/browser/DOM';
 import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
+import { LogManager } from '../core/managers/LogManager';
 import { URLManager } from '../core/managers/URLManager';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { DebugInfoModal } from './modal-extensions/DebugInfoModal';
@@ -60,6 +61,8 @@ class DebugInfoTool extends Control {
     }
 
     handleClick() {
+        LogManager.logDebug(FILENAME, 'handleClick', 'User clicked tool');
+
         // User defined callback from constructor
         if(typeof this.options.click === 'function') {
             this.options.click();

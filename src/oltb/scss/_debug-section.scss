@@ -28,6 +28,23 @@
         background-color: $color-gray-light;
         overflow-x: auto;
     }
+
+    &__log {
+        margin: 0;
+        padding: 0;
+        list-style-type: none;
+    }
+
+    &__log-item {
+        padding: .5rem;
+        border-radius: $border-radius;
+        margin: .5rem 0;
+
+        &:nth-child(odd) {
+            background-color: $color-gray-light;
+            color: $color-gray-dark;
+        }
+    }
 }
 
 body.oltb-dark .oltb-debug {

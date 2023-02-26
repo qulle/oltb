@@ -51,6 +51,8 @@ class NotificationTool extends Control {
     }
 
     handleClick() {
+        LogManager.logDebug(FILENAME, 'handleClick', 'User clicked tool');
+        
         // User defined callback from constructor
         if(typeof this.options.click === 'function') {
             this.options.click();

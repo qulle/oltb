@@ -1,27 +1,34 @@
+import { URLManager } from "./URLManager";
+
 const FILENAME = 'managers/LogManager.js';
 
 class LogManager {
+    static #isDebug;
     static #log = [];
     static #levels = Object.freeze({
         debug: {
-            level: 1,
+            value: 1,
+            icon: '🐳',
             color: '#D7E3FA',
-            consoleMethod: window.console.log
+            method: window.console.log
         },
         information: {
-            level: 2,
+            value: 2,
+            icon: '🐸',
             color: '#D3D9E6',
-            consoleMethod: window.console.info
+            method: window.console.info
         },
         warning: {
-            level: 3,
+            value: 3,
+            icon: '🐠',
             color: '#FFF1C5',
-            consoleMethod: window.console.warn
+            method: window.console.warn
         },
         error: {
-            level: 4,
+            value: 4,
+            icon: '🐝',
             color: '#FDB5B4',
-            consoleMethod: window.console.error
+            method: window.console.error
         }
     });
 
@@ -31,14 +38,18 @@ class LogManager {
             level: level,
             origin: origin,
             method: method,
-            value: (typeof value === 'string' ? value : JSON.stringify(value, null, 4))
+            value: value
         });
 
-        // Log to browser console
-        level.consoleMethod.call(origin, method, value);
+        // Log to browser console if url has debug parameter
+        if(this.#isDebug) {
+            level.method.call(LogManager, level.value, origin, method, value);
+        }
     }
 
-    static init(map) { }
+    static init(map) {
+        this.#isDebug = URLManager.getParameter('debug') === 'true';
+    }
 
     static getLog() {
         return this.#log;
