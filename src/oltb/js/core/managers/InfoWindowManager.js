@@ -11,6 +11,7 @@ import { Fill, Stroke, Style } from 'ol/style';
 import { trapFocusKeyListener } from '../../helpers/browser/TrapFocus';
 import { copyFeatureCoordinates } from './info-window-manager/CopyFeatureCoordinates';
 
+const FILENAME = 'managers/InfoWindowManager.js';
 const ANIMATION_CLASS = 'oltb-animation--centered-bounce';
 const ID_PREFIX = 'oltb-info-window-marker';
 

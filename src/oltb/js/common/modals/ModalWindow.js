@@ -1,6 +1,7 @@
 import { DOM } from '../../helpers/browser/DOM';
 import { ModalBase } from './ModalBase';
 
+const FILENAME = 'modals/ModalWindow.js';
 const DEFAULT_OPTIONS = Object.freeze({
     title: 'Default modal title',
     content: 'Default modal content'

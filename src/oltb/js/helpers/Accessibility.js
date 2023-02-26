@@ -4,6 +4,8 @@ import { EVENTS } from './constants/Events';
 import { URLManager } from '../core/managers/URLManager';
 import { TOOLBAR_ELEMENT, TOOLBOX_ELEMENT, MAP_ELEMENT } from '../core/elements/index';
 
+const FILENAME = 'helpers/Accessibility.js';
+
 // Set version as custom attribute to the html element
 document.documentElement.setAttribute('oltb-version', CONFIG.Version);
 

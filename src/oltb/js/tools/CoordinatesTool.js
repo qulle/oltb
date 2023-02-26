@@ -19,6 +19,7 @@ import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
 import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 import { LOCAL_STORAGE_KEYS } from '../helpers/constants/LocalStorageKeys';
 
+const FILENAME = 'tools/CoordiantesTool.js';
 const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.CoordinatesTool;
 const LOCAL_STORAGE_DEFAULTS = Object.freeze({
     active: false

@@ -7,6 +7,7 @@ import { TOOLBAR_ELEMENT } from '../core/elements/index';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
 import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 
+const FILENAME = 'tools/InfoTool.js';
 const DEFAULT_OPTIONS = Object.freeze({
     title: 'Hey!',
     content: 'This is the default content, try adding some content of your own.'

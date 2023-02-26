@@ -4,6 +4,7 @@ import { EVENTS } from '../../helpers/constants/Events';
 import { isDarkTheme } from '../../helpers/IsDarkTheme';
 import { trapFocusKeyListener } from '../../helpers/browser/TrapFocus';
 
+const FILENAME = 'dialogs/DialogBase.js';
 const ANIMATION_CLASS = 'oltb-animation--bounce';
 
 class DialogBase {

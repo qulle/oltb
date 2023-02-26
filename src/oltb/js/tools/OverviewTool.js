@@ -11,6 +11,7 @@ import { LOCAL_STORAGE_KEYS } from '../helpers/constants/LocalStorageKeys';
 import { Control, OverviewMap } from 'ol/control';
 import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT } from '../core/elements/index';
 
+const FILENAME = 'tools/OverviewTool.js';
 const ID_PREFIX = 'oltb-overview';
 const DEFAULT_OPTIONS = Object.freeze({});
 

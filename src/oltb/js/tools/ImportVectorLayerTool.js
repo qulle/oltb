@@ -12,6 +12,7 @@ import { instantiateFormat } from '../core/ol-types/FormatTypes';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
 import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 
+const FILENAME = 'tools/ImportVectorLayerTool.js';
 const DEFAULT_OPTIONS = Object.freeze({});
 
 class ImportVectorLayerTool extends Control {

@@ -7,6 +7,8 @@ import { isHorizontal } from '../helpers/IsRowDirection';
 import { delegate, createSingleton } from 'tippy.js';
 import { colorPicker, onColorPickerTooltipShow } from './ColorPicker';
 
+const FILENAME = 'core/Tooltips.js';
+
 // Create tippy singleton for the Toolbar
 const toolButtonsTippySingleton = createSingleton([], {
     placement: 'right',

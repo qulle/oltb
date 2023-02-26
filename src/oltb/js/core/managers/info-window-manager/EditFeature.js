@@ -6,6 +6,7 @@ import { toStringHDMS } from 'ol/coordinate';
 import { LayerManager } from '../LayerManager';
 import { generateMarker } from '../../../generators/GenerateMarker';
 
+const FILENAME = 'info-window-manager/EditFeature.js';
 const ID_PREFIX = 'oltb-info-window-marker';
 
 const editFeature = function(InfoWindowManager, feature) {

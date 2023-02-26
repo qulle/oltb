@@ -1,3 +1,5 @@
+const FILENAME = 'epsg/Projections.js';
+
 const PROJECTIONS = Object.freeze([
     {
         code: '3857',

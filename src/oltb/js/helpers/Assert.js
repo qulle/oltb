@@ -1,3 +1,5 @@
+const FILENAME = 'helpers/Assert.js';
+
 class Assert {
     static check(condition, message) {
         if(!condition) {

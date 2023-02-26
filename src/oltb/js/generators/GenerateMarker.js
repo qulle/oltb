@@ -5,6 +5,8 @@ import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 import { FEATURE_PROPERTIES } from '../helpers/constants/FeatureProperties';
 import { Circle, Fill, Icon, Stroke, Style } from 'ol/style';
 
+const FILENAME = 'generators/GenerateMarker.js';
+
 const DEFAULT_OPTIONS = Object.freeze({
     lat: undefined,
     lon: undefined,

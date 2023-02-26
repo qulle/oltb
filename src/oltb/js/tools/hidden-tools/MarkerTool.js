@@ -8,6 +8,7 @@ import { generateMarker } from '../../generators/GenerateMarker';
 import { TOOLBAR_ELEMENT } from '../../core/elements/index';
 import { SVG_PATHS, getIcon } from '../../core/icons/GetIcon';
 
+const FILENAME = 'hidden-tools/MarkerTool.js';
 const ID_PREFIX = 'oltb-info-window-marker';
 const DEFAULT_OPTIONS = Object.freeze({});
 

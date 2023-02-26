@@ -3,6 +3,8 @@ import { CONFIG } from '../../Config';
 import { LogManager } from '../LogManager';
 import { copyToClipboard } from '../../../helpers/browser/CopyToClipboard';
 
+const FILENAME = 'info-window-manager/CopyFeatureInfo.js';
+
 const copyFeatureInfo = async function(InfoWindowManager, dataToCopy) {
     copyToClipboard(dataToCopy)
         .then(() => {

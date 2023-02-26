@@ -2,6 +2,7 @@ import { DOM } from '../../helpers/browser/DOM';
 import { ModalBase } from '../../common/modals/ModalBase';
 import { isDarkTheme } from '../../helpers/IsDarkTheme';
 
+const FILENAME = 'modal-extensions/DownloadLayerModal.js';
 const PREFIX_LAYER_ID = 'oltb-download-layer-modal';
 const DEFAULT_OPTIONS = Object.freeze({
     maximized: false,

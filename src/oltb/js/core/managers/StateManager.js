@@ -1,5 +1,7 @@
 import { CONFIG } from "../Config";
 
+const FILENAME = 'managers/StateManager.js';
+
 class StateManager {
     static #runtimeState = JSON.parse(localStorage.getItem(CONFIG.LocalStorage.Key)) || {};
 

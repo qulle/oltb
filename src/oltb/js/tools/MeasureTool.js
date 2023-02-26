@@ -23,6 +23,7 @@ import { Fill, Stroke, Circle, Style } from 'ol/style';
 import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT } from '../core/elements/index';
 import { getMeasureCoordinates, getMeasureValue } from '../helpers/Measurements';
 
+const FILENAME = 'tools/MeasureTool.js';
 const ID_PREFIX = 'oltb-measure';
 const DEFAULT_OPTIONS = Object.freeze({});
 

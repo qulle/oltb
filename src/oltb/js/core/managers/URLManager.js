@@ -1,3 +1,5 @@
+const FILENAME = 'managers/URLManager.js';
+
 class URLManager {
     static init(map) { }
     

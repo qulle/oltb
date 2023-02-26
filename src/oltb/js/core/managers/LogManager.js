@@ -1,3 +1,5 @@
+const FILENAME = 'managers/LogManager.js';
+
 class LogManager {
     static #log = [];
     static #levels = Object.freeze({

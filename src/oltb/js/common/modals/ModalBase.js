@@ -5,6 +5,7 @@ import { MAP_ELEMENT } from '../../core/elements/index';
 import { SVG_PATHS, getIcon } from '../../core/icons/GetIcon';
 import { trapFocusKeyListener } from '../../helpers/browser/TrapFocus';
 
+const FILENAME = 'modals/ModalBase.js';
 const ANIMATION_CLASS = 'oltb-animation--bounce';
 
 class ModalBase {

@@ -3,6 +3,7 @@ import { ModalBase } from '../../common/modals/ModalBase';
 import { isDarkTheme } from '../../helpers/IsDarkTheme';
 import { SettingsManager } from '../../core/managers/SettingsManager';
 
+const FILENAME = 'modal-extensions/SettingsModal.js';
 const DEFAULT_OPTIONS = Object.freeze({
     maximized: false,
     onClose: undefined,

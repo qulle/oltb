@@ -3,6 +3,7 @@ import { CONFIG } from '../../core/Config';
 import { EVENTS } from '../../helpers/constants/Events';
 import { TOAST_ELEMENT } from '../../core/elements/index';
 
+const FILENAME = 'toasts/ToastBase.js';
 const DEFAULT_OPTIONS = Object.freeze({
     title: 'Toast',
     message: '',

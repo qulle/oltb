@@ -10,6 +10,8 @@ import { LOCAL_STORAGE_KEYS } from '../../helpers/constants/LocalStorageKeys';
 import { fromLonLat, toLonLat } from 'ol/proj';
 import { CoordinateModal } from '../modal-extensions/CoordinateModal';
 
+const FILENAME = 'hidden-tools/MapNavigationTool.js';
+
 // This is the same NODE_NAME and PROPS that the map.js file is using
 const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.MapData;
 const LOCAL_STORAGE_DEFAULTS = Object.freeze({

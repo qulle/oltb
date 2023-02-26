@@ -1,3 +1,5 @@
+const FILENAME = 'icons/GetIcon.js';
+
 const SVG_PATHS = Object.freeze({
     ArrowClockwise: Object.freeze({
         Stroked: `

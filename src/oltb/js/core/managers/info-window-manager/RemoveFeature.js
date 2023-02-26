@@ -2,6 +2,8 @@ import { Dialog } from '../../../common/Dialog';
 import { EVENTS } from '../../../helpers/constants/Events';
 import { LayerManager } from '../LayerManager';
 
+const FILENAME = 'info-window-manager/RemoveFeature.js';
+
 const removeFeature = function(InfoWindowManager, feature) {
     Dialog.confirm({
         title: 'Delete marker',

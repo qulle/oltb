@@ -17,6 +17,7 @@ import {
     exitFullScreen
 } from '../helpers/browser/Fullscreen';
 
+const FILENAME = 'tools/FullscreenTool.js';
 const DEFAULT_OPTIONS = Object.freeze({});
 
 class FullscreenTool extends Control {

@@ -13,6 +13,7 @@ import { SettingsManager } from '../core/managers/SettingsManager';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
 import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 
+const FILENAME = 'tools/SettingsTool.js';
 const DEFAULT_OPTIONS = Object.freeze({});
 
 class SettingsTool extends Control {

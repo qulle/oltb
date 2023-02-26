@@ -1,5 +1,7 @@
 import { FEATURE_PROPERTIES } from "./constants/FeatureProperties";
 
+const FILENAME = 'helpers/IsFeatureIntersectable.js';
+
 const isFeatureIntersectable = function(type, geometry) {
     return (
         type !== FEATURE_PROPERTIES.Type.Marker      && 

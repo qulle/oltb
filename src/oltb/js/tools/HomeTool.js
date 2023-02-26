@@ -11,6 +11,7 @@ import { TOOLBAR_ELEMENT } from '../core/elements/index';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
 import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 
+const FILENAME = 'tools/HomeTool.js';
 const DEFAULT_OPTIONS = Object.freeze({
     zoom: 3,
     lon: 0,

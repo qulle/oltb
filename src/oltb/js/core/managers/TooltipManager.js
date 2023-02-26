@@ -4,6 +4,8 @@ import { EVENTS } from '../../helpers/constants/Events';
 import { Overlay } from 'ol';
 import { unByKey } from 'ol/Observable';
 
+const FILENAME = 'managers/TooltipManager.js';
+
 class TooltipManager {
     static #map;
     static #tooltipOverlay;

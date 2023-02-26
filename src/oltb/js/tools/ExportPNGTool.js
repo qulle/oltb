@@ -12,6 +12,7 @@ import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
 import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 import { MAP_ELEMENT, TOOLBAR_ELEMENT } from '../core/elements/index';
 
+const FILENAME = 'tools/ExportPNGTool.js';
 const DEFAULT_OPTIONS = Object.freeze({
     filename: 'map-image-export',
     appendTime: false

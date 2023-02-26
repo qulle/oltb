@@ -2,6 +2,7 @@ import { DOM } from '../../helpers/browser/DOM';
 import { DialogBase } from './DialogBase';
 import { MAP_ELEMENT } from '../../core/elements/index';
 
+const FILENAME = 'dialogs/Prompt.js';
 const DEFAULT_OPTIONS = Object.freeze({
     title: 'Prompt',
     message: 'Default prompt text',

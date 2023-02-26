@@ -1,3 +1,5 @@
+const FILENAME = 'browser/Fullscreen.js';
+
 const FULL_SCREEN_EVENTS = Object.freeze([
     'fullscreenchange',
     'webkitfullscreenchange',

@@ -1,5 +1,7 @@
 import { DOM } from '../../helpers/browser/DOM';
 
+const FILENAME = 'browser/Download.js';
+
 const download = function(filename, content) {
     const downloadTrigger = DOM.createElement({
         element: 'a', 

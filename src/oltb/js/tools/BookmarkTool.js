@@ -21,6 +21,7 @@ import { LOCAL_STORAGE_KEYS } from '../helpers/constants/LocalStorageKeys';
 import { generateAnimalName } from '../helpers/name-generator/NameGenerator';
 import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT } from '../core/elements/index';
 
+const FILENAME = 'tools/BookmarkTool.js';
 const BOOKMARK_BUTTON_DEFAULT_CLASSES = 'oltb-func-btn';
 const ID_PREFIX = 'oltb-bookmark';
 

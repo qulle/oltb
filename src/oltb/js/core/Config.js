@@ -1,5 +1,7 @@
 import { version } from '../../../../package.json';
 
+const FILENAME = 'core/Config.js';
+
 const CONFIG = Object.freeze({
     Version: version,
     Locale: 'en-us',

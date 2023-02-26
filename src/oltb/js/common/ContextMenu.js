@@ -8,6 +8,7 @@ import { MAP_ELEMENT } from "../core/elements/index";
 import { hasNestedProperty } from "../helpers/browser/HasNestedProperty";
 import { trapFocusKeyListener } from '../helpers/browser/TrapFocus';
 
+const FILENAME = 'common/ContextMenu.js';
 const DEFAULT_OPTIONS = Object.freeze({});
 
 class ContextMenu extends Control {

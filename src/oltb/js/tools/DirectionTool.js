@@ -11,6 +11,7 @@ import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 import { LOCAL_STORAGE_KEYS } from '../helpers/constants/LocalStorageKeys';
 import { toolButtonsTippySingleton } from '../core/Tooltips';
 
+const FILENAME = 'tools/DirectionTool.js';
 const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.DirectionTool;
 const DEFAULT_OPTIONS = Object.freeze({});
 

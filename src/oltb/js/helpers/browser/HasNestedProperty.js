@@ -1,3 +1,5 @@
+const FILENAME = 'browser/HasNestedProperty.js';
+
 const hasNestedProperty = (obj, prop, ...rest) => {
     if(obj === undefined) {
         return false;

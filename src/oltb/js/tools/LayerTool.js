@@ -25,6 +25,7 @@ import { FEATURE_PROPERTIES } from '../helpers/constants/FeatureProperties';
 import { hasCustomFeatureProperty } from '../helpers/browser/HasNestedProperty';
 import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT } from '../core/elements/index';
 
+const FILENAME = 'tools/LayerTool.js';
 const LAYER_BUTTON_DEFAULT_CLASSES = 'oltb-func-btn';
 const ID_PREFIX = 'oltb-layer';
 

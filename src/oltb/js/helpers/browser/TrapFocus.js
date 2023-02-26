@@ -1,5 +1,6 @@
 import { KEYS } from "../constants/Keys";
 
+const FILENAME = 'browser/TrapFocus.js';
 const ELEMENTS = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
 
 const trapFocusKeyListener = function(event) {

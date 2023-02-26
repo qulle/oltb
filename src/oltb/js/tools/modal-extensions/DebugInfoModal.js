@@ -7,6 +7,7 @@ import { LogManager } from '../../core/managers/LogManager';
 import { PROJECTIONS } from '../../epsg/Projections';
 import { getIcon, SVG_PATHS } from '../../core/icons/GetIcon';
 
+const FILENAME = 'modal-extensions/DebugInfoModal.js';
 const ID_PREFIX = 'oltb-debug';
 const DEFAULT_OPTIONS = Object.freeze({
     map: undefined,

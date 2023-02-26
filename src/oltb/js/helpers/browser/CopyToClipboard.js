@@ -1,5 +1,7 @@
 import { LogManager } from "../../core/managers/LogManager";
 
+const FILENAME = 'browser/CopyToClipboard.js';
+
 const copyToClipboard = async function(text = '') {
     return navigator.clipboard.writeText(text.trim())
         .then(() => {

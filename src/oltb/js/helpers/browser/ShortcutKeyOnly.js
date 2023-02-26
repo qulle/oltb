@@ -1,3 +1,5 @@
+const FILENAME = 'browser/ShortcutKeyOnly.js';
+
 const isShortcutKeyOnly = function(event, key) {
     return (
         document.activeElement.nodeName !== 'TEXTAREA' && 

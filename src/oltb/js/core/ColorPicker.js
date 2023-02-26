@@ -5,6 +5,8 @@ import { EVENTS } from '../helpers/constants/Events';
 import { isHorizontal } from '../helpers/IsRowDirection';
 import { eventDispatcher } from '../helpers/browser/EventDispatcher';
 
+const FILENAME = 'core/ColorPicker.js';
+
 // Create element to host ACP instance
 const colorPickerElement = DOM.createElement({
     element: 'div', 

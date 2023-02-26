@@ -3,6 +3,8 @@ import { EVENTS } from "../../helpers/constants/Events";
 import { StateManager } from "../managers/StateManager";
 import { LOCAL_STORAGE_KEYS } from '../../helpers/constants/LocalStorageKeys';
 
+const FILENAME = 'elements/ToolbarElement.js';
+
 const DIRECTION_KEY = LOCAL_STORAGE_KEYS.DirectionTool;
 const THEME_KEY = LOCAL_STORAGE_KEYS.ThemeTool;
 

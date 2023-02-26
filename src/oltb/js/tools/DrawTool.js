@@ -22,6 +22,7 @@ import { Fill, Stroke, Circle, Style } from 'ol/style';
 import { createBox, createRegularPolygon } from 'ol/interaction/Draw';
 import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT } from '../core/elements/index';
 
+const FILENAME = 'tools/DrawTool.js';
 const ID_PREFIX = 'oltb-draw';
 const DEFAULT_OPTIONS = Object.freeze({});
 

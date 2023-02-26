@@ -2,6 +2,7 @@ import { SETTINGS } from "../../helpers/constants/Settings";
 import { StateManager } from "./StateManager";
 import { LOCAL_STORAGE_KEYS } from "../../helpers/constants/LocalStorageKeys";
 
+const FILENAME = 'managers/SettingsManager.js';
 const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.SettingsManager;
 const LOCAL_STORAGE_DEFAULTS = Object.freeze({});
 

@@ -3,6 +3,7 @@ import { SVG_PATHS } from '../../core/icons/GetIcon';
 import { ModalBase } from '../../common/modals/ModalBase';
 import { isDarkTheme } from '../../helpers/IsDarkTheme';
 
+const FILENAME = 'modal-extensions/MarkerModal.js';
 const ID_PREFIX = 'oltb-marker-modal-marker';
 const DEFAULT_OPTIONS = Object.freeze({
     edit: false,

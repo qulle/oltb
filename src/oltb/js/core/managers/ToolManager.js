@@ -1,3 +1,5 @@
+const FILENAME = 'managers/ToolManager.js';
+
 class ToolManager {
     static #tool;
 

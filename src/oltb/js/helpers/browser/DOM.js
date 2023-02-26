@@ -1,5 +1,7 @@
 import { CONFIG } from "../../core/Config";
 
+const FILENAME = 'browser/DOM.js';
+
 class DOM {
     static createElement(options = {}) {
         const element = document.createElement(options.element);

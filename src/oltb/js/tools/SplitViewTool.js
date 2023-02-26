@@ -14,6 +14,7 @@ import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 import { LOCAL_STORAGE_KEYS } from '../helpers/constants/LocalStorageKeys';
 import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT, MAP_ELEMENT } from '../core/elements/index';
 
+const FILENAME = 'tools/SplitViewTool.js';
 const RADIX = 10;
 const ID_PREFIX = 'oltb-split-view';
 const DEFAULT_OPTIONS = Object.freeze({});

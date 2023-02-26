@@ -1,5 +1,7 @@
 import { TileWMS, XYZ, OSM, Vector } from 'ol/source';
 
+const FILENAME = 'ol-types/SourceTypes.js';
+
 const SOURCE_TYPES = Object.freeze({
     'TileWMS': TileWMS,
     'XYZ': XYZ,

@@ -3,6 +3,7 @@ import { CONFIG } from '../../core/Config';
 import { ModalBase } from '../../common/modals/ModalBase';
 import { isDarkTheme } from '../../helpers/IsDarkTheme';
 
+const FILENAME = 'modal-extensions/LayerModal.js';
 const PREFIX_LAYER_ID = 'oltb-layer-modal';
 const DEFAULT_OPTIONS = Object.freeze({
     maximized: false,

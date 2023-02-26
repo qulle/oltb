@@ -1,3 +1,5 @@
+const FILENAME = 'browser/EventDispatcher.js';
+
 const eventDispatcher = function(
     elements, 
     type, 

@@ -9,6 +9,7 @@ import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
 import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 import { LOCAL_STORAGE_KEYS } from '../helpers/constants/LocalStorageKeys';
 
+const FILENAME = 'tools/ThemeTool.js';
 const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.ThemeTool;
 const DEFAULT_OPTIONS = Object.freeze({});
 

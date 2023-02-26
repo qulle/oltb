@@ -39,6 +39,7 @@ import { GeometryCollection, LinearRing, LineString, MultiLineString, MultiPoint
  *  https://github.com/bjornharrtell/jsts#caveats
  */
 
+const FILENAME = 'tools/EditTool.js';
 const ID_PREFIX = 'oltb-edit';
 const DEFAULT_OPTIONS = Object.freeze({});
 

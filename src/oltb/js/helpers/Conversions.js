@@ -1,3 +1,5 @@
+const FILENAME = 'helpers/Conversions.js';
+
 const degreesToRadians = function(degrees) {
     return degrees * (Math.PI / 180);
 }

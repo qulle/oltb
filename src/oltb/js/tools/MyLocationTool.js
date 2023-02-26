@@ -17,6 +17,7 @@ import { InfoWindowManager } from '../core/managers/InfoWindowManager';
 import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 import { isFullScreen, exitFullScreen } from '../helpers/browser/Fullscreen';
 
+const FILENAME = 'tools/MyLocationTool.js';
 const ID_PREFIX = 'oltb-info-window-marker';
 
 const DEFAULT_OPTIONS = Object.freeze({

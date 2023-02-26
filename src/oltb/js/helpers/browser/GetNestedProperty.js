@@ -1,3 +1,5 @@
+const FILENAME = 'browser/GetNestedProperty.js';
+
 const getNestedProperty = (obj, prop, ...rest) => {
     if(obj === undefined) {
         return undefined;

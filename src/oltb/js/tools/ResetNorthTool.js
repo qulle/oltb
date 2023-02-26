@@ -12,6 +12,7 @@ import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
 import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 import { degreesToRadians, radiansToDegrees } from '../helpers/Conversions';
 
+const FILENAME = 'tools/ResetNorthTool.js';
 const DEFAULT_OPTIONS = Object.freeze({});
 
 class ResetNorthTool extends Control {
