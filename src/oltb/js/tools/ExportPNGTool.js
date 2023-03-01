@@ -125,7 +125,7 @@ class ExportPNGTool extends Control {
             this.downloadCanvas(pngCanvas);
         }catch(error) {
             const errorMessage = 'Failed to export canvas image';
-            LogManager.logError('ExportPNGTool.js', 'onRenderComplete', {
+            LogManager.logError(FILENAME, 'onRenderComplete', {
                 message: errorMessage,
                 error: error
             });

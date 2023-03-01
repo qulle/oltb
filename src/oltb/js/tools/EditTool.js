@@ -357,7 +357,7 @@ class EditTool extends Control {
 
     onToggleToolbox(toggle) {
         const targetName = toggle.dataset.oltbToggleableTarget;
-        document.getElementById(targetName).slideToggle(CONFIG.AnimationDuration.Fast, (collapsed) => {
+        document.getElementById(targetName)?.slideToggle(CONFIG.AnimationDuration.Fast, (collapsed) => {
             this.localStorage.collapsed = collapsed;
             StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, this.localStorage);
         });
@@ -532,7 +532,7 @@ class EditTool extends Control {
             }
         }catch(error) {
             const errorMessage = 'Failed to perform shape operation';
-            LogManager.logError('EditTool.js', 'onShapeOperator', {
+            LogManager.logError(FILENAME, 'onShapeOperator', {
                 message: errorMessage,
                 error: error
             });

@@ -30,16 +30,16 @@
     }
 
     &__title {
-        color: $color-gray-dark;
+        color: $color-dark;
         margin: 0;
     }
 
     &__close {
-        color: $color-gray-dark;
+        color: $color-dark;
     }
 
     &__content {
-        color: $color-gray-dark;
+        color: $color-dark;
 
         p {
             font-size: 1rem;
@@ -58,7 +58,7 @@
     }
 
     &__footer {
-        color: $color-gray-dark;
+        color: $color-dark;
         margin: 1.5rem 0 0 0;
         display: flex;
         align-items: center;

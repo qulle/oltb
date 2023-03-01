@@ -16,7 +16,7 @@ const copyFeatureInfo = async function(InfoWindowManager, dataToCopy) {
         })
         .catch((error) => {
             const errorMessage = 'Failed to copy feature info';
-            LogManager.logError('CopyFeatureInfo.js', 'copyFeatureInfo', {
+            LogManager.logError(FILENAME, 'copyFeatureInfo', {
                 message: errorMessage,
                 error: error
             });

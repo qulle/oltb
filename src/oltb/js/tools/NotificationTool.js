@@ -129,7 +129,7 @@ class NotificationTool extends Control {
                 `;
 
                 this.notificationModal.setContent(content);
-                LogManager.logError('NotificationTool.js', 'momentaryActivation', {
+                LogManager.logError(FILENAME, 'momentaryActivation', {
                     message: 'Fetch error',
                     error: error
                 });

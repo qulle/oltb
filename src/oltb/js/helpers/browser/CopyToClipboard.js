@@ -8,7 +8,7 @@ const copyToClipboard = async function(text = '') {
             return true;
         })
         .catch((error) => {
-            LogManager.logError('CopyToClipboard.js', 'copyToClipboard', {
+            LogManager.logError(FILENAME, 'copyToClipboard', {
                 message: 'Error copying data',
                 error: error
             });

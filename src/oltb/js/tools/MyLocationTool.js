@@ -86,7 +86,7 @@ class MyLocationTool extends Control {
                             this.getGEOLocation();
                         })
                         .catch((error) => {
-                            LogManager.logError('MyLocationTool.js', 'momentaryActivation', {
+                            LogManager.logError(FILENAME, 'momentaryActivation', {
                                 message: 'Error exiting fullscreen',
                                 error: error
                             });

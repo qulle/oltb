@@ -66,7 +66,7 @@ class HelpTool extends Control {
             window.open(this.options.url, this.options.target).focus();
         }catch(error) {
             const errorMessage = 'Action was blocked by browser, try open with mouse';
-            LogManager.logError('HelpTool.js', 'momentaryActivation', {
+            LogManager.logError(FILENAME, 'momentaryActivation', {
                 message: errorMessage,
                 error: error
             });

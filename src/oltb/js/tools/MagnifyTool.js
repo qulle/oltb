@@ -220,7 +220,7 @@ class MagnifyTool extends Control {
                 this.button.click();
 
                 const errorMessage = 'Unexpected error using magnifyer';
-                LogManager.logError('MagnifyTool.js', 'onPostrender', {
+                LogManager.logError(FILENAME, 'onPostrender', {
                     message: errorMessage,
                     error: error
                 });

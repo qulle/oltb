@@ -154,7 +154,7 @@ class DebugInfoModal extends ModalBase {
     #generateJSONSection(section) {
         const sectionPre = DOM.createElement({
             element: 'pre',
-            class: 'oltb-debug__json oltb-thin-scrollbars'
+            class: `${section.class} oltb-thin-scrollbars`
         });
 
         const sectionCode = DOM.createElement({
@@ -170,28 +170,157 @@ class DebugInfoModal extends ModalBase {
     }
 
     #generateLogSection(section) {
-        const eventlogList = DOM.createElement({
-            element: 'ul',
-            class: 'oltb-debug__log'
+        const eventLog = DOM.createElement({
+            element: 'div',
+            class: 'oltb-log oltb-thin-scrollbars'
         });
 
-        section.content.forEach((entry) => {
-            const logItem = DOM.createElement({
-                element: 'li',
-                html: entry.level.icon + entry.origin + entry.method + entry.value,
-                class: 'oltb-debug__log-item'
-            });
-
-            DOM.appendChildren(eventlogList, [
-                logItem
-            ]);
+        section.content.forEach((entry, index) => {
+            if(typeof entry.value === 'string') {
+                const logItem = this.#generateTextLogItem(entry);
+                DOM.appendChildren(eventLog, [
+                    logItem
+                ]);
+            }else {
+                const logItem = this.#generateObjectLogItem(entry, index);
+                DOM.appendChildren(eventLog, [
+                    logItem
+                ]);
+            }
         });
 
-        return eventlogList;
+        return eventLog;
+    }
+
+    #generateTextLogItem(entry) {
+        const item = DOM.createElement({
+            element: 'div',
+            class: 'oltb-log__item'
+        });
+
+        const header = DOM.createElement({
+            element: 'div',
+            class: 'oltb-log__header',
+        });
+
+        const title = DOM.createElement({
+            element: 'span',
+            class: 'oltb-log__title', 
+            html: `
+                ${
+                    entry.level.icon
+                }&nbsp;<strong>${
+                    entry.timestamp
+                }</strong> 🡒 ${
+                    entry.origin
+                } 🡒 ${
+                    entry.method
+                } 🡒 ${
+                    entry.value
+                }
+            `
+        }); 
+
+        DOM.appendChildren(header, [
+            title
+        ]);
+
+        DOM.appendChildren(item, [
+            header
+        ]);
+
+        return item;
+    }
+
+    #generateObjectLogItem(entry, index) {
+        const item = DOM.createElement({
+            element: 'div',
+            class: 'oltb-log__item'
+        });
+
+        const header = DOM.createElement({
+            element: 'div',
+            class: 'oltb-log__header oltb-log__header--toggleable oltb-toggleable',
+            attributes: {
+                'data-oltb-toggleable-target': `${ID_PREFIX}-log-item-${index}`
+            }
+        });
+
+        const title = DOM.createElement({
+            element: 'span',
+            class: 'oltb-log__title', 
+            html: `
+                ${
+                    entry.level.icon
+                }&nbsp;<strong>${
+                    entry.timestamp
+                }</strong> 🡒 ${
+                    entry.origin
+                } 🡒 ${
+                    entry.method
+                }
+            `
+        }); 
+
+        const toggle = DOM.createElement({
+            element: 'button', 
+            html: getIcon({
+                path: SVG_PATHS.ChevronExpand.Stroked, 
+                fill: 'none', 
+                stroke: 'currentColor',
+                width: 16,
+                height: 16,
+            }),
+            title: 'Toggle section',
+            class: 'oltb-log__toggle oltb-btn oltb-btn--blank oltb-tippy',
+            attributes: {
+                type: 'button'
+            }
+        });
+
+        DOM.appendChildren(header, [
+            title,
+            toggle
+        ]);
+
+        const content = DOM.createElement({
+            element: 'div',
+            style: 'display: none;',
+            id: `${ID_PREFIX}-log-item-${index}`
+        });
+
+        const pre = this.#generateJSONSection({
+            content: entry.value,
+            class: 'oltb-log__json'
+        }, true);
+
+        DOM.appendChildren(content, [
+            pre
+        ]);
+
+        DOM.appendChildren(item, [
+            header,
+            content
+        ]);
+
+        return item;
     }
 
     #generateModalContent() {
         const commandsWrapper = this.#generateCommandSection();
+
+        // OL Information
+        const view = this.options.map?.getView();
+        const appDataContent = view ? {
+            zoom: view.getZoom(),
+            location: view.getCenter(),
+            rotation: view.getRotation(),
+            projection: view.getProjection(),
+            proj4Defs: PROJECTIONS,
+            defaultConfig: CONFIG
+        } : {
+            info: 'No map reference found'
+        };
 
         // Browser LocalStorage
         const localStorageContent = {};
@@ -199,7 +328,7 @@ class DebugInfoModal extends ModalBase {
             try {
                 localStorageContent[key] = JSON.parse(localStorage.getItem(key) || '{}');
             }catch (error) {
-                LogManager.logError('DebugInfoModal.js', 'constructor', {
+                LogManager.logError(FILENAME, 'constructor', {
                     message: 'Error parsing localstorage',
                     error: error
                 });
@@ -212,7 +341,7 @@ class DebugInfoModal extends ModalBase {
             try {
                 sessionStorageContent[key] = JSON.parse(localStorage.getItem(key) || '{}');
             } catch (error) {
-                LogManager.logError('DebugInfoModal.js', 'constructor', {
+                LogManager.logError(FILENAME, 'constructor', {
                     message: 'Error parsing sessionStorage',
                     error: error
                 });
@@ -225,48 +354,39 @@ class DebugInfoModal extends ModalBase {
         }));
 
         // Eventlog
-        const eventlog = LogManager.getLog();
-
-        // OL Information
-        const view = this.options.map?.getView();
-        const debugContent = view ? {
-            zoom: view.getZoom(),
-            location: view.getCenter(),
-            rotation: view.getRotation(),
-            projection: view.getProjection(),
-            proj4Defs: PROJECTIONS,
-            defaultConfig: CONFIG
-        } : {
-            info: 'No map reference found'
-        };
+        const eventlog = LogManager.getLog().slice().reverse();
 
         // Generate sections
         const sectionFragment = document.createDocumentFragment(); 
         [
             {
-                title: 'Local Storage',
-                content: localStorageContent,
+                title: 'App data',
+                content: appDataContent,
+                class: 'oltb-debug__json',
                 display: 'none',
                 json: true
-            },
-            {
+            }, {
+                title: 'Local Storage',
+                content: localStorageContent,
+                class: 'oltb-debug__json',
+                display: 'none',
+                json: true
+            }, {
                 title: 'Session Storage',
                 content: sessionStorageContent,
+                class: 'oltb-debug__json',
                 display: 'none',
                 json: true
             }, {
                 title: 'Cookies',
                 content: cookiesContent,
-                display: 'none',
-                json: true
-            }, {
-                title: 'App data',
-                content: debugContent,
+                class: 'oltb-debug__json',
                 display: 'none',
                 json: true
             }, {
                 title: 'Eventlog',
                 content: eventlog,
+                class: 'oltb-debug__json',
                 display: 'block',
                 json: false
             }
@@ -292,7 +412,7 @@ class DebugInfoModal extends ModalBase {
 
     onToggleSection(toggle) {
         const targetName = toggle.dataset.oltbToggleableTarget;
-        document.getElementById(targetName).slideToggle(CONFIG.AnimationDuration.Fast);
+        document.getElementById(targetName)?.slideToggle(CONFIG.AnimationDuration.Fast);
     }
 
     onDoAction() {
@@ -312,7 +432,7 @@ class DebugInfoModal extends ModalBase {
         console.dir(this.options.map);
         Toast.success({
             title: 'Logged',
-            message: 'Map object logged to console (F12)', 
+            message: 'Map object logged to console <strong>(F12)</strong>', 
             autoremove: CONFIG.AutoRemovalDuation.Normal
         });
     }

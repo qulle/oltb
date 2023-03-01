@@ -16,7 +16,7 @@ const copyFeatureCoordinates = async function(InfoWindowManager, data) {
         })
         .catch((error) => {
             const errorMessage = 'Failed to copy feature coordinates';
-            LogManager.logError('CopyFeatureCoordinages.js', 'copyFeatureCoordinates', {
+            LogManager.logError(FILENAME, 'copyFeatureCoordinates', {
                 message: errorMessage,
                 error: error
             });

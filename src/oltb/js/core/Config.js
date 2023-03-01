@@ -1,10 +1,10 @@
 import { version } from '../../../../package.json';
 
 const FILENAME = 'core/Config.js';
-
 const CONFIG = Object.freeze({
     Version: version,
     Locale: 'en-us',
+    TimeFormat: 'YYYY-MM-DD HH:mm:ss:SSS',
     ScrollDistance: 100,
     Browser: Object.freeze({
         REM: 16

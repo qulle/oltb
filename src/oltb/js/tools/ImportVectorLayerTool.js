@@ -123,7 +123,7 @@ class ImportVectorLayerTool extends Control {
             }
         }catch(error) {
             const errorMessage = 'Failed to import vector layer';
-            LogManager.logError('ImportVectorLayerTool.js', 'parseLayer', {
+            LogManager.logError(FILENAME, 'parseLayer', {
                 message: errorMessage,
                 error: error
             });

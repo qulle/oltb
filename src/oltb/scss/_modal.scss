@@ -38,12 +38,12 @@
 
     &__title {
         margin: 0;
-        color: $color-gray-dark;
+        color: $color-dark;
     }
 
     &__close {
         margin: 0;
-        color: $color-gray-dark;
+        color: $color-dark;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -58,7 +58,7 @@
     
     &__content {
         text-align: left;
-        color: $color-gray-dark;
+        color: $color-dark;
 
         > :last-child {
             margin-bottom: 0;

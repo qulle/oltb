@@ -161,7 +161,7 @@ class CoordinatesTool extends Control {
             })
             .catch((error) => {
                 const errorMessage = 'Failed to copy coordinates';
-                LogManager.logError('CoordaintesTool.js', 'onMapClick', {
+                LogManager.logError(FILENAME, 'onMapClick', {
                     message: errorMessage,
                     error: error
                 });

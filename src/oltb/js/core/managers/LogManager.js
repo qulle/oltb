@@ -1,3 +1,5 @@
+import moment from "moment/moment";
+import { CONFIG } from "../Config";
 import { URLManager } from "./URLManager";
 
 const FILENAME = 'managers/LogManager.js';
@@ -33,8 +35,12 @@ class LogManager {
     });
 
     static #logSink(level, origin, method, value) {
+        const timestamp = moment();
+        const timeFormat = CONFIG.TimeFormat;
+
         // Store to show in debug tool
         this.#log.push({
+            timestamp: timestamp.format(timeFormat),
             level: level,
             origin: origin,
             method: method,
@@ -43,7 +49,7 @@ class LogManager {
 
         // Log to browser console if url has debug parameter
         if(this.#isDebug) {
-            level.method.call(LogManager, level.value, origin, method, value);
+            level.method.call(LogManager, timestamp, level.value, origin, method, value);
         }
     }
 

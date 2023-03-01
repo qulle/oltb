@@ -184,7 +184,7 @@ class LayerTool extends Control {
 
     onToggleToolbox(toggle) {
         const targetName = toggle.dataset.oltbToggleableTarget;
-        document.getElementById(targetName).slideToggle(CONFIG.AnimationDuration.Fast, (collapsed) => {
+        document.getElementById(targetName)?.slideToggle(CONFIG.AnimationDuration.Fast, (collapsed) => {
             this.localStorage[targetName] = collapsed;
             StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, this.localStorage);
         });
@@ -270,7 +270,7 @@ class LayerTool extends Control {
                     });
                 }catch(error) {
                     const errorMessage = 'Failed to generate new layer';
-                    LogManager.logError('LayerTool.js', 'showAddMapLayerModal', {
+                    LogManager.logError(FILENAME, 'showAddMapLayerModal', {
                         message: errorMessage,
                         error: error
                     });

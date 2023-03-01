@@ -38,13 +38,15 @@ Have a look at the [Internal Development Documentation](README_INTERNAL.md).
 
 ## External GitHub projects
 1. [OpenLayers 7.1.0](https://openlayers.org/en/v7.1.0/apidoc/)
-2. [Tippy.js 6.3.7](https://atomiks.github.io/tippyjs/)
-3. [Bootstrap Icons](https://icons.getbootstrap.com/)
-4. [A Color Picker 1.2.1](https://github.com/narsenico/a-color-picker)
-5. [Plain JS Slidetoggle 2.0.0](https://github.com/ericbutler555/plain-js-slidetoggle)
-6. [JSTS 2.9.3](https://github.com/bjornharrtell/jsts)
-7. [Parcel 2.8.1](https://parceljs.org/)
-8. [Rollup 3.7.1](https://github.com/rollup/rollup)
+2. [Proj4 2.8.1](http://proj4js.org/)   
+3. [Tippy.js 6.3.7](https://atomiks.github.io/tippyjs/)
+4. [Bootstrap Icons](https://icons.getbootstrap.com/)
+5. [Moment](https://momentjs.com/)
+6. [A Color Picker 1.2.1](https://github.com/narsenico/a-color-picker)
+7. [Plain JS Slidetoggle 2.0.0](https://github.com/ericbutler555/plain-js-slidetoggle)
+8. [JSTS 2.9.3](https://github.com/bjornharrtell/jsts)
+9. [Parcel 2.8.1](https://parceljs.org/)
+10. [Rollup 3.7.1](https://github.com/rollup/rollup)
 
 ## Maps used in the demo
 1. [OpenStreetMap](https://www.openstreetmap.org/)
