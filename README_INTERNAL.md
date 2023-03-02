@@ -37,7 +37,8 @@ Detailed documentation how the toolbar is structured, internal dependencies and 
     15. [Context menu](#context-menu)
     16. [State Management](#state-management)
     17. [Debug tool](#debug-tool)
-    18. [OLTB namespace](#oltb-namespace)
+    18. [Logging](#logging)
+    19. [OLTB namespace](#oltb-namespace)
 6. [External GitHub projects](#external-github-projects)
 7. [Maps used in the demo](#maps-used-in-the-demo)
 8. [License](#license)
@@ -1041,6 +1042,26 @@ StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, this.localStorage);
 
 ### Debug tool
 To make debugging and diagnosting errors easier there is a tool named `DebugInfoTool`. This tool will gather information about the map such as zoomlevel, location, layers, rotation, projection etc and displays the information in a modal window. To hide the debug tool as default, add the parameter `onlyWhenGetParameter: true` and add the get parameter to the url `/?debug=true` to show the tool. Adding the debug parameter will also enable the default context-menu in the browser.
+
+### Logging
+Logging is done through the `LogManager`. This way all logging is done through one central place and will be outputted in the `DebugInfoModal`. There are four levels to use when logging.
+```javascript
+LogManager.logDebug(FILENAME, 'handleClick', 'User clicked tool');
+LogManager.logInformation(FILENAME, 'onLayerCreated', 'Layer was created');
+LogManager.logWarning(FILENAME, 'loadLayer', 'Could not load geojson file');
+LogManager.logError(FILENAME, 'saveState', 'Error parsing JSON object');
+```
+
+There is also the possibility to log complex objects insted of plain text.
+```javascript
+LogManager.logDebug(FILENAME, 'handleClick', {
+    info: 'User clicked tool',
+    url: 'localhost:1234',
+    values: [1, 2, 3, 4]
+});
+```
+
+Add the get parameter to the url `/?debug=true` to also display the logged messages in the browser console.
 
 ### OLTB namespace
 All classes and id:s in the project are prefixed with the namespace `oltb`. Data is also stored in local storage under the key `oltb-state`. 

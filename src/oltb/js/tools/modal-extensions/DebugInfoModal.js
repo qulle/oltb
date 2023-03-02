@@ -26,7 +26,6 @@ class DebugInfoModal extends ModalBase {
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
         const modalContent = this.#generateModalContent();
-
         this.show(modalContent);
 
         const toggleableTriggers = modalContent.querySelectorAll('.oltb-toggleable');
@@ -36,7 +35,7 @@ class DebugInfoModal extends ModalBase {
     }
 
     #generateCommandSection() {
-        const actionSelect = DOM.createElement({
+        const commandsCollection = DOM.createElement({
             element: 'select',
             class: 'oltb-select'
         });
@@ -47,7 +46,7 @@ class DebugInfoModal extends ModalBase {
                 action: 'log.map.to.console'
             }
         ].forEach((item) => {
-            actionSelect.appendChild(
+            commandsCollection.appendChild(
                 DOM.createElement({
                     element: 'option', 
                     text: item.name, 
@@ -74,11 +73,11 @@ class DebugInfoModal extends ModalBase {
         }); 
 
         DOM.appendChildren(commandsWrapper, [
-            actionSelect,
+            commandsCollection,
             actionButton
         ]);
 
-        this.actionSelect = actionSelect;
+        this.commandsCollection = commandsCollection;
 
         return commandsWrapper;
     }
@@ -119,6 +118,11 @@ class DebugInfoModal extends ModalBase {
             }
         });
 
+        DOM.appendChildren(sectionHeader, [
+            sectionTitle, 
+            sectionToggle
+        ]);
+
         const sectionContent = DOM.createElement({
             element: 'div',
             class: 'oltb-debug__content',
@@ -137,11 +141,6 @@ class DebugInfoModal extends ModalBase {
                 logSection
             ]);
         }
-
-        DOM.appendChildren(sectionHeader, [
-            sectionTitle, 
-            sectionToggle
-        ]);
 
         DOM.appendChildren(sectionWrapper, [
             sectionHeader, 
@@ -193,17 +192,12 @@ class DebugInfoModal extends ModalBase {
     }
 
     #generateTextLogItem(entry) {
-        const item = DOM.createElement({
-            element: 'div',
-            class: 'oltb-log__item'
-        });
-
-        const header = DOM.createElement({
+        const logHeader = DOM.createElement({
             element: 'div',
             class: 'oltb-log__header',
         });
 
-        const title = DOM.createElement({
+        const logTitle = DOM.createElement({
             element: 'span',
             class: 'oltb-log__title', 
             html: `
@@ -221,24 +215,24 @@ class DebugInfoModal extends ModalBase {
             `
         }); 
 
-        DOM.appendChildren(header, [
-            title
+        DOM.appendChildren(logHeader, [
+            logTitle
         ]);
 
-        DOM.appendChildren(item, [
-            header
-        ]);
-
-        return item;
-    }
-
-    #generateObjectLogItem(entry, index) {
-        const item = DOM.createElement({
+        const logItem = DOM.createElement({
             element: 'div',
             class: 'oltb-log__item'
         });
 
-        const header = DOM.createElement({
+        DOM.appendChildren(logItem, [
+            logHeader
+        ]);
+
+        return logItem;
+    }
+
+    #generateObjectLogItem(entry, index) {
+        const logHeader = DOM.createElement({
             element: 'div',
             class: 'oltb-log__header oltb-log__header--toggleable oltb-toggleable',
             attributes: {
@@ -246,7 +240,7 @@ class DebugInfoModal extends ModalBase {
             }
         });
 
-        const title = DOM.createElement({
+        const logTitle = DOM.createElement({
             element: 'span',
             class: 'oltb-log__title', 
             html: `
@@ -262,7 +256,7 @@ class DebugInfoModal extends ModalBase {
             `
         }); 
 
-        const toggle = DOM.createElement({
+        const logToggle = DOM.createElement({
             element: 'button', 
             html: getIcon({
                 path: SVG_PATHS.ChevronExpand.Stroked, 
@@ -278,32 +272,37 @@ class DebugInfoModal extends ModalBase {
             }
         });
 
-        DOM.appendChildren(header, [
-            title,
-            toggle
+        DOM.appendChildren(logHeader, [
+            logTitle,
+            logToggle
         ]);
 
-        const content = DOM.createElement({
+        const logContent = DOM.createElement({
             element: 'div',
             style: 'display: none;',
             id: `${ID_PREFIX}-log-item-${index}`
         });
 
-        const pre = this.#generateJSONSection({
+        const jsonSection = this.#generateJSONSection({
             content: entry.value,
             class: 'oltb-log__json'
         }, true);
 
-        DOM.appendChildren(content, [
-            pre
+        DOM.appendChildren(logContent, [
+            jsonSection
         ]);
 
-        DOM.appendChildren(item, [
-            header,
-            content
+        const logItem = DOM.createElement({
+            element: 'div',
+            class: 'oltb-log__item'
+        });
+
+        DOM.appendChildren(logItem, [
+            logHeader,
+            logContent
         ]);
 
-        return item;
+        return logItem;
     }
 
     #generateModalContent() {
@@ -335,7 +334,7 @@ class DebugInfoModal extends ModalBase {
             }
         });
 
-        // Browser SectionStorage
+        // Browser SessionStorage
         const sessionStorageContent = {};
         Object.keys(sessionStorage).forEach((key) => {
             try {
@@ -416,7 +415,7 @@ class DebugInfoModal extends ModalBase {
     }
 
     onDoAction() {
-        const action = this.actionSelect.value;
+        const action = this.commandsCollection.value;
         const actions = {
             'log.map.to.console': this.actionLoggingMap.bind(this)
         };
