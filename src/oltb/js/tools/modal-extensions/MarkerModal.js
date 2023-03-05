@@ -109,9 +109,8 @@ class MarkerModal extends ModalBase {
             }
         }
 
-        const targetIcon = this.options.icon;
-
         // Select the GeoPin icon as default
+        const targetIcon = this.options.icon;
         for(var i = 0; i < iconSelect.length; i++) {
             if(iconSelect[i].value === targetIcon) {
                 iconSelect.selectedIndex = i;

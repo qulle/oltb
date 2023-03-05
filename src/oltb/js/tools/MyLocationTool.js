@@ -4,7 +4,7 @@ import { CONFIG } from '../core/Config';
 import { Dialog } from '../common/Dialog';
 import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
-import { easeOut } from 'ol/easing';
+import { goToView } from '../helpers/GoToView';
 import { fromLonLat } from 'ol/proj';
 import { LogManager } from '../core/managers/LogManager';
 import { toStringHDMS } from 'ol/coordinate';
@@ -21,9 +21,10 @@ const FILENAME = 'tools/MyLocationTool.js';
 const ID_PREFIX = 'oltb-info-window-marker';
 
 const DEFAULT_OPTIONS = Object.freeze({
+    title: 'My Location',
     enableHighAccuracy: true,
     timeout: 10000,
-    infoWindowContent: 'This is the location that the browser was able to find. It might not be your actual location.'
+    infoWindowDescription: 'This is the location that the browser was able to find. It might not be your actual location.'
 });
 
 class MyLocationTool extends Control {
@@ -43,7 +44,7 @@ class MyLocationTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `My location (${SHORTCUT_KEYS.MyLocation})`
+                'data-tippy-content': `${DEFAULT_OPTIONS.title} (${SHORTCUT_KEYS.MyLocation})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -83,7 +84,7 @@ class MyLocationTool extends Control {
                 onConfirm: () => {
                     exitFullScreen()
                         .then(() => {
-                            this.getGEOLocation();
+                            this.getGeoLocation();
                         })
                         .catch((error) => {
                             LogManager.logError(FILENAME, 'momentaryActivation', {
@@ -94,16 +95,16 @@ class MyLocationTool extends Control {
                 }
             });
         }else {
-            this.getGEOLocation();
+            this.getGeoLocation();
         }
     }
 
-    getGEOLocation() {
-        if(this.loadingToast) {
+    getGeoLocation() {
+        if(Boolean(this.loadingToast)) {
             return;
         }
 
-        if(navigator.geolocation) {
+        if(Boolean(navigator.geolocation)) {
             this.loadingToast = Toast.info({
                 title: 'Searching',
                 message: 'Trying to find your location...', 
@@ -130,21 +131,26 @@ class MyLocationTool extends Control {
     }
 
     onSuccess(location) {
+        const map = this.getMap();
+        if(!Boolean(map)) {
+            return;
+        }
+
         const lat = location.coords.latitude;
         const lon = location.coords.longitude;
         const prettyCoordinates = toStringHDMS([lon, lat]);
 
         const infoWindow = {
-            title: 'My location',
+            title: DEFAULT_OPTIONS.title,
             content: `
-                <p>${this.options.infoWindowContent}</p>
+                <p>${this.options.infoWindowDescription}</p>
             `,
             footer: `
                 <span class="oltb-info-window__coordinates">${prettyCoordinates}</span>
                 <div class="oltb-info-window__buttons-wrapper">
                     <button class="oltb-func-btn oltb-func-btn--delete oltb-tippy" title="Delete marker" id="${ID_PREFIX}-remove"></button>
                     <button class="oltb-func-btn oltb-func-btn--crosshair oltb-tippy" title="Copy marker coordinates" id="${ID_PREFIX}-copy-coordinates" data-coordinates="${prettyCoordinates}"></button>
-                    <button class="oltb-func-btn oltb-func-btn--copy oltb-tippy" title="Copy marker text" id="${ID_PREFIX}-copy-text" data-copy="${this.options.infoWindowContent}"></button>
+                    <button class="oltb-func-btn oltb-func-btn--copy oltb-tippy" title="Copy marker text" id="${ID_PREFIX}-copy-text" data-copy="${this.options.infoWindowDescription}"></button>
                 </div>
             `
         };
@@ -152,27 +158,16 @@ class MyLocationTool extends Control {
         const marker = new generateMarker({
             lat: lat,
             lon: lon,
+            title: DEFAULT_OPTIONS.title,
+            description: this.options.infoWindowDescription,
             icon: 'Person.Filled',
-            notSelectable: true,
             infoWindow: infoWindow
         });
 
-        const layerWrapper = LayerManager.addFeatureLayer('My location');
-        layerWrapper.layer.getSource().addFeature(marker);
+        const layerWrapper = LayerManager.addFeatureLayer(DEFAULT_OPTIONS.title);
+        layerWrapper.getLayer().getSource().addFeature(marker);
 
-        // Center map over location
-        const view = this.getMap().getView();
-
-        if(view.getAnimating()) {
-            view.cancelAnimations();
-        }
-
-        view.animate({
-            center: fromLonLat([lon, lat]),
-            zoom: 6,
-            duration: CONFIG.AnimationDuration.Normal,
-            easing: easeOut
-        });
+        goToView(map, [lon, lat], 6);
 
         // Trigger InfoWindow to show
         window.setTimeout(() => {

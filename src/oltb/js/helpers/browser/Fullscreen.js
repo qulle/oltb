@@ -1,5 +1,4 @@
 const FILENAME = 'browser/Fullscreen.js';
-
 const FULL_SCREEN_EVENTS = Object.freeze([
     'fullscreenchange',
     'webkitfullscreenchange',
@@ -30,17 +29,17 @@ const isFullScreen = function() {
 }
 
 const requestFullScreen = function(element) {
-    if(element.requestFullscreen) {
+    if(Boolean(element.requestFullscreen)) {
         element.requestFullscreen();
-    }else if(element['msRequestFullscreen']) {
+    }else if(Boolean(element['msRequestFullscreen'])) {
         element['msRequestFullscreen']();
-    }else if(element['webkitRequestFullscreen']) {
+    }else if(Boolean(element['webkitRequestFullscreen'])) {
         element['webkitRequestFullscreen']();
     }
 }
   
 const requestFullScreenWithKeys = function(element) {
-    if(element['webkitRequestFullscreen']) {
+    if(Boolean(element['webkitRequestFullscreen'])) {
         element['webkitRequestFullscreen']();
     }else {
         requestFullScreen(element);
@@ -48,11 +47,11 @@ const requestFullScreenWithKeys = function(element) {
 }
   
 const exitFullScreen = function() {
-    if(document.exitFullscreen) {
+    if(Boolean(document.exitFullscreen)) {
         return document.exitFullscreen();
-    }else if(document['msExitFullscreen']) {
+    }else if(Boolean(document['msExitFullscreen'])) {
         return document['msExitFullscreen']();
-    }else if(document['webkitExitFullscreen']) {
+    }else if(Boolean(document['webkitExitFullscreen'])) {
         return document['webkitExitFullscreen']();
     }
 }

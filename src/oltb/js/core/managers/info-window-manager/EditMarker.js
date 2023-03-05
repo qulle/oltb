@@ -1,4 +1,4 @@
-import { CONFIG } from '../../../core/Config';
+import { CONFIG } from '../../Config';
 import { EVENTS } from '../../../helpers/constants/Events';
 import { transform } from 'ol/proj';
 import { MarkerModal } from "../../../tools/modal-extensions/MarkerModal";
@@ -6,15 +6,15 @@ import { toStringHDMS } from 'ol/coordinate';
 import { LayerManager } from '../LayerManager';
 import { generateMarker } from '../../../generators/GenerateMarker';
 
-const FILENAME = 'info-window-manager/EditFeature.js';
+const FILENAME = 'info-window-manager/EditMarker.js';
 const ID_PREFIX = 'oltb-info-window-marker';
 
-const editFeature = function(InfoWindowManager, feature) {
-    const properties = feature.getProperties().oltb;
+const editMarker = function(InfoWindowManager, beforeMarker) {
+    const properties = beforeMarker.getProperties().oltb;
     const markerModal = new MarkerModal({
         edit: true,
         coordinates: transform(
-            feature.getGeometry().getCoordinates(), 
+            beforeMarker.getGeometry().getCoordinates(), 
             CONFIG.Projection.Default, 
             CONFIG.Projection.WGS84
         ),
@@ -28,7 +28,7 @@ const editFeature = function(InfoWindowManager, feature) {
     
             // Remove old marker and add new
             // Easier then updating the existing marker with new data.
-            LayerManager.removeFeatureFromLayer(feature);
+            LayerManager.removeFeatureFromLayer(beforeMarker);
     
             const prettyCoordinates = toStringHDMS([result.longitude, result.latitude]);
             const infoWindow = {
@@ -41,13 +41,13 @@ const editFeature = function(InfoWindowManager, feature) {
                     <div class="oltb-info-window__buttons-wrapper">
                         <button class="oltb-func-btn oltb-func-btn--delete oltb-tippy" title="Delete marker" id="${ID_PREFIX}-remove"></button>
                         <button class="oltb-func-btn oltb-func-btn--crosshair oltb-tippy" title="Copy marker coordinates" id="${ID_PREFIX}-copy-coordinates" data-coordinates="${prettyCoordinates}"></button>
-                        <button class="oltb-func-btn oltb-func-btn--copy oltb-tippy" title="Copy marker text" id="${ID_PREFIX}-copy-text" data-copy="${result.name} ${result.info}"></button>
+                        <button class="oltb-func-btn oltb-func-btn--copy oltb-tippy" title="Copy marker text" id="${ID_PREFIX}-copy-text" data-copy="${result.title} ${result.description}"></button>
                         <button class="oltb-func-btn oltb-func-btn--edit oltb-tippy" title="Edit marker" id="${ID_PREFIX}-edit"></button>
                     </div>
                 `
             };
             
-            const marker = new generateMarker({
+            const afterMarker = new generateMarker({
                 title: result.title,
                 description: result.description,
                 lat: result.latitude,
@@ -55,7 +55,6 @@ const editFeature = function(InfoWindowManager, feature) {
                 icon: result.icon,
                 backgroundColor: result.backgroundColor,
                 color: result.color,
-                notSelectable: true,
                 infoWindow: infoWindow
             });
     
@@ -63,16 +62,16 @@ const editFeature = function(InfoWindowManager, feature) {
                 fallback: 'Markers'
             });
             
-            layerWrapper.layer.getSource().addFeature(marker);
+            layerWrapper.getLayer().getSource().addFeature(afterMarker);
     
             window.dispatchEvent(new CustomEvent(EVENTS.Custom.FeatureEdited, {
                 detail: {
-                    before: feature,
-                    after: marker
+                    before: beforeMarker,
+                    after: afterMarker
                 }
             }));
         }
     });
 }
 
-export { editFeature };
+export { editMarker };

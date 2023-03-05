@@ -3,8 +3,8 @@ import { ModalBase } from './ModalBase';
 
 const FILENAME = 'modals/ModalWindow.js';
 const DEFAULT_OPTIONS = Object.freeze({
-    title: 'Default modal title',
-    content: 'Default modal content'
+    title: 'Modal',
+    content: 'Oops missing modal content'
 });
 
 class ModalWindow extends ModalBase {

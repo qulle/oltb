@@ -1,8 +1,9 @@
 import { DOM } from '../helpers/browser/DOM';
 import { CONFIG } from '../core/Config';
 import { EVENTS } from '../helpers/constants/Events';
-import { easeOut } from 'ol/easing';
 import { Control } from 'ol/control';
+import { toLonLat } from "ol/proj";
+import { goToView } from '../helpers/GoToView';
 import { LogManager } from '../core/managers/LogManager';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { TOOLBAR_ELEMENT } from '../core/elements/index';
@@ -61,20 +62,17 @@ class ZoomInTool extends Control {
     }
 
     momentaryActivation() {
-        const view = this.getMap().getView();
-
-        const currentZoom = view.getZoom();
-        const newZoom = view.getConstrainedZoom(currentZoom + this.delta);
-            
-        if(view.getAnimating()) {
-            view.cancelAnimations();
+        const map = this.getMap();
+        if(!Boolean(map)) {
+            return;
         }
 
-        view.animate({
-            zoom: newZoom,
-            duration: CONFIG.AnimationDuration.Normal,
-            easing: easeOut
-        });
+        const view = map.getView();
+        const coordiantes = toLonLat(view.getCenter());
+        const currentZoom = view.getZoom();
+        const newZoom = view.getConstrainedZoom(currentZoom + this.delta);
+
+        goToView(map, coordiantes, newZoom);
 
         window.setTimeout(() => {
             // User defined callback from constructor

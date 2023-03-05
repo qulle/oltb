@@ -5,7 +5,7 @@ import { MAP_ELEMENT } from '../../core/elements/index';
 const FILENAME = 'dialogs/Confirm.js';
 const DEFAULT_OPTIONS = Object.freeze({
     title: 'Confirm',
-    message: 'Default confirm message',
+    message: 'Oops missing confirm message',
     onConfirm: undefined,
     onCancel: undefined,
     confirmClass: 'oltb-btn--red-mid',

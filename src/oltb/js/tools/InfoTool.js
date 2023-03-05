@@ -63,7 +63,7 @@ class InfoTool extends Control {
     }
 
     momentaryActivation() {
-        if(this.infoModal) {
+        if(Boolean(this.infoModal)) {
             return;
         }
 

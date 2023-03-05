@@ -6,7 +6,6 @@ import { FEATURE_PROPERTIES } from '../helpers/constants/FeatureProperties';
 import { Circle, Fill, Icon, Stroke, Style } from 'ol/style';
 
 const FILENAME = 'generators/GenerateMarker.js';
-
 const DEFAULT_OPTIONS = Object.freeze({
     lat: undefined,
     lon: undefined,
@@ -14,11 +13,12 @@ const DEFAULT_OPTIONS = Object.freeze({
     description: undefined,
     backgroundColor: '#0166A5FF',
     color: '#FFFFFFFF',
-    icon: 'GeoPin.Filled',
     width: 15,
     radius: 15,
-    scale: .7,
-    notSelectable: false,
+    icon: 'GeoPin.Filled',
+    iconWidth: 14,
+    iconHeight: 14,
+    notSelectable: true,
     infoWindow: undefined
 });
 
@@ -28,8 +28,8 @@ const generateMarker = function(options = {}) {
     const [ iconName, iconVersion ] = options.icon.split('.');
     const icon = getIcon({
         path: SVG_PATHS[iconName][iconVersion],
-        width: 20,
-        height: 20,
+        width: options.iconWidth,
+        height: options.iconHeight,
         fill: 'rgb(255, 255, 255)',
         stroke: 'none'
     });
@@ -57,7 +57,6 @@ const generateMarker = function(options = {}) {
         new Style({
             image: new Icon({
                 src: `data:image/svg+xml;utf8,${icon}`,
-                scale: options.scale,
                 color: options.color
             })
         })

@@ -3,23 +3,24 @@ import { CONFIG } from '../../Config';
 import { LogManager } from '../LogManager';
 import { copyToClipboard } from '../../../helpers/browser/CopyToClipboard';
 
-const FILENAME = 'info-window-manager/CopyFeatureCoordinates.js';
+const FILENAME = 'info-window-manager/CopyMarkerCoordinates.js';
 
-const copyFeatureCoordinates = async function(InfoWindowManager, data) {
+const copyMarkerCoordinates = async function(InfoWindowManager, data) {
     copyToClipboard(data)
         .then(() => {
             Toast.success({
                 title: 'Copied',
-                message: 'Feature coordinates copied to clipboard', 
+                message: 'Marker coordinates copied to clipboard', 
                 autoremove: CONFIG.AutoRemovalDuation.Normal
             });
         })
         .catch((error) => {
-            const errorMessage = 'Failed to copy feature coordinates';
-            LogManager.logError(FILENAME, 'copyFeatureCoordinates', {
+            const errorMessage = 'Failed to copy marker coordinates';
+            LogManager.logError(FILENAME, 'copyMarkerCoordinates', {
                 message: errorMessage,
                 error: error
             });
+            
             Toast.error({
                 title: 'Error',
                 message: errorMessage
@@ -27,4 +28,4 @@ const copyFeatureCoordinates = async function(InfoWindowManager, data) {
         });
 }
 
-export { copyFeatureCoordinates };
+export { copyMarkerCoordinates };

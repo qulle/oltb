@@ -4,7 +4,8 @@ import { Dialog } from '../common/Dialog';
 import { CONFIG } from '../core/Config';
 import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
-import { easeOut } from 'ol/easing';
+import { toLonLat } from 'ol/proj';
+import { goToView } from '../helpers/GoToView';
 import { LogManager } from '../core/managers/LogManager';
 import { ContextMenu } from '../common/ContextMenu';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
@@ -61,8 +62,13 @@ class ResetNorthTool extends Control {
     onContextMenuSetRotation(map, coordinates, target) {
         const view = map.getView();
 
+        const zoom = view.getZoom();
         const rotation = radiansToDegrees(view.getRotation());
         const normalizedRotation = rotation < 0 ? rotation + 360 : rotation;
+
+        // Must use the center of the view
+        // The method gets the coordinates where the user clicked
+        const centerCoordinates = toLonLat(view.getCenter());
 
         Dialog.prompt({
             title: 'Rotate map',
@@ -71,11 +77,7 @@ class ResetNorthTool extends Control {
             confirmText: 'Rotate map',
             onConfirm: (result) => {
                 if(result.isDigitsOnly()) {
-                    view.animate({
-                        rotation: degreesToRadians(result),
-                        duration: CONFIG.AnimationDuration.Normal,
-                        easing: easeOut
-                    });
+                    goToView(map, centerCoordinates, zoom, degreesToRadians(result));
                 }else {
                     Toast.error({
                         title: 'Error',
@@ -98,17 +100,16 @@ class ResetNorthTool extends Control {
     }
 
     momentaryActivation() {
-        const view = this.getMap().getView();
-
-        if(view.getAnimating()) {
-            view.cancelAnimations();
+        const map = this.getMap();
+        if(!Boolean(map)) {
+            return;
         }
 
-        view.animate({
-            rotation: 0,
-            duration: CONFIG.AnimationDuration.Normal,
-            easing: easeOut
-        });
+        const view = map.getView();
+        const zoom = view.getZoom();
+        const coordinates = toLonLat(view.getCenter());
+
+        goToView(map, coordinates, zoom, 0);
 
         window.setTimeout(() => {
             // User defined callback from constructor

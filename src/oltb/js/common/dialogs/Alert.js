@@ -5,7 +5,7 @@ import { MAP_ELEMENT } from '../../core/elements/index';
 const FILENAME = 'dialogs/Alert.js';
 const DEFAULT_OPTIONS = Object.freeze({
     title: 'Alert',
-    message: 'Default alert message',
+    message: 'Oops missing alert message',
     onConfirm: undefined,
     confirmText: 'Ok'
 });

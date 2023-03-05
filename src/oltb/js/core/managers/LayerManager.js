@@ -6,7 +6,7 @@ import { hasCustomFeatureProperty } from '../../helpers/browser/HasNestedPropert
 
 const FILENAME = 'managers/LayerManager.js';
 const DEFAULT_LAYER_NAME = 'New layer';
-const ZINDEX_BASE = 1000;
+const Z_INDEX_BASE = 1000;
 
 class LayerManager {
     static #map;
@@ -24,7 +24,7 @@ class LayerManager {
     };
 
     static init(map) {
-        if(this.#map) {
+        if(Boolean(this.#map)) {
             return;
         }
 
@@ -55,19 +55,49 @@ class LayerManager {
     }
 
     static addMapLayer(layerWrapper, silent = false) {
-        layerWrapper.id = this.#layerId;
+        // Add getters and setters
+        // Makes it easier for the user to create the layer object
+        layerWrapper.getLayer = function() {
+            return this.layer;
+        }
+
+        layerWrapper.setLayer = function(layer) {
+            this.layer = layer;
+        }
+
+        layerWrapper.getName = function() {
+            return this.name;
+        }
+
+        layerWrapper.setLayer = function(name) {
+            this.name = name;
+        }
+
+        layerWrapper.getId = function() {
+            return this.id;
+        }
+
+        layerWrapper.setId = function(id) {
+            this.id = id;
+        }
+
+        // 
+        layerWrapper.setId(this.#layerId);
         this.#layerId = this.#layerId + 1;
     
-        if(this.#map) {
+        if(Boolean(this.#map)) {
             this.addMapLayerToMap(layerWrapper, silent);
         }else {
-            this.#queue.mapLayers.push({layerWrapper: layerWrapper, silent: silent});
+            this.#queue.mapLayers.push({
+                layerWrapper: layerWrapper, 
+                silent: silent
+            });
         }
     }
 
     static addMapLayerToMap(layerWrapper, silent = false) {
         this.#layers.mapLayers.push(layerWrapper);
-        this.#map.addLayer(layerWrapper.layer);
+        this.#map.addLayer(layerWrapper.getLayer());
 
         window.dispatchEvent(new CustomEvent(EVENTS.Custom.MapLayerAdded, {
             detail: {
@@ -100,7 +130,7 @@ class LayerManager {
 
     static getMapLayerById(id) {
         const result = this.#layers.mapLayers.find((layerWrapper) => {
-            return layerWrapper.id === id;
+            return layerWrapper.getId() === id;
         });
 
         return result;
@@ -119,7 +149,7 @@ class LayerManager {
 
     static setTopMapLayerAsOnlyVisible() {
         this.#layers.mapLayers.forEach((layerWrapper) => {
-            layerWrapper.layer.setVisible(false);
+            layerWrapper.getLayer().setVisible(false);
         });
     
         if(!this.isMapLayersEmpty()) {
@@ -150,18 +180,39 @@ class LayerManager {
             name: name,
             layer: new VectorLayer({
                 source: new VectorSource(),
-                zIndex: ZINDEX_BASE + this.#layerId,
+                zIndex: Z_INDEX_BASE + this.#layerId,
                 visible: visible
-            })
+            }),
+            getLayer: function() {
+                return this.layer;
+            },
+            setLayer: function(layer) {
+                this.layer = layer;
+            },
+            getName: function() {
+                return this.name;
+            },
+            setName: function(name) {
+                this.name = name;
+            },
+            getId: function() {
+                return this.id;
+            },
+            setId: function(id) {
+                this.id = id;
+            }
         };
 
         this.#layerId = this.#layerId + 1;
         this.#activeFeatureLayer = layerWrapper;
 
-        if(this.#map) {
+        if(Boolean(this.#map)) {
             this.addFeatureLayerToMap(layerWrapper, silent);
         }else {
-            this.#queue.featureLayers.push({layerWrapper: layerWrapper, silent: silent});
+            this.#queue.featureLayers.push({
+                layerWrapper: layerWrapper, 
+                silent: silent
+            });
         }
 
         return layerWrapper;
@@ -169,7 +220,7 @@ class LayerManager {
 
     static addFeatureLayerToMap(layerWrapper, silent = false) {
         this.#layers.featureLayers.push(layerWrapper);
-        this.#map.addLayer(layerWrapper.layer);
+        this.#map.addLayer(layerWrapper.getLayer());
 
         window.dispatchEvent(new CustomEvent(EVENTS.Custom.FeatureLayerAdded, {
             detail: {
@@ -209,7 +260,7 @@ class LayerManager {
     }
 
     static getActiveFeatureLayer(options = {}) {
-        if(!this.#activeFeatureLayer) {
+        if(!Boolean(this.#activeFeatureLayer)) {
             this.addFeatureLayer(options.fallback);
         }
 
@@ -226,7 +277,7 @@ class LayerManager {
 
     static removeFeatureFromLayer(feature) {
         this.getFeatureLayers().forEach((layerWrapper) => {
-            layerWrapper.layer.getSource().removeFeature(feature);
+            layerWrapper.getLayer().getSource().removeFeature(feature);
         });
     }
 

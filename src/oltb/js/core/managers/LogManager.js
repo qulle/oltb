@@ -48,8 +48,12 @@ class LogManager {
         });
 
         // Log to browser console if url has debug parameter
-        if(this.#isDebug) {
-            level.method.call(LogManager, timestamp, level.value, origin, method, value);
+        if(Boolean(this.#isDebug)) {
+            level.method.call(
+                LogManager,
+                level.icon, 
+                timestamp.format(timeFormat), '🡒', origin, '🡒', method, '🡒', value
+            );
         }
     }
 

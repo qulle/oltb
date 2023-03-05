@@ -135,7 +135,7 @@ class MeasureTool extends Control {
     }
 
     onDOMContentLoaded() {
-        if(this.localStorage.active) {
+        if(Boolean(this.localStorage.active)) {
             this.activateTool();
         }
     }
@@ -144,11 +144,11 @@ class MeasureTool extends Control {
         const key = event.key.toLowerCase();
 
         if(key === KEYS.Escape) {
-            if(this.interaction) {
+            if(Boolean(this.interaction)) {
                 this.interaction.abortDrawing();
             }
-        }else if(event.ctrlKey && key === KEYS.Z) {
-            if(this.interaction) {
+        }else if(Boolean(event.ctrlKey) && key === KEYS.Z) {
+            if(Boolean(this.interaction)) {
                 this.interaction.removeLastPoint();
             }
         }else if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Measure)) {
@@ -168,7 +168,7 @@ class MeasureTool extends Control {
         this.strokeColor.firstElementChild.style.backgroundColor = this.localStorage.strokeColor;
 
         // Update the tool to use the correct colors
-        if(this.active) {
+        if(Boolean(this.active)) {
             this.updateTool();
         }
     }
@@ -200,7 +200,7 @@ class MeasureTool extends Control {
             this.options.click();
         }
         
-        if(this.active) {
+        if(Boolean(this.active)) {
             this.deActivateTool();
         }else {
             this.activateTool();
@@ -226,11 +226,16 @@ class MeasureTool extends Control {
     }
 
     deActivateTool() {
+        const map = this.getMap();
+        if(!Boolean(map)) {
+            return;
+        }
+
         this.active = false;
         this.measureToolbox.classList.remove('oltb-toolbox-section--show');
         this.button.classList.remove('oltb-tool-button--active'); 
 
-        this.getMap().removeInteraction(this.interaction);
+        map.removeInteraction(this.interaction);
         this.interaction = undefined;
 
         ToolManager.removeActiveTool();
@@ -241,9 +246,12 @@ class MeasureTool extends Control {
 
     selectMeasure(toolType, fillColor, strokeColor) {
         const map = this.getMap();
+        if(!Boolean(map)) {
+            return;
+        }
 
         // Remove previous interaction if tool is changed
-        if(this.interaction) {
+        if(Boolean(this.interaction)) {
             map.removeInteraction(this.interaction);
         }
         
@@ -299,9 +307,13 @@ class MeasureTool extends Control {
     }
 
     onDrawEnd(event) {
+        const map = this.getMap();
+        if(!Boolean(map)) {
+            return;
+        }
+
         unByKey(this.onChangeListener);
 
-        const map = this.getMap();
         const feature = event.feature;
         feature.setStyle(this.styles);
         
@@ -323,9 +335,9 @@ class MeasureTool extends Control {
             fallback: 'Measurements layer'
         });
         
-        layerWrapper.layer.getSource().addFeature(feature);
+        layerWrapper.getLayer().getSource().addFeature(feature);
         
-        if(!layerWrapper.layer.getVisible()) {
+        if(!layerWrapper.getLayer().getVisible()) {
             Toast.info({
                 title: 'Tip',
                 message: 'You are measuring in a hidden layer', 
@@ -336,7 +348,7 @@ class MeasureTool extends Control {
         map.addOverlay(tooltip.getOverlay());
 
         // The layer might be hidden, check if the tooltip also should be hidden
-        if(layerWrapper.layer.getVisible()) {
+        if(layerWrapper.getLayer().getVisible()) {
             tooltip.getOverlay().setMap(map);
         }else {
             tooltip.getOverlay().setMap(null);

@@ -63,6 +63,8 @@ const geoJsonPromise = fetch(urlCapitalsGeoJSON)
                 new generateMarker({
                     lat: lat,
                     lon: lon,
+                    title: capital.properties.countryName,
+                    description: capital.properties.countryName,
                     icon: 'GeoMarker.Filled',
                     backgroundColor: backgroundColor,
                     notSelectable: true,

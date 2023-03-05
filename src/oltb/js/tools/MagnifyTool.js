@@ -58,7 +58,7 @@ class MagnifyTool extends Control {
     }
 
     onDOMContentLoaded() {
-        if(this.localStorage.active) {
+        if(Boolean(this.localStorage.active)) {
             this.activateTool();
         }
     }
@@ -77,7 +77,7 @@ class MagnifyTool extends Control {
             this.options.click();
         }
 
-        if(this.active) {
+        if(Boolean(this.active)) {
             this.deActivateTool();
         }else {
             this.activateTool();
@@ -86,6 +86,10 @@ class MagnifyTool extends Control {
 
     activateTool() {
         const map = this.getMap();
+        if(!Boolean(map)) {
+            return;
+        }
+
         const mapContainer = map.getTarget();
     
         this.onMousemoveListenert = this.onMousemove.bind(this);
@@ -111,6 +115,10 @@ class MagnifyTool extends Control {
 
     deActivateTool() {
         const map = this.getMap();
+        if(!Boolean(map)) {
+            return;
+        }
+
         const mapContainer = map.getTarget();
 
         // Remove the eventlisteners
@@ -135,8 +143,13 @@ class MagnifyTool extends Control {
     onKeydown(event) {
         // Disable map-zoom when changing size of magnifier
         event.preventDefault();
+
+        const map = this.getMap();
+        if(!Boolean(map)) {
+            return;
+        }
         
-        const key = event.key;
+        const key = event.key.toLowerCase();
 
         if(key === '+') {
             this.radius = Math.min(this.radius + 5, 150);
@@ -144,22 +157,31 @@ class MagnifyTool extends Control {
             this.radius = Math.max(this.radius - 5, 25);
         }
 
-        this.getMap().render();
+        map.render();
     }
 
     onMousemove(event) {
         const map = this.getMap();
+        if(!Boolean(map)) {
+            return;
+        }
+        
         this.mousePosition = map.getEventPixel(event);
         map.render();
     }
 
     onMouseout(event) {
+        const map = this.getMap();
+        if(!Boolean(map)) {
+            return;
+        }
+
         this.mousePosition = null;
-        this.getMap().render();
+        map.render();
     }
 
     onPostrender(event) {
-        if(this.mousePosition) {
+        if(Boolean(this.mousePosition)) {
             const mousePosition = this.mousePosition;
             const radius = this.radius;
 

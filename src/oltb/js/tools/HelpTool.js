@@ -70,6 +70,7 @@ class HelpTool extends Control {
                 message: errorMessage,
                 error: error
             });
+            
             Toast.error({
                 title: 'Error',
                 message: errorMessage

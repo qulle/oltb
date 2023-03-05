@@ -1,16 +1,24 @@
+import { Toast } from '../../common/Toast';
 import { CONFIG } from '../../core/Config';
 import { EVENTS } from '../../helpers/constants/Events';
-import { easeOut } from 'ol/easing';
 import { Control } from 'ol/control';
+import { goToView } from '../../helpers/GoToView';
+import { LogManager } from '../../core/managers/LogManager';
+import { URLManager } from '../../core/managers/URLManager';
 import { ContextMenu } from '../../common/ContextMenu';
+import { toStringHDMS } from 'ol/coordinate';
+import { LayerManager } from '../../core/managers/LayerManager';
 import { StateManager } from '../../core/managers/StateManager';
+import { generateMarker } from '../../generators/GenerateMarker';
 import { TOOLBAR_ELEMENT } from '../../core/elements/index';
+import { CoordinateModal } from '../modal-extensions/CoordinateModal';
+import { InfoWindowManager } from '../../core/managers/InfoWindowManager';
 import { SVG_PATHS, getIcon } from '../../core/icons/GetIcon';
 import { LOCAL_STORAGE_KEYS } from '../../helpers/constants/LocalStorageKeys';
 import { fromLonLat, toLonLat } from 'ol/proj';
-import { CoordinateModal } from '../modal-extensions/CoordinateModal';
 
 const FILENAME = 'hidden-tools/MapNavigationTool.js';
+const ID_PREFIX = 'oltb-info-window-marker';
 
 // This is the same NODE_NAME and PROPS that the map.js file is using
 const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.MapData;
@@ -23,6 +31,19 @@ const LOCAL_STORAGE_DEFAULTS = Object.freeze({
 
 const DEFAULT_OPTIONS = Object.freeze({
     focusZoom: 2
+});
+
+const DEFAULT_URL_MARKER = Object.freeze({
+    title: "Marker Title",
+    description: "Oops, this is the default description, have you forgot a parameter?",
+    icon: "GeoMarker.Filled",
+    layerName: "URL Marker",
+    backgroundColor: '#0166A5FF',
+    color: '#FFFFFFFF',
+    coordinateSystem: "EPSG:3857",
+    lon: 18.6435,
+    lat: 60.1282,
+    zoom: 6
 });
 
 class HiddenMapNavigationTool extends Control {
@@ -77,14 +98,93 @@ class HiddenMapNavigationTool extends Control {
 
     onDOMContentLoaded(event) {
         const map = this.getMap();
+        if(!Boolean(map)) {
+            return;
+        }
 
-        if(map) {
-            map.on(EVENTS.OpenLayers.MoveEnd, this.onMoveEnd.bind(this));
+        // Bind to global map events
+        map.on(EVENTS.OpenLayers.MoveEnd, this.onMoveEnd.bind(this));
+
+        // Check if any url parameters are present
+        const marker = URLManager.getParameter('oltb-marker', false);
+        if(Boolean(marker)) {
+            this.onCreateUrlMarker(marker);
+        }
+    }
+
+    onCreateUrlMarker(markerString) {
+        const map = this.getMap();
+        if(!Boolean(map)) {
+            return;
+        }
+
+        try {
+            const markerDataRaw = JSON.parse(markerString);
+            const markerData = { ...DEFAULT_URL_MARKER, ...markerDataRaw };
+
+            const coordinates = [markerData.lon, markerData.lat];
+            const prettyCoordinates = toStringHDMS(coordinates);
+
+            const infoWindow = {
+                title: markerData.title,
+                content: `
+                    <p>${markerData.description}</p>
+                `,
+                footer: `
+                    <span class="oltb-info-window__coordinates">${prettyCoordinates}</span>
+                    <div class="oltb-info-window__buttons-wrapper">
+                        <button class="oltb-func-btn oltb-func-btn--delete oltb-tippy" title="Delete marker" id="${ID_PREFIX}-remove"></button>
+                        <button class="oltb-func-btn oltb-func-btn--crosshair oltb-tippy" title="Copy marker coordinates" id="${ID_PREFIX}-copy-coordinates" data-coordinates="${prettyCoordinates}"></button>
+                        <button class="oltb-func-btn oltb-func-btn--copy oltb-tippy" title="Copy marker text" id="${ID_PREFIX}-copy-text" data-copy="${markerData.title}, ${markerData.content}"></button>
+                    </div>
+                `
+            };
+
+            // Colors given in URL can't contain hashtag
+            if(markerData.color[0] !== '#') {
+                markerData.color = `#${markerData.color}`;
+            }
+
+            if(markerData.backgroundColor[0] !== '#') {
+                markerData.backgroundColor = `#${markerData.backgroundColor}`;
+            }
+
+            const marker = new generateMarker({
+                lat: markerData.lat,
+                lon: markerData.lon,
+                icon: markerData.icon,
+                title: markerData.title,
+                description: markerData.description,
+                backgroundColor: markerData.backgroundColor,
+                color: markerData.color,
+                infoWindow: infoWindow
+            });
+
+            const layerWrapper = LayerManager.addFeatureLayer(markerData.layerName);
+            layerWrapper.getLayer().getSource().addFeature(marker);
+
+            goToView(map, coordinates, markerData.zoom);
+
+            // Trigger InfoWindow to show
+            window.setTimeout(() => {
+                InfoWindowManager.showOverly(marker, fromLonLat(coordinates));
+            }, CONFIG.AnimationDuration.Normal);
+        }catch(error) {
+            const errorMessage = 'Failed to parse URL marker';
+            LogManager.logError(FILENAME, 'onCreateUrlMarker', {
+                message: errorMessage,
+                error: error
+            });
+            
+            Toast.error({
+                title: 'Error',
+                message: errorMessage
+            }); 
         }
     }
 
     onContextMenuCenterAtCoordinate(map, coordinates, target) {
-        if(this.coordinatesModal) {
+        if(Boolean(this.coordinatesModal)) {
             return;
         }
 
@@ -106,23 +206,13 @@ class HiddenMapNavigationTool extends Control {
         this.goToView(map, coordinates, this.options.focusZoom);
     }
 
-    goToView(map, coordinates, zoom) {
-        const view = map.getView();
-        
-        if(view.getAnimating()) {
-            view.cancelAnimations();
-        }
-    
-        view.animate({
-            center: fromLonLat(coordinates),
-            zoom: zoom,
-            duration: CONFIG.AnimationDuration.Normal,
-            easing: easeOut
-        });
-    }
-
     onMoveEnd(event) {
-        const view = this.getMap().getView();
+        const map = this.getMap();
+        if(!Boolean(map)) {
+            return;
+        }
+
+        const view = map.getView();
         const center = toLonLat(view.getCenter());
 
         this.localStorage.lon = center[0];

@@ -45,10 +45,11 @@ class DebugInfoTool extends Control {
         // If the tool only should be visible in debug mode (?debug=true)
         const isDebug = URLManager.getParameter('debug') === 'true';
 
-        if(this.options.onlyWhenGetParameter) {
-            if(!isDebug || isDebug !== true) {
-                button.classList.add('oltb-tool-button--hidden');
-            }
+        if(
+            Boolean(this.options.onlyWhenGetParameter) &&
+            !Boolean(isDebug)
+        ) {
+            button.classList.add('oltb-tool-button--hidden');
         }
 
         window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
@@ -72,12 +73,17 @@ class DebugInfoTool extends Control {
     }
 
     momentaryActivation() {
-        if(this.debugInfoModal) {
+        if(Boolean(this.debugInfoModal)) {
+            return;
+        }
+
+        const map = this.getMap();
+        if(!Boolean(map)) {
             return;
         }
 
         this.debugInfoModal = new DebugInfoModal({
-            map: this.getMap(),
+            map: map,
             onClose: () => {
                 this.debugInfoModal = undefined;
             }

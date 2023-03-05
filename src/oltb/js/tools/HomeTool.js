@@ -3,8 +3,8 @@ import { Toast } from '../common/Toast';
 import { CONFIG } from '../core/Config';
 import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
-import { easeOut } from 'ol/easing';
-import { fromLonLat } from 'ol/proj';
+import { toLonLat } from 'ol/proj';
+import { goToView } from '../helpers/GoToView';
 import { LogManager } from '../core/managers/LogManager';
 import { ContextMenu } from '../common/ContextMenu';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
@@ -46,7 +46,7 @@ class HomeTool extends Control {
         this.element.appendChild(button);
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
-        this.homeLocation = fromLonLat([this.options.lon, this.options.lat]);;
+        this.homeLocation = [this.options.lon, this.options.lat];
         this.homeZoom = this.options.zoom;
         
         this.userDefinedHomeLocation = null;
@@ -58,7 +58,7 @@ class HomeTool extends Control {
             fn: this.onContextMenuSetHomeLocation.bind(this)
         });
 
-        window.addEventListener(EVENTS.Custom.SettingsCleared, this.onWindowClearHomeLocation.bind(this));
+        window.addEventListener(EVENTS.Custom.SettingsCleared, this.onWindowSettingsCleared.bind(this));
         window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
     }
 
@@ -80,21 +80,20 @@ class HomeTool extends Control {
     }
 
     momentaryActivation() {
-        const view = this.getMap().getView();
-
-        if(view.getAnimating()) {
-            view.cancelAnimations();
+        const map = this.getMap();
+        if(!Boolean(map)) {
+            return;
         }
+        
+        const zoom = this.userDefinedHomeZoom
+            ? this.userDefinedHomeZoom 
+            : this.homeZoom;
 
-        const zoom = this.userDefinedHomeZoom ? this.userDefinedHomeZoom : this.homeZoom;
-        const center = this.userDefinedHomeLocation ? this.userDefinedHomeLocation : this.homeLocation;
+        const coordiantes = this.userDefinedHomeLocation 
+            ? this.userDefinedHomeLocation 
+            : this.homeLocation;
 
-        view.animate({
-            zoom: zoom,
-            center: center,
-            duration: CONFIG.AnimationDuration.Normal,
-            easing: easeOut
-        });
+        goToView(map, coordiantes, zoom);
 
         window.setTimeout(() => {
             // User defined callback from constructor
@@ -104,16 +103,21 @@ class HomeTool extends Control {
         }, CONFIG.AnimationDuration.Normal);
     }
 
-    onWindowClearHomeLocation() {
+    onWindowSettingsCleared() {
         this.userDefinedHomeLocation = null;
         this.userDefinedHomeZoom = null;
     }
 
     onContextMenuSetHomeLocation() {
-        const view = this.getMap().getView();
+        const map = this.getMap();
+        if(!Boolean(map)) {
+            return;
+        }
+
+        const view = map.getView();
 
         this.userDefinedHomeZoom = view.getZoom();
-        this.userDefinedHomeLocation = view.getCenter();
+        this.userDefinedHomeLocation = toLonLat(view.getCenter());
 
         Toast.success({
             title: 'New home',

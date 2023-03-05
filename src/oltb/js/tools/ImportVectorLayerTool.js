@@ -100,7 +100,7 @@ class ImportVectorLayerTool extends Control {
             });
 
             // This should not happen since the format is set in the dialog
-            if(!format) {
+            if(!Boolean(format)) {
                 Toast.error({
                     title: 'Error',
                     message: 'This layer format is not supported'
@@ -114,8 +114,7 @@ class ImportVectorLayerTool extends Control {
             });
 
             const layerWrapper = LayerManager.addFeatureLayer(`Import : ${filename}`);
-            
-            layerWrapper.layer.getSource().addFeatures(features);
+            layerWrapper.getLayer().getSource().addFeatures(features);
 
             // User defined callback from constructor
             if(typeof this.options.imported === 'function') {
@@ -127,6 +126,7 @@ class ImportVectorLayerTool extends Control {
                 message: errorMessage,
                 error: error
             });
+            
             Toast.error({
                 title: 'Error',
                 message: errorMessage

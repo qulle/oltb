@@ -1,5 +1,4 @@
 const FILENAME = 'constants/Keys.js';
-
 const KEYS = Object.freeze({
     Tab: 'tab',
     Enter: 'enter',

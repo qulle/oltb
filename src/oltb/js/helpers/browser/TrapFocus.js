@@ -5,8 +5,7 @@ const ELEMENTS = 'button, [href], input, select, textarea, [tabindex]:not([tabin
 
 const trapFocusKeyListener = function(event) {
     const isTabKey = event.key.toLowerCase() === KEYS.Tab;
-
-    if(!isTabKey) {
+    if(!Boolean(isTabKey)) {
         return;
     }
     
@@ -14,7 +13,7 @@ const trapFocusKeyListener = function(event) {
     const content = this.querySelectorAll(ELEMENTS);
     const lastElement = content[content.length - 1];
 
-    if(event.shiftKey) {
+    if(Boolean(event.shiftKey)) {
         if(document.activeElement === firstElement) {
             lastElement.focus();
             event.preventDefault();

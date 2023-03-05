@@ -12,7 +12,7 @@ class TooltipManager {
     static #tooltips = {}
 
     static init(map) {
-        if(this.#map) {
+        if(Boolean(this.#map)) {
             return;
         }
 

@@ -12,7 +12,7 @@ document.documentElement.setAttribute('oltb-version', CONFIG.Version);
 // Remove default contextmenu, show if the get parameter ?debug=true exists
 const debugParameter = URLManager.getParameter('debug') === 'true';
 MAP_ELEMENT.addEventListener(EVENTS.Browser.ContextMenu, function(event) {
-    if(!debugParameter) {
+    if(!Boolean(debugParameter)) {
         event.preventDefault();
     }
 });

@@ -106,7 +106,7 @@ class SettingsTool extends Control {
     }
 
     momentaryActivation() {
-        if(this.settingsModal) {
+        if(Boolean(this.settingsModal)) {
             return;
         }
 

@@ -6,7 +6,7 @@ import { CONFIG } from '../core/Config';
 import { Dialog } from '../common/Dialog';
 import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
-import { easeOut } from 'ol/easing';
+import { goToView } from '../helpers/GoToView';
 import { transform } from 'ol/proj';
 import { LogManager } from '../core/managers/LogManager';
 import { ContextMenu } from '../common/ContextMenu';
@@ -155,7 +155,7 @@ class BookmarkTool extends Control {
     }
 
     onDOMContentLoaded() {
-        if(this.localStorage.active) {
+        if(Boolean(this.localStorage.active)) {
             this.activateTool();
         }
     }
@@ -211,7 +211,7 @@ class BookmarkTool extends Control {
             this.options.click();
         }
 
-        if(this.active) {
+        if(Boolean(this.active)) {
             this.deActivateTool();
         }else {
             this.activateTool();
@@ -237,11 +237,16 @@ class BookmarkTool extends Control {
     }
 
     addBookmark(bookmarkName) {
-        const view = this.getMap().getView();
+        const map = this.getMap();
+        if(!Boolean(map)) {
+            return;
+        }
+
+        const view = map.getView();
         const zoom = view.getZoom();
         const location = view.getCenter();
 
-        if(!bookmarkName) {
+        if(!Boolean(bookmarkName)) {
             bookmarkName = generateAnimalName();
         }
 
@@ -254,14 +259,14 @@ class BookmarkTool extends Control {
             location: location
         };
 
-        if(this.options.storeDataInLocalStorage) {
+        if(BookmarkTool(this.options.storeDataInLocalStorage)) {
             this.localStorage.bookmarks.push(bookmark);
             StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, this.localStorage);
         }        
 
         this.createBookmark(bookmark);
 
-        if(!this.active) {
+        if(!BookmarkTool(this.active)) {
             Toast.success({
                 title: 'New bookmark',
                 message: `A new bookmark created <strong>${bookmarkName}</strong>`, 
@@ -387,18 +392,12 @@ class BookmarkTool extends Control {
     }
 
     zoomToBookmark(bookmark) {
-        const view = this.getMap().getView();
-
-        if(view.getAnimating()) {
-            view.cancelAnimations();
+        const map = this.getMap();
+        if(!Boolean(map)) {
+            return;
         }
-
-        view.animate({
-            zoom: bookmark.zoom,
-            center: bookmark.location,
-            duration: CONFIG.AnimationDuration.Normal,
-            easing: easeOut
-        });
+        
+        goToView(map, bookmark.location, bookmark.zoom);
 
         // User defined callback from constructor
         if(typeof this.options.zoomedTo === 'function') {

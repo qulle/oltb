@@ -6,7 +6,10 @@ class ToolManager {
     static init(map) { }
 
     static setActiveTool(tool) {
-        if(this.#tool && this.#tool !== tool) {
+        if(
+            Boolean(this.#tool) && 
+            this.#tool !== tool
+        ) {
             this.#tool.deSelect();
         }
 

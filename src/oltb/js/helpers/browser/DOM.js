@@ -7,31 +7,31 @@ class DOM {
         const element = document.createElement(options.element);
 
         // Common attributes
-        if(options.id) {
+        if(Boolean(options.id)) {
             element.id = options.id;
         }
 
-        if(options.class) {
+        if(Boolean(options.class)) {
             element.className = options.class;
         }
 
-        if(options.value) {
+        if(Boolean(options.value)) {
             element.value = options.value;
         }
 
-        if(options.text) {
+        if(Boolean(options.text)) {
             element.innerText = options.text;
         }
     
-        if(options.html) {
+        if(Boolean(options.html)) {
             element.innerHTML = options.html;
         }
 
-        if(options.style) {
+        if(Boolean(options.style)) {
             element.style = options.style;
         }
 
-        if(options.title) {
+        if(Boolean(options.title)) {
             element.title = options.title;
         }
 

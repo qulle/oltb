@@ -2,7 +2,6 @@ import { DOM } from '../../helpers/browser/DOM';
 import { MAP_ELEMENT } from './MapElement';
 
 const FILENAME = 'elements/ToastElement.js';
-
 const TOAST_ELEMENT = DOM.createElement({
     element: 'div', 
     class: 'oltb-toast-container',

@@ -172,7 +172,7 @@ class DrawTool extends Control {
     }
 
     onDOMContentLoaded() {
-        if(this.localStorage.active) {
+        if(Boolean(this.localStorage.active)) {
             this.activateTool();
         }
     }
@@ -185,11 +185,11 @@ class DrawTool extends Control {
         const key = event.key.toLowerCase();
 
         if(key === KEYS.Escape) {
-            if(this.interaction) {
+            if(Boolean(this.interaction)) {
                 this.interaction.abortDrawing();
             }
-        }else if(event.ctrlKey && key === KEYS.Z) {
-            if(this.interaction) {
+        }else if(Boolean(event.ctrlKey) && key === KEYS.Z) {
+            if(Boolean(this.interaction)) {
                 this.interaction.removeLastPoint();
             }
         }else if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Draw)) {
@@ -209,7 +209,7 @@ class DrawTool extends Control {
         this.strokeColor.firstElementChild.style.backgroundColor = this.localStorage.strokeColor;
 
         // Update the tool to use the correct colors
-        if(this.active) {
+        if(Boolean(this.active)) {
             this.updateTool();
         }
     }
@@ -255,7 +255,7 @@ class DrawTool extends Control {
             this.options.click();
         }
 
-        if(this.active) {
+        if(Boolean(this.active)) {
             this.deActivateTool();
         }else {
             this.activateTool();
@@ -281,11 +281,16 @@ class DrawTool extends Control {
     }
 
     deActivateTool() {
+        const map = this.getMap();
+        if(!Boolean(map)) {
+            return;
+        }
+
         this.active = false;
         this.drawToolbox.classList.remove('oltb-toolbox-section--show');
         this.button.classList.remove('oltb-tool-button--active');
 
-        this.getMap().removeInteraction(this.interaction);
+        map.removeInteraction(this.interaction);
         this.interaction = undefined;
 
         ToolManager.removeActiveTool();
@@ -296,9 +301,12 @@ class DrawTool extends Control {
 
     selectDraw(toolType, strokeWidth, fillColor, strokeColor) {
         const map = this.getMap();
+        if(!Boolean(map)) {
+            return;
+        }
 
         // Remove previous interaction if tool is changed
-        if(this.interaction) {
+        if(Boolean(this.interaction)) {
             map.removeInteraction(this.interaction);
         }
 
@@ -362,7 +370,7 @@ class DrawTool extends Control {
             fallback: 'Drawing layer'
         });
 
-        const source = layerWrapper.layer.getSource();
+        const source = layerWrapper.getLayer().getSource();
 
         if(this.isIntersectionEnabled()) {
             this.onDrawEndIntersection(source, event);
@@ -370,7 +378,7 @@ class DrawTool extends Control {
             this.onDrawEndNormal(source, event);
         }
 
-        if(!layerWrapper.layer.getVisible()) {
+        if(!layerWrapper.getLayer().getVisible()) {
             Toast.info({
                 title: 'Tip',
                 message: 'You are drawing in a hidden layer', 
@@ -421,7 +429,7 @@ class DrawTool extends Control {
 
         if(this.intersectedFeatures.length === 0) {
             Toast.info({
-                title: 'Whoops',
+                title: 'Oops',
                 message: 'No intersecting objects found', 
                 autoremove: CONFIG.AutoRemovalDuation.Normal
             });

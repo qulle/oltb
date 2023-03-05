@@ -1,5 +1,4 @@
 const FILENAME = 'name-generator/Animals.js';
-
 const ANIMALS = Object.freeze([
     'Badger',
     'Bear',

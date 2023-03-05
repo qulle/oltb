@@ -7,7 +7,6 @@ import { degreesToRadians } from '../helpers/Conversions';
 import { FEATURE_PROPERTIES } from '../helpers/constants/FeatureProperties';
 
 const FILENAME = 'generators/GenerateWindbarb.js';
-
 const DEFAULT_OPTIONS = Object.freeze({
     lat: undefined,
     lon: undefined,

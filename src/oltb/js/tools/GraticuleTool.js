@@ -74,7 +74,7 @@ class GraticuleTool extends Control {
     }
 
     onDOMContentLoaded() {
-        if(this.localStorage.active) {
+        if(Boolean(this.localStorage.active)) {
             this.activateTool();
         }
     }
@@ -93,7 +93,7 @@ class GraticuleTool extends Control {
             this.options.click();
         }
 
-        if(this.active) {
+        if(Boolean(this.active)) {
             this.deActivateTool();
         }else {
             this.activateTool();
@@ -101,7 +101,12 @@ class GraticuleTool extends Control {
     }
 
     activateTool() {
-        this.graticule.setMap(this.getMap());
+        const map = this.getMap();
+        if(!Boolean(map)) {
+            return;
+        }
+
+        this.graticule.setMap(map);
 
         this.active = true;
         this.button.classList.add('oltb-tool-button--active');

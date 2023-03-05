@@ -3,13 +3,13 @@ import { CONFIG } from '../Config';
 import { EVENTS } from '../../helpers/constants/Events';
 import { Overlay } from 'ol';
 import { getCenter } from 'ol/extent';
-import { editFeature } from './info-window-manager/EditFeature';
-import { removeFeature } from './info-window-manager/RemoveFeature';
-import { copyFeatureInfo } from './info-window-manager/CopyFeatureInfo';
+import { editMarker } from './info-window-manager/EditMarker';
+import { removeMarker } from './info-window-manager/RemoveMarker';
+import { copyMarkerInfo } from './info-window-manager/CopyMarkerInfo';
 import { SVG_PATHS, getIcon } from '../icons/GetIcon';
 import { Fill, Stroke, Style } from 'ol/style';
 import { trapFocusKeyListener } from '../../helpers/browser/TrapFocus';
-import { copyFeatureCoordinates } from './info-window-manager/CopyFeatureCoordinates';
+import { copyMarkerCoordinates } from './info-window-manager/CopyMarkerCoordinates';
 
 const FILENAME = 'managers/InfoWindowManager.js';
 const ANIMATION_CLASS = 'oltb-animation--centered-bounce';
@@ -25,7 +25,7 @@ class InfoWindowManager {
     static #lastFeature;
 
     static init(map) {
-        if(this.#map) {
+        if(Boolean(this.#map)) {
             return;
         }
 
@@ -112,8 +112,7 @@ class InfoWindowManager {
         });
 
         const infoWindow = feature?.getProperties()?.oltb?.infoWindow;
-        
-        if(infoWindow) {
+        if(Boolean(infoWindow)) {
             this.showOverly(feature);
         }else {
             this.hideOverlay();
@@ -125,21 +124,19 @@ class InfoWindowManager {
             return feature;
         });
 
-        if(this.#lastFeature && (!feature || this.#lastFeature !== feature)) {
+        if(this.#lastFeature && (Boolean(!feature) || this.#lastFeature !== feature)) {
             this.#lastFeature.setStyle(null);
         }
 
         const hightlight = feature?.getProperties()?.oltb?.highlightOnHover;
-
-        if(hightlight) {
+        if(Boolean(hightlight)) {
             this.hightlightVectorSection(feature);
         }
 
         const infoWindow = feature?.getProperties()?.oltb?.infoWindow;
         const nodeName = event.originalEvent.target.nodeName;
-
         if(
-            infoWindow && 
+            Boolean(infoWindow) && 
             nodeName === 'CANVAS'
         ) {
             this.#map.getViewport().style.cursor = 'pointer';
@@ -163,18 +160,21 @@ class InfoWindowManager {
         this.#lastFeature = feature;
     }
 
-    static showOverly(feature, position) {
-        const infoWindow = feature.getProperties().oltb.infoWindow;
+    static showOverly(marker, position) {
+        const infoWindow = marker.getProperties().oltb.infoWindow;
+        if(!Boolean(infoWindow)) {
+            return;
+        }
 
         this.#title.innerHTML = infoWindow.title;
         this.#content.innerHTML = infoWindow.content;
         this.#footer.innerHTML = infoWindow.footer;
 
-        if(position) {
+        if(Boolean(position)) {
             this.#overlay.setPosition(position);
         }else {
             this.#overlay.setPosition(getCenter(
-                feature.getGeometry().getExtent()
+                marker.getGeometry().getExtent()
             ));
         }
 
@@ -183,35 +183,35 @@ class InfoWindowManager {
         DOM.runAnimation(this.#infoWindow, ANIMATION_CLASS);
 
         // Attach listeners to the function-buttons inside the infoWindow
-        const removeFeatureButton = this.#footer.querySelector(`#${ID_PREFIX}-remove`);
-        if(removeFeatureButton) {
-            removeFeatureButton.addEventListener(
+        const removeMarkerButton = this.#footer.querySelector(`#${ID_PREFIX}-remove`);
+        if(Boolean(removeMarkerButton)) {
+            removeMarkerButton.addEventListener(
                 EVENTS.Browser.Click, 
-                removeFeature.bind(this, InfoWindowManager, feature)
+                removeMarker.bind(this, InfoWindowManager, marker)
             );
         }
 
-        const copyFeatureCoordinatesButton = this.#footer.querySelector(`#${ID_PREFIX}-copy-coordinates`);
-        if(copyFeatureCoordinatesButton) {
-            copyFeatureCoordinatesButton.addEventListener(
+        const copyMarkerCoordinatesButton = this.#footer.querySelector(`#${ID_PREFIX}-copy-coordinates`);
+        if(Boolean(copyMarkerCoordinatesButton)) {
+            copyMarkerCoordinatesButton.addEventListener(
                 EVENTS.Browser.Click, 
-                copyFeatureCoordinates.bind(this, InfoWindowManager, copyFeatureCoordinatesButton.getAttribute('data-coordinates'))
+                copyMarkerCoordinates.bind(this, InfoWindowManager, copyMarkerCoordinatesButton.getAttribute('data-coordinates'))
             );
         }
 
-        const copyFeatureInfoButton = this.#footer.querySelector(`#${ID_PREFIX}-copy-text`);
-        if(copyFeatureInfoButton) {
-            copyFeatureInfoButton.addEventListener(
+        const copyMarkerInfoButton = this.#footer.querySelector(`#${ID_PREFIX}-copy-text`);
+        if(Boolean(copyMarkerInfoButton)) {
+            copyMarkerInfoButton.addEventListener(
                 EVENTS.Browser.Click, 
-                copyFeatureInfo.bind(this, InfoWindowManager, copyFeatureInfoButton.getAttribute('data-copy'))
+                copyMarkerInfo.bind(this, InfoWindowManager, copyMarkerInfoButton.getAttribute('data-copy'))
             );
         }
 
-        const editFeatureButton = this.#footer.querySelector(`#${ID_PREFIX}-edit`);
-        if(editFeatureButton) {
-            editFeatureButton.addEventListener(
+        const editMarkerButton = this.#footer.querySelector(`#${ID_PREFIX}-edit`);
+        if(Boolean(editMarkerButton)) {
+            editMarkerButton.addEventListener(
                 EVENTS.Browser.Click, 
-                editFeature.bind(this, InfoWindowManager, feature)
+                editMarker.bind(this, InfoWindowManager, marker)
             );
         }
     }

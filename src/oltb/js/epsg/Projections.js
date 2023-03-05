@@ -1,5 +1,6 @@
-const FILENAME = 'epsg/Projections.js';
+import { LogManager } from "../core/managers/LogManager";
 
+const FILENAME = 'epsg/Projections.js';
 const PROJECTIONS = Object.freeze([
     {
         code: '3857',
@@ -28,6 +29,8 @@ const getProj4Defs = function() {
     const result = [];
 
     PROJECTIONS.forEach((projection) => {
+        LogManager.logDebug(FILENAME, 'getProj4Defs', projection.code);
+
         result.push([
             `EPSG: ${projection.code}`,
             projection.proj4def

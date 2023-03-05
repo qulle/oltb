@@ -24,12 +24,12 @@ class ToastBase {
 
         this.toast = toast;
         
-        if(this.options.clickToRemove) {
+        if(Boolean(this.options.clickToRemove)) {
             toast.classList.add('oltb-toast--clickable');
             toast.addEventListener(EVENTS.Browser.Click, this.remove.bind(this));
         }
 
-        if(this.options.spinner) {
+        if(Boolean(this.options.spinner)) {
             const spinnerElement = DOM.createElement({
                 element: 'div',
                 class: 'oltb-spinner oltb-spinner--small oltb-animation oltb-animation--linear-spinner'
@@ -66,7 +66,7 @@ class ToastBase {
 
         TOAST_ELEMENT.prepend(toast);
 
-        if(this.options.autoremove) {
+        if(Boolean(this.options.autoremove)) {
             window.setTimeout(() => {
                 this.remove();
             }, this.options.autoremove);

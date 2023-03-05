@@ -93,6 +93,11 @@ class OverviewTool extends Control {
     }
 
     onToggleToolbox(toggle) {
+        const map = this.getMap();
+        if(!Boolean(map)) {
+            return;
+        }
+
         const targetName = toggle.dataset.oltbToggleableTarget;
         document.getElementById(targetName)?.slideToggle(CONFIG.AnimationDuration.fast, (collapsed) => {
             this.localStorage.collapsed = collapsed;
@@ -101,12 +106,12 @@ class OverviewTool extends Control {
             // Force render of overview, 
             // Other solutions will not render the dashed box correctly until the map is moved
             this.overviewMap.setMap(null);
-            this.overviewMap.setMap(this.getMap());
+            this.overviewMap.setMap(map);
         });
     }
 
     onDOMContentLoaded() {
-        if(this.localStorage.active) {
+        if(Boolean(this.localStorage.active)) {
             this.activateTool();
         }
     }
@@ -129,7 +134,7 @@ class OverviewTool extends Control {
             this.options.click();
         }
 
-        if(this.active) {
+        if(Boolean(this.active)) {
             this.deActivateTool();
         }else {
             this.activateTool(); 
@@ -137,9 +142,14 @@ class OverviewTool extends Control {
     }
 
     activateTool() {
+        const map = this.getMap();
+        if(!Boolean(map)) {
+            return;
+        }
+
         // The class must be added before setMap or the overview will not render correctly
         this.overviewToolbox.classList.add('oltb-toolbox-section--show');
-        this.overviewMap.setMap(this.getMap());
+        this.overviewMap.setMap(map);
 
         this.active = true;
         this.button.classList.add('oltb-tool-button--active');

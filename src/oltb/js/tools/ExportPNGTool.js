@@ -60,8 +60,7 @@ class ExportPNGTool extends Control {
 
     onDOMContentLoaded() {
         const attributions = MAP_ELEMENT.querySelector('.ol-attribution');
-
-        if(attributions) {
+        if(Boolean(attributions)) {
             attributions.setAttribute('data-html2canvas-ignore', 'true');
         }
     }
@@ -79,6 +78,9 @@ class ExportPNGTool extends Control {
 
     momentaryActivation() {
         const map = this.getMap();
+        if(!Boolean(map)) {
+            return;
+        }
 
         // RenderSync will trigger the export the png
         map.once(EVENTS.OpenLayers.RenderComplete, this.onRenderComplete.bind(this));
@@ -86,8 +88,13 @@ class ExportPNGTool extends Control {
     }
 
     async onRenderComplete() {
+        const map = this.getMap();
+        if(!Boolean(map)) {
+            return;
+        }
+
         try {
-            const size = this.getMap().getSize();
+            const size = map.getSize();
             const pngCanvas = DOM.createElement({
                 element: 'canvas',
                 attributes: {
@@ -129,6 +136,7 @@ class ExportPNGTool extends Control {
                 message: errorMessage,
                 error: error
             });
+            
             Toast.error({
                 title: 'Error',
                 message: errorMessage
@@ -141,7 +149,7 @@ class ExportPNGTool extends Control {
             ? `-${new Date().toLocaleString(CONFIG.Locale)}`
             : '';
 
-        if(navigator.msSaveBlob) {
+        if(Boolean(navigator.msSaveBlob)) {
             navigator.msSaveBlob(pngCanvas.msToBlob(), `${this.options.filename}${timestamp}.png`);
         }else {
             download(`${this.options.filename}${timestamp}.png`, pngCanvas.toDataURL());

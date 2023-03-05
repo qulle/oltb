@@ -2,7 +2,6 @@ import { DOM } from '../../helpers/browser/DOM';
 import { MAP_ELEMENT } from './MapElement';
 
 const FILENAME = 'elements/ToolboxElement.js';
-
 const TOOLBOX_ELEMENT = DOM.createElement({
     element: 'div', 
     class: 'oltb-toolbox-container',

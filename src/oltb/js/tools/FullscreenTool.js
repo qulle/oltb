@@ -93,9 +93,14 @@ class FullscreenTool extends Control {
         if(isFullScreen()) {
             exitFullScreen();
         }else {
-            let element = this.getMap().getTargetElement();
+            const map = this.getMap();
+            if(!Boolean(map)) {
+                return;
+            }
 
-            if(this.keys) {
+            const element = map.getTargetElement();
+
+            if(Boolean(this.keys)) {
                 requestFullScreenWithKeys(element);
             }else {
                 requestFullScreen(element);
@@ -104,7 +109,7 @@ class FullscreenTool extends Control {
     }
 
     onFullScreenChange(event) {
-        if(document.fullscreenElement) {
+        if(Boolean(document.fullscreenElement)) {
             this.button._tippy.setContent(`Exit fullscreen (${SHORTCUT_KEYS.FullScreen})`);
 
             // User defined callback from constructor
@@ -122,6 +127,11 @@ class FullscreenTool extends Control {
     }
 
     handleFullScreenChange() {
+        const map = this.getMap();
+        if(!Boolean(map)) {
+            return;
+        }
+
         if(isFullScreen()) {
             this.button.removeChild(this.button.firstElementChild);
             this.button.insertAdjacentHTML('afterbegin', this.exitFullscreenIcon);
@@ -132,7 +142,7 @@ class FullscreenTool extends Control {
             this.dispatchEvent(FULL_SCREEN_EVENT_TYPE.LeaveFullScreen);
         }
 
-        this.getMap().updateSize();
+        map.updateSize();
 
         this.active = !this.active;
         this.button.classList.toggle('oltb-tool-button--active');

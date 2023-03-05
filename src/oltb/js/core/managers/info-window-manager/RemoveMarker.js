@@ -2,9 +2,9 @@ import { Dialog } from '../../../common/Dialog';
 import { EVENTS } from '../../../helpers/constants/Events';
 import { LayerManager } from '../LayerManager';
 
-const FILENAME = 'info-window-manager/RemoveFeature.js';
+const FILENAME = 'info-window-manager/RemoveMarker.js';
 
-const removeFeature = function(InfoWindowManager, feature) {
+const removeMarker = function(InfoWindowManager, marker) {
     Dialog.confirm({
         title: 'Delete marker',
         message: 'Do you want to delete this marker?',
@@ -12,15 +12,17 @@ const removeFeature = function(InfoWindowManager, feature) {
         onConfirm: () => {
             this.hideOverlay();
 
-            LayerManager.removeFeatureFromLayer(feature);
+            LayerManager.removeFeatureFromLayer(marker);
             
+            // Important to use feature as property key
+            // Not only markers can be removed
             window.dispatchEvent(new CustomEvent(EVENTS.Custom.FeatureRemoved, {
                 detail: {
-                    feature: feature
+                    feature: marker
                 }
             }));
         }
     });
 }
 
-export { removeFeature };
+export { removeMarker };

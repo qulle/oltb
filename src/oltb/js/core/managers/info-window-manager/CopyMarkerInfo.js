@@ -3,23 +3,24 @@ import { CONFIG } from '../../Config';
 import { LogManager } from '../LogManager';
 import { copyToClipboard } from '../../../helpers/browser/CopyToClipboard';
 
-const FILENAME = 'info-window-manager/CopyFeatureInfo.js';
+const FILENAME = 'info-window-manager/CopyMarkerInfo.js';
 
-const copyFeatureInfo = async function(InfoWindowManager, dataToCopy) {
+const copyMarkerInfo = async function(InfoWindowManager, dataToCopy) {
     copyToClipboard(dataToCopy)
         .then(() => {
             Toast.success({
                 title: 'Copied',
-                message: 'Feature info copied to clipboard', 
+                message: 'Marker info copied to clipboard', 
                 autoremove: CONFIG.AutoRemovalDuation.Normal
             });
         })
         .catch((error) => {
-            const errorMessage = 'Failed to copy feature info';
-            LogManager.logError(FILENAME, 'copyFeatureInfo', {
+            const errorMessage = 'Failed to copy marker info';
+            LogManager.logError(FILENAME, 'copyMarkerInfo', {
                 message: errorMessage,
                 error: error
             });
+            
             Toast.error({
                 title: 'Error',
                 message: errorMessage
@@ -27,4 +28,4 @@ const copyFeatureInfo = async function(InfoWindowManager, dataToCopy) {
         });
 }
 
-export { copyFeatureInfo };
+export { copyMarkerInfo };

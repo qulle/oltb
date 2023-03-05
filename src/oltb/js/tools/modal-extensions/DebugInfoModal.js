@@ -130,7 +130,7 @@ class DebugInfoModal extends ModalBase {
             id: `${ID_PREFIX}-section-${index}`
         });
 
-        if(section.json) {
+        if(Boolean(section.json)) {
             const jsonSection = this.#generateJSONSection(section);
             DOM.appendChildren(sectionContent, [
                 jsonSection
@@ -203,7 +203,7 @@ class DebugInfoModal extends ModalBase {
             html: `
                 ${
                     entry.level.icon
-                }&nbsp;<strong>${
+                } <strong>${
                     entry.timestamp
                 }</strong> 🡒 ${
                     entry.origin
@@ -246,7 +246,7 @@ class DebugInfoModal extends ModalBase {
             html: `
                 ${
                     entry.level.icon
-                }&nbsp;<strong>${
+                } <strong>${
                     entry.timestamp
                 }</strong> 🡒 ${
                     entry.origin
@@ -421,8 +421,7 @@ class DebugInfoModal extends ModalBase {
         };
 
         const actionMethod = actions[action];
-
-        if(actionMethod) {
+        if(Boolean(actionMethod)) {
             actionMethod.call();
         }
     }

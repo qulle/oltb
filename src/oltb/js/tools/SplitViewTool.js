@@ -89,11 +89,11 @@ class SplitViewTool extends Control {
 
         this.splitViewToolbox = document.querySelector(`#${ID_PREFIX}-toolbox`);
 
-        this.leftSrc = this.splitViewToolbox.querySelector(`#${ID_PREFIX}-left-src`);
-        this.leftSrc.addEventListener(EVENTS.Browser.Change, this.updateTool.bind(this));
+        this.leftSideSrc = this.splitViewToolbox.querySelector(`#${ID_PREFIX}-left-src`);
+        this.leftSideSrc.addEventListener(EVENTS.Browser.Change, this.updateTool.bind(this));
 
-        this.rightSrc = this.splitViewToolbox.querySelector(`#${ID_PREFIX}-right-src`);
-        this.rightSrc.addEventListener(EVENTS.Browser.Change, this.updateTool.bind(this));
+        this.rightSideSrc = this.splitViewToolbox.querySelector(`#${ID_PREFIX}-right-src`);
+        this.rightSideSrc.addEventListener(EVENTS.Browser.Change, this.updateTool.bind(this));
 
         const toggleableTriggers = this.splitViewToolbox.querySelectorAll('.oltb-toggleable');
         toggleableTriggers.forEach((toggle) => {
@@ -106,15 +106,22 @@ class SplitViewTool extends Control {
         });
         
         this.splitViewSlider = MAP_ELEMENT.querySelector(`#${ID_PREFIX}-slider`);
-        this.splitViewSlider.addEventListener(EVENTS.Browser.Input, (event) => {
-            this.getMap().render();
-        });
+        this.splitViewSlider.addEventListener(EVENTS.Browser.Input, this.onSliderInput.bind(this));
 
         window.addEventListener(EVENTS.Custom.MapLayerAdded, this.onWindowMapLayerAdded.bind(this));
         window.addEventListener(EVENTS.Custom.MapLayerRemoved, this.onWindowMapLayerRemoved.bind(this));
         window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
         window.addEventListener(EVENTS.Custom.SettingsCleared, this.onWindowSettingsCleared.bind(this));
         window.addEventListener(EVENTS.Browser.ContentLoaded, this.onDOMContentLoaded.bind(this));
+    }
+
+    onSliderInput(event) {
+        const map = this.getMap();
+        if(!Boolean(map)) {
+            return;
+        }
+
+        map.render();
     }
 
     onToggleToolbox(toggle) {
@@ -126,7 +133,7 @@ class SplitViewTool extends Control {
     }
 
     onDOMContentLoaded() {
-        if(this.localStorage.active) {
+        if(Boolean(this.localStorage.active)) {
             this.activateTool();
         }
     }
@@ -146,42 +153,42 @@ class SplitViewTool extends Control {
 
         const leftOption = DOM.createElement({
             element: 'option',
-            text: layerWrapper.name,
-            value: layerWrapper.id.toString()
+            text: layerWrapper.getName(),
+            value: layerWrapper.getId().toString()
         });
 
         const rightOption = DOM.createElement({
             element: 'option',
-            text: layerWrapper.name,
-            value: layerWrapper.id.toString()
+            text: layerWrapper.getName(),
+            value: layerWrapper.getId().toString()
         });
 
-        this.leftSrc.appendChild(leftOption);
-        this.rightSrc.appendChild(rightOption);
+        this.leftSideSrc.appendChild(leftOption);
+        this.rightSideSrc.appendChild(rightOption);
     }
 
     onWindowMapLayerRemoved(event) {
         const layerWrapper = event.detail.layerWrapper;
 
-        this.leftSrc.childNodes.forEach((option) => {
-            if(parseInt(option.value, RADIX) === layerWrapper.id) {
+        this.leftSideSrc.childNodes.forEach((option) => {
+            if(parseInt(option.value, RADIX) === layerWrapper.getId()) {
                 option.remove();
             }
         });
 
-        this.rightSrc.childNodes.forEach((option) => {
-            if(parseInt(option.value, RADIX) === layerWrapper.id) {
+        this.rightSideSrc.childNodes.forEach((option) => {
+            if(parseInt(option.value, RADIX) === layerWrapper.getId()) {
                 option.remove();
             }
         });
 
-        eventDispatcher([this.leftSrc, this.rightSrc], EVENTS.Browser.Change);
+        eventDispatcher([this.leftSideSrc, this.rightSideSrc], EVENTS.Browser.Change);
     }
 
     updateTool() {
         this.sourceChange(
-            parseInt(this.leftSrc.value, RADIX), 
-            parseInt(this.rightSrc.value, RADIX)
+            parseInt(this.leftSideSrc.value, RADIX), 
+            parseInt(this.rightSideSrc.value, RADIX)
         );
     }
 
@@ -202,7 +209,7 @@ class SplitViewTool extends Control {
             return;
         }
 
-        if(this.active) {
+        if(Boolean(this.active)) {
             this.deActivateTool();
         }else {
             this.activateTool();
@@ -210,11 +217,11 @@ class SplitViewTool extends Control {
     }
 
     activateTool() {
-        this.rightSrc.selectedIndex = '1';
+        this.rightSideSrc.selectedIndex = '1';
 
-        eventDispatcher([this.rightSrc], EVENTS.Browser.Change);
+        eventDispatcher([this.rightSideSrc], EVENTS.Browser.Change);
 
-        if(this.layerLoadingError) {
+        if(Boolean(this.layerLoadingError)) {
             return;
         }
 
@@ -229,6 +236,9 @@ class SplitViewTool extends Control {
 
     deActivateTool() {
         const map = this.getMap();
+        if(!Boolean(map)) {
+            return;
+        }
 
         // Remove previosly added listeners
         unByKey(this.onPreRenderListener);
@@ -236,12 +246,12 @@ class SplitViewTool extends Control {
 
         // Remove the ol-split-view-layers from the map
         LayerManager.getMapLayers().forEach((layerWrapper) => {
-            map.removeLayer(layerWrapper.layer);
+            map.removeLayer(layerWrapper.getLayer());
         });
 
         // Add back all the original layers to the map
         LayerManager.getMapLayers().forEach((layerWrapper) => {
-            map.addLayer(layerWrapper.layer);
+            map.addLayer(layerWrapper.getLayer());
         });
 
         // Set first layer as the only one visible
@@ -257,34 +267,40 @@ class SplitViewTool extends Control {
     }
 
     swapSides() {
-        const currentRightId = this.rightSrc.value;
+        const currentRightId = this.rightSideSrc.value;
 
-        this.rightSrc.value = this.leftSrc.value;
-        this.leftSrc.value = currentRightId;
+        this.rightSideSrc.value = this.leftSideSrc.value;
+        this.leftSideSrc.value = currentRightId;
 
-        eventDispatcher([this.leftSrc, this.rightSrc], EVENTS.Browser.Change);
+        eventDispatcher([this.leftSideSrc, this.rightSideSrc], EVENTS.Browser.Change);
     }
 
-    sourceChange(leftSrcId, rightSrcId) {
+    sourceChange(leftSideSrcId, rightSideSrcId) {
+        const map = this.getMap();
+        if(!Boolean(map)) {
+            return;
+        }
+
         // Remove previously added listeners
         unByKey(this.onPreRenderListener);
         unByKey(this.onPostRenderListener);
 
-        const map = this.getMap();
-
         // Remove current layers from the map
         // Only the left and right layer will be added later
         LayerManager.getMapLayers().forEach((layerWrapper) => {
-            map.removeLayer(layerWrapper.layer);
-            layerWrapper.layer.setVisible(false);
+            map.removeLayer(layerWrapper.getLayer());
+            layerWrapper.getLayer().setVisible(false);
         });
 
         // Get layers to view in split-mode
-        const leftlayerWrapper = LayerManager.getMapLayerById(leftSrcId);
-        const rightlayerWrapper = LayerManager.getMapLayerById(rightSrcId);
+        const leftSideLayerWrapper = LayerManager.getMapLayerById(leftSideSrcId);
+        const rightSideLayerWrapper = LayerManager.getMapLayerById(rightSideSrcId);
 
         // This should not happen, but just in case
-        if(!leftlayerWrapper || !rightlayerWrapper) {
+        if(
+            !Boolean(leftSideLayerWrapper) || 
+            !Boolean(rightSideLayerWrapper)
+        ) {
             this.layerLoadingError = true;
             Toast.error({
                 title: 'Error',
@@ -294,30 +310,35 @@ class SplitViewTool extends Control {
             return;
         }
 
-        const leftLayer = leftlayerWrapper.layer;
-        const rightLayer = rightlayerWrapper.layer;
+        const leftSideLayer = leftSideLayerWrapper.getLayer();
+        const rightSideLayer = rightSideLayerWrapper.getLayer();
 
         // Left layer config
-        leftLayer.setVisible(true);
-        map.addLayer(leftLayer);
+        leftSideLayer.setVisible(true);
+        map.addLayer(leftSideLayer);
 
-        if(leftSrcId !== rightSrcId) {
+        if(leftSideSrcId !== rightSideSrcId) {
             // Right layer config, only if different source than left side
-            rightLayer.setVisible(true);
-            map.addLayer(rightLayer);
+            rightSideLayer.setVisible(true);
+            map.addLayer(rightSideLayer);
 
             // Attach listeners to the right layer. 
             // Pre/Post render will only show part of the right map
-            this.onPreRenderListener = rightLayer.on(EVENTS.OpenLayers.PreRender, this.onPreRender.bind(this));
-            this.onPostRenderListener = rightLayer.on(EVENTS.OpenLayers.PostRender, this.onPostRender.bind(this));
+            this.onPreRenderListener = rightSideLayer.on(EVENTS.OpenLayers.PreRender, this.onPreRender.bind(this));
+            this.onPostRenderListener = rightSideLayer.on(EVENTS.OpenLayers.PostRender, this.onPostRender.bind(this));
         }
 
         map.render();
     }
 
     onPreRender(event) {
+        const map = this.getMap();
+        if(!Boolean(map)) {
+            return;
+        }
+
         const context = event.context;
-        const mapSize = this.getMap().getSize();
+        const mapSize = map.getSize();
 
         // Calculate offset for the handlebar. 
         // The range slider is not perfectly linear towards the edges. 

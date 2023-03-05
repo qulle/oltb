@@ -10,7 +10,7 @@ export const banner = `/*!
  * | (+) proj4 2.8.1                        - (http://proj4js.org/)                                                  |
  * | (+) Tippy.js 6.3.7                     - (https://atomiks.github.io/tippyjs/)                                   |
  * | (+) Bootstrap Icons                    - (https://icons.getbootstrap.com/)                                      |
- * | (+) Moment                             - (https://momentjs.com/)                                                |
+ * | (+) Moment 2.29.4                      - (https://momentjs.com/)                                                |
  * | (+) A Color Picker 1.2.1               - (https://github.com/narsenico/a-color-picker)                          |
  * | (+) Plain JS Slidetoggle 2.0.0         - (https://github.com/ericbutler555/plain-js-slidetoggle)                |
  * | (+) JSTS 2.9.3                         - (https://github.com/bjornharrtell/jsts)                                |

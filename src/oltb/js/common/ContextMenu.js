@@ -86,8 +86,16 @@ class ContextMenu extends Control {
     }
 
     show(event) {
+        // Disable native context menu
+        event.preventDefault();
+
+        const map = this.getMap();
+        if(!Boolean(map)) {
+            return;
+        }
+
         this.coordinates = transform(
-            this.getMap().getEventCoordinate(event), 
+            map.getEventCoordinate(event), 
             CONFIG.Projection.Default, 
             CONFIG.Projection.WGS84
         );
@@ -96,9 +104,6 @@ class ContextMenu extends Control {
         this.menu.style.top = `${event.clientY}px`;
         this.menu.classList.add('oltb-context-menu--show');
         this.menu.focus();
-
-        // Disable native context menu
-        event.preventDefault();
     }
 
     hide() {

@@ -5,7 +5,7 @@ import { MAP_ELEMENT } from '../../core/elements/index';
 const FILENAME = 'dialogs/Prompt.js';
 const DEFAULT_OPTIONS = Object.freeze({
     title: 'Prompt',
-    message: 'Default prompt text',
+    message: 'Oops missing prompt text',
     placeholder: undefined,
     value: undefined,
     onConfirm: undefined,

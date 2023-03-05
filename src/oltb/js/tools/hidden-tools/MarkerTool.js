@@ -51,21 +51,20 @@ class HiddenMarkerTool extends Control {
                         <div class="oltb-info-window__buttons-wrapper">
                             <button class="oltb-func-btn oltb-func-btn--delete oltb-tippy" title="Delete marker" id="${ID_PREFIX}-remove"></button>
                             <button class="oltb-func-btn oltb-func-btn--crosshair oltb-tippy" title="Copy marker coordinates" id="${ID_PREFIX}-copy-coordinates" data-coordinates="${prettyCoordinates}"></button>
-                            <button class="oltb-func-btn oltb-func-btn--copy oltb-tippy" title="Copy marker text" id="${ID_PREFIX}-copy-text" data-copy="${result.name} ${result.info}"></button>
+                            <button class="oltb-func-btn oltb-func-btn--copy oltb-tippy" title="Copy marker text" id="${ID_PREFIX}-copy-text" data-copy="${result.title}, ${result.description}"></button>
                             <button class="oltb-func-btn oltb-func-btn--edit oltb-tippy" title="Edit marker" id="${ID_PREFIX}-edit"></button>
                         </div>
                     `
                 };
                 
                 const marker = new generateMarker({
-                    title: result.title,
-                    description: result.description,
                     lat: result.latitude,
                     lon: result.longitude,
+                    title: result.title,
+                    description: result.description,
                     icon: result.icon,
                     backgroundColor: result.backgroundColor,
                     color: result.color,
-                    notSelectable: true,
                     infoWindow: infoWindow
                 });
     
@@ -73,7 +72,7 @@ class HiddenMarkerTool extends Control {
                     fallback: 'Markers'
                 });
                 
-                layerWrapper.layer.getSource().addFeature(marker);
+                layerWrapper.getLayer().getSource().addFeature(marker);
     
                 // User defined callback from constructor
                 if(typeof this.options.added === 'function') {

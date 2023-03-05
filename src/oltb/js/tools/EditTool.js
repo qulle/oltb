@@ -198,16 +198,13 @@ class EditTool extends Control {
             filter: function(feature, layer) {
                 const selectable = !hasCustomFeatureProperty(feature.getProperties(), FEATURE_PROPERTIES.NotSelectable);
                 const isFeatureLayer = LayerManager.getFeatureLayers().find((layerWrapper) => {
-                    return layerWrapper.layer.getSource().hasFeature(feature);
+                    return layerWrapper.getLayer().getSource().hasFeature(feature);
                 });
                 
-                return (
-                    selectable && 
-                    (
-                        isFeatureLayer || 
-                        SettingsManager.getSetting(SETTINGS.SelectVectorMapShapes)
-                    )
-                );
+                return (selectable && (
+                    isFeatureLayer || 
+                    SettingsManager.getSetting(SETTINGS.SelectVectorMapShapes)
+                ));
             },
             style: this.lastStyle
         });
@@ -246,21 +243,26 @@ class EditTool extends Control {
     }
 
     onDOMContentLoaded() {
-        if(this.localStorage.active) {
+        if(Boolean(this.localStorage.active)) {
             this.activateTool();
         }
+    }
+
+    isMeasurementType(feature) {
+        return getCustomFeatureProperty(feature.getProperties(), 'type') === FEATURE_PROPERTIES.Type.Measurement;
     }
 
     onSelectFeatureRemove(event) {
         const feature = event.element;
 
-        // The setTimeout must be used, if not, the style will be reset to the style used before the feature was selected
+        // The setTimeout must be used
+        // If not, the style will be reset to the style used before the feature was selected
         window.setTimeout(() => {
-            if(this.colorHasChanged) {
+            if(Boolean(this.colorHasChanged)) {
                 // Set the lastStyle as the default style
                 feature.setStyle(this.lastStyle);
 
-                if(getCustomFeatureProperty(feature.getProperties(), 'type') === FEATURE_PROPERTIES.Type.Measurement) {
+                if(this.isMeasurementType(feature)) {
                     // To add lineDash, a new Style object must be used
                     // If the lastStyle is used all object that is referenced with that object will get a dashed line
                     const style = new Style({
@@ -312,7 +314,6 @@ class EditTool extends Control {
 
     onModifyEnd(event) {
         const features = event.features;
-
         features.forEach((feature) => {
             if(hasCustomFeatureProperty(feature.getProperties(), FEATURE_PROPERTIES.Tooltip)) {
                 this.detachOnChange(feature);
@@ -366,7 +367,7 @@ class EditTool extends Control {
     onWindowKeyUp(event) {
         if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Edit)) {
             this.handleClick(event);
-        }else if(event.key.toLowerCase() === KEYS.Delete && this.active) {
+        }else if(event.key.toLowerCase() === KEYS.Delete && Boolean(this.active)) {
             this.onDeleteSelectedFeatures();
         }
     }
@@ -386,7 +387,7 @@ class EditTool extends Control {
 
         if(featureLength === 0) {
             Toast.info({
-                title: 'Whoops',
+                title: 'Oops',
                 message: 'No features selected to delete', 
                 autoremove: CONFIG.AutoRemovalDuation.Normal
             });
@@ -406,13 +407,18 @@ class EditTool extends Control {
     }
 
     deleteFeatures(features) {
+        const map = this.getMap();
+        if(!Boolean(map)) {
+            return;
+        }
+
         const layerWrappers = LayerManager.getFeatureLayers();
 
         // The user can select features from any layer
         // Each feature needs to be removed from its associated layer
         features.forEach((feature) => {
             layerWrappers.forEach((layerWrapper) => {
-                const source = layerWrapper.layer.getSource();
+                const source = layerWrapper.getLayer().getSource();
                 if(source.hasFeature(feature)) {
                     // Remove feature from layer
                     source.removeFeature(feature);
@@ -422,7 +428,7 @@ class EditTool extends Control {
 
                     // Remove overlays associated with the feature
                     if(hasCustomFeatureProperty(feature.getProperties(), FEATURE_PROPERTIES.Tooltip)) {
-                        this.getMap().removeOverlay(feature.getProperties().oltb.tooltip);
+                        map.removeOverlay(feature.getProperties().oltb.tooltip);
                     }
 
                     // User defined callback from constructor
@@ -462,13 +468,21 @@ class EditTool extends Control {
         StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, this.localStorage);
     }
 
+    isTwoAndOnlyTwoShapes(features) {
+        return features.length === 2;
+    }
+
     onShapeOperator(operation, type) {
+        const map = this.getMap();
+        if(!Boolean(map)) {
+            return;
+        }
+
         const features = [ ...this.select.getFeatures().getArray() ];
 
-        // Only allow two shapes at the time to be unioned
-        if(features.length !== 2) {
+        if(!isTwoAndOnlyTwoShapes(features)) {
             Toast.info({
-                title: 'Whoops',
+                title: 'Oops',
                 message: 'Strict two overlapping features must be selected', 
                 autoremove: CONFIG.AutoRemovalDuation.Normal
             });
@@ -493,8 +507,8 @@ class EditTool extends Control {
 
             // Check if a or b was a measurement, if so, create a new tooltip
             if(
-                getCustomFeatureProperty(a.getProperties(), 'type') === FEATURE_PROPERTIES.Type.Measurement ||
-                getCustomFeatureProperty(b.getProperties(), 'type') === FEATURE_PROPERTIES.Type.Measurement
+                this.isMeasurementType(a) ||
+                this.isMeasurementType(b)
             ) {
                 const tooltip = generateTooltip();
 
@@ -510,7 +524,7 @@ class EditTool extends Control {
                 tooltip.setPosition(getMeasureCoordinates(geometry));
                 tooltip.setData(getMeasureValue(geometry));
 
-                this.getMap().addOverlay(tooltip.getOverlay());
+                map.addOverlay(tooltip.getOverlay());
 
                 feature.setStyle(DEFAULT_MEASURE_STYLE);
             }else {
@@ -519,7 +533,7 @@ class EditTool extends Control {
 
             // Add the unioned shape
             const layerWrapper = LayerManager.getActiveFeatureLayer();
-            const source = layerWrapper.layer.getSource();
+            const source = layerWrapper.getLayer().getSource();
 
             source.addFeature(feature);
 
@@ -536,6 +550,7 @@ class EditTool extends Control {
                 message: errorMessage,
                 error: error
             });
+            
             Toast.error({
                 title: 'Error',
                 message: errorMessage
@@ -572,7 +587,7 @@ class EditTool extends Control {
         const selectedFeatures = this.select.getFeatures().getArray();
         const hasOtherTooltip = !TooltipManager.isEmpty();
 
-        if(hasOtherTooltip && selectedFeatures.length === 1) {
+        if(Boolean(hasOtherTooltip) && selectedFeatures.length === 1) {
             this.tooltipItem = TooltipManager.push('edit');
         }
 
@@ -587,7 +602,7 @@ class EditTool extends Control {
         const selectedFeatures = this.select.getFeatures().getArray();
         const hasOtherTooltip = !TooltipManager.isEmpty();
         
-        if(hasOtherTooltip && selectedFeatures.length === 1) {
+        if(Boolean(hasOtherTooltip) && selectedFeatures.length === 1) {
             const poppedTooltip = TooltipManager.pop('edit');
         }
 
@@ -609,7 +624,7 @@ class EditTool extends Control {
         const hasOtherTooltip = !TooltipManager.isEmpty();
         const geometry = feature.getGeometry();
 
-        if(hasOtherTooltip && selectedFeatures.length === 1) {
+        if(Boolean(hasOtherTooltip) && selectedFeatures.length === 1) {
             this.tooltipItem.innerHTML = getMeasureValue(geometry);
         }else {
             const overlay = feature.getProperties().oltb.tooltip;
@@ -632,7 +647,7 @@ class EditTool extends Control {
             this.options.click();
         }
         
-        if(this.active) {
+        if(Boolean(this.active)) {
             this.deActivateTool();
         }else {
             this.activateTool();
@@ -640,12 +655,17 @@ class EditTool extends Control {
     }
 
     activateTool() {
+        const map = this.getMap();
+        if(!Boolean(map)) {
+            return;
+        }
+
         [
             this.select,
             this.translate,
             this.modify
         ].forEach((item) => {
-            this.getMap().addInteraction(item);
+            map.addInteraction(item);
         });
 
         ToolManager.setActiveTool(this);

@@ -1,5 +1,4 @@
 const FILENAME = 'constants/FeatureProperties.js';
-
 const FEATURE_PROPERTIES = Object.freeze({
     Type: Object.freeze({
         Layer: 'layer',

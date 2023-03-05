@@ -18,11 +18,15 @@ class URLManager {
         return urlParameters;
     }
 
-    static getParameter(name) {
+    static getParameter(name, lowerCase = true) {
         const parameters = this.getParameters();
         const parameter = parameters.get(name) || '';
 
-        return parameter.toLowerCase();
+        if(Boolean(lowerCase)) {
+            return parameter.toLowerCase();
+        }
+
+        return parameter;
     }
 
     static setParameter(name, value) {

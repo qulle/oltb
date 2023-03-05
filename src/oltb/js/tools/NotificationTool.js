@@ -62,7 +62,7 @@ class NotificationTool extends Control {
     }
 
     momentaryActivation() {
-        if(this.notificationModal) {
+        if(Boolean(this.notificationModal)) {
             return;
         }
 
@@ -77,7 +77,7 @@ class NotificationTool extends Control {
         const timestamp = new Date().getTime().toString();
         const notificationPromise = fetch(`${NOTIFICATION_URL}?cache=${timestamp}`)
             .then((response) => {
-                if(!response.ok) {
+                if(!Boolean(response.ok)) {
                     throw new Error(`Fetch error [${response.status}] [${response.statusText}]`);
                 }
 

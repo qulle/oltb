@@ -1,5 +1,4 @@
 const FILENAME = 'constants/LocalStorageKeys.js';
-
 const LOCAL_STORAGE_KEYS = Object.freeze({
     MapData: 'common.mapdata',
     DrawTool: 'tool.draw',

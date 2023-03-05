@@ -30,7 +30,7 @@ class HiddenAboutTool extends Control {
     }
 
     onContextMenuAbout(map, coordinates, target) {        
-        if(this.aboutInfoModal) {
+        if(Boolean(this.aboutInfoModal)) {
             return;
         }
 

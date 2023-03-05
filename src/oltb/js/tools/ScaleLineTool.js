@@ -58,7 +58,7 @@ class ScaleLineTool extends Control {
     }
 
     onDOMContentLoaded() {
-        if(this.localStorage.active) {
+        if(Boolean(this.localStorage.active)) {
             this.activateTool();
         }
     }
@@ -77,7 +77,7 @@ class ScaleLineTool extends Control {
             this.options.click();
         }
 
-        if(this.active) {
+        if(Boolean(this.active)) {
             this.deActivateTool();
         }else {
             this.activateTool();
@@ -85,7 +85,12 @@ class ScaleLineTool extends Control {
     }
 
     activateTool() {
-        this.scaleLine.setMap(this.getMap());
+        const map = this.getMap();
+        if(!Boolean(map)) {
+            return;
+        }
+
+        this.scaleLine.setMap(map);
 
         this.active = true;
         this.button.classList.add('oltb-tool-button--active');

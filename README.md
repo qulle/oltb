@@ -41,7 +41,7 @@ Have a look at the [Internal Development Documentation](README_INTERNAL.md).
 2. [Proj4 2.8.1](http://proj4js.org/)   
 3. [Tippy.js 6.3.7](https://atomiks.github.io/tippyjs/)
 4. [Bootstrap Icons](https://icons.getbootstrap.com/)
-5. [Moment](https://momentjs.com/)
+5. [Moment 2.29.4](https://momentjs.com/)
 6. [A Color Picker 1.2.1](https://github.com/narsenico/a-color-picker)
 7. [Plain JS Slidetoggle 2.0.0](https://github.com/ericbutler555/plain-js-slidetoggle)
 8. [JSTS 2.9.3](https://github.com/bjornharrtell/jsts)

@@ -81,7 +81,9 @@ class OLTB {
             const [key, value] = entry;
 
             const toolName = key;
-            const toolParameters = typeof value !== 'function' ? value : {};
+            const toolParameters = typeof value !== 'function' 
+                ? value 
+                : {};
 
             if(ALL_TOOLS.hasOwnProperty(toolName)) {
                 this.#tools[toolName] = new ALL_TOOLS[toolName](toolParameters);
@@ -91,7 +93,7 @@ class OLTB {
         // Always add the ContextMenu
         this.#tools['ContextMenu'] = new ContextMenu({});
 
-        if(options.map) {
+        if(Boolean(options.map)) {
             this.setMap(options.map);
         }
     }

@@ -55,7 +55,7 @@ class SettingsModal extends ModalBase {
             // Copy current state of each setting
             this.#state.set(key, settingObj.state);
 
-            if(settingObj.state) {
+            if(Boolean(settingObj.state)) {
                 checkbox.setAttribute('checked', '');
             }
 

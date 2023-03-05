@@ -317,36 +317,36 @@ class CoordinatesTool extends Control {}
 
 When using the custom tools, all that is needed is to import the module(s) you want to have in your toolbar.
 ```javascript
-import { HomeTool } from './modules/tools/HomeTool';
-import { DrawTool } from './modules/tools/DrawTool';
-import { EditTool } from './modules/tools/EditTool';
-import { InfoTool } from './modules/tools/InfoTool';
-import { HelpTool } from './modules/tools/HelpTool';
-import { ThemeTool } from './modules/tools/ThemeTool';
-import { LayerTool } from './modules/tools/LayerTool';
-import { ZoomInTool } from './modules/tools/ZoomInTool';
-import { MeasureTool } from './modules/tools/MeasureTool';
-import { MagnifyTool } from './modules/tools/MagnifyTool';
-import { ZoomOutTool } from './modules/tools/ZoomOutTool';
-import { RefreshTool } from './modules/tools/RefreshTool';
-import { SettingsTool } from './modules/tools/SettingsTool';
-import { OverviewTool } from './modules/tools/OverviewTool';
-import { BookmarkTool } from './modules/tools/BookmarkTool';
-import { DirectionTool } from './modules/tools/DirectionTool';
-import { DebugInfoTool } from './modules/tools/DebugInfoTool';
-import { SplitViewTool } from './modules/tools/SplitViewTool';
-import { ExportPNGTool } from './modules/tools/ExportPNGTool';
-import { ScaleLineTool } from './modules/tools/ScaleLineTool';
-import { GraticuleTool } from './modules/tools/GraticuleTool';
-import { MyLocationTool } from './modules/tools/MyLocationTool';
-import { ResetNorthTool } from './modules/tools/ResetNorthTool';
-import { FullscreenTool } from './modules/tools/FullscreenTool';
-import { CoordinatesTool } from './modules/tools/CoordinatesTool';
-import { HiddenAboutTool } from './modules/tools/hidden-tools/AboutTool';
-import { NotificationTool } from './modules/tools/NotificationTool';
-import { HiddenMarkerTool } from './modules/tools/hidden-tools/MarkerTool';
-import { ImportVectorLayerTool } from './modules/tools/ImportVectorLayerTool';
-import { HiddenMapNavigationTool } from './modules/tools/hidden-tools/MapNavigationTool';
+import { HomeTool } from 'oltb/js/tools/HomeTool';
+import { DrawTool } from 'oltb/js/tools/DrawTool';
+import { EditTool } from 'oltb/js/tools/EditTool';
+import { InfoTool } from 'oltb/js/tools/InfoTool';
+import { HelpTool } from 'oltb/js/tools/HelpTool';
+import { ThemeTool } from 'oltb/js/tools/ThemeTool';
+import { LayerTool } from 'oltb/js/tools/LayerTool';
+import { ZoomInTool } from 'oltb/js/tools/ZoomInTool';
+import { MeasureTool } from 'oltb/js/tools/MeasureTool';
+import { MagnifyTool } from 'oltb/js/tools/MagnifyTool';
+import { ZoomOutTool } from 'oltb/js/tools/ZoomOutTool';
+import { RefreshTool } from 'oltb/js/tools/RefreshTool';
+import { SettingsTool } from 'oltb/js/tools/SettingsTool';
+import { OverviewTool } from 'oltb/js/tools/OverviewTool';
+import { BookmarkTool } from 'oltb/js/tools/BookmarkTool';
+import { DirectionTool } from 'oltb/js/tools/DirectionTool';
+import { DebugInfoTool } from 'oltb/js/tools/DebugInfoTool';
+import { SplitViewTool } from 'oltb/js/tools/SplitViewTool';
+import { ExportPNGTool } from 'oltb/js/tools/ExportPNGTool';
+import { ScaleLineTool } from 'oltb/js/tools/ScaleLineTool';
+import { GraticuleTool } from 'oltb/js/tools/GraticuleTool';
+import { MyLocationTool } from 'oltb/js/tools/MyLocationTool';
+import { ResetNorthTool } from 'oltb/js/tools/ResetNorthTool';
+import { FullscreenTool } from 'oltb/js/tools/FullscreenTool';
+import { CoordinatesTool } from 'oltb/js/tools/CoordinatesTool';
+import { HiddenAboutTool } from 'oltb/js/tools/hidden-tools/AboutTool';
+import { NotificationTool } from 'oltb/js/tools/NotificationTool';
+import { HiddenMarkerTool } from 'oltb/js/tools/hidden-tools/MarkerTool';
+import { ImportVectorLayerTool } from 'oltb/js/tools/ImportVectorLayerTool';
+import { HiddenMapNavigationTool } from 'oltb/js/tools/hidden-tools/MapNavigationTool';
 ```
 
 Then call the constructor for each tool in the extend method. The tools are added to the toolbar in the order you include them in the array.
@@ -752,10 +752,47 @@ Layers can be added at any time during the applications lifetime. If the map is 
 
 There are two types of layers, `map`- and `feature`-layers. Exampels of adding different types of layers are available in the [examples directory](https://github.com/qulle/oltb/tree/main/examples/).
 
+### Markers
+Markers can be created in the map using the following module.
+```javascript
+import { generateMarker } from 'oltb/js/generators/GenerateMarker';
+```
+
+To create a marker use the following object properties.
+```javascript
+const marker = generateMarker({
+    lat: 23.7588,
+    lon: 25.5809,
+    title: 'Marker Title',
+    description: 'Marker description',
+    backgroundColor: '#0166A5FF',
+    color: '#FFFFFFFF',
+    icon: 'GeoPin.Filled'
+});
+```
+
+Other properties that you can add are:
+```javascript
+({
+    width: 15,           // Circle stroke width
+    radius: 15,          // Circle radius
+    iconWidth: 14,       // Height of icon (px)
+    iconHeight: 14,      // Width of icon (px)
+    infoWindow: '',      // HTML Content to show when user click on marker
+    notSelectable: true, // If the marker can be selected by the Edit Tool
+});
+```
+
+#### URL Markers
+A marker can be created by providing the `oltb-marker` object as the GET parameter according to the following syntax.
+```
+/?oltb-marker={"title":"Marker Title","description":"Information about the maker","icon":"ExclamationTriangle.Filled","backgroundColor":"EB4542FF","color":"FFFFFFFF","layerName":"URL Marker","coordinateSystem":"EPSG:3857","lon":25.5809,"lat":23.7588,"zoom":6}
+```
+
 ### Dialogs
 To use the custom dialogs in the map, include the following module. All the dialogs uses trap focus and circles the tab-key to always stay in the opened dialog.
 ```javascript
-import { Dialog } from './modules/common/Dialog';
+import { Dialog } from 'oltb/js/common/Dialog';
 ```
 
 #### Alert
@@ -826,7 +863,7 @@ Other properties that you can add are:
 ### Modal
 To use the custom modal in the map, include the following module.
 ```javascript
-import { Modal } from './modules/common/Modal';
+import { Modal } from 'oltb/js/common/Modal';
 ```
 
 The modal uses trap focus to circle the tab-key.
@@ -844,7 +881,7 @@ Modal.create({
 A reference to the created modal is returned from the create function. This can be used to block the creation of a second modal if a button is pressed again. The `onClose` callback can be used to release the lock.
 ```javascript
 infoToolClick() {
-    if(this.infoModal) {
+    if(Boolean(this.infoModal)) {
         return;
     }
 
@@ -861,7 +898,7 @@ infoToolClick() {
 ### Toast
 To use the custom toasts in the map, include the following module.
 ```javascript
-import { Toast } from './modules/common/Toast';
+import { Toast } from 'oltb/js/common/Toast';
 ```
 
 There are four types of toast messages.
@@ -911,7 +948,7 @@ this.loadingToast.remove();
 The returned reference to the toast can be used to block further actions while a task is being performed. The `onRemove` callback can be used to release the lock.
 ```javascript
 myLocationToolClick() {
-    if(this.loadingToast) {
+    if(Boolean(this.loadingToast)) {
         return;
     }
 
@@ -933,7 +970,7 @@ There are two modules for using SVG icons. One is for basic icons and the other 
 #### Basic icons
 Most of the icons are from the excellent [icons.getbootstrap.com](https://icons.getbootstrap.com/). Icons have been added on a as needed basis and far from all icons have been added.
 ```javascript
-import { getIcon, SVG_PATHS } from './modules/core/GetIcon';
+import { getIcon, SVG_PATHS } from 'oltb/js/core/GetIcon';
 
 const icon = getIcon({
     path: SVG_PATHS.GeoMarker.Filled,
@@ -955,7 +992,7 @@ const path = SVG_PATHS[name][version]; // The 'getIcon' function wrapps the path
 #### Windbarb icons
 The windbarbs are available from 0 to 190 knots (0 to 97.5m/s). To get more information about the windbarbs visit my other project [github.com/qulle/svg-wind-barbs](https://github.com/qulle/svg-wind-barbs).
 ```javascript
-import { getWindBarb } from './modules/core/GetWindBarb';
+import { getWindBarb } from 'oltb/js/core/GetWindBarb';
 
 const icon = getWindBarb({
     windSpeed: 25,
@@ -970,7 +1007,7 @@ const icon = getWindBarb({
 ### Context menu
 To use the context menu start by importing the following module.
 ```javascript
-import { ContextMenu } from './modules/common/ContextMenu';
+import { ContextMenu } from 'oltb/js/common/ContextMenu';
 ```
 
 To create a context menu in the map call the constructor as any other tool. The context menu class extends the Control-class from OpenLayers.
@@ -1013,7 +1050,7 @@ ContextMenu.addItem({});
 ### State Management
 To use state management start by importing the following module.
 ```javascript
-import { StateManager } from './modules/core/managers/StateManager';
+import { StateManager } from 'oltb/js/core/managers/StateManager';
 ```
 
 State management is done through localStorage. First add a node name and an object to store default values.
