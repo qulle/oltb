@@ -67,8 +67,8 @@ import { HiddenMapNavigationTool } from 'oltb/dist/src/oltb/js/tools/hidden-tool
 // This is the same NODE_NAME and PROPS that the MapNavigationTool.js is using
 const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.MapData;
 const LOCAL_STORAGE_DEFAULTS = Object.freeze({
-    lon: 25.5809,
-    lat: 23.7588,
+    lon: 18.0685,
+    lat: 59.3293,
     zoom: 3,
     rotation: 0
 });
@@ -130,8 +130,8 @@ const map = new Map({
             focusZoom: 10
         }),
         new HomeTool({
-            lon: 25.5809,
-            lat: 23.7588,
+            lon: 18.0685,
+            lat: 59.3293,
             zoom: 3,
             click: function() {
                 console.log('HomeTool click');

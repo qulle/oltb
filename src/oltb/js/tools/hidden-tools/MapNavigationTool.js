@@ -3,12 +3,14 @@ import { CONFIG } from '../../core/Config';
 import { EVENTS } from '../../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { goToView } from '../../helpers/GoToView';
+import { transform } from 'ol/proj';
 import { LogManager } from '../../core/managers/LogManager';
 import { UrlManager } from '../../core/managers/UrlManager';
 import { ContextMenu } from '../../common/ContextMenu';
 import { toStringHDMS } from 'ol/coordinate';
 import { LayerManager } from '../../core/managers/LayerManager';
 import { StateManager } from '../../core/managers/StateManager';
+import { hasProjection } from '../../epsg/Projections';
 import { generateMarker } from '../../generators/GenerateMarker';
 import { TOOLBAR_ELEMENT } from '../../core/elements/index';
 import { CoordinateModal } from '../modal-extensions/CoordinateModal';
@@ -23,8 +25,8 @@ const ID_PREFIX = 'oltb-info-window-marker';
 // This is the same NODE_NAME and PROPS that the map.js file is using
 const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.MapData;
 const LOCAL_STORAGE_DEFAULTS = Object.freeze({
-    lon: 18.6435,
-    lat: 60.1282,
+    lon: 18.0685,
+    lat: 59.3293,
     zoom: 4,
     rotation: 0
 });
@@ -34,15 +36,15 @@ const DEFAULT_OPTIONS = Object.freeze({
 });
 
 const DEFAULT_URL_MARKER = Object.freeze({
+    lon: 18.0685,
+    lat: 59.3293,
     title: "Marker Title",
     description: "Oops, this is the default description, have you forgot a parameter?",
     icon: "GeoMarker.Filled",
     layerName: "URL Marker",
     backgroundColor: '#0166A5FF',
     color: '#FFFFFFFF',
-    coordinateSystem: "EPSG:3857",
-    lon: 18.6435,
-    lat: 60.1282,
+    projection: CONFIG.Projection.WGS84,
     zoom: 6
 });
 
@@ -119,12 +121,37 @@ class HiddenMapNavigationTool extends Control {
         }
 
         try {
-            const markerDataRaw = JSON.parse(markerString);
-            const markerData = { ...DEFAULT_URL_MARKER, ...markerDataRaw };
+            const markerDataParsed = JSON.parse(markerString);
+            const markerData = { ...DEFAULT_URL_MARKER, ...markerDataParsed };
 
-            const coordinates = [markerData.lon, markerData.lat];
+            LogManager.logDebug(FILENAME, 'onCreateUrlMarker', markerData);
+
+            // Make sure projection is formatted correctly
+            markerData.projection = markerData.projection.toUpperCase();
+            if(!markerData.projection.startsWith('EPSG:')) {
+                markerData.projection = `EPSG:${markerData.projection}`;
+            }
+
+            if(!hasProjection(markerData.projection)) {
+                Toast.info({
+                    title: 'Projection',
+                    message: `
+                        Must add projection definition for <strong>${markerData.projection}</strong> <br>
+                        <a href="https://epsg.io" target="_blank" class="oltb-link">https://epsg.io</a>
+                    `
+                }); 
+
+                return;
+            }
+
+            // Transform coordinates to format that can be used in the map
+            const coordinates = transform(
+                [markerData.lon, markerData.lat], 
+                markerData.projection, 
+                CONFIG.Projection.WGS84
+            );
+
             const prettyCoordinates = toStringHDMS(coordinates);
-
             const infoWindow = {
                 title: markerData.title,
                 content: `
@@ -150,11 +177,11 @@ class HiddenMapNavigationTool extends Control {
             }
 
             const marker = new generateMarker({
-                lat: markerData.lat,
-                lon: markerData.lon,
-                icon: markerData.icon,
+                lon: coordinates[0],
+                lat: coordinates[1],
                 title: markerData.title,
                 description: markerData.description,
+                icon: markerData.icon,
                 backgroundColor: markerData.backgroundColor,
                 color: markerData.color,
                 infoWindow: infoWindow

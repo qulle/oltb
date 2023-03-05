@@ -732,7 +732,7 @@ Tools that create objects at runtime, for example the BookmarkTool, LayerTool et
 Tools refered to as hidden tools are tools that only add functionality via the context menu. The hidden tools are used to enable the same type of callback functions that exists on all other tools. 
 
 ### Shortcut keys
-All tools have a shortcut key for ease of use and speeds up the handling of the toolbar. The shortcut key is displayed in the tooltip on the corresponding tool. All shortcut keys are stored in the module `./modules/helpers/Constants/ShortcutKeys`.
+All tools have a shortcut key for ease of use and speeds up the handling of the toolbar. The shortcut key is displayed in the tooltip on the corresponding tool. All shortcut keys are stored in the module `oltb/js/helpers/Constants/ShortcutKeys`.
 ```javascript
 const SHORTCUT_KEYS = {
     AreaOverview: 'A',
@@ -743,7 +743,7 @@ const SHORTCUT_KEYS = {
 ```
 
 ### Custom projections
-You can define custom projections in the file `./modules/epsg/Projections`. This file is registrated in `proj4.js` and the projections can be used throughout the project. If you want to change the default projection used, there is a general config module `./modules/core/Config` where you can change that. More projections can be fetched here [https://epsg.io/](https://epsg.io/).
+You can define custom projections in the file `oltb/js/epsg/Projections`. This file is registrated in `proj4.js` and the projections can be used throughout the project. If you want to change the default projection used, there is a general config module `oltb/js/core/Config` where you can change that. More projections can be fetched here [https://epsg.io/](https://epsg.io/).
 
 ### Layers
 Layers are added to the map using the `LayerManager`. The manager handels internal functionality and fires of events that the layer-tool captures to create the UI.
@@ -761,8 +761,8 @@ import { generateMarker } from 'oltb/js/generators/GenerateMarker';
 To create a marker use the following object properties.
 ```javascript
 const marker = generateMarker({
-    lat: 23.7588,
-    lon: 25.5809,
+    lon: 18.0685,
+    lat: 59.3293,
     title: 'Marker Title',
     description: 'Marker description',
     backgroundColor: '#0166A5FF',
@@ -786,7 +786,7 @@ Other properties that you can add are:
 #### URL Markers
 A marker can be created by providing the `oltb-marker` object as the GET parameter according to the following syntax.
 ```
-/?oltb-marker={"title":"Marker Title","description":"Information about the maker","icon":"ExclamationTriangle.Filled","backgroundColor":"EB4542FF","color":"FFFFFFFF","layerName":"URL Marker","coordinateSystem":"EPSG:3857","lon":25.5809,"lat":23.7588,"zoom":6}
+/?oltb-marker={"title":"Marker Title","description":"Information about the maker","icon":"ExclamationTriangle.Filled","backgroundColor":"EB4542FF","color":"FFFFFFFF","layerName":"URL Marker","projection":"EPSG:4326","lon":18.0685,"lat":59.3293,"zoom":6}
 ```
 
 ### Dialogs

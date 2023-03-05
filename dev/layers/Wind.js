@@ -61,8 +61,8 @@ const geoJsonPromise = fetch(urlCapitalsGeoJSON)
 
             layerWrapper.layer.getSource().addFeature(
                 new generateWindbarb({
-                    lat: lat,
                     lon: lon,
+                    lat: lat,
                     fill: 'rgb(59, 67, 82)',
                     stroke: 'rgb(59, 67, 82)',
                     scale: .8,

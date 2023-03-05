@@ -7,8 +7,8 @@ import { Circle, Fill, Icon, Stroke, Style } from 'ol/style';
 
 const FILENAME = 'generators/GenerateMarker.js';
 const DEFAULT_OPTIONS = Object.freeze({
-    lat: undefined,
     lon: undefined,
+    lat: undefined,
     title: undefined,
     description: undefined,
     backgroundColor: '#0166A5FF',

@@ -22,9 +22,9 @@ import { MAP_ELEMENT } from './core/elements/index';
 import { LOCAL_STORAGE_KEYS } from './helpers/constants/LocalStorageKeys';
 
 // Core Managers
+import { LogManager } from './core/managers/LogManager';
 import { LayerManager } from './core/managers/LayerManager';
 import { StateManager } from './core/managers/StateManager';
-import { LoggerManager } from './core/managers/LoggerManager';
 import { TooltipManager } from './core/managers/TooltipManager';
 import { SettingsManager } from './core/managers/SettingsManager';
 import { InfoWindowManager } from './core/managers/InfoWindowManager';
@@ -40,8 +40,8 @@ import { ALL_TOOLS } from './tools/index';
 // This is the same NODE_NAME and PROPS that the MapNavigationTool.js is using
 const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.MapData;
 const LOCAL_STORAGE_DEFAULTS = Object.freeze({
-    lon: 25.5809,
-    lat: 23.7588,
+    lon: 18.0685,
+    lat: 59.3293,
     zoom: 3,
     rotation: 0
 });
@@ -55,9 +55,9 @@ class OLTB {
 
     static CONFIG = CONFIG;
 
+    static LogManager = LogManager;
     static StateManager = StateManager;
     static LayerManager = LayerManager;
-    static LoggerManager = LoggerManager;
     static TooltipManager = TooltipManager;
     static SettingsManager = SettingsManager;
     static InfoWindowManager = InfoWindowManager;

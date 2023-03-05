@@ -48,10 +48,10 @@ const editMarker = function(InfoWindowManager, beforeMarker) {
             };
             
             const afterMarker = new generateMarker({
+                lon: result.longitude,
+                lat: result.latitude,
                 title: result.title,
                 description: result.description,
-                lat: result.latitude,
-                lon: result.longitude,
                 icon: result.icon,
                 backgroundColor: result.backgroundColor,
                 color: result.color,

@@ -15,8 +15,8 @@ import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 const FILENAME = 'tools/HomeTool.js';
 const DEFAULT_OPTIONS = Object.freeze({
     zoom: 3,
-    lon: 0,
-    lat: 0
+    lon: 18.0685,
+    lat: 59.3293,
 });
 
 class HomeTool extends Control {

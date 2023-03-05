@@ -47,8 +47,8 @@ const toolbar = new OLTB({
             focusZoom: 10
         },
         HomeTool: {
-            lon: 25.5809,
-            lat: 23.7588,
+            lon: 18.0685,
+            lat: 59.3293,
             zoom: 3,
             click: function() {
                 console.log('HomeTool click');

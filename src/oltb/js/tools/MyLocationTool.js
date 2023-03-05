@@ -156,8 +156,8 @@ class MyLocationTool extends Control {
         };
         
         const marker = new generateMarker({
-            lat: lat,
             lon: lon,
+            lat: lat,
             title: DEFAULT_OPTIONS.title,
             description: this.options.infoWindowDescription,
             icon: 'Person.Filled',

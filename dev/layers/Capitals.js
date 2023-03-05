@@ -61,8 +61,8 @@ const geoJsonPromise = fetch(urlCapitalsGeoJSON)
         
             layerWrapper.layer.getSource().addFeature(
                 new generateMarker({
-                    lat: lat,
                     lon: lon,
+                    lat: lat,
                     title: capital.properties.countryName,
                     description: capital.properties.countryName,
                     icon: 'GeoMarker.Filled',
