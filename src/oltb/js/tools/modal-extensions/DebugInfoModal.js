@@ -24,7 +24,10 @@ class DebugInfoModal extends ModalBase {
         );
         
         this.options = { ...DEFAULT_OPTIONS, ...options };
+        this.#createModal();
+    }
 
+    #createModal() {
         const modalContent = this.#generateModalContent();
         this.show(modalContent);
 

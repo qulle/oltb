@@ -6,19 +6,19 @@ import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { download } from '../helpers/browser/Download';
 import { LogManager } from '../core/managers/LogManager';
-import { URLManager } from '../core/managers/URLManager';
+import { UrlManager } from '../core/managers/UrlManager';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
 import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 import { MAP_ELEMENT, TOOLBAR_ELEMENT } from '../core/elements/index';
 
-const FILENAME = 'tools/ExportPNGTool.js';
+const FILENAME = 'tools/ExportPngTool.js';
 const DEFAULT_OPTIONS = Object.freeze({
     filename: 'map-image-export',
     appendTime: false
 });
 
-class ExportPNGTool extends Control {
+class ExportPngTool extends Control {
     constructor(options = {}) {
         super({
             element: TOOLBAR_ELEMENT
@@ -46,7 +46,7 @@ class ExportPNGTool extends Control {
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
         // If the tool should activate detailed logging in the html2canvas process (?debug=true)
-        this.isDebug = URLManager.getParameter('debug') === 'true';
+        this.isDebug = UrlManager.getParameter('debug') === 'true';
         
         window.addEventListener(EVENTS.Browser.ContentLoaded, this.onDOMContentLoaded.bind(this));
         window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
@@ -162,4 +162,4 @@ class ExportPNGTool extends Control {
     }
 }
 
-export { ExportPNGTool };
+export { ExportPngTool };

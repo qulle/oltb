@@ -18,7 +18,10 @@ class Confirm extends DialogBase {
         super();
 
         this.options = { ...DEFAULT_OPTIONS, ...options };
+        this.#createDialog();
+    }
 
+    #createDialog() {
         const dialog = DOM.createElement({
             element: 'div', 
             class: 'oltb-dialog oltb-dialog--confirm oltb-animation oltb-animation--bounce'

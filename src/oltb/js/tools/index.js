@@ -16,7 +16,7 @@ import { BookmarkTool } from './BookmarkTool';
 import { DirectionTool } from './DirectionTool';
 import { DebugInfoTool } from './DebugInfoTool';
 import { SplitViewTool } from './SplitViewTool';
-import { ExportPNGTool } from './ExportPNGTool';
+import { ExportPngTool } from './ExportPngTool';
 import { ScaleLineTool } from './ScaleLineTool';
 import { GraticuleTool } from './GraticuleTool';
 import { MyLocationTool } from './MyLocationTool';
@@ -37,7 +37,7 @@ const ALL_TOOLS = Object.freeze({
     ZoomInTool,
     ZoomOutTool,
     FullscreenTool,
-    ExportPNGTool,
+    ExportPngTool,
     DrawTool,
     MeasureTool,
     EditTool,

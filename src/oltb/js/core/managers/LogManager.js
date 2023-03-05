@@ -1,6 +1,6 @@
 import moment from "moment/moment";
 import { CONFIG } from "../Config";
-import { URLManager } from "./URLManager";
+import { UrlManager } from "./UrlManager";
 
 const FILENAME = 'managers/LogManager.js';
 
@@ -58,7 +58,7 @@ class LogManager {
     }
 
     static init(map) {
-        this.#isDebug = URLManager.getParameter('debug') === 'true';
+        this.#isDebug = UrlManager.getParameter('debug') === 'true';
     }
 
     static getLog() {

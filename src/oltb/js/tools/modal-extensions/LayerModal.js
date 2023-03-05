@@ -15,8 +15,12 @@ const DEFAULT_OPTIONS = Object.freeze({
 class LayerModal extends ModalBase {
     constructor(options = {}) {
         super('Create map layer', options.maximized, options.onClose);
+        
         this.options = { ...DEFAULT_OPTIONS, ...options };
+        this.#createModal();
+    }
 
+    #createModal() {
         const nameWrapper = DOM.createElement({
             element: 'div',
             class: 'oltb-m-0'
@@ -63,7 +67,10 @@ class LayerModal extends ModalBase {
             class: 'oltb-select'
         });
 
-        ['Tile', 'Vector'].forEach((type) => {
+        [
+            'Tile', 
+            'Vector'
+        ].forEach((type) => {
             typeSelect.appendChild(
                 DOM.createElement({
                     element: 'option', 
@@ -95,7 +102,12 @@ class LayerModal extends ModalBase {
             class: 'oltb-select'
         });
 
-        ['TileWMS', 'XYZ', 'OSM', 'Vector'].forEach((type) => {
+        [
+            'TileWMS', 
+            'XYZ', 
+            'OSM', 
+            'Vector'
+        ].forEach((type) => {
             sourceSelect.appendChild(
                 DOM.createElement({
                     element: 'option', 
@@ -204,7 +216,10 @@ class LayerModal extends ModalBase {
             class: 'oltb-select'
         });
 
-        ['False', 'True'].forEach((item) => {
+        [
+            'False', 
+            'True'
+        ].forEach((item) => {
             wrapXSelect.appendChild(
                 DOM.createElement({
                     element: 'option', 

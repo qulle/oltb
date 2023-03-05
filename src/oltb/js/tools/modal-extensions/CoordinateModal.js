@@ -16,8 +16,12 @@ class CoordinateModal extends ModalBase {
 
     constructor(options = {}) {
         super('Coordinates', options.maximized, options.onClose);
+        
         this.options = { ...DEFAULT_OPTIONS, ...options };
+        this.#createModal();
+    }
 
+    #createModal() {
         const latWrapper = DOM.createElement({
             element: 'div',
             class: 'oltb-mt-0625'

@@ -4,7 +4,7 @@ import { EVENTS } from '../../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { goToView } from '../../helpers/GoToView';
 import { LogManager } from '../../core/managers/LogManager';
-import { URLManager } from '../../core/managers/URLManager';
+import { UrlManager } from '../../core/managers/UrlManager';
 import { ContextMenu } from '../../common/ContextMenu';
 import { toStringHDMS } from 'ol/coordinate';
 import { LayerManager } from '../../core/managers/LayerManager';
@@ -106,7 +106,7 @@ class HiddenMapNavigationTool extends Control {
         map.on(EVENTS.OpenLayers.MoveEnd, this.onMoveEnd.bind(this));
 
         // Check if any url parameters are present
-        const marker = URLManager.getParameter('oltb-marker', false);
+        const marker = UrlManager.getParameter('oltb-marker', false);
         if(Boolean(marker)) {
             this.onCreateUrlMarker(marker);
         }

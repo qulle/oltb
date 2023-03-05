@@ -46,6 +46,7 @@ LayerManager.addMapLayers([
                                 );
 
                                 const prettyCoordinates = toStringHDMS(coordinates);
+                                const measureValue = getMeasureValue(feature.getGeometry());
 
                                 feature.setProperties({
                                     oltb: {
@@ -55,13 +56,13 @@ LayerManager.addMapLayers([
                                             title: feature.getProperties().name,
                                             content: `
                                                 <p>
-                                                    Based on the geometric data, we estimate the area to be <strong>${getMeasureValue(feature.getGeometry())}</strong>.
+                                                    Based on the geometric data, we estimate the area to be <strong>${measureValue.value} ${measureValue.unit}</strong>.
                                                 </p>
                                             `,
                                             footer: `
                                                 <span class="oltb-info-window__coordinates">${prettyCoordinates}</span>
                                                 <div class="oltb-info-window__buttons-wrapper">
-                                                    <button class="oltb-func-btn oltb-func-btn--copy oltb-tippy" title="Copy marker text" id="${ID_PREFIX}-copy-text" data-copy="Based on the geometric data, we estimate the area to be ${getMeasureValue(feature.getGeometry())}"></button>
+                                                    <button class="oltb-func-btn oltb-func-btn--copy oltb-tippy" title="Copy marker text" id="${ID_PREFIX}-copy-text" data-copy="Based on the geometric data, we estimate the area to be ${measureValue.value} ${measureValue.unit}"></button>
                                                 </div>
                                             `
                                         }

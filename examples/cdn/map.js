@@ -108,10 +108,10 @@ const toolbar = new oltb({
                 console.log('Leave fullscreen mode', event);
             }
         },
-        ExportPNGTool: {
+        ExportPngTool: {
             filename: 'map-image-export',
             click: function() {
-                console.log('ExportPNGTool clicked');
+                console.log('ExportPngTool clicked');
             },
             exported: function() {
                 console.log('Map exported as png');

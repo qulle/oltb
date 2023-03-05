@@ -56,7 +56,7 @@ import { BookmarkTool } from '../src/oltb/js/tools/BookmarkTool';
 import { DirectionTool } from '../src/oltb/js/tools/DirectionTool';
 import { DebugInfoTool } from '../src/oltb/js/tools/DebugInfoTool';
 import { SplitViewTool } from '../src/oltb/js/tools/SplitViewTool';
-import { ExportPNGTool } from '../src/oltb/js/tools/ExportPNGTool';
+import { ExportPngTool } from '../src/oltb/js/tools/ExportPngTool';
 import { ScaleLineTool } from '../src/oltb/js/tools/ScaleLineTool';
 import { GraticuleTool } from '../src/oltb/js/tools/GraticuleTool';
 import { MyLocationTool } from '../src/oltb/js/tools/MyLocationTool';
@@ -172,11 +172,11 @@ const map = new Map({
                 console.log('Leave fullscreen mode', event);
             }
         }),
-        new ExportPNGTool({
+        new ExportPngTool({
             filename: 'map-image-export',
             appendTime: true,
             click: function() {
-                console.log('ExportPNGTool clicked');
+                console.log('ExportPngTool clicked');
             },
             exported: function() {
                 console.log('Map exported as png');

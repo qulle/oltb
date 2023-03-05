@@ -22,8 +22,12 @@ const DEFAULT_OPTIONS = Object.freeze({
 class MarkerModal extends ModalBase {
     constructor(options = {}) {
         super('Marker configuration', options.maximized, options.onClose);
+        
         this.options = { ...DEFAULT_OPTIONS, ...options };
+        this.#createModal();
+    }
 
+    #createModal() {
         const titleWrapper = DOM.createElement({
             element: 'div',
             class: 'oltb-m-0'

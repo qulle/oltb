@@ -1,4 +1,5 @@
 import { EVENTS } from '../../helpers/constants/Events';
+import { LogManager } from '../managers/LogManager';
 import { FEATURE_PROPERTIES } from '../../helpers/constants/FeatureProperties';
 import { Vector as VectorLayer } from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';
@@ -55,6 +56,8 @@ class LayerManager {
     }
 
     static addMapLayer(layerWrapper, silent = false) {
+        LogManager.logDebug(FILENAME, 'addMapLayer', layerWrapper.name);
+
         // Add getters and setters
         // Makes it easier for the user to create the layer object
         layerWrapper.getLayer = function() {
@@ -81,7 +84,7 @@ class LayerManager {
             this.id = id;
         }
 
-        // 
+        // Internal logic
         layerWrapper.setId(this.#layerId);
         this.#layerId = this.#layerId + 1;
     
@@ -107,18 +110,20 @@ class LayerManager {
         }));
     }
 
-    static removeMapLayer(targetLayer, silent = false) {
+    static removeMapLayer(layerWrapper, silent = false) {
+        LogManager.logDebug(FILENAME, 'removeMapLayer', layerWrapper.getName());
+
         // Remove the layer from the internal collection
         this.#layers.mapLayers = this.#layers.mapLayers.filter(function(layer) {
-            return layer.id !== targetLayer.id;
+            return layer.getId() !== layerWrapper.getId();
         }); 
 
         // Remove the actual ol layer
-        this.#map.removeLayer(targetLayer.layer);
+        this.#map.removeLayer(layerWrapper.getLayer());
 
         window.dispatchEvent(new CustomEvent(EVENTS.Custom.MapLayerRemoved, {
             detail: {
-                layerWrapper: targetLayer, 
+                layerWrapper: layerWrapper, 
                 silent: silent
             }
         }));
@@ -137,14 +142,14 @@ class LayerManager {
     }
 
     static getOlMapLayers() {
-        const olLayers = [];
+        const layers = [];
 
         // Filter out the actual ol layer
         for(let index in this.#layers.mapLayers) {
-            olLayers.push(this.#layers.mapLayers[index].layer);
+            layers.push(this.#layers.mapLayers[index].getLayer());
         }
 
-        return olLayers;
+        return layers;
     }
 
     static setTopMapLayerAsOnlyVisible() {
@@ -153,7 +158,7 @@ class LayerManager {
         });
     
         if(!this.isMapLayersEmpty()) {
-            this.#layers.mapLayers[0].layer.setVisible(true);
+            this.#layers.mapLayers[0].getLayer().setVisible(true);
         }
     }
 
@@ -169,6 +174,8 @@ class LayerManager {
     // Feature layers specific
     //-------------------------------------------
     static addFeatureLayer(name, visible = true, silent = false) {
+        LogManager.logDebug(FILENAME, 'addFeatureLayer', name);
+
         name = name.trim();
 
         if(!name.length) {
@@ -230,21 +237,23 @@ class LayerManager {
         }));
     }
 
-    static removeFeatureLayer(targetLayer, silent = false) {
+    static removeFeatureLayer(layerWrapper, silent = false) {
+        LogManager.logDebug(FILENAME, 'removeFeatureLayer', layerWrapper.getName());
+
         // Remove the layer from the internal collection
         this.#layers.featureLayers = this.#layers.featureLayers.filter(function(layer) {
-            return layer.id !== targetLayer.id;
+            return layer.getId() !== layerWrapper.getId();
         }); 
 
         // Remove overlays associated with each feature
-        targetLayer.layer.getSource().getFeatures().forEach((feature) => {
+        layerWrapper.getLayer().getSource().getFeatures().forEach((feature) => {
             if(hasCustomFeatureProperty(feature.getProperties(), FEATURE_PROPERTIES.Tooltip)) {
                 this.#map.removeOverlay(feature.getProperties().oltb.tooltip);
             }
         });
 
         // Remove the actual ol layer
-        this.#map.removeLayer(targetLayer.layer);
+        this.#map.removeLayer(layerWrapper.getLayer());
 
         // Sett another layer as active if exists
         this.#activeFeatureLayer = !this.isFeatureLayersEmpty() 
@@ -253,7 +262,7 @@ class LayerManager {
 
         window.dispatchEvent(new CustomEvent(EVENTS.Custom.FeatureLayerRemoved, {
             detail: {
-                layerWrapper: targetLayer, 
+                layerWrapper: layerWrapper, 
                 silent: silent
             }
         }));

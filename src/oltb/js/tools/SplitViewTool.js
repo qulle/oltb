@@ -243,17 +243,15 @@ class SplitViewTool extends Control {
         // Remove previosly added listeners
         unByKey(this.onPreRenderListener);
         unByKey(this.onPostRenderListener);
-
-        const layer = layerWrapper.getLayer();
-
+        
         // Remove the ol-split-view-layers from the map
         LayerManager.getMapLayers().forEach((layerWrapper) => {
-            map.removeLayer(layer);
+            map.removeLayer(layerWrapper.getLayer());
         });
 
         // Add back all the original layers to the map
         LayerManager.getMapLayers().forEach((layerWrapper) => {
-            map.addLayer(layer);
+            map.addLayer(layerWrapper.getLayer());
         });
 
         // Set first layer as the only one visible

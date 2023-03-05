@@ -16,8 +16,12 @@ class SettingsModal extends ModalBase {
 
     constructor(options = {}) {
         super('Settings', options.maximized, options.onClose);
+        
         this.options = { ...DEFAULT_OPTIONS, ...options };
+        this.#createModal();
+    }
 
+    #createModal() {
         const settingsFragment = document.createDocumentFragment();
         const settings = SettingsManager.getSettings();
         

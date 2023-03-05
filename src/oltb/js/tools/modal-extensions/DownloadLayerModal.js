@@ -14,8 +14,12 @@ const DEFAULT_OPTIONS = Object.freeze({
 class DownloadLayerModal extends ModalBase {
     constructor(options = {}) {
         super('Download layer', options.maximized, options.onClose);
-        this.options = { DEFAULT_OPTIONS, ...options };
 
+        this.options = { DEFAULT_OPTIONS, ...options };
+        this.#createModal();
+    }
+
+    #createModal() {
         const formatWrapper = DOM.createElement({
             element: 'div',
             class: 'oltb-mt-0625'
@@ -36,7 +40,10 @@ class DownloadLayerModal extends ModalBase {
             class: 'oltb-select'
         });
 
-        ['GeoJSON', 'KML'].forEach((item) => {
+        [
+            'GeoJSON', 
+            'KML'
+        ].forEach((item) => {
             formatSelect.appendChild(
                 DOM.createElement({
                     element: 'option', 

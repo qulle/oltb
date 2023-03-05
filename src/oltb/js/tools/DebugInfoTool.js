@@ -2,7 +2,7 @@ import { DOM } from '../helpers/browser/DOM';
 import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { LogManager } from '../core/managers/LogManager';
-import { URLManager } from '../core/managers/URLManager';
+import { UrlManager } from '../core/managers/UrlManager';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { DebugInfoModal } from './modal-extensions/DebugInfoModal';
 import { TOOLBAR_ELEMENT } from '../core/elements/index';
@@ -43,7 +43,7 @@ class DebugInfoTool extends Control {
         this.options = { ...DEFAULT_OPTIONS, ...options };
         
         // If the tool only should be visible in debug mode (?debug=true)
-        const isDebug = URLManager.getParameter('debug') === 'true';
+        const isDebug = UrlManager.getParameter('debug') === 'true';
 
         if(
             Boolean(this.options.onlyWhenGetParameter) &&

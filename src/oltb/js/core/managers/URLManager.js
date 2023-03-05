@@ -1,6 +1,6 @@
-const FILENAME = 'managers/URLManager.js';
+const FILENAME = 'managers/UrlManager.js';
 
-class URLManager {
+class UrlManager {
     static init(map) { }
     
     static assign(path) {
@@ -44,4 +44,4 @@ class URLManager {
     }
 }
 
-export { URLManager };
+export { UrlManager };
