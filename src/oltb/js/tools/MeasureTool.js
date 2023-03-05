@@ -297,7 +297,8 @@ class MeasureTool extends Control {
         const tooltipItem = TooltipManager.push('measure');
         
         this.onChangeListener = feature.getGeometry().on(EVENTS.OpenLayers.Change, (event) => {
-            tooltipItem.innerHTML = getMeasureValue(event.target);
+            const measureValue = getMeasureValue(event.target);
+            tooltipItem.innerHTML = `${measureValue.value} ${measureValue.unit}`;
         });
 
         // User defined callback from constructor
@@ -329,15 +330,18 @@ class MeasureTool extends Control {
         
         const geometry = feature.getGeometry();
         tooltip.setPosition(getMeasureCoordinates(geometry));
-        tooltip.setData(getMeasureValue(geometry));
+        
+        const measureValue = getMeasureValue(geometry);
+        tooltip.setData(`${measureValue.value} ${measureValue.unit}`);
 
         const layerWrapper = LayerManager.getActiveFeatureLayer({
             fallback: 'Measurements layer'
         });
         
-        layerWrapper.getLayer().getSource().addFeature(feature);
+        const layer = layerWrapper.getLayer();
+        layer.getSource().addFeature(feature);
         
-        if(!layerWrapper.getLayer().getVisible()) {
+        if(!layer.getVisible()) {
             Toast.info({
                 title: 'Tip',
                 message: 'You are measuring in a hidden layer', 
@@ -348,7 +352,7 @@ class MeasureTool extends Control {
         map.addOverlay(tooltip.getOverlay());
 
         // The layer might be hidden, check if the tooltip also should be hidden
-        if(layerWrapper.getLayer().getVisible()) {
+        if(layer.getVisible()) {
             tooltip.getOverlay().setMap(map);
         }else {
             tooltip.getOverlay().setMap(null);

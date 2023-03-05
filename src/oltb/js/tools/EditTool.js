@@ -520,9 +520,10 @@ class EditTool extends Control {
                 });
 
                 const geometry = feature.getGeometry();
-
                 tooltip.setPosition(getMeasureCoordinates(geometry));
-                tooltip.setData(getMeasureValue(geometry));
+
+                const measureValue = getMeasureValue(geometry);
+                tooltip.setData(`${measureValue.value} ${measureValue.unit}`);
 
                 map.addOverlay(tooltip.getOverlay());
 
@@ -616,22 +617,26 @@ class EditTool extends Control {
 
         const tooltip = overlay.getElement();
         tooltip.className = 'oltb-overlay-tooltip';
-        tooltip.firstElementChild.innerHTML = getMeasureValue(geometry);
+
+        const measureValue = getMeasureValue(geometry);
+        tooltip.firstElementChild.innerHTML = `${measureValue.value} ${measureValue.unit}`;
     }
 
     onFeatureChange(feature) {
         const selectedFeatures = this.select.getFeatures().getArray();
         const hasOtherTooltip = !TooltipManager.isEmpty();
+
         const geometry = feature.getGeometry();
+        const measureValue = getMeasureValue(geometry);
 
         if(Boolean(hasOtherTooltip) && selectedFeatures.length === 1) {
-            this.tooltipItem.innerHTML = getMeasureValue(geometry);
+            this.tooltipItem.innerHTML = `${measureValue.value} ${measureValue.unit}`;
         }else {
             const overlay = feature.getProperties().oltb.tooltip;
             overlay.setPosition(getMeasureCoordinates(geometry));
 
             const tooltip = overlay.getElement();
-            tooltip.firstElementChild.innerHTML = getMeasureValue(geometry);
+            tooltip.firstElementChild.innerHTML = `${measureValue.value} ${measureValue.unit}`;
         }
     }
 

@@ -19,20 +19,32 @@ const formatLength = function(line) {
     const length = getLength(line);
     
     if(length > 100) {
-        return `${Math.round((length / 1000) * 100) / 100} km`;
+        return {
+            value: Math.round((length / 1000) * 100) / 100,
+            unit: 'km'
+        };
     }
     
-    return `${Math.round(length * 100) / 100} m`;
+    return {
+        value: Math.round(length * 100) / 100,
+        unit: 'm'
+    };
 };
 
 const formatArea = function(polygon) {
     const area = getArea(polygon);
     
     if(area > 10000) {
-        return `${Math.round((area / 1000000) * 100) / 100} km<sup>2</sup>`;
+        return {
+            value: Math.round((area / 1000000) * 100) / 100,
+            unit: 'km<sup>2</sup>'
+        };
     }
     
-    return `${Math.round(area * 100) / 100} m<sup>2</sup>`;
+    return {
+        value: Math.round(area * 100) / 100,
+        unit: 'm<sup>2</sup>'
+    };
 };
 
 export { getMeasureValue, getMeasureCoordinates };

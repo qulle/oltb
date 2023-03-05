@@ -370,7 +370,8 @@ class DrawTool extends Control {
             fallback: 'Drawing layer'
         });
 
-        const source = layerWrapper.getLayer().getSource();
+        const layer = layerWrapper.getLayer();
+        const source = layer.getSource();
 
         if(this.isIntersectionEnabled()) {
             this.onDrawEndIntersection(source, event);
@@ -378,7 +379,7 @@ class DrawTool extends Control {
             this.onDrawEndNormal(source, event);
         }
 
-        if(!layerWrapper.getLayer().getVisible()) {
+        if(!layer.getVisible()) {
             Toast.info({
                 title: 'Tip',
                 message: 'You are drawing in a hidden layer', 

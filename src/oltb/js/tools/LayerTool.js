@@ -415,15 +415,18 @@ class LayerTool extends Control {
             layer.classList.remove('oltb-toolbox-list__item--active');
         });
 
+        const layer = layerWrapper.getLayer();
         const layerElement = DOM.createElement({
             element: 'li', 
             id: `${options.idPrefix}-${layerWrapper.getId()}`,
-            class: `oltb-toolbox-list__item oltb-toolbox-list__item--active ${(!layerWrapper.getLayer().getVisible() ? ' oltb-toolbox-list__item--hidden' : '')}`
+            class: `oltb-toolbox-list__item oltb-toolbox-list__item--active ${(
+                !layer.getVisible() ? ' oltb-toolbox-list__item--hidden' : ''
+            )}`
         });
 
         // Eventlistener to update the UI if the visibility of the layer is changed
         // Other tools may change a layers visibility and the UI must be updated in this event
-        layerWrapper.getLayer().on(EVENTS.OpenLayers.PropertyChange, function(event) {
+        layer.on(EVENTS.OpenLayers.PropertyChange, function(event) {
             if(event.key === 'visible') {
                 layerElement.classList.toggle('oltb-toolbox-list__item--hidden');
             }
@@ -613,13 +616,14 @@ class LayerTool extends Control {
                 'click': () => {
                     InfoWindowManager.hideOverlay();
 
-                    const flippedVisibility = !layerWrapper.getLayer().getVisible();
-                    layerWrapper.getLayer().setVisible(flippedVisibility);
+                    const layer = layerWrapper.getLayer();
+                    const flippedVisibility = !layer.getVisible();
+                    layer.setVisible(flippedVisibility);
                      
                     // Hide overlays associated with the layer
-                    const hasFeatures = typeof layerWrapper.getLayer().getSource().getFeatures === 'function';
+                    const hasFeatures = typeof layer.getSource().getFeatures === 'function';
                     if(Boolean(hasFeatures)) {
-                        layerWrapper.getLayer().getSource().getFeatures().forEach((feature) => {
+                        layer.getSource().getFeatures().forEach((feature) => {
                             if(hasCustomFeatureProperty(feature.getProperties(), FEATURE_PROPERTIES.Tooltip)) {
                                 feature.getProperties().oltb.tooltip.setMap(flippedVisibility ? map : null)
                             }
