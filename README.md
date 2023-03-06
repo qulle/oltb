@@ -46,7 +46,7 @@ Have a look at the [Internal Development Documentation](README_INTERNAL.md).
 7. [Plain JS Slidetoggle 2.0.0](https://github.com/ericbutler555/plain-js-slidetoggle)
 8. [JSTS 2.9.3](https://github.com/bjornharrtell/jsts)
 9. [Parcel 2.8.1](https://parceljs.org/)
-10. [Rollup 3.7.1](https://github.com/rollup/rollup)
+10. [Rollup 3.18.0](https://github.com/rollup/rollup)
 
 ## Maps used in the demo
 1. [OpenStreetMap](https://www.openstreetmap.org/)

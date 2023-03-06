@@ -16,12 +16,12 @@ export const banner = `/*!
  * | (+) JSTS 2.9.3                         - (https://github.com/bjornharrtell/jsts)                                |
  * | (+) Parcel 2.8.3                       - (https://parceljs.org/)                                                |
  * | (+) @parcel/transformer-sass 2.8.3     - (https://github.com/parcel-bundler/parcel)                             |
- * | (+) Rollup 3.7.1                       - (https://github.com/rollup/rollup)                                     |
- * | (+) @rollup/plugin-commonjs 23.0.4     - (https://github.com/rollup/plugins/tree/master/packages/commonjs)      |
- * | (+) @rollup/plugin-json 5.0.2          - (https://github.com/rollup/plugins/tree/master/packages/json)          |
+ * | (+) Rollup 3.18.0                      - (https://github.com/rollup/rollup)                                     |
+ * | (+) @rollup/plugin-commonjs 24.0.1     - (https://github.com/rollup/plugins/tree/master/packages/commonjs)      |
+ * | (+) @rollup/plugin-json 6.0.0          - (https://github.com/rollup/plugins/tree/master/packages/json)          |
  * | (+) @rollup/plugin-node-resolve 15.0.1 - (https://github.com/rollup/plugins/tree/master/packages/node-resolve)  |
- * | (+) @rollup-plugin-replace 5.0.1       - (https://github.com/rollup/plugins/tree/master/packages/replace)       |
- * | (+) @rollup/plugin-terser 0.1.0        - (https://github.com/rollup/plugins/tree/master/packages/terser)        |
+ * | (+) @rollup-plugin-replace 5.0.2       - (https://github.com/rollup/plugins/tree/master/packages/replace)       |
+ * | (+) @rollup/plugin-terser 0.4.0        - (https://github.com/rollup/plugins/tree/master/packages/terser)        |
  * | (+) rollup-plugin-license 3.0.1        - (https://github.com/mjeanroy/rollup-plugin-license)                    |
  * | (+) rollup-plugin-scss 4.0.0           - (https://github.com/thgh/rollup-plugin-scss)                           |
  * +-----------------------------------------------------------------------------------------------------------------+
