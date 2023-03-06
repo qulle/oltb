@@ -64,6 +64,8 @@ const generateMarker = function(options = {}) {
 
     marker.setProperties({
         oltb: {
+            lon: options.lon,
+            lat: options.lat,
             type: FEATURE_PROPERTIES.Type.Marker,
             title: options.title,
             description: options.description,

@@ -1,6 +1,7 @@
 import { KEYS } from './constants/Keys';
 import { CONFIG } from '../core/Config';
 import { EVENTS } from './constants/Events';
+import { LogManager } from '../core/managers/LogManager';
 import { UrlManager } from '../core/managers/UrlManager';
 import { TOOLBAR_ELEMENT, TOOLBOX_ELEMENT, MAP_ELEMENT } from '../core/elements/index';
 
@@ -8,11 +9,16 @@ const FILENAME = 'helpers/Accessibility.js';
 
 // Set version as custom attribute to the html element
 document.documentElement.setAttribute('oltb-version', CONFIG.Version);
+LogManager.logInformation(FILENAME, 'fileScope', `Running version ${CONFIG.Version}`);
+
+const isDebug = UrlManager.getParameter('debug') === 'true';
+if(Boolean(isDebug)) {
+    LogManager.logInformation(FILENAME, 'fileScope', 'Debugging');
+}
 
 // Remove default contextmenu, show if the get parameter ?debug=true exists
-const debugParameter = UrlManager.getParameter('debug') === 'true';
 MAP_ELEMENT.addEventListener(EVENTS.Browser.ContextMenu, function(event) {
-    if(!Boolean(debugParameter)) {
+    if(!Boolean(isDebug)) {
         event.preventDefault();
     }
 });

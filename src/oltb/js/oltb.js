@@ -32,7 +32,7 @@ import { InfoWindowManager } from './core/managers/InfoWindowManager';
 // Generator functions
 import { generateMarker } from './generators/GenerateMarker';
 import { generateTooltip } from './generators/GenerateTooltip';
-import { generateWindbarb } from './generators/GenerateWindbarb';
+import { generateWindBarb } from './generators/generateWindBarb';
 
 // Toolbar tools
 import { ALL_TOOLS } from './tools/index';
@@ -68,7 +68,7 @@ class OLTB {
 
     generateMarker = generateMarker;
     generateTooltip = generateTooltip;
-    generateWindbarb = generateWindbarb;
+    generateWindBarb = generateWindBarb;
 
     constructor(options = {}) {
         // Tools that should be added

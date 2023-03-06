@@ -3,7 +3,7 @@ const FEATURE_PROPERTIES = Object.freeze({
     Type: Object.freeze({
         Layer: 'layer',
         Marker: 'marker',
-        Windbarb: 'windBarb',
+        WindBarb: 'windBarb',
         Measurement: 'measurement',
         Drawing: 'drawing'
     }),

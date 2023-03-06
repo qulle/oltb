@@ -3,7 +3,7 @@ import { LogManager } from "../../src/oltb/js/core/managers/LogManager";
 import { toStringHDMS } from "ol/coordinate";
 import { randomNumber } from "../../src/oltb/js/helpers/browser/Random";
 import { LayerManager } from "../../src/oltb/js/core/managers/LayerManager";
-import { generateWindbarb } from "../../src/oltb/js/generators/GenerateWindbarb";
+import { generateWindBarb } from "../../src/oltb/js/generators/GenerateWindBarb";
 
 import urlCapitalsGeoJSON from 'url:../geojson/capitals.geojson';
 
@@ -22,7 +22,7 @@ const CONTINENT_DIRECTION = Object.freeze({
     'US': 210
 });
 
-const layerWrapper = LayerManager.addFeatureLayer('Windbarbs', false, true);
+const layerWrapper = LayerManager.addFeatureLayer('Wind Barbs', false, true);
 const geoJsonPromise = fetch(urlCapitalsGeoJSON)
     .then((response) => {
         if(!response.ok) {
@@ -60,7 +60,7 @@ const geoJsonPromise = fetch(urlCapitalsGeoJSON)
             };
 
             layerWrapper.layer.getSource().addFeature(
-                new generateWindbarb({
+                new generateWindBarb({
                     lon: lon,
                     lat: lat,
                     fill: 'rgb(59, 67, 82)',
@@ -76,7 +76,7 @@ const geoJsonPromise = fetch(urlCapitalsGeoJSON)
         });
     })
     .catch((error) => {
-        const errorMessage = 'Failed to load Windbarb layer';
+        const errorMessage = 'Failed to load Wind Barb layer';
 
         LogManager.logError(LOG_ORIGIN, 'geoJsonPromise', `${errorMessage} [${error}]`);
         Toast.error({

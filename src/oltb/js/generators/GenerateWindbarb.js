@@ -6,7 +6,7 @@ import { getWindBarb } from '../core/icons/GetWindBarb';
 import { degreesToRadians } from '../helpers/Conversions';
 import { FEATURE_PROPERTIES } from '../helpers/constants/FeatureProperties';
 
-const FILENAME = 'generators/GenerateWindbarb.js';
+const FILENAME = 'generators/generateWindBarb.js';
 const DEFAULT_OPTIONS = Object.freeze({
     lon: undefined,
     lat: undefined,
@@ -22,12 +22,13 @@ const DEFAULT_OPTIONS = Object.freeze({
     infoWindow: undefined
 });
 
-const generateWindbarb = function(options = {}) {
+const generateWindBarb = function(options = {}) {
     options = { ...DEFAULT_OPTIONS, ...options };
 
     const windbarb = new Feature({
         geometry: new Point(fromLonLat([
-            options.lon, options.lat
+            options.lon, 
+            options.lat
         ]))
     });
 
@@ -52,7 +53,9 @@ const generateWindbarb = function(options = {}) {
 
     windbarb.setProperties({
         oltb: {
-            type: FEATURE_PROPERTIES.Type.Windbarb,
+            type: FEATURE_PROPERTIES.Type.WindBarb,
+            lon: options.lon,
+            lat: options.lat,
             notSelectable: options.notSelectable, 
             infoWindow: options.infoWindow
         }
@@ -61,4 +64,4 @@ const generateWindbarb = function(options = {}) {
     return windbarb;
 }
 
-export { generateWindbarb };
+export { generateWindBarb };

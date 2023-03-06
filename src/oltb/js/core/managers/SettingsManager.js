@@ -1,4 +1,5 @@
 import { SETTINGS } from "../../helpers/constants/Settings";
+import { LogManager } from './LogManager';
 import { StateManager } from "./StateManager";
 import { LOCAL_STORAGE_KEYS } from "../../helpers/constants/LocalStorageKeys";
 
@@ -46,9 +47,7 @@ const DEFAULT_SETTINGS = new Map([
 ]);
 
 class SettingsManager {
-    static #localStorageState = StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME);
-    static #localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...this.#localStorageState };
-
+    static #localStorage = this.#loadBrowserData();
     static #settings = structuredClone(DEFAULT_SETTINGS);
 
     static init(map) {
@@ -58,6 +57,15 @@ class SettingsManager {
                 value.state = this.#localStorage[key];
             }
         });
+    }
+
+    static #loadBrowserData() {
+        LogManager.logDebug(FILENAME, 'loadBrowserData', 'Loading settings from browser');
+
+        const localStorageState = StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME);
+        const localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
+
+        return localStorage;
     }
 
     static getSettings() {

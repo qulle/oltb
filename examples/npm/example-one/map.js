@@ -92,6 +92,9 @@ const toolbar = new OLTB({
             },
             exported: function() {
                 console.log('Map exported as png');
+            },
+            error: function(error) {
+                console.log('Error exporting png', error);
             }
         },
         DrawTool: {

@@ -32,8 +32,8 @@ Detailed documentation how the toolbar is structured, internal dependencies and 
     12. [Modal](#modal)
     13. [Toast](#toast)
     14. [Icons](#icons)
-        1. [Basic icons](#basic-icons)
-        2. [Windbarb icons](#windbarb-icons)
+        1. [Basic Icons](#basic-icons)
+        2. [WindBarb Icons](#windbarb-icons)
     15. [Context menu](#context-menu)
     16. [State Management](#state-management)
     17. [Debug tool](#debug-tool)
@@ -45,7 +45,7 @@ Detailed documentation how the toolbar is structured, internal dependencies and 
 9. [Author](#author)
 
 ## Branches
-The `main` branch always holds the latest features that are considered done. The latest commit from the main branch is available on the demo-page hosted on the `gh-pages` branch.
+The `main` branch always holds the latest features that are considered done. The latest commit from the main branch is available on the demo-page hosted in the `gh-pages` branch.
 
 ## Get started
 The dev-environment uses NPM so you need to have [Node.js](https://nodejs.org/en/) installed. I use Node version *18.12.0* and NPM version *8.16.0*.
@@ -307,7 +307,7 @@ SCSS and HTML is written with [BEM](http://getbem.com/introduction/) naming conv
 ```
 
 ### Import and Export
-All modules uses named exports exclusively throughout the project. The one exception is the oltb.js file which is the main entry for Rollup to create the portable CDN version.
+All modules uses named exports exclusively throughout the project. The one exception is the `oltb.js` file which is the main entry for Rollup to create the portable CDN version.
 
 ### JavaScript
 The tools are located in the directory `src/oltb/js/modules/tools`. Every tool has its own class and extend the Control-class from OpenLayers.
@@ -335,7 +335,7 @@ import { BookmarkTool } from 'oltb/js/tools/BookmarkTool';
 import { DirectionTool } from 'oltb/js/tools/DirectionTool';
 import { DebugInfoTool } from 'oltb/js/tools/DebugInfoTool';
 import { SplitViewTool } from 'oltb/js/tools/SplitViewTool';
-import { ExportPNGTool } from 'oltb/js/tools/ExportPNGTool';
+import { ExportPngTool } from 'oltb/js/tools/ExportPngTool';
 import { ScaleLineTool } from 'oltb/js/tools/ScaleLineTool';
 import { GraticuleTool } from 'oltb/js/tools/GraticuleTool';
 import { MyLocationTool } from 'oltb/js/tools/MyLocationTool';
@@ -353,8 +353,7 @@ Then call the constructor for each tool in the extend method. The tools are adde
 ```javascript
 controls: defaultControls({
     zoom: false, 
-    rotate: false, 
-    attribution: SettingsManager.getSetting('show.attributions')
+    rotate: false
 }).extend([
     new HiddenMarkerTool(),
     new HiddenMapNavigationTool(),
@@ -362,7 +361,7 @@ controls: defaultControls({
     new ZoomInTool(),
     new ZoomOutTool(),
     new FullscreenTool(),
-    new ExportPNGTool(),
+    new ExportPngTool(),
     new DrawTool(),
     new MeasureTool(),
     new EditTool(),
@@ -394,8 +393,7 @@ Tools that in any way change the map, create, modify or delete objects have seve
 ```javascript
 controls: defaultControls({
     zoom: false, 
-    rotate: false, 
-    attribution: SettingsManager.getSetting('show.attributions')
+    rotate: false
 }).extend([
     new HiddenMarkerTool({
         added: function(marker) {
@@ -412,8 +410,8 @@ controls: defaultControls({
         focusZoom: 10
     }),
     new HomeTool({
-        lon: 25.5809,
-        lat: 23.7588,
+        lon: 18.0685,
+        lat: 59.3293,
         zoom: 3,
         click: function() {
             console.log('HomeTool click');
@@ -449,14 +447,17 @@ controls: defaultControls({
             console.log('Leave fullscreen mode', event);
         }
     }),
-    new ExportPNGTool({
+    new ExportPngTool({
         filename: 'map-image-export',
         appendTime: true,
         click: function() {
-            console.log('ExportPNGTool clicked');
+            console.log('ExportPngTool clicked');
         },
         exported: function() {
             console.log('Map exported as png');
+        },
+        error: function(error) {
+            console.log('Error exporting png', error);
         }
     }),
     new DrawTool({
@@ -786,7 +787,7 @@ Other properties that you can add are:
 #### URL Markers
 A marker can be created by providing the `oltb-marker` object as the GET parameter according to the following syntax.
 ```
-/?oltb-marker={"title":"Marker Title","description":"Information about the maker","icon":"ExclamationTriangle.Filled","backgroundColor":"EB4542FF","color":"FFFFFFFF","layerName":"URL Marker","projection":"EPSG:4326","lon":18.0685,"lat":59.3293,"zoom":6}
+/?oltb-marker={"title":"Marker Title","description":"Information about the maker","icon":"ExclamationTriangle.Filled","backgroundColor":"EB4542FF","color":"FFFFFFFF","layerName":"URL Marker","projection":"EPSG:4326","lon":18.0685,"lat":59.3293,"zoom":8}
 ```
 
 ### Dialogs
@@ -965,9 +966,9 @@ myLocationToolClick() {
 ```
 
 ### Icons
-There are two modules for using SVG icons. One is for basic icons and the other one is for windbarb icons.
+There are two modules for using SVG icons. One is for basic icons and the other one is for Wind Barb icons.
 
-#### Basic icons
+#### Basic Icons
 Most of the icons are from the excellent [icons.getbootstrap.com](https://icons.getbootstrap.com/). Icons have been added on a as needed basis and far from all icons have been added.
 ```javascript
 import { getIcon, SVG_PATHS } from 'oltb/js/core/GetIcon';
@@ -982,15 +983,15 @@ const icon = getIcon({
 });
 ```
 
-In general, two version of each icon exists (stroked and filled). Some icons don't have a filled version and some icons have a combination of both stroked and filled, these are called mixed.
+In general, two version of each icon exists (stroked and filled). Some icons don't have a filled version and some icons have a combination of both stroked and filled, these are called mixed. Where an icon is given as a string the name and version is separated using a period (.) `GeoPin.Filled`.
 ```javascript
 const name = 'GeoPin';                 // https://icons.getbootstrap.com/
 const version = 'Filled';              // Stroked | Filled | Mixed
 const path = SVG_PATHS[name][version]; // The 'getIcon' function wrapps the path with an svg element
 ```
 
-#### Windbarb icons
-The windbarbs are available from 0 to 190 knots (0 to 97.5m/s). To get more information about the windbarbs visit my other project [github.com/qulle/svg-wind-barbs](https://github.com/qulle/svg-wind-barbs).
+#### WindBarb Icons
+The Wind Barbs are available from 0 to 190 knots (0 to 97.5m/s). To get more information about the Wind Barbs visit my other project [github.com/qulle/svg-wind-barbs](https://github.com/qulle/svg-wind-barbs).
 ```javascript
 import { getWindBarb } from 'oltb/js/core/GetWindBarb';
 

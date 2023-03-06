@@ -4,12 +4,12 @@ import { LogManager } from './LogManager';
 const FILENAME = 'managers/StateManager.js';
 
 class StateManager {
-    static #runtimeState = this.#loadBrowserState();
+    static #runtimeState = this.#loadBrowserData();
 
     static init(map) { }
 
-    static #loadBrowserState() {
-        LogManager.logDebug(FILENAME, 'loadBrowserState', 'Loading stored state from browser');
+    static #loadBrowserData() {
+        LogManager.logDebug(FILENAME, 'loadBrowserData', 'Loading stored state from browser');
 
         let state = {};
 

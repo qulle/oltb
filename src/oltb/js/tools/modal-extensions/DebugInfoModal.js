@@ -328,9 +328,9 @@ class DebugInfoModal extends ModalBase {
         const localStorageContent = {};
         Object.keys(localStorage).forEach((key) => {
             try {
-                localStorageContent[key] = JSON.parse(localStorage.getItem(key) || '{}');
+                localStorageContent[key] = JSON.parse(localStorage.getItem(key)) || {};
             }catch (error) {
-                LogManager.logError(FILENAME, 'constructor', {
+                LogManager.logError(FILENAME, 'generateModalContent', {
                     message: 'Error parsing localstorage',
                     error: error
                 });
@@ -341,9 +341,9 @@ class DebugInfoModal extends ModalBase {
         const sessionStorageContent = {};
         Object.keys(sessionStorage).forEach((key) => {
             try {
-                sessionStorageContent[key] = JSON.parse(localStorage.getItem(key) || '{}');
+                sessionStorageContent[key] = JSON.parse(localStorage.getItem(key)) || {};
             } catch (error) {
-                LogManager.logError(FILENAME, 'constructor', {
+                LogManager.logError(FILENAME, 'generateModalContent', {
                     message: 'Error parsing sessionStorage',
                     error: error
                 });

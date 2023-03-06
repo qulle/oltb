@@ -175,6 +175,9 @@ const map = new Map({
             },
             exported: function() {
                 console.log('Map exported as png');
+            },
+            error: function(error) {
+                console.log('Error exporting png', error);
             }
         }),
         new DrawTool({

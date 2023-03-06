@@ -38,14 +38,14 @@ const DEFAULT_OPTIONS = Object.freeze({
 const DEFAULT_URL_MARKER = Object.freeze({
     lon: 18.0685,
     lat: 59.3293,
-    title: "Marker Title",
+    title: "Marker",
     description: "Oops, this is the default description, have you forgot a parameter?",
     icon: "GeoMarker.Filled",
     layerName: "URL Marker",
     backgroundColor: '#0166A5FF',
     color: '#FFFFFFFF',
     projection: CONFIG.Projection.WGS84,
-    zoom: 6
+    zoom: 8
 });
 
 class HiddenMapNavigationTool extends Control {
