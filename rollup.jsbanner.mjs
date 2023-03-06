@@ -6,7 +6,7 @@ export const banner = `/*!
  * | License: BSD-2-Clause license (https://github.com/qulle/oltb/blob/main/LICENSE)                                 |
  * + ----------------------------------------------------------------------------------------------------------------+
  * | Thanks to the following projects that enabled the creation of this library.                                     |
- * | (+) OpenLayers 7.2.2                   - (https://openlayers.org/)                                              |
+ * | (+) OpenLayers 7.3.0                   - (https://openlayers.org/)                                              |
  * | (+) proj4 2.8.1                        - (http://proj4js.org/)                                                  |
  * | (+) Tippy.js 6.3.7                     - (https://atomiks.github.io/tippyjs/)                                   |
  * | (+) Bootstrap Icons                    - (https://icons.getbootstrap.com/)                                      |

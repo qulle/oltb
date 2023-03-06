@@ -37,7 +37,7 @@ Examples for both the NPM and CDN version can be viewed for each release in the 
 Have a look at the [Internal Development Documentation](README_INTERNAL.md).
 
 ## External GitHub projects
-1. [OpenLayers 7.1.0](https://openlayers.org/en/v7.1.0/apidoc/)
+1. [OpenLayers 7.3.0](https://openlayers.org/en/v7.3.0/apidoc/)
 2. [Proj4 2.8.1](http://proj4js.org/)   
 3. [Tippy.js 6.3.7](https://atomiks.github.io/tippyjs/)
 4. [Bootstrap Icons](https://icons.getbootstrap.com/)
