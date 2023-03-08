@@ -155,14 +155,17 @@ $ git add dist -f
 $ git commit -m "gh-pages demo release x.y.z"
 $ git subtree push --prefix dist origin gh-pages
 
-# (15). Clean temp demo commit
+# (15). Verify new demo
+# https://qulle.github.io/oltb/
+
+# (16). Clean temp demo commit
 $ git reset --hard HEAD~1
 
-# (16). Tag the release
+# (17). Tag the release
 git tag -a vx.y.x -m "vx.y.x"
 git push origin --tags
 
-# (17). Clean github.com/qulle/notification-endpoints
+# (18). Clean github.com/qulle/notification-endpoints
 ```
 
 ## Browser Support 
