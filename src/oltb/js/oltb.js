@@ -5,7 +5,6 @@ import { platformModifierKeyOnly, altShiftKeysOnly, shiftKeyOnly, targetNotEdita
 
 // Toolbar helpers
 import './core/Tooltips';
-import './epsg/Registrate';
 import './helpers/browser/Prototypes';
 import './helpers/browser/SlideToggle';
 
@@ -30,6 +29,7 @@ import { TooltipManager } from './core/managers/TooltipManager';
 import { SettingsManager } from './core/managers/SettingsManager';
 import { BootstrapManager } from './core/managers/BootstrapManager';
 import { InfoWindowManager } from './core/managers/InfoWindowManager';
+import { ProjectionManager } from './core/managers/ProjectionManager';
 import { AccessibilityManager } from './core/managers/AccessibilityManager';
 
 // Generator functions
@@ -43,8 +43,8 @@ import { ALL_TOOLS } from './tools/index';
 // This is the same NODE_NAME and PROPS that the MapNavigationTool.js is using
 const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.MapData;
 const LOCAL_STORAGE_DEFAULTS = Object.freeze({
-    lon: 18.0685,
-    lat: 59.3293,
+    lon: 18.1201,
+    lat: 35.3518,
     zoom: 3,
     rotation: 0
 });
@@ -77,6 +77,19 @@ class OLTB {
     generateWindBarb = generateWindBarb;
 
     constructor(options = {}) {
+        BootstrapManager.init([
+            LogManager,
+            UrlManager,
+            ToolManager,
+            LayerManager,
+            StateManager,
+            TooltipManager,
+            SettingsManager,
+            InfoWindowManager,
+            ProjectionManager,
+            AccessibilityManager
+        ]);
+
         // Tools that should be added
         const tools = options.tools && Object.keys(options.tools).length 
             ? options.tools 
@@ -105,13 +118,11 @@ class OLTB {
     }
 
     setMap(map) {
-        // Update all added tools with map reference
         Object.values(this.#tools).forEach((tool) => {
             tool.setMap(map);
         });
 
-        // Initialize static managers
-        BootstrapManager.init(map, [
+        BootstrapManager.setMap(map, [
             LogManager,
             UrlManager,
             ToolManager,
@@ -120,6 +131,7 @@ class OLTB {
             TooltipManager,
             SettingsManager,
             InfoWindowManager,
+            ProjectionManager,
             AccessibilityManager
         ]);
 

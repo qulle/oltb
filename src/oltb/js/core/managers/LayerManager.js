@@ -24,17 +24,20 @@ class LayerManager {
         featureLayers: []
     };
 
-    static init(map) {
+    static init() {
         if(Boolean(this.#map)) {
             return;
         }
 
         LogManager.logDebug(FILENAME, 'init', 'Initializing started');
+    }
+
+    static setMap(map) { 
         LogManager.logDebug(FILENAME, 'init', `Handling map queues, adding ${
-                this.#queue.mapLayers.length
-            } map-layers and ${
-                this.#queue.featureLayers.length
-            } feature-layers`);
+            this.#queue.mapLayers.length
+        } map-layers and ${
+            this.#queue.featureLayers.length
+        } feature-layers`);
 
         this.#map = map;
 

@@ -5,9 +5,11 @@ const FILENAME = 'managers/ToolManager.js';
 class ToolManager {
     static #tool;
 
-    static init(map) {
+    static init() {
         LogManager.logDebug(FILENAME, 'init', 'Initializing started');
     }
+
+    static setMap(map) { }
 
     static setActiveTool(tool) {
         if(

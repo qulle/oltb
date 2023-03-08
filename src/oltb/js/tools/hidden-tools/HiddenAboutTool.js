@@ -1,6 +1,5 @@
 import { Modal } from '../../common/Modal';
 import { CONFIG } from '../../core/Config';
-import { VERSION } from 'ol';
 import { Control } from 'ol/control';
 import { ContextMenu } from '../../common/ContextMenu';
 import { TOOLBAR_ELEMENT } from '../../core/elements/index';
@@ -37,7 +36,7 @@ class HiddenAboutTool extends Control {
         const content = (`
             <p>Version ${CONFIG.Version}</p>
             <p>Developed by Qulle <a href="//github.com/qulle/oltb" target="_blank" class="oltb-link">github.com/qulle/oltb</a></p>
-            <p>Using OpenLayers <a href="//openlayers.org/en/v${VERSION}/apidoc/" target="_blank" class="oltb-link">${VERSION}</a></p>
+            <p>Using OpenLayers <a href="//openlayers.org/en/v${CONFIG.OpenLayers.Version}/apidoc/" target="_blank" class="oltb-link">${CONFIG.OpenLayers.Version}</a></p>
         `);
 
         this.aboutInfoModal = Modal.create({

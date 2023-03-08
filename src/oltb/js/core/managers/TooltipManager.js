@@ -12,14 +12,12 @@ class TooltipManager {
     static #tooltipOverlay;
     static #tooltips = {}
 
-    static init(map) {
+    static init() {
         if(Boolean(this.#map)) {
             return;
         }
 
         LogManager.logDebug(FILENAME, 'init', 'Initializing started');
-
-        this.#map = map;
 
         const tooltipElement = DOM.createElement({
             element: 'div',
@@ -35,6 +33,10 @@ class TooltipManager {
                 CONFIG.OverlayOffset.Vertical
             ]
         });
+    }
+
+    static setMap(map) {
+        this.#map = map;
     }
 
     static isEmpty() {

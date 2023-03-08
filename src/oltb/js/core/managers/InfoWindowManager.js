@@ -25,14 +25,12 @@ class InfoWindowManager {
     static #footer;
     static #lastFeature;
 
-    static init(map) {
+    static init() {
         if(Boolean(this.#map)) {
             return;
         }
 
         LogManager.logDebug(FILENAME, 'init', 'Initializing started');
-
-        this.#map = map;
 
         // Create infoWindow
         this.#infoWindow = DOM.createElement({
@@ -103,6 +101,10 @@ class InfoWindowManager {
                 duration: CONFIG.AnimationDuration.Normal
             }
         });
+    }
+
+    static setMap(map) {
+        this.#map = map;
 
         this.#map.addOverlay(this.#overlay);
         this.#map.on(EVENTS.OpenLayers.SingleClick, this.onSingleClick.bind(this));

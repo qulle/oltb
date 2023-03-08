@@ -16,7 +16,6 @@ import './layers/Continents';
 
 // Toolbar helpers
 import '../src/oltb/js/core/Tooltips';
-import '../src/oltb/js/epsg/Registrate';
 import '../src/oltb/js/helpers/browser/Prototypes';
 import '../src/oltb/js/helpers/browser/SlideToggle';
 
@@ -38,6 +37,7 @@ import { TooltipManager } from '../src/oltb/js/core/managers/TooltipManager';
 import { SettingsManager } from '../src/oltb/js/core/managers/SettingsManager';
 import { BootstrapManager } from '../src/oltb/js/core/managers/BootstrapManager';
 import { InfoWindowManager } from '../src/oltb/js/core/managers/InfoWindowManager';
+import { ProjectionManager } from '../src/oltb/js/core/managers/ProjectionManager';
 import { AccessibilityManager } from '../src/oltb/js/core/managers/AccessibilityManager';
 
 // Toolbar tools
@@ -75,8 +75,8 @@ import { HiddenMapNavigationTool } from '../src/oltb/js/tools/hidden-tools/Hidde
 // This is the same NODE_NAME and PROPS that the MapNavigationTool.js is using
 const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.MapData;
 const LOCAL_STORAGE_DEFAULTS = Object.freeze({
-    lon: 18.0685,
-    lat: 59.3293,
+    lon: 18.1201,
+    lat: 35.3518,
     zoom: 3,
     rotation: 0
 });
@@ -85,7 +85,19 @@ const LOCAL_STORAGE_DEFAULTS = Object.freeze({
 const LOCAL_STORAGE_STATE = StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME);
 const LOCAL_STORAGE = { ...LOCAL_STORAGE_DEFAULTS, ...LOCAL_STORAGE_STATE };
 
-// Create Map
+BootstrapManager.init([
+    LogManager,
+    UrlManager,
+    ToolManager,
+    LayerManager,
+    StateManager,
+    TooltipManager,
+    SettingsManager,
+    InfoWindowManager,
+    ProjectionManager,
+    AccessibilityManager
+]);
+
 const map = new Map({
     interactions: defaultInterctions({
         mouseWheelZoom: false,
@@ -155,8 +167,8 @@ const map = new Map({
             focusZoom: 10
         }),
         new HomeTool({
-            lon: 18.0685,
-            lat: 59.3293,
+            lon: 18.1201,
+            lat: 35.3518,
             zoom: 3,
             click: function() {
                 console.log('HomeTool click');
@@ -479,8 +491,7 @@ const map = new Map({
     })
 });
 
-// Initialize static managers
-BootstrapManager.init(map, [
+BootstrapManager.setMap(map, [
     LogManager,
     UrlManager,
     ToolManager,
@@ -489,5 +500,6 @@ BootstrapManager.init(map, [
     TooltipManager,
     SettingsManager,
     InfoWindowManager,
+    ProjectionManager,
     AccessibilityManager
 ]);

@@ -14,8 +14,8 @@ import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 
 const FILENAME = 'tools/HomeTool.js';
 const DEFAULT_OPTIONS = Object.freeze({
-    lon: 18.0685,
-    lat: 59.3293,
+    lon: 18.1201,
+    lat: 35.3518,
     zoom: 3,
     click: undefined,
     home: undefined

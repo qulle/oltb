@@ -11,7 +11,6 @@ import '../shared/Maps';
 // Toolbar
 import OLTB from 'oltb/dist/src/oltb/js/oltb';
 
-// Create Map
 const map = new Map({
     interactions: defaultInterctions({
         mouseWheelZoom: false,
@@ -28,7 +27,6 @@ const map = new Map({
     })
 });
 
-// Create Toolbar
 const toolbar = new OLTB({
     map: map,
     tools: {
@@ -47,8 +45,8 @@ const toolbar = new OLTB({
             focusZoom: 10
         },
         HomeTool: {
-            lon: 18.0685,
-            lat: 59.3293,
+            lon: 18.1201,
+            lat: 35.3518,
             zoom: 3,
             click: function() {
                 console.log('HomeTool click');

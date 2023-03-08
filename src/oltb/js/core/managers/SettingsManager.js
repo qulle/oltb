@@ -50,7 +50,7 @@ class SettingsManager {
     static #localStorage = this.#loadBrowserData();
     static #settings = structuredClone(DEFAULT_SETTINGS);
 
-    static init(map) {
+    static init() {
         LogManager.logDebug(FILENAME, 'init', 'Initializing started');
         
         // Update the states of the settings with values from localStorage
@@ -60,6 +60,8 @@ class SettingsManager {
             }
         });
     }
+
+    static setMap(map) { }
 
     static #loadBrowserData() {
         LogManager.logDebug(FILENAME, 'loadBrowserData', 'Loading settings from browser');

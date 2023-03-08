@@ -34,11 +34,13 @@ class LogManager {
         }
     });
 
-    static init(map) {
+    static init() {
         LogManager.logDebug(FILENAME, 'init', 'Initializing started');
         
         this.#isDebug = UrlManager.getParameter('debug') === 'true';
     }
+
+    static setMap(map) { }
 
     static #logSink(level, origin, method, value) {
         const timestamp = moment();

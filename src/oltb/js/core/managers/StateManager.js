@@ -6,9 +6,11 @@ const FILENAME = 'managers/StateManager.js';
 class StateManager {
     static #runtimeState = this.#loadBrowserData();
 
-    static init(map) {
+    static init() {
         LogManager.logDebug(FILENAME, 'init', 'Initializing started');
     }
+
+    static setMap(map) { }
 
     static #loadBrowserData() {
         LogManager.logDebug(FILENAME, 'loadBrowserData', 'Loading stored state from browser');

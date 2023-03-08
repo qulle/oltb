@@ -3,9 +3,11 @@ import { LogManager } from './LogManager';
 const FILENAME = 'managers/UrlManager.js';
 
 class UrlManager {
-    static init(map) {
+    static init() {
         LogManager.logDebug(FILENAME, 'init', 'Initializing started');
     }
+
+    static setMap(map) { }
     
     static assign(path) {
         window.location.assign(path);

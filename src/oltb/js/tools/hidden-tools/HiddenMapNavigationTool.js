@@ -10,11 +10,11 @@ import { ContextMenu } from '../../common/ContextMenu';
 import { toStringHDMS } from 'ol/coordinate';
 import { LayerManager } from '../../core/managers/LayerManager';
 import { StateManager } from '../../core/managers/StateManager';
-import { hasProjection } from '../../epsg/Projections';
 import { generateMarker } from '../../generators/GenerateMarker';
 import { TOOLBAR_ELEMENT } from '../../core/elements/index';
 import { CoordinateModal } from '../modal-extensions/CoordinateModal';
 import { InfoWindowManager } from '../../core/managers/InfoWindowManager';
+import { ProjectionManager } from '../../core/managers/ProjectionManager';
 import { SVG_PATHS, getIcon } from '../../core/icons/GetIcon';
 import { LOCAL_STORAGE_KEYS } from '../../helpers/constants/LocalStorageKeys';
 import { fromLonLat, toLonLat } from 'ol/proj';
@@ -28,8 +28,8 @@ const DEFAULT_OPTIONS = Object.freeze({
 // This is the same NODE_NAME and PROPS that the map.js file is using
 const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.MapData;
 const LOCAL_STORAGE_DEFAULTS = Object.freeze({
-    lon: 18.0685,
-    lat: 59.3293,
+    lon: 18.1201,
+    lat: 35.3518,
     zoom: 4,
     rotation: 0
 });
@@ -131,7 +131,7 @@ class HiddenMapNavigationTool extends Control {
                 markerData.projection = `EPSG:${markerData.projection}`;
             }
 
-            if(!hasProjection(markerData.projection)) {
+            if(!ProjectionManager.hasActiveProjection(markerData.projection)) {
                 Toast.info({
                     title: 'Projection',
                     message: `

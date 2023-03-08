@@ -4,7 +4,7 @@ import { CONFIG } from '../../core/Config';
 import { EVENTS } from '../../helpers/constants/Events';
 import { ModalBase } from '../../common/modals/ModalBase';
 import { LogManager } from '../../core/managers/LogManager';
-import { PROJECTIONS } from '../../epsg/Projections';
+import { ProjectionManager } from '../../core/managers/ProjectionManager';
 import { getIcon, SVG_PATHS } from '../../core/icons/GetIcon';
 
 const FILENAME = 'modal-extensions/DebugInfoModal.js';
@@ -318,7 +318,7 @@ class DebugInfoModal extends ModalBase {
             location: view.getCenter(),
             rotation: view.getRotation(),
             projection: view.getProjection(),
-            proj4Defs: PROJECTIONS,
+            proj4Defs: ProjectionManager.getProjections(),
             defaultConfig: CONFIG
         } : {
             info: 'No map reference found'
