@@ -23,11 +23,11 @@ import { MyLocationTool } from './MyLocationTool';
 import { ResetNorthTool } from './ResetNorthTool';
 import { FullscreenTool } from './FullscreenTool';
 import { CoordinatesTool } from './CoordinatesTool';
-import { HiddenAboutTool } from './hidden-tools/AboutTool';
+import { HiddenAboutTool } from './hidden-tools/HiddenAboutTool';
 import { NotificationTool } from './NotificationTool';
-import { HiddenMarkerTool } from './hidden-tools/MarkerTool';
+import { HiddenMarkerTool } from './hidden-tools/HiddenMarkerTool';
 import { ImportVectorLayerTool } from './ImportVectorLayerTool';
-import { HiddenMapNavigationTool } from './hidden-tools/MapNavigationTool';
+import { HiddenMapNavigationTool } from './hidden-tools/HiddenMapNavigationTool';
 
 // The order decides order in the Toolbar
 const ALL_TOOLS = Object.freeze({

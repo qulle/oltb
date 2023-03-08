@@ -3,6 +3,7 @@ import { CONFIG } from '../Config';
 import { EVENTS } from '../../helpers/constants/Events';
 import { Overlay } from 'ol';
 import { getCenter } from 'ol/extent';
+import { LogManager } from './LogManager';
 import { editMarker } from './info-window-manager/EditMarker';
 import { removeMarker } from './info-window-manager/RemoveMarker';
 import { copyMarkerInfo } from './info-window-manager/CopyMarkerInfo';
@@ -28,6 +29,8 @@ class InfoWindowManager {
         if(Boolean(this.#map)) {
             return;
         }
+
+        LogManager.logDebug(FILENAME, 'init', 'Initializing started');
 
         this.#map = map;
 

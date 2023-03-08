@@ -4,6 +4,7 @@ import { CONFIG } from '../core/Config';
 import { EVENTS } from "../helpers/constants/Events";
 import { Control } from "ol/control";
 import { transform } from 'ol/proj';
+import { UrlManager } from '../core/managers/UrlManager';
 import { MAP_ELEMENT } from "../core/elements/index";
 import { hasNestedProperty } from "../helpers/browser/HasNestedProperty";
 import { trapFocusKeyListener } from '../helpers/browser/TrapFocus';
@@ -12,6 +13,7 @@ const FILENAME = 'common/ContextMenu.js';
 const DEFAULT_OPTIONS = Object.freeze({});
 
 class ContextMenu extends Control {
+    static #isDebug;
     static #items = [];
 
     static addItem(item) {
@@ -36,6 +38,7 @@ class ContextMenu extends Control {
         this.options = { ...DEFAULT_OPTIONS, ...options };
         this.menu = this.element;
 
+        ContextMenu.#isDebug = UrlManager.getParameter('debug') === 'true';
         ContextMenu.#items.forEach((item) => {
             this.addMenuItem(item);
         });
@@ -87,7 +90,9 @@ class ContextMenu extends Control {
 
     show(event) {
         // Disable native context menu
-        event.preventDefault();
+        if(!ContextMenu.#isDebug) {
+            event.preventDefault();
+        }
 
         const map = this.getMap();
         if(!Boolean(map)) {

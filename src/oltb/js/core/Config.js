@@ -1,7 +1,9 @@
+import { VERSION } from 'ol';
 import { version } from '../../../../package.json';
 
 const FILENAME = 'core/Config.js';
 const CONFIG = Object.freeze({
+    OpenLayersVersion: VERSION,
     Version: version,
     Locale: 'en-us',
     TimeFormat: 'YYYY-MM-DD HH:mm:ss:SSS',

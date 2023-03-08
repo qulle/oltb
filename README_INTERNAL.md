@@ -9,21 +9,22 @@ Detailed documentation how the toolbar is structured, internal dependencies and 
 
 ## Table of contents
 1. [Branches](#branches)
-2. [Get started](#get-started)
-3. [Browser support](#browser-support)
-4. [Colors](#colors) 
-    1. [Theme colors](#theme-colors)
-    2. [Color palette](#color-palette)
-5. [About the code](#about-the-code)
+2. [Get Started](#get-started)
+3. [Making A Release](#making-a-release)
+4. [Browser Support](#browser-support)
+5. [Colors](#colors) 
+    1. [Theme Colors](#theme-colors)
+    2. [Color Palette](#color-palette)
+6. [About The Code](#about-the-code)
     1. [HTML](#html)
     2. [SCSS](#scss)
-    3. [Import and Export](#import-and-export)
+    3. [Import And Export](#import-and-export)
     4. [JavaScript](#javascript)
-    5. [Callback functions and constructor parameters](#callback-functions-and-constructor-parameters)
-    6. [Store data locally instead of via API](#store-data-locally-instead-of-via-api)
-    7. [Hidden tools](#hidden-tools)
-    8. [Shortcut keys](#shortcut-keys)
-    9. [Custom projections](#custom-projections)
+    5. [Callback Functions And Constructor Parameters](#callback-functions-and-constructor-parameters)
+    6. [Store Data Locally](#store-data-locally)
+    7. [Hidden Tools](#hidden-tools)
+    8. [Shortcut Keys](#shortcut-keys)
+    9. [Custom Projections](#custom-projections)
     10. [Layers](#layers)
     11. [Dialogs](#dialogs)
         1. [Alert](#alert)
@@ -34,20 +35,18 @@ Detailed documentation how the toolbar is structured, internal dependencies and 
     14. [Icons](#icons)
         1. [Basic Icons](#basic-icons)
         2. [WindBarb Icons](#windbarb-icons)
-    15. [Context menu](#context-menu)
+    15. [Context Menu](#context-menu)
     16. [State Management](#state-management)
-    17. [Debug tool](#debug-tool)
+    17. [Debug Tool](#debug-tool)
     18. [Logging](#logging)
-    19. [OLTB namespace](#oltb-namespace)
-6. [External GitHub projects](#external-github-projects)
-7. [Maps used in the demo](#maps-used-in-the-demo)
-8. [License](#license)
-9. [Author](#author)
+    19. [OLTB Namespace](#oltb-namespace)
+7. [License](#license)
+8. [Author](#author)
 
 ## Branches
 The `main` branch always holds the latest features that are considered done. The latest commit from the main branch is available on the demo-page hosted in the `gh-pages` branch.
 
-## Get started
+## Get Started
 The dev-environment uses NPM so you need to have [Node.js](https://nodejs.org/en/) installed. I use Node version *18.12.0* and NPM version *8.16.0*.
 
 Clone the repo.
@@ -97,7 +96,7 @@ $ npm update --save
 
 **Note:** that from npm version `7.0.0` the command `$ npm update` does not longer update the `package.json` file. From npm version `8.3.2` the command to run is `$ npm update --save` or to always apply the save option add `save=true` to the `.npmrc` file.
 
-## Making a Release
+## Making A Release
 ```bash
 # (1). Checkout and update main branch
 $ git checkout main
@@ -108,6 +107,8 @@ $ npm run clean
 
 # (3). Update version in: 
 #      - package.json
+#      - README.md
+#      - README_INTERNAL.md
 
 # (4). Update version and dependencies in:
 #      - rollup.cssbanner.mjs
@@ -164,7 +165,7 @@ git push origin --tags
 # (17). Clean github.com/qulle/notification-endpoints
 ```
 
-## Browser support 
+## Browser Support 
 Manually tested in modern browsers (Mozilla Firefox, Microsoft Edge, Google Chrome).
 
 _IE is not supported, it's time to move on._
@@ -172,7 +173,7 @@ _IE is not supported, it's time to move on._
 ## Colors
 The project's Theme colors and the full color palette are described below.
 
-### Theme colors
+### Theme Colors
 The toolbar is available in both `light` and `dark` mode. I have decided to go for a small set of colors in both themes. This enables for a solid look-and-feel and association between colors and functionality. The `mid` color is to consider as the default normal color. For some situations the `light` and `dark` color is used in the normal state.
 <table>
     <tr>
@@ -195,7 +196,7 @@ The toolbar is available in both `light` and `dark` mode. I have decided to go f
     </tr>
 </table>
 
-### Color palette
+### Color Palette
 The full color palette is displayed below.
 <table>
     <tr>
@@ -266,7 +267,7 @@ The full color palette is displayed below.
     </tr>
 </table>
 
-## About the code
+## About The Code
 Below is the basic HTML and JavaScript structure used in the project. For a complete example of how to set up the code go to the [examples directory](https://github.com/qulle/oltb/tree/main/examples/).
 
 ### HTML
@@ -306,7 +307,7 @@ SCSS and HTML is written with [BEM](http://getbem.com/introduction/) naming conv
 .block__element--modifier {}
 ```
 
-### Import and Export
+### Import And Export
 All modules uses named exports exclusively throughout the project. The one exception is the `oltb.js` file which is the main entry for Rollup to create the portable CDN version.
 
 ### JavaScript
@@ -342,11 +343,11 @@ import { MyLocationTool } from 'oltb/js/tools/MyLocationTool';
 import { ResetNorthTool } from 'oltb/js/tools/ResetNorthTool';
 import { FullscreenTool } from 'oltb/js/tools/FullscreenTool';
 import { CoordinatesTool } from 'oltb/js/tools/CoordinatesTool';
-import { HiddenAboutTool } from 'oltb/js/tools/hidden-tools/AboutTool';
+import { HiddenAboutTool } from 'oltb/js/tools/hidden-tools/HiddenAboutTool';
 import { NotificationTool } from 'oltb/js/tools/NotificationTool';
-import { HiddenMarkerTool } from 'oltb/js/tools/hidden-tools/MarkerTool';
+import { HiddenMarkerTool } from 'oltb/js/tools/hidden-tools/HiddenMarkerTool';
 import { ImportVectorLayerTool } from 'oltb/js/tools/ImportVectorLayerTool';
-import { HiddenMapNavigationTool } from 'oltb/js/tools/hidden-tools/MapNavigationTool';
+import { HiddenMapNavigationTool } from 'oltb/js/tools/hidden-tools/HiddenMapNavigationTool';
 ```
 
 Then call the constructor for each tool in the extend method. The tools are added to the toolbar in the order you include them in the array.
@@ -388,7 +389,7 @@ controls: defaultControls({
 ])
 ```
 
-### Callback functions and constructor parameters
+### Callback Functions And Constructor Parameters
 Tools that in any way change the map, create, modify or delete objects have several different callback functions that return data to you. All tools in the main toolbar have at least one callback that is named `click`.
 ```javascript
 controls: defaultControls({
@@ -724,15 +725,15 @@ controls: defaultControls({
 ])
 ```
 
-### Store data locally instead of via API
+### Store Data Locally
 Tools that create objects at runtime, for example the BookmarkTool, LayerTool etc. returns data via the callback functions. There is also the possibility for these tools to store the created objects in localStorage instead. This is done by setting the constructor parameter `storeDataInLocalStorage: true`. This can be useful if you want to create a map-viewer that can persists data between page load but have no need for an additionall long-term storage via API. 
 
 **Note:** At the moment only the BookmarkTool has this feature implemented. The Map also stores base data (zoom, lon, lat) in localStorage. You can read more about the State Management [here](#state-management). 
 
-### Hidden tools
+### Hidden Tools
 Tools refered to as hidden tools are tools that only add functionality via the context menu. The hidden tools are used to enable the same type of callback functions that exists on all other tools. 
 
-### Shortcut keys
+### Shortcut Keys
 All tools have a shortcut key for ease of use and speeds up the handling of the toolbar. The shortcut key is displayed in the tooltip on the corresponding tool. All shortcut keys are stored in the module `oltb/js/helpers/Constants/ShortcutKeys`.
 ```javascript
 const SHORTCUT_KEYS = {
@@ -743,7 +744,7 @@ const SHORTCUT_KEYS = {
 };
 ```
 
-### Custom projections
+### Custom Projections
 You can define custom projections in the file `oltb/js/epsg/Projections`. This file is registrated in `proj4.js` and the projections can be used throughout the project. If you want to change the default projection used, there is a general config module `oltb/js/core/Config` where you can change that. More projections can be fetched here [https://epsg.io/](https://epsg.io/).
 
 ### Layers
@@ -789,6 +790,8 @@ A marker can be created by providing the `oltb-marker` object as the GET paramet
 ```
 /?oltb-marker={"title":"Marker Title","description":"Information about the maker","icon":"ExclamationTriangle.Filled","backgroundColor":"EB4542FF","color":"FFFFFFFF","layerName":"URL Marker","projection":"EPSG:4326","lon":18.0685,"lat":59.3293,"zoom":8}
 ```
+
+Test the marker above using the <a href='https://qulle.github.io/oltb/?oltb-marker={"title":"Marker Title","description":"Information about the maker","icon":"ExclamationTriangle.Filled","backgroundColor":"EB4542FF","color":"FFFFFFFF","layerName":"URL Marker","projection":"EPSG:4326","lon":18.0685,"lat":59.3293,"zoom":8}' target="_blank">demo page</a>.
 
 ### Dialogs
 To use the custom dialogs in the map, include the following module. All the dialogs uses trap focus and circles the tab-key to always stay in the opened dialog.
@@ -1005,7 +1008,7 @@ const icon = getWindBarb({
 });
 ```
 
-### Context menu
+### Context Menu
 To use the context menu start by importing the following module.
 ```javascript
 import { ContextMenu } from 'oltb/js/common/ContextMenu';
@@ -1078,7 +1081,7 @@ To update the state in localStorage, call the `setStateObject` method and pass i
 StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, this.localStorage);
 ```
 
-### Debug tool
+### Debug Tool
 To make debugging and diagnosting errors easier there is a tool named `DebugInfoTool`. This tool will gather information about the map such as zoomlevel, location, layers, rotation, projection etc and displays the information in a modal window. To hide the debug tool as default, add the parameter `onlyWhenGetParameter: true` and add the get parameter to the url `/?debug=true` to show the tool. Adding the debug parameter will also enable the default context-menu in the browser.
 
 ### Logging
@@ -1101,7 +1104,7 @@ LogManager.logDebug(FILENAME, 'handleClick', {
 
 Add the get parameter to the url `/?debug=true` to also display the logged messages in the browser console.
 
-### OLTB namespace
+### OLTB Namespace
 All classes and id:s in the project are prefixed with the namespace `oltb`. Data is also stored in local storage under the key `oltb-state`. 
 
 ## License

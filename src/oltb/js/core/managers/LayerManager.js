@@ -29,6 +29,13 @@ class LayerManager {
             return;
         }
 
+        LogManager.logDebug(FILENAME, 'init', 'Initializing started');
+        LogManager.logDebug(FILENAME, 'init', `Handling map queues, adding ${
+                this.#queue.mapLayers.length
+            } map-layers and ${
+                this.#queue.featureLayers.length
+            } feature-layers`);
+
         this.#map = map;
 
         // Handle queue of map-layers that was added before the map was ready

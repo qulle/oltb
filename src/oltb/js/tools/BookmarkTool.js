@@ -34,7 +34,13 @@ const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.BookmarkTool;
 const LOCAL_STORAGE_DEFAULTS = Object.freeze({
     active: false,
     collapsed: false,
-    bookmarks: []
+    bookmarks: [],
+    click: undefined,
+    added: undefined,
+    removed: undefined,
+    renamed: undefined,
+    zoomedTo: undefined,
+    cleared: undefined
 });
 
 class BookmarkTool extends Control {
@@ -259,14 +265,14 @@ class BookmarkTool extends Control {
             location: location
         };
 
-        if(BookmarkTool(this.options.storeDataInLocalStorage)) {
+        if(Boolean(this.options.storeDataInLocalStorage)) {
             this.localStorage.bookmarks.push(bookmark);
             StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, this.localStorage);
         }        
 
         this.createBookmark(bookmark);
 
-        if(!BookmarkTool(this.active)) {
+        if(!Boolean(this.active)) {
             Toast.success({
                 title: 'New bookmark',
                 message: `A new bookmark created <strong>${bookmarkName}</strong>`, 

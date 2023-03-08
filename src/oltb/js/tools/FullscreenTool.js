@@ -19,7 +19,11 @@ import {
 } from '../helpers/browser/Fullscreen';
 
 const FILENAME = 'tools/FullscreenTool.js';
-const DEFAULT_OPTIONS = Object.freeze({});
+const DEFAULT_OPTIONS = Object.freeze({
+    click: undefined,
+    enter: undefined,
+    leave: undefined
+});
 
 class FullscreenTool extends Control {
     constructor(options = {}) {

@@ -10,13 +10,14 @@ import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 import { LOCAL_STORAGE_KEYS } from '../helpers/constants/LocalStorageKeys';
 
 const FILENAME = 'tools/ScaleLineTool.js';
+const DEFAULT_OPTIONS = Object.freeze({
+    units: 'metric',
+    click: undefined
+});
+
 const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.ScaleLineTool;
 const LOCAL_STORAGE_DEFAULTS = Object.freeze({
     active: false
-});
-
-const DEFAULT_OPTIONS = Object.freeze({
-    units: 'metric'
 });
 
 class ScaleLineTool extends Control {

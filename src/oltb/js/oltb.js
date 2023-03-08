@@ -6,7 +6,6 @@ import { platformModifierKeyOnly, altShiftKeysOnly, shiftKeyOnly, targetNotEdita
 // Toolbar helpers
 import './core/Tooltips';
 import './epsg/Registrate';
-import './helpers/Accessibility';
 import './helpers/browser/Prototypes';
 import './helpers/browser/SlideToggle';
 
@@ -23,11 +22,15 @@ import { LOCAL_STORAGE_KEYS } from './helpers/constants/LocalStorageKeys';
 
 // Core Managers
 import { LogManager } from './core/managers/LogManager';
+import { UrlManager } from './core/managers/UrlManager';
+import { ToolManager } from './core/managers/ToolManager';
 import { LayerManager } from './core/managers/LayerManager';
 import { StateManager } from './core/managers/StateManager';
 import { TooltipManager } from './core/managers/TooltipManager';
 import { SettingsManager } from './core/managers/SettingsManager';
+import { BootstrapManager } from './core/managers/BootstrapManager';
 import { InfoWindowManager } from './core/managers/InfoWindowManager';
+import { AccessibilityManager } from './core/managers/AccessibilityManager';
 
 // Generator functions
 import { generateMarker } from './generators/GenerateMarker';
@@ -56,11 +59,14 @@ class OLTB {
     static CONFIG = CONFIG;
 
     static LogManager = LogManager;
+    static UrlManager = UrlManager;
+    static ToolManager = ToolManager;
     static StateManager = StateManager;
     static LayerManager = LayerManager;
     static TooltipManager = TooltipManager;
     static SettingsManager = SettingsManager;
     static InfoWindowManager = InfoWindowManager;
+    static AccessibilityManager = AccessibilityManager;
     
     static Toast = Toast;
     static Modal = Modal;
@@ -99,45 +105,66 @@ class OLTB {
     }
 
     setMap(map) {
+        // Update all added tools with map reference
         Object.values(this.#tools).forEach((tool) => {
             tool.setMap(map);
         });
 
-        [
+        // Initialize static managers
+        BootstrapManager.init(map, [
+            LogManager,
+            UrlManager,
+            ToolManager,
             LayerManager,
             StateManager,
             TooltipManager,
             SettingsManager,
-            InfoWindowManager
-        ].forEach((manager) => {
-            manager.init(map);
-        });
+            InfoWindowManager,
+            AccessibilityManager
+        ]);
 
         map.setTarget(MAP_ELEMENT);
         map.getInteractions().extend([
             new MouseWheelZoom({
                 condition: function(event) { 
-                    return platformModifierKeyOnly(event) || SettingsManager.getSetting(SETTINGS.MouseWheelZoom); 
+                    return (
+                        platformModifierKeyOnly(event) || 
+                        SettingsManager.getSetting(SETTINGS.MouseWheelZoom)
+                    ); 
                 }
             }),
             new DragRotate({
                 condition: function(event) {
-                    return altShiftKeysOnly(event) && SettingsManager.getSetting(SETTINGS.AltShiftDragRotate);
+                    return (
+                        altShiftKeysOnly(event) && 
+                        SettingsManager.getSetting(SETTINGS.AltShiftDragRotate)
+                    );
                 }
             }),
             new DragPan({
                 condition: function(event) {
-                    return (platformModifierKeyOnly(event) || SettingsManager.getSetting(SETTINGS.DragPan)) && !altShiftKeysOnly(event) && !shiftKeyOnly(event);
+                    return (
+                        (
+                            platformModifierKeyOnly(event) || 
+                            SettingsManager.getSetting(SETTINGS.DragPan)
+                        ) && !altShiftKeysOnly(event) && !shiftKeyOnly(event)
+                    );
                 }
             }),
             new KeyboardZoom({
                 condition: function(event) {
-                    return SettingsManager.getSetting(SETTINGS.KeyboardZoom) && targetNotEditable(event);
+                    return (
+                        SettingsManager.getSetting(SETTINGS.KeyboardZoom) && 
+                        targetNotEditable(event)
+                    );
                 }
             }),
             new KeyboardPan({
                 condition: function(event) {
-                    return SettingsManager.getSetting(SETTINGS.KeyboardPan) && targetNotEditable(event);
+                    return (
+                        SettingsManager.getSetting(SETTINGS.KeyboardPan) && 
+                        targetNotEditable(event)
+                    );
                 }
             })
         ]);

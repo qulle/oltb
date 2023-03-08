@@ -11,7 +11,8 @@ import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 const FILENAME = 'tools/HelpTool.js';
 const DEFAULT_OPTIONS = Object.freeze({
     url: 'https://github.com/qulle/oltb',
-    target: '_blank'
+    target: '_blank',
+    click: undefined
 });
 
 class HelpTool extends Control {

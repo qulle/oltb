@@ -8,7 +8,9 @@ import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
 import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 
 const FILENAME = 'tools/RefreshTool.js';
-const DEFAULT_OPTIONS = Object.freeze({});
+const DEFAULT_OPTIONS = Object.freeze({
+    click: undefined
+});
 
 class RefreshTool extends Control {
     constructor(options = {}) {

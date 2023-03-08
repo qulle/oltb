@@ -18,7 +18,9 @@ import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT, MAP_ELEMENT } from '../core/elements/
 const FILENAME = 'tools/SplitViewTool.js';
 const RADIX = 10;
 const ID_PREFIX = 'oltb-split-view';
-const DEFAULT_OPTIONS = Object.freeze({});
+const DEFAULT_OPTIONS = Object.freeze({
+    click: undefined
+});
 
 const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.SplitViewTool;
 const LOCAL_STORAGE_DEFAULTS = Object.freeze({

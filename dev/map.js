@@ -17,7 +17,6 @@ import './layers/Continents';
 // Toolbar helpers
 import '../src/oltb/js/core/Tooltips';
 import '../src/oltb/js/epsg/Registrate';
-import '../src/oltb/js/helpers/Accessibility';
 import '../src/oltb/js/helpers/browser/Prototypes';
 import '../src/oltb/js/helpers/browser/SlideToggle';
 
@@ -31,11 +30,15 @@ import { LOCAL_STORAGE_KEYS } from '../src/oltb/js/helpers/constants/LocalStorag
 
 // Core Managers
 import { LogManager } from '../src/oltb/js/core/managers/LogManager';
+import { UrlManager } from '../src/oltb/js/core/managers/UrlManager';
+import { ToolManager } from '../src/oltb/js/core/managers/ToolManager';
 import { LayerManager } from '../src/oltb/js/core/managers/LayerManager';
 import { StateManager } from '../src/oltb/js/core/managers/StateManager';
 import { TooltipManager } from '../src/oltb/js/core/managers/TooltipManager';
 import { SettingsManager } from '../src/oltb/js/core/managers/SettingsManager';
+import { BootstrapManager } from '../src/oltb/js/core/managers/BootstrapManager';
 import { InfoWindowManager } from '../src/oltb/js/core/managers/InfoWindowManager';
+import { AccessibilityManager } from '../src/oltb/js/core/managers/AccessibilityManager';
 
 // Toolbar tools
 import { HomeTool } from '../src/oltb/js/tools/HomeTool';
@@ -63,11 +66,11 @@ import { MyLocationTool } from '../src/oltb/js/tools/MyLocationTool';
 import { ResetNorthTool } from '../src/oltb/js/tools/ResetNorthTool';
 import { FullscreenTool } from '../src/oltb/js/tools/FullscreenTool';
 import { CoordinatesTool } from '../src/oltb/js/tools/CoordinatesTool';
-import { HiddenAboutTool } from '../src/oltb/js/tools/hidden-tools/AboutTool';
+import { HiddenAboutTool } from '../src/oltb/js/tools/hidden-tools/HiddenAboutTool';
 import { NotificationTool } from '../src/oltb/js/tools/NotificationTool';
-import { HiddenMarkerTool } from '../src/oltb/js/tools/hidden-tools/MarkerTool';
+import { HiddenMarkerTool } from '../src/oltb/js/tools/hidden-tools/HiddenMarkerTool';
 import { ImportVectorLayerTool } from '../src/oltb/js/tools/ImportVectorLayerTool';
-import { HiddenMapNavigationTool } from '../src/oltb/js/tools/hidden-tools/MapNavigationTool';
+import { HiddenMapNavigationTool } from '../src/oltb/js/tools/hidden-tools/HiddenMapNavigationTool';
 
 // This is the same NODE_NAME and PROPS that the MapNavigationTool.js is using
 const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.MapData;
@@ -92,27 +95,44 @@ const map = new Map({
     }).extend([
         new MouseWheelZoom({
             condition: function(event) { 
-                return platformModifierKeyOnly(event) || SettingsManager.getSetting(SETTINGS.MouseWheelZoom); 
+                return (
+                    platformModifierKeyOnly(event) || 
+                    SettingsManager.getSetting(SETTINGS.MouseWheelZoom)
+                ); 
             }
         }),
         new DragRotate({
             condition: function(event) {
-                return altShiftKeysOnly(event) && SettingsManager.getSetting(SETTINGS.AltShiftDragRotate);
+                return (
+                    altShiftKeysOnly(event) && 
+                    SettingsManager.getSetting(SETTINGS.AltShiftDragRotate)
+                );
             }
         }),
         new DragPan({
             condition: function(event) {
-                return (platformModifierKeyOnly(event) || SettingsManager.getSetting(SETTINGS.DragPan)) && !altShiftKeysOnly(event) && !shiftKeyOnly(event);
+                return (
+                    (
+                        platformModifierKeyOnly(event) || 
+                        SettingsManager.getSetting(SETTINGS.DragPan)
+                    ) && !altShiftKeysOnly(event) && !shiftKeyOnly(event)
+                );
             }
         }),
         new KeyboardZoom({
             condition: function(event) {
-                return SettingsManager.getSetting(SETTINGS.KeyboardZoom) && targetNotEditable(event);
+                return (
+                    SettingsManager.getSetting(SETTINGS.KeyboardZoom) && 
+                    targetNotEditable(event)
+                );
             }
         }),
         new KeyboardPan({
             condition: function(event) {
-                return SettingsManager.getSetting(SETTINGS.KeyboardPan) && targetNotEditable(event);
+                return (
+                    SettingsManager.getSetting(SETTINGS.KeyboardPan) && 
+                    targetNotEditable(event)
+                );
             }
         })
     ]),
@@ -460,13 +480,14 @@ const map = new Map({
 });
 
 // Initialize static managers
-[
+BootstrapManager.init(map, [
     LogManager,
+    UrlManager,
+    ToolManager,
     LayerManager,
     StateManager,
     TooltipManager,
     SettingsManager,
-    InfoWindowManager
-].forEach((manager) => {
-    manager.init(map);
-});
+    InfoWindowManager,
+    AccessibilityManager
+]);

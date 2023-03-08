@@ -26,8 +26,8 @@ import { hasCustomFeatureProperty } from '../helpers/browser/HasNestedProperty';
 import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT } from '../core/elements/index';
 
 const FILENAME = 'tools/LayerTool.js';
-const LAYER_BUTTON_DEFAULT_CLASSES = 'oltb-func-btn';
 const ID_PREFIX = 'oltb-layer';
+const LAYER_BUTTON_DEFAULT_CLASSES = 'oltb-func-btn';
 
 const DEFAULT_OPTIONS = Object.freeze({
     disableMapCreateLayerButton: false,
@@ -38,7 +38,17 @@ const DEFAULT_OPTIONS = Object.freeze({
     disableFeatureLayerVisibilityButton: false,
     disableFeatureLayerEditButton: false,
     disableFeatureLayerDeleteButton: false,
-    disableFeatureLayerDownloadButton: false
+    disableFeatureLayerDownloadButton: false,
+    click: undefined,
+    mapLayerAdded: undefined,
+    mapLayerRemoved: undefined,
+    mapLayerRenamed: undefined,
+    mapLayerVisibilityChanged: undefined,
+    featureLayerAdded: undefined,
+    featureLayerRemoved: undefined,
+    featureLayerRenamed: undefined,
+    featureLayerVisibilityChanged: undefined,
+    featureLayerDownloaded: undefined,
 });
 
 /* 

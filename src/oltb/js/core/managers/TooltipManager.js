@@ -3,6 +3,7 @@ import { CONFIG } from "../Config";
 import { EVENTS } from '../../helpers/constants/Events';
 import { Overlay } from 'ol';
 import { unByKey } from 'ol/Observable';
+import { LogManager } from "./LogManager";
 
 const FILENAME = 'managers/TooltipManager.js';
 
@@ -15,6 +16,8 @@ class TooltipManager {
         if(Boolean(this.#map)) {
             return;
         }
+
+        LogManager.logDebug(FILENAME, 'init', 'Initializing started');
 
         this.#map = map;
 

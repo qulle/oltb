@@ -5,9 +5,9 @@
 <h1 align="center">Toolbar for OpenLayers</h1>
 
 ## About
-OLTB is a portable mobile friendly GIS toolbar developed for `OpenLayers 7.1.0`. The toolbar can be filled with any number of tools and can be used in both horizontal and vertical mode and is available in both light and dark theme.
+OLTB is a portable mobile friendly GIS toolbar developed for `OpenLayers 7.3.0`. The toolbar can be filled with any number of tools and can be used in both horizontal and vertical mode and is available in both light and dark theme.
 
-## Latest build - [Demo](https://qulle.github.io/oltb/)
+## Latest Build - [Demo](https://qulle.github.io/oltb/)
 The latest demo is built using the last official release `v1.0.0-beta3` but may contain more features that have been added since then.
 
 ## Screenshots
@@ -33,10 +33,10 @@ The latest demo is built using the last official release `v1.0.0-beta3` but may 
 ## Examples
 Examples for both the NPM and CDN version can be viewed for each release in the [examples directory](https://github.com/qulle/oltb/tree/main/examples/).
 
-## Want more info?
+## Want More Info?
 Have a look at the [Internal Development Documentation](README_INTERNAL.md).
 
-## External GitHub projects
+## External GitHub Projects
 1. [OpenLayers 7.3.0](https://openlayers.org/en/v7.3.0/apidoc/)
 2. [Proj4 2.8.1](http://proj4js.org/)   
 3. [Tippy.js 6.3.7](https://atomiks.github.io/tippyjs/)
@@ -48,7 +48,7 @@ Have a look at the [Internal Development Documentation](README_INTERNAL.md).
 9. [Parcel 2.8.1](https://parceljs.org/)
 10. [Rollup 3.18.0](https://github.com/rollup/rollup)
 
-## Maps used in the demo
+## Maps
 1. [OpenStreetMap](https://www.openstreetmap.org/)
 2. [Maps.Stamen.Com](http://maps.stamen.com/)
 3. [ArcGIS World Topo](https://www.arcgis.com/index.html)

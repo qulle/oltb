@@ -13,12 +13,14 @@ import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 import { LOCAL_STORAGE_KEYS } from '../helpers/constants/LocalStorageKeys';
 
 const FILENAME = 'tools/MagnifyTool.js';
+const DEFAULT_OPTIONS = Object.freeze({
+    click: undefined
+});
+
 const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.MagnifyTool;
 const LOCAL_STORAGE_DEFAULTS = Object.freeze({
     active: false
 });
-
-const DEFAULT_OPTIONS = Object.freeze({});
 
 class MagnifyTool extends Control {
     constructor(options = {}) {

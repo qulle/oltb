@@ -19,8 +19,11 @@ import { SVG_PATHS, getIcon } from '../../core/icons/GetIcon';
 import { LOCAL_STORAGE_KEYS } from '../../helpers/constants/LocalStorageKeys';
 import { fromLonLat, toLonLat } from 'ol/proj';
 
-const FILENAME = 'hidden-tools/MapNavigationTool.js';
+const FILENAME = 'hidden-tools/HiddenMapNavigationTool.js';
 const ID_PREFIX = 'oltb-info-window-marker';
+const DEFAULT_OPTIONS = Object.freeze({
+    focusZoom: 2
+});
 
 // This is the same NODE_NAME and PROPS that the map.js file is using
 const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.MapData;
@@ -29,10 +32,6 @@ const LOCAL_STORAGE_DEFAULTS = Object.freeze({
     lat: 59.3293,
     zoom: 4,
     rotation: 0
-});
-
-const DEFAULT_OPTIONS = Object.freeze({
-    focusZoom: 2
 });
 
 const DEFAULT_URL_MARKER = Object.freeze({

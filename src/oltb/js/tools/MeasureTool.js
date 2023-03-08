@@ -26,7 +26,13 @@ import { getMeasureCoordinates, getMeasureValue } from '../helpers/Measurements'
 
 const FILENAME = 'tools/MeasureTool.js';
 const ID_PREFIX = 'oltb-measure';
-const DEFAULT_OPTIONS = Object.freeze({});
+const DEFAULT_OPTIONS = Object.freeze({
+    click: undefined,
+    start: undefined,
+    end: undefined,
+    abort: undefined,
+    error: undefined
+});
 
 const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.MeasureTool;
 const LOCAL_STORAGE_DEFAULTS = Object.freeze({

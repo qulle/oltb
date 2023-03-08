@@ -11,7 +11,10 @@ import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
 import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 
 const FILENAME = 'tools/ZoomInTool.js';
-const DEFAULT_OPTIONS = Object.freeze({});
+const DEFAULT_OPTIONS = Object.freeze({
+    click: undefined,
+    zoomed: undefined
+});
 
 class ZoomInTool extends Control {
     constructor(options = {}) {

@@ -11,7 +11,8 @@ import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 const FILENAME = 'tools/InfoTool.js';
 const DEFAULT_OPTIONS = Object.freeze({
     title: 'Hey!',
-    content: 'This is the default content, try adding some content of your own.'
+    content: 'This is the default content, try adding some content of your own.',
+    click: undefined
 });
 
 class InfoTool extends Control {

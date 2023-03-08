@@ -41,13 +41,25 @@ import { GeometryCollection, LinearRing, LineString, MultiLineString, MultiPoint
 
 const FILENAME = 'tools/EditTool.js';
 const ID_PREFIX = 'oltb-edit';
-const DEFAULT_OPTIONS = Object.freeze({});
+const DEFAULT_OPTIONS = Object.freeze({
+    hitTolerance: 5,
+    click: undefined,
+    styleChange: undefined,
+    shapeOperation: undefined,
+    selectadd: undefined,
+    selectremove: undefined,
+    modifystart: undefined,
+    modifyend: undefined,
+    translatestart: undefined,
+    translateend: undefined,
+    removedfeature: undefined,
+    error: undefined
+});
 
 const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.EditTool;
 const LOCAL_STORAGE_DEFAULTS = Object.freeze({
     active: false,
     collapsed: false,
-    hitTolerance: 5,
     strokeColor: '#4A86B8',
     fillColor: '#D7E3FA80'
 });

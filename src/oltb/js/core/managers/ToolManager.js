@@ -1,9 +1,13 @@
+import { LogManager } from './LogManager';
+
 const FILENAME = 'managers/ToolManager.js';
 
 class ToolManager {
     static #tool;
 
-    static init(map) { }
+    static init(map) {
+        LogManager.logDebug(FILENAME, 'init', 'Initializing started');
+    }
 
     static setActiveTool(tool) {
         if(

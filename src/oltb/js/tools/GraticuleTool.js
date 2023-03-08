@@ -12,17 +12,18 @@ import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 import { LOCAL_STORAGE_KEYS } from '../helpers/constants/LocalStorageKeys';
 
 const FILENAME = 'tools/GraticuleTool.js';
-const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.GraticuleTool;
-const LOCAL_STORAGE_DEFAULTS = Object.freeze({
-    active: false
-});
-
 const DEFAULT_OPTIONS = Object.freeze({
     color: 'rgba(59, 67, 82, 0.9)',
     dashed: true,
     width: 2,
     showLabels: true,
-    wrapX: true
+    wrapX: true,
+    click: undefined
+});
+
+const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.GraticuleTool;
+const LOCAL_STORAGE_DEFAULTS = Object.freeze({
+    active: false
 });
 
 class GraticuleTool extends Control {

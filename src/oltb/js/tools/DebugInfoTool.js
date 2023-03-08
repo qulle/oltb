@@ -11,7 +11,8 @@ import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 
 const FILENAME = 'tools/DebugInfoTool.js';
 const DEFAULT_OPTIONS = Object.freeze({
-    onlyWhenGetParameter: false
+    onlyWhenGetParameter: false,
+    click: undefined
 });
 
 class DebugInfoTool extends Control {

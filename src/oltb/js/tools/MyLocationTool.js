@@ -24,7 +24,10 @@ const DEFAULT_OPTIONS = Object.freeze({
     title: 'My Location',
     enableHighAccuracy: true,
     timeout: 10000,
-    infoWindowDescription: 'This is the location that the browser was able to find. It might not be your actual location.'
+    infoWindowDescription: 'This is the location that the browser was able to find. It might not be your actual location.',
+    click: undefined,
+    location: undefined,
+    error: undefined
 });
 
 class MyLocationTool extends Control {

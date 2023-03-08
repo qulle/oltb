@@ -14,7 +14,9 @@ import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT } from '../core/elements/index';
 
 const FILENAME = 'tools/OverviewTool.js';
 const ID_PREFIX = 'oltb-overview';
-const DEFAULT_OPTIONS = Object.freeze({});
+const DEFAULT_OPTIONS = Object.freeze({
+    click: undefined
+});
 
 const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.OverviewTool;
 const LOCAL_STORAGE_DEFAULTS = Object.freeze({

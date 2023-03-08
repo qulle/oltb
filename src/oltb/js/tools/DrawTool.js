@@ -25,7 +25,14 @@ import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT } from '../core/elements/index';
 
 const FILENAME = 'tools/DrawTool.js';
 const ID_PREFIX = 'oltb-draw';
-const DEFAULT_OPTIONS = Object.freeze({});
+const DEFAULT_OPTIONS = Object.freeze({
+    click: undefined,
+    start: undefined,
+    end: undefined,
+    abort: undefined,
+    error: undefined,
+    intersected: undefined
+});
 
 const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.DrawTool;
 const LOCAL_STORAGE_DEFAULTS = Object.freeze({

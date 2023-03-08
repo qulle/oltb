@@ -10,38 +10,55 @@ import { TOOLBAR_ELEMENT } from '../core/elements/index';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
 import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 import { LOCAL_STORAGE_KEYS } from '../helpers/constants/LocalStorageKeys';
-import { toolButtonsTippySingleton } from '../core/Tooltips';
 
 const FILENAME = 'tools/DirectionTool.js';
+const DEFAULT_OPTIONS = Object.freeze({
+    click: undefined,
+    changed: undefined
+});
+
+const DIRECTION_DATA = Object.freeze({
+    col: Object.freeze({
+        class: 'col',
+        tippyContent: 'Vertical toolbar',
+        icon: getIcon({
+            path: SVG_PATHS.SymmetryVertical.Stroked,
+            class: 'oltb-tool-button__icon'
+        })
+    }),
+    row: Object.freeze({
+        class: 'row',
+        tippyContent: 'Horizontal toolbar',
+        icon: getIcon({
+            path: SVG_PATHS.SymmetryHorizontal.Stroked,
+            class: 'oltb-tool-button__icon'
+        })
+    })
+});
+
 const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.DirectionTool;
-const DEFAULT_OPTIONS = Object.freeze({});
+const LOCAL_STORAGE_DEFAULTS = Object.freeze({
+    direction: DIRECTION_DATA.col.class
+});
 
 class DirectionTool extends Control {
     constructor(options = {}) {
         super({
             element: TOOLBAR_ELEMENT
         });
-        
-        this.horizontalIcon = getIcon({
-            path: SVG_PATHS.SymmetryHorizontal.Stroked,
-            class: 'oltb-tool-button__icon'
-        });
-
-        this.verticalIcon = getIcon({
-            path: SVG_PATHS.SymmetryVertical.Stroked,
-            class: 'oltb-tool-button__icon'
-        });
 
         const button = DOM.createElement({
             element: 'button',
-            html: isHorizontal() ? this.verticalIcon : this.horizontalIcon,
+            html: isHorizontal() 
+                ? DIRECTION_DATA.col.icon
+                : DIRECTION_DATA.row.icon,
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
                 'data-tippy-content': `${(
                     isHorizontal() 
-                        ? 'Vertical toolbar' 
-                        : 'Horizontal toolbar'
+                        ? DIRECTION_DATA.col.tippyContent
+                        : DIRECTION_DATA.row.tippyContent
                 )} (${SHORTCUT_KEYS.ToolbarDirection})`
             },
             listeners: {
@@ -54,10 +71,14 @@ class DirectionTool extends Control {
         this.active = false;
         this.options = { ...DEFAULT_OPTIONS, ...options };
         
+        // Load stored data from localStorage
+        const localStorageState = StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME);
+        this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
+
         this.onWindowDeviceCheck();
 
         window.addEventListener(EVENTS.Browser.Resize, this.onWindowDeviceCheck.bind(this));
-        window.addEventListener(EVENTS.Custom.SettingsCleared, this.onWindowClearDirection.bind(this));
+        window.addEventListener(EVENTS.Custom.SettingsCleared, this.onWindowSettingsCleared.bind(this));
         window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
     }
 
@@ -75,16 +96,9 @@ class DirectionTool extends Control {
         }
     }
 
-    onWindowClearDirection() {
-        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, 'col');
-        TOOLBAR_ELEMENT.classList.remove('row');
-        document.body.classList.remove('oltb-row');
-
-        // Update toolbar icon
-        this.button.removeChild(this.button.firstElementChild);
-        this.button.insertAdjacentHTML('afterbegin', this.horizontalIcon);
-        this.button._tippy.setContent(`Horizontal toolbar (${SHORTCUT_KEYS.ToolbarDirection})`);
-        toolButtonsTippySingleton.setProps({placement: 'right'});
+    onWindowSettingsCleared() {
+        const active = this.getActiveDirection();
+        this.swithDirectionFromTo(active, DIRECTION_DATA.col);
     }
 
     handleClick() {
@@ -99,37 +113,57 @@ class DirectionTool extends Control {
     }
 
     momentaryActivation() {
-        let direction = 'col';
-        let tooltipDirection = 'right';
+        this.toggleDirection();
 
-        if(isHorizontal()) {
-            this.onWindowClearDirection();
-        }else {
-            direction = 'row';
-            tooltipDirection = 'bottom';
+        const active = this.getActiveDirection();
 
-            StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, 'row');
-            TOOLBAR_ELEMENT.classList.add('row');
-            document.body.classList.add('oltb-row');
-
-            // Update toolbar icon
-            this.button.removeChild(this.button.firstElementChild);
-            this.button.insertAdjacentHTML('afterbegin', this.verticalIcon);
-            this.button._tippy.setContent(`Vertical  toolbar (${SHORTCUT_KEYS.ToolbarDirection})`);
-            toolButtonsTippySingleton.setProps({placement: 'bottom'});
-        }
-
-        // This will trigger collision detection for the toolbar vs toolbox
+        // This will trigger collision detection on the ToolboxElement (elements/ToolboxElement.js)
+        // It will also update the tooltip placement (core/Tooltips.js)
         window.dispatchEvent(new CustomEvent(EVENTS.Custom.ToolbarDirectionChange, {
             detail: {
-                direction: tooltipDirection
+                direction: active.class
             }
         }));
 
         // User defined callback from constructor
         if(typeof this.options.changed === 'function') {
-            this.options.changed(direction);
+            this.options.changed(active.class);
         }
+    }
+
+    toggleDirection() {
+        const active = this.getActiveDirection();
+        const inActive = this.getInActiveDirection();
+
+        this.swithDirectionFromTo(active, inActive);
+    }
+
+    swithDirectionFromTo(from, to) {
+        this.localStorage.direction = to.class;
+        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, this.localStorage);
+
+        TOOLBAR_ELEMENT.classList.remove(from.class);
+        document.body.classList.remove(`oltb-${from.class}`);
+
+        TOOLBAR_ELEMENT.classList.add(to.class);
+        document.body.classList.add(`oltb-${to.class}`);
+
+        // Update toolbar button
+        this.button.removeChild(this.button.firstElementChild);
+        this.button.insertAdjacentHTML('afterbegin', from.icon);
+        this.button._tippy.setContent(`${from.tippyContent} (${SHORTCUT_KEYS.ToolbarDirection})`);
+    }
+
+    getInActiveDirection() {
+        return isHorizontal()
+            ? DIRECTION_DATA.col
+            : DIRECTION_DATA.row;
+    }
+
+    getActiveDirection() {
+        return isHorizontal()
+            ? DIRECTION_DATA.row
+            : DIRECTION_DATA.col;
     }
 }
 

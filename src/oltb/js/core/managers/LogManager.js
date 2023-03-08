@@ -34,6 +34,12 @@ class LogManager {
         }
     });
 
+    static init(map) {
+        LogManager.logDebug(FILENAME, 'init', 'Initializing started');
+        
+        this.#isDebug = UrlManager.getParameter('debug') === 'true';
+    }
+
     static #logSink(level, origin, method, value) {
         const timestamp = moment();
         const timeFormat = CONFIG.TimeFormat;
@@ -55,10 +61,6 @@ class LogManager {
                 timestamp.format(timeFormat), '🡒', origin, '🡒', method, '🡒', value
             );
         }
-    }
-
-    static init(map) {
-        this.#isDebug = UrlManager.getParameter('debug') === 'true';
     }
 
     static getLog() {

@@ -15,7 +15,10 @@ import { MAP_ELEMENT, TOOLBAR_ELEMENT } from '../core/elements/index';
 const FILENAME = 'tools/ExportPngTool.js';
 const DEFAULT_OPTIONS = Object.freeze({
     filename: 'map-image-export',
-    appendTime: false
+    appendTime: false,
+    click: undefined,
+    exported: undefined,
+    error: undefined
 });
 
 class ExportPngTool extends Control {
