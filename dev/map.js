@@ -14,9 +14,9 @@ import './layers/Capitals';
 import './layers/Countries';
 import './layers/Continents';
 
-// Toolbar helpers
-import '../src/oltb/js/helpers/browser/Prototypes';
-import '../src/oltb/js/helpers/browser/SlideToggle';
+// Browser prototype extensions
+import '../src/oltb/js/helpers/prototypes/String';
+import '../src/oltb/js/helpers/prototypes/SlideToggle';
 
 // Core Toolbar
 import '../src/oltb/scss/oltb.scss';

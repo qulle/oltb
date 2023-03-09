@@ -3,16 +3,16 @@ import { fromLonLat } from 'ol/proj';
 import { MouseWheelZoom, DragPan, DragRotate, KeyboardZoom, KeyboardPan } from 'ol/interaction';
 import { platformModifierKeyOnly, altShiftKeysOnly, shiftKeyOnly, targetNotEditable } from 'ol/events/condition';
 
-// Toolbar helpers
-import './helpers/browser/Prototypes';
-import './helpers/browser/SlideToggle';
+// Browser prototype extensions
+import './helpers/prototypes/String';
+import './helpers/prototypes/SlideToggle';
 
 // Core Toolbar
 import '../scss/oltb.scss';
 import { Toast } from './common/Toast';
 import { Modal } from './common/Modal';
-import { CONFIG } from './core/Config';
 import { Dialog } from './common/Dialog';
+import { CONFIG } from './core/Config';
 import { SETTINGS } from './helpers/constants/Settings';
 import { ContextMenu } from './common/ContextMenu';
 import { LOCAL_STORAGE_KEYS } from './helpers/constants/LocalStorageKeys';

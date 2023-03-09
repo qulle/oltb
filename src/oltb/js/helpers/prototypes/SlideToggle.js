@@ -1,4 +1,4 @@
-const FILENAME = 'browser/SlideToggle.js';
+const FILENAME = 'prototypes/SlideToggle.js';
 
 HTMLElement.prototype.slideToggle = function(duration, callback) {
     if(this.clientHeight === 0) {
@@ -53,7 +53,7 @@ const slideToggle = function(el, duration, callback, isDown) {
   
     let start;
   
-    function step(timestamp) {
+    const step = function(timestamp) {
         if(start === undefined) {
             start = timestamp;
         }

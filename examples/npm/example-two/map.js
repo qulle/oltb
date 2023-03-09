@@ -10,9 +10,9 @@ import { defaults as defaultInterctions, MouseWheelZoom, DragPan, DragRotate, Ke
 // Layers
 import '../shared/Maps';
 
-// Toolbar helpers
-import 'oltb/dist/src/oltb/js/helpers/browser/Prototypes';
-import 'oltb/dist/src/oltb/js/helpers/browser/SlideToggle';
+// Browser prototype extensions
+import 'oltb/dist/src/oltb/js/helpers/prototypes/String';
+import 'oltb/dist/src/oltb/js/helpers/prototypes/SlideToggle';
 
 // Core Toolbar
 import 'oltb/dist/src/oltb/scss/oltb.scss';
