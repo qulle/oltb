@@ -8,9 +8,9 @@ import { download } from '../helpers/browser/Download';
 import { LogManager } from '../core/managers/LogManager';
 import { UrlManager } from '../core/managers/UrlManager';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
+import { ElementManager } from '../core/managers/ElementManager';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
 import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
-import { MAP_ELEMENT, TOOLBAR_ELEMENT } from '../core/elements/index';
 
 const FILENAME = 'tools/ExportPngTool.js';
 const DEFAULT_OPTIONS = Object.freeze({
@@ -24,7 +24,7 @@ const DEFAULT_OPTIONS = Object.freeze({
 class ExportPngTool extends Control {
     constructor(options = {}) {
         super({
-            element: TOOLBAR_ELEMENT
+            element: ElementManager.getToolbarElement()
         });
         
         const icon = getIcon({
@@ -62,7 +62,8 @@ class ExportPngTool extends Control {
     }
 
     onDOMContentLoaded() {
-        const attributions = MAP_ELEMENT.querySelector('.ol-attribution');
+        const mapElement = ElementManager.getMapElement();
+        const attributions = mapElement.querySelector('.ol-attribution');
         if(Boolean(attributions)) {
             attributions.setAttribute('data-html2canvas-ignore', 'true');
         }
@@ -97,6 +98,7 @@ class ExportPngTool extends Control {
         }
 
         try {
+            const mapElement = ElementManager.getMapElement();
             const size = map.getSize();
             const pngCanvas = DOM.createElement({
                 element: 'canvas',
@@ -109,7 +111,7 @@ class ExportPngTool extends Control {
             const pngContext = pngCanvas.getContext('2d');
 
             // Draw map layers (Canvases)
-            const mapCanvas = MAP_ELEMENT.querySelector('.ol-layer canvas');
+            const mapCanvas = mapElement.querySelector('.ol-layer canvas');
             const opacity = mapCanvas.parentNode.style.opacity;
             pngContext.globalAlpha = opacity === '' ? 1 : Number(opacity);
     
@@ -122,7 +124,7 @@ class ExportPngTool extends Control {
             pngContext.drawImage(mapCanvas, 0, 0);
 
             // Draw overlays souch as Tooltips and InfoWindows
-            const overlay = MAP_ELEMENT.querySelector('.ol-overlaycontainer-stopevent');
+            const overlay = mapElement.querySelector('.ol-overlaycontainer-stopevent');
             const overlayCanvas = await html2canvas(overlay, {
                 scrollX: 0,
                 scrollY: 0,

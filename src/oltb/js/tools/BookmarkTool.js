@@ -14,12 +14,12 @@ import { toStringHDMS } from 'ol/coordinate';
 import { StateManager } from '../core/managers/StateManager';
 import { randomNumber } from '../helpers/browser/Random';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
+import { ElementManager } from '../core/managers/ElementManager';
 import { copyToClipboard } from '../helpers/browser/CopyToClipboard';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
 import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 import { LOCAL_STORAGE_KEYS } from '../helpers/constants/LocalStorageKeys';
 import { generateAnimalName } from '../helpers/name-generator/NameGenerator';
-import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT } from '../core/elements/index';
 
 const FILENAME = 'tools/BookmarkTool.js';
 const BOOKMARK_BUTTON_DEFAULT_CLASSES = 'oltb-func-btn';
@@ -46,7 +46,7 @@ const LOCAL_STORAGE_DEFAULTS = Object.freeze({
 class BookmarkTool extends Control {
     constructor(options = {}) {
         super({
-            element: TOOLBAR_ELEMENT
+            element: ElementManager.getToolbarElement()
         });
         
         const icon = getIcon({
@@ -80,7 +80,8 @@ class BookmarkTool extends Control {
         const localStorageState = StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME);
         this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
 
-        TOOLBOX_ELEMENT.insertAdjacentHTML('beforeend', `
+        const toolboxElement = ElementManager.getToolboxElement();
+        toolboxElement.insertAdjacentHTML('beforeend', `
             <div id="${ID_PREFIX}-toolbox" class="oltb-toolbox-section">
                 <div class="oltb-toolbox-section__header">
                     <h4 class="oltb-toolbox-section__title oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">

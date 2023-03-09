@@ -7,7 +7,7 @@ import { LogManager } from '../core/managers/LogManager';
 import { FORMAT_TYPES } from '../core/ol-types/FormatTypes';
 import { LayerManager } from '../core/managers/LayerManager';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
-import { TOOLBAR_ELEMENT } from '../core/elements/index';
+import { ElementManager } from '../core/managers/ElementManager';
 import { instantiateFormat } from '../core/ol-types/FormatTypes';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
 import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
@@ -22,7 +22,7 @@ const DEFAULT_OPTIONS = Object.freeze({
 class ImportVectorLayerTool extends Control {
     constructor(options = {}) {
         super({
-            element: TOOLBAR_ELEMENT
+            element: ElementManager.getToolbarElement()
         });
         
         const icon = getIcon({

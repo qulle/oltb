@@ -16,7 +16,7 @@ HTMLElement.prototype.slideDown = function (duration, callback) {
     slideToggle(this, duration, callback, true);
 };
 
-function slideToggle(el, duration, callback, isDown) {
+const slideToggle = function(el, duration, callback, isDown) {
     if(typeof duration === 'undefined') {
         duration = 200;
     }

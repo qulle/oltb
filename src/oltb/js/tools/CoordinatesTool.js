@@ -11,9 +11,9 @@ import { ToolManager } from '../core/managers/ToolManager';
 import { toStringHDMS } from 'ol/coordinate';
 import { StateManager } from '../core/managers/StateManager';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
+import { ElementManager } from '../core/managers/ElementManager';
 import { TooltipManager } from '../core/managers/TooltipManager';
 import { SettingsManager } from '../core/managers/SettingsManager';
-import { TOOLBAR_ELEMENT } from '../core/elements/index';
 import { copyToClipboard } from '../helpers/browser/CopyToClipboard';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
 import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
@@ -33,7 +33,7 @@ const LOCAL_STORAGE_DEFAULTS = Object.freeze({
 class CoordinatesTool extends Control {
     constructor(options = {}) {
         super({
-            element: TOOLBAR_ELEMENT
+            element: ElementManager.getToolbarElement()
         });
 
         const icon = getIcon({

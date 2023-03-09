@@ -11,24 +11,28 @@ class LogManager {
         debug: {
             value: 1,
             icon: '🐳',
+            info: 'Debug message',
             color: '#D7E3FA',
             method: window.console.log
         },
         information: {
             value: 2,
             icon: '🐸',
+            info: 'Information message',
             color: '#D3D9E6',
             method: window.console.info
         },
         warning: {
             value: 3,
             icon: '🐠',
+            info: 'Warning message',
             color: '#FFF1C5',
             method: window.console.warn
         },
         error: {
             value: 4,
             icon: '🐝',
+            info: 'Error message',
             color: '#FDB5B4',
             method: window.console.error
         }

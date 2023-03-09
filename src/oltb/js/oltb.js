@@ -4,7 +4,6 @@ import { MouseWheelZoom, DragPan, DragRotate, KeyboardZoom, KeyboardPan } from '
 import { platformModifierKeyOnly, altShiftKeysOnly, shiftKeyOnly, targetNotEditable } from 'ol/events/condition';
 
 // Toolbar helpers
-import './core/Tooltips';
 import './helpers/browser/Prototypes';
 import './helpers/browser/SlideToggle';
 
@@ -16,7 +15,6 @@ import { CONFIG } from './core/Config';
 import { Dialog } from './common/Dialog';
 import { SETTINGS } from './helpers/constants/Settings';
 import { ContextMenu } from './common/ContextMenu';
-import { MAP_ELEMENT } from './core/elements/index';
 import { LOCAL_STORAGE_KEYS } from './helpers/constants/LocalStorageKeys';
 
 // Core Managers
@@ -25,11 +23,14 @@ import { UrlManager } from './core/managers/UrlManager';
 import { ToolManager } from './core/managers/ToolManager';
 import { LayerManager } from './core/managers/LayerManager';
 import { StateManager } from './core/managers/StateManager';
+import { TippyManager } from './core/managers/TippyManager';
+import { ElementManager } from './core/managers/ElementManager';
 import { TooltipManager } from './core/managers/TooltipManager';
 import { SettingsManager } from './core/managers/SettingsManager';
 import { BootstrapManager } from './core/managers/BootstrapManager';
 import { InfoWindowManager } from './core/managers/InfoWindowManager';
 import { ProjectionManager } from './core/managers/ProjectionManager';
+import { ColorPickerManager } from './core/managers/ColorPickerManager';
 import { AccessibilityManager } from './core/managers/AccessibilityManager';
 
 // Generator functions
@@ -49,23 +50,24 @@ const LOCAL_STORAGE_DEFAULTS = Object.freeze({
     rotation: 0
 });
 
-// Load stored data from localStorage
-const LOCAL_STORAGE_STATE = StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME);
-const LOCAL_STORAGE = { ...LOCAL_STORAGE_DEFAULTS, ...LOCAL_STORAGE_STATE };
-
 class OLTB {
     #tools = {};
+    #localStorage = {};
 
     static CONFIG = CONFIG;
 
     static LogManager = LogManager;
+    static StateManager = StateManager;
+    static ElementManager = ElementManager;
+    static ProjectionManager = ProjectionManager;
+    static LayerManager = LayerManager;
+    static TippyManager = TippyManager;
+    static TooltipManager = TooltipManager;
     static UrlManager = UrlManager;
     static ToolManager = ToolManager;
-    static StateManager = StateManager;
-    static LayerManager = LayerManager;
-    static TooltipManager = TooltipManager;
     static SettingsManager = SettingsManager;
     static InfoWindowManager = InfoWindowManager;
+    static ColorPickerManager = ColorPickerManager;
     static AccessibilityManager = AccessibilityManager;
     
     static Toast = Toast;
@@ -77,18 +79,26 @@ class OLTB {
     generateWindBarb = generateWindBarb;
 
     constructor(options = {}) {
+        // Note: The order of the collection is important
         BootstrapManager.init([
             LogManager,
+            StateManager,
+            ElementManager,
+            ProjectionManager,
+            LayerManager,
+            TippyManager,
+            TooltipManager,
             UrlManager,
             ToolManager,
-            LayerManager,
-            StateManager,
-            TooltipManager,
             SettingsManager,
             InfoWindowManager,
-            ProjectionManager,
+            ColorPickerManager,
             AccessibilityManager
         ]);
+
+        // Load stored data from localStorage
+        const localStorageState = StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME);
+        this.#localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
 
         // Tools that should be added
         const tools = options.tools && Object.keys(options.tools).length 
@@ -122,20 +132,9 @@ class OLTB {
             tool.setMap(map);
         });
 
-        BootstrapManager.setMap(map, [
-            LogManager,
-            UrlManager,
-            ToolManager,
-            LayerManager,
-            StateManager,
-            TooltipManager,
-            SettingsManager,
-            InfoWindowManager,
-            ProjectionManager,
-            AccessibilityManager
-        ]);
+        BootstrapManager.setMap(map);
 
-        map.setTarget(MAP_ELEMENT);
+        map.setTarget(ElementManager.getMapElement());
         map.getInteractions().extend([
             new MouseWheelZoom({
                 condition: function(event) { 
@@ -183,13 +182,13 @@ class OLTB {
 
         const view = map.getView();
         const coordinates = fromLonLat([
-            LOCAL_STORAGE.lon,
-            LOCAL_STORAGE.lat
+            this.#localStorage.lon,
+            this.#localStorage.lat
         ], CONFIG.Projection.Default);
 
         view.setCenter(coordinates);
-        view.setZoom(LOCAL_STORAGE.zoom);
-        view.setRotation(LOCAL_STORAGE.rotation);
+        view.setZoom(this.#localStorage.zoom);
+        view.setRotation(this.#localStorage.rotation);
     }
 }
 

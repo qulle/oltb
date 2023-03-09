@@ -1,6 +1,6 @@
 import { DOM } from '../../helpers/browser/DOM';
 import { DialogBase } from './DialogBase';
-import { MAP_ELEMENT } from '../../core/elements/index';
+import { ElementManager } from '../../core/managers/ElementManager';
 
 const FILENAME = 'dialogs/Prompt.js';
 const DEFAULT_OPTIONS = Object.freeze({
@@ -110,8 +110,10 @@ class Prompt extends DialogBase {
             buttonWrapper
         ]);
 
+        const mapElement = ElementManager.getMapElement();
+
         this.backdrop.appendChild(dialog);
-        MAP_ELEMENT.appendChild(this.backdrop);
+        mapElement.appendChild(this.backdrop);
         this.backdrop.focus();
     }
 }

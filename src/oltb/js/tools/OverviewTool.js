@@ -6,11 +6,11 @@ import { EVENTS } from '../helpers/constants/Events';
 import { LogManager } from '../core/managers/LogManager';
 import { StateManager } from '../core/managers/StateManager';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
+import { ElementManager } from '../core/managers/ElementManager';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
 import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 import { LOCAL_STORAGE_KEYS } from '../helpers/constants/LocalStorageKeys';
 import { Control, OverviewMap } from 'ol/control';
-import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT } from '../core/elements/index';
 
 const FILENAME = 'tools/OverviewTool.js';
 const ID_PREFIX = 'oltb-overview';
@@ -27,7 +27,7 @@ const LOCAL_STORAGE_DEFAULTS = Object.freeze({
 class OverviewTool extends Control {
     constructor(options = {}) {
         super({
-            element: TOOLBAR_ELEMENT
+            element: ElementManager.getToolbarElement()
         });
         
         const icon = getIcon({
@@ -57,7 +57,8 @@ class OverviewTool extends Control {
         const localStorageState = StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME);
         this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
 
-        TOOLBOX_ELEMENT.insertAdjacentHTML('beforeend', `
+        const toolboxElement = ElementManager.getToolboxElement();
+        toolboxElement.insertAdjacentHTML('beforeend', `
             <div id="${ID_PREFIX}-toolbox" class="oltb-toolbox-section">
                 <div class="oltb-toolbox-section__header">
                     <h4 class="oltb-toolbox-section__title oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">

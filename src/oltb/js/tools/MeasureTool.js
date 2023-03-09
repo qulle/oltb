@@ -12,6 +12,7 @@ import { ToolManager } from '../core/managers/ToolManager';
 import { LayerManager } from '../core/managers/LayerManager';
 import { StateManager } from '../core/managers/StateManager';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
+import { ElementManager } from '../core/managers/ElementManager';
 import { TooltipManager } from '../core/managers/TooltipManager';
 import { SettingsManager } from '../core/managers/SettingsManager';
 import { generateTooltip } from '../generators/GenerateTooltip';
@@ -21,7 +22,6 @@ import { FEATURE_PROPERTIES } from '../helpers/constants/FeatureProperties';
 import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 import { LOCAL_STORAGE_KEYS } from '../helpers/constants/LocalStorageKeys';
 import { Fill, Stroke, Circle, Style } from 'ol/style';
-import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT } from '../core/elements/index';
 import { getMeasureCoordinates, getMeasureValue } from '../helpers/Measurements';
 
 const FILENAME = 'tools/MeasureTool.js';
@@ -46,7 +46,7 @@ const LOCAL_STORAGE_DEFAULTS = Object.freeze({
 class MeasureTool extends Control {
     constructor(options = {}) {
         super({
-            element: TOOLBAR_ELEMENT
+            element: ElementManager.getToolbarElement()
         });
         
         const icon = getIcon({
@@ -76,7 +76,8 @@ class MeasureTool extends Control {
         const localStorageState = StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME);
         this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
 
-        TOOLBOX_ELEMENT.insertAdjacentHTML('beforeend', `
+        const toolboxElement = ElementManager.getToolboxElement();
+        toolboxElement.insertAdjacentHTML('beforeend', `
             <div id="${ID_PREFIX}-toolbox" class="oltb-toolbox-section">
                 <div class="oltb-toolbox-section__header">
                     <h4 class="oltb-toolbox-section__title oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">

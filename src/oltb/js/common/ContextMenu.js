@@ -5,7 +5,7 @@ import { EVENTS } from "../helpers/constants/Events";
 import { Control } from "ol/control";
 import { transform } from 'ol/proj';
 import { UrlManager } from '../core/managers/UrlManager';
-import { MAP_ELEMENT } from "../core/elements/index";
+import { ElementManager } from '../core/managers/ElementManager';
 import { hasNestedProperty } from "../helpers/browser/HasNestedProperty";
 import { trapFocusKeyListener } from '../helpers/browser/TrapFocus';
 
@@ -43,9 +43,11 @@ class ContextMenu extends Control {
             this.addMenuItem(item);
         });
 
-        MAP_ELEMENT.appendChild(this.menu);
-        MAP_ELEMENT.addEventListener(EVENTS.Browser.ContextMenu, this.show.bind(this));
-        MAP_ELEMENT.addEventListener(EVENTS.Browser.Click, this.hide.bind(this));
+        const mapElement = ElementManager.getMapElement();
+
+        mapElement.appendChild(this.menu);
+        mapElement.addEventListener(EVENTS.Browser.ContextMenu, this.show.bind(this));
+        mapElement.addEventListener(EVENTS.Browser.Click, this.hide.bind(this));
     }
 
     addMenuItem(item) {

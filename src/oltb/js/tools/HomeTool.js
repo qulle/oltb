@@ -8,7 +8,7 @@ import { goToView } from '../helpers/GoToView';
 import { LogManager } from '../core/managers/LogManager';
 import { ContextMenu } from '../common/ContextMenu';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
-import { TOOLBAR_ELEMENT } from '../core/elements/index';
+import { ElementManager } from '../core/managers/ElementManager';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
 import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 
@@ -24,7 +24,7 @@ const DEFAULT_OPTIONS = Object.freeze({
 class HomeTool extends Control {
     constructor(options = {}) {
         super({
-            element: TOOLBAR_ELEMENT
+            element: ElementManager.getToolbarElement()
         });
         
         const icon = getIcon({

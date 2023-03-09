@@ -4,7 +4,7 @@ import { EVENTS } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { LogManager } from '../core/managers/LogManager';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
-import { TOOLBAR_ELEMENT } from '../core/elements/index';
+import { ElementManager } from '../core/managers/ElementManager';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
 import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 
@@ -18,7 +18,7 @@ const DEFAULT_OPTIONS = Object.freeze({
 class InfoTool extends Control {
     constructor(options = {}) {
         super({
-            element: TOOLBAR_ELEMENT
+            element: ElementManager.getToolbarElement()
         });
         
         const icon = getIcon({

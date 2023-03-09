@@ -11,7 +11,7 @@ import { toStringHDMS } from 'ol/coordinate';
 import { LayerManager } from '../core/managers/LayerManager';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { generateMarker } from '../generators/GenerateMarker';
-import { TOOLBAR_ELEMENT } from '../core/elements/index';
+import { ElementManager } from '../core/managers/ElementManager';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
 import { InfoWindowManager } from '../core/managers/InfoWindowManager';
 import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
@@ -33,7 +33,7 @@ const DEFAULT_OPTIONS = Object.freeze({
 class MyLocationTool extends Control {
     constructor(options = {}) {
         super({
-            element: TOOLBAR_ELEMENT
+            element: ElementManager.getToolbarElement()
         });
         
         const icon = getIcon({

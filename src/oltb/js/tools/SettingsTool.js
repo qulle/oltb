@@ -9,7 +9,7 @@ import { ContextMenu } from '../common/ContextMenu';
 import { StateManager } from '../core/managers/StateManager';
 import { SettingsModal } from './modal-extensions/SettingsModal';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
-import { TOOLBAR_ELEMENT } from '../core/elements/index';
+import { ElementManager } from '../core/managers/ElementManager';
 import { SettingsManager } from '../core/managers/SettingsManager';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
 import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
@@ -23,7 +23,7 @@ const DEFAULT_OPTIONS = Object.freeze({
 class SettingsTool extends Control {
     constructor(options = {}) {
         super({
-            element: TOOLBAR_ELEMENT
+            element: ElementManager.getToolbarElement()
         });
         
         const icon = getIcon({

@@ -204,9 +204,9 @@ class DebugInfoModal extends ModalBase {
             element: 'span',
             class: 'oltb-log__title', 
             html: `
-                ${
+                <span class="oltb-tippy" title="${entry.level.info}">${
                     entry.level.icon
-                } <strong>${
+                }</span> <strong>${
                     entry.timestamp
                 }</strong> 🡒 ${
                     entry.origin
@@ -247,9 +247,9 @@ class DebugInfoModal extends ModalBase {
             element: 'span',
             class: 'oltb-log__title', 
             html: `
-                ${
+                <span class="oltb-tippy" title="${entry.level.info}">${
                     entry.level.icon
-                } <strong>${
+                }</span> <strong>${
                     entry.timestamp
                 }</strong> 🡒 ${
                     entry.origin

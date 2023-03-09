@@ -2,7 +2,7 @@ import { Modal } from '../../common/Modal';
 import { CONFIG } from '../../core/Config';
 import { Control } from 'ol/control';
 import { ContextMenu } from '../../common/ContextMenu';
-import { TOOLBAR_ELEMENT } from '../../core/elements/index';
+import { ElementManager } from '../../core/managers/ElementManager';
 import { SVG_PATHS, getIcon } from '../../core/icons/GetIcon';
 
 const FILENAME = 'hidden-tools/HiddenAboutTool.js';
@@ -10,7 +10,7 @@ const FILENAME = 'hidden-tools/HiddenAboutTool.js';
 class HiddenAboutTool extends Control {
     constructor() {
         super({
-            element: TOOLBAR_ELEMENT
+            element: ElementManager.getToolbarElement()
         });
 
         const icon = getIcon({

@@ -15,7 +15,6 @@ import './layers/Countries';
 import './layers/Continents';
 
 // Toolbar helpers
-import '../src/oltb/js/core/Tooltips';
 import '../src/oltb/js/helpers/browser/Prototypes';
 import '../src/oltb/js/helpers/browser/SlideToggle';
 
@@ -24,7 +23,6 @@ import '../src/oltb/scss/oltb.scss';
 import { CONFIG } from '../src/oltb/js/core/Config';
 import { SETTINGS } from '../src/oltb/js/helpers/constants/Settings';
 import { ContextMenu } from '../src/oltb/js/common/ContextMenu';
-import { MAP_ELEMENT } from '../src/oltb/js/core/elements/index';
 import { LOCAL_STORAGE_KEYS } from '../src/oltb/js/helpers/constants/LocalStorageKeys';
 
 // Core Managers
@@ -33,11 +31,14 @@ import { UrlManager } from '../src/oltb/js/core/managers/UrlManager';
 import { ToolManager } from '../src/oltb/js/core/managers/ToolManager';
 import { LayerManager } from '../src/oltb/js/core/managers/LayerManager';
 import { StateManager } from '../src/oltb/js/core/managers/StateManager';
+import { TippyManager } from '../src/oltb/js/core/managers/TippyManager';
+import { ElementManager } from '../src/oltb/js/core/managers/ElementManager';
 import { TooltipManager } from '../src/oltb/js/core/managers/TooltipManager';
 import { SettingsManager } from '../src/oltb/js/core/managers/SettingsManager';
 import { BootstrapManager } from '../src/oltb/js/core/managers/BootstrapManager';
 import { InfoWindowManager } from '../src/oltb/js/core/managers/InfoWindowManager';
 import { ProjectionManager } from '../src/oltb/js/core/managers/ProjectionManager';
+import { ColorPickerManager } from '../src/oltb/js/core/managers/ColorPickerManager';
 import { AccessibilityManager } from '../src/oltb/js/core/managers/AccessibilityManager';
 
 // Toolbar tools
@@ -81,22 +82,26 @@ const LOCAL_STORAGE_DEFAULTS = Object.freeze({
     rotation: 0
 });
 
+// Note: The order of the collection is important
+BootstrapManager.init([
+    LogManager,
+    StateManager,
+    ElementManager,
+    ProjectionManager,
+    LayerManager,
+    TippyManager,
+    TooltipManager,
+    UrlManager,
+    ToolManager,
+    SettingsManager,
+    InfoWindowManager,
+    ColorPickerManager,
+    AccessibilityManager
+]);
+
 // Load stored data from localStorage
 const LOCAL_STORAGE_STATE = StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME);
 const LOCAL_STORAGE = { ...LOCAL_STORAGE_DEFAULTS, ...LOCAL_STORAGE_STATE };
-
-BootstrapManager.init([
-    LogManager,
-    UrlManager,
-    ToolManager,
-    LayerManager,
-    StateManager,
-    TooltipManager,
-    SettingsManager,
-    InfoWindowManager,
-    ProjectionManager,
-    AccessibilityManager
-]);
 
 const map = new Map({
     interactions: defaultInterctions({
@@ -479,7 +484,7 @@ const map = new Map({
         new HiddenAboutTool(),
         new ContextMenu()
     ]),
-    target: MAP_ELEMENT,
+    target: ElementManager.getMapElement(),
     view: new View({
         projection: getProjection(CONFIG.Projection.Default),
         center: fromLonLat([
@@ -491,15 +496,4 @@ const map = new Map({
     })
 });
 
-BootstrapManager.setMap(map, [
-    LogManager,
-    UrlManager,
-    ToolManager,
-    LayerManager,
-    StateManager,
-    TooltipManager,
-    SettingsManager,
-    InfoWindowManager,
-    ProjectionManager,
-    AccessibilityManager
-]);
+BootstrapManager.setMap(map);

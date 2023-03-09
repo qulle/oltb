@@ -13,6 +13,7 @@ import { ContextMenu } from '../common/ContextMenu';
 import { StateManager } from '../core/managers/StateManager';
 import { LayerManager } from '../core/managers/LayerManager';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
+import { ElementManager } from '../core/managers/ElementManager';
 import { instantiateLayer } from '../core/ol-types/LayerTypes';
 import { InfoWindowManager } from '../core/managers/InfoWindowManager';
 import { instantiateSource } from '../core/ol-types/SourceTypes';
@@ -23,7 +24,6 @@ import { LOCAL_STORAGE_KEYS } from '../helpers/constants/LocalStorageKeys';
 import { DownloadLayerModal } from './modal-extensions/DownloadLayerModal';
 import { FEATURE_PROPERTIES } from '../helpers/constants/FeatureProperties';
 import { hasCustomFeatureProperty } from '../helpers/browser/HasNestedProperty';
-import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT } from '../core/elements/index';
 
 const FILENAME = 'tools/LayerTool.js';
 const ID_PREFIX = 'oltb-layer';
@@ -65,7 +65,7 @@ const LOCAL_STORAGE_DEFAULTS = Object.freeze({
 class LayerTool extends Control {
     constructor(options = {}) {
         super({
-            element: TOOLBAR_ELEMENT
+            element: ElementManager.getToolbarElement()
         });
         
         const icon = getIcon({
@@ -95,7 +95,8 @@ class LayerTool extends Control {
         const localStorageState = StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME);
         this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
 
-        TOOLBOX_ELEMENT.insertAdjacentHTML('beforeend', `
+        const toolboxElement = ElementManager.getToolboxElement();
+        toolboxElement.insertAdjacentHTML('beforeend', `
             <div id="${ID_PREFIX}-toolbox" class="oltb-toolbox-section">
                 <div class="oltb-toolbox-section__header">
                     <h4 class="oltb-toolbox-section__title oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-map-toolbox-collapsed">

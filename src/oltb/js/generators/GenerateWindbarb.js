@@ -25,7 +25,7 @@ const DEFAULT_OPTIONS = Object.freeze({
 const generateWindBarb = function(options = {}) {
     options = { ...DEFAULT_OPTIONS, ...options };
 
-    const windbarb = new Feature({
+    const windBarb = new Feature({
         geometry: new Point(fromLonLat([
             options.lon, 
             options.lat
@@ -41,7 +41,7 @@ const generateWindBarb = function(options = {}) {
         strokeWidth: options.strokeWidth
     });
 
-    windbarb.setStyle([
+    windBarb.setStyle([
         new Style({
             image: new Icon({
                 src: `data:image/svg+xml;utf8,${icon}`,
@@ -51,7 +51,7 @@ const generateWindBarb = function(options = {}) {
         })
     ]);
 
-    windbarb.setProperties({
+    windBarb.setProperties({
         oltb: {
             type: FEATURE_PROPERTIES.Type.WindBarb,
             lon: options.lon,
@@ -61,7 +61,7 @@ const generateWindBarb = function(options = {}) {
         }
     });
 
-    return windbarb;
+    return windBarb;
 }
 
 export { generateWindBarb };

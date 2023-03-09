@@ -47,13 +47,14 @@ const DEFAULT_SETTINGS = new Map([
 ]);
 
 class SettingsManager {
-    static #localStorage = this.#loadBrowserData();
+    static #localStorage;
     static #settings = structuredClone(DEFAULT_SETTINGS);
 
     static init() {
         LogManager.logDebug(FILENAME, 'init', 'Initializing started');
         
         // Update the states of the settings with values from localStorage
+        this.#localStorage = this.#loadBrowserData();
         this.#settings.forEach((value, key) => {
             if(key in this.#localStorage) {
                 value.state = this.#localStorage[key];

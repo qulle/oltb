@@ -4,8 +4,8 @@ import { Control } from 'ol/control';
 import { LogManager } from '../core/managers/LogManager';
 import { UrlManager } from '../core/managers/UrlManager';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
+import { ElementManager } from '../core/managers/ElementManager';
 import { DebugInfoModal } from './modal-extensions/DebugInfoModal';
-import { TOOLBAR_ELEMENT } from '../core/elements/index';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
 import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 
@@ -18,7 +18,7 @@ const DEFAULT_OPTIONS = Object.freeze({
 class DebugInfoTool extends Control {
     constructor(options = {}) {
         super({
-            element: TOOLBAR_ELEMENT
+            element: ElementManager.getToolbarElement()
         });
         
         const icon = getIcon({

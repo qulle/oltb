@@ -5,7 +5,7 @@ import { MarkerModal } from '../modal-extensions/MarkerModal';
 import { toStringHDMS } from 'ol/coordinate';
 import { LayerManager } from '../../core/managers/LayerManager';
 import { generateMarker } from '../../generators/GenerateMarker';
-import { TOOLBAR_ELEMENT } from '../../core/elements/index';
+import { ElementManager } from '../../core/managers/ElementManager';
 import { SVG_PATHS, getIcon } from '../../core/icons/GetIcon';
 
 const FILENAME = 'hidden-tools/HiddenMarkerTool.js';
@@ -19,7 +19,7 @@ const DEFAULT_OPTIONS = Object.freeze({
 class HiddenMarkerTool extends Control {
     constructor(options = {}) {
         super({
-            element: TOOLBAR_ELEMENT
+            element: ElementManager.getToolbarElement()
         });
 
         this.options = { ...DEFAULT_OPTIONS, ...options };

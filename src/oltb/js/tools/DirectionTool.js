@@ -6,7 +6,7 @@ import { LogManager } from '../core/managers/LogManager';
 import { isHorizontal } from '../helpers/IsRowDirection';
 import { StateManager } from '../core/managers/StateManager';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
-import { TOOLBAR_ELEMENT } from '../core/elements/index';
+import { ElementManager } from '../core/managers/ElementManager';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
 import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 import { LOCAL_STORAGE_KEYS } from '../helpers/constants/LocalStorageKeys';
@@ -44,7 +44,7 @@ const LOCAL_STORAGE_DEFAULTS = Object.freeze({
 class DirectionTool extends Control {
     constructor(options = {}) {
         super({
-            element: TOOLBAR_ELEMENT
+            element: ElementManager.getToolbarElement()
         });
 
         const button = DOM.createElement({
@@ -116,9 +116,6 @@ class DirectionTool extends Control {
         this.toggleDirection();
 
         const active = this.getActiveDirection();
-
-        // This will trigger collision detection on the ToolboxElement (elements/ToolboxElement.js)
-        // It will also update the tooltip placement (core/Tooltips.js)
         window.dispatchEvent(new CustomEvent(EVENTS.Custom.ToolbarDirectionChange, {
             detail: {
                 direction: active.class
@@ -142,10 +139,12 @@ class DirectionTool extends Control {
         this.localStorage.direction = to.class;
         StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, this.localStorage);
 
-        TOOLBAR_ELEMENT.classList.remove(from.class);
+        const toolbarElement = ElementManager.getToolbarElement();
+        
+        toolbarElement.classList.remove(from.class);
         document.body.classList.remove(`oltb-${from.class}`);
 
-        TOOLBAR_ELEMENT.classList.add(to.class);
+        toolbarElement.classList.add(to.class);
         document.body.classList.add(`oltb-${to.class}`);
 
         // Update toolbar button

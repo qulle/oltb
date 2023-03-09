@@ -11,6 +11,7 @@ import { ToolManager } from '../core/managers/ToolManager';
 import { StateManager } from '../core/managers/StateManager';
 import { LayerManager } from '../core/managers/LayerManager';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
+import { ElementManager } from '../core/managers/ElementManager';
 import { SettingsManager } from '../core/managers/SettingsManager';
 import { eventDispatcher } from '../helpers/browser/EventDispatcher';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
@@ -21,7 +22,6 @@ import { LinearRing, Polygon } from 'ol/geom';
 import { isFeatureIntersectable } from '../helpers/IsFeatureIntersectable';
 import { Fill, Stroke, Circle, Style } from 'ol/style';
 import { createBox, createRegularPolygon } from 'ol/interaction/Draw';
-import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT } from '../core/elements/index';
 
 const FILENAME = 'tools/DrawTool.js';
 const ID_PREFIX = 'oltb-draw';
@@ -47,7 +47,7 @@ const LOCAL_STORAGE_DEFAULTS = Object.freeze({
 class DrawTool extends Control {
     constructor(options = {}) {
         super({
-            element: TOOLBAR_ELEMENT
+            element: ElementManager.getToolbarElement()
         });
         
         const icon = getIcon({
@@ -78,7 +78,8 @@ class DrawTool extends Control {
         const localStorageState = StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME);
         this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
 
-        TOOLBOX_ELEMENT.insertAdjacentHTML('beforeend', `
+        const toolboxElement = ElementManager.getToolboxElement();
+        toolboxElement.insertAdjacentHTML('beforeend', `
             <div id="${ID_PREFIX}-toolbox" class="oltb-toolbox-section">
                 <div class="oltb-toolbox-section__header">
                     <h4 class="oltb-toolbox-section__title oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">

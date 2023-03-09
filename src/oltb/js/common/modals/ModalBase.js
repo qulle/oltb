@@ -1,7 +1,7 @@
 import { DOM } from '../../helpers/browser/DOM';
 import { KEYS } from '../../helpers/constants/Keys';
 import { EVENTS } from '../../helpers/constants/Events';
-import { MAP_ELEMENT } from '../../core/elements/index';
+import { ElementManager } from '../../core/managers/ElementManager';
 import { SVG_PATHS, getIcon } from '../../core/icons/GetIcon';
 import { trapFocusKeyListener } from '../../helpers/browser/TrapFocus';
 
@@ -87,8 +87,10 @@ class ModalBase {
     }
 
     show(modalContent) {
+        const mapElement = ElementManager.getMapElement();
+
         this.modal.appendChild(modalContent);
-        MAP_ELEMENT.appendChild(this.backdrop);
+        mapElement.appendChild(this.backdrop);
         this.backdrop.focus();
     }
 

@@ -9,11 +9,11 @@ import { LayerManager } from '../core/managers/LayerManager';
 import { StateManager } from '../core/managers/StateManager';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { getRenderPixel } from 'ol/render';
+import { ElementManager } from '../core/managers/ElementManager';
 import { eventDispatcher } from '../helpers/browser/EventDispatcher';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
 import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 import { LOCAL_STORAGE_KEYS } from '../helpers/constants/LocalStorageKeys';
-import { TOOLBOX_ELEMENT, TOOLBAR_ELEMENT, MAP_ELEMENT } from '../core/elements/index';
 
 const FILENAME = 'tools/SplitViewTool.js';
 const RADIX = 10;
@@ -31,7 +31,7 @@ const LOCAL_STORAGE_DEFAULTS = Object.freeze({
 class SplitViewTool extends Control {
     constructor(options = {}) {
         super({
-            element: TOOLBAR_ELEMENT
+            element: ElementManager.getToolbarElement()
         });
         
         const icon = getIcon({
@@ -61,7 +61,9 @@ class SplitViewTool extends Control {
         const localStorageState = StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME);
         this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
 
-        TOOLBOX_ELEMENT.insertAdjacentHTML('beforeend', `
+        const mapElement = ElementManager.getMapElement();
+        const toolboxElement = ElementManager.getToolboxElement();
+        toolboxElement.insertAdjacentHTML('beforeend', `
             <div id="${ID_PREFIX}-toolbox" class="oltb-toolbox-section">
                 <div class="oltb-toolbox-section__header">
                     <h4 class="oltb-toolbox-section__title oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">
@@ -85,7 +87,7 @@ class SplitViewTool extends Control {
             </div>
         `);
 
-        MAP_ELEMENT.insertAdjacentHTML('beforeend', `
+        mapElement.insertAdjacentHTML('beforeend', `
             <input type="range" min="0" max="100" value="50" class="oltb-slider" id="${ID_PREFIX}-slider">
         `);
 
@@ -107,7 +109,7 @@ class SplitViewTool extends Control {
             this.swapSides();
         });
         
-        this.splitViewSlider = MAP_ELEMENT.querySelector(`#${ID_PREFIX}-slider`);
+        this.splitViewSlider = mapElement.querySelector(`#${ID_PREFIX}-slider`);
         this.splitViewSlider.addEventListener(EVENTS.Browser.Input, this.onSliderInput.bind(this));
 
         window.addEventListener(EVENTS.Custom.MapLayerAdded, this.onWindowMapLayerAdded.bind(this));

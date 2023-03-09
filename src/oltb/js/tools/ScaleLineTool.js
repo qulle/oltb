@@ -3,7 +3,7 @@ import { EVENTS } from '../helpers/constants/Events';
 import { LogManager } from '../core/managers/LogManager';
 import { StateManager } from '../core/managers/StateManager';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
-import { TOOLBAR_ELEMENT } from '../core/elements/index';
+import { ElementManager } from '../core/managers/ElementManager';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
 import { Control, ScaleLine } from 'ol/control';
 import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
@@ -23,7 +23,7 @@ const LOCAL_STORAGE_DEFAULTS = Object.freeze({
 class ScaleLineTool extends Control {
     constructor(options = {}) {
         super({
-            element: TOOLBAR_ELEMENT
+            element: ElementManager.getToolbarElement()
         });
         
         const icon = getIcon({

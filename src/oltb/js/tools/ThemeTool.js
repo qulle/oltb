@@ -5,7 +5,7 @@ import { LogManager } from '../core/managers/LogManager';
 import { isDarkTheme } from '../helpers/IsDarkTheme';
 import { StateManager } from '../core/managers/StateManager';
 import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
-import { TOOLBAR_ELEMENT } from '../core/elements/index';
+import { ElementManager } from '../core/managers/ElementManager';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
 import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 import { LOCAL_STORAGE_KEYS } from '../helpers/constants/LocalStorageKeys';
@@ -43,7 +43,7 @@ const LOCAL_STORAGE_DEFAULTS = Object.freeze({
 class ThemeTool extends Control {
     constructor(options = {}) {
         super({
-            element: TOOLBAR_ELEMENT
+            element: ElementManager.getToolbarElement()
         });
 
         const button = DOM.createElement({
@@ -121,10 +121,12 @@ class ThemeTool extends Control {
         this.localStorage.theme = to.class;
         StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, this.localStorage);
 
-        TOOLBAR_ELEMENT.classList.remove(from.class);
+        const toolbarElement = ElementManager.getToolbarElement();
+
+        toolbarElement.classList.remove(from.class);
         document.body.classList.remove(`oltb-${from.class}`);
 
-        TOOLBAR_ELEMENT.classList.add(to.class);
+        toolbarElement.classList.add(to.class);
         document.body.classList.add(`oltb-${to.class}`);
 
         // Update toolbar button

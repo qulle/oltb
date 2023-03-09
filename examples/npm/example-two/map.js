@@ -11,7 +11,6 @@ import { defaults as defaultInterctions, MouseWheelZoom, DragPan, DragRotate, Ke
 import '../shared/Maps';
 
 // Toolbar helpers
-import 'oltb/dist/src/oltb/js/core/Tooltips';
 import 'oltb/dist/src/oltb/js/helpers/browser/Prototypes';
 import 'oltb/dist/src/oltb/js/helpers/browser/SlideToggle';
 
@@ -20,7 +19,6 @@ import 'oltb/dist/src/oltb/scss/oltb.scss';
 import { CONFIG } from 'oltb/dist/src/oltb/js/core/Config';
 import { SETTINGS } from 'oltb/dist/src/oltb/js/helpers/constants/Settings';
 import { ContextMenu } from 'oltb/dist/src/oltb/js/common/ContextMenu';
-import { MAP_ELEMENT } from 'oltb/dist/src/oltb/js/core/elements/index';
 import { LOCAL_STORAGE_KEYS } from 'oltb/dist/src/oltb/js/helpers/constants/LocalStorageKeys';
 
 // Core Managers
@@ -29,11 +27,14 @@ import { UrlManager } from 'oltb/dist/src/oltb/js/core/managers/UrlManager';
 import { ToolManager } from 'oltb/dist/src/oltb/js/core/managers/ToolManager';
 import { LayerManager } from 'oltb/dist/src/oltb/js/core/managers/LayerManager';
 import { StateManager } from 'oltb/dist/src/oltb/js/core/managers/StateManager';
+import { TippyManager } from 'oltb/dist/src/oltb/js/core/managers/TippyManager';
+import { ElementManager } from '../../../src/oltb/js/core/managers/ElementManager';
 import { TooltipManager } from 'oltb/dist/src/oltb/js/core/managers/TooltipManager';
 import { SettingsManager } from 'oltb/dist/src/oltb/js/core/managers/SettingsManager';
 import { BootstrapManager } from 'oltb/dist/src/oltb/js/core/managers/BootstrapManager';
 import { InfoWindowManager } from 'oltb/dist/src/oltb/js/core/managers/InfoWindowManager';
 import { ProjectionManager } from 'oltb/dist/src/oltb/js/core/managers/ProjectionManager';
+import { ColorPickerManager } from 'oltb/dist/src/oltb/js/core/managers/ColorPickerManager';
 import { AccessibilityManager } from 'oltb/dist/src/oltb/js/core/managers/AccessibilityManager';
 
 // Toolbar tools
@@ -77,22 +78,26 @@ const LOCAL_STORAGE_DEFAULTS = Object.freeze({
     rotation: 0
 });
 
+// Note: The order of the collection is important
+BootstrapManager.init([
+    LogManager,
+    StateManager,
+    ElementManager,
+    ProjectionManager,
+    LayerManager,
+    TippyManager,
+    TooltipManager,
+    UrlManager,
+    ToolManager,
+    SettingsManager,
+    InfoWindowManager,
+    ColorPickerManager,
+    AccessibilityManager
+]);
+
 // Load stored data from localStorage
 const LOCAL_STORAGE_STATE = StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME);
 const LOCAL_STORAGE = { ...LOCAL_STORAGE_DEFAULTS, ...LOCAL_STORAGE_STATE };
-
-BootstrapManager.init([
-    LogManager,
-    UrlManager,
-    ToolManager,
-    LayerManager,
-    StateManager,
-    TooltipManager,
-    SettingsManager,
-    InfoWindowManager,
-    ProjectionManager,
-    AccessibilityManager
-]);
 
 const map = new Map({
     interactions: defaultInterctions({
@@ -487,15 +492,4 @@ const map = new Map({
     })
 });
 
-BootstrapManager.setMap(map, [
-    LogManager,
-    UrlManager,
-    ToolManager,
-    LayerManager,
-    StateManager,
-    TooltipManager,
-    SettingsManager,
-    InfoWindowManager,
-    ProjectionManager,
-    AccessibilityManager
-]);
+BootstrapManager.setMap(map);

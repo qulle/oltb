@@ -7,6 +7,12 @@ const CONFIG = Object.freeze({
         Version: VERSION
     }),
     Version: version,
+    Map: Object.freeze({
+        Id: 'map'
+    }),
+    Toolbar: Object.freeze({
+        Id: 'oltb'
+    }),
     Locale: 'en-us',
     TimeFormat: 'YYYY-MM-DD HH:mm:ss:SSS',
     ScrollDistance: 100,

@@ -11,7 +11,7 @@ import { toStringHDMS } from 'ol/coordinate';
 import { LayerManager } from '../../core/managers/LayerManager';
 import { StateManager } from '../../core/managers/StateManager';
 import { generateMarker } from '../../generators/GenerateMarker';
-import { TOOLBAR_ELEMENT } from '../../core/elements/index';
+import { ElementManager } from '../../core/managers/ElementManager';
 import { CoordinateModal } from '../modal-extensions/CoordinateModal';
 import { InfoWindowManager } from '../../core/managers/InfoWindowManager';
 import { ProjectionManager } from '../../core/managers/ProjectionManager';
@@ -50,7 +50,7 @@ const DEFAULT_URL_MARKER = Object.freeze({
 class HiddenMapNavigationTool extends Control {
     constructor(options = {}) {
         super({
-            element: TOOLBAR_ELEMENT
+            element: ElementManager.getToolbarElement()
         });
 
         this.options = { ...DEFAULT_OPTIONS, ...options };

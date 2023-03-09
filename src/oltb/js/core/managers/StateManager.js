@@ -4,10 +4,12 @@ import { LogManager } from './LogManager';
 const FILENAME = 'managers/StateManager.js';
 
 class StateManager {
-    static #runtimeState = this.#loadBrowserData();
+    static #runtimeState;
 
     static init() {
         LogManager.logDebug(FILENAME, 'init', 'Initializing started');
+
+        this.#runtimeState = this.#loadBrowserData();
     }
 
     static setMap(map) { }

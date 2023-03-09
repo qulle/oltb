@@ -33,7 +33,7 @@ class LayerManager {
     }
 
     static setMap(map) { 
-        LogManager.logDebug(FILENAME, 'init', `Handling map queues, adding ${
+        LogManager.logDebug(FILENAME, 'setMap', `Handling map queues, adding ${
             this.#queue.mapLayers.length
         } map-layers and ${
             this.#queue.featureLayers.length

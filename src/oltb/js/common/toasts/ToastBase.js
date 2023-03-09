@@ -1,7 +1,7 @@
 import { DOM } from '../../helpers/browser/DOM';
 import { CONFIG } from '../../core/Config';
 import { EVENTS } from '../../helpers/constants/Events';
-import { TOAST_ELEMENT } from '../../core/elements/index';
+import { ElementManager } from '../../core/managers/ElementManager';
 
 const FILENAME = 'toasts/ToastBase.js';
 const DEFAULT_OPTIONS = Object.freeze({
@@ -64,7 +64,8 @@ class ToastBase {
             container
         ]);
 
-        TOAST_ELEMENT.prepend(toast);
+        const toastElement = ElementManager.getToastElement();
+        toastElement.prepend(toast);
 
         if(Boolean(this.options.autoremove)) {
             window.setTimeout(() => {
