@@ -49,13 +49,15 @@ class DebugInfoModal extends ModalBase {
                 action: 'log.map.to.console'
             }
         ].forEach((item) => {
-            commandsCollection.appendChild(
-                DOM.createElement({
-                    element: 'option', 
-                    text: item.name, 
-                    value: item.action
-                }
-            ));
+            const option = DOM.createElement({
+                element: 'option', 
+                text: item.name, 
+                value: item.action
+            });
+
+            DOM.appendChildren(commandsCollection, [
+                option
+            ]);
         });
 
         const actionButton = DOM.createElement({

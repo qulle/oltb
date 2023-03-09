@@ -16,7 +16,9 @@ const generateTooltip = function(data = '') {
         class: 'oltb-overlay-tooltip__item'
     });
 
-    tooltip.appendChild(item);
+    DOM.appendChildren(tooltip, [
+        item
+    ]);
 
     const overlay = new Overlay({
         element: tooltip,

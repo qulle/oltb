@@ -44,7 +44,9 @@ class ScaleLineTool extends Control {
             }
         });
 
-        this.element.appendChild(button);
+        DOM.appendChildren(this.element, [
+            button
+        ]);
         this.button = button;
         this.active = false;
         this.options = { ...DEFAULT_OPTIONS, ...options };

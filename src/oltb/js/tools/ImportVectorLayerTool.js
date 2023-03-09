@@ -43,7 +43,9 @@ class ImportVectorLayerTool extends Control {
             }
         });
 
-        this.element.appendChild(button);
+        DOM.appendChildren(this.element, [
+            button
+        ]);
         this.fileReader = undefined;
         this.options = { ...DEFAULT_OPTIONS, ...options };
         

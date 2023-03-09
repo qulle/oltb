@@ -44,7 +44,9 @@ class SettingsTool extends Control {
             }
         });
 
-        this.element.appendChild(button);
+        DOM.appendChildren(this.element, [
+            button
+        ]);
         this.settingsModal = undefined;
         this.options = { ...DEFAULT_OPTIONS, ...options };
 

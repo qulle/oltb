@@ -46,7 +46,9 @@ class MagnifyTool extends Control {
             }
         });
 
-        this.element.appendChild(button);
+        DOM.appendChildren(this.element, [
+            button
+        ]);
         this.button = button;
         this.radius = 75;
         this.options = { ...DEFAULT_OPTIONS, ...options };

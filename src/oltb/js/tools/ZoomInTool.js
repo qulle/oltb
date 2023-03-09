@@ -40,7 +40,9 @@ class ZoomInTool extends Control {
             }
         });
 
-        this.element.appendChild(button);
+        DOM.appendChildren(this.element, [
+            button
+        ]);
         this.options = { ...DEFAULT_OPTIONS, ...options };
         this.delta = 1;
 

@@ -54,7 +54,9 @@ class MyLocationTool extends Control {
             }
         });
 
-        this.element.appendChild(button);
+        DOM.appendChildren(this.element, [
+            button
+        ]);
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
         window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));

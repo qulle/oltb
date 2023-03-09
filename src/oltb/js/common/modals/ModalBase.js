@@ -10,6 +10,11 @@ const ANIMATION_CLASS = 'oltb-animation--bounce';
 
 class ModalBase {
     constructor(title, maximized, onClose) {
+        this.#createModal(title, maximized, onClose);
+    }
+
+    #createModal(title, maximized, onClose) {
+        this.onClose = onClose;
         this.backdrop = DOM.createElement({
             element: 'div', 
             class: 'oltb-modal-backdrop oltb-modal-backdrop--fixed',
@@ -24,7 +29,9 @@ class ModalBase {
 
         this.modal = DOM.createElement({
             element: 'div', 
-            class: `oltb-modal ${maximized ? 'oltb-modal--maximized' : ''} oltb-animation oltb-animation--bounce`
+            class: `oltb-modal ${
+                maximized ? 'oltb-modal--maximized' : ''
+            } oltb-animation oltb-animation--bounce`
         });
 
         const modalHeader = DOM.createElement({
@@ -59,10 +66,13 @@ class ModalBase {
             modalClose
         ]);
 
-        this.backdrop.appendChild(this.modal);
-        this.modal.appendChild(modalHeader);
+        DOM.appendChildren(this.modal, [
+            modalHeader
+        ]);
 
-        this.onClose = onClose;
+        DOM.appendChildren(this.backdrop, [
+            this.modal
+        ]);
 
         window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
     }
@@ -87,10 +97,15 @@ class ModalBase {
     }
 
     show(modalContent) {
-        const mapElement = ElementManager.getMapElement();
+        DOM.appendChildren(this.modal, [
+            modalContent
+        ]);
 
-        this.modal.appendChild(modalContent);
-        mapElement.appendChild(this.backdrop);
+        const mapElement = ElementManager.getMapElement();
+        DOM.appendChildren(mapElement, [
+            this.backdrop
+        ]);
+
         this.backdrop.focus();
     }
 

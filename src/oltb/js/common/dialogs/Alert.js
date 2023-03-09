@@ -66,10 +66,15 @@ class Alert extends DialogBase {
             buttonWrapper
         ]);
 
-        const mapElement = ElementManager.getMapElement();
+        DOM.appendChildren(this.backdrop, [
+            dialog
+        ]);
 
-        this.backdrop.appendChild(dialog);
-        mapElement.appendChild(this.backdrop);
+        const mapElement = ElementManager.getMapElement();
+        DOM.appendChildren(mapElement, [
+            this.backdrop
+        ])
+
         this.backdrop.focus();
     }
 }

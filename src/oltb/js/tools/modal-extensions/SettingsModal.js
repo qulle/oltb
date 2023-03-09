@@ -68,7 +68,9 @@ class SettingsModal extends ModalBase {
                 label
             ]);
             
-            settingsFragment.appendChild(checkboxWrapper);
+            DOM.appendChildren(settingsFragment, [
+                checkboxWrapper
+            ]);
         });
 
         const buttonsWrapper = DOM.createElement({
@@ -100,7 +102,9 @@ class SettingsModal extends ModalBase {
         const cancelButton = DOM.createElement({
             element: 'button', 
             text: 'Cancel', 
-            class: `oltb-dialog__btn oltb-btn ${isDarkTheme() ? 'oltb-btn--gray-mid' : 'oltb-btn--gray-dark'}`,
+            class: `oltb-dialog__btn oltb-btn ${
+                isDarkTheme() ? 'oltb-btn--gray-mid' : 'oltb-btn--gray-dark'
+            }`,
             attributes: {
                 type: 'button'
             },

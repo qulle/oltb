@@ -1,5 +1,6 @@
 import { DOM } from '../../helpers/browser/DOM';
 import { DialogBase } from './DialogBase';
+import { isDarkTheme } from '../../helpers/IsDarkTheme';
 import { ElementManager } from '../../core/managers/ElementManager';
 
 const FILENAME = 'dialogs/Confirm.js';
@@ -62,7 +63,9 @@ class Confirm extends DialogBase {
         const cancelButton = DOM.createElement({
             element: 'button',
             text: this.options.cancelText,
-            class: `oltb-dialog__btn oltb-btn ${this.isDark ? 'oltb-btn--gray-mid' : 'oltb-btn--gray-dark'}`,
+            class: `oltb-dialog__btn oltb-btn ${
+                isDarkTheme() ? 'oltb-btn--gray-mid' : 'oltb-btn--gray-dark'
+            }`,
             attributes: {
                 type: 'button'
             },
@@ -85,10 +88,15 @@ class Confirm extends DialogBase {
             buttonWrapper
         ]);
 
-        const mapElement = ElementManager.getMapElement();
+        DOM.appendChildren(this.backdrop, [
+            dialog
+        ]);
 
-        this.backdrop.appendChild(dialog);
-        mapElement.appendChild(this.backdrop);
+        const mapElement = ElementManager.getMapElement();
+        DOM.appendChildren(mapElement, [
+            this.backdrop
+        ]);
+
         this.backdrop.focus();
     }
 }

@@ -52,7 +52,9 @@ class SplitViewTool extends Control {
             }
         });
 
-        this.element.appendChild(button);
+        DOM.appendChildren(this.element, [
+            button
+        ]);
         this.button = button;
         this.active = false;
         this.options = { ...DEFAULT_OPTIONS, ...options };
@@ -167,8 +169,13 @@ class SplitViewTool extends Control {
             value: layerWrapper.getId().toString()
         });
 
-        this.leftSideSrc.appendChild(leftOption);
-        this.rightSideSrc.appendChild(rightOption);
+        DOM.appendChildren(this.leftSideSrc, [
+            leftOption
+        ]);
+
+        DOM.appendChildren(this.rightSideSrc, [
+            rightOption
+        ]);
     }
 
     onWindowMapLayerRemoved(event) {

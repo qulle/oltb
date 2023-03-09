@@ -82,7 +82,7 @@ const LOCAL_STORAGE_DEFAULTS = Object.freeze({
     rotation: 0
 });
 
-// Note: The order of the collection is important
+// Note: The init order is important
 BootstrapManager.init([
     LogManager,
     StateManager,

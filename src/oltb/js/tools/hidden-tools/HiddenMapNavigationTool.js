@@ -216,7 +216,7 @@ class HiddenMapNavigationTool extends Control {
 
         this.coordinatesModal = new CoordinateModal({
             onNavigate: (coordinates) => {
-                this.goToView(map, coordinates, map.getView().getZoom());
+                goToView(map, coordinates, map.getView().getZoom());
             },
             onClose: () => {
                 this.coordinatesModal = undefined;
@@ -225,11 +225,11 @@ class HiddenMapNavigationTool extends Control {
     }
 
     onContextMenuCenterMap(map, coordinates, target) {
-        this.goToView(map, coordinates, map.getView().getZoom());
+        goToView(map, coordinates, map.getView().getZoom());
     }
 
     onContextMenuFocusHere(map, coordinates, target) {
-        this.goToView(map, coordinates, this.options.focusZoom);
+        goToView(map, coordinates, this.options.focusZoom);
     }
 
     onMoveEnd(event) {

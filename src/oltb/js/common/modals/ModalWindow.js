@@ -16,7 +16,10 @@ class ModalWindow extends ModalBase {
         );
 
         this.options = { ...DEFAULT_OPTIONS, ...options };
+        this.#createModal();
+    }
 
+    #createModal() {
         this.modalContent = DOM.createElement({
             element: 'div', 
             class: 'oltb-modal__content'
@@ -30,7 +33,9 @@ class ModalWindow extends ModalBase {
         if(typeof content === 'string') {
             this.modalContent.innerHTML = content;
         }else {
-            this.modalContent.appendChild(content);
+            DOM.appendChildren(this.modalContent, [
+                content
+            ]);
         }
     }
 }

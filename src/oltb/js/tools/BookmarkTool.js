@@ -71,7 +71,9 @@ class BookmarkTool extends Control {
             }
         });
 
-        this.element.appendChild(button);
+        DOM.appendChildren(this.element, [
+            button
+        ]);
         this.button = button;
         this.active = false;
         this.options = { ...DEFAULT_OPTIONS, ...options };
@@ -329,8 +331,13 @@ class BookmarkTool extends Control {
             class: 'oltb-toolbox-list__wrapper'
         });
 
-        leftButtonWrapper.appendChild(bookmarkName);
-        bookmarkElement.appendChild(leftButtonWrapper);
+        DOM.appendChildren(leftButtonWrapper, [
+            bookmarkName
+        ]);
+
+        DOM.appendChildren(bookmarkElement, [
+            leftButtonWrapper
+        ]);
 
         const rightButtonWrapper = DOM.createElement({
             element: 'div', 
@@ -392,7 +399,9 @@ class BookmarkTool extends Control {
             deleteButton
         ]);
         
-        bookmarkElement.appendChild(rightButtonWrapper);
+        DOM.appendChildren(bookmarkElement, [
+            rightButtonWrapper
+        ]);
 
         // Add the bookmark to the user interface
         this.bookmarkStack.prepend(bookmarkElement);

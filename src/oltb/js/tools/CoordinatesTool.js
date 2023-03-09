@@ -54,7 +54,9 @@ class CoordinatesTool extends Control {
             }
         });
 
-        this.element.appendChild(button);
+        DOM.appendChildren(this.element, [
+            button
+        ]);
         this.button = button;
         this.active = false;
         this.tooltipItem = undefined;

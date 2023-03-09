@@ -44,8 +44,10 @@ class ContextMenu extends Control {
         });
 
         const mapElement = ElementManager.getMapElement();
+        DOM.appendChildren(mapElement, [
+            this.menu
+        ]);
 
-        mapElement.appendChild(this.menu);
         mapElement.addEventListener(EVENTS.Browser.ContextMenu, this.show.bind(this));
         mapElement.addEventListener(EVENTS.Browser.Click, this.hide.bind(this));
     }
@@ -57,7 +59,9 @@ class ContextMenu extends Control {
                 class: 'oltb-context-menu__divider'
             });
 
-            this.menu.appendChild(li);
+            DOM.appendChildren(this.menu, [
+                li
+            ]);
         }else {
             const li = DOM.createElement({
                 element: 'li',
@@ -80,13 +84,17 @@ class ContextMenu extends Control {
                 }
             });
             
-            li.prepend(DOM.createElement({
+            const span = DOM.createElement({
                 element: 'span',
                 html: item.icon,
                 class: 'oltb-context-menu__icon'
-            }));
+            });
 
-            this.menu.appendChild(li);
+            li.prepend(span);
+
+            DOM.appendChildren(this.menu, [
+                li
+            ]);
         }
     }
 

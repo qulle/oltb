@@ -414,8 +414,8 @@ controls: defaultControls({
         focusZoom: 10
     }),
     new HomeTool({
-        lon: 18.0685,
-        lat: 59.3293,
+        lon: 18.1201,
+        lat: 35.3518,
         zoom: 3,
         click: function() {
             console.log('HomeTool click');
@@ -795,6 +795,22 @@ A marker can be created by providing the `oltb-marker` object as the GET paramet
 ```
 
 Test the marker above using the <a href='https://qulle.github.io/oltb/?oltb-marker={"title":"Marker Title","description":"Information about the maker","icon":"ExclamationTriangle.Filled","backgroundColor":"EB4542FF","color":"FFFFFFFF","layerName":"URL Marker","projection":"EPSG:4326","lon":18.0685,"lat":59.3293,"zoom":8}' target="_blank">demo page</a>.
+
+The JSON object has the following structure.
+```json
+{
+    "title": "Marker Title",
+    "description": "Information about the maker",
+    "icon": "ExclamationTriangle.Filled",
+    "backgroundColor": "EB4542FF",
+    "color": "FFFFFFFF",
+    "layerName": "URL Marker",
+    "projection": "EPSG:4326",
+    "lon": 18.0685,
+    "lat": 59.3293,
+    "zoom": 8
+}
+```
 
 ### Dialogs
 To use the custom dialogs in the map, include the following module. All the dialogs uses trap focus and circles the tab-key to always stay in the opened dialog.

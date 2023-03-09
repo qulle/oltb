@@ -86,7 +86,9 @@ class LayerTool extends Control {
             }
         });
 
-        this.element.appendChild(button);
+        DOM.appendChildren(this.element, [
+            button
+        ]);
         this.button = button;
         this.active = false;
         this.options = { ...DEFAULT_OPTIONS, ...options };
@@ -482,8 +484,13 @@ class LayerTool extends Control {
             class: 'oltb-toolbox-list__wrapper' 
         });
 
-        leftButtonWrapper.appendChild(layerName);
-        layerElement.appendChild(leftButtonWrapper);
+        DOM.appendChildren(leftButtonWrapper, [
+            layerName
+        ]);
+
+        DOM.appendChildren(layerElement, [
+            leftButtonWrapper
+        ]);
 
         const rightButtonWrapper = DOM.createElement({
             element: 'div',
@@ -492,15 +499,21 @@ class LayerTool extends Control {
 
         // Add all buttons to the layer
         for(const name in options.buttons) {
-            rightButtonWrapper.appendChild(options.buttons[name].function.call(
+            const button = options.buttons[name].function.call(
                 this,
                 layerWrapper,
                 options.buttons[name].callback,
                 layerName
-            ));
+            );
+
+            DOM.appendChildren(rightButtonWrapper, [
+                button
+            ]);
         }
 
-        layerElement.appendChild(rightButtonWrapper);
+        DOM.appendChildren(layerElement, [
+            rightButtonWrapper
+        ]);
 
         // Add the created layer item to the user interface
         options.target.prepend(layerElement);

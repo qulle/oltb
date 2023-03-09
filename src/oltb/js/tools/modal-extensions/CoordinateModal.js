@@ -12,8 +12,6 @@ const DEFAULT_OPTIONS = Object.freeze({
 });
 
 class CoordinateModal extends ModalBase {
-    #state = new Map();
-
     constructor(options = {}) {
         super('Coordinates', options.maximized, options.onClose);
         
@@ -27,14 +25,14 @@ class CoordinateModal extends ModalBase {
             class: 'oltb-mt-0625'
         });
 
-        latWrapper.appendChild(DOM.createElement({
+        const latLabel = DOM.createElement({
             element: 'label', 
             text: 'Latitud',
             class: 'oltb-label', 
             attributes: {
                 for: `${ID_PREFIX}-lat`
             }
-        }));
+        });
 
         const latText = DOM.createElement({
             element: 'input',
@@ -47,21 +45,24 @@ class CoordinateModal extends ModalBase {
             }
         });
 
-        latWrapper.appendChild(latText);
+        DOM.appendChildren(latWrapper, [
+            latLabel,
+            latText
+        ]);
 
         const lonWrapper = DOM.createElement({
             element: 'div',
             class: 'oltb-mt-0625'
         });
 
-        lonWrapper.appendChild(DOM.createElement({
+        const lonLabel = DOM.createElement({
             element: 'label', 
             text: 'Longitud', 
             class: 'oltb-label',
             attributes: {
                 for: `${ID_PREFIX}-lon`
             }
-        }));
+        });
 
         const lonText = DOM.createElement({
             element: 'input',
@@ -74,7 +75,10 @@ class CoordinateModal extends ModalBase {
             }
         });
 
-        lonWrapper.appendChild(lonText);
+        DOM.appendChildren(lonWrapper, [
+            lonLabel,
+            lonText
+        ]);
         
         const buttonsWrapper = DOM.createElement({
             element: 'div',
@@ -102,7 +106,9 @@ class CoordinateModal extends ModalBase {
         const cancelButton = DOM.createElement({
             element: 'button', 
             text: 'Cancel', 
-            class: `oltb-dialog__btn oltb-btn ${isDarkTheme() ? 'oltb-btn--gray-mid' : 'oltb-btn--gray-dark'}`,
+            class: `oltb-dialog__btn oltb-btn ${
+                isDarkTheme() ? 'oltb-btn--gray-mid' : 'oltb-btn--gray-dark'
+            }`,
             attributes: {
                 type: 'button'
             },

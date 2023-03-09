@@ -25,14 +25,14 @@ class DownloadLayerModal extends ModalBase {
             class: 'oltb-mt-0625'
         });
 
-        formatWrapper.appendChild(DOM.createElement({
+        const formatLabel = DOM.createElement({
             element: 'label', 
             text: 'Layer format',
             class: 'oltb-label', 
             attributes: {
                 for: `${PREFIX_LAYER_ID}-layer-wrapx`
             }
-        }));
+        });
 
         const formatSelect = DOM.createElement({
             element: 'select',
@@ -44,16 +44,21 @@ class DownloadLayerModal extends ModalBase {
             'GeoJSON', 
             'KML'
         ].forEach((item) => {
-            formatSelect.appendChild(
-                DOM.createElement({
-                    element: 'option', 
-                    text: item, 
-                    value: item
-                }
-            ));
+            const option = DOM.createElement({
+                element: 'option', 
+                text: item, 
+                value: item
+            });
+
+            DOM.appendChildren(formatSelect, [
+                option
+            ]);
         });
 
-        formatWrapper.appendChild(formatSelect);
+        DOM.appendChildren(formatWrapper, [
+            formatLabel,
+            formatSelect
+        ]);
 
         const buttonsWrapper = DOM.createElement({
             element: 'div',
@@ -82,7 +87,9 @@ class DownloadLayerModal extends ModalBase {
         const cancelButton = DOM.createElement({
             element: 'button', 
             text: 'Cancel', 
-            class: `oltb-dialog__btn oltb-btn ${isDarkTheme() ? 'oltb-btn--gray-mid' : 'oltb-btn--gray-dark'}`,
+            class: `oltb-dialog__btn oltb-btn ${
+                isDarkTheme() ? 'oltb-btn--gray-mid' : 'oltb-btn--gray-dark'
+            }`,
             attributes: {
                 type: 'button'
             },

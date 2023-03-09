@@ -16,17 +16,18 @@ const DEFAULT_OPTIONS = Object.freeze({
 class ToastBase {
     constructor(options = {}) {
         this.options = { ...DEFAULT_OPTIONS, ...options };
+        this.#createToast();
+    }
 
-        const toast = DOM.createElement({
+    #createToast() {
+        this.toast = DOM.createElement({
             element: 'div',
             class: `oltb-toast oltb-toast--${this.options.type} oltb-animation oltb-animation--slide-in oltb-d-flex` 
         });
-
-        this.toast = toast;
         
         if(Boolean(this.options.clickToRemove)) {
-            toast.classList.add('oltb-toast--clickable');
-            toast.addEventListener(EVENTS.Browser.Click, this.remove.bind(this));
+            this.toast.classList.add('oltb-toast--clickable');
+            this.toast.addEventListener(EVENTS.Browser.Click, this.remove.bind(this));
         }
 
         if(Boolean(this.options.spinner)) {
@@ -35,7 +36,9 @@ class ToastBase {
                 class: 'oltb-spinner oltb-spinner--small oltb-animation oltb-animation--linear-spinner'
             });
             
-            toast.appendChild(spinnerElement);
+            DOM.appendChildren(this.toast, [
+                spinnerElement
+            ]);
         }
 
         const container = DOM.createElement({
@@ -60,12 +63,12 @@ class ToastBase {
             message
         ]);
         
-        DOM.appendChildren(toast, [
+        DOM.appendChildren(this.toast, [
             container
         ]);
 
         const toastElement = ElementManager.getToastElement();
-        toastElement.prepend(toast);
+        toastElement.prepend(this.toast);
 
         if(Boolean(this.options.autoremove)) {
             window.setTimeout(() => {

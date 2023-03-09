@@ -275,7 +275,9 @@ class MarkerModal extends ModalBase {
         const cancelButton = DOM.createElement({
             element: 'button', 
             text: 'Cancel',
-            class: `oltb-dialog__btn oltb-btn ${isDarkTheme() ? 'oltb-btn--gray-mid' : 'oltb-btn--gray-dark'}`,
+            class: `oltb-dialog__btn oltb-btn ${
+                isDarkTheme() ? 'oltb-btn--gray-mid' : 'oltb-btn--gray-dark'
+            }`,
             attributes: {
                 type: 'button'
             },

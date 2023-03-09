@@ -45,7 +45,9 @@ class ExportPngTool extends Control {
             }
         });
 
-        this.element.appendChild(button);
+        DOM.appendChildren(this.element, [
+            button
+        ]);
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
         // If the tool should activate detailed logging in the html2canvas process (?debug=true)

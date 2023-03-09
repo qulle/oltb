@@ -79,7 +79,7 @@ class OLTB {
     generateWindBarb = generateWindBarb;
 
     constructor(options = {}) {
-        // Note: The order of the collection is important
+        // Note: The init order is important
         BootstrapManager.init([
             LogManager,
             StateManager,

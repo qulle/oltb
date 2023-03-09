@@ -50,7 +50,9 @@ class ElementManager {
             }
         });
         
-        this.#mapElement.appendChild(element);
+        DOM.appendChildren(this.#mapElement, [
+            element
+        ]);
 
         return element;
     }
@@ -109,7 +111,9 @@ class ElementManager {
             }
         });
         
-        this.#mapElement.appendChild(element);
+        DOM.appendChildren(this.#mapElement, [
+            element
+        ]);
 
         return element;
     }
