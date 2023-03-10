@@ -8,7 +8,6 @@ class StateManager {
 
     static init() {
         LogManager.logDebug(FILENAME, 'init', 'Initializing started');
-
         this.#runtimeState = this.#loadBrowserData();
     }
 

@@ -84,13 +84,13 @@ class ContextMenu extends Control {
                 }
             });
             
-            const span = DOM.createElement({
+            const icon = DOM.createElement({
                 element: 'span',
                 html: item.icon,
                 class: 'oltb-context-menu__icon'
             });
 
-            li.prepend(span);
+            li.prepend(icon);
 
             DOM.appendChildren(this.menu, [
                 li

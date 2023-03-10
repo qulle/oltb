@@ -22,7 +22,9 @@ class ToastBase {
     #createToast() {
         this.toast = DOM.createElement({
             element: 'div',
-            class: `oltb-toast oltb-toast--${this.options.type} oltb-animation oltb-animation--slide-in oltb-d-flex` 
+            class: `oltb-toast oltb-toast--${
+                this.options.type
+            } oltb-animation oltb-animation--slide-in oltb-d-flex` 
         });
         
         if(Boolean(this.options.clickToRemove)) {

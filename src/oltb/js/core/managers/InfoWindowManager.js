@@ -26,12 +26,19 @@ class InfoWindowManager {
     static #lastFeature;
 
     static init() {
-        if(Boolean(this.#map)) {
-            return;
-        }
-
         LogManager.logDebug(FILENAME, 'init', 'Initializing started');
+        this.#createInfoWindow();
+    }
 
+    static setMap(map) {
+        this.#map = map;
+
+        this.#map.addOverlay(this.#overlay);
+        this.#map.on(EVENTS.OpenLayers.SingleClick, this.onSingleClick.bind(this));
+        this.#map.on(EVENTS.OpenLayers.PointerMove, this.onPointerMove.bind(this));
+    }
+
+    static #createInfoWindow() {
         // Create infoWindow
         this.#infoWindow = DOM.createElement({
             element: 'div',
@@ -101,14 +108,6 @@ class InfoWindowManager {
                 duration: CONFIG.AnimationDuration.Normal
             }
         });
-    }
-
-    static setMap(map) {
-        this.#map = map;
-
-        this.#map.addOverlay(this.#overlay);
-        this.#map.on(EVENTS.OpenLayers.SingleClick, this.onSingleClick.bind(this));
-        this.#map.on(EVENTS.OpenLayers.PointerMove, this.onPointerMove.bind(this));
     }
 
     static onSingleClick(event) {

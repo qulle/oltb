@@ -22,7 +22,7 @@ const DIRECTION_DATA = Object.freeze({
         class: 'col',
         tippyContent: 'Vertical toolbar',
         icon: getIcon({
-            path: SVG_PATHS.SymmetryVertical.Stroked,
+            path: SVG_PATHS.SymmetryVertical.Mixed,
             class: 'oltb-tool-button__icon'
         })
     }),
@@ -30,7 +30,7 @@ const DIRECTION_DATA = Object.freeze({
         class: 'row',
         tippyContent: 'Horizontal toolbar',
         icon: getIcon({
-            path: SVG_PATHS.SymmetryHorizontal.Stroked,
+            path: SVG_PATHS.SymmetryHorizontal.Mixed,
             class: 'oltb-tool-button__icon'
         })
     })

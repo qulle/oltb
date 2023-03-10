@@ -26,14 +26,14 @@ class LayerModal extends ModalBase {
             class: 'oltb-m-0'
         });
 
-        nameWrapper.appendChild(DOM.createElement({
+        const nameLabel = DOM.createElement({
             element: 'label', 
             text: 'Name',
             class: 'oltb-label', 
             attributes: {
                 for: `${PREFIX_LAYER_ID}-layer-name`
             }
-        }));
+        });
 
         const nameText = DOM.createElement({
             element: 'input', 
@@ -45,21 +45,24 @@ class LayerModal extends ModalBase {
             }
         });
 
-        nameWrapper.appendChild(nameText);
+        DOM.appendChildren(nameWrapper, [
+            nameLabel,
+            nameText
+        ]);
 
         const typeWrapper = DOM.createElement({
             element: 'div',
             class: 'oltb-mt-0625'
         });
 
-        typeWrapper.appendChild(DOM.createElement({
+        const typeLabel = DOM.createElement({
             element: 'label', 
             text: 'Layer',
             class: 'oltb-label', 
             attributes: {
                 for: `${PREFIX_LAYER_ID}-layer-type`
             }
-        }));
+        });
 
         const typeSelect = DOM.createElement({
             element: 'select', 
@@ -71,30 +74,35 @@ class LayerModal extends ModalBase {
             'Tile', 
             'Vector'
         ].forEach((type) => {
-            typeSelect.appendChild(
-                DOM.createElement({
-                    element: 'option', 
-                    text: type, 
-                    value: type
-                }
-            ));
+            const option = DOM.createElement({
+                element: 'option', 
+                text: type, 
+                value: type
+            });
+
+            DOM.appendChildren(typeSelect, [
+                option
+            ]);
         });
 
-        typeWrapper.appendChild(typeSelect);
+        DOM.appendChildren(typeWrapper, [
+            typeLabel,
+            typeSelect
+        ]);
 
         const sourceWrapper = DOM.createElement({
             element: 'div',
             class: 'oltb-mt-0625' 
         });
 
-        sourceWrapper.appendChild(DOM.createElement({
+        const sourceLabel = DOM.createElement({
             element: 'label', 
             text: 'Source',
             class: 'oltb-label', 
             attributes: {
                 for: `${PREFIX_LAYER_ID}-layer-source`
             }
-        }));
+        });
 
         const sourceSelect = DOM.createElement({
             element: 'select', 
@@ -108,30 +116,35 @@ class LayerModal extends ModalBase {
             'OSM', 
             'Vector'
         ].forEach((type) => {
-            sourceSelect.appendChild(
-                DOM.createElement({
-                    element: 'option', 
-                    text: type, 
-                    value: type
-                }
-            ));
+            const option = DOM.createElement({
+                element: 'option', 
+                text: type, 
+                value: type
+            });
+
+            DOM.appendChildren(sourceSelect, [
+                option
+            ]);
         });
 
-        sourceWrapper.appendChild(sourceSelect);
+        DOM.appendChildren(sourceWrapper, [
+            sourceLabel,
+            sourceSelect
+        ]);
 
         const projectionWrapper = DOM.createElement({
             element: 'div',
             class: 'oltb-mt-0625' 
         });
 
-        projectionWrapper.appendChild(DOM.createElement({
+        const projectionLabel = DOM.createElement({
             element: 'label', 
             text: 'Projection',
             class: 'oltb-label', 
             attributes: {
                 for: `${PREFIX_LAYER_ID}-layer-projection`
             }
-        }));
+        });
 
         const projectionText = DOM.createElement({
             element: 'input', 
@@ -143,21 +156,24 @@ class LayerModal extends ModalBase {
             }
         });
 
-        projectionWrapper.appendChild(projectionText);
+        DOM.appendChildren(projectionWrapper, [
+            projectionLabel,
+            projectionText
+        ]);
 
         const urlWrapper = DOM.createElement({
             element: 'div',
             class: 'oltb-mt-0625'
         });
 
-        urlWrapper.appendChild(DOM.createElement({
+        const urlLabel = DOM.createElement({
             element: 'label', 
             text: 'URL', 
             class: 'oltb-label',
             attributes: {
                 for: `${PREFIX_LAYER_ID}-layer-url`
             }
-        }));
+        });
 
         const urlText = DOM.createElement({
             element: 'input',
@@ -168,21 +184,24 @@ class LayerModal extends ModalBase {
             }
         });
 
-        urlWrapper.appendChild(urlText);
+        DOM.appendChildren(urlWrapper, [
+            urlLabel,
+            urlText
+        ]);
 
         const parametersWrapper = DOM.createElement({
             element: 'div',
             class: 'oltb-mt-0625'
         });
 
-        parametersWrapper.appendChild(DOM.createElement({
+        const parametersLabel = DOM.createElement({
             element: 'label', 
             text: 'Parameters (JSON)', 
             class: 'oltb-label',
             attributes: {
                 for: `${PREFIX_LAYER_ID}-layer-parameters`
             }
-        }));
+        });
 
         const parametersText = DOM.createElement({
             element: 'input', 
@@ -194,21 +213,24 @@ class LayerModal extends ModalBase {
             }
         });
 
-        parametersWrapper.appendChild(parametersText);
+        DOM.appendChildren(parametersWrapper, [
+            parametersLabel,
+            parametersText
+        ]);
 
         const wrapXWrapper = DOM.createElement({
             element: 'div',
             class: 'oltb-mt-0625'
         });
 
-        wrapXWrapper.appendChild(DOM.createElement({
+        const wrapXLabel = DOM.createElement({
             element: 'label', 
             text: 'WrapX',
             class: 'oltb-label', 
             attributes: {
                 for: `${PREFIX_LAYER_ID}-layer-wrapx`
             }
-        }));
+        });
 
         const wrapXSelect = DOM.createElement({
             element: 'select',
@@ -220,30 +242,35 @@ class LayerModal extends ModalBase {
             'False', 
             'True'
         ].forEach((item) => {
-            wrapXSelect.appendChild(
-                DOM.createElement({
-                    element: 'option', 
-                    text: item, 
-                    value: item
-                }
-            ));
+            const option = DOM.createElement({
+                element: 'option', 
+                text: item, 
+                value: item
+            });
+
+            DOM.appendChildren(wrapXSelect, [
+                option
+            ]);
         });
 
-        wrapXWrapper.appendChild(wrapXSelect);
+        DOM.appendChildren(wrapXWrapper, [
+            wrapXLabel,
+            wrapXSelect
+        ]);
 
         const attributionsWrapper = DOM.createElement({
             element: 'div',
             class: 'oltb-mt-0625'
         });
 
-        attributionsWrapper.appendChild(DOM.createElement({
+        const attributionsLabel = DOM.createElement({
             element: 'label', 
             text: 'Attributions', 
             class: 'oltb-label',
             attributes: {
                 for: `${PREFIX_LAYER_ID}-layer-attributions`
             }
-        }));
+        });
 
         const attributionsText = DOM.createElement({
             element: 'input',
@@ -254,7 +281,10 @@ class LayerModal extends ModalBase {
             }
         });
 
-        attributionsWrapper.appendChild(attributionsText);
+        DOM.appendChildren(attributionsWrapper, [
+            attributionsLabel,
+            attributionsText
+        ]);
 
         const buttonsWrapper = DOM.createElement({
             element: 'div',

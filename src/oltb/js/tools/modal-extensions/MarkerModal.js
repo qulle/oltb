@@ -33,14 +33,14 @@ class MarkerModal extends ModalBase {
             class: 'oltb-m-0'
         });
 
-        titleWrapper.appendChild(DOM.createElement({
+        const titleLabel = DOM.createElement({
             element: 'label', 
             text: 'Title',
             class: 'oltb-label', 
             attributes: {
                 for: `${ID_PREFIX}-title`
             }
-        }));
+        });
 
         const titleText = DOM.createElement({
             element: 'input', 
@@ -52,21 +52,24 @@ class MarkerModal extends ModalBase {
             }
         });
 
-        titleWrapper.appendChild(titleText);
+        DOM.appendChildren(titleWrapper, [
+            titleLabel,
+            titleText
+        ]);
 
         const descriptionWrapper = DOM.createElement({
             element: 'div',
             class: 'oltb-mt-0625'
         });
 
-        descriptionWrapper.appendChild(DOM.createElement({
+        const descriptionLabel = DOM.createElement({
             element: 'label', 
             text: 'Description',
             class: 'oltb-label', 
             attributes: {
                 for: `${ID_PREFIX}-description`
             }
-        }));
+        });
 
         const descriptionText = DOM.createElement({
             element: 'input', 
@@ -79,21 +82,24 @@ class MarkerModal extends ModalBase {
             }
         });
 
-        descriptionWrapper.appendChild(descriptionText);
+        DOM.appendChildren(descriptionWrapper, [
+            descriptionLabel,
+            descriptionText
+        ]);
 
         const iconWrapper = DOM.createElement({
             element: 'div',
             class: 'oltb-mt-0625'
         });
 
-        iconWrapper.appendChild(DOM.createElement({
+        const iconLabel = DOM.createElement({
             element: 'label', 
             text: 'Icon',
             class: 'oltb-label', 
             attributes: {
                 for: `${ID_PREFIX}-icon`
             }
-        }));
+        });
 
         const iconSelect = DOM.createElement({
             element: 'select',
@@ -103,40 +109,39 @@ class MarkerModal extends ModalBase {
  
         for(const path in SVG_PATHS) {
             for(const version in SVG_PATHS[path]) {
-                iconSelect.appendChild(
-                    DOM.createElement({
-                        element: 'option', 
-                        text: `${path} (${version})`, 
-                        value: `${path}.${version}`
-                    }
-                ));
+                const option = DOM.createElement({
+                    element: 'option', 
+                    text: `${path} (${version})`, 
+                    value: `${path}.${version}`
+                });
+
+                DOM.appendChildren(iconSelect, [
+                    option
+                ]);
             }
         }
 
-        // Select the GeoPin icon as default
-        const targetIcon = this.options.icon;
-        for(var i = 0; i < iconSelect.length; i++) {
-            if(iconSelect[i].value === targetIcon) {
-                iconSelect.selectedIndex = i;
-                break;
-            }
-        }
- 
-        iconWrapper.appendChild(iconSelect);
+        // Select the correct icon, fall back on GeoPin as default icon
+        iconSelect.value = this.options.icon;
+
+        DOM.appendChildren(iconWrapper, [
+            iconLabel,
+            iconSelect
+        ]);
 
         const latWrapper = DOM.createElement({
             element: 'div',
             class: 'oltb-mt-0625'
         });
 
-        latWrapper.appendChild(DOM.createElement({
+        const latLabel = DOM.createElement({
             element: 'label', 
             text: 'Latitud',
             class: 'oltb-label', 
             attributes: {
                 for: `${ID_PREFIX}-lat`
             }
-        }));
+        });
 
         const latText = DOM.createElement({
             element: 'input',
@@ -148,21 +153,24 @@ class MarkerModal extends ModalBase {
             }
         });
 
-        latWrapper.appendChild(latText);
+        DOM.appendChildren(latWrapper, [
+            latLabel,
+            latText
+        ]);
 
         const lonWrapper = DOM.createElement({
             element: 'div',
             class: 'oltb-mt-0625'
         });
 
-        lonWrapper.appendChild(DOM.createElement({
+        const lonLabel = DOM.createElement({
             element: 'label', 
             text: 'Longitud', 
             class: 'oltb-label',
             attributes: {
                 for: `${ID_PREFIX}-lon`
             }
-        }));
+        });
 
         const lonText = DOM.createElement({
             element: 'input',
@@ -174,21 +182,24 @@ class MarkerModal extends ModalBase {
             }
         });
 
-        lonWrapper.appendChild(lonText);
+        DOM.appendChildren(lonWrapper, [
+            lonLabel,
+            lonText
+        ]);
 
         const backgroundColorWrapper = DOM.createElement({
             element: 'div',
             class: 'oltb-mt-0625'
         });
 
-        backgroundColorWrapper.appendChild(DOM.createElement({
+        const backgroundLabel = DOM.createElement({
             element: 'label', 
             text: 'Background color',
             class: 'oltb-label', 
             attributes: {
                 for: `${ID_PREFIX}-background`
             }
-        }));
+        });
 
         const backgroundColorInput = DOM.createElement({
             element: 'div',
@@ -201,27 +212,34 @@ class MarkerModal extends ModalBase {
             }
         });
 
-        backgroundColorInput.appendChild(DOM.createElement({
+        const backgroundColorInputInner = DOM.createElement({
             element: 'div',
             style: `background-color: ${this.options.backgroundColor}`,
             class: 'oltb-color-input__inner'
-        }));
+        });
 
-        backgroundColorWrapper.appendChild(backgroundColorInput);
+        DOM.appendChildren(backgroundColorInput, [
+            backgroundColorInputInner
+        ]);
+
+        DOM.appendChildren(backgroundColorWrapper, [
+            backgroundLabel,
+            backgroundColorInput
+        ]);
 
         const colorWrapper = DOM.createElement({
             element: 'div',
             class: 'oltb-mt-0625' 
         });
 
-        colorWrapper.appendChild(DOM.createElement({
+        const colorLabel = DOM.createElement({
             element: 'label', 
             text: 'Color',
             class: 'oltb-label', 
             attributes: {
                 for: `${ID_PREFIX}-color`
             }
-        }));
+        });
 
         const colorInput = DOM.createElement({
             element: 'div',
@@ -234,13 +252,20 @@ class MarkerModal extends ModalBase {
             }
         });
 
-        colorInput.appendChild(DOM.createElement({
+        const colorInputInner = DOM.createElement({
             element: 'div',
             style: `background-color: ${this.options.color}`,
             class: 'oltb-color-input__inner'
-        }));
+        });
 
-        colorWrapper.appendChild(colorInput);
+        DOM.appendChildren(colorInput, [
+            colorInputInner
+        ]);
+
+        DOM.appendChildren(colorWrapper, [
+            colorLabel,
+            colorInput
+        ]);
 
         const buttonsWrapper = DOM.createElement({
             element: 'div',

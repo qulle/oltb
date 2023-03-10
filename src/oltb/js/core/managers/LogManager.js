@@ -40,7 +40,6 @@ class LogManager {
 
     static init() {
         LogManager.logDebug(FILENAME, 'init', 'Initializing started');
-        
         this.#isDebug = UrlManager.getParameter('debug') === 'true';
     }
 

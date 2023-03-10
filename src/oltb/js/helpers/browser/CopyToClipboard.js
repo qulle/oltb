@@ -12,6 +12,7 @@ const copyToClipboard = async function(text = '') {
                 message: 'Error copying data',
                 error: error
             });
+            
             return false;
         });
 }

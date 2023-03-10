@@ -568,16 +568,16 @@ class LayerTool extends Control {
                             }
             
                             const features = layerWrapper.getLayer().getSource().getFeatures();
-                            const formatString = format.writeFeatures(features, {
+                            const content = format.writeFeatures(features, {
                                 featureProjection: CONFIG.Projection.Default
                             });
                         
-                            const fileName = `${layerWrapper.getName()}.${result.format.toLowerCase()}`;
-                            download(fileName, formatString);
+                            const filename = `${layerWrapper.getName()}.${result.format.toLowerCase()}`;
+                            download(filename, content);
             
                             // User defined callback from constructor
                             if(typeof callback === 'function') {
-                                callback(layerWrapper);
+                                callback(layerWrapper, filename, content);
                             }
                         }
                     });

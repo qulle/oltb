@@ -20,7 +20,6 @@ class HiddenAboutTool extends Control {
         this.aboutInfoModal = undefined;
 
         ContextMenu.addItem({});
-        
         ContextMenu.addItem({
             icon: icon, 
             name: 'About OLTB', 

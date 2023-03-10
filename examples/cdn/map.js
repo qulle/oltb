@@ -113,8 +113,8 @@ const toolbar = new oltb({
             click: function() {
                 console.log('ExportPngTool clicked');
             },
-            exported: function() {
-                console.log('Map exported as png');
+            exported: function(filename, content) {
+                console.log('Map exported as png', filename, content);
             },
             error: function(error) {
                 console.log('Error exporting png', error);
@@ -249,8 +249,8 @@ const toolbar = new oltb({
             featureLayerVisibilityChanged: function(layerWrapper) {
                 console.log('Feature layer visibility change', layerWrapper);
             },
-            featureLayerDownloaded: function(layerWrapper) {
-                console.log('Feature layer downloaded', layerWrapper);
+            featureLayerDownloaded: function(layerWrapper, filename, content) {
+                console.log('Feature layer downloaded', layerWrapper, filename, content);
             }
         },
         SplitViewTool: {

@@ -25,10 +25,6 @@ class LayerManager {
     };
 
     static init() {
-        if(Boolean(this.#map)) {
-            return;
-        }
-
         LogManager.logDebug(FILENAME, 'init', 'Initializing started');
     }
 

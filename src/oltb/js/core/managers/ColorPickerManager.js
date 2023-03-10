@@ -48,7 +48,7 @@ class ColorPickerManager {
         const selector = instance.reference.getAttribute('data-oltb-color-target');
         const target = document.querySelector(selector);
     
-        instance.setContent(colorPickerElement);
+        instance.setContent(this.#colorPickerElement);
     
         this.#colorPicker.setColor(instance.reference.getAttribute('data-oltb-color'));
         this.#colorPicker.on(EVENTS.Browser.Change, (picker, color) => {

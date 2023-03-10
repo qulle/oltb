@@ -161,15 +161,20 @@ class ExportPngTool extends Control {
             ? `-${new Date().toLocaleString(CONFIG.Locale)}`
             : '';
 
+        const filename = `${this.options.filename}${timestamp}.png`;
+        const content = Boolean(navigator.msSaveBlob)
+            ? pngCanvas.msToBlob()
+            : pngCanvas.toDataURL();
+
         if(Boolean(navigator.msSaveBlob)) {
-            navigator.msSaveBlob(pngCanvas.msToBlob(), `${this.options.filename}${timestamp}.png`);
+            navigator.msSaveBlob(content, filename);
         }else {
-            download(`${this.options.filename}${timestamp}.png`, pngCanvas.toDataURL());
+            download(filename, content);
         }
 
         // User defined callback from constructor
         if(typeof this.options.exported === 'function') {
-            this.options.exported();
+            this.options.exported(filename, content);
         }
     }
 }

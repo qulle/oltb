@@ -14,11 +14,11 @@ const download = function(name, content) {
         }
     });
 
-    downloadTrigger.setAttribute('href', isImage(name)
+    const data = isImage(name)
         ? content
-        : `data:text/plain;charset=utf-8,${encodeURIComponent(content)}`
-    );
-    
+        : `data:text/plain;charset=utf-8,${encodeURIComponent(content)}`;
+
+    downloadTrigger.setAttribute('href', data);
     downloadTrigger.click();
 }
 
