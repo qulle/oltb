@@ -131,7 +131,7 @@ class HiddenMapNavigationTool extends Control {
                 markerData.projection = `EPSG:${markerData.projection}`;
             }
 
-            if(!ProjectionManager.hasActiveProjection(markerData.projection)) {
+            if(!ProjectionManager.hasProjection(markerData.projection)) {
                 Toast.info({
                     title: 'Projection',
                     message: `

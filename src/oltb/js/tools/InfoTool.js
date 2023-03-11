@@ -42,6 +42,8 @@ class InfoTool extends Control {
         DOM.appendChildren(this.element, [
             button
         ]);
+
+        this.button = button;
         this.infoModal = undefined;
         this.options = { ...DEFAULT_OPTIONS, ...options };
 

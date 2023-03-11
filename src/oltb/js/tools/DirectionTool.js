@@ -69,6 +69,7 @@ class DirectionTool extends Control {
         DOM.appendChildren(this.element, [
             button
         ]);
+        
         this.button = button;
         this.active = false;
         this.options = { ...DEFAULT_OPTIONS, ...options };

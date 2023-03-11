@@ -16,10 +16,12 @@ import { TooltipManager } from '../core/managers/TooltipManager';
 import { SettingsManager } from '../core/managers/SettingsManager';
 import { copyToClipboard } from '../helpers/browser/CopyToClipboard';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
+import { ProjectionManager } from '../core/managers/ProjectionManager';
 import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 import { LOCAL_STORAGE_KEYS } from '../helpers/constants/LocalStorageKeys';
 
 const FILENAME = 'tools/CoordiantesTool.js';
+const ID_PREFIX = 'oltb-coordinates';
 const DEFAULT_OPTIONS = Object.freeze({
     click: undefined,
     mapClicked: undefined
@@ -27,7 +29,8 @@ const DEFAULT_OPTIONS = Object.freeze({
 
 const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.CoordinatesTool;
 const LOCAL_STORAGE_DEFAULTS = Object.freeze({
-    active: false
+    active: false,
+    coordinatesFormat: 'DD'
 });
 
 class CoordinatesTool extends Control {
@@ -57,6 +60,7 @@ class CoordinatesTool extends Control {
         DOM.appendChildren(this.element, [
             button
         ]);
+        
         this.button = button;
         this.active = false;
         this.tooltipItem = undefined;
@@ -66,6 +70,45 @@ class CoordinatesTool extends Control {
         const localStorageState = StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME);
         this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
 
+        const toolboxElement = ElementManager.getToolboxElement();
+        toolboxElement.insertAdjacentHTML('beforeend', `
+            <div id="${ID_PREFIX}-toolbox" class="oltb-toolbox-section">
+                <div class="oltb-toolbox-section__header">
+                    <h4 class="oltb-toolbox-section__title oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">
+                        Coordinates
+                        <span class="oltb-toolbox-section__icon oltb-tippy" title="Toggle section"></span>
+                    </h4>
+                </div>
+                <div class="oltb-toolbox-section__groups" id="${ID_PREFIX}-toolbox-collapsed" style="display: ${this.localStorage.collapsed ? 'none' : 'block'}">
+                    <div class="oltb-toolbox-section__group">
+                        <label class="oltb-label" for="${ID_PREFIX}-format">Format</label>
+                        <select id="${ID_PREFIX}-format" class="oltb-select">
+                            <option value="DD">Decimal degrees</option>
+                            <option value="DMS">Degrees, minutes, seconds</option>
+                        </select>
+                    </div>
+                    <div class="oltb-toolbox-section__group">
+                        <label class="oltb-label">Coordinates <em>(Lat, Lon)</em></label>
+                        <table class="oltb-table oltb-mt-05" id="${ID_PREFIX}-table"></table>
+                    </div>
+                </div>
+            </div>
+        `);
+
+        this.coordinatesToolbox = document.querySelector(`#${ID_PREFIX}-toolbox`);
+        this.coordinatesTable = this.coordinatesToolbox.querySelector(`#${ID_PREFIX}-table`);
+        
+        this.coordinatesFormat = this.coordinatesToolbox.querySelector(`#${ID_PREFIX}-format`);
+        this.coordinatesFormat.value = this.localStorage.coordinatesFormat;
+        this.coordinatesFormat.addEventListener(EVENTS.Browser.Change, this.onCoordinatesFormatChange.bind(this));
+
+        this.projections = new Map();
+
+        const toggleableTriggers = this.coordinatesToolbox.querySelectorAll('.oltb-toggleable');
+        toggleableTriggers.forEach((toggle) => {
+            toggle.addEventListener(EVENTS.Browser.Click, this.onToggleToolbox.bind(this, toggle));
+        });
+
         SettingsManager.addSetting(SETTINGS.CopyCoordinatesOnClick, {
             state: true, 
             text: 'Coordinates tool - Copy coordinates on click'
@@ -73,6 +116,14 @@ class CoordinatesTool extends Control {
 
         window.addEventListener(EVENTS.Browser.KeyDown, this.onWindowKeyDown.bind(this));
         window.addEventListener(EVENTS.Browser.ContentLoaded, this.onDOMContentLoaded.bind(this));
+    }
+    
+    onToggleToolbox(toggle) {
+        const targetName = toggle.dataset.oltbToggleableTarget;
+        document.getElementById(targetName)?.slideToggle(CONFIG.AnimationDuration.Fast, (collapsed) => {
+            this.localStorage.collapsed = collapsed;
+            StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, this.localStorage);
+        });
     }
 
     onDOMContentLoaded() {
@@ -85,6 +136,11 @@ class CoordinatesTool extends Control {
         if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Coordinates)) {
             this.handleClick(event);
         }
+    }
+
+    onCoordinatesFormatChange() {
+        this.localStorage.coordinatesFormat = this.coordinatesFormat.value;
+        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, this.localStorage);
     }
 
     handleClick() {
@@ -108,11 +164,50 @@ class CoordinatesTool extends Control {
             return;
         }
 
+        const projections = ProjectionManager.getProjections();
+        projections.forEach((projection) => {
+            const projectionRow = DOM.createElement({
+                element: 'tr'
+            });
+
+            const projectionName = DOM.createElement({
+                element: 'th',
+                text: projection.name,
+                title: projection.code,
+                class: 'oltb-tippy'
+            });
+
+            DOM.appendChildren(projectionRow, [
+                projectionName
+            ]);
+
+            const coordinatesRow = DOM.createElement({
+                element: 'tr'
+            });
+
+            const coordinatesCell = DOM.createElement({
+                element: 'td',
+                text: '-'
+            });
+
+            DOM.appendChildren(coordinatesRow, [
+                coordinatesCell
+            ]);
+
+            DOM.appendChildren(this.coordinatesTable, [
+                projectionRow,
+                coordinatesRow
+            ]);
+
+            this.projections.set(projection.code, coordinatesCell);
+        });
+
         this.tooltipItem = TooltipManager.push('coordinates');
         this.onPointerMoveListener = map.on(EVENTS.OpenLayers.PointerMove, this.onPointerMove.bind(this));
         this.onMapClickListener = map.on(EVENTS.Browser.Click, this.onMapClick.bind(this));
 
         this.active = true;
+        this.coordinatesToolbox.classList.add('oltb-toolbox-section--show');
         this.button.classList.add('oltb-tool-button--active');
 
         this.localStorage.active = true;
@@ -120,12 +215,14 @@ class CoordinatesTool extends Control {
     }
 
     deActivateTool() {
+        this.coordinatesTable.innerHTML = '';
         const poppedTooltip = TooltipManager.pop('coordinates');
         
         unByKey(this.onPointerMoveListener);
         unByKey(this.onMapClickListener);
 
         this.active = false;
+        this.coordinatesToolbox.classList.remove('oltb-toolbox-section--show');
         this.button.classList.remove('oltb-tool-button--active');
 
         this.localStorage.active = false;
@@ -133,6 +230,11 @@ class CoordinatesTool extends Control {
     }
 
     onPointerMove(event) {
+        this.tooltipCoordinates(event);
+        this.toolboxCoordinates(event);
+    }
+
+    tooltipCoordinates(event) {
         const coordinates = transform(
             event.coordinate, 
             CONFIG.Projection.Default, 
@@ -143,7 +245,62 @@ class CoordinatesTool extends Control {
         this.tooltipItem.innerHTML = prettyCoordinates;
     }
 
-    async onMapClick(event) {
+    toolboxCoordinates(event) {
+        const projections = ProjectionManager.getProjections();
+        projections.forEach((projection) => {
+            const coordinates = transform(
+                event.coordinate, 
+                CONFIG.Projection.Default, 
+                projection.code
+            );
+
+            const format = this.coordinatesFormat.value;
+            const cell = this.projections.get(projection.code);
+
+            if(format === 'DMS') {
+                this.toDegreeMinutesSeconds(cell, coordinates);
+            }else {
+                this.toDecimalDegrees(cell, coordinates);
+            }
+        });
+    }
+
+    toDecimalDegrees(cell, coordinates) {
+        cell.innerHTML = `
+            ${parseFloat(coordinates[1]).toFixed(4)}, 
+            ${parseFloat(coordinates[0]).toFixed(4)}
+        `;
+    }
+
+    toDegreeMinutesSeconds(cell, coordinates) {
+        const prettyCoordinates = toStringHDMS(coordinates);
+        cell.innerHTML = prettyCoordinates;
+    }
+
+    async onMapClick(event) {        
+        const allCoordinates = [];
+        const projections = ProjectionManager.getProjections();
+        projections.forEach((projection) => {
+            const coordinates = transform(
+                event.coordinate, 
+                CONFIG.Projection.Default, 
+                projection.code
+            );
+
+            const prettyCoordinates = toStringHDMS(coordinates);
+            allCoordinates.push({
+                code: projection.code,
+                name: projection.name,
+                coordinates: coordinates,
+                prettyCoordinates: prettyCoordinates
+            });
+        });
+
+        // User defined callback from constructor
+        if(typeof this.options.mapClicked === 'function') {
+            this.options.mapClicked(allCoordinates);
+        }
+
         if(
             !SettingsManager.getSetting(SETTINGS.CopyCoordinatesOnClick) || 
             ToolManager.hasActiveTool()
@@ -151,6 +308,10 @@ class CoordinatesTool extends Control {
             return;
         }
 
+        this.copyCoordinates(event);
+    }
+
+    copyCoordinates(event) {
         const coordinates = transform(
             event.coordinate, 
             CONFIG.Projection.Default, 
@@ -173,26 +334,12 @@ class CoordinatesTool extends Control {
                     message: errorMessage,
                     error: error
                 });
+
                 Toast.error({
                     title: 'Error',
                     message: errorMessage
                 });
             });
-        
-        const lon = coordinates[0];
-        const lat = coordinates[1];
-        const response = {
-            data: {
-                lon: lon, 
-                lat: lat
-            },
-            pretty: prettyCoordinates
-        };
-
-        // User defined callback from constructor
-        if(typeof this.options.mapClicked === 'function') {
-            this.options.mapClicked(response);
-        }
     }
 }
 

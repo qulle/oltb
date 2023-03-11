@@ -42,6 +42,8 @@ class DebugInfoTool extends Control {
         DOM.appendChildren(this.element, [
             button
         ]);
+
+        this.button = button;
         this.debugInfoModal = undefined;
         this.options = { ...DEFAULT_OPTIONS, ...options };
         

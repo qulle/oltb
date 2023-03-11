@@ -48,6 +48,8 @@ class HomeTool extends Control {
         DOM.appendChildren(this.element, [
             button
         ]);
+
+        this.button = button;
         this.options = { ...DEFAULT_OPTIONS, ...options };
 
         this.homeLocation = [this.options.lon, this.options.lat];

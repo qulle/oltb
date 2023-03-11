@@ -85,15 +85,6 @@ class ProjectionManager {
             return projection.code === code.toUpperCase();
         });
     }
-
-    static hasActiveProjection() {
-        return this.#projections.find((projection) => {
-            return (
-                Boolean(projection.active) && 
-                projection.code === code.toUpperCase()
-            );
-        });
-    }
 }
 
 export { ProjectionManager };

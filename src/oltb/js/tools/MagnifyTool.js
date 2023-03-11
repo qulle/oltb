@@ -49,6 +49,7 @@ class MagnifyTool extends Control {
         DOM.appendChildren(this.element, [
             button
         ]);
+        
         this.button = button;
         this.radius = 75;
         this.options = { ...DEFAULT_OPTIONS, ...options };
@@ -250,6 +251,7 @@ class MagnifyTool extends Control {
                     message: errorMessage,
                     error: error
                 });
+                
                 Toast.error({
                     title: 'Error',
                     message: (error.name === 'SecurityError' 
