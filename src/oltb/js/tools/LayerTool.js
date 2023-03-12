@@ -1,10 +1,10 @@
 import tippy from 'tippy.js';
 import { DOM } from '../helpers/browser/DOM';
-import { KEYS } from '../helpers/constants/Keys';
+import { Keys } from '../helpers/constants/Keys';
 import { Toast } from '../common/Toast';
-import { CONFIG } from '../core/Config';
+import { Config } from '../core/Config';
 import { Dialog } from '../common/Dialog';
-import { EVENTS } from '../helpers/constants/Events';
+import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { download } from '../helpers/browser/Download';
 import { LogManager } from '../core/managers/LogManager';
@@ -12,24 +12,25 @@ import { LayerModal } from './modal-extensions/LayerModal';
 import { ContextMenu } from '../common/ContextMenu';
 import { StateManager } from '../core/managers/StateManager';
 import { LayerManager } from '../core/managers/LayerManager';
-import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
+import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
 import { ElementManager } from '../core/managers/ElementManager';
 import { instantiateLayer } from '../core/ol-types/LayerTypes';
-import { InfoWindowManager } from '../core/managers/InfoWindowManager';
+import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
+import { SvgPaths, getIcon } from '../core/icons/GetIcon';
 import { instantiateSource } from '../core/ol-types/SourceTypes';
 import { instantiateFormat } from '../core/ol-types/FormatTypes';
+import { InfoWindowManager } from '../core/managers/InfoWindowManager';
+import { ProjectionManager } from '../core/managers/ProjectionManager';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
-import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
-import { LOCAL_STORAGE_KEYS } from '../helpers/constants/LocalStorageKeys';
+import { FeatureProperties } from '../helpers/constants/FeatureProperties';
 import { DownloadLayerModal } from './modal-extensions/DownloadLayerModal';
-import { FEATURE_PROPERTIES } from '../helpers/constants/FeatureProperties';
 import { hasCustomFeatureProperty } from '../helpers/browser/HasNestedProperty';
 
 const FILENAME = 'tools/LayerTool.js';
 const ID_PREFIX = 'oltb-layer';
 const LAYER_BUTTON_DEFAULT_CLASSES = 'oltb-func-btn';
 
-const DEFAULT_OPTIONS = Object.freeze({
+const DefaultOptions = Object.freeze({
     disableMapCreateLayerButton: false,
     disableMapLayerVisibilityButton: false,
     disableMapLayerEditButton: false,
@@ -55,8 +56,8 @@ const DEFAULT_OPTIONS = Object.freeze({
     Because this tool has two different sections that can be collapsed it's not a viable solution to have a single collapsed property. 
     Unfortunately this results in two longer names stored in localStorage.
 */
-const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.LayerTool;
-const LOCAL_STORAGE_DEFAULTS = Object.freeze({
+const LocalStorageNodeName = LocalStorageKeys.layerTool;
+const LocalStorageDefaults = Object.freeze({
     active: false, 
     'oltb-layer-map-toolbox-collapsed': false,
     'oltb-layer-feature-toolbox-collapsed': false,
@@ -69,7 +70,7 @@ class LayerTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.Layers.Stroked,
+            path: SvgPaths.layers.stroked,
             class: 'oltb-tool-button__icon'
         });
 
@@ -79,7 +80,7 @@ class LayerTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Layers (${SHORTCUT_KEYS.Layer})`
+                'data-tippy-content': `Layers (${ShortcutKeys.layerTool})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -92,11 +93,11 @@ class LayerTool extends Control {
 
         this.button = button;
         this.active = false;
-        this.options = { ...DEFAULT_OPTIONS, ...options };
+        this.options = { ...DefaultOptions, ...options };
 
         // Load stored data from localStorage
-        const localStorageState = StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME);
-        this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
+        const localStorageState = StateManager.getStateObject(LocalStorageNodeName);
+        this.localStorage = { ...LocalStorageDefaults, ...localStorageState };
 
         const toolboxElement = ElementManager.getToolboxElement();
         toolboxElement.insertAdjacentHTML('beforeend', `
@@ -135,7 +136,7 @@ class LayerTool extends Control {
                                     <input type="text" id="${ID_PREFIX}-feature-stack-add-text" class="oltb-input" placeholder="Layer name">
                                     <button type="button" id="${ID_PREFIX}-feature-stack-add-button" class="oltb-btn oltb-btn--green-mid oltb-tippy" title="Create feature layer">
                                         ${getIcon({
-                                            path: SVG_PATHS.Plus.Stroked,
+                                            path: SvgPaths.plus.stroked,
                                             width: 20,
                                             height: 20,
                                             fill: 'none',
@@ -158,7 +159,7 @@ class LayerTool extends Control {
 
         const toggleableTriggers = this.layersToolbox.querySelectorAll('.oltb-toggleable');
         toggleableTriggers.forEach((toggle) => {
-            toggle.addEventListener(EVENTS.Browser.Click, this.onToggleToolbox.bind(this, toggle));
+            toggle.addEventListener(Events.browser.click, this.onToggleToolbox.bind(this, toggle));
         });
 
         this.mapLayerStack = this.layersToolbox.querySelector(`#${ID_PREFIX}-map-stack`);
@@ -169,15 +170,15 @@ class LayerTool extends Control {
         this.addFeatureLayerText = this.layersToolbox.querySelector(`#${ID_PREFIX}-feature-stack-add-text`);
 
         if(Boolean(this.addMapLayerButton)) {
-            this.addMapLayerButton.addEventListener(EVENTS.Browser.Click, this.showAddMapLayerModal.bind(this));
+            this.addMapLayerButton.addEventListener(Events.browser.click, this.showAddMapLayerModal.bind(this));
         }
 
         if(Boolean(this.addFeatureLayerButton)) {
-            this.addFeatureLayerButton.addEventListener(EVENTS.Browser.Click, this.onFeatureLayerAdd.bind(this));
+            this.addFeatureLayerButton.addEventListener(Events.browser.click, this.onFeatureLayerAdd.bind(this));
         }
 
         if(Boolean(this.addFeatureLayerText)) {
-            this.addFeatureLayerText.addEventListener(EVENTS.Browser.KeyUp, this.onFeatureLayerAdd.bind(this));
+            this.addFeatureLayerText.addEventListener(Events.browser.keyUp, this.onFeatureLayerAdd.bind(this));
         }
 
         if(!Boolean(this.options.disableMapCreateLayerButton)) {
@@ -188,19 +189,19 @@ class LayerTool extends Control {
             });
         }
 
-        window.addEventListener(EVENTS.Custom.MapLayerAdded, this.onWindowMapLayerAdded.bind(this));
-        window.addEventListener(EVENTS.Custom.MapLayerRemoved, this.onWindowMapLayerRemoved.bind(this));
-        window.addEventListener(EVENTS.Custom.FeatureLayerAdded, this.onWindowFeatureLayerAdded.bind(this));
-        window.addEventListener(EVENTS.Custom.FeatureLayerRemoved, this.onWindowFeatureLayerRemoved.bind(this));
-        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
-        window.addEventListener(EVENTS.Browser.ContentLoaded, this.onDOMContentLoaded.bind(this));
+        window.addEventListener(Events.custom.mapLayerAdded, this.onWindowMapLayerAdded.bind(this));
+        window.addEventListener(Events.custom.mapLayerRemoved, this.onWindowMapLayerRemoved.bind(this));
+        window.addEventListener(Events.custom.featureLayerAdded, this.onWindowFeatureLayerAdded.bind(this));
+        window.addEventListener(Events.custom.featureLayerRemoved, this.onWindowFeatureLayerRemoved.bind(this));
+        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(Events.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
     }
 
     onToggleToolbox(toggle) {
         const targetName = toggle.dataset.oltbToggleableTarget;
-        document.getElementById(targetName)?.slideToggle(CONFIG.AnimationDuration.Fast, (collapsed) => {
+        document.getElementById(targetName)?.slideToggle(Config.animationDuration.fast, (collapsed) => {
             this.localStorage[targetName] = collapsed;
-            StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, this.localStorage);
+            StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
         });
     }
 
@@ -211,7 +212,7 @@ class LayerTool extends Control {
     }
 
     onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Layer)) {
+        if(isShortcutKeyOnly(event, ShortcutKeys.layerTool)) {
             this.handleClick(event);
         }
     }
@@ -222,8 +223,8 @@ class LayerTool extends Control {
 
     onFeatureLayerAdd(event) {
         if(
-            event.type === EVENTS.Browser.KeyUp && 
-            event.key.toLowerCase() !== KEYS.Enter
+            event.type === Events.browser.keyUp && 
+            event.key !== Keys.valueEnter
         ) {
             return;
         }
@@ -253,7 +254,7 @@ class LayerTool extends Control {
         this.button.classList.add('oltb-tool-button--active');
 
         this.localStorage.active = true;
-        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, this.localStorage);
+        StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 
     deActivateTool() {
@@ -262,39 +263,59 @@ class LayerTool extends Control {
         this.button.classList.remove('oltb-tool-button--active');
 
         this.localStorage.active = false;
-        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, this.localStorage);
+        StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 
     showAddMapLayerModal() {
         const layerModal = new LayerModal({
             onCreate: (result) => {
-                try {
-                    LayerManager.addMapLayer({
-                        name: result.name,
-                        layer: instantiateLayer(result.layer, {
-                            projection: result.projection || CONFIG.Projection.Default,
-                            source: instantiateSource(result.source, {
-                                url: result.url,
-                                params: JSON.parse(result.parameters),
-                                wrapX: result.wrapX,
-                                attributions: result.attributions,
-                                format: instantiateFormat(result.source)
-                            })
-                        })
-                    });
-                }catch(error) {
-                    const errorMessage = 'Failed to generate new layer';
-                    LogManager.logError(FILENAME, 'showAddMapLayerModal', {
-                        message: errorMessage,
-                        error: error
-                    });
-                    Toast.error({
-                        title: 'Error',
-                        message: errorMessage
-                    });
-                }
+                this.onCreateMapLayer(result);
             }
         });
+    }
+
+    onCreateMapLayer(result) {
+        if(!ProjectionManager.hasProjection(result.projection)) {
+            const errorMessage = `Must add projection definition for <strong>${result.projection}</strong>`;
+            LogManager.logError(FILENAME, 'showAddMapLayerModal', errorMessage);
+
+            Toast.error({
+                title: 'Error',
+                message: `
+                    ${errorMessage} <br>
+                    <a href="https://epsg.io" target="_blank" class="oltb-link">https://epsg.io</a>
+                `
+            });
+
+            return;
+        }
+
+        try {
+            LayerManager.addMapLayer({
+                name: result.name,
+                layer: instantiateLayer(result.layer, {
+                    projection: result.projection || Config.projection.default,
+                    source: instantiateSource(result.source, {
+                        url: result.url,
+                        params: JSON.parse(result.parameters),
+                        wrapX: result.wrapX,
+                        attributions: result.attributions,
+                        format: instantiateFormat(result.source)
+                    })
+                })
+            });
+        }catch(error) {
+            const errorMessage = 'Failed to generate new layer';
+            LogManager.logError(FILENAME, 'showAddMapLayerModal', {
+                message: errorMessage,
+                error: error
+            });
+
+            Toast.error({
+                title: 'Error',
+                message: errorMessage
+            });
+        }
     }
 
     onWindowMapLayerAdded(event) {
@@ -440,7 +461,7 @@ class LayerTool extends Control {
 
         // Eventlistener to update the UI if the visibility of the layer is changed
         // Other tools may change a layers visibility and the UI must be updated in this event
-        layer.on(EVENTS.OpenLayers.PropertyChange, function(event) {
+        layer.on(Events.openLayers.propertyChange, function(event) {
             if(event.key === 'visible') {
                 layerElement.classList.toggle('oltb-toolbox-list__item--hidden');
             }
@@ -468,7 +489,7 @@ class LayerTool extends Control {
 
         // If feature layer - attach eventlistener for setting the active layer
         if(this.isFeatureLayer(options)) {
-            layerName.addEventListener(EVENTS.Browser.Click, (event) => {
+            layerName.addEventListener(Events.browser.click, (event) => {
                 LayerManager.setActiveFeatureLayer(layerWrapper);
                 // Should just be one li-item that has the active class, but just in case
                 this.featureLayerStack.querySelectorAll('li').forEach((layer) => {
@@ -557,29 +578,7 @@ class LayerTool extends Control {
                 'click': () => {
                     const downloadModal = new DownloadLayerModal({
                         onDownload: (result) => {   
-                            const format = instantiateFormat(result.format);
-            
-                            if(!Boolean(format)) {
-                                Toast.error({
-                                    title: 'Error',
-                                    message: 'This layer format is not supported'
-                                });
-                                
-                                return;
-                            }
-            
-                            const features = layerWrapper.getLayer().getSource().getFeatures();
-                            const content = format.writeFeatures(features, {
-                                featureProjection: CONFIG.Projection.Default
-                            });
-                        
-                            const filename = `${layerWrapper.getName()}.${result.format.toLowerCase()}`;
-                            download(filename, content);
-            
-                            // User defined callback from constructor
-                            if(typeof callback === 'function') {
-                                callback(layerWrapper, filename, content);
-                            }
+                            this.onDownloadLayer(layerWrapper, result);
                         }
                     });
                 }
@@ -587,6 +586,32 @@ class LayerTool extends Control {
         });
 
         return downloadButton;
+    }
+
+    onDownloadLayer(layerWrapper, result) {
+        const format = instantiateFormat(result.format);
+            
+        if(!Boolean(format)) {
+            Toast.error({
+                title: 'Error',
+                message: 'This layer format is not supported'
+            });
+                                
+            return;
+        }
+            
+        const features = layerWrapper.getLayer().getSource().getFeatures();
+        const content = format.writeFeatures(features, {
+            featureProjection: Config.projection.default
+        });
+                        
+        const filename = `${layerWrapper.getName()}.${result.format.toLowerCase()}`;
+        download(filename, content);
+            
+        // User defined callback from constructor
+        if(typeof callback === 'function') {
+            callback(layerWrapper, filename, content);
+        }
     }
 
     createEditButton(layerWrapper, callback, layerName) {
@@ -649,7 +674,7 @@ class LayerTool extends Control {
                     const hasFeatures = typeof layer.getSource().getFeatures === 'function';
                     if(Boolean(hasFeatures)) {
                         layer.getSource().getFeatures().forEach((feature) => {
-                            if(hasCustomFeatureProperty(feature.getProperties(), FEATURE_PROPERTIES.Tooltip)) {
+                            if(hasCustomFeatureProperty(feature.getProperties(), FeatureProperties.tooltip)) {
                                 feature.getProperties().oltb.tooltip.setMap(flippedVisibility ? map : null)
                             }
                         });

@@ -1,4 +1,4 @@
-import { CONFIG } from "../Config";
+import { Config } from "../Config";
 import { LogManager } from './LogManager';
 
 const FILENAME = 'managers/StateManager.js';
@@ -19,7 +19,7 @@ class StateManager {
         let state = {};
 
         try {
-            state = JSON.parse(localStorage.getItem(CONFIG.LocalStorage.Key)) || {};
+            state = JSON.parse(localStorage.getItem(Config.localStorage.key)) || {};
         }catch(error) {
             const errorMessage = 'Failed to load application state';
             LogManager.logError(FILENAME, 'loadBrowserState', {
@@ -47,7 +47,7 @@ class StateManager {
     static saveState() {
         try {
             const serialized = JSON.stringify(this.#runtimeState);
-            localStorage.setItem(CONFIG.LocalStorage.Key, serialized);
+            localStorage.setItem(Config.localStorage.key, serialized);
         }catch(error) {
             const errorMessage = 'Failed to save application state';
             LogManager.logError(FILENAME, 'saveState', {

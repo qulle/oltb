@@ -8,6 +8,7 @@ import urlCapitalsGeoJSON from 'url:../geojson/capitals.geojson';
 
 const LOG_ORIGIN = 'Capitals.js';
 const ID_PREFIX = 'oltb-info-window-marker';
+
 const CONTINENT_COLORS = Object.freeze({
     'Europe': '#5B88D6FF',
     'Africa': '#68B9E5FF',
@@ -65,7 +66,7 @@ const geoJsonPromise = fetch(urlCapitalsGeoJSON)
                     lat: lat,
                     title: capital.properties.countryName,
                     description: capital.properties.countryName,
-                    icon: 'GeoMarker.Filled',
+                    icon: 'geoMarker.filled',
                     backgroundColor: backgroundColor,
                     notSelectable: true,
                     infoWindow: infoWindow
@@ -77,6 +78,7 @@ const geoJsonPromise = fetch(urlCapitalsGeoJSON)
         const errorMessage = 'Failed to load Capitals layer';
 
         LogManager.logError(LOG_ORIGIN, 'geoJsonPromise', `${errorMessage} [${error}]`);
+
         Toast.error({
             title: 'Error',
             message: errorMessage

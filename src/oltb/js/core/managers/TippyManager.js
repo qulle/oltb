@@ -1,7 +1,7 @@
 import 'tippy.js/dist/tippy.css';
 import tippy from 'tippy.js';
-import { CONFIG } from '../Config';
-import { EVENTS } from '../../helpers/constants/Events';
+import { Config } from '../Config';
+import { Events } from '../../helpers/constants/Events';
 import { LogManager } from './LogManager';
 import { isHorizontal } from '../../helpers/IsRowDirection';
 import { ElementManager } from './ElementManager';
@@ -22,9 +22,9 @@ class TippyManager {
         this.#mapTippy = this.#createMapTippy();
         this.#colorTippy = this.#createColorTippy();
 
-        window.addEventListener(EVENTS.Custom.ToolbarDirectionChange, this.#onPlacementChange.bind(this));
-        window.addEventListener(EVENTS.Browser.Resize, this.#onPlacementChange.bind(this));
-        window.addEventListener(EVENTS.Browser.ContentLoaded, this.#onDOMContentLoaded.bind(this));
+        window.addEventListener(Events.custom.toolbarDirectionChange, this.#onPlacementChange.bind(this));
+        window.addEventListener(Events.browser.resize, this.#onPlacementChange.bind(this));
+        window.addEventListener(Events.browser.contentLoaded, this.#onDOMContentLoaded.bind(this));
     }
 
     static setMap(map) { }
@@ -32,7 +32,7 @@ class TippyManager {
     static #onPlacementChange(event) {
         this.#toolButtonTippy.setProps({
             placement: (
-                window.innerWidth <= CONFIG.DeviceWidth.SM || isHorizontal()
+                window.innerWidth <= Config.deviceWidth.sm || isHorizontal()
             ) ? 'bottom' : 'right'
         });
     }
@@ -88,7 +88,7 @@ class TippyManager {
                 ColorPickerManager.onColorPickerTooltipShow(instance);
             },
             onHide(instance) {
-                ColorPickerManager.getColorPicker().off(EVENTS.Browser.Change);
+                ColorPickerManager.getColorPicker().off(Events.browser.change);
             },
             onHidden(instance) {
                 instance.setContent(null);

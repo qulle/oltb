@@ -3,7 +3,8 @@ import { DialogBase } from './DialogBase';
 import { ElementManager } from '../../core/managers/ElementManager';
 
 const FILENAME = 'dialogs/Alert.js';
-const DEFAULT_OPTIONS = Object.freeze({
+
+const DefaultOptions = Object.freeze({
     title: 'Alert',
     message: 'Oops missing alert message',
     onConfirm: undefined,
@@ -14,7 +15,7 @@ class Alert extends DialogBase {
     constructor(options = {}) {
         super();
         
-        this.options = { ...DEFAULT_OPTIONS, ...options };
+        this.options = { ...DefaultOptions, ...options };
         this.#createDialog();
     }
 

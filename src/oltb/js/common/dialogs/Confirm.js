@@ -4,7 +4,8 @@ import { isDarkTheme } from '../../helpers/IsDarkTheme';
 import { ElementManager } from '../../core/managers/ElementManager';
 
 const FILENAME = 'dialogs/Confirm.js';
-const DEFAULT_OPTIONS = Object.freeze({
+
+const DefaultOptions = Object.freeze({
     title: 'Confirm',
     message: 'Oops missing confirm message',
     onConfirm: undefined,
@@ -18,7 +19,7 @@ class Confirm extends DialogBase {
     constructor(options = {}) {
         super();
 
-        this.options = { ...DEFAULT_OPTIONS, ...options };
+        this.options = { ...DefaultOptions, ...options };
         this.#createDialog();
     }
 

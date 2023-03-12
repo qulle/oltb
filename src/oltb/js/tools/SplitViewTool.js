@@ -1,29 +1,30 @@
 import { DOM } from '../helpers/browser/DOM';
 import { Toast } from '../common/Toast';
-import { CONFIG } from '../core/Config';
-import { EVENTS } from '../helpers/constants/Events';
+import { Config } from '../core/Config';
+import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { unByKey } from 'ol/Observable';
 import { LogManager } from '../core/managers/LogManager';
 import { LayerManager } from '../core/managers/LayerManager';
 import { StateManager } from '../core/managers/StateManager';
-import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
+import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
 import { getRenderPixel } from 'ol/render';
 import { ElementManager } from '../core/managers/ElementManager';
 import { eventDispatcher } from '../helpers/browser/EventDispatcher';
+import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
+import { SvgPaths, getIcon } from '../core/icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
-import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
-import { LOCAL_STORAGE_KEYS } from '../helpers/constants/LocalStorageKeys';
 
 const FILENAME = 'tools/SplitViewTool.js';
 const RADIX = 10;
 const ID_PREFIX = 'oltb-split-view';
-const DEFAULT_OPTIONS = Object.freeze({
+
+const DefaultOptions = Object.freeze({
     click: undefined
 });
 
-const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.SplitViewTool;
-const LOCAL_STORAGE_DEFAULTS = Object.freeze({
+const LocalStorageNodeName = LocalStorageKeys.splitViewTool;
+const LocalStorageDefaults = Object.freeze({
     active: false,
     collapsed: false
 });
@@ -35,7 +36,7 @@ class SplitViewTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.ArrowsExpandVertical.Stroked,
+            path: SvgPaths.arrowsExpandVertical.stroked,
             class: 'oltb-tool-button__icon'
         });
 
@@ -45,7 +46,7 @@ class SplitViewTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Split view (${SHORTCUT_KEYS.SplitView})`
+                'data-tippy-content': `Split view (${ShortcutKeys.splitViewTool})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -58,11 +59,11 @@ class SplitViewTool extends Control {
         
         this.button = button;
         this.active = false;
-        this.options = { ...DEFAULT_OPTIONS, ...options };
+        this.options = { ...DefaultOptions, ...options };
 
         // Load stored data from localStorage
-        const localStorageState = StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME);
-        this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
+        const localStorageState = StateManager.getStateObject(LocalStorageNodeName);
+        this.localStorage = { ...LocalStorageDefaults, ...localStorageState };
 
         const mapElement = ElementManager.getMapElement();
         const toolboxElement = ElementManager.getToolboxElement();
@@ -97,29 +98,29 @@ class SplitViewTool extends Control {
         this.splitViewToolbox = document.querySelector(`#${ID_PREFIX}-toolbox`);
 
         this.leftSideSrc = this.splitViewToolbox.querySelector(`#${ID_PREFIX}-left-src`);
-        this.leftSideSrc.addEventListener(EVENTS.Browser.Change, this.updateTool.bind(this));
+        this.leftSideSrc.addEventListener(Events.browser.change, this.updateTool.bind(this));
 
         this.rightSideSrc = this.splitViewToolbox.querySelector(`#${ID_PREFIX}-right-src`);
-        this.rightSideSrc.addEventListener(EVENTS.Browser.Change, this.updateTool.bind(this));
+        this.rightSideSrc.addEventListener(Events.browser.change, this.updateTool.bind(this));
 
         const toggleableTriggers = this.splitViewToolbox.querySelectorAll('.oltb-toggleable');
         toggleableTriggers.forEach((toggle) => {
-            toggle.addEventListener(EVENTS.Browser.Click, this.onToggleToolbox.bind(this, toggle));
+            toggle.addEventListener(Events.browser.click, this.onToggleToolbox.bind(this, toggle));
         });
 
         const swapSidesButton = this.splitViewToolbox.querySelector(`#${ID_PREFIX}-swap-button`);
-        swapSidesButton.addEventListener(EVENTS.Browser.Click, (event) => {
+        swapSidesButton.addEventListener(Events.browser.click, (event) => {
             this.swapSides();
         });
         
         this.splitViewSlider = mapElement.querySelector(`#${ID_PREFIX}-slider`);
-        this.splitViewSlider.addEventListener(EVENTS.Browser.Input, this.onSliderInput.bind(this));
+        this.splitViewSlider.addEventListener(Events.browser.input, this.onSliderInput.bind(this));
 
-        window.addEventListener(EVENTS.Custom.MapLayerAdded, this.onWindowMapLayerAdded.bind(this));
-        window.addEventListener(EVENTS.Custom.MapLayerRemoved, this.onWindowMapLayerRemoved.bind(this));
-        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
-        window.addEventListener(EVENTS.Custom.SettingsCleared, this.onWindowSettingsCleared.bind(this));
-        window.addEventListener(EVENTS.Browser.ContentLoaded, this.onDOMContentLoaded.bind(this));
+        window.addEventListener(Events.custom.mapLayerAdded, this.onWindowMapLayerAdded.bind(this));
+        window.addEventListener(Events.custom.mapLayerRemoved, this.onWindowMapLayerRemoved.bind(this));
+        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(Events.custom.settingsCleared, this.onWindowSettingsCleared.bind(this));
+        window.addEventListener(Events.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
     }
 
     onSliderInput(event) {
@@ -133,9 +134,9 @@ class SplitViewTool extends Control {
 
     onToggleToolbox(toggle) {
         const targetName = toggle.dataset.oltbToggleableTarget;
-        document.getElementById(targetName)?.slideToggle(CONFIG.AnimationDuration.Fast, (collapsed) => {
+        document.getElementById(targetName)?.slideToggle(Config.animationDuration.fast, (collapsed) => {
             this.localStorage.collapsed = collapsed;
-            StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, this.localStorage);
+            StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
         });
     }
 
@@ -146,13 +147,13 @@ class SplitViewTool extends Control {
     }
 
     onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.SplitView)) {
+        if(isShortcutKeyOnly(event, ShortcutKeys.splitViewTool)) {
             this.handleClick(event);
         }
     }
     
     onWindowSettingsCleared() {
-        this.localStorage = { ...LOCAL_STORAGE_DEFAULTS };
+        this.localStorage = { ...LocalStorageDefaults };
     }
 
     onWindowMapLayerAdded(event) {
@@ -194,7 +195,7 @@ class SplitViewTool extends Control {
             }
         });
 
-        eventDispatcher([this.leftSideSrc, this.rightSideSrc], EVENTS.Browser.Change);
+        eventDispatcher([this.leftSideSrc, this.rightSideSrc], Events.browser.change);
     }
 
     updateTool() {
@@ -231,7 +232,7 @@ class SplitViewTool extends Control {
     activateTool() {
         this.rightSideSrc.selectedIndex = '1';
 
-        eventDispatcher([this.rightSideSrc], EVENTS.Browser.Change);
+        eventDispatcher([this.rightSideSrc], Events.browser.change);
 
         if(Boolean(this.layerLoadingError)) {
             return;
@@ -243,7 +244,7 @@ class SplitViewTool extends Control {
         this.button.classList.add('oltb-tool-button--active');
 
         this.localStorage.active = true;
-        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, this.localStorage);
+        StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 
     deActivateTool() {
@@ -275,7 +276,7 @@ class SplitViewTool extends Control {
         this.button.classList.remove('oltb-tool-button--active');
 
         this.localStorage.active = false;
-        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, this.localStorage);
+        StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 
     swapSides() {
@@ -284,7 +285,7 @@ class SplitViewTool extends Control {
         this.rightSideSrc.value = this.leftSideSrc.value;
         this.leftSideSrc.value = currentRightId;
 
-        eventDispatcher([this.leftSideSrc, this.rightSideSrc], EVENTS.Browser.Change);
+        eventDispatcher([this.leftSideSrc, this.rightSideSrc], Events.browser.change);
     }
 
     sourceChange(leftSideSrcId, rightSideSrcId) {
@@ -338,8 +339,8 @@ class SplitViewTool extends Control {
 
             // Attach listeners to the right layer. 
             // Pre/Post render will only show part of the right map
-            this.onPreRenderListener = rightSideLayer.on(EVENTS.OpenLayers.PreRender, this.onPreRender.bind(this));
-            this.onPostRenderListener = rightSideLayer.on(EVENTS.OpenLayers.PostRender, this.onPostRender.bind(this));
+            this.onPreRenderListener = rightSideLayer.on(Events.openLayers.preRender, this.onPreRender.bind(this));
+            this.onPostRenderListener = rightSideLayer.on(Events.openLayers.postRender, this.onPostRender.bind(this));
         }
 
         map.render();
@@ -356,7 +357,7 @@ class SplitViewTool extends Control {
 
         // Calculate offset for the handlebar. 
         // The range slider is not perfectly linear towards the edges. 
-        const halfHandleWidth = CONFIG.Browser.REM;
+        const halfHandleWidth = Config.browser.rem;
         const sliderWidth = this.splitViewSlider.offsetWidth;
         const sliderCenter = sliderWidth / 2;
         const percentOfRange = (this.splitViewSlider.value / (this.splitViewSlider.max - this.splitViewSlider.min));

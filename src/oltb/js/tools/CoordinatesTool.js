@@ -1,34 +1,35 @@
 import { DOM } from '../helpers/browser/DOM';
 import { Toast } from '../common/Toast';
-import { CONFIG } from '../core/Config';
-import { EVENTS } from '../helpers/constants/Events';
+import { Config } from '../core/Config';
+import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { unByKey } from 'ol/Observable';
-import { SETTINGS } from '../helpers/constants/Settings';
+import { Settings } from '../helpers/constants/Settings';
 import { transform } from 'ol/proj';
 import { LogManager } from '../core/managers/LogManager';
 import { ToolManager } from '../core/managers/ToolManager';
 import { toStringHDMS } from 'ol/coordinate';
 import { StateManager } from '../core/managers/StateManager';
-import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
+import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
 import { ElementManager } from '../core/managers/ElementManager';
 import { TooltipManager } from '../core/managers/TooltipManager';
 import { SettingsManager } from '../core/managers/SettingsManager';
 import { copyToClipboard } from '../helpers/browser/CopyToClipboard';
+import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
+import { SvgPaths, getIcon } from '../core/icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
 import { ProjectionManager } from '../core/managers/ProjectionManager';
-import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
-import { LOCAL_STORAGE_KEYS } from '../helpers/constants/LocalStorageKeys';
 
 const FILENAME = 'tools/CoordiantesTool.js';
 const ID_PREFIX = 'oltb-coordinates';
-const DEFAULT_OPTIONS = Object.freeze({
+
+const DefaultOptions = Object.freeze({
     click: undefined,
     mapClicked: undefined
 });
 
-const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.CoordinatesTool;
-const LOCAL_STORAGE_DEFAULTS = Object.freeze({
+const LocalStorageNodeName = LocalStorageKeys.coordinatesTool;
+const LocalStorageDefaults = Object.freeze({
     active: false,
     coordinatesFormat: 'DD'
 });
@@ -40,7 +41,7 @@ class CoordinatesTool extends Control {
         });
 
         const icon = getIcon({
-            path: SVG_PATHS.Crosshair.Stroked,
+            path: SvgPaths.crosshair.stroked,
             class: 'oltb-tool-button__icon'
         });
 
@@ -50,7 +51,7 @@ class CoordinatesTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Show coordinates (${SHORTCUT_KEYS.Coordinates})`
+                'data-tippy-content': `Show coordinates (${ShortcutKeys.coordinatesTool})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -64,11 +65,11 @@ class CoordinatesTool extends Control {
         this.button = button;
         this.active = false;
         this.tooltipItem = undefined;
-        this.options = { ...DEFAULT_OPTIONS, ...options };
+        this.options = { ...DefaultOptions, ...options };
 
         // Load stored data from localStorage
-        const localStorageState = StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME);
-        this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
+        const localStorageState = StateManager.getStateObject(LocalStorageNodeName);
+        this.localStorage = { ...LocalStorageDefaults, ...localStorageState };
 
         const toolboxElement = ElementManager.getToolboxElement();
         toolboxElement.insertAdjacentHTML('beforeend', `
@@ -100,29 +101,29 @@ class CoordinatesTool extends Control {
         
         this.coordinatesFormat = this.coordinatesToolbox.querySelector(`#${ID_PREFIX}-format`);
         this.coordinatesFormat.value = this.localStorage.coordinatesFormat;
-        this.coordinatesFormat.addEventListener(EVENTS.Browser.Change, this.onCoordinatesFormatChange.bind(this));
+        this.coordinatesFormat.addEventListener(Events.browser.change, this.onCoordinatesFormatChange.bind(this));
 
         this.projections = new Map();
 
         const toggleableTriggers = this.coordinatesToolbox.querySelectorAll('.oltb-toggleable');
         toggleableTriggers.forEach((toggle) => {
-            toggle.addEventListener(EVENTS.Browser.Click, this.onToggleToolbox.bind(this, toggle));
+            toggle.addEventListener(Events.browser.click, this.onToggleToolbox.bind(this, toggle));
         });
 
-        SettingsManager.addSetting(SETTINGS.CopyCoordinatesOnClick, {
+        SettingsManager.addSetting(Settings.copyCoordinatesOnClick, {
             state: true, 
             text: 'Coordinates tool - Copy coordinates on click'
         });
 
-        window.addEventListener(EVENTS.Browser.KeyDown, this.onWindowKeyDown.bind(this));
-        window.addEventListener(EVENTS.Browser.ContentLoaded, this.onDOMContentLoaded.bind(this));
+        window.addEventListener(Events.browser.keyDown, this.onWindowKeyDown.bind(this));
+        window.addEventListener(Events.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
     }
     
     onToggleToolbox(toggle) {
         const targetName = toggle.dataset.oltbToggleableTarget;
-        document.getElementById(targetName)?.slideToggle(CONFIG.AnimationDuration.Fast, (collapsed) => {
+        document.getElementById(targetName)?.slideToggle(Config.animationDuration.fast, (collapsed) => {
             this.localStorage.collapsed = collapsed;
-            StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, this.localStorage);
+            StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
         });
     }
 
@@ -133,14 +134,14 @@ class CoordinatesTool extends Control {
     }
 
     onWindowKeyDown(event) {
-        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Coordinates)) {
+        if(isShortcutKeyOnly(event, ShortcutKeys.coordinatesTool)) {
             this.handleClick(event);
         }
     }
 
     onCoordinatesFormatChange() {
         this.localStorage.coordinatesFormat = this.coordinatesFormat.value;
-        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, this.localStorage);
+        StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 
     handleClick() {
@@ -203,15 +204,15 @@ class CoordinatesTool extends Control {
         });
 
         this.tooltipItem = TooltipManager.push('coordinates');
-        this.onPointerMoveListener = map.on(EVENTS.OpenLayers.PointerMove, this.onPointerMove.bind(this));
-        this.onMapClickListener = map.on(EVENTS.Browser.Click, this.onMapClick.bind(this));
+        this.onPointerMoveListener = map.on(Events.openLayers.pointerMove, this.onPointerMove.bind(this));
+        this.onMapClickListener = map.on(Events.browser.click, this.onMapClick.bind(this));
 
         this.active = true;
         this.coordinatesToolbox.classList.add('oltb-toolbox-section--show');
         this.button.classList.add('oltb-tool-button--active');
 
         this.localStorage.active = true;
-        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, this.localStorage);
+        StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 
     deActivateTool() {
@@ -226,7 +227,7 @@ class CoordinatesTool extends Control {
         this.button.classList.remove('oltb-tool-button--active');
 
         this.localStorage.active = false;
-        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, this.localStorage);
+        StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 
     onPointerMove(event) {
@@ -237,8 +238,8 @@ class CoordinatesTool extends Control {
     tooltipCoordinates(event) {
         const coordinates = transform(
             event.coordinate, 
-            CONFIG.Projection.Default, 
-            CONFIG.Projection.WGS84
+            Config.projection.default, 
+            Config.projection.wgs84
         );
         
         const prettyCoordinates = toStringHDMS(coordinates);
@@ -250,7 +251,7 @@ class CoordinatesTool extends Control {
         projections.forEach((projection) => {
             const coordinates = transform(
                 event.coordinate, 
-                CONFIG.Projection.Default, 
+                Config.projection.default, 
                 projection.code
             );
 
@@ -283,7 +284,7 @@ class CoordinatesTool extends Control {
         projections.forEach((projection) => {
             const coordinates = transform(
                 event.coordinate, 
-                CONFIG.Projection.Default, 
+                Config.projection.default, 
                 projection.code
             );
 
@@ -302,7 +303,7 @@ class CoordinatesTool extends Control {
         }
 
         if(
-            !SettingsManager.getSetting(SETTINGS.CopyCoordinatesOnClick) || 
+            !SettingsManager.getSetting(Settings.copyCoordinatesOnClick) || 
             ToolManager.hasActiveTool()
         ) {
             return;
@@ -314,8 +315,8 @@ class CoordinatesTool extends Control {
     copyCoordinates(event) {
         const coordinates = transform(
             event.coordinate, 
-            CONFIG.Projection.Default, 
-            CONFIG.Projection.WGS84
+            Config.projection.default, 
+            Config.projection.wgs84
         );
 
         const prettyCoordinates = toStringHDMS(coordinates);
@@ -325,7 +326,7 @@ class CoordinatesTool extends Control {
                 Toast.success({
                     title: 'Copied',
                     message: 'Coordinates copied to clipboard', 
-                    autoremove: CONFIG.AutoRemovalDuation.Normal
+                    autoremove: Config.autoRemovalDuation.normal
                 });
             })
             .catch((error) => {

@@ -1,17 +1,18 @@
 import { DOM } from '../helpers/browser/DOM';
 import { Modal } from '../common/Modal';
-import { CONFIG } from '../core/Config';
-import { EVENTS } from '../helpers/constants/Events';
+import { Config } from '../core/Config';
+import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { LogManager } from '../core/managers/LogManager';
-import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
+import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
 import { ElementManager } from '../core/managers/ElementManager';
+import { SvgPaths, getIcon } from '../core/icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
-import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 
 const FILENAME = 'tools/NotificationTool.js';
 const NOTIFICATION_URL = 'https://raw.githubusercontent.com/qulle/notification-endpoints/main/endpoints/oltb.json';
-const DEFAULT_OPTIONS = Object.freeze({
+
+const DefaultOptions = Object.freeze({
     click: undefined
 });
 
@@ -22,7 +23,7 @@ class NotificationTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.Bell.Stroked,
+            path: SvgPaths.bell.stroked,
             class: 'oltb-tool-button__icon'
         });
 
@@ -32,7 +33,7 @@ class NotificationTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Notifications (${SHORTCUT_KEYS.Notifications})`
+                'data-tippy-content': `Notifications (${ShortcutKeys.notificationsTool})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -45,13 +46,13 @@ class NotificationTool extends Control {
 
         this.button = button;
         this.notificationModal = undefined;
-        this.options = { ...DEFAULT_OPTIONS, ...options };
+        this.options = { ...DefaultOptions, ...options };
 
-        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
     }
 
     onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Notifications)) {
+        if(isShortcutKeyOnly(event, ShortcutKeys.notificationsTool)) {
             this.handleClick(event);
         }
     }
@@ -104,14 +105,14 @@ class NotificationTool extends Control {
                     <p>${json.qulle}</p>
                     <h3>🔭 Your version</h3>
                     <p>
-                        <a href="https://github.com/qulle/oltb/releases/tag/v${CONFIG.Version}" target="_blank" class="oltb-link">
-                            v${CONFIG.Version}
+                        <a href="https://github.com/qulle/oltb/releases/tag/v${Config.toolbar.version}" target="_blank" class="oltb-link">
+                            v${Config.toolbar.version}
                         </a>
                     </p>
                     <h3>🚀 Latest version</h3>
                     <p>
                         <a href="https://github.com/qulle/oltb/releases/tag/v${json.latest}" target="_blank" class="oltb-link">
-                            v${json.latest} - ${new Date(json.released).toLocaleDateString(CONFIG.Locale)}
+                            v${json.latest} - ${new Date(json.released).toLocaleDateString(Config.locale)}
                         </a>
                     </p>
                     <h3>💡 New features under development</h3>
@@ -126,8 +127,8 @@ class NotificationTool extends Control {
                     <p>Glad you are using my App, hope you find it useful!</p>
                     <h3>🔭 Your version</h3>
                     <p>
-                        <a href="https://github.com/qulle/oltb/releases/tag/v${CONFIG.Version}" target="_blank" class="oltb-link">
-                            v${CONFIG.Version}
+                        <a href="https://github.com/qulle/oltb/releases/tag/v${Config.toolbar.version}" target="_blank" class="oltb-link">
+                            v${Config.toolbar.version}
                         </a>
                     </p>
                     <h3>📡 Fetch error</h3>

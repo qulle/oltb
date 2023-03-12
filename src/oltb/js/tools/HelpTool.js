@@ -1,15 +1,16 @@
 import { DOM } from '../helpers/browser/DOM';
 import { Toast } from '../common/Toast';
-import { EVENTS } from '../helpers/constants/Events';
+import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { LogManager } from '../core/managers/LogManager';
-import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
+import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
 import { ElementManager } from '../core/managers/ElementManager';
+import { SvgPaths, getIcon } from '../core/icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
-import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 
 const FILENAME = 'tools/HelpTool.js';
-const DEFAULT_OPTIONS = Object.freeze({
+
+const DefaultOptions = Object.freeze({
     url: 'https://github.com/qulle/oltb',
     target: '_blank',
     click: undefined
@@ -22,7 +23,7 @@ class HelpTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.QuestionCircle.Stroked,
+            path: SvgPaths.questionCircle.stroked,
             class: 'oltb-tool-button__icon'
         });
 
@@ -32,7 +33,7 @@ class HelpTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Help (${SHORTCUT_KEYS.Help})`
+                'data-tippy-content': `Help (${ShortcutKeys.helpTool})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -44,13 +45,13 @@ class HelpTool extends Control {
         ]);
 
         this.button = button;
-        this.options = { ...DEFAULT_OPTIONS, ...options };
+        this.options = { ...DefaultOptions, ...options };
 
-        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
     }
 
     onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Help)) {
+        if(isShortcutKeyOnly(event, ShortcutKeys.helpTool)) {
             this.handleClick(event);
         }
     }

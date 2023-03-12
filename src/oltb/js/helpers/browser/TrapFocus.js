@@ -1,10 +1,10 @@
-import { KEYS } from "../constants/Keys";
+import { Keys } from "../constants/Keys";
 
 const FILENAME = 'browser/TrapFocus.js';
 const ELEMENTS = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
 
 const trapFocusKeyListener = function(event) {
-    const isTabKey = event.key.toLowerCase() === KEYS.Tab;
+    const isTabKey = event.key === Keys.valueTab;
     if(!Boolean(isTabKey)) {
         return;
     }

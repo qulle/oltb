@@ -1,14 +1,14 @@
-import { ANIMALS } from './Animals';
-import { ADJECTIVES } from './Adjectives';
+import { Animals } from './Animals';
+import { Adjectives } from './Adjectives';
 import { randomNumber } from '../browser/Random';
 
 const FILENAME = 'name-generator/NameGenerator.js';
 
 const generateAnimalName = function() {
-    const animalIndex    = randomNumber(0, ANIMALS.length    - 1);
-    const adjectiveIndex = randomNumber(0, ADJECTIVES.length - 1);
+    const animalIndex    = randomNumber(0, Animals.length    - 1);
+    const adjectiveIndex = randomNumber(0, Adjectives.length - 1);
 
-    return (`${ADJECTIVES[adjectiveIndex]} ${ANIMALS[animalIndex]}`).capitalize();
+    return (`${Adjectives[adjectiveIndex]} ${Animals[animalIndex]}`).capitalize();
 }
 
 export { generateAnimalName };

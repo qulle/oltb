@@ -1,13 +1,13 @@
-import { FEATURE_PROPERTIES } from "./constants/FeatureProperties";
+import { FeatureProperties } from "./constants/FeatureProperties";
 
 const FILENAME = 'helpers/IsFeatureIntersectable.js';
 
 const isFeatureIntersectable = function(type, geometry) {
     return (
-        type !== FEATURE_PROPERTIES.Type.Marker      && 
-        type !== FEATURE_PROPERTIES.Type.Measurement &&
-        type !== FEATURE_PROPERTIES.Type.WindBarb    && 
-        type !== FEATURE_PROPERTIES.Type.Layer       &&
+        type !== FeatureProperties.type.marker      && 
+        type !== FeatureProperties.type.measurement &&
+        type !== FeatureProperties.type.windBarb    && 
+        type !== FeatureProperties.type.layer       &&
         geometry.getType() !== 'LineString'          &&
         geometry.getType() !== 'Point'
     );

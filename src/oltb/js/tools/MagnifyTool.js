@@ -1,24 +1,26 @@
 import { DOM } from '../helpers/browser/DOM';
+import { Keys } from '../helpers/constants/Keys';
 import { Toast } from '../common/Toast';
-import { EVENTS } from '../helpers/constants/Events';
+import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { unByKey } from 'ol/Observable';
 import { LogManager } from '../core/managers/LogManager';
 import { StateManager } from '../core/managers/StateManager';
-import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
+import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
 import { getRenderPixel } from 'ol/render';
 import { ElementManager } from '../core/managers/ElementManager';
+import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
+import { SvgPaths, getIcon } from '../core/icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
-import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
-import { LOCAL_STORAGE_KEYS } from '../helpers/constants/LocalStorageKeys';
 
 const FILENAME = 'tools/MagnifyTool.js';
-const DEFAULT_OPTIONS = Object.freeze({
+
+const DefaultOptions = Object.freeze({
     click: undefined
 });
 
-const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.MagnifyTool;
-const LOCAL_STORAGE_DEFAULTS = Object.freeze({
+const LocalStorageNodeName = LocalStorageKeys.magnifyTool;
+const LocalStorageDefaults = Object.freeze({
     active: false
 });
 
@@ -29,7 +31,7 @@ class MagnifyTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.Search.Stroked,
+            path: SvgPaths.search.stroked,
             class: 'oltb-tool-button__icon'
         });
 
@@ -39,7 +41,7 @@ class MagnifyTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Magnifier (${SHORTCUT_KEYS.Magnify})`
+                'data-tippy-content': `Magnifier (${ShortcutKeys.magnifyTool})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -52,14 +54,14 @@ class MagnifyTool extends Control {
         
         this.button = button;
         this.radius = 75;
-        this.options = { ...DEFAULT_OPTIONS, ...options };
+        this.options = { ...DefaultOptions, ...options };
 
         // Load stored data from localStorage
-        const localStorageState = StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME);
-        this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
+        const localStorageState = StateManager.getStateObject(LocalStorageNodeName);
+        this.localStorage = { ...LocalStorageDefaults, ...localStorageState };
 
-        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
-        window.addEventListener(EVENTS.Browser.ContentLoaded, this.onDOMContentLoaded.bind(this));
+        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(Events.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
     }
 
     onDOMContentLoaded() {
@@ -69,7 +71,7 @@ class MagnifyTool extends Control {
     }
 
     onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Magnify)) {
+        if(isShortcutKeyOnly(event, ShortcutKeys.magnifyTool)) {
             this.handleClick(event);
         }
     }
@@ -98,24 +100,24 @@ class MagnifyTool extends Control {
         const mapContainer = map.getTarget();
     
         this.onMousemoveListenert = this.onMousemove.bind(this);
-        mapContainer.addEventListener(EVENTS.Browser.MouseMove, this.onMousemoveListenert);
+        mapContainer.addEventListener(Events.browser.mouseMove, this.onMousemoveListenert);
 
         this.onMouseoutListenert = this.onMouseout.bind(this);
-        mapContainer.addEventListener(EVENTS.Browser.MouseOut, this.onMouseoutListenert);
+        mapContainer.addEventListener(Events.browser.mouseOut, this.onMouseoutListenert);
 
         this.onKeydownListener = this.onKeydown.bind(this);
-        document.addEventListener(EVENTS.Browser.KeyDown, this.onKeydownListener);
+        document.addEventListener(Events.browser.keyDown, this.onKeydownListener);
 
         this.onPostrenderListeners = [];
         map.getLayers().getArray().forEach((layer) => {
-            this.onPostrenderListeners.push(layer.on(EVENTS.OpenLayers.PostRender, this.onPostrender.bind(this)));
+            this.onPostrenderListeners.push(layer.on(Events.openLayers.postRender, this.onPostrender.bind(this)));
         });
 
         this.active = true;
         this.button.classList.add('oltb-tool-button--active');
 
         this.localStorage.active = true;
-        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, this.localStorage);
+        StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 
     deActivateTool() {
@@ -127,9 +129,9 @@ class MagnifyTool extends Control {
         const mapContainer = map.getTarget();
 
         // Remove the eventlisteners
-        mapContainer.removeEventListener(EVENTS.Browser.MouseMove, this.onMousemoveListenert);
-        mapContainer.removeEventListener(EVENTS.Browser.MouseOut, this.onMouseoutListenert);
-        document.removeEventListener(EVENTS.Browser.KeyDown, this.onKeydownListener);
+        mapContainer.removeEventListener(Events.browser.mouseMove, this.onMousemoveListenert);
+        mapContainer.removeEventListener(Events.browser.mouseOut, this.onMouseoutListenert);
+        document.removeEventListener(Events.browser.keyDown, this.onKeydownListener);
 
         this.onPostrenderListeners.forEach((listener) => {
             unByKey(listener);
@@ -142,7 +144,7 @@ class MagnifyTool extends Control {
         this.button.classList.remove('oltb-tool-button--active');
 
         this.localStorage.active = false;
-        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, this.localStorage);
+        StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 
     onKeydown(event) {
@@ -154,11 +156,11 @@ class MagnifyTool extends Control {
             return;
         }
         
-        const key = event.key.toLowerCase();
+        const key = event.key;
 
-        if(key === '+') {
+        if(key === Keys.valueAdd) {
             this.radius = Math.min(this.radius + 5, 150);
-        }else if(key === '-') {
+        }else if(key === Keys.valueSubtract) {
             this.radius = Math.max(this.radius - 5, 25);
         }
 

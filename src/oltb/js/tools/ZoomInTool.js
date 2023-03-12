@@ -1,17 +1,18 @@
 import { DOM } from '../helpers/browser/DOM';
-import { CONFIG } from '../core/Config';
-import { EVENTS } from '../helpers/constants/Events';
+import { Config } from '../core/Config';
+import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { toLonLat } from "ol/proj";
 import { goToView } from '../helpers/GoToView';
 import { LogManager } from '../core/managers/LogManager';
-import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
+import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
 import { ElementManager } from '../core/managers/ElementManager';
+import { SvgPaths, getIcon } from '../core/icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
-import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 
 const FILENAME = 'tools/ZoomInTool.js';
-const DEFAULT_OPTIONS = Object.freeze({
+
+const DefaultOptions = Object.freeze({
     click: undefined,
     zoomed: undefined
 });
@@ -23,7 +24,7 @@ class ZoomInTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.ZoomIn.Stroked,
+            path: SvgPaths.zoomIn.stroked,
             class: 'oltb-tool-button__icon'
         });
 
@@ -33,7 +34,7 @@ class ZoomInTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Zoom in (${SHORTCUT_KEYS.ZoomIn})`
+                'data-tippy-content': `Zoom in (${ShortcutKeys.zoomInTool})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -45,14 +46,14 @@ class ZoomInTool extends Control {
         ]);
 
         this.button = button;
-        this.options = { ...DEFAULT_OPTIONS, ...options };
+        this.options = { ...DefaultOptions, ...options };
         this.delta = 1;
 
-        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
     }
 
     onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.ZoomIn)) {
+        if(isShortcutKeyOnly(event, ShortcutKeys.zoomInTool)) {
             this.handleClick(event);
         }
     }
@@ -86,7 +87,7 @@ class ZoomInTool extends Control {
             if(typeof this.options.zoomed === 'function') {
                 this.options.zoomed();
             }
-        }, CONFIG.AnimationDuration.Normal);
+        }, Config.animationDuration.normal);
     }
 }
 

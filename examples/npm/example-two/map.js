@@ -16,10 +16,10 @@ import 'oltb/dist/src/oltb/js/helpers/prototypes/SlideToggle';
 
 // Core Toolbar
 import 'oltb/dist/src/oltb/scss/oltb.scss';
-import { CONFIG } from 'oltb/dist/src/oltb/js/core/Config';
-import { SETTINGS } from 'oltb/dist/src/oltb/js/helpers/constants/Settings';
+import { Config } from 'oltb/dist/src/oltb/js/core/Config';
+import { Settings } from 'oltb/dist/src/oltb/js/helpers/constants/Settings';
 import { ContextMenu } from 'oltb/dist/src/oltb/js/common/ContextMenu';
-import { LOCAL_STORAGE_KEYS } from 'oltb/dist/src/oltb/js/helpers/constants/LocalStorageKeys';
+import { LocalStorageKeys } from 'oltb/dist/src/oltb/js/helpers/constants/LocalStorageKeys';
 
 // Core Managers
 import { LogManager } from 'oltb/dist/src/oltb/js/core/managers/LogManager';
@@ -70,8 +70,8 @@ import { ImportVectorLayerTool } from 'oltb/dist/src/oltb/js/tools/ImportVectorL
 import { HiddenMapNavigationTool } from 'oltb/dist/src/oltb/js/tools/hidden-tools/HiddenMapNavigationTool';
 
 // This is the same NODE_NAME and PROPS that the MapNavigationTool.js is using
-const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.MapData;
-const LOCAL_STORAGE_DEFAULTS = Object.freeze({
+const LocalStorageNodeName = LocalStorageKeys.mapData;
+const LocalStorageDefaults = Object.freeze({
     lon: 18.1201,
     lat: 35.3518,
     zoom: 3,
@@ -96,8 +96,8 @@ BootstrapManager.init([
 ]);
 
 // Load stored data from localStorage
-const LOCAL_STORAGE_STATE = StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME);
-const LOCAL_STORAGE = { ...LOCAL_STORAGE_DEFAULTS, ...LOCAL_STORAGE_STATE };
+const LocalStorageState = StateManager.getStateObject(LocalStorageNodeName);
+const LocalStorage = { ...LocalStorageDefaults, ...LocalStorageState };
 
 const map = new Map({
     interactions: defaultInterctions({
@@ -110,7 +110,7 @@ const map = new Map({
             condition: function(event) { 
                 return (
                     platformModifierKeyOnly(event) || 
-                    SettingsManager.getSetting(SETTINGS.MouseWheelZoom)
+                    SettingsManager.getSetting(Settings.mouseWheelZoom)
                 ); 
             }
         }),
@@ -118,7 +118,7 @@ const map = new Map({
             condition: function(event) {
                 return (
                     altShiftKeysOnly(event) && 
-                    SettingsManager.getSetting(SETTINGS.AltShiftDragRotate)
+                    SettingsManager.getSetting(Settings.altShiftDragRotate)
                 );
             }
         }),
@@ -127,7 +127,7 @@ const map = new Map({
                 return (
                     (
                         platformModifierKeyOnly(event) || 
-                        SettingsManager.getSetting(SETTINGS.DragPan)
+                        SettingsManager.getSetting(Settings.dragPan)
                     ) && !altShiftKeysOnly(event) && !shiftKeyOnly(event)
                 );
             }
@@ -135,7 +135,7 @@ const map = new Map({
         new KeyboardZoom({
             condition: function(event) {
                 return (
-                    SettingsManager.getSetting(SETTINGS.KeyboardZoom) && 
+                    SettingsManager.getSetting(Settings.keyboardZoom) && 
                     targetNotEditable(event)
                 );
             }
@@ -143,7 +143,7 @@ const map = new Map({
         new KeyboardPan({
             condition: function(event) {
                 return (
-                    SettingsManager.getSetting(SETTINGS.KeyboardPan) && 
+                    SettingsManager.getSetting(Settings.keyboardPan) && 
                     targetNotEditable(event)
                 );
             }
@@ -480,15 +480,15 @@ const map = new Map({
         new HiddenAboutTool(),
         new ContextMenu()
     ]),
-    target: MAP_ELEMENT,
+    target: ElementManager.getMapElement(),
     view: new View({
-        projection: getProjection(CONFIG.Projection.Default),
+        projection: getProjection(Config.projection.default),
         center: fromLonLat([
-            LOCAL_STORAGE.lon,
-            LOCAL_STORAGE.lat
-        ], CONFIG.Projection.Default),
-        zoom: LOCAL_STORAGE.zoom,
-        rotation: LOCAL_STORAGE.rotation
+            LocalStorage.lon,
+            LocalStorage.lat
+        ], Config.projection.default),
+        zoom: LocalStorage.zoom,
+        rotation: LocalStorage.rotation
     })
 });
 

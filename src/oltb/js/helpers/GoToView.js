@@ -1,4 +1,4 @@
-import { CONFIG } from "../core/Config";
+import { Config } from "../core/Config";
 import { easeOut } from 'ol/easing';
 import { fromLonLat } from "ol/proj";
 
@@ -19,7 +19,7 @@ const goToView = function (map, coordinates, zoom, rotation) {
         rotation: rotation,
         center: fromLonLat(coordinates),
         zoom: zoom,
-        duration: CONFIG.AnimationDuration.Normal,
+        duration: Config.animationDuration.normal,
         easing: easeOut
     });
 }

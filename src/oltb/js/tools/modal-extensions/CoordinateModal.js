@@ -4,7 +4,8 @@ import { isDarkTheme } from '../../helpers/IsDarkTheme';
 
 const FILENAME = 'modal-extensions/CoordinateModal.js';
 const ID_PREFIX = 'oltb-coordinates-modal';
-const DEFAULT_OPTIONS = Object.freeze({
+
+const DefaultOptions = Object.freeze({
     maximized: false,
     onClose: undefined,
     onNavigate: undefined,
@@ -15,7 +16,7 @@ class CoordinateModal extends ModalBase {
     constructor(options = {}) {
         super('Coordinates', options.maximized, options.onClose);
         
-        this.options = { ...DEFAULT_OPTIONS, ...options };
+        this.options = { ...DefaultOptions, ...options };
         this.#createModal();
     }
 

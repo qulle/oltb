@@ -1,37 +1,37 @@
 import tippy from 'tippy.js';
 import { DOM } from '../helpers/browser/DOM';
-import { KEYS } from '../helpers/constants/Keys';
+import { Keys } from '../helpers/constants/Keys';
 import { Toast } from '../common/Toast';
-import { CONFIG } from '../core/Config';
+import { Config } from '../core/Config';
 import { Dialog } from '../common/Dialog';
-import { EVENTS } from '../helpers/constants/Events';
+import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { goToView } from '../helpers/GoToView';
-import { transform } from 'ol/proj';
+import { toLonLat, transform } from 'ol/proj';
 import { LogManager } from '../core/managers/LogManager';
 import { ContextMenu } from '../common/ContextMenu';
 import { toStringHDMS } from 'ol/coordinate';
-import { StateManager } from '../core/managers/StateManager';
 import { randomNumber } from '../helpers/browser/Random';
-import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
+import { StateManager } from '../core/managers/StateManager';
+import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
 import { ElementManager } from '../core/managers/ElementManager';
 import { copyToClipboard } from '../helpers/browser/CopyToClipboard';
+import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
+import { SvgPaths, getIcon } from '../core/icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
-import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
-import { LOCAL_STORAGE_KEYS } from '../helpers/constants/LocalStorageKeys';
 import { generateAnimalName } from '../helpers/name-generator/NameGenerator';
 
 const FILENAME = 'tools/BookmarkTool.js';
 const BOOKMARK_BUTTON_DEFAULT_CLASSES = 'oltb-func-btn';
 const ID_PREFIX = 'oltb-bookmark';
 
-const DEFAULT_OPTIONS = Object.freeze({
+const DefaultOptions = Object.freeze({
     storeDataInLocalStorage: false,
     bookmarks: []
 });
 
-const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.BookmarkTool;
-const LOCAL_STORAGE_DEFAULTS = Object.freeze({
+const LocalStorageNodeName = LocalStorageKeys.bookmarkTool;
+const LocalStorageDefaults = Object.freeze({
     active: false,
     collapsed: false,
     bookmarks: [],
@@ -50,12 +50,12 @@ class BookmarkTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.BookmarkStar.Stroked,
+            path: SvgPaths.bookmarkStar.stroked,
             class: 'oltb-tool-button__icon'
         });
 
         const clearBookmarksIcon = getIcon({
-            path: SVG_PATHS.BookmarkX.Stroked
+            path: SvgPaths.bookmarkX.stroked
         });
 
         const button = DOM.createElement({
@@ -64,7 +64,7 @@ class BookmarkTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Bookmarks (${SHORTCUT_KEYS.Bookmark})`
+                'data-tippy-content': `Bookmarks (${ShortcutKeys.bookmarkTool})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -77,11 +77,11 @@ class BookmarkTool extends Control {
         
         this.button = button;
         this.active = false;
-        this.options = { ...DEFAULT_OPTIONS, ...options };
+        this.options = { ...DefaultOptions, ...options };
         
         // Load stored data from localStorage
-        const localStorageState = StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME);
-        this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
+        const localStorageState = StateManager.getStateObject(LocalStorageNodeName);
+        this.localStorage = { ...LocalStorageDefaults, ...localStorageState };
 
         const toolboxElement = ElementManager.getToolboxElement();
         toolboxElement.insertAdjacentHTML('beforeend', `
@@ -98,7 +98,7 @@ class BookmarkTool extends Control {
                             <input type="text" id="${ID_PREFIX}-add-text" class="oltb-input" placeholder="Bookmark name">
                             <button type="button" id="${ID_PREFIX}-add-button" class="oltb-btn oltb-btn--green-mid oltb-tippy" title="Add Bookmark">
                                 ${getIcon({
-                                    path: SVG_PATHS.Plus.Stroked,
+                                    path: SvgPaths.plus.stroked,
                                     width: 20,
                                     height: 20,
                                     fill: 'none',
@@ -121,12 +121,12 @@ class BookmarkTool extends Control {
         this.addBookmarkButton = this.bookmarkToolbox.querySelector(`#${ID_PREFIX}-add-button`);
         this.addBookmarkText = this.bookmarkToolbox.querySelector(`#${ID_PREFIX}-add-text`);
 
-        this.addBookmarkButton.addEventListener(EVENTS.Browser.Click, this.onBookmarkAdd.bind(this));
-        this.addBookmarkText.addEventListener(EVENTS.Browser.KeyUp, this.onBookmarkAdd.bind(this));
+        this.addBookmarkButton.addEventListener(Events.browser.click, this.onBookmarkAdd.bind(this));
+        this.addBookmarkText.addEventListener(Events.browser.keyUp, this.onBookmarkAdd.bind(this));
 
         const toggleableTriggers = this.bookmarkToolbox.querySelectorAll('.oltb-toggleable');
         toggleableTriggers.forEach((toggle) => {
-            toggle.addEventListener(EVENTS.Browser.Click, this.onToggleToolbox.bind(this, toggle));
+            toggle.addEventListener(Events.browser.click, this.onToggleToolbox.bind(this, toggle));
         });
 
         // Add all bookmarks that is passed through constructor
@@ -151,16 +151,16 @@ class BookmarkTool extends Control {
             fn: this.onContextMenuBookmarksClear.bind(this)
         });
 
-        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
-        window.addEventListener(EVENTS.Custom.SettingsCleared, this.onWindowSettingsCleared.bind(this));
-        window.addEventListener(EVENTS.Browser.ContentLoaded, this.onDOMContentLoaded.bind(this));
+        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(Events.custom.settingsCleared, this.onWindowSettingsCleared.bind(this));
+        window.addEventListener(Events.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
     }
 
     onToggleToolbox(toggle) {
         const targetName = toggle.dataset.oltbToggleableTarget;
-        document.getElementById(targetName)?.slideToggle(CONFIG.AnimationDuration.Fast, (collapsed) => {
+        document.getElementById(targetName)?.slideToggle(Config.animationDuration.fast, (collapsed) => {
             this.localStorage.collapsed = collapsed;
-            StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, this.localStorage);
+            StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
         });
     }
 
@@ -185,26 +185,26 @@ class BookmarkTool extends Control {
                 Toast.info({
                     title: 'Cleared',
                     message: "All stored bookmarks was cleared", 
-                    autoremove: CONFIG.AutoRemovalDuation.Normal
+                    autoremove: Config.autoRemovalDuation.normal
                 });
             }
         });
     }
 
     onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Bookmark)) {
+        if(isShortcutKeyOnly(event, ShortcutKeys.bookmarkTool)) {
             this.handleClick(event);
         }
     }
 
     onWindowSettingsCleared() {
-        this.localStorage = { ...LOCAL_STORAGE_DEFAULTS };
+        this.localStorage = { ...LocalStorageDefaults };
     }
 
     onBookmarkAdd(event) {
         if(
-            event.type === EVENTS.Browser.KeyUp && 
-            event.key.toLowerCase() !== KEYS.Enter
+            event.type === Events.browser.keyUp && 
+            event.key !== Keys.valueEnter
         ) {
             return;
         }
@@ -234,7 +234,7 @@ class BookmarkTool extends Control {
         this.button.classList.add('oltb-tool-button--active');
 
         this.localStorage.active = true;
-        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, this.localStorage);
+        StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 
     deActivateTool() {
@@ -243,7 +243,7 @@ class BookmarkTool extends Control {
         this.button.classList.remove('oltb-tool-button--active');
 
         this.localStorage.active = false;
-        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, this.localStorage);
+        StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 
     addBookmark(bookmarkName) {
@@ -254,7 +254,7 @@ class BookmarkTool extends Control {
 
         const view = map.getView();
         const zoom = view.getZoom();
-        const location = view.getCenter();
+        const location = toLonLat(view.getCenter());
 
         if(!Boolean(bookmarkName)) {
             bookmarkName = generateAnimalName();
@@ -271,7 +271,7 @@ class BookmarkTool extends Control {
 
         if(Boolean(this.options.storeDataInLocalStorage)) {
             this.localStorage.bookmarks.push(bookmark);
-            StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, this.localStorage);
+            StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
         }        
 
         this.createBookmark(bookmark);
@@ -280,7 +280,7 @@ class BookmarkTool extends Control {
             Toast.success({
                 title: 'New bookmark',
                 message: `A new bookmark created <strong>${bookmarkName}</strong>`, 
-                autoremove: CONFIG.AutoRemovalDuation.Normal
+                autoremove: Config.autoRemovalDuation.normal
             });
         }
 
@@ -291,7 +291,7 @@ class BookmarkTool extends Control {
     }
 
     clearBookmarks() {
-        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, LOCAL_STORAGE_DEFAULTS);
+        StateManager.setStateObject(LocalStorageNodeName, LocalStorageDefaults);
         this.bookmarkStack.innerHTML = '';
 
         // User defined callback from constructor
@@ -425,8 +425,8 @@ class BookmarkTool extends Control {
     coopyBookmarkCoordinates(bookmark) {
         const coordinates = transform(
             bookmark.location, 
-            CONFIG.Projection.Default, 
-            CONFIG.Projection.WGS84
+            Config.projection.default, 
+            Config.projection.wgs84
         );
 
         const prettyCoordinates = toStringHDMS(coordinates);
@@ -436,7 +436,7 @@ class BookmarkTool extends Control {
                 Toast.success({
                     title: 'Copied',
                     message: 'Coordinates copied to clipboard', 
-                    autoremove: CONFIG.AutoRemovalDuation.Normal
+                    autoremove: Config.autoRemovalDuation.normal
                 });
             })
             .catch((error) => {
@@ -466,7 +466,7 @@ class BookmarkTool extends Control {
                     return item.id !== bookmark.id;
                 });
 
-                StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, this.localStorage);
+                StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
 
                 // User defined callback from constructor
                 if(typeof this.options.removed === 'function') {
@@ -488,7 +488,7 @@ class BookmarkTool extends Control {
                     bookmarkName.innerText = result.ellipsis(20);
                     bookmarkName._tippy.setContent(result);
 
-                    StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, this.localStorage);
+                    StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
 
                     // User defined callback from constructor
                     if(typeof this.options.renamed === 'function') {

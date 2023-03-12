@@ -11,11 +11,11 @@ import './helpers/prototypes/SlideToggle';
 import '../scss/oltb.scss';
 import { Toast } from './common/Toast';
 import { Modal } from './common/Modal';
+import { Config } from './core/Config';
 import { Dialog } from './common/Dialog';
-import { CONFIG } from './core/Config';
-import { SETTINGS } from './helpers/constants/Settings';
+import { Settings } from './helpers/constants/Settings';
 import { ContextMenu } from './common/ContextMenu';
-import { LOCAL_STORAGE_KEYS } from './helpers/constants/LocalStorageKeys';
+import { LocalStorageKeys } from './helpers/constants/LocalStorageKeys';
 
 // Core Managers
 import { LogManager } from './core/managers/LogManager';
@@ -39,11 +39,11 @@ import { generateTooltip } from './generators/GenerateTooltip';
 import { generateWindBarb } from './generators/generateWindBarb';
 
 // Toolbar tools
-import { ALL_TOOLS } from './tools/index';
+import { AllTools } from './tools/index';
 
 // This is the same NODE_NAME and PROPS that the MapNavigationTool.js is using
-const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.MapData;
-const LOCAL_STORAGE_DEFAULTS = Object.freeze({
+const LocalStorageNodeName = LocalStorageKeys.mapData;
+const LocalStorageDefaults = Object.freeze({
     lon: 18.1201,
     lat: 35.3518,
     zoom: 3,
@@ -54,7 +54,7 @@ class OLTB {
     #tools = {};
     #localStorage = {};
 
-    static CONFIG = CONFIG;
+    static Config = Config;
 
     static LogManager = LogManager;
     static StateManager = StateManager;
@@ -97,13 +97,13 @@ class OLTB {
         ]);
 
         // Load stored data from localStorage
-        const localStorageState = StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME);
-        this.#localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
+        const localStorageState = StateManager.getStateObject(LocalStorageNodeName);
+        this.#localStorage = { ...LocalStorageDefaults, ...localStorageState };
 
         // Tools that should be added
         const tools = options.tools && Object.keys(options.tools).length 
             ? options.tools 
-            : ALL_TOOLS;
+            : AllTools;
 
         // Create tool instances
         Object.entries(tools).forEach((entry) => {
@@ -114,8 +114,8 @@ class OLTB {
                 ? value 
                 : {};
 
-            if(ALL_TOOLS.hasOwnProperty(toolName)) {
-                this.#tools[toolName] = new ALL_TOOLS[toolName](toolParameters);
+            if(AllTools.hasOwnProperty(toolName)) {
+                this.#tools[toolName] = new AllTools[toolName](toolParameters);
             }
         });
 
@@ -140,7 +140,7 @@ class OLTB {
                 condition: function(event) { 
                     return (
                         platformModifierKeyOnly(event) || 
-                        SettingsManager.getSetting(SETTINGS.MouseWheelZoom)
+                        SettingsManager.getSetting(Settings.mouseWheelZoom)
                     ); 
                 }
             }),
@@ -148,7 +148,7 @@ class OLTB {
                 condition: function(event) {
                     return (
                         altShiftKeysOnly(event) && 
-                        SettingsManager.getSetting(SETTINGS.AltShiftDragRotate)
+                        SettingsManager.getSetting(Settings.altShiftDragRotate)
                     );
                 }
             }),
@@ -157,7 +157,7 @@ class OLTB {
                     return (
                         (
                             platformModifierKeyOnly(event) || 
-                            SettingsManager.getSetting(SETTINGS.DragPan)
+                            SettingsManager.getSetting(Settings.dragPan)
                         ) && !altShiftKeysOnly(event) && !shiftKeyOnly(event)
                     );
                 }
@@ -165,7 +165,7 @@ class OLTB {
             new KeyboardZoom({
                 condition: function(event) {
                     return (
-                        SettingsManager.getSetting(SETTINGS.KeyboardZoom) && 
+                        SettingsManager.getSetting(Settings.keyboardZoom) && 
                         targetNotEditable(event)
                     );
                 }
@@ -173,7 +173,7 @@ class OLTB {
             new KeyboardPan({
                 condition: function(event) {
                     return (
-                        SettingsManager.getSetting(SETTINGS.KeyboardPan) && 
+                        SettingsManager.getSetting(Settings.keyboardPan) && 
                         targetNotEditable(event)
                     );
                 }
@@ -184,7 +184,7 @@ class OLTB {
         const coordinates = fromLonLat([
             this.#localStorage.lon,
             this.#localStorage.lat
-        ], CONFIG.Projection.Default);
+        ], Config.projection.default);
 
         view.setCenter(coordinates);
         view.setZoom(this.#localStorage.zoom);

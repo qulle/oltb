@@ -1,18 +1,19 @@
 import { DOM } from '../helpers/browser/DOM';
 import { Stroke } from 'ol/style';
-import { EVENTS } from '../helpers/constants/Events';
+import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { Graticule } from 'ol/layer';
 import { LogManager } from '../core/managers/LogManager';
 import { StateManager } from '../core/managers/StateManager';
-import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
+import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
 import { ElementManager } from '../core/managers/ElementManager';
+import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
+import { SvgPaths, getIcon } from '../core/icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
-import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
-import { LOCAL_STORAGE_KEYS } from '../helpers/constants/LocalStorageKeys';
 
 const FILENAME = 'tools/GraticuleTool.js';
-const DEFAULT_OPTIONS = Object.freeze({
+
+const DefaultOptions = Object.freeze({
     color: 'rgba(59, 67, 82, 0.9)',
     dashed: true,
     width: 2,
@@ -21,8 +22,8 @@ const DEFAULT_OPTIONS = Object.freeze({
     click: undefined
 });
 
-const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.GraticuleTool;
-const LOCAL_STORAGE_DEFAULTS = Object.freeze({
+const LocalStorageNodeName = LocalStorageKeys.graticuleTool;
+const LocalStorageDefaults = Object.freeze({
     active: false
 });
 
@@ -33,7 +34,7 @@ class GraticuleTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.Globe.Stroked,
+            path: SvgPaths.globe.stroked,
             class: 'oltb-tool-button__icon'
         });
 
@@ -43,7 +44,7 @@ class GraticuleTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Show graticule (${SHORTCUT_KEYS.Graticule})`
+                'data-tippy-content': `Show graticule (${ShortcutKeys.graticuleTool})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -56,11 +57,11 @@ class GraticuleTool extends Control {
         
         this.button = button;
         this.active = false;
-        this.options = { ...DEFAULT_OPTIONS, ...options };
+        this.options = { ...DefaultOptions, ...options };
 
         // Load stored data from localStorage
-        const localStorageState = StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME);
-        this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
+        const localStorageState = StateManager.getStateObject(LocalStorageNodeName);
+        this.localStorage = { ...LocalStorageDefaults, ...localStorageState };
         
         this.graticule = new Graticule({
             strokeStyle: new Stroke({
@@ -73,8 +74,8 @@ class GraticuleTool extends Control {
             wrapX: this.options.wrapX,
         });
 
-        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
-        window.addEventListener(EVENTS.Browser.ContentLoaded, this.onDOMContentLoaded.bind(this));
+        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(Events.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
     }
 
     onDOMContentLoaded() {
@@ -84,7 +85,7 @@ class GraticuleTool extends Control {
     }
 
     onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Graticule)) {
+        if(isShortcutKeyOnly(event, ShortcutKeys.graticuleTool)) {
             this.handleClick(event);
         }
     }    
@@ -116,7 +117,7 @@ class GraticuleTool extends Control {
         this.button.classList.add('oltb-tool-button--active');
 
         this.localStorage.active = true;
-        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, this.localStorage);
+        StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 
     deActivateTool() {
@@ -126,7 +127,7 @@ class GraticuleTool extends Control {
         this.button.classList.remove('oltb-tool-button--active');
 
         this.localStorage.active = false;
-        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, this.localStorage);
+        StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 }
 

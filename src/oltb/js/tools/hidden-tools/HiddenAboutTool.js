@@ -1,9 +1,9 @@
 import { Modal } from '../../common/Modal';
-import { CONFIG } from '../../core/Config';
+import { Config } from '../../core/Config';
 import { Control } from 'ol/control';
 import { ContextMenu } from '../../common/ContextMenu';
 import { ElementManager } from '../../core/managers/ElementManager';
-import { SVG_PATHS, getIcon } from '../../core/icons/GetIcon';
+import { SvgPaths, getIcon } from '../../core/icons/GetIcon';
 
 const FILENAME = 'hidden-tools/HiddenAboutTool.js';
 
@@ -14,7 +14,7 @@ class HiddenAboutTool extends Control {
         });
 
         const icon = getIcon({
-            path: SVG_PATHS.GitHub.Mixed
+            path: SvgPaths.gitHub.mixed
         });
 
         this.aboutInfoModal = undefined;
@@ -33,9 +33,9 @@ class HiddenAboutTool extends Control {
         }
 
         const content = (`
-            <p>Version ${CONFIG.Version}</p>
+            <p>Version ${Config.toolbar.version}</p>
             <p>Developed by Qulle <a href="//github.com/qulle/oltb" target="_blank" class="oltb-link">github.com/qulle/oltb</a></p>
-            <p>Using OpenLayers <a href="//openlayers.org/en/v${CONFIG.OpenLayers.Version}/apidoc/" target="_blank" class="oltb-link">${CONFIG.OpenLayers.Version}</a></p>
+            <p>Using OpenLayers <a href="//openlayers.org/en/v${Config.openLayers.version}/apidoc/" target="_blank" class="oltb-link">${Config.openLayers.version}</a></p>
         `);
 
         this.aboutInfoModal = Modal.create({

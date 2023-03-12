@@ -1,23 +1,23 @@
 import { DOM } from '../helpers/browser/DOM';
 import { Draw } from 'ol/interaction';
-import { KEYS } from '../helpers/constants/Keys';
+import { Keys } from '../helpers/constants/Keys';
 import { Toast } from '../common/Toast';
-import { CONFIG } from '../core/Config';
-import { EVENTS } from '../helpers/constants/Events';
+import { Config } from '../core/Config';
+import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
-import { SETTINGS } from '../helpers/constants/Settings';
+import { Settings } from '../helpers/constants/Settings';
 import { LogManager } from '../core/managers/LogManager';
 import { ToolManager } from '../core/managers/ToolManager';
 import { StateManager } from '../core/managers/StateManager';
 import { LayerManager } from '../core/managers/LayerManager';
-import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
+import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
 import { ElementManager } from '../core/managers/ElementManager';
 import { SettingsManager } from '../core/managers/SettingsManager';
 import { eventDispatcher } from '../helpers/browser/EventDispatcher';
+import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
+import { SvgPaths, getIcon } from '../core/icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
-import { FEATURE_PROPERTIES } from '../helpers/constants/FeatureProperties';
-import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
-import { LOCAL_STORAGE_KEYS } from '../helpers/constants/LocalStorageKeys';
+import { FeatureProperties } from '../helpers/constants/FeatureProperties';
 import { LinearRing, Polygon } from 'ol/geom';
 import { isFeatureIntersectable } from '../helpers/IsFeatureIntersectable';
 import { Fill, Stroke, Circle, Style } from 'ol/style';
@@ -25,7 +25,8 @@ import { createBox, createRegularPolygon } from 'ol/interaction/Draw';
 
 const FILENAME = 'tools/DrawTool.js';
 const ID_PREFIX = 'oltb-draw';
-const DEFAULT_OPTIONS = Object.freeze({
+
+const DefaultOptions = Object.freeze({
     click: undefined,
     start: undefined,
     end: undefined,
@@ -34,8 +35,8 @@ const DEFAULT_OPTIONS = Object.freeze({
     intersected: undefined
 });
 
-const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.DrawTool;
-const LOCAL_STORAGE_DEFAULTS = Object.freeze({
+const LocalStorageNodeName = LocalStorageKeys.drawTool;
+const LocalStorageDefaults = Object.freeze({
     active: false,
     collapsed: false,
     toolTypeIndex: 5,
@@ -51,7 +52,7 @@ class DrawTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.VectorPen.Mixed,
+            path: SvgPaths.vectorPen.mixed,
             class: 'oltb-tool-button__icon'
         });
 
@@ -61,7 +62,7 @@ class DrawTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Draw (${SHORTCUT_KEYS.Draw})`
+                'data-tippy-content': `Draw (${ShortcutKeys.drawTool})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -75,11 +76,11 @@ class DrawTool extends Control {
         this.button = button;
         this.active = false;
         this.intersectedFeatures = [];
-        this.options = { ...DEFAULT_OPTIONS, ...options };
+        this.options = { ...DefaultOptions, ...options };
 
         // Load stored data from localStorage
-        const localStorageState = StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME);
-        this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
+        const localStorageState = StateManager.getStateObject(LocalStorageNodeName);
+        this.localStorage = { ...LocalStorageDefaults, ...localStorageState };
 
         const toolboxElement = ElementManager.getToolboxElement();
         toolboxElement.insertAdjacentHTML('beforeend', `
@@ -147,38 +148,38 @@ class DrawTool extends Control {
 
         const toggleableTriggers = this.drawToolbox.querySelectorAll('.oltb-toggleable');
         toggleableTriggers.forEach((toggle) => {
-            toggle.addEventListener(EVENTS.Browser.Click, this.onToggleToolbox.bind(this, toggle));
+            toggle.addEventListener(Events.browser.click, this.onToggleToolbox.bind(this, toggle));
         });
 
         this.toolType = this.drawToolbox.querySelector(`#${ID_PREFIX}-type`);
-        this.toolType.addEventListener(EVENTS.Browser.Change, this.updateTool.bind(this));
+        this.toolType.addEventListener(Events.browser.change, this.updateTool.bind(this));
 
         this.intersectionEnable = this.drawToolbox.querySelector(`#${ID_PREFIX}-intersection-enable`);
-        this.intersectionEnable.addEventListener(EVENTS.Browser.Change, this.updateTool.bind(this));
+        this.intersectionEnable.addEventListener(Events.browser.change, this.updateTool.bind(this));
 
         this.fillColor = this.drawToolbox.querySelector(`#${ID_PREFIX}-fill-color`);
-        this.fillColor.addEventListener(EVENTS.Custom.ColorChange, this.updateTool.bind(this));
+        this.fillColor.addEventListener(Events.custom.colorChange, this.updateTool.bind(this));
 
         this.strokeWidth = this.drawToolbox.querySelector(`#${ID_PREFIX}-stroke-width`);
-        this.strokeWidth.addEventListener(EVENTS.Browser.Change, this.updateTool.bind(this));
+        this.strokeWidth.addEventListener(Events.browser.change, this.updateTool.bind(this));
 
         this.strokeColor = this.drawToolbox.querySelector(`#${ID_PREFIX}-stroke-color`);
-        this.strokeColor.addEventListener(EVENTS.Custom.ColorChange, this.updateTool.bind(this));
+        this.strokeColor.addEventListener(Events.custom.colorChange, this.updateTool.bind(this));
 
         // Set default selected values
         this.toolType.selectedIndex = this.localStorage.toolTypeIndex;
         this.strokeWidth.selectedIndex  = this.localStorage.strokeWidthIndex;
 
-        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
-        window.addEventListener(EVENTS.Custom.SettingsCleared, this.onWindowSettingsCleared.bind(this));
-        window.addEventListener(EVENTS.Browser.ContentLoaded, this.onDOMContentLoaded.bind(this));
+        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(Events.custom.settingsCleared, this.onWindowSettingsCleared.bind(this));
+        window.addEventListener(Events.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
     }
 
     onToggleToolbox(toggle) {
         const targetName = toggle.dataset.oltbToggleableTarget;
-        document.getElementById(targetName)?.slideToggle(CONFIG.AnimationDuration.Fast, (collapsed) => {
+        document.getElementById(targetName)?.slideToggle(Config.animationDuration.fast, (collapsed) => {
             this.localStorage.collapsed = collapsed;
-            StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, this.localStorage);
+            StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
         });
     }
 
@@ -193,24 +194,24 @@ class DrawTool extends Control {
     }
 
     onWindowKeyUp(event) {
-        const key = event.key.toLowerCase();
+        const key = event.key;
 
-        if(key === KEYS.Escape) {
+        if(key === Keys.valueEscape) {
             if(Boolean(this.interaction)) {
                 this.interaction.abortDrawing();
             }
-        }else if(Boolean(event.ctrlKey) && key === KEYS.Z) {
+        }else if(Boolean(event.ctrlKey) && key === Keys.valueZ) {
             if(Boolean(this.interaction)) {
                 this.interaction.removeLastPoint();
             }
-        }else if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Draw)) {
+        }else if(isShortcutKeyOnly(event, ShortcutKeys.drawTool)) {
             this.handleClick(event);
         }
     }
 
     onWindowSettingsCleared() {
         // Update runtime copy of localStorage to default
-        this.localStorage = { ...LOCAL_STORAGE_DEFAULTS };
+        this.localStorage = { ...LocalStorageDefaults };
 
         // Rest UI components
         this.fillColor.setAttribute('data-oltb-color', this.localStorage.fillColor);
@@ -232,7 +233,7 @@ class DrawTool extends Control {
         this.localStorage.fillColor = this.fillColor.getAttribute('data-oltb-color');
         this.localStorage.strokeColor = this.strokeColor.getAttribute('data-oltb-color');;
 
-        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, this.localStorage);
+        StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
 
         // IntersectionMode doesn't play well when tool is LineString or Point
         if(
@@ -280,15 +281,15 @@ class DrawTool extends Control {
 
         ToolManager.setActiveTool(this);
 
-        if(SettingsManager.getSetting(SETTINGS.AlwaysNewLayers)) {
+        if(SettingsManager.getSetting(Settings.alwaysNewLayers)) {
             LayerManager.addFeatureLayer('Drawing layer');
         }
 
         // Triggers activation of the tool
-        eventDispatcher([this.toolType], EVENTS.Browser.Change);
+        eventDispatcher([this.toolType], Events.browser.change);
 
         this.localStorage.active = true;
-        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, this.localStorage);
+        StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 
     deActivateTool() {
@@ -307,7 +308,7 @@ class DrawTool extends Control {
         ToolManager.removeActiveTool();
 
         this.localStorage.active = false;
-        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, this.localStorage);
+        StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 
     selectDraw(toolType, strokeWidth, fillColor, strokeColor) {
@@ -363,10 +364,10 @@ class DrawTool extends Control {
 
         map.addInteraction(this.interaction);
 
-        this.interaction.on(EVENTS.OpenLayers.DrawStart, this.onDrawStart.bind(this));
-        this.interaction.on(EVENTS.OpenLayers.DrawEnd, this.onDrawEnd.bind(this));
-        this.interaction.on(EVENTS.OpenLayers.DrawAbort, this.onDrawAbort.bind(this));
-        this.interaction.on(EVENTS.OpenLayers.Error, this.onDrawError.bind(this));
+        this.interaction.on(Events.openLayers.drawStart, this.onDrawStart.bind(this));
+        this.interaction.on(Events.openLayers.drawEnd, this.onDrawEnd.bind(this));
+        this.interaction.on(Events.openLayers.drawAbort, this.onDrawAbort.bind(this));
+        this.interaction.on(Events.openLayers.error, this.onDrawError.bind(this));
     }
 
     onDrawStart(event) {
@@ -394,7 +395,7 @@ class DrawTool extends Control {
             Toast.info({
                 title: 'Tip',
                 message: 'You are drawing in a hidden layer', 
-                autoremove: CONFIG.AutoRemovalDuation.Normal
+                autoremove: Config.autoRemovalDuation.normal
             });
         }
     }
@@ -405,7 +406,7 @@ class DrawTool extends Control {
         feature.setStyle(this.style);
         feature.setProperties({
             oltb: {
-                type: FEATURE_PROPERTIES.Type.Drawing
+                type: FeatureProperties.type.drawing
             }
         });
 
@@ -443,7 +444,7 @@ class DrawTool extends Control {
             Toast.info({
                 title: 'Oops',
                 message: 'No intersecting objects found', 
-                autoremove: CONFIG.AutoRemovalDuation.Normal
+                autoremove: Config.autoRemovalDuation.normal
             });
         }
 

@@ -1,15 +1,16 @@
 import { DOM } from '../helpers/browser/DOM';
 import { Modal } from '../common/Modal';
-import { EVENTS } from '../helpers/constants/Events';
+import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { LogManager } from '../core/managers/LogManager';
-import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
+import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
 import { ElementManager } from '../core/managers/ElementManager';
+import { SvgPaths, getIcon } from '../core/icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
-import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 
 const FILENAME = 'tools/InfoTool.js';
-const DEFAULT_OPTIONS = Object.freeze({
+
+const DefaultOptions = Object.freeze({
     title: 'Hey!',
     content: 'This is the default content, try adding some content of your own.',
     click: undefined
@@ -22,7 +23,7 @@ class InfoTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.InfoCircle.Stroked,
+            path: SvgPaths.infoCircle.stroked,
             class: 'oltb-tool-button__icon'
         });
 
@@ -32,7 +33,7 @@ class InfoTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Info (${SHORTCUT_KEYS.Info})`
+                'data-tippy-content': `Info (${ShortcutKeys.infoTool})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -45,13 +46,13 @@ class InfoTool extends Control {
 
         this.button = button;
         this.infoModal = undefined;
-        this.options = { ...DEFAULT_OPTIONS, ...options };
+        this.options = { ...DefaultOptions, ...options };
 
-        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
     }
 
     onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Info)) {
+        if(isShortcutKeyOnly(event, ShortcutKeys.infoTool)) {
             this.handleClick(event);
         }
     }    

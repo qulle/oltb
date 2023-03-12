@@ -1,8 +1,8 @@
 import { DOM } from '../../helpers/browser/DOM';
-import { KEYS } from '../../helpers/constants/Keys';
-import { EVENTS } from '../../helpers/constants/Events';
+import { Keys } from '../../helpers/constants/Keys';
+import { Events } from '../../helpers/constants/Events';
 import { ElementManager } from '../../core/managers/ElementManager';
-import { SVG_PATHS, getIcon } from '../../core/icons/GetIcon';
+import { SvgPaths, getIcon } from '../../core/icons/GetIcon';
 import { trapFocusKeyListener } from '../../helpers/browser/TrapFocus';
 
 const FILENAME = 'modals/ModalBase.js';
@@ -48,7 +48,7 @@ class ModalBase {
         const modalClose = DOM.createElement({
             element: 'button', 
             html: getIcon({
-                path: SVG_PATHS.Close.Stroked, 
+                path: SvgPaths.close.stroked, 
                 fill: 'none', 
                 stroke: 'currentColor'
             }),
@@ -74,11 +74,11 @@ class ModalBase {
             this.modal
         ]);
 
-        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
     }
 
     onWindowKeyUp(event) {
-        if(event.key.toLowerCase() === KEYS.Escape) {
+        if(event.key === Keys.valueEscape) {
             this.close();
         }
     }
@@ -110,7 +110,7 @@ class ModalBase {
     }
 
     close() {
-        this.backdrop.removeEventListener(EVENTS.Browser.KeyDown, trapFocusKeyListener);
+        this.backdrop.removeEventListener(Events.browser.keyDown, trapFocusKeyListener);
         this.backdrop.remove();
 
         // User defined callback from constructor

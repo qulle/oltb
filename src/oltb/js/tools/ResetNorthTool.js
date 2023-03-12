@@ -1,21 +1,22 @@
 import { DOM } from '../helpers/browser/DOM';
 import { Toast } from '../common/Toast';
 import { Dialog } from '../common/Dialog';
-import { CONFIG } from '../core/Config';
-import { EVENTS } from '../helpers/constants/Events';
+import { Config } from '../core/Config';
+import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { toLonLat } from 'ol/proj';
 import { goToView } from '../helpers/GoToView';
 import { LogManager } from '../core/managers/LogManager';
 import { ContextMenu } from '../common/ContextMenu';
-import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
+import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
 import { ElementManager } from '../core/managers/ElementManager';
+import { SvgPaths, getIcon } from '../core/icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
-import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 import { degreesToRadians, radiansToDegrees } from '../helpers/Conversions';
 
 const FILENAME = 'tools/ResetNorthTool.js';
-const DEFAULT_OPTIONS = Object.freeze({
+
+const DefaultOptions = Object.freeze({
     click: undefined,
     reset: undefined
 });
@@ -27,7 +28,7 @@ class ResetNorthTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.Compass.Stroked,
+            path: SvgPaths.compass.stroked,
             class: 'oltb-tool-button__icon'
         });
 
@@ -37,7 +38,7 @@ class ResetNorthTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Reset North (${SHORTCUT_KEYS.ResetNorth})`
+                'data-tippy-content': `Reset North (${ShortcutKeys.resetNorthTool})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -49,7 +50,7 @@ class ResetNorthTool extends Control {
         ]);
 
         this.button = button;
-        this.options = { ...DEFAULT_OPTIONS, ...options };
+        this.options = { ...DefaultOptions, ...options };
 
         ContextMenu.addItem({
             icon: icon, 
@@ -57,11 +58,11 @@ class ResetNorthTool extends Control {
             fn: this.onContextMenuSetRotation.bind(this)
         });
 
-        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
     }
 
     onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.ResetNorth)) {
+        if(isShortcutKeyOnly(event, ShortcutKeys.resetNorthTool)) {
             this.handleClick(event);
         }
     }
@@ -123,7 +124,7 @@ class ResetNorthTool extends Control {
             if(typeof this.options.reset === 'function') {
                 this.options.reset();
             }
-        }, CONFIG.AnimationDuration.Normal);
+        }, Config.animationDuration.normal);
     }
 }
 

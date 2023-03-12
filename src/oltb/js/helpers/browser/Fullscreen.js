@@ -1,15 +1,16 @@
 import { LogManager } from '../../core/managers/LogManager';
 
 const FILENAME = 'browser/Fullscreen.js';
-const FULL_SCREEN_EVENTS = Object.freeze([
+
+const FullscreenEvents = Object.freeze([
     'fullscreenchange',
     'webkitfullscreenchange',
     'MSFullscreenChange'
 ]);
-  
-const FULL_SCREEN_EVENT_TYPE = Object.freeze({
-    EnterFullScreen: 'enterfullscreen',
-    LeaveFullScreen: 'leavefullscreen'
+
+const FullscreenEventType = Object.freeze({
+    enterFullScreen: 'enterfullscreen',
+    leaveFullScreen: 'leavefullscreen'
 });
 
 const isFullScreenSupported = function() {
@@ -65,8 +66,8 @@ const exitFullScreen = function() {
 }
 
 export {
-    FULL_SCREEN_EVENTS,
-    FULL_SCREEN_EVENT_TYPE,
+    FullscreenEvents,
+    FullscreenEventType,
     isFullScreenSupported,
     isFullScreen,
     requestFullScreen,

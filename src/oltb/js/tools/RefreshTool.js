@@ -1,14 +1,15 @@
 import { DOM } from '../helpers/browser/DOM';
-import { EVENTS } from '../helpers/constants/Events';
+import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { LogManager } from '../core/managers/LogManager';
-import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
+import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
 import { ElementManager } from '../core/managers/ElementManager';
+import { SvgPaths, getIcon } from '../core/icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
-import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 
 const FILENAME = 'tools/RefreshTool.js';
-const DEFAULT_OPTIONS = Object.freeze({
+
+const DefaultOptions = Object.freeze({
     click: undefined
 });
 
@@ -19,7 +20,7 @@ class RefreshTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.ArrowClockwise.Stroked,
+            path: SvgPaths.arrowClockwise.stroked,
             class: 'oltb-tool-button__icon'
         });
 
@@ -29,7 +30,7 @@ class RefreshTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Refresh page (${SHORTCUT_KEYS.RefreshPage})`
+                'data-tippy-content': `Refresh page (${ShortcutKeys.refreshPageTool})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -41,13 +42,13 @@ class RefreshTool extends Control {
         ]);
 
         this.button = button;
-        this.options = { ...DEFAULT_OPTIONS, ...options };
+        this.options = { ...DefaultOptions, ...options };
 
-        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
     }
 
     onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.RefreshPage)) {
+        if(isShortcutKeyOnly(event, ShortcutKeys.refreshPageTool)) {
             this.handleClick(event);
         }
     }

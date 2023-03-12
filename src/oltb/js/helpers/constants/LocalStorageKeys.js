@@ -1,20 +1,23 @@
 const FILENAME = 'constants/LocalStorageKeys.js';
-const LOCAL_STORAGE_KEYS = Object.freeze({
-    MapData: 'common.mapdata',
-    DrawTool: 'tool.draw',
-    EditTool: 'tool.edit',
-    LayerTool: 'tool.layer',
-    ThemeTool: 'tool.theme',
-    MagnifyTool: 'tool.magnify',
-    MeasureTool: 'tool.measure',
-    OverviewTool: 'tool.overview',
-    BookmarkTool: 'tool.bookmark',
-    DirectionTool: 'tool.direction',
-    SplitViewTool: 'tool.splitview',
-    GraticuleTool: 'tool.graticule',
-    ScaleLineTool: 'tool.scaleline',
-    CoordinatesTool: 'tool.coordinates',
-    SettingsManager: 'manager.settings'
+
+// Note: These properties are placed inside the oltb object in localStorage
+// So the don't need to be prefixed
+const LocalStorageKeys = Object.freeze({
+    mapData: 'common.mapdata',
+    rawTool: 'tool.draw',
+    editTool: 'tool.edit',
+    layerTool: 'tool.layer',
+    themeTool: 'tool.theme',
+    magnifyTool: 'tool.magnify',
+    measureTool: 'tool.measure',
+    overviewTool: 'tool.overview',
+    bookmarkTool: 'tool.bookmark',
+    directionTool: 'tool.direction',
+    splitViewTool: 'tool.splitview',
+    graticuleTool: 'tool.graticule',
+    scaleLineTool: 'tool.scaleline',
+    coordinatesTool: 'tool.coordinates',
+    settingsManager: 'manager.settings'
 });
 
-export { LOCAL_STORAGE_KEYS };
+export { LocalStorageKeys };

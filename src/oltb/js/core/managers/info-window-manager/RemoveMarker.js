@@ -1,5 +1,5 @@
 import { Dialog } from '../../../common/Dialog';
-import { EVENTS } from '../../../helpers/constants/Events';
+import { Events } from '../../../helpers/constants/Events';
 import { LayerManager } from '../LayerManager';
 
 const FILENAME = 'info-window-manager/RemoveMarker.js';
@@ -16,7 +16,7 @@ const removeMarker = function(InfoWindowManager, marker) {
             
             // Important to use feature as property key
             // Not only markers can be removed
-            window.dispatchEvent(new CustomEvent(EVENTS.Custom.FeatureRemoved, {
+            window.dispatchEvent(new CustomEvent(Events.custom.featureRemoved, {
                 detail: {
                     feature: marker
                 }

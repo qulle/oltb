@@ -82,7 +82,7 @@ class ProjectionManager {
 
     static hasProjection(code) {
         return this.#projections.find((projection) => {
-            return projection.code === code.toUpperCase();
+            return projection.code === code?.toUpperCase();
         });
     }
 }

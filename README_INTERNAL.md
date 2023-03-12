@@ -791,7 +791,7 @@ Other properties that you can add are:
 #### URL Markers
 A marker can be created by providing the `oltb-marker` object as the GET parameter according to the following syntax.
 ```
-/?oltb-marker={"title":"Marker Title","description":"Information about the maker","icon":"ExclamationTriangle.Filled","backgroundColor":"EB4542FF","color":"FFFFFFFF","layerName":"URL Marker","projection":"EPSG:4326","lon":18.0685,"lat":59.3293,"zoom":8}
+/?oltb-marker={"title":"Marker Title","description":"Information about the maker","icon":"exclamationTriangle.filled","backgroundColor":"EB4542FF","color":"FFFFFFFF","layerName":"URL Marker","projection":"EPSG:4326","lon":18.0685,"lat":59.3293,"zoom":8}
 ```
 
 Test the marker above using the <a href='https://qulle.github.io/oltb/?oltb-marker={"title":"Marker Title","description":"Information about the maker","icon":"ExclamationTriangle.Filled","backgroundColor":"EB4542FF","color":"FFFFFFFF","layerName":"URL Marker","projection":"EPSG:4326","lon":18.0685,"lat":59.3293,"zoom":8}' target="_blank">demo page</a>.
@@ -801,7 +801,7 @@ The JSON object has the following structure.
 {
     "title": "Marker Title",
     "description": "Information about the maker",
-    "icon": "ExclamationTriangle.Filled",
+    "icon": "exclamationTriangle.filled",
     "backgroundColor": "EB4542FF",
     "color": "FFFFFFFF",
     "layerName": "URL Marker",
@@ -993,10 +993,10 @@ There are two modules for using SVG icons. One is for basic icons and the other 
 #### Basic Icons
 Most of the icons are from the excellent [icons.getbootstrap.com](https://icons.getbootstrap.com/). Icons have been added on a as needed basis and far from all icons have been added.
 ```javascript
-import { getIcon, SVG_PATHS } from 'oltb/js/core/GetIcon';
+import { SvgPaths, getIcon } from 'oltb/js/core/GetIcon';
 
 const icon = getIcon({
-    path: SVG_PATHS.GeoMarker.Filled,
+    path: SvgPaths.geoMarker.filled,
     class: 'some-class',
     width: 20,
     height: 20,
@@ -1005,11 +1005,11 @@ const icon = getIcon({
 });
 ```
 
-In general, two version of each icon exists (stroked and filled). Some icons don't have a filled version and some icons have a combination of both stroked and filled, these are called mixed. Where an icon is given as a string the name and version is separated using a period (.) `GeoPin.Filled`.
+In general, two version of each icon exists (stroked and filled). Some icons don't have a filled version and some icons have a combination of both stroked and filled, these are called mixed. Where an icon is given as a string the name and version is separated using a period (.) `geoPin.filled`.
 ```javascript
-const name = 'GeoPin';                 // https://icons.getbootstrap.com/
-const version = 'Filled';              // Stroked | Filled | Mixed
-const path = SVG_PATHS[name][version]; // The 'getIcon' function wrapps the path with an svg element
+const name = 'geoPin';                 // https://icons.getbootstrap.com/
+const version = 'filled';              // stroked | filled | mixed
+const path = SvgPaths[name][version]; // The 'getIcon' function wrapps the path with an svg element
 ```
 
 #### WindBarb Icons
@@ -1078,8 +1078,8 @@ import { StateManager } from 'oltb/js/core/managers/StateManager';
 
 State management is done through localStorage. First add a node name and an object to store default values.
 ```javascript
-const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.DrawTool;
-const LOCAL_STORAGE_DEFAULTS = {
+const LocalStorageNodeName = LocalStorageKeys.drawTool;
+const LocalStorageDefaults = {
     active: false,
     collapsed: false,
     toolTypeIndex: 5,
@@ -1089,15 +1089,15 @@ const LOCAL_STORAGE_DEFAULTS = {
 };
 ```
 
-These two nextcomming lines merges stored data into a runtime copy of the default properties located in `LOCAL_STORAGE_DEFAULTS`. The spread operator is a really nice feature for this operation.
+These two nextcomming lines merges stored data into a runtime copy of the default properties located in `LocalStorageDefaults`. The spread operator is a really nice feature for this operation.
 ```javascript
-const localStorageState = StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME);
-this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
+const localStorageState = StateManager.getStateObject(LocalStorageNodeName);
+this.localStorage = { ...LocalStorageDefaults, ...localStorageState };
 ```
 
 To update the state in localStorage, call the `setStateObject` method and pass in the node name along with the updated state object.
 ```javascript
-StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, this.localStorage);
+StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
 ```
 
 ### Debug Tool

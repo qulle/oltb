@@ -1,16 +1,17 @@
 import { DOM } from '../helpers/browser/DOM';
-import { EVENTS } from '../helpers/constants/Events';
+import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { LogManager } from '../core/managers/LogManager';
 import { UrlManager } from '../core/managers/UrlManager';
-import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
+import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
 import { ElementManager } from '../core/managers/ElementManager';
 import { DebugInfoModal } from './modal-extensions/DebugInfoModal';
+import { SvgPaths, getIcon } from '../core/icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
-import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 
 const FILENAME = 'tools/DebugInfoTool.js';
-const DEFAULT_OPTIONS = Object.freeze({
+
+const DefaultOptions = Object.freeze({
     onlyWhenGetParameter: false,
     click: undefined
 });
@@ -22,7 +23,7 @@ class DebugInfoTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.Bug.Stroked,
+            path: SvgPaths.bug.stroked,
             class: 'oltb-tool-button__icon'
         });
 
@@ -32,7 +33,7 @@ class DebugInfoTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Debug info (${SHORTCUT_KEYS.DebugInfo})`
+                'data-tippy-content': `Debug info (${ShortcutKeys.debugInfoTool})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -45,7 +46,7 @@ class DebugInfoTool extends Control {
 
         this.button = button;
         this.debugInfoModal = undefined;
-        this.options = { ...DEFAULT_OPTIONS, ...options };
+        this.options = { ...DefaultOptions, ...options };
         
         // If the tool only should be visible in debug mode (?debug=true)
         const isDebug = UrlManager.getParameter('debug') === 'true';
@@ -57,11 +58,11 @@ class DebugInfoTool extends Control {
             button.classList.add('oltb-tool-button--hidden');
         }
 
-        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
     }
 
     onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.DebugInfo)) {
+        if(isShortcutKeyOnly(event, ShortcutKeys.debugInfoTool)) {
             this.handleClick(event);
         }
     }

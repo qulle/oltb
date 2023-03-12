@@ -1,6 +1,6 @@
-import { EVENTS } from '../../helpers/constants/Events';
+import { Events } from '../../helpers/constants/Events';
 import { LogManager } from '../managers/LogManager';
-import { FEATURE_PROPERTIES } from '../../helpers/constants/FeatureProperties';
+import { FeatureProperties } from '../../helpers/constants/FeatureProperties';
 import { Vector as VectorLayer } from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';
 import { hasCustomFeatureProperty } from '../../helpers/browser/HasNestedProperty';
@@ -108,7 +108,7 @@ class LayerManager {
         this.#layers.mapLayers.push(layerWrapper);
         this.#map.addLayer(layerWrapper.getLayer());
 
-        window.dispatchEvent(new CustomEvent(EVENTS.Custom.MapLayerAdded, {
+        window.dispatchEvent(new CustomEvent(Events.custom.mapLayerAdded, {
             detail: {
                 layerWrapper: layerWrapper, 
                 silent: silent
@@ -127,7 +127,7 @@ class LayerManager {
         // Remove the actual ol layer
         this.#map.removeLayer(layerWrapper.getLayer());
 
-        window.dispatchEvent(new CustomEvent(EVENTS.Custom.MapLayerRemoved, {
+        window.dispatchEvent(new CustomEvent(Events.custom.mapLayerRemoved, {
             detail: {
                 layerWrapper: layerWrapper, 
                 silent: silent
@@ -235,7 +235,7 @@ class LayerManager {
         this.#layers.featureLayers.push(layerWrapper);
         this.#map.addLayer(layerWrapper.getLayer());
 
-        window.dispatchEvent(new CustomEvent(EVENTS.Custom.FeatureLayerAdded, {
+        window.dispatchEvent(new CustomEvent(Events.custom.featureLayerAdded, {
             detail: {
                 layerWrapper: layerWrapper, 
                 silent: silent
@@ -253,7 +253,7 @@ class LayerManager {
 
         // Remove overlays associated with each feature
         layerWrapper.getLayer().getSource().getFeatures().forEach((feature) => {
-            if(hasCustomFeatureProperty(feature.getProperties(), FEATURE_PROPERTIES.Tooltip)) {
+            if(hasCustomFeatureProperty(feature.getProperties(), FeatureProperties.tooltip)) {
                 this.#map.removeOverlay(feature.getProperties().oltb.tooltip);
             }
         });
@@ -266,7 +266,7 @@ class LayerManager {
             ? this.#layers.featureLayers[this.#layers.featureLayers.length - 1] 
             : null;
 
-        window.dispatchEvent(new CustomEvent(EVENTS.Custom.FeatureLayerRemoved, {
+        window.dispatchEvent(new CustomEvent(Events.custom.featureLayerRemoved, {
             detail: {
                 layerWrapper: layerWrapper, 
                 silent: silent

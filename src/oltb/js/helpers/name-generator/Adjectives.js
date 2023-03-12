@@ -1,5 +1,6 @@
 const FILENAME = 'name-generator/Adjectives.js';
-const ADJECTIVES = Object.freeze([
+
+const Adjectives = Object.freeze([
     'Adorable',
     'Adored',
     'Angry',
@@ -27,4 +28,4 @@ const ADJECTIVES = Object.freeze([
     'Yummy'
 ]);
 
-export { ADJECTIVES };
+export { Adjectives };

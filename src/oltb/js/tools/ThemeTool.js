@@ -1,27 +1,28 @@
 import { DOM } from '../helpers/browser/DOM';
-import { EVENTS } from '../helpers/constants/Events';
+import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { LogManager } from '../core/managers/LogManager';
 import { isDarkTheme } from '../helpers/IsDarkTheme';
 import { StateManager } from '../core/managers/StateManager';
-import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
+import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
 import { ElementManager } from '../core/managers/ElementManager';
+import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
+import { SvgPaths, getIcon } from '../core/icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
-import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
-import { LOCAL_STORAGE_KEYS } from '../helpers/constants/LocalStorageKeys';
 
 const FILENAME = 'tools/ThemeTool.js';
-const DEFAULT_OPTIONS = Object.freeze({
+
+const DefaultOptions = Object.freeze({
     click: undefined,
     changed: undefined
 });
 
-const THEMES_DATA = Object.freeze({
+const ThemesData = Object.freeze({
     light: Object.freeze({
         class: 'light',
         tippyContent: 'Light theme',
         icon: getIcon({
-            path: SVG_PATHS.Sun.Stroked,
+            path: SvgPaths.sun.stroked,
             class: 'oltb-tool-button__icon'
         })
     }),
@@ -29,15 +30,15 @@ const THEMES_DATA = Object.freeze({
         class: 'dark',
         tippyContent: 'Dark theme',
         icon: getIcon({
-            path: SVG_PATHS.MoonStars.Stroked,
+            path: SvgPaths.moonStars.stroked,
             class: 'oltb-tool-button__icon'
         })
     })
 });
 
-const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.ThemeTool;
-const LOCAL_STORAGE_DEFAULTS = Object.freeze({
-    theme: THEMES_DATA.light.class
+const LocalStorageNodeName = LocalStorageKeys.themeTool;
+const LocalStorageDefaults = Object.freeze({
+    theme: ThemesData.light.class
 });
 
 class ThemeTool extends Control {
@@ -49,16 +50,16 @@ class ThemeTool extends Control {
         const button = DOM.createElement({
             element: 'button',
             html: isDarkTheme() 
-                ? THEMES_DATA.light.icon
-                : THEMES_DATA.dark.icon,
+                ? ThemesData.light.icon
+                : ThemesData.dark.icon,
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
                 'data-tippy-content': `${(
                     isDarkTheme() 
-                        ? THEMES_DATA.light.tippyContent 
-                        : THEMES_DATA.dark.tippyContent
-                )} (${SHORTCUT_KEYS.ToolbarTheme})`
+                        ? ThemesData.light.tippyContent 
+                        : ThemesData.dark.tippyContent
+                )} (${ShortcutKeys.themeTool})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -71,25 +72,25 @@ class ThemeTool extends Control {
         
         this.button = button;
         this.active = false;
-        this.options = { ...DEFAULT_OPTIONS, ...options };
+        this.options = { ...DefaultOptions, ...options };
 
         // Load stored data from localStorage
-        const localStorageState = StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME);
-        this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
+        const localStorageState = StateManager.getStateObject(LocalStorageNodeName);
+        this.localStorage = { ...LocalStorageDefaults, ...localStorageState };
 
-        window.addEventListener(EVENTS.Custom.SettingsCleared, this.onWindowSettingsCleared.bind(this));
-        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(Events.custom.settingsCleared, this.onWindowSettingsCleared.bind(this));
+        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
     }
 
     onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.ToolbarTheme)) {
+        if(isShortcutKeyOnly(event, ShortcutKeys.themeTool)) {
             this.handleClick(event);
         }
     }
 
     onWindowSettingsCleared() {
         const active = this.getActiveTheme();
-        this.swithThemeFromTo(active, THEMES_DATA.light);
+        this.swithThemeFromTo(active, ThemesData.light);
     }
 
     handleClick() {
@@ -122,7 +123,7 @@ class ThemeTool extends Control {
 
     swithThemeFromTo(from, to) {
         this.localStorage.theme = to.class;
-        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, this.localStorage);
+        StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
 
         const toolbarElement = ElementManager.getToolbarElement();
 
@@ -135,19 +136,19 @@ class ThemeTool extends Control {
         // Update toolbar button
         this.button.removeChild(this.button.firstElementChild);
         this.button.insertAdjacentHTML('afterbegin', from.icon);
-        this.button._tippy.setContent(`${from.tippyContent} (${SHORTCUT_KEYS.ToolbarTheme})`);
+        this.button._tippy.setContent(`${from.tippyContent} (${ShortcutKeys.themeTool})`);
     }
 
     getInActiveThem() {
         return isDarkTheme()
-            ? THEMES_DATA.light
-            : THEMES_DATA.dark;
+            ? ThemesData.light
+            : ThemesData.dark;
     }
 
     getActiveTheme() {
         return isDarkTheme()
-            ? THEMES_DATA.dark
-            : THEMES_DATA.light;
+            ? ThemesData.dark
+            : ThemesData.light;
     }
 }
 

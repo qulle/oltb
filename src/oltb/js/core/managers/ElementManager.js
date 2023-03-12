@@ -1,9 +1,9 @@
 import { DOM } from '../../helpers/browser/DOM';
-import { CONFIG } from '../Config';
-import { EVENTS } from '../../helpers/constants/Events';
+import { Config } from '../Config';
+import { Events } from '../../helpers/constants/Events';
 import { LogManager } from './LogManager';
 import { StateManager } from './StateManager';
-import { LOCAL_STORAGE_KEYS } from '../../helpers/constants/LocalStorageKeys';
+import { LocalStorageKeys } from '../../helpers/constants/LocalStorageKeys';
 
 const FILENAME = 'managers/ElementManager.js';
 
@@ -21,22 +21,22 @@ class ElementManager {
         this.#toolbarElement = this.#createToolbarElement();
         this.#toolboxElement = this.#createToolboxElement();
 
-        window.addEventListener(EVENTS.Browser.Resize, this.#collisionDetection.bind(this));
-        window.addEventListener(EVENTS.Browser.ContentLoaded, this.#collisionDetection.bind(this));
-        window.addEventListener(EVENTS.Custom.ToolbarDirectionChange, this.#collisionDetection.bind(this));
+        window.addEventListener(Events.browser.resize, this.#collisionDetection.bind(this));
+        window.addEventListener(Events.browser.contentLoaded, this.#collisionDetection.bind(this));
+        window.addEventListener(Events.custom.toolbarDirectionChange, this.#collisionDetection.bind(this));
     }
 
     static setMap(map) { }
 
     static #onMouseWheel(event) {
         if(!Boolean(event.ctrlKey)) {
-            const distance = CONFIG.ScrollDistance;
+            const distance = Config.scrollDistance;
             this.scrollLeft += event.deltaY > 0 ? distance : -distance;
         }
     }
 
     static #createMapElement() {
-        const element = document.getElementById(CONFIG.Map.Id);
+        const element = document.getElementById(Config.openLayers.id);
 
         return element;
     }
@@ -58,12 +58,12 @@ class ElementManager {
     }
 
     static #createToolbarElement() {
-        const element = document.getElementById(CONFIG.Toolbar.Id);
+        const element = document.getElementById(Config.toolbar.id);
         element.setAttribute('data-html2canvas-ignore', 'true');
-        element.addEventListener(EVENTS.Browser.Wheel, this.#onMouseWheel.bind(element));
+        element.addEventListener(Events.browser.wheel, this.#onMouseWheel.bind(element));
 
-        const themeKey = LOCAL_STORAGE_KEYS.ThemeTool;
-        const directionKey = LOCAL_STORAGE_KEYS.DirectionTool;
+        const themeKey = LocalStorageKeys.themeTool;
+        const directionKey = LocalStorageKeys.directionTool;
 
         // Check if the user has chosen dark theme
         const isDarkTheme = (StateManager.getStateObject(themeKey).theme === 'dark');
@@ -123,7 +123,7 @@ class ElementManager {
         const toolbarWidth = this.#toolbarElement.offsetWidth;
         const toolboxWidth = this.#toolboxElement.offsetWidth;
         
-        if(windowWidth - ((3 * CONFIG.Browser.REM) + toolbarWidth + toolboxWidth) <= 0) {
+        if(windowWidth - ((3 * Config.browser.rem) + toolbarWidth + toolboxWidth) <= 0) {
             this.#toolboxElement.classList.add('oltb-toolbox-container--collision');
         }else {
             this.#toolboxElement.classList.remove('oltb-toolbox-container--collision');

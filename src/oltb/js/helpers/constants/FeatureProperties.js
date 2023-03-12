@@ -1,16 +1,19 @@
 const FILENAME = 'constants/FeatureProperties.js';
-const FEATURE_PROPERTIES = Object.freeze({
-    Type: Object.freeze({
-        Layer: 'layer',
-        Marker: 'marker',
-        WindBarb: 'windBarb',
-        Measurement: 'measurement',
-        Drawing: 'drawing'
+
+// Note: These properties are placed inside the oltb object in the feature
+// So the don't need to be prefixed
+const FeatureProperties = Object.freeze({
+    type: Object.freeze({
+        layer: 'layer',
+        marker: 'marker',
+        windBarb: 'windBarb',
+        measurement: 'measurement',
+        drawing: 'drawing'
     }),
-    Tooltip: 'tooltip',
-    InfoWindow: 'infoWindow',
-    NotSelectable: 'notSelectable',
-    HighlightOnHover: 'highlightOnHover'
+    tooltip: 'tooltip',
+    infoWindow: 'infoWindow',
+    notSelectable: 'notSelectable',
+    highlightOnHover: 'highlightOnHover'
 });
 
-export { FEATURE_PROPERTIES };
+export { FeatureProperties };

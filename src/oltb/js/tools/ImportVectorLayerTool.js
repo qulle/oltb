@@ -1,19 +1,20 @@
 import { DOM } from '../helpers/browser/DOM';
 import { Toast } from '../common/Toast';
-import { CONFIG } from '../core/Config';
-import { EVENTS } from '../helpers/constants/Events';
+import { Config } from '../core/Config';
+import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { LogManager } from '../core/managers/LogManager';
-import { FORMAT_TYPES } from '../core/ol-types/FormatTypes';
+import { FormatTypes } from '../core/ol-types/FormatTypes';
 import { LayerManager } from '../core/managers/LayerManager';
-import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
+import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
 import { ElementManager } from '../core/managers/ElementManager';
+import { SvgPaths, getIcon } from '../core/icons/GetIcon';
 import { instantiateFormat } from '../core/ol-types/FormatTypes';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
-import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 
 const FILENAME = 'tools/ImportVectorLayerTool.js';
-const DEFAULT_OPTIONS = Object.freeze({
+
+const DefaultOptions = Object.freeze({
     click: undefined,
     imported: undefined,
     error: undefined
@@ -26,7 +27,7 @@ class ImportVectorLayerTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.FolderOpen.Stroked,
+            path: SvgPaths.folderOpen.stroked,
             class: 'oltb-tool-button__icon'
         });
 
@@ -36,7 +37,7 @@ class ImportVectorLayerTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Import Vector layer (${SHORTCUT_KEYS.ImportVectorLayer})`
+                'data-tippy-content': `Import Vector layer (${ShortcutKeys.importVectorLayerTool})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -49,7 +50,7 @@ class ImportVectorLayerTool extends Control {
 
         this.button = button;
         this.fileReader = undefined;
-        this.options = { ...DEFAULT_OPTIONS, ...options };
+        this.options = { ...DefaultOptions, ...options };
         
         this.inputDialog = DOM.createElement({
             element: 'input',
@@ -62,11 +63,11 @@ class ImportVectorLayerTool extends Control {
             }
         });
         
-        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
     }
 
     onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.ImportVectorLayer)) {
+        if(isShortcutKeyOnly(event, ShortcutKeys.importVectorLayerTool)) {
             this.handleClick(event);
         }
     }
@@ -90,7 +91,7 @@ class ImportVectorLayerTool extends Control {
         const fileDialog = event.target;
 
         this.fileReader = new FileReader();
-        this.fileReader.addEventListener(EVENTS.Browser.Load, this.parseLayer.bind(this, fileDialog));
+        this.fileReader.addEventListener(Events.browser.load, this.parseLayer.bind(this, fileDialog));
         this.fileReader.readAsText(fileDialog.files[0]);
     }
 
@@ -103,7 +104,7 @@ class ImportVectorLayerTool extends Control {
 
             // Can't use the in-operator since the format can be formatted by the user
             // Forcing format to be lower-case and the do a search for it as a key in the format-object
-            const format = Object.keys(FORMAT_TYPES).find((key) => {
+            const format = Object.keys(FormatTypes).find((key) => {
                 return key.toLowerCase() === fileExtension;
             });
 
@@ -118,7 +119,7 @@ class ImportVectorLayerTool extends Control {
             }
                 
             const features = instantiateFormat(format).readFeatures(this.fileReader.result, {
-                featureProjection: CONFIG.Projection.Default
+                featureProjection: Config.projection.default
             });
 
             const layerWrapper = LayerManager.addFeatureLayer(`Import : ${filename}`);

@@ -4,10 +4,11 @@ import { fromLonLat } from 'ol/proj';
 import { Icon, Style } from 'ol/style';
 import { getWindBarb } from '../core/icons/GetWindBarb';
 import { degreesToRadians } from '../helpers/Conversions';
-import { FEATURE_PROPERTIES } from '../helpers/constants/FeatureProperties';
+import { FeatureProperties } from '../helpers/constants/FeatureProperties';
 
 const FILENAME = 'generators/generateWindBarb.js';
-const DEFAULT_OPTIONS = Object.freeze({
+
+const DefaultOptions = Object.freeze({
     lon: undefined,
     lat: undefined,
     windSpeed: 0,
@@ -23,7 +24,7 @@ const DEFAULT_OPTIONS = Object.freeze({
 });
 
 const generateWindBarb = function(options = {}) {
-    options = { ...DEFAULT_OPTIONS, ...options };
+    options = { ...DefaultOptions, ...options };
 
     const windBarb = new Feature({
         geometry: new Point(fromLonLat([
@@ -53,7 +54,7 @@ const generateWindBarb = function(options = {}) {
 
     windBarb.setProperties({
         oltb: {
-            type: FEATURE_PROPERTIES.Type.WindBarb,
+            type: FeatureProperties.type.windBarb,
             lon: options.lon,
             lat: options.lat,
             notSelectable: options.notSelectable, 

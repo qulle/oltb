@@ -1,6 +1,6 @@
 import { DOM } from '../../helpers/browser/DOM';
-import { KEYS } from '../../helpers/constants/Keys';
-import { EVENTS } from '../../helpers/constants/Events';
+import { Keys } from '../../helpers/constants/Keys';
+import { Events } from '../../helpers/constants/Events';
 import { trapFocusKeyListener } from '../../helpers/browser/TrapFocus';
 
 const FILENAME = 'dialogs/DialogBase.js';
@@ -20,11 +20,11 @@ class DialogBase {
             }
         });
 
-        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
     }
 
     onWindowKeyUp(event) {
-        if(event.key.toLowerCase() === KEYS.Escape) {
+        if(event.key === Keys.valueEscape) {
             this.close();
         }
     }
@@ -43,7 +43,7 @@ class DialogBase {
     }
 
     close() {
-        this.backdrop.removeEventListener(EVENTS.Browser.KeyDown, trapFocusKeyListener);
+        this.backdrop.removeEventListener(Events.browser.keyDown, trapFocusKeyListener);
         this.backdrop.remove();
     }
 }

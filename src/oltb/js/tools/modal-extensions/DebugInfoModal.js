@@ -1,15 +1,17 @@
 import { DOM } from '../../helpers/browser/DOM';
 import { Toast } from '../../common/Toast';
-import { CONFIG } from '../../core/Config';
-import { EVENTS } from '../../helpers/constants/Events';
+import { Config } from '../../core/Config';
+import { Events } from '../../helpers/constants/Events';
+import { toLonLat } from 'ol/proj';
 import { ModalBase } from '../../common/modals/ModalBase';
 import { LogManager } from '../../core/managers/LogManager';
+import { SvgPaths, getIcon } from '../../core/icons/GetIcon';
 import { ProjectionManager } from '../../core/managers/ProjectionManager';
-import { getIcon, SVG_PATHS } from '../../core/icons/GetIcon';
 
 const FILENAME = 'modal-extensions/DebugInfoModal.js';
 const ID_PREFIX = 'oltb-debug';
-const DEFAULT_OPTIONS = Object.freeze({
+
+const DefaultOptions = Object.freeze({
     map: undefined,
     maximized: true,
     onClose: undefined
@@ -19,11 +21,11 @@ class DebugInfoModal extends ModalBase {
     constructor(options = {}) {
         super(
             'Debug information', 
-            DEFAULT_OPTIONS.maximized, 
+            DefaultOptions.maximized, 
             options.onClose
         );
         
-        this.options = { ...DEFAULT_OPTIONS, ...options };
+        this.options = { ...DefaultOptions, ...options };
         this.#createModal();
     }
 
@@ -33,7 +35,7 @@ class DebugInfoModal extends ModalBase {
 
         const toggleableTriggers = modalContent.querySelectorAll('.oltb-toggleable');
         toggleableTriggers.forEach((toggle) => {
-            toggle.addEventListener(EVENTS.Browser.Click, this.onToggleSection.bind(this, toggle));
+            toggle.addEventListener(Events.browser.click, this.onToggleSection.bind(this, toggle));
         });
     }
 
@@ -110,7 +112,7 @@ class DebugInfoModal extends ModalBase {
         const sectionToggle = DOM.createElement({
             element: 'button', 
             html: getIcon({
-                path: SVG_PATHS.ChevronExpand.Stroked, 
+                path: SvgPaths.chevronExpand.stroked, 
                 fill: 'none', 
                 stroke: 'currentColor',
                 width: 16,
@@ -264,7 +266,7 @@ class DebugInfoModal extends ModalBase {
         const logToggle = DOM.createElement({
             element: 'button', 
             html: getIcon({
-                path: SVG_PATHS.ChevronExpand.Stroked, 
+                path: SvgPaths.chevronExpand.stroked, 
                 fill: 'none', 
                 stroke: 'currentColor',
                 width: 16,
@@ -317,11 +319,11 @@ class DebugInfoModal extends ModalBase {
         const view = this.options.map?.getView();
         const appDataContent = view ? {
             zoom: view.getZoom(),
-            location: view.getCenter(),
+            location: toLonLat(view.getCenter()),
             rotation: view.getRotation(),
             projection: view.getProjection(),
             proj4Defs: ProjectionManager.getProjections(),
-            defaultConfig: CONFIG
+            defaultConfig: Config
         } : {
             info: 'No map reference found'
         };
@@ -416,7 +418,7 @@ class DebugInfoModal extends ModalBase {
 
     onToggleSection(toggle) {
         const targetName = toggle.dataset.oltbToggleableTarget;
-        document.getElementById(targetName)?.slideToggle(CONFIG.AnimationDuration.Fast);
+        document.getElementById(targetName)?.slideToggle(Config.animationDuration.fast);
     }
 
     onDoAction() {
@@ -436,7 +438,7 @@ class DebugInfoModal extends ModalBase {
         Toast.success({
             title: 'Logged',
             message: 'Map object logged to console <strong>(F12)</strong>', 
-            autoremove: CONFIG.AutoRemovalDuation.Normal
+            autoremove: Config.autoRemovalDuation.normal
         });
     }
 }

@@ -1,13 +1,13 @@
 import { DOM } from '../../helpers/browser/DOM';
-import { CONFIG } from '../Config';
-import { EVENTS } from '../../helpers/constants/Events';
+import { Config } from '../Config';
+import { Events } from '../../helpers/constants/Events';
 import { Overlay } from 'ol';
 import { getCenter } from 'ol/extent';
 import { LogManager } from './LogManager';
 import { editMarker } from './info-window-manager/EditMarker';
 import { removeMarker } from './info-window-manager/RemoveMarker';
 import { copyMarkerInfo } from './info-window-manager/CopyMarkerInfo';
-import { SVG_PATHS, getIcon } from '../icons/GetIcon';
+import { SvgPaths, getIcon } from '../icons/GetIcon';
 import { Fill, Stroke, Style } from 'ol/style';
 import { trapFocusKeyListener } from '../../helpers/browser/TrapFocus';
 import { copyMarkerCoordinates } from './info-window-manager/CopyMarkerCoordinates';
@@ -34,8 +34,8 @@ class InfoWindowManager {
         this.#map = map;
 
         this.#map.addOverlay(this.#overlay);
-        this.#map.on(EVENTS.OpenLayers.SingleClick, this.onSingleClick.bind(this));
-        this.#map.on(EVENTS.OpenLayers.PointerMove, this.onPointerMove.bind(this));
+        this.#map.on(Events.openLayers.singleClick, this.onSingleClick.bind(this));
+        this.#map.on(Events.openLayers.pointerMove, this.onPointerMove.bind(this));
     }
 
     static #createInfoWindow() {
@@ -64,7 +64,7 @@ class InfoWindowManager {
         const closeButton = DOM.createElement({
             element: 'button', 
             html: getIcon({
-                path: SVG_PATHS.Close.Stroked,
+                path: SvgPaths.close.stroked,
                 fill: 'none',
                 stroke: 'currentColor'
             }),
@@ -100,12 +100,12 @@ class InfoWindowManager {
             element: this.#infoWindow,
             positioning: 'bottom-center',
             offset: [
-                CONFIG.OverlayOffset.Horizontal,
-                CONFIG.OverlayOffset.Vertical
+                Config.overlayOffset.horizontal,
+                Config.overlayOffset.vertical
             ],
             autoPan: true,
             autoPanAnimation: {
-                duration: CONFIG.AnimationDuration.Normal
+                duration: Config.animationDuration.normal
             }
         });
     }
@@ -190,7 +190,7 @@ class InfoWindowManager {
         const removeMarkerButton = this.#footer.querySelector(`#${ID_PREFIX}-remove`);
         if(Boolean(removeMarkerButton)) {
             removeMarkerButton.addEventListener(
-                EVENTS.Browser.Click, 
+                Events.browser.click, 
                 removeMarker.bind(this, InfoWindowManager, marker)
             );
         }
@@ -198,7 +198,7 @@ class InfoWindowManager {
         const copyMarkerCoordinatesButton = this.#footer.querySelector(`#${ID_PREFIX}-copy-coordinates`);
         if(Boolean(copyMarkerCoordinatesButton)) {
             copyMarkerCoordinatesButton.addEventListener(
-                EVENTS.Browser.Click, 
+                Events.browser.click, 
                 copyMarkerCoordinates.bind(this, InfoWindowManager, copyMarkerCoordinatesButton.getAttribute('data-coordinates'))
             );
         }
@@ -206,7 +206,7 @@ class InfoWindowManager {
         const copyMarkerInfoButton = this.#footer.querySelector(`#${ID_PREFIX}-copy-text`);
         if(Boolean(copyMarkerInfoButton)) {
             copyMarkerInfoButton.addEventListener(
-                EVENTS.Browser.Click, 
+                Events.browser.click, 
                 copyMarkerInfo.bind(this, InfoWindowManager, copyMarkerInfoButton.getAttribute('data-copy'))
             );
         }
@@ -214,7 +214,7 @@ class InfoWindowManager {
         const editMarkerButton = this.#footer.querySelector(`#${ID_PREFIX}-edit`);
         if(Boolean(editMarkerButton)) {
             editMarkerButton.addEventListener(
-                EVENTS.Browser.Click, 
+                Events.browser.click, 
                 editMarker.bind(this, InfoWindowManager, marker)
             );
         }

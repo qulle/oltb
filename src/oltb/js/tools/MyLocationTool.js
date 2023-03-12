@@ -1,26 +1,26 @@
 import { DOM } from '../helpers/browser/DOM';
 import { Toast } from '../common/Toast';
-import { CONFIG } from '../core/Config';
+import { Config } from '../core/Config';
 import { Dialog } from '../common/Dialog';
-import { EVENTS } from '../helpers/constants/Events';
+import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { goToView } from '../helpers/GoToView';
 import { fromLonLat } from 'ol/proj';
 import { LogManager } from '../core/managers/LogManager';
 import { toStringHDMS } from 'ol/coordinate';
 import { LayerManager } from '../core/managers/LayerManager';
-import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
+import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
 import { generateMarker } from '../generators/GenerateMarker';
 import { ElementManager } from '../core/managers/ElementManager';
+import { SvgPaths, getIcon } from '../core/icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
 import { InfoWindowManager } from '../core/managers/InfoWindowManager';
-import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 import { isFullScreen, exitFullScreen } from '../helpers/browser/Fullscreen';
 
 const FILENAME = 'tools/MyLocationTool.js';
 const ID_PREFIX = 'oltb-info-window-marker';
 
-const DEFAULT_OPTIONS = Object.freeze({
+const DefaultOptions = Object.freeze({
     title: 'My Location',
     enableHighAccuracy: true,
     timeout: 10000,
@@ -37,7 +37,7 @@ class MyLocationTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.GeoMarker.Stroked,
+            path: SvgPaths.geoMarker.stroked,
             class: 'oltb-tool-button__icon'
         });
 
@@ -47,7 +47,7 @@ class MyLocationTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `${DEFAULT_OPTIONS.title} (${SHORTCUT_KEYS.MyLocation})`
+                'data-tippy-content': `My Location (${ShortcutKeys.myLocationTool})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -59,13 +59,13 @@ class MyLocationTool extends Control {
         ]);
 
         this.button = button;
-        this.options = { ...DEFAULT_OPTIONS, ...options };
+        this.options = { ...DefaultOptions, ...options };
 
-        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
     }
 
     onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.MyLocation)) {
+        if(isShortcutKeyOnly(event, ShortcutKeys.myLocationTool)) {
             this.handleClick(event);
         }
     }
@@ -148,7 +148,7 @@ class MyLocationTool extends Control {
         const prettyCoordinates = toStringHDMS([lon, lat]);
 
         const infoWindow = {
-            title: DEFAULT_OPTIONS.title,
+            title: this.options.title,
             content: `
                 <p>${this.options.infoWindowDescription}</p>
             `,
@@ -165,13 +165,13 @@ class MyLocationTool extends Control {
         const marker = new generateMarker({
             lon: lon,
             lat: lat,
-            title: DEFAULT_OPTIONS.title,
+            title: this.options.title,
             description: this.options.infoWindowDescription,
-            icon: 'Person.Filled',
+            icon: 'person.filled',
             infoWindow: infoWindow
         });
 
-        const layerWrapper = LayerManager.addFeatureLayer(DEFAULT_OPTIONS.title);
+        const layerWrapper = LayerManager.addFeatureLayer(this.options.title);
         layerWrapper.getLayer().getSource().addFeature(marker);
 
         goToView(map, [lon, lat], 6);
@@ -179,7 +179,7 @@ class MyLocationTool extends Control {
         // Trigger InfoWindow to show
         window.setTimeout(() => {
             InfoWindowManager.showOverly(marker, fromLonLat([lon, lat]));
-        }, CONFIG.AnimationDuration.Normal);
+        }, Config.animationDuration.normal);
 
         // User defined callback from constructor
         if(typeof this.options.location === 'function') {

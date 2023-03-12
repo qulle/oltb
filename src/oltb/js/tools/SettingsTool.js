@@ -1,21 +1,22 @@
 import { DOM } from '../helpers/browser/DOM';
 import { Toast } from '../common/Toast';
-import { CONFIG } from '../core/Config';
+import { Config } from '../core/Config';
 import { Dialog } from '../common/Dialog';
-import { EVENTS } from '../helpers/constants/Events';
+import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { LogManager } from '../core/managers/LogManager';
 import { ContextMenu } from '../common/ContextMenu';
 import { StateManager } from '../core/managers/StateManager';
+import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
 import { SettingsModal } from './modal-extensions/SettingsModal';
-import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
 import { ElementManager } from '../core/managers/ElementManager';
 import { SettingsManager } from '../core/managers/SettingsManager';
+import { SvgPaths, getIcon } from '../core/icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
-import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 
 const FILENAME = 'tools/SettingsTool.js';
-const DEFAULT_OPTIONS = Object.freeze({
+
+const DefaultOptions = Object.freeze({
     click: undefined,
     cleared: undefined
 });
@@ -27,7 +28,7 @@ class SettingsTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.Gear.Stroked,
+            path: SvgPaths.gear.stroked,
             class: 'oltb-tool-button__icon'
         });
 
@@ -37,7 +38,7 @@ class SettingsTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Settings (${SHORTCUT_KEYS.Settings})`
+                'data-tippy-content': `Settings (${ShortcutKeys.settingsTool})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -50,7 +51,7 @@ class SettingsTool extends Control {
 
         this.button = button;
         this.settingsModal = undefined;
-        this.options = { ...DEFAULT_OPTIONS, ...options };
+        this.options = { ...DefaultOptions, ...options };
 
         ContextMenu.addItem({
             icon: icon, 
@@ -58,11 +59,11 @@ class SettingsTool extends Control {
             fn: this.onContextMenuSettingsClear.bind(this)
         });
 
-        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
     }
 
     onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Settings)) {
+        if(isShortcutKeyOnly(event, ShortcutKeys.settingsTool)) {
             this.handleClick(event);
         }
     }
@@ -78,7 +79,7 @@ class SettingsTool extends Control {
                 Toast.success({
                     title: 'Cleared',
                     message: "All stored settings was cleared", 
-                    autoremove: CONFIG.AutoRemovalDuation.Normal
+                    autoremove: Config.autoRemovalDuation.normal
                 });
             }
         });
@@ -98,7 +99,7 @@ class SettingsTool extends Control {
         }
 
         // Emit event so that any tool can clean up
-        window.dispatchEvent(new CustomEvent(EVENTS.Custom.SettingsCleared));
+        window.dispatchEvent(new CustomEvent(Events.custom.settingsCleared));
     }
 
     handleClick() {
@@ -118,6 +119,15 @@ class SettingsTool extends Control {
         }
 
         this.settingsModal = new SettingsModal({
+            onSave: () => {
+                Toast.success({
+                    title: 'Saved',
+                    message: "All settings settings was saved", 
+                    autoremove: Config.autoRemovalDuation.normal
+                });
+                
+                this.settingsModal = undefined;
+            },
             onClose: () => {
                 this.settingsModal = undefined;
             }

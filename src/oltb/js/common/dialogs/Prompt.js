@@ -4,7 +4,8 @@ import { isDarkTheme } from '../../helpers/IsDarkTheme';
 import { ElementManager } from '../../core/managers/ElementManager';
 
 const FILENAME = 'dialogs/Prompt.js';
-const DEFAULT_OPTIONS = Object.freeze({
+
+const DefaultOptions = Object.freeze({
     title: 'Prompt',
     message: 'Oops missing prompt text',
     placeholder: undefined,
@@ -20,7 +21,7 @@ class Prompt extends DialogBase {
     constructor(options = {}) {
         super();
         
-        this.options = { ...DEFAULT_OPTIONS, ...options };
+        this.options = { ...DefaultOptions, ...options };
         this.#createDialog();
     }
 

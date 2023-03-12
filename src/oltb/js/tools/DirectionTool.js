@@ -1,28 +1,29 @@
 import { DOM } from '../helpers/browser/DOM';
-import { CONFIG } from '../core/Config';
-import { EVENTS } from '../helpers/constants/Events';
+import { Config } from '../core/Config';
+import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { LogManager } from '../core/managers/LogManager';
 import { isHorizontal } from '../helpers/IsRowDirection';
 import { StateManager } from '../core/managers/StateManager';
-import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
+import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
 import { ElementManager } from '../core/managers/ElementManager';
+import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
+import { SvgPaths, getIcon } from '../core/icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
-import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
-import { LOCAL_STORAGE_KEYS } from '../helpers/constants/LocalStorageKeys';
 
 const FILENAME = 'tools/DirectionTool.js';
-const DEFAULT_OPTIONS = Object.freeze({
+
+const DefaultOptions = Object.freeze({
     click: undefined,
     changed: undefined
 });
 
-const DIRECTION_DATA = Object.freeze({
+const DirectionData = Object.freeze({
     col: Object.freeze({
         class: 'col',
         tippyContent: 'Vertical toolbar',
         icon: getIcon({
-            path: SVG_PATHS.SymmetryVertical.Mixed,
+            path: SvgPaths.symmetryVertical.mixed,
             class: 'oltb-tool-button__icon'
         })
     }),
@@ -30,15 +31,15 @@ const DIRECTION_DATA = Object.freeze({
         class: 'row',
         tippyContent: 'Horizontal toolbar',
         icon: getIcon({
-            path: SVG_PATHS.SymmetryHorizontal.Mixed,
+            path: SvgPaths.symmetryHorizontal.mixed,
             class: 'oltb-tool-button__icon'
         })
     })
 });
 
-const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.DirectionTool;
-const LOCAL_STORAGE_DEFAULTS = Object.freeze({
-    direction: DIRECTION_DATA.col.class
+const LocalStorageNodeName = LocalStorageKeys.directionTool;
+const LocalStorageDefaults = Object.freeze({
+    direction: DirectionData.col.class
 });
 
 class DirectionTool extends Control {
@@ -50,16 +51,16 @@ class DirectionTool extends Control {
         const button = DOM.createElement({
             element: 'button',
             html: isHorizontal() 
-                ? DIRECTION_DATA.col.icon
-                : DIRECTION_DATA.row.icon,
+                ? DirectionData.col.icon
+                : DirectionData.row.icon,
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
                 'data-tippy-content': `${(
                     isHorizontal() 
-                        ? DIRECTION_DATA.col.tippyContent
-                        : DIRECTION_DATA.row.tippyContent
-                )} (${SHORTCUT_KEYS.ToolbarDirection})`
+                        ? DirectionData.col.tippyContent
+                        : DirectionData.row.tippyContent
+                )} (${ShortcutKeys.directionTool})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -72,27 +73,27 @@ class DirectionTool extends Control {
         
         this.button = button;
         this.active = false;
-        this.options = { ...DEFAULT_OPTIONS, ...options };
+        this.options = { ...DefaultOptions, ...options };
         
         // Load stored data from localStorage
-        const localStorageState = StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME);
-        this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
+        const localStorageState = StateManager.getStateObject(LocalStorageNodeName);
+        this.localStorage = { ...LocalStorageDefaults, ...localStorageState };
 
         this.onWindowDeviceCheck();
 
-        window.addEventListener(EVENTS.Browser.Resize, this.onWindowDeviceCheck.bind(this));
-        window.addEventListener(EVENTS.Custom.SettingsCleared, this.onWindowSettingsCleared.bind(this));
-        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(Events.browser.resize, this.onWindowDeviceCheck.bind(this));
+        window.addEventListener(Events.custom.settingsCleared, this.onWindowSettingsCleared.bind(this));
+        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
     }
 
     onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.ToolbarDirection)) {
+        if(isShortcutKeyOnly(event, ShortcutKeys.directionTool)) {
             this.handleClick(event);
         }
     }
 
     onWindowDeviceCheck(event) {
-        if(window.innerWidth <= CONFIG.DeviceWidth.SM) {
+        if(window.innerWidth <= Config.deviceWidth.sm) {
             this.button.classList.add('oltb-tool-button--hidden');
         }else {
             this.button.classList.remove('oltb-tool-button--hidden');
@@ -101,7 +102,7 @@ class DirectionTool extends Control {
 
     onWindowSettingsCleared() {
         const active = this.getActiveDirection();
-        this.swithDirectionFromTo(active, DIRECTION_DATA.col);
+        this.swithDirectionFromTo(active, DirectionData.col);
     }
 
     handleClick() {
@@ -119,7 +120,7 @@ class DirectionTool extends Control {
         this.toggleDirection();
 
         const active = this.getActiveDirection();
-        window.dispatchEvent(new CustomEvent(EVENTS.Custom.ToolbarDirectionChange, {
+        window.dispatchEvent(new CustomEvent(Events.custom.toolbarDirectionChange, {
             detail: {
                 direction: active.class
             }
@@ -140,7 +141,7 @@ class DirectionTool extends Control {
 
     swithDirectionFromTo(from, to) {
         this.localStorage.direction = to.class;
-        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, this.localStorage);
+        StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
 
         const toolbarElement = ElementManager.getToolbarElement();
         
@@ -153,19 +154,19 @@ class DirectionTool extends Control {
         // Update toolbar button
         this.button.removeChild(this.button.firstElementChild);
         this.button.insertAdjacentHTML('afterbegin', from.icon);
-        this.button._tippy.setContent(`${from.tippyContent} (${SHORTCUT_KEYS.ToolbarDirection})`);
+        this.button._tippy.setContent(`${from.tippyContent} (${ShortcutKeys.directionTool})`);
     }
 
     getInActiveDirection() {
         return isHorizontal()
-            ? DIRECTION_DATA.col
-            : DIRECTION_DATA.row;
+            ? DirectionData.col
+            : DirectionData.row;
     }
 
     getActiveDirection() {
         return isHorizontal()
-            ? DIRECTION_DATA.row
-            : DIRECTION_DATA.col;
+            ? DirectionData.row
+            : DirectionData.col;
     }
 }
 

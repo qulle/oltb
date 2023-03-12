@@ -1,4 +1,4 @@
-import { CONFIG } from "../Config";
+import { Config } from "../Config";
 import { LogManager } from "./LogManager";
 
 const FILENAME = 'managers/BootstrapManager.js';
@@ -7,8 +7,8 @@ class BootstrapManager {
     static #managers = [];
 
     static init(managers = []) {
-        const oltbVersion = CONFIG.Version;
-        const openLayersVersion = CONFIG.OpenLayers.Version;
+        const oltbVersion = Config.toolbar.version;
+        const openLayersVersion = Config.openLayers.version;
 
         document.documentElement.setAttribute('ol-version', openLayersVersion);
         document.documentElement.setAttribute('oltb-version', oltbVersion);

@@ -1,12 +1,13 @@
 import { Point } from 'ol/geom';
 import { Feature } from 'ol';
 import { fromLonLat } from 'ol/proj';
-import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
-import { FEATURE_PROPERTIES } from '../helpers/constants/FeatureProperties';
+import { SvgPaths, getIcon } from '../core/icons/GetIcon';
+import { FeatureProperties } from '../helpers/constants/FeatureProperties';
 import { Circle, Fill, Icon, Stroke, Style } from 'ol/style';
 
 const FILENAME = 'generators/GenerateMarker.js';
-const DEFAULT_OPTIONS = Object.freeze({
+
+const DefaultOptions = Object.freeze({
     lon: undefined,
     lat: undefined,
     title: undefined,
@@ -15,7 +16,7 @@ const DEFAULT_OPTIONS = Object.freeze({
     color: '#FFFFFFFF',
     width: 15,
     radius: 15,
-    icon: 'GeoPin.Filled',
+    icon: 'geoPin.filled',
     iconWidth: 14,
     iconHeight: 14,
     notSelectable: true,
@@ -23,11 +24,11 @@ const DEFAULT_OPTIONS = Object.freeze({
 });
 
 const generateMarker = function(options = {}) {
-    options = { ...DEFAULT_OPTIONS, ...options };
+    options = { ...DefaultOptions, ...options };
 
     const [ iconName, iconVersion ] = options.icon.split('.');
     const icon = getIcon({
-        path: SVG_PATHS[iconName][iconVersion],
+        path: SvgPaths[iconName][iconVersion],
         width: options.iconWidth,
         height: options.iconHeight,
         fill: 'rgb(255, 255, 255)',
@@ -66,7 +67,7 @@ const generateMarker = function(options = {}) {
         oltb: {
             lon: options.lon,
             lat: options.lat,
-            type: FEATURE_PROPERTIES.Type.Marker,
+            type: FeatureProperties.type.marker,
             title: options.title,
             description: options.description,
             icon: options.icon,

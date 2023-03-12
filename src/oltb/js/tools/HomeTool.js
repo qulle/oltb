@@ -1,19 +1,20 @@
 import { DOM } from '../helpers/browser/DOM';
 import { Toast } from '../common/Toast';
-import { CONFIG } from '../core/Config';
-import { EVENTS } from '../helpers/constants/Events';
+import { Config } from '../core/Config';
+import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { toLonLat } from 'ol/proj';
 import { goToView } from '../helpers/GoToView';
 import { LogManager } from '../core/managers/LogManager';
 import { ContextMenu } from '../common/ContextMenu';
-import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
+import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
 import { ElementManager } from '../core/managers/ElementManager';
+import { SvgPaths, getIcon } from '../core/icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
-import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 
 const FILENAME = 'tools/HomeTool.js';
-const DEFAULT_OPTIONS = Object.freeze({
+
+const DefaultOptions = Object.freeze({
     lon: 18.1201,
     lat: 35.3518,
     zoom: 3,
@@ -28,7 +29,7 @@ class HomeTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.House.Stroked,
+            path: SvgPaths.house.stroked,
             class: 'oltb-tool-button__icon'
         });
 
@@ -38,7 +39,7 @@ class HomeTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Zoom home (${SHORTCUT_KEYS.Home})`
+                'data-tippy-content': `Zoom home (${ShortcutKeys.homeTool})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -50,7 +51,7 @@ class HomeTool extends Control {
         ]);
 
         this.button = button;
-        this.options = { ...DEFAULT_OPTIONS, ...options };
+        this.options = { ...DefaultOptions, ...options };
 
         this.homeLocation = [this.options.lon, this.options.lat];
         this.homeZoom = this.options.zoom;
@@ -64,12 +65,12 @@ class HomeTool extends Control {
             fn: this.onContextMenuSetHomeLocation.bind(this)
         });
 
-        window.addEventListener(EVENTS.Custom.SettingsCleared, this.onWindowSettingsCleared.bind(this));
-        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(Events.custom.settingsCleared, this.onWindowSettingsCleared.bind(this));
+        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
     }
 
     onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Home)) {
+        if(isShortcutKeyOnly(event, ShortcutKeys.homeTool)) {
             this.handleClick(event);
         }
     }
@@ -106,7 +107,7 @@ class HomeTool extends Control {
             if(typeof this.options.home === 'function') {
                 this.options.home();
             }
-        }, CONFIG.AnimationDuration.Normal);
+        }, Config.animationDuration.normal);
     }
 
     onWindowSettingsCleared() {
@@ -128,7 +129,7 @@ class HomeTool extends Control {
         Toast.success({
             title: 'New home',
             message: 'New location was set as home',
-            autoremove: CONFIG.AutoRemovalDuation.Normal
+            autoremove: Config.autoRemovalDuation.normal
         });
     }
 }

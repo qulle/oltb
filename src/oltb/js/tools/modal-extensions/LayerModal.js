@@ -1,11 +1,12 @@
 import { DOM } from '../../helpers/browser/DOM';
-import { CONFIG } from '../../core/Config';
+import { Config } from '../../core/Config';
 import { ModalBase } from '../../common/modals/ModalBase';
 import { isDarkTheme } from '../../helpers/IsDarkTheme';
 
 const FILENAME = 'modal-extensions/LayerModal.js';
 const PREFIX_LAYER_ID = 'oltb-layer-modal';
-const DEFAULT_OPTIONS = Object.freeze({
+
+const DefaultOptions = Object.freeze({
     maximized: false,
     onClose: undefined,
     onCreate: undefined,
@@ -16,7 +17,7 @@ class LayerModal extends ModalBase {
     constructor(options = {}) {
         super('Create map layer', options.maximized, options.onClose);
         
-        this.options = { ...DEFAULT_OPTIONS, ...options };
+        this.options = { ...DefaultOptions, ...options };
         this.#createModal();
     }
 
@@ -152,7 +153,7 @@ class LayerModal extends ModalBase {
             class: 'oltb-input', 
             attributes: {
                 type: 'text', 
-                placeholder: CONFIG.Projection.Default
+                placeholder: Config.projection.default
             }
         });
 
@@ -304,6 +305,7 @@ class LayerModal extends ModalBase {
                         name: nameText.value,
                         layer: typeSelect.value,
                         source: sourceSelect.value,
+                        projection: projectionText.value || Config.projection.default,
                         url: urlText.value,
                         parameters: parametersText.value || '{}',
                         wrapX: wrapXSelect.value,

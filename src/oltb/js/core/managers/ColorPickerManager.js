@@ -1,7 +1,7 @@
 import * as AColorPicker from 'a-color-picker';
 import { DOM } from "../../helpers/browser/DOM";
-import { CONFIG } from '../Config';
-import { EVENTS } from '../../helpers/constants/Events';
+import { Config } from '../Config';
+import { Events } from '../../helpers/constants/Events';
 import { LogManager } from './LogManager';
 import { isHorizontal } from '../../helpers/IsRowDirection';
 import { eventDispatcher } from '../../helpers/browser/EventDispatcher';
@@ -40,7 +40,7 @@ class ColorPickerManager {
     static onColorPickerTooltipShow(instance) {
         instance.setProps({
             placement: (
-                window.innerWidth <= CONFIG.DeviceWidth.SM || 
+                window.innerWidth <= Config.deviceWidth.sm || 
                 isHorizontal()
             ) ? 'bottom' : 'left'
         });
@@ -51,7 +51,7 @@ class ColorPickerManager {
         instance.setContent(this.#colorPickerElement);
     
         this.#colorPicker.setColor(instance.reference.getAttribute('data-oltb-color'));
-        this.#colorPicker.on(EVENTS.Browser.Change, (picker, color) => {
+        this.#colorPicker.on(Events.browser.change, (picker, color) => {
             // Important to always be HEX with Alpha value
             // Sometimes the two last digits are replaced with fixed alpha value
             color = AColorPicker.parseColor(color, 'hexcss4');
@@ -60,7 +60,7 @@ class ColorPickerManager {
             target.setAttribute('data-oltb-color', color);
             target.firstElementChild.style.backgroundColor = color;
     
-            eventDispatcher([instance.reference], EVENTS.Custom.ColorChange);
+            eventDispatcher([instance.reference], Events.custom.colorChange);
         });
     }
 

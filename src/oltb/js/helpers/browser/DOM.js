@@ -1,4 +1,4 @@
-import { CONFIG } from "../../core/Config";
+import { Config } from "../../core/Config";
 
 const FILENAME = 'browser/DOM.js';
 
@@ -68,11 +68,11 @@ class DOM {
         void element.offsetWidth;
         element.classList.add(className);
 
-        // CONFIG.AnimationDuration.Fast matches the time given in _animations.scss
+        // Config.animationDuration.fast matches the time given in _animations.scss
         // With the animation-class the html2canvas fails to render the exported PNG correctly
         window.setTimeout(() => {
             element.classList.remove(className);
-        }, CONFIG.AnimationDuration.Fast);
+        }, Config.animationDuration.fast);
     }
 }
 

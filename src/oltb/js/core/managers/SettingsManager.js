@@ -1,45 +1,46 @@
-import { SETTINGS } from "../../helpers/constants/Settings";
+import { Settings } from "../../helpers/constants/Settings";
 import { LogManager } from './LogManager';
 import { StateManager } from "./StateManager";
-import { LOCAL_STORAGE_KEYS } from "../../helpers/constants/LocalStorageKeys";
+import { LocalStorageKeys } from "../../helpers/constants/LocalStorageKeys";
 
 const FILENAME = 'managers/SettingsManager.js';
-const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.SettingsManager;
-const LOCAL_STORAGE_DEFAULTS = Object.freeze({});
 
-const DEFAULT_SETTINGS = new Map([
+const LocalStorageNodeName = LocalStorageKeys.settingsManager;
+const LocalStorageDefaults = Object.freeze({});
+
+const DefaultSettings = new Map([
     [
-        SETTINGS.MouseWheelZoom, {
+        Settings.mouseWheelZoom, {
             state: false, 
             text: 'Enable zooming using mousewheel only'
         }
     ], [
-        SETTINGS.AltShiftDragRotate, {
+        Settings.altShiftDragRotate, {
             state: true, 
             text: 'Enable rotate of map using Shift + Alt + Drag'
         }
     ], [
-        SETTINGS.DragPan, {
+        Settings.dragPan, {
             state: true, 
             text: 'Enable dragging using mouse only'
         }
     ], [
-        SETTINGS.KeyboardZoom, {
+        Settings.keyboardZoom, {
             state: true, 
             text: 'Enable zooming using keyboard'
         }
     ], [
-        SETTINGS.KeyboardPan, {
+        Settings.keyboardPan, {
             state: true, 
             text: 'Enable panning using keyboard'
         }
     ], [
-        SETTINGS.SelectVectorMapShapes, {
+        Settings.selectVectorMapShapes, {
             state: false, 
             text: 'Enable select of shapes in vector map layers'
         }
     ], [
-        SETTINGS.AlwaysNewLayers, {
+        Settings.alwaysNewLayers, {
             state: false, 
             text: 'Always create new layer when selecting tool'
         }
@@ -48,7 +49,7 @@ const DEFAULT_SETTINGS = new Map([
 
 class SettingsManager {
     static #localStorage;
-    static #settings = structuredClone(DEFAULT_SETTINGS);
+    static #settings = structuredClone(DefaultSettings);
 
     static init() {
         LogManager.logDebug(FILENAME, 'init', 'Initializing started');
@@ -67,8 +68,8 @@ class SettingsManager {
     static #loadBrowserData() {
         LogManager.logDebug(FILENAME, 'loadBrowserData', 'Loading settings from browser');
 
-        const localStorageState = StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME);
-        const localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
+        const localStorageState = StateManager.getStateObject(LocalStorageNodeName);
+        const localStorage = { ...LocalStorageDefaults, ...localStorageState };
 
         return localStorage;
     }
@@ -78,11 +79,11 @@ class SettingsManager {
     }
 
     static clear() {
-        this.#settings = structuredClone(DEFAULT_SETTINGS);
+        this.#settings = structuredClone(DefaultSettings);
     }
 
     static addSetting(key, valueObj) {
-        DEFAULT_SETTINGS.set(key, structuredClone(valueObj));
+        DefaultSettings.set(key, structuredClone(valueObj));
         this.#settings.set(key, valueObj);
     }
 
@@ -90,7 +91,7 @@ class SettingsManager {
         this.#settings.get(key).state = state;
         this.#localStorage[key] = state;
 
-        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, this.#localStorage);
+        StateManager.setStateObject(LocalStorageNodeName, this.#localStorage);
     }
 
     static getSetting(key) {

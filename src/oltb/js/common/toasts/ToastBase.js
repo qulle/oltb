@@ -1,10 +1,11 @@
 import { DOM } from '../../helpers/browser/DOM';
-import { CONFIG } from '../../core/Config';
-import { EVENTS } from '../../helpers/constants/Events';
+import { Config } from '../../core/Config';
+import { Events } from '../../helpers/constants/Events';
 import { ElementManager } from '../../core/managers/ElementManager';
 
 const FILENAME = 'toasts/ToastBase.js';
-const DEFAULT_OPTIONS = Object.freeze({
+
+const DefaultOptions = Object.freeze({
     title: 'Toast',
     message: '',
     type: 'info',
@@ -15,7 +16,7 @@ const DEFAULT_OPTIONS = Object.freeze({
 
 class ToastBase {
     constructor(options = {}) {
-        this.options = { ...DEFAULT_OPTIONS, ...options };
+        this.options = { ...DefaultOptions, ...options };
         this.#createToast();
     }
 
@@ -29,7 +30,7 @@ class ToastBase {
         
         if(Boolean(this.options.clickToRemove)) {
             this.toast.classList.add('oltb-toast--clickable');
-            this.toast.addEventListener(EVENTS.Browser.Click, this.remove.bind(this));
+            this.toast.addEventListener(Events.browser.click, this.remove.bind(this));
         }
 
         if(Boolean(this.options.spinner)) {
@@ -89,7 +90,7 @@ class ToastBase {
             if(typeof this.options.onRemove === 'function') {
                 this.options.onRemove();
             }
-        }, CONFIG.AnimationDuration.Fast);
+        }, Config.animationDuration.fast);
     }
 
     static get Info() { 

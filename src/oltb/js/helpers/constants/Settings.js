@@ -1,13 +1,14 @@
 const FILENAME = 'constants/Settings.js';
-const SETTINGS = Object.freeze({
-    DragPan: 'drag.pan',
-    KeyboardPan: 'keyboard.pan',
-    KeyboardZoom: 'keyboard.zoom',
-    MouseWheelZoom: 'mouse.wheel.zoom',
-    AlwaysNewLayers: 'always.new.layers',
-    AltShiftDragRotate: 'alt.shift.drag.rotate',
-    SelectVectorMapShapes: 'select.vector.map.shapes',
-    CopyCoordinatesOnClick: 'copy.coordinates.on.click'
+
+const Settings = Object.freeze({
+    dragPan: 'drag.pan',
+    keyboardPan: 'keyboard.pan',
+    keyboardZoom: 'keyboard.zoom',
+    mouseWheelZoom: 'mouse.wheel.zoom',
+    alwaysNewLayers: 'always.new.layers',
+    altShiftDragRotate: 'alt.shift.drag.rotate',
+    selectVectorMapShapes: 'select.vector.map.shapes',
+    copyCoordinatesOnClick: 'copy.coordinates.on.click'
 });
 
-export { SETTINGS };
+export { Settings };

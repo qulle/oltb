@@ -1,32 +1,33 @@
 import { DOM } from '../helpers/browser/DOM';
 import { Draw } from 'ol/interaction';
-import { KEYS } from '../helpers/constants/Keys';
+import { Keys } from '../helpers/constants/Keys';
 import { Toast } from '../common/Toast';
-import { CONFIG } from '../core/Config';
-import { EVENTS } from '../helpers/constants/Events';
+import { Config } from '../core/Config';
+import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { unByKey } from 'ol/Observable';
-import { SETTINGS } from '../helpers/constants/Settings';
+import { Settings } from '../helpers/constants/Settings';
 import { LogManager } from '../core/managers/LogManager';
 import { ToolManager } from '../core/managers/ToolManager';
 import { LayerManager } from '../core/managers/LayerManager';
 import { StateManager } from '../core/managers/StateManager';
-import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
+import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
 import { ElementManager } from '../core/managers/ElementManager';
 import { TooltipManager } from '../core/managers/TooltipManager';
-import { SettingsManager } from '../core/managers/SettingsManager';
 import { generateTooltip } from '../generators/GenerateTooltip';
+import { SettingsManager } from '../core/managers/SettingsManager';
 import { eventDispatcher } from '../helpers/browser/EventDispatcher';
+import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
+import { SvgPaths, getIcon } from '../core/icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
-import { FEATURE_PROPERTIES } from '../helpers/constants/FeatureProperties';
-import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
-import { LOCAL_STORAGE_KEYS } from '../helpers/constants/LocalStorageKeys';
+import { FeatureProperties } from '../helpers/constants/FeatureProperties';
 import { Fill, Stroke, Circle, Style } from 'ol/style';
 import { getMeasureCoordinates, getMeasureValue } from '../helpers/Measurements';
 
 const FILENAME = 'tools/MeasureTool.js';
 const ID_PREFIX = 'oltb-measure';
-const DEFAULT_OPTIONS = Object.freeze({
+
+const DefaultOptions = Object.freeze({
     click: undefined,
     start: undefined,
     end: undefined,
@@ -34,8 +35,8 @@ const DEFAULT_OPTIONS = Object.freeze({
     error: undefined
 });
 
-const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.MeasureTool;
-const LOCAL_STORAGE_DEFAULTS = Object.freeze({
+const LocalStorageNodeName = LocalStorageKeys.measureTool;
+const LocalStorageDefaults = Object.freeze({
     active: false,
     collapsed: false,
     toolTypeIndex: 0,
@@ -50,7 +51,7 @@ class MeasureTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.Rulers.Mixed,
+            path: SvgPaths.rulers.mixed,
             class: 'oltb-tool-button__icon'
         });
 
@@ -60,7 +61,7 @@ class MeasureTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Measure (${SHORTCUT_KEYS.Measure})`
+                'data-tippy-content': `Measure (${ShortcutKeys.measureTool})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -73,11 +74,11 @@ class MeasureTool extends Control {
         
         this.button = button;
         this.active = false;
-        this.options = { ...DEFAULT_OPTIONS, ...options };
+        this.options = { ...DefaultOptions, ...options };
         
         // Load stored data from localStorage
-        const localStorageState = StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME);
-        this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
+        const localStorageState = StateManager.getStateObject(LocalStorageNodeName);
+        this.localStorage = { ...LocalStorageDefaults, ...localStorageState };
 
         const toolboxElement = ElementManager.getToolboxElement();
         toolboxElement.insertAdjacentHTML('beforeend', `
@@ -116,31 +117,31 @@ class MeasureTool extends Control {
 
         const toggleableTriggers = this.measureToolbox.querySelectorAll('.oltb-toggleable');
         toggleableTriggers.forEach((toggle) => {
-            toggle.addEventListener(EVENTS.Browser.Click, this.onToggleToolbox.bind(this, toggle));
+            toggle.addEventListener(Events.browser.click, this.onToggleToolbox.bind(this, toggle));
         });
 
         this.toolType = this.measureToolbox.querySelector(`#${ID_PREFIX}-type`);
-        this.toolType.addEventListener(EVENTS.Browser.Change, this.updateTool.bind(this));
+        this.toolType.addEventListener(Events.browser.change, this.updateTool.bind(this));
 
         this.fillColor = this.measureToolbox.querySelector(`#${ID_PREFIX}-fill-color`);
-        this.fillColor.addEventListener(EVENTS.Custom.ColorChange, this.updateTool.bind(this));
+        this.fillColor.addEventListener(Events.custom.colorChange, this.updateTool.bind(this));
 
         this.strokeColor = this.measureToolbox.querySelector(`#${ID_PREFIX}-stroke-color`);
-        this.strokeColor.addEventListener(EVENTS.Custom.ColorChange, this.updateTool.bind(this));
+        this.strokeColor.addEventListener(Events.custom.colorChange, this.updateTool.bind(this));
 
         // Set default selected values
         this.toolType.selectedIndex = this.localStorage.toolTypeIndex; 
 
-        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
-        window.addEventListener(EVENTS.Custom.SettingsCleared, this.onWindowSettingsCleared.bind(this));
-        window.addEventListener(EVENTS.Browser.ContentLoaded, this.onDOMContentLoaded.bind(this));
+        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(Events.custom.settingsCleared, this.onWindowSettingsCleared.bind(this));
+        window.addEventListener(Events.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
     }
 
     onToggleToolbox(toggle) {
         const targetName = toggle.dataset.oltbToggleableTarget;
-        document.getElementById(targetName)?.slideToggle(CONFIG.AnimationDuration.Fast, (collapsed) => {
+        document.getElementById(targetName)?.slideToggle(Config.animationDuration.fast, (collapsed) => {
             this.localStorage.collapsed = collapsed;
-            StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, this.localStorage);
+            StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
         });
     }
 
@@ -151,24 +152,24 @@ class MeasureTool extends Control {
     }
 
     onWindowKeyUp(event) {
-        const key = event.key.toLowerCase();
+        const key = event.key;
 
-        if(key === KEYS.Escape) {
+        if(key === Keys.valueEscape) {
             if(Boolean(this.interaction)) {
                 this.interaction.abortDrawing();
             }
-        }else if(Boolean(event.ctrlKey) && key === KEYS.Z) {
+        }else if(Boolean(event.ctrlKey) && key === Keys.valueZ) {
             if(Boolean(this.interaction)) {
                 this.interaction.removeLastPoint();
             }
-        }else if(isShortcutKeyOnly(event, SHORTCUT_KEYS.Measure)) {
+        }else if(isShortcutKeyOnly(event, ShortcutKeys.measureTool)) {
             this.handleClick(event);
         }
     }
     
     onWindowSettingsCleared() {
         // Update runtime copy of localStorage to default
-        this.localStorage = { ...LOCAL_STORAGE_DEFAULTS };
+        this.localStorage = { ...LocalStorageDefaults };
 
         // Rest UI components
         this.fillColor.setAttribute('data-oltb-color', this.localStorage.fillColor);
@@ -189,7 +190,7 @@ class MeasureTool extends Control {
         this.localStorage.fillColor = this.fillColor.getAttribute('data-oltb-color');
         this.localStorage.strokeColor = this.strokeColor.getAttribute('data-oltb-color');;
 
-        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, this.localStorage);
+        StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
 
         this.selectMeasure(
             this.toolType.value,
@@ -224,15 +225,15 @@ class MeasureTool extends Control {
 
         ToolManager.setActiveTool(this);
 
-        if(SettingsManager.getSetting(SETTINGS.AlwaysNewLayers)) {
+        if(SettingsManager.getSetting(Settings.alwaysNewLayers)) {
             LayerManager.addFeatureLayer('Measurements layer');
         }
 
         // Triggers activation of the measure tool
-        eventDispatcher([this.toolType], EVENTS.Browser.Change);
+        eventDispatcher([this.toolType], Events.browser.change);
 
         this.localStorage.active = true;
-        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, this.localStorage);
+        StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 
     deActivateTool() {
@@ -251,7 +252,7 @@ class MeasureTool extends Control {
         ToolManager.removeActiveTool();
 
         this.localStorage.active = false;
-        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, this.localStorage);
+        StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 
     selectMeasure(toolType, fillColor, strokeColor) {
@@ -296,17 +297,17 @@ class MeasureTool extends Control {
 
         map.addInteraction(this.interaction);
 
-        this.interaction.on(EVENTS.OpenLayers.DrawStart, this.onDrawStart.bind(this));
-        this.interaction.on(EVENTS.OpenLayers.DrawEnd, this.onDrawEnd.bind(this));
-        this.interaction.on(EVENTS.OpenLayers.DrawAbort, this.onDrawAbort.bind(this));
-        this.interaction.on(EVENTS.OpenLayers.Error, this.onDrawEnd.bind(this));
+        this.interaction.on(Events.openLayers.drawStart, this.onDrawStart.bind(this));
+        this.interaction.on(Events.openLayers.drawEnd, this.onDrawEnd.bind(this));
+        this.interaction.on(Events.openLayers.drawAbort, this.onDrawAbort.bind(this));
+        this.interaction.on(Events.openLayers.error, this.onDrawEnd.bind(this));
     }
 
     onDrawStart(event) {
         const feature = event.feature;
         const tooltipItem = TooltipManager.push('measure');
         
-        this.onChangeListener = feature.getGeometry().on(EVENTS.OpenLayers.Change, (event) => {
+        this.onChangeListener = feature.getGeometry().on(Events.openLayers.change, (event) => {
             const measureValue = getMeasureValue(event.target);
             tooltipItem.innerHTML = `${measureValue.value} ${measureValue.unit}`;
         });
@@ -333,7 +334,7 @@ class MeasureTool extends Control {
 
         feature.setProperties({
             oltb: {
-                type: FEATURE_PROPERTIES.Type.Measurement,
+                type: FeatureProperties.type.measurement,
                 tooltip: tooltip.getOverlay()
             }
         });
@@ -355,7 +356,7 @@ class MeasureTool extends Control {
             Toast.info({
                 title: 'Tip',
                 message: 'You are measuring in a hidden layer', 
-                autoremove: CONFIG.AutoRemovalDuation.Normal
+                autoremove: Config.autoRemovalDuation.normal
             });
         }
 

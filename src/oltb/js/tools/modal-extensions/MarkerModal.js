@@ -1,18 +1,19 @@
 import { DOM } from '../../helpers/browser/DOM';
-import { SVG_PATHS } from '../../core/icons/GetIcon';
+import { SvgPaths } from '../../core/icons/GetIcon';
 import { ModalBase } from '../../common/modals/ModalBase';
 import { isDarkTheme } from '../../helpers/IsDarkTheme';
 
 const FILENAME = 'modal-extensions/MarkerModal.js';
 const ID_PREFIX = 'oltb-marker-modal-marker';
-const DEFAULT_OPTIONS = Object.freeze({
+
+const DefaultOptions = Object.freeze({
     edit: false,
     coordinates: [0, 0],
     title: 'Marker',
     description: '',
     backgroundColor: '#0166A5FF',
     color: '#FFFFFFFF',
-    icon: 'GeoPin.Filled',
+    icon: 'geoPin.filled',
     maximized: false,
     onClose: undefined,
     onCreate: undefined,
@@ -23,7 +24,7 @@ class MarkerModal extends ModalBase {
     constructor(options = {}) {
         super('Marker configuration', options.maximized, options.onClose);
         
-        this.options = { ...DEFAULT_OPTIONS, ...options };
+        this.options = { ...DefaultOptions, ...options };
         this.#createModal();
     }
 
@@ -107,8 +108,8 @@ class MarkerModal extends ModalBase {
             class: 'oltb-select'
         });
  
-        for(const path in SVG_PATHS) {
-            for(const version in SVG_PATHS[path]) {
+        for(const path in SvgPaths) {
+            for(const version in SvgPaths[path]) {
                 const option = DOM.createElement({
                     element: 'option', 
                     text: `${path} (${version})`, 

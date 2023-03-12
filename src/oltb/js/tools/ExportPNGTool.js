@@ -1,19 +1,20 @@
 import html2canvas from 'html2canvas';
 import { DOM } from '../helpers/browser/DOM';
 import { Toast } from '../common/Toast';
-import { CONFIG } from '../core/Config';
-import { EVENTS } from '../helpers/constants/Events';
+import { Config } from '../core/Config';
+import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { download } from '../helpers/browser/Download';
 import { LogManager } from '../core/managers/LogManager';
 import { UrlManager } from '../core/managers/UrlManager';
-import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
+import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
 import { ElementManager } from '../core/managers/ElementManager';
+import { SvgPaths, getIcon } from '../core/icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
-import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 
 const FILENAME = 'tools/ExportPngTool.js';
-const DEFAULT_OPTIONS = Object.freeze({
+
+const DefaultOptions = Object.freeze({
     filename: 'map-image-export',
     appendTime: false,
     click: undefined,
@@ -28,7 +29,7 @@ class ExportPngTool extends Control {
         });
         
         const icon = getIcon({
-            path: SVG_PATHS.Image.Mixed,
+            path: SvgPaths.image.mixed,
             class: 'oltb-tool-button__icon'
         });
 
@@ -38,7 +39,7 @@ class ExportPngTool extends Control {
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
-                'data-tippy-content': `Export PNG (${SHORTCUT_KEYS.ExportPNG})`
+                'data-tippy-content': `Export PNG (${ShortcutKeys.exportPngTool})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -50,15 +51,15 @@ class ExportPngTool extends Control {
         ]);
 
         this.button = button;
-        this.options = { ...DEFAULT_OPTIONS, ...options };
+        this.options = { ...DefaultOptions, ...options };
         this.isDebug = UrlManager.getParameter('debug') === 'true';
         
-        window.addEventListener(EVENTS.Browser.ContentLoaded, this.onDOMContentLoaded.bind(this));
-        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(Events.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
+        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
     }
 
     onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.ExportPNG)) {
+        if(isShortcutKeyOnly(event, ShortcutKeys.exportPngTool)) {
             this.handleClick(event);
         }
     }
@@ -89,7 +90,7 @@ class ExportPngTool extends Control {
         }
 
         // RenderSync will trigger the export the png
-        map.once(EVENTS.OpenLayers.RenderComplete, this.onRenderComplete.bind(this));
+        map.once(Events.openLayers.renderComplete, this.onRenderComplete.bind(this));
         map.renderSync();
     }
 
@@ -158,7 +159,7 @@ class ExportPngTool extends Control {
 
     downloadCanvas(pngCanvas) {
         const timestamp = this.options.appendTime 
-            ? `-${new Date().toLocaleString(CONFIG.Locale)}`
+            ? `-${new Date().toLocaleString(Config.locale)}`
             : '';
 
         const filename = `${this.options.filename}${timestamp}.png`;

@@ -1,7 +1,7 @@
 import { DOM } from '../helpers/browser/DOM';
-import { KEYS } from '../helpers/constants/Keys';
-import { CONFIG } from '../core/Config';
-import { EVENTS } from "../helpers/constants/Events";
+import { Keys } from '../helpers/constants/Keys';
+import { Config } from '../core/Config';
+import { Events } from "../helpers/constants/Events";
 import { Control } from "ol/control";
 import { transform } from 'ol/proj';
 import { UrlManager } from '../core/managers/UrlManager';
@@ -10,7 +10,8 @@ import { hasNestedProperty } from "../helpers/browser/HasNestedProperty";
 import { trapFocusKeyListener } from '../helpers/browser/TrapFocus';
 
 const FILENAME = 'common/ContextMenu.js';
-const DEFAULT_OPTIONS = Object.freeze({});
+
+const DefaultOptions = Object.freeze({});
 
 class ContextMenu extends Control {
     static #isDebug;
@@ -35,7 +36,7 @@ class ContextMenu extends Control {
             })
         });
 
-        this.options = { ...DEFAULT_OPTIONS, ...options };
+        this.options = { ...DefaultOptions, ...options };
         this.menu = this.element;
 
         ContextMenu.#isDebug = UrlManager.getParameter('debug') === 'true';
@@ -48,8 +49,8 @@ class ContextMenu extends Control {
             this.menu
         ]);
 
-        mapElement.addEventListener(EVENTS.Browser.ContextMenu, this.show.bind(this));
-        mapElement.addEventListener(EVENTS.Browser.Click, this.hide.bind(this));
+        mapElement.addEventListener(Events.browser.contextMenu, this.show.bind(this));
+        mapElement.addEventListener(Events.browser.click, this.hide.bind(this));
     }
 
     addMenuItem(item) {
@@ -73,11 +74,11 @@ class ContextMenu extends Control {
                 listeners: {
                     'click': this.click.bind(this, item),
                     'keyup': (event) => {
-                        const key = event.key.toLowerCase();
+                        const key = event.key;
 
-                        if(key === KEYS.Enter) {
+                        if(key === Keys.valueEnter) {
                             this.click(event);
-                        }else if(key === KEYS.Escape) {
+                        }else if(key === Keys.valueEscape) {
                             this.hide();
                         }
                     }
@@ -111,8 +112,8 @@ class ContextMenu extends Control {
 
         this.coordinates = transform(
             map.getEventCoordinate(event), 
-            CONFIG.Projection.Default, 
-            CONFIG.Projection.WGS84
+            Config.projection.default, 
+            Config.projection.wgs84
         );
         
         this.menu.style.left = `${event.clientX}px`;

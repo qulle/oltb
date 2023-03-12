@@ -4,7 +4,8 @@ import { isDarkTheme } from '../../helpers/IsDarkTheme';
 
 const FILENAME = 'modal-extensions/DownloadLayerModal.js';
 const PREFIX_LAYER_ID = 'oltb-download-layer-modal';
-const DEFAULT_OPTIONS = Object.freeze({
+
+const DefaultOptions = Object.freeze({
     maximized: false,
     onClose: undefined,
     onDownload: undefined,
@@ -15,7 +16,7 @@ class DownloadLayerModal extends ModalBase {
     constructor(options = {}) {
         super('Download layer', options.maximized, options.onClose);
 
-        this.options = { DEFAULT_OPTIONS, ...options };
+        this.options = { DefaultOptions, ...options };
         this.#createModal();
     }
 

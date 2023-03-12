@@ -2,7 +2,8 @@ import { DOM } from '../../helpers/browser/DOM';
 import { ModalBase } from './ModalBase';
 
 const FILENAME = 'modals/ModalWindow.js';
-const DEFAULT_OPTIONS = Object.freeze({
+
+const DefaultOptions = Object.freeze({
     title: 'Modal',
     content: 'Oops missing modal content'
 });
@@ -10,12 +11,12 @@ const DEFAULT_OPTIONS = Object.freeze({
 class ModalWindow extends ModalBase {
     constructor(options = {}) {
         super(
-            options.title || DEFAULT_OPTIONS.title,
+            options.title || DefaultOptions.title,
             options.maximized,
             options.onClose
         );
 
-        this.options = { ...DEFAULT_OPTIONS, ...options };
+        this.options = { ...DefaultOptions, ...options };
         this.#createModal();
     }
 

@@ -1,6 +1,6 @@
 import { DOM } from "../../helpers/browser/DOM";
-import { CONFIG } from "../Config";
-import { EVENTS } from '../../helpers/constants/Events';
+import { Config } from "../Config";
+import { Events } from '../../helpers/constants/Events';
 import { Overlay } from 'ol';
 import { unByKey } from 'ol/Observable';
 import { LogManager } from "./LogManager";
@@ -25,8 +25,8 @@ class TooltipManager {
             element: tooltipElement,
             positioning: 'bottom-center',
             offset: [
-                CONFIG.OverlayOffset.Horizontal,
-                CONFIG.OverlayOffset.Vertical
+                Config.overlayOffset.horizontal,
+                Config.overlayOffset.vertical
             ]
         });
     }
@@ -47,7 +47,7 @@ class TooltipManager {
 
         if(this.isEmpty()) {
             this.#map.addOverlay(this.#tooltipOverlay);
-            this.onPointerMoveListener = this.#map.on(EVENTS.OpenLayers.PointerMove, this.onPointerMove.bind(this));
+            this.onPointerMoveListener = this.#map.on(Events.openLayers.pointerMove, this.onPointerMove.bind(this));
         }
 
         this.#tooltips[key] = tooltipItemElement;

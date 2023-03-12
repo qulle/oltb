@@ -30,7 +30,7 @@ import { ImportVectorLayerTool } from './ImportVectorLayerTool';
 import { HiddenMapNavigationTool } from './hidden-tools/HiddenMapNavigationTool';
 
 // Note: The order decides order in the Toolbar
-const ALL_TOOLS = Object.freeze({
+const AllTools = Object.freeze({
     HiddenMarkerTool,
     HiddenMapNavigationTool,
     HomeTool,
@@ -63,4 +63,4 @@ const ALL_TOOLS = Object.freeze({
     HiddenAboutTool
 });
 
-export { ALL_TOOLS };
+export { AllTools };

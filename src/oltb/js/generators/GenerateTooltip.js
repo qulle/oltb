@@ -1,5 +1,5 @@
 import { DOM } from '../helpers/browser/DOM';
-import { CONFIG } from '../core/Config';
+import { Config } from '../core/Config';
 import { Overlay } from 'ol';
 
 const FILENAME = 'generators/GenerateTooltip.js';
@@ -24,8 +24,8 @@ const generateTooltip = function(data = '') {
         element: tooltip,
         positioning: 'bottom-center',
         offset: [
-            CONFIG.OverlayOffset.Horizontal,
-            CONFIG.OverlayOffset.Vertical
+            Config.overlayOffset.horizontal,
+            Config.overlayOffset.vertical
         ]
     });
 

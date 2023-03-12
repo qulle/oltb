@@ -2,17 +2,18 @@ import { KML } from 'ol/format';
 import { GeoJSON } from 'ol/format';
 
 const FILENAME = 'ol-types/FormatTypes.js';
-const FORMAT_TYPES = Object.freeze({
+
+const FormatTypes = Object.freeze({
     'GeoJSON': GeoJSON,
     'KML': KML
 });
 
 const instantiateFormat = function(name, options) {
-    if(!(name in FORMAT_TYPES)) {
+    if(!(name in FormatTypes)) {
         return null;
     }
 
-    return new FORMAT_TYPES[name](options);
+    return new FormatTypes[name](options);
 }
 
-export { FORMAT_TYPES, instantiateFormat };
+export { FormatTypes, instantiateFormat };

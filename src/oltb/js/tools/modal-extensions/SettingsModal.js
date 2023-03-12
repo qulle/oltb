@@ -4,7 +4,8 @@ import { isDarkTheme } from '../../helpers/IsDarkTheme';
 import { SettingsManager } from '../../core/managers/SettingsManager';
 
 const FILENAME = 'modal-extensions/SettingsModal.js';
-const DEFAULT_OPTIONS = Object.freeze({
+
+const DefaultOptions = Object.freeze({
     maximized: false,
     onClose: undefined,
     onSave: undefined,
@@ -17,7 +18,7 @@ class SettingsModal extends ModalBase {
     constructor(options = {}) {
         super('Settings', options.maximized, options.onClose);
         
-        this.options = { ...DEFAULT_OPTIONS, ...options };
+        this.options = { ...DefaultOptions, ...options };
         this.#createModal();
     }
 

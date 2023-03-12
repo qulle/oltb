@@ -1,6 +1,6 @@
 import { Toast } from '../../common/Toast';
-import { CONFIG } from '../../core/Config';
-import { EVENTS } from '../../helpers/constants/Events';
+import { Config } from '../../core/Config';
+import { Events } from '../../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { goToView } from '../../helpers/GoToView';
 import { transform } from 'ol/proj';
@@ -13,21 +13,21 @@ import { StateManager } from '../../core/managers/StateManager';
 import { generateMarker } from '../../generators/GenerateMarker';
 import { ElementManager } from '../../core/managers/ElementManager';
 import { CoordinateModal } from '../modal-extensions/CoordinateModal';
+import { LocalStorageKeys } from '../../helpers/constants/LocalStorageKeys';
+import { SvgPaths, getIcon } from '../../core/icons/GetIcon';
 import { InfoWindowManager } from '../../core/managers/InfoWindowManager';
 import { ProjectionManager } from '../../core/managers/ProjectionManager';
-import { SVG_PATHS, getIcon } from '../../core/icons/GetIcon';
-import { LOCAL_STORAGE_KEYS } from '../../helpers/constants/LocalStorageKeys';
 import { fromLonLat, toLonLat } from 'ol/proj';
 
 const FILENAME = 'hidden-tools/HiddenMapNavigationTool.js';
 const ID_PREFIX = 'oltb-info-window-marker';
-const DEFAULT_OPTIONS = Object.freeze({
+const DefaultOptions = Object.freeze({
     focusZoom: 2
 });
 
 // This is the same NODE_NAME and PROPS that the map.js file is using
-const LOCAL_STORAGE_NODE_NAME = LOCAL_STORAGE_KEYS.MapData;
-const LOCAL_STORAGE_DEFAULTS = Object.freeze({
+const LocalStorageNodeName = LocalStorageKeys.mapData;
+const LocalStorageDefaults = Object.freeze({
     lon: 18.1201,
     lat: 35.3518,
     zoom: 4,
@@ -43,7 +43,7 @@ const DEFAULT_URL_MARKER = Object.freeze({
     layerName: "URL Marker",
     backgroundColor: '#0166A5FF',
     color: '#FFFFFFFF',
-    projection: CONFIG.Projection.WGS84,
+    projection: Config.projection.wgs84,
     zoom: 8
 });
 
@@ -53,23 +53,23 @@ class HiddenMapNavigationTool extends Control {
             element: ElementManager.getToolbarElement()
         });
 
-        this.options = { ...DEFAULT_OPTIONS, ...options };
+        this.options = { ...DefaultOptions, ...options };
         this.coordinatesModal = undefined;
 
         // Load stored data from localStorage
-        const localStorageState = StateManager.getStateObject(LOCAL_STORAGE_NODE_NAME);
-        this.localStorage = { ...LOCAL_STORAGE_DEFAULTS, ...localStorageState };
+        const localStorageState = StateManager.getStateObject(LocalStorageNodeName);
+        this.localStorage = { ...LocalStorageDefaults, ...localStorageState };
 
         const coordinatesIcon = getIcon({
-            path: SVG_PATHS.Crosshair.Stroked
+            path: SvgPaths.crosshair.stroked
         });
 
         const moveCenterIcon = getIcon({
-            path: SVG_PATHS.ArrowsMove.Stroked
+            path: SvgPaths.arrowsMove.stroked
         });
         
         const focusHereIcon = getIcon({
-            path: SVG_PATHS.AspectRatio.Stroked
+            path: SvgPaths.aspectRatio.stroked
         });
 
         ContextMenu.addItem({
@@ -94,7 +94,7 @@ class HiddenMapNavigationTool extends Control {
 
         // Track changes to zoom, paning etc. store in localStorage
         // Must wait until DOM is loaded before the reference to the map can be used
-        window.addEventListener(EVENTS.Browser.ContentLoaded, this.onDOMContentLoaded.bind(this));
+        window.addEventListener(Events.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
     }
 
     onDOMContentLoaded(event) {
@@ -104,7 +104,7 @@ class HiddenMapNavigationTool extends Control {
         }
 
         // Bind to global map events
-        map.on(EVENTS.OpenLayers.MoveEnd, this.onMoveEnd.bind(this));
+        map.on(Events.openLayers.moveEnd, this.onMoveEnd.bind(this));
 
         // Check if any url parameters are present
         const marker = UrlManager.getParameter('oltb-marker', false);
@@ -132,10 +132,16 @@ class HiddenMapNavigationTool extends Control {
             }
 
             if(!ProjectionManager.hasProjection(markerData.projection)) {
-                Toast.info({
-                    title: 'Projection',
+                const errorMessage = `Must add projection definition for <strong>${markerData.projection}</strong>`;
+                LogManager.logError(FILENAME, 'onCreateUrlMarker', {
+                    message: errorMessage,
+                    error: error
+                });
+
+                Toast.error({
+                    title: 'Error',
                     message: `
-                        Must add projection definition for <strong>${markerData.projection}</strong> <br>
+                        ${errorMessage} <br>
                         <a href="https://epsg.io" target="_blank" class="oltb-link">https://epsg.io</a>
                     `
                 }); 
@@ -147,7 +153,7 @@ class HiddenMapNavigationTool extends Control {
             const coordinates = transform(
                 [markerData.lon, markerData.lat], 
                 markerData.projection, 
-                CONFIG.Projection.WGS84
+                Config.projection.wgs84
             );
 
             const prettyCoordinates = toStringHDMS(coordinates);
@@ -194,7 +200,7 @@ class HiddenMapNavigationTool extends Control {
             // Trigger InfoWindow to show
             window.setTimeout(() => {
                 InfoWindowManager.showOverly(marker, fromLonLat(coordinates));
-            }, CONFIG.AnimationDuration.Normal);
+            }, Config.animationDuration.normal);
         }catch(error) {
             const errorMessage = 'Failed to parse URL marker';
             LogManager.logError(FILENAME, 'onCreateUrlMarker', {
@@ -246,7 +252,7 @@ class HiddenMapNavigationTool extends Control {
         this.localStorage.zoom = view.getZoom();
         this.localStorage.rotation = view.getRotation();
 
-        StateManager.setStateObject(LOCAL_STORAGE_NODE_NAME, this.localStorage);
+        StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 }
 

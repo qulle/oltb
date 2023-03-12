@@ -10,7 +10,7 @@ const map = new ol.Map({
         rotate: false
     }),
     view: new ol.View({
-        projection: ol.proj.get(oltb.CONFIG.Projection.Default)
+        projection: ol.proj.get(oltb.Config.projection.default)
     })
 });
 

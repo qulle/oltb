@@ -1,16 +1,16 @@
 import { DOM } from '../helpers/browser/DOM';
 import { Toast } from '../common/Toast';
-import { EVENTS } from '../helpers/constants/Events';
 import { listen } from 'ol/events';
+import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { LogManager } from '../core/managers/LogManager';
-import { SHORTCUT_KEYS } from '../helpers/constants/ShortcutKeys';
+import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
 import { ElementManager } from '../core/managers/ElementManager';
+import { SvgPaths, getIcon } from '../core/icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
-import { SVG_PATHS, getIcon } from '../core/icons/GetIcon';
 import {
-    FULL_SCREEN_EVENTS,
-    FULL_SCREEN_EVENT_TYPE,
+    FullscreenEvents,
+    FullscreenEventType,
     isFullScreenSupported,
     isFullScreen,
     requestFullScreen,
@@ -19,7 +19,8 @@ import {
 } from '../helpers/browser/Fullscreen';
 
 const FILENAME = 'tools/FullscreenTool.js';
-const DEFAULT_OPTIONS = Object.freeze({
+
+const DefaultOptions = Object.freeze({
     click: undefined,
     enter: undefined,
     leave: undefined
@@ -32,12 +33,12 @@ class FullscreenTool extends Control {
         });
 
         this.enterFullscreenIcon = getIcon({
-            path: SVG_PATHS.Fullscreen.Stroked,
+            path: SvgPaths.fullscreen.stroked,
             class: 'oltb-tool-button__icon'
         });
 
         this.exitFullscreenIcon = getIcon({
-            path: SVG_PATHS.FullscreenExit.Stroked,
+            path: SvgPaths.fullscreenExit.stroked,
             class: 'oltb-tool-button__icon'
         });
 
@@ -51,7 +52,7 @@ class FullscreenTool extends Control {
                     isFullScreen() 
                         ? 'Exit fullscreen' 
                         : 'Enter fullscreen'
-                )} (${SHORTCUT_KEYS.FullScreen})`
+                )} (${ShortcutKeys.fullscreenTool})`
             },
             listeners: {
                 'click': this.handleClick.bind(this)
@@ -64,14 +65,14 @@ class FullscreenTool extends Control {
         
         this.button = button;
         this.active = false;
-        this.options = { ...DEFAULT_OPTIONS, ...options };
+        this.options = { ...DefaultOptions, ...options };
 
-        document.addEventListener(EVENTS.Browser.FullScreenChange, this.onFullScreenChange.bind(this));
-        window.addEventListener(EVENTS.Browser.KeyUp, this.onWindowKeyUp.bind(this));
+        document.addEventListener(Events.browser.fullScreenChange, this.onFullScreenChange.bind(this));
+        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
     }
 
     onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, SHORTCUT_KEYS.FullScreen)) {
+        if(isShortcutKeyOnly(event, ShortcutKeys.fullscreenTool)) {
             this.handleClick(event);
         }
     }
@@ -117,14 +118,14 @@ class FullscreenTool extends Control {
 
     onFullScreenChange(event) {
         if(Boolean(document.fullscreenElement)) {
-            this.button._tippy.setContent(`Exit fullscreen (${SHORTCUT_KEYS.FullScreen})`);
+            this.button._tippy.setContent(`Exit fullscreen (${ShortcutKeys.fullscreenTool})`);
 
             // User defined callback from constructor
             if(typeof this.options.enter === 'function') {
                 this.options.enter(event);
             }
         }else {
-            this.button._tippy.setContent(`Enter fullscreen (${SHORTCUT_KEYS.FullScreen})`);
+            this.button._tippy.setContent(`Enter fullscreen (${ShortcutKeys.fullscreenTool})`);
 
             // User defined callback from constructor
             if(typeof this.options.leave === 'function') {
@@ -142,11 +143,11 @@ class FullscreenTool extends Control {
         if(isFullScreen()) {
             this.button.removeChild(this.button.firstElementChild);
             this.button.insertAdjacentHTML('afterbegin', this.exitFullscreenIcon);
-            this.dispatchEvent(FULL_SCREEN_EVENT_TYPE.EnterFullScreen);
+            this.dispatchEvent(FullscreenEventType.enterFullScreen);
         }else {
             this.button.removeChild(this.button.firstElementChild);
             this.button.insertAdjacentHTML('afterbegin', this.enterFullscreenIcon);
-            this.dispatchEvent(FULL_SCREEN_EVENT_TYPE.LeaveFullScreen);
+            this.dispatchEvent(FullscreenEventType.leaveFullScreen);
         }
 
         map.updateSize();
@@ -158,10 +159,10 @@ class FullscreenTool extends Control {
     setMap(map) {
         super.setMap(map);
         
-        for(let i = 0, ii = FULL_SCREEN_EVENTS.length; i < ii; ++i) {
+        for(let i = 0, ii = FullscreenEvents.length; i < ii; ++i) {
             this.listenerKeys.push(listen(
                 document, 
-                FULL_SCREEN_EVENTS[i], 
+                FullscreenEvents[i], 
                 this.handleFullScreenChange, 
                 this
             ));
