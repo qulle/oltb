@@ -64,6 +64,7 @@ class DOM {
     }
 
     static runAnimation(element, className) {
+        // Trigger re-render of DOM between class toggle
         element.classList.remove(className);
         void element.offsetWidth;
         element.classList.add(className);

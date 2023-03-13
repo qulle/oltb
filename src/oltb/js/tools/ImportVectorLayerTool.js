@@ -110,14 +110,20 @@ class ImportVectorLayerTool extends Control {
 
             // This should not happen since the format is set in the dialog
             if(!Boolean(format)) {
+                const errorMessage = `This layer format (${format}) is not supported`;
+                LogManager.logError(FILENAME, 'parseLayer', errorMessage);
+
                 Toast.error({
                     title: 'Error',
-                    message: 'This layer format is not supported'
+                    message: errorMessage
                 });
 
                 return;
             }
-                
+            
+            // The feature projection is the projection used in the representation by the view
+            // The data projection is the projection used to store coordinates in the data-files
+            // Might need to let the user pick a format while inporting
             const features = instantiateFormat(format).readFeatures(this.fileReader.result, {
                 featureProjection: Config.projection.default
             });

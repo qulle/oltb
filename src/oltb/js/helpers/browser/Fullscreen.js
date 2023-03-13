@@ -8,7 +8,7 @@ const FullscreenEvents = Object.freeze([
     'MSFullscreenChange'
 ]);
 
-const FullscreenEventType = Object.freeze({
+const FullscreenEventTypes = Object.freeze({
     enterFullScreen: 'enterfullscreen',
     leaveFullScreen: 'leavefullscreen'
 });
@@ -67,7 +67,7 @@ const exitFullScreen = function() {
 
 export {
     FullscreenEvents,
-    FullscreenEventType,
+    FullscreenEventTypes,
     isFullScreenSupported,
     isFullScreen,
     requestFullScreen,

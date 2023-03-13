@@ -10,7 +10,7 @@ import { SvgPaths, getIcon } from '../core/icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
 import {
     FullscreenEvents,
-    FullscreenEventType,
+    FullscreenEventTypes,
     isFullScreenSupported,
     isFullScreen,
     requestFullScreen,
@@ -143,11 +143,11 @@ class FullscreenTool extends Control {
         if(isFullScreen()) {
             this.button.removeChild(this.button.firstElementChild);
             this.button.insertAdjacentHTML('afterbegin', this.exitFullscreenIcon);
-            this.dispatchEvent(FullscreenEventType.enterFullScreen);
+            this.dispatchEvent(FullscreenEventTypes.enterFullScreen);
         }else {
             this.button.removeChild(this.button.firstElementChild);
             this.button.insertAdjacentHTML('afterbegin', this.enterFullscreenIcon);
-            this.dispatchEvent(FullscreenEventType.leaveFullScreen);
+            this.dispatchEvent(FullscreenEventTypes.leaveFullScreen);
         }
 
         map.updateSize();

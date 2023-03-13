@@ -750,6 +750,42 @@ const SHORTCUT_KEYS = {
 ### Custom Projections
 You can define custom projections in the file `oltb/js/core/managers/ProjectionManager.js`. This manager keeps track of all added projections. If you want to change the default projection used, there is a general config module `oltb/js/core/Config` where you can change that. More projections can be fetched at [https://epsg.io/](https://epsg.io/).
 
+The map uses `EPSG:3857` as the default projection. Tools that can receive coordinates expect these to be given in the projection `EPSG:4326`:
+
+The following projections are added by default.
+<table>
+    <tr>
+        <th>Code</th>
+        <th>Name</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>EPSG:3857</td>
+        <td>WGS 84 / Pseudo-Mercator</td>
+        <td>Standard projection used by OpenLayers, Google Maps, Bing Maps</td>
+    </tr>
+    <tr>
+        <td>EPSG:4326</td>
+        <td>WGS 84 (World Geodetic System)</td>
+        <td>Common GPS style coordinates</td>
+    </tr>
+    <tr>
+        <td>EPSG:7789</td>
+        <td>ITRF2014</td>
+        <td>An Earth-fixed system that is independent of continental drift</td>
+    </tr>
+    <tr>
+        <td>EPSG:3006</td>
+        <td>SWEREF99 TM</td>
+        <td>Projected coordinate system for Sweden - onshore and offshore. From 2003 replaces RT90 2.5 gon V (CRS code 3021)</td>
+    </tr>
+    <tr>
+        <td>EPSG:3021</td>
+        <td>RT90 2.5 gon V</td>
+        <td>Coordinate system that previously was used for map production in Sweden. Many services sill generates coordinates in this projection.</td>
+    </tr>
+</table>
+
 ### Layers
 Layers are added to the map using the `LayerManager`. The manager handels internal functionality and fires of events that the layer-tool captures to create the UI.
 

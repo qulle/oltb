@@ -131,9 +131,16 @@ class CoordinateModal extends ModalBase {
             class: 'oltb-modal__content'
         });
 
+        const coordinatesLabel = DOM.createElement({
+            element: 'label', 
+            text: 'Coordinates are given in WGS84/EPSG:4326',
+            class: 'oltb-label oltb-mt-1'
+        });
+
         DOM.appendChildren(modalContent, [
             latWrapper,
             lonWrapper,
+            coordinatesLabel,
             buttonsWrapper,
         ]);
 

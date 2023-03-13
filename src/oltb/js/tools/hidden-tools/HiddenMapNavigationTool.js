@@ -21,6 +21,7 @@ import { fromLonLat, toLonLat } from 'ol/proj';
 
 const FILENAME = 'hidden-tools/HiddenMapNavigationTool.js';
 const ID_PREFIX = 'oltb-info-window-marker';
+
 const DefaultOptions = Object.freeze({
     focusZoom: 2
 });
@@ -34,7 +35,7 @@ const LocalStorageDefaults = Object.freeze({
     rotation: 0
 });
 
-const DEFAULT_URL_MARKER = Object.freeze({
+const DefaultUrlMarker = Object.freeze({
     lon: 18.0685,
     lat: 59.3293,
     title: "Marker",
@@ -121,7 +122,7 @@ class HiddenMapNavigationTool extends Control {
 
         try {
             const markerDataParsed = JSON.parse(markerString);
-            const markerData = { ...DEFAULT_URL_MARKER, ...markerDataParsed };
+            const markerData = { ...DefaultUrlMarker, ...markerDataParsed };
 
             LogManager.logDebug(FILENAME, 'onCreateUrlMarker', markerData);
 
