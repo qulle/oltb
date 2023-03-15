@@ -19,7 +19,7 @@ import { SettingsManager } from '../core/managers/SettingsManager';
 import { eventDispatcher } from '../helpers/browser/EventDispatcher';
 import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
 import { SvgPaths, getIcon } from '../core/icons/GetIcon';
-import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
+import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
 import { FeatureProperties } from '../helpers/constants/FeatureProperties';
 import { Fill, Stroke, Circle, Style } from 'ol/style';
 import { getMeasureCoordinates, getMeasureValue } from '../helpers/Measurements';
@@ -39,8 +39,8 @@ const LocalStorageNodeName = LocalStorageKeys.measureTool;
 const LocalStorageDefaults = Object.freeze({
     active: false,
     collapsed: false,
-    toolTypeIndex: 0,
-    strokeColor: '#3B4352',
+    toolType: 'LineString',
+    strokeColor: '#3B4352FF',
     fillColor: '#D7E3FA80'
 });
 
@@ -130,7 +130,7 @@ class MeasureTool extends Control {
         this.strokeColor.addEventListener(Events.custom.colorChange, this.updateTool.bind(this));
 
         // Set default selected values
-        this.toolType.selectedIndex = this.localStorage.toolTypeIndex; 
+        this.toolType.value = this.localStorage.toolType; 
 
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
         window.addEventListener(Events.custom.settingsCleared, this.onWindowSettingsCleared.bind(this));
@@ -186,7 +186,7 @@ class MeasureTool extends Control {
 
     updateTool() {
         // Store current values in local storage
-        this.localStorage.toolTypeIndex = this.toolType.selectedIndex;
+        this.localStorage.toolType = this.toolType.value;
         this.localStorage.fillColor = this.fillColor.getAttribute('data-oltb-color');
         this.localStorage.strokeColor = this.strokeColor.getAttribute('data-oltb-color');;
 

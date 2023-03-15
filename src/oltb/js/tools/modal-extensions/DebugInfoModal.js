@@ -346,7 +346,7 @@ class DebugInfoModal extends ModalBase {
         Object.keys(sessionStorage).forEach((key) => {
             try {
                 sessionStorageContent[key] = JSON.parse(localStorage.getItem(key)) || {};
-            } catch (error) {
+            }catch (error) {
                 LogManager.logError(FILENAME, 'generateModalContent', {
                     message: 'Error parsing sessionStorage',
                     error: error

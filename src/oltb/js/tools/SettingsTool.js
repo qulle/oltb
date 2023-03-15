@@ -12,7 +12,7 @@ import { SettingsModal } from './modal-extensions/SettingsModal';
 import { ElementManager } from '../core/managers/ElementManager';
 import { SettingsManager } from '../core/managers/SettingsManager';
 import { SvgPaths, getIcon } from '../core/icons/GetIcon';
-import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
+import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
 
 const FILENAME = 'tools/SettingsTool.js';
 

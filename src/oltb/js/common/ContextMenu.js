@@ -4,10 +4,10 @@ import { Config } from '../core/Config';
 import { Events } from "../helpers/constants/Events";
 import { Control } from "ol/control";
 import { transform } from 'ol/proj';
+import { trapFocus } from '../helpers/browser/TrapFocus';
 import { UrlManager } from '../core/managers/UrlManager';
 import { ElementManager } from '../core/managers/ElementManager';
 import { hasNestedProperty } from "../helpers/browser/HasNestedProperty";
-import { trapFocusKeyListener } from '../helpers/browser/TrapFocus';
 
 const FILENAME = 'common/ContextMenu.js';
 
@@ -31,7 +31,7 @@ class ContextMenu extends Control {
                     'data-contextmenu': options.name
                 },
                 listeners: {
-                    'keydown': trapFocusKeyListener
+                    'keydown': trapFocus
                 }
             })
         });
@@ -39,7 +39,7 @@ class ContextMenu extends Control {
         this.options = { ...DefaultOptions, ...options };
         this.menu = this.element;
 
-        ContextMenu.#isDebug = UrlManager.getParameter('debug') === 'true';
+        ContextMenu.#isDebug = UrlManager.getParameter(Config.urlParameters.debug) === 'true';
         ContextMenu.#items.forEach((item) => {
             this.addMenuItem(item);
         });

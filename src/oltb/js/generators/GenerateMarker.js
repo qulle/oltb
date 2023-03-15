@@ -12,28 +12,20 @@ const DefaultOptions = Object.freeze({
     lat: undefined,
     title: undefined,
     description: undefined,
-    backgroundColor: '#0166A5FF',
-    color: '#FFFFFFFF',
-    width: 15,
-    radius: 15,
+    width: 14,
+    radius: 14,
+    fill: '#0166A5FF',
+    stroke: '#FFFFFFFF',
     icon: 'geoPin.filled',
     iconWidth: 14,
     iconHeight: 14,
     notSelectable: true,
-    infoWindow: undefined
+    infoWindow: undefined,
+    replaceHashtag: true
 });
 
 const generateMarker = function(options = {}) {
     options = { ...DefaultOptions, ...options };
-
-    const [ iconName, iconVersion ] = options.icon.split('.');
-    const icon = getIcon({
-        path: SvgPaths[iconName][iconVersion],
-        width: options.iconWidth,
-        height: options.iconHeight,
-        fill: 'rgb(255, 255, 255)',
-        stroke: 'none'
-    });
 
     const marker = new Feature({
         geometry: new Point(fromLonLat([
@@ -42,15 +34,25 @@ const generateMarker = function(options = {}) {
         ]))
     });
 
+    const [ iconName, iconVersion ] = options.icon.split('.');
+    const icon = getIcon({
+        path: SvgPaths[iconName][iconVersion],
+        width: options.iconWidth,
+        height: options.iconHeight,
+        fill: '#FFFFFFFF',
+        stroke: 'none',
+        replaceHashtag: options.replaceHashtag
+    });
+
     marker.setStyle([
         new Style({
             image: new Circle({
                 radius: options.radius,
                 fill: new Fill({
-                    color: options.backgroundColor
+                    color: options.fill
                 }),
                 stroke: new Stroke({
-                    color: `${options.backgroundColor.slice(0, -2)}66`,
+                    color: `${options.fill.slice(0, -2)}66`,
                     width: options.width,
                 })
             })
@@ -68,13 +70,17 @@ const generateMarker = function(options = {}) {
             lon: options.lon,
             lat: options.lat,
             type: FeatureProperties.type.marker,
-            title: options.title,
-            description: options.description,
-            icon: options.icon,
-            backgroundColor: options.backgroundColor,
-            color: options.color,
-            notSelectable: options.notSelectable, 
-            infoWindow: options.infoWindow
+            notSelectable: options.notSelectable,
+            infoWindow: options.infoWindow,
+            marker: {
+                icon: options.icon,
+                title: options.title,
+                description: options.description,
+            },
+            style: {
+                fill: options.fill,
+                stroke: options.stroke
+            }
         }
     });
 

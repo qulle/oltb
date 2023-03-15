@@ -3,7 +3,7 @@ import { Keys } from "../constants/Keys";
 const FILENAME = 'browser/TrapFocus.js';
 const ELEMENTS = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
 
-const trapFocusKeyListener = function(event) {
+const trapFocus = function(event) {
     const isTabKey = event.key === Keys.valueTab;
     if(!Boolean(isTabKey)) {
         return;
@@ -26,4 +26,4 @@ const trapFocusKeyListener = function(event) {
     }
 }
 
-export { trapFocusKeyListener };
+export { trapFocus };

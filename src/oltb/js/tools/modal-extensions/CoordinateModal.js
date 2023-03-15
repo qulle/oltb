@@ -14,7 +14,11 @@ const DefaultOptions = Object.freeze({
 
 class CoordinateModal extends ModalBase {
     constructor(options = {}) {
-        super('Coordinates', options.maximized, options.onClose);
+        super(
+            'Coordinates', 
+            options.maximized, 
+            options.onClose
+        );
         
         this.options = { ...DefaultOptions, ...options };
         this.#createModal();

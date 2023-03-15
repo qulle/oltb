@@ -42,8 +42,8 @@ const DefaultUrlMarker = Object.freeze({
     description: "Oops, this is the default description, have you forgot a parameter?",
     icon: "GeoMarker.Filled",
     layerName: "URL Marker",
-    backgroundColor: '#0166A5FF',
-    color: '#FFFFFFFF',
+    fill: '#0166A5FF',
+    stroke: '#FFFFFFFF',
     projection: Config.projection.wgs84,
     zoom: 8
 });
@@ -107,8 +107,7 @@ class HiddenMapNavigationTool extends Control {
         // Bind to global map events
         map.on(Events.openLayers.moveEnd, this.onMoveEnd.bind(this));
 
-        // Check if any url parameters are present
-        const marker = UrlManager.getParameter('oltb-marker', false);
+        const marker = UrlManager.getParameter(Config.urlParameters.marker, false);
         if(Boolean(marker)) {
             this.onCreateUrlMarker(marker);
         }
@@ -134,10 +133,7 @@ class HiddenMapNavigationTool extends Control {
 
             if(!ProjectionManager.hasProjection(markerData.projection)) {
                 const errorMessage = `Must add projection definition for <strong>${markerData.projection}</strong>`;
-                LogManager.logError(FILENAME, 'onCreateUrlMarker', {
-                    message: errorMessage,
-                    error: error
-                });
+                LogManager.logError(FILENAME, 'onCreateUrlMarker', errorMessage);
 
                 Toast.error({
                     title: 'Error',
@@ -173,13 +169,14 @@ class HiddenMapNavigationTool extends Control {
                 `
             };
 
-            // Colors given in URL can't contain hashtag
-            if(markerData.color[0] !== '#') {
-                markerData.color = `#${markerData.color}`;
+            // Colors given in URL can't contain hashtag unless encoded as %23
+            // Easier to prepend with hashtag after URL data has been fetched and parsed
+            if(markerData.stroke[0] !== '#') {
+                markerData.stroke = `#${markerData.stroke}`;
             }
 
-            if(markerData.backgroundColor[0] !== '#') {
-                markerData.backgroundColor = `#${markerData.backgroundColor}`;
+            if(markerData.fill[0] !== '#') {
+                markerData.fill = `#${markerData.fill}`;
             }
 
             const marker = new generateMarker({
@@ -188,8 +185,8 @@ class HiddenMapNavigationTool extends Control {
                 title: markerData.title,
                 description: markerData.description,
                 icon: markerData.icon,
-                backgroundColor: markerData.backgroundColor,
-                color: markerData.color,
+                fill: markerData.fill,
+                stroke: markerData.stroke,
                 infoWindow: infoWindow
             });
 

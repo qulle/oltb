@@ -10,7 +10,7 @@ import { UrlManager } from '../core/managers/UrlManager';
 import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
 import { ElementManager } from '../core/managers/ElementManager';
 import { SvgPaths, getIcon } from '../core/icons/GetIcon';
-import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
+import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
 
 const FILENAME = 'tools/ExportPngTool.js';
 
@@ -52,7 +52,7 @@ class ExportPngTool extends Control {
 
         this.button = button;
         this.options = { ...DefaultOptions, ...options };
-        this.isDebug = UrlManager.getParameter('debug') === 'true';
+        this.isDebug = UrlManager.getParameter(Config.urlParameters.debug) === 'true';
         
         window.addEventListener(Events.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));

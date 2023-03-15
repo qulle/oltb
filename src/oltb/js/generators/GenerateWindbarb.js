@@ -6,21 +6,24 @@ import { getWindBarb } from '../core/icons/GetWindBarb';
 import { degreesToRadians } from '../helpers/Conversions';
 import { FeatureProperties } from '../helpers/constants/FeatureProperties';
 
-const FILENAME = 'generators/generateWindBarb.js';
+const FILENAME = 'generators/GenerateWindBarb.js';
 
 const DefaultOptions = Object.freeze({
     lon: undefined,
     lat: undefined,
-    windSpeed: 0,
-    rotation: 0,
+    title: undefined,
+    description: undefined,
     width: 250,
     height: 250,
-    fill: 'rgb(59, 67, 82)',
-    stroke: 'rgb(59, 67, 82)',
+    fill: '#3B4352FF',
+    stroke: '#3B4352FF',
+    windSpeed: 0,
+    rotation: 0,
     strokeWidth: 3,
     scale: 1,
-    notSelectable: false,
-    infoWindow: undefined
+    notSelectable: true,
+    infoWindow: undefined,
+    replaceHashtag: true
 });
 
 const generateWindBarb = function(options = {}) {
@@ -39,7 +42,8 @@ const generateWindBarb = function(options = {}) {
         height: options.height,
         fill: options.fill,
         stroke: options.stroke,
-        strokeWidth: options.strokeWidth
+        strokeWidth: options.strokeWidth,
+        replaceHashtag: options.replaceHashtag
     });
 
     windBarb.setStyle([
@@ -54,11 +58,23 @@ const generateWindBarb = function(options = {}) {
 
     windBarb.setProperties({
         oltb: {
-            type: FeatureProperties.type.windBarb,
             lon: options.lon,
             lat: options.lat,
+            type: FeatureProperties.type.windBarb,
             notSelectable: options.notSelectable, 
-            infoWindow: options.infoWindow
+            infoWindow: options.infoWindow,
+            windBarb: {
+                windSpeed: options.windSpeed,
+                title: options.title,
+                description: options.description,
+            },
+            style: {
+                width: options.width,
+                height: options.height,
+                fill: options.fill,
+                stroke: options.stroke,
+                strokeWidth: options.strokeWidth
+            }
         }
     });
 

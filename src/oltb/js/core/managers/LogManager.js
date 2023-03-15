@@ -12,35 +12,35 @@ class LogManager {
             value: 1,
             icon: '🐳',
             info: 'Debug',
-            color: '#D7E3FA',
+            color: '#D7E3FAFF',
             method: window.console.log
         },
         information: {
             value: 2,
             icon: '🐸',
             info: 'Information',
-            color: '#D3D9E6',
+            color: '#D3D9E6FF',
             method: window.console.info
         },
         warning: {
             value: 3,
             icon: '🐠',
             info: 'Warning',
-            color: '#FFF1C5',
+            color: '#FFF1C5FF',
             method: window.console.warn
         },
         error: {
             value: 4,
             icon: '🐝',
             info: 'Error',
-            color: '#FDB5B4',
+            color: '#FDB5B4FF',
             method: window.console.error
         }
     });
 
     static init() {
         LogManager.logDebug(FILENAME, 'init', 'Initializing started');
-        this.#isDebug = UrlManager.getParameter('debug') === 'true';
+        this.#isDebug = UrlManager.getParameter(Config.urlParameters.debug) === 'true';
     }
 
     static setMap(map) { }

@@ -6,7 +6,7 @@ import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
 import { ElementManager } from '../core/managers/ElementManager';
 import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
 import { SvgPaths, getIcon } from '../core/icons/GetIcon';
-import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
+import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
 import { Control, ScaleLine } from 'ol/control';
 
 const FILENAME = 'tools/ScaleLineTool.js';

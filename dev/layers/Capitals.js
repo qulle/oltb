@@ -6,10 +6,10 @@ import { generateMarker } from '../../src/oltb/js/generators/GenerateMarker';
 
 import urlCapitalsGeoJSON from 'url:../geojson/capitals.geojson';
 
-const LOG_ORIGIN = 'Capitals.js';
+const FILENAME = 'layers/Capitals.js';
 const ID_PREFIX = 'oltb-info-window-marker';
 
-const CONTINENT_COLORS = Object.freeze({
+const ContinentColors = Object.freeze({
     'Europe': '#5B88D6FF',
     'Africa': '#68B9E5FF',
     'Antarctica': '#3CAEA3FF',
@@ -58,7 +58,7 @@ const geoJsonPromise = fetch(urlCapitalsGeoJSON)
                 `
             };
         
-            const backgroundColor = CONTINENT_COLORS[capital.properties.continentName] || '#6397C2FF';
+            const fill = ContinentColors[capital.properties.continentName] || '#6397C2FF';
         
             layerWrapper.layer.getSource().addFeature(
                 new generateMarker({
@@ -67,7 +67,7 @@ const geoJsonPromise = fetch(urlCapitalsGeoJSON)
                     title: capital.properties.countryName,
                     description: capital.properties.countryName,
                     icon: 'geoMarker.filled',
-                    backgroundColor: backgroundColor,
+                    fill: fill,
                     notSelectable: true,
                     infoWindow: infoWindow
                 })
@@ -76,8 +76,7 @@ const geoJsonPromise = fetch(urlCapitalsGeoJSON)
     })
     .catch((error) => {
         const errorMessage = 'Failed to load Capitals layer';
-
-        LogManager.logError(LOG_ORIGIN, 'geoJsonPromise', `${errorMessage} [${error}]`);
+        LogManager.logError(FILENAME, 'geoJsonPromise', `${errorMessage} [${error}]`);
 
         Toast.error({
             title: 'Error',

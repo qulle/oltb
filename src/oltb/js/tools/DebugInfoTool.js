@@ -1,4 +1,5 @@
 import { DOM } from '../helpers/browser/DOM';
+import { Config } from '../core/Config';
 import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { LogManager } from '../core/managers/LogManager';
@@ -7,7 +8,7 @@ import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
 import { ElementManager } from '../core/managers/ElementManager';
 import { DebugInfoModal } from './modal-extensions/DebugInfoModal';
 import { SvgPaths, getIcon } from '../core/icons/GetIcon';
-import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
+import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
 
 const FILENAME = 'tools/DebugInfoTool.js';
 
@@ -48,8 +49,8 @@ class DebugInfoTool extends Control {
         this.debugInfoModal = undefined;
         this.options = { ...DefaultOptions, ...options };
         
-        // If the tool only should be visible in debug mode (?debug=true)
-        const isDebug = UrlManager.getParameter('debug') === 'true';
+        // If the tool only should be visible in debug mode
+        const isDebug = UrlManager.getParameter(Config.urlParameters.debug) === 'true';
 
         if(
             Boolean(this.options.onlyWhenGetParameter) &&

@@ -608,7 +608,7 @@ controls: defaultControls({
         }
     }),
     new GraticuleTool({
-        color: 'rgba(59, 67, 82, 0.9)',
+        color: '#3B4352E6',
         dashed: true,
         width: 2,
         showLabels: true,
@@ -827,7 +827,7 @@ Other properties that you can add are:
 #### URL Markers
 A marker can be created by providing the `oltb-marker` object as the GET parameter according to the following syntax.
 ```
-/?oltb-marker={"title":"Marker Title","description":"Information about the maker","icon":"exclamationTriangle.filled","backgroundColor":"EB4542FF","color":"FFFFFFFF","layerName":"URL Marker","projection":"EPSG:4326","lon":18.0685,"lat":59.3293,"zoom":8}
+/?oltb-marker={"title":"Marker Title","description":"Information about the maker","icon":"exclamationTriangle.filled","fill":"EB4542FF","stroke":"FFFFFFFF","layerName":"URL Marker","projection":"EPSG:4326","lon":18.0685,"lat":59.3293,"zoom":8}
 ```
 
 Test the marker above using the <a href='https://qulle.github.io/oltb/?oltb-marker={"title":"Marker Title","description":"Information about the maker","icon":"ExclamationTriangle.Filled","backgroundColor":"EB4542FF","color":"FFFFFFFF","layerName":"URL Marker","projection":"EPSG:4326","lon":18.0685,"lat":59.3293,"zoom":8}' target="_blank">demo page</a>.
@@ -838,8 +838,8 @@ The JSON object has the following structure.
     "title": "Marker Title",
     "description": "Information about the maker",
     "icon": "exclamationTriangle.filled",
-    "backgroundColor": "EB4542FF",
-    "color": "FFFFFFFF",
+    "fill": "EB4542FF",
+    "stroke": "FFFFFFFF",
     "layerName": "URL Marker",
     "projection": "EPSG:4326",
     "lon": 18.0685,
@@ -1036,7 +1036,7 @@ const icon = getIcon({
     class: 'some-class',
     width: 20,
     height: 20,
-    fill: 'rgb(255, 255, 255)',
+    fill: '#FFFFFFFF',
     stroke: 'none'
 });
 ```
@@ -1057,8 +1057,8 @@ const icon = getWindBarb({
     windSpeed: 25,
     width: 250,
     height: 250,
-    fill: 'rgb(59, 67, 82)',
-    stroke: 'rgb(59, 67, 82)',
+    fill: '#3B4352FF',
+    stroke: '#3B4352FF',
     strokeWidth: 3
 });
 ```
@@ -1119,7 +1119,7 @@ const LocalStorageDefaults = {
     active: false,
     collapsed: false,
     toolTypeIndex: 5,
-    strokeColor: '#4A86B8',
+    strokeColor: '#4A86B8FF',
     strokeWidth: 2,
     fillColor: '#FFFFFF80'
 };
@@ -1137,7 +1137,7 @@ StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
 ```
 
 ### Debug Tool
-To make debugging and diagnosting errors easier there is a tool named `DebugInfoTool`. This tool will gather information about the map such as zoomlevel, location, layers, rotation, projection etc and displays the information in a modal window. To hide the debug tool as default, add the parameter `onlyWhenGetParameter: true` and add the get parameter to the url `/?debug=true` to show the tool. Adding the debug parameter will also enable the default context-menu in the browser.
+To make debugging and diagnosting errors easier there is a tool named `DebugInfoTool`. This tool will gather information about the map such as zoomlevel, location, layers, rotation, projection etc and displays the information in a modal window. To hide the debug tool as default, add the parameter `onlyWhenGetParameter: true` and add the get parameter to the url `/?oltb-debug=true` to show the tool. Adding the debug parameter will also enable the default context-menu in the browser.
 
 ### Logging
 Logging is done through the `LogManager`. This way all logging is done through one central place and will be outputted in the `DebugInfoModal`. There are four levels to use when logging.
@@ -1157,7 +1157,7 @@ LogManager.logDebug(FILENAME, 'handleClick', {
 });
 ```
 
-Add the get parameter to the url `/?debug=true` to also display the logged messages in the browser console.
+Add the get parameter to the url `/?oltb-debug=true` to also display the logged messages in the browser console.
 
 ### OLTB Namespace
 All classes and id:s in the project are prefixed with the namespace `oltb`. Data is also stored in local storage under the key `oltb-state`. 

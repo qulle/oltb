@@ -9,12 +9,12 @@ import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
 import { ElementManager } from '../core/managers/ElementManager';
 import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
 import { SvgPaths, getIcon } from '../core/icons/GetIcon';
-import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
+import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
 
 const FILENAME = 'tools/GraticuleTool.js';
 
 const DefaultOptions = Object.freeze({
-    color: 'rgba(59, 67, 82, 0.9)',
+    color: '#3B4352E6',
     dashed: true,
     width: 2,
     showLabels: true,

@@ -11,6 +11,7 @@ const Keys = Object.freeze({
     valueShift: 'Shift',
     valueControl: 'Control',
     valueAlt: 'Alt',
+    valueOperatingSystem: 'OS',
     valuePause: 'Pause',
     valueCapsLock: 'CapsLock',
     valueEscape: 'Escape',

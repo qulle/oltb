@@ -2,6 +2,7 @@ import { DOM } from '../../helpers/browser/DOM';
 import { Config } from '../../core/Config';
 import { ModalBase } from '../../common/modals/ModalBase';
 import { isDarkTheme } from '../../helpers/IsDarkTheme';
+import { ProjectionManager } from '../../core/managers/ProjectionManager';
 
 const FILENAME = 'modal-extensions/LayerModal.js';
 const PREFIX_LAYER_ID = 'oltb-layer-modal';
@@ -15,7 +16,11 @@ const DefaultOptions = Object.freeze({
 
 class LayerModal extends ModalBase {
     constructor(options = {}) {
-        super('Create map layer', options.maximized, options.onClose);
+        super(
+            'Create map layer', 
+            options.maximized, 
+            options.onClose
+        );
         
         this.options = { ...DefaultOptions, ...options };
         this.#createModal();
@@ -147,19 +152,31 @@ class LayerModal extends ModalBase {
             }
         });
 
-        const projectionText = DOM.createElement({
-            element: 'input', 
+        const projectionSelect = DOM.createElement({
+            element: 'select', 
             id: `${PREFIX_LAYER_ID}-layer-projection`,
-            class: 'oltb-input', 
-            attributes: {
-                type: 'text', 
-                placeholder: Config.projection.default
-            }
+            class: 'oltb-select'
         });
+
+        const projections = ProjectionManager.getProjections();
+        projections.forEach((projection) => {
+            const option = DOM.createElement({
+                element: 'option', 
+                text: `${projection.name} (${projection.code})`, 
+                value: projection.code
+            });
+
+            DOM.appendChildren(projectionSelect, [
+                option
+            ]);
+        });
+
+        // Set the default selected values
+        projectionSelect.value = Config.projection.default;
 
         DOM.appendChildren(projectionWrapper, [
             projectionLabel,
-            projectionText
+            projectionSelect
         ]);
 
         const urlWrapper = DOM.createElement({
@@ -305,7 +322,7 @@ class LayerModal extends ModalBase {
                         name: nameText.value,
                         layer: typeSelect.value,
                         source: sourceSelect.value,
-                        projection: projectionText.value || Config.projection.default,
+                        projection: projectionSelect.value || Config.projection.default,
                         url: urlText.value,
                         parameters: parametersText.value || '{}',
                         wrapX: wrapXSelect.value,

@@ -1,7 +1,7 @@
 import { DOM } from '../../helpers/browser/DOM';
 import { Keys } from '../../helpers/constants/Keys';
 import { Events } from '../../helpers/constants/Events';
-import { trapFocusKeyListener } from '../../helpers/browser/TrapFocus';
+import { trapFocus } from '../../helpers/browser/TrapFocus';
 
 const FILENAME = 'dialogs/DialogBase.js';
 const ANIMATION_CLASS = 'oltb-animation--bounce';
@@ -16,7 +16,7 @@ class DialogBase {
             },
             listeners: {
                 'click': this.bounceAnimation.bind(this),
-                'keydown': trapFocusKeyListener
+                'keydown': trapFocus
             }
         });
 
@@ -43,7 +43,7 @@ class DialogBase {
     }
 
     close() {
-        this.backdrop.removeEventListener(Events.browser.keyDown, trapFocusKeyListener);
+        this.backdrop.removeEventListener(Events.browser.keyDown, trapFocus);
         this.backdrop.remove();
     }
 }

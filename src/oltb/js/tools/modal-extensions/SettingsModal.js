@@ -16,7 +16,11 @@ class SettingsModal extends ModalBase {
     #state = new Map();
 
     constructor(options = {}) {
-        super('Settings', options.maximized, options.onClose);
+        super(
+            'Settings', 
+            options.maximized, 
+            options.onClose
+        );
         
         this.options = { ...DefaultOptions, ...options };
         this.#createModal();

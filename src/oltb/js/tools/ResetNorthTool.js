@@ -11,7 +11,7 @@ import { ContextMenu } from '../common/ContextMenu';
 import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
 import { ElementManager } from '../core/managers/ElementManager';
 import { SvgPaths, getIcon } from '../core/icons/GetIcon';
-import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
+import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
 import { degreesToRadians, radiansToDegrees } from '../helpers/Conversions';
 
 const FILENAME = 'tools/ResetNorthTool.js';
@@ -87,6 +87,12 @@ class ResetNorthTool extends Control {
                 if(result.isDigitsOnly()) {
                     goToView(map, centerCoordinates, zoom, degreesToRadians(result));
                 }else {
+                    const errorMessage = 'Only digits are allowed as input';
+                    LogManager.logError(FILENAME, 'onContextMenuSetRotation', {
+                        message: errorMessage,
+                        result: result
+                    });
+
                     Toast.error({
                         title: 'Error',
                         message: 'Only digits are allowed as input'

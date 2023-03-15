@@ -13,7 +13,7 @@ Some of the changes done in this version are:
 - Added a full color palette
 - Refactored and added new managers to control the startup procedure
 - Refactored DebugTool to have more in dept information as well as logg
-- Removed data projection from both export and import of vector layers. Default value from OL will be used. In later versions, this may be allowed to be selected by the user
+- Refactored ImportVectorLayerTool to have selectable feature- and data- projections
 - Fixed the opacity and position issue of InfoWindow when exporting map as PNG
 - Fixed Alert dialog, undefined text property
 - Fixed issue where importing vector layers re-generates previously imported layers

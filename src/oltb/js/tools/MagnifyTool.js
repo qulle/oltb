@@ -11,7 +11,7 @@ import { getRenderPixel } from 'ol/render';
 import { ElementManager } from '../core/managers/ElementManager';
 import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
 import { SvgPaths, getIcon } from '../core/icons/GetIcon';
-import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
+import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
 
 const FILENAME = 'tools/MagnifyTool.js';
 
@@ -240,7 +240,7 @@ class MagnifyTool extends Control {
                 context.beginPath();
                 context.arc(centerX, centerY, half, 0, 2 * Math.PI);
                 context.lineWidth = (3 * half) / radius;
-                context.strokeStyle = 'rgba(59, 67, 82, 1)';
+                context.strokeStyle = '#3b4352FF';
                 context.putImageData(dest, originX, originY);
                 context.stroke();
                 context.restore();

@@ -14,7 +14,11 @@ const DefaultOptions = Object.freeze({
 
 class DownloadLayerModal extends ModalBase {
     constructor(options = {}) {
-        super('Download layer', options.maximized, options.onClose);
+        super(
+            'Download layer', 
+            options.maximized, 
+            options.onClose
+        );
 
         this.options = { DefaultOptions, ...options };
         this.#createModal();
@@ -31,13 +35,13 @@ class DownloadLayerModal extends ModalBase {
             text: 'Layer format',
             class: 'oltb-label', 
             attributes: {
-                for: `${PREFIX_LAYER_ID}-layer-wrapx`
+                for: `${PREFIX_LAYER_ID}-layer-format`
             }
         });
 
         const formatSelect = DOM.createElement({
             element: 'select',
-            id: `${PREFIX_LAYER_ID}-layer-type`,  
+            id: `${PREFIX_LAYER_ID}-layer-format`,  
             class: 'oltb-select'
         });
 

@@ -1,4 +1,6 @@
-const FILENAME = 'browser/ShortcutKeyOnly.js';
+import { Keys } from "../constants/Keys";
+
+const FILENAME = 'browser/IsShortcutKeyOnly.js';
 
 const isShortcutKeyOnly = function(event, key) {
     return (
@@ -8,6 +10,7 @@ const isShortcutKeyOnly = function(event, key) {
         !Boolean(event.shiftKey) && 
         !Boolean(event.altKey) && 
         !Boolean(event.metaKey) && 
+        event.key.toUpperCase() !== Keys.valueOperatingSystem &&
         event.key.toUpperCase() === key
     );
 }

@@ -21,7 +21,7 @@ import { instantiateSource } from '../core/ol-types/SourceTypes';
 import { instantiateFormat } from '../core/ol-types/FormatTypes';
 import { InfoWindowManager } from '../core/managers/InfoWindowManager';
 import { ProjectionManager } from '../core/managers/ProjectionManager';
-import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
+import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
 import { FeatureProperties } from '../helpers/constants/FeatureProperties';
 import { DownloadLayerModal } from './modal-extensions/DownloadLayerModal';
 import { hasCustomFeatureProperty } from '../helpers/browser/HasNestedProperty';
@@ -140,7 +140,7 @@ class LayerTool extends Control {
                                             width: 20,
                                             height: 20,
                                             fill: 'none',
-                                            stroke: 'rgb(255, 255, 255)',
+                                            stroke: '#FFFFFFFF',
                                             class: 'oltb-btn__icon'
                                         })}
                                     </button>
@@ -277,7 +277,7 @@ class LayerTool extends Control {
     onCreateMapLayer(result) {
         if(!ProjectionManager.hasProjection(result.projection)) {
             const errorMessage = `Must add projection definition for <strong>${result.projection}</strong>`;
-            LogManager.logError(FILENAME, 'showAddMapLayerModal', errorMessage);
+            LogManager.logError(FILENAME, 'onCreateMapLayer', errorMessage);
 
             Toast.error({
                 title: 'Error',
@@ -306,7 +306,7 @@ class LayerTool extends Control {
             });
         }catch(error) {
             const errorMessage = 'Failed to generate new layer';
-            LogManager.logError(FILENAME, 'showAddMapLayerModal', {
+            LogManager.logError(FILENAME, 'onCreateMapLayer', {
                 message: errorMessage,
                 error: error
             });
@@ -592,13 +592,22 @@ class LayerTool extends Control {
         const format = instantiateFormat(result.format);
             
         if(!Boolean(format)) {
+            const errorMessage = `Layer format '<strong>${result.format})</strong>' is not supported`;
+            LogManager.logError(FILENAME, 'onDownloadLayer', errorMessage);
+
             Toast.error({
                 title: 'Error',
-                message: 'This layer format is not supported'
+                message: errorMessage
             });
-                                
+
             return;
         }
+
+        LogManager.logDebug(FILENAME, 'onDownloadLayer', {
+            layerName: layerWrapper.getName(),
+            formatName: result.format,
+            format: format
+        });
             
         const features = layerWrapper.getLayer().getSource().getFeatures();
         const content = format.writeFeatures(features, {

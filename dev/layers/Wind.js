@@ -7,9 +7,10 @@ import { generateWindBarb } from "../../src/oltb/js/generators/GenerateWindBarb"
 
 import urlCapitalsGeoJSON from 'url:../geojson/capitals.geojson';
 
-const LOG_ORIGIN = 'Wind.js';
+const FILENAME = 'layers/Wind.js';
 const ID_PREFIX = 'oltb-info-window-marker';
-const CONTINENT_DIRECTION = Object.freeze({
+
+const ContinentDirections = Object.freeze({
     'Europe': 5,
     'Africa': 110,
     'Antarctica': 65,
@@ -41,7 +42,7 @@ const geoJsonPromise = fetch(urlCapitalsGeoJSON)
             const windSpeed = randomNumber(0, 40);
 
             // Get example direction to not have all wind barbs facing the same way
-            const rotation = CONTINENT_DIRECTION[capital.properties.continentName] || 0;
+            const rotation = ContinentDirections[capital.properties.continentName] || 0;
             const infoWindow = {
                 title: capital.properties.countryName,
                 content: `
@@ -63,22 +64,22 @@ const geoJsonPromise = fetch(urlCapitalsGeoJSON)
                 new generateWindBarb({
                     lon: lon,
                     lat: lat,
-                    fill: 'rgb(59, 67, 82)',
-                    stroke: 'rgb(59, 67, 82)',
+                    title: capital.properties.countryName,
+                    description: capital.properties.countryName,
+                    fill: '#3B4352FF',
+                    stroke: '#3B4352FF',
                     scale: .8,
                     windSpeed: windSpeed,
                     rotation: rotation,
-                    notSelectable: true,
-                    infoWindow: infoWindow,
-                    strokeWidth: 3
+                    infoWindow: infoWindow
                 })
             );
         });
     })
     .catch((error) => {
         const errorMessage = 'Failed to load Wind Barb layer';
+        LogManager.logError(FILENAME, 'geoJsonPromise', `${errorMessage} [${error}]`);
 
-        LogManager.logError(LOG_ORIGIN, 'geoJsonPromise', `${errorMessage} [${error}]`);
         Toast.error({
             title: 'Error',
             message: errorMessage

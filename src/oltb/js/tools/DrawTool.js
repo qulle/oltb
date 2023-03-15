@@ -16,7 +16,7 @@ import { SettingsManager } from '../core/managers/SettingsManager';
 import { eventDispatcher } from '../helpers/browser/EventDispatcher';
 import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
 import { SvgPaths, getIcon } from '../core/icons/GetIcon';
-import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
+import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
 import { FeatureProperties } from '../helpers/constants/FeatureProperties';
 import { LinearRing, Polygon } from 'ol/geom';
 import { isFeatureIntersectable } from '../helpers/IsFeatureIntersectable';
@@ -39,9 +39,9 @@ const LocalStorageNodeName = LocalStorageKeys.drawTool;
 const LocalStorageDefaults = Object.freeze({
     active: false,
     collapsed: false,
-    toolTypeIndex: 5,
-    strokeWidthIndex: 4,
-    strokeColor: '#4A86B8',
+    toolType: 'Polygon',
+    strokeWidth: '2.5',
+    strokeColor: '#4A86B8FF',
     fillColor: '#D7E3FA80'
 });
 
@@ -106,7 +106,7 @@ class DrawTool extends Control {
                     <div class="oltb-toolbox-section__group">
                         <label class="oltb-label" for="${ID_PREFIX}-intersection-enable">Intersection</label>
                         <select id="${ID_PREFIX}-intersection-enable" class="oltb-select">
-                            <option value="false" selected>False</option>
+                            <option value="false">False</option>
                             <option value="true">True</option>
                         </select>
                     </div>
@@ -167,8 +167,9 @@ class DrawTool extends Control {
         this.strokeColor.addEventListener(Events.custom.colorChange, this.updateTool.bind(this));
 
         // Set default selected values
-        this.toolType.selectedIndex = this.localStorage.toolTypeIndex;
-        this.strokeWidth.selectedIndex  = this.localStorage.strokeWidthIndex;
+        this.toolType.value = this.localStorage.toolType;
+        this.strokeWidth.value  = this.localStorage.strokeWidth;
+        this.intersectionEnable.value = 'false';
 
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
         window.addEventListener(Events.custom.settingsCleared, this.onWindowSettingsCleared.bind(this));
@@ -228,8 +229,8 @@ class DrawTool extends Control {
 
     updateTool() {
         // Store current values in local storage
-        this.localStorage.toolTypeIndex = this.toolType.selectedIndex;
-        this.localStorage.strokeWidthIndex = this.strokeWidth.selectedIndex;
+        this.localStorage.toolType = this.toolType.value;
+        this.localStorage.strokeWidth = this.strokeWidth.value;
         this.localStorage.fillColor = this.fillColor.getAttribute('data-oltb-color');
         this.localStorage.strokeColor = this.strokeColor.getAttribute('data-oltb-color');;
 
@@ -240,7 +241,7 @@ class DrawTool extends Control {
             this.toolType.value === 'LineString' || 
             this.toolType.value === 'Point'
         ) {
-            this.intersectionEnable.selectedIndex = 0;
+            this.intersectionEnable.value = 'false';
             this.intersectionEnable.disabled = true;
         }else {
             this.intersectionEnable.disabled = false;

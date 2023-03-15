@@ -366,7 +366,7 @@ const map = new Map({
             }
         }),
         new GraticuleTool({
-            color: 'rgba(59, 67, 82, 0.9)',
+            color: '#3B4352E6',
             dashed: true,
             width: 2,
             showLabels: true,

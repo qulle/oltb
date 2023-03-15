@@ -3,13 +3,13 @@ import { Config } from '../Config';
 import { Events } from '../../helpers/constants/Events';
 import { Overlay } from 'ol';
 import { getCenter } from 'ol/extent';
+import { trapFocus } from '../../helpers/browser/TrapFocus';
 import { LogManager } from './LogManager';
 import { editMarker } from './info-window-manager/EditMarker';
 import { removeMarker } from './info-window-manager/RemoveMarker';
 import { copyMarkerInfo } from './info-window-manager/CopyMarkerInfo';
 import { SvgPaths, getIcon } from '../icons/GetIcon';
 import { Fill, Stroke, Style } from 'ol/style';
-import { trapFocusKeyListener } from '../../helpers/browser/TrapFocus';
 import { copyMarkerCoordinates } from './info-window-manager/CopyMarkerCoordinates';
 
 const FILENAME = 'managers/InfoWindowManager.js';
@@ -47,7 +47,7 @@ class InfoWindowManager {
                 tabindex: '-1'
             },
             listeners: {
-                'keydown': trapFocusKeyListener
+                'keydown': trapFocus
             }
         });
 

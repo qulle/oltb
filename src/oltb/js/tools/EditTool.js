@@ -21,7 +21,7 @@ import { generateTooltip } from '../generators/GenerateTooltip';
 import { SettingsManager } from '../core/managers/SettingsManager';
 import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
 import { SvgPaths, getIcon } from '../core/icons/GetIcon';
-import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
+import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
 import { FeatureProperties } from '../helpers/constants/FeatureProperties';
 import { Fill, Stroke, Style } from 'ol/style';
 import { hasCustomFeatureProperty } from '../helpers/browser/HasNestedProperty';
@@ -61,14 +61,14 @@ const LocalStorageNodeName = LocalStorageKeys.editTool;
 const LocalStorageDefaults = Object.freeze({
     active: false,
     collapsed: false,
-    strokeColor: '#4A86B8',
+    strokeColor: '#4A86B8FF',
     fillColor: '#D7E3FA80'
 });
 
 const DefaultButtonProps = Object.freeze({
     width: 20,
     height: 20,
-    fill: 'rgb(255, 255, 255)',
+    fill: '#FFFFFFFF',
     stroke: 'none',
     class: 'oltb-btn__icon'
 });
@@ -78,17 +78,17 @@ const DefaultDrawingStyle = new Style({
         color: '#D7E3FA80'
     }),
     stroke: new Stroke({
-        color: '#4A86B8',
+        color: '#4A86B8FF',
         width: 2.5
     })
 });
 
 const DefaultMeasureStyle = new Style({
     fill: new Fill({
-        color: 'rgba(255, 255, 255, .5)'
+        color: '#FFFFFF66'
     }),
     stroke: new Stroke({
-        color: '#3B4352',
+        color: '#3B4352FF',
         lineDash: [2, 5],
         width: 2.5
     })
@@ -500,7 +500,7 @@ class EditTool extends Control {
 
         const features = [ ...this.select.getFeatures().getArray() ];
 
-        if(!isTwoAndOnlyTwoShapes(features)) {
+        if(!this.isTwoAndOnlyTwoShapes(features)) {
             Toast.info({
                 title: 'Oops',
                 message: 'Strict two overlapping features must be selected', 

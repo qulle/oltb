@@ -17,7 +17,7 @@ import { SettingsManager } from '../core/managers/SettingsManager';
 import { copyToClipboard } from '../helpers/browser/CopyToClipboard';
 import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
 import { SvgPaths, getIcon } from '../core/icons/GetIcon';
-import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
+import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
 import { ProjectionManager } from '../core/managers/ProjectionManager';
 
 const FILENAME = 'tools/CoordiantesTool.js';
@@ -331,7 +331,7 @@ class CoordinatesTool extends Control {
             })
             .catch((error) => {
                 const errorMessage = 'Failed to copy coordinates';
-                LogManager.logError(FILENAME, 'onMapClick', {
+                LogManager.logError(FILENAME, 'copyCoordinates', {
                     message: errorMessage,
                     error: error
                 });

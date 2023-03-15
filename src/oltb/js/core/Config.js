@@ -12,6 +12,10 @@ const Config = Object.freeze({
         version: version,
         id: 'oltb'
     }),
+    urlParameters: {
+        debug: 'oltb-debug',
+        marker: 'oltb-marker'
+    },
     locale: 'en-us',
     timeFormat: 'YYYY-MM-DD HH:mm:ss:SSS',
     scrollDistance: 100,

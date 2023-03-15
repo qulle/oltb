@@ -22,7 +22,7 @@ class StateManager {
             state = JSON.parse(localStorage.getItem(Config.localStorage.key)) || {};
         }catch(error) {
             const errorMessage = 'Failed to load application state';
-            LogManager.logError(FILENAME, 'loadBrowserState', {
+            LogManager.logError(FILENAME, 'loadBrowserData', {
                 message: errorMessage,
                 error: error
             });

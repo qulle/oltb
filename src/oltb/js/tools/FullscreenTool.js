@@ -7,7 +7,7 @@ import { LogManager } from '../core/managers/LogManager';
 import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
 import { ElementManager } from '../core/managers/ElementManager';
 import { SvgPaths, getIcon } from '../core/icons/GetIcon';
-import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
+import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
 import {
     FullscreenEvents,
     FullscreenEventTypes,
@@ -90,9 +90,12 @@ class FullscreenTool extends Control {
 
     momentaryActivation() {
         if(!isFullScreenSupported()) {
+            const errorMessage = 'Fullscreen is not supported by this browser';
+            LogManager.logError(FILENAME, 'momentaryActivation', errorMessage);
+
             Toast.error({
                 title: 'Error',
-                message: 'Fullscreen is not supported by this browser'
+                message: errorMessage
             });
             
             return;

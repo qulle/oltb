@@ -13,7 +13,7 @@ import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
 import { generateMarker } from '../generators/GenerateMarker';
 import { ElementManager } from '../core/managers/ElementManager';
 import { SvgPaths, getIcon } from '../core/icons/GetIcon';
-import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
+import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
 import { InfoWindowManager } from '../core/managers/InfoWindowManager';
 import { isFullScreen, exitFullScreen } from '../helpers/browser/Fullscreen';
 
@@ -190,6 +190,8 @@ class MyLocationTool extends Control {
     }
 
     onError(error, ptrToast = Toast.error) {
+        LogManager.logError(FILENAME, 'onError', error.message);
+
         ptrToast({
             title: 'Error',
             message: error.message

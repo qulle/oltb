@@ -20,8 +20,8 @@ const editMarker = function(InfoWindowManager, beforeMarker) {
         ),
         title: properties.title,
         description: properties.description,
-        backgroundColor: properties.backgroundColor,
-        color: properties.color,
+        fill: properties.fill,
+        stroke: properties.stroke,
         icon: properties.icon,
         onCreate: (result) => {
             onEditMarker(InfoWindowManager, beforeMarker, result);
@@ -59,8 +59,8 @@ const onEditMarker = function(InfoWindowManager, beforeMarker, result) {
         title: result.title,
         description: result.description,
         icon: result.icon,
-        backgroundColor: result.backgroundColor,
-        color: result.color,
+        fill: result.fill,
+        stroke: result.stroke,
         infoWindow: infoWindow
     });
 

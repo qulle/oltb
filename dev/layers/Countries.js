@@ -14,8 +14,9 @@ import { Vector as VectorSource } from 'ol/source';
 
 import urlCountriesGeoJSON from 'url:../geojson/countries.geojson';
 
-const LOG_ORIGIN = 'Countries.js';
+const FILENAME = 'layers/Countries.js';
 const ID_PREFIX = 'oltb-info-window-marker';
+
 LayerManager.addMapLayers([
     {
         name: 'Countries overlay',
@@ -75,8 +76,8 @@ LayerManager.addMapLayers([
                         })
                         .catch((error) => {
                             const errorMessage = 'Failed to load Countries layer';
+                            LogManager.logError(FILENAME, 'addMapLayers', `${errorMessage} [${error}]`);
 
-                            LogManager.logError(LOG_ORIGIN, 'addMapLayers', `${errorMessage} [${error}]`);
                             Toast.error({
                                 title: 'Error',
                                 message: errorMessage

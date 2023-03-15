@@ -34,7 +34,7 @@ The latest demo is built using the last official release `v1.0.0-beta3` but may 
 Examples for both the NPM and CDN version can be viewed for each release in the [examples directory](https://github.com/qulle/oltb/tree/main/examples/).
 
 ## Want More Info?
-Have a look at the [Internal Development Documentation](README_INTERNAL.md).
+Have a look at the [Internal Development Documentation](https://github.com/qulle/oltb/blob/main/README_INTERNAL.md).
 
 ## External GitHub Projects
 1. [OpenLayers 7.3.0](https://openlayers.org/en/v7.3.0/apidoc/)

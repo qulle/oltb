@@ -74,8 +74,8 @@ class HiddenMarkerTool extends Control {
             title: result.title,
             description: result.description,
             icon: result.icon,
-            backgroundColor: result.backgroundColor,
-            color: result.color,
+            fill: result.fill,
+            stroke: result.stroke,
             infoWindow: infoWindow
         });
     

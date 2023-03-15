@@ -1,9 +1,9 @@
 import { DOM } from '../../helpers/browser/DOM';
 import { Keys } from '../../helpers/constants/Keys';
 import { Events } from '../../helpers/constants/Events';
+import { trapFocus } from '../../helpers/browser/TrapFocus';
 import { ElementManager } from '../../core/managers/ElementManager';
 import { SvgPaths, getIcon } from '../../core/icons/GetIcon';
-import { trapFocusKeyListener } from '../../helpers/browser/TrapFocus';
 
 const FILENAME = 'modals/ModalBase.js';
 const ANIMATION_CLASS = 'oltb-animation--bounce';
@@ -23,7 +23,7 @@ class ModalBase {
             },
             listeners: {
                 'click': this.bounceAnimation.bind(this),
-                'keydown': trapFocusKeyListener
+                'keydown': trapFocus
             }
         });
 
@@ -110,7 +110,7 @@ class ModalBase {
     }
 
     close() {
-        this.backdrop.removeEventListener(Events.browser.keyDown, trapFocusKeyListener);
+        this.backdrop.removeEventListener(Events.browser.keyDown, trapFocus);
         this.backdrop.remove();
 
         // User defined callback from constructor

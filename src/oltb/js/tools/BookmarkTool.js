@@ -18,7 +18,7 @@ import { ElementManager } from '../core/managers/ElementManager';
 import { copyToClipboard } from '../helpers/browser/CopyToClipboard';
 import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
 import { SvgPaths, getIcon } from '../core/icons/GetIcon';
-import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
+import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
 import { generateAnimalName } from '../helpers/name-generator/NameGenerator';
 
 const FILENAME = 'tools/BookmarkTool.js';
@@ -102,7 +102,7 @@ class BookmarkTool extends Control {
                                     width: 20,
                                     height: 20,
                                     fill: 'none',
-                                    stroke: 'rgb(255, 255, 255)',
+                                    stroke: '#FFFFFFFF',
                                     class: 'oltb-btn__icon'
                                 })}
                             </button>

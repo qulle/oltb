@@ -356,14 +356,23 @@ const SvgPaths = Object.freeze({
 const DefaultOptions = Object.freeze({
     width: 24,
     height: 24,
+    replaceHashtag: false,
     fill: 'currentColor',
-    Stroke: 'none',
+    stroke: 'none',
     class: '',
     path: SvgPaths.arrowClockwise.stroked
 });
 
 const getIcon = function(options = {}) {
     options = { ...DefaultOptions, ...options };
+
+    // HEX Colors are not valid in SVG 
+    // Unless they are replaced with URL alternative char
+    if(Boolean(options.replaceHashtag)) 
+    {   
+        options.fill = options.fill.replace('#', '%23');
+        options.stroke = options.stroke.replace('#', '%23');
+    }
 
     return (`
         <svg xmlns="http://www.w3.org/2000/svg" 

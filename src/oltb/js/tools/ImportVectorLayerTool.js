@@ -1,6 +1,5 @@
 import { DOM } from '../helpers/browser/DOM';
 import { Toast } from '../common/Toast';
-import { Config } from '../core/Config';
 import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { LogManager } from '../core/managers/LogManager';
@@ -8,9 +7,10 @@ import { FormatTypes } from '../core/ol-types/FormatTypes';
 import { LayerManager } from '../core/managers/LayerManager';
 import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
 import { ElementManager } from '../core/managers/ElementManager';
+import { ImportLayerModal } from './modal-extensions/ImportLayerModal';
 import { SvgPaths, getIcon } from '../core/icons/GetIcon';
 import { instantiateFormat } from '../core/ol-types/FormatTypes';
-import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
+import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
 
 const FILENAME = 'tools/ImportVectorLayerTool.js';
 
@@ -59,7 +59,7 @@ class ImportVectorLayerTool extends Control {
                 accept: '.geojson, .kml'
             },
             listeners: {
-                'change': this.loadLayer.bind(this)
+                'change': this.onInputChange.bind(this)
             }
         });
         
@@ -87,23 +87,35 @@ class ImportVectorLayerTool extends Control {
         this.inputDialog.click();
     }
 
-    loadLayer(event) {
+    onInputChange(event) {
         const fileDialog = event.target;
 
         this.fileReader = new FileReader();
-        this.fileReader.addEventListener(Events.browser.load, this.parseLayer.bind(this, fileDialog));
+        this.fileReader.addEventListener(Events.browser.load, this.onParseLayer.bind(this, fileDialog));
         this.fileReader.readAsText(fileDialog.files[0]);
     }
 
-    parseLayer(fileDialog) {
+    onParseLayer(fileDialog) {
         const file = fileDialog.files[0].name;
-            
+        
+        const importLayerModal = new ImportLayerModal({
+            onImport: (result) => {   
+                this.onImportLayer(file, result);
+            }
+        });
+    }
+
+    onImportLayer(file, result) {
+        LogManager.logInformation(FILENAME, 'onImportLayer', {
+            file: file,
+            featureProjection: result.featureProjection,
+            dataProjection: result.dataProjection
+        });
+
         try {
             const filename = file.split('.')[0];
             const fileExtension = file.split('.').pop().toLowerCase();
 
-            // Can't use the in-operator since the format can be formatted by the user
-            // Forcing format to be lower-case and the do a search for it as a key in the format-object
             const format = Object.keys(FormatTypes).find((key) => {
                 return key.toLowerCase() === fileExtension;
             });
@@ -111,7 +123,7 @@ class ImportVectorLayerTool extends Control {
             // This should not happen since the format is set in the dialog
             if(!Boolean(format)) {
                 const errorMessage = `This layer format (${format}) is not supported`;
-                LogManager.logError(FILENAME, 'parseLayer', errorMessage);
+                LogManager.logError(FILENAME, 'onImportLayer', errorMessage);
 
                 Toast.error({
                     title: 'Error',
@@ -120,17 +132,15 @@ class ImportVectorLayerTool extends Control {
 
                 return;
             }
-            
-            // The feature projection is the projection used in the representation by the view
-            // The data projection is the projection used to store coordinates in the data-files
-            // Might need to let the user pick a format while inporting
-            const features = instantiateFormat(format).readFeatures(this.fileReader.result, {
-                featureProjection: Config.projection.default
-            });
 
+            const features = instantiateFormat(format).readFeatures(this.fileReader.result, {
+                featureProjection: result.featureProjection,
+                dataProjection: result.dataProjection
+            });
+    
             const layerWrapper = LayerManager.addFeatureLayer(`Import : ${filename}`);
             layerWrapper.getLayer().getSource().addFeatures(features);
-
+    
             // User defined callback from constructor
             if(typeof this.options.imported === 'function') {
                 this.options.imported(features);

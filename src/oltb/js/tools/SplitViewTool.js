@@ -13,7 +13,7 @@ import { ElementManager } from '../core/managers/ElementManager';
 import { eventDispatcher } from '../helpers/browser/EventDispatcher';
 import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
 import { SvgPaths, getIcon } from '../core/icons/GetIcon';
-import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
+import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
 
 const FILENAME = 'tools/SplitViewTool.js';
 const RADIX = 10;
@@ -317,9 +317,19 @@ class SplitViewTool extends Control {
             !Boolean(rightSideLayerWrapper)
         ) {
             this.layerLoadingError = true;
+
+            const errorMessage = 'One or both of the layers could not be loaded';
+            LogManager.logError(FILENAME, 'onContextMenuSetRotation', {
+                message: errorMessage,
+                layers: {
+                    left: leftSideLayerWrapper,
+                    right: rightSideLayerWrapper
+                }
+            });
+
             Toast.error({
                 title: 'Error',
-                message: 'One or both of the layers could not be loaded'
+                message: errorMessage
             });
 
             return;

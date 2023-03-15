@@ -91,13 +91,22 @@ const DefaultOptions = Object.freeze({
     windSpeed: 0,
     width: 250,
     height: 250,
-    fill: 'rgba(59, 67, 82)',
-    stroke: 'rgba(59, 67, 82)',
+    replaceHashtag: false,
+    fill: '#3B4352FF',
+    stroke: '#3B4352FF',
     strokeWidth: 3
 });
 
 const getWindBarb = function(options = {}) {
     options = { ...DefaultOptions, ...options };
+
+    // HEX Colors are not valid in SVG 
+    // Unless they are replaced with URL alternative char
+    if(Boolean(options.replaceHashtag)) 
+    {   
+        options.fill = options.fill.replace('#', '%23');
+        options.stroke = options.stroke.replace('#', '%23');
+    }
 
     return (`
         <svg xmlns="http://www.w3.org/2000/svg" 

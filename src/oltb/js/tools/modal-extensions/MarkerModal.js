@@ -11,8 +11,8 @@ const DefaultOptions = Object.freeze({
     coordinates: [0, 0],
     title: 'Marker',
     description: '',
-    backgroundColor: '#0166A5FF',
-    color: '#FFFFFFFF',
+    fill: '#0166A5FF',
+    stroke: '#FFFFFFFF',
     icon: 'geoPin.filled',
     maximized: false,
     onClose: undefined,
@@ -22,7 +22,11 @@ const DefaultOptions = Object.freeze({
 
 class MarkerModal extends ModalBase {
     constructor(options = {}) {
-        super('Marker configuration', options.maximized, options.onClose);
+        super(
+            'Marker configuration', 
+            options.maximized, 
+            options.onClose
+        );
         
         this.options = { ...DefaultOptions, ...options };
         this.#createModal();
@@ -188,84 +192,84 @@ class MarkerModal extends ModalBase {
             lonText
         ]);
 
-        const backgroundColorWrapper = DOM.createElement({
+        const fillWrapper = DOM.createElement({
             element: 'div',
             class: 'oltb-mt-0625'
         });
 
-        const backgroundLabel = DOM.createElement({
+        const fillLabel = DOM.createElement({
             element: 'label', 
-            text: 'Background color',
+            text: 'Fill color',
             class: 'oltb-label', 
             attributes: {
-                for: `${ID_PREFIX}-background`
+                for: `${ID_PREFIX}-fill`
             }
         });
 
-        const backgroundColorInput = DOM.createElement({
+        const fillInput = DOM.createElement({
             element: 'div',
-            id: `${ID_PREFIX}-background`,
+            id: `${ID_PREFIX}-fill`,
             class: 'oltb-color-input oltb-color-tippy',
             attributes: {
                 tabindex: 0,
-                'data-oltb-color-target': `#${ID_PREFIX}-background`,
-                'data-oltb-color': this.options.backgroundColor
+                'data-oltb-color-target': `#${ID_PREFIX}-fill`,
+                'data-oltb-color': this.options.fill
             }
         });
 
-        const backgroundColorInputInner = DOM.createElement({
+        const fillInputInner = DOM.createElement({
             element: 'div',
-            style: `background-color: ${this.options.backgroundColor}`,
+            style: `background-color: ${this.options.fill}`,
             class: 'oltb-color-input__inner'
         });
 
-        DOM.appendChildren(backgroundColorInput, [
-            backgroundColorInputInner
+        DOM.appendChildren(fillInput, [
+            fillInputInner
         ]);
 
-        DOM.appendChildren(backgroundColorWrapper, [
-            backgroundLabel,
-            backgroundColorInput
+        DOM.appendChildren(fillWrapper, [
+            fillLabel,
+            fillInput
         ]);
 
-        const colorWrapper = DOM.createElement({
+        const strokeWrapper = DOM.createElement({
             element: 'div',
             class: 'oltb-mt-0625' 
         });
 
-        const colorLabel = DOM.createElement({
+        const strokeLabel = DOM.createElement({
             element: 'label', 
-            text: 'Color',
+            text: 'Stroke color',
             class: 'oltb-label', 
             attributes: {
-                for: `${ID_PREFIX}-color`
+                for: `${ID_PREFIX}-stroke`
             }
         });
 
-        const colorInput = DOM.createElement({
+        const strokeInput = DOM.createElement({
             element: 'div',
-            id: `${ID_PREFIX}-color`,
+            id: `${ID_PREFIX}-stroke`,
             class: 'oltb-color-input oltb-color-tippy',
             attributes: {
                 tabindex: 0,
-                'data-oltb-color-target': `#${ID_PREFIX}-color`,
-                'data-oltb-color': this.options.color
+                'data-oltb-color-target': `#${ID_PREFIX}-stroke`,
+                'data-oltb-color': this.options.stroke
             }
         });
 
-        const colorInputInner = DOM.createElement({
+        const strokeInputInner = DOM.createElement({
             element: 'div',
-            style: `background-color: ${this.options.color}`,
+            style: `background-color: ${this.options.stroke}`,
             class: 'oltb-color-input__inner'
         });
 
-        DOM.appendChildren(colorInput, [
-            colorInputInner
+        DOM.appendChildren(strokeInput, [
+            strokeInputInner
         ]);
 
-        DOM.appendChildren(colorWrapper, [
-            colorLabel,
-            colorInput
+        DOM.appendChildren(strokeWrapper, [
+            strokeLabel,
+            strokeInput
         ]);
 
         const buttonsWrapper = DOM.createElement({
@@ -288,8 +292,8 @@ class MarkerModal extends ModalBase {
                         icon: iconSelect.value,
                         latitude: parseFloat(latText.value),
                         longitude: parseFloat(lonText.value),
-                        backgroundColor: backgroundColorInput.getAttribute('data-oltb-color'),
-                        color: colorInput.getAttribute('data-oltb-color')
+                        fill: fillInput.getAttribute('data-oltb-color'),
+                        stroke: strokeInput.getAttribute('data-oltb-color')
                     };
         
                     this.close();
@@ -331,8 +335,8 @@ class MarkerModal extends ModalBase {
             iconWrapper,
             latWrapper,
             lonWrapper,
-            backgroundColorWrapper,
-            colorWrapper,
+            fillWrapper,
+            strokeWrapper,
             buttonsWrapper
         ]);
 

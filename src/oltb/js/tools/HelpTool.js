@@ -6,7 +6,7 @@ import { LogManager } from '../core/managers/LogManager';
 import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
 import { ElementManager } from '../core/managers/ElementManager';
 import { SvgPaths, getIcon } from '../core/icons/GetIcon';
-import { isShortcutKeyOnly } from '../helpers/browser/ShortcutKeyOnly';
+import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
 
 const FILENAME = 'tools/HelpTool.js';
 
@@ -71,7 +71,7 @@ class HelpTool extends Control {
         try {
             window.open(this.options.url, this.options.target).focus();
         }catch(error) {
-            const errorMessage = 'Action was blocked by browser, try open with mouse';
+            const errorMessage = 'Action was blocked by browser, try open using mouse';
             LogManager.logError(FILENAME, 'momentaryActivation', {
                 message: errorMessage,
                 error: error
