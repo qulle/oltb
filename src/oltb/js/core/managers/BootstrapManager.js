@@ -13,7 +13,7 @@ class BootstrapManager {
         document.documentElement.setAttribute('ol-version', openLayersVersion);
         document.documentElement.setAttribute('oltb-version', oltbVersion);
         
-        LogManager.logInformation(FILENAME, 'init', `Running OL version ${openLayersVersion}`);
+        LogManager.logInformation(FILENAME, 'init', `Running OpenLayer version ${openLayersVersion}`);
         LogManager.logInformation(FILENAME, 'init', `Running OLTB version ${oltbVersion}`);
 
         managers.forEach((manager) => {
