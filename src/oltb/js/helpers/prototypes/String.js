@@ -5,7 +5,7 @@ String.prototype.capitalize = function() {
 }
 
 String.prototype.isDigitsOnly = function() {
-    return this.match(/^-?[0-9]+$/) != null;
+    return this.match(/^-?[0-9]+$/) !== null;
 }
 
 String.prototype.ellipsis = function(limit) {

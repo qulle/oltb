@@ -10,7 +10,7 @@ import { SvgPaths, getIcon } from '../core/icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
 
 const FILENAME = 'tools/NotificationTool.js';
-const NOTIFICATION_URL = 'https://raw.githubusercontent.com/qulle/notification-endpoints/main/endpoints/oltb.json';
+const NOTIFICATION_URL = 'https://raw.githubusercontent.com/qulle1/notification-endpoints/main/endpoints/oltb.json';
 
 const DefaultOptions = Object.freeze({
     click: undefined

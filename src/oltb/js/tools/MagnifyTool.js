@@ -16,6 +16,9 @@ import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
 const FILENAME = 'tools/MagnifyTool.js';
 
 const DefaultOptions = Object.freeze({
+    radius: 75,
+    min: 25,
+    max: 150,
     click: undefined
 });
 
@@ -53,7 +56,6 @@ class MagnifyTool extends Control {
         ]);
         
         this.button = button;
-        this.radius = 75;
         this.options = { ...DefaultOptions, ...options };
 
         // Load stored data from localStorage
@@ -159,9 +161,9 @@ class MagnifyTool extends Control {
         const key = event.key;
 
         if(key === Keys.valueAdd) {
-            this.radius = Math.min(this.radius + 5, 150);
+            this.options.radius = Math.min(this.options.radius + 5, this.options.max);
         }else if(key === Keys.valueSubtract) {
-            this.radius = Math.max(this.radius - 5, 25);
+            this.options.radius = Math.max(this.options.radius - 5, this.options.min);
         }
 
         map.render();
@@ -183,14 +185,14 @@ class MagnifyTool extends Control {
             return;
         }
 
-        this.mousePosition = null;
+        this.mousePosition = undefined;
         map.render();
     }
 
     onPostrender(event) {
         if(Boolean(this.mousePosition)) {
             const mousePosition = this.mousePosition;
-            const radius = this.radius;
+            const radius = this.options.radius;
 
             const pixel = getRenderPixel(event, mousePosition);
             const offset = getRenderPixel(event, [

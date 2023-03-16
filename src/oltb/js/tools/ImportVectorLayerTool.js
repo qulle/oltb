@@ -50,6 +50,7 @@ class ImportVectorLayerTool extends Control {
 
         this.button = button;
         this.fileReader = undefined;
+        this.importLayerModal = undefined;
         this.options = { ...DefaultOptions, ...options };
         
         this.inputDialog = DOM.createElement({
@@ -84,6 +85,10 @@ class ImportVectorLayerTool extends Control {
     }
 
     momentaryActivation() {
+        if(Boolean(this.importLayerModal)) {
+            return;
+        }
+
         this.inputDialog.click();
     }
 
@@ -98,9 +103,12 @@ class ImportVectorLayerTool extends Control {
     onParseLayer(fileDialog) {
         const file = fileDialog.files[0].name;
         
-        const importLayerModal = new ImportLayerModal({
+        this.importLayerModal = new ImportLayerModal({
             onImport: (result) => {   
                 this.onImportLayer(file, result);
+            },
+            onClose: () => {
+                this.importLayerModal = undefined;
             }
         });
     }

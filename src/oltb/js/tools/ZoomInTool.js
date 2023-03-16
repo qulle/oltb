@@ -13,6 +13,7 @@ import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
 const FILENAME = 'tools/ZoomInTool.js';
 
 const DefaultOptions = Object.freeze({
+    delta: 1,
     click: undefined,
     zoomed: undefined
 });
@@ -47,7 +48,6 @@ class ZoomInTool extends Control {
 
         this.button = button;
         this.options = { ...DefaultOptions, ...options };
-        this.delta = 1;
 
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
     }
@@ -78,7 +78,7 @@ class ZoomInTool extends Control {
         const view = map.getView();
         const coordiantes = toLonLat(view.getCenter());
         const currentZoom = view.getZoom();
-        const newZoom = view.getConstrainedZoom(currentZoom + this.delta);
+        const newZoom = view.getConstrainedZoom(currentZoom + this.options.delta);
 
         goToView(map, coordiantes, newZoom);
 

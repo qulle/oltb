@@ -28,6 +28,8 @@ class StateManager {
             });
         }
 
+        LogManager.logDebug(FILENAME, 'loadBrowserData', structuredClone(state));
+
         return state;
     }
 

@@ -56,8 +56,8 @@ class HomeTool extends Control {
         this.homeLocation = [this.options.lon, this.options.lat];
         this.homeZoom = this.options.zoom;
         
-        this.userDefinedHomeLocation = null;
-        this.userDefinedHomeZoom = null;
+        this.userDefinedHomeLocation = undefined;
+        this.userDefinedHomeZoom = undefined;
 
         ContextMenu.addItem({
             icon: icon, 
@@ -111,8 +111,8 @@ class HomeTool extends Control {
     }
 
     onWindowSettingsCleared() {
-        this.userDefinedHomeLocation = null;
-        this.userDefinedHomeZoom = null;
+        this.userDefinedHomeLocation = undefined;
+        this.userDefinedHomeZoom = undefined;
     }
 
     onContextMenuSetHomeLocation() {

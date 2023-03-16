@@ -254,7 +254,7 @@ class BookmarkTool extends Control {
 
         const view = map.getView();
         const zoom = view.getZoom();
-        const location = toLonLat(view.getCenter());
+        const coordinates = toLonLat(view.getCenter());
 
         if(!Boolean(bookmarkName)) {
             bookmarkName = generateAnimalName();
@@ -266,7 +266,7 @@ class BookmarkTool extends Control {
             id: randomNumber(),
             name: bookmarkName,
             zoom: zoom,
-            location: location
+            coordinates: coordinates
         };
 
         if(Boolean(this.options.storeDataInLocalStorage)) {
@@ -291,6 +291,8 @@ class BookmarkTool extends Control {
     }
 
     clearBookmarks() {
+        LogManager.logDebug(FILENAME, 'clearBookmarks', 'All bookmarks cleared');
+        
         StateManager.setStateObject(LocalStorageNodeName, LocalStorageDefaults);
         this.bookmarkStack.innerHTML = '';
 
@@ -301,6 +303,8 @@ class BookmarkTool extends Control {
     }
 
     createBookmark(bookmark) {
+        LogManager.logDebug(FILENAME, 'createBookmark', bookmark);
+
         const bookmarkElement = DOM.createElement({
             element: 'li', 
             id: `oltb-bookmark-${bookmark.id}`,
@@ -348,7 +352,7 @@ class BookmarkTool extends Control {
         const zoomToButton = DOM.createElement({
             element: 'button',
             class: `${BOOKMARK_BUTTON_DEFAULT_CLASSES} oltb-func-btn--geo-pin oltb-tippy`,
-            title: 'Zoom to location',
+            title: 'Zoom to coordinates',
             attributes: {
                 type: 'button'
             },
@@ -414,7 +418,7 @@ class BookmarkTool extends Control {
             return;
         }
         
-        goToView(map, bookmark.location, bookmark.zoom);
+        goToView(map, bookmark.coordinates, bookmark.zoom);
 
         // User defined callback from constructor
         if(typeof this.options.zoomedTo === 'function') {
@@ -423,13 +427,7 @@ class BookmarkTool extends Control {
     }
     
     coopyBookmarkCoordinates(bookmark) {
-        const coordinates = transform(
-            bookmark.location, 
-            Config.projection.default, 
-            Config.projection.wgs84
-        );
-
-        const prettyCoordinates = toStringHDMS(coordinates);
+        const prettyCoordinates = toStringHDMS(bookmark.coordinates);
 
         copyToClipboard(prettyCoordinates)
             .then(() => {
@@ -459,6 +457,8 @@ class BookmarkTool extends Control {
             message: `Do you want to delete the <strong>${bookmark.name}</strong> bookmark?`,
             confirmText: 'Delete',
             onConfirm: () => {
+                LogManager.logDebug(FILENAME, 'deleteBookmark', bookmark);
+
                 bookmarkElement.remove();
 
                 // Remove the bookmark from the collection

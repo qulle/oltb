@@ -125,8 +125,6 @@ class SettingsTool extends Control {
                     message: "All settings settings was saved", 
                     autoremove: Config.autoRemovalDuation.normal
                 });
-                
-                this.settingsModal = undefined;
             },
             onClose: () => {
                 this.settingsModal = undefined;

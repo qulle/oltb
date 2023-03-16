@@ -79,9 +79,9 @@ class DirectionTool extends Control {
         const localStorageState = StateManager.getStateObject(LocalStorageNodeName);
         this.localStorage = { ...LocalStorageDefaults, ...localStorageState };
 
-        this.onWindowDeviceCheck();
+        this.onWindowSizeCheck();
 
-        window.addEventListener(Events.browser.resize, this.onWindowDeviceCheck.bind(this));
+        window.addEventListener(Events.browser.resize, this.onWindowSizeCheck.bind(this));
         window.addEventListener(Events.custom.settingsCleared, this.onWindowSettingsCleared.bind(this));
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
     }
@@ -92,7 +92,7 @@ class DirectionTool extends Control {
         }
     }
 
-    onWindowDeviceCheck(event) {
+    onWindowSizeCheck(event) {
         if(window.innerWidth <= Config.deviceWidth.sm) {
             this.button.classList.add('oltb-tool-button--hidden');
         }else {

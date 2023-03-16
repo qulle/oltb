@@ -5,6 +5,7 @@ import { Events } from '../../helpers/constants/Events';
 import { toLonLat } from 'ol/proj';
 import { ModalBase } from '../../common/modals/ModalBase';
 import { LogManager } from '../../core/managers/LogManager';
+import { isNativeJSError } from '../../helpers/browser/IsNativeJSError';
 import { SvgPaths, getIcon } from '../../core/icons/GetIcon';
 import { ProjectionManager } from '../../core/managers/ProjectionManager';
 
@@ -163,9 +164,16 @@ class DebugInfoModal extends ModalBase {
             class: `${section.class} oltb-thin-scrollbars`
         });
 
+        // Native JS Errors can't be serialized bu default
+        // This is a quick hack to get information from first tree level out
+        const replacer = isNativeJSError(section.content.error)
+            ? Object.getOwnPropertyNames(section.content)
+            : undefined;
+
+        const indentation = 4;
         const sectionCode = DOM.createElement({
             element: 'code',
-            text: JSON.stringify(section.content, undefined, 4),
+            text: JSON.stringify(section.content, replacer, indentation),
         });
 
         DOM.appendChildren(sectionPre, [

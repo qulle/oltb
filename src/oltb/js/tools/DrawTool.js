@@ -345,7 +345,7 @@ class DrawTool extends Control {
 
         // A normal circle can not be serialized to json, approximated circle as polygon instead. 
         // Also use circle to create square and rectangle
-        let geometryFunction = null;
+        let geometryFunction = undefined;
         if(toolType === 'Square') {
             geometryFunction = createRegularPolygon(4);
             toolType = 'Circle';

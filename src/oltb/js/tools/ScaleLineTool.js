@@ -52,7 +52,10 @@ class ScaleLineTool extends Control {
         this.button = button;
         this.active = false;
         this.options = { ...DefaultOptions, ...options };
-        this.scaleLine = new ScaleLine({units: this.options.units});
+        
+        this.scaleLine = new ScaleLine({
+            units: this.options.units
+        });
 
         // Load stored data from localStorage
         const localStorageState = StateManager.getStateObject(LocalStorageNodeName);

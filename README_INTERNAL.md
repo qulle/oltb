@@ -24,22 +24,23 @@ Detailed documentation how the toolbar is structured, internal dependencies and 
     6. [Store Data Locally](#store-data-locally)
     7. [Hidden Tools](#hidden-tools)
     8. [Shortcut Keys](#shortcut-keys)
-    9. [Custom Projections](#custom-projections)
-    10. [Layers](#layers)
-    11. [Dialogs](#dialogs)
+    9. [Managers](#managers)
+    10. [Custom Projections](#custom-projections)
+    11. [Layers](#layers)
+    12. [Dialogs](#dialogs)
         1. [Alert](#alert)
         2. [Confirm](#confirm)
         3. [Prompt](#prompt)
-    12. [Modal](#modal)
-    13. [Toast](#toast)
-    14. [Icons](#icons)
+    13. [Modal](#modal)
+    14. [Toast](#toast)
+    15. [Icons](#icons)
         1. [Basic Icons](#basic-icons)
         2. [WindBarb Icons](#windbarb-icons)
-    15. [Context Menu](#context-menu)
-    16. [State Management](#state-management)
-    17. [Debug Tool](#debug-tool)
-    18. [Logging](#logging)
-    19. [OLTB Namespace](#oltb-namespace)
+    16. [Context Menu](#context-menu)
+    17. [State Management](#state-management)
+    18. [Debug Tool](#debug-tool)
+    19. [Logging](#logging)
+    20. [OLTB Namespace](#oltb-namespace)
 7. [License](#license)
 8. [Author](#author)
 
@@ -425,6 +426,7 @@ controls: defaultControls({
         }
     }),
     new ZoomInTool({
+        delta: 1,
         click: function() {
             console.log('ZoomInTool clicked');
         },
@@ -433,6 +435,7 @@ controls: defaultControls({
         }
     }),
     new ZoomOutTool({
+        delta: -1,
         click: function() {
             console.log('ZoomOutTool clicked');
         },
@@ -541,10 +544,10 @@ controls: defaultControls({
     new BookmarkTool({
         storeDataInLocalStorage: true,
         bookmarks: [{
-            id: 123456,
+            id: 18151210,
             name: 'Custom bookmark',
             zoom: 5,
-            location: [57.123, 16.456]
+            coordinates: [57.123, 16.456]
         }],
         click: function() {
             console.log('BookmarkTool clicked');
@@ -618,6 +621,9 @@ controls: defaultControls({
         }
     }),
     new MagnifyTool({
+        radius: 75,
+        min: 25,
+        max: 150,
         click: function() {
             console.log('MagnifyTool clicked');
         }
@@ -739,12 +745,39 @@ Tools refered to as hidden tools are tools that only add functionality via the c
 ### Shortcut Keys
 All tools have a shortcut key for ease of use and speeds up the handling of the toolbar. The shortcut key is displayed in the tooltip on the corresponding tool. All shortcut keys are stored in the module `oltb/js/helpers/Constants/ShortcutKeys`.
 ```javascript
-const SHORTCUT_KEYS = {
-    AreaOverview: 'A',
-    Bookmark: 'B',
-    Coordinates: 'C'
+const ShortcutKeys = {
+    areaOverview: 'A',
+    bookmark: 'B',
+    coordinates: 'C'
     ...
 };
+```
+
+### Managers
+There are a number of so-called managers located in `oltb/js/core/managers`. These are to be considered as self-isolated classes that have no dependencies to the tools, but the other way around. The managers are the central hub of the application that provides data to all other parties and among themselves.
+
+The managers are initiated in two steps. The first one is the base initiation that is done before the map is created.
+```javascript
+BootstrapManager.init([
+    LogManager,
+    StateManager,
+    ElementManager,
+    ProjectionManager,
+    LayerManager,
+    TippyManager,
+    TooltipManager,
+    UrlManager,
+    ToolManager,
+    SettingsManager,
+    InfoWindowManager,
+    ColorPickerManager,
+    AccessibilityManager
+]);
+```
+
+The second step is after the map has been created, passing the map-reference to all managers to complete the initiation process.
+```javascript
+BootstrapManager.setMap(map);
 ```
 
 ### Custom Projections
@@ -1043,8 +1076,8 @@ const icon = getIcon({
 
 In general, two version of each icon exists (stroked and filled). Some icons don't have a filled version and some icons have a combination of both stroked and filled, these are called mixed. Where an icon is given as a string the name and version is separated using a period (.) `geoPin.filled`.
 ```javascript
-const name = 'geoPin';                 // https://icons.getbootstrap.com/
-const version = 'filled';              // stroked | filled | mixed
+const name = 'geoPin';                // https://icons.getbootstrap.com/
+const version = 'filled';             // stroked | filled | mixed
 const path = SvgPaths[name][version]; // The 'getIcon' function wrapps the path with an svg element
 ```
 

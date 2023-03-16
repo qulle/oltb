@@ -180,13 +180,13 @@ class LayerManager {
     // Feature layers specific
     //-------------------------------------------
     static addFeatureLayer(name, visible = true, silent = false) {
-        LogManager.logDebug(FILENAME, 'addFeatureLayer', name);
-
         name = name.trim();
 
         if(!name.length) {
             name = DEFAULT_LAYER_NAME;
         }
+
+        LogManager.logDebug(FILENAME, 'addFeatureLayer', name);
 
         const layerWrapper = {
             id: this.#layerId,
