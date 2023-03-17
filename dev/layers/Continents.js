@@ -4,14 +4,14 @@ import { LayerManager } from "../../src/oltb/js/core/managers/LayerManager";
 import { Vector as VectorLayer } from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';
 
-import urlContinentsGeoJSON from 'url:../geojson/continents.geojson';
+import urlContinentsGeoJson from 'url:../geojson/continents.geojson';
 
 LayerManager.addMapLayers([
     {
         name: 'Continents overlay',
         layer: new VectorLayer({
             source: new VectorSource({
-                url: urlContinentsGeoJSON,
+                url: urlContinentsGeoJson,
                 format: new GeoJSON({
                     featureProjection: Config.projection.default
                 })

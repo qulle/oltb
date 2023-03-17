@@ -26,7 +26,7 @@ class InfoWindowManager {
     static #lastFeature;
 
     static init() {
-        LogManager.logDebug(FILENAME, 'init', 'Initializing started');
+        LogManager.logDebug(FILENAME, 'init', 'Initialization started');
         this.#createInfoWindow();
     }
 

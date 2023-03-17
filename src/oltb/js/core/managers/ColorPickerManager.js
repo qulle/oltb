@@ -13,7 +13,7 @@ class ColorPickerManager {
     static #colorPicker;
 
     static init() {
-        LogManager.logDebug(FILENAME, 'init', 'Initializing started');
+        LogManager.logDebug(FILENAME, 'init', 'Initialization started');
         
         this.#colorPickerElement = this.#createColorPickerElement();
         this.#colorPicker = AColorPicker.createPicker(this.#colorPickerElement);

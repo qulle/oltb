@@ -488,6 +488,8 @@ class BookmarkTool extends Control {
                     bookmarkName.innerText = result.ellipsis(20);
                     bookmarkName._tippy.setContent(result);
 
+                    console.dir(this.localStorage);
+
                     StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
 
                     // User defined callback from constructor

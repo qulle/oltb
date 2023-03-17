@@ -50,6 +50,10 @@ class DebugInfoModal extends ModalBase {
             {
                 name: 'Log map to browser console',
                 action: 'log.map.to.console'
+            },
+            {
+                name: 'Clear event log',
+                action: 'clear.event.log'
             }
         ].forEach((item) => {
             const option = DOM.createElement({
@@ -180,6 +184,7 @@ class DebugInfoModal extends ModalBase {
     #generateLogSection(section) {
         const eventLog = DOM.createElement({
             element: 'div',
+            id: 'oltb-event-log',
             class: 'oltb-log oltb-thin-scrollbars'
         });
 
@@ -426,7 +431,8 @@ class DebugInfoModal extends ModalBase {
     onDoAction() {
         const action = this.commandsCollection.value;
         const actions = {
-            'log.map.to.console': this.actionLoggingMap.bind(this)
+            'log.map.to.console': this.actionLoggingMap.bind(this),
+            'clear.event.log': this.actionClearEventLog.bind(this)
         };
 
         const actionMethod = actions[action];
@@ -440,6 +446,21 @@ class DebugInfoModal extends ModalBase {
         Toast.success({
             title: 'Logged',
             message: 'Map object logged to console <strong>(F12)</strong>', 
+            autoremove: Config.autoRemovalDuation.normal
+        });
+    }
+
+    actionClearEventLog() {
+        LogManager.clearLog();
+
+        const eventLogElement = document.getElementById('oltb-event-log');
+        if(eventLogElement) {
+            eventLogElement.innerHTML = '';
+        }
+
+        Toast.success({
+            title: 'Cleared',
+            message: 'Event log was cleared of all entries', 
             autoremove: Config.autoRemovalDuation.normal
         });
     }

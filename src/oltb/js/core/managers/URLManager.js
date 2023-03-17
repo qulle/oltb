@@ -4,7 +4,7 @@ const FILENAME = 'managers/UrlManager.js';
 
 class UrlManager {
     static init() {
-        LogManager.logDebug(FILENAME, 'init', 'Initializing started');
+        LogManager.logDebug(FILENAME, 'init', 'Initialization started');
     }
 
     static setMap(map) { }

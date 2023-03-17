@@ -7,7 +7,7 @@ class StateManager {
     static #runtimeState;
 
     static init() {
-        LogManager.logDebug(FILENAME, 'init', 'Initializing started');
+        LogManager.logDebug(FILENAME, 'init', 'Initialization started');
         this.#runtimeState = this.#loadBrowserData();
     }
 
@@ -21,9 +21,8 @@ class StateManager {
         try {
             state = JSON.parse(localStorage.getItem(Config.localStorage.key)) || {};
         }catch(error) {
-            const errorMessage = 'Failed to load application state';
             LogManager.logError(FILENAME, 'loadBrowserData', {
-                message: errorMessage,
+                message: 'Failed to load application state',
                 error: error
             });
         }
@@ -51,9 +50,8 @@ class StateManager {
             const serialized = JSON.stringify(this.#runtimeState);
             localStorage.setItem(Config.localStorage.key, serialized);
         }catch(error) {
-            const errorMessage = 'Failed to save application state';
             LogManager.logError(FILENAME, 'saveState', {
-                message: errorMessage,
+                message: 'Failed to save application state',
                 error: error
             });
         }

@@ -95,7 +95,7 @@ class ResetNorthTool extends Control {
 
                     Toast.error({
                         title: 'Error',
-                        message: 'Only digits are allowed as input'
+                        message: errorMessage
                     });
                 }
             }

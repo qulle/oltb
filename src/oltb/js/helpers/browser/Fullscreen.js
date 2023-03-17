@@ -23,7 +23,7 @@ const isFullScreenSupported = function() {
     );
 
     if(!supported) {
-        LogManager.logWarning(FILENAME, 'isFullScreenSupported', 'FullScreen is not supported in browser');
+        LogManager.logWarning(FILENAME, 'isFullScreenSupported', 'FullScreen is not supported by browser');
     }
         
     return supported;

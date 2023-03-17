@@ -6,7 +6,7 @@ const FILENAME = 'managers/AccessibilityManager.js';
 
 class AccessibilityManager {
     static init() {
-        LogManager.logDebug(FILENAME, 'init', 'Initializing started');
+        LogManager.logDebug(FILENAME, 'init', 'Initialization started');
 
         document.body.addEventListener(Events.browser.mouseDown, this.#onMouseDown.bind(this));
         document.body.addEventListener(Events.browser.keyDown, this.#onKeyBoardDown.bind(this));

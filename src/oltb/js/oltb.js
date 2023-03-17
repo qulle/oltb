@@ -192,4 +192,6 @@ class OLTB {
     }
 }
 
+// Note: This must be a default export
+// Rollup won't build the CDN-lib correctly if named export is used
 export default OLTB;

@@ -51,7 +51,12 @@ class HiddenMarkerTool extends Control {
     }
 
     onCreateMarker(result) {
-        const prettyCoordinates = toStringHDMS([result.longitude, result.latitude]);
+        const coordinates = [
+            result.longitude,
+            result.latitude
+        ];
+
+        const prettyCoordinates = toStringHDMS(coordinates);
         const infoWindow = {
             title: result.title,
             content: `

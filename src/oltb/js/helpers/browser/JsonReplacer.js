@@ -26,7 +26,7 @@ const jsonReplacer = function(key, value) {
         };
     }
     
-    // Normal anonymous object
+    // Normal anonymous object or number/literal
     return value;
 }
 

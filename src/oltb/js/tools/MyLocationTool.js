@@ -24,7 +24,7 @@ const DefaultOptions = Object.freeze({
     title: 'My Location',
     enableHighAccuracy: true,
     timeout: 10000,
-    infoWindowDescription: 'This is the location that the browser was able to find. It might not be your actual location.',
+    description: 'This is the location that the browser was able to find. It might not be your actual location.',
     click: undefined,
     location: undefined,
     error: undefined
@@ -150,14 +150,14 @@ class MyLocationTool extends Control {
         const infoWindow = {
             title: this.options.title,
             content: `
-                <p>${this.options.infoWindowDescription}</p>
+                <p>${this.options.description}</p>
             `,
             footer: `
                 <span class="oltb-info-window__coordinates">${prettyCoordinates}</span>
                 <div class="oltb-info-window__buttons-wrapper">
                     <button class="oltb-func-btn oltb-func-btn--delete oltb-tippy" title="Delete marker" id="${ID_PREFIX}-remove"></button>
                     <button class="oltb-func-btn oltb-func-btn--crosshair oltb-tippy" title="Copy marker coordinates" id="${ID_PREFIX}-copy-coordinates" data-coordinates="${prettyCoordinates}"></button>
-                    <button class="oltb-func-btn oltb-func-btn--copy oltb-tippy" title="Copy marker text" id="${ID_PREFIX}-copy-text" data-copy="${this.options.infoWindowDescription}"></button>
+                    <button class="oltb-func-btn oltb-func-btn--copy oltb-tippy" title="Copy marker text" id="${ID_PREFIX}-copy-text" data-copy="${this.options.description}"></button>
                 </div>
             `
         };
@@ -166,7 +166,7 @@ class MyLocationTool extends Control {
             lon: lon,
             lat: lat,
             title: this.options.title,
-            description: this.options.infoWindowDescription,
+            description: this.options.description,
             icon: 'person.filled',
             infoWindow: infoWindow
         });

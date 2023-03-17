@@ -52,7 +52,7 @@ class SettingsManager {
     static #settings = structuredClone(DefaultSettings);
 
     static init() {
-        LogManager.logDebug(FILENAME, 'init', 'Initializing started');
+        LogManager.logDebug(FILENAME, 'init', 'Initialization started');
         
         // Update the states of the settings with values from localStorage
         this.#localStorage = this.#loadBrowserData();

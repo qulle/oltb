@@ -13,7 +13,7 @@ class TooltipManager {
     static #tooltips = {}
 
     static init() {
-        LogManager.logDebug(FILENAME, 'init', 'Initializing started');
+        LogManager.logDebug(FILENAME, 'init', 'Initialization started');
 
         const tooltipElement = DOM.createElement({
             element: 'div',

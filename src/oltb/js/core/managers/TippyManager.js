@@ -16,7 +16,7 @@ class TippyManager {
     static #colorTippy;
 
     static init() {
-        LogManager.logDebug(FILENAME, 'init', 'Initializing started');
+        LogManager.logDebug(FILENAME, 'init', 'Initialization started');
         
         this.#toolButtonTippy = this.#createToolButtonTippy();
         this.#mapTippy = this.#createMapTippy();

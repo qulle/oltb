@@ -12,10 +12,88 @@ import { FeatureProperties } from "../../src/oltb/js/helpers/constants/FeaturePr
 import { Vector as VectorLayer } from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';
 
-import urlCountriesGeoJSON from 'url:../geojson/countries.geojson';
+import urlCountriesGeoJson from 'url:../geojson/countries.geojson';
 
 const FILENAME = 'layers/Countries.js';
 const ID_PREFIX = 'oltb-info-window-marker';
+
+const parseGeoJson = function(context, data, projection) {
+    const features = new GeoJSON({
+        featureProjection: projection.getCode()
+    }).readFeatures(data);
+
+    features.forEach((feature) => {
+        const coordinates = transform(
+            getCenter(feature.getGeometry().getExtent()), 
+            Config.projection.default, 
+            Config.projection.wgs84
+        );
+
+        const prettyCoordinates = toStringHDMS(coordinates);
+        const measureValue = getMeasureValue(feature.getGeometry());
+
+        const title = feature.getProperties().name;
+        const description = `
+            Based on the geometric data, we estimate the area to be ${measureValue.value} ${measureValue.unit}.
+        `;
+
+        feature.setProperties({
+            oltb: {
+                type: FeatureProperties.type.layer,
+                highlightOnHover: true,
+                title: countryName,
+                description: description,
+                infoWindow: {
+                    title: title,
+                    content: `
+                        <p>${description}</p>
+                    `,
+                    footer: `
+                        <span class="oltb-info-window__coordinates">${prettyCoordinates}</span>
+                        <div class="oltb-info-window__buttons-wrapper">
+                            <button class="oltb-func-btn oltb-func-btn--copy oltb-tippy" title="Copy marker text" id="${ID_PREFIX}-copy-text" data-copy="${description}"></button>
+                        </div>
+                    `
+                }
+            }
+        });
+    });
+
+    context.addFeatures(features);
+    
+    return features;
+}
+
+const loadGeoJson = function(extent, resolution, projection, success, failure) {
+    const geoJsonPromise = fetch(urlCountriesGeoJson)
+        .then((response) => {
+            if(!Boolean(response.ok)) {
+                throw new Error('Failed to fetch local geojson', {
+                    cause: response
+                });
+            }
+
+            return response.json();
+        })
+        .then((data) => {
+            const features = parseGeoJson(this, data, projection);
+            success(features);
+        })
+        .catch((error) => {
+            const errorMessage = 'Failed to load Countries layer';
+            LogManager.logError(FILENAME, 'geoJsonPromise', {
+                message: errorMessage,
+                error: error
+            });
+
+            Toast.error({
+                title: 'Error',
+                message: errorMessage
+            });
+
+            failure();
+        });
+}
 
 LayerManager.addMapLayers([
     {
@@ -25,67 +103,8 @@ LayerManager.addMapLayers([
                 format: new GeoJSON({
                     featureProjection: Config.projection.default
                 }),
-                loader: function(extent, resolution, projection, success, failure) {
-                    const geoJsonPromise = fetch(urlCountriesGeoJSON)
-                        .then((response) => {
-                            if(!response.ok) {
-                                throw new Error(`Fetch error [${response.status}] [${response.statusText}]`);
-                            }
-
-                            return response.json();
-                        })
-                        .then((json) => {
-                            const features = new GeoJSON({
-                                featureProjection: projection.getCode()
-                            }).readFeatures(json);
-
-                            features.forEach((feature) => {
-                                const coordinates = transform(
-                                    getCenter(feature.getGeometry().getExtent()), 
-                                    Config.projection.default, 
-                                    Config.projection.wgs84
-                                );
-
-                                const prettyCoordinates = toStringHDMS(coordinates);
-                                const measureValue = getMeasureValue(feature.getGeometry());
-
-                                feature.setProperties({
-                                    oltb: {
-                                        type: FeatureProperties.type.layer,
-                                        highlightOnHover: true,
-                                        infoWindow: {
-                                            title: feature.getProperties().name,
-                                            content: `
-                                                <p>
-                                                    Based on the geometric data, we estimate the area to be <strong>${measureValue.value} ${measureValue.unit}</strong>.
-                                                </p>
-                                            `,
-                                            footer: `
-                                                <span class="oltb-info-window__coordinates">${prettyCoordinates}</span>
-                                                <div class="oltb-info-window__buttons-wrapper">
-                                                    <button class="oltb-func-btn oltb-func-btn--copy oltb-tippy" title="Copy marker text" id="${ID_PREFIX}-copy-text" data-copy="Based on the geometric data, we estimate the area to be ${measureValue.value} ${measureValue.unit}"></button>
-                                                </div>
-                                            `
-                                        }
-                                    }
-                                });
-                            });
-
-                            this.addFeatures(features);
-                            success(features);
-                        })
-                        .catch((error) => {
-                            const errorMessage = 'Failed to load Countries layer';
-                            LogManager.logError(FILENAME, 'addMapLayers', `${errorMessage} [${error}]`);
-
-                            Toast.error({
-                                title: 'Error',
-                                message: errorMessage
-                            });
-
-                            failure();
-                        });
-                }, strategy: bbox,
+                loader: loadGeoJson, 
+                strategy: bbox,
             }),
             visible: false
         })
