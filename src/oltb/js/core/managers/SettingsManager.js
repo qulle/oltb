@@ -83,6 +83,13 @@ class SettingsManager {
     }
 
     static addSetting(key, valueObj) {
+        // Check if there exists a value already in the browser for this setting
+        // Must overwrite the literal value that the tools is adding
+        const state = this.#localStorage[key];
+        if(state !== undefined) {
+            valueObj.state = state;
+        }
+
         DefaultSettings.set(key, structuredClone(valueObj));
         this.#settings.set(key, valueObj);
     }

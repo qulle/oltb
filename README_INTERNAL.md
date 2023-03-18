@@ -98,7 +98,7 @@ $ bash tasks/dist-examples-setup.sh
 
 # (8). Manually update examples:
 #      - NPM x 2
-#      - CDN
+#      - CDN (also bump ol CDN-links in index.html)
 
 # (9). Verify examples
 $ npm run example:one
@@ -624,7 +624,6 @@ controls: defaultControls({
         }
     }),
     new CoordinatesTool({
-        updateToolboxCoordinatsOnlyOnClick: false,
         click: function() {
             console.log('CoordinatesTool clicked');
         },

@@ -8,7 +8,8 @@ const Settings = Object.freeze({
     alwaysNewLayers: 'always.new.layers',
     altShiftDragRotate: 'alt.shift.drag.rotate',
     selectVectorMapShapes: 'select.vector.map.shapes',
-    copyCoordinatesOnClick: 'copy.coordinates.on.click'
+    copyCoordinatesOnClick: 'copy.coordinates.on.click',
+    updateToolboxCoordinatesOnHover: 'update.toolbox.coordinates.on.hover'
 });
 
 export { Settings };

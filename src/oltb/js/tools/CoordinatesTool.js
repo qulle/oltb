@@ -24,7 +24,6 @@ const FILENAME = 'tools/CoordiantesTool.js';
 const ID_PREFIX = 'oltb-coordinates';
 
 const DefaultOptions = Object.freeze({
-    updateToolboxCoordinatsOnlyOnClick: false,
     click: undefined,
     mapClicked: undefined
 });
@@ -113,7 +112,12 @@ class CoordinatesTool extends Control {
 
         SettingsManager.addSetting(Settings.copyCoordinatesOnClick, {
             state: true, 
-            text: 'Coordinates tool - Copy coordinates on click'
+            text: 'Copy coordinates on click'
+        });
+
+        SettingsManager.addSetting(Settings.updateToolboxCoordinatesOnHover, {
+            state: true, 
+            text: 'Update toolbox coordinates when hover'
         });
 
         window.addEventListener(Events.browser.keyDown, this.onWindowKeyDown.bind(this));
@@ -277,7 +281,7 @@ class CoordinatesTool extends Control {
     onPointerMove(event) {
         this.tooltipCoordinates(event);
 
-        if(!Boolean(this.options.updateToolboxCoordinatsOnlyOnClick)) {
+        if(SettingsManager.getSetting(Settings.updateToolboxCoordinatesOnHover)) {
             this.toolboxCoordinates(event);
         }
     }
@@ -285,7 +289,7 @@ class CoordinatesTool extends Control {
     onMapClick(event) {        
         this.copyCoordinates(event);
 
-        if(Boolean(this.options.updateToolboxCoordinatsOnlyOnClick)) {
+        if(!SettingsManager.getSetting(Settings.updateToolboxCoordinatesOnHover)) {
             this.toolboxCoordinates(event);
         }
 

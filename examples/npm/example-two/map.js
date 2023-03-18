@@ -385,7 +385,6 @@ const map = new Map({
             }
         }),
         new CoordinatesTool({
-            updateToolboxCoordinatsOnlyOnClick: false,
             click: function() {
                 console.log('CoordinatesTool clicked');
             },
