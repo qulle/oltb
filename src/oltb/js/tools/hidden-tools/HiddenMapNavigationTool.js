@@ -148,7 +148,10 @@ class HiddenMapNavigationTool extends Control {
 
             // Transform coordinates to format that can be used in the map
             const coordinates = transform(
-                [markerData.lon, markerData.lat], 
+                [
+                    Number(markerData.lon), 
+                    Number(markerData.lat)
+                ], 
                 markerData.projection, 
                 Config.projection.wgs84
             );

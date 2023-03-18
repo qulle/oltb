@@ -389,6 +389,7 @@ const map = new Map({
             }
         }),
         new CoordinatesTool({
+            updateToolboxCoordinatsOnlyOnClick: false,
             click: function() {
                 console.log('CoordinatesTool clicked');
             },
@@ -488,8 +489,8 @@ const map = new Map({
     view: new View({
         projection: getProjection(Config.projection.default),
         center: fromLonLat([
-            LocalStorage.lon, 
-            LocalStorage.lat
+            Number(LocalStorage.lon), 
+            Number(LocalStorage.lat)
         ], Config.projection.Default),
         zoom: LocalStorage.zoom,
         rotation: LocalStorage.rotation

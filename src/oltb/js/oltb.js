@@ -182,8 +182,8 @@ class OLTB {
 
         const view = map.getView();
         const coordinates = fromLonLat([
-            this.#localStorage.lon,
-            this.#localStorage.lat
+            Number(this.#localStorage.lon),
+            Number(this.#localStorage.lat)
         ], Config.projection.default);
 
         view.setCenter(coordinates);

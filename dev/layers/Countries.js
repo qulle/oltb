@@ -41,7 +41,7 @@ const parseGeoJson = function(context, data, projection) {
             oltb: {
                 type: FeatureProperties.type.layer,
                 highlightOnHover: true,
-                title: countryName,
+                title: title,
                 description: description,
                 infoWindow: {
                     title: title,

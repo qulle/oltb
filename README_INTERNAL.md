@@ -11,11 +11,12 @@ Detailed documentation how the toolbar is structured, internal dependencies and 
 1. [Branches](#branches)
 2. [Get Started](#get-started)
 3. [Making A Release](#making-a-release)
-4. [Browser Support](#browser-support)
-5. [Colors](#colors) 
+4. [Update Dependencies](#update-dependencies)
+5. [Browser Support](#browser-support)
+6. [Colors](#colors) 
     1. [Theme Colors](#theme-colors)
     2. [Color Palette](#color-palette)
-6. [About The Code](#about-the-code)
+7. [About The Code](#about-the-code)
     1. [HTML](#html)
     2. [SCSS](#scss)
     3. [Import And Export](#import-and-export)
@@ -41,61 +42,29 @@ Detailed documentation how the toolbar is structured, internal dependencies and 
     18. [Debug Tool](#debug-tool)
     19. [Logging](#logging)
     20. [OLTB Namespace](#oltb-namespace)
-7. [License](#license)
-8. [Author](#author)
+8. [License](#license)
+9. [Author](#author)
 
 ## Branches
-The `main` branch always holds the latest features that are considered done. The latest commit from the main branch is available on the demo-page hosted in the `gh-pages` branch.
+The `main` branch holds the latest features that are considered done and safe to use. The latest commit from the main branch is available on the [demo-page](https://qulle.github.io/oltb/) hosted in the `gh-pages` branch. Each released major, minor or patch version is tagged and can be checked out or downloaded from CDN and NPM.
 
 ## Get Started
 The dev-environment uses NPM so you need to have [Node.js](https://nodejs.org/en/) installed. I use Node version *18.12.0* and NPM version *8.16.0*.
 
-Clone the repo.
+Clone the repo
 ```
 $ git clone https://github.com/qulle/oltb.git
 ```
 
-Install all dependencies from package.json.
+Install all dependencies from package.json
 ```
 $ npm install
 ```
 
-Start the dev server.
+Start the dev server
 ```
 $ npm start
 ```
-
-Make GitHub demo build.
-```
-$ bash tasks/github_demo.sh
-```
-
-Make NPM library build.
-```
-$ bash tasks/npm_dist.sh
-```
-
-Use the following command clean all.
-```
-$ npm run clean
-```
-
-Check for dependency updates.
-```
-$ npm outdated
-```
-
-Check for dependency security issues.
-```
-$ npm audit
-```
-
-Install dependency updates.
-```
-$ npm update --save
-```
-
-**Note:** that from npm version `7.0.0` the command `$ npm update` does not longer update the `package.json` file. From npm version `8.3.2` the command to run is `$ npm update --save` or to always apply the save option add `save=true` to the `.npmrc` file.
 
 ## Making A Release
 ```bash
@@ -115,7 +84,7 @@ $ npm run clean
 #      - rollup.cssbanner.mjs
 #      - rollup.jsbanner.mjs
 
-# (5). Create new dist directory
+# (5). Create new dist
 $ bash tasks/npm-dist.sh
 
 # (6). Clean package.json in dist:
@@ -168,6 +137,24 @@ git push origin --tags
 
 # (18). Clean github.com/qulle/notification-endpoints
 ```
+
+## Update Dependencies
+Check for dependency updates
+```
+$ npm outdated
+```
+
+Check for dependency security issues
+```
+$ npm audit
+```
+
+Install dependency updates
+```
+$ npm update --save
+```
+
+**Note:** that from npm version `7.0.0` the command `$ npm update` does not longer update the package.json file. From npm version `8.3.2` the command to run is `$ npm update --save` or to always apply the save option add `save=true` to the `.npmrc` file.
 
 ## Browser Support 
 Manually tested in modern browsers (Mozilla Firefox, Microsoft Edge, Google Chrome).
@@ -315,7 +302,7 @@ SCSS and HTML is written with [BEM](http://getbem.com/introduction/) naming conv
 All modules uses named exports exclusively throughout the project. The one exception is the `oltb.js` file which is the main entry for Rollup to create the portable CDN version.
 
 ### JavaScript
-The tools are located in the directory `src/oltb/js/modules/tools`. Every tool has its own class and extend the Control-class from OpenLayers.
+The tools are located in the directory `src/oltb/js/tools`. Every tool has its own class and extend the Control-class from OpenLayers.
 ```javascript
 class CoordinatesTool extends Control {}
 ```
@@ -637,6 +624,7 @@ controls: defaultControls({
         }
     }),
     new CoordinatesTool({
+        updateToolboxCoordinatsOnlyOnClick: false,
         click: function() {
             console.log('CoordinatesTool clicked');
         },
@@ -647,7 +635,7 @@ controls: defaultControls({
     new MyLocationTool({
         enableHighAccuracy: true,
         timeout: 10000,
-        infoWindowContent: 'This is the location that the browser was able to find. It might not be your actual location.',
+        description: 'This is the location that the browser was able to find. It might not be your actual location.',
         click: function() {
             console.log('MyLocationTool clicked');
         },
@@ -698,7 +686,7 @@ controls: defaultControls({
     }),
     new InfoTool({
         title: 'Hey!', 
-        content: '<p>This is a <em>modal window</em>, here you can place some text about your application or links to external resources.</p>',
+        content: '<p>This is a <strong>modal window</strong>, here you can place some text about your application or links to external resources.</p>',
         click: function() {
             console.log('InfoTool clicked');
         }
@@ -740,17 +728,17 @@ Tools that create objects at runtime, for example the BookmarkTool, LayerTool et
 **Note:** At the moment only the BookmarkTool has this feature implemented. The Map also stores base data (zoom, lon, lat) in localStorage. You can read more about the State Management [here](#state-management). 
 
 ### Hidden Tools
-Tools refered to as hidden tools are tools that only add functionality via the context menu. The hidden tools are used to enable the same type of callback functions that exists on all other tools. 
+Tools refered to as hidden tools are tools that only add functionality via the context menu. The hidden tools are used to enable the same type of setup and callback functions that exists on all other tools. 
 
 ### Shortcut Keys
 All tools have a shortcut key for ease of use and speeds up the handling of the toolbar. The shortcut key is displayed in the tooltip on the corresponding tool. All shortcut keys are stored in the module `oltb/js/helpers/Constants/ShortcutKeys`.
 ```javascript
-const ShortcutKeys = {
+const ShortcutKeys = Object.freeze({
     areaOverview: 'A',
     bookmark: 'B',
     coordinates: 'C'
     ...
-};
+});
 ```
 
 ### Managers
@@ -820,7 +808,7 @@ The following projections are added by default.
 </table>
 
 ### Layers
-Layers are added to the map using the `LayerManager`. The manager handels internal functionality and fires of events that the layer-tool captures to create the UI.
+Layers are added to the map using the `LayerManager`. The manager handels internal functionality and fires of events that the LayerTool captures to create the UI.
 
 Layers can be added at any time during the applications lifetime. If the map is not ready to recieve a layer the manager will queue the layer and add it to the map once the manager is initiated with a reference to the map.
 
@@ -839,8 +827,8 @@ const marker = generateMarker({
     lat: 59.3293,
     title: 'Marker Title',
     description: 'Marker description',
-    backgroundColor: '#0166A5FF',
-    color: '#FFFFFFFF',
+    fill: '#0166A5FF',
+    stroke: '#FFFFFFFF',
     icon: 'GeoPin.Filled'
 });
 ```
@@ -848,8 +836,8 @@ const marker = generateMarker({
 Other properties that you can add are:
 ```javascript
 ({
-    width: 15,           // Circle stroke width
-    radius: 15,          // Circle radius
+    width: 14,           // Circle stroke width
+    radius: 14,          // Circle radius
     iconWidth: 14,       // Height of icon (px)
     iconHeight: 14,      // Width of icon (px)
     infoWindow: '',      // HTML Content to show when user click on marker
@@ -858,12 +846,12 @@ Other properties that you can add are:
 ```
 
 #### URL Markers
-A marker can be created by providing the `oltb-marker` object as the GET parameter according to the following syntax.
+A marker can be created by providing the `oltb-marker` object as the GET parameter with the following syntax.
 ```
 /?oltb-marker={"title":"Marker Title","description":"Information about the maker","icon":"exclamationTriangle.filled","fill":"EB4542FF","stroke":"FFFFFFFF","layerName":"URL Marker","projection":"EPSG:4326","lon":18.0685,"lat":59.3293,"zoom":8}
 ```
 
-Test the marker above using the <a href='https://qulle.github.io/oltb/?oltb-marker={"title":"Marker Title","description":"Information about the maker","icon":"ExclamationTriangle.Filled","backgroundColor":"EB4542FF","color":"FFFFFFFF","layerName":"URL Marker","projection":"EPSG:4326","lon":18.0685,"lat":59.3293,"zoom":8}' target="_blank">demo page</a>.
+Test the marker above using the <a href='https://qulle.github.io/oltb/?oltb-marker={"title":"Marker Title","description":"Information about the maker","icon":"exclamationTriangle.filled","fill":"EB4542FF","stroke":"FFFFFFFF","layerName":"URL Marker","projection":"EPSG:4326","lon":18.0685,"lat":59.3293,"zoom":8}' target="_blank">demo page</a>.
 
 The JSON object has the following structure.
 ```json
@@ -970,7 +958,7 @@ Modal.create({
 });
 ```
 
-A reference to the created modal is returned from the create function. This can be used to block the creation of a second modal if a button is pressed again. The `onClose` callback can be used to release the lock.
+A reference to the created modal is returned from the create function. This can be used to block the creation of a second modal if a button or shortcut key is pressed again. The `onClose` callback can be used to release the lock.
 ```javascript
 infoToolClick() {
     if(Boolean(this.infoModal)) {
@@ -1060,7 +1048,7 @@ myLocationToolClick() {
 There are two modules for using SVG icons. One is for basic icons and the other one is for Wind Barb icons.
 
 #### Basic Icons
-Most of the icons are from the excellent [icons.getbootstrap.com](https://icons.getbootstrap.com/). Icons have been added on a as needed basis and far from all icons have been added.
+Most of the icons are from [icons.getbootstrap.com](https://icons.getbootstrap.com/). Icons have been added on a as needed basis and far from all icons have been added.
 ```javascript
 import { SvgPaths, getIcon } from 'oltb/js/core/GetIcon';
 
@@ -1145,20 +1133,20 @@ To use state management start by importing the following module.
 import { StateManager } from 'oltb/js/core/managers/StateManager';
 ```
 
-State management is done through localStorage. First add a node name and an object to store default values.
+State management is done through localStorage under the key `oltb-state`. First add a node name and an object to store default values.
 ```javascript
 const LocalStorageNodeName = LocalStorageKeys.drawTool;
-const LocalStorageDefaults = {
+const LocalStorageDefaults = Object.freeze({
     active: false,
     collapsed: false,
-    toolTypeIndex: 5,
+    toolType: 'Polygon',
+    strokeWidth: '2.5',
     strokeColor: '#4A86B8FF',
-    strokeWidth: 2,
-    fillColor: '#FFFFFF80'
-};
+    fillColor: '#D7E3FA80'
+});
 ```
 
-These two nextcomming lines merges stored data into a runtime copy of the default properties located in `LocalStorageDefaults`. The spread operator is a really nice feature for this operation.
+These two nextcomming lines merges stored data into a runtime copy of the default properties located in `LocalStorageDefaults`.
 ```javascript
 const localStorageState = StateManager.getStateObject(LocalStorageNodeName);
 this.localStorage = { ...LocalStorageDefaults, ...localStorageState };
@@ -1193,7 +1181,7 @@ LogManager.logDebug(FILENAME, 'handleClick', {
 Add the get parameter to the url `/?oltb-debug=true` to also display the logged messages in the browser console.
 
 ### OLTB Namespace
-All classes and id:s in the project are prefixed with the namespace `oltb`. Data is also stored in local storage under the key `oltb-state`. 
+All classes and id:s in the project are prefixed with the namespace `oltb`.
 
 ## License
 [BSD-2-Clause License](LICENSE)

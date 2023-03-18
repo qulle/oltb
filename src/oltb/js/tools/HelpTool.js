@@ -1,5 +1,6 @@
 import { DOM } from '../helpers/browser/DOM';
 import { Toast } from '../common/Toast';
+import { Dialog } from '../common/Dialog';
 import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { LogManager } from '../core/managers/LogManager';
@@ -52,7 +53,15 @@ class HelpTool extends Control {
 
     onWindowKeyUp(event) {
         if(isShortcutKeyOnly(event, ShortcutKeys.helpTool)) {
-            this.handleClick(event);
+            Dialog.confirm({
+                title: 'Help pages',
+                message: 'Browsers block automatic opening new windows, here is a button for you to press',
+                confirmClass: Dialog.Success,
+                confirmText: 'Open Help',
+                onConfirm: () => {
+                    this.handleClick();
+                }
+            });
         }
     }
 
@@ -71,7 +80,7 @@ class HelpTool extends Control {
         try {
             window.open(this.options.url, this.options.target).focus();
         }catch(error) {
-            const errorMessage = 'Action was blocked by browser, try open using mouse';
+            const errorMessage = 'Action was restricted by browser settings';
             LogManager.logError(FILENAME, 'momentaryActivation', {
                 message: errorMessage,
                 error: error

@@ -31,7 +31,7 @@ The latest demo is built using the last official release `v1.0.0-beta3` but may 
 ```
 
 ## Examples
-Examples for both the NPM and CDN version can be viewed for each release in the [examples directory](https://github.com/qulle/oltb/tree/main/examples/).
+Examples for both the NPM and CDN version can be viewed in the [examples directory](https://github.com/qulle/oltb/tree/main/examples/). Use Git history and the tagged releases to look at older examples.
 
 ## Want More Info?
 Have a look at the [Internal Development Documentation](https://github.com/qulle/oltb/blob/main/README_INTERNAL.md).

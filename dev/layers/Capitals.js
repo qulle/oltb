@@ -31,8 +31,8 @@ const getFillColor = function(continentName) {
 const parseGeoJson = function(data) {
     data.features.forEach((capital) => {
         const coordinates = [
-            capital.geometry.coordinates[0],
-            capital.geometry.coordinates[1]
+            Number(capital.geometry.coordinates[0]),
+            Number(capital.geometry.coordinates[1])
         ];
 
         const prettyCoordinates = toStringHDMS(coordinates);

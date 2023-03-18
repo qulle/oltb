@@ -52,8 +52,8 @@ class HiddenMarkerTool extends Control {
 
     onCreateMarker(result) {
         const coordinates = [
-            result.longitude,
-            result.latitude
+            Number(result.longitude),
+            Number(result.latitude)
         ];
 
         const prettyCoordinates = toStringHDMS(coordinates);

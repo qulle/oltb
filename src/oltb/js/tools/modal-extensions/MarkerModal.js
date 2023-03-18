@@ -116,7 +116,7 @@ class MarkerModal extends ModalBase {
             for(const version in SvgPaths[path]) {
                 const option = DOM.createElement({
                     element: 'option', 
-                    text: `${path} (${version})`, 
+                    text: `${path.capitalize()} (${version})`, 
                     value: `${path}.${version}`
                 });
 

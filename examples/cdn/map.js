@@ -287,6 +287,7 @@ const toolbar = new oltb({
             }
         },
         CoordinatesTool: {
+            updateToolboxCoordinatsOnlyOnClick: false,
             click: function() {
                 console.log('CoordinatesTool clicked');
             },

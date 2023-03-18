@@ -17,13 +17,14 @@ import { SettingsManager } from '../core/managers/SettingsManager';
 import { copyToClipboard } from '../helpers/browser/CopyToClipboard';
 import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
 import { SvgPaths, getIcon } from '../core/icons/GetIcon';
-import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
 import { ProjectionManager } from '../core/managers/ProjectionManager';
+import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
 
 const FILENAME = 'tools/CoordiantesTool.js';
 const ID_PREFIX = 'oltb-coordinates';
 
 const DefaultOptions = Object.freeze({
+    updateToolboxCoordinatsOnlyOnClick: false,
     click: undefined,
     mapClicked: undefined
 });
@@ -230,11 +231,6 @@ class CoordinatesTool extends Control {
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 
-    onPointerMove(event) {
-        this.tooltipCoordinates(event);
-        this.toolboxCoordinates(event);
-    }
-
     tooltipCoordinates(event) {
         const coordinates = transform(
             event.coordinate, 
@@ -278,7 +274,21 @@ class CoordinatesTool extends Control {
         cell.innerHTML = prettyCoordinates;
     }
 
-    async onMapClick(event) {        
+    onPointerMove(event) {
+        this.tooltipCoordinates(event);
+
+        if(!Boolean(this.options.updateToolboxCoordinatsOnlyOnClick)) {
+            this.toolboxCoordinates(event);
+        }
+    }
+
+    onMapClick(event) {        
+        this.copyCoordinates(event);
+
+        if(Boolean(this.options.updateToolboxCoordinatsOnlyOnClick)) {
+            this.toolboxCoordinates(event);
+        }
+
         const allCoordinates = [];
         const projections = ProjectionManager.getProjections();
         projections.forEach((projection) => {
@@ -301,7 +311,9 @@ class CoordinatesTool extends Control {
         if(typeof this.options.mapClicked === 'function') {
             this.options.mapClicked(allCoordinates);
         }
+    }
 
+    copyCoordinates(event) {
         if(
             !SettingsManager.getSetting(Settings.copyCoordinatesOnClick) || 
             ToolManager.hasActiveTool()
@@ -309,10 +321,6 @@ class CoordinatesTool extends Control {
             return;
         }
 
-        this.copyCoordinates(event);
-    }
-
-    copyCoordinates(event) {
         const coordinates = transform(
             event.coordinate, 
             Config.projection.default, 
