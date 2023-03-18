@@ -7,7 +7,7 @@ export const banner = `/*!
  * + ----------------------------------------------------------------------------------------------------------------+
  * | Thanks to the following projects that enabled the creation of this library.                                     |
  * | (+) OpenLayers 7.3.0                   - (https://openlayers.org/)                                              |
- * | (+) proj4 2.8.1                        - (http://proj4js.org/)                                                  |
+ * | (+) proj4 2.9.0                        - (http://proj4js.org/)                                                  |
  * | (+) Tippy.js 6.3.7                     - (https://atomiks.github.io/tippyjs/)                                   |
  * | (+) Bootstrap Icons                    - (https://icons.getbootstrap.com/)                                      |
  * | (+) Moment 2.29.4                      - (https://momentjs.com/)                                                |
@@ -16,7 +16,7 @@ export const banner = `/*!
  * | (+) JSTS 2.9.3                         - (https://github.com/bjornharrtell/jsts)                                |
  * | (+) Parcel 2.8.3                       - (https://parceljs.org/)                                                |
  * | (+) @parcel/transformer-sass 2.8.3     - (https://github.com/parcel-bundler/parcel)                             |
- * | (+) Rollup 3.18.0                      - (https://github.com/rollup/rollup)                                     |
+ * | (+) Rollup 3.19.1                      - (https://github.com/rollup/rollup)                                     |
  * | (+) @rollup/plugin-commonjs 24.0.1     - (https://github.com/rollup/plugins/tree/master/packages/commonjs)      |
  * | (+) @rollup/plugin-json 6.0.0          - (https://github.com/rollup/plugins/tree/master/packages/json)          |
  * | (+) @rollup/plugin-node-resolve 15.0.1 - (https://github.com/rollup/plugins/tree/master/packages/node-resolve)  |

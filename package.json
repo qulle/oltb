@@ -41,7 +41,7 @@
         "jsts": "^2.9.3",
         "moment": "^2.29.4",
         "ol": "^7.3.0",
-        "proj4": "^2.8.1",
+        "proj4": "^2.9.0",
         "tippy.js": "^6.3.7"
     },
     "devDependencies": {
@@ -53,7 +53,7 @@
         "@rollup/plugin-terser": "^0.4.0",
         "buffer": "^5.7.1",
         "parcel": "^2.8.3",
-        "rollup": "^3.18.0",
+        "rollup": "^3.19.1",
         "rollup-plugin-license": "^3.0.1",
         "rollup-plugin-scss": "^4.0.0"
     }

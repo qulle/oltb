@@ -1,6 +1,5 @@
 import moment from "moment/moment";
 import { Config } from "../Config";
-import { UrlManager } from "./UrlManager";
 
 const FILENAME = 'managers/LogManager.js';
 
@@ -40,7 +39,6 @@ class LogManager {
 
     static init() {
         LogManager.logDebug(FILENAME, 'init', 'Initialization started');
-        this.#isDebug = UrlManager.getParameter(Config.urlParameters.debug) === 'true';
     }
 
     static setMap(map) { }
@@ -49,7 +47,6 @@ class LogManager {
         const timestamp = moment();
         const timeFormat = Config.timeFormat;
 
-        // Store to show in debug tool
         this.#log.push({
             timestamp: timestamp.format(timeFormat),
             level: level,
@@ -57,15 +54,6 @@ class LogManager {
             method: method,
             value: value
         });
-
-        // Log to browser console if url has debug parameter
-        if(Boolean(this.#isDebug)) {
-            level.method.call(
-                LogManager,
-                level.icon, 
-                timestamp.format(timeFormat), '🡒', origin, '🡒', method, '🡒', value
-            );
-        }
     }
 
     static getLog() {
