@@ -1157,7 +1157,9 @@ StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
 ```
 
 ### Debug Tool
-To make debugging and diagnosting errors easier there is a tool named `DebugInfoTool`. This tool will gather information about the map such as zoomlevel, location, layers, rotation, projection etc and displays the information in a modal window. To hide the debug tool as default, add the parameter `onlyWhenGetParameter: true` and add the get parameter to the url `/?oltb-debug=true` to show the tool. Adding the debug parameter will also enable the default context-menu in the browser.
+To make debugging and diagnosting errors easier there is a tool named `DebugInfoTool`. This tool will gather information about the map such as zoomlevel, location, layers, rotation, projection etc and displays the information in a modal window. To hide the debug tool as default, add the parameter `onlyWhenGetParameter: true` to the tools constructor. Then add the get parameter to the url `/?oltb-debug=true` to show the tool. 
+
+Adding the debug parameter will also enable the default context-menu in the browser and will also output information in the console from `html2canvas` when generating a PNG.
 
 ### Logging
 Logging is done through the `LogManager`. This way all logging is done through one central place and will be outputted in the `DebugInfoModal`. There are four levels to use when logging.
@@ -1176,8 +1178,6 @@ LogManager.logDebug(FILENAME, 'handleClick', {
     values: [1, 2, 3, 4]
 });
 ```
-
-Add the get parameter to the url `/?oltb-debug=true` to also display the logged messages in the browser console.
 
 ### OLTB Namespace
 All classes and id:s in the project are prefixed with the namespace `oltb`.

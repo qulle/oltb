@@ -1,11 +1,11 @@
 # Releases
 
 ## 1.0.0
-TBA
+2023-03-20
 
 Some of the changes done in this version are:
 
-- Implemented build system for creating portable library
+- Implemented build system for creating portable library using Rollup
 - Deployed the project on NPM and jsdelivr (CDN)
 - Added examples for both NPM and CDN usage
 - Added more options and callbacks to Modal, Toast and Dialog
@@ -18,6 +18,7 @@ Some of the changes done in this version are:
 - Fixed Alert dialog, undefined text property
 - Fixed issue where importing vector layers re-generates previously imported layers
 - Fixed projection issue in create-new-map-layer method
+- Fixed tools that create dynamic settings not retrieving correctly saved value on page load
 - Code refactoring and improvements
 
 ## 1.0.0-beta3
