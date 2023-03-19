@@ -1,34 +1,60 @@
 {
     "name": "oltb",
-    "browserslist": "> 0.5%, last 2 versions, not dead",
     "version": "1.0.0-beta3",
-    "description": "Lightweight mobile friendly GIS toolbar developed for OpenLayers 7.1.0",
-    "scripts": {
-        "start": "parcel src/index.html --open",
-        "build": "parcel build --public-url . src/index.html",
-        "clean": "rm -rf dist/ .parcel-cache/"
-    },
+    "author": "Qulle",
+    "license": "BSD-2-Clause license",
+    "description": "OLTB is a portable mobile friendly GIS toolbar developed for OpenLayers 7.3.0",
+    "keywords": [
+        "open-source",
+        "gis",
+        "toolbar",
+        "openlayers",
+        "rollupjs",
+        "parceljs",
+        "gis-toolbar",
+        "openlayers-toolbar"
+    ],
     "repository": {
         "type": "git",
         "url": "git+https://github.com/qulle/oltb.git"
     },
-    "keywords": [],
-    "author": "Qulle",
-    "license": "BSD-2-Clause license",
+    "homepage": "https://github.com/qulle/oltb#readme",
     "bugs": {
         "url": "https://github.com/qulle/oltb/issues"
     },
-    "homepage": "https://github.com/qulle/oltb#readme",
+    "scripts": {
+        "start": "parcel serve ./dev/index.html --open --dist-dir serve/",
+        "build": "npm run build:demo && npm run build:lib",
+        "build:lib": "rollup --config",
+        "build:demo": "parcel build --public-url . ./dev/index.html --dist-dir demo/",
+        "example:one": "sh -c 'start firefox -url \"file://C:$(cut -c3- <<< $(readlink -m ./examples/cdn/index.html))\"'",
+        "example:two": "parcel serve ./examples/npm/example-one/index.html --open --dist-dir serve/",
+        "example:three": "parcel serve ./examples/npm/example-two/index.html --open --dist-dir serve/",
+        "clean": "rm -rf serve/ dist/ demo/ .parcel-cache/"
+    },
+    "files": [
+        "dist"
+    ],
     "dependencies": {
         "a-color-picker": "^1.2.1",
         "html2canvas": "^1.4.1",
-        "jsts": "^2.9.2",
-        "ol": "^7.1.0",
-        "proj4": "^2.8.0",
+        "jsts": "^2.9.3",
+        "moment": "^2.29.4",
+        "ol": "^7.3.0",
+        "proj4": "^2.9.0",
         "tippy.js": "^6.3.7"
     },
     "devDependencies": {
-        "@parcel/transformer-sass": "^2.7.0",
-        "parcel": "^2.7.0"
+        "@parcel/transformer-sass": "^2.8.3",
+        "@rollup/plugin-commonjs": "^24.0.1",
+        "@rollup/plugin-json": "^6.0.0",
+        "@rollup/plugin-node-resolve": "^15.0.1",
+        "@rollup/plugin-replace": "^5.0.2",
+        "@rollup/plugin-terser": "^0.4.0",
+        "buffer": "^5.7.1",
+        "parcel": "^2.8.3",
+        "rollup": "^3.19.1",
+        "rollup-plugin-license": "^3.0.1",
+        "rollup-plugin-scss": "^4.0.0"
     }
 }

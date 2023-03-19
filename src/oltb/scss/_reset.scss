@@ -1,0 +1,46 @@
+*, *::before, *::after {
+    -webkit-box-sizing: border-box; 
+    -moz-box-sizing: border-box;   
+    box-sizing: border-box; 
+    
+    outline: none;
+}
+
+h1, h2, h3, h4, h5, h6, p, img, span, a {
+    margin: 0 0 1rem 0;
+    padding: 0;
+}
+
+p {
+    font-size: 1.125rem;
+}
+
+textarea {
+    resize: none;
+}
+
+/* Chrome, Firefox, Opera, Safari 10.1+ */
+::placeholder { 
+    color: $color-dark;
+    opacity: 1;
+}
+
+/* Microsoft Edge */
+::-ms-input-placeholder { 
+    color: $color-dark;
+    opacity: 1;
+}
+
+/* Disable blue-highlight on touch devices */
+.oltb-btn,
+.oltb-func-btn,
+.oltb-toggleable {
+    -webkit-tap-highlight-color: transparent;
+
+    &:focus {
+        -webkit-tap-highlight-color: transparent;
+        -ms-touch-action: manipulation;
+        touch-action: manipulation;
+        outline: none;
+    }
+}

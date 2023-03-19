@@ -1,0 +1,63 @@
+.oltb-dialog {
+    background-color: $background-theme-light;
+    display: inline-block;
+    min-width: 400px;
+    max-width: 400px;
+    margin: 2rem auto;
+    padding: $top-level-padding;
+    border-radius: $border-radius;
+    box-shadow: $box-shadow-dark;
+    color: $color-dark;
+
+    &-backdrop {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, .6);
+        z-index: 900;
+        text-align: center;
+
+        &--fixed {
+            position: fixed;
+        }
+    }
+
+    &__title {
+        text-align: left;
+    }
+
+    &__message {
+        text-align: left;
+    }
+
+    &__buttons-wrapper {
+        text-align: right;
+        margin-top: 1.5rem;
+    }
+
+    &__btn {
+        padding: .5rem .625rem;
+
+        &:last-child {
+            margin-left: .5rem;
+        }
+    
+        &:only-child {
+            margin: 0;
+        }
+    }
+}
+
+body.oltb-dark .oltb-dialog {
+    background-color: $background-theme-dark;
+    color: $color-light;
+}
+
+@media only screen and (max-width: $breakpoint-sm) {
+    .oltb-dialog {
+        min-width: calc(100% - 2rem);
+        max-width: calc(100% - 2rem);
+    }
+}

@@ -1,0 +1,82 @@
+.oltb-info-window {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: scale(1.0) translateX(-50%);
+    min-width: 360px;
+    padding: $top-level-padding;
+    background-color: $background-theme-light;
+    color: $color-light;
+    border-radius: $border-radius;
+    -webkit-filter: drop-shadow(0 0 .25rem rgba(0, 0, 0, .4));
+    filter: drop-shadow(0 0 .25rem rgba(0, 0, 0, .4));
+
+    &::after {
+        content: '';
+        position: absolute;    
+        bottom: 1px;
+        left: 50%;
+        transform: translate(-50%, 100%);
+        border-top: .625rem solid $background-theme-light;
+        border-left: .625rem solid transparent;
+        border-right: .625rem solid transparent;
+    }
+
+    &__header{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 0 0 1rem 0;
+    }
+
+    &__title {
+        color: $color-dark;
+        margin: 0;
+    }
+
+    &__close {
+        color: $color-dark;
+    }
+
+    &__content {
+        color: $color-dark;
+
+        p {
+            font-size: 1rem;
+        }
+    }
+
+    &__coordinates {
+        margin: 0;
+        font-size: .8rem;
+        white-space: nowrap;
+    }
+
+    &__buttons-wrapper {
+        margin-left: 1rem;
+        flex-shrink: 0;
+    }
+
+    &__footer {
+        color: $color-dark;
+        margin: 1.5rem 0 0 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+}
+
+body.oltb-dark .oltb-info-window {
+    background-color: $background-theme-dark;
+        
+    &::after {
+        border-top: .625rem solid $background-theme-dark;
+    }
+
+    &__title,
+    &__close,
+    &__content,
+    &__footer {
+        color: $background-theme-light;
+    }
+}

@@ -1,0 +1,44 @@
+.oltb-debug {
+    border-bottom: 1px dashed $color-gray-mid;
+    padding: .5rem 0;
+
+    &__commands {
+        padding-bottom: 1rem;
+        border-bottom: 1px dashed $color-gray-mid;
+    }
+
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        align-content: center;
+        cursor: pointer;
+    }
+
+    &__title {
+        margin: 0;
+        padding: .25rem 0;
+    }
+
+    &__toggle {
+        color: $color-dark;
+    }
+
+    &__json {
+        padding: .5rem;
+        border-radius: $border-radius;
+        background-color: $color-gray-light;
+        overflow: auto;
+        max-height: 600px;
+        font-size: 1rem;
+    }
+}
+
+body.oltb-dark .oltb-debug {
+    &__toggle {
+        color: $color-light;
+    }
+
+    &__json {
+        color: $color-dark;
+    }
+}

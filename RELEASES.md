@@ -1,5 +1,26 @@
 # Releases
 
+## 1.0.0
+2023-03-20
+
+Some of the changes done in this version are:
+
+- Implemented build system for creating portable library using Rollup
+- Deployed the project on NPM and jsdelivr (CDN)
+- Added examples for both NPM and CDN usage
+- Added more options and callbacks to Modal, Toast and Dialog
+- Added more options to the ExportPngTool
+- Added a full color palette
+- Refactored and added new managers to control the startup procedure
+- Refactored DebugTool to have more in dept information as well as logg
+- Refactored ImportVectorLayerTool to have selectable feature- and data- projections
+- Fixed the opacity and position issue of InfoWindow when exporting map as PNG
+- Fixed Alert dialog, undefined text property
+- Fixed issue where importing vector layers re-generates previously imported layers
+- Fixed projection issue in create-new-map-layer method
+- Fixed tools that create dynamic settings not retrieving correctly saved value on page load
+- Code refactoring and improvements
+
 ## 1.0.0-beta3
 2022-10-19
 

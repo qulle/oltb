@@ -1,0 +1,139 @@
+.oltb-btn {
+    display: inline-flex;
+    flex-shrink: 0;
+    justify-content: center;
+    align-items: center;
+    font-weight: 400;
+    text-align: center;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-color: transparent;
+    font-size: 1rem;
+    border-radius: $border-radius;
+    border: none;
+    cursor: pointer;
+    box-shadow: $box-shadow-mid;
+    color: $color-light;
+    padding: .5rem;
+    text-shadow: $text-shadow-light;
+
+    &:disabled {
+        opacity: .5;
+        pointer-events: none;
+    }
+
+    &__icon {
+        filter: $drop-shadow-filter-light;
+    }
+
+    &--round {
+        border-radius: 50%;
+    }
+
+    &--blank {
+        box-shadow: none;
+        padding: 0;
+    }
+
+    &--blue-light {
+        background-color: $color-blue-light;
+
+        &:focus {
+            box-shadow: 0 0 0 $shadow-focus-width rgba($color-blue-light, .5);
+        }
+    }
+
+    &--blue-mid {
+        background-color: $color-blue-mid;
+
+        &:focus {
+            box-shadow: 0 0 0 $shadow-focus-width rgba($color-blue-mid, .5);
+        }
+    }
+
+    &--blue-dark {
+        background-color: $color-blue-dark;
+
+        &:focus {
+            box-shadow: 0 0 0 $shadow-focus-width rgba($color-blue-dark, .5);
+        }
+    }
+
+    &--green-light {
+        background-color: $color-green-light;
+
+        &:focus {
+            box-shadow: 0 0 0 $shadow-focus-width rgba($color-green-light, .5);
+        }
+    }
+
+    &--green-mid {
+        background-color: $color-green-mid;
+
+        &:focus {
+            box-shadow: 0 0 0 $shadow-focus-width rgba($color-green-mid, .5);
+        }
+    }
+
+    &--green-dark {
+        background-color: $color-green-dark;
+
+        &:focus {
+            box-shadow: 0 0 0 $shadow-focus-width rgba($color-green-dark, .5);
+        }
+    }
+
+    &--red-light {
+        background-color: $color-red-light;
+
+        &:focus {
+            box-shadow: 0 0 0 $shadow-focus-width rgba($color-red-light, .5);
+        }
+    }
+
+    &--red-mid {
+        background-color: $color-red-mid;
+
+        &:focus {
+            box-shadow: 0 0 0 $shadow-focus-width rgba($color-red-mid, .5);
+        }
+    }
+
+    &--red-dark {
+        background-color: $color-red-dark;
+
+        &:focus {
+            box-shadow: 0 0 0 $shadow-focus-width rgba($color-red-dark, .5);
+        }
+    }
+
+    &--gray-light {
+        background-color: $color-gray-light;
+
+        &:focus {
+            box-shadow: 0 0 0 $shadow-focus-width rgba($color-gray-light, .5);
+        }
+    }
+
+    &--gray-mid {
+        background-color: $color-gray-mid;
+
+        &:focus {
+            box-shadow: 0 0 0 $shadow-focus-width rgba($color-gray-mid, .5);
+        }
+    }
+
+    &--gray-dark {
+        background-color: $color-dark;
+
+        &:focus {
+            box-shadow: 0 0 0 $shadow-focus-width rgba($color-gray-dark, .5);
+        }
+    }
+}
+
+body.oltb-using-keyboard .oltb-btn--blank:focus {
+    box-shadow: 0 0 0 $shadow-focus-width rgba($color-gray-mid, .5);
+}

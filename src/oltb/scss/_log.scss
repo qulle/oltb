@@ -1,0 +1,71 @@
+.oltb-log {
+    margin: 1rem 0;
+    padding: 0 1rem 0 0;
+    overflow-y: scroll;
+    max-height: 600px;
+    
+    &__item {
+        padding: .5rem;
+        border-radius: $border-radius;
+        margin: .5rem 0;
+
+        &:nth-child(odd) {
+            background-color: $color-gray-light;
+            color: $color-dark;
+        }
+
+        &:first-child {
+            margin-top: 0;
+        }
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        align-content: center;
+        
+        &--toggleable {
+            cursor: pointer;
+        }
+    }
+
+    &__title {
+        margin: 0;
+    }
+
+    &__toggle {
+        color: $color-dark;
+    }
+
+    &__json {
+        padding: 1rem 0 0 0;
+        margin: 0;
+        border-radius: $border-radius;
+        background-color: transparent;
+        overflow: auto;
+        max-height: 300px;
+        font-size: 1rem;
+    }
+}
+
+body.oltb-dark .oltb-log {
+    &__item {
+        &:nth-child(odd) {
+            .oltb-log__toggle,
+            .oltb-log__json {
+                color: $color-dark;
+            }
+        }
+
+        &:nth-child(even) {
+            .oltb-log__json,
+            .oltb-log__toggle {
+                color: $color-light;
+            }
+        }
+    }
+}

@@ -1,0 +1,35 @@
+.oltb-table {
+    border-collapse: collapse;
+    width: 100%;
+    color: #3b4352;
+    cursor: default;
+
+    th {
+        text-align: left;
+        padding-top: 8px;
+    }
+
+    td {
+        padding: 4px 0 8px 0;
+    }
+
+    tr:first-child {
+        th {
+            padding-top: 0;
+        }
+    }
+
+    tr:last-child {
+        td {
+            padding-bottom: 0;
+        }
+    }
+
+    tr:not(:last-child):nth-child(2n) > td {
+        border-bottom: 1px dashed #ced4da;
+    }
+}
+
+body.oltb-dark .oltb-table {
+    color: #FFFFFF;
+}
