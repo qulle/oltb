@@ -1,33 +1,31 @@
 <p align="center">
-	<img src="images/oltb-full.svg" width="200" />
+    <img src="https://raw.githubusercontent.com/qulle/oltb/main/images/oltb-full.svg" width="200" />
 </p>
 
 <h1 align="center">Toolbar for OpenLayers</h1>
 
-## About
-OLTB is a portable mobile friendly GIS toolbar developed for `OpenLayers 7.3.0`. The toolbar can be filled with any number of tools and can be used in both horizontal and vertical mode and is available in both light and dark theme.
+## OLTB v1.0.1
+OLTB is a portable mobile friendly GIS toolbar developed for OpenLayers 7.3.0. The toolbar can be filled with any number of tools and can be used in both horizontal and vertical mode and is available in both light and dark theme.
 
 ## Latest Build - [Demo](https://qulle.github.io/oltb/)
-The latest demo is built using the last official release `v1.0.0-beta3` but may contain more features that have been added since then.
+The latest demo is built using the last official release but may contain more features that have been added since then.
 
 ## Screenshots
-![Screenshot Light Theme](images/demo-light.png?raw=true "Screenshot Light Theme")
+![Screenshot Light Theme](https://raw.githubusercontent.com/qulle/oltb/main/images/demo-light.png?raw=true "Screenshot Light Theme")
 <p align="center"><em>Light theme</em></p>
 
-![Screenshot Dark Theme](images/demo-dark.png?raw=true "Screenshot Dark Theme")
+![Screenshot Dark Theme](https://raw.githubusercontent.com/qulle/oltb/main/images/demo-dark.png?raw=true "Screenshot Dark Theme")
 <p align="center"><em>Dark theme</em></p>
 
 ## NPM
-```javascript
-// TODO
-// ex: npm install oltb
+```
+$ npm install oltb
 ```
 
 ## CDN 
-```javascript
-// TODO
-// ex: https://cdn.jsdelivr.net/npm/oltb@v1.0.0/dist/oltb.min.js
-// ex: https://cdn.jsdelivr.net/npm/oltb@v1.0.0/dist/oltb.min.css
+```
+https://cdn.jsdelivr.net/npm/oltb@v1.0.1/dist/oltb.min.js
+https://cdn.jsdelivr.net/npm/oltb@v1.0.1/dist/oltb.min.css
 ```
 
 ## Examples
@@ -54,7 +52,7 @@ Have a look at the [Internal Development Documentation](https://github.com/qulle
 3. [ArcGIS World Topo](https://www.arcgis.com/index.html)
 
 ## License
-[BSD-2-Clause License](LICENSE)
+[BSD-2-Clause License](https://github.com/qulle/oltb/blob/main/LICENSE)
 
 ## Author
 [Qulle](https://github.com/qulle/)

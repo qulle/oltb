@@ -17,20 +17,21 @@ const DefaultOptions = Object.freeze({
     changed: undefined
 });
 
+// Note: The values are flipped
 const ThemesData = Object.freeze({
     light: Object.freeze({
         class: 'light',
-        tippyContent: 'Light theme',
+        tippyContent: 'Dark theme',
         icon: getIcon({
-            path: SvgPaths.sun.stroked,
+            path: SvgPaths.moonStars.stroked,
             class: 'oltb-tool-button__icon'
         })
     }),
     dark: Object.freeze({
         class: 'dark',
-        tippyContent: 'Dark theme',
+        tippyContent: 'Light theme',
         icon: getIcon({
-            path: SvgPaths.moonStars.stroked,
+            path: SvgPaths.sun.stroked,
             class: 'oltb-tool-button__icon'
         })
     })
@@ -50,15 +51,15 @@ class ThemeTool extends Control {
         const button = DOM.createElement({
             element: 'button',
             html: isDarkTheme() 
-                ? ThemesData.light.icon
-                : ThemesData.dark.icon,
+                ? ThemesData.dark.icon
+                : ThemesData.light.icon,
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
                 'data-tippy-content': `${(
                     isDarkTheme() 
-                        ? ThemesData.light.tippyContent 
-                        : ThemesData.dark.tippyContent
+                        ? ThemesData.dark.tippyContent 
+                        : ThemesData.light.tippyContent
                 )} (${ShortcutKeys.themeTool})`
             },
             listeners: {
@@ -135,8 +136,8 @@ class ThemeTool extends Control {
 
         // Update toolbar button
         this.button.removeChild(this.button.firstElementChild);
-        this.button.insertAdjacentHTML('afterbegin', from.icon);
-        this.button._tippy.setContent(`${from.tippyContent} (${ShortcutKeys.themeTool})`);
+        this.button.insertAdjacentHTML('afterbegin', to.icon);
+        this.button._tippy.setContent(`${to.tippyContent} (${ShortcutKeys.themeTool})`);
     }
 
     getInActiveThem() {

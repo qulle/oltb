@@ -25,15 +25,24 @@ class TippyManager {
         window.addEventListener(Events.custom.toolbarDirectionChange, this.#onPlacementChange.bind(this));
         window.addEventListener(Events.browser.resize, this.#onPlacementChange.bind(this));
         window.addEventListener(Events.browser.contentLoaded, this.#onDOMContentLoaded.bind(this));
+        window.addEventListener(Events.custom.settingsCleared, this.#onWindowSettingsCleared.bind(this));
     }
 
     static setMap(map) { }
 
     static #onPlacementChange(event) {
         this.#toolButtonTippy.setProps({
-            placement: (
-                window.innerWidth <= Config.deviceWidth.sm || isHorizontal()
-            ) ? 'bottom' : 'right'
+            placement: window.innerWidth <= Config.deviceWidth.sm || isHorizontal()
+                ? 'bottom' 
+                : 'right'
+        });
+    }
+
+    static #onWindowSettingsCleared() {
+        this.#toolButtonTippy.setProps({
+            placement: window.innerWidth <= Config.deviceWidth.sm
+                ? 'bottom' 
+                : 'right'
         });
     }
     

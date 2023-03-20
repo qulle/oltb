@@ -2,6 +2,7 @@ import { Point } from 'ol/geom';
 import { Feature } from 'ol';
 import { fromLonLat } from 'ol/proj';
 import { SvgPaths, getIcon } from '../core/icons/GetIcon';
+import { hasNestedProperty } from '../helpers/browser/HasNestedProperty';
 import { FeatureProperties } from '../helpers/constants/FeatureProperties';
 import { Circle, Fill, Icon, Stroke, Style } from 'ol/style';
 
@@ -35,8 +36,14 @@ const generateMarker = function(options = {}) {
     });
 
     const [ iconName, iconVersion ] = options.icon.split('.');
+    const [ defaultIconName, defaultIconVersion ] = DefaultOptions.icon.split('.');
+
+    const path = hasNestedProperty(SvgPaths, iconName, iconVersion)
+        ? SvgPaths[iconName][iconVersion]
+        : SvgPaths[defaultIconName][defaultIconVersion];
+
     const icon = getIcon({
-        path: SvgPaths[iconName][iconVersion],
+        path: path,
         width: options.iconWidth,
         height: options.iconHeight,
         fill: '#FFFFFFFF',
@@ -78,6 +85,8 @@ const generateMarker = function(options = {}) {
                 description: options.description,
             },
             style: {
+                width: options.width,
+                radius: options.radius,
                 fill: options.fill,
                 stroke: options.stroke
             }

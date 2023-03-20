@@ -18,11 +18,11 @@ const editMarker = function(InfoWindowManager, beforeMarker) {
             Config.projection.default, 
             Config.projection.wgs84
         ),
-        title: properties.title,
-        description: properties.description,
-        fill: properties.fill,
-        stroke: properties.stroke,
-        icon: properties.icon,
+        title: properties.marker.title,
+        description: properties.marker.description,
+        fill: properties.style.fill,
+        stroke: properties.style.stroke,
+        icon: properties.marker.icon,
         onCreate: (result) => {
             onEditMarker(InfoWindowManager, beforeMarker, result);
         }

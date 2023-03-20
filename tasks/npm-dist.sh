@@ -7,9 +7,9 @@ echo -e "\n$TCyan[0/5]$TReset. Starting new dist-build";
 rm -rf ./dist
 echo -e "\n$TCyan[1/5]$TReset. Old dist removed";
 
-mkdir ./dist 
-mkdir ./dist/dist 
-mkdir ./dist/src 
+mkdir ./dist
+mkdir ./dist/dist
+mkdir ./dist/src
 mkdir ./dist/src/oltb
 echo -e "\n$TCyan[2/5]$TReset. New dist directory created";
 

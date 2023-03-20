@@ -18,20 +18,21 @@ const DefaultOptions = Object.freeze({
     changed: undefined
 });
 
+// Note: The values are flipped
 const DirectionData = Object.freeze({
     col: Object.freeze({
         class: 'col',
-        tippyContent: 'Vertical toolbar',
+        tippyContent: 'Horizontal toolbar',
         icon: getIcon({
-            path: SvgPaths.symmetryVertical.mixed,
+            path: SvgPaths.symmetryHorizontal.mixed,
             class: 'oltb-tool-button__icon'
         })
     }),
     row: Object.freeze({
         class: 'row',
-        tippyContent: 'Horizontal toolbar',
+        tippyContent: 'Vertical toolbar',
         icon: getIcon({
-            path: SvgPaths.symmetryHorizontal.mixed,
+            path: SvgPaths.symmetryVertical.mixed,
             class: 'oltb-tool-button__icon'
         })
     })
@@ -51,15 +52,15 @@ class DirectionTool extends Control {
         const button = DOM.createElement({
             element: 'button',
             html: isHorizontal() 
-                ? DirectionData.col.icon
-                : DirectionData.row.icon,
+                ? DirectionData.row.icon
+                : DirectionData.col.icon,
             class: 'oltb-tool-button',
             attributes: {
                 type: 'button',
                 'data-tippy-content': `${(
                     isHorizontal() 
-                        ? DirectionData.col.tippyContent
-                        : DirectionData.row.tippyContent
+                        ? DirectionData.row.tippyContent
+                        : DirectionData.col.tippyContent
                 )} (${ShortcutKeys.directionTool})`
             },
             listeners: {
@@ -153,8 +154,8 @@ class DirectionTool extends Control {
 
         // Update toolbar button
         this.button.removeChild(this.button.firstElementChild);
-        this.button.insertAdjacentHTML('afterbegin', from.icon);
-        this.button._tippy.setContent(`${from.tippyContent} (${ShortcutKeys.directionTool})`);
+        this.button.insertAdjacentHTML('afterbegin', to.icon);
+        this.button._tippy.setContent(`${to.tippyContent} (${ShortcutKeys.directionTool})`);
     }
 
     getInActiveDirection() {

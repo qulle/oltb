@@ -24,9 +24,18 @@ class ElementManager {
         window.addEventListener(Events.browser.resize, this.#collisionDetection.bind(this));
         window.addEventListener(Events.browser.contentLoaded, this.#collisionDetection.bind(this));
         window.addEventListener(Events.custom.toolbarDirectionChange, this.#collisionDetection.bind(this));
+        window.addEventListener(Events.custom.settingsCleared, this.#onWindowSettingsCleared.bind(this));
     }
 
     static setMap(map) { }
+
+    static #onWindowSettingsCleared(event) {
+        if(window.innerWidth <= Config.deviceWidth.sm) {
+            this.#toolboxElement.classList.add('oltb-toolbox-container--collision');
+        }else {
+            this.#toolboxElement.classList.remove('oltb-toolbox-container--collision');
+        }
+    }
 
     static #onMouseWheel(event) {
         if(!Boolean(event.ctrlKey)) {

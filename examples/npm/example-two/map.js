@@ -11,65 +11,65 @@ import { defaults as defaultInterctions, MouseWheelZoom, DragPan, DragRotate, Ke
 import '../shared/Maps';
 
 // Browser prototype extensions
-import 'oltb/dist/src/oltb/js/helpers/prototypes/String';
-import 'oltb/dist/src/oltb/js/helpers/prototypes/SlideToggle';
+import 'oltb/src/oltb/js/helpers/prototypes/String';
+import 'oltb/src/oltb/js/helpers/prototypes/SlideToggle';
 
 // Core Toolbar
-import 'oltb/dist/src/oltb/scss/oltb.scss';
-import { Config } from 'oltb/dist/src/oltb/js/core/Config';
-import { Settings } from 'oltb/dist/src/oltb/js/helpers/constants/Settings';
-import { ContextMenu } from 'oltb/dist/src/oltb/js/common/ContextMenu';
-import { LocalStorageKeys } from 'oltb/dist/src/oltb/js/helpers/constants/LocalStorageKeys';
+import 'oltb/src/oltb/scss/oltb.scss';
+import { Config } from 'oltb/src/oltb/js/core/Config';
+import { Settings } from 'oltb/src/oltb/js/helpers/constants/Settings';
+import { ContextMenu } from 'oltb/src/oltb/js/common/ContextMenu';
+import { LocalStorageKeys } from 'oltb/src/oltb/js/helpers/constants/LocalStorageKeys';
 
 // Core Managers
-import { LogManager } from 'oltb/dist/src/oltb/js/core/managers/LogManager';
-import { UrlManager } from 'oltb/dist/src/oltb/js/core/managers/UrlManager';
-import { ToolManager } from 'oltb/dist/src/oltb/js/core/managers/ToolManager';
-import { LayerManager } from 'oltb/dist/src/oltb/js/core/managers/LayerManager';
-import { StateManager } from 'oltb/dist/src/oltb/js/core/managers/StateManager';
-import { TippyManager } from 'oltb/dist/src/oltb/js/core/managers/TippyManager';
-import { ElementManager } from '../../../src/oltb/js/core/managers/ElementManager';
-import { TooltipManager } from 'oltb/dist/src/oltb/js/core/managers/TooltipManager';
-import { SettingsManager } from 'oltb/dist/src/oltb/js/core/managers/SettingsManager';
-import { BootstrapManager } from 'oltb/dist/src/oltb/js/core/managers/BootstrapManager';
-import { InfoWindowManager } from 'oltb/dist/src/oltb/js/core/managers/InfoWindowManager';
-import { ProjectionManager } from 'oltb/dist/src/oltb/js/core/managers/ProjectionManager';
-import { ColorPickerManager } from 'oltb/dist/src/oltb/js/core/managers/ColorPickerManager';
-import { AccessibilityManager } from 'oltb/dist/src/oltb/js/core/managers/AccessibilityManager';
+import { LogManager } from 'oltb/src/oltb/js/core/managers/LogManager';
+import { UrlManager } from 'oltb/src/oltb/js/core/managers/UrlManager';
+import { ToolManager } from 'oltb/src/oltb/js/core/managers/ToolManager';
+import { LayerManager } from 'oltb/src/oltb/js/core/managers/LayerManager';
+import { StateManager } from 'oltb/src/oltb/js/core/managers/StateManager';
+import { TippyManager } from 'oltb/src/oltb/js/core/managers/TippyManager';
+import { ElementManager } from 'oltb/src/oltb/js/core/managers/ElementManager';
+import { TooltipManager } from 'oltb/src/oltb/js/core/managers/TooltipManager';
+import { SettingsManager } from 'oltb/src/oltb/js/core/managers/SettingsManager';
+import { BootstrapManager } from 'oltb/src/oltb/js/core/managers/BootstrapManager';
+import { InfoWindowManager } from 'oltb/src/oltb/js/core/managers/InfoWindowManager';
+import { ProjectionManager } from 'oltb/src/oltb/js/core/managers/ProjectionManager';
+import { ColorPickerManager } from 'oltb/src/oltb/js/core/managers/ColorPickerManager';
+import { AccessibilityManager } from 'oltb/src/oltb/js/core/managers/AccessibilityManager';
 
 // Toolbar tools
-import { HomeTool } from 'oltb/dist/src/oltb/js/tools/HomeTool';
-import { DrawTool } from 'oltb/dist/src/oltb/js/tools/DrawTool';
-import { EditTool } from 'oltb/dist/src/oltb/js/tools/EditTool';
-import { InfoTool } from 'oltb/dist/src/oltb/js/tools/InfoTool';
-import { HelpTool } from 'oltb/dist/src/oltb/js/tools/HelpTool';
-import { ThemeTool } from 'oltb/dist/src/oltb/js/tools/ThemeTool';
-import { LayerTool } from 'oltb/dist/src/oltb/js/tools/LayerTool';
-import { ZoomInTool } from 'oltb/dist/src/oltb/js/tools/ZoomInTool';
-import { MeasureTool } from 'oltb/dist/src/oltb/js/tools/MeasureTool';
-import { MagnifyTool } from 'oltb/dist/src/oltb/js/tools/MagnifyTool';
-import { ZoomOutTool } from 'oltb/dist/src/oltb/js/tools/ZoomOutTool';
-import { RefreshTool } from 'oltb/dist/src/oltb/js/tools/RefreshTool';
-import { SettingsTool } from 'oltb/dist/src/oltb/js/tools/SettingsTool';
-import { OverviewTool } from 'oltb/dist/src/oltb/js/tools/OverviewTool';
-import { BookmarkTool } from 'oltb/dist/src/oltb/js/tools/BookmarkTool';
-import { DirectionTool } from 'oltb/dist/src/oltb/js/tools/DirectionTool';
-import { DebugInfoTool } from 'oltb/dist/src/oltb/js/tools/DebugInfoTool';
-import { SplitViewTool } from 'oltb/dist/src/oltb/js/tools/SplitViewTool';
-import { ExportPngTool } from 'oltb/dist/src/oltb/js/tools/ExportPngTool';
-import { ScaleLineTool } from 'oltb/dist/src/oltb/js/tools/ScaleLineTool';
-import { GraticuleTool } from 'oltb/dist/src/oltb/js/tools/GraticuleTool';
-import { MyLocationTool } from 'oltb/dist/src/oltb/js/tools/MyLocationTool';
-import { ResetNorthTool } from 'oltb/dist/src/oltb/js/tools/ResetNorthTool';
-import { FullscreenTool } from 'oltb/dist/src/oltb/js/tools/FullscreenTool';
-import { CoordinatesTool } from 'oltb/dist/src/oltb/js/tools/CoordinatesTool';
-import { HiddenAboutTool } from 'oltb/dist/src/oltb/js/tools/hidden-tools/HiddenAboutTool';
-import { NotificationTool } from 'oltb/dist/src/oltb/js/tools/NotificationTool';
-import { HiddenMarkerTool } from 'oltb/dist/src/oltb/js/tools/hidden-tools/HiddenMarkerTool';
-import { ImportVectorLayerTool } from 'oltb/dist/src/oltb/js/tools/ImportVectorLayerTool';
-import { HiddenMapNavigationTool } from 'oltb/dist/src/oltb/js/tools/hidden-tools/HiddenMapNavigationTool';
+import { HomeTool } from 'oltb/src/oltb/js/tools/HomeTool';
+import { DrawTool } from 'oltb/src/oltb/js/tools/DrawTool';
+import { EditTool } from 'oltb/src/oltb/js/tools/EditTool';
+import { InfoTool } from 'oltb/src/oltb/js/tools/InfoTool';
+import { HelpTool } from 'oltb/src/oltb/js/tools/HelpTool';
+import { ThemeTool } from 'oltb/src/oltb/js/tools/ThemeTool';
+import { LayerTool } from 'oltb/src/oltb/js/tools/LayerTool';
+import { ZoomInTool } from 'oltb/src/oltb/js/tools/ZoomInTool';
+import { MeasureTool } from 'oltb/src/oltb/js/tools/MeasureTool';
+import { MagnifyTool } from 'oltb/src/oltb/js/tools/MagnifyTool';
+import { ZoomOutTool } from 'oltb/src/oltb/js/tools/ZoomOutTool';
+import { RefreshTool } from 'oltb/src/oltb/js/tools/RefreshTool';
+import { SettingsTool } from 'oltb/src/oltb/js/tools/SettingsTool';
+import { OverviewTool } from 'oltb/src/oltb/js/tools/OverviewTool';
+import { BookmarkTool } from 'oltb/src/oltb/js/tools/BookmarkTool';
+import { DirectionTool } from 'oltb/src/oltb/js/tools/DirectionTool';
+import { DebugInfoTool } from 'oltb/src/oltb/js/tools/DebugInfoTool';
+import { SplitViewTool } from 'oltb/src/oltb/js/tools/SplitViewTool';
+import { ExportPngTool } from 'oltb/src/oltb/js/tools/ExportPngTool';
+import { ScaleLineTool } from 'oltb/src/oltb/js/tools/ScaleLineTool';
+import { GraticuleTool } from 'oltb/src/oltb/js/tools/GraticuleTool';
+import { MyLocationTool } from 'oltb/src/oltb/js/tools/MyLocationTool';
+import { ResetNorthTool } from 'oltb/src/oltb/js/tools/ResetNorthTool';
+import { FullscreenTool } from 'oltb/src/oltb/js/tools/FullscreenTool';
+import { CoordinatesTool } from 'oltb/src/oltb/js/tools/CoordinatesTool';
+import { HiddenAboutTool } from 'oltb/src/oltb/js/tools/hidden-tools/HiddenAboutTool';
+import { NotificationTool } from 'oltb/src/oltb/js/tools/NotificationTool';
+import { HiddenMarkerTool } from 'oltb/src/oltb/js/tools/hidden-tools/HiddenMarkerTool';
+import { ImportVectorLayerTool } from 'oltb/src/oltb/js/tools/ImportVectorLayerTool';
+import { HiddenMapNavigationTool } from 'oltb/src/oltb/js/tools/hidden-tools/HiddenMapNavigationTool';
 
-// This is the same NODE_NAME and PROPS that the MapNavigationTool.js is using
+// This is the same NodeName and Defaults that the HiddenMapNavigationTool.js is using
 const LocalStorageNodeName = LocalStorageKeys.mapData;
 const LocalStorageDefaults = Object.freeze({
     lon: 18.1201,

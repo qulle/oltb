@@ -73,7 +73,7 @@ import { HiddenMarkerTool } from '../src/oltb/js/tools/hidden-tools/HiddenMarker
 import { ImportVectorLayerTool } from '../src/oltb/js/tools/ImportVectorLayerTool';
 import { HiddenMapNavigationTool } from '../src/oltb/js/tools/hidden-tools/HiddenMapNavigationTool';
 
-// This is the same NODE_NAME and PROPS that the MapNavigationTool.js is using
+// This is the same NodeName and Defaults that the HiddenMapNavigationTool.js is using
 const LocalStorageNodeName = LocalStorageKeys.mapData;
 const LocalStorageDefaults = Object.freeze({
     lon: 18.1201,

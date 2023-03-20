@@ -7,10 +7,11 @@ echo -e "\n$TCyan[0/3]$TReset. Examples setup";
 cp ./dist/dist/* ./examples/cdn/
 echo -e "\n$TCyan[1/3]$TReset. Copied CDN lib to examples";
 
+cd ./dist
 npm link
 echo -e "\n$TCyan[2/3]$TReset. Created global symlink";
 
-cd ./examples/npm
+cd ../examples/npm
 npm link oltb
 ls -al $(npm root -g) | grep "\->"
 echo -e "\n$TCyan[3/3]$TReset. Linked oltb to examples";

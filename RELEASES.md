@@ -1,7 +1,7 @@
 # Releases
 
 ## 1.0.0
-2023-03-20
+2023-03-19
 
 Some of the changes done in this version are:
 

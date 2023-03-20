@@ -4,7 +4,7 @@ TCyan='\033[0;36m';
 
 echo -e "\n$TCyan[0/3]$TReset. Starting new demo-build";
 
-rm -rf ./demo 
+rm -rf ./demo
 rm -rf .parcel-cache/
 echo -e "\n$TCyan[1/3]$TReset. Old demo removed";
 

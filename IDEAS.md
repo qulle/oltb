@@ -1,4 +1,4 @@
-# IDEAS
+# Ideas
 
 - Projections, how to make it work with ex. EPSG:3006, having issues with Markers not ending up on correct positions on the map and the GraticuleTool is not working.
 

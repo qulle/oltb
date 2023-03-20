@@ -8,8 +8,8 @@ npm login
 user=$(npm whoami)
 echo -e "\n$TCyan[1/2]$TReset. Session created for [$user]";
 
-# npm push
-echo -e "\n$TCyan[2/3]$TReset. Pushed package";
+npm publish ./dist --access public
+echo -e "\n$TCyan[2/3]$TReset. Published package";
 
 npm logout
 echo -e "\n$TCyan[3/3]$TReset. Session terminated for [$user]";

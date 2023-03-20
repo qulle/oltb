@@ -9,7 +9,7 @@ import { defaults as defaultInterctions } from 'ol/interaction';
 import '../shared/Maps';
 
 // Toolbar
-import OLTB from 'oltb/dist/src/oltb/js/oltb';
+import OLTB from 'oltb/src/oltb/js/oltb';
 
 const map = new Map({
     interactions: defaultInterctions({
