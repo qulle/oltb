@@ -56,7 +56,7 @@ class Confirm extends DialogBase {
             listeners: {
                 'click': () => {
                     this.close();
-                    typeof this.options.onConfirm === 'function' && this.options.onConfirm();
+                    this.options.onConfirm instanceof Function && this.options.onConfirm();
                 }
             }
         });
@@ -73,7 +73,7 @@ class Confirm extends DialogBase {
             listeners: {
                 'click': () => {
                     this.close();
-                    typeof this.options.onCancel === 'function' && this.options.onCancel();
+                    this.options.onCancel instanceof Function && this.options.onCancel();
                 }
             }
         });

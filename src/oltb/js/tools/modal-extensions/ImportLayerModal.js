@@ -124,7 +124,7 @@ class ImportLayerModal extends ModalBase {
                     };
         
                     this.close();
-                    typeof this.options.onImport === 'function' && this.options.onImport(result);
+                    this.options.onImport instanceof Function && this.options.onImport(result);
                 }
             }
         });
@@ -141,7 +141,7 @@ class ImportLayerModal extends ModalBase {
             listeners: {
                 'click': () => {
                     this.close();
-                    typeof this.options.onCancel === 'function' && this.options.onCancel();
+                    this.options.onCancel instanceof Function && this.options.onCancel();
                 }
             }
         });

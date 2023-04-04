@@ -87,7 +87,7 @@ class ToastBase {
         window.setTimeout(() => {
             this.toast.remove();
             
-            if(typeof this.options.onRemove === 'function') {
+            if(this.options.onRemove instanceof Function) {
                 this.options.onRemove();
             }
         }, Config.animationDuration.fast);

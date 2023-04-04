@@ -297,7 +297,7 @@ class MarkerModal extends ModalBase {
                     };
         
                     this.close();
-                    typeof this.options.onCreate === 'function' && this.options.onCreate(response);
+                    this.options.onCreate instanceof Function && this.options.onCreate(response);
                 }
             }
         });
@@ -314,7 +314,7 @@ class MarkerModal extends ModalBase {
             listeners: {
                 'click': () => {
                     this.close();
-                    typeof this.options.onCancel === 'function' && this.options.onCancel();
+                    this.options.onCancel instanceof Function && this.options.onCancel();
                 }
             }
         });

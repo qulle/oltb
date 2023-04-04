@@ -254,7 +254,7 @@ class EditTool extends Control {
 
     onSelectFeatureAdd(event) {
         // User defined callback from constructor
-        if(typeof this.options.selectadd === 'function') {
+        if(this.options.selectadd instanceof Function) {
             this.options.selectadd(event);
         }
     }
@@ -297,7 +297,7 @@ class EditTool extends Control {
                 }
 
                 // User defined callback from constructor
-                if(typeof this.options.styleChange === 'function') {
+                if(this.options.styleChange instanceof Function) {
                     this.options.styleChange(event, this.lastStyle);
                 }
 
@@ -309,7 +309,7 @@ class EditTool extends Control {
         });
 
         // User defined callback from constructor
-        if(typeof this.options.selectremove === 'function') {
+        if(this.options.selectremove instanceof Function) {
             this.options.selectremove(event);
         }
     }
@@ -324,7 +324,7 @@ class EditTool extends Control {
         });
 
         // User defined callback from constructor
-        if(typeof this.options.modifystart === 'function') {
+        if(this.options.modifystart instanceof Function) {
             this.options.modifystart(event);
         }
     }
@@ -338,7 +338,7 @@ class EditTool extends Control {
         });
 
         // User defined callback from constructor
-        if(typeof this.options.modifyend === 'function') {
+        if(this.options.modifyend instanceof Function) {
             this.options.modifyend(event);
         }
     }
@@ -353,7 +353,7 @@ class EditTool extends Control {
         });
 
         // User defined callback from constructor
-        if(typeof this.options.translatestart === 'function') {
+        if(this.options.translatestart instanceof Function) {
             this.options.translatestart(event);
         }
     }
@@ -368,7 +368,7 @@ class EditTool extends Control {
         });
 
         // User defined callback from constructor
-        if(typeof this.options.translateend === 'function') {
+        if(this.options.translateend instanceof Function) {
             this.options.translateend(event);
         }
     }
@@ -452,7 +452,7 @@ class EditTool extends Control {
                     }
 
                     // User defined callback from constructor
-                    if(typeof this.options.removedfeature === 'function') {
+                    if(this.options.removedfeature instanceof Function) {
                         this.options.removedfeature(feature);
                     }
                 }
@@ -562,7 +562,7 @@ class EditTool extends Control {
             this.deleteFeatures(features);
 
             // User defined callback from constructor
-            if(typeof this.options.shapeOperation === 'function') {
+            if(this.options.shapeOperation instanceof Function) {
                 this.options.shapeOperation(type, a, b, feature);
             }
         }catch(error) {
@@ -578,7 +578,7 @@ class EditTool extends Control {
             }); 
 
             // User defined callback from constructor
-            if(typeof this.options.error === 'function') {
+            if(this.options.error instanceof Function) {
                 this.options.error(error);
             }
         }
@@ -668,7 +668,7 @@ class EditTool extends Control {
         LogManager.logDebug(FILENAME, 'handleClick', 'User clicked tool');
         
         // User defined callback from constructor
-        if(typeof this.options.click === 'function') {
+        if(this.options.click instanceof Function) {
             this.options.click();
         }
         

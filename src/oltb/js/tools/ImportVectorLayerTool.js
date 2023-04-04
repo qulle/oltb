@@ -77,7 +77,7 @@ class ImportVectorLayerTool extends Control {
         LogManager.logDebug(FILENAME, 'handleClick', 'User clicked tool');
         
         // User defined callback from constructor
-        if(typeof this.options.click === 'function') {
+        if(this.options.click instanceof Function) {
             this.options.click();
         }
         
@@ -150,7 +150,7 @@ class ImportVectorLayerTool extends Control {
             layerWrapper.getLayer().getSource().addFeatures(features);
     
             // User defined callback from constructor
-            if(typeof this.options.imported === 'function') {
+            if(this.options.imported instanceof Function) {
                 this.options.imported(features);
             }
         }catch(error) {
@@ -166,7 +166,7 @@ class ImportVectorLayerTool extends Control {
             });
 
             // User defined callback from constructor
-            if(typeof this.options.error === 'function') {
+            if(this.options.error instanceof Function) {
                 this.options.error(file, error);
             }
         }

@@ -100,7 +100,7 @@ class CoordinateModal extends ModalBase {
             listeners: {
                 'click': () => {
                     this.close();
-                    typeof this.options.onNavigate === 'function' && this.options.onNavigate([
+                    this.options.onNavigate instanceof Function && this.options.onNavigate([
                         lonText.value,
                         latText.value
                     ]);
@@ -120,7 +120,7 @@ class CoordinateModal extends ModalBase {
             listeners: {
                 'click': () => {
                     this.close();
-                    typeof this.options.onCancel === 'function' && this.options.onCancel();
+                    this.options.onCancel instanceof Function && this.options.onCancel();
                 }
             }
         });

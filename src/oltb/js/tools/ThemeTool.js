@@ -98,7 +98,7 @@ class ThemeTool extends Control {
         LogManager.logDebug(FILENAME, 'handleClick', 'User clicked tool');
 
         // User defined callback from constructor
-        if(typeof this.options.click === 'function') {
+        if(this.options.click instanceof Function) {
             this.options.click();
         }
         
@@ -109,7 +109,7 @@ class ThemeTool extends Control {
         this.toggleTheme();
 
         // User defined callback from constructor
-        if(typeof this.options.changed === 'function') {
+        if(this.options.changed instanceof Function) {
             const active = this.getActiveTheme();
             this.options.changed(active.class);
         }

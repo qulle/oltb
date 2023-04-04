@@ -207,7 +207,7 @@ class MeasureTool extends Control {
         LogManager.logDebug(FILENAME, 'handleClick', 'User clicked tool');
 
         // User defined callback from constructor
-        if(typeof this.options.click === 'function') {
+        if(this.options.click instanceof Function) {
             this.options.click();
         }
         
@@ -313,7 +313,7 @@ class MeasureTool extends Control {
         });
 
         // User defined callback from constructor
-        if(typeof this.options.start === 'function') {
+        if(this.options.start instanceof Function) {
             this.options.start(event);
         }
     }
@@ -370,7 +370,7 @@ class MeasureTool extends Control {
         }
 
         // User defined callback from constructor
-        if(typeof this.options.end === 'function') {
+        if(this.options.end instanceof Function) {
             this.options.end(event);
         }
     }
@@ -381,14 +381,14 @@ class MeasureTool extends Control {
         const tooltipItem = TooltipManager.pop('measure');
 
         // User defined callback from constructor
-        if(typeof this.options.abort === 'function') {
+        if(this.options.abort instanceof Function) {
             this.options.abort(event);
         }
     }
 
     onDrawError(event) {
         // User defined callback from constructor
-        if(typeof this.options.error === 'function') {
+        if(this.options.error instanceof Function) {
             this.options.error(event);
         }
     }

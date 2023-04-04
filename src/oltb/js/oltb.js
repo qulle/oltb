@@ -110,7 +110,7 @@ class OLTB {
             const [key, value] = entry;
 
             const toolName = key;
-            const toolParameters = typeof value !== 'function' 
+            const toolParameters = !(value instanceof Function)
                 ? value 
                 : {};
 

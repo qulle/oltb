@@ -84,7 +84,7 @@ class DownloadLayerModal extends ModalBase {
                     };
         
                     this.close();
-                    typeof this.options.onDownload === 'function' && this.options.onDownload(result);
+                    this.options.onDownload instanceof Function && this.options.onDownload(result);
                 }
             }
         });
@@ -101,7 +101,7 @@ class DownloadLayerModal extends ModalBase {
             listeners: {
                 'click': () => {
                     this.close();
-                    typeof this.options.onCancel === 'function' && this.options.onCancel();
+                    this.options.onCancel instanceof Function && this.options.onCancel();
                 }
             }
         });

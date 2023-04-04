@@ -76,7 +76,7 @@ class ExportPngTool extends Control {
         LogManager.logDebug(FILENAME, 'handleClick', 'User clicked tool');
         
         // User defined callback from constructor
-        if(typeof this.options.click === 'function') {
+        if(this.options.click instanceof Function) {
             this.options.click();
         }
 
@@ -140,7 +140,7 @@ class ExportPngTool extends Control {
             this.downloadCanvas(pngCanvas);
         }catch(error) {
             // User defined callback from constructor
-            if(typeof this.options.error === 'function') {
+            if(this.options.error instanceof Function) {
                 this.options.error(error);
             }
 
@@ -174,7 +174,7 @@ class ExportPngTool extends Control {
         }
 
         // User defined callback from constructor
-        if(typeof this.options.exported === 'function') {
+        if(this.options.exported instanceof Function) {
             this.options.exported(filename, content);
         }
     }

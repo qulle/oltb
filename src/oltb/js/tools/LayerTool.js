@@ -237,7 +237,7 @@ class LayerTool extends Control {
         LogManager.logDebug(FILENAME, 'handleClick', 'User clicked tool');
         
         // User defined callback from constructor
-        if(typeof this.options.click === 'function') {
+        if(this.options.click instanceof Function) {
             this.options.click();
         }
         
@@ -349,7 +349,7 @@ class LayerTool extends Control {
         // User defined callback from constructor
         if(
             !Boolean(silent) &&
-            typeof this.options.mapLayerAdded === 'function'
+            this.options.mapLayerAdded instanceof Function
         ) {
             this.options.mapLayerAdded(layerWrapper);
         }
@@ -367,7 +367,7 @@ class LayerTool extends Control {
         // User defined callback from constructor
         if(
             !Boolean(silent) &&
-            typeof this.options.mapLayerRemoved === 'function'
+            this.options.mapLayerRemoved instanceof Function
         ) {
             this.options.mapLayerRemoved(layerWrapper);
         }
@@ -409,7 +409,7 @@ class LayerTool extends Control {
         // User defined callback from constructor
         if(
             !Boolean(silent) &&
-            typeof this.options.featureLayerAdded === 'function'
+            this.options.featureLayerAdded instanceof Function
         ) {
             this.options.featureLayerAdded(layerWrapper);
         }
@@ -434,7 +434,7 @@ class LayerTool extends Control {
         // User defined callback from constructor
         if(
             !Boolean(silent) &&
-            typeof this.options.featureLayerRemoved === 'function'
+            this.options.featureLayerRemoved instanceof Function
         ) {
             this.options.featureLayerRemoved(layerWrapper);
         }
@@ -618,7 +618,7 @@ class LayerTool extends Control {
         download(filename, content);
             
         // User defined callback from constructor
-        if(typeof callback === 'function') {
+        if(callback instanceof Function) {
             callback(layerWrapper, filename, content);
         }
     }
@@ -645,7 +645,7 @@ class LayerTool extends Control {
                                 layerName._tippy.setContent(result);
                                 
                                 // User defined callback from constructor
-                                if(typeof callback === 'function') {
+                                if(callback instanceof Function) {
                                     callback(layerWrapper);
                                 }
                             }
@@ -680,7 +680,7 @@ class LayerTool extends Control {
                     layer.setVisible(flippedVisibility);
                      
                     // Hide overlays associated with the layer
-                    const hasFeatures = typeof layer.getSource().getFeatures === 'function';
+                    const hasFeatures = layer.getSource().getFeatures instanceof Function;
                     if(Boolean(hasFeatures)) {
                         layer.getSource().getFeatures().forEach((feature) => {
                             if(hasCustomFeatureProperty(feature.getProperties(), FeatureProperties.tooltip)) {
@@ -690,7 +690,7 @@ class LayerTool extends Control {
                     }
 
                     // User defined callback from constructor
-                    if(typeof callback === 'function') {
+                    if(callback instanceof Function) {
                         callback(layerWrapper);
                     }
                 }

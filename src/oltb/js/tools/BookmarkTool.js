@@ -217,7 +217,7 @@ class BookmarkTool extends Control {
         LogManager.logDebug(FILENAME, 'handleClick', 'User clicked tool');
         
         // User defined callback from constructor
-        if(typeof this.options.click === 'function') {
+        if(this.options.click instanceof Function) {
             this.options.click();
         }
 
@@ -285,7 +285,7 @@ class BookmarkTool extends Control {
         }
 
         // User defined callback from constructor
-        if(typeof this.options.added === 'function') {
+        if(this.options.added instanceof Function) {
             this.options.added(bookmark);
         }
     }
@@ -297,7 +297,7 @@ class BookmarkTool extends Control {
         this.bookmarkStack.innerHTML = '';
 
         // User defined callback from constructor
-        if(typeof this.options.cleared === 'function') {
+        if(this.options.cleared instanceof Function) {
             this.options.cleared();
         }
     }
@@ -421,7 +421,7 @@ class BookmarkTool extends Control {
         goToView(map, bookmark.coordinates, bookmark.zoom);
 
         // User defined callback from constructor
-        if(typeof this.options.zoomedTo === 'function') {
+        if(this.options.zoomedTo instanceof Function) {
             this.options.zoomedTo(bookmark);
         }
     }
@@ -469,7 +469,7 @@ class BookmarkTool extends Control {
                 StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
 
                 // User defined callback from constructor
-                if(typeof this.options.removed === 'function') {
+                if(this.options.removed instanceof Function) {
                     this.options.removed(bookmark);
                 }
             }
@@ -491,7 +491,7 @@ class BookmarkTool extends Control {
                     StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
 
                     // User defined callback from constructor
-                    if(typeof this.options.renamed === 'function') {
+                    if(this.options.renamed instanceof Function) {
                         this.options.renamed(bookmark);
                     }
                 }

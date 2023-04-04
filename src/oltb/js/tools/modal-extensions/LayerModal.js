@@ -330,7 +330,7 @@ class LayerModal extends ModalBase {
                     };
         
                     this.close();
-                    typeof this.options.onCreate === 'function' && this.options.onCreate(layer);
+                    this.options.onCreate instanceof Function && this.options.onCreate(layer);
                 }
             }
         });
@@ -347,7 +347,7 @@ class LayerModal extends ModalBase {
             listeners: {
                 'click': () => {
                     this.close();
-                    typeof this.options.onCancel === 'function' && this.options.onCancel();
+                    this.options.onCancel instanceof Function && this.options.onCancel();
                 }
             }
         });

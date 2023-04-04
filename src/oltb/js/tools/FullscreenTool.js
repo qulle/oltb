@@ -81,7 +81,7 @@ class FullscreenTool extends Control {
         LogManager.logDebug(FILENAME, 'handleClick', 'User clicked tool');
 
         // User defined callback from constructor
-        if(typeof this.options.click === 'function') {
+        if(this.options.click instanceof Function) {
             this.options.click();
         }
 
@@ -124,14 +124,14 @@ class FullscreenTool extends Control {
             this.button._tippy.setContent(`Exit fullscreen (${ShortcutKeys.fullscreenTool})`);
 
             // User defined callback from constructor
-            if(typeof this.options.enter === 'function') {
+            if(this.options.enter instanceof Function) {
                 this.options.enter(event);
             }
         }else {
             this.button._tippy.setContent(`Enter fullscreen (${ShortcutKeys.fullscreenTool})`);
 
             // User defined callback from constructor
-            if(typeof this.options.leave === 'function') {
+            if(this.options.leave instanceof Function) {
                 this.options.leave(event);
             }
         }

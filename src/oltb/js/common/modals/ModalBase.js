@@ -114,7 +114,7 @@ class ModalBase {
         this.backdrop.remove();
 
         // User defined callback from constructor
-        if(typeof this.onClose === 'function') {
+        if(this.onClose instanceof Function) {
             this.onClose();
         }
     }

@@ -52,7 +52,7 @@ class Alert extends DialogBase {
             listeners: {
                 'click': () => {
                     this.close();
-                    typeof this.options.onConfirm === 'function' && this.options.onConfirm();
+                    this.options.onConfirm instanceof Function && this.options.onConfirm();
                 }
             }
         });

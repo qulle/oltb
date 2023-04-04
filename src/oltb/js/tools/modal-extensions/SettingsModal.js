@@ -99,7 +99,7 @@ class SettingsModal extends ModalBase {
                     this.#state.clear();
 
                     this.close();
-                    typeof this.options.onSave === 'function' && this.options.onSave();
+                    this.options.onSave instanceof Function && this.options.onSave();
                 }
             }
         });
@@ -116,7 +116,7 @@ class SettingsModal extends ModalBase {
             listeners: {
                 'click': () => {
                     this.close();
-                    typeof this.options.onCancel === 'function' && this.options.onCancel();
+                    this.options.onCancel instanceof Function && this.options.onCancel();
                 }
             }
         });

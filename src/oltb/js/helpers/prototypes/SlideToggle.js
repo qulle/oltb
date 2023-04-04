@@ -86,7 +86,7 @@ const slideToggle = function(el, duration, callback, isDown) {
                 el.style.display = 'none';
             }
 
-            if(typeof callback === 'function') {
+            if(callback instanceof Function) {
                 callback(!isDown);
             }
         }else {

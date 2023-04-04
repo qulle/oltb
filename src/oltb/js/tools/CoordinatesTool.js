@@ -153,7 +153,7 @@ class CoordinatesTool extends Control {
         LogManager.logDebug(FILENAME, 'handleClick', 'User clicked tool');
 
         // User defined callback from constructor
-        if(typeof this.options.click === 'function') {
+        if(this.options.click instanceof Function) {
             this.options.click();
         }
         
@@ -312,7 +312,7 @@ class CoordinatesTool extends Control {
         });
 
         // User defined callback from constructor
-        if(typeof this.options.mapClicked === 'function') {
+        if(this.options.mapClicked instanceof Function) {
             this.options.mapClicked(allCoordinates);
         }
     }

@@ -62,7 +62,7 @@ class ZoomInTool extends Control {
         LogManager.logDebug(FILENAME, 'handleClick', 'User clicked tool');
 
         // User defined callback from constructor
-        if(typeof this.options.click === 'function') {
+        if(this.options.click instanceof Function) {
             this.options.click();
         }
         
@@ -84,7 +84,7 @@ class ZoomInTool extends Control {
 
         window.setTimeout(() => {
             // User defined callback from constructor
-            if(typeof this.options.zoomed === 'function') {
+            if(this.options.zoomed instanceof Function) {
                 this.options.zoomed();
             }
         }, Config.animationDuration.normal);
