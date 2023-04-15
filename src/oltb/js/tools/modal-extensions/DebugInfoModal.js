@@ -143,7 +143,7 @@ class DebugInfoModal extends ModalBase {
         });
 
         if(Boolean(section.json)) {
-            const jsonSection = this.#generateJSONSection(section);
+            const jsonSection = this.#generateJsonSection(section);
             DOM.appendChildren(sectionContent, [
                 jsonSection
             ]);
@@ -162,7 +162,7 @@ class DebugInfoModal extends ModalBase {
         return sectionWrapper;
     }
 
-    #generateJSONSection(section) {
+    #generateJsonSection(section) {
         const sectionPre = DOM.createElement({
             element: 'pre',
             class: `${section.class} oltb-thin-scrollbars`
@@ -297,7 +297,7 @@ class DebugInfoModal extends ModalBase {
             id: `${ID_PREFIX}-log-item-${index}`
         });
 
-        const jsonSection = this.#generateJSONSection({
+        const jsonSection = this.#generateJsonSection({
             content: entry.value,
             class: 'oltb-log__json'
         }, true);

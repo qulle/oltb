@@ -24,6 +24,7 @@ import { ToolManager } from './core/managers/ToolManager';
 import { LayerManager } from './core/managers/LayerManager';
 import { StateManager } from './core/managers/StateManager';
 import { TippyManager } from './core/managers/TippyManager';
+import { ErrorManager } from './core/managers/ErrorManager';
 import { ElementManager } from './core/managers/ElementManager';
 import { TooltipManager } from './core/managers/TooltipManager';
 import { SettingsManager } from './core/managers/SettingsManager';
@@ -82,6 +83,7 @@ class OLTB {
         // Note: The init order is important
         BootstrapManager.init([
             LogManager,
+            ErrorManager,
             StateManager,
             ElementManager,
             ProjectionManager,

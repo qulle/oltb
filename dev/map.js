@@ -32,6 +32,7 @@ import { ToolManager } from '../src/oltb/js/core/managers/ToolManager';
 import { LayerManager } from '../src/oltb/js/core/managers/LayerManager';
 import { StateManager } from '../src/oltb/js/core/managers/StateManager';
 import { TippyManager } from '../src/oltb/js/core/managers/TippyManager';
+import { ErrorManager } from '../src/oltb/js/core/managers/ErrorManager';
 import { ElementManager } from '../src/oltb/js/core/managers/ElementManager';
 import { TooltipManager } from '../src/oltb/js/core/managers/TooltipManager';
 import { SettingsManager } from '../src/oltb/js/core/managers/SettingsManager';
@@ -85,6 +86,7 @@ const LocalStorageDefaults = Object.freeze({
 // Note: The init order is important
 BootstrapManager.init([
     LogManager,
+    ErrorManager,
     StateManager,
     ElementManager,
     ProjectionManager,

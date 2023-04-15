@@ -11,44 +11,48 @@
     }
 }
 
-.tippy-box[data-theme~='oltb'][data-placement^='top'] > .tippy-arrow::before {
-    border-top-color: $background-theme-dark;
-    filter: $drop-shadow-filter-mid;
-}
+.tippy-box[data-theme~='oltb'] {
+    &[data-placement^='top'] > .tippy-arrow::before {
+        border-top-color: $background-theme-dark;
+        filter: $drop-shadow-filter-mid;
+    }
 
-.tippy-box[data-theme~='oltb'][data-placement^='bottom'] > .tippy-arrow::before {
-    border-bottom-color: $background-theme-dark;
-    filter: drop-shadow(1px 0 0 rgba(0, 0, 0, .1));
-}
-  
-.tippy-box[data-theme~='oltb'][data-placement^='left'] > .tippy-arrow::before {
-    border-left-color: $background-theme-dark;
-    filter: $drop-shadow-filter-mid;
-}
-  
-.tippy-box[data-theme~='oltb'][data-placement^='right'] > .tippy-arrow::before {
-    border-right-color: $background-theme-dark;
-    filter: drop-shadow(0 1px 0 rgba(0, 0, 0, .1));
+    &[data-placement^='bottom'] > .tippy-arrow::before {
+        border-bottom-color: $background-theme-dark;
+        filter: drop-shadow(1px 0 0 rgba(0, 0, 0, .1));
+    }
+
+    &[data-placement^='left'] > .tippy-arrow::before {
+        border-left-color: $background-theme-dark;
+        filter: $drop-shadow-filter-mid;
+    }
+
+    &[data-placement^='right'] > .tippy-arrow::before {
+        border-right-color: $background-theme-dark;
+        filter: drop-shadow(0 1px 0 rgba(0, 0, 0, .1));
+    }
 }
 
 body.oltb-dark .tippy-box[data-theme~='oltb-themed'] {
     background-color: $background-theme-light;
     color: $background-theme-dark;
 
-    &.tippy-box[data-theme~='oltb'][data-placement^='top'] > .tippy-arrow::before {
-        border-top-color: $background-theme-light;
-    }
-    
-    &.tippy-box[data-theme~='oltb'][data-placement^='bottom'] > .tippy-arrow::before {
-        border-bottom-color: $background-theme-light;
-    }
-      
-    &.tippy-box[data-theme~='oltb'][data-placement^='left'] > .tippy-arrow::before {
-        border-left-color: $background-theme-light;
-    }
-      
-    &.tippy-box[data-theme~='oltb'][data-placement^='right'] > .tippy-arrow::before {
-        border-right-color: $background-theme-light;
+    &.tippy-box[data-theme~='oltb'] {
+        &[data-placement^='top'] > .tippy-arrow::before {
+            border-top-color: $background-theme-light;
+        }
+
+        &[data-placement^='bottom'] > .tippy-arrow::before {
+            border-bottom-color: $background-theme-light;
+        }
+
+        &[data-placement^='left'] > .tippy-arrow::before {
+            border-left-color: $background-theme-light;
+        }
+
+        &[data-placement^='right'] > .tippy-arrow::before {
+            border-right-color: $background-theme-light;
+        }
     }
 }
 
@@ -56,19 +60,21 @@ body:not(.oltb-dark) .tippy-box[data-theme~='oltb-inverted-themed'] {
     background-color: $background-theme-light;
     color: $background-theme-dark;
 
-    &.tippy-box[data-theme~='oltb'][data-placement^='top'] > .tippy-arrow::before {
-        border-top-color: $background-theme-light;
-    }
-    
-    &.tippy-box[data-theme~='oltb'][data-placement^='bottom'] > .tippy-arrow::before {
-        border-bottom-color: $background-theme-light;
-    }
-      
-    &.tippy-box[data-theme~='oltb'][data-placement^='left'] > .tippy-arrow::before {
-        border-left-color: $background-theme-light;
-    }
-      
-    &.tippy-box[data-theme~='oltb'][data-placement^='right'] > .tippy-arrow::before {
-        border-right-color: $background-theme-light;
+    &.tippy-box[data-theme~='oltb'] {
+        &[data-placement^='top'] > .tippy-arrow::before {
+            border-top-color: $background-theme-light;
+        }
+
+        &[data-placement^='bottom'] > .tippy-arrow::before {
+            border-bottom-color: $background-theme-light;
+        }
+
+        &[data-placement^='left'] > .tippy-arrow::before {
+            border-left-color: $background-theme-light;
+        }
+
+        &[data-placement^='right'] > .tippy-arrow::before {
+            border-right-color: $background-theme-light;
+        }
     }
 }
