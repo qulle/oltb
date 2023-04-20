@@ -1,5 +1,17 @@
 const FILENAME = 'helpers/Conversions.js';
 
+const roundToNearest = function(value, nearest) {
+    return Math.round(value / nearest) * nearest;
+}
+
+const roundUpToNearest = function(value, nearest) {
+    return Math.ceil(value / nearest) * nearest;
+}
+
+const roundDownToNearest = function(value, nearest) {
+    return Math.floor(value / nearest) * nearest;
+}
+
 const degreesToRadians = function(degrees) {
     return degrees * (Math.PI / 180);
 }
@@ -17,6 +29,9 @@ const knotsToMetersPerSecond = function(knots) {
 }
 
 export {
+    roundToNearest,
+    roundUpToNearest,
+    roundDownToNearest,
     degreesToRadians,
     radiansToDegrees,
     metersPerSecondToKnots,

@@ -1,6 +1,9 @@
-const FILENAME = 'icons/GetWindBarbs.js';
+import { hasNestedProperty } from "../../helpers/browser/HasNestedProperty";
+import { metersPerSecondToKnots, roundDownToNearest, roundToNearest } from "../../helpers/Conversions";
 
-const WindBarbs = Object.freeze({
+const FILENAME = 'icons/GetWindBarb.js';
+
+const WindBarb = Object.freeze({
     knot0: '<path fill="#1A232D" d="M125,120c2.762,0,5,2.239,5,5c0,2.762-2.238,5-5,5c-2.761,0-5-2.238-5-5C120,122.239,122.239,120,125,120z"/><path fill="none" stroke="#1A232D" stroke-width="2" d="M125,115c5.523,0,10,4.477,10,10c0,5.523-4.477,10-10,10 c-5.523,0-10-4.477-10-10C115,119.477,119.477,115,125,115z "/>',
     knot2: '<path d="M125,112V76 M125,125l7-12.1h-14L125,125z"/>',
     knot5: '<path d="M125,112V76 M125,89l7-7 M125,125l7-12.1h-14L125,125z"/>',
@@ -43,48 +46,26 @@ const WindBarbs = Object.freeze({
     knot190: '<path d="M125,112V18 M125,18h14l-14,14V18z M125,32h14l-14,14V32z M125,46h14l-14,14V46z M125,70l14-14 M125,80l14-14 M125,90l14-14 M125,100l14-14 M125,125l7-12.1h-14L125,125z"/>'
 });
 
-const getSVGPath = function(windSpeed) {
-         if(windSpeed >= 0.0  && windSpeed < 1.0)  return WindBarbs.knot0;
-    else if(windSpeed >= 1.0  && windSpeed < 2.5)  return WindBarbs.knot2;
-    else if(windSpeed >= 2.5  && windSpeed < 5.0)  return WindBarbs.knot5;
-    else if(windSpeed >= 5.0  && windSpeed < 7.5)  return WindBarbs.knot10;
-    else if(windSpeed >= 7.5  && windSpeed < 10.0) return WindBarbs.knot15;
-    else if(windSpeed >= 10.0 && windSpeed < 12.5) return WindBarbs.knot20;
-    else if(windSpeed >= 12.5 && windSpeed < 15.0) return WindBarbs.knot25;
-    else if(windSpeed >= 15.0 && windSpeed < 17.5) return WindBarbs.knot30;
-    else if(windSpeed >= 17.5 && windSpeed < 20.0) return WindBarbs.knot35;
-    else if(windSpeed >= 20.0 && windSpeed < 22.5) return WindBarbs.knot40;
-    else if(windSpeed >= 22.5 && windSpeed < 25.0) return WindBarbs.knot45;
-    else if(windSpeed >= 25.0 && windSpeed < 27.5) return WindBarbs.knot50;
-    else if(windSpeed >= 27.5 && windSpeed < 30.0) return WindBarbs.knot55;
-    else if(windSpeed >= 30.0 && windSpeed < 32.5) return WindBarbs.knot60;
-    else if(windSpeed >= 32.5 && windSpeed < 35.0) return WindBarbs.knot65;
-    else if(windSpeed >= 35.0 && windSpeed < 37.5) return WindBarbs.knot70;
-    else if(windSpeed >= 37.5 && windSpeed < 40.0) return WindBarbs.knot75;
-    else if(windSpeed >= 40.0 && windSpeed < 42.5) return WindBarbs.knot80;
-    else if(windSpeed >= 42.5 && windSpeed < 45.0) return WindBarbs.knot85;
-    else if(windSpeed >= 45.0 && windSpeed < 47.5) return WindBarbs.knot90;
-    else if(windSpeed >= 47.5 && windSpeed < 50.0) return WindBarbs.knot95;
-    else if(windSpeed >= 50.0 && windSpeed < 52.5) return WindBarbs.knot100;
-    else if(windSpeed >= 52.5 && windSpeed < 55.0) return WindBarbs.knot105;
-    else if(windSpeed >= 55.0 && windSpeed < 57.5) return WindBarbs.knot110;
-    else if(windSpeed >= 57.5 && windSpeed < 60.0) return WindBarbs.knot115;
-    else if(windSpeed >= 60.0 && windSpeed < 62.5) return WindBarbs.knot120;
-    else if(windSpeed >= 62.5 && windSpeed < 65.0) return WindBarbs.knot125;
-    else if(windSpeed >= 65.0 && windSpeed < 67.5) return WindBarbs.knot130;
-    else if(windSpeed >= 67.5 && windSpeed < 70.0) return WindBarbs.knot135;
-    else if(windSpeed >= 70.0 && windSpeed < 72.5) return WindBarbs.knot140;
-    else if(windSpeed >= 72.5 && windSpeed < 75.0) return WindBarbs.knot145;
-    else if(windSpeed >= 75.0 && windSpeed < 77.5) return WindBarbs.knot150;
-    else if(windSpeed >= 77.5 && windSpeed < 80.0) return WindBarbs.knot155;
-    else if(windSpeed >= 80.0 && windSpeed < 82.5) return WindBarbs.knot160;
-    else if(windSpeed >= 82.5 && windSpeed < 85.0) return WindBarbs.knot165;
-    else if(windSpeed >= 85.0 && windSpeed < 87.5) return WindBarbs.knot170;
-    else if(windSpeed >= 87.5 && windSpeed < 90.0) return WindBarbs.knot175;
-    else if(windSpeed >= 90.0 && windSpeed < 92.5) return WindBarbs.knot180;
-    else if(windSpeed >= 92.5 && windSpeed < 95.0) return WindBarbs.knot185;
-    else if(windSpeed >= 95.0 && windSpeed < 97.5) return WindBarbs.knot190;
-    else return WindBarbs.knot0;
+const getSvgPath = function(windSpeed) {
+    // Base case that breaks the pattern of 2.5 m/s steps
+    if(windSpeed >= 1.0  && windSpeed < 2.5) {
+        return WindBarb.knot2;
+    }
+
+    const meterPerSecondStep = 2.5;
+    const lowerMeterPerSecond = roundDownToNearest(windSpeed, meterPerSecondStep);
+
+    const knots = metersPerSecondToKnots(lowerMeterPerSecond);
+
+    const knotPerSecondStep = 5;
+    const lowerKnotPerSecond = roundToNearest(knots, knotPerSecondStep);
+    
+    const windBarbName = `knot${lowerKnotPerSecond}`;
+    if(hasNestedProperty(WindBarb, windBarbName)) {
+        return WindBarb[windBarbName];
+    }
+
+    return WindBarb.knot0;
 }
 
 const DefaultOptions = Object.freeze({
@@ -102,8 +83,7 @@ const getWindBarb = function(options = {}) {
 
     // HEX Colors are not valid in SVG 
     // Unless they are replaced with URL alternative char
-    if(Boolean(options.replaceHashtag)) 
-    {   
+    if(Boolean(options.replaceHashtag)) {   
         options.fill = options.fill.replace('#', '%23');
         options.stroke = options.stroke.replace('#', '%23');
     }
@@ -119,9 +99,9 @@ const getWindBarb = function(options = {}) {
             stroke-linejoin="round"
             stroke-miterlimit="10"
             viewBox="0 0 250 250">
-            ${getSVGPath(options.windSpeed)}
+            ${getSvgPath(options.windSpeed)}
         </svg>
     `);
 }
 
-export { WindBarbs, getWindBarb };
+export { WindBarb, getWindBarb };
