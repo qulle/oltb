@@ -27,10 +27,21 @@
         display: flex;
         justify-content: space-between;
         align-content: center;
+        cursor: default;
         
         &--toggleable {
             cursor: pointer;
         }
+    }
+
+    &__timestamp {
+        font-weight: bold;
+        margin: 0;
+        white-space: nowrap;
+    }
+
+    &__level-icon {
+        margin: 0 .5rem 0 0;
     }
 
     &__title {

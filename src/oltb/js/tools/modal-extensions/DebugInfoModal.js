@@ -212,18 +212,18 @@ class DebugInfoModal extends ModalBase {
         });
 
         const logTitle = DOM.createElement({
-            element: 'span',
+            element: 'div',
             class: 'oltb-log__title', 
             html: `
-                <span class="oltb-tippy" title="${entry.level.info}">${
+                <span class="oltb-tippy oltb-log__level-icon" title="${entry.level.info}">${
                     entry.level.icon
-                }</span> <strong>${
+                }</span><span class="oltb-log__timestamp">${
                     entry.timestamp
-                }</strong> 🡒 ${
+                }</span> &rarr; ${
                     entry.origin
-                } 🡒 ${
+                } &rarr; ${
                     entry.method
-                } 🡒 ${
+                } &rarr; ${
                     entry.value
                 }
             `
@@ -255,16 +255,16 @@ class DebugInfoModal extends ModalBase {
         });
 
         const logTitle = DOM.createElement({
-            element: 'span',
+            element: 'div',
             class: 'oltb-log__title', 
             html: `
-                <span class="oltb-tippy" title="${entry.level.info}">${
+                <span class="oltb-tippy oltb-log__level-icon" title="${entry.level.info}">${
                     entry.level.icon
-                }</span> <strong>${
+                }</span><span class="oltb-log__timestamp">${
                     entry.timestamp
-                }</strong> 🡒 ${
+                }</span> &rarr; ${
                     entry.origin
-                } 🡒 ${
+                } &rarr; ${
                     entry.method
                 }
             `
