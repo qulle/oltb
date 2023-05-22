@@ -10,6 +10,7 @@ import { SvgPaths, getIcon } from '../core/icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
 
 const FILENAME = 'tools/NotificationTool.js';
+const TOOL_BUTTON_CLASS = 'oltb-tool-button';
 const NOTIFICATION_URL = 'https://raw.githubusercontent.com/qulle/notification-endpoints/main/endpoints/oltb.json';
 
 const DefaultOptions = Object.freeze({
@@ -24,13 +25,13 @@ class NotificationTool extends Control {
         
         const icon = getIcon({
             path: SvgPaths.bell.stroked,
-            class: 'oltb-tool-button__icon'
+            class: `${TOOL_BUTTON_CLASS}__icon`
         });
 
         const button = DOM.createElement({
             element: 'button',
             html: icon,
-            class: 'oltb-tool-button',
+            class: TOOL_BUTTON_CLASS,
             attributes: {
                 type: 'button',
                 'data-tippy-content': `Notifications (${ShortcutKeys.notificationsTool})`

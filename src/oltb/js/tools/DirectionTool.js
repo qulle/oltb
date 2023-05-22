@@ -12,6 +12,7 @@ import { SvgPaths, getIcon } from '../core/icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
 
 const FILENAME = 'tools/DirectionTool.js';
+const TOOL_BUTTON_CLASS = 'oltb-tool-button';
 
 const DefaultOptions = Object.freeze({
     click: undefined,
@@ -25,7 +26,7 @@ const DirectionData = Object.freeze({
         tippyContent: 'Horizontal toolbar',
         icon: getIcon({
             path: SvgPaths.symmetryHorizontal.mixed,
-            class: 'oltb-tool-button__icon'
+            class: `${TOOL_BUTTON_CLASS}__icon`
         })
     }),
     row: Object.freeze({
@@ -33,7 +34,7 @@ const DirectionData = Object.freeze({
         tippyContent: 'Vertical toolbar',
         icon: getIcon({
             path: SvgPaths.symmetryVertical.mixed,
-            class: 'oltb-tool-button__icon'
+            class: `${TOOL_BUTTON_CLASS}__icon`
         })
     })
 });
@@ -54,7 +55,7 @@ class DirectionTool extends Control {
             html: isHorizontal() 
                 ? DirectionData.row.icon
                 : DirectionData.col.icon,
-            class: 'oltb-tool-button',
+            class: TOOL_BUTTON_CLASS,
             attributes: {
                 type: 'button',
                 'data-tippy-content': `${(
@@ -95,9 +96,9 @@ class DirectionTool extends Control {
 
     onWindowSizeCheck(event) {
         if(window.innerWidth <= Config.deviceWidth.sm) {
-            this.button.classList.add('oltb-tool-button--hidden');
+            this.button.classList.add(`${TOOL_BUTTON_CLASS}--hidden`);
         }else {
-            this.button.classList.remove('oltb-tool-button--hidden');
+            this.button.classList.remove(`${TOOL_BUTTON_CLASS}--hidden`);
         }
     }
 

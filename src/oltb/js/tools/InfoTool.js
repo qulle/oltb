@@ -9,6 +9,7 @@ import { SvgPaths, getIcon } from '../core/icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
 
 const FILENAME = 'tools/InfoTool.js';
+const TOOL_BUTTON_CLASS = 'oltb-tool-button';
 
 const DefaultOptions = Object.freeze({
     title: 'Hey!',
@@ -24,13 +25,13 @@ class InfoTool extends Control {
         
         const icon = getIcon({
             path: SvgPaths.infoCircle.stroked,
-            class: 'oltb-tool-button__icon'
+            class: `${TOOL_BUTTON_CLASS}__icon`
         });
 
         const button = DOM.createElement({
             element: 'button',
             html: icon,
-            class: 'oltb-tool-button',
+            class: TOOL_BUTTON_CLASS,
             attributes: {
                 type: 'button',
                 'data-tippy-content': `Info (${ShortcutKeys.infoTool})`

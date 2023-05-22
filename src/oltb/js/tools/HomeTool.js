@@ -13,6 +13,7 @@ import { SvgPaths, getIcon } from '../core/icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
 
 const FILENAME = 'tools/HomeTool.js';
+const TOOL_BUTTON_CLASS = 'oltb-tool-button';
 
 const DefaultOptions = Object.freeze({
     lon: 18.1201,
@@ -30,13 +31,13 @@ class HomeTool extends Control {
         
         const icon = getIcon({
             path: SvgPaths.house.stroked,
-            class: 'oltb-tool-button__icon'
+            class: `${TOOL_BUTTON_CLASS}__icon`
         });
 
         const button = DOM.createElement({
             element: 'button',
             html: icon,
-            class: 'oltb-tool-button',
+            class: TOOL_BUTTON_CLASS,
             attributes: {
                 type: 'button',
                 'data-tippy-content': `Zoom home (${ShortcutKeys.homeTool})`

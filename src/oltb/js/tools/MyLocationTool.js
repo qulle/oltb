@@ -18,6 +18,7 @@ import { InfoWindowManager } from '../core/managers/InfoWindowManager';
 import { isFullScreen, exitFullScreen } from '../helpers/browser/Fullscreen';
 
 const FILENAME = 'tools/MyLocationTool.js';
+const TOOL_BUTTON_CLASS = 'oltb-tool-button';
 const ID_PREFIX = 'oltb-info-window-marker';
 
 const DefaultOptions = Object.freeze({
@@ -38,13 +39,13 @@ class MyLocationTool extends Control {
         
         const icon = getIcon({
             path: SvgPaths.geoMarker.stroked,
-            class: 'oltb-tool-button__icon'
+            class: `${TOOL_BUTTON_CLASS}__icon`
         });
 
         const button = DOM.createElement({
             element: 'button',
             html: icon,
-            class: 'oltb-tool-button',
+            class: TOOL_BUTTON_CLASS,
             attributes: {
                 type: 'button',
                 'data-tippy-content': `My Location (${ShortcutKeys.myLocationTool})`
@@ -174,7 +175,8 @@ class MyLocationTool extends Control {
         const layerWrapper = LayerManager.addFeatureLayer(this.options.title);
         layerWrapper.getLayer().getSource().addFeature(marker);
 
-        goToView(map, [lon, lat], 6);
+        const zoom = 6;
+        goToView(map, [lon, lat], zoom);
 
         // Trigger InfoWindow to show
         window.setTimeout(() => {

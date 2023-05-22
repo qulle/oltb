@@ -13,6 +13,7 @@ import { SvgPaths, getIcon } from '../core/icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
 
 const FILENAME = 'tools/ExportPngTool.js';
+const TOOL_BUTTON_CLASS = 'oltb-tool-button';
 
 const DefaultOptions = Object.freeze({
     filename: 'map-image-export',
@@ -30,13 +31,13 @@ class ExportPngTool extends Control {
         
         const icon = getIcon({
             path: SvgPaths.image.mixed,
-            class: 'oltb-tool-button__icon'
+            class: `${TOOL_BUTTON_CLASS}__icon`
         });
 
         const button = DOM.createElement({
             element: 'button',
             html: icon,
-            class: 'oltb-tool-button',
+            class: TOOL_BUTTON_CLASS,
             attributes: {
                 type: 'button',
                 'data-tippy-content': `Export PNG (${ShortcutKeys.exportPngTool})`
@@ -114,9 +115,10 @@ class ExportPngTool extends Control {
             const pngContext = pngCanvas.getContext('2d');
 
             // Draw map layers (Canvases)
+            const fullOpacity = 1;
             const mapCanvas = mapElement.querySelector('.ol-layer canvas');
             const opacity = mapCanvas.parentNode.style.opacity;
-            pngContext.globalAlpha = opacity === '' ? 1 : Number(opacity);
+            pngContext.globalAlpha = opacity === '' ? fullOpacity : Number(opacity);
     
             const matrix = mapCanvas.style.transform
                 .match(/^matrix\(([^\(]*)\)$/)[1]

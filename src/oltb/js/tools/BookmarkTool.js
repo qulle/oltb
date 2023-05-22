@@ -22,6 +22,9 @@ import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
 import { generateAnimalName } from '../helpers/name-generator/NameGenerator';
 
 const FILENAME = 'tools/BookmarkTool.js';
+const TOOL_BUTTON_CLASS = 'oltb-tool-button';
+const TOOLBOX_SECTION_CLASS = 'oltb-toolbox-section';
+const TOOLBOX_LIST_CLASS = 'oltb-toolbox-list';
 const BOOKMARK_BUTTON_DEFAULT_CLASSES = 'oltb-func-btn';
 const ID_PREFIX = 'oltb-bookmark';
 
@@ -51,7 +54,7 @@ class BookmarkTool extends Control {
         
         const icon = getIcon({
             path: SvgPaths.bookmarkStar.stroked,
-            class: 'oltb-tool-button__icon'
+            class: `${TOOL_BUTTON_CLASS}__icon`
         });
 
         const clearBookmarksIcon = getIcon({
@@ -61,7 +64,7 @@ class BookmarkTool extends Control {
         const button = DOM.createElement({
             element: 'button',
             html: icon,
-            class: 'oltb-tool-button',
+            class: TOOL_BUTTON_CLASS,
             attributes: {
                 type: 'button',
                 'data-tippy-content': `Bookmarks (${ShortcutKeys.bookmarkTool})`
@@ -85,15 +88,15 @@ class BookmarkTool extends Control {
 
         const toolboxElement = ElementManager.getToolboxElement();
         toolboxElement.insertAdjacentHTML('beforeend', `
-            <div id="${ID_PREFIX}-toolbox" class="oltb-toolbox-section">
-                <div class="oltb-toolbox-section__header">
-                    <h4 class="oltb-toolbox-section__title oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">
+            <div id="${ID_PREFIX}-toolbox" class="${TOOLBOX_SECTION_CLASS}">
+                <div class="${TOOLBOX_SECTION_CLASS}__header">
+                    <h4 class="${TOOLBOX_SECTION_CLASS}__title oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">
                         Bookmarks
-                        <span class="oltb-toolbox-section__icon oltb-tippy" title="Toggle section"></span>
+                        <span class="${TOOLBOX_SECTION_CLASS}__icon oltb-tippy" title="Toggle section"></span>
                     </h4>
                 </div>
-                <div class="oltb-toolbox-section__groups" id="${ID_PREFIX}-toolbox-collapsed" style="display: ${this.localStorage.collapsed ? 'none' : 'block'}">
-                    <div class="oltb-toolbox-section__group">
+                <div class="${TOOLBOX_SECTION_CLASS}__groups" id="${ID_PREFIX}-toolbox-collapsed" style="display: ${this.localStorage.collapsed ? 'none' : 'block'}">
+                    <div class="${TOOLBOX_SECTION_CLASS}__group">
                         <div class="oltb-input-button-group">
                             <input type="text" id="${ID_PREFIX}-add-text" class="oltb-input" placeholder="Bookmark name">
                             <button type="button" id="${ID_PREFIX}-add-button" class="oltb-btn oltb-btn--green-mid oltb-tippy" title="Add Bookmark">
@@ -108,8 +111,8 @@ class BookmarkTool extends Control {
                             </button>
                         </div>
                     </div>
-                    <div class="oltb-toolbox-section__group oltb-m-0">
-                        <ul id="${ID_PREFIX}-stack" class="oltb-toolbox-list"></ul>
+                    <div class="${TOOLBOX_SECTION_CLASS}__group oltb-m-0">
+                        <ul id="${ID_PREFIX}-stack" class="${TOOLBOX_LIST_CLASS}"></ul>
                     </div>
                 </div>
             </div>
@@ -230,8 +233,8 @@ class BookmarkTool extends Control {
 
     activateTool() {
         this.active = true;
-        this.bookmarkToolbox.classList.add('oltb-toolbox-section--show');
-        this.button.classList.add('oltb-tool-button--active');
+        this.bookmarkToolbox.classList.add(`${TOOLBOX_SECTION_CLASS}--show`);
+        this.button.classList.add(`${TOOL_BUTTON_CLASS}--active`);
 
         this.localStorage.active = true;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
@@ -239,8 +242,8 @@ class BookmarkTool extends Control {
 
     deActivateTool() {
         this.active = false;
-        this.bookmarkToolbox.classList.remove('oltb-toolbox-section--show');
-        this.button.classList.remove('oltb-tool-button--active');
+        this.bookmarkToolbox.classList.remove(`${TOOLBOX_SECTION_CLASS}--show`);
+        this.button.classList.remove(`${TOOL_BUTTON_CLASS}--active`);
 
         this.localStorage.active = false;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
@@ -308,13 +311,13 @@ class BookmarkTool extends Control {
         const bookmarkElement = DOM.createElement({
             element: 'li', 
             id: `oltb-bookmark-${bookmark.id}`,
-            class: 'oltb-toolbox-list__item'
+            class: `${TOOLBOX_LIST_CLASS}__item`
         });
 
         const bookmarkName = DOM.createElement({
             element: 'span', 
             text: bookmark.name.ellipsis(20),
-            class: 'oltb-toolbox-list__title oltb-tippy',
+            class: `${TOOLBOX_LIST_CLASS}__title oltb-tippy`,
             title: bookmark.name
         });
 
@@ -333,7 +336,7 @@ class BookmarkTool extends Control {
 
         const leftButtonWrapper = DOM.createElement({
             element: 'div', 
-            class: 'oltb-toolbox-list__wrapper'
+            class: `${TOOLBOX_LIST_CLASS}__wrapper`
         });
 
         DOM.appendChildren(leftButtonWrapper, [
@@ -346,7 +349,7 @@ class BookmarkTool extends Control {
 
         const rightButtonWrapper = DOM.createElement({
             element: 'div', 
-            class: 'oltb-toolbox-list__wrapper'
+            class: `${TOOLBOX_LIST_CLASS}__wrapper`
         });
 
         const zoomToButton = DOM.createElement({

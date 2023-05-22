@@ -21,6 +21,8 @@ import { ProjectionManager } from '../core/managers/ProjectionManager';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
 
 const FILENAME = 'tools/CoordiantesTool.js';
+const TOOL_BUTTON_CLASS = 'oltb-tool-button';
+const TOOLBOX_SECTION_CLASS = 'oltb-toolbox-section';
 const ID_PREFIX = 'oltb-coordinates';
 
 const DefaultOptions = Object.freeze({
@@ -42,13 +44,13 @@ class CoordinatesTool extends Control {
 
         const icon = getIcon({
             path: SvgPaths.crosshair.stroked,
-            class: 'oltb-tool-button__icon'
+            class: `${TOOL_BUTTON_CLASS}__icon`
         });
 
         const button = DOM.createElement({
             element: 'button',
             html: icon,
-            class: 'oltb-tool-button',
+            class: TOOL_BUTTON_CLASS,
             attributes: {
                 type: 'button',
                 'data-tippy-content': `Show coordinates (${ShortcutKeys.coordinatesTool})`
@@ -73,22 +75,22 @@ class CoordinatesTool extends Control {
 
         const toolboxElement = ElementManager.getToolboxElement();
         toolboxElement.insertAdjacentHTML('beforeend', `
-            <div id="${ID_PREFIX}-toolbox" class="oltb-toolbox-section">
-                <div class="oltb-toolbox-section__header">
-                    <h4 class="oltb-toolbox-section__title oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">
+            <div id="${ID_PREFIX}-toolbox" class="${TOOLBOX_SECTION_CLASS}">
+                <div class="${TOOLBOX_SECTION_CLASS}__header">
+                    <h4 class="${TOOLBOX_SECTION_CLASS}__title oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">
                         Coordinates
-                        <span class="oltb-toolbox-section__icon oltb-tippy" title="Toggle section"></span>
+                        <span class="${TOOLBOX_SECTION_CLASS}__icon oltb-tippy" title="Toggle section"></span>
                     </h4>
                 </div>
-                <div class="oltb-toolbox-section__groups" id="${ID_PREFIX}-toolbox-collapsed" style="display: ${this.localStorage.collapsed ? 'none' : 'block'}">
-                    <div class="oltb-toolbox-section__group">
+                <div class="${TOOLBOX_SECTION_CLASS}__groups" id="${ID_PREFIX}-toolbox-collapsed" style="display: ${this.localStorage.collapsed ? 'none' : 'block'}">
+                    <div class="${TOOLBOX_SECTION_CLASS}__group">
                         <label class="oltb-label" for="${ID_PREFIX}-format">Format</label>
                         <select id="${ID_PREFIX}-format" class="oltb-select">
                             <option value="DD">Decimal degrees</option>
                             <option value="DMS">Degrees, minutes, seconds</option>
                         </select>
                     </div>
-                    <div class="oltb-toolbox-section__group">
+                    <div class="${TOOLBOX_SECTION_CLASS}__group">
                         <label class="oltb-label">Coordinates <em>(Lat, Lon)</em></label>
                         <table class="oltb-table oltb-mt-05" id="${ID_PREFIX}-table"></table>
                     </div>
@@ -213,8 +215,8 @@ class CoordinatesTool extends Control {
         this.onMapClickListener = map.on(Events.browser.click, this.onMapClick.bind(this));
 
         this.active = true;
-        this.coordinatesToolbox.classList.add('oltb-toolbox-section--show');
-        this.button.classList.add('oltb-tool-button--active');
+        this.coordinatesToolbox.classList.add(`${TOOLBOX_SECTION_CLASS}--show`);
+        this.button.classList.add(`${TOOL_BUTTON_CLASS}--active`);
 
         this.localStorage.active = true;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
@@ -228,8 +230,8 @@ class CoordinatesTool extends Control {
         unByKey(this.onMapClickListener);
 
         this.active = false;
-        this.coordinatesToolbox.classList.remove('oltb-toolbox-section--show');
-        this.button.classList.remove('oltb-tool-button--active');
+        this.coordinatesToolbox.classList.remove(`${TOOLBOX_SECTION_CLASS}--show`);
+        this.button.classList.remove(`${TOOL_BUTTON_CLASS}--active`);
 
         this.localStorage.active = false;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);

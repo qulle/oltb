@@ -10,6 +10,7 @@ import { ElementManager } from '../core/managers/ElementManager';
 import { hasNestedProperty } from "../helpers/browser/HasNestedProperty";
 
 const FILENAME = 'common/ContextMenu.js';
+const CONTEXT_CLASS = 'oltb-context-menu';
 
 const DefaultOptions = Object.freeze({});
 
@@ -25,7 +26,7 @@ class ContextMenu extends Control {
         super({
             element: DOM.createElement({
                 element: 'ul',
-                class: 'oltb-context-menu',
+                class: CONTEXT_CLASS,
                 attributes: {
                     tabindex: '-1',
                     'data-contextmenu': options.name
@@ -57,7 +58,7 @@ class ContextMenu extends Control {
         if(!hasNestedProperty(item, 'name')) {
             const li = DOM.createElement({
                 element: 'li',
-                class: 'oltb-context-menu__divider'
+                class: `${CONTEXT_CLASS}__divider`
             });
 
             DOM.appendChildren(this.menu, [
@@ -66,7 +67,7 @@ class ContextMenu extends Control {
         }else {
             const li = DOM.createElement({
                 element: 'li',
-                class: 'oltb-context-menu__item',
+                class: `${CONTEXT_CLASS}__item`,
                 text: item.name,
                 attributes: {
                     tabindex: '0'
@@ -88,7 +89,7 @@ class ContextMenu extends Control {
             const icon = DOM.createElement({
                 element: 'span',
                 html: item.icon,
-                class: 'oltb-context-menu__icon'
+                class: `${CONTEXT_CLASS}__icon`
             });
 
             li.prepend(icon);
@@ -118,12 +119,12 @@ class ContextMenu extends Control {
         
         this.menu.style.left = `${event.clientX}px`;
         this.menu.style.top = `${event.clientY}px`;
-        this.menu.classList.add('oltb-context-menu--show');
+        this.menu.classList.add(`${CONTEXT_CLASS}--show`);
         this.menu.focus();
     }
 
     hide() {
-        this.menu.classList.remove('oltb-context-menu--show');
+        this.menu.classList.remove(`${CONTEXT_CLASS}--show`);
     }
 
     click(item) {

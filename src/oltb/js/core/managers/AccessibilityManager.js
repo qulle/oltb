@@ -3,6 +3,7 @@ import { Events } from "../../helpers/constants/Events";
 import { LogManager } from "./LogManager";
 
 const FILENAME = 'managers/AccessibilityManager.js';
+const ACCESSIBILITY_CLASS = 'oltb-using-keyboard';
 
 class AccessibilityManager {
     static init() {
@@ -16,12 +17,12 @@ class AccessibilityManager {
 
     static #onKeyBoardDown(event) {
         if(event.key === Keys.valueTab) {
-            document.body.classList.add('oltb-using-keyboard');
+            document.body.classList.add(ACCESSIBILITY_CLASS);
         }
     }
 
     static #onMouseDown(event) {
-        document.body.classList.remove('oltb-using-keyboard');
+        document.body.classList.remove(ACCESSIBILITY_CLASS);
     }
 }
 

@@ -15,6 +15,7 @@ import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
 import { degreesToRadians, radiansToDegrees } from '../helpers/Conversions';
 
 const FILENAME = 'tools/ResetNorthTool.js';
+const TOOL_BUTTON_CLASS = 'oltb-tool-button';
 
 const DefaultOptions = Object.freeze({
     click: undefined,
@@ -29,13 +30,13 @@ class ResetNorthTool extends Control {
         
         const icon = getIcon({
             path: SvgPaths.compass.stroked,
-            class: 'oltb-tool-button__icon'
+            class: `${TOOL_BUTTON_CLASS}__icon`
         });
 
         const button = DOM.createElement({
             element: 'button',
             html: icon,
-            class: 'oltb-tool-button',
+            class: TOOL_BUTTON_CLASS,
             attributes: {
                 type: 'button',
                 'data-tippy-content': `Reset North (${ShortcutKeys.resetNorthTool})`
@@ -72,7 +73,11 @@ class ResetNorthTool extends Control {
 
         const zoom = view.getZoom();
         const rotation = radiansToDegrees(view.getRotation());
-        const normalizedRotation = rotation < 0 ? rotation + 360 : rotation;
+        const normalizationMinLimit = 0;
+        const normalizationMaxLimit = 360;
+        const normalizedRotation = rotation < normalizationMinLimit 
+            ? rotation + normalizationMaxLimit 
+            : rotation;
 
         // Must use the center of the view
         // The method gets the coordinates where the user clicked

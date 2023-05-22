@@ -6,6 +6,7 @@ import { StateManager } from './StateManager';
 import { LocalStorageKeys } from '../../helpers/constants/LocalStorageKeys';
 
 const FILENAME = 'managers/ElementManager.js';
+const TOOLBOX_CONTAINER_CLASSNAME = 'oltb-toolbox-container';
 
 class ElementManager {
     static #mapElement;
@@ -31,16 +32,17 @@ class ElementManager {
 
     static #onWindowSettingsCleared(event) {
         if(window.innerWidth <= Config.deviceWidth.sm) {
-            this.#toolboxElement.classList.add('oltb-toolbox-container--collision');
+            this.#toolboxElement.classList.add(`${TOOLBOX_CONTAINER_CLASSNAME}--collision`);
         }else {
-            this.#toolboxElement.classList.remove('oltb-toolbox-container--collision');
+            this.#toolboxElement.classList.remove(`${TOOLBOX_CONTAINER_CLASSNAME}--collision`);
         }
     }
 
     static #onMouseWheel(event) {
         if(!Boolean(event.ctrlKey)) {
+            const zeroAxis = 0;
             const distance = Config.scrollDistance;
-            this.scrollLeft += event.deltaY > 0 ? distance : -distance;
+            this.scrollLeft += event.deltaY > zeroAxis ? distance : -distance;
         }
     }
 
@@ -114,7 +116,7 @@ class ElementManager {
     static #createToolboxElement() {
         const element = DOM.createElement({
             element: 'div', 
-            class: 'oltb-toolbox-container',
+            class: TOOLBOX_CONTAINER_CLASSNAME,
             attributes: {
                 'data-html2canvas-ignore': 'true'
             }
@@ -128,14 +130,15 @@ class ElementManager {
     }
 
     static #collisionDetection(event) {
+        const collisionLimit = 0;
         const windowWidth = window.innerWidth;
         const toolbarWidth = this.#toolbarElement.offsetWidth;
         const toolboxWidth = this.#toolboxElement.offsetWidth;
         
-        if(windowWidth - ((3 * Config.browser.rem) + toolbarWidth + toolboxWidth) <= 0) {
-            this.#toolboxElement.classList.add('oltb-toolbox-container--collision');
+        if(windowWidth - ((3 * Config.browser.rem) + toolbarWidth + toolboxWidth) <= collisionLimit) {
+            this.#toolboxElement.classList.add(`${TOOLBOX_CONTAINER_CLASSNAME}--collision`);
         }else {
-            this.#toolboxElement.classList.remove('oltb-toolbox-container--collision');
+            this.#toolboxElement.classList.remove(`${TOOLBOX_CONTAINER_CLASSNAME}--collision`);
         }
     }
 

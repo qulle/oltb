@@ -40,6 +40,8 @@ import { GeometryCollection, LinearRing, LineString, MultiLineString, MultiPoint
  */
 
 const FILENAME = 'tools/EditTool.js';
+const TOOL_BUTTON_CLASS = 'oltb-tool-button';
+const TOOLBOX_SECTION_CLASS = 'oltb-toolbox-section';
 const ID_PREFIX = 'oltb-edit';
 
 const DefaultOptions = Object.freeze({
@@ -102,13 +104,13 @@ class EditTool extends Control {
         
         const icon = getIcon({
             path: SvgPaths.cursor.stroked,
-            class: 'oltb-tool-button__icon'
+            class: `${TOOL_BUTTON_CLASS}__icon`
         });
 
         const button = DOM.createElement({
             element: 'button',
             html: icon,
-            class: 'oltb-tool-button',
+            class: TOOL_BUTTON_CLASS,
             attributes: {
                 type: 'button',
                 'data-tippy-content': `Edit (${ShortcutKeys.editTool})`
@@ -137,21 +139,21 @@ class EditTool extends Control {
         
         const toolboxElement = ElementManager.getToolboxElement();
         toolboxElement.insertAdjacentHTML('beforeend', `
-            <div id="${ID_PREFIX}-toolbox" class="oltb-toolbox-section">
-                <div class="oltb-toolbox-section__header">
-                    <h4 class="oltb-toolbox-section__title oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">
+            <div id="${ID_PREFIX}-toolbox" class="${TOOLBOX_SECTION_CLASS}">
+                <div class="${TOOLBOX_SECTION_CLASS}__header">
+                    <h4 class="${TOOLBOX_SECTION_CLASS}__title oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">
                         Edit tool
-                        <span class="oltb-toolbox-section__icon oltb-tippy" title="Toggle section"></span>
+                        <span class="${TOOLBOX_SECTION_CLASS}__icon oltb-tippy" title="Toggle section"></span>
                     </h4>
                 </div>
-                <div class="oltb-toolbox-section__groups" id="${ID_PREFIX}-toolbox-collapsed" style="display: ${this.localStorage.collapsed ? 'none' : 'block'}">
-                    <div class="oltb-toolbox-section__group">
+                <div class="${TOOLBOX_SECTION_CLASS}__groups" id="${ID_PREFIX}-toolbox-collapsed" style="display: ${this.localStorage.collapsed ? 'none' : 'block'}">
+                    <div class="${TOOLBOX_SECTION_CLASS}__group">
                         <label class="oltb-label">Misc</label>
                         <button type="button" id="${ID_PREFIX}-delete-selected-button" class="oltb-btn oltb-btn--blue-mid oltb-tippy" title="Delete">
                             ${getIcon({ ...DefaultButtonProps, path: SvgPaths.trash.stroked })}
                         </button>
                     </div>
-                    <div class="oltb-toolbox-section__group oltb-toolbox-section__group--sub-toolbar">
+                    <div class="${TOOLBOX_SECTION_CLASS}__group ${TOOLBOX_SECTION_CLASS}__group--sub-toolbar">
                         <label class="oltb-label">Shapes</label>
                         <button type="button" id="${ID_PREFIX}-union-selected-button" class="oltb-btn oltb-btn--blue-mid oltb-tippy" title="Union">
                             ${getIcon({ ...DefaultButtonProps, path: SvgPaths.union.mixed })}
@@ -166,13 +168,13 @@ class EditTool extends Control {
                             ${getIcon({ ...DefaultButtonProps, path: SvgPaths.subtract.mixed })}
                         </button>
                     </div>
-                    <div class="oltb-toolbox-section__group">
+                    <div class="${TOOLBOX_SECTION_CLASS}__group">
                         <label class="oltb-label" for="${ID_PREFIX}-stroke-color">Stroke color</label>
                         <div id="${ID_PREFIX}-stroke-color" class="oltb-color-input oltb-color-tippy" data-oltb-color-target="#${ID_PREFIX}-stroke-color" data-oltb-color="${this.localStorage.strokeColor}" tabindex="0">
                             <div class="oltb-color-input__inner" style="background-color: ${this.localStorage.strokeColor};"></div>
                         </div>
                     </div>
-                    <div class="oltb-toolbox-section__group">
+                    <div class="${TOOLBOX_SECTION_CLASS}__group">
                         <label class="oltb-label" for="${ID_PREFIX}-fill-color">Fill color</label>
                         <div id="${ID_PREFIX}-fill-color" class="oltb-color-input oltb-color-tippy" data-oltb-color-target="#${ID_PREFIX}-fill-color" data-oltb-color="${this.localStorage.fillColor}" tabindex="0">
                             <div class="oltb-color-input__inner" style="background-color: ${this.localStorage.fillColor};"></div>
@@ -415,9 +417,10 @@ class EditTool extends Control {
             return;
         }
 
+        const genetiveLimit = 1;
         Dialog.confirm({
             title: 'Delete feature',
-            message: `Delete ${featureLength} selected feature${featureLength > 1 ? 's': ''}?`,
+            message: `Delete ${featureLength} selected feature${featureLength > genetiveLimit ? 's': ''}?`,
             confirmText: 'Delete',
             onConfirm: () => {
                 const features = [ ...this.select.getFeatures().getArray() ];
@@ -696,8 +699,8 @@ class EditTool extends Control {
         ToolManager.setActiveTool(this);
 
         this.active = true;
-        this.editToolbox.classList.add('oltb-toolbox-section--show');
-        this.button.classList.add('oltb-tool-button--active');
+        this.editToolbox.classList.add(`${TOOLBOX_SECTION_CLASS}--show`);
+        this.button.classList.add(`${TOOL_BUTTON_CLASS}--active`);
 
         this.localStorage.active = true;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
@@ -715,8 +718,8 @@ class EditTool extends Control {
         ToolManager.removeActiveTool();
 
         this.active = false;
-        this.editToolbox.classList.remove('oltb-toolbox-section--show');
-        this.button.classList.remove('oltb-tool-button--active');
+        this.editToolbox.classList.remove(`${TOOLBOX_SECTION_CLASS}--show`);
+        this.button.classList.remove(`${TOOL_BUTTON_CLASS}--active`);
 
         this.localStorage.active = false;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);

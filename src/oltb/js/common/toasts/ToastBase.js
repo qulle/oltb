@@ -4,6 +4,7 @@ import { Events } from '../../helpers/constants/Events';
 import { ElementManager } from '../../core/managers/ElementManager';
 
 const FILENAME = 'toasts/ToastBase.js';
+const TOAST_CLASS = 'oltb-toast';
 
 const DefaultOptions = Object.freeze({
     title: 'Toast',
@@ -23,13 +24,13 @@ class ToastBase {
     #createToast() {
         this.toast = DOM.createElement({
             element: 'div',
-            class: `oltb-toast oltb-toast--${
+            class: `${TOAST_CLASS} ${TOAST_CLASS}--${
                 this.options.type
             } oltb-animation oltb-animation--slide-in oltb-d-flex` 
         });
         
         if(Boolean(this.options.clickToRemove)) {
-            this.toast.classList.add('oltb-toast--clickable');
+            this.toast.classList.add(`${TOAST_CLASS}--clickable`);
             this.toast.addEventListener(Events.browser.click, this.remove.bind(this));
         }
 
@@ -46,19 +47,19 @@ class ToastBase {
 
         const container = DOM.createElement({
             element: 'div',
-            class: `oltb-toast__container ${this.options.spinner ? 'oltb-ml-0625' : ''}`
+            class: `${TOAST_CLASS}__container ${this.options.spinner ? 'oltb-ml-0625' : ''}`
         });
 
         const title = DOM.createElement({
             element: 'h4',
             text: this.options.title,
-            class: 'oltb-toast__title'
+            class: `${TOAST_CLASS}__title`
         });
 
         const message = DOM.createElement({
             element: 'p', 
             html: this.options.message,
-            class: 'oltb-toast__message'
+            class: `${TOAST_CLASS}__message`
         });
     
         DOM.appendChildren(container, [
@@ -81,7 +82,7 @@ class ToastBase {
     }
 
     remove() {
-        this.toast.classList.add('oltb-toast--remove', 'oltb-animation--slide-out');
+        this.toast.classList.add(`${TOAST_CLASS}--remove`, 'oltb-animation--slide-out');
     
         // Remove the toast from DOM after animation finishes
         window.setTimeout(() => {

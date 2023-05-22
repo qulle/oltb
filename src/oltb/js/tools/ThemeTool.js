@@ -11,6 +11,7 @@ import { SvgPaths, getIcon } from '../core/icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
 
 const FILENAME = 'tools/ThemeTool.js';
+const TOOL_BUTTON_CLASS = 'oltb-tool-button';
 
 const DefaultOptions = Object.freeze({
     click: undefined,
@@ -24,7 +25,7 @@ const ThemesData = Object.freeze({
         tippyContent: 'Dark theme',
         icon: getIcon({
             path: SvgPaths.moonStars.stroked,
-            class: 'oltb-tool-button__icon'
+            class: `${TOOL_BUTTON_CLASS}__icon`
         })
     }),
     dark: Object.freeze({
@@ -32,7 +33,7 @@ const ThemesData = Object.freeze({
         tippyContent: 'Light theme',
         icon: getIcon({
             path: SvgPaths.sun.stroked,
-            class: 'oltb-tool-button__icon'
+            class: `${TOOL_BUTTON_CLASS}__icon`
         })
     })
 });
@@ -53,7 +54,7 @@ class ThemeTool extends Control {
             html: isDarkTheme() 
                 ? ThemesData.dark.icon
                 : ThemesData.light.icon,
-            class: 'oltb-tool-button',
+            class: TOOL_BUTTON_CLASS,
             attributes: {
                 type: 'button',
                 'data-tippy-content': `${(

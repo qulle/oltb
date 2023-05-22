@@ -25,6 +25,8 @@ import { Fill, Stroke, Circle, Style } from 'ol/style';
 import { getMeasureCoordinates, getMeasureValue } from '../helpers/Measurements';
 
 const FILENAME = 'tools/MeasureTool.js';
+const TOOL_BUTTON_CLASS = 'oltb-tool-button';
+const TOOLBOX_SECTION_CLASS = 'oltb-toolbox-section';
 const ID_PREFIX = 'oltb-measure';
 
 const DefaultOptions = Object.freeze({
@@ -52,13 +54,13 @@ class MeasureTool extends Control {
         
         const icon = getIcon({
             path: SvgPaths.rulers.mixed,
-            class: 'oltb-tool-button__icon'
+            class: `${TOOL_BUTTON_CLASS}__icon`
         });
 
         const button = DOM.createElement({
             element: 'button',
             html: icon,
-            class: 'oltb-tool-button',
+            class: TOOL_BUTTON_CLASS,
             attributes: {
                 type: 'button',
                 'data-tippy-content': `Measure (${ShortcutKeys.measureTool})`
@@ -82,28 +84,28 @@ class MeasureTool extends Control {
 
         const toolboxElement = ElementManager.getToolboxElement();
         toolboxElement.insertAdjacentHTML('beforeend', `
-            <div id="${ID_PREFIX}-toolbox" class="oltb-toolbox-section">
-                <div class="oltb-toolbox-section__header">
-                    <h4 class="oltb-toolbox-section__title oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">
+            <div id="${ID_PREFIX}-toolbox" class="${TOOLBOX_SECTION_CLASS}">
+                <div class="${TOOLBOX_SECTION_CLASS}__header">
+                    <h4 class="${TOOLBOX_SECTION_CLASS}__title oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">
                         Measure tool
-                        <span class="oltb-toolbox-section__icon oltb-tippy" title="Toggle section"></span>
+                        <span class="${TOOLBOX_SECTION_CLASS}__icon oltb-tippy" title="Toggle section"></span>
                     </h4>
                 </div>
-                <div class="oltb-toolbox-section__groups" id="${ID_PREFIX}-toolbox-collapsed" style="display: ${this.localStorage.collapsed ? 'none' : 'block'}">
-                    <div class="oltb-toolbox-section__group">
+                <div class="${TOOLBOX_SECTION_CLASS}__groups" id="${ID_PREFIX}-toolbox-collapsed" style="display: ${this.localStorage.collapsed ? 'none' : 'block'}">
+                    <div class="${TOOLBOX_SECTION_CLASS}__group">
                         <label class="oltb-label" for="${ID_PREFIX}-type">Type</label>
                         <select id="${ID_PREFIX}-type" class="oltb-select">
                             <option value="LineString">Length</option>
                             <option value="Polygon">Area</option>
                         </select>
                     </div>
-                    <div class="oltb-toolbox-section__group">
+                    <div class="${TOOLBOX_SECTION_CLASS}__group">
                         <label class="oltb-label" for="${ID_PREFIX}-stroke-color">Stroke color</label>
                         <div id="${ID_PREFIX}-stroke-color" class="oltb-color-input oltb-color-tippy" data-oltb-color-target="#${ID_PREFIX}-stroke-color" data-oltb-color="${this.localStorage.strokeColor}" tabindex="0">
                             <div class="oltb-color-input__inner" style="background-color: ${this.localStorage.strokeColor};"></div>
                         </div>
                     </div>
-                    <div class="oltb-toolbox-section__group">
+                    <div class="${TOOLBOX_SECTION_CLASS}__group">
                         <label class="oltb-label" for="${ID_PREFIX}-fill-color">Fill color</label>
                         <div id="${ID_PREFIX}-fill-color" class="oltb-color-input oltb-color-tippy" data-oltb-color-target="#${ID_PREFIX}-fill-color" data-oltb-color="${this.localStorage.fillColor}" tabindex="0">
                             <div class="oltb-color-input__inner" style="background-color: ${this.localStorage.fillColor};"></div>
@@ -220,8 +222,8 @@ class MeasureTool extends Control {
 
     activateTool() {
         this.active = true;
-        this.measureToolbox.classList.add('oltb-toolbox-section--show');
-        this.button.classList.add('oltb-tool-button--active'); 
+        this.measureToolbox.classList.add(`${TOOLBOX_SECTION_CLASS}--show`);
+        this.button.classList.add(`${TOOL_BUTTON_CLASS}--active`); 
 
         ToolManager.setActiveTool(this);
 
@@ -243,8 +245,8 @@ class MeasureTool extends Control {
         }
 
         this.active = false;
-        this.measureToolbox.classList.remove('oltb-toolbox-section--show');
-        this.button.classList.remove('oltb-tool-button--active'); 
+        this.measureToolbox.classList.remove(`${TOOLBOX_SECTION_CLASS}--show`);
+        this.button.classList.remove(`${TOOL_BUTTON_CLASS}--active`); 
 
         map.removeInteraction(this.interaction);
         this.interaction = undefined;

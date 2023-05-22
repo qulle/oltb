@@ -13,6 +13,8 @@ import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
 import { Control, OverviewMap } from 'ol/control';
 
 const FILENAME = 'tools/OverviewTool.js';
+const TOOL_BUTTON_CLASS = 'oltb-tool-button';
+const TOOLBOX_SECTION_CLASS = 'oltb-toolbox-section';
 const ID_PREFIX = 'oltb-overview';
 
 const DefaultOptions = Object.freeze({
@@ -33,13 +35,13 @@ class OverviewTool extends Control {
         
         const icon = getIcon({
             path: SvgPaths.aspectRatio.stroked,
-            class: 'oltb-tool-button__icon'
+            class: `${TOOL_BUTTON_CLASS}__icon`
         });
 
         const button = DOM.createElement({
             element: 'button',
             html: icon,
-            class: 'oltb-tool-button',
+            class: TOOL_BUTTON_CLASS,
             attributes: {
                 type: 'button',
                 'data-tippy-content': `Area overview (${ShortcutKeys.overviewTool})`
@@ -63,15 +65,15 @@ class OverviewTool extends Control {
 
         const toolboxElement = ElementManager.getToolboxElement();
         toolboxElement.insertAdjacentHTML('beforeend', `
-            <div id="${ID_PREFIX}-toolbox" class="oltb-toolbox-section">
-                <div class="oltb-toolbox-section__header">
-                    <h4 class="oltb-toolbox-section__title oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">
+            <div id="${ID_PREFIX}-toolbox" class="${TOOLBOX_SECTION_CLASS}">
+                <div class="${TOOLBOX_SECTION_CLASS}__header">
+                    <h4 class="${TOOLBOX_SECTION_CLASS}__title oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">
                         Overview tool
-                        <span class="oltb-toolbox-section__icon oltb-tippy" title="Toggle section"></span>
+                        <span class="${TOOLBOX_SECTION_CLASS}__icon oltb-tippy" title="Toggle section"></span>
                     </h4>
                 </div>
-                <div class="oltb-toolbox-section__groups" id="${ID_PREFIX}-toolbox-collapsed" style="display: ${this.localStorage.collapsed ? 'none' : 'block'}">
-                    <div class="oltb-toolbox-section__group" id="${ID_PREFIX}-target"></div>
+                <div class="${TOOLBOX_SECTION_CLASS}__groups" id="${ID_PREFIX}-toolbox-collapsed" style="display: ${this.localStorage.collapsed ? 'none' : 'block'}">
+                    <div class="${TOOLBOX_SECTION_CLASS}__group" id="${ID_PREFIX}-target"></div>
                 </div>
             </div>
         `);
@@ -155,11 +157,11 @@ class OverviewTool extends Control {
         }
 
         // The class must be added before setMap or the overview will not render correctly
-        this.overviewToolbox.classList.add('oltb-toolbox-section--show');
+        this.overviewToolbox.classList.add(`${TOOLBOX_SECTION_CLASS}--show`);
         this.overviewMap.setMap(map);
 
         this.active = true;
-        this.button.classList.add('oltb-tool-button--active');
+        this.button.classList.add(`${TOOL_BUTTON_CLASS}--active`);
 
         this.localStorage.active = true;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
@@ -169,8 +171,8 @@ class OverviewTool extends Control {
         this.overviewMap.setMap(null);
 
         this.active = false;
-        this.button.classList.remove('oltb-tool-button--active');
-        this.overviewToolbox.classList.remove('oltb-toolbox-section--show');
+        this.button.classList.remove(`${TOOL_BUTTON_CLASS}--active`);
+        this.overviewToolbox.classList.remove(`${TOOLBOX_SECTION_CLASS}--show`);
 
         this.localStorage.active = false;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);

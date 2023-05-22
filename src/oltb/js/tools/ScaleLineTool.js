@@ -10,6 +10,7 @@ import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
 import { Control, ScaleLine } from 'ol/control';
 
 const FILENAME = 'tools/ScaleLineTool.js';
+const TOOL_BUTTON_CLASS = 'oltb-tool-button';
 
 const DefaultOptions = Object.freeze({
     units: 'metric',
@@ -29,13 +30,13 @@ class ScaleLineTool extends Control {
         
         const icon = getIcon({
             path: SvgPaths.scaleLine.stroked,
-            class: 'oltb-tool-button__icon'
+            class: `${TOOL_BUTTON_CLASS}__icon`
         });
 
         const button = DOM.createElement({
             element: 'button',
             html: icon,
-            class: 'oltb-tool-button',
+            class: TOOL_BUTTON_CLASS,
             attributes: {
                 type: 'button',
                 'data-tippy-content': `Scale line (${ShortcutKeys.scaleLineTool})`
@@ -101,7 +102,7 @@ class ScaleLineTool extends Control {
         this.scaleLine.setMap(map);
 
         this.active = true;
-        this.button.classList.add('oltb-tool-button--active');
+        this.button.classList.add(`${TOOL_BUTTON_CLASS}--active`);
 
         this.localStorage.active = true;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
@@ -111,7 +112,7 @@ class ScaleLineTool extends Control {
         this.scaleLine.setMap(null);
 
         this.active = false;
-        this.button.classList.remove('oltb-tool-button--active');
+        this.button.classList.remove(`${TOOL_BUTTON_CLASS}--active`);
 
         this.localStorage.active = false;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
