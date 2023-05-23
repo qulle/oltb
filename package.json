@@ -28,7 +28,14 @@
         "example:one": "sh -c 'start firefox -url \"file://C:$(cut -c3- <<< $(readlink -m ./examples/cdn/index.html))\"'",
         "example:two": "parcel serve ./examples/npm/example-one/index.html --open --dist-dir serve/",
         "example:three": "parcel serve ./examples/npm/example-two/index.html --open --dist-dir serve/",
-        "clean": "rm -rf serve/ dist/ demo/ .parcel-cache/"
+        "clean": "rm -rf serve/ dist/ demo/ .parcel-cache/",
+        "install-husky": "npx husky install",
+        "configure-husky": "npx husky install && npx husky add .husky/pre-commit \"npx lint-staged\""
+    },
+    "lint-staged": {
+        "**/*.{js,cjs,mjs}": [
+            "eslint"
+        ]
     },
     "files": [
         "dist"
@@ -51,6 +58,8 @@
         "@rollup/plugin-terser": "^0.4.0",
         "buffer": "^5.7.1",
         "eslint": "^8.41.0",
+        "husky": "^8.0.3",
+        "lint-staged": "^13.2.2",
         "parcel": "^2.8.3",
         "rollup": "^3.19.1",
         "rollup-plugin-license": "^3.0.1",
