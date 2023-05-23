@@ -21,6 +21,7 @@
     },
     "scripts": {
         "start": "parcel serve ./dev/index.html --open --dist-dir serve/",
+        "eslint": "eslint -c ./.eslintrc.cjs ./src/oltb/js/**/*.js",
         "build": "npm run build:demo && npm run build:lib",
         "build:lib": "rollup --config",
         "build:demo": "parcel build --public-url . ./dev/index.html --dist-dir demo/",
@@ -49,6 +50,7 @@
         "@rollup/plugin-replace": "^5.0.2",
         "@rollup/plugin-terser": "^0.4.0",
         "buffer": "^5.7.1",
+        "eslint": "^8.41.0",
         "parcel": "^2.8.3",
         "rollup": "^3.19.1",
         "rollup-plugin-license": "^3.0.1",
