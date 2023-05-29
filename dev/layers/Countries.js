@@ -65,9 +65,9 @@ const parseGeoJson = function(context, data, projection) {
 }
 
 const loadGeoJson = function(extent, resolution, projection, success, failure) {
-    const geoJsonPromise = fetch(urlCountriesGeoJson)
+    fetch(urlCountriesGeoJson)
         .then((response) => {
-            if(!Boolean(response.ok)) {
+            if(!response.ok) {
                 throw new Error('Failed to fetch local geojson', {
                     cause: response
                 });

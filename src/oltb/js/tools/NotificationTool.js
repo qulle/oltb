@@ -19,6 +19,8 @@ const DefaultOptions = Object.freeze({
 
 class NotificationTool extends Control {
     constructor(options = {}) {
+        LogManager.logDebug(FILENAME, 'constructor', 'init');
+        
         super({
             element: ElementManager.getToolbarElement()
         });
@@ -74,7 +76,7 @@ class NotificationTool extends Control {
     }
 
     fetchNotifications() {
-        if(Boolean(this.notificationModal)) {
+        if(this.notificationModal) {
             return;
         }
 
@@ -87,14 +89,14 @@ class NotificationTool extends Control {
         });
 
         const timestamp = new Date().getTime().toString();
-        const notificationPromise = fetch(`${NOTIFICATION_URL}?cache=${timestamp}`, {
+        fetch(`${NOTIFICATION_URL}?cache=${timestamp}`, {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json'
                 },
             })
             .then((response) => {
-                if(!Boolean(response.ok)) {
+                if(!response.ok) {
                     throw new Error('Bad response from server', {
                         cause: response
                     });

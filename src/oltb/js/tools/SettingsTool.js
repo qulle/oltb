@@ -24,6 +24,8 @@ const DefaultOptions = Object.freeze({
 
 class SettingsTool extends Control {
     constructor(options = {}) {
+        LogManager.logDebug(FILENAME, 'constructor', 'init');
+        
         super({
             element: ElementManager.getToolbarElement()
         });
@@ -115,7 +117,7 @@ class SettingsTool extends Control {
     }
 
     momentaryActivation() {
-        if(Boolean(this.settingsModal)) {
+        if(this.settingsModal) {
             return;
         }
 

@@ -1,10 +1,8 @@
 import { Keys } from "../constants/Keys";
 
-const FILENAME = 'browser/TrapFocus.js';
-
 const trapFocus = function(event) {
     const isTabKey = event.key === Keys.valueTab;
-    if(!Boolean(isTabKey)) {
+    if(!isTabKey) {
         return;
     }
 
@@ -13,7 +11,7 @@ const trapFocus = function(event) {
     const content = this.querySelectorAll(elements);
     const lastElement = content[content.length - 1];
 
-    if(Boolean(event.shiftKey)) {
+    if(event.shiftKey) {
         if(document.activeElement === firstElement) {
             lastElement.focus();
             event.preventDefault();

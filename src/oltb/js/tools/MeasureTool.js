@@ -48,6 +48,8 @@ const LocalStorageDefaults = Object.freeze({
 
 class MeasureTool extends Control {
     constructor(options = {}) {
+        LogManager.logDebug(FILENAME, 'constructor', 'init');
+        
         super({
             element: ElementManager.getToolbarElement()
         });
@@ -148,7 +150,7 @@ class MeasureTool extends Control {
     }
 
     onDOMContentLoaded() {
-        if(Boolean(this.localStorage.active)) {
+        if(this.localStorage.active) {
             this.activateTool();
         }
     }
@@ -157,11 +159,11 @@ class MeasureTool extends Control {
         const key = event.key;
 
         if(key === Keys.valueEscape) {
-            if(Boolean(this.interaction)) {
+            if(this.interaction) {
                 this.interaction.abortDrawing();
             }
         }else if(Boolean(event.ctrlKey) && key === Keys.valueZ) {
-            if(Boolean(this.interaction)) {
+            if(this.interaction) {
                 this.interaction.removeLastPoint();
             }
         }else if(isShortcutKeyOnly(event, ShortcutKeys.measureTool)) {
@@ -181,7 +183,7 @@ class MeasureTool extends Control {
         this.strokeColor.firstElementChild.style.backgroundColor = this.localStorage.strokeColor;
 
         // Update the tool to use the correct colors
-        if(Boolean(this.active)) {
+        if(this.active) {
             this.updateTool();
         }
     }
@@ -190,7 +192,7 @@ class MeasureTool extends Control {
         // Store current values in local storage
         this.localStorage.toolType = this.toolType.value;
         this.localStorage.fillColor = this.fillColor.getAttribute('data-oltb-color');
-        this.localStorage.strokeColor = this.strokeColor.getAttribute('data-oltb-color');;
+        this.localStorage.strokeColor = this.strokeColor.getAttribute('data-oltb-color');
 
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
 
@@ -213,7 +215,7 @@ class MeasureTool extends Control {
             this.options.click();
         }
         
-        if(Boolean(this.active)) {
+        if(this.active) {
             this.deActivateTool();
         }else {
             this.activateTool();
@@ -240,7 +242,7 @@ class MeasureTool extends Control {
 
     deActivateTool() {
         const map = this.getMap();
-        if(!Boolean(map)) {
+        if(!map) {
             return;
         }
 
@@ -259,12 +261,12 @@ class MeasureTool extends Control {
 
     selectMeasure(toolType, fillColor, strokeColor) {
         const map = this.getMap();
-        if(!Boolean(map)) {
+        if(!map) {
             return;
         }
 
         // Remove previous interaction if tool is changed
-        if(Boolean(this.interaction)) {
+        if(this.interaction) {
             map.removeInteraction(this.interaction);
         }
         
@@ -322,7 +324,7 @@ class MeasureTool extends Control {
 
     onDrawEnd(event) {
         const map = this.getMap();
-        if(!Boolean(map)) {
+        if(!map) {
             return;
         }
 
@@ -331,7 +333,7 @@ class MeasureTool extends Control {
         const feature = event.feature;
         feature.setStyle(this.styles);
         
-        const poppedTooltip = TooltipManager.pop('measure');
+        TooltipManager.pop('measure');
         const tooltip = generateTooltip();
 
         feature.setProperties({
@@ -380,7 +382,7 @@ class MeasureTool extends Control {
     onDrawAbort(event) {
         unByKey(this.onChangeListener);
         
-        const tooltipItem = TooltipManager.pop('measure');
+        TooltipManager.pop('measure');
 
         // User defined callback from constructor
         if(this.options.abort instanceof Function) {

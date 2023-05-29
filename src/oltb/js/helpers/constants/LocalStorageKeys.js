@@ -1,5 +1,3 @@
-const FILENAME = 'constants/LocalStorageKeys.js';
-
 // Note: These properties are placed inside the oltb object in localStorage
 // So the don't need to be prefixed
 const LocalStorageKeys = Object.freeze({

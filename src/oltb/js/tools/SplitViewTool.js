@@ -34,6 +34,8 @@ const LocalStorageDefaults = Object.freeze({
 
 class SplitViewTool extends Control {
     constructor(options = {}) {
+        LogManager.logDebug(FILENAME, 'constructor', 'init');
+        
         super({
             element: ElementManager.getToolbarElement()
         });
@@ -128,7 +130,7 @@ class SplitViewTool extends Control {
 
     onSliderInput(event) {
         const map = this.getMap();
-        if(!Boolean(map)) {
+        if(!map) {
             return;
         }
 
@@ -144,7 +146,7 @@ class SplitViewTool extends Control {
     }
 
     onDOMContentLoaded() {
-        if(Boolean(this.localStorage.active)) {
+        if(this.localStorage.active) {
             this.activateTool();
         }
     }
@@ -225,7 +227,7 @@ class SplitViewTool extends Control {
             return;
         }
 
-        if(Boolean(this.active)) {
+        if(this.active) {
             this.deActivateTool();
         }else {
             this.activateTool();
@@ -237,7 +239,7 @@ class SplitViewTool extends Control {
 
         eventDispatcher([this.rightSideSrc], Events.browser.change);
 
-        if(Boolean(this.layerLoadingError)) {
+        if(this.layerLoadingError) {
             return;
         }
 
@@ -252,7 +254,7 @@ class SplitViewTool extends Control {
 
     deActivateTool() {
         const map = this.getMap();
-        if(!Boolean(map)) {
+        if(!map) {
             return;
         }
 
@@ -293,7 +295,7 @@ class SplitViewTool extends Control {
 
     sourceChange(leftSideSrcId, rightSideSrcId) {
         const map = this.getMap();
-        if(!Boolean(map)) {
+        if(!map) {
             return;
         }
 
@@ -316,8 +318,8 @@ class SplitViewTool extends Control {
 
         // This should not happen, but just in case
         if(
-            !Boolean(leftSideLayerWrapper) || 
-            !Boolean(rightSideLayerWrapper)
+            !leftSideLayerWrapper || 
+            !rightSideLayerWrapper
         ) {
             this.layerLoadingError = true;
 
@@ -361,7 +363,7 @@ class SplitViewTool extends Control {
 
     onPreRender(event) {
         const map = this.getMap();
-        if(!Boolean(map)) {
+        if(!map) {
             return;
         }
 

@@ -109,14 +109,14 @@ class OLTB {
 
         // Create tool instances
         Object.entries(tools).forEach((entry) => {
-            const [key, value] = entry;
+            const [ key, value ] = entry;
 
             const toolName = key;
             const toolParameters = !(value instanceof Function)
                 ? value 
                 : {};
 
-            if(AllTools.hasOwnProperty(toolName)) {
+            if(Object.prototype.hasOwnProperty.call(AllTools, toolName)) {
                 this.#tools[toolName] = new AllTools[toolName](toolParameters);
             }
         });
@@ -124,7 +124,7 @@ class OLTB {
         // Always add the ContextMenu
         this.#tools['ContextMenu'] = new ContextMenu({});
 
-        if(Boolean(options.map)) {
+        if(options.map) {
             this.setMap(options.map);
         }
     }

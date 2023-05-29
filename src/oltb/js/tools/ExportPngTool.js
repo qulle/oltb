@@ -25,6 +25,8 @@ const DefaultOptions = Object.freeze({
 
 class ExportPngTool extends Control {
     constructor(options = {}) {
+        LogManager.logDebug(FILENAME, 'constructor', 'init');
+
         super({
             element: ElementManager.getToolbarElement()
         });
@@ -68,7 +70,7 @@ class ExportPngTool extends Control {
     onDOMContentLoaded() {
         const mapElement = ElementManager.getMapElement();
         const attributions = mapElement.querySelector('.ol-attribution');
-        if(Boolean(attributions)) {
+        if(attributions) {
             attributions.setAttribute('data-html2canvas-ignore', 'true');
         }
     }
@@ -86,7 +88,7 @@ class ExportPngTool extends Control {
 
     momentaryActivation() {
         const map = this.getMap();
-        if(!Boolean(map)) {
+        if(!map) {
             return;
         }
 
@@ -97,7 +99,7 @@ class ExportPngTool extends Control {
 
     async onRenderComplete() {
         const map = this.getMap();
-        if(!Boolean(map)) {
+        if(!map) {
             return;
         }
 
@@ -121,7 +123,7 @@ class ExportPngTool extends Control {
             pngContext.globalAlpha = opacity === '' ? fullOpacity : Number(opacity);
     
             const matrix = mapCanvas.style.transform
-                .match(/^matrix\(([^\(]*)\)$/)[1]
+                .match(/^matrix\(([^(]*)\)$/)[1]
                 .split(',')
                 .map(Number);
 
@@ -165,11 +167,11 @@ class ExportPngTool extends Control {
             : '';
 
         const filename = `${this.options.filename}${timestamp}.png`;
-        const content = Boolean(navigator.msSaveBlob)
+        const content = navigator.msSaveBlob
             ? pngCanvas.msToBlob()
             : pngCanvas.toDataURL();
 
-        if(Boolean(navigator.msSaveBlob)) {
+        if(navigator.msSaveBlob) {
             navigator.msSaveBlob(content, filename);
         }else {
             download(filename, content);

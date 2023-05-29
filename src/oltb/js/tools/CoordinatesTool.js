@@ -38,6 +38,8 @@ const LocalStorageDefaults = Object.freeze({
 
 class CoordinatesTool extends Control {
     constructor(options = {}) {
+        LogManager.logDebug(FILENAME, 'constructor', 'init');
+
         super({
             element: ElementManager.getToolbarElement()
         });
@@ -135,7 +137,7 @@ class CoordinatesTool extends Control {
     }
 
     onDOMContentLoaded() {
-        if(Boolean(this.localStorage.active)) {
+        if(this.localStorage.active) {
             this.activateTool();
         }
     }
@@ -159,7 +161,7 @@ class CoordinatesTool extends Control {
             this.options.click();
         }
         
-        if(Boolean(this.active)) {
+        if(this.active) {
             this.deActivateTool();
         }else {
             this.activateTool();
@@ -168,7 +170,7 @@ class CoordinatesTool extends Control {
 
     activateTool() {
         const map = this.getMap();
-        if(!Boolean(map)) {
+        if(!map) {
             return;
         }
 
@@ -224,7 +226,7 @@ class CoordinatesTool extends Control {
 
     deActivateTool() {
         this.coordinatesTable.innerHTML = '';
-        const poppedTooltip = TooltipManager.pop('coordinates');
+        TooltipManager.pop('coordinates');
         
         unByKey(this.onPointerMoveListener);
         unByKey(this.onMapClickListener);

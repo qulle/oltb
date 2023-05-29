@@ -1,5 +1,6 @@
 import { DOM } from '../../helpers/browser/DOM';
 import { ModalBase } from './ModalBase';
+import { LogManager } from '../../core/managers/LogManager';
 
 const FILENAME = 'modals/ModalWindow.js';
 
@@ -10,6 +11,8 @@ const DefaultOptions = Object.freeze({
 
 class ModalWindow extends ModalBase {
     constructor(options = {}) {
+        LogManager.logDebug(FILENAME, 'constructor', 'init');
+        
         super(
             options.title || DefaultOptions.title,
             options.maximized,

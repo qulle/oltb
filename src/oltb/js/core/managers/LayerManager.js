@@ -94,7 +94,7 @@ class LayerManager {
         layerWrapper.setId(this.#layerId);
         this.#layerId = this.#layerId + 1;
     
-        if(Boolean(this.#map)) {
+        if(this.#map) {
             this.addMapLayerToMap(layerWrapper, silent);
         }else {
             this.#queue.mapLayers.push({
@@ -219,7 +219,7 @@ class LayerManager {
         this.#layerId = this.#layerId + 1;
         this.#activeFeatureLayer = layerWrapper;
 
-        if(Boolean(this.#map)) {
+        if(this.#map) {
             this.addFeatureLayerToMap(layerWrapper, silent);
         }else {
             this.#queue.featureLayers.push({
@@ -275,7 +275,7 @@ class LayerManager {
     }
 
     static getActiveFeatureLayer(options = {}) {
-        if(!Boolean(this.#activeFeatureLayer)) {
+        if(!this.#activeFeatureLayer) {
             this.addFeatureLayer(options.fallback);
         }
 

@@ -116,7 +116,7 @@ class InfoWindowManager {
         });
 
         const infoWindow = feature?.getProperties()?.oltb?.infoWindow;
-        if(Boolean(infoWindow)) {
+        if(infoWindow) {
             this.showOverly(feature);
         }else {
             this.hideOverlay();
@@ -133,7 +133,7 @@ class InfoWindowManager {
         }
 
         const hightlight = feature?.getProperties()?.oltb?.highlightOnHover;
-        if(Boolean(hightlight)) {
+        if(hightlight) {
             this.hightlightVectorSection(feature);
         }
 
@@ -166,7 +166,7 @@ class InfoWindowManager {
 
     static showOverly(marker, position) {
         const infoWindow = marker.getProperties().oltb.infoWindow;
-        if(!Boolean(infoWindow)) {
+        if(!infoWindow) {
             return;
         }
 
@@ -174,7 +174,7 @@ class InfoWindowManager {
         this.#content.innerHTML = infoWindow.content;
         this.#footer.innerHTML = infoWindow.footer;
 
-        if(Boolean(position)) {
+        if(position) {
             this.#overlay.setPosition(position);
         }else {
             this.#overlay.setPosition(getCenter(
@@ -188,7 +188,7 @@ class InfoWindowManager {
 
         // Attach listeners to the function-buttons inside the infoWindow
         const removeMarkerButton = this.#footer.querySelector(`#${ID_PREFIX}-remove`);
-        if(Boolean(removeMarkerButton)) {
+        if(removeMarkerButton) {
             removeMarkerButton.addEventListener(
                 Events.browser.click, 
                 removeMarker.bind(this, InfoWindowManager, marker)
@@ -196,7 +196,7 @@ class InfoWindowManager {
         }
 
         const copyMarkerCoordinatesButton = this.#footer.querySelector(`#${ID_PREFIX}-copy-coordinates`);
-        if(Boolean(copyMarkerCoordinatesButton)) {
+        if(copyMarkerCoordinatesButton) {
             copyMarkerCoordinatesButton.addEventListener(
                 Events.browser.click, 
                 copyMarkerCoordinates.bind(this, InfoWindowManager, copyMarkerCoordinatesButton.getAttribute('data-coordinates'))
@@ -204,7 +204,7 @@ class InfoWindowManager {
         }
 
         const copyMarkerInfoButton = this.#footer.querySelector(`#${ID_PREFIX}-copy-text`);
-        if(Boolean(copyMarkerInfoButton)) {
+        if(copyMarkerInfoButton) {
             copyMarkerInfoButton.addEventListener(
                 Events.browser.click, 
                 copyMarkerInfo.bind(this, InfoWindowManager, copyMarkerInfoButton.getAttribute('data-copy'))
@@ -212,7 +212,7 @@ class InfoWindowManager {
         }
 
         const editMarkerButton = this.#footer.querySelector(`#${ID_PREFIX}-edit`);
-        if(Boolean(editMarkerButton)) {
+        if(editMarkerButton) {
             editMarkerButton.addEventListener(
                 Events.browser.click, 
                 editMarker.bind(this, InfoWindowManager, marker)

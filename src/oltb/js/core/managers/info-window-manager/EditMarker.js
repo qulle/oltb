@@ -6,12 +6,11 @@ import { toStringHDMS } from 'ol/coordinate';
 import { LayerManager } from '../LayerManager';
 import { generateMarker } from '../../../generators/GenerateMarker';
 
-const FILENAME = 'info-window-manager/EditMarker.js';
 const ID_PREFIX = 'oltb-info-window-marker';
 
 const editMarker = function(InfoWindowManager, beforeMarker) {
     const properties = beforeMarker.getProperties().oltb;
-    const markerModal = new MarkerModal({
+    new MarkerModal({
         edit: true,
         coordinates: transform(
             beforeMarker.getGeometry().getCoordinates(), 

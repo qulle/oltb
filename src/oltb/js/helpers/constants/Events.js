@@ -1,5 +1,3 @@
-const FILENAME = 'constants/Events.js';
-
 const Events = Object.freeze({
     browser: Object.freeze({
         click: 'click',

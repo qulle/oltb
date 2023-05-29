@@ -1,7 +1,5 @@
 import { ToastBase } from './toasts/ToastBase';
 
-const FILENAME = 'common/Toast.js';
-
 class Toast {
     static info(options) {
         return new ToastBase({ ...options, type: ToastBase.Info });

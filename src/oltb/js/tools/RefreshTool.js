@@ -16,6 +16,8 @@ const DefaultOptions = Object.freeze({
 
 class RefreshTool extends Control {
     constructor(options = {}) {
+        LogManager.logDebug(FILENAME, 'constructor', 'init');
+        
         super({
             element: ElementManager.getToolbarElement()
         });

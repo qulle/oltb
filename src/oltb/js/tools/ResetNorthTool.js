@@ -24,6 +24,8 @@ const DefaultOptions = Object.freeze({
 
 class ResetNorthTool extends Control {
     constructor(options = {}) {
+        LogManager.logDebug(FILENAME, 'constructor', 'init');
+        
         super({
             element: ElementManager.getToolbarElement()
         });
@@ -120,7 +122,7 @@ class ResetNorthTool extends Control {
 
     momentaryActivation() {
         const map = this.getMap();
-        if(!Boolean(map)) {
+        if(!map) {
             return;
         }
 

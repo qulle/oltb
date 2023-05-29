@@ -6,8 +6,6 @@ import { hasNestedProperty } from '../helpers/browser/HasNestedProperty';
 import { FeatureProperties } from '../helpers/constants/FeatureProperties';
 import { Circle, Fill, Icon, Stroke, Style } from 'ol/style';
 
-const FILENAME = 'generators/GenerateMarker.js';
-
 const DefaultOptions = Object.freeze({
     lon: undefined,
     lat: undefined,

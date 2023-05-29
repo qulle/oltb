@@ -68,6 +68,8 @@ const LocalStorageDefaults = Object.freeze({
 
 class LayerTool extends Control {
     constructor(options = {}) {
+        LogManager.logDebug(FILENAME, 'constructor', 'init');
+
         super({
             element: ElementManager.getToolbarElement()
         });
@@ -172,19 +174,19 @@ class LayerTool extends Control {
         this.addFeatureLayerButton = this.layersToolbox.querySelector(`#${ID_PREFIX}-feature-stack-add-button`);
         this.addFeatureLayerText = this.layersToolbox.querySelector(`#${ID_PREFIX}-feature-stack-add-text`);
 
-        if(Boolean(this.addMapLayerButton)) {
+        if(this.addMapLayerButton) {
             this.addMapLayerButton.addEventListener(Events.browser.click, this.showAddMapLayerModal.bind(this));
         }
 
-        if(Boolean(this.addFeatureLayerButton)) {
+        if(this.addFeatureLayerButton) {
             this.addFeatureLayerButton.addEventListener(Events.browser.click, this.onFeatureLayerAdd.bind(this));
         }
 
-        if(Boolean(this.addFeatureLayerText)) {
+        if(this.addFeatureLayerText) {
             this.addFeatureLayerText.addEventListener(Events.browser.keyUp, this.onFeatureLayerAdd.bind(this));
         }
 
-        if(!Boolean(this.options.disableMapCreateLayerButton)) {
+        if(!this.options.disableMapCreateLayerButton) {
             ContextMenu.addItem({
                 icon: icon, 
                 name: 'Add map layer', 
@@ -209,7 +211,7 @@ class LayerTool extends Control {
     }
 
     onDOMContentLoaded() {
-        if(Boolean(this.localStorage.active)) {
+        if(this.localStorage.active) {
             this.activateTool();
         }
     }
@@ -244,7 +246,7 @@ class LayerTool extends Control {
             this.options.click();
         }
         
-        if(Boolean(this.active)) {
+        if(this.active) {
             this.deActivateTool();
         }else {
             this.activateTool();
@@ -270,7 +272,7 @@ class LayerTool extends Control {
     }
 
     showAddMapLayerModal() {
-        const layerModal = new LayerModal({
+        new LayerModal({
             onCreate: (result) => {
                 this.onCreateMapLayer(result);
             }
@@ -351,7 +353,7 @@ class LayerTool extends Control {
 
         // User defined callback from constructor
         if(
-            !Boolean(silent) &&
+            !silent &&
             this.options.mapLayerAdded instanceof Function
         ) {
             this.options.mapLayerAdded(layerWrapper);
@@ -369,7 +371,7 @@ class LayerTool extends Control {
 
         // User defined callback from constructor
         if(
-            !Boolean(silent) &&
+            !silent &&
             this.options.mapLayerRemoved instanceof Function
         ) {
             this.options.mapLayerRemoved(layerWrapper);
@@ -411,7 +413,7 @@ class LayerTool extends Control {
 
         // User defined callback from constructor
         if(
-            !Boolean(silent) &&
+            !silent &&
             this.options.featureLayerAdded instanceof Function
         ) {
             this.options.featureLayerAdded(layerWrapper);
@@ -436,7 +438,7 @@ class LayerTool extends Control {
 
         // User defined callback from constructor
         if(
-            !Boolean(silent) &&
+            !silent &&
             this.options.featureLayerRemoved instanceof Function
         ) {
             this.options.featureLayerRemoved(layerWrapper);
@@ -579,7 +581,7 @@ class LayerTool extends Control {
             },
             listeners: {
                 'click': () => {
-                    const downloadModal = new DownloadLayerModal({
+                    new DownloadLayerModal({
                         onDownload: (result) => {   
                             this.onDownloadLayer(layerWrapper, result);
                         }
@@ -594,7 +596,7 @@ class LayerTool extends Control {
     onDownloadLayer(layerWrapper, result) {
         const format = instantiateFormat(result.format);
             
-        if(!Boolean(format)) {
+        if(!format) {
             const errorMessage = `Layer format '<strong>${result.format})</strong>' is not supported`;
             LogManager.logError(FILENAME, 'onDownloadLayer', errorMessage);
 
@@ -621,8 +623,8 @@ class LayerTool extends Control {
         download(filename, content);
             
         // User defined callback from constructor
-        if(callback instanceof Function) {
-            callback(layerWrapper, filename, content);
+        if(this.options.featureLayerDownloaded instanceof Function) {
+            this.options.featureLayerDownloaded(layerWrapper, filename, content);
         }
     }
 
@@ -663,7 +665,7 @@ class LayerTool extends Control {
 
     createVisibilityButton(layerWrapper, callback, layerName) {
         const map = this.getMap();
-        if(!Boolean(map)) {
+        if(!map) {
             return;
         }
 
@@ -684,7 +686,7 @@ class LayerTool extends Control {
                      
                     // Hide overlays associated with the layer
                     const hasFeatures = layer.getSource().getFeatures instanceof Function;
-                    if(Boolean(hasFeatures)) {
+                    if(hasFeatures) {
                         layer.getSource().getFeatures().forEach((feature) => {
                             if(hasCustomFeatureProperty(feature.getProperties(), FeatureProperties.tooltip)) {
                                 feature.getProperties().oltb.tooltip.setMap(flippedVisibility ? map : null)

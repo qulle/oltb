@@ -6,6 +6,7 @@ import { Control } from "ol/control";
 import { transform } from 'ol/proj';
 import { trapFocus } from '../helpers/browser/TrapFocus';
 import { UrlManager } from '../core/managers/UrlManager';
+import { LogManager } from '../core/managers/LogManager';
 import { ElementManager } from '../core/managers/ElementManager';
 import { hasNestedProperty } from "../helpers/browser/HasNestedProperty";
 
@@ -23,6 +24,8 @@ class ContextMenu extends Control {
     }
 
     constructor(options = {}) {
+        LogManager.logDebug(FILENAME, 'constructor', 'init');
+        
         super({
             element: DOM.createElement({
                 element: 'ul',
@@ -107,7 +110,7 @@ class ContextMenu extends Control {
         }
 
         const map = this.getMap();
-        if(!Boolean(map)) {
+        if(!map) {
             return;
         }
 

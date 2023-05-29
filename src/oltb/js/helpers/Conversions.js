@@ -1,5 +1,3 @@
-const FILENAME = 'helpers/Conversions.js';
-
 const roundToNearest = function(value, nearest) {
     return Math.round(value / nearest) * nearest;
 }

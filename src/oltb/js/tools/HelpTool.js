@@ -20,6 +20,8 @@ const DefaultOptions = Object.freeze({
 
 class HelpTool extends Control {
     constructor(options = {}) {
+        LogManager.logDebug(FILENAME, 'constructor', 'init');
+
         super({
             element: ElementManager.getToolbarElement()
         });

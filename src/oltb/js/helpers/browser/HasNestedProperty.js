@@ -1,13 +1,10 @@
-const FILENAME = 'browser/HasNestedProperty.js';
-const EMPTY = 0;
-
 const hasNestedProperty = (obj, prop, ...rest) => {
     if(obj === undefined) {
         return false;
     }
 
     if(
-        rest.length === EMPTY &&
+        rest.length === 0 &&
         Object.prototype.hasOwnProperty.call(obj, prop)
     ) {
         return true;

@@ -46,6 +46,8 @@ const LocalStorageDefaults = Object.freeze({
 
 class DirectionTool extends Control {
     constructor(options = {}) {
+        LogManager.logDebug(FILENAME, 'constructor', 'init');
+
         super({
             element: ElementManager.getToolbarElement()
         });

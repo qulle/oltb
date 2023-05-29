@@ -1,5 +1,6 @@
 import { DOM } from '../../helpers/browser/DOM';
 import { ModalBase } from '../../common/modals/ModalBase';
+import { LogManager } from '../../core/managers/LogManager';
 import { isDarkTheme } from '../../helpers/IsDarkTheme';
 
 const FILENAME = 'modal-extensions/CoordinateModal.js';
@@ -14,6 +15,8 @@ const DefaultOptions = Object.freeze({
 
 class CoordinateModal extends ModalBase {
     constructor(options = {}) {
+        LogManager.logDebug(FILENAME, 'constructor', 'init');
+
         super(
             'Coordinates', 
             options.maximized, 

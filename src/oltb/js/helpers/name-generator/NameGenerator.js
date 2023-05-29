@@ -2,7 +2,6 @@ import { Animals } from './Animals';
 import { Adjectives } from './Adjectives';
 import { randomNumber } from '../browser/Random';
 
-const FILENAME = 'name-generator/NameGenerator.js';
 const ZERO_INDEX_OFFSET = 1;
 
 const generateAnimalName = function() {

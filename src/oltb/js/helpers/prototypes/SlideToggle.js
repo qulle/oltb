@@ -1,5 +1,3 @@
-const FILENAME = 'prototypes/SlideToggle.js';
-
 HTMLElement.prototype.slideToggle = function(duration, callback) {
     if(this.clientHeight === 0) {
         slideToggle(this, duration, callback, true);

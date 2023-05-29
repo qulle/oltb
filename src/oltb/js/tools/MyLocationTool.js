@@ -33,6 +33,8 @@ const DefaultOptions = Object.freeze({
 
 class MyLocationTool extends Control {
     constructor(options = {}) {
+        LogManager.logDebug(FILENAME, 'constructor', 'init');
+        
         super({
             element: ElementManager.getToolbarElement()
         });
@@ -108,11 +110,11 @@ class MyLocationTool extends Control {
     }
 
     getGeoLocation() {
-        if(Boolean(this.loadingToast)) {
+        if(this.loadingToast) {
             return;
         }
 
-        if(Boolean(navigator.geolocation)) {
+        if(navigator.geolocation) {
             this.loadingToast = Toast.info({
                 title: 'Searching',
                 message: 'Trying to find your location...', 
@@ -140,7 +142,7 @@ class MyLocationTool extends Control {
 
     onSuccess(location) {
         const map = this.getMap();
-        if(!Boolean(map)) {
+        if(!map) {
             return;
         }
 

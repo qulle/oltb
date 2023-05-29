@@ -1,5 +1,6 @@
 import { DOM } from '../../helpers/browser/DOM';
 import { ModalBase } from '../../common/modals/ModalBase';
+import { LogManager } from '../../core/managers/LogManager';
 import { isDarkTheme } from '../../helpers/IsDarkTheme';
 import { SettingsManager } from '../../core/managers/SettingsManager';
 
@@ -16,6 +17,8 @@ class SettingsModal extends ModalBase {
     #state = new Map();
 
     constructor(options = {}) {
+        LogManager.logDebug(FILENAME, 'constructor', 'init');
+
         super(
             'Settings', 
             options.maximized, 
@@ -64,7 +67,7 @@ class SettingsModal extends ModalBase {
             // Copy current state of each setting
             this.#state.set(key, settingObj.state);
 
-            if(Boolean(settingObj.state)) {
+            if(settingObj.state) {
                 checkbox.setAttribute('checked', '');
             }
 

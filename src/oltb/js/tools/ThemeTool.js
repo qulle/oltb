@@ -45,6 +45,8 @@ const LocalStorageDefaults = Object.freeze({
 
 class ThemeTool extends Control {
     constructor(options = {}) {
+        LogManager.logDebug(FILENAME, 'constructor', 'init');
+        
         super({
             element: ElementManager.getToolbarElement()
         });

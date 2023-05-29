@@ -29,6 +29,8 @@ const LocalStorageDefaults = Object.freeze({
 
 class OverviewTool extends Control {
     constructor(options = {}) {
+        LogManager.logDebug(FILENAME, 'constructor', 'init');
+        
         super({
             element: ElementManager.getToolbarElement()
         });
@@ -103,7 +105,7 @@ class OverviewTool extends Control {
 
     onToggleToolbox(toggle) {
         const map = this.getMap();
-        if(!Boolean(map)) {
+        if(!map) {
             return;
         }
 
@@ -120,7 +122,7 @@ class OverviewTool extends Control {
     }
 
     onDOMContentLoaded() {
-        if(Boolean(this.localStorage.active)) {
+        if(this.localStorage.active) {
             this.activateTool();
         }
     }
@@ -143,7 +145,7 @@ class OverviewTool extends Control {
             this.options.click();
         }
 
-        if(Boolean(this.active)) {
+        if(this.active) {
             this.deActivateTool();
         }else {
             this.activateTool(); 
@@ -152,7 +154,7 @@ class OverviewTool extends Control {
 
     activateTool() {
         const map = this.getMap();
-        if(!Boolean(map)) {
+        if(!map) {
             return;
         }
 

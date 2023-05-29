@@ -21,6 +21,8 @@ const DefaultOptions = Object.freeze({
 
 class ZoomInTool extends Control {
     constructor(options = {}) {
+        LogManager.logDebug(FILENAME, 'constructor', 'init');
+        
         super({
             element: ElementManager.getToolbarElement()
         });
@@ -72,7 +74,7 @@ class ZoomInTool extends Control {
 
     momentaryActivation() {
         const map = this.getMap();
-        if(!Boolean(map)) {
+        if(!map) {
             return;
         }
 

@@ -1,5 +1,6 @@
 import { DOM } from '../../helpers/browser/DOM';
 import { DialogBase } from './DialogBase';
+import { LogManager } from '../../core/managers/LogManager';
 import { isDarkTheme } from '../../helpers/IsDarkTheme';
 import { ElementManager } from '../../core/managers/ElementManager';
 
@@ -17,6 +18,8 @@ const DefaultOptions = Object.freeze({
 
 class Confirm extends DialogBase {
     constructor(options = {}) {
+        LogManager.logDebug(FILENAME, 'constructor', 'init');
+        
         super();
 
         this.options = { ...DefaultOptions, ...options };

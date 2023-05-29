@@ -29,6 +29,8 @@ const DefaultOptions = Object.freeze({
 
 class FullscreenTool extends Control {
     constructor(options = {}) {
+        LogManager.logDebug(FILENAME, 'constructor', 'init');
+
         super({
             element: ElementManager.getToolbarElement()
         });
@@ -106,13 +108,13 @@ class FullscreenTool extends Control {
             exitFullScreen();
         }else {
             const map = this.getMap();
-            if(!Boolean(map)) {
+            if(!map) {
                 return;
             }
 
             const element = map.getTargetElement();
 
-            if(Boolean(this.keys)) {
+            if(this.keys) {
                 requestFullScreenWithKeys(element);
             }else {
                 requestFullScreen(element);
@@ -121,7 +123,7 @@ class FullscreenTool extends Control {
     }
 
     onFullScreenChange(event) {
-        if(Boolean(document.fullscreenElement)) {
+        if(document.fullscreenElement) {
             this.button._tippy.setContent(`Exit fullscreen (${ShortcutKeys.fullscreenTool})`);
 
             // User defined callback from constructor
@@ -140,7 +142,7 @@ class FullscreenTool extends Control {
 
     handleFullScreenChange() {
         const map = this.getMap();
-        if(!Boolean(map)) {
+        if(!map) {
             return;
         }
 

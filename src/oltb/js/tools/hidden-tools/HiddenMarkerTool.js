@@ -1,5 +1,6 @@
 import { Events } from '../../helpers/constants/Events';
 import { Control } from 'ol/control';
+import { LogManager } from '../../core/managers/LogManager';
 import { ContextMenu } from '../../common/ContextMenu';
 import { MarkerModal } from '../modal-extensions/MarkerModal';
 import { toStringHDMS } from 'ol/coordinate';
@@ -19,6 +20,8 @@ const DefaultOptions = Object.freeze({
 
 class HiddenMarkerTool extends Control {
     constructor(options = {}) {
+        LogManager.logDebug(FILENAME, 'constructor', 'init');
+
         super({
             element: ElementManager.getToolbarElement()
         });
@@ -42,7 +45,7 @@ class HiddenMarkerTool extends Control {
     }
 
     onContextMenuCreateMarker(map, coordinates, target) {
-        const markerModal = new MarkerModal({
+        new MarkerModal({
             coordinates: coordinates,
             onCreate: (result) => {
                 this.onCreateMarker(result);

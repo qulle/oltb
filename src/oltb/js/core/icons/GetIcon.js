@@ -1,5 +1,3 @@
-const FILENAME = 'icons/GetIcon.js';
-
 const SvgPaths = Object.freeze({
     arrowClockwise: Object.freeze({
         stroked: `
@@ -368,7 +366,7 @@ const getIcon = function(options = {}) {
 
     // HEX Colors are not valid in SVG 
     // Unless they are replaced with URL alternative char
-    if(Boolean(options.replaceHashtag)) {   
+    if(options.replaceHashtag) {   
         options.fill = options.fill.replace('#', '%23');
         options.stroke = options.stroke.replace('#', '%23');
     }

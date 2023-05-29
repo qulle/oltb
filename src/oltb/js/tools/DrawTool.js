@@ -49,6 +49,8 @@ const LocalStorageDefaults = Object.freeze({
 
 class DrawTool extends Control {
     constructor(options = {}) {
+        LogManager.logDebug(FILENAME, 'constructor', 'init');
+
         super({
             element: ElementManager.getToolbarElement()
         });
@@ -187,7 +189,7 @@ class DrawTool extends Control {
     }
 
     onDOMContentLoaded() {
-        if(Boolean(this.localStorage.active)) {
+        if(this.localStorage.active) {
             this.activateTool();
         }
     }
@@ -200,11 +202,11 @@ class DrawTool extends Control {
         const key = event.key;
 
         if(key === Keys.valueEscape) {
-            if(Boolean(this.interaction)) {
+            if(this.interaction) {
                 this.interaction.abortDrawing();
             }
         }else if(Boolean(event.ctrlKey) && key === Keys.valueZ) {
-            if(Boolean(this.interaction)) {
+            if(this.interaction) {
                 this.interaction.removeLastPoint();
             }
         }else if(isShortcutKeyOnly(event, ShortcutKeys.drawTool)) {
@@ -224,7 +226,7 @@ class DrawTool extends Control {
         this.strokeColor.firstElementChild.style.backgroundColor = this.localStorage.strokeColor;
 
         // Update the tool to use the correct colors
-        if(Boolean(this.active)) {
+        if(this.active) {
             this.updateTool();
         }
     }
@@ -234,7 +236,7 @@ class DrawTool extends Control {
         this.localStorage.toolType = this.toolType.value;
         this.localStorage.strokeWidth = this.strokeWidth.value;
         this.localStorage.fillColor = this.fillColor.getAttribute('data-oltb-color');
-        this.localStorage.strokeColor = this.strokeColor.getAttribute('data-oltb-color');;
+        this.localStorage.strokeColor = this.strokeColor.getAttribute('data-oltb-color');
 
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
 
@@ -270,7 +272,7 @@ class DrawTool extends Control {
             this.options.click();
         }
 
-        if(Boolean(this.active)) {
+        if(this.active) {
             this.deActivateTool();
         }else {
             this.activateTool();
@@ -297,7 +299,7 @@ class DrawTool extends Control {
 
     deActivateTool() {
         const map = this.getMap();
-        if(!Boolean(map)) {
+        if(!map) {
             return;
         }
 
@@ -316,12 +318,12 @@ class DrawTool extends Control {
 
     selectDraw(toolType, strokeWidth, fillColor, strokeColor) {
         const map = this.getMap();
-        if(!Boolean(map)) {
+        if(!map) {
             return;
         }
 
         // Remove previous interaction if tool is changed
-        if(Boolean(this.interaction)) {
+        if(this.interaction) {
             map.removeInteraction(this.interaction);
         }
 

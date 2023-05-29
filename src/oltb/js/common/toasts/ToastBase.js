@@ -1,6 +1,7 @@
 import { DOM } from '../../helpers/browser/DOM';
 import { Config } from '../../core/Config';
 import { Events } from '../../helpers/constants/Events';
+import { LogManager } from '../../core/managers/LogManager';
 import { ElementManager } from '../../core/managers/ElementManager';
 
 const FILENAME = 'toasts/ToastBase.js';
@@ -17,6 +18,8 @@ const DefaultOptions = Object.freeze({
 
 class ToastBase {
     constructor(options = {}) {
+        LogManager.logDebug(FILENAME, 'constructor', 'init');
+        
         this.options = { ...DefaultOptions, ...options };
         this.#createToast();
     }
@@ -29,12 +32,12 @@ class ToastBase {
             } oltb-animation oltb-animation--slide-in oltb-d-flex` 
         });
         
-        if(Boolean(this.options.clickToRemove)) {
+        if(this.options.clickToRemove) {
             this.toast.classList.add(`${TOAST_CLASS}--clickable`);
             this.toast.addEventListener(Events.browser.click, this.remove.bind(this));
         }
 
-        if(Boolean(this.options.spinner)) {
+        if(this.options.spinner) {
             const spinnerElement = DOM.createElement({
                 element: 'div',
                 class: 'oltb-spinner oltb-spinner--small oltb-animation oltb-animation--linear-spinner'
@@ -74,7 +77,7 @@ class ToastBase {
         const toastElement = ElementManager.getToastElement();
         toastElement.prepend(this.toast);
 
-        if(Boolean(this.options.autoremove)) {
+        if(this.options.autoremove) {
             window.setTimeout(() => {
                 this.remove();
             }, this.options.autoremove);

@@ -1,5 +1,3 @@
-const FILENAME = 'constants/FeatureProperties.js';
-
 // Note: These properties are placed inside the oltb object in the feature
 // So the don't need to be prefixed
 const FeatureProperties = Object.freeze({

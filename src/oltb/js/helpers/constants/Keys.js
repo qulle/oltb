@@ -1,5 +1,3 @@
-const FILENAME = 'constants/Keys.js';
-
 const Keys = Object.freeze({
     valueCancel: 'Cancel',
     valueHelp: 'Help',

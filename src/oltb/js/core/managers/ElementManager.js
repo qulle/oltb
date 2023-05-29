@@ -39,7 +39,7 @@ class ElementManager {
     }
 
     static #onMouseWheel(event) {
-        if(!Boolean(event.ctrlKey)) {
+        if(!event.ctrlKey) {
             const zeroAxis = 0;
             const distance = Config.scrollDistance;
             this.scrollLeft += event.deltaY > zeroAxis ? distance : -distance;
@@ -78,25 +78,25 @@ class ElementManager {
 
         // Check if the user has chosen dark theme
         const isDarkTheme = (StateManager.getStateObject(themeKey).theme === 'dark');
-        if(Boolean(isDarkTheme)) {
+        if(isDarkTheme) {
             element.classList.add('dark');
         }
 
         // Check if the user has chosen light theme 
         const isLightTheme = (StateManager.getStateObject(themeKey).theme === 'light');
-        if(Boolean(isLightTheme)) {
+        if(isLightTheme) {
             element.classList.remove('dark');
         }
 
         // Check if the user has chosen horizontal layout 
         const isHorizontal = (StateManager.getStateObject(directionKey).direction === 'row');
-        if(Boolean(isHorizontal)) {
+        if(isHorizontal) {
             element.classList.add('row');
         }
 
         // Check if the user has chosen vertical layout 
         const isVertical = (StateManager.getStateObject(directionKey).direction === 'col');
-        if(Boolean(isVertical)) {
+        if(isVertical) {
             element.classList.remove('row');
         }
 

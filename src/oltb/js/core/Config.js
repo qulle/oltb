@@ -1,8 +1,6 @@
 import { VERSION } from 'ol';
 import { version } from '../../../../package.json';
 
-const FILENAME = 'core/Config.js';
-
 const Config = Object.freeze({
     openLayers: Object.freeze({
         version: VERSION,

@@ -38,17 +38,17 @@ const isFullScreen = function() {
 }
 
 const requestFullScreen = function(element) {
-    if(Boolean(element.requestFullscreen)) {
+    if(element.requestFullscreen) {
         element.requestFullscreen();
-    }else if(Boolean(element['msRequestFullscreen'])) {
+    }else if(element['msRequestFullscreen']) {
         element['msRequestFullscreen']();
-    }else if(Boolean(element['webkitRequestFullscreen'])) {
+    }else if(element['webkitRequestFullscreen']) {
         element['webkitRequestFullscreen']();
     }
 }
   
 const requestFullScreenWithKeys = function(element) {
-    if(Boolean(element['webkitRequestFullscreen'])) {
+    if(element['webkitRequestFullscreen']) {
         element['webkitRequestFullscreen']();
     }else {
         requestFullScreen(element);
@@ -56,11 +56,11 @@ const requestFullScreenWithKeys = function(element) {
 }
   
 const exitFullScreen = function() {
-    if(Boolean(document.exitFullscreen)) {
+    if(document.exitFullscreen) {
         return document.exitFullscreen();
-    }else if(Boolean(document['msExitFullscreen'])) {
+    }else if(document['msExitFullscreen']) {
         return document['msExitFullscreen']();
-    }else if(Boolean(document['webkitExitFullscreen'])) {
+    }else if(document['webkitExitFullscreen']) {
         return document['webkitExitFullscreen']();
     }
 }

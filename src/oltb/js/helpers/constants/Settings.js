@@ -1,5 +1,3 @@
-const FILENAME = 'constants/Settings.js';
-
 const Settings = Object.freeze({
     dragPan: 'drag.pan',
     keyboardPan: 'keyboard.pan',

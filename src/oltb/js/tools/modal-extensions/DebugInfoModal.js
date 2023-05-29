@@ -20,6 +20,8 @@ const DefaultOptions = Object.freeze({
 
 class DebugInfoModal extends ModalBase {
     constructor(options = {}) {
+        LogManager.logDebug(FILENAME, 'constructor', 'init');
+
         super(
             'Debug information', 
             DefaultOptions.maximized, 
@@ -142,7 +144,7 @@ class DebugInfoModal extends ModalBase {
             id: `${ID_PREFIX}-section-${index}`
         });
 
-        if(Boolean(section.json)) {
+        if(section.json) {
             const jsonSection = this.#generateJsonSection(section);
             DOM.appendChildren(sectionContent, [
                 jsonSection
@@ -436,7 +438,7 @@ class DebugInfoModal extends ModalBase {
         };
 
         const actionMethod = actions[action];
-        if(Boolean(actionMethod)) {
+        if(actionMethod) {
             actionMethod.call();
         }
     }

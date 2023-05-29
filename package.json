@@ -21,7 +21,10 @@
     },
     "scripts": {
         "start": "parcel serve ./dev/index.html --open --dist-dir serve/",
-        "eslint": "eslint -c ./.eslintrc.cjs ./src/oltb/js/**/*.js",
+        "eslint:src": "eslint --config ./.eslintrc.cjs ./src/oltb/js/**/*.js",
+        "eslint:src-fix": "eslint --fix --config ./.eslintrc.cjs ./src/oltb/js/**/*.js",
+        "eslint:dev": "eslint --config ./.eslintrc.cjs ./dev/**/*.js",
+        "eslint:dev-fix": "eslint --fix --config ./.eslintrc.cjs ./dev/**/*.js",
         "build": "npm run build:demo && npm run build:lib",
         "build:lib": "rollup --config",
         "build:demo": "parcel build --public-url . ./dev/index.html --dist-dir demo/",
@@ -33,8 +36,8 @@
         "configure-husky": "npx husky install && npx husky add .husky/pre-commit \"npx lint-staged\""
     },
     "lint-staged": {
-        "**/*.{js,cjs,mjs}": [
-            "eslint"
+        "**/*.{js}": [
+            "eslint --config ./.eslintrc.cjs"
         ]
     },
     "files": [

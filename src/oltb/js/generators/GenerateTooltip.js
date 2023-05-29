@@ -2,8 +2,6 @@ import { DOM } from '../helpers/browser/DOM';
 import { Config } from '../core/Config';
 import { Overlay } from 'ol';
 
-const FILENAME = 'generators/GenerateTooltip.js';
-
 const generateTooltip = function(data = '') {
     const tooltip = DOM.createElement({
         element: 'div',

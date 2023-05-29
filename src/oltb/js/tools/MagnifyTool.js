@@ -30,6 +30,8 @@ const LocalStorageDefaults = Object.freeze({
 
 class MagnifyTool extends Control {
     constructor(options = {}) {
+        LogManager.logDebug(FILENAME, 'constructor', 'init');
+        
         super({
             element: ElementManager.getToolbarElement()
         });
@@ -68,7 +70,7 @@ class MagnifyTool extends Control {
     }
 
     onDOMContentLoaded() {
-        if(Boolean(this.localStorage.active)) {
+        if(this.localStorage.active) {
             this.activateTool();
         }
     }
@@ -87,7 +89,7 @@ class MagnifyTool extends Control {
             this.options.click();
         }
 
-        if(Boolean(this.active)) {
+        if(this.active) {
             this.deActivateTool();
         }else {
             this.activateTool();
@@ -96,7 +98,7 @@ class MagnifyTool extends Control {
 
     activateTool() {
         const map = this.getMap();
-        if(!Boolean(map)) {
+        if(!map) {
             return;
         }
 
@@ -125,7 +127,7 @@ class MagnifyTool extends Control {
 
     deActivateTool() {
         const map = this.getMap();
-        if(!Boolean(map)) {
+        if(!map) {
             return;
         }
 
@@ -155,7 +157,7 @@ class MagnifyTool extends Control {
         event.preventDefault();
 
         const map = this.getMap();
-        if(!Boolean(map)) {
+        if(!map) {
             return;
         }
         
@@ -172,7 +174,7 @@ class MagnifyTool extends Control {
 
     onMousemove(event) {
         const map = this.getMap();
-        if(!Boolean(map)) {
+        if(!map) {
             return;
         }
         
@@ -182,7 +184,7 @@ class MagnifyTool extends Control {
 
     onMouseout(event) {
         const map = this.getMap();
-        if(!Boolean(map)) {
+        if(!map) {
             return;
         }
 
@@ -191,7 +193,7 @@ class MagnifyTool extends Control {
     }
 
     onPostrender(event) {
-        if(Boolean(this.mousePosition)) {
+        if(this.mousePosition) {
             const mousePosition = this.mousePosition;
             const radius = this.options.radius;
 

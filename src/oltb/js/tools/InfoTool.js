@@ -19,6 +19,8 @@ const DefaultOptions = Object.freeze({
 
 class InfoTool extends Control {
     constructor(options = {}) {
+        LogManager.logDebug(FILENAME, 'constructor', 'init');
+
         super({
             element: ElementManager.getToolbarElement()
         });
@@ -70,7 +72,7 @@ class InfoTool extends Control {
     }
 
     momentaryActivation() {
-        if(Boolean(this.infoModal)) {
+        if(this.infoModal) {
             return;
         }
 

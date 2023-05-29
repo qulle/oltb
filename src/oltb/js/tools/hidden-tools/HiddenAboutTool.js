@@ -1,6 +1,7 @@
 import { Modal } from '../../common/Modal';
 import { Config } from '../../core/Config';
 import { Control } from 'ol/control';
+import { LogManager } from '../../core/managers/LogManager';
 import { ContextMenu } from '../../common/ContextMenu';
 import { ElementManager } from '../../core/managers/ElementManager';
 import { SvgPaths, getIcon } from '../../core/icons/GetIcon';
@@ -9,6 +10,8 @@ const FILENAME = 'hidden-tools/HiddenAboutTool.js';
 
 class HiddenAboutTool extends Control {
     constructor() {
+        LogManager.logDebug(FILENAME, 'constructor', 'init');
+
         super({
             element: ElementManager.getToolbarElement()
         });
@@ -28,7 +31,7 @@ class HiddenAboutTool extends Control {
     }
 
     onContextMenuAbout(map, coordinates, target) {        
-        if(Boolean(this.aboutInfoModal)) {
+        if(this.aboutInfoModal) {
             return;
         }
 

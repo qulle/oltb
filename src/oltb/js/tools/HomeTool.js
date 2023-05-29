@@ -25,6 +25,8 @@ const DefaultOptions = Object.freeze({
 
 class HomeTool extends Control {
     constructor(options = {}) {
+        LogManager.logDebug(FILENAME, 'constructor', 'init');
+
         super({
             element: ElementManager.getToolbarElement()
         });
@@ -89,7 +91,7 @@ class HomeTool extends Control {
 
     momentaryActivation() {
         const map = this.getMap();
-        if(!Boolean(map)) {
+        if(!map) {
             return;
         }
         
@@ -118,7 +120,7 @@ class HomeTool extends Control {
 
     onContextMenuSetHomeLocation() {
         const map = this.getMap();
-        if(!Boolean(map)) {
+        if(!map) {
             return;
         }
 

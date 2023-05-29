@@ -1,8 +1,6 @@
 import { Polygon } from 'ol/geom';
 import { getArea, getLength } from 'ol/sphere';
 
-const FILENAME = 'helpers/Measurements.js';
-
 const getMeasureValue = function(geometry) {
     return geometry instanceof Polygon
         ? formatArea(geometry)

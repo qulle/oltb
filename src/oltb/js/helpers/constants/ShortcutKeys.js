@@ -1,5 +1,3 @@
-const FILENAME = 'constants/ShortcutKeys.js';
-
 const ShortcutKeys = Object.freeze({
     overviewTool: 'A',
     bookmarkTool: 'B',

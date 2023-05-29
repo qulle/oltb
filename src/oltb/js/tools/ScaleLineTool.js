@@ -24,6 +24,8 @@ const LocalStorageDefaults = Object.freeze({
 
 class ScaleLineTool extends Control {
     constructor(options = {}) {
+        LogManager.logDebug(FILENAME, 'constructor', 'init');
+        
         super({
             element: ElementManager.getToolbarElement()
         });
@@ -67,7 +69,7 @@ class ScaleLineTool extends Control {
     }
 
     onDOMContentLoaded() {
-        if(Boolean(this.localStorage.active)) {
+        if(this.localStorage.active) {
             this.activateTool();
         }
     }
@@ -86,7 +88,7 @@ class ScaleLineTool extends Control {
             this.options.click();
         }
 
-        if(Boolean(this.active)) {
+        if(this.active) {
             this.deActivateTool();
         }else {
             this.activateTool();
@@ -95,7 +97,7 @@ class ScaleLineTool extends Control {
 
     activateTool() {
         const map = this.getMap();
-        if(!Boolean(map)) {
+        if(!map) {
             return;
         }
 

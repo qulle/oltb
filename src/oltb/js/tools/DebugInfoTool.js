@@ -20,6 +20,8 @@ const DefaultOptions = Object.freeze({
 
 class DebugInfoTool extends Control {
     constructor(options = {}) {
+        LogManager.logDebug(FILENAME, 'constructor', 'init');
+
         super({
             element: ElementManager.getToolbarElement()
         });
@@ -55,7 +57,7 @@ class DebugInfoTool extends Control {
 
         if(
             Boolean(this.options.onlyWhenGetParameter) &&
-            !Boolean(isDebug)
+            !isDebug
         ) {
             button.classList.add(`${TOOL_BUTTON_CLASS}--hidden`);
         }
@@ -81,12 +83,12 @@ class DebugInfoTool extends Control {
     }
 
     momentaryActivation() {
-        if(Boolean(this.debugInfoModal)) {
+        if(this.debugInfoModal) {
             return;
         }
 
         const map = this.getMap();
-        if(!Boolean(map)) {
+        if(!map) {
             return;
         }
 

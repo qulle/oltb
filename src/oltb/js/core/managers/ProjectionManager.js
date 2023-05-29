@@ -38,7 +38,7 @@ class ProjectionManager {
 
         const projectionsToAdd = [];
         this.#projections.forEach((projection) => {
-            if(!Boolean(projection.active)) {
+            if(!projection.active) {
                 LogManager.logDebug(FILENAME, 'init', `Skipping projection (${projection.code} ${projection.name})`);
             }else {
                 LogManager.logDebug(FILENAME, 'init', `Adding projection (${projection.code} ${projection.name})`);

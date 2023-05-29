@@ -50,6 +50,8 @@ const DefaultUrlMarker = Object.freeze({
 
 class HiddenMapNavigationTool extends Control {
     constructor(options = {}) {
+        LogManager.logDebug(FILENAME, 'constructor', 'init');
+
         super({
             element: ElementManager.getToolbarElement()
         });
@@ -100,7 +102,7 @@ class HiddenMapNavigationTool extends Control {
 
     onDOMContentLoaded(event) {
         const map = this.getMap();
-        if(!Boolean(map)) {
+        if(!map) {
             return;
         }
 
@@ -108,14 +110,14 @@ class HiddenMapNavigationTool extends Control {
         map.on(Events.openLayers.moveEnd, this.onMoveEnd.bind(this));
 
         const marker = UrlManager.getParameter(Config.urlParameters.marker, false);
-        if(Boolean(marker)) {
+        if(marker) {
             this.onCreateUrlMarker(marker);
         }
     }
 
     onCreateUrlMarker(markerString) {
         const map = this.getMap();
-        if(!Boolean(map)) {
+        if(!map) {
             return;
         }
 
@@ -217,7 +219,7 @@ class HiddenMapNavigationTool extends Control {
     }
 
     onContextMenuCenterAtCoordinate(map, coordinates, target) {
-        if(Boolean(this.coordinatesModal)) {
+        if(this.coordinatesModal) {
             return;
         }
 
@@ -241,7 +243,7 @@ class HiddenMapNavigationTool extends Control {
 
     onMoveEnd(event) {
         const map = this.getMap();
-        if(!Boolean(map)) {
+        if(!map) {
             return;
         }
 

@@ -83,9 +83,9 @@ const parseGeoJson = function(data) {
     });
 }
 
-const geoJsonPromise = fetch(urlCapitalsGeoJson)
+fetch(urlCapitalsGeoJson)
     .then((response) => {
-        if(!Boolean(response.ok)) {
+        if(!response.ok) {
             throw new Error('Failed to fetch local geojson', {
                 cause: response
             });

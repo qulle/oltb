@@ -1,5 +1,6 @@
 import { DOM } from '../../helpers/browser/DOM';
 import { DialogBase } from './DialogBase';
+import { LogManager } from '../../core/managers/LogManager';
 import { ElementManager } from '../../core/managers/ElementManager';
 
 const FILENAME = 'dialogs/Alert.js';
@@ -13,6 +14,8 @@ const DefaultOptions = Object.freeze({
 
 class Alert extends DialogBase {
     constructor(options = {}) {
+        LogManager.logDebug(FILENAME, 'constructor', 'init');
+
         super();
         
         this.options = { ...DefaultOptions, ...options };

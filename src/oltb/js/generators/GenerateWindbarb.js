@@ -6,8 +6,6 @@ import { getWindBarb } from '../core/icons/GetWindBarb';
 import { degreesToRadians } from '../helpers/Conversions';
 import { FeatureProperties } from '../helpers/constants/FeatureProperties';
 
-const FILENAME = 'generators/GenerateWindBarb.js';
-
 const DefaultOptions = Object.freeze({
     lon: undefined,
     lat: undefined,

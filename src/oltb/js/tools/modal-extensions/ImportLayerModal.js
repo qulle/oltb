@@ -1,6 +1,7 @@
 import { DOM } from '../../helpers/browser/DOM';
 import { Config } from '../../core/Config';
 import { ModalBase } from '../../common/modals/ModalBase';
+import { LogManager } from '../../core/managers/LogManager';
 import { isDarkTheme } from '../../helpers/IsDarkTheme';
 import { ProjectionManager } from '../../core/managers/ProjectionManager';
 
@@ -16,6 +17,8 @@ const DefaultOptions = Object.freeze({
 
 class ImportLayerModal extends ModalBase {
     constructor(options = {}) {
+        LogManager.logDebug(FILENAME, 'constructor', 'init');
+
         super(
             'Import layer', 
             options.maximized, 

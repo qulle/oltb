@@ -23,6 +23,8 @@ const DefaultOptions = Object.freeze({
 
 class ImportVectorLayerTool extends Control {
     constructor(options = {}) {
+        LogManager.logDebug(FILENAME, 'constructor', 'init');
+        
         super({
             element: ElementManager.getToolbarElement()
         });
@@ -86,7 +88,7 @@ class ImportVectorLayerTool extends Control {
     }
 
     momentaryActivation() {
-        if(Boolean(this.importLayerModal)) {
+        if(this.importLayerModal) {
             return;
         }
 
@@ -130,7 +132,7 @@ class ImportVectorLayerTool extends Control {
             });
 
             // This should not happen since the format is set in the dialog
-            if(!Boolean(format)) {
+            if(!format) {
                 const errorMessage = `This layer format (${format}) is not supported`;
                 LogManager.logError(FILENAME, 'onImportLayer', errorMessage);
 

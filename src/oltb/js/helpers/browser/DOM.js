@@ -1,37 +1,35 @@
 import { Config } from "../../core/Config";
 
-const FILENAME = 'browser/DOM.js';
-
 class DOM {
     static createElement(options = {}) {
         const element = document.createElement(options.element);
 
         // Common attributes
-        if(Boolean(options.id)) {
+        if(options.id) {
             element.id = options.id;
         }
 
-        if(Boolean(options.class)) {
+        if(options.class) {
             element.className = options.class;
         }
 
-        if(Boolean(options.value)) {
+        if(options.value) {
             element.value = options.value;
         }
 
-        if(Boolean(options.text)) {
+        if(options.text) {
             element.innerText = options.text;
         }
     
-        if(Boolean(options.html)) {
+        if(options.html) {
             element.innerHTML = options.html;
         }
 
-        if(Boolean(options.style)) {
+        if(options.style) {
             element.style = options.style;
         }
 
-        if(Boolean(options.title)) {
+        if(options.title) {
             element.title = options.title;
         }
 

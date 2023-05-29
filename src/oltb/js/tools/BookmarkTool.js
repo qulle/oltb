@@ -6,8 +6,8 @@ import { Config } from '../core/Config';
 import { Dialog } from '../common/Dialog';
 import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
+import { toLonLat } from 'ol/proj';
 import { goToView } from '../helpers/GoToView';
-import { toLonLat, transform } from 'ol/proj';
 import { LogManager } from '../core/managers/LogManager';
 import { ContextMenu } from '../common/ContextMenu';
 import { toStringHDMS } from 'ol/coordinate';
@@ -48,6 +48,8 @@ const LocalStorageDefaults = Object.freeze({
 
 class BookmarkTool extends Control {
     constructor(options = {}) {
+        LogManager.logDebug(FILENAME, 'constructor', 'init');
+
         super({
             element: ElementManager.getToolbarElement()
         });
@@ -168,7 +170,7 @@ class BookmarkTool extends Control {
     }
 
     onDOMContentLoaded() {
-        if(Boolean(this.localStorage.active)) {
+        if(this.localStorage.active) {
             this.activateTool();
         }
     }
@@ -224,7 +226,7 @@ class BookmarkTool extends Control {
             this.options.click();
         }
 
-        if(Boolean(this.active)) {
+        if(this.active) {
             this.deActivateTool();
         }else {
             this.activateTool();
@@ -251,7 +253,7 @@ class BookmarkTool extends Control {
 
     addBookmark(bookmarkName) {
         const map = this.getMap();
-        if(!Boolean(map)) {
+        if(!map) {
             return;
         }
 
@@ -259,7 +261,7 @@ class BookmarkTool extends Control {
         const zoom = view.getZoom();
         const coordinates = toLonLat(view.getCenter());
 
-        if(!Boolean(bookmarkName)) {
+        if(!bookmarkName) {
             bookmarkName = generateAnimalName();
         }
 
@@ -272,14 +274,14 @@ class BookmarkTool extends Control {
             coordinates: coordinates
         };
 
-        if(Boolean(this.options.storeDataInLocalStorage)) {
+        if(this.options.storeDataInLocalStorage) {
             this.localStorage.bookmarks.push(bookmark);
             StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
         }        
 
         this.createBookmark(bookmark);
 
-        if(!Boolean(this.active)) {
+        if(!this.active) {
             Toast.success({
                 title: 'New bookmark',
                 message: `A new bookmark created <strong>${bookmarkName}</strong>`, 
@@ -417,7 +419,7 @@ class BookmarkTool extends Control {
 
     zoomToBookmark(bookmark) {
         const map = this.getMap();
-        if(!Boolean(map)) {
+        if(!map) {
             return;
         }
         

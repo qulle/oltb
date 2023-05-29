@@ -1,5 +1,3 @@
-const FILENAME = 'name-generator/Adjectives.js';
-
 const Adjectives = Object.freeze([
     'Adorable',
     'Adored',

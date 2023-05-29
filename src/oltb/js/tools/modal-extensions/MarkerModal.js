@@ -1,6 +1,7 @@
 import { DOM } from '../../helpers/browser/DOM';
 import { SvgPaths } from '../../core/icons/GetIcon';
 import { ModalBase } from '../../common/modals/ModalBase';
+import { LogManager } from '../../core/managers/LogManager';
 import { isDarkTheme } from '../../helpers/IsDarkTheme';
 
 const FILENAME = 'modal-extensions/MarkerModal.js';
@@ -22,6 +23,8 @@ const DefaultOptions = Object.freeze({
 
 class MarkerModal extends ModalBase {
     constructor(options = {}) {
+        LogManager.logDebug(FILENAME, 'constructor', 'init');
+
         super(
             'Marker configuration', 
             options.maximized, 

@@ -2,10 +2,8 @@ import { Config } from "../core/Config";
 import { easeOut } from 'ol/easing';
 import { fromLonLat } from "ol/proj";
 
-const FILENAME = 'helpers/GoToView.js';
-
 const goToView = function (map, coordinates, zoom, rotation) {
-    if(!Boolean(map)) {
+    if(!map) {
         return;
     }
 

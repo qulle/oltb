@@ -1,7 +1,5 @@
 import { Tile, Vector } from 'ol/layer';
 
-const FILENAME = 'ol-types/LayerTypes.js';
-
 const LayerTypes = Object.freeze({
     'Tile': Tile,
     'Vector': Vector

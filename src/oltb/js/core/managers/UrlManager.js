@@ -28,7 +28,7 @@ class UrlManager {
         const parameters = this.getParameters();
         const parameter = parameters.get(name) || '';
 
-        if(Boolean(lowerCase)) {
+        if(lowerCase) {
             return parameter.toLowerCase();
         }
 

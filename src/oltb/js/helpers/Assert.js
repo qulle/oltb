@@ -9,7 +9,7 @@ class Assert {
             message: message
         });
 
-        if(!Boolean(condition)) {
+        if(!condition) {
             throw new Error(`Assertion failed - ${message}`);
         }
     }

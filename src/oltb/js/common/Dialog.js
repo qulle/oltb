@@ -2,8 +2,6 @@ import { Alert } from './dialogs/Alert';
 import { Prompt } from './dialogs/Prompt';
 import { Confirm } from './dialogs/Confirm';
 
-const FILENAME = 'common/Dialog.js';
-
 class Dialog {
     static alert(options) {
         return new Alert(options);

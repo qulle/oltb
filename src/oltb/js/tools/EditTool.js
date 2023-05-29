@@ -98,6 +98,8 @@ const DefaultMeasureStyle = new Style({
 
 class EditTool extends Control {
     constructor(options = {}) {
+        LogManager.logDebug(FILENAME, 'constructor', 'init');
+
         super({
             element: ElementManager.getToolbarElement()
         });
@@ -262,7 +264,7 @@ class EditTool extends Control {
     }
 
     onDOMContentLoaded() {
-        if(Boolean(this.localStorage.active)) {
+        if(this.localStorage.active) {
             this.activateTool();
         }
     }
@@ -277,7 +279,7 @@ class EditTool extends Control {
         // The setTimeout must be used
         // If not, the style will be reset to the style used before the feature was selected
         window.setTimeout(() => {
-            if(Boolean(this.colorHasChanged)) {
+            if(this.colorHasChanged) {
                 // Set the lastStyle as the default style
                 feature.setStyle(this.lastStyle);
 
@@ -431,7 +433,7 @@ class EditTool extends Control {
 
     deleteFeatures(features) {
         const map = this.getMap();
-        if(!Boolean(map)) {
+        if(!map) {
             return;
         }
 
@@ -497,7 +499,7 @@ class EditTool extends Control {
 
     onShapeOperator(operation, type) {
         const map = this.getMap();
-        if(!Boolean(map)) {
+        if(!map) {
             return;
         }
 
@@ -627,7 +629,7 @@ class EditTool extends Control {
         const hasOtherTooltip = !TooltipManager.isEmpty();
         
         if(Boolean(hasOtherTooltip) && selectedFeatures.length === 1) {
-            const poppedTooltip = TooltipManager.pop('edit');
+            TooltipManager.pop('edit');
         }
 
         const properties = feature.getProperties();
@@ -675,7 +677,7 @@ class EditTool extends Control {
             this.options.click();
         }
         
-        if(Boolean(this.active)) {
+        if(this.active) {
             this.deActivateTool();
         }else {
             this.activateTool();
@@ -684,7 +686,7 @@ class EditTool extends Control {
 
     activateTool() {
         const map = this.getMap();
-        if(!Boolean(map)) {
+        if(!map) {
             return;
         }
 
