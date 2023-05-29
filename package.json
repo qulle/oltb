@@ -36,7 +36,7 @@
         "configure-husky": "npx husky install && npx husky add .husky/pre-commit \"npx lint-staged\""
     },
     "lint-staged": {
-        "**/*.{js}": [
+        "**/*.js": [
             "eslint --config ./.eslintrc.cjs"
         ]
     },
