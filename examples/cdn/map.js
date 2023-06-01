@@ -18,15 +18,18 @@ oltb.LayerManager.addMapLayers([
     {
         name: 'Open Street Map',
         layer: new ol.layer.Tile({
-            source: new ol.source.OSM(),
+            source: new ol.source.OSM({
+                crossOrigin: 'anonymous',
+            }),
             visible: true
         })
     }, {
         name: 'ArcGIS World Topo',
         layer: new ol.layer.Tile({
             source: new ol.source.XYZ({
+                crossOrigin: 'anonymous',
                 attributions: 'Tiles © <a href="https://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer">ArcGIS</a>',
-                url:'https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}',
+                url:'https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}'
             }),
             visible: false
         })
@@ -35,8 +38,9 @@ oltb.LayerManager.addMapLayers([
         layer: new ol.layer.Tile({
             maxZoom: 12,
             source: new ol.source.Stamen({
+                crossOrigin: 'anonymous',
                 layer: 'watercolor',
-                attributions: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://creativecommons.org/licenses/by-sa/3.0">CC BY SA</a>.',
+                attributions: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://creativecommons.org/licenses/by-sa/3.0">CC BY SA</a>.'
             }),
             visible: false
         })
@@ -45,8 +49,9 @@ oltb.LayerManager.addMapLayers([
         layer: new ol.layer.Tile({
             maxZoom: 12,
             source: new ol.source.Stamen({
+                crossOrigin: 'anonymous',
                 layer: 'terrain',
-                attributions: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://www.openstreetmap.org/copyright">ODbL</a>.',
+                attributions: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://www.openstreetmap.org/copyright">ODbL</a>.'
             }),
             visible: false
         })

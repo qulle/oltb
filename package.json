@@ -36,7 +36,10 @@
         "configure-husky": "npx husky install && npx husky add .husky/pre-commit \"npx lint-staged\""
     },
     "lint-staged": {
-        "**/*.js": [
+        "./src/oltb/js/**/*.js": [
+            "eslint --config ./.eslintrc.cjs"
+        ],
+        "./dev/**/*.js": [
             "eslint --config ./.eslintrc.cjs"
         ]
     },

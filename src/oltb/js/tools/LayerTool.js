@@ -305,6 +305,9 @@ class LayerTool extends Control {
                         params: JSON.parse(result.parameters),
                         wrapX: result.wrapX,
                         attributions: result.attributions,
+                        ...(result.crossOrigin !== 'undefined' && {
+                            crossOrigin: result.crossOrigin
+                        }),
                         format: instantiateFormat(result.source)
                     })
                 })

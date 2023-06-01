@@ -279,6 +279,56 @@ class LayerModal extends ModalBase {
             wrapXSelect
         ]);
 
+        const corsWrapper = DOM.createElement({
+            element: 'div',
+            class: 'oltb-mt-0625'
+        });
+
+        const corsLabel = DOM.createElement({
+            element: 'label', 
+            text: 'CORS',
+            class: 'oltb-label', 
+            attributes: {
+                for: `${PREFIX_LAYER_ID}-layer-cors`
+            }
+        });
+
+        const corsSelect = DOM.createElement({
+            element: 'select',
+            id: `${PREFIX_LAYER_ID}-layer-cors`, 
+            class: 'oltb-select'
+        });
+
+        [
+            {
+                text: 'Anonymous',
+                value: 'anonymous'
+            }, 
+            {
+                text: 'Credentials',
+                value: 'use-credentials'
+            },
+            {
+                text: 'None',
+                value: 'undefined'
+            }
+        ].forEach((item) => {
+            const option = DOM.createElement({
+                element: 'option', 
+                text: item.text, 
+                value: item.value
+            });
+
+            DOM.appendChildren(corsSelect, [
+                option
+            ]);
+        });
+
+        DOM.appendChildren(corsWrapper, [
+            corsLabel,
+            corsSelect
+        ]);
+
         const attributionsWrapper = DOM.createElement({
             element: 'div',
             class: 'oltb-mt-0625'
@@ -329,6 +379,7 @@ class LayerModal extends ModalBase {
                         url: urlText.value,
                         parameters: parametersText.value || '{}',
                         wrapX: wrapXSelect.value,
+                        crossOrigin: corsSelect.value,
                         attributions: attributionsText.value
                     };
         
@@ -373,6 +424,7 @@ class LayerModal extends ModalBase {
             urlWrapper,
             parametersWrapper,
             wrapXWrapper,
+            corsWrapper,
             attributionsWrapper,
             buttonsWrapper
         ]);
