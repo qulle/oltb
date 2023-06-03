@@ -25,7 +25,7 @@ const FILENAME = 'tools/BookmarkTool.js';
 const TOOL_BUTTON_CLASS = 'oltb-tool-button';
 const TOOLBOX_SECTION_CLASS = 'oltb-toolbox-section';
 const TOOLBOX_LIST_CLASS = 'oltb-toolbox-list';
-const BOOKMARK_BUTTON_DEFAULT_CLASSES = 'oltb-func-btn';
+const FUNC_BUTTON_CLASS = 'oltb-func-btn';
 const ID_PREFIX = 'oltb-bookmark';
 
 const DefaultOptions = Object.freeze({
@@ -356,7 +356,7 @@ class BookmarkTool extends Control {
 
         const zoomToButton = DOM.createElement({
             element: 'button',
-            class: `${BOOKMARK_BUTTON_DEFAULT_CLASSES} oltb-func-btn--geo-pin oltb-tippy`,
+            class: `${FUNC_BUTTON_CLASS} ${FUNC_BUTTON_CLASS}--geo-pin oltb-tippy`,
             title: 'Zoom to coordinates',
             attributes: {
                 type: 'button'
@@ -368,7 +368,7 @@ class BookmarkTool extends Control {
 
         const copyCoordinatesButton = DOM.createElement({
             element: 'button',
-            class: `${BOOKMARK_BUTTON_DEFAULT_CLASSES} oltb-func-btn--crosshair oltb-tippy`,
+            class: `${FUNC_BUTTON_CLASS} ${FUNC_BUTTON_CLASS}--crosshair oltb-tippy`,
             title: 'Copy coordinates',
             attributes: {
                 type: 'button'
@@ -380,7 +380,7 @@ class BookmarkTool extends Control {
         
         const editButton = DOM.createElement({
             element: 'button',
-            class: `${BOOKMARK_BUTTON_DEFAULT_CLASSES} oltb-func-btn--edit oltb-tippy`,
+            class: `${FUNC_BUTTON_CLASS} ${FUNC_BUTTON_CLASS}--edit oltb-tippy`,
             title: 'Rename bookmark',
             attributes: {
                 type: 'button'
@@ -392,7 +392,7 @@ class BookmarkTool extends Control {
 
         const deleteButton = DOM.createElement({
             element: 'button',
-            class: `${BOOKMARK_BUTTON_DEFAULT_CLASSES} oltb-func-btn--delete oltb-tippy`,
+            class: `${FUNC_BUTTON_CLASS} ${FUNC_BUTTON_CLASS}--delete oltb-tippy`,
             title: 'Delete bookmark',
             attributes: {
                 type: 'button'

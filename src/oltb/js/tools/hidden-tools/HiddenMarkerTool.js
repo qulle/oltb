@@ -11,6 +11,7 @@ import { SvgPaths, getIcon } from '../../core/icons/GetIcon';
 
 const FILENAME = 'hidden-tools/HiddenMarkerTool.js';
 const ID_PREFIX = 'oltb-info-window-marker';
+const FUNC_BUTTON_CLASS = 'oltb-func-btn';
 
 const DefaultOptions = Object.freeze({
     added: undefined,
@@ -68,10 +69,10 @@ class HiddenMarkerTool extends Control {
             footer: `
                 <span class="oltb-info-window__coordinates">${prettyCoordinates}</span>
                 <div class="oltb-info-window__buttons-wrapper">
-                    <button class="oltb-func-btn oltb-func-btn--delete oltb-tippy" title="Delete marker" id="${ID_PREFIX}-remove"></button>
-                    <button class="oltb-func-btn oltb-func-btn--crosshair oltb-tippy" title="Copy marker coordinates" id="${ID_PREFIX}-copy-coordinates" data-coordinates="${prettyCoordinates}"></button>
-                    <button class="oltb-func-btn oltb-func-btn--copy oltb-tippy" title="Copy marker text" id="${ID_PREFIX}-copy-text" data-copy="${result.title}, ${result.description}"></button>
-                    <button class="oltb-func-btn oltb-func-btn--edit oltb-tippy" title="Edit marker" id="${ID_PREFIX}-edit"></button>
+                    <button class="${FUNC_BUTTON_CLASS} ${FUNC_BUTTON_CLASS}--delete oltb-tippy" title="Delete marker" id="${ID_PREFIX}-remove"></button>
+                    <button class="${FUNC_BUTTON_CLASS} ${FUNC_BUTTON_CLASS}--crosshair oltb-tippy" title="Copy marker coordinates" id="${ID_PREFIX}-copy-coordinates" data-coordinates="${prettyCoordinates}"></button>
+                    <button class="${FUNC_BUTTON_CLASS} ${FUNC_BUTTON_CLASS}--copy oltb-tippy" title="Copy marker text" id="${ID_PREFIX}-copy-text" data-copy="${result.title}, ${result.description}"></button>
+                    <button class="${FUNC_BUTTON_CLASS} ${FUNC_BUTTON_CLASS}--edit oltb-tippy" title="Edit marker" id="${ID_PREFIX}-edit"></button>
                 </div>
             `
         };

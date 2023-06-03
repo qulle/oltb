@@ -31,7 +31,7 @@ const TOOL_BUTTON_CLASS = 'oltb-tool-button';
 const TOOLBOX_SECTION_CLASS = 'oltb-toolbox-section';
 const TOOLBOX_LIST_CLASS = 'oltb-toolbox-list';
 const ID_PREFIX = 'oltb-layer';
-const LAYER_BUTTON_DEFAULT_CLASSES = 'oltb-func-btn';
+const FUNC_BUTTON_CLASS = 'oltb-func-btn';
 
 const DefaultOptions = Object.freeze({
     disableMapCreateLayerButton: false,
@@ -552,7 +552,7 @@ class LayerTool extends Control {
     createDeleteButton(layerWrapper, callback) {
         const deleteButton = DOM.createElement({
             element: 'button',
-            class: `${LAYER_BUTTON_DEFAULT_CLASSES} oltb-func-btn--delete oltb-tippy`,
+            class: `${FUNC_BUTTON_CLASS} ${FUNC_BUTTON_CLASS}--delete oltb-tippy`,
             title: 'Delete layer',
             attributes: {
                 type: 'button'
@@ -577,7 +577,7 @@ class LayerTool extends Control {
     createDownloadButton(layerWrapper, callback) {
         const downloadButton = DOM.createElement({
             element: 'button', 
-            class: `${LAYER_BUTTON_DEFAULT_CLASSES} oltb-func-btn--download oltb-tippy`,
+            class: `${FUNC_BUTTON_CLASS} ${FUNC_BUTTON_CLASS}--download oltb-tippy`,
             title: 'Download layer',
             attributes: {
                 type: 'button'
@@ -634,7 +634,7 @@ class LayerTool extends Control {
     createEditButton(layerWrapper, callback, layerName) {
         const editButton = DOM.createElement({
             element: 'button',
-            class: `${LAYER_BUTTON_DEFAULT_CLASSES} oltb-func-btn--edit oltb-tippy`,
+            class: `${FUNC_BUTTON_CLASS} ${FUNC_BUTTON_CLASS}--edit oltb-tippy`,
             title: 'Rename layer',
             attributes: {
                 type: 'button'
@@ -674,7 +674,7 @@ class LayerTool extends Control {
 
         const visibilityButton = DOM.createElement({
             element: 'button',
-            class: `${LAYER_BUTTON_DEFAULT_CLASSES} oltb-func-btn--visibility oltb-tippy`,
+            class: `${FUNC_BUTTON_CLASS} ${FUNC_BUTTON_CLASS}--visibility oltb-tippy`,
             title: 'Toggle visibility',
             attributes: {
                 type: 'button'
