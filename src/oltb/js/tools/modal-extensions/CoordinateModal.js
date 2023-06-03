@@ -2,6 +2,7 @@ import { DOM } from '../../helpers/browser/DOM';
 import { ModalBase } from '../../common/modals/ModalBase';
 import { LogManager } from '../../core/managers/LogManager';
 import { isDarkTheme } from '../../helpers/IsDarkTheme';
+import { generateInput } from '../../generators/GenerateInput';
 
 const FILENAME = 'modal-extensions/CoordinateModal.js';
 const ID_PREFIX = 'oltb-coordinates-modal';
@@ -28,65 +29,19 @@ class CoordinateModal extends ModalBase {
     }
 
     #createModal() {
-        const latWrapper = DOM.createElement({
-            element: 'div',
-            class: 'oltb-mt-0625'
-        });
-
-        const latLabel = DOM.createElement({
-            element: 'label', 
+        const [ latWrapper, latInput ] = generateInput({
+            idPrefix: ID_PREFIX,
+            idPostfix: '-lat',
             text: 'Latitud',
-            class: 'oltb-label', 
-            attributes: {
-                for: `${ID_PREFIX}-lat`
-            }
+            placeholder: '51.5072'
         });
 
-        const latText = DOM.createElement({
-            element: 'input',
-            id: `${ID_PREFIX}-lat`,
-            class: 'oltb-input',
-            value: '',
-            attributes: {
-                placeholder: '51.5072',
-                type: 'text'
-            }
+        const [ lonWrapper, lonInput ] = generateInput({
+            idPrefix: ID_PREFIX,
+            idPostfix: '-lon',
+            text: 'Longitud',
+            placeholder: '0.1276'
         });
-
-        DOM.appendChildren(latWrapper, [
-            latLabel,
-            latText
-        ]);
-
-        const lonWrapper = DOM.createElement({
-            element: 'div',
-            class: 'oltb-mt-0625'
-        });
-
-        const lonLabel = DOM.createElement({
-            element: 'label', 
-            text: 'Longitud', 
-            class: 'oltb-label',
-            attributes: {
-                for: `${ID_PREFIX}-lon`
-            }
-        });
-
-        const lonText = DOM.createElement({
-            element: 'input',
-            id: `${ID_PREFIX}-lon`,
-            class: 'oltb-input',
-            value: '',
-            attributes: {
-                placeholder: '0.1276',
-                type: 'text'
-            }
-        });
-
-        DOM.appendChildren(lonWrapper, [
-            lonLabel,
-            lonText
-        ]);
         
         const buttonsWrapper = DOM.createElement({
             element: 'div',
@@ -102,11 +57,13 @@ class CoordinateModal extends ModalBase {
             },
             listeners: {
                 'click': () => {
+                    const result = [
+                        lonInput.value.trim(), 
+                        latInput.value.trim()
+                    ];
+
                     this.close();
-                    this.options.onNavigate instanceof Function && this.options.onNavigate([
-                        lonText.value,
-                        latText.value
-                    ]);
+                    this.options.onNavigate instanceof Function && this.options.onNavigate(result);
                 }
             }
         });

@@ -65,7 +65,7 @@ const generateMarker = function(options = {}) {
         new Style({
             image: new Icon({
                 src: `data:image/svg+xml;utf8,${icon}`,
-                color: options.color
+                color: options.stroke
             })
         })
     ]);

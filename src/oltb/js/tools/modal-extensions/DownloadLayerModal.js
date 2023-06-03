@@ -2,9 +2,11 @@ import { DOM } from '../../helpers/browser/DOM';
 import { ModalBase } from '../../common/modals/ModalBase';
 import { LogManager } from '../../core/managers/LogManager';
 import { isDarkTheme } from '../../helpers/IsDarkTheme';
+import { FormatOptions } from '../../core/ol-types/FormatTypes';
+import { generateSelect } from '../../generators/GenerateSelect';
 
 const FILENAME = 'modal-extensions/DownloadLayerModal.js';
-const PREFIX_LAYER_ID = 'oltb-download-layer-modal';
+const ID_PREFIX = 'oltb-download-layer-modal';
 
 const DefaultOptions = Object.freeze({
     maximized: false,
@@ -28,45 +30,12 @@ class DownloadLayerModal extends ModalBase {
     }
 
     #createModal() {
-        const formatWrapper = DOM.createElement({
-            element: 'div',
-            class: 'oltb-mt-0625'
-        });
-
-        const formatLabel = DOM.createElement({
-            element: 'label', 
+        const [ formatWrapper, formatSelect ] = generateSelect({
+            idPrefix: ID_PREFIX,
+            idPostfix: '-format',
             text: 'Layer format',
-            class: 'oltb-label', 
-            attributes: {
-                for: `${PREFIX_LAYER_ID}-layer-format`
-            }
+            options: structuredClone(FormatOptions)
         });
-
-        const formatSelect = DOM.createElement({
-            element: 'select',
-            id: `${PREFIX_LAYER_ID}-layer-format`,  
-            class: 'oltb-select'
-        });
-
-        [
-            'GeoJSON', 
-            'KML'
-        ].forEach((item) => {
-            const option = DOM.createElement({
-                element: 'option', 
-                text: item, 
-                value: item
-            });
-
-            DOM.appendChildren(formatSelect, [
-                option
-            ]);
-        });
-
-        DOM.appendChildren(formatWrapper, [
-            formatLabel,
-            formatSelect
-        ]);
 
         const buttonsWrapper = DOM.createElement({
             element: 'div',
@@ -83,7 +52,7 @@ class DownloadLayerModal extends ModalBase {
             listeners: {
                 'click': () => {
                     const result = {
-                        format: formatSelect.value
+                        format: formatSelect.value.trim()
                     };
         
                     this.close();

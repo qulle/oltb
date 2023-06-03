@@ -1,5 +1,24 @@
 import { TileWMS, XYZ, OSM, Vector } from 'ol/source';
 
+const SourceOptions = [
+    {
+        text: 'TileWMS',
+        value: 'TileWMS'
+    },
+    {
+        text: 'XYZ',
+        value: 'XYZ'
+    },
+    {
+        text: 'OSM',
+        value: 'OSM'
+    },
+    {
+        text: 'Vector',
+        value: 'Vector'
+    }
+];
+
 const SourceTypes = Object.freeze({
     'TileWMS': TileWMS,
     'XYZ': XYZ,
@@ -15,4 +34,4 @@ const instantiateSource = function(name, options) {
     return new SourceTypes[name](options);
 }
 
-export { SourceTypes, instantiateSource };
+export { SourceOptions, SourceTypes, instantiateSource };

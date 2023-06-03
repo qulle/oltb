@@ -3,6 +3,7 @@ import { ModalBase } from '../../common/modals/ModalBase';
 import { LogManager } from '../../core/managers/LogManager';
 import { isDarkTheme } from '../../helpers/IsDarkTheme';
 import { SettingsManager } from '../../core/managers/SettingsManager';
+import { generateCheckbox } from '../../generators/GenerateCheckbox';
 
 const FILENAME = 'modal-extensions/SettingsModal.js';
 
@@ -34,48 +35,21 @@ class SettingsModal extends ModalBase {
         const settings = SettingsManager.getSettings();
         
         settings.forEach((settingObj, key) => {
-            const checkboxWrapper = DOM.createElement({
-                element: 'div',
-                    class: 'oltb-checkbox-wrapper'
-            });
-
-            const label = DOM.createElement({
-                element: 'label',
+            const [ checkboxWrapper, checkbox ] = generateCheckbox({
+                idPrefix: key,
                 text: settingObj.text,
-                class: 'oltb-checkbox-wrapper__title oltb-label--inline oltb-m-0',
-                attributes: {
-                    for: key
-                }
+                checked: settingObj.state
             });
 
-            const checkbox = DOM.createElement({
-                element: 'input',
-                id: key,
-                class: 'oltb-checkbox-wrapper__checkbox',
-                attributes: {
-                    type: 'checkbox'
-                },
-                listeners: {
-                    'click': () => {
-                        // Update local state with new value
-                        // Is saved when save button is pressed
-                        this.#state.set(key, checkbox.checked);
-                    }
-                }
+            checkbox.addEventListener('click', () => {
+                // Update local state with new value
+                // Is saved when save button is pressed
+                this.#state.set(key, checkbox.checked);
             });
 
             // Copy current state of each setting
             this.#state.set(key, settingObj.state);
 
-            if(settingObj.state) {
-                checkbox.setAttribute('checked', '');
-            }
-
-            DOM.appendChildren(checkboxWrapper, [
-                checkbox, 
-                label
-            ]);
-            
             DOM.appendChildren(settingsFragment, [
                 checkboxWrapper
             ]);

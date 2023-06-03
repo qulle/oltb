@@ -3,10 +3,14 @@ import { Config } from '../../core/Config';
 import { ModalBase } from '../../common/modals/ModalBase';
 import { LogManager } from '../../core/managers/LogManager';
 import { isDarkTheme } from '../../helpers/IsDarkTheme';
+import { LayerOptions } from '../../core/ol-types/LayerTypes';
+import { SourceOptions } from '../../core/ol-types/SourceTypes';
+import { generateInput } from '../../generators/GenerateInput';
+import { generateSelect } from '../../generators/GenerateSelect';
 import { ProjectionManager } from '../../core/managers/ProjectionManager';
 
 const FILENAME = 'modal-extensions/LayerModal.js';
-const PREFIX_LAYER_ID = 'oltb-layer-modal';
+const ID_PREFIX = 'oltb-layer-modal';
 
 const DefaultOptions = Object.freeze({
     maximized: false,
@@ -30,332 +34,98 @@ class LayerModal extends ModalBase {
     }
 
     #createModal() {
-        const nameWrapper = DOM.createElement({
-            element: 'div',
-            class: 'oltb-m-0'
-        });
-
-        const nameLabel = DOM.createElement({
-            element: 'label', 
+        const [ nameWrapper, nameInput ] = generateInput({
+            idPrefix: ID_PREFIX,
+            idPostfix: '-name',
             text: 'Name',
-            class: 'oltb-label', 
-            attributes: {
-                for: `${PREFIX_LAYER_ID}-layer-name`
-            }
+            value: 'New map layer'
         });
 
-        const nameText = DOM.createElement({
-            element: 'input', 
-            id: `${PREFIX_LAYER_ID}-layer-name`,
-            class: 'oltb-input',
-            value: 'New map layer', 
-            attributes: {
-                type: 'text'
-            }
-        });
-
-        DOM.appendChildren(nameWrapper, [
-            nameLabel,
-            nameText
-        ]);
-
-        const typeWrapper = DOM.createElement({
-            element: 'div',
-            class: 'oltb-mt-0625'
-        });
-
-        const typeLabel = DOM.createElement({
-            element: 'label', 
+        const [ typeWrapper, typeSelect ] = generateSelect({
+            idPrefix: ID_PREFIX,
+            idPostfix: '-type',
             text: 'Layer',
-            class: 'oltb-label', 
-            attributes: {
-                for: `${PREFIX_LAYER_ID}-layer-type`
-            }
+            options: structuredClone(LayerOptions)
         });
 
-        const typeSelect = DOM.createElement({
-            element: 'select', 
-            id: `${PREFIX_LAYER_ID}-layer-type`,
-            class: 'oltb-select'
+        const [ sourceWrapper, sourceSelect ] = generateSelect({
+            idPrefix: ID_PREFIX,
+            idPostfix: '-source',
+            text: 'Layer',
+            options: structuredClone(SourceOptions)
         });
 
-        [
-            'Tile', 
-            'Vector'
-        ].forEach((type) => {
-            const option = DOM.createElement({
-                element: 'option', 
-                text: type, 
-                value: type
-            });
-
-            DOM.appendChildren(typeSelect, [
-                option
-            ]);
-        });
-
-        DOM.appendChildren(typeWrapper, [
-            typeLabel,
-            typeSelect
-        ]);
-
-        const sourceWrapper = DOM.createElement({
-            element: 'div',
-            class: 'oltb-mt-0625' 
-        });
-
-        const sourceLabel = DOM.createElement({
-            element: 'label', 
-            text: 'Source',
-            class: 'oltb-label', 
-            attributes: {
-                for: `${PREFIX_LAYER_ID}-layer-source`
-            }
-        });
-
-        const sourceSelect = DOM.createElement({
-            element: 'select', 
-            id: `${PREFIX_LAYER_ID}-layer-source`,
-            class: 'oltb-select'
-        });
-
-        [
-            'TileWMS', 
-            'XYZ', 
-            'OSM', 
-            'Vector'
-        ].forEach((type) => {
-            const option = DOM.createElement({
-                element: 'option', 
-                text: type, 
-                value: type
-            });
-
-            DOM.appendChildren(sourceSelect, [
-                option
-            ]);
-        });
-
-        DOM.appendChildren(sourceWrapper, [
-            sourceLabel,
-            sourceSelect
-        ]);
-
-        const projectionWrapper = DOM.createElement({
-            element: 'div',
-            class: 'oltb-mt-0625' 
-        });
-
-        const projectionLabel = DOM.createElement({
-            element: 'label', 
-            text: 'Projection',
-            class: 'oltb-label', 
-            attributes: {
-                for: `${PREFIX_LAYER_ID}-layer-projection`
-            }
-        });
-
-        const projectionSelect = DOM.createElement({
-            element: 'select', 
-            id: `${PREFIX_LAYER_ID}-layer-projection`,
-            class: 'oltb-select'
-        });
-
+        const projectionOptions = [];
         const projections = ProjectionManager.getProjections();
-        projections.forEach((projection) => {
-            const option = DOM.createElement({
-                element: 'option', 
+        projections.forEach(projection => {
+            projectionOptions.push({
                 text: `${projection.name} (${projection.code})`, 
                 value: projection.code
             });
-
-            DOM.appendChildren(projectionSelect, [
-                option
-            ]);
         });
 
-        // Set the default selected values
-        projectionSelect.value = Config.projection.default;
-
-        DOM.appendChildren(projectionWrapper, [
-            projectionLabel,
-            projectionSelect
-        ]);
-
-        const urlWrapper = DOM.createElement({
-            element: 'div',
-            class: 'oltb-mt-0625'
+        const [ projectionWrapper, projectionSelect ] = generateSelect({
+            idPrefix: ID_PREFIX,
+            idPostfix: '-projection',
+            text: 'Projection',
+            options: projectionOptions,
+            value: Config.projection.default
         });
 
-        const urlLabel = DOM.createElement({
-            element: 'label', 
-            text: 'URL', 
-            class: 'oltb-label',
-            attributes: {
-                for: `${PREFIX_LAYER_ID}-layer-url`
-            }
+        const [ urlWrapper, urlInput ] = generateInput({
+            idPrefix: ID_PREFIX,
+            idPostfix: '-url',
+            text: 'URL'
         });
 
-        const urlText = DOM.createElement({
-            element: 'input',
-            id: `${PREFIX_LAYER_ID}-layer-url`, 
-            class: 'oltb-input',
-            attributes: {
-                type: 'text'
-            }
+        const [ parametersWrapper, parametersInput ] = generateInput({
+            idPrefix: ID_PREFIX,
+            idPostfix: '-parameters',
+            text: 'Parameters (JSON)',
+            placeholder: '{"Layers": "HPD_TRP"}'
         });
 
-        DOM.appendChildren(urlWrapper, [
-            urlLabel,
-            urlText
-        ]);
-
-        const parametersWrapper = DOM.createElement({
-            element: 'div',
-            class: 'oltb-mt-0625'
-        });
-
-        const parametersLabel = DOM.createElement({
-            element: 'label', 
-            text: 'Parameters (JSON)', 
-            class: 'oltb-label',
-            attributes: {
-                for: `${PREFIX_LAYER_ID}-layer-parameters`
-            }
-        });
-
-        const parametersText = DOM.createElement({
-            element: 'input', 
-            id: `${PREFIX_LAYER_ID}-layer-parameters`,
-            class: 'oltb-input', 
-            attributes: {
-                type: 'text', 
-                placeholder: '{"Layers": "HPD_TRP"}'
-            }
-        });
-
-        DOM.appendChildren(parametersWrapper, [
-            parametersLabel,
-            parametersText
-        ]);
-
-        const wrapXWrapper = DOM.createElement({
-            element: 'div',
-            class: 'oltb-mt-0625'
-        });
-
-        const wrapXLabel = DOM.createElement({
-            element: 'label', 
+        const [ wrapXWrapper, wrapXSelect ] = generateSelect({
+            idPrefix: ID_PREFIX,
+            idPostfix: '-wrapx',
             text: 'WrapX',
-            class: 'oltb-label', 
-            attributes: {
-                for: `${PREFIX_LAYER_ID}-layer-wrapx`
-            }
+            options: [
+                {
+                    text: 'False',
+                    value: 'False'
+                },
+                {
+                    text: 'True',
+                    value: 'True'
+                }
+            ]
         });
 
-        const wrapXSelect = DOM.createElement({
-            element: 'select',
-            id: `${PREFIX_LAYER_ID}-layer-wrapx`, 
-            class: 'oltb-select'
-        });
-
-        [
-            'False', 
-            'True'
-        ].forEach((item) => {
-            const option = DOM.createElement({
-                element: 'option', 
-                text: item, 
-                value: item
-            });
-
-            DOM.appendChildren(wrapXSelect, [
-                option
-            ]);
-        });
-
-        DOM.appendChildren(wrapXWrapper, [
-            wrapXLabel,
-            wrapXSelect
-        ]);
-
-        const corsWrapper = DOM.createElement({
-            element: 'div',
-            class: 'oltb-mt-0625'
-        });
-
-        const corsLabel = DOM.createElement({
-            element: 'label', 
+        const [ corsWrapper, corsSelect ] = generateSelect({
+            idPrefix: ID_PREFIX,
+            idPostfix: '-cors',
             text: 'CORS',
-            class: 'oltb-label', 
-            attributes: {
-                for: `${PREFIX_LAYER_ID}-layer-cors`
-            }
+            options: [
+                {
+                    text: 'Anonymous',
+                    value: 'anonymous'
+                }, 
+                {
+                    text: 'Credentials',
+                    value: 'use-credentials'
+                },
+                {
+                    text: 'None',
+                    value: 'undefined'
+                }
+            ]
         });
 
-        const corsSelect = DOM.createElement({
-            element: 'select',
-            id: `${PREFIX_LAYER_ID}-layer-cors`, 
-            class: 'oltb-select'
+        const [ attributionsWrapper, attributionsInput ] = generateInput({
+            idPrefix: ID_PREFIX,
+            idPostfix: '-attributions',
+            text: 'Attributions'
         });
-
-        [
-            {
-                text: 'Anonymous',
-                value: 'anonymous'
-            }, 
-            {
-                text: 'Credentials',
-                value: 'use-credentials'
-            },
-            {
-                text: 'None',
-                value: 'undefined'
-            }
-        ].forEach((item) => {
-            const option = DOM.createElement({
-                element: 'option', 
-                text: item.text, 
-                value: item.value
-            });
-
-            DOM.appendChildren(corsSelect, [
-                option
-            ]);
-        });
-
-        DOM.appendChildren(corsWrapper, [
-            corsLabel,
-            corsSelect
-        ]);
-
-        const attributionsWrapper = DOM.createElement({
-            element: 'div',
-            class: 'oltb-mt-0625'
-        });
-
-        const attributionsLabel = DOM.createElement({
-            element: 'label', 
-            text: 'Attributions', 
-            class: 'oltb-label',
-            attributes: {
-                for: `${PREFIX_LAYER_ID}-layer-attributions`
-            }
-        });
-
-        const attributionsText = DOM.createElement({
-            element: 'input',
-            id: `${PREFIX_LAYER_ID}-layer-attributions`, 
-            class: 'oltb-input',
-            attributes: {
-                type: 'text'
-            }
-        });
-
-        DOM.appendChildren(attributionsWrapper, [
-            attributionsLabel,
-            attributionsText
-        ]);
 
         const buttonsWrapper = DOM.createElement({
             element: 'div',
@@ -371,20 +141,20 @@ class LayerModal extends ModalBase {
             },
             listeners: {
                 'click': () => {
-                    const layer = {
-                        name: nameText.value,
-                        layer: typeSelect.value,
-                        source: sourceSelect.value,
-                        projection: projectionSelect.value || Config.projection.default,
-                        url: urlText.value,
-                        parameters: parametersText.value || '{}',
-                        wrapX: wrapXSelect.value,
-                        crossOrigin: corsSelect.value,
-                        attributions: attributionsText.value
+                    const result = {
+                        name: nameInput.value.trim(),
+                        layer: typeSelect.value.trim(),
+                        source: sourceSelect.value.trim(),
+                        projection: projectionSelect.value.trim() || Config.projection.default,
+                        url: urlInput.value.trim(),
+                        parameters: parametersInput.value.trim() || '{}',
+                        wrapX: wrapXSelect.value.trim(),
+                        crossOrigin: corsSelect.value.trim(),
+                        attributions: attributionsInput.value.trim()
                     };
-        
+
                     this.close();
-                    this.options.onCreate instanceof Function && this.options.onCreate(layer);
+                    this.options.onCreate instanceof Function && this.options.onCreate(result);
                 }
             }
         });

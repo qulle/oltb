@@ -75,7 +75,7 @@ class HiddenMarkerTool extends Control {
                 </div>
             `
         };
-                
+        
         const marker = new generateMarker({
             lon: result.longitude,
             lat: result.latitude,
