@@ -34,6 +34,13 @@ class LogManager {
             info: 'Error',
             color: '#FDB5B4FF',
             method: window.console.error
+        },
+        fatal: {
+            value: 5,
+            icon: '🐞',
+            info: 'Fatal',
+            color: '#D0CAFFFF',
+            method: window.console.error
         }
     });
 
@@ -78,6 +85,10 @@ class LogManager {
 
     static logError(origin, method, value) {
         this.#logSink(this.#levels.error, origin, method, value);
+    }
+
+    static logFatal(origin, method, value) {
+        this.#logSink(this.#levels.fatal, origin, method, value);
     }
 }
 

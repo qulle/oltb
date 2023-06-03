@@ -237,6 +237,7 @@ class DebugInfoModal extends ModalBase {
 
         const logItem = DOM.createElement({
             element: 'div',
+            style: `background-color: ${entry.level.color}`,
             class: 'oltb-log__item'
         });
 
@@ -310,6 +311,7 @@ class DebugInfoModal extends ModalBase {
 
         const logItem = DOM.createElement({
             element: 'div',
+            style: `background-color: ${entry.level.color}`,
             class: 'oltb-log__item'
         });
 

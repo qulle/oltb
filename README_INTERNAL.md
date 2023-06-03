@@ -1161,12 +1161,13 @@ To make debugging and diagnosting errors easier there is a tool named `DebugInfo
 Adding the debug parameter will also enable the default context-menu in the browser and will also output information in the console from `html2canvas` when generating a PNG.
 
 ### Logging
-Logging is done through the `LogManager`. This way all logging is done through one central place and will be outputted in the `DebugInfoModal`. There are four levels to use when logging.
+Logging is done through the `LogManager`. This way all logging is done through one central place and will be outputted in the `DebugInfoModal`. There are five levels to use when logging.
 ```javascript
 LogManager.logDebug(FILENAME, 'handleClick', 'User clicked tool');
 LogManager.logInformation(FILENAME, 'onLayerCreated', 'Layer was created');
 LogManager.logWarning(FILENAME, 'loadLayer', 'Could not load geojson file');
 LogManager.logError(FILENAME, 'saveState', 'Error parsing JSON object');
+LogManager.logFatal(FILENAME, 'globalErrorHandler', 'Uncaught error');
 ```
 
 There is also the possibility to log complex objects insted of plain text.

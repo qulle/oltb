@@ -15,7 +15,7 @@ class ErrorManager {
     static globalErrorHandler(error) {
         error.preventDefault();
         
-        LogManager.logError(FILENAME, 'globalErrorHandler', error.error);
+        LogManager.logFatal(FILENAME, 'globalErrorHandler', error.error);
         Toast.error({
             title: 'Error',
             message: 'An unexpected error occurred'

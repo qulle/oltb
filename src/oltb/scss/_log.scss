@@ -9,11 +9,6 @@
         border-radius: $border-radius;
         margin: .5rem 0;
 
-        &:nth-child(odd) {
-            background-color: $color-gray-light;
-            color: $color-dark;
-        }
-
         &:first-child {
             margin-top: 0;
         }
