@@ -84,9 +84,10 @@ class BookmarkTool extends Control {
         this.active = false;
         this.options = { ...DefaultOptions, ...options };
         
-        // Load stored data from localStorage
-        const localStorageState = StateManager.getStateObject(LocalStorageNodeName);
-        this.localStorage = { ...LocalStorageDefaults, ...localStorageState };
+        this.localStorage = StateManager.getAndMergeStateObject(
+            LocalStorageNodeName, 
+            LocalStorageDefaults
+        );
 
         const toolboxElement = ElementManager.getToolboxElement();
         toolboxElement.insertAdjacentHTML('beforeend', `
@@ -296,7 +297,7 @@ class BookmarkTool extends Control {
     }
 
     clearBookmarks() {
-        LogManager.logDebug(FILENAME, 'clearBookmarks', 'All bookmarks cleared');
+        LogManager.logInformation(FILENAME, 'clearBookmarks', 'All bookmarks cleared');
         
         StateManager.setStateObject(LocalStorageNodeName, LocalStorageDefaults);
         this.bookmarkStack.innerHTML = '';
@@ -308,7 +309,7 @@ class BookmarkTool extends Control {
     }
 
     createBookmark(bookmark) {
-        LogManager.logDebug(FILENAME, 'createBookmark', bookmark);
+        LogManager.logInformation(FILENAME, 'createBookmark', bookmark);
 
         const bookmarkElement = DOM.createElement({
             element: 'li', 
@@ -462,7 +463,7 @@ class BookmarkTool extends Control {
             message: `Do you want to delete the <strong>${bookmark.name}</strong> bookmark?`,
             confirmText: 'Delete',
             onConfirm: () => {
-                LogManager.logDebug(FILENAME, 'deleteBookmark', bookmark);
+                LogManager.logInformation(FILENAME, 'deleteBookmark', bookmark);
 
                 bookmarkElement.remove();
 

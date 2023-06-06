@@ -37,12 +37,13 @@ class ColorPickerManager {
         });
     }
 
+    static isToPlaceBottom() {
+        return window.innerWidth <= Config.deviceWidth.sm || isHorizontal();
+    }
+
     static onColorPickerTooltipShow(instance) {
         instance.setProps({
-            placement: (
-                window.innerWidth <= Config.deviceWidth.sm || 
-                isHorizontal()
-            ) ? 'bottom' : 'left'
+            placement: this.isToPlaceBottom() ? 'bottom' : 'left'
         });
     
         const selector = instance.reference.getAttribute('data-oltb-color-target');

@@ -78,9 +78,10 @@ class ThemeTool extends Control {
         this.active = false;
         this.options = { ...DefaultOptions, ...options };
 
-        // Load stored data from localStorage
-        const localStorageState = StateManager.getStateObject(LocalStorageNodeName);
-        this.localStorage = { ...LocalStorageDefaults, ...localStorageState };
+        this.localStorage = StateManager.getAndMergeStateObject(
+            LocalStorageNodeName, 
+            LocalStorageDefaults
+        );
 
         window.addEventListener(Events.custom.settingsCleared, this.onWindowSettingsCleared.bind(this));
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));

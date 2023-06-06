@@ -45,6 +45,10 @@ class StateManager {
         return {};
     }
 
+    static getAndMergeStateObject(name, defaultObject) {
+        return { ...defaultObject, ...this.getStateObject(name) };
+    }
+
     static saveState() {
         try {
             const serialized = JSON.stringify(this.#runtimeState);

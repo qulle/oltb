@@ -52,9 +52,6 @@ const LocalStorageDefaults = Object.freeze({
 });
 
 class OLTB {
-    #tools = {};
-    #localStorage = {};
-
     static Config = Config;
 
     static LogManager = LogManager;
@@ -79,31 +76,16 @@ class OLTB {
     generateTooltip = generateTooltip;
     generateWindBarb = generateWindBarb;
 
-    constructor(options = {}) {
-        // Note: The init order is important
-        BootstrapManager.init([
-            LogManager,
-            ErrorManager,
-            StateManager,
-            ElementManager,
-            ProjectionManager,
-            LayerManager,
-            TippyManager,
-            TooltipManager,
-            UrlManager,
-            ToolManager,
-            SettingsManager,
-            InfoWindowManager,
-            ColorPickerManager,
-            AccessibilityManager
-        ]);
+    #tools = {};
+    #localStorage = {};
 
-        // Load stored data from localStorage
-        const localStorageState = StateManager.getStateObject(LocalStorageNodeName);
-        this.#localStorage = { ...LocalStorageDefaults, ...localStorageState };
+    #hasSpecifiedTools(options) {
+        return options.tools && Object.keys(options.tools).length;
+    }
 
+    #initTools(options) {
         // Tools that should be added
-        const tools = options.tools && Object.keys(options.tools).length 
+        const tools = this.#hasSpecifiedTools(options) 
             ? options.tools 
             : AllTools;
 
@@ -123,6 +105,36 @@ class OLTB {
 
         // Always add the ContextMenu
         this.#tools['ContextMenu'] = new ContextMenu({});
+    }
+
+    #initLocalStorage() {
+        this.#localStorage = StateManager.getAndMergeStateObject(
+            LocalStorageNodeName, 
+            LocalStorageDefaults
+        );
+    }
+
+    constructor(options = {}) {
+        // Note: The init order is important
+        BootstrapManager.init([
+            LogManager,
+            ErrorManager,
+            StateManager,
+            ElementManager,
+            ProjectionManager,
+            LayerManager,
+            ColorPickerManager,
+            TippyManager,
+            TooltipManager,
+            UrlManager,
+            ToolManager,
+            SettingsManager,
+            InfoWindowManager,
+            AccessibilityManager
+        ]);
+
+        this.#initLocalStorage();
+        this.#initTools(options);
 
         if(options.map) {
             this.setMap(options.map);

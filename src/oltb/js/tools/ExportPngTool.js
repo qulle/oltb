@@ -93,11 +93,11 @@ class ExportPngTool extends Control {
         }
 
         // RenderSync will trigger the export the png
-        map.once(Events.openLayers.renderComplete, this.onRenderComplete.bind(this));
+        map.once(Events.openLayers.renderComplete, this.onRenderCompleteAsync.bind(this));
         map.renderSync();
     }
 
-    async onRenderComplete() {
+    async onRenderCompleteAsync() {
         const map = this.getMap();
         if(!map) {
             return;
@@ -149,7 +149,7 @@ class ExportPngTool extends Control {
             }
 
             const errorMessage = 'Failed to export canvas image';
-            LogManager.logError(FILENAME, 'onRenderComplete', {
+            LogManager.logError(FILENAME, 'onRenderCompleteAsync', {
                 message: errorMessage,
                 error: error
             });

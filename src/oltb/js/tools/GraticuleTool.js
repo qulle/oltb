@@ -62,9 +62,10 @@ class GraticuleTool extends Control {
         this.active = false;
         this.options = { ...DefaultOptions, ...options };
 
-        // Load stored data from localStorage
-        const localStorageState = StateManager.getStateObject(LocalStorageNodeName);
-        this.localStorage = { ...LocalStorageDefaults, ...localStorageState };
+        this.localStorage = StateManager.getAndMergeStateObject(
+            LocalStorageNodeName, 
+            LocalStorageDefaults
+        );
         
         this.graticule = new Graticule({
             strokeStyle: new Stroke({

@@ -1,6 +1,6 @@
 import { Tile, Vector } from 'ol/layer';
 
-const LayerOptions = [
+const LayerOptions = Object.freeze([
     {
         text: 'Tile',
         value: 'Tile'
@@ -9,7 +9,7 @@ const LayerOptions = [
         text: 'Vector',
         value: 'Vector'
     }
-];
+]);
 
 const LayerTypes = Object.freeze({
     'Tile': Tile,

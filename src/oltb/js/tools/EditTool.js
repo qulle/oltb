@@ -135,9 +135,10 @@ class EditTool extends Control {
         this.parser = new jsts.io.OL3Parser();
         this.parser.inject(Point, LineString, LinearRing, Polygon, MultiPoint, MultiLineString, MultiPolygon, GeometryCollection);
 
-        // Load stored data from localStorage
-        const localStorageState = StateManager.getStateObject(LocalStorageNodeName);
-        this.localStorage = { ...LocalStorageDefaults, ...localStorageState };
+        this.localStorage = StateManager.getAndMergeStateObject(
+            LocalStorageNodeName, 
+            LocalStorageDefaults
+        );
         
         const toolboxElement = ElementManager.getToolboxElement();
         toolboxElement.insertAdjacentHTML('beforeend', `

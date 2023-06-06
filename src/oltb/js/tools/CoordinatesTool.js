@@ -71,9 +71,10 @@ class CoordinatesTool extends Control {
         this.tooltipItem = undefined;
         this.options = { ...DefaultOptions, ...options };
 
-        // Load stored data from localStorage
-        const localStorageState = StateManager.getStateObject(LocalStorageNodeName);
-        this.localStorage = { ...LocalStorageDefaults, ...localStorageState };
+        this.localStorage = StateManager.getAndMergeStateObject(
+            LocalStorageNodeName, 
+            LocalStorageDefaults
+        );
 
         const toolboxElement = ElementManager.getToolboxElement();
         toolboxElement.insertAdjacentHTML('beforeend', `

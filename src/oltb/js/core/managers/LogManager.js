@@ -4,7 +4,6 @@ import { Config } from "../Config";
 const FILENAME = 'managers/LogManager.js';
 
 class LogManager {
-    static #isDebug;
     static #log = [];
     static #levels = Object.freeze({
         debug: {

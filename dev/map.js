@@ -91,19 +91,20 @@ BootstrapManager.init([
     ElementManager,
     ProjectionManager,
     LayerManager,
+    ColorPickerManager,
     TippyManager,
     TooltipManager,
     UrlManager,
     ToolManager,
     SettingsManager,
     InfoWindowManager,
-    ColorPickerManager,
     AccessibilityManager
 ]);
 
-// Load stored data from localStorage
-const LocalStorageState = StateManager.getStateObject(LocalStorageNodeName);
-const LocalStorage = { ...LocalStorageDefaults, ...LocalStorageState };
+const LocalStorage = StateManager.getAndMergeStateObject(
+    LocalStorageNodeName, 
+    LocalStorageDefaults
+);
 
 const map = new Map({
     interactions: defaultInterctions({

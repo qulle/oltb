@@ -66,6 +66,15 @@ Start the dev server
 $ npm start
 ```
 
+Scripts in `package.json` was designed to be executed in Bash. If you are using Windows then by default CMD is the default shell that NPM uses internally, even if you run the first command from Bash. Set Bash as default shell in the NPM-config.
+```bash
+# x86
+$ npm config set script-shell "C:\\Program Files (x86)\\git\\bin\\bash.exe"
+
+# x64
+$ npm config set script-shell "C:\\Program Files\\git\\bin\\bash.exe"
+```
+
 ## Making A Release
 ```bash
 # (1). Checkout and update main branch
@@ -1144,10 +1153,12 @@ const LocalStorageDefaults = Object.freeze({
 });
 ```
 
-These two nextcomming lines merges stored data into a runtime copy of the default properties located in `LocalStorageDefaults`.
+Merge the default properties in `LocalStorageDefaults` along with any stored values from localStorage.
 ```javascript
-const localStorageState = StateManager.getStateObject(LocalStorageNodeName);
-this.localStorage = { ...LocalStorageDefaults, ...localStorageState };
+this.localStorage = StateManager.getAndMergeStateObject(
+    LocalStorageNodeName, 
+    LocalStorageDefaults
+);
 ```
 
 To update the state in localStorage, call the `setStateObject` method and pass in the node name along with the updated state object.

@@ -29,11 +29,12 @@ class LayerManager {
     }
 
     static setMap(map) { 
-        LogManager.logDebug(FILENAME, 'setMap', `Handling map queues, adding ${
-            this.#queue.mapLayers.length
-        } map-layers and ${
-            this.#queue.featureLayers.length
-        } feature-layers`);
+        LogManager.logInformation(FILENAME, 'setMap', {
+            adding: {
+                mapLayers: this.#queue.mapLayers.length,
+                featureLayers: this.#queue.featureLayers.length
+            }
+        });
 
         this.#map = map;
 

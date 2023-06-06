@@ -60,9 +60,10 @@ class ScaleLineTool extends Control {
             units: this.options.units
         });
 
-        // Load stored data from localStorage
-        const localStorageState = StateManager.getStateObject(LocalStorageNodeName);
-        this.localStorage = { ...LocalStorageDefaults, ...localStorageState };
+        this.localStorage = StateManager.getAndMergeStateObject(
+            LocalStorageNodeName, 
+            LocalStorageDefaults
+        );
         
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
         window.addEventListener(Events.browser.contentLoaded, this.onDOMContentLoaded.bind(this));

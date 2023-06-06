@@ -1,10 +1,9 @@
+import urlCapitalsGeoJson from 'url:../geojson/capitals.geojson';
 import { Toast } from "../../src/oltb/js/common/Toast";
 import { LogManager } from "../../src/oltb/js/core/managers/LogManager";
 import { toStringHDMS } from "ol/coordinate";
 import { LayerManager } from "../../src/oltb/js/core/managers/LayerManager";
 import { generateMarker } from '../../src/oltb/js/generators/GenerateMarker';
-
-import urlCapitalsGeoJson from 'url:../geojson/capitals.geojson';
 
 const FILENAME = 'layers/Capitals.js';
 const ID_PREFIX = 'oltb-info-window-marker';

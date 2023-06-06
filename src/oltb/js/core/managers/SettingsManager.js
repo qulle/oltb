@@ -67,9 +67,11 @@ class SettingsManager {
 
     static #loadBrowserData() {
         LogManager.logDebug(FILENAME, 'loadBrowserData', 'Loading settings from browser');
-
-        const localStorageState = StateManager.getStateObject(LocalStorageNodeName);
-        const localStorage = { ...LocalStorageDefaults, ...localStorageState };
+        
+        const localStorage = StateManager.getAndMergeStateObject(
+            LocalStorageNodeName, 
+            LocalStorageDefaults
+        );
 
         return localStorage;
     }

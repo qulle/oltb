@@ -6,7 +6,6 @@ const FILENAME = 'managers/ErrorManger.js';
 class ErrorManager {
     static init() {
         LogManager.logDebug(FILENAME, 'init', 'Initialization started');
-
         window.addEventListener('error', this.globalErrorHandler);
     }
 

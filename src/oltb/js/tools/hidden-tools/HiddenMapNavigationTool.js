@@ -60,9 +60,10 @@ class HiddenMapNavigationTool extends Control {
         this.options = { ...DefaultOptions, ...options };
         this.coordinatesModal = undefined;
 
-        // Load stored data from localStorage
-        const localStorageState = StateManager.getStateObject(LocalStorageNodeName);
-        this.localStorage = { ...LocalStorageDefaults, ...localStorageState };
+        this.localStorage = StateManager.getAndMergeStateObject(
+            LocalStorageNodeName, 
+            LocalStorageDefaults
+        );
 
         const coordinatesIcon = getIcon({
             path: SvgPaths.crosshair.stroked

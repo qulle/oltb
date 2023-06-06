@@ -1,3 +1,7 @@
+// Url imports
+import urlCountriesGeoJson from 'url:../geojson/countries.geojson';
+
+// Module imports
 import { bbox } from 'ol/loadingstrategy';
 import { Toast } from "../../src/oltb/js/common/Toast";
 import { Config } from '../../src/oltb/js/core/Config';
@@ -11,8 +15,6 @@ import { getMeasureValue } from "../../src/oltb/js/helpers/Measurements";
 import { FeatureProperties } from "../../src/oltb/js/helpers/constants/FeatureProperties";
 import { Vector as VectorLayer } from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';
-
-import urlCountriesGeoJson from 'url:../geojson/countries.geojson';
 
 const FILENAME = 'layers/Countries.js';
 const ID_PREFIX = 'oltb-info-window-marker';

@@ -20,18 +20,18 @@
         "url": "https://github.com/qulle/oltb/issues"
     },
     "scripts": {
-        "start": "parcel serve ./dev/index.html --open --dist-dir serve/",
+        "start": "parcel serve ./dev/index.html --open --dist-dir ./serve",
         "eslint:src": "eslint --config ./.eslintrc.cjs ./src/oltb/js/**/*.js",
         "eslint:src-fix": "eslint --fix --config ./.eslintrc.cjs ./src/oltb/js/**/*.js",
         "eslint:dev": "eslint --config ./.eslintrc.cjs ./dev/**/*.js",
         "eslint:dev-fix": "eslint --fix --config ./.eslintrc.cjs ./dev/**/*.js",
         "build": "npm run build:demo && npm run build:lib",
         "build:lib": "rollup --config",
-        "build:demo": "parcel build --public-url . ./dev/index.html --dist-dir demo/",
+        "build:demo": "parcel build --public-url . ./dev/index.html --dist-dir ./demo",
         "example:one": "sh -c 'start firefox -url \"file://C:$(cut -c3- <<< $(readlink -m ./examples/cdn/index.html))\"'",
-        "example:two": "parcel serve ./examples/npm/example-one/index.html --open --dist-dir serve/",
-        "example:three": "parcel serve ./examples/npm/example-two/index.html --open --dist-dir serve/",
-        "clean": "rm -rf serve/ dist/ demo/ .parcel-cache/",
+        "example:two": "parcel serve ./examples/npm/example-one/index.html --open --dist-dir ./serve",
+        "example:three": "parcel serve ./examples/npm/example-two/index.html --open --dist-dir ./serve",
+        "clean": "rm -rf ./serve ./dist ./demo ./.parcel-cache",
         "install-husky": "npx husky install",
         "configure-husky": "npx husky install && npx husky add .husky/pre-commit \"npx lint-staged\""
     },

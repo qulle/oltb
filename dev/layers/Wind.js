@@ -1,11 +1,13 @@
+// Url imports
+import urlCapitalsGeoJson from 'url:../geojson/capitals.geojson';
+
+// Module imports
 import { Toast } from "../../src/oltb/js/common/Toast";
 import { LogManager } from "../../src/oltb/js/core/managers/LogManager";
 import { toStringHDMS } from "ol/coordinate";
 import { randomNumber } from "../../src/oltb/js/helpers/browser/Random";
 import { LayerManager } from "../../src/oltb/js/core/managers/LayerManager";
 import { generateWindBarb } from "../../src/oltb/js/generators/GenerateWindBarb";
-
-import urlCapitalsGeoJson from 'url:../geojson/capitals.geojson';
 
 const FILENAME = 'layers/Wind.js';
 const ID_PREFIX = 'oltb-info-window-marker';
