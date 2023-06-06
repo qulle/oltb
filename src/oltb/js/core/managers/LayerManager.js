@@ -79,7 +79,7 @@ class LayerManager {
             return this.name;
         }
 
-        layerWrapper.setLayer = function(name) {
+        layerWrapper.setName = function(name) {
             this.name = name;
         }
 
@@ -94,7 +94,7 @@ class LayerManager {
         // Internal logic
         layerWrapper.setId(this.#layerId);
         this.#layerId = this.#layerId + 1;
-    
+
         if(this.#map) {
             this.addMapLayerToMap(layerWrapper, silent);
         }else {
