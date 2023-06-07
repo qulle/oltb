@@ -4,6 +4,7 @@ import { MouseWheelZoom, DragPan, DragRotate, KeyboardZoom, KeyboardPan } from '
 import { platformModifierKeyOnly, altShiftKeysOnly, shiftKeyOnly, targetNotEditable } from 'ol/events/condition';
 
 // Browser prototype extensions
+import './helpers/extensions/Cycle';
 import './helpers/prototypes/String';
 import './helpers/prototypes/SlideToggle';
 

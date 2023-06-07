@@ -25,5 +25,6 @@ export const banner = `/*!
  * | (+) @rollup/plugin-terser 0.4.0        - (https://github.com/rollup/plugins/tree/master/packages/terser)        |
  * | (+) rollup-plugin-license 3.0.1        - (https://github.com/mjeanroy/rollup-plugin-license)                    |
  * | (+) rollup-plugin-scss 4.0.0           - (https://github.com/thgh/rollup-plugin-scss)                           |
+ * | (+) Cycle.js                           - (https://github.com/douglascrockford/JSON-js)                          |
  * +-----------------------------------------------------------------------------------------------------------------+
  */`;

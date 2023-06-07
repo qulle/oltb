@@ -755,17 +755,18 @@ The managers are initiated in two steps. The first one is the base initiation th
 ```javascript
 BootstrapManager.init([
     LogManager,
+    ErrorManager,
     StateManager,
     ElementManager,
     ProjectionManager,
     LayerManager,
+    ColorPickerManager,
     TippyManager,
     TooltipManager,
     UrlManager,
     ToolManager,
     SettingsManager,
     InfoWindowManager,
-    ColorPickerManager,
     AccessibilityManager
 ]);
 ```

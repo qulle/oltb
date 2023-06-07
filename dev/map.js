@@ -15,6 +15,7 @@ import './layers/Countries';
 import './layers/Continents';
 
 // Browser prototype extensions
+import '../src/oltb/js/helpers/extensions/Cycle';
 import '../src/oltb/js/helpers/prototypes/String';
 import '../src/oltb/js/helpers/prototypes/SlideToggle';
 

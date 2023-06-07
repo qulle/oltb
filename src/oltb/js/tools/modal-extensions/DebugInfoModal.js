@@ -173,7 +173,11 @@ class DebugInfoModal extends ModalBase {
         const indentation = 4;
         const sectionCode = DOM.createElement({
             element: 'code',
-            text: JSON.stringify(section.content, jsonReplacer, indentation),
+            text: JSON.stringify(
+                JSON.decycle(section.content),
+                jsonReplacer, 
+                indentation
+            ),
         });
 
         DOM.appendChildren(sectionPre, [

@@ -11,6 +11,7 @@ import { defaults as defaultInterctions, MouseWheelZoom, DragPan, DragRotate, Ke
 import '../shared/Maps';
 
 // Browser prototype extensions
+import 'oltb/src/oltb/js/helpers/extensions/Cycle';
 import 'oltb/src/oltb/js/helpers/prototypes/String';
 import 'oltb/src/oltb/js/helpers/prototypes/SlideToggle';
 

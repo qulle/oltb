@@ -16,6 +16,7 @@ module.exports = {
                 "args": "none", 
                 "ignoreRestSiblings": false 
             }
-        ]
+        ],
+        "no-control-regex": 0
     }
 }

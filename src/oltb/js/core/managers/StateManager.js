@@ -51,7 +51,7 @@ class StateManager {
 
     static saveState() {
         try {
-            const serialized = JSON.stringify(this.#runtimeState);
+            const serialized = JSON.stringify(JSON.decycle(this.#runtimeState));
             localStorage.setItem(Config.localStorage.key, serialized);
         }catch(error) {
             LogManager.logError(FILENAME, 'saveState', {
