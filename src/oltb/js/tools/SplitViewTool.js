@@ -201,7 +201,10 @@ class SplitViewTool extends Control {
             }
         });
 
-        eventDispatcher([this.leftSideSrc, this.rightSideSrc], Events.browser.change);
+        eventDispatcher([
+            this.leftSideSrc, 
+            this.rightSideSrc
+        ], Events.browser.change);
     }
 
     updateTool() {
@@ -236,15 +239,20 @@ class SplitViewTool extends Control {
     }
 
     activateTool() {
+        this.active = true;
+
         this.rightSideSrc.selectedIndex = '1';
+        eventDispatcher([
+            this.rightSideSrc
+        ], Events.browser.change);
 
-        eventDispatcher([this.rightSideSrc], Events.browser.change);
-
+        // Some layer related error, missing or rendering
+        // Triggered by eventDispatcher change-event
         if(this.layerLoadingError) {
+            this.active = false;
             return;
         }
-
-        this.active = true;
+        
         this.splitViewToolbox.classList.add(`${TOOLBOX_SECTION_CLASS}--show`);
         this.splitViewSlider.classList.add(`${SLIDER_CLASS}--show`);
         this.button.classList.add(`${TOOL_BUTTON_CLASS}--active`);
@@ -291,10 +299,19 @@ class SplitViewTool extends Control {
         this.rightSideSrc.value = this.leftSideSrc.value;
         this.leftSideSrc.value = currentRightId;
 
-        eventDispatcher([this.leftSideSrc, this.rightSideSrc], Events.browser.change);
+        eventDispatcher([
+            this.leftSideSrc, 
+            this.rightSideSrc
+        ], Events.browser.change);
     }
 
     sourceChange(leftSideSrcId, rightSideSrcId) {
+        // Block access for events that are captued when the tool is not activated
+        // Example removing a layer in the LayerTool
+        if(!this.active) {
+            return;
+        }
+
         const map = this.getMap();
         if(!map) {
             return;
@@ -318,10 +335,7 @@ class SplitViewTool extends Control {
         const rightSideLayerWrapper = LayerManager.getMapLayerById(rightSideSrcId);
 
         // This should not happen, but just in case
-        if(
-            !leftSideLayerWrapper || 
-            !rightSideLayerWrapper
-        ) {
+        if(!leftSideLayerWrapper || !rightSideLayerWrapper) {
             this.layerLoadingError = true;
 
             const errorMessage = 'One or both of the layers could not be loaded';
