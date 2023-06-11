@@ -1,37 +1,16 @@
-/*
-    cycle.js
-    2021-05-31
+// Cycle.js
+// @ https://github.com/douglascrockford/JSON-js
 
-    Public Domain.
-
-    NO WARRANTY EXPRESSED OR IMPLIED. USE AT YOUR OWN RISK.
-
-    This code should be minified before deployment.
-    See https://www.crockford.com/jsmin.html
-
-    USE YOUR OWN COPY. IT IS EXTREMELY UNWISE TO LOAD CODE FROM SERVERS YOU DO
-    NOT CONTROL.
-*/
-
-// The file uses the WeakMap feature of ES6.
-
-/*jslint eval */
-
-/*property
-    $ref, decycle, forEach, get, indexOf, isArray, keys, length, push,
-    retrocycle, set, stringify, test
-*/
-
-if (typeof JSON.decycle !== "function") {
+if (typeof JSON.decycle !== 'function') {
     JSON.decycle = function decycle(object, replacer) {
-        "use strict";
+        'use strict';
 
         // Make a deep copy of an object or array, assuring that there is at most
         // one instance of each object or array in the resulting structure. The
         // duplicate references (which might be forming cycles) are replaced with
         // an object of the form
 
-        //      {"$ref": PATH}
+        //      {'$ref': PATH}
 
         // where the PATH is a JSONPath string that locates the first occurance.
 
@@ -41,7 +20,7 @@ if (typeof JSON.decycle !== "function") {
         //      a[0] = a;
         //      return JSON.stringify(JSON.decycle(a));
 
-        // produces the string '[{"$ref":"$"}]'.
+        // produces the string '[{'$ref':'$'}]'.
 
         // If a replacer function is provided, then it will be called for each value.
         // A replacer function receives a value and returns a replacement value.
@@ -65,11 +44,11 @@ if (typeof JSON.decycle !== "function") {
                 value = replacer(value);
             }
 
-            // typeof null === "object", so go on if this value is really an object but not
+            // typeof null === 'object', so go on if this value is really an object but not
             // one of the weird builtin objects.
 
             if (
-                typeof value === "object"
+                typeof value === 'object'
                 && value !== null
                 && !(value instanceof Boolean)
                 && !(value instanceof Date)
@@ -79,7 +58,7 @@ if (typeof JSON.decycle !== "function") {
             ) {
 
                 // If the value is an object or array, look to see if we have already
-                // encountered it. If so, return a {"$ref":PATH} object. This uses an
+                // encountered it. If so, return a {'$ref':PATH} object. This uses an
                 // ES6 WeakMap.
 
                 old_path = objects.get(value);
@@ -96,7 +75,7 @@ if (typeof JSON.decycle !== "function") {
                 if (Array.isArray(value)) {
                     nu = [];
                     value.forEach(function (element, i) {
-                        nu[i] = derez(element, path + "[" + i + "]");
+                        nu[i] = derez(element, path + '[' + i + ']');
                     });
                 } else {
 
@@ -106,21 +85,21 @@ if (typeof JSON.decycle !== "function") {
                     Object.keys(value).forEach(function (name) {
                         nu[name] = derez(
                             value[name],
-                            path + "[" + JSON.stringify(name) + "]"
+                            path + '[' + JSON.stringify(name) + ']'
                         );
                     });
                 }
                 return nu;
             }
             return value;
-        }(object, "$"));
+        }(object, '$'));
     };
 }
 
 
-if (typeof JSON.retrocycle !== "function") {
+if (typeof JSON.retrocycle !== 'function') {
     JSON.retrocycle = function retrocycle($) {
-        "use strict";
+        'use strict';
 
         // Restore an object that was reduced by decycle. Members whose values are
         // objects of the form
@@ -137,7 +116,7 @@ if (typeof JSON.retrocycle !== "function") {
         // Goessner's JSONPath.
 
         // So,
-        //      var s = '[{"$ref":"$"}]';
+        //      var s = '[{'$ref':'$'}]';
         //      return JSON.retrocycle(JSON.parse(s));
         // produces an array containing a single element which is the array itself.
 
@@ -150,12 +129,12 @@ if (typeof JSON.retrocycle !== "function") {
             // replaces the $ref object with a reference to the value that is found by
             // the path.
 
-            if (value && typeof value === "object") {
+            if (value && typeof value === 'object') {
                 if (Array.isArray(value)) {
                     value.forEach(function (element, i) {
-                        if (typeof element === "object" && element !== null) {
+                        if (typeof element === 'object' && element !== null) {
                             var path = element.$ref;
-                            if (typeof path === "string" && px.test(path)) {
+                            if (typeof path === 'string' && px.test(path)) {
                                 value[i] = eval(path);
                             } else {
                                 rez(element);
@@ -165,9 +144,9 @@ if (typeof JSON.retrocycle !== "function") {
                 } else {
                     Object.keys(value).forEach(function (name) {
                         var item = value[name];
-                        if (typeof item === "object" && item !== null) {
+                        if (typeof item === 'object' && item !== null) {
                             var path = item.$ref;
-                            if (typeof path === "string" && px.test(path)) {
+                            if (typeof path === 'string' && px.test(path)) {
                                 value[name] = eval(path);
                             } else {
                                 rez(item);

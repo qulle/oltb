@@ -2,6 +2,10 @@ import { VERSION } from 'ol';
 import { version } from '../../../../package.json';
 
 const Config = Object.freeze({
+    classNames: Object.freeze({
+        row: 'oltb-row',
+        dark: 'oltb-dark'
+    }),
     openLayers: Object.freeze({
         version: VERSION,
         id: 'map'

@@ -2,7 +2,7 @@ import { Config } from "../core/Config";
 import { easeOut } from 'ol/easing';
 import { fromLonLat } from "ol/proj";
 
-const goToView = function (map, coordinates, zoom, rotation) {
+const goToView = function(map, coordinates, zoom, rotation) {
     if(!map) {
         return;
     }
