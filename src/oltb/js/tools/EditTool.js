@@ -43,6 +43,7 @@ const FILENAME = 'tools/EditTool.js';
 const TOOL_BUTTON_CLASS = 'oltb-tool-button';
 const TOOLBOX_SECTION_CLASS = 'oltb-toolbox-section';
 const ID_PREFIX = 'oltb-edit';
+const TOOLTIP_KEY = 'edit';
 
 const DefaultOptions = Object.freeze({
     hitTolerance: 5,
@@ -223,8 +224,7 @@ class EditTool extends Control {
                     return layerWrapper.getLayer().getSource().hasFeature(feature);
                 });
                 
-                return (selectable && (
-                    isFeatureLayer || 
+                return (selectable && (isFeatureLayer || 
                     SettingsManager.getSetting(Settings.selectVectorMapShapes)
                 ));
             },
@@ -532,10 +532,7 @@ class EditTool extends Control {
             });
 
             // Check if a or b was a measurement, if so, create a new tooltip
-            if(
-                this.isMeasurementType(a) ||
-                this.isMeasurementType(b)
-            ) {
+            if(this.isMeasurementType(a) || this.isMeasurementType(b)) {
                 const tooltip = generateTooltip();
 
                 feature.setProperties({
@@ -615,7 +612,7 @@ class EditTool extends Control {
         const hasOtherTooltip = !TooltipManager.isEmpty();
 
         if(Boolean(hasOtherTooltip) && selectedFeatures.length === 1) {
-            this.tooltipItem = TooltipManager.push('edit');
+            this.tooltipItem = TooltipManager.push(TOOLTIP_KEY);
         }
 
         const properties = feature.getProperties();
@@ -630,7 +627,7 @@ class EditTool extends Control {
         const hasOtherTooltip = !TooltipManager.isEmpty();
         
         if(Boolean(hasOtherTooltip) && selectedFeatures.length === 1) {
-            TooltipManager.pop('edit');
+            TooltipManager.pop(TOOLTIP_KEY);
         }
 
         const properties = feature.getProperties();

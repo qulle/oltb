@@ -8,6 +8,7 @@ import { Control } from 'ol/control';
 import { Settings } from '../helpers/constants/Settings';
 import { LogManager } from '../core/managers/LogManager';
 import { ToolManager } from '../core/managers/ToolManager';
+import { GeometryType } from '../core/ol-types/GeometryType';
 import { StateManager } from '../core/managers/StateManager';
 import { LayerManager } from '../core/managers/LayerManager';
 import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
@@ -41,7 +42,7 @@ const LocalStorageNodeName = LocalStorageKeys.drawTool;
 const LocalStorageDefaults = Object.freeze({
     active: false,
     collapsed: false,
-    toolType: 'Polygon',
+    toolType: GeometryType.Polygon,
     strokeWidth: '2.5',
     strokeColor: '#4A86B8FF',
     fillColor: '#D7E3FA80'
@@ -242,10 +243,7 @@ class DrawTool extends Control {
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
 
         // IntersectionMode doesn't play well when tool is LineString or Point
-        if(
-            this.toolType.value === 'LineString' || 
-            this.toolType.value === 'Point'
-        ) {
+        if(this.toolType.value === GeometryType.LineString || this.toolType.value === GeometryType.Point) {
             this.intersectionEnable.value = 'false';
             this.intersectionEnable.disabled = true;
         }else {
@@ -351,13 +349,13 @@ class DrawTool extends Control {
         // A normal circle can not be serialized to json, approximated circle as polygon instead. 
         // Also use circle to create square and rectangle
         let geometryFunction = undefined;
-        if(toolType === 'Square') {
+        if(toolType === GeometryType.Square) {
             geometryFunction = createRegularPolygon(4);
-            toolType = 'Circle';
-        }else if(toolType === 'Rectangle') {
+            toolType = GeometryType.Circle;
+        }else if(toolType === GeometryType.Rectangle) {
             geometryFunction = createBox();
-            toolType = 'Circle';
-        }else if(toolType === 'Circle') {
+            toolType = GeometryType.Circle;
+        }else if(toolType === GeometryType.Circle) {
             geometryFunction = createRegularPolygon(32);
         }
 

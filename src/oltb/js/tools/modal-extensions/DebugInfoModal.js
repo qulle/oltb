@@ -174,7 +174,7 @@ class DebugInfoModal extends ModalBase {
         const sectionCode = DOM.createElement({
             element: 'code',
             text: JSON.stringify(
-                JSON.decycle(section.content),
+                JSON.retrocycle(section.content),
                 jsonReplacer, 
                 indentation
             ),
@@ -241,7 +241,7 @@ class DebugInfoModal extends ModalBase {
 
         const logItem = DOM.createElement({
             element: 'div',
-            style: `background-color: ${entry.level.color}`,
+            style: `background-color: ${entry.level.backgroundColor}; color: ${entry.level.color};`,
             class: 'oltb-log__item'
         });
 
@@ -315,7 +315,7 @@ class DebugInfoModal extends ModalBase {
 
         const logItem = DOM.createElement({
             element: 'div',
-            style: `background-color: ${entry.level.color}`,
+            style: `background-color: ${entry.level.backgroundColor}; color: ${entry.level.color};`,
             class: 'oltb-log__item'
         });
 

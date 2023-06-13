@@ -2,7 +2,7 @@ import { DOM } from '../../helpers/browser/DOM';
 import { ModalBase } from '../../common/modals/ModalBase';
 import { LogManager } from '../../core/managers/LogManager';
 import { isDarkTheme } from '../../helpers/IsDarkTheme';
-import { FormatOptions } from '../../core/ol-types/FormatTypes';
+import { FormatOptions } from '../../core/ol-types/FormatType';
 import { generateSelect } from '../../generators/GenerateSelect';
 
 const FILENAME = 'modal-extensions/DownloadLayerModal.js';

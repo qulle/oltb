@@ -194,10 +194,10 @@ class MyLocationTool extends Control {
         this.loadingToast.remove();
     }
 
-    onError(error, ptrToast = Toast.error) {
+    onError(error, toastPtr = Toast.error) {
         LogManager.logError(FILENAME, 'onError', error.message);
 
-        ptrToast({
+        toastPtr({
             title: 'Error',
             message: error.message
         });

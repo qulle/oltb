@@ -44,7 +44,7 @@
     }
 
     &__toggle {
-        color: $color-dark;
+        color: inherit;
     }
 
     &__json {
@@ -55,23 +55,5 @@
         overflow: auto;
         max-height: 300px;
         font-size: 1rem;
-    }
-}
-
-body.oltb-dark .oltb-log {
-    &__item {
-        &:nth-child(odd) {
-            .oltb-log__toggle,
-            .oltb-log__json {
-                color: $color-dark;
-            }
-        }
-
-        &:nth-child(even) {
-            .oltb-log__json,
-            .oltb-log__toggle {
-                color: $color-light;
-            }
-        }
     }
 }

@@ -12,17 +12,17 @@ const FormatOptions = Object.freeze([
     }
 ]);
 
-const FormatTypes = Object.freeze({
+const FormatType = Object.freeze({
     'GeoJSON': GeoJSON,
     'KML': KML
 });
 
 const instantiateFormat = function(name, options) {
-    if(!(name in FormatTypes)) {
+    if(!(name in FormatType)) {
         return null;
     }
 
-    return new FormatTypes[name](options);
+    return new FormatType[name](options);
 }
 
-export { FormatOptions, FormatTypes, instantiateFormat };
+export { FormatOptions, FormatType, instantiateFormat };

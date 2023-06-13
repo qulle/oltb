@@ -24,6 +24,7 @@ const FILENAME = 'tools/CoordiantesTool.js';
 const TOOL_BUTTON_CLASS = 'oltb-tool-button';
 const TOOLBOX_SECTION_CLASS = 'oltb-toolbox-section';
 const ID_PREFIX = 'oltb-coordinates';
+const TOOLTIP_KEY = 'coordinates';
 
 const DefaultOptions = Object.freeze({
     click: undefined,
@@ -213,7 +214,7 @@ class CoordinatesTool extends Control {
             this.projections.set(projection.code, coordinatesCell);
         });
 
-        this.tooltipItem = TooltipManager.push('coordinates');
+        this.tooltipItem = TooltipManager.push(TOOLTIP_KEY);
         this.onPointerMoveListener = map.on(Events.openLayers.pointerMove, this.onPointerMove.bind(this));
         this.onMapClickListener = map.on(Events.browser.click, this.onMapClick.bind(this));
 
@@ -227,7 +228,7 @@ class CoordinatesTool extends Control {
 
     deActivateTool() {
         this.coordinatesTable.innerHTML = '';
-        TooltipManager.pop('coordinates');
+        TooltipManager.pop(TOOLTIP_KEY);
         
         unByKey(this.onPointerMoveListener);
         unByKey(this.onMapClickListener);
@@ -323,10 +324,7 @@ class CoordinatesTool extends Control {
     }
 
     copyCoordinates(event) {
-        if(
-            !SettingsManager.getSetting(Settings.copyCoordinatesOnClick) || 
-            ToolManager.hasActiveTool()
-        ) {
+        if(!SettingsManager.getSetting(Settings.copyCoordinatesOnClick) || ToolManager.hasActiveTool()) {
             return;
         }
 

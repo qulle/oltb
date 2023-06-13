@@ -9,6 +9,7 @@ import { unByKey } from 'ol/Observable';
 import { Settings } from '../helpers/constants/Settings';
 import { LogManager } from '../core/managers/LogManager';
 import { ToolManager } from '../core/managers/ToolManager';
+import { GeometryType } from '../core/ol-types/GeometryType';
 import { LayerManager } from '../core/managers/LayerManager';
 import { StateManager } from '../core/managers/StateManager';
 import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
@@ -28,6 +29,7 @@ const FILENAME = 'tools/MeasureTool.js';
 const TOOL_BUTTON_CLASS = 'oltb-tool-button';
 const TOOLBOX_SECTION_CLASS = 'oltb-toolbox-section';
 const ID_PREFIX = 'oltb-measure';
+const TOOLTIP_KEY = 'measure';
 
 const DefaultOptions = Object.freeze({
     click: undefined,
@@ -41,7 +43,7 @@ const LocalStorageNodeName = LocalStorageKeys.measureTool;
 const LocalStorageDefaults = Object.freeze({
     active: false,
     collapsed: false,
-    toolType: 'LineString',
+    toolType: GeometryType.LineString,
     strokeColor: '#3B4352FF',
     fillColor: '#D7E3FA80'
 });
@@ -310,7 +312,7 @@ class MeasureTool extends Control {
 
     onDrawStart(event) {
         const feature = event.feature;
-        const tooltipItem = TooltipManager.push('measure');
+        const tooltipItem = TooltipManager.push(TOOLTIP_KEY);
         
         this.onChangeListener = feature.getGeometry().on(Events.openLayers.change, (event) => {
             const measureValue = getMeasureValue(event.target);
@@ -334,7 +336,7 @@ class MeasureTool extends Control {
         const feature = event.feature;
         feature.setStyle(this.styles);
         
-        TooltipManager.pop('measure');
+        TooltipManager.pop(TOOLTIP_KEY);
         const tooltip = generateTooltip();
 
         feature.setProperties({
@@ -383,7 +385,7 @@ class MeasureTool extends Control {
     onDrawAbort(event) {
         unByKey(this.onChangeListener);
         
-        TooltipManager.pop('measure');
+        TooltipManager.pop(TOOLTIP_KEY);
 
         // User defined callback from constructor
         if(this.options.abort instanceof Function) {

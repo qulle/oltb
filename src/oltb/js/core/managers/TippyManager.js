@@ -31,9 +31,17 @@ class TippyManager {
 
     static setMap(map) { }
 
+    static #isPlacementBottom() {
+        return window.innerWidth <= Config.deviceWidth.sm;
+    }
+
+    static #isPlacementForcedBottom() {
+        return this.#isPlacementBottom() || isHorizontal();
+    }
+
     static #onPlacementChange(event) {
         this.#toolButtonTippy.setProps({
-            placement: window.innerWidth <= Config.deviceWidth.sm || isHorizontal()
+            placement: this.#isPlacementForcedBottom()
                 ? 'bottom' 
                 : 'right'
         });
@@ -41,7 +49,7 @@ class TippyManager {
 
     static #onWindowSettingsCleared() {
         this.#toolButtonTippy.setProps({
-            placement: window.innerWidth <= Config.deviceWidth.sm
+            placement: this.#isPlacementBottom()
                 ? 'bottom' 
                 : 'right'
         });

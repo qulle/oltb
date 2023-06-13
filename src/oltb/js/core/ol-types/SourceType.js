@@ -19,7 +19,7 @@ const SourceOptions = Object.freeze([
     }
 ]);
 
-const SourceTypes = Object.freeze({
+const SourceType = Object.freeze({
     'TileWMS': TileWMS,
     'XYZ': XYZ,
     'OSM': OSM,
@@ -27,11 +27,11 @@ const SourceTypes = Object.freeze({
 });
 
 const instantiateSource = function(name, options) {
-    if(!(name in SourceTypes)) {
+    if(!(name in SourceType)) {
         return null;
     }
 
-    return new SourceTypes[name](options);
+    return new SourceType[name](options);
 }
 
-export { SourceOptions, SourceTypes, instantiateSource };
+export { SourceOptions, SourceType, instantiateSource };

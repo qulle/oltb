@@ -3,13 +3,13 @@ import { Toast } from '../common/Toast';
 import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { LogManager } from '../core/managers/LogManager';
-import { FormatTypes } from '../core/ol-types/FormatTypes';
+import { FormatType } from '../core/ol-types/FormatType';
 import { LayerManager } from '../core/managers/LayerManager';
 import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
 import { ElementManager } from '../core/managers/ElementManager';
 import { ImportLayerModal } from './modal-extensions/ImportLayerModal';
 import { SvgPaths, getIcon } from '../core/icons/GetIcon';
-import { instantiateFormat } from '../core/ol-types/FormatTypes';
+import { instantiateFormat } from '../core/ol-types/FormatType';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
 
 const FILENAME = 'tools/ImportVectorLayerTool.js';
@@ -127,7 +127,7 @@ class ImportVectorLayerTool extends Control {
             const filename = file.split('.')[0];
             const fileExtension = file.split('.').pop().toLowerCase();
 
-            const format = Object.keys(FormatTypes).find((key) => {
+            const format = Object.keys(FormatType).find((key) => {
                 return key.toLowerCase() === fileExtension;
             });
 

@@ -10,35 +10,40 @@ class LogManager {
             value: 1,
             icon: '🐳',
             info: 'Debug',
-            color: '#D7E3FAFF',
+            color: '#0166A5FF',
+            backgroundColor: '#D7E3FAFF',
             method: window.console.log
         },
         information: {
             value: 2,
             icon: '🐸',
             info: 'Information',
-            color: '#D3D9E6FF',
+            color: '#3B4352FF',
+            backgroundColor: '#D3D9E6FF',
             method: window.console.info
         },
         warning: {
             value: 3,
             icon: '🐠',
             info: 'Warning',
-            color: '#FFF1C5FF',
+            color: '#FBBD02FF',
+            backgroundColor: '#FFF1C5FF',
             method: window.console.warn
         },
         error: {
             value: 4,
             icon: '🐝',
             info: 'Error',
-            color: '#FDB5B4FF',
+            color: '#EB4542FF',
+            backgroundColor: '#FDB5B4FF',
             method: window.console.error
         },
         fatal: {
             value: 5,
             icon: '🐞',
             info: 'Fatal',
-            color: '#D0CAFFFF',
+            color: '#493E9CFF',
+            backgroundColor: '#D0CAFFFF',
             method: window.console.error
         }
     });
