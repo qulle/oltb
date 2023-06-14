@@ -139,10 +139,7 @@ class InfoWindowManager {
 
         const infoWindow = feature?.getProperties()?.oltb?.infoWindow;
         const nodeName = event.originalEvent.target.nodeName;
-        if(
-            Boolean(infoWindow) && 
-            nodeName === 'CANVAS'
-        ) {
+        if(Boolean(infoWindow) && nodeName === 'CANVAS') {
             this.#map.getViewport().style.cursor = 'pointer';
         }else {
             this.#map.getViewport().style.cursor = 'default';

@@ -7,7 +7,9 @@ import { hasCustomFeatureProperty } from '../../helpers/browser/HasNestedPropert
 
 const FILENAME = 'managers/LayerManager.js';
 const DEFAULT_LAYER_NAME = 'New layer';
-const Z_INDEX_BASE = 1000;
+
+const ZINDEX_BASE_MAP_LAYER = 1;
+const ZINDEX_BASE_FEATURE_LAYER = 10000;
 
 class LayerManager {
     static #map;
@@ -53,20 +55,7 @@ class LayerManager {
         this.#queue.featureLayers = [];
     }
 
-    //-------------------------------------------
-    // Map layers specific
-    //-------------------------------------------
-    static addMapLayers(layerWrappers, silent = false) {
-        for(let index in layerWrappers) {
-            this.addMapLayer(layerWrappers[index], silent);
-        }
-    }
-
-    static addMapLayer(layerWrapper, silent = false) {
-        LogManager.logDebug(FILENAME, 'addMapLayer', layerWrapper.name);
-
-        // Add getters and setters
-        // Makes it easier for the user to create the layer object
+    static #addPropertiesInterface(layerWrapper) {
         layerWrapper.getLayer = function() {
             return this.layer;
         }
@@ -90,10 +79,30 @@ class LayerManager {
         layerWrapper.setId = function(id) {
             this.id = id;
         }
+    }
 
-        // Internal logic
+    static #setIdAndZIndex(zBase, layerWrapper) {
         layerWrapper.setId(this.#layerId);
-        this.#layerId = this.#layerId + 1;
+        layerWrapper.getLayer().setZIndex(zBase + this.#layerId);
+
+        this.#layerId += 1;
+    }
+
+    //-------------------------------------------
+    // Map layers specific
+    //-------------------------------------------
+
+    static addMapLayers(layerWrappers, silent = false) {
+        for(let index in layerWrappers) {
+            this.addMapLayer(layerWrappers[index], silent);
+        }
+    }
+
+    static addMapLayer(layerWrapper, silent = false) {
+        LogManager.logDebug(FILENAME, 'addMapLayer', layerWrapper.name);
+
+        this.#addPropertiesInterface(layerWrapper);
+        this.#setIdAndZIndex(ZINDEX_BASE_MAP_LAYER, layerWrapper);
 
         if(this.#map) {
             this.addMapLayerToMap(layerWrapper, silent);
@@ -180,44 +189,32 @@ class LayerManager {
     //-------------------------------------------
     // Feature layers specific
     //-------------------------------------------
-    static addFeatureLayer(name, visible = true, silent = false) {
+
+    static #validateName(name) {
         name = name.trim();
 
         if(!name.length) {
             name = DEFAULT_LAYER_NAME;
         }
 
+        return name;
+    }
+
+    static addFeatureLayer(name, visible = true, silent = false) {
+        name = this.#validateName(name);
         LogManager.logDebug(FILENAME, 'addFeatureLayer', name);
 
         const layerWrapper = {
-            id: this.#layerId,
             name: name,
             layer: new VectorLayer({
                 source: new VectorSource(),
-                zIndex: Z_INDEX_BASE + this.#layerId,
                 visible: visible
-            }),
-            getLayer: function() {
-                return this.layer;
-            },
-            setLayer: function(layer) {
-                this.layer = layer;
-            },
-            getName: function() {
-                return this.name;
-            },
-            setName: function(name) {
-                this.name = name;
-            },
-            getId: function() {
-                return this.id;
-            },
-            setId: function(id) {
-                this.id = id;
-            }
+            })
         };
 
-        this.#layerId = this.#layerId + 1;
+        this.#addPropertiesInterface(layerWrapper);
+        this.#setIdAndZIndex(ZINDEX_BASE_FEATURE_LAYER, layerWrapper);
+
         this.#activeFeatureLayer = layerWrapper;
 
         if(this.#map) {
@@ -244,6 +241,13 @@ class LayerManager {
         }));
     }
 
+    static #getNextActiveFeatureLayer() {
+        return (!this.isFeatureLayersEmpty() 
+            ? this.#layers.featureLayers[this.#layers.featureLayers.length - 1] 
+            : null
+        );
+    }
+
     static removeFeatureLayer(layerWrapper, silent = false) {
         LogManager.logDebug(FILENAME, 'removeFeatureLayer', layerWrapper.getName());
 
@@ -263,9 +267,7 @@ class LayerManager {
         this.#map.removeLayer(layerWrapper.getLayer());
 
         // Sett another layer as active if exists
-        this.#activeFeatureLayer = !this.isFeatureLayersEmpty() 
-            ? this.#layers.featureLayers[this.#layers.featureLayers.length - 1] 
-            : null;
+        this.#activeFeatureLayer = this.#getNextActiveFeatureLayer();
 
         window.dispatchEvent(new CustomEvent(Events.custom.featureLayerRemoved, {
             detail: {

@@ -389,10 +389,7 @@ class EditTool extends Control {
     onWindowKeyUp(event) {
         if(isShortcutKeyOnly(event, ShortcutKeys.editTool)) {
             this.handleClick(event);
-        }else if(
-            event.key === Keys.valueDelete && 
-            Boolean(this.active)
-        ) {
+        }else if(Boolean(this.active) && event.key === Keys.valueDelete) {
             this.onDeleteSelectedFeatures();
         }
     }
@@ -421,9 +418,10 @@ class EditTool extends Control {
         }
 
         const genetiveLimit = 1;
+        const genetiveChar = featureLength > genetiveLimit ? 's': '';
         Dialog.confirm({
             title: 'Delete feature',
-            message: `Delete ${featureLength} selected feature${featureLength > genetiveLimit ? 's': ''}?`,
+            message: `Delete ${featureLength} selected feature${genetiveChar}?`,
             confirmText: 'Delete',
             onConfirm: () => {
                 const features = [ ...this.select.getFeatures().getArray() ];
@@ -520,11 +518,11 @@ class EditTool extends Control {
             const a = features[0];
             const b = features[1];
 
-            const aGeo = this.parser.read(a.getGeometry());
-            const bGeo = this.parser.read(b.getGeometry());
+            const aGeometry = this.parser.read(a.getGeometry());
+            const bGeometry = this.parser.read(b.getGeometry());
 
             // JSTS Lib operation
-            const shape = operation(aGeo, bGeo);
+            const shape = operation(aGeometry, bGeometry);
 
             // Create new feature with that shape
             const feature = new Feature({
@@ -549,7 +547,6 @@ class EditTool extends Control {
                 tooltip.setData(`${measureValue.value} ${measureValue.unit}`);
 
                 map.addOverlay(tooltip.getOverlay());
-
                 feature.setStyle(DefaultMeasureStyle);
             }else {
                 feature.setStyle(DefaultDrawingStyle);

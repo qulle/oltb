@@ -55,10 +55,7 @@ class DebugInfoTool extends Control {
         // If the tool only should be visible in debug mode
         const isDebug = UrlManager.getParameter(Config.urlParameters.debug) === 'true';
 
-        if(
-            Boolean(this.options.onlyWhenGetParameter) &&
-            !isDebug
-        ) {
+        if(!isDebug && Boolean(this.options.onlyWhenGetParameter)) {
             button.classList.add(`${TOOL_BUTTON_CLASS}--hidden`);
         }
 

@@ -356,10 +356,7 @@ class LayerTool extends Control {
         });
 
         // User defined callback from constructor
-        if(
-            !silent &&
-            this.options.mapLayerAdded instanceof Function
-        ) {
+        if(!silent && this.options.mapLayerAdded instanceof Function) {
             this.options.mapLayerAdded(layerWrapper);
         }
     }
@@ -374,10 +371,7 @@ class LayerTool extends Control {
         this.mapLayerStack.querySelector(`#${ID_PREFIX}-map-${layerWrapper.getId()}`).remove();
 
         // User defined callback from constructor
-        if(
-            !silent &&
-            this.options.mapLayerRemoved instanceof Function
-        ) {
+        if(!silent &&this.options.mapLayerRemoved instanceof Function) {
             this.options.mapLayerRemoved(layerWrapper);
         }
     }
@@ -416,10 +410,7 @@ class LayerTool extends Control {
         });
 
         // User defined callback from constructor
-        if(
-            !silent &&
-            this.options.featureLayerAdded instanceof Function
-        ) {
+        if(!silent && this.options.featureLayerAdded instanceof Function) {
             this.options.featureLayerAdded(layerWrapper);
         }
     }
@@ -441,10 +432,7 @@ class LayerTool extends Control {
         }
 
         // User defined callback from constructor
-        if(
-            !silent &&
-            this.options.featureLayerRemoved instanceof Function
-        ) {
+        if(!silent && this.options.featureLayerRemoved instanceof Function) {
             this.options.featureLayerRemoved(layerWrapper);
         }
     }
