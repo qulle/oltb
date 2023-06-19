@@ -5,7 +5,7 @@ const FILENAME = 'managers/ToolManager.js';
 class ToolManager {
     static #tool;
 
-    static init() {
+    static init(options = {}) {
         LogManager.logDebug(FILENAME, 'init', 'Initialization started');
     }
 

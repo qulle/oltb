@@ -12,7 +12,7 @@ class TooltipManager {
     static #tooltipOverlay;
     static #tooltips = {}
 
-    static init() {
+    static init(options = {}) {
         LogManager.logDebug(FILENAME, 'init', 'Initialization started');
 
         const tooltipElement = DOM.createElement({

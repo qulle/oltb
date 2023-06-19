@@ -6,7 +6,7 @@ const FILENAME = 'managers/AccessibilityManager.js';
 const CLASS_ACCESSIBILITY = 'oltb-using-keyboard';
 
 class AccessibilityManager {
-    static init() {
+    static init(options = {}) {
         LogManager.logDebug(FILENAME, 'init', 'Initialization started');
 
         document.body.addEventListener(Events.browser.mouseDown, this.#onMouseDown.bind(this));

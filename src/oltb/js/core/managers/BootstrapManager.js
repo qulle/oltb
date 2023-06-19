@@ -16,9 +16,12 @@ class BootstrapManager {
         LogManager.logInformation(FILENAME, 'init', `Running OL version ${openLayersVersion}`);
         LogManager.logInformation(FILENAME, 'init', `Running OLTB version ${oltbVersion}`);
 
-        managers.forEach((manager) => {
+        managers.forEach((item) => {
+            const manager = item.manager;
+            const options = item.options || {};
+
             this.#managers.push(manager);
-            manager.init();
+            manager.init(options);
         });
     }
 

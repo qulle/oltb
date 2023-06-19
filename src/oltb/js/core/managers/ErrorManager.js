@@ -4,7 +4,7 @@ import { LogManager } from "./LogManager";
 const FILENAME = 'managers/ErrorManger.js';
 
 class ErrorManager {
-    static init() {
+    static init(options = {}) {
         LogManager.logDebug(FILENAME, 'init', 'Initialization started');
         window.addEventListener('error', this.globalErrorHandler);
     }

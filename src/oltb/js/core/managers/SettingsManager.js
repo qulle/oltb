@@ -51,11 +51,11 @@ class SettingsManager {
     static #localStorage;
     static #settings = structuredClone(DefaultSettings);
 
-    static init() {
+    static init(options = {}) {
         LogManager.logDebug(FILENAME, 'init', 'Initialization started');
         
         // Update the states of the settings with values from localStorage
-        this.#localStorage = this.#loadBrowserData();
+        this.#localStorage = this.#getBrowserData();
         this.#settings.forEach((value, key) => {
             if(key in this.#localStorage) {
                 value.state = this.#localStorage[key];
@@ -65,8 +65,8 @@ class SettingsManager {
 
     static setMap(map) { }
 
-    static #loadBrowserData() {
-        LogManager.logDebug(FILENAME, 'loadBrowserData', 'Loading settings from browser');
+    static #getBrowserData() {
+        LogManager.logDebug(FILENAME, 'getBrowserData', 'Loading settings from browser');
         
         const localStorage = StateManager.getAndMergeStateObject(
             LocalStorageNodeName, 

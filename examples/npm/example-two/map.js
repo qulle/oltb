@@ -82,20 +82,22 @@ const LocalStorageDefaults = Object.freeze({
 
 // Note: The init order is important
 BootstrapManager.init([
-    LogManager,
-    ErrorManager,
-    StateManager,
-    ElementManager,
-    ProjectionManager,
-    LayerManager,
-    TippyManager,
-    TooltipManager,
-    UrlManager,
-    ToolManager,
-    SettingsManager,
-    InfoWindowManager,
-    ColorPickerManager,
-    AccessibilityManager
+    {manager: LogManager},
+    {manager: ErrorManager},
+    {manager: StateManager, options: {
+        ignoredKeys: []
+    }},
+    {manager: ElementManager},
+    {manager: ProjectionManager},
+    {manager: LayerManager},
+    {manager: ColorPickerManager},
+    {manager: TippyManager},
+    {manager: TooltipManager},
+    {manager: UrlManager},
+    {manager: ToolManager},
+    {manager: SettingsManager},
+    {manager: InfoWindowManager},
+    {manager: AccessibilityManager}
 ]);
 
 const LocalStorage = StateManager.getAndMergeStateObject(

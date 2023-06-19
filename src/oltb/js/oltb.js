@@ -38,7 +38,7 @@ import { AccessibilityManager } from './core/managers/AccessibilityManager';
 // Generator functions
 import { generateMarker } from './generators/GenerateMarker';
 import { generateTooltip } from './generators/GenerateTooltip';
-import { generateWindBarb } from './generators/generateWindBarb';
+import { generateWindBarb } from './generators/GenerateWindBarb';
 
 // Toolbar tools
 import { AllTools } from './tools/index';
@@ -118,20 +118,22 @@ class OLTB {
     constructor(options = {}) {
         // Note: The init order is important
         BootstrapManager.init([
-            LogManager,
-            ErrorManager,
-            StateManager,
-            ElementManager,
-            ProjectionManager,
-            LayerManager,
-            ColorPickerManager,
-            TippyManager,
-            TooltipManager,
-            UrlManager,
-            ToolManager,
-            SettingsManager,
-            InfoWindowManager,
-            AccessibilityManager
+            {manager: LogManager},
+            {manager: ErrorManager},
+            {manager: StateManager, options: {
+                ignoredKeys: []
+            }},
+            {manager: ElementManager},
+            {manager: ProjectionManager},
+            {manager: LayerManager},
+            {manager: ColorPickerManager},
+            {manager: TippyManager},
+            {manager: TooltipManager},
+            {manager: UrlManager},
+            {manager: ToolManager},
+            {manager: SettingsManager},
+            {manager: InfoWindowManager},
+            {manager: AccessibilityManager}
         ]);
 
         this.#initLocalStorage();

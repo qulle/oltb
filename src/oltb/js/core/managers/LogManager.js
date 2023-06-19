@@ -48,7 +48,7 @@ class LogManager {
         }
     });
 
-    static init() {
+    static init(options = {}) {
         LogManager.logDebug(FILENAME, 'init', 'Initialization started');
     }
 

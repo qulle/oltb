@@ -5,35 +5,49 @@ const FILENAME = 'managers/StateManager.js';
 
 // Some objects have properties that we don't want to store in localStorage
 // Example: Bookmarks have a reference to the marker on the Map
-const IgnoredProperties = Object.freeze([
+const IgnoredKeys = Object.freeze([
     'marker'
 ]);
 
 class StateManager {
+    static #ignoredKeys;
     static #runtimeState;
 
-    static init() {
+    static init(options = {}) {
         LogManager.logDebug(FILENAME, 'init', 'Initialization started');
-        this.#runtimeState = this.#loadBrowserData();
+
+        this.#ignoredKeys = this.#getIgnoredKeys(options);
+        this.#runtimeState = this.#getBrowserData();
     }
 
     static setMap(map) { }
 
-    static #loadBrowserData() {
-        LogManager.logDebug(FILENAME, 'loadBrowserData', 'Loading stored state from browser');
+    static #getIgnoredKeys(options) {
+        const ignoredKeys = Object.freeze([
+            ...IgnoredKeys,
+            ...options?.ignoredKeys || []
+        ]);
+
+        LogManager.logInformation(FILENAME, 'getIgnoredKeys', ignoredKeys);
+
+        return ignoredKeys;
+    }
+
+    static #getBrowserData() {
+        LogManager.logDebug(FILENAME, 'logetBrowserDataadBrowserData', 'Loading stored state from browser');
 
         let state = {};
 
         try {
             state = JSON.parse(localStorage.getItem(Config.localStorage.key)) || {};
         }catch(error) {
-            LogManager.logError(FILENAME, 'loadBrowserData', {
+            LogManager.logError(FILENAME, 'getBrowserData', {
                 message: 'Failed to load application state',
                 error: error
             });
         }
 
-        LogManager.logDebug(FILENAME, 'loadBrowserData', structuredClone(state));
+        LogManager.logDebug(FILENAME, 'getBrowserData', structuredClone(state));
 
         return state;
     }
@@ -58,7 +72,7 @@ class StateManager {
     static saveState() {
         try {
             const serialized = JSON.stringify(this.#runtimeState, (key, value) => {
-                if(IgnoredProperties.includes(key)) {
+                if(this.#ignoredKeys.includes(key)) {
                     return undefined;
                 }
 

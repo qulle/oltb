@@ -3,7 +3,7 @@ import { LogManager } from './LogManager';
 const FILENAME = 'managers/UrlManager.js';
 
 class UrlManager {
-    static init() {
+    static init(options = {}) {
         LogManager.logDebug(FILENAME, 'init', 'Initialization started');
     }
 

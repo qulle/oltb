@@ -25,7 +25,7 @@ class InfoWindowManager {
     static #footer;
     static #lastFeature;
 
-    static init() {
+    static init(options = {}) {
         LogManager.logDebug(FILENAME, 'init', 'Initialization started');
         this.#createInfoWindow();
     }

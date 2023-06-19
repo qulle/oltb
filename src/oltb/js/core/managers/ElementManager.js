@@ -14,7 +14,7 @@ class ElementManager {
     static #toolbarElement;
     static #toolboxElement;
 
-    static init() {
+    static init(options = {}) {
         LogManager.logDebug(FILENAME, 'init', 'Initialization started');
 
         this.#mapElement = this.#createMapElement();
