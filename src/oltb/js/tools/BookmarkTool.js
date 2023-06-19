@@ -6,37 +6,35 @@ import { Config } from '../core/Config';
 import { Dialog } from '../common/Dialog';
 import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
-import { toLonLat } from 'ol/proj';
 import { goToView } from '../helpers/GoToView';
 import { LogManager } from '../core/managers/LogManager';
 import { ContextMenu } from '../common/ContextMenu';
 import { toStringHDMS } from 'ol/coordinate';
 import { randomNumber } from '../helpers/browser/Random';
+import { LayerManager } from '../core/managers/LayerManager';
 import { StateManager } from '../core/managers/StateManager';
 import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
+import { generateMarker } from '../generators/GenerateMarker';
 import { ElementManager } from '../core/managers/ElementManager';
 import { copyToClipboard } from '../helpers/browser/CopyToClipboard';
 import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
 import { SvgPaths, getIcon } from '../core/icons/GetIcon';
+import { InfoWindowManager } from '../core/managers/InfoWindowManager';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
 import { generateAnimalName } from '../helpers/name-generator/NameGenerator';
+import { fromLonLat, toLonLat } from 'ol/proj';
 
 const FILENAME = 'tools/BookmarkTool.js';
-const TOOL_BUTTON_CLASS = 'oltb-tool-button';
-const TOOLBOX_SECTION_CLASS = 'oltb-toolbox-section';
-const TOOLBOX_LIST_CLASS = 'oltb-toolbox-list';
-const FUNC_BUTTON_CLASS = 'oltb-func-btn';
+const CLASS_TOOL_BUTTON = 'oltb-tool-button';
+const CLASS_TOOLBOX_SECTION = 'oltb-toolbox-section';
+const CLASS_TOOLBOX_LIST = 'oltb-toolbox-list';
+const CLASS_FUNC_BUTTON = 'oltb-func-btn';
 const ID_PREFIX = 'oltb-bookmark';
+const ID_PREFIX_INFO_WINDOW = 'oltb-info-window-marker';
 
 const DefaultOptions = Object.freeze({
+    markerLayerVisibleOnLoad: true,
     storeDataInLocalStorage: false,
-    bookmarks: []
-});
-
-const LocalStorageNodeName = LocalStorageKeys.bookmarkTool;
-const LocalStorageDefaults = Object.freeze({
-    active: false,
-    collapsed: false,
     bookmarks: [],
     click: undefined,
     added: undefined,
@@ -44,6 +42,13 @@ const LocalStorageDefaults = Object.freeze({
     renamed: undefined,
     zoomedTo: undefined,
     cleared: undefined
+});
+
+const LocalStorageNodeName = LocalStorageKeys.bookmarkTool;
+const LocalStorageDefaults = Object.freeze({
+    active: false,
+    collapsed: false,
+    bookmarks: []
 });
 
 class BookmarkTool extends Control {
@@ -56,7 +61,7 @@ class BookmarkTool extends Control {
         
         const icon = getIcon({
             path: SvgPaths.bookmarkStar.stroked,
-            class: `${TOOL_BUTTON_CLASS}__icon`
+            class: `${CLASS_TOOL_BUTTON}__icon`
         });
 
         const clearBookmarksIcon = getIcon({
@@ -66,7 +71,7 @@ class BookmarkTool extends Control {
         const button = DOM.createElement({
             element: 'button',
             html: icon,
-            class: TOOL_BUTTON_CLASS,
+            class: CLASS_TOOL_BUTTON,
             attributes: {
                 type: 'button',
                 'data-tippy-content': `Bookmarks (${ShortcutKeys.bookmarkTool})`
@@ -83,7 +88,16 @@ class BookmarkTool extends Control {
         this.button = button;
         this.active = false;
         this.options = { ...DefaultOptions, ...options };
-        
+        this.layerWrapper = LayerManager.addFeatureLayer({
+            name: 'Bookmarks', 
+            visible: this.options.markerLayerVisibleOnLoad, 
+            silent: true,
+            disableFeatureLayerVisibilityButton: false,
+            disableFeatureLayerEditButton: false,
+            disableFeatureLayerDownloadButton: true,
+            disableFeatureLayerDeleteButton: true
+        });
+
         this.localStorage = StateManager.getAndMergeStateObject(
             LocalStorageNodeName, 
             LocalStorageDefaults
@@ -91,15 +105,15 @@ class BookmarkTool extends Control {
 
         const toolboxElement = ElementManager.getToolboxElement();
         toolboxElement.insertAdjacentHTML('beforeend', `
-            <div id="${ID_PREFIX}-toolbox" class="${TOOLBOX_SECTION_CLASS}">
-                <div class="${TOOLBOX_SECTION_CLASS}__header">
-                    <h4 class="${TOOLBOX_SECTION_CLASS}__title oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">
+            <div id="${ID_PREFIX}-toolbox" class="${CLASS_TOOLBOX_SECTION}">
+                <div class="${CLASS_TOOLBOX_SECTION}__header">
+                    <h4 class="${CLASS_TOOLBOX_SECTION}__title oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">
                         Bookmarks
-                        <span class="${TOOLBOX_SECTION_CLASS}__icon oltb-tippy" title="Toggle section"></span>
+                        <span class="${CLASS_TOOLBOX_SECTION}__icon oltb-tippy" title="Toggle section"></span>
                     </h4>
                 </div>
-                <div class="${TOOLBOX_SECTION_CLASS}__groups" id="${ID_PREFIX}-toolbox-collapsed" style="display: ${this.localStorage.collapsed ? 'none' : 'block'}">
-                    <div class="${TOOLBOX_SECTION_CLASS}__group">
+                <div class="${CLASS_TOOLBOX_SECTION}__groups" id="${ID_PREFIX}-toolbox-collapsed" style="display: ${this.localStorage.collapsed ? 'none' : 'block'}">
+                    <div class="${CLASS_TOOLBOX_SECTION}__group">
                         <div class="oltb-input-button-group">
                             <input type="text" id="${ID_PREFIX}-add-text" class="oltb-input" placeholder="Bookmark name">
                             <button type="button" id="${ID_PREFIX}-add-button" class="oltb-btn oltb-btn--green-mid oltb-tippy" title="Add Bookmark">
@@ -114,8 +128,8 @@ class BookmarkTool extends Control {
                             </button>
                         </div>
                     </div>
-                    <div class="${TOOLBOX_SECTION_CLASS}__group oltb-m-0">
-                        <ul id="${ID_PREFIX}-stack" class="${TOOLBOX_LIST_CLASS}"></ul>
+                    <div class="${CLASS_TOOLBOX_SECTION}__group oltb-m-0">
+                        <ul id="${ID_PREFIX}-stack" class="${CLASS_TOOLBOX_LIST}"></ul>
                     </div>
                 </div>
             </div>
@@ -160,6 +174,32 @@ class BookmarkTool extends Control {
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
         window.addEventListener(Events.custom.settingsCleared, this.onWindowSettingsCleared.bind(this));
         window.addEventListener(Events.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
+    }
+
+    validateName(name) {
+        name = name.trim();
+
+        if(!name) {
+            name = generateAnimalName();
+        }
+
+        return name;
+    }
+
+    addMarker(marker) {
+        this.layerWrapper.getLayer().getSource().addFeature(marker);
+    }
+
+    removeMarker(marker) {
+        this.layerWrapper.getLayer().getSource().removeFeature(marker);
+    }
+
+    clearMarkers() {
+        this.layerWrapper.getLayer().getSource().clear();
+    }
+
+    isLayerVisible() {
+        return this.layerWrapper.getLayer().getVisible()
     }
 
     onToggleToolbox(toggle) {
@@ -236,8 +276,8 @@ class BookmarkTool extends Control {
 
     activateTool() {
         this.active = true;
-        this.bookmarkToolbox.classList.add(`${TOOLBOX_SECTION_CLASS}--show`);
-        this.button.classList.add(`${TOOL_BUTTON_CLASS}--active`);
+        this.bookmarkToolbox.classList.add(`${CLASS_TOOLBOX_SECTION}--show`);
+        this.button.classList.add(`${CLASS_TOOL_BUTTON}--active`);
 
         this.localStorage.active = true;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
@@ -245,14 +285,14 @@ class BookmarkTool extends Control {
 
     deActivateTool() {
         this.active = false;
-        this.bookmarkToolbox.classList.remove(`${TOOLBOX_SECTION_CLASS}--show`);
-        this.button.classList.remove(`${TOOL_BUTTON_CLASS}--active`);
+        this.bookmarkToolbox.classList.remove(`${CLASS_TOOLBOX_SECTION}--show`);
+        this.button.classList.remove(`${CLASS_TOOL_BUTTON}--active`);
 
         this.localStorage.active = false;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 
-    addBookmark(bookmarkName) {
+    addBookmark(name) {
         const map = this.getMap();
         if(!map) {
             return;
@@ -262,15 +302,11 @@ class BookmarkTool extends Control {
         const zoom = view.getZoom();
         const coordinates = toLonLat(view.getCenter());
 
-        if(!bookmarkName) {
-            bookmarkName = generateAnimalName();
-        }
-
-        bookmarkName = bookmarkName.trim();
+        name = this.validateName(name);
 
         const bookmark = {
             id: randomNumber(),
-            name: bookmarkName,
+            name: name,
             zoom: zoom,
             coordinates: coordinates
         };
@@ -285,7 +321,7 @@ class BookmarkTool extends Control {
         if(!this.active) {
             Toast.success({
                 title: 'New bookmark',
-                message: `A new bookmark created <strong>${bookmarkName}</strong>`, 
+                message: `A new bookmark created <strong>${name}</strong>`, 
                 autoremove: Config.autoRemovalDuation.normal
             });
         }
@@ -299,8 +335,14 @@ class BookmarkTool extends Control {
     clearBookmarks() {
         LogManager.logInformation(FILENAME, 'clearBookmarks', 'All bookmarks cleared');
         
-        StateManager.setStateObject(LocalStorageNodeName, LocalStorageDefaults);
+        // Delete bookmark items from toolbox
         this.bookmarkStack.innerHTML = '';
+
+        // Delete markers from feature-layer
+        this.clearMarkers();
+
+        // Remove the bookmarks from localstorage
+        StateManager.setStateObject(LocalStorageNodeName, LocalStorageDefaults);
 
         // User defined callback from constructor
         if(this.options.cleared instanceof Function) {
@@ -308,19 +350,49 @@ class BookmarkTool extends Control {
         }
     }
 
-    createBookmark(bookmark) {
-        LogManager.logInformation(FILENAME, 'createBookmark', bookmark);
+    addBookmarkMarker(bookmark) {
+        const coordinates = bookmark.coordinates;
+        const prettyCoordinates = toStringHDMS(coordinates);
+        const infoWindow = {
+            title: bookmark.name,
+            content: '',
+            footer: `
+                <span class="oltb-info-window__coordinates">${prettyCoordinates}</span>
+                <div class="oltb-info-window__buttons-wrapper">
+                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--crosshair oltb-tippy" title="Copy marker coordinates" id="${ID_PREFIX_INFO_WINDOW}-copy-coordinates" data-coordinates="${prettyCoordinates}"></button>
+                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--copy oltb-tippy" title="Copy marker text" id="${ID_PREFIX_INFO_WINDOW}-copy-text" data-copy="${bookmark.name}"></button>
+                </div>
+            `
+        };
+        
+        const marker = new generateMarker({
+            lon: coordinates[0],
+            lat: coordinates[1],
+            title: bookmark.name,
+            description: '',
+            icon: 'bookmarkStar.filled',
+            fill: '#3B4352FF',
+            stroke: '#FFFFFFFF',
+            infoWindow: infoWindow
+        });
 
+        // Add reference to the marker on the bookmark
+        bookmark.marker = marker;
+
+        this.addMarker(marker);
+    }
+
+    addBookmarkItem(bookmark) {
         const bookmarkElement = DOM.createElement({
             element: 'li', 
             id: `oltb-bookmark-${bookmark.id}`,
-            class: `${TOOLBOX_LIST_CLASS}__item`
+            class: `${CLASS_TOOLBOX_LIST}__item`
         });
 
         const bookmarkName = DOM.createElement({
             element: 'span', 
             text: bookmark.name.ellipsis(20),
-            class: `${TOOLBOX_LIST_CLASS}__title oltb-tippy`,
+            class: `${CLASS_TOOLBOX_LIST}__title oltb-tippy`,
             title: bookmark.name
         });
 
@@ -337,27 +409,27 @@ class BookmarkTool extends Control {
             delay: [600, 100]
         });
 
-        const leftButtonWrapper = DOM.createElement({
+        const leftWrapper = DOM.createElement({
             element: 'div', 
-            class: `${TOOLBOX_LIST_CLASS}__wrapper`
+            class: `${CLASS_TOOLBOX_LIST}__wrapper`
         });
 
-        DOM.appendChildren(leftButtonWrapper, [
+        DOM.appendChildren(leftWrapper, [
             bookmarkName
         ]);
 
         DOM.appendChildren(bookmarkElement, [
-            leftButtonWrapper
+            leftWrapper
         ]);
 
-        const rightButtonWrapper = DOM.createElement({
+        const rightWrapper = DOM.createElement({
             element: 'div', 
-            class: `${TOOLBOX_LIST_CLASS}__wrapper`
+            class: `${CLASS_TOOLBOX_LIST}__wrapper`
         });
 
         const zoomToButton = DOM.createElement({
             element: 'button',
-            class: `${FUNC_BUTTON_CLASS} ${FUNC_BUTTON_CLASS}--geo-pin oltb-tippy`,
+            class: `${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--geo-pin oltb-tippy`,
             title: 'Zoom to coordinates',
             attributes: {
                 type: 'button'
@@ -369,7 +441,7 @@ class BookmarkTool extends Control {
 
         const copyCoordinatesButton = DOM.createElement({
             element: 'button',
-            class: `${FUNC_BUTTON_CLASS} ${FUNC_BUTTON_CLASS}--crosshair oltb-tippy`,
+            class: `${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--crosshair oltb-tippy`,
             title: 'Copy coordinates',
             attributes: {
                 type: 'button'
@@ -381,7 +453,7 @@ class BookmarkTool extends Control {
         
         const editButton = DOM.createElement({
             element: 'button',
-            class: `${FUNC_BUTTON_CLASS} ${FUNC_BUTTON_CLASS}--edit oltb-tippy`,
+            class: `${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--edit oltb-tippy`,
             title: 'Rename bookmark',
             attributes: {
                 type: 'button'
@@ -393,7 +465,7 @@ class BookmarkTool extends Control {
 
         const deleteButton = DOM.createElement({
             element: 'button',
-            class: `${FUNC_BUTTON_CLASS} ${FUNC_BUTTON_CLASS}--delete oltb-tippy`,
+            class: `${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--delete oltb-tippy`,
             title: 'Delete bookmark',
             attributes: {
                 type: 'button'
@@ -403,7 +475,7 @@ class BookmarkTool extends Control {
             }
         });
         
-        DOM.appendChildren(rightButtonWrapper, [
+        DOM.appendChildren(rightWrapper, [
             zoomToButton,
             copyCoordinatesButton,
             editButton, 
@@ -411,11 +483,18 @@ class BookmarkTool extends Control {
         ]);
         
         DOM.appendChildren(bookmarkElement, [
-            rightButtonWrapper
+            rightWrapper
         ]);
 
         // Add the bookmark to the user interface
         this.bookmarkStack.prepend(bookmarkElement);
+    }
+
+    createBookmark(bookmark) {
+        LogManager.logInformation(FILENAME, 'createBookmark', bookmark);        
+
+        this.addBookmarkMarker(bookmark);
+        this.addBookmarkItem(bookmark);
     }
 
     zoomToBookmark(bookmark) {
@@ -424,7 +503,15 @@ class BookmarkTool extends Control {
             return;
         }
         
+        // Focus Location in view
         goToView(map, bookmark.coordinates, bookmark.zoom);
+
+        // Trigger InfoWindow to show
+        if(this.isLayerVisible()) {
+            window.setTimeout(() => {
+                InfoWindowManager.showOverly(bookmark.marker, fromLonLat(bookmark.coordinates));
+            }, Config.animationDuration.normal);
+        }
 
         // User defined callback from constructor
         if(this.options.zoomedTo instanceof Function) {
@@ -458,6 +545,7 @@ class BookmarkTool extends Control {
     }
 
     deleteBookmark(bookmark, bookmarkElement) {
+        InfoWindowManager.hideOverlay();
         Dialog.confirm({
             title: 'Delete bookmark',
             message: `Do you want to delete the <strong>${bookmark.name}</strong> bookmark?`,
@@ -465,9 +553,13 @@ class BookmarkTool extends Control {
             onConfirm: () => {
                 LogManager.logInformation(FILENAME, 'deleteBookmark', bookmark);
 
+                // Delete bookmark item from toolbox
                 bookmarkElement.remove();
 
-                // Remove the bookmark from the collection
+                // Delete marker from feature-layer
+                this.removeMarker(bookmark.marker);
+
+                // Remove the bookmark from localstorage
                 this.localStorage.bookmarks = this.localStorage.bookmarks.filter((item) => {
                     return item.id !== bookmark.id;
                 });
@@ -483,6 +575,7 @@ class BookmarkTool extends Control {
     }
 
     editBookmark(bookmark, bookmarkName) {
+        InfoWindowManager.hideOverlay();
         Dialog.prompt({
             title: 'Edit name',
             message: `You are editing the <strong>${bookmark.name}</strong> bookmark`,
@@ -490,9 +583,19 @@ class BookmarkTool extends Control {
             confirmText: 'Rename',
             onConfirm: (result) => {
                 if(result !== null && !!result.length) {
+                    // Internal name
                     bookmark.name = result;
+                    
+                    // Bookmark item text
                     bookmarkName.innerText = result.ellipsis(20);
+
+                    // Tooltip
                     bookmarkName._tippy.setContent(result);
+
+                    // Update Marker and InfoWindow
+                    // Easiest to delete and add a new Marker at the same location
+                    this.removeMarker(bookmark.marker);
+                    this.addBookmarkMarker(bookmark);
 
                     StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
 

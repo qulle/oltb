@@ -301,6 +301,7 @@ const map = new Map({
             }
         }),
         new BookmarkTool({
+            markerLayerVisibleOnLoad: true,
             storeDataInLocalStorage: true,
             bookmarks: [{
                 id: 18151210,

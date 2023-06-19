@@ -21,10 +21,10 @@ import { ProjectionManager } from '../core/managers/ProjectionManager';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
 
 const FILENAME = 'tools/CoordiantesTool.js';
-const TOOL_BUTTON_CLASS = 'oltb-tool-button';
-const TOOLBOX_SECTION_CLASS = 'oltb-toolbox-section';
+const CLASS_TOOL_BUTTON = 'oltb-tool-button';
+const CLASS_TOOLBOX_SECTION = 'oltb-toolbox-section';
 const ID_PREFIX = 'oltb-coordinates';
-const TOOLTIP_KEY = 'coordinates';
+const KEY_TOOLTIP = 'coordinates';
 
 const DefaultOptions = Object.freeze({
     click: undefined,
@@ -47,13 +47,13 @@ class CoordinatesTool extends Control {
 
         const icon = getIcon({
             path: SvgPaths.crosshair.stroked,
-            class: `${TOOL_BUTTON_CLASS}__icon`
+            class: `${CLASS_TOOL_BUTTON}__icon`
         });
 
         const button = DOM.createElement({
             element: 'button',
             html: icon,
-            class: TOOL_BUTTON_CLASS,
+            class: CLASS_TOOL_BUTTON,
             attributes: {
                 type: 'button',
                 'data-tippy-content': `Show coordinates (${ShortcutKeys.coordinatesTool})`
@@ -79,22 +79,22 @@ class CoordinatesTool extends Control {
 
         const toolboxElement = ElementManager.getToolboxElement();
         toolboxElement.insertAdjacentHTML('beforeend', `
-            <div id="${ID_PREFIX}-toolbox" class="${TOOLBOX_SECTION_CLASS}">
-                <div class="${TOOLBOX_SECTION_CLASS}__header">
-                    <h4 class="${TOOLBOX_SECTION_CLASS}__title oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">
+            <div id="${ID_PREFIX}-toolbox" class="${CLASS_TOOLBOX_SECTION}">
+                <div class="${CLASS_TOOLBOX_SECTION}__header">
+                    <h4 class="${CLASS_TOOLBOX_SECTION}__title oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">
                         Coordinates
-                        <span class="${TOOLBOX_SECTION_CLASS}__icon oltb-tippy" title="Toggle section"></span>
+                        <span class="${CLASS_TOOLBOX_SECTION}__icon oltb-tippy" title="Toggle section"></span>
                     </h4>
                 </div>
-                <div class="${TOOLBOX_SECTION_CLASS}__groups" id="${ID_PREFIX}-toolbox-collapsed" style="display: ${this.localStorage.collapsed ? 'none' : 'block'}">
-                    <div class="${TOOLBOX_SECTION_CLASS}__group">
+                <div class="${CLASS_TOOLBOX_SECTION}__groups" id="${ID_PREFIX}-toolbox-collapsed" style="display: ${this.localStorage.collapsed ? 'none' : 'block'}">
+                    <div class="${CLASS_TOOLBOX_SECTION}__group">
                         <label class="oltb-label" for="${ID_PREFIX}-format">Format</label>
                         <select id="${ID_PREFIX}-format" class="oltb-select">
                             <option value="DD">Decimal degrees</option>
                             <option value="DMS">Degrees, minutes, seconds</option>
                         </select>
                     </div>
-                    <div class="${TOOLBOX_SECTION_CLASS}__group">
+                    <div class="${CLASS_TOOLBOX_SECTION}__group">
                         <label class="oltb-label">Coordinates <em>(Lat, Lon)</em></label>
                         <table class="oltb-table oltb-mt-05" id="${ID_PREFIX}-table"></table>
                     </div>
@@ -214,13 +214,13 @@ class CoordinatesTool extends Control {
             this.projections.set(projection.code, coordinatesCell);
         });
 
-        this.tooltipItem = TooltipManager.push(TOOLTIP_KEY);
+        this.tooltipItem = TooltipManager.push(KEY_TOOLTIP);
         this.onPointerMoveListener = map.on(Events.openLayers.pointerMove, this.onPointerMove.bind(this));
         this.onMapClickListener = map.on(Events.browser.click, this.onMapClick.bind(this));
 
         this.active = true;
-        this.coordinatesToolbox.classList.add(`${TOOLBOX_SECTION_CLASS}--show`);
-        this.button.classList.add(`${TOOL_BUTTON_CLASS}--active`);
+        this.coordinatesToolbox.classList.add(`${CLASS_TOOLBOX_SECTION}--show`);
+        this.button.classList.add(`${CLASS_TOOL_BUTTON}--active`);
 
         this.localStorage.active = true;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
@@ -228,14 +228,14 @@ class CoordinatesTool extends Control {
 
     deActivateTool() {
         this.coordinatesTable.innerHTML = '';
-        TooltipManager.pop(TOOLTIP_KEY);
+        TooltipManager.pop(KEY_TOOLTIP);
         
         unByKey(this.onPointerMoveListener);
         unByKey(this.onMapClickListener);
 
         this.active = false;
-        this.coordinatesToolbox.classList.remove(`${TOOLBOX_SECTION_CLASS}--show`);
-        this.button.classList.remove(`${TOOL_BUTTON_CLASS}--active`);
+        this.coordinatesToolbox.classList.remove(`${CLASS_TOOLBOX_SECTION}--show`);
+        this.button.classList.remove(`${CLASS_TOOL_BUTTON}--active`);
 
         this.localStorage.active = false;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);

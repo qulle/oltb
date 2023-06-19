@@ -17,8 +17,8 @@ import { Vector as VectorLayer } from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';
 
 const FILENAME = 'layers/Countries.js';
-const ID_PREFIX = 'oltb-info-window-marker';
-const FUNC_BUTTON_CLASS = 'oltb-func-btn';
+const CLASS_FUNC_BUTTON = 'oltb-func-btn';
+const ID_PREFIX_INFO_WINDOW = 'oltb-info-window-marker';
 
 const parseGeoJson = function(context, data, projection) {
     const features = new GeoJSON({
@@ -54,7 +54,7 @@ const parseGeoJson = function(context, data, projection) {
                     footer: `
                         <span class="oltb-info-window__coordinates">${prettyCoordinates}</span>
                         <div class="oltb-info-window__buttons-wrapper">
-                            <button class="${FUNC_BUTTON_CLASS} ${FUNC_BUTTON_CLASS}--copy oltb-tippy" title="Copy marker text" id="${ID_PREFIX}-copy-text" data-copy="${description}"></button>
+                            <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--copy oltb-tippy" title="Copy marker text" id="${ID_PREFIX_INFO_WINDOW}-copy-text" data-copy="${description}"></button>
                         </div>
                     `
                 }
@@ -112,4 +112,6 @@ LayerManager.addMapLayers([
             visible: false
         })
     }
-], true);
+], {
+    silent: true
+});

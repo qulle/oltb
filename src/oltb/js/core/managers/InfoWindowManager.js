@@ -13,8 +13,8 @@ import { Fill, Stroke, Style } from 'ol/style';
 import { copyMarkerCoordinates } from './info-window-manager/CopyMarkerCoordinates';
 
 const FILENAME = 'managers/InfoWindowManager.js';
-const ANIMATION_CLASS = 'oltb-animation--centered-bounce';
-const ID_PREFIX = 'oltb-info-window-marker';
+const CLASS_ANIMATION = 'oltb-animation--centered-bounce';
+const ID_PREFIX_INFO_WINDOW = 'oltb-info-window-marker';
 
 class InfoWindowManager {
     static #map;
@@ -181,10 +181,10 @@ class InfoWindowManager {
 
         this.#infoWindow.focus();
         
-        DOM.runAnimation(this.#infoWindow, ANIMATION_CLASS);
+        DOM.runAnimation(this.#infoWindow, CLASS_ANIMATION);
 
         // Attach listeners to the function-buttons inside the infoWindow
-        const removeMarkerButton = this.#footer.querySelector(`#${ID_PREFIX}-remove`);
+        const removeMarkerButton = this.#footer.querySelector(`#${ID_PREFIX_INFO_WINDOW}-remove`);
         if(removeMarkerButton) {
             removeMarkerButton.addEventListener(
                 Events.browser.click, 
@@ -192,7 +192,7 @@ class InfoWindowManager {
             );
         }
 
-        const copyMarkerCoordinatesButton = this.#footer.querySelector(`#${ID_PREFIX}-copy-coordinates`);
+        const copyMarkerCoordinatesButton = this.#footer.querySelector(`#${ID_PREFIX_INFO_WINDOW}-copy-coordinates`);
         if(copyMarkerCoordinatesButton) {
             copyMarkerCoordinatesButton.addEventListener(
                 Events.browser.click, 
@@ -200,7 +200,7 @@ class InfoWindowManager {
             );
         }
 
-        const copyMarkerInfoButton = this.#footer.querySelector(`#${ID_PREFIX}-copy-text`);
+        const copyMarkerInfoButton = this.#footer.querySelector(`#${ID_PREFIX_INFO_WINDOW}-copy-text`);
         if(copyMarkerInfoButton) {
             copyMarkerInfoButton.addEventListener(
                 Events.browser.click, 
@@ -208,7 +208,7 @@ class InfoWindowManager {
             );
         }
 
-        const editMarkerButton = this.#footer.querySelector(`#${ID_PREFIX}-edit`);
+        const editMarkerButton = this.#footer.querySelector(`#${ID_PREFIX_INFO_WINDOW}-edit`);
         if(editMarkerButton) {
             editMarkerButton.addEventListener(
                 Events.browser.click, 

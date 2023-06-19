@@ -9,7 +9,7 @@ import { ColorPickerManager } from './ColorPickerManager';
 import { createSingleton, delegate } from 'tippy.js';
 
 const FILENAME = 'managers/TippyManager.js';
-const TOOL_BUTTON_CLASS = 'oltb-tool-button';
+const CLASS_TOOL_BUTTON = 'oltb-tool-button';
 
 class TippyManager {
     static #toolButtonTippy;
@@ -56,7 +56,7 @@ class TippyManager {
     }
     
     static #onDOMContentLoaded(event) {
-        this.#toolButtonTippy.setInstances(tippy(`.${TOOL_BUTTON_CLASS}`));
+        this.#toolButtonTippy.setInstances(tippy(`.${CLASS_TOOL_BUTTON}`));
         this.#onPlacementChange(event);
     }
 

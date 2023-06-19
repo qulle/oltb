@@ -11,7 +11,7 @@ import { ElementManager } from '../core/managers/ElementManager';
 import { hasNestedProperty } from "../helpers/browser/HasNestedProperty";
 
 const FILENAME = 'common/ContextMenu.js';
-const CONTEXT_CLASS = 'oltb-context-menu';
+const CLASS_CONTEXT_MENU = 'oltb-context-menu';
 
 const DefaultOptions = Object.freeze({});
 
@@ -29,7 +29,7 @@ class ContextMenu extends Control {
         super({
             element: DOM.createElement({
                 element: 'ul',
-                class: CONTEXT_CLASS,
+                class: CLASS_CONTEXT_MENU,
                 attributes: {
                     tabindex: '-1',
                     'data-contextmenu': options.name
@@ -61,7 +61,7 @@ class ContextMenu extends Control {
         if(!hasNestedProperty(item, 'name')) {
             const li = DOM.createElement({
                 element: 'li',
-                class: `${CONTEXT_CLASS}__divider`
+                class: `${CLASS_CONTEXT_MENU}__divider`
             });
 
             DOM.appendChildren(this.menu, [
@@ -70,7 +70,7 @@ class ContextMenu extends Control {
         }else {
             const li = DOM.createElement({
                 element: 'li',
-                class: `${CONTEXT_CLASS}__item`,
+                class: `${CLASS_CONTEXT_MENU}__item`,
                 text: item.name,
                 attributes: {
                     tabindex: '0'
@@ -92,7 +92,7 @@ class ContextMenu extends Control {
             const icon = DOM.createElement({
                 element: 'span',
                 html: item.icon,
-                class: `${CONTEXT_CLASS}__icon`
+                class: `${CLASS_CONTEXT_MENU}__icon`
             });
 
             li.prepend(icon);
@@ -122,12 +122,12 @@ class ContextMenu extends Control {
         
         this.menu.style.left = `${event.clientX}px`;
         this.menu.style.top = `${event.clientY}px`;
-        this.menu.classList.add(`${CONTEXT_CLASS}--show`);
+        this.menu.classList.add(`${CLASS_CONTEXT_MENU}--show`);
         this.menu.focus();
     }
 
     hide() {
-        this.menu.classList.remove(`${CONTEXT_CLASS}--show`);
+        this.menu.classList.remove(`${CLASS_CONTEXT_MENU}--show`);
     }
 
     click(item) {

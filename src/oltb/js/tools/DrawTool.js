@@ -25,8 +25,8 @@ import { Fill, Stroke, Circle, Style } from 'ol/style';
 import { createBox, createRegularPolygon } from 'ol/interaction/Draw';
 
 const FILENAME = 'tools/DrawTool.js';
-const TOOL_BUTTON_CLASS = 'oltb-tool-button';
-const TOOLBOX_SECTION_CLASS = 'oltb-toolbox-section';
+const CLASS_TOOL_BUTTON = 'oltb-tool-button';
+const CLASS_TOOLBOX_SECTION = 'oltb-toolbox-section';
 const ID_PREFIX = 'oltb-draw';
 
 const DefaultOptions = Object.freeze({
@@ -58,13 +58,13 @@ class DrawTool extends Control {
         
         const icon = getIcon({
             path: SvgPaths.vectorPen.mixed,
-            class: `${TOOL_BUTTON_CLASS}__icon`
+            class: `${CLASS_TOOL_BUTTON}__icon`
         });
 
         const button = DOM.createElement({
             element: 'button',
             html: icon,
-            class: TOOL_BUTTON_CLASS,
+            class: CLASS_TOOL_BUTTON,
             attributes: {
                 type: 'button',
                 'data-tippy-content': `Draw (${ShortcutKeys.drawTool})`
@@ -90,15 +90,15 @@ class DrawTool extends Control {
 
         const toolboxElement = ElementManager.getToolboxElement();
         toolboxElement.insertAdjacentHTML('beforeend', `
-            <div id="${ID_PREFIX}-toolbox" class="${TOOLBOX_SECTION_CLASS}">
-                <div class="${TOOLBOX_SECTION_CLASS}__header">
-                    <h4 class="${TOOLBOX_SECTION_CLASS}__title oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">
+            <div id="${ID_PREFIX}-toolbox" class="${CLASS_TOOLBOX_SECTION}">
+                <div class="${CLASS_TOOLBOX_SECTION}__header">
+                    <h4 class="${CLASS_TOOLBOX_SECTION}__title oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">
                         Draw tool
-                        <span class="${TOOLBOX_SECTION_CLASS}__icon oltb-tippy" title="Toggle section"></span>
+                        <span class="${CLASS_TOOLBOX_SECTION}__icon oltb-tippy" title="Toggle section"></span>
                     </h4>
                 </div>
-                <div class="${TOOLBOX_SECTION_CLASS}__groups" id="${ID_PREFIX}-toolbox-collapsed" style="display: ${this.localStorage.collapsed ? 'none' : 'block'}">
-                    <div class="${TOOLBOX_SECTION_CLASS}__group">
+                <div class="${CLASS_TOOLBOX_SECTION}__groups" id="${ID_PREFIX}-toolbox-collapsed" style="display: ${this.localStorage.collapsed ? 'none' : 'block'}">
+                    <div class="${CLASS_TOOLBOX_SECTION}__group">
                         <label class="oltb-label" for="${ID_PREFIX}-type">Shape</label>
                         <select id="${ID_PREFIX}-type" class="oltb-select">
                             <option value="Circle">Circle</option>
@@ -109,14 +109,14 @@ class DrawTool extends Control {
                             <option value="Polygon">Polygon</option>
                         </select>
                     </div>
-                    <div class="${TOOLBOX_SECTION_CLASS}__group">
+                    <div class="${CLASS_TOOLBOX_SECTION}__group">
                         <label class="oltb-label" for="${ID_PREFIX}-intersection-enable">Intersection</label>
                         <select id="${ID_PREFIX}-intersection-enable" class="oltb-select">
                             <option value="false">False</option>
                             <option value="true">True</option>
                         </select>
                     </div>
-                    <div class="${TOOLBOX_SECTION_CLASS}__group">
+                    <div class="${CLASS_TOOLBOX_SECTION}__group">
                         <label class="oltb-label" for="${ID_PREFIX}-stroke-width">Stroke width</label>
                         <select id="${ID_PREFIX}-stroke-width" class="oltb-select">
                             <option value="1">1</option>
@@ -134,13 +134,13 @@ class DrawTool extends Control {
                             <option value="10">10</option>
                         </select>
                     </div>
-                    <div class="${TOOLBOX_SECTION_CLASS}__group">
+                    <div class="${CLASS_TOOLBOX_SECTION}__group">
                         <label class="oltb-label" for="${ID_PREFIX}-stroke-color">Stroke color</label>
                         <div id="${ID_PREFIX}-stroke-color" class="oltb-color-input oltb-color-tippy" data-oltb-color-target="#${ID_PREFIX}-stroke-color" data-oltb-color="${this.localStorage.strokeColor}" tabindex="0">
                             <div class="oltb-color-input__inner" style="background-color: ${this.localStorage.strokeColor};"></div>
                         </div>
                     </div>
-                    <div class=${TOOLBOX_SECTION_CLASS}__group">
+                    <div class=${CLASS_TOOLBOX_SECTION}__group">
                         <label class="oltb-label" for="${ID_PREFIX}-fill-color">Fill color</label>
                         <div id="${ID_PREFIX}-fill-color" class="oltb-color-input oltb-color-tippy" data-oltb-color-target="#${ID_PREFIX}-fill-color" data-oltb-color="${this.localStorage.fillColor}" tabindex="0">
                             <div class="oltb-color-input__inner" style="background-color: ${this.localStorage.fillColor};"></div>
@@ -280,13 +280,15 @@ class DrawTool extends Control {
 
     activateTool() {
         this.active = true;
-        this.drawToolbox.classList.add(`${TOOLBOX_SECTION_CLASS}--show`);
-        this.button.classList.add(`${TOOL_BUTTON_CLASS}--active`);
+        this.drawToolbox.classList.add(`${CLASS_TOOLBOX_SECTION}--show`);
+        this.button.classList.add(`${CLASS_TOOL_BUTTON}--active`);
 
         ToolManager.setActiveTool(this);
 
         if(SettingsManager.getSetting(Settings.alwaysNewLayers)) {
-            LayerManager.addFeatureLayer('Drawing layer');
+            LayerManager.addFeatureLayer({
+                name: 'Drawing layer'
+            });
         }
 
         // Triggers activation of the tool
@@ -303,8 +305,8 @@ class DrawTool extends Control {
         }
 
         this.active = false;
-        this.drawToolbox.classList.remove(`${TOOLBOX_SECTION_CLASS}--show`);
-        this.button.classList.remove(`${TOOL_BUTTON_CLASS}--active`);
+        this.drawToolbox.classList.remove(`${CLASS_TOOLBOX_SECTION}--show`);
+        this.button.classList.remove(`${CLASS_TOOL_BUTTON}--active`);
 
         map.removeInteraction(this.interaction);
         this.interaction = undefined;

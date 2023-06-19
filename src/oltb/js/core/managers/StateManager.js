@@ -3,6 +3,12 @@ import { LogManager } from './LogManager';
 
 const FILENAME = 'managers/StateManager.js';
 
+// Some objects have properties that we don't want to store in localStorage
+// Example: Bookmarks have a reference to the marker on the Map
+const IgnoredProperties = Object.freeze([
+    'marker'
+]);
+
 class StateManager {
     static #runtimeState;
 
@@ -51,7 +57,13 @@ class StateManager {
 
     static saveState() {
         try {
-            const serialized = JSON.stringify(this.#runtimeState);
+            const serialized = JSON.stringify(this.#runtimeState, (key, value) => {
+                if(IgnoredProperties.includes(key)) {
+                    return undefined;
+                }
+
+                return value;
+            });
             localStorage.setItem(Config.localStorage.key, serialized);
         }catch(error) {
             LogManager.logError(FILENAME, 'saveState', {

@@ -19,7 +19,7 @@ import {
 } from '../helpers/browser/Fullscreen';
 
 const FILENAME = 'tools/FullscreenTool.js';
-const TOOL_BUTTON_CLASS = 'oltb-tool-button';
+const CLASS_TOOL_BUTTON = 'oltb-tool-button';
 
 const DefaultOptions = Object.freeze({
     click: undefined,
@@ -37,18 +37,18 @@ class FullscreenTool extends Control {
 
         this.enterFullscreenIcon = getIcon({
             path: SvgPaths.fullscreen.stroked,
-            class: `${TOOL_BUTTON_CLASS}__icon`
+            class: `${CLASS_TOOL_BUTTON}__icon`
         });
 
         this.exitFullscreenIcon = getIcon({
             path: SvgPaths.fullscreenExit.stroked,
-            class: `${TOOL_BUTTON_CLASS}__icon`
+            class: `${CLASS_TOOL_BUTTON}__icon`
         });
 
         const button = DOM.createElement({
             element: 'button',
             html: isFullScreen() ? this.exitFullscreenIcon : this.enterFullscreenIcon,
-            class: TOOL_BUTTON_CLASS,
+            class: CLASS_TOOL_BUTTON,
             attributes: {
                 type: 'button',
                 'data-tippy-content': `${(
@@ -159,7 +159,7 @@ class FullscreenTool extends Control {
         map.updateSize();
 
         this.active = !this.active;
-        this.button.classList.toggle(`${TOOL_BUTTON_CLASS}--active`);
+        this.button.classList.toggle(`${CLASS_TOOL_BUTTON}--active`);
     }
 
     setMap(map) {

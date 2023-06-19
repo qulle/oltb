@@ -44,4 +44,6 @@ LayerManager.addMapLayers([
             visible: false
         })
     }
-], true);
+], {
+    silent: true
+});

@@ -21,4 +21,6 @@ LayerManager.addMapLayers([
             visible: true
         })
     }
-], true);
+], {
+    silent: true
+});

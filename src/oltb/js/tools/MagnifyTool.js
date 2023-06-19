@@ -14,7 +14,7 @@ import { SvgPaths, getIcon } from '../core/icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
 
 const FILENAME = 'tools/MagnifyTool.js';
-const TOOL_BUTTON_CLASS = 'oltb-tool-button';
+const CLASS_TOOL_BUTTON = 'oltb-tool-button';
 
 const DefaultOptions = Object.freeze({
     radius: 75,
@@ -38,13 +38,13 @@ class MagnifyTool extends Control {
         
         const icon = getIcon({
             path: SvgPaths.search.stroked,
-            class: `${TOOL_BUTTON_CLASS}__icon`
+            class: `${CLASS_TOOL_BUTTON}__icon`
         });
 
         const button = DOM.createElement({
             element: 'button',
             html: icon,
-            class: TOOL_BUTTON_CLASS,
+            class: CLASS_TOOL_BUTTON,
             attributes: {
                 type: 'button',
                 'data-tippy-content': `Magnifier (${ShortcutKeys.magnifyTool})`
@@ -120,7 +120,7 @@ class MagnifyTool extends Control {
         });
 
         this.active = true;
-        this.button.classList.add(`${TOOL_BUTTON_CLASS}--active`);
+        this.button.classList.add(`${CLASS_TOOL_BUTTON}--active`);
 
         this.localStorage.active = true;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
@@ -147,7 +147,7 @@ class MagnifyTool extends Control {
         map.render();
 
         this.active = false;
-        this.button.classList.remove(`${TOOL_BUTTON_CLASS}--active`);
+        this.button.classList.remove(`${CLASS_TOOL_BUTTON}--active`);
 
         this.localStorage.active = false;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);

@@ -6,10 +6,14 @@ import { LayerManager } from "../../src/oltb/js/core/managers/LayerManager";
 import { generateMarker } from '../../src/oltb/js/generators/GenerateMarker';
 
 const FILENAME = 'layers/Capitals.js';
-const ID_PREFIX = 'oltb-info-window-marker';
-const FUNC_BUTTON_CLASS = 'oltb-func-btn';
+const CLASS_FUNC_BUTTON = 'oltb-func-btn';
+const ID_PREFIX_INFO_WINDOW = 'oltb-info-window-marker';
 
-const LayerWrapper = LayerManager.addFeatureLayer('Capitals', true, true);
+const LayerWrapper = LayerManager.addFeatureLayer({
+    name: 'Capitals',
+    visible: true,
+    silent: true
+});
 
 const getFillColor = function(continentName) {
     const fillColors = Object.freeze({
@@ -60,9 +64,9 @@ const parseGeoJson = function(data) {
             footer: `
                 <span class="oltb-info-window__coordinates">${prettyCoordinates}</span>
                 <div class="oltb-info-window__buttons-wrapper">
-                    <button class="${FUNC_BUTTON_CLASS} ${FUNC_BUTTON_CLASS}--delete oltb-tippy" title="Delete marker" id="${ID_PREFIX}-remove"></button>
-                    <button class="${FUNC_BUTTON_CLASS} ${FUNC_BUTTON_CLASS}--crosshair oltb-tippy" title="Copy marker coordinates" id="${ID_PREFIX}-copy-coordinates" data-coordinates="${prettyCoordinates}"></button>
-                    <button class="${FUNC_BUTTON_CLASS} ${FUNC_BUTTON_CLASS}--copy oltb-tippy" title="Copy marker text" id="${ID_PREFIX}-copy-text" data-copy="${description}"></button>
+                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--delete oltb-tippy" title="Delete marker" id="${ID_PREFIX_INFO_WINDOW}-remove"></button>
+                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--crosshair oltb-tippy" title="Copy marker coordinates" id="${ID_PREFIX_INFO_WINDOW}-copy-coordinates" data-coordinates="${prettyCoordinates}"></button>
+                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--copy oltb-tippy" title="Copy marker text" id="${ID_PREFIX_INFO_WINDOW}-copy-text" data-copy="${description}"></button>
                 </div>
             `
         };

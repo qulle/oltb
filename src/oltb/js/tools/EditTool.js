@@ -40,10 +40,10 @@ import { GeometryCollection, LinearRing, LineString, MultiLineString, MultiPoint
  */
 
 const FILENAME = 'tools/EditTool.js';
-const TOOL_BUTTON_CLASS = 'oltb-tool-button';
-const TOOLBOX_SECTION_CLASS = 'oltb-toolbox-section';
+const CLASS_TOOL_BUTTON = 'oltb-tool-button';
+const CLASS_TOOLBOX_SECTION = 'oltb-toolbox-section';
 const ID_PREFIX = 'oltb-edit';
-const TOOLTIP_KEY = 'edit';
+const KEY_TOOLTIP = 'edit';
 
 const DefaultOptions = Object.freeze({
     hitTolerance: 5,
@@ -107,13 +107,13 @@ class EditTool extends Control {
         
         const icon = getIcon({
             path: SvgPaths.cursor.stroked,
-            class: `${TOOL_BUTTON_CLASS}__icon`
+            class: `${CLASS_TOOL_BUTTON}__icon`
         });
 
         const button = DOM.createElement({
             element: 'button',
             html: icon,
-            class: TOOL_BUTTON_CLASS,
+            class: CLASS_TOOL_BUTTON,
             attributes: {
                 type: 'button',
                 'data-tippy-content': `Edit (${ShortcutKeys.editTool})`
@@ -143,21 +143,21 @@ class EditTool extends Control {
         
         const toolboxElement = ElementManager.getToolboxElement();
         toolboxElement.insertAdjacentHTML('beforeend', `
-            <div id="${ID_PREFIX}-toolbox" class="${TOOLBOX_SECTION_CLASS}">
-                <div class="${TOOLBOX_SECTION_CLASS}__header">
-                    <h4 class="${TOOLBOX_SECTION_CLASS}__title oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">
+            <div id="${ID_PREFIX}-toolbox" class="${CLASS_TOOLBOX_SECTION}">
+                <div class="${CLASS_TOOLBOX_SECTION}__header">
+                    <h4 class="${CLASS_TOOLBOX_SECTION}__title oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">
                         Edit tool
-                        <span class="${TOOLBOX_SECTION_CLASS}__icon oltb-tippy" title="Toggle section"></span>
+                        <span class="${CLASS_TOOLBOX_SECTION}__icon oltb-tippy" title="Toggle section"></span>
                     </h4>
                 </div>
-                <div class="${TOOLBOX_SECTION_CLASS}__groups" id="${ID_PREFIX}-toolbox-collapsed" style="display: ${this.localStorage.collapsed ? 'none' : 'block'}">
-                    <div class="${TOOLBOX_SECTION_CLASS}__group">
+                <div class="${CLASS_TOOLBOX_SECTION}__groups" id="${ID_PREFIX}-toolbox-collapsed" style="display: ${this.localStorage.collapsed ? 'none' : 'block'}">
+                    <div class="${CLASS_TOOLBOX_SECTION}__group">
                         <label class="oltb-label">Misc</label>
                         <button type="button" id="${ID_PREFIX}-delete-selected-button" class="oltb-btn oltb-btn--blue-mid oltb-tippy" title="Delete">
                             ${getIcon({ ...DefaultButtonProps, path: SvgPaths.trash.stroked })}
                         </button>
                     </div>
-                    <div class="${TOOLBOX_SECTION_CLASS}__group ${TOOLBOX_SECTION_CLASS}__group--sub-toolbar">
+                    <div class="${CLASS_TOOLBOX_SECTION}__group ${CLASS_TOOLBOX_SECTION}__group--sub-toolbar">
                         <label class="oltb-label">Shapes</label>
                         <button type="button" id="${ID_PREFIX}-union-selected-button" class="oltb-btn oltb-btn--blue-mid oltb-tippy" title="Union">
                             ${getIcon({ ...DefaultButtonProps, path: SvgPaths.union.mixed })}
@@ -172,13 +172,13 @@ class EditTool extends Control {
                             ${getIcon({ ...DefaultButtonProps, path: SvgPaths.subtract.mixed })}
                         </button>
                     </div>
-                    <div class="${TOOLBOX_SECTION_CLASS}__group">
+                    <div class="${CLASS_TOOLBOX_SECTION}__group">
                         <label class="oltb-label" for="${ID_PREFIX}-stroke-color">Stroke color</label>
                         <div id="${ID_PREFIX}-stroke-color" class="oltb-color-input oltb-color-tippy" data-oltb-color-target="#${ID_PREFIX}-stroke-color" data-oltb-color="${this.localStorage.strokeColor}" tabindex="0">
                             <div class="oltb-color-input__inner" style="background-color: ${this.localStorage.strokeColor};"></div>
                         </div>
                     </div>
-                    <div class="${TOOLBOX_SECTION_CLASS}__group">
+                    <div class="${CLASS_TOOLBOX_SECTION}__group">
                         <label class="oltb-label" for="${ID_PREFIX}-fill-color">Fill color</label>
                         <div id="${ID_PREFIX}-fill-color" class="oltb-color-input oltb-color-tippy" data-oltb-color-target="#${ID_PREFIX}-fill-color" data-oltb-color="${this.localStorage.fillColor}" tabindex="0">
                             <div class="oltb-color-input__inner" style="background-color: ${this.localStorage.fillColor};"></div>
@@ -609,7 +609,7 @@ class EditTool extends Control {
         const hasOtherTooltip = !TooltipManager.isEmpty();
 
         if(Boolean(hasOtherTooltip) && selectedFeatures.length === 1) {
-            this.tooltipItem = TooltipManager.push(TOOLTIP_KEY);
+            this.tooltipItem = TooltipManager.push(KEY_TOOLTIP);
         }
 
         const properties = feature.getProperties();
@@ -624,7 +624,7 @@ class EditTool extends Control {
         const hasOtherTooltip = !TooltipManager.isEmpty();
         
         if(Boolean(hasOtherTooltip) && selectedFeatures.length === 1) {
-            TooltipManager.pop(TOOLTIP_KEY);
+            TooltipManager.pop(KEY_TOOLTIP);
         }
 
         const properties = feature.getProperties();
@@ -696,8 +696,8 @@ class EditTool extends Control {
         ToolManager.setActiveTool(this);
 
         this.active = true;
-        this.editToolbox.classList.add(`${TOOLBOX_SECTION_CLASS}--show`);
-        this.button.classList.add(`${TOOL_BUTTON_CLASS}--active`);
+        this.editToolbox.classList.add(`${CLASS_TOOLBOX_SECTION}--show`);
+        this.button.classList.add(`${CLASS_TOOL_BUTTON}--active`);
 
         this.localStorage.active = true;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
@@ -715,8 +715,8 @@ class EditTool extends Control {
         ToolManager.removeActiveTool();
 
         this.active = false;
-        this.editToolbox.classList.remove(`${TOOLBOX_SECTION_CLASS}--show`);
-        this.button.classList.remove(`${TOOL_BUTTON_CLASS}--active`);
+        this.editToolbox.classList.remove(`${CLASS_TOOLBOX_SECTION}--show`);
+        this.button.classList.remove(`${CLASS_TOOL_BUTTON}--active`);
 
         this.localStorage.active = false;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);

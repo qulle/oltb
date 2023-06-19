@@ -11,6 +11,24 @@ const DEFAULT_LAYER_NAME = 'New layer';
 const ZINDEX_BASE_MAP_LAYER = 1;
 const ZINDEX_BASE_FEATURE_LAYER = 10000;
 
+const DefaultFeatureLayerOptions = Object.freeze({
+    name: '',
+    visible: true,
+    silent: false,
+    disableFeatureLayerVisibilityButton: false,
+    disableFeatureLayerEditButton: false,
+    disableFeatureLayerDownloadButton: false,
+    disableFeatureLayerDeleteButton: false
+});
+
+const DefaultMapLayerOptions = Object.freeze({
+    visible: true,
+    silent: false,
+    disableMapLayerVisibilityButton: false,
+    disableMapLayerEditButton: false,
+    disableMapLayerDeleteButton: false
+});
+
 class LayerManager {
     static #map;
     static #activeFeatureLayer;
@@ -42,14 +60,14 @@ class LayerManager {
 
         // Handle queue of map-layers that was added before the map was ready
         this.#queue.mapLayers.forEach((item) => {
-            this.addMapLayerToMap(item.layerWrapper, item.silent);
+            this.#addMapLayerToMap(item.layerWrapper, item.options);
         });
 
         this.#queue.mapLayers = [];
 
         // Handle queue of feature-layers that was added before the map was ready
         this.#queue.featureLayers.forEach((item) => {
-            this.addFeatureLayerToMap(item.layerWrapper, item.silent);
+            this.#addFeatureLayerToMap(item.layerWrapper, item.options);
         });
 
         this.#queue.featureLayers = [];
@@ -88,40 +106,56 @@ class LayerManager {
         this.#layerId += 1;
     }
 
+    static #validateName(name) {
+        name = name.trim();
+
+        if(!name.length) {
+            name = DEFAULT_LAYER_NAME;
+        }
+
+        return name;
+    }
+
     //-------------------------------------------
     // Map layers specific
     //-------------------------------------------
 
-    static addMapLayers(layerWrappers, silent = false) {
+    static addMapLayers(layerWrappers, options = {}) {
         for(let index in layerWrappers) {
-            this.addMapLayer(layerWrappers[index], silent);
+            this.addMapLayer(layerWrappers[index], options);
         }
     }
 
-    static addMapLayer(layerWrapper, silent = false) {
+    static addMapLayer(layerWrapper, options = {}) {
+        layerWrapper.name = this.#validateName(layerWrapper.name);
         LogManager.logDebug(FILENAME, 'addMapLayer', layerWrapper.name);
+
+        const mergedOptions = { ...DefaultMapLayerOptions, ...options };
 
         this.#addPropertiesInterface(layerWrapper);
         this.#setIdAndZIndex(ZINDEX_BASE_MAP_LAYER, layerWrapper);
 
         if(this.#map) {
-            this.addMapLayerToMap(layerWrapper, silent);
+            this.#addMapLayerToMap(layerWrapper, mergedOptions);
         }else {
             this.#queue.mapLayers.push({
                 layerWrapper: layerWrapper, 
-                silent: silent
+                options: mergedOptions
             });
         }
     }
 
-    static addMapLayerToMap(layerWrapper, silent = false) {
+    static #addMapLayerToMap(layerWrapper, options) {
         this.#layers.mapLayers.push(layerWrapper);
         this.#map.addLayer(layerWrapper.getLayer());
 
         window.dispatchEvent(new CustomEvent(Events.custom.mapLayerAdded, {
             detail: {
                 layerWrapper: layerWrapper, 
-                silent: silent
+                silent: options.silent,
+                disableMapLayerVisibilityButton: options.disableMapLayerVisibilityButton,
+                disableMapLayerEditButton: options.disableMapLayerEditButton,
+                disableMapLayerDeleteButton: options.disableMapLayerDeleteButton
             }
         }));
     }
@@ -190,25 +224,16 @@ class LayerManager {
     // Feature layers specific
     //-------------------------------------------
 
-    static #validateName(name) {
-        name = name.trim();
-
-        if(!name.length) {
-            name = DEFAULT_LAYER_NAME;
-        }
-
-        return name;
-    }
-
-    static addFeatureLayer(name, visible = true, silent = false) {
-        name = this.#validateName(name);
-        LogManager.logDebug(FILENAME, 'addFeatureLayer', name);
+    static addFeatureLayer(options = {}) {
+        const mergedOptions = { ...DefaultFeatureLayerOptions, ...options };
+        mergedOptions.name = this.#validateName(mergedOptions.name);
+        LogManager.logDebug(FILENAME, 'addFeatureLayer', mergedOptions.name);
 
         const layerWrapper = {
-            name: name,
+            name: mergedOptions.name,
             layer: new VectorLayer({
                 source: new VectorSource(),
-                visible: visible
+                visible: mergedOptions.visible
             })
         };
 
@@ -218,25 +243,29 @@ class LayerManager {
         this.#activeFeatureLayer = layerWrapper;
 
         if(this.#map) {
-            this.addFeatureLayerToMap(layerWrapper, silent);
+            this.#addFeatureLayerToMap(layerWrapper, mergedOptions);
         }else {
             this.#queue.featureLayers.push({
                 layerWrapper: layerWrapper, 
-                silent: silent
+                options: mergedOptions
             });
         }
 
         return layerWrapper;
     }
 
-    static addFeatureLayerToMap(layerWrapper, silent = false) {
+    static #addFeatureLayerToMap(layerWrapper, options) {
         this.#layers.featureLayers.push(layerWrapper);
         this.#map.addLayer(layerWrapper.getLayer());
 
         window.dispatchEvent(new CustomEvent(Events.custom.featureLayerAdded, {
             detail: {
                 layerWrapper: layerWrapper, 
-                silent: silent
+                silent: options.silent,
+                disableFeatureLayerVisibilityButton: options.disableFeatureLayerVisibilityButton,
+                disableFeatureLayerEditButton: options.disableFeatureLayerEditButton,
+                disableFeatureLayerDownloadButton: options.disableFeatureLayerDownloadButton,
+                disableFeatureLayerDeleteButton: options.disableFeatureLayerDeleteButton,
             }
         }));
     }
@@ -279,7 +308,9 @@ class LayerManager {
 
     static getActiveFeatureLayer(options = {}) {
         if(!this.#activeFeatureLayer) {
-            this.addFeatureLayer(options.fallback);
+            this.addFeatureLayer({
+                name: options.fallback
+            });
         }
 
         return this.#activeFeatureLayer;

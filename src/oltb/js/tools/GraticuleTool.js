@@ -12,7 +12,7 @@ import { SvgPaths, getIcon } from '../core/icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
 
 const FILENAME = 'tools/GraticuleTool.js';
-const TOOL_BUTTON_CLASS = 'oltb-tool-button';
+const CLASS_TOOL_BUTTON = 'oltb-tool-button';
 
 const DefaultOptions = Object.freeze({
     color: '#3B4352E6',
@@ -38,13 +38,13 @@ class GraticuleTool extends Control {
         
         const icon = getIcon({
             path: SvgPaths.globe.stroked,
-            class: `${TOOL_BUTTON_CLASS}__icon`
+            class: `${CLASS_TOOL_BUTTON}__icon`
         });
 
         const button = DOM.createElement({
             element: 'button',
             html: icon,
-            class: TOOL_BUTTON_CLASS,
+            class: CLASS_TOOL_BUTTON,
             attributes: {
                 type: 'button',
                 'data-tippy-content': `Show graticule (${ShortcutKeys.graticuleTool})`
@@ -118,7 +118,7 @@ class GraticuleTool extends Control {
         this.graticule.setMap(map);
 
         this.active = true;
-        this.button.classList.add(`${TOOL_BUTTON_CLASS}--active`);
+        this.button.classList.add(`${CLASS_TOOL_BUTTON}--active`);
 
         this.localStorage.active = true;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
@@ -128,7 +128,7 @@ class GraticuleTool extends Control {
         this.graticule.setMap(null);
 
         this.active = false;
-        this.button.classList.remove(`${TOOL_BUTTON_CLASS}--active`);
+        this.button.classList.remove(`${CLASS_TOOL_BUTTON}--active`);
 
         this.localStorage.active = false;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);

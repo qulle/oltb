@@ -26,10 +26,10 @@ import { Fill, Stroke, Circle, Style } from 'ol/style';
 import { getMeasureCoordinates, getMeasureValue } from '../helpers/Measurements';
 
 const FILENAME = 'tools/MeasureTool.js';
-const TOOL_BUTTON_CLASS = 'oltb-tool-button';
-const TOOLBOX_SECTION_CLASS = 'oltb-toolbox-section';
+const CLASS_TOOL_BUTTON = 'oltb-tool-button';
+const CLASS_TOOLBOX_SECTION = 'oltb-toolbox-section';
 const ID_PREFIX = 'oltb-measure';
-const TOOLTIP_KEY = 'measure';
+const KEY_TOOLTIP = 'measure';
 
 const DefaultOptions = Object.freeze({
     click: undefined,
@@ -58,13 +58,13 @@ class MeasureTool extends Control {
         
         const icon = getIcon({
             path: SvgPaths.rulers.mixed,
-            class: `${TOOL_BUTTON_CLASS}__icon`
+            class: `${CLASS_TOOL_BUTTON}__icon`
         });
 
         const button = DOM.createElement({
             element: 'button',
             html: icon,
-            class: TOOL_BUTTON_CLASS,
+            class: CLASS_TOOL_BUTTON,
             attributes: {
                 type: 'button',
                 'data-tippy-content': `Measure (${ShortcutKeys.measureTool})`
@@ -89,28 +89,28 @@ class MeasureTool extends Control {
 
         const toolboxElement = ElementManager.getToolboxElement();
         toolboxElement.insertAdjacentHTML('beforeend', `
-            <div id="${ID_PREFIX}-toolbox" class="${TOOLBOX_SECTION_CLASS}">
-                <div class="${TOOLBOX_SECTION_CLASS}__header">
-                    <h4 class="${TOOLBOX_SECTION_CLASS}__title oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">
+            <div id="${ID_PREFIX}-toolbox" class="${CLASS_TOOLBOX_SECTION}">
+                <div class="${CLASS_TOOLBOX_SECTION}__header">
+                    <h4 class="${CLASS_TOOLBOX_SECTION}__title oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">
                         Measure tool
-                        <span class="${TOOLBOX_SECTION_CLASS}__icon oltb-tippy" title="Toggle section"></span>
+                        <span class="${CLASS_TOOLBOX_SECTION}__icon oltb-tippy" title="Toggle section"></span>
                     </h4>
                 </div>
-                <div class="${TOOLBOX_SECTION_CLASS}__groups" id="${ID_PREFIX}-toolbox-collapsed" style="display: ${this.localStorage.collapsed ? 'none' : 'block'}">
-                    <div class="${TOOLBOX_SECTION_CLASS}__group">
+                <div class="${CLASS_TOOLBOX_SECTION}__groups" id="${ID_PREFIX}-toolbox-collapsed" style="display: ${this.localStorage.collapsed ? 'none' : 'block'}">
+                    <div class="${CLASS_TOOLBOX_SECTION}__group">
                         <label class="oltb-label" for="${ID_PREFIX}-type">Type</label>
                         <select id="${ID_PREFIX}-type" class="oltb-select">
                             <option value="LineString">Length</option>
                             <option value="Polygon">Area</option>
                         </select>
                     </div>
-                    <div class="${TOOLBOX_SECTION_CLASS}__group">
+                    <div class="${CLASS_TOOLBOX_SECTION}__group">
                         <label class="oltb-label" for="${ID_PREFIX}-stroke-color">Stroke color</label>
                         <div id="${ID_PREFIX}-stroke-color" class="oltb-color-input oltb-color-tippy" data-oltb-color-target="#${ID_PREFIX}-stroke-color" data-oltb-color="${this.localStorage.strokeColor}" tabindex="0">
                             <div class="oltb-color-input__inner" style="background-color: ${this.localStorage.strokeColor};"></div>
                         </div>
                     </div>
-                    <div class="${TOOLBOX_SECTION_CLASS}__group">
+                    <div class="${CLASS_TOOLBOX_SECTION}__group">
                         <label class="oltb-label" for="${ID_PREFIX}-fill-color">Fill color</label>
                         <div id="${ID_PREFIX}-fill-color" class="oltb-color-input oltb-color-tippy" data-oltb-color-target="#${ID_PREFIX}-fill-color" data-oltb-color="${this.localStorage.fillColor}" tabindex="0">
                             <div class="oltb-color-input__inner" style="background-color: ${this.localStorage.fillColor};"></div>
@@ -227,13 +227,15 @@ class MeasureTool extends Control {
 
     activateTool() {
         this.active = true;
-        this.measureToolbox.classList.add(`${TOOLBOX_SECTION_CLASS}--show`);
-        this.button.classList.add(`${TOOL_BUTTON_CLASS}--active`); 
+        this.measureToolbox.classList.add(`${CLASS_TOOLBOX_SECTION}--show`);
+        this.button.classList.add(`${CLASS_TOOL_BUTTON}--active`); 
 
         ToolManager.setActiveTool(this);
 
         if(SettingsManager.getSetting(Settings.alwaysNewLayers)) {
-            LayerManager.addFeatureLayer('Measurements layer');
+            LayerManager.addFeatureLayer({
+                name: 'Measurements layer'
+            });
         }
 
         // Triggers activation of the measure tool
@@ -250,8 +252,8 @@ class MeasureTool extends Control {
         }
 
         this.active = false;
-        this.measureToolbox.classList.remove(`${TOOLBOX_SECTION_CLASS}--show`);
-        this.button.classList.remove(`${TOOL_BUTTON_CLASS}--active`); 
+        this.measureToolbox.classList.remove(`${CLASS_TOOLBOX_SECTION}--show`);
+        this.button.classList.remove(`${CLASS_TOOL_BUTTON}--active`); 
 
         map.removeInteraction(this.interaction);
         this.interaction = undefined;
@@ -312,7 +314,7 @@ class MeasureTool extends Control {
 
     onDrawStart(event) {
         const feature = event.feature;
-        const tooltipItem = TooltipManager.push(TOOLTIP_KEY);
+        const tooltipItem = TooltipManager.push(KEY_TOOLTIP);
         
         this.onChangeListener = feature.getGeometry().on(Events.openLayers.change, (event) => {
             const measureValue = getMeasureValue(event.target);
@@ -336,7 +338,7 @@ class MeasureTool extends Control {
         const feature = event.feature;
         feature.setStyle(this.styles);
         
-        TooltipManager.pop(TOOLTIP_KEY);
+        TooltipManager.pop(KEY_TOOLTIP);
         const tooltip = generateTooltip();
 
         feature.setProperties({
@@ -385,7 +387,7 @@ class MeasureTool extends Control {
     onDrawAbort(event) {
         unByKey(this.onChangeListener);
         
-        TooltipManager.pop(TOOLTIP_KEY);
+        TooltipManager.pop(KEY_TOOLTIP);
 
         // User defined callback from constructor
         if(this.options.abort instanceof Function) {

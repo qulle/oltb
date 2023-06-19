@@ -13,7 +13,7 @@ import { instantiateFormat } from '../core/ol-types/FormatType';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
 
 const FILENAME = 'tools/ImportVectorLayerTool.js';
-const TOOL_BUTTON_CLASS = 'oltb-tool-button';
+const CLASS_TOOL_BUTTON = 'oltb-tool-button';
 
 const DefaultOptions = Object.freeze({
     click: undefined,
@@ -31,13 +31,13 @@ class ImportVectorLayerTool extends Control {
         
         const icon = getIcon({
             path: SvgPaths.folderOpen.stroked,
-            class: `${TOOL_BUTTON_CLASS}__icon`
+            class: `${CLASS_TOOL_BUTTON}__icon`
         });
 
         const button = DOM.createElement({
             element: 'button',
             html: icon,
-            class: TOOL_BUTTON_CLASS,
+            class: CLASS_TOOL_BUTTON,
             attributes: {
                 type: 'button',
                 'data-tippy-content': `Import Vector layer (${ShortcutKeys.importVectorLayerTool})`
@@ -149,7 +149,9 @@ class ImportVectorLayerTool extends Control {
                 dataProjection: result.dataProjection
             });
     
-            const layerWrapper = LayerManager.addFeatureLayer(`Import : ${filename}`);
+            const layerWrapper = LayerManager.addFeatureLayer({
+                name: `Import : ${filename}`
+            });
             layerWrapper.getLayer().getSource().addFeatures(features);
     
             // User defined callback from constructor

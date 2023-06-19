@@ -10,8 +10,8 @@ import { SvgPaths, getIcon } from '../core/icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
 
 const FILENAME = 'tools/NotificationTool.js';
-const TOOL_BUTTON_CLASS = 'oltb-tool-button';
-const NOTIFICATION_URL = 'https://raw.githubusercontent.com/qulle/notification-endpoints/main/endpoints/oltb.json';
+const CLASS_TOOL_BUTTON = 'oltb-tool-button';
+const URL_NOTIFICATION = 'https://raw.githubusercontent.com/qulle/notification-endpoints/main/endpoints/oltb.json';
 
 const DefaultOptions = Object.freeze({
     click: undefined
@@ -27,13 +27,13 @@ class NotificationTool extends Control {
         
         const icon = getIcon({
             path: SvgPaths.bell.stroked,
-            class: `${TOOL_BUTTON_CLASS}__icon`
+            class: `${CLASS_TOOL_BUTTON}__icon`
         });
 
         const button = DOM.createElement({
             element: 'button',
             html: icon,
-            class: TOOL_BUTTON_CLASS,
+            class: CLASS_TOOL_BUTTON,
             attributes: {
                 type: 'button',
                 'data-tippy-content': `Notifications (${ShortcutKeys.notificationsTool})`
@@ -89,7 +89,7 @@ class NotificationTool extends Control {
         });
 
         const timestamp = new Date().getTime().toString();
-        fetch(`${NOTIFICATION_URL}?cache=${timestamp}`, {
+        fetch(`${URL_NOTIFICATION}?cache=${timestamp}`, {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json'

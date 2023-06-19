@@ -16,11 +16,11 @@ import { SvgPaths, getIcon } from '../core/icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
 
 const FILENAME = 'tools/SplitViewTool.js';
-const TOOL_BUTTON_CLASS = 'oltb-tool-button';
-const TOOLBOX_SECTION_CLASS = 'oltb-toolbox-section';
-const SLIDER_CLASS = 'oltb-slider';
-const RADIX = 10;
+const CLASS_TOOL_BUTTON = 'oltb-tool-button';
+const CLASS_TOOLBOX_SECTION = 'oltb-toolbox-section';
+const CLASS_SLIDER = 'oltb-slider';
 const ID_PREFIX = 'oltb-split-view';
+const RADIX = 10;
 
 const DefaultOptions = Object.freeze({
     click: undefined
@@ -42,13 +42,13 @@ class SplitViewTool extends Control {
         
         const icon = getIcon({
             path: SvgPaths.arrowsExpandVertical.stroked,
-            class: `${TOOL_BUTTON_CLASS}__icon`
+            class: `${CLASS_TOOL_BUTTON}__icon`
         });
 
         const button = DOM.createElement({
             element: 'button',
             html: icon,
-            class: TOOL_BUTTON_CLASS,
+            class: CLASS_TOOL_BUTTON,
             attributes: {
                 type: 'button',
                 'data-tippy-content': `Split view (${ShortcutKeys.splitViewTool})`
@@ -74,23 +74,23 @@ class SplitViewTool extends Control {
         const mapElement = ElementManager.getMapElement();
         const toolboxElement = ElementManager.getToolboxElement();
         toolboxElement.insertAdjacentHTML('beforeend', `
-            <div id="${ID_PREFIX}-toolbox" class="${TOOLBOX_SECTION_CLASS}">
-                <div class="${TOOLBOX_SECTION_CLASS}__header">
-                    <h4 class="${TOOLBOX_SECTION_CLASS}__title oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">
+            <div id="${ID_PREFIX}-toolbox" class="${CLASS_TOOLBOX_SECTION}">
+                <div class="${CLASS_TOOLBOX_SECTION}__header">
+                    <h4 class="${CLASS_TOOLBOX_SECTION}__title oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">
                         Split view
-                        <span class="${TOOLBOX_SECTION_CLASS}__icon oltb-tippy" title="Toggle section"></span>
+                        <span class="${CLASS_TOOLBOX_SECTION}__icon oltb-tippy" title="Toggle section"></span>
                     </h4>
                 </div>
-                <div class="${TOOLBOX_SECTION_CLASS}__groups" id="${ID_PREFIX}-toolbox-collapsed" style="display: ${this.localStorage.collapsed ? 'none' : 'block'}">
-                    <div class="${TOOLBOX_SECTION_CLASS}__group">
+                <div class="${CLASS_TOOLBOX_SECTION}__groups" id="${ID_PREFIX}-toolbox-collapsed" style="display: ${this.localStorage.collapsed ? 'none' : 'block'}">
+                    <div class="${CLASS_TOOLBOX_SECTION}__group">
                         <label class="oltb-label" for="${ID_PREFIX}-left-src">Left side</label>
                         <select id="${ID_PREFIX}-left-src" class="oltb-select"></select>
                     </div>
-                    <div class="${TOOLBOX_SECTION_CLASS}__group">
+                    <div class="${CLASS_TOOLBOX_SECTION}__group">
                         <label class="oltb-label" for="${ID_PREFIX}-src">Right side</label>
                         <select id="${ID_PREFIX}-right-src" class="oltb-select"></select>
                     </div>
-                    <div class="${TOOLBOX_SECTION_CLASS}__group">
+                    <div class="${CLASS_TOOLBOX_SECTION}__group">
                         <button type="button" id="${ID_PREFIX}-swap-button" class="oltb-btn oltb-btn--green-mid oltb-w-100">Swap sides</button>
                     </div>
                 </div>
@@ -263,9 +263,9 @@ class SplitViewTool extends Control {
             return;
         }
         
-        this.splitViewToolbox.classList.add(`${TOOLBOX_SECTION_CLASS}--show`);
-        this.splitViewSlider.classList.add(`${SLIDER_CLASS}--show`);
-        this.button.classList.add(`${TOOL_BUTTON_CLASS}--active`);
+        this.splitViewToolbox.classList.add(`${CLASS_TOOLBOX_SECTION}--show`);
+        this.splitViewSlider.classList.add(`${CLASS_SLIDER}--show`);
+        this.button.classList.add(`${CLASS_TOOL_BUTTON}--active`);
 
         this.localStorage.active = true;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
@@ -295,9 +295,9 @@ class SplitViewTool extends Control {
         LayerManager.setTopMapLayerAsOnlyVisible();
 
         this.active = false;
-        this.splitViewToolbox.classList.remove(`${TOOLBOX_SECTION_CLASS}--show`);
-        this.splitViewSlider.classList.remove(`${SLIDER_CLASS}--show`);
-        this.button.classList.remove(`${TOOL_BUTTON_CLASS}--active`);
+        this.splitViewToolbox.classList.remove(`${CLASS_TOOLBOX_SECTION}--show`);
+        this.splitViewSlider.classList.remove(`${CLASS_SLIDER}--show`);
+        this.button.classList.remove(`${CLASS_TOOL_BUTTON}--active`);
 
         this.localStorage.active = false;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);

@@ -7,7 +7,7 @@ import { ElementManager } from '../../core/managers/ElementManager';
 import { SvgPaths, getIcon } from '../../core/icons/GetIcon';
 
 const FILENAME = 'modals/ModalBase.js';
-const ANIMATION_CLASS = 'oltb-animation--bounce';
+const CLASS_ANIMATION = 'oltb-animation--bounce';
 
 class ModalBase {
     constructor(title, maximized, onClose) {
@@ -96,7 +96,7 @@ class ModalBase {
         }
 
         const modal = this.backdrop.firstElementChild;
-        DOM.runAnimation(modal, ANIMATION_CLASS);
+        DOM.runAnimation(modal, CLASS_ANIMATION);
     }
 
     show(modalContent) {

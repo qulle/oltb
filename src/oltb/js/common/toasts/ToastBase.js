@@ -5,7 +5,7 @@ import { LogManager } from '../../core/managers/LogManager';
 import { ElementManager } from '../../core/managers/ElementManager';
 
 const FILENAME = 'toasts/ToastBase.js';
-const TOAST_CLASS = 'oltb-toast';
+const CLASS_TOAST = 'oltb-toast';
 
 const DefaultOptions = Object.freeze({
     title: 'Toast',
@@ -27,13 +27,13 @@ class ToastBase {
     #createToast() {
         this.toast = DOM.createElement({
             element: 'div',
-            class: `${TOAST_CLASS} ${TOAST_CLASS}--${
+            class: `${CLASS_TOAST} ${CLASS_TOAST}--${
                 this.options.type
             } oltb-animation oltb-animation--slide-in oltb-d-flex` 
         });
         
         if(this.options.clickToRemove) {
-            this.toast.classList.add(`${TOAST_CLASS}--clickable`);
+            this.toast.classList.add(`${CLASS_TOAST}--clickable`);
             this.toast.addEventListener(Events.browser.click, this.remove.bind(this));
         }
 
@@ -50,19 +50,19 @@ class ToastBase {
 
         const container = DOM.createElement({
             element: 'div',
-            class: `${TOAST_CLASS}__container ${this.options.spinner ? 'oltb-ml-0625' : ''}`
+            class: `${CLASS_TOAST}__container ${this.options.spinner ? 'oltb-ml-0625' : ''}`
         });
 
         const title = DOM.createElement({
             element: 'h4',
             text: this.options.title,
-            class: `${TOAST_CLASS}__title`
+            class: `${CLASS_TOAST}__title`
         });
 
         const message = DOM.createElement({
             element: 'p', 
             html: this.options.message,
-            class: `${TOAST_CLASS}__message`
+            class: `${CLASS_TOAST}__message`
         });
     
         DOM.appendChildren(container, [
@@ -85,7 +85,7 @@ class ToastBase {
     }
 
     remove() {
-        this.toast.classList.add(`${TOAST_CLASS}--remove`, 'oltb-animation--slide-out');
+        this.toast.classList.add(`${CLASS_TOAST}--remove`, 'oltb-animation--slide-out');
     
         // Remove the toast from DOM after animation finishes
         window.setTimeout(() => {

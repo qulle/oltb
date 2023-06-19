@@ -27,11 +27,11 @@ import { DownloadLayerModal } from './modal-extensions/DownloadLayerModal';
 import { hasCustomFeatureProperty } from '../helpers/browser/HasNestedProperty';
 
 const FILENAME = 'tools/LayerTool.js';
-const TOOL_BUTTON_CLASS = 'oltb-tool-button';
-const TOOLBOX_SECTION_CLASS = 'oltb-toolbox-section';
-const TOOLBOX_LIST_CLASS = 'oltb-toolbox-list';
+const CLASS_TOOL_BUTTON = 'oltb-tool-button';
+const CLASS_TOOLBOX_SECTION = 'oltb-toolbox-section';
+const CLASS_TOOLBOX_LIST = 'oltb-toolbox-list';
+const CLASS_FUNC_BUTTON = 'oltb-func-btn';
 const ID_PREFIX = 'oltb-layer';
-const FUNC_BUTTON_CLASS = 'oltb-func-btn';
 
 const DefaultOptions = Object.freeze({
     disableMapCreateLayerButton: false,
@@ -76,13 +76,13 @@ class LayerTool extends Control {
         
         const icon = getIcon({
             path: SvgPaths.layers.stroked,
-            class: `${TOOL_BUTTON_CLASS}__icon`
+            class: `${CLASS_TOOL_BUTTON}__icon`
         });
 
         const button = DOM.createElement({
             element: 'button',
             html: icon,
-            class: TOOL_BUTTON_CLASS,
+            class: CLASS_TOOL_BUTTON,
             attributes: {
                 type: 'button',
                 'data-tippy-content': `Layers (${ShortcutKeys.layerTool})`
@@ -107,34 +107,34 @@ class LayerTool extends Control {
 
         const toolboxElement = ElementManager.getToolboxElement();
         toolboxElement.insertAdjacentHTML('beforeend', `
-            <div id="${ID_PREFIX}-toolbox" class="${TOOLBOX_SECTION_CLASS}">
-                <div class="${TOOLBOX_SECTION_CLASS}__header">
-                    <h4 class="${TOOLBOX_SECTION_CLASS}__title oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-map-toolbox-collapsed">
+            <div id="${ID_PREFIX}-toolbox" class="${CLASS_TOOLBOX_SECTION}">
+                <div class="${CLASS_TOOLBOX_SECTION}__header">
+                    <h4 class="${CLASS_TOOLBOX_SECTION}__title oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-map-toolbox-collapsed">
                         Map layers
-                        <span class="${TOOLBOX_SECTION_CLASS}__icon oltb-tippy" title="Toggle section"></span>
+                        <span class="${CLASS_TOOLBOX_SECTION}__icon oltb-tippy" title="Toggle section"></span>
                     </h4>
                 </div>
-                <div class="${TOOLBOX_SECTION_CLASS}__groups" id="${ID_PREFIX}-map-toolbox-collapsed" style="display: ${this.localStorage[`${ID_PREFIX}-map-toolbox-collapsed`] ? 'none' : 'block'}">
+                <div class="${CLASS_TOOLBOX_SECTION}__groups" id="${ID_PREFIX}-map-toolbox-collapsed" style="display: ${this.localStorage[`${ID_PREFIX}-map-toolbox-collapsed`] ? 'none' : 'block'}">
                     ${
                         !this.options.disableMapCreateLayerButton ? 
                         `
-                            <div class="${TOOLBOX_SECTION_CLASS}__group">
+                            <div class="${CLASS_TOOLBOX_SECTION}__group">
                                 <button type="button" id="${ID_PREFIX}-map-stack-add-button" class="oltb-btn oltb-btn--green-mid oltb-w-100">Create map layer</button>
                             </div>
                         ` : ''
                     }
-                    <div class="${TOOLBOX_SECTION_CLASS}__group ${this.options.disableMapCreateLayerButton ? `${TOOLBOX_SECTION_CLASS}__group--topmost` : ''} oltb-m-0">
-                        <ul id="${ID_PREFIX}-map-stack" class="${TOOLBOX_LIST_CLASS}"></ul>
+                    <div class="${CLASS_TOOLBOX_SECTION}__group ${this.options.disableMapCreateLayerButton ? `${CLASS_TOOLBOX_SECTION}__group--topmost` : ''} oltb-m-0">
+                        <ul id="${ID_PREFIX}-map-stack" class="${CLASS_TOOLBOX_LIST}"></ul>
                     </div>
                 </div>
-                <div class="${TOOLBOX_SECTION_CLASS}__header">
-                    <h4 class="${TOOLBOX_SECTION_CLASS}__title oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-feature-toolbox-collapsed">
+                <div class="${CLASS_TOOLBOX_SECTION}__header">
+                    <h4 class="${CLASS_TOOLBOX_SECTION}__title oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-feature-toolbox-collapsed">
                         Feature layers
-                        <span class="${TOOLBOX_SECTION_CLASS}__icon oltb-tippy" title="Toggle section"></span>
+                        <span class="${CLASS_TOOLBOX_SECTION}__icon oltb-tippy" title="Toggle section"></span>
                     </h4>
                 </div>
-                <div class="${TOOLBOX_SECTION_CLASS}__groups" id="${ID_PREFIX}-feature-toolbox-collapsed" style="display: ${this.localStorage[`${ID_PREFIX}-feature-toolbox-collapsed`] ? 'none' : 'block'}">
-                    <div class="${TOOLBOX_SECTION_CLASS}__group">
+                <div class="${CLASS_TOOLBOX_SECTION}__groups" id="${ID_PREFIX}-feature-toolbox-collapsed" style="display: ${this.localStorage[`${ID_PREFIX}-feature-toolbox-collapsed`] ? 'none' : 'block'}">
+                    <div class="${CLASS_TOOLBOX_SECTION}__group">
                         ${
                             !this.options.disableFeatureCreateLayerButton ? 
                             `
@@ -154,8 +154,8 @@ class LayerTool extends Control {
                             ` : ''
                         }
                     </div>
-                    <div class="${TOOLBOX_SECTION_CLASS}__group ${this.options.disableFeatureCreateLayerButton ? `${TOOLBOX_SECTION_CLASS}__group--topmost` : ''} oltb-m-0">
-                        <ul id="${ID_PREFIX}-feature-stack" class="${TOOLBOX_LIST_CLASS} ${TOOLBOX_LIST_CLASS}--selectable"></ul>
+                    <div class="${CLASS_TOOLBOX_SECTION}__group ${this.options.disableFeatureCreateLayerButton ? `${CLASS_TOOLBOX_SECTION}__group--topmost` : ''} oltb-m-0">
+                        <ul id="${ID_PREFIX}-feature-stack" class="${CLASS_TOOLBOX_LIST} ${CLASS_TOOLBOX_LIST}--selectable"></ul>
                     </div>
                 </div>
             </div>
@@ -235,7 +235,9 @@ class LayerTool extends Control {
             return;
         }
 
-        LayerManager.addFeatureLayer(this.addFeatureLayerText.value);
+        LayerManager.addFeatureLayer({
+            name: this.addFeatureLayerText.value
+        });
         this.addFeatureLayerText.value = '';
     }
 
@@ -256,8 +258,8 @@ class LayerTool extends Control {
 
     activateTool() {
         this.active = true;
-        this.layersToolbox.classList.add(`${TOOLBOX_SECTION_CLASS}--show`);
-        this.button.classList.add(`${TOOL_BUTTON_CLASS}--active`);
+        this.layersToolbox.classList.add(`${CLASS_TOOLBOX_SECTION}--show`);
+        this.button.classList.add(`${CLASS_TOOL_BUTTON}--active`);
 
         this.localStorage.active = true;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
@@ -265,8 +267,8 @@ class LayerTool extends Control {
 
     deActivateTool() {
         this.active = false;
-        this.layersToolbox.classList.remove(`${TOOLBOX_SECTION_CLASS}--show`);
-        this.button.classList.remove(`${TOOL_BUTTON_CLASS}--active`);
+        this.layersToolbox.classList.remove(`${CLASS_TOOLBOX_SECTION}--show`);
+        this.button.classList.remove(`${CLASS_TOOL_BUTTON}--active`);
 
         this.localStorage.active = false;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
@@ -331,9 +333,23 @@ class LayerTool extends Control {
         const layerWrapper = event.detail.layerWrapper;
         const silent = event.detail.silent;
 
-        const disableVisibilityButton = this.options.disableMapLayerVisibilityButton;
-        const disableEditButton = this.options.disableMapLayerEditButton;
-        const disableDeleteButton = this.options.disableMapLayerDeleteButton;
+        const disableVisibilityButton = (
+            event.detail.disableMapLayerVisibilityButton ||
+            this.options.disableMapLayerVisibilityButton ||
+            false
+        );
+
+        const disableEditButton = (
+            event.detail.disableMapLayerEditButton ||
+            this.options.disableMapLayerEditButton ||
+            false
+        );
+
+        const disableDeleteButton = (
+            event.detail.disableMapLayerDeleteButton ||
+            this.options.disableMapLayerDeleteButton ||
+            false
+        );
 
         // Add to UI
         this.createLayerItem(layerWrapper, {
@@ -380,10 +396,29 @@ class LayerTool extends Control {
         const layerWrapper = event.detail.layerWrapper;
         const silent = event.detail.silent;
 
-        const disableVisibilityButton = this.options.disableFeatureLayerVisibilityButton;
-        const disableEditButton = this.options.disableFeatureLayerEditButton;
-        const disableDownloadButton = this.options.disableFeatureLayerDownloadButton;
-        const disableDeleteButton = this.options.disableFeatureLayerDeleteButton;
+        const disableVisibilityButton = (
+            event.detail.disableFeatureLayerVisibilityButton ||
+            this.options.disableFeatureLayerVisibilityButton ||
+            false
+        );
+
+        const disableEditButton = (
+            event.detail.disableFeatureLayerEditButton ||
+            this.options.disableFeatureLayerEditButton ||
+            false
+        );
+
+        const disableDownloadButton = (
+            event.detail.disableFeatureLayerDownloadButton ||
+            this.options.disableFeatureLayerDownloadButton ||
+            false
+        );
+
+        const disableDeleteButton = (
+            event.detail.disableFeatureLayerDeleteButton ||
+            this.options.disableFeatureLayerDeleteButton ||
+            false
+        );
 
         // Add to UI, this will check if the user has disabled any of the UI-buttons for a layer
         this.createLayerItem(layerWrapper, {
@@ -428,7 +463,7 @@ class LayerTool extends Control {
         // Important that it is the first child, the LayerManager uses the first next layer
         const numLayers = this.featureLayerStack.querySelectorAll('li').length;
         if(numLayers > 0) {
-            this.featureLayerStack.firstChild.classList.add(`${TOOLBOX_LIST_CLASS}__item--active`);
+            this.featureLayerStack.firstChild.classList.add(`${CLASS_TOOLBOX_LIST}__item--active`);
         }
 
         // User defined callback from constructor
@@ -444,15 +479,15 @@ class LayerTool extends Control {
     createLayerItem(layerWrapper, options) {
         // Should just be one li-item that has the active class, but just in case
         this.featureLayerStack.querySelectorAll('li').forEach((layer) => {
-            layer.classList.remove(`${TOOLBOX_LIST_CLASS}__item--active`);
+            layer.classList.remove(`${CLASS_TOOLBOX_LIST}__item--active`);
         });
 
         const layer = layerWrapper.getLayer();
         const layerElement = DOM.createElement({
             element: 'li', 
             id: `${options.idPrefix}-${layerWrapper.getId()}`,
-            class: `${TOOLBOX_LIST_CLASS}__item ${TOOLBOX_LIST_CLASS}__item--active ${(
-                !layer.getVisible() ? ` ${TOOLBOX_LIST_CLASS}__item--hidden` : ''
+            class: `${CLASS_TOOLBOX_LIST}__item ${CLASS_TOOLBOX_LIST}__item--active ${(
+                !layer.getVisible() ? ` ${CLASS_TOOLBOX_LIST}__item--hidden` : ''
             )}`
         });
 
@@ -460,14 +495,14 @@ class LayerTool extends Control {
         // Other tools may change a layers visibility and the UI must be updated in this event
         layer.on(Events.openLayers.propertyChange, function(event) {
             if(event.key === 'visible') {
-                layerElement.classList.toggle(`${TOOLBOX_LIST_CLASS}__item--hidden`);
+                layerElement.classList.toggle(`${CLASS_TOOLBOX_LIST}__item--hidden`);
             }
         });
 
         const layerName = DOM.createElement({
             element: 'span', 
             text: layerWrapper.getName().ellipsis(20),
-            class: `${TOOLBOX_LIST_CLASS}__title`,
+            class: `${CLASS_TOOLBOX_LIST}__title`,
             title: layerWrapper.getName()
         });
 
@@ -490,17 +525,17 @@ class LayerTool extends Control {
                 LayerManager.setActiveFeatureLayer(layerWrapper);
                 // Should just be one li-item that has the active class, but just in case
                 this.featureLayerStack.querySelectorAll('li').forEach((layer) => {
-                    layer.classList.remove(`${TOOLBOX_LIST_CLASS}__item--active`)
+                    layer.classList.remove(`${CLASS_TOOLBOX_LIST}__item--active`)
                 });
                     
                 // Set the new layer as the active layer
-                layerName.closest('li').classList.add(`${TOOLBOX_LIST_CLASS}__item--active`);
+                layerName.closest('li').classList.add(`${CLASS_TOOLBOX_LIST}__item--active`);
             });
         }
 
         const leftButtonWrapper = DOM.createElement({
             element: 'div',
-            class: `${TOOLBOX_LIST_CLASS}__wrapper`
+            class: `${CLASS_TOOLBOX_LIST}__wrapper`
         });
 
         DOM.appendChildren(leftButtonWrapper, [
@@ -513,7 +548,7 @@ class LayerTool extends Control {
 
         const rightButtonWrapper = DOM.createElement({
             element: 'div',
-            class: `${TOOLBOX_LIST_CLASS}__wrapper`
+            class: `${CLASS_TOOLBOX_LIST}__wrapper`
         });
 
         // Add all buttons to the layer
@@ -541,7 +576,7 @@ class LayerTool extends Control {
     createDeleteButton(layerWrapper, callback) {
         const deleteButton = DOM.createElement({
             element: 'button',
-            class: `${FUNC_BUTTON_CLASS} ${FUNC_BUTTON_CLASS}--delete oltb-tippy`,
+            class: `${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--delete oltb-tippy`,
             title: 'Delete layer',
             attributes: {
                 type: 'button'
@@ -566,7 +601,7 @@ class LayerTool extends Control {
     createDownloadButton(layerWrapper, callback) {
         const downloadButton = DOM.createElement({
             element: 'button', 
-            class: `${FUNC_BUTTON_CLASS} ${FUNC_BUTTON_CLASS}--download oltb-tippy`,
+            class: `${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--download oltb-tippy`,
             title: 'Download layer',
             attributes: {
                 type: 'button'
@@ -623,7 +658,7 @@ class LayerTool extends Control {
     createEditButton(layerWrapper, callback, layerName) {
         const editButton = DOM.createElement({
             element: 'button',
-            class: `${FUNC_BUTTON_CLASS} ${FUNC_BUTTON_CLASS}--edit oltb-tippy`,
+            class: `${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--edit oltb-tippy`,
             title: 'Rename layer',
             attributes: {
                 type: 'button'
@@ -663,7 +698,7 @@ class LayerTool extends Control {
 
         const visibilityButton = DOM.createElement({
             element: 'button',
-            class: `${FUNC_BUTTON_CLASS} ${FUNC_BUTTON_CLASS}--visibility oltb-tippy`,
+            class: `${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--visibility oltb-tippy`,
             title: 'Toggle visibility',
             attributes: {
                 type: 'button'

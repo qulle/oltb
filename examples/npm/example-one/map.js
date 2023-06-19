@@ -170,6 +170,7 @@ const toolbar = new OLTB({
             }
         },
         BookmarkTool: {
+            markerLayerVisibleOnLoad: true,
             storeDataInLocalStorage: true,
             bookmarks: [{
                 id: 18151210,

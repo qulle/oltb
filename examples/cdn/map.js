@@ -56,7 +56,9 @@ oltb.LayerManager.addMapLayers([
             visible: false
         })
     }
-], true);
+], {
+    silent: true
+});
 
 const toolbar = new oltb({
     map: map,
@@ -200,6 +202,7 @@ const toolbar = new oltb({
             }
         },
         BookmarkTool: {
+            markerLayerVisibleOnLoad: true,
             storeDataInLocalStorage: true,
             bookmarks: [{
                 id: 18151210,
