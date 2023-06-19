@@ -2,7 +2,7 @@
 // So the don't need to be prefixed
 const LocalStorageKeys = Object.freeze({
     mapData: 'common.mapdata',
-    rawTool: 'tool.draw',
+    drawTool: 'tool.draw',
     editTool: 'tool.edit',
     layerTool: 'tool.layer',
     themeTool: 'tool.theme',
