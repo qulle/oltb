@@ -5,7 +5,7 @@
 <h1 align="center">Toolbar for OpenLayers</h1>
 
 ## OLTB v1.0.1
-OLTB is a portable mobile friendly GIS toolbar developed for OpenLayers 7.3.0. The toolbar can be filled with any number of tools and can be used in both horizontal and vertical mode and is available in both light and dark theme.
+OLTB is a portable mobile friendly GIS toolbar developed for OpenLayers 7.4.0. The toolbar can be filled with any number of tools and can be used in both horizontal and vertical mode and is available in both light and dark theme.
 
 ## Latest Build - [Demo](https://qulle.github.io/oltb/)
 The latest demo is built using the last official release but may contain more features that have been added since then.
@@ -35,7 +35,7 @@ Examples for both the NPM and CDN version can be viewed in the [examples directo
 Have a look at the [Internal Development Documentation](https://github.com/qulle/oltb/blob/main/README_INTERNAL.md).
 
 ## External GitHub Projects
-1. [OpenLayers 7.3.0](https://openlayers.org/en/v7.3.0/apidoc/)
+1. [OpenLayers 7.4.0](https://openlayers.org/en/v7.4.0/apidoc/)
 2. [Proj4 2.9.0](http://proj4js.org/)   
 3. [Tippy.js 6.3.7](https://atomiks.github.io/tippyjs/)
 4. [Bootstrap Icons](https://icons.getbootstrap.com/)
@@ -43,8 +43,8 @@ Have a look at the [Internal Development Documentation](https://github.com/qulle
 6. [A Color Picker 1.2.1](https://github.com/narsenico/a-color-picker)
 7. [Plain JS Slidetoggle 2.0.0](https://github.com/ericbutler555/plain-js-slidetoggle)
 8. [JSTS 2.9.3](https://github.com/bjornharrtell/jsts)
-9. [Parcel 2.8.3](https://parceljs.org/)
-10. [Rollup 3.19.1](https://github.com/rollup/rollup)
+9. [Parcel 2.9.2](https://parceljs.org/)
+10. [Rollup 3.25.1](https://github.com/rollup/rollup)
 11. [Cycle.js](https://github.com/douglascrockford/JSON-js)
 
 ## Maps

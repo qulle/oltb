@@ -135,7 +135,8 @@ if (typeof JSON.retrocycle !== 'function') {
                         if (typeof element === 'object' && element !== null) {
                             var path = element.$ref;
                             if (typeof path === 'string' && px.test(path)) {
-                                value[i] = eval(path);
+                                // value[i] = eval(path);
+                                value[i] = Function(path);
                             } else {
                                 rez(element);
                             }
@@ -147,7 +148,8 @@ if (typeof JSON.retrocycle !== 'function') {
                         if (typeof item === 'object' && item !== null) {
                             var path = item.$ref;
                             if (typeof path === 'string' && px.test(path)) {
-                                value[name] = eval(path);
+                                // value[name] = eval(path);
+                                value[name] = Function(path);
                             } else {
                                 rez(item);
                             }
