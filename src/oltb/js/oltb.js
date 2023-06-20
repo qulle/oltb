@@ -84,20 +84,32 @@ class OLTB {
         return options.tools && Object.keys(options.tools).length;
     }
 
+    #getTools(options) {
+        if(this.#hasSpecifiedTools(options)) {
+            return options.tools;
+        }
+
+        return AllTools;
+    }
+
+    #getToolParameters(value) {
+        if(!(value instanceof Function)) {
+            return value;
+        }
+
+        return {};
+    }
+
     #initTools(options) {
         // Tools that should be added
-        const tools = this.#hasSpecifiedTools(options) 
-            ? options.tools 
-            : AllTools;
+        const tools = this.#getTools(options);
 
         // Create tool instances
         Object.entries(tools).forEach((entry) => {
             const [ key, value ] = entry;
 
             const toolName = key;
-            const toolParameters = !(value instanceof Function)
-                ? value 
-                : {};
+            const toolParameters = this.#getToolParameters(value);
 
             if(Object.prototype.hasOwnProperty.call(AllTools, toolName)) {
                 this.#tools[toolName] = new AllTools[toolName](toolParameters);

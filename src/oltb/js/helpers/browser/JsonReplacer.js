@@ -1,4 +1,14 @@
+// Some objects have properties that we don't want to serialize due to size
+// Example: Bookmarks have a reference to the marker on the Map
+const IgnoredKeys = Object.freeze([
+    'marker'
+]);
+
 const jsonReplacer = function(key, value) {
+    if(IgnoredKeys.includes(key)) {
+        return undefined;
+    }
+
     if(value instanceof Error) {
         // Known properties from Error object
         // Native JS errors that inherits from Error
