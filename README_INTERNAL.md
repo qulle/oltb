@@ -98,6 +98,7 @@ $ bash tasks/npm-dist.sh
 # (6). Clean package.json in dist:
 #      - repository
 #      - scripts
+#      - lint-staged
 #      - files
 #      - devDependencies
 
