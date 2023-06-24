@@ -756,20 +756,22 @@ There are a number of so-called managers located in `oltb/js/core/managers`. The
 The managers are initiated in two steps. The first one is the base initiation that is done before the map is created.
 ```javascript
 BootstrapManager.init([
-    LogManager,
-    ErrorManager,
-    StateManager,
-    ElementManager,
-    ProjectionManager,
-    LayerManager,
-    ColorPickerManager,
-    TippyManager,
-    TooltipManager,
-    UrlManager,
-    ToolManager,
-    SettingsManager,
-    InfoWindowManager,
-    AccessibilityManager
+    {manager: LogManager},
+    {manager: ErrorManager},
+    {manager: StateManager, options: {
+        ignoredKeys: []
+    }},
+    {manager: ElementManager},
+    {manager: ProjectionManager},
+    {manager: LayerManager},
+    {manager: ColorPickerManager},
+    {manager: TippyManager},
+    {manager: TooltipManager},
+    {manager: UrlManager},
+    {manager: ToolManager},
+    {manager: SettingsManager},
+    {manager: InfoWindowManager},
+    {manager: AccessibilityManager}
 ]);
 ```
 

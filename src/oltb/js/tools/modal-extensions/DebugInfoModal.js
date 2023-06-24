@@ -1,3 +1,4 @@
+import BrowserDetector from 'browser-dtector';
 import { DOM } from '../../helpers/browser/DOM';
 import { Toast } from '../../common/Toast';
 import { Config } from '../../core/Config';
@@ -343,6 +344,12 @@ class DebugInfoModal extends ModalBase {
             info: 'No map reference found'
         };
 
+        const browser = new BrowserDetector(window.navigator.userAgent);
+        const userAgent = browser.parseUserAgent();
+        const browserDataContent = {
+            userAgent: userAgent
+        };
+
         // Browser LocalStorage
         const localStorageContent = {};
         Object.keys(localStorage).forEach((key) => {
@@ -383,6 +390,12 @@ class DebugInfoModal extends ModalBase {
             {
                 title: 'App data',
                 content: appDataContent,
+                class: 'oltb-debug__json',
+                display: 'none',
+                json: true
+            },{
+                title: 'Browser data',
+                content: browserDataContent,
                 class: 'oltb-debug__json',
                 display: 'none',
                 json: true

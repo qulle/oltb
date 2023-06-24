@@ -6,7 +6,7 @@ export const banner = `/*!
  * |  Author: Qulle (https://github.com/qulle/)                                                                      |
  * | License: BSD-2-Clause license (https://github.com/qulle/oltb/blob/main/LICENSE)                                 |
  * + ----------------------------------------------------------------------------------------------------------------+
- * | Thanks to the following projects that enabled the creation of this library.                                     |
+ * | Thanks to the following projects:                                                                               |
  * | (+) OpenLayers 7.4.0                   - (https://openlayers.org/)                                              |
  * | (+) proj4 2.9.0                        - (http://proj4js.org/)                                                  |
  * | (+) Tippy.js 6.3.7                     - (https://atomiks.github.io/tippyjs/)                                   |
@@ -26,5 +26,6 @@ export const banner = `/*!
  * | (+) rollup-plugin-license 3.0.1        - (https://github.com/mjeanroy/rollup-plugin-license)                    |
  * | (+) rollup-plugin-scss 4.0.0           - (https://github.com/thgh/rollup-plugin-scss)                           |
  * | (+) Cycle.js                           - (https://github.com/douglascrockford/JSON-js)                          |
+ * | (+) Browser Dtector 3.3.0              - (https://github.com/sibiraj-s/browser-dtector)                         |
  * +-----------------------------------------------------------------------------------------------------------------+
  */`;

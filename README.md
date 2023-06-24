@@ -46,6 +46,7 @@ Have a look at the [Internal Development Documentation](https://github.com/qulle
 9. [Parcel 2.9.2](https://parceljs.org/)
 10. [Rollup 3.25.1](https://github.com/rollup/rollup)
 11. [Cycle.js](https://github.com/douglascrockford/JSON-js)
+12. [Browser Dtector 3.3.0](https://github.com/sibiraj-s/browser-dtector)
 
 ## Maps
 1. [OpenStreetMap](https://www.openstreetmap.org/)

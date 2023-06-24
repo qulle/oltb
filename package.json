@@ -48,6 +48,7 @@
     ],
     "dependencies": {
         "a-color-picker": "^1.2.1",
+        "browser-dtector": "^3.3.0",
         "html2canvas": "^1.4.1",
         "jsts": "^2.9.3",
         "moment": "^2.29.4",
