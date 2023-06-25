@@ -551,6 +551,18 @@ class LayerTool extends Control {
             class: `${CLASS_TOOLBOX_LIST}__wrapper`
         });
 
+        // If featyre layer - create small strip to indicate if the layer is active
+        if(this.isFeatureLayer(options)) {
+            const layerActiveStrip = DOM.createElement({
+                element: 'div',
+                class: `${CLASS_TOOLBOX_LIST}__strip`
+            });
+
+            DOM.appendChildren(leftButtonWrapper, [
+                layerActiveStrip
+            ]);
+        }
+
         DOM.appendChildren(leftButtonWrapper, [
             layerName
         ]);
