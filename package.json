@@ -54,6 +54,7 @@
         "moment": "^2.29.4",
         "ol": "^7.4.0",
         "proj4": "^2.9.0",
+        "sortablejs": "^1.15.0",
         "tippy.js": "^6.3.7"
     },
     "devDependencies": {

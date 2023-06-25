@@ -13,6 +13,7 @@ class ErrorManager {
 
     static globalErrorHandler(error) {
         error.preventDefault();
+        console.error(error);
         
         LogManager.logFatal(FILENAME, 'globalErrorHandler', error.error);
         Toast.error({

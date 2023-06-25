@@ -1,4 +1,5 @@
 import tippy from 'tippy.js';
+import Sortable from 'sortablejs';
 import { DOM } from '../helpers/browser/DOM';
 import { Keys } from '../helpers/constants/Keys';
 import { Toast } from '../common/Toast';
@@ -174,6 +175,18 @@ class LayerTool extends Control {
         this.featureLayerStack = this.layersToolbox.querySelector(`#${ID_PREFIX}-feature-stack`);
         this.addFeatureLayerButton = this.layersToolbox.querySelector(`#${ID_PREFIX}-feature-stack-add-button`);
         this.addFeatureLayerText = this.layersToolbox.querySelector(`#${ID_PREFIX}-feature-stack-add-text`);
+
+        this.sortableMapLayerStack = Sortable.create(this.mapLayerStack, {
+            handle: `.${CLASS_TOOLBOX_LIST}__handle`,
+            chosenClass: 'oltb-toolbox-list__item--chosen',
+            dragClass: 'oltb-toolbox-list__item--drag'
+        });
+
+        this.sortableFeatureLayerStack = Sortable.create(this.featureLayerStack, {
+            handle: `.${CLASS_TOOLBOX_LIST}__handle`,
+            chosenClass: 'oltb-toolbox-list__item--chosen',
+            dragClass: 'oltb-toolbox-list__item--drag'
+        });
 
         if(this.addMapLayerButton) {
             this.addMapLayerButton.addEventListener(Events.browser.click, this.showAddMapLayerModal.bind(this));
@@ -564,6 +577,16 @@ class LayerTool extends Control {
                 button
             ]);
         }
+        
+        const layerHandle = DOM.createElement({
+            element: 'div',
+            class: `${CLASS_TOOLBOX_LIST}__handle oltb-tippy`,
+            title: 'Drag to sort'
+        });
+
+        DOM.appendChildren(rightButtonWrapper, [
+            layerHandle
+        ]);
 
         DOM.appendChildren(layerElement, [
             rightButtonWrapper
