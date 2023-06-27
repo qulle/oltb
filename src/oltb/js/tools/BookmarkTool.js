@@ -1,4 +1,5 @@
 import tippy from 'tippy.js';
+import Sortable from 'sortablejs';
 import { DOM } from '../helpers/browser/DOM';
 import { Keys } from '../helpers/constants/Keys';
 import { Toast } from '../common/Toast';
@@ -128,7 +129,7 @@ class BookmarkTool extends Control {
                             </button>
                         </div>
                     </div>
-                    <div class="${CLASS_TOOLBOX_SECTION}__group oltb-m-0">
+                    <div class="${CLASS_TOOLBOX_SECTION}__group">
                         <ul id="${ID_PREFIX}-stack" class="${CLASS_TOOLBOX_LIST}"></ul>
                     </div>
                 </div>
@@ -138,6 +139,15 @@ class BookmarkTool extends Control {
         this.bookmarkToolbox = document.querySelector(`#${ID_PREFIX}-toolbox`);
         this.bookmarkStack = this.bookmarkToolbox.querySelector(`#${ID_PREFIX}-stack`);
 
+        this.sortableBookmarkStack = Sortable.create(this.bookmarkStack, {
+            group: 'bookmarkSort',
+            forceFallback: true,
+            handle: `.${CLASS_TOOLBOX_LIST}__handle`,
+            chosenClass: 'oltb-toolbox-list__item--chosen',
+            dragClass: 'oltb-toolbox-list__item--drag',
+            ghostClass: 'oltb-toolbox-list__item--ghost'
+        });
+                                
         this.addBookmarkButton = this.bookmarkToolbox.querySelector(`#${ID_PREFIX}-add-button`);
         this.addBookmarkText = this.bookmarkToolbox.querySelector(`#${ID_PREFIX}-add-text`);
 
@@ -392,7 +402,7 @@ class BookmarkTool extends Control {
         const bookmarkName = DOM.createElement({
             element: 'span', 
             text: bookmark.name.ellipsis(20),
-            class: `${CLASS_TOOLBOX_LIST}__title oltb-tippy`,
+            class: `${CLASS_TOOLBOX_LIST}__title`,
             title: bookmark.name
         });
 
@@ -480,6 +490,16 @@ class BookmarkTool extends Control {
             copyCoordinatesButton,
             editButton, 
             deleteButton
+        ]);
+
+        const layerHandle = DOM.createElement({
+            element: 'div',
+            class: `${CLASS_TOOLBOX_LIST}__handle oltb-tippy`,
+            title: 'Drag to sort'
+        });
+
+        DOM.appendChildren(rightWrapper, [
+            layerHandle
         ]);
         
         DOM.appendChildren(bookmarkElement, [

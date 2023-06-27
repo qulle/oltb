@@ -124,7 +124,7 @@ class LayerTool extends Control {
                             </div>
                         ` : ''
                     }
-                    <div class="${CLASS_TOOLBOX_SECTION}__group ${this.options.disableMapCreateLayerButton ? `${CLASS_TOOLBOX_SECTION}__group--topmost` : ''} oltb-m-0">
+                    <div class="${CLASS_TOOLBOX_SECTION}__group ${this.options.disableMapCreateLayerButton ? `${CLASS_TOOLBOX_SECTION}__group--topmost` : ''}">
                         <ul id="${ID_PREFIX}-map-stack" class="${CLASS_TOOLBOX_LIST}"></ul>
                     </div>
                 </div>
@@ -155,7 +155,7 @@ class LayerTool extends Control {
                             ` : ''
                         }
                     </div>
-                    <div class="${CLASS_TOOLBOX_SECTION}__group ${this.options.disableFeatureCreateLayerButton ? `${CLASS_TOOLBOX_SECTION}__group--topmost` : ''} oltb-m-0">
+                    <div class="${CLASS_TOOLBOX_SECTION}__group ${this.options.disableFeatureCreateLayerButton ? `${CLASS_TOOLBOX_SECTION}__group--topmost` : ''}">
                         <ul id="${ID_PREFIX}-feature-stack" class="${CLASS_TOOLBOX_LIST} ${CLASS_TOOLBOX_LIST}--selectable"></ul>
                     </div>
                 </div>
@@ -172,20 +172,26 @@ class LayerTool extends Control {
         this.mapLayerStack = this.layersToolbox.querySelector(`#${ID_PREFIX}-map-stack`);
         this.addMapLayerButton = this.layersToolbox.querySelector(`#${ID_PREFIX}-map-stack-add-button`);
 
+        this.sortableMapLayerStack = Sortable.create(this.mapLayerStack, {
+            group: 'mapLayerSort',
+            forceFallback: true,
+            handle: `.${CLASS_TOOLBOX_LIST}__handle`,
+            chosenClass: 'oltb-toolbox-list__item--chosen',
+            dragClass: 'oltb-toolbox-list__item--drag',
+            ghostClass: 'oltb-toolbox-list__item--ghost'
+        });
+
         this.featureLayerStack = this.layersToolbox.querySelector(`#${ID_PREFIX}-feature-stack`);
         this.addFeatureLayerButton = this.layersToolbox.querySelector(`#${ID_PREFIX}-feature-stack-add-button`);
         this.addFeatureLayerText = this.layersToolbox.querySelector(`#${ID_PREFIX}-feature-stack-add-text`);
 
-        this.sortableMapLayerStack = Sortable.create(this.mapLayerStack, {
-            handle: `.${CLASS_TOOLBOX_LIST}__handle`,
-            chosenClass: 'oltb-toolbox-list__item--chosen',
-            dragClass: 'oltb-toolbox-list__item--drag'
-        });
-
         this.sortableFeatureLayerStack = Sortable.create(this.featureLayerStack, {
+            group: 'featureLayerSort',
+            forceFallback: true,
             handle: `.${CLASS_TOOLBOX_LIST}__handle`,
             chosenClass: 'oltb-toolbox-list__item--chosen',
-            dragClass: 'oltb-toolbox-list__item--drag'
+            dragClass: 'oltb-toolbox-list__item--drag',
+            ghostClass: 'oltb-toolbox-list__item--ghost'
         });
 
         if(this.addMapLayerButton) {
@@ -546,7 +552,7 @@ class LayerTool extends Control {
             });
         }
 
-        const leftButtonWrapper = DOM.createElement({
+        const leftWrapper = DOM.createElement({
             element: 'div',
             class: `${CLASS_TOOLBOX_LIST}__wrapper`
         });
@@ -558,20 +564,20 @@ class LayerTool extends Control {
                 class: `${CLASS_TOOLBOX_LIST}__strip`
             });
 
-            DOM.appendChildren(leftButtonWrapper, [
+            DOM.appendChildren(leftWrapper, [
                 layerActiveStrip
             ]);
         }
 
-        DOM.appendChildren(leftButtonWrapper, [
+        DOM.appendChildren(leftWrapper, [
             layerName
         ]);
 
         DOM.appendChildren(layerElement, [
-            leftButtonWrapper
+            leftWrapper
         ]);
 
-        const rightButtonWrapper = DOM.createElement({
+        const rightWrapper = DOM.createElement({
             element: 'div',
             class: `${CLASS_TOOLBOX_LIST}__wrapper`
         });
@@ -585,7 +591,7 @@ class LayerTool extends Control {
                 layerName
             );
 
-            DOM.appendChildren(rightButtonWrapper, [
+            DOM.appendChildren(rightWrapper, [
                 button
             ]);
         }
@@ -596,12 +602,12 @@ class LayerTool extends Control {
             title: 'Drag to sort'
         });
 
-        DOM.appendChildren(rightButtonWrapper, [
+        DOM.appendChildren(rightWrapper, [
             layerHandle
         ]);
 
         DOM.appendChildren(layerElement, [
-            rightButtonWrapper
+            rightWrapper
         ]);
 
         // Add the created layer item to the user interface
