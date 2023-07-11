@@ -541,7 +541,7 @@ controls: defaultControls({
         markerLayerVisibleOnLoad: true,
         storeDataInLocalStorage: true,
         bookmarks: [{
-            id: 18151210,
+            id: '6812cc22-f490-46b7-a9f3-42eb9ea58ac2',
             name: 'Custom bookmark',
             zoom: 5,
             coordinates: [57.123, 16.456]

@@ -14,6 +14,7 @@ const CLASS_FUNC_BUTTON = 'oltb-func-btn';
 const ID_PREFIX_INFO_WINDOW = 'oltb-info-window-marker';
 
 const LayerWrapper = LayerManager.addFeatureLayer({
+    id: 'fd319a29-d2ac-4b2b-b018-dc86cff22600',
     name: 'Wind Barbs',
     visible: false,
     silent: true

@@ -10,8 +10,8 @@ import { Control } from 'ol/control';
 import { goToView } from '../helpers/GoToView';
 import { LogManager } from '../core/managers/LogManager';
 import { ContextMenu } from '../common/ContextMenu';
+import { v4 as uuidv4 } from 'uuid';
 import { toStringHDMS } from 'ol/coordinate';
-import { randomNumber } from '../helpers/browser/Random';
 import { LayerManager } from '../core/managers/LayerManager';
 import { StateManager } from '../core/managers/StateManager';
 import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
@@ -32,6 +32,7 @@ const CLASS_TOOLBOX_LIST = 'oltb-toolbox-list';
 const CLASS_FUNC_BUTTON = 'oltb-func-btn';
 const ID_PREFIX = 'oltb-bookmark';
 const ID_PREFIX_INFO_WINDOW = 'oltb-info-window-marker';
+const SORTABLE_BOOKMARKS = 'sortableBookmarks';
 
 const DefaultOptions = Object.freeze({
     markerLayerVisibleOnLoad: true,
@@ -49,7 +50,8 @@ const LocalStorageNodeName = LocalStorageKeys.bookmarkTool;
 const LocalStorageDefaults = Object.freeze({
     active: false,
     collapsed: false,
-    bookmarks: []
+    bookmarks: [],
+    sortMap: {}
 });
 
 class BookmarkTool extends Control {
@@ -89,7 +91,9 @@ class BookmarkTool extends Control {
         this.button = button;
         this.active = false;
         this.options = { ...DefaultOptions, ...options };
+
         this.layerWrapper = LayerManager.addFeatureLayer({
+            id: '1fde0d79-46f9-4c92-8f9c-eb0e98f46772',
             name: 'Bookmarks', 
             visible: this.options.markerLayerVisibleOnLoad, 
             silent: true,
@@ -140,12 +144,29 @@ class BookmarkTool extends Control {
         this.bookmarkStack = this.bookmarkToolbox.querySelector(`#${ID_PREFIX}-stack`);
 
         this.sortableBookmarkStack = Sortable.create(this.bookmarkStack, {
-            group: 'bookmarkSort',
+            group: SORTABLE_BOOKMARKS,
+            animation: Config.animationDuration.warp,
             forceFallback: true,
             handle: `.${CLASS_TOOLBOX_LIST}__handle`,
-            chosenClass: 'oltb-toolbox-list__item--chosen',
-            dragClass: 'oltb-toolbox-list__item--drag',
-            ghostClass: 'oltb-toolbox-list__item--ghost'
+            chosenClass: `${CLASS_TOOLBOX_LIST}__item--chosen`,
+            dragClass: `${CLASS_TOOLBOX_LIST}__item--drag`,
+            ghostClass: `${CLASS_TOOLBOX_LIST}__item--ghost`,
+            onEnd: (event) => {
+                const ul = event.to;
+                ul.childNodes.forEach((li, index) => {
+                    // Update data-attribute, this is used by Sortable.js to do the sorting
+                    li.setAttribute('data-id', index);
+
+                    // Update state that is stored in localStorage
+                    // This will keep track of the sort after a reload
+                    const bookmarkId = li.getAttribute('data-item-id');
+                    console.log('Innan', this.localStorage.sortMap[bookmarkId]);
+                    this.localStorage.sortMap[bookmarkId] = index;
+                    console.log('Efter', this.localStorage.sortMap[bookmarkId]);
+                });
+
+                StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
+            }
         });
                                 
         this.addBookmarkButton = this.bookmarkToolbox.querySelector(`#${ID_PREFIX}-add-button`);
@@ -314,8 +335,9 @@ class BookmarkTool extends Control {
 
         name = this.validateName(name);
 
+        const bookmarkId = uuidv4();
         const bookmark = {
-            id: randomNumber(),
+            id: bookmarkId,
             name: name,
             zoom: zoom,
             coordinates: coordinates
@@ -392,11 +414,38 @@ class BookmarkTool extends Control {
         this.addMarker(marker);
     }
 
+    sortAsc(sortable) {
+        const order = sortable.toArray();
+        sortable.sort(order.sort(), false);
+    }
+
+    sortDesc(sortable) {
+        const order = sortable.toArray();
+        sortable.sort(order.reverse(), false);
+    }
+
+    getDataIdFromBookmarkId(primary, secondary, id) {
+        return primary[id] ?? secondary.length;
+    }
+
     addBookmarkItem(bookmark) {
+        // BookmarkId = The unique Bookmark Id
+        // Data Id = The Sort Index used by Sortable.js
+        const bookmarkId = bookmark.id;
+        const dataId = this.getDataIdFromBookmarkId(
+            this.localStorage.sortMap,
+            this.bookmarkStack.childNodes,
+            bookmarkId
+        );
+
         const bookmarkElement = DOM.createElement({
             element: 'li', 
-            id: `oltb-bookmark-${bookmark.id}`,
-            class: `${CLASS_TOOLBOX_LIST}__item`
+            id: `oltb-bookmark-${bookmarkId}`,
+            class: `${CLASS_TOOLBOX_LIST}__item`,
+            attributes: {
+                'data-item-id': bookmarkId,
+                'data-id': dataId
+            }
         });
 
         const bookmarkName = DOM.createElement({
@@ -506,15 +555,15 @@ class BookmarkTool extends Control {
             rightWrapper
         ]);
 
-        // Add the bookmark to the user interface
-        this.bookmarkStack.prepend(bookmarkElement);
+        this.bookmarkStack.append(bookmarkElement);
+        this.sortDesc(this.sortableBookmarkStack);
     }
 
     createBookmark(bookmark) {
         LogManager.logInformation(FILENAME, 'createBookmark', bookmark);        
 
-        this.addBookmarkMarker(bookmark);
         this.addBookmarkItem(bookmark);
+        this.addBookmarkMarker(bookmark);
     }
 
     zoomToBookmark(bookmark) {
@@ -576,6 +625,9 @@ class BookmarkTool extends Control {
                 // Delete bookmark item from toolbox
                 bookmarkElement.remove();
 
+                // Delete stored sort index
+                delete this.localStorage.sortMap[bookmark.id];
+
                 // Delete marker from feature-layer
                 this.removeMarker(bookmark.marker);
 
@@ -603,13 +655,11 @@ class BookmarkTool extends Control {
             confirmText: 'Rename',
             onConfirm: (result) => {
                 if(result !== null && !!result.length) {
-                    // Internal name
+                    // Update model
                     bookmark.name = result;
-                    
-                    // Bookmark item text
-                    bookmarkName.innerText = result.ellipsis(20);
 
-                    // Tooltip
+                    // Update UI item
+                    bookmarkName.innerText = result.ellipsis(20);
                     bookmarkName._tippy.setContent(result);
 
                     // Update Marker and InfoWindow

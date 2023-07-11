@@ -1,5 +1,6 @@
 import { Events } from '../../helpers/constants/Events';
 import { LogManager } from '../managers/LogManager';
+import { v4 as uuidv4 } from 'uuid';
 import { FeatureProperties } from '../../helpers/constants/FeatureProperties';
 import { Vector as VectorLayer } from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';
@@ -32,7 +33,6 @@ const DefaultMapLayerOptions = Object.freeze({
 class LayerManager {
     static #map;
     static #activeFeatureLayer;
-    static #layerId = 0;
 
     static #queue = {
         mapLayers: [],
@@ -99,13 +99,6 @@ class LayerManager {
         }
     }
 
-    static #setIdAndZIndex(zBase, layerWrapper) {
-        layerWrapper.setId(this.#layerId);
-        layerWrapper.getLayer().setZIndex(zBase + this.#layerId);
-
-        this.#layerId += 1;
-    }
-
     static #validateName(name) {
         name = name.trim();
 
@@ -131,9 +124,12 @@ class LayerManager {
         LogManager.logDebug(FILENAME, 'addMapLayer', layerWrapper.name);
 
         const mergedOptions = { ...DefaultMapLayerOptions, ...options };
-
         this.#addPropertiesInterface(layerWrapper);
-        this.#setIdAndZIndex(ZINDEX_BASE_MAP_LAYER, layerWrapper);
+
+        if(!layerWrapper.getId()) {
+            const layerId = uuidv4();
+            layerWrapper.setId(layerId);
+        }
 
         if(this.#map) {
             this.#addMapLayerToMap(layerWrapper, mergedOptions);
@@ -220,6 +216,10 @@ class LayerManager {
         return this.getMapLayerSize() === 0;
     }
 
+    static setMapLayerZIndex(layerWrapper, index) {
+        layerWrapper.getLayer().setZIndex(ZINDEX_BASE_MAP_LAYER + index);
+    }
+
     //-------------------------------------------
     // Feature layers specific
     //-------------------------------------------
@@ -238,7 +238,11 @@ class LayerManager {
         };
 
         this.#addPropertiesInterface(layerWrapper);
-        this.#setIdAndZIndex(ZINDEX_BASE_FEATURE_LAYER, layerWrapper);
+
+        if(!layerWrapper.getId()) {
+            const layerId = uuidv4();
+            layerWrapper.setId(layerId);
+        }
 
         this.#activeFeatureLayer = layerWrapper;
 
@@ -285,15 +289,17 @@ class LayerManager {
             return layer.getId() !== layerWrapper.getId();
         }); 
 
+        const layer = layerWrapper.getLayer();
+        
         // Remove overlays associated with each feature
-        layerWrapper.getLayer().getSource().getFeatures().forEach((feature) => {
+        layer.getSource().getFeatures().forEach((feature) => {
             if(hasCustomFeatureProperty(feature.getProperties(), FeatureProperties.tooltip)) {
                 this.#map.removeOverlay(feature.getProperties().oltb.tooltip);
             }
         });
 
         // Remove the actual ol layer
-        this.#map.removeLayer(layerWrapper.getLayer());
+        this.#map.removeLayer(layer);
 
         // Sett another layer as active if exists
         this.#activeFeatureLayer = this.#getNextActiveFeatureLayer();
@@ -324,6 +330,14 @@ class LayerManager {
         return this.#layers.featureLayers;
     }
 
+    static getFeatureLayerById(id) {
+        const result = this.#layers.featureLayers.find((layerWrapper) => {
+            return layerWrapper.getId() === id;
+        });
+
+        return result;
+    }
+
     static removeFeatureFromLayer(feature) {
         this.getFeatureLayers().forEach((layerWrapper) => {
             layerWrapper.getLayer().getSource().removeFeature(feature);
@@ -336,6 +350,10 @@ class LayerManager {
 
     static isFeatureLayersEmpty() {
         return this.getFeatureLayerSize() === 0;
+    }
+
+    static setFeatureLayerZIndex(layerWrapper, index) {
+        layerWrapper.getLayer().setZIndex(ZINDEX_BASE_FEATURE_LAYER + index);
     }
 }
 

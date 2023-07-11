@@ -33,6 +33,8 @@ const CLASS_TOOLBOX_SECTION = 'oltb-toolbox-section';
 const CLASS_TOOLBOX_LIST = 'oltb-toolbox-list';
 const CLASS_FUNC_BUTTON = 'oltb-func-btn';
 const ID_PREFIX = 'oltb-layer';
+const SORTABLE_MAP_LAYERS = 'sortableMapLayers';
+const SORTABLE_FEATURE_LAYERS = 'sortableFeatureLayers';
 
 const DefaultOptions = Object.freeze({
     disableMapCreateLayerButton: false,
@@ -62,7 +64,9 @@ const DefaultOptions = Object.freeze({
 */
 const LocalStorageNodeName = LocalStorageKeys.layerTool;
 const LocalStorageDefaults = Object.freeze({
-    active: false, 
+    active: false,
+    featureLayerSortMap: {},
+    mapLayerSortMap: {},
     'oltb-layer-map-toolbox-collapsed': false,
     'oltb-layer-feature-toolbox-collapsed': false,
 });
@@ -173,12 +177,27 @@ class LayerTool extends Control {
         this.addMapLayerButton = this.layersToolbox.querySelector(`#${ID_PREFIX}-map-stack-add-button`);
 
         this.sortableMapLayerStack = Sortable.create(this.mapLayerStack, {
-            group: 'mapLayerSort',
+            group: SORTABLE_MAP_LAYERS,
+            animation: Config.animationDuration.warp,
             forceFallback: true,
             handle: `.${CLASS_TOOLBOX_LIST}__handle`,
-            chosenClass: 'oltb-toolbox-list__item--chosen',
-            dragClass: 'oltb-toolbox-list__item--drag',
-            ghostClass: 'oltb-toolbox-list__item--ghost'
+            chosenClass: `${CLASS_TOOLBOX_LIST}__item--chosen`,
+            dragClass: `${CLASS_TOOLBOX_LIST}__item--drag`,
+            ghostClass: `${CLASS_TOOLBOX_LIST}__item--ghost`,
+            onEnd: (event) => {
+                const ul = event.to;
+                ul.childNodes.forEach((li, index) => {
+                    // Update data-attribute, this is used by Sortable.js to do the sorting
+                    li.setAttribute('data-id', index);
+
+                    // Update state that is stored in localStorage
+                    // This will keep track of the sort after a reload
+                    const layerId = li.getAttribute('data-item-id');
+                    this.localStorage.mapLayerSortMap[layerId] = index;
+                });
+
+                StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
+            }
         });
 
         this.featureLayerStack = this.layersToolbox.querySelector(`#${ID_PREFIX}-feature-stack`);
@@ -186,12 +205,30 @@ class LayerTool extends Control {
         this.addFeatureLayerText = this.layersToolbox.querySelector(`#${ID_PREFIX}-feature-stack-add-text`);
 
         this.sortableFeatureLayerStack = Sortable.create(this.featureLayerStack, {
-            group: 'featureLayerSort',
+            group: SORTABLE_FEATURE_LAYERS,
+            animation: Config.animationDuration.warp,
             forceFallback: true,
             handle: `.${CLASS_TOOLBOX_LIST}__handle`,
-            chosenClass: 'oltb-toolbox-list__item--chosen',
-            dragClass: 'oltb-toolbox-list__item--drag',
-            ghostClass: 'oltb-toolbox-list__item--ghost'
+            chosenClass: `${CLASS_TOOLBOX_LIST}__item--chosen`,
+            dragClass: `${CLASS_TOOLBOX_LIST}__item--drag`,
+            ghostClass: `${CLASS_TOOLBOX_LIST}__item--ghost`,
+            onEnd: (event) => {
+                const ul = event.to;
+                ul.childNodes.forEach((li, index) => {
+                    // Update data-attribute, this is used by Sortable.js to do the sorting
+                    li.setAttribute('data-id', index);
+
+                    // Update state that is stored in localStorage
+                    // This will keep track of the sort after a reload
+                    const layerId = li.getAttribute('data-item-id');
+                    this.localStorage.featureLayerSortMap[layerId] = index;
+
+                    const layer = LayerManager.getFeatureLayerById(layerId);
+                    layer.getLayer().setZIndex(index);
+                });
+
+                StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
+            }
         });
 
         if(this.addMapLayerButton) {
@@ -301,6 +338,20 @@ class LayerTool extends Control {
         });
     }
 
+    sortAsc(sortable) {
+        const order = sortable.toArray();
+        sortable.sort(order.sort(), false);
+    }
+
+    sortDesc(sortable) {
+        const order = sortable.toArray();
+        sortable.sort(order.reverse(), false);
+    }
+
+    getDataIdFromLayerId(primary, secondary, id) {
+        return primary[id] ?? secondary.length;
+    }
+
     onCreateMapLayer(result) {
         if(!ProjectionManager.hasProjection(result.projection)) {
             const errorMessage = `Must add projection definition for <strong>${result.projection}</strong>`;
@@ -370,24 +421,19 @@ class LayerTool extends Control {
             false
         );
 
-        // Add to UI
-        this.createLayerItem(layerWrapper, {
-            idPrefix: `${ID_PREFIX}-map`,
-            target: this.mapLayerStack,
-            buttons: {
-                ...(!disableVisibilityButton && {visibilityButton: {
-                    function: this.createVisibilityButton, 
-                    callback: this.options.mapLayerVisibilityChanged
-                }}),
-                ...(!disableEditButton && {editButton: {
-                    function: this.createEditButton,
-                    callback: this.options.mapLayerRenamed
-                }}),
-                ...(!disableDeleteButton && {deleteButton: {
-                    function: this.createDeleteButton,
-                    callback: LayerManager.removeMapLayer.bind(LayerManager)
-                }})
-            }
+        this.createMapLayerItem(layerWrapper, {
+            ...(!disableVisibilityButton && {visibilityButton: {
+                function: this.createVisibilityButton, 
+                callback: this.options.mapLayerVisibilityChanged
+            }}),
+            ...(!disableEditButton && {editButton: {
+                function: this.createEditButton,
+                callback: this.options.mapLayerRenamed
+            }}),
+            ...(!disableDeleteButton && {deleteButton: {
+                function: this.createDeleteButton,
+                callback: LayerManager.removeMapLayer.bind(LayerManager)
+            }})
         });
 
         // User defined callback from constructor
@@ -439,28 +485,23 @@ class LayerTool extends Control {
             false
         );
 
-        // Add to UI, this will check if the user has disabled any of the UI-buttons for a layer
-        this.createLayerItem(layerWrapper, {
-            idPrefix: `${ID_PREFIX}-feature`,
-            target: this.featureLayerStack,
-            buttons: {
-                ...(!disableVisibilityButton && {visibilityButton: {
-                    function: this.createVisibilityButton, 
-                    callback: this.options.featureLayerVisibilityChanged
-                }}),
-                ...(!disableEditButton && {editButton: {
-                    function: this.createEditButton,
-                    callback: this.options.featureLayerRenamed
-                }}),
-                ...(!disableDownloadButton && {downloadButton: {
-                    function: this.createDownloadButton,
-                    callback: this.options.featureLayerDownloaded
-                }}),
-                ...(!disableDeleteButton && {deleteButton: {
-                    function: this.createDeleteButton,
-                    callback: LayerManager.removeFeatureLayer.bind(LayerManager)
-                }})
-            }
+        this.createFeatureLayerItem(layerWrapper, {
+            ...(!disableVisibilityButton && {visibilityButton: {
+                function: this.createVisibilityButton, 
+                callback: this.options.featureLayerVisibilityChanged
+            }}),
+            ...(!disableEditButton && {editButton: {
+                function: this.createEditButton,
+                callback: this.options.featureLayerRenamed
+            }}),
+            ...(!disableDownloadButton && {downloadButton: {
+                function: this.createDownloadButton,
+                callback: this.options.featureLayerDownloaded
+            }}),
+            ...(!disableDeleteButton && {deleteButton: {
+                function: this.createDeleteButton,
+                callback: LayerManager.removeFeatureLayer.bind(LayerManager)
+            }})
         });
 
         // User defined callback from constructor
@@ -478,11 +519,15 @@ class LayerTool extends Control {
         // Remove layer from UI
         this.featureLayerStack.querySelector(`#${ID_PREFIX}-feature-${layerWrapper.getId()}`).remove();
 
-        // Set top-most-layer tas the active layer
-        // Important that it is the first child, the LayerManager uses the first next layer
-        const numLayers = this.featureLayerStack.querySelectorAll('li').length;
-        if(numLayers > 0) {
-            this.featureLayerStack.firstChild.classList.add(`${CLASS_TOOLBOX_LIST}__item--active`);
+        // Set new active feature layer
+        this.removeActiveFeatureLayerClass();
+        const activeFeatureLayer = LayerManager.getActiveFeatureLayer();
+        if(activeFeatureLayer) {
+            this.featureLayerStack.querySelectorAll('li').forEach((item) => {
+                if(activeFeatureLayer.getId() === Number(item.getAttribute('data-item-id'))) {
+                    item.classList.add(`${CLASS_TOOLBOX_LIST}__item--active`);
+                }
+            });
         }
 
         // User defined callback from constructor
@@ -491,24 +536,63 @@ class LayerTool extends Control {
         }
     }
 
-    isFeatureLayer(options) {
-        return options.idPrefix === `${ID_PREFIX}-feature`;
+    attachLayerNameTippy(layerName) {
+        tippy(layerName, {
+            content(reference) {
+                const title = reference.getAttribute('title');
+                reference.removeAttribute('title');
+                return title;
+            },
+            placement: 'top',
+            theme: 'oltb oltb-themed',
+            delay: [600, 100]
+        });
     }
 
-    createLayerItem(layerWrapper, options) {
+    removeActiveFeatureLayerClass() {
         // Should just be one li-item that has the active class, but just in case
-        this.featureLayerStack.querySelectorAll('li').forEach((layer) => {
-            layer.classList.remove(`${CLASS_TOOLBOX_LIST}__item--active`);
+        this.featureLayerStack.querySelectorAll('li').forEach((item) => {
+            item.classList.remove(`${CLASS_TOOLBOX_LIST}__item--active`);
         });
+    }
+
+    attachButtonCallbacks(options, layerWrapper, rightWrapper, layerName) {
+        for(const name in options) {
+            const button = options[name].function.call(
+                this,
+                layerWrapper,
+                options[name].callback,
+                layerName
+            );
+
+            DOM.appendChildren(rightWrapper, [
+                button
+            ]);
+        }
+    }
+
+    createMapLayerItem(layerWrapper, options) {
+        const layerId = layerWrapper.getId();
+        const dataId = this.getDataIdFromLayerId(
+            this.localStorage.mapLayerSortMap,
+            this.mapLayerStack.childNodes,
+            layerId
+        );
 
         const layer = layerWrapper.getLayer();
         const layerElement = DOM.createElement({
             element: 'li', 
-            id: `${options.idPrefix}-${layerWrapper.getId()}`,
-            class: `${CLASS_TOOLBOX_LIST}__item ${CLASS_TOOLBOX_LIST}__item--active ${(
-                !layer.getVisible() ? ` ${CLASS_TOOLBOX_LIST}__item--hidden` : ''
-            )}`
+            id: `${ID_PREFIX}-map-${layerId}`,
+            class: `${CLASS_TOOLBOX_LIST}__item`,
+            attributes: {
+                'data-item-id': layerId,
+                'data-id': dataId
+            }
         });
+
+        if(!layer.getVisible()) {
+            layerElement.classList.add(`${CLASS_TOOLBOX_LIST}__item--hidden`);
+        }
 
         // Eventlistener to update the UI if the visibility of the layer is changed
         // Other tools may change a layers visibility and the UI must be updated in this event
@@ -527,47 +611,12 @@ class LayerTool extends Control {
 
         // This tooltip can not be triggered by the delegated .oltb-tippy class
         // Because the tooltip instance can not be reached in the renaming function unless it is known during "compile time"
-        tippy(layerName, {
-            content(reference) {
-                const title = reference.getAttribute('title');
-                reference.removeAttribute('title');
-                return title;
-            },
-            placement: 'top',
-            theme: 'oltb oltb-themed',
-            delay: [600, 100]
-        });
-
-        // If feature layer - attach eventlistener for setting the active layer
-        if(this.isFeatureLayer(options)) {
-            layerName.addEventListener(Events.browser.click, (event) => {
-                LayerManager.setActiveFeatureLayer(layerWrapper);
-                // Should just be one li-item that has the active class, but just in case
-                this.featureLayerStack.querySelectorAll('li').forEach((layer) => {
-                    layer.classList.remove(`${CLASS_TOOLBOX_LIST}__item--active`)
-                });
-                    
-                // Set the new layer as the active layer
-                layerName.closest('li').classList.add(`${CLASS_TOOLBOX_LIST}__item--active`);
-            });
-        }
+        this.attachLayerNameTippy(layerName);
 
         const leftWrapper = DOM.createElement({
             element: 'div',
             class: `${CLASS_TOOLBOX_LIST}__wrapper`
         });
-
-        // If featyre layer - create small strip to indicate if the layer is active
-        if(this.isFeatureLayer(options)) {
-            const layerActiveStrip = DOM.createElement({
-                element: 'div',
-                class: `${CLASS_TOOLBOX_LIST}__strip`
-            });
-
-            DOM.appendChildren(leftWrapper, [
-                layerActiveStrip
-            ]);
-        }
 
         DOM.appendChildren(leftWrapper, [
             layerName
@@ -582,19 +631,7 @@ class LayerTool extends Control {
             class: `${CLASS_TOOLBOX_LIST}__wrapper`
         });
 
-        // Add all buttons to the layer
-        for(const name in options.buttons) {
-            const button = options.buttons[name].function.call(
-                this,
-                layerWrapper,
-                options.buttons[name].callback,
-                layerName
-            );
-
-            DOM.appendChildren(rightWrapper, [
-                button
-            ]);
-        }
+        this.attachButtonCallbacks(options, layerWrapper, rightWrapper, layerName);
         
         const layerHandle = DOM.createElement({
             element: 'div',
@@ -610,8 +647,110 @@ class LayerTool extends Control {
             rightWrapper
         ]);
 
-        // Add the created layer item to the user interface
-        options.target.prepend(layerElement);
+        this.mapLayerStack.append(layerElement);
+        this.sortDesc(this.sortableMapLayerStack);
+    }
+
+    createFeatureLayerItem(layerWrapper, options) {
+        this.removeActiveFeatureLayerClass();
+
+        const layerId = layerWrapper.getId();
+        const dataId = this.getDataIdFromLayerId(
+            this.localStorage.featureLayerSortMap,
+            this.featureLayerStack.childNodes,
+            layerId
+        );
+
+        const layer = layerWrapper.getLayer();
+        layer.setZIndex(dataId);
+
+        const layerElement = DOM.createElement({
+            element: 'li', 
+            id: `${ID_PREFIX}-feature-${layerId}`,
+            class: `${CLASS_TOOLBOX_LIST}__item ${CLASS_TOOLBOX_LIST}__item--active`,
+            attributes: {
+                'data-item-id': layerId,
+                'data-id': dataId
+            }
+        });
+
+        if(!layer.getVisible()) {
+            layerElement.classList.add(`${CLASS_TOOLBOX_LIST}__item--hidden`);
+        }
+
+        // Eventlistener to update the UI if the visibility of the layer is changed
+        // Other tools may change a layers visibility and the UI must be updated in this event
+        layer.on(Events.openLayers.propertyChange, function(event) {
+            if(event.key === 'visible') {
+                layerElement.classList.toggle(`${CLASS_TOOLBOX_LIST}__item--hidden`);
+            }
+        });
+
+        const layerName = DOM.createElement({
+            element: 'span', 
+            text: layerWrapper.getName().ellipsis(20),
+            class: `${CLASS_TOOLBOX_LIST}__title`,
+            title: layerWrapper.getName()
+        });
+
+        // This tooltip can not be triggered by the delegated .oltb-tippy class
+        // Because the tooltip instance can not be reached in the renaming function unless it is known during "compile time"
+        this.attachLayerNameTippy(layerName);
+
+        // Attach eventlistener for setting the active layer
+        layerName.addEventListener(Events.browser.click, (event) => {
+            this.removeActiveFeatureLayerClass();
+                    
+            // Set the target layer as the active layer
+            LayerManager.setActiveFeatureLayer(layerWrapper);
+            layerElement.classList.add(`${CLASS_TOOLBOX_LIST}__item--active`);
+        });
+
+        const leftWrapper = DOM.createElement({
+            element: 'div',
+            class: `${CLASS_TOOLBOX_LIST}__wrapper`
+        });
+
+        const layerActiveStrip = DOM.createElement({
+            element: 'div',
+            class: `${CLASS_TOOLBOX_LIST}__strip`
+        });
+
+        DOM.appendChildren(leftWrapper, [
+            layerActiveStrip
+        ]);
+
+        DOM.appendChildren(leftWrapper, [
+            layerName
+        ]);
+
+        DOM.appendChildren(layerElement, [
+            leftWrapper
+        ]);
+
+        const rightWrapper = DOM.createElement({
+            element: 'div',
+            class: `${CLASS_TOOLBOX_LIST}__wrapper`
+        });
+
+        this.attachButtonCallbacks(options, layerWrapper, rightWrapper, layerName);
+        
+        const layerHandle = DOM.createElement({
+            element: 'div',
+            class: `${CLASS_TOOLBOX_LIST}__handle oltb-tippy`,
+            title: 'Drag to sort'
+        });
+
+        DOM.appendChildren(rightWrapper, [
+            layerHandle
+        ]);
+
+        DOM.appendChildren(layerElement, [
+            rightWrapper
+        ]);
+
+        this.featureLayerStack.append(layerElement);
+        this.sortDesc(this.sortableFeatureLayerStack);
     }
 
     createDeleteButton(layerWrapper, callback) {
@@ -686,7 +825,7 @@ class LayerTool extends Control {
         const content = format.writeFeatures(features, {
             featureProjection: Config.projection.default
         });
-                        
+        
         const filename = `${layerWrapper.getName()}.${result.format.toLowerCase()}`;
         download(filename, content);
             
@@ -713,7 +852,10 @@ class LayerTool extends Control {
                         confirmText: 'Rename',
                         onConfirm: function(result) {
                             if(result !== null && !!result.length) {
+                                // Update model
                                 layerWrapper.setName(result);
+                                
+                                // Update UI item
                                 layerName.innerText = result.ellipsis(20);
                                 layerName._tippy.setContent(result);
                                 

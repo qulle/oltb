@@ -51,7 +51,8 @@ const Config = Object.freeze({
     animationDuration: Object.freeze({
         slow: 450,
         normal: 350,
-        fast: 250
+        fast: 250,
+        warp: 150
     })
 });
 

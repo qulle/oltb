@@ -10,6 +10,7 @@ const CLASS_FUNC_BUTTON = 'oltb-func-btn';
 const ID_PREFIX_INFO_WINDOW = 'oltb-info-window-marker';
 
 const LayerWrapper = LayerManager.addFeatureLayer({
+    id: '73e8b36c-6aa2-42b9-a97d-0e8288916050',
     name: 'Capitals',
     visible: true,
     silent: true

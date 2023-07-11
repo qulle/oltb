@@ -10,6 +10,7 @@ import { Vector as VectorSource } from 'ol/source';
 
 LayerManager.addMapLayers([
     {
+        id: '7f6200e1-8a41-48a2-a39c-b8ff1ed4f7ec',
         name: 'Continents overlay',
         layer: new VectorLayer({
             source: new VectorSource({
