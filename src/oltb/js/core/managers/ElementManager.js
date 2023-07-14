@@ -9,18 +9,18 @@ const FILENAME = 'managers/ElementManager.js';
 const CLASS_TOOLBOX_CONTAINER = 'oltb-toolbox-container';
 
 class ElementManager {
-    static #mapElement;
-    static #toastElement;
-    static #toolbarElement;
-    static #toolboxElement;
+    static #uiRefMapElement;
+    static #uiRefToastElement;
+    static #uiRefToolbarElement;
+    static #uiRefToolboxElement;
 
     static init(options = {}) {
         LogManager.logDebug(FILENAME, 'init', 'Initialization started');
 
-        this.#mapElement = this.#createMapElement();
-        this.#toastElement = this.#createToastElement();
-        this.#toolbarElement = this.#createToolbarElement();
-        this.#toolboxElement = this.#createToolboxElement();
+        this.#uiRefMapElement = this.#createMapElement();
+        this.#uiRefToastElement = this.#createToastElement();
+        this.#uiRefToolbarElement = this.#createToolbarElement();
+        this.#uiRefToolboxElement = this.#createToolboxElement();
 
         window.addEventListener(Events.browser.resize, this.#collisionDetection.bind(this));
         window.addEventListener(Events.browser.contentLoaded, this.#collisionDetection.bind(this));
@@ -32,9 +32,9 @@ class ElementManager {
 
     static #onWindowSettingsCleared(event) {
         if(window.innerWidth <= Config.deviceWidth.sm) {
-            this.#toolboxElement.classList.add(`${CLASS_TOOLBOX_CONTAINER}--collision`);
+            this.#uiRefToolboxElement.classList.add(`${CLASS_TOOLBOX_CONTAINER}--collision`);
         }else {
-            this.#toolboxElement.classList.remove(`${CLASS_TOOLBOX_CONTAINER}--collision`);
+            this.#uiRefToolboxElement.classList.remove(`${CLASS_TOOLBOX_CONTAINER}--collision`);
         }
     }
 
@@ -47,9 +47,7 @@ class ElementManager {
     }
 
     static #createMapElement() {
-        const element = document.getElementById(Config.openLayers.id);
-
-        return element;
+        return document.getElementById(Config.openLayers.id);;
     }
 
     static #createToastElement() {
@@ -61,7 +59,7 @@ class ElementManager {
             }
         });
         
-        DOM.appendChildren(this.#mapElement, [
+        DOM.appendChildren(this.#uiRefMapElement, [
             element
         ]);
 
@@ -122,7 +120,7 @@ class ElementManager {
             }
         });
         
-        DOM.appendChildren(this.#mapElement, [
+        DOM.appendChildren(this.#uiRefMapElement, [
             element
         ]);
 
@@ -132,30 +130,30 @@ class ElementManager {
     static #collisionDetection(event) {
         const collisionLimit = 0;
         const windowWidth = window.innerWidth;
-        const toolbarWidth = this.#toolbarElement.offsetWidth;
-        const toolboxWidth = this.#toolboxElement.offsetWidth;
+        const toolbarWidth = this.#uiRefToolbarElement.offsetWidth;
+        const toolboxWidth = this.#uiRefToolboxElement.offsetWidth;
         
         if(windowWidth - ((3 * Config.browser.rem) + toolbarWidth + toolboxWidth) <= collisionLimit) {
-            this.#toolboxElement.classList.add(`${CLASS_TOOLBOX_CONTAINER}--collision`);
+            this.#uiRefToolboxElement.classList.add(`${CLASS_TOOLBOX_CONTAINER}--collision`);
         }else {
-            this.#toolboxElement.classList.remove(`${CLASS_TOOLBOX_CONTAINER}--collision`);
+            this.#uiRefToolboxElement.classList.remove(`${CLASS_TOOLBOX_CONTAINER}--collision`);
         }
     }
 
     static getMapElement() {
-        return this.#mapElement;
+        return this.#uiRefMapElement;
     }
 
     static getToastElement() {
-        return this.#toastElement;
+        return this.#uiRefToastElement;
     }
 
     static getToolbarElement() {
-        return this.#toolbarElement;
+        return this.#uiRefToolbarElement;
     }
 
     static getToolboxElement() {
-        return this.#toolboxElement;
+        return this.#uiRefToolboxElement;
     }
 }
 

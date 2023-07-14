@@ -33,6 +33,7 @@ const CLASS_FUNC_BUTTON = 'oltb-func-btn';
 const ID_PREFIX = 'oltb-bookmark';
 const ID_PREFIX_INFO_WINDOW = 'oltb-info-window-marker';
 const SORTABLE_BOOKMARKS = 'sortableBookmarks';
+const INDEX_OFFSET = 1;
 
 const DefaultOptions = Object.freeze({
     markerLayerVisibleOnLoad: true,
@@ -43,7 +44,8 @@ const DefaultOptions = Object.freeze({
     removed: undefined,
     renamed: undefined,
     zoomedTo: undefined,
-    cleared: undefined
+    cleared: undefined,
+    dragged: undefined
 });
 
 const LocalStorageNodeName = LocalStorageKeys.bookmarkTool;
@@ -108,8 +110,8 @@ class BookmarkTool extends Control {
             LocalStorageDefaults
         );
 
-        const toolboxElement = ElementManager.getToolboxElement();
-        toolboxElement.insertAdjacentHTML('beforeend', `
+        const uiRefToolboxElement = ElementManager.getToolboxElement();
+        uiRefToolboxElement.insertAdjacentHTML('beforeend', `
             <div id="${ID_PREFIX}-toolbox" class="${CLASS_TOOLBOX_SECTION}">
                 <div class="${CLASS_TOOLBOX_SECTION}__header">
                     <h4 class="${CLASS_TOOLBOX_SECTION}__title oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">
@@ -140,11 +142,12 @@ class BookmarkTool extends Control {
             </div>
         `);
 
-        this.bookmarkToolbox = document.querySelector(`#${ID_PREFIX}-toolbox`);
-        this.bookmarkStack = this.bookmarkToolbox.querySelector(`#${ID_PREFIX}-stack`);
+        this.uiRefBookmarkToolbox = document.querySelector(`#${ID_PREFIX}-toolbox`);
+        this.uiRefBookmarkStack = this.uiRefBookmarkToolbox.querySelector(`#${ID_PREFIX}-stack`);
 
-        this.sortableBookmarkStack = Sortable.create(this.bookmarkStack, {
+        this.sortableBookmarkStack = Sortable.create(this.uiRefBookmarkStack, {
             group: SORTABLE_BOOKMARKS,
+            dataIdAttr: 'data-sort-index',
             animation: Config.animationDuration.warp,
             forceFallback: true,
             handle: `.${CLASS_TOOLBOX_LIST}__handle`,
@@ -152,31 +155,51 @@ class BookmarkTool extends Control {
             dragClass: `${CLASS_TOOLBOX_LIST}__item--drag`,
             ghostClass: `${CLASS_TOOLBOX_LIST}__item--ghost`,
             onEnd: (event) => {
+                // Callback data
+                const list = [];
+                const item = {
+                    id: event.item.getAttribute('data-id'),
+                    oldIndex: event.oldDraggableIndex,
+                    newIndex: event.newDraggableIndex
+                };
+
                 const ul = event.to;
                 ul.childNodes.forEach((li, index) => {
+                    // Note: Reverse the index so that 0 is at bottom of list not top
+                    const reversedIndex = ul.childNodes.length - index - INDEX_OFFSET;
+
                     // Update data-attribute, this is used by Sortable.js to do the sorting
-                    li.setAttribute('data-id', index);
+                    li.setAttribute('data-sort-index', reversedIndex);
 
                     // Update state that is stored in localStorage
                     // This will keep track of the sort after a reload
-                    const bookmarkId = li.getAttribute('data-item-id');
-                    console.log('Innan', this.localStorage.sortMap[bookmarkId]);
-                    this.localStorage.sortMap[bookmarkId] = index;
-                    console.log('Efter', this.localStorage.sortMap[bookmarkId]);
+                    const bookmarkId = li.getAttribute('data-id');
+                    this.localStorage.sortMap[bookmarkId] = reversedIndex;
+
+                    // Update callback data
+                    list.push({
+                        bookmarkId: bookmarkId,
+                        index: reversedIndex
+                    });
                 });
 
                 StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
+
+                // User defined callback from constructor
+                if(this.options.dragged instanceof Function) {
+                    this.options.dragged(item, list);
+                }
             }
         });
                                 
-        this.addBookmarkButton = this.bookmarkToolbox.querySelector(`#${ID_PREFIX}-add-button`);
-        this.addBookmarkText = this.bookmarkToolbox.querySelector(`#${ID_PREFIX}-add-text`);
+        this.uiRefAddBookmarkButton = this.uiRefBookmarkToolbox.querySelector(`#${ID_PREFIX}-add-button`);
+        this.uiRefAddBookmarkText = this.uiRefBookmarkToolbox.querySelector(`#${ID_PREFIX}-add-text`);
 
-        this.addBookmarkButton.addEventListener(Events.browser.click, this.onBookmarkAdd.bind(this));
-        this.addBookmarkText.addEventListener(Events.browser.keyUp, this.onBookmarkAdd.bind(this));
+        this.uiRefAddBookmarkButton.addEventListener(Events.browser.click, this.onBookmarkAdd.bind(this));
+        this.uiRefAddBookmarkText.addEventListener(Events.browser.keyUp, this.onBookmarkAdd.bind(this));
 
-        const toggleableTriggers = this.bookmarkToolbox.querySelectorAll('.oltb-toggleable');
-        toggleableTriggers.forEach((toggle) => {
+        const uiRefToggleableTriggers = this.uiRefBookmarkToolbox.querySelectorAll('.oltb-toggleable');
+        uiRefToggleableTriggers.forEach((toggle) => {
             toggle.addEventListener(Events.browser.click, this.onToggleToolbox.bind(this, toggle));
         });
 
@@ -286,8 +309,8 @@ class BookmarkTool extends Control {
             return;
         }
 
-        this.addBookmark(this.addBookmarkText.value);
-        this.addBookmarkText.value = '';
+        this.addBookmark(this.uiRefAddBookmarkText.value);
+        this.uiRefAddBookmarkText.value = '';
     }
 
     handleClick() {
@@ -307,7 +330,7 @@ class BookmarkTool extends Control {
 
     activateTool() {
         this.active = true;
-        this.bookmarkToolbox.classList.add(`${CLASS_TOOLBOX_SECTION}--show`);
+        this.uiRefBookmarkToolbox.classList.add(`${CLASS_TOOLBOX_SECTION}--show`);
         this.button.classList.add(`${CLASS_TOOL_BUTTON}--active`);
 
         this.localStorage.active = true;
@@ -316,7 +339,7 @@ class BookmarkTool extends Control {
 
     deActivateTool() {
         this.active = false;
-        this.bookmarkToolbox.classList.remove(`${CLASS_TOOLBOX_SECTION}--show`);
+        this.uiRefBookmarkToolbox.classList.remove(`${CLASS_TOOLBOX_SECTION}--show`);
         this.button.classList.remove(`${CLASS_TOOL_BUTTON}--active`);
 
         this.localStorage.active = false;
@@ -368,7 +391,7 @@ class BookmarkTool extends Control {
         LogManager.logInformation(FILENAME, 'clearBookmarks', 'All bookmarks cleared');
         
         // Delete bookmark items from toolbox
-        this.bookmarkStack.innerHTML = '';
+        this.uiRefBookmarkStack.innerHTML = '';
 
         // Delete markers from feature-layer
         this.clearMarkers();
@@ -415,26 +438,37 @@ class BookmarkTool extends Control {
     }
 
     sortAsc(sortable) {
-        const order = sortable.toArray();
-        sortable.sort(order.sort(), false);
+        const order = sortable.toArray().sort();
+        sortable.sort(order, false);
     }
 
     sortDesc(sortable) {
-        const order = sortable.toArray();
-        sortable.sort(order.reverse(), false);
+        const order = sortable.toArray().sort().reverse();
+        sortable.sort(order, false);
     }
 
-    getDataIdFromBookmarkId(primary, secondary, id) {
+    getSortIndexFromBookmarkId(primary, secondary, id) {
         return primary[id] ?? secondary.length;
     }
 
+    attachBookmarkNameTippy(bookmarkName) {
+        tippy(bookmarkName, {
+            content(reference) {
+                const title = reference.getAttribute('title');
+                reference.removeAttribute('title');
+                return title;
+            },
+            placement: 'top',
+            theme: 'oltb oltb-themed',
+            delay: [600, 100]
+        });
+    }
+
     addBookmarkItem(bookmark) {
-        // BookmarkId = The unique Bookmark Id
-        // Data Id = The Sort Index used by Sortable.js
         const bookmarkId = bookmark.id;
-        const dataId = this.getDataIdFromBookmarkId(
+        const sortIndex = this.getSortIndexFromBookmarkId(
             this.localStorage.sortMap,
-            this.bookmarkStack.childNodes,
+            this.uiRefBookmarkStack.childNodes,
             bookmarkId
         );
 
@@ -443,8 +477,8 @@ class BookmarkTool extends Control {
             id: `oltb-bookmark-${bookmarkId}`,
             class: `${CLASS_TOOLBOX_LIST}__item`,
             attributes: {
-                'data-item-id': bookmarkId,
-                'data-id': dataId
+                'data-id': bookmarkId,
+                'data-sort-index': sortIndex
             }
         });
 
@@ -457,16 +491,7 @@ class BookmarkTool extends Control {
 
         // This tooltip can not be triggered by the delegated .oltb-tippy class
         // Because the tooltip instance can not be reached in the renaming function unless it is known during "compile time"
-        tippy(bookmarkName, {
-            content(reference) {
-                const title = reference.getAttribute('title');
-                reference.removeAttribute('title');
-                return title;
-            },
-            placement: 'top',
-            theme: 'oltb oltb-themed',
-            delay: [600, 100]
-        });
+        this.attachBookmarkNameTippy(bookmarkName);
 
         const leftWrapper = DOM.createElement({
             element: 'div', 
@@ -555,7 +580,7 @@ class BookmarkTool extends Control {
             rightWrapper
         ]);
 
-        this.bookmarkStack.append(bookmarkElement);
+        this.uiRefBookmarkStack.append(bookmarkElement);
         this.sortDesc(this.sortableBookmarkStack);
     }
 

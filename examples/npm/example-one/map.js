@@ -195,6 +195,9 @@ const toolbar = new OLTB({
             },
             cleared: function() {
                 console.log('Bookmarks cleared');
+            },
+            dragged: function(item, list) {
+                console.log('Bookmark dragged', item, list);
             }
         },
         LayerTool: {
@@ -213,6 +216,9 @@ const toolbar = new OLTB({
             mapLayerVisibilityChanged: function(layerWrapper) {
                 console.log('Map layer visibility change', layerWrapper);
             },
+            mapLayerDragged(item, list) {
+                console.log('Map layer dragged', item, list);
+            },
             featureLayerAdded: function(layerWrapper) {
                 console.log('Feature layer added', layerWrapper);
             },
@@ -227,7 +233,10 @@ const toolbar = new OLTB({
             },
             featureLayerDownloaded: function(layerWrapper, filename, content) {
                 console.log('Feature layer downloaded', layerWrapper, filename, content);
-            }
+            },
+            featureLayerDragged(item, list) {
+                console.log('Feature layer dragged', item, list);
+            },
         },
         SplitViewTool: {
             click: function() {

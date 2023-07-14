@@ -37,8 +37,8 @@ class DebugInfoModal extends ModalBase {
         const modalContent = this.#generateModalContent();
         this.show(modalContent);
 
-        const toggleableTriggers = modalContent.querySelectorAll('.oltb-toggleable');
-        toggleableTriggers.forEach((toggle) => {
+        const uiRefToggleableTriggers = modalContent.querySelectorAll('.oltb-toggleable');
+        uiRefToggleableTriggers.forEach((toggle) => {
             toggle.addEventListener(Events.browser.click, this.onToggleSection.bind(this, toggle));
         });
     }
@@ -474,12 +474,12 @@ class DebugInfoModal extends ModalBase {
     actionClearEventLog() {
         LogManager.clearLog();
 
-        const eventLogElement = document.getElementById('oltb-event-log');
-        if(eventLogElement) {
-            eventLogElement.innerHTML = '';
+        const uiRefEventLog = document.getElementById('oltb-event-log');
+        if(uiRefEventLog) {
+            uiRefEventLog.innerHTML = '';
         }
 
-        Toast.success({
+        Toast.info({
             title: 'Cleared',
             message: 'Event log was cleared of all entries', 
             autoremove: Config.autoRemovalDuation.normal

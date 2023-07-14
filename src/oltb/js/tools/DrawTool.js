@@ -88,8 +88,8 @@ class DrawTool extends Control {
             LocalStorageDefaults
         );
 
-        const toolboxElement = ElementManager.getToolboxElement();
-        toolboxElement.insertAdjacentHTML('beforeend', `
+        const uiRefToolboxElement = ElementManager.getToolboxElement();
+        uiRefToolboxElement.insertAdjacentHTML('beforeend', `
             <div id="${ID_PREFIX}-toolbox" class="${CLASS_TOOLBOX_SECTION}">
                 <div class="${CLASS_TOOLBOX_SECTION}__header">
                     <h4 class="${CLASS_TOOLBOX_SECTION}__title oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">
@@ -150,32 +150,32 @@ class DrawTool extends Control {
             </div>
         `);
 
-        this.drawToolbox = document.querySelector(`#${ID_PREFIX}-toolbox`);
+        this.uiRefDrawToolbox = document.querySelector(`#${ID_PREFIX}-toolbox`);
 
-        const toggleableTriggers = this.drawToolbox.querySelectorAll('.oltb-toggleable');
-        toggleableTriggers.forEach((toggle) => {
+        const uiRefToggleableTriggers = this.uiRefDrawToolbox.querySelectorAll('.oltb-toggleable');
+        uiRefToggleableTriggers.forEach((toggle) => {
             toggle.addEventListener(Events.browser.click, this.onToggleToolbox.bind(this, toggle));
         });
 
-        this.toolType = this.drawToolbox.querySelector(`#${ID_PREFIX}-type`);
-        this.toolType.addEventListener(Events.browser.change, this.updateTool.bind(this));
+        this.uiRefToolType = this.uiRefDrawToolbox.querySelector(`#${ID_PREFIX}-type`);
+        this.uiRefToolType.addEventListener(Events.browser.change, this.updateTool.bind(this));
 
-        this.intersectionEnable = this.drawToolbox.querySelector(`#${ID_PREFIX}-intersection-enable`);
-        this.intersectionEnable.addEventListener(Events.browser.change, this.updateTool.bind(this));
+        this.uiRefIntersectionEnable = this.uiRefDrawToolbox.querySelector(`#${ID_PREFIX}-intersection-enable`);
+        this.uiRefIntersectionEnable.addEventListener(Events.browser.change, this.updateTool.bind(this));
 
-        this.fillColor = this.drawToolbox.querySelector(`#${ID_PREFIX}-fill-color`);
-        this.fillColor.addEventListener(Events.custom.colorChange, this.updateTool.bind(this));
+        this.uiRefFillColor = this.uiRefDrawToolbox.querySelector(`#${ID_PREFIX}-fill-color`);
+        this.uiRefFillColor.addEventListener(Events.custom.colorChange, this.updateTool.bind(this));
 
-        this.strokeWidth = this.drawToolbox.querySelector(`#${ID_PREFIX}-stroke-width`);
-        this.strokeWidth.addEventListener(Events.browser.change, this.updateTool.bind(this));
+        this.uiRefStrokeWidth = this.uiRefDrawToolbox.querySelector(`#${ID_PREFIX}-stroke-width`);
+        this.uiRefStrokeWidth.addEventListener(Events.browser.change, this.updateTool.bind(this));
 
-        this.strokeColor = this.drawToolbox.querySelector(`#${ID_PREFIX}-stroke-color`);
-        this.strokeColor.addEventListener(Events.custom.colorChange, this.updateTool.bind(this));
+        this.uiRefStrokeColor = this.uiRefDrawToolbox.querySelector(`#${ID_PREFIX}-stroke-color`);
+        this.uiRefStrokeColor.addEventListener(Events.custom.colorChange, this.updateTool.bind(this));
 
         // Set default selected values
-        this.toolType.value = this.localStorage.toolType;
-        this.strokeWidth.value  = this.localStorage.strokeWidth;
-        this.intersectionEnable.value = 'false';
+        this.uiRefToolType.value = this.localStorage.toolType;
+        this.uiRefStrokeWidth.value  = this.localStorage.strokeWidth;
+        this.uiRefIntersectionEnable.value = 'false';
 
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
         window.addEventListener(Events.custom.settingsCleared, this.onWindowSettingsCleared.bind(this));
@@ -197,7 +197,7 @@ class DrawTool extends Control {
     }
 
     isIntersectionEnabled() {
-        return this.intersectionEnable.value.toLowerCase() === 'true';
+        return this.uiRefIntersectionEnable.value.toLowerCase() === 'true';
     }
 
     onWindowKeyUp(event) {
@@ -221,11 +221,11 @@ class DrawTool extends Control {
         this.localStorage = { ...LocalStorageDefaults };
 
         // Rest UI components
-        this.fillColor.setAttribute('data-oltb-color', this.localStorage.fillColor);
-        this.fillColor.firstElementChild.style.backgroundColor = this.localStorage.fillColor;
+        this.uiRefFillColor.setAttribute('data-oltb-color', this.localStorage.fillColor);
+        this.uiRefFillColor.firstElementChild.style.backgroundColor = this.localStorage.fillColor;
 
-        this.strokeColor.setAttribute('data-oltb-color', this.localStorage.strokeColor);
-        this.strokeColor.firstElementChild.style.backgroundColor = this.localStorage.strokeColor;
+        this.uiRefStrokeColor.setAttribute('data-oltb-color', this.localStorage.strokeColor);
+        this.uiRefStrokeColor.firstElementChild.style.backgroundColor = this.localStorage.strokeColor;
 
         // Update the tool to use the correct colors
         if(this.active) {
@@ -235,27 +235,27 @@ class DrawTool extends Control {
 
     updateTool() {
         // Store current values in local storage
-        this.localStorage.toolType = this.toolType.value;
-        this.localStorage.strokeWidth = this.strokeWidth.value;
-        this.localStorage.fillColor = this.fillColor.getAttribute('data-oltb-color');
-        this.localStorage.strokeColor = this.strokeColor.getAttribute('data-oltb-color');
+        this.localStorage.toolType = this.uiRefToolType.value;
+        this.localStorage.strokeWidth = this.uiRefStrokeWidth.value;
+        this.localStorage.fillColor = this.uiRefFillColor.getAttribute('data-oltb-color');
+        this.localStorage.strokeColor = this.uiRefStrokeColor.getAttribute('data-oltb-color');
 
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
 
         // IntersectionMode doesn't play well when tool is LineString or Point
-        if(this.toolType.value === GeometryType.LineString || this.toolType.value === GeometryType.Point) {
-            this.intersectionEnable.value = 'false';
-            this.intersectionEnable.disabled = true;
+        if(this.uiRefToolType.value === GeometryType.LineString || this.uiRefToolType.value === GeometryType.Point) {
+            this.uiRefIntersectionEnable.value = 'false';
+            this.uiRefIntersectionEnable.disabled = true;
         }else {
-            this.intersectionEnable.disabled = false;
+            this.uiRefIntersectionEnable.disabled = false;
         }
 
         // Update the draw tool in the map
         this.selectDraw(
-            this.toolType.value,
-            this.strokeWidth.value,
-            this.fillColor.getAttribute('data-oltb-color'),
-            this.strokeColor.getAttribute('data-oltb-color')
+            this.uiRefToolType.value,
+            this.uiRefStrokeWidth.value,
+            this.uiRefFillColor.getAttribute('data-oltb-color'),
+            this.uiRefStrokeColor.getAttribute('data-oltb-color')
         );
     }
 
@@ -280,7 +280,7 @@ class DrawTool extends Control {
 
     activateTool() {
         this.active = true;
-        this.drawToolbox.classList.add(`${CLASS_TOOLBOX_SECTION}--show`);
+        this.uiRefDrawToolbox.classList.add(`${CLASS_TOOLBOX_SECTION}--show`);
         this.button.classList.add(`${CLASS_TOOL_BUTTON}--active`);
 
         ToolManager.setActiveTool(this);
@@ -292,7 +292,7 @@ class DrawTool extends Control {
         }
 
         // Triggers activation of the tool
-        eventDispatcher([this.toolType], Events.browser.change);
+        eventDispatcher([this.uiRefToolType], Events.browser.change);
 
         this.localStorage.active = true;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
@@ -305,7 +305,7 @@ class DrawTool extends Control {
         }
 
         this.active = false;
-        this.drawToolbox.classList.remove(`${CLASS_TOOLBOX_SECTION}--show`);
+        this.uiRefDrawToolbox.classList.remove(`${CLASS_TOOLBOX_SECTION}--show`);
         this.button.classList.remove(`${CLASS_TOOL_BUTTON}--active`);
 
         map.removeInteraction(this.interaction);

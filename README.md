@@ -34,7 +34,7 @@ Examples for both the NPM and CDN version can be viewed in the [examples directo
 ## Want More Info?
 Have a look at the [Internal Development Documentation](https://github.com/qulle/oltb/blob/main/README_INTERNAL.md).
 
-## External GitHub Projects
+## Dependencies
 1. [OpenLayers 7.4.0](https://openlayers.org/en/v7.4.0/apidoc/)
 2. [Proj4 2.9.0](http://proj4js.org/)   
 3. [Tippy.js 6.3.7](https://atomiks.github.io/tippyjs/)
@@ -43,14 +43,26 @@ Have a look at the [Internal Development Documentation](https://github.com/qulle
 6. [A Color Picker 1.2.1](https://github.com/narsenico/a-color-picker)
 7. [Plain JS Slidetoggle 2.0.0](https://github.com/ericbutler555/plain-js-slidetoggle)
 8. [JSTS 2.9.3](https://github.com/bjornharrtell/jsts)
-9. [Parcel 2.9.2](https://parceljs.org/)
-10. [Rollup 3.25.1](https://github.com/rollup/rollup)
-11. [Cycle.js](https://github.com/douglascrockford/JSON-js)
-12. [Browser Dtector 3.3.0](https://github.com/sibiraj-s/browser-dtector)
+9. [Cycle.js](https://github.com/douglascrockford/JSON-js)
+10. [Browser Dtector 3.3.0](https://github.com/sibiraj-s/browser-dtector)
+11. [Sortable JS 1.15.0](https://github.com/SortableJS/Sortable)
+12. [UUID JS 9.0.0](https://github.com/uuidjs/uuid)
+
+## Dev Dependencies
+1. [Parcel 2.9.2](https://parceljs.org/)
+2. [@parcel/transformer-sass 2.9.2](https://github.com/parcel-bundler/parcel)
+3. [Rollup 3.25.1](https://github.com/rollup/rollup)
+4. [@rollup/plugin-commonjs 25.0.2](https://github.com/rollup/plugins/tree/master/packages/commonjs)
+5. [@rollup/plugin-json 6.0.0](https://github.com/rollup/plugins/tree/master/packages/json)
+6. [@rollup/plugin-node-resolve 15.1.0](https://github.com/rollup/plugins/tree/master/packages/node-resolve)
+7. [@rollup-plugin-replace 5.0.2](https://github.com/rollup/plugins/tree/master/packages/replace)
+8. [@rollup/plugin-terser 0.4.3](https://github.com/rollup/plugins/tree/master/packages/terser)
+9. [rollup-plugin-license 3.0.1](https://github.com/mjeanroy/rollup-plugin-license)
+10. [rollup-plugin-scss 4.0.0](https://github.com/thgh/rollup-plugin-scss)
 
 ## Maps
-1. [OpenStreetMap](https://www.openstreetmap.org/)
-2. [Maps.Stamen.Com](http://maps.stamen.com/)
+1. [Open Street Map](https://www.openstreetmap.org/)
+2. [Stamen Maps](http://maps.stamen.com/)
 3. [ArcGIS World Topo](https://www.arcgis.com/index.html)
 
 ## License

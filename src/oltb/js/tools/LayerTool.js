@@ -35,6 +35,7 @@ const CLASS_FUNC_BUTTON = 'oltb-func-btn';
 const ID_PREFIX = 'oltb-layer';
 const SORTABLE_MAP_LAYERS = 'sortableMapLayers';
 const SORTABLE_FEATURE_LAYERS = 'sortableFeatureLayers';
+const INDEX_OFFSET = 1;
 
 const DefaultOptions = Object.freeze({
     disableMapCreateLayerButton: false,
@@ -51,11 +52,13 @@ const DefaultOptions = Object.freeze({
     mapLayerRemoved: undefined,
     mapLayerRenamed: undefined,
     mapLayerVisibilityChanged: undefined,
+    mapLayerDragged: undefined,
     featureLayerAdded: undefined,
     featureLayerRemoved: undefined,
     featureLayerRenamed: undefined,
     featureLayerVisibilityChanged: undefined,
     featureLayerDownloaded: undefined,
+    featureLayerDragged: undefined
 });
 
 /* 
@@ -110,8 +113,8 @@ class LayerTool extends Control {
             LocalStorageDefaults
         );
 
-        const toolboxElement = ElementManager.getToolboxElement();
-        toolboxElement.insertAdjacentHTML('beforeend', `
+        const uiRefToolboxElement = ElementManager.getToolboxElement();
+        uiRefToolboxElement.insertAdjacentHTML('beforeend', `
             <div id="${ID_PREFIX}-toolbox" class="${CLASS_TOOLBOX_SECTION}">
                 <div class="${CLASS_TOOLBOX_SECTION}__header">
                     <h4 class="${CLASS_TOOLBOX_SECTION}__title oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-map-toolbox-collapsed">
@@ -166,18 +169,19 @@ class LayerTool extends Control {
             </div>
         `);
 
-        this.layersToolbox = document.querySelector(`#${ID_PREFIX}-toolbox`);
+        this.uiRefLayersToolbox = document.querySelector(`#${ID_PREFIX}-toolbox`);
 
-        const toggleableTriggers = this.layersToolbox.querySelectorAll('.oltb-toggleable');
-        toggleableTriggers.forEach((toggle) => {
+        const uiRefToggleableTriggers = this.uiRefLayersToolbox.querySelectorAll('.oltb-toggleable');
+        uiRefToggleableTriggers.forEach((toggle) => {
             toggle.addEventListener(Events.browser.click, this.onToggleToolbox.bind(this, toggle));
         });
 
-        this.mapLayerStack = this.layersToolbox.querySelector(`#${ID_PREFIX}-map-stack`);
-        this.addMapLayerButton = this.layersToolbox.querySelector(`#${ID_PREFIX}-map-stack-add-button`);
+        this.uiRefMapLayerStack = this.uiRefLayersToolbox.querySelector(`#${ID_PREFIX}-map-stack`);
+        this.uiRefAddMapLayerButton = this.uiRefLayersToolbox.querySelector(`#${ID_PREFIX}-map-stack-add-button`);
 
-        this.sortableMapLayerStack = Sortable.create(this.mapLayerStack, {
+        this.sortableMapLayerStack = Sortable.create(this.uiRefMapLayerStack, {
             group: SORTABLE_MAP_LAYERS,
+            dataIdAttr: 'data-sort-index',
             animation: Config.animationDuration.warp,
             forceFallback: true,
             handle: `.${CLASS_TOOLBOX_LIST}__handle`,
@@ -185,27 +189,54 @@ class LayerTool extends Control {
             dragClass: `${CLASS_TOOLBOX_LIST}__item--drag`,
             ghostClass: `${CLASS_TOOLBOX_LIST}__item--ghost`,
             onEnd: (event) => {
+                // Callback data
+                const list = [];
+                const item = {
+                    id: event.item.getAttribute('data-id'),
+                    oldIndex: event.oldDraggableIndex,
+                    newIndex: event.newDraggableIndex
+                };
+                
                 const ul = event.to;
                 ul.childNodes.forEach((li, index) => {
+                    // Note: Reverse the index so that 0 is at bottom of list not top
+                    const reversedIndex = ul.childNodes.length - index - INDEX_OFFSET;
+
                     // Update data-attribute, this is used by Sortable.js to do the sorting
-                    li.setAttribute('data-id', index);
+                    li.setAttribute('data-sort-index', reversedIndex);
 
                     // Update state that is stored in localStorage
                     // This will keep track of the sort after a reload
-                    const layerId = li.getAttribute('data-item-id');
-                    this.localStorage.mapLayerSortMap[layerId] = index;
+                    const layerId = li.getAttribute('data-id');
+                    this.localStorage.mapLayerSortMap[layerId] = reversedIndex;
+
+                    // Update each layer with the new ZIndex
+                    // OpenLayers will handle the rest
+                    LayerManager.setMapLayerZIndex(layerId, reversedIndex);
+
+                    // Update callback data
+                    list.push({
+                        layerId: layerId,
+                        index: reversedIndex
+                    });
                 });
 
                 StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
+
+                // User defined callback from constructor
+                if(this.options.mapLayerDragged instanceof Function) {
+                    this.options.mapLayerDragged(item, list);
+                }
             }
         });
 
-        this.featureLayerStack = this.layersToolbox.querySelector(`#${ID_PREFIX}-feature-stack`);
-        this.addFeatureLayerButton = this.layersToolbox.querySelector(`#${ID_PREFIX}-feature-stack-add-button`);
-        this.addFeatureLayerText = this.layersToolbox.querySelector(`#${ID_PREFIX}-feature-stack-add-text`);
+        this.uiRefFeatureLayerStack = this.uiRefLayersToolbox.querySelector(`#${ID_PREFIX}-feature-stack`);
+        this.uiRefAddFeatureLayerButton = this.uiRefLayersToolbox.querySelector(`#${ID_PREFIX}-feature-stack-add-button`);
+        this.uiRefAddFeatureLayerText = this.uiRefLayersToolbox.querySelector(`#${ID_PREFIX}-feature-stack-add-text`);
 
-        this.sortableFeatureLayerStack = Sortable.create(this.featureLayerStack, {
+        this.sortableFeatureLayerStack = Sortable.create(this.uiRefFeatureLayerStack, {
             group: SORTABLE_FEATURE_LAYERS,
+            dataIdAttr: 'data-sort-index',
             animation: Config.animationDuration.warp,
             forceFallback: true,
             handle: `.${CLASS_TOOLBOX_LIST}__handle`,
@@ -213,34 +244,57 @@ class LayerTool extends Control {
             dragClass: `${CLASS_TOOLBOX_LIST}__item--drag`,
             ghostClass: `${CLASS_TOOLBOX_LIST}__item--ghost`,
             onEnd: (event) => {
+                // Callback data
+                const list = [];
+                const item = {
+                    id: event.item.getAttribute('data-id'),
+                    oldIndex: event.oldDraggableIndex,
+                    newIndex: event.newDraggableIndex
+                };
+
                 const ul = event.to;
                 ul.childNodes.forEach((li, index) => {
+                    // Note: Reverse the index so that 0 is at bottom of list not top
+                    const reversedIndex = ul.childNodes.length - index - INDEX_OFFSET;
+                    
                     // Update data-attribute, this is used by Sortable.js to do the sorting
-                    li.setAttribute('data-id', index);
+                    li.setAttribute('data-sort-index', reversedIndex);
 
                     // Update state that is stored in localStorage
                     // This will keep track of the sort after a reload
-                    const layerId = li.getAttribute('data-item-id');
-                    this.localStorage.featureLayerSortMap[layerId] = index;
+                    const layerId = li.getAttribute('data-id');
+                    this.localStorage.featureLayerSortMap[layerId] = reversedIndex;
 
-                    const layer = LayerManager.getFeatureLayerById(layerId);
-                    layer.getLayer().setZIndex(index);
+                    // Update each layer with the new ZIndex
+                    // OpenLayers will handle the rest
+                    LayerManager.setFeatureLayerZIndex(layerId, reversedIndex);
+
+                    // Update callback data
+                    list.push({
+                        layerId: layerId,
+                        index: reversedIndex
+                    });
                 });
 
                 StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
+
+                // User defined callback from constructor
+                if(this.options.featureLayerDragged instanceof Function) {
+                    this.options.featureLayerDragged(item, list);
+                }
             }
         });
 
-        if(this.addMapLayerButton) {
-            this.addMapLayerButton.addEventListener(Events.browser.click, this.showAddMapLayerModal.bind(this));
+        if(this.uiRefAddMapLayerButton) {
+            this.uiRefAddMapLayerButton.addEventListener(Events.browser.click, this.showAddMapLayerModal.bind(this));
         }
 
-        if(this.addFeatureLayerButton) {
-            this.addFeatureLayerButton.addEventListener(Events.browser.click, this.onFeatureLayerAdd.bind(this));
+        if(this.uiRefAddFeatureLayerButton) {
+            this.uiRefAddFeatureLayerButton.addEventListener(Events.browser.click, this.onFeatureLayerAdd.bind(this));
         }
 
-        if(this.addFeatureLayerText) {
-            this.addFeatureLayerText.addEventListener(Events.browser.keyUp, this.onFeatureLayerAdd.bind(this));
+        if(this.uiRefAddFeatureLayerText) {
+            this.uiRefAddFeatureLayerText.addEventListener(Events.browser.keyUp, this.onFeatureLayerAdd.bind(this));
         }
 
         if(!this.options.disableMapCreateLayerButton) {
@@ -292,9 +346,9 @@ class LayerTool extends Control {
         }
 
         LayerManager.addFeatureLayer({
-            name: this.addFeatureLayerText.value
+            name: this.uiRefAddFeatureLayerText.value
         });
-        this.addFeatureLayerText.value = '';
+        this.uiRefAddFeatureLayerText.value = '';
     }
 
     handleClick() {
@@ -314,7 +368,7 @@ class LayerTool extends Control {
 
     activateTool() {
         this.active = true;
-        this.layersToolbox.classList.add(`${CLASS_TOOLBOX_SECTION}--show`);
+        this.uiRefLayersToolbox.classList.add(`${CLASS_TOOLBOX_SECTION}--show`);
         this.button.classList.add(`${CLASS_TOOL_BUTTON}--active`);
 
         this.localStorage.active = true;
@@ -323,7 +377,7 @@ class LayerTool extends Control {
 
     deActivateTool() {
         this.active = false;
-        this.layersToolbox.classList.remove(`${CLASS_TOOLBOX_SECTION}--show`);
+        this.uiRefLayersToolbox.classList.remove(`${CLASS_TOOLBOX_SECTION}--show`);
         this.button.classList.remove(`${CLASS_TOOL_BUTTON}--active`);
 
         this.localStorage.active = false;
@@ -339,16 +393,16 @@ class LayerTool extends Control {
     }
 
     sortAsc(sortable) {
-        const order = sortable.toArray();
-        sortable.sort(order.sort(), false);
+        const order = sortable.toArray().sort();
+        sortable.sort(order, false);
     }
 
     sortDesc(sortable) {
-        const order = sortable.toArray();
-        sortable.sort(order.reverse(), false);
+        const order = sortable.toArray().sort().reverse();
+        sortable.sort(order, false);
     }
 
-    getDataIdFromLayerId(primary, secondary, id) {
+    getSortIndexFromLayerId(primary, secondary, id) {
         return primary[id] ?? secondary.length;
     }
 
@@ -449,7 +503,8 @@ class LayerTool extends Control {
         const silent = event.detail.silent;
 
         // Remove layer from UI
-        this.mapLayerStack.querySelector(`#${ID_PREFIX}-map-${layerWrapper.getId()}`).remove();
+        const uiRefLayer = this.uiRefMapLayerStack.querySelector(`#${ID_PREFIX}-map-${layerWrapper.getId()}`);
+        uiRefLayer?.remove();
 
         // User defined callback from constructor
         if(!silent &&this.options.mapLayerRemoved instanceof Function) {
@@ -517,14 +572,15 @@ class LayerTool extends Control {
         const silent = event.detail.silent;
 
         // Remove layer from UI
-        this.featureLayerStack.querySelector(`#${ID_PREFIX}-feature-${layerWrapper.getId()}`).remove();
+        const uiRefLayer = this.uiRefFeatureLayerStack.querySelector(`#${ID_PREFIX}-feature-${layerWrapper.getId()}`);
+        uiRefLayer?.remove();
 
         // Set new active feature layer
         this.removeActiveFeatureLayerClass();
         const activeFeatureLayer = LayerManager.getActiveFeatureLayer();
         if(activeFeatureLayer) {
-            this.featureLayerStack.querySelectorAll('li').forEach((item) => {
-                if(activeFeatureLayer.getId() === Number(item.getAttribute('data-item-id'))) {
+            this.uiRefFeatureLayerStack.querySelectorAll('li').forEach((item) => {
+                if(activeFeatureLayer.getId() === item.getAttribute('data-id')) {
                     item.classList.add(`${CLASS_TOOLBOX_LIST}__item--active`);
                 }
             });
@@ -551,7 +607,7 @@ class LayerTool extends Control {
 
     removeActiveFeatureLayerClass() {
         // Should just be one li-item that has the active class, but just in case
-        this.featureLayerStack.querySelectorAll('li').forEach((item) => {
+        this.uiRefFeatureLayerStack.querySelectorAll('li').forEach((item) => {
             item.classList.remove(`${CLASS_TOOLBOX_LIST}__item--active`);
         });
     }
@@ -573,9 +629,9 @@ class LayerTool extends Control {
 
     createMapLayerItem(layerWrapper, options) {
         const layerId = layerWrapper.getId();
-        const dataId = this.getDataIdFromLayerId(
+        const sortIndex = this.getSortIndexFromLayerId(
             this.localStorage.mapLayerSortMap,
-            this.mapLayerStack.childNodes,
+            this.uiRefMapLayerStack.childNodes,
             layerId
         );
 
@@ -585,8 +641,8 @@ class LayerTool extends Control {
             id: `${ID_PREFIX}-map-${layerId}`,
             class: `${CLASS_TOOLBOX_LIST}__item`,
             attributes: {
-                'data-item-id': layerId,
-                'data-id': dataId
+                'data-id': layerId,
+                'data-sort-index': sortIndex
             }
         });
 
@@ -647,7 +703,7 @@ class LayerTool extends Control {
             rightWrapper
         ]);
 
-        this.mapLayerStack.append(layerElement);
+        this.uiRefMapLayerStack.append(layerElement);
         this.sortDesc(this.sortableMapLayerStack);
     }
 
@@ -655,25 +711,25 @@ class LayerTool extends Control {
         this.removeActiveFeatureLayerClass();
 
         const layerId = layerWrapper.getId();
-        const dataId = this.getDataIdFromLayerId(
+        const sortIndex = this.getSortIndexFromLayerId(
             this.localStorage.featureLayerSortMap,
-            this.featureLayerStack.childNodes,
+            this.uiRefFeatureLayerStack.childNodes,
             layerId
         );
 
-        const layer = layerWrapper.getLayer();
-        layer.setZIndex(dataId);
+        LayerManager.setFeatureLayerZIndex(layerId, sortIndex);
 
         const layerElement = DOM.createElement({
             element: 'li', 
             id: `${ID_PREFIX}-feature-${layerId}`,
             class: `${CLASS_TOOLBOX_LIST}__item ${CLASS_TOOLBOX_LIST}__item--active`,
             attributes: {
-                'data-item-id': layerId,
-                'data-id': dataId
+                'data-id': layerId,
+                'data-sort-index': sortIndex
             }
         });
 
+        const layer = layerWrapper.getLayer();
         if(!layer.getVisible()) {
             layerElement.classList.add(`${CLASS_TOOLBOX_LIST}__item--hidden`);
         }
@@ -749,7 +805,7 @@ class LayerTool extends Control {
             rightWrapper
         ]);
 
-        this.featureLayerStack.append(layerElement);
+        this.uiRefFeatureLayerStack.append(layerElement);
         this.sortDesc(this.sortableFeatureLayerStack);
     }
 

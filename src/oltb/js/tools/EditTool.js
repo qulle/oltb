@@ -141,8 +141,8 @@ class EditTool extends Control {
             LocalStorageDefaults
         );
         
-        const toolboxElement = ElementManager.getToolboxElement();
-        toolboxElement.insertAdjacentHTML('beforeend', `
+        const uiRefToolboxElement = ElementManager.getToolboxElement();
+        uiRefToolboxElement.insertAdjacentHTML('beforeend', `
             <div id="${ID_PREFIX}-toolbox" class="${CLASS_TOOLBOX_SECTION}">
                 <div class="${CLASS_TOOLBOX_SECTION}__header">
                     <h4 class="${CLASS_TOOLBOX_SECTION}__title oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">
@@ -188,31 +188,31 @@ class EditTool extends Control {
             </div>
         `);
 
-        this.editToolbox = document.querySelector(`#${ID_PREFIX}-toolbox`);
+        this.uiRefEditToolbox = document.querySelector(`#${ID_PREFIX}-toolbox`);
 
-        this.deleteSelectedButton = this.editToolbox.querySelector(`#${ID_PREFIX}-delete-selected-button`);
-        this.deleteSelectedButton.addEventListener(Events.browser.click, this.onDeleteSelectedFeatures.bind(this));
+        this.uiRefDeleteSelectedButton = this.uiRefEditToolbox.querySelector(`#${ID_PREFIX}-delete-selected-button`);
+        this.uiRefDeleteSelectedButton.addEventListener(Events.browser.click, this.onDeleteSelectedFeatures.bind(this));
 
-        this.unionSelectedButton = this.editToolbox.querySelector(`#${ID_PREFIX}-union-selected-button`);
-        this.unionSelectedButton.addEventListener(Events.browser.click, this.onShapeOperator.bind(this, this.unionFeatures, 'union'));
+        this.uiRefUnionSelectedButton = this.uiRefEditToolbox.querySelector(`#${ID_PREFIX}-union-selected-button`);
+        this.uiRefUnionSelectedButton.addEventListener(Events.browser.click, this.onShapeOperator.bind(this, this.unionFeatures, 'union'));
 
-        this.intersectSelectedButton = this.editToolbox.querySelector(`#${ID_PREFIX}-intersect-selected-button`);
-        this.intersectSelectedButton.addEventListener(Events.browser.click, this.onShapeOperator.bind(this, this.intersectFeatures, 'intersect'));
+        this.uiRefIntersectSelectedButton = this.uiRefEditToolbox.querySelector(`#${ID_PREFIX}-intersect-selected-button`);
+        this.uiRefIntersectSelectedButton.addEventListener(Events.browser.click, this.onShapeOperator.bind(this, this.intersectFeatures, 'intersect'));
 
-        this.excludeSelectedButton = this.editToolbox.querySelector(`#${ID_PREFIX}-exclude-selected-button`);
-        this.excludeSelectedButton.addEventListener(Events.browser.click, this.onShapeOperator.bind(this, this.excludeFeatures, 'exclude'));
+        this.uiRefExcludeSelectedButton = this.uiRefEditToolbox.querySelector(`#${ID_PREFIX}-exclude-selected-button`);
+        this.uiRefExcludeSelectedButton.addEventListener(Events.browser.click, this.onShapeOperator.bind(this, this.excludeFeatures, 'exclude'));
 
-        this.differenceSelectedButton = this.editToolbox.querySelector(`#${ID_PREFIX}-difference-selected-button`);
-        this.differenceSelectedButton.addEventListener(Events.browser.click, this.onShapeOperator.bind(this, this.differenceFeatures, 'difference'));
+        this.uiRefDifferenceSelectedButton = this.uiRefEditToolbox.querySelector(`#${ID_PREFIX}-difference-selected-button`);
+        this.uiRefDifferenceSelectedButton.addEventListener(Events.browser.click, this.onShapeOperator.bind(this, this.differenceFeatures, 'difference'));
 
-        this.fillColor = this.editToolbox.querySelector(`#${ID_PREFIX}-fill-color`);
-        this.fillColor.addEventListener(Events.custom.colorChange, this.onFeatureColorChange.bind(this));
+        this.uiRefFillColor = this.uiRefEditToolbox.querySelector(`#${ID_PREFIX}-fill-color`);
+        this.uiRefFillColor.addEventListener(Events.custom.colorChange, this.onFeatureColorChange.bind(this));
 
-        this.strokeColor = this.editToolbox.querySelector(`#${ID_PREFIX}-stroke-color`);
-        this.strokeColor.addEventListener(Events.custom.colorChange, this.onFeatureColorChange.bind(this));
+        this.uiRefStrokeColor = this.uiRefEditToolbox.querySelector(`#${ID_PREFIX}-stroke-color`);
+        this.uiRefStrokeColor.addEventListener(Events.custom.colorChange, this.onFeatureColorChange.bind(this));
 
-        const toggleableTriggers = this.editToolbox.querySelectorAll('.oltb-toggleable');
-        toggleableTriggers.forEach((toggle) => {
+        const uiRefToggleableTriggers = this.uiRefEditToolbox.querySelectorAll('.oltb-toggleable');
+        uiRefToggleableTriggers.forEach((toggle) => {
             toggle.addEventListener(Events.browser.click, this.onToggleToolbox.bind(this, toggle));
         });
 
@@ -397,11 +397,11 @@ class EditTool extends Control {
     onWindowSettingsCleared() {
         this.localStorage = { ...LocalStorageDefaults };
 
-        this.fillColor.setAttribute('data-oltb-color', this.localStorage.fillColor);
-        this.fillColor.firstElementChild.style.backgroundColor = this.localStorage.fillColor;
+        this.uiRefFillColor.setAttribute('data-oltb-color', this.localStorage.fillColor);
+        this.uiRefFillColor.firstElementChild.style.backgroundColor = this.localStorage.fillColor;
 
-        this.strokeColor.setAttribute('data-oltb-color', this.localStorage.strokeColor);
-        this.strokeColor.firstElementChild.style.backgroundColor = this.localStorage.strokeColor;
+        this.uiRefStrokeColor.setAttribute('data-oltb-color', this.localStorage.strokeColor);
+        this.uiRefStrokeColor.firstElementChild.style.backgroundColor = this.localStorage.strokeColor;
     }
 
     onDeleteSelectedFeatures() {
@@ -467,8 +467,8 @@ class EditTool extends Control {
     onFeatureColorChange(event) {
         this.colorHasChanged = true;
 
-        const fillColor = this.fillColor.getAttribute('data-oltb-color');
-        const strokeColor = this.strokeColor.getAttribute('data-oltb-color');
+        const fillColor = this.uiRefFillColor.getAttribute('data-oltb-color');
+        const strokeColor = this.uiRefStrokeColor.getAttribute('data-oltb-color');
 
         const features = [ ...this.select.getFeatures().getArray() ];
 
@@ -696,7 +696,7 @@ class EditTool extends Control {
         ToolManager.setActiveTool(this);
 
         this.active = true;
-        this.editToolbox.classList.add(`${CLASS_TOOLBOX_SECTION}--show`);
+        this.uiRefEditToolbox.classList.add(`${CLASS_TOOLBOX_SECTION}--show`);
         this.button.classList.add(`${CLASS_TOOL_BUTTON}--active`);
 
         this.localStorage.active = true;
@@ -715,7 +715,7 @@ class EditTool extends Control {
         ToolManager.removeActiveTool();
 
         this.active = false;
-        this.editToolbox.classList.remove(`${CLASS_TOOLBOX_SECTION}--show`);
+        this.uiRefEditToolbox.classList.remove(`${CLASS_TOOLBOX_SECTION}--show`);
         this.button.classList.remove(`${CLASS_TOOL_BUTTON}--active`);
 
         this.localStorage.active = false;

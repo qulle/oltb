@@ -70,6 +70,7 @@ class CoordinatesTool extends Control {
         this.button = button;
         this.active = false;
         this.tooltipItem = undefined;
+        this.projections = new Map();
         this.options = { ...DefaultOptions, ...options };
 
         this.localStorage = StateManager.getAndMergeStateObject(
@@ -77,8 +78,8 @@ class CoordinatesTool extends Control {
             LocalStorageDefaults
         );
 
-        const toolboxElement = ElementManager.getToolboxElement();
-        toolboxElement.insertAdjacentHTML('beforeend', `
+        const uiRefToolboxElement = ElementManager.getToolboxElement();
+        uiRefToolboxElement.insertAdjacentHTML('beforeend', `
             <div id="${ID_PREFIX}-toolbox" class="${CLASS_TOOLBOX_SECTION}">
                 <div class="${CLASS_TOOLBOX_SECTION}__header">
                     <h4 class="${CLASS_TOOLBOX_SECTION}__title oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">
@@ -102,17 +103,15 @@ class CoordinatesTool extends Control {
             </div>
         `);
 
-        this.coordinatesToolbox = document.querySelector(`#${ID_PREFIX}-toolbox`);
-        this.coordinatesTable = this.coordinatesToolbox.querySelector(`#${ID_PREFIX}-table`);
+        this.uiRefCoordinatesToolbox = document.querySelector(`#${ID_PREFIX}-toolbox`);
+        this.uiRefCoordinatesTable = this.uiRefCoordinatesToolbox.querySelector(`#${ID_PREFIX}-table`);
         
-        this.coordinatesFormat = this.coordinatesToolbox.querySelector(`#${ID_PREFIX}-format`);
-        this.coordinatesFormat.value = this.localStorage.coordinatesFormat;
-        this.coordinatesFormat.addEventListener(Events.browser.change, this.onCoordinatesFormatChange.bind(this));
+        this.uiRefCoordinatesFormat = this.uiRefCoordinatesToolbox.querySelector(`#${ID_PREFIX}-format`);
+        this.uiRefCoordinatesFormat.value = this.localStorage.coordinatesFormat;
+        this.uiRefCoordinatesFormat.addEventListener(Events.browser.change, this.onCoordinatesFormatChange.bind(this));
 
-        this.projections = new Map();
-
-        const toggleableTriggers = this.coordinatesToolbox.querySelectorAll('.oltb-toggleable');
-        toggleableTriggers.forEach((toggle) => {
+        const uiRefToggleableTriggers = this.uiRefCoordinatesToolbox.querySelectorAll('.oltb-toggleable');
+        uiRefToggleableTriggers.forEach((toggle) => {
             toggle.addEventListener(Events.browser.click, this.onToggleToolbox.bind(this, toggle));
         });
 
@@ -151,7 +150,7 @@ class CoordinatesTool extends Control {
     }
 
     onCoordinatesFormatChange() {
-        this.localStorage.coordinatesFormat = this.coordinatesFormat.value;
+        this.localStorage.coordinatesFormat = this.uiRefCoordinatesFormat.value;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 
@@ -206,7 +205,7 @@ class CoordinatesTool extends Control {
                 coordinatesCell
             ]);
 
-            DOM.appendChildren(this.coordinatesTable, [
+            DOM.appendChildren(this.uiRefCoordinatesTable, [
                 projectionRow,
                 coordinatesRow
             ]);
@@ -219,7 +218,7 @@ class CoordinatesTool extends Control {
         this.onMapClickListener = map.on(Events.browser.click, this.onMapClick.bind(this));
 
         this.active = true;
-        this.coordinatesToolbox.classList.add(`${CLASS_TOOLBOX_SECTION}--show`);
+        this.uiRefCoordinatesToolbox.classList.add(`${CLASS_TOOLBOX_SECTION}--show`);
         this.button.classList.add(`${CLASS_TOOL_BUTTON}--active`);
 
         this.localStorage.active = true;
@@ -227,14 +226,14 @@ class CoordinatesTool extends Control {
     }
 
     deActivateTool() {
-        this.coordinatesTable.innerHTML = '';
+        this.uiRefCoordinatesTable.innerHTML = '';
         TooltipManager.pop(KEY_TOOLTIP);
         
         unByKey(this.onPointerMoveListener);
         unByKey(this.onMapClickListener);
 
         this.active = false;
-        this.coordinatesToolbox.classList.remove(`${CLASS_TOOLBOX_SECTION}--show`);
+        this.uiRefCoordinatesToolbox.classList.remove(`${CLASS_TOOLBOX_SECTION}--show`);
         this.button.classList.remove(`${CLASS_TOOL_BUTTON}--active`);
 
         this.localStorage.active = false;
@@ -261,7 +260,7 @@ class CoordinatesTool extends Control {
                 projection.code
             );
 
-            const format = this.coordinatesFormat.value;
+            const format = this.uiRefCoordinatesFormat.value;
             const cell = this.projections.get(projection.code);
 
             if(format === 'DMS') {

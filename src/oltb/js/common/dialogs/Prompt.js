@@ -121,8 +121,8 @@ class Prompt extends DialogBase {
             dialog
         ]);
 
-        const mapElement = ElementManager.getMapElement();
-        DOM.appendChildren(mapElement, [
+        const uiRefMapElement = ElementManager.getMapElement();
+        DOM.appendChildren(uiRefMapElement, [
             this.backdrop
         ]);
 

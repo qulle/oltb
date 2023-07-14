@@ -324,6 +324,9 @@ const map = new Map({
             },
             cleared: function() {
                 console.log('Bookmarks cleared');
+            },
+            dragged: function(item, list) {
+                console.log('Bookmark dragged', item, list);
             }
         }),
         new LayerTool({
@@ -342,6 +345,9 @@ const map = new Map({
             mapLayerVisibilityChanged: function(layerWrapper) {
                 console.log('Map layer visibility change', layerWrapper);
             },
+            mapLayerDragged(item, list) {
+                console.log('Map layer dragged', item, list);
+            },
             featureLayerAdded: function(layerWrapper) {
                 console.log('Feature layer added', layerWrapper);
             },
@@ -356,7 +362,10 @@ const map = new Map({
             },
             featureLayerDownloaded: function(layerWrapper, filename, content) {
                 console.log('Feature layer downloaded', layerWrapper, filename, content);
-            }
+            },
+            featureLayerDragged(item, list) {
+                console.log('Feature layer dragged', item, list);
+            },
         }),
         new SplitViewTool({
             click: function() {

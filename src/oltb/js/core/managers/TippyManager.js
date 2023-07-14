@@ -61,11 +61,11 @@ class TippyManager {
     }
 
     static #createToolButtonTippy() {
-        const mapElement = ElementManager.getMapElement();
+        const uiRefMapElement = ElementManager.getMapElement();
 
         return createSingleton([], {
             placement: 'right',
-            appendTo: mapElement,
+            appendTo: uiRefMapElement,
             offset: [0, 12],
             theme: 'oltb',
             touch: false
@@ -73,9 +73,9 @@ class TippyManager {
     }
 
     static #createMapTippy() {
-        const mapElement = ElementManager.getMapElement();
+        const uiRefMapElement = ElementManager.getMapElement();
 
-        return delegate(mapElement, {
+        return delegate(uiRefMapElement, {
             content(reference) {
                 const title = reference.getAttribute('title');
                 reference.removeAttribute('title');
@@ -83,7 +83,7 @@ class TippyManager {
             },
             target: '.oltb-tippy',
             placement: 'top',
-            appendTo: mapElement,
+            appendTo: uiRefMapElement,
             theme: 'oltb oltb-themed',
             delay: [600, 100],
             touch: false
@@ -91,14 +91,14 @@ class TippyManager {
     }
 
     static #createColorTippy() {
-        const mapElement = ElementManager.getMapElement();
+        const uiRefMapElement = ElementManager.getMapElement();
 
-        return delegate(mapElement, {
+        return delegate(uiRefMapElement, {
             target: '.oltb-color-tippy',
             placement: 'left',
             offset: [0, 25],
             trigger: 'click',
-            appendTo: mapElement,
+            appendTo: uiRefMapElement,
             theme: 'oltb oltb-inverted-themed',
             interactive: true,
             allowHTML: true,

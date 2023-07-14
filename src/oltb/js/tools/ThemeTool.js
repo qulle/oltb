@@ -130,12 +130,12 @@ class ThemeTool extends Control {
         this.localStorage.theme = to.class;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
 
-        const toolbarElement = ElementManager.getToolbarElement();
+        const uiRefToolbarElement = ElementManager.getToolbarElement();
 
-        toolbarElement.classList.remove(from.class);
+        uiRefToolbarElement.classList.remove(from.class);
         document.body.classList.remove(`oltb-${from.class}`);
 
-        toolbarElement.classList.add(to.class);
+        uiRefToolbarElement.classList.add(to.class);
         document.body.classList.add(`oltb-${to.class}`);
 
         // Update toolbar button

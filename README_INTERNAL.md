@@ -563,6 +563,9 @@ controls: defaultControls({
         },
         cleared: function() {
             console.log('Bookmarks cleared');
+        },
+        dragged: function(item, list) {
+            console.log('Bookmark dragged', item, list);
         }
     }),
     new LayerTool({
@@ -581,6 +584,9 @@ controls: defaultControls({
         mapLayerVisibilityChanged: function(layerWrapper) {
             console.log('Map layer visibility change', layerWrapper);
         },
+        mapLayerDragged(item, list) {
+            console.log('Map layer dragged', item, list);
+        },
         featureLayerAdded: function(layerWrapper) {
             console.log('Feature layer added', layerWrapper);
         },
@@ -595,6 +601,9 @@ controls: defaultControls({
         },
         featureLayerDownloaded: function(layerWrapper, filename, content) {
             console.log('Feature layer downloaded', layerWrapper, filename, content);
+        },
+        featureLayerDragged(item, list) {
+            console.log('Feature layer dragged', item, list);
         }
     }),
     new SplitViewTool({

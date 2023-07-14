@@ -47,7 +47,7 @@ class ColorPickerManager {
         });
     
         const selector = instance.reference.getAttribute('data-oltb-color-target');
-        const target = document.querySelector(selector);
+        const uiRefTarget = document.querySelector(selector);
     
         instance.setContent(this.#colorPickerElement);
     
@@ -58,8 +58,8 @@ class ColorPickerManager {
             color = AColorPicker.parseColor(color, 'hexcss4');
     
             // Update color on the ACP instance
-            target.setAttribute('data-oltb-color', color);
-            target.firstElementChild.style.backgroundColor = color;
+            uiRefTarget.setAttribute('data-oltb-color', color);
+            uiRefTarget.firstElementChild.style.backgroundColor = color;
     
             eventDispatcher([instance.reference], Events.custom.colorChange);
         });

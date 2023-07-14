@@ -10,7 +10,7 @@ const FILENAME = 'managers/LayerManager.js';
 const DEFAULT_LAYER_NAME = 'New layer';
 
 const ZINDEX_BASE_MAP_LAYER = 1;
-const ZINDEX_BASE_FEATURE_LAYER = 10000;
+const ZINDEX_BASE_FEATURE_LAYER = 1e6;
 
 const DefaultFeatureLayerOptions = Object.freeze({
     name: '',
@@ -160,7 +160,7 @@ class LayerManager {
         LogManager.logDebug(FILENAME, 'removeMapLayer', layerWrapper.getName());
 
         // Remove the layer from the internal collection
-        this.#layers.mapLayers = this.#layers.mapLayers.filter(function(layer) {
+        this.#layers.mapLayers = this.#layers.mapLayers.filter((layer) => {
             return layer.getId() !== layerWrapper.getId();
         }); 
 
@@ -180,6 +180,7 @@ class LayerManager {
     }
 
     static getMapLayerById(id) {
+        // Note: The id is a string UUID
         const result = this.#layers.mapLayers.find((layerWrapper) => {
             return layerWrapper.getId() === id;
         });
@@ -216,7 +217,8 @@ class LayerManager {
         return this.getMapLayerSize() === 0;
     }
 
-    static setMapLayerZIndex(layerWrapper, index) {
+    static setMapLayerZIndex(layerId, index) {
+        const layerWrapper = this.getMapLayerById(layerId);
         layerWrapper.getLayer().setZIndex(ZINDEX_BASE_MAP_LAYER + index);
     }
 
@@ -230,6 +232,7 @@ class LayerManager {
         LogManager.logDebug(FILENAME, 'addFeatureLayer', mergedOptions.name);
 
         const layerWrapper = {
+            id: mergedOptions.id,
             name: mergedOptions.name,
             layer: new VectorLayer({
                 source: new VectorSource(),
@@ -285,7 +288,7 @@ class LayerManager {
         LogManager.logDebug(FILENAME, 'removeFeatureLayer', layerWrapper.getName());
 
         // Remove the layer from the internal collection
-        this.#layers.featureLayers = this.#layers.featureLayers.filter(function(layer) {
+        this.#layers.featureLayers = this.#layers.featureLayers.filter((layer) => {
             return layer.getId() !== layerWrapper.getId();
         }); 
 
@@ -331,6 +334,7 @@ class LayerManager {
     }
 
     static getFeatureLayerById(id) {
+        // Note: The id is a string UUID
         const result = this.#layers.featureLayers.find((layerWrapper) => {
             return layerWrapper.getId() === id;
         });
@@ -352,7 +356,8 @@ class LayerManager {
         return this.getFeatureLayerSize() === 0;
     }
 
-    static setFeatureLayerZIndex(layerWrapper, index) {
+    static setFeatureLayerZIndex(layerId, index) {
+        const layerWrapper = this.getFeatureLayerById(layerId);
         layerWrapper.getLayer().setZIndex(ZINDEX_BASE_FEATURE_LAYER + index);
     }
 }

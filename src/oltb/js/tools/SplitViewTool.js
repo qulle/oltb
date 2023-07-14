@@ -71,9 +71,9 @@ class SplitViewTool extends Control {
             LocalStorageDefaults
         );
 
-        const mapElement = ElementManager.getMapElement();
-        const toolboxElement = ElementManager.getToolboxElement();
-        toolboxElement.insertAdjacentHTML('beforeend', `
+        const uiRefMapElement = ElementManager.getMapElement();
+        const uiRefToolboxElement = ElementManager.getToolboxElement();
+        uiRefToolboxElement.insertAdjacentHTML('beforeend', `
             <div id="${ID_PREFIX}-toolbox" class="${CLASS_TOOLBOX_SECTION}">
                 <div class="${CLASS_TOOLBOX_SECTION}__header">
                     <h4 class="${CLASS_TOOLBOX_SECTION}__title oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">
@@ -97,30 +97,30 @@ class SplitViewTool extends Control {
             </div>
         `);
 
-        mapElement.insertAdjacentHTML('beforeend', `
+        uiRefMapElement.insertAdjacentHTML('beforeend', `
             <input type="range" min="0" max="100" value="50" class="oltb-slider" id="${ID_PREFIX}-slider">
         `);
 
-        this.splitViewToolbox = document.querySelector(`#${ID_PREFIX}-toolbox`);
+        this.uiRefSplitViewToolbox = document.querySelector(`#${ID_PREFIX}-toolbox`);
 
-        this.leftSideSrc = this.splitViewToolbox.querySelector(`#${ID_PREFIX}-left-src`);
-        this.leftSideSrc.addEventListener(Events.browser.change, this.updateTool.bind(this));
+        this.uiRefLeftSideSrc = this.uiRefSplitViewToolbox.querySelector(`#${ID_PREFIX}-left-src`);
+        this.uiRefLeftSideSrc.addEventListener(Events.browser.change, this.updateTool.bind(this));
 
-        this.rightSideSrc = this.splitViewToolbox.querySelector(`#${ID_PREFIX}-right-src`);
-        this.rightSideSrc.addEventListener(Events.browser.change, this.updateTool.bind(this));
+        this.uiRefRightSideSrc = this.uiRefSplitViewToolbox.querySelector(`#${ID_PREFIX}-right-src`);
+        this.uiRefRightSideSrc.addEventListener(Events.browser.change, this.updateTool.bind(this));
 
-        const toggleableTriggers = this.splitViewToolbox.querySelectorAll('.oltb-toggleable');
-        toggleableTriggers.forEach((toggle) => {
+        const uiRefToggleableTriggers = this.uiRefSplitViewToolbox.querySelectorAll('.oltb-toggleable');
+        uiRefToggleableTriggers.forEach((toggle) => {
             toggle.addEventListener(Events.browser.click, this.onToggleToolbox.bind(this, toggle));
         });
 
-        const swapSidesButton = this.splitViewToolbox.querySelector(`#${ID_PREFIX}-swap-button`);
-        swapSidesButton.addEventListener(Events.browser.click, (event) => {
+        const uiRefSwapSidesButton = this.uiRefSplitViewToolbox.querySelector(`#${ID_PREFIX}-swap-button`);
+        uiRefSwapSidesButton.addEventListener(Events.browser.click, (event) => {
             this.swapSides();
         });
         
-        this.splitViewSlider = mapElement.querySelector(`#${ID_PREFIX}-slider`);
-        this.splitViewSlider.addEventListener(Events.browser.input, this.onSliderInput.bind(this));
+        this.uiRefSplitViewSlider = uiRefMapElement.querySelector(`#${ID_PREFIX}-slider`);
+        this.uiRefSplitViewSlider.addEventListener(Events.browser.input, this.onSliderInput.bind(this));
 
         window.addEventListener(Events.custom.mapLayerAdded, this.onWindowMapLayerAdded.bind(this));
         window.addEventListener(Events.custom.mapLayerRemoved, this.onWindowMapLayerRemoved.bind(this));
@@ -177,11 +177,11 @@ class SplitViewTool extends Control {
             value: layerWrapper.getId().toString()
         });
 
-        DOM.appendChildren(this.leftSideSrc, [
+        DOM.appendChildren(this.uiRefLeftSideSrc, [
             leftOption
         ]);
 
-        DOM.appendChildren(this.rightSideSrc, [
+        DOM.appendChildren(this.uiRefRightSideSrc, [
             rightOption
         ]);
     }
@@ -189,13 +189,13 @@ class SplitViewTool extends Control {
     onWindowMapLayerRemoved(event) {
         const layerWrapper = event.detail.layerWrapper;
 
-        this.leftSideSrc.childNodes.forEach((option) => {
+        this.uiRefLeftSideSrc.childNodes.forEach((option) => {
             if(parseInt(option.value, RADIX) === layerWrapper.getId()) {
                 option.remove();
             }
         });
 
-        this.rightSideSrc.childNodes.forEach((option) => {
+        this.uiRefRightSideSrc.childNodes.forEach((option) => {
             if(parseInt(option.value, RADIX) === layerWrapper.getId()) {
                 option.remove();
             }
@@ -206,8 +206,8 @@ class SplitViewTool extends Control {
 
     updateTool() {
         this.sourceChange(
-            parseInt(this.leftSideSrc.value, RADIX), 
-            parseInt(this.rightSideSrc.value, RADIX)
+            parseInt(this.uiRefLeftSideSrc.value, RADIX), 
+            parseInt(this.uiRefRightSideSrc.value, RADIX)
         );
     }
 
@@ -236,16 +236,16 @@ class SplitViewTool extends Control {
     }
 
     setDefaultSelectedIndexes() {
-        this.rightSideSrc.selectedIndex = '0';
-        this.rightSideSrc.selectedIndex = '1';
+        this.uiRefRightSideSrc.selectedIndex = '0';
+        this.uiRefRightSideSrc.selectedIndex = '1';
 
         return this;
     }
 
     dispatchChangeEvent() {
         eventDispatcher([
-            this.leftSideSrc, 
-            this.rightSideSrc
+            this.uiRefLeftSideSrc, 
+            this.uiRefRightSideSrc
         ], Events.browser.change);
     }
 
@@ -263,8 +263,8 @@ class SplitViewTool extends Control {
             return;
         }
         
-        this.splitViewToolbox.classList.add(`${CLASS_TOOLBOX_SECTION}--show`);
-        this.splitViewSlider.classList.add(`${CLASS_SLIDER}--show`);
+        this.uiRefSplitViewToolbox.classList.add(`${CLASS_TOOLBOX_SECTION}--show`);
+        this.uiRefSplitViewSlider.classList.add(`${CLASS_SLIDER}--show`);
         this.button.classList.add(`${CLASS_TOOL_BUTTON}--active`);
 
         this.localStorage.active = true;
@@ -295,8 +295,8 @@ class SplitViewTool extends Control {
         LayerManager.setTopMapLayerAsOnlyVisible();
 
         this.active = false;
-        this.splitViewToolbox.classList.remove(`${CLASS_TOOLBOX_SECTION}--show`);
-        this.splitViewSlider.classList.remove(`${CLASS_SLIDER}--show`);
+        this.uiRefSplitViewToolbox.classList.remove(`${CLASS_TOOLBOX_SECTION}--show`);
+        this.uiRefSplitViewSlider.classList.remove(`${CLASS_SLIDER}--show`);
         this.button.classList.remove(`${CLASS_TOOL_BUTTON}--active`);
 
         this.localStorage.active = false;
@@ -304,10 +304,10 @@ class SplitViewTool extends Control {
     }
 
     swapSides() {
-        const currentRightId = this.rightSideSrc.value;
+        const currentRightId = this.uiRefRightSideSrc.value;
 
-        this.rightSideSrc.value = this.leftSideSrc.value;
-        this.leftSideSrc.value = currentRightId;
+        this.uiRefRightSideSrc.value = this.uiRefLeftSideSrc.value;
+        this.uiRefLeftSideSrc.value = currentRightId;
 
         this.dispatchChangeEvent();
     }
@@ -396,9 +396,9 @@ class SplitViewTool extends Control {
         // Calculate offset for the handlebar. 
         // The range slider is not perfectly linear towards the edges. 
         const halfHandleWidth = Config.browser.rem;
-        const sliderWidth = this.splitViewSlider.offsetWidth;
+        const sliderWidth = this.uiRefSplitViewSlider.offsetWidth;
         const sliderCenter = sliderWidth / 2;
-        const percentOfRange = (this.splitViewSlider.value / (this.splitViewSlider.max - this.splitViewSlider.min));
+        const percentOfRange = (this.uiRefSplitViewSlider.value / (this.uiRefSplitViewSlider.max - this.uiRefSplitViewSlider.min));
         const valuePxPosition = percentOfRange * sliderWidth;
         const distFromCenter = valuePxPosition - sliderCenter;
         const percentDistFromCenter = distFromCenter / sliderCenter;
@@ -408,7 +408,7 @@ class SplitViewTool extends Control {
         const mapHeight = mapSize[1];
 
         // Displaying two maps next to each other.
-        const width = mapWidth * (this.splitViewSlider.value / this.splitViewSlider.max) - offset;
+        const width = mapWidth * (this.uiRefSplitViewSlider.value / this.uiRefSplitViewSlider.max) - offset;
         const tl = getRenderPixel(event, [width, 0]);
         const tr = getRenderPixel(event, [mapWidth, 0]);
         const bl = getRenderPixel(event, [width, mapHeight]);

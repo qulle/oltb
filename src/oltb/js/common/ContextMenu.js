@@ -48,13 +48,13 @@ class ContextMenu extends Control {
             this.addMenuItem(item);
         });
 
-        const mapElement = ElementManager.getMapElement();
-        DOM.appendChildren(mapElement, [
+        const uiRefMapElement = ElementManager.getMapElement();
+        DOM.appendChildren(uiRefMapElement, [
             this.menu
         ]);
 
-        mapElement.addEventListener(Events.browser.contextMenu, this.show.bind(this));
-        mapElement.addEventListener(Events.browser.click, this.hide.bind(this));
+        uiRefMapElement.addEventListener(Events.browser.contextMenu, this.show.bind(this));
+        uiRefMapElement.addEventListener(Events.browser.click, this.hide.bind(this));
     }
 
     addMenuItem(item) {

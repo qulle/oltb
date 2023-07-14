@@ -74,8 +74,8 @@ class ToastBase {
             container
         ]);
 
-        const toastElement = ElementManager.getToastElement();
-        toastElement.prepend(this.toast);
+        const uiRefToastElement = ElementManager.getToastElement();
+        uiRefToastElement.prepend(this.toast);
 
         if(this.options.autoremove) {
             window.setTimeout(() => {

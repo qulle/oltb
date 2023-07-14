@@ -87,8 +87,8 @@ class MeasureTool extends Control {
             LocalStorageDefaults
         );
 
-        const toolboxElement = ElementManager.getToolboxElement();
-        toolboxElement.insertAdjacentHTML('beforeend', `
+        const uiRefToolboxElement = ElementManager.getToolboxElement();
+        uiRefToolboxElement.insertAdjacentHTML('beforeend', `
             <div id="${ID_PREFIX}-toolbox" class="${CLASS_TOOLBOX_SECTION}">
                 <div class="${CLASS_TOOLBOX_SECTION}__header">
                     <h4 class="${CLASS_TOOLBOX_SECTION}__title oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">
@@ -120,24 +120,24 @@ class MeasureTool extends Control {
             </div>
         `);
 
-        this.measureToolbox = document.querySelector(`#${ID_PREFIX}-toolbox`);
+        this.uiRefMeasureToolbox = document.querySelector(`#${ID_PREFIX}-toolbox`);
 
-        const toggleableTriggers = this.measureToolbox.querySelectorAll('.oltb-toggleable');
-        toggleableTriggers.forEach((toggle) => {
+        const uiRefToggleableTriggers = this.uiRefMeasureToolbox.querySelectorAll('.oltb-toggleable');
+        uiRefToggleableTriggers.forEach((toggle) => {
             toggle.addEventListener(Events.browser.click, this.onToggleToolbox.bind(this, toggle));
         });
 
-        this.toolType = this.measureToolbox.querySelector(`#${ID_PREFIX}-type`);
-        this.toolType.addEventListener(Events.browser.change, this.updateTool.bind(this));
+        this.uiRefToolType = this.uiRefMeasureToolbox.querySelector(`#${ID_PREFIX}-type`);
+        this.uiRefToolType.addEventListener(Events.browser.change, this.updateTool.bind(this));
 
-        this.fillColor = this.measureToolbox.querySelector(`#${ID_PREFIX}-fill-color`);
-        this.fillColor.addEventListener(Events.custom.colorChange, this.updateTool.bind(this));
+        this.uiRefFillColor = this.uiRefMeasureToolbox.querySelector(`#${ID_PREFIX}-fill-color`);
+        this.uiRefFillColor.addEventListener(Events.custom.colorChange, this.updateTool.bind(this));
 
-        this.strokeColor = this.measureToolbox.querySelector(`#${ID_PREFIX}-stroke-color`);
-        this.strokeColor.addEventListener(Events.custom.colorChange, this.updateTool.bind(this));
+        this.uiRefStrokeColor = this.uiRefMeasureToolbox.querySelector(`#${ID_PREFIX}-stroke-color`);
+        this.uiRefStrokeColor.addEventListener(Events.custom.colorChange, this.updateTool.bind(this));
 
         // Set default selected values
-        this.toolType.value = this.localStorage.toolType; 
+        this.uiRefToolType.value = this.localStorage.toolType; 
 
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
         window.addEventListener(Events.custom.settingsCleared, this.onWindowSettingsCleared.bind(this));
@@ -179,11 +179,11 @@ class MeasureTool extends Control {
         this.localStorage = { ...LocalStorageDefaults };
 
         // Rest UI components
-        this.fillColor.setAttribute('data-oltb-color', this.localStorage.fillColor);
-        this.fillColor.firstElementChild.style.backgroundColor = this.localStorage.fillColor;
+        this.uiRefFillColor.setAttribute('data-oltb-color', this.localStorage.fillColor);
+        this.uiRefFillColor.firstElementChild.style.backgroundColor = this.localStorage.fillColor;
 
-        this.strokeColor.setAttribute('data-oltb-color', this.localStorage.strokeColor);
-        this.strokeColor.firstElementChild.style.backgroundColor = this.localStorage.strokeColor;
+        this.uiRefStrokeColor.setAttribute('data-oltb-color', this.localStorage.strokeColor);
+        this.uiRefStrokeColor.firstElementChild.style.backgroundColor = this.localStorage.strokeColor;
 
         // Update the tool to use the correct colors
         if(this.active) {
@@ -193,16 +193,16 @@ class MeasureTool extends Control {
 
     updateTool() {
         // Store current values in local storage
-        this.localStorage.toolType = this.toolType.value;
-        this.localStorage.fillColor = this.fillColor.getAttribute('data-oltb-color');
-        this.localStorage.strokeColor = this.strokeColor.getAttribute('data-oltb-color');
+        this.localStorage.toolType = this.uiRefToolType.value;
+        this.localStorage.fillColor = this.uiRefFillColor.getAttribute('data-oltb-color');
+        this.localStorage.strokeColor = this.uiRefStrokeColor.getAttribute('data-oltb-color');
 
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
 
         this.selectMeasure(
-            this.toolType.value,
-            this.fillColor.getAttribute('data-oltb-color'),
-            this.strokeColor.getAttribute('data-oltb-color')
+            this.uiRefToolType.value,
+            this.uiRefFillColor.getAttribute('data-oltb-color'),
+            this.uiRefStrokeColor.getAttribute('data-oltb-color')
         );
     }
 
@@ -227,7 +227,7 @@ class MeasureTool extends Control {
 
     activateTool() {
         this.active = true;
-        this.measureToolbox.classList.add(`${CLASS_TOOLBOX_SECTION}--show`);
+        this.uiRefMeasureToolbox.classList.add(`${CLASS_TOOLBOX_SECTION}--show`);
         this.button.classList.add(`${CLASS_TOOL_BUTTON}--active`); 
 
         ToolManager.setActiveTool(this);
@@ -239,7 +239,7 @@ class MeasureTool extends Control {
         }
 
         // Triggers activation of the measure tool
-        eventDispatcher([this.toolType], Events.browser.change);
+        eventDispatcher([this.uiRefToolType], Events.browser.change);
 
         this.localStorage.active = true;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
@@ -252,7 +252,7 @@ class MeasureTool extends Control {
         }
 
         this.active = false;
-        this.measureToolbox.classList.remove(`${CLASS_TOOLBOX_SECTION}--show`);
+        this.uiRefMeasureToolbox.classList.remove(`${CLASS_TOOLBOX_SECTION}--show`);
         this.button.classList.remove(`${CLASS_TOOL_BUTTON}--active`); 
 
         map.removeInteraction(this.interaction);

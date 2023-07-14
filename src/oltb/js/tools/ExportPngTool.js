@@ -68,10 +68,11 @@ class ExportPngTool extends Control {
     }
 
     onDOMContentLoaded() {
-        const mapElement = ElementManager.getMapElement();
-        const attributions = mapElement.querySelector('.ol-attribution');
-        if(attributions) {
-            attributions.setAttribute('data-html2canvas-ignore', 'true');
+        const uiRefMapElement = ElementManager.getMapElement();
+        const uiRefAttribution = uiRefMapElement.querySelector('.ol-attribution');
+
+        if(uiRefAttribution) {
+            uiRefAttribution.setAttribute('data-html2canvas-ignore', 'true');
         }
     }
 
@@ -104,7 +105,7 @@ class ExportPngTool extends Control {
         }
 
         try {
-            const mapElement = ElementManager.getMapElement();
+            const uiRefMapElement = ElementManager.getMapElement();
             const size = map.getSize();
             const pngCanvas = DOM.createElement({
                 element: 'canvas',
@@ -118,21 +119,21 @@ class ExportPngTool extends Control {
 
             // Draw map layers (Canvases)
             const fullOpacity = 1;
-            const mapCanvas = mapElement.querySelector('.ol-layer canvas');
-            const opacity = mapCanvas.parentNode.style.opacity;
+            const uiRefMapCanvas = uiRefMapElement.querySelector('.ol-layer canvas');
+            const opacity = uiRefMapCanvas.parentNode.style.opacity;
             pngContext.globalAlpha = opacity === '' ? fullOpacity : Number(opacity);
     
-            const matrix = mapCanvas.style.transform
+            const matrix = uiRefMapCanvas.style.transform
                 .match(/^matrix\(([^(]*)\)$/)[1]
                 .split(',')
                 .map(Number);
 
             CanvasRenderingContext2D.prototype.setTransform.apply(pngContext, matrix);
-            pngContext.drawImage(mapCanvas, 0, 0);
+            pngContext.drawImage(uiRefMapCanvas, 0, 0);
 
             // Draw overlays souch as Tooltips and InfoWindows
-            const overlay = mapElement.querySelector('.ol-overlaycontainer-stopevent');
-            const overlayCanvas = await html2canvas(overlay, {
+            const uiRefOverlay = uiRefMapElement.querySelector('.ol-overlaycontainer-stopevent');
+            const overlayCanvas = await html2canvas(uiRefOverlay, {
                 scrollX: 0,
                 scrollY: 0,
                 backgroundColor: null,

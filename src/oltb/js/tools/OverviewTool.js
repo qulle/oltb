@@ -66,8 +66,8 @@ class OverviewTool extends Control {
             LocalStorageDefaults
         );
 
-        const toolboxElement = ElementManager.getToolboxElement();
-        toolboxElement.insertAdjacentHTML('beforeend', `
+        const uiRefToolboxElement = ElementManager.getToolboxElement();
+        uiRefToolboxElement.insertAdjacentHTML('beforeend', `
             <div id="${ID_PREFIX}-toolbox" class="${CLASS_TOOLBOX_SECTION}">
                 <div class="${CLASS_TOOLBOX_SECTION}__header">
                     <h4 class="${CLASS_TOOLBOX_SECTION}__title oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">
@@ -81,10 +81,10 @@ class OverviewTool extends Control {
             </div>
         `);
 
-        this.overviewToolbox = document.querySelector(`#${ID_PREFIX}-toolbox`);
+        this.uiRefOverviewToolbox = document.querySelector(`#${ID_PREFIX}-toolbox`);
 
-        const toggleableTriggers = this.overviewToolbox.querySelectorAll('.oltb-toggleable');
-        toggleableTriggers.forEach((toggle) => {
+        const uiRefToggleableTriggers = this.uiRefOverviewToolbox.querySelectorAll('.oltb-toggleable');
+        uiRefToggleableTriggers.forEach((toggle) => {
             toggle.addEventListener(Events.browser.click, this.onToggleToolbox.bind(this, toggle));
         });
 
@@ -160,7 +160,7 @@ class OverviewTool extends Control {
         }
 
         // The class must be added before setMap or the overview will not render correctly
-        this.overviewToolbox.classList.add(`${CLASS_TOOLBOX_SECTION}--show`);
+        this.uiRefOverviewToolbox.classList.add(`${CLASS_TOOLBOX_SECTION}--show`);
         this.overviewMap.setMap(map);
 
         this.active = true;
@@ -175,7 +175,7 @@ class OverviewTool extends Control {
 
         this.active = false;
         this.button.classList.remove(`${CLASS_TOOL_BUTTON}--active`);
-        this.overviewToolbox.classList.remove(`${CLASS_TOOLBOX_SECTION}--show`);
+        this.uiRefOverviewToolbox.classList.remove(`${CLASS_TOOLBOX_SECTION}--show`);
 
         this.localStorage.active = false;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);

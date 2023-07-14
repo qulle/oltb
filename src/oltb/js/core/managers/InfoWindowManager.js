@@ -184,33 +184,33 @@ class InfoWindowManager {
         DOM.runAnimation(this.#infoWindow, CLASS_ANIMATION);
 
         // Attach listeners to the function-buttons inside the infoWindow
-        const removeMarkerButton = this.#footer.querySelector(`#${ID_PREFIX_INFO_WINDOW}-remove`);
-        if(removeMarkerButton) {
-            removeMarkerButton.addEventListener(
+        const uiRefRemoveMarkerButton = this.#footer.querySelector(`#${ID_PREFIX_INFO_WINDOW}-remove`);
+        if(uiRefRemoveMarkerButton) {
+            uiRefRemoveMarkerButton.addEventListener(
                 Events.browser.click, 
                 removeMarker.bind(this, InfoWindowManager, marker)
             );
         }
 
-        const copyMarkerCoordinatesButton = this.#footer.querySelector(`#${ID_PREFIX_INFO_WINDOW}-copy-coordinates`);
-        if(copyMarkerCoordinatesButton) {
-            copyMarkerCoordinatesButton.addEventListener(
+        const uiRefCopyMarkerCoordinatesButton = this.#footer.querySelector(`#${ID_PREFIX_INFO_WINDOW}-copy-coordinates`);
+        if(uiRefCopyMarkerCoordinatesButton) {
+            uiRefCopyMarkerCoordinatesButton.addEventListener(
                 Events.browser.click, 
-                copyMarkerCoordinates.bind(this, InfoWindowManager, copyMarkerCoordinatesButton.getAttribute('data-coordinates'))
+                copyMarkerCoordinates.bind(this, InfoWindowManager, uiRefCopyMarkerCoordinatesButton.getAttribute('data-coordinates'))
             );
         }
 
-        const copyMarkerInfoButton = this.#footer.querySelector(`#${ID_PREFIX_INFO_WINDOW}-copy-text`);
-        if(copyMarkerInfoButton) {
-            copyMarkerInfoButton.addEventListener(
+        const uiRefCopyMarkerInfoButton = this.#footer.querySelector(`#${ID_PREFIX_INFO_WINDOW}-copy-text`);
+        if(uiRefCopyMarkerInfoButton) {
+            uiRefCopyMarkerInfoButton.addEventListener(
                 Events.browser.click, 
-                copyMarkerInfo.bind(this, InfoWindowManager, copyMarkerInfoButton.getAttribute('data-copy'))
+                copyMarkerInfo.bind(this, InfoWindowManager, uiRefCopyMarkerInfoButton.getAttribute('data-copy'))
             );
         }
 
-        const editMarkerButton = this.#footer.querySelector(`#${ID_PREFIX_INFO_WINDOW}-edit`);
-        if(editMarkerButton) {
-            editMarkerButton.addEventListener(
+        const uiRefEditMarkerButton = this.#footer.querySelector(`#${ID_PREFIX_INFO_WINDOW}-edit`);
+        if(uiRefEditMarkerButton) {
+            uiRefEditMarkerButton.addEventListener(
                 Events.browser.click, 
                 editMarker.bind(this, InfoWindowManager, marker)
             );
