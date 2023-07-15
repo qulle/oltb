@@ -145,51 +145,10 @@ class BookmarkTool extends Control {
         this.uiRefBookmarkToolbox = document.querySelector(`#${ID_PREFIX}-toolbox`);
         this.uiRefBookmarkStack = this.uiRefBookmarkToolbox.querySelector(`#${ID_PREFIX}-stack`);
 
-        this.sortableBookmarkStack = Sortable.create(this.uiRefBookmarkStack, {
+        this.sortableBookmarkStack = this.createSortable(this.uiRefBookmarkStack, {
             group: SORTABLE_BOOKMARKS,
-            dataIdAttr: 'data-sort-index',
-            animation: Config.animationDuration.warp,
-            forceFallback: true,
-            handle: `.${CLASS_TOOLBOX_LIST}__handle`,
-            chosenClass: `${CLASS_TOOLBOX_LIST}__item--chosen`,
-            dragClass: `${CLASS_TOOLBOX_LIST}__item--drag`,
-            ghostClass: `${CLASS_TOOLBOX_LIST}__item--ghost`,
-            onEnd: (event) => {
-                // Callback data
-                const list = [];
-                const item = {
-                    id: event.item.getAttribute('data-id'),
-                    oldIndex: event.oldDraggableIndex,
-                    newIndex: event.newDraggableIndex
-                };
-
-                const ul = event.to;
-                ul.childNodes.forEach((li, index) => {
-                    // Note: Reverse the index so that 0 is at bottom of list not top
-                    const reversedIndex = ul.childNodes.length - index - INDEX_OFFSET;
-
-                    // Update data-attribute, this is used by Sortable.js to do the sorting
-                    li.setAttribute('data-sort-index', reversedIndex);
-
-                    // Update state that is stored in localStorage
-                    // This will keep track of the sort after a reload
-                    const bookmarkId = li.getAttribute('data-id');
-                    this.localStorage.sortMap[bookmarkId] = reversedIndex;
-
-                    // Update callback data
-                    list.push({
-                        bookmarkId: bookmarkId,
-                        index: reversedIndex
-                    });
-                });
-
-                StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
-
-                // User defined callback from constructor
-                if(this.options.dragged instanceof Function) {
-                    this.options.dragged(item, list);
-                }
-            }
+            callback: this.options.dragged,
+            sortMap: this.localStorage.sortMap
         });
                                 
         this.uiRefAddBookmarkButton = this.uiRefBookmarkToolbox.querySelector(`#${ID_PREFIX}-add-button`);
@@ -228,6 +187,55 @@ class BookmarkTool extends Control {
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
         window.addEventListener(Events.custom.settingsCleared, this.onWindowSettingsCleared.bind(this));
         window.addEventListener(Events.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
+    }
+
+    createSortable(element, options) {
+        return Sortable.create(element, {
+            group: options.group,
+            dataIdAttr: 'data-oltb-sort-index',
+            animation: Config.animationDuration.warp,
+            forceFallback: true,
+            handle: `.${CLASS_TOOLBOX_LIST}__handle`,
+            chosenClass: `${CLASS_TOOLBOX_LIST}__item--chosen`,
+            dragClass: `${CLASS_TOOLBOX_LIST}__item--drag`,
+            ghostClass: `${CLASS_TOOLBOX_LIST}__item--ghost`,
+            onEnd: (event) => {
+                // Callback data
+                const list = [];
+                const item = {
+                    id: event.item.getAttribute('data-oltb-id'),
+                    oldIndex: event.oldDraggableIndex,
+                    newIndex: event.newDraggableIndex
+                };
+
+                const ul = event.to;
+                ul.childNodes.forEach((li, index) => {
+                    // Note: Reverse the index so that 0 is at bottom of list not top
+                    const reversedIndex = ul.childNodes.length - index - INDEX_OFFSET;
+
+                    // Update data-attribute, this is used by Sortable.js to do the sorting
+                    li.setAttribute('data-oltb-sort-index', reversedIndex);
+
+                    // Update state that is stored in localStorage
+                    // This will keep track of the sort after a reload
+                    const id = li.getAttribute('data-oltb-id');
+                    options.sortMap[id] = reversedIndex;
+
+                    // Update callback data
+                    list.push({
+                        id: id,
+                        index: reversedIndex
+                    });
+                });
+
+                StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
+
+                // User defined callback from constructor
+                if(options.callback instanceof Function) {
+                    options.callback(item, list);
+                }
+            }
+        });
     }
 
     validateName(name) {
@@ -414,8 +422,8 @@ class BookmarkTool extends Control {
             footer: `
                 <span class="oltb-info-window__coordinates">${prettyCoordinates}</span>
                 <div class="oltb-info-window__buttons-wrapper">
-                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--crosshair oltb-tippy" title="Copy marker coordinates" id="${ID_PREFIX_INFO_WINDOW}-copy-coordinates" data-coordinates="${prettyCoordinates}"></button>
-                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--copy oltb-tippy" title="Copy marker text" id="${ID_PREFIX_INFO_WINDOW}-copy-text" data-copy="${bookmark.name}"></button>
+                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--crosshair oltb-tippy" title="Copy marker coordinates" id="${ID_PREFIX_INFO_WINDOW}-copy-coordinates" data-oltb-coordinates="${prettyCoordinates}"></button>
+                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--copy oltb-tippy" title="Copy marker text" id="${ID_PREFIX_INFO_WINDOW}-copy-text" data-oltb-copy="${bookmark.name}"></button>
                 </div>
             `
         };
@@ -477,8 +485,8 @@ class BookmarkTool extends Control {
             id: `oltb-bookmark-${bookmarkId}`,
             class: `${CLASS_TOOLBOX_LIST}__item`,
             attributes: {
-                'data-id': bookmarkId,
-                'data-sort-index': sortIndex
+                'data-oltb-id': bookmarkId,
+                'data-oltb-sort-index': sortIndex
             }
         });
 

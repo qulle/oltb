@@ -179,110 +179,22 @@ class LayerTool extends Control {
         this.uiRefMapLayerStack = this.uiRefLayersToolbox.querySelector(`#${ID_PREFIX}-map-stack`);
         this.uiRefAddMapLayerButton = this.uiRefLayersToolbox.querySelector(`#${ID_PREFIX}-map-stack-add-button`);
 
-        this.sortableMapLayerStack = Sortable.create(this.uiRefMapLayerStack, {
+        this.sortableMapLayerStack = this.createSortable(this.uiRefMapLayerStack, {
             group: SORTABLE_MAP_LAYERS,
-            dataIdAttr: 'data-sort-index',
-            animation: Config.animationDuration.warp,
-            forceFallback: true,
-            handle: `.${CLASS_TOOLBOX_LIST}__handle`,
-            chosenClass: `${CLASS_TOOLBOX_LIST}__item--chosen`,
-            dragClass: `${CLASS_TOOLBOX_LIST}__item--drag`,
-            ghostClass: `${CLASS_TOOLBOX_LIST}__item--ghost`,
-            onEnd: (event) => {
-                // Callback data
-                const list = [];
-                const item = {
-                    id: event.item.getAttribute('data-id'),
-                    oldIndex: event.oldDraggableIndex,
-                    newIndex: event.newDraggableIndex
-                };
-                
-                const ul = event.to;
-                ul.childNodes.forEach((li, index) => {
-                    // Note: Reverse the index so that 0 is at bottom of list not top
-                    const reversedIndex = ul.childNodes.length - index - INDEX_OFFSET;
-
-                    // Update data-attribute, this is used by Sortable.js to do the sorting
-                    li.setAttribute('data-sort-index', reversedIndex);
-
-                    // Update state that is stored in localStorage
-                    // This will keep track of the sort after a reload
-                    const layerId = li.getAttribute('data-id');
-                    this.localStorage.mapLayerSortMap[layerId] = reversedIndex;
-
-                    // Update each layer with the new ZIndex
-                    // OpenLayers will handle the rest
-                    LayerManager.setMapLayerZIndex(layerId, reversedIndex);
-
-                    // Update callback data
-                    list.push({
-                        layerId: layerId,
-                        index: reversedIndex
-                    });
-                });
-
-                StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
-
-                // User defined callback from constructor
-                if(this.options.mapLayerDragged instanceof Function) {
-                    this.options.mapLayerDragged(item, list);
-                }
-            }
+            callback: this.options.mapLayerDragged,
+            setZIndex: LayerManager.setMapLayerZIndex.bind(LayerManager),
+            sortMap: this.localStorage.mapLayerSortMap,
         });
 
         this.uiRefFeatureLayerStack = this.uiRefLayersToolbox.querySelector(`#${ID_PREFIX}-feature-stack`);
         this.uiRefAddFeatureLayerButton = this.uiRefLayersToolbox.querySelector(`#${ID_PREFIX}-feature-stack-add-button`);
         this.uiRefAddFeatureLayerText = this.uiRefLayersToolbox.querySelector(`#${ID_PREFIX}-feature-stack-add-text`);
 
-        this.sortableFeatureLayerStack = Sortable.create(this.uiRefFeatureLayerStack, {
+        this.sortableFeatureLayerStack = this.createSortable(this.uiRefFeatureLayerStack, {
             group: SORTABLE_FEATURE_LAYERS,
-            dataIdAttr: 'data-sort-index',
-            animation: Config.animationDuration.warp,
-            forceFallback: true,
-            handle: `.${CLASS_TOOLBOX_LIST}__handle`,
-            chosenClass: `${CLASS_TOOLBOX_LIST}__item--chosen`,
-            dragClass: `${CLASS_TOOLBOX_LIST}__item--drag`,
-            ghostClass: `${CLASS_TOOLBOX_LIST}__item--ghost`,
-            onEnd: (event) => {
-                // Callback data
-                const list = [];
-                const item = {
-                    id: event.item.getAttribute('data-id'),
-                    oldIndex: event.oldDraggableIndex,
-                    newIndex: event.newDraggableIndex
-                };
-
-                const ul = event.to;
-                ul.childNodes.forEach((li, index) => {
-                    // Note: Reverse the index so that 0 is at bottom of list not top
-                    const reversedIndex = ul.childNodes.length - index - INDEX_OFFSET;
-                    
-                    // Update data-attribute, this is used by Sortable.js to do the sorting
-                    li.setAttribute('data-sort-index', reversedIndex);
-
-                    // Update state that is stored in localStorage
-                    // This will keep track of the sort after a reload
-                    const layerId = li.getAttribute('data-id');
-                    this.localStorage.featureLayerSortMap[layerId] = reversedIndex;
-
-                    // Update each layer with the new ZIndex
-                    // OpenLayers will handle the rest
-                    LayerManager.setFeatureLayerZIndex(layerId, reversedIndex);
-
-                    // Update callback data
-                    list.push({
-                        layerId: layerId,
-                        index: reversedIndex
-                    });
-                });
-
-                StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
-
-                // User defined callback from constructor
-                if(this.options.featureLayerDragged instanceof Function) {
-                    this.options.featureLayerDragged(item, list);
-                }
-            }
+            callback: this.options.featureLayerDragged,
+            setZIndex: LayerManager.setFeatureLayerZIndex.bind(LayerManager),
+            sortMap: this.localStorage.featureLayerSortMap,
         });
 
         if(this.uiRefAddMapLayerButton) {
@@ -349,6 +261,58 @@ class LayerTool extends Control {
             name: this.uiRefAddFeatureLayerText.value
         });
         this.uiRefAddFeatureLayerText.value = '';
+    }
+
+    createSortable(element, options) {
+        return Sortable.create(element, {
+            group: options.group,
+            dataIdAttr: 'data-oltb-sort-index',
+            animation: Config.animationDuration.warp,
+            forceFallback: true,
+            handle: `.${CLASS_TOOLBOX_LIST}__handle`,
+            chosenClass: `${CLASS_TOOLBOX_LIST}__item--chosen`,
+            dragClass: `${CLASS_TOOLBOX_LIST}__item--drag`,
+            ghostClass: `${CLASS_TOOLBOX_LIST}__item--ghost`,
+            onEnd: (event) => {
+                // Callback data
+                const list = [];
+                const item = {
+                    id: event.item.getAttribute('data-oltb-id'),
+                    oldIndex: event.oldDraggableIndex,
+                    newIndex: event.newDraggableIndex
+                };
+
+                const ul = event.to;
+                ul.childNodes.forEach((li, index) => {
+                    // Note: Reverse the index so that 0 is at bottom of list not top
+                    const reversedIndex = ul.childNodes.length - index - INDEX_OFFSET;
+
+                    // Update data-attribute, this is used by Sortable.js to do the sorting
+                    li.setAttribute('data-oltb-sort-index', reversedIndex);
+
+                    // Update state that is stored in localStorage
+                    // This will keep track of the sort after a reload
+                    const id = li.getAttribute('data-oltb-id');
+                    options.sortMap[id] = reversedIndex;
+
+                    // Update each layer with the new ZIndex
+                    options.setZIndex(id, reversedIndex);
+
+                    // Update callback data
+                    list.push({
+                        id: id,
+                        index: reversedIndex
+                    });
+                });
+
+                StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
+
+                // User defined callback from constructor
+                if(options.callback instanceof Function) {
+                    options.callback(item, list);
+                }
+            }
+        });
     }
 
     handleClick() {
@@ -499,12 +463,16 @@ class LayerTool extends Control {
     onWindowMapLayerRemoved(event) {
         InfoWindowManager.hideOverlay();
 
-        const layerWrapper = event.detail.layerWrapper;
         const silent = event.detail.silent;
+        const layerWrapper = event.detail.layerWrapper;
+        const layerId = layerWrapper.getId();
 
         // Remove layer from UI
-        const uiRefLayer = this.uiRefMapLayerStack.querySelector(`#${ID_PREFIX}-map-${layerWrapper.getId()}`);
+        const uiRefLayer = this.uiRefMapLayerStack.querySelector(`#${ID_PREFIX}-map-${layerId}`);
         uiRefLayer?.remove();
+
+        // Delete stored sort index
+        delete this.localStorage.mapLayerSortMap[layerId];
 
         // User defined callback from constructor
         if(!silent &&this.options.mapLayerRemoved instanceof Function) {
@@ -568,19 +536,23 @@ class LayerTool extends Control {
     onWindowFeatureLayerRemoved(event) {
         InfoWindowManager.hideOverlay();
 
-        const layerWrapper = event.detail.layerWrapper;
         const silent = event.detail.silent;
+        const layerWrapper = event.detail.layerWrapper;
+        const layerId = layerWrapper.getId();
 
         // Remove layer from UI
         const uiRefLayer = this.uiRefFeatureLayerStack.querySelector(`#${ID_PREFIX}-feature-${layerWrapper.getId()}`);
         uiRefLayer?.remove();
+
+        // Delete stored sort index
+        delete this.localStorage.featureLayerSortMap[layerId];
 
         // Set new active feature layer
         this.removeActiveFeatureLayerClass();
         const activeFeatureLayer = LayerManager.getActiveFeatureLayer();
         if(activeFeatureLayer) {
             this.uiRefFeatureLayerStack.querySelectorAll('li').forEach((item) => {
-                if(activeFeatureLayer.getId() === item.getAttribute('data-id')) {
+                if(activeFeatureLayer.getId() === item.getAttribute('data-oltb-id')) {
                     item.classList.add(`${CLASS_TOOLBOX_LIST}__item--active`);
                 }
             });
@@ -641,8 +613,8 @@ class LayerTool extends Control {
             id: `${ID_PREFIX}-map-${layerId}`,
             class: `${CLASS_TOOLBOX_LIST}__item`,
             attributes: {
-                'data-id': layerId,
-                'data-sort-index': sortIndex
+                'data-oltb-id': layerId,
+                'data-oltb-sort-index': sortIndex
             }
         });
 
@@ -724,8 +696,8 @@ class LayerTool extends Control {
             id: `${ID_PREFIX}-feature-${layerId}`,
             class: `${CLASS_TOOLBOX_LIST}__item ${CLASS_TOOLBOX_LIST}__item--active`,
             attributes: {
-                'data-id': layerId,
-                'data-sort-index': sortIndex
+                'data-oltb-id': layerId,
+                'data-oltb-sort-index': sortIndex
             }
         });
 

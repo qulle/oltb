@@ -196,7 +196,7 @@ class InfoWindowManager {
         if(uiRefCopyMarkerCoordinatesButton) {
             uiRefCopyMarkerCoordinatesButton.addEventListener(
                 Events.browser.click, 
-                copyMarkerCoordinates.bind(this, InfoWindowManager, uiRefCopyMarkerCoordinatesButton.getAttribute('data-coordinates'))
+                copyMarkerCoordinates.bind(this, InfoWindowManager, uiRefCopyMarkerCoordinatesButton.getAttribute('data-oltb-coordinates'))
             );
         }
 
@@ -204,7 +204,7 @@ class InfoWindowManager {
         if(uiRefCopyMarkerInfoButton) {
             uiRefCopyMarkerInfoButton.addEventListener(
                 Events.browser.click, 
-                copyMarkerInfo.bind(this, InfoWindowManager, uiRefCopyMarkerInfoButton.getAttribute('data-copy'))
+                copyMarkerInfo.bind(this, InfoWindowManager, uiRefCopyMarkerInfoButton.getAttribute('data-oltb-copy'))
             );
         }
 
