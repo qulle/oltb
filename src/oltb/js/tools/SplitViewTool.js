@@ -20,7 +20,6 @@ const CLASS_TOOL_BUTTON = 'oltb-tool-button';
 const CLASS_TOOLBOX_SECTION = 'oltb-toolbox-section';
 const CLASS_SLIDER = 'oltb-slider';
 const ID_PREFIX = 'oltb-split-view';
-const RADIX = 10;
 
 const DefaultOptions = Object.freeze({
     click: undefined
@@ -190,13 +189,13 @@ class SplitViewTool extends Control {
         const layerWrapper = event.detail.layerWrapper;
 
         this.uiRefLeftSideSrc.childNodes.forEach((option) => {
-            if(parseInt(option.value, RADIX) === layerWrapper.getId()) {
+            if(option.value === layerWrapper.getId()) {
                 option.remove();
             }
         });
 
         this.uiRefRightSideSrc.childNodes.forEach((option) => {
-            if(parseInt(option.value, RADIX) === layerWrapper.getId()) {
+            if(option.value === layerWrapper.getId()) {
                 option.remove();
             }
         });
@@ -206,8 +205,8 @@ class SplitViewTool extends Control {
 
     updateTool() {
         this.sourceChange(
-            parseInt(this.uiRefLeftSideSrc.value, RADIX), 
-            parseInt(this.uiRefRightSideSrc.value, RADIX)
+            this.uiRefLeftSideSrc.value, 
+            this.uiRefRightSideSrc.value
         );
     }
 
