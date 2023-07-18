@@ -29,5 +29,6 @@ export const banner = `/*!
  * | (+) Browser Dtector 3.3.0              - https://github.com/sibiraj-s/browser-dtector                         |
  * | (+) Sortable JS 1.15.0                 - https://github.com/SortableJS/Sortable                               |
  * | (+) UUID JS 9.0.0                      - https://github.com/uuidjs/uuid                                       |
+ * | (+) Lodash 4.17.21                     - https://github.com/lodash/lodash                                     |
  * +---------------------------------------------------------------------------------------------------------------+
  */`;

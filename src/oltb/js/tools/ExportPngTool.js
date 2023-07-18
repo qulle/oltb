@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import html2canvas from 'html2canvas';
 import { DOM } from '../helpers/browser/DOM';
 import { Toast } from '../common/Toast';
@@ -18,9 +19,9 @@ const CLASS_TOOL_BUTTON = 'oltb-tool-button';
 const DefaultOptions = Object.freeze({
     filename: 'map-image-export',
     appendTime: false,
-    click: undefined,
-    exported: undefined,
-    error: undefined
+    onClick: undefined,
+    onExported: undefined,
+    onError: undefined
 });
 
 class ExportPngTool extends Control {
@@ -45,7 +46,7 @@ class ExportPngTool extends Control {
                 'data-tippy-content': `Export PNG (${ShortcutKeys.exportPngTool})`
             },
             listeners: {
-                'click': this.handleClick.bind(this)
+                'click': this.onClickTool.bind(this)
             }
         });
 
@@ -54,7 +55,7 @@ class ExportPngTool extends Control {
         ]);
 
         this.button = button;
-        this.options = { ...DefaultOptions, ...options };
+        this.options = _.merge(_.cloneDeep(DefaultOptions), options);
         this.isDebug = UrlManager.getParameter(Config.urlParameters.debug) === 'true';
         
         window.addEventListener(Events.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
@@ -63,7 +64,7 @@ class ExportPngTool extends Control {
 
     onWindowKeyUp(event) {
         if(isShortcutKeyOnly(event, ShortcutKeys.exportPngTool)) {
-            this.handleClick(event);
+            this.onClickTool(event);
         }
     }
 
@@ -76,12 +77,12 @@ class ExportPngTool extends Control {
         }
     }
 
-    handleClick() {
-        LogManager.logDebug(FILENAME, 'handleClick', 'User clicked tool');
+    onClickTool() {
+        LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
         
-        // User defined callback from constructor
-        if(this.options.click instanceof Function) {
-            this.options.click();
+        // Note: Consumer callback
+        if(this.options.onClick instanceof Function) {
+            this.options.onClick();
         }
 
         this.momentaryActivation();
@@ -144,9 +145,9 @@ class ExportPngTool extends Control {
 
             this.downloadCanvas(pngCanvas);
         }catch(error) {
-            // User defined callback from constructor
-            if(this.options.error instanceof Function) {
-                this.options.error(error);
+            // Note: Consumer callback
+            if(this.options.onError instanceof Function) {
+                this.options.onError(error);
             }
 
             const errorMessage = 'Failed to export canvas image';
@@ -178,9 +179,9 @@ class ExportPngTool extends Control {
             download(filename, content);
         }
 
-        // User defined callback from constructor
-        if(this.options.exported instanceof Function) {
-            this.options.exported(filename, content);
+        // Note: Consumer callback
+        if(this.options.onExported instanceof Function) {
+            this.options.onExported(filename, content);
         }
     }
 }

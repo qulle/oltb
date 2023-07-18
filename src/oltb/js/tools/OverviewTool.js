@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { OSM } from 'ol/source';
 import { DOM } from '../helpers/browser/DOM';
 import { Tile } from 'ol/layer';
@@ -18,7 +19,7 @@ const CLASS_TOOLBOX_SECTION = 'oltb-toolbox-section';
 const ID_PREFIX = 'oltb-overview';
 
 const DefaultOptions = Object.freeze({
-    click: undefined
+    onClick: undefined
 });
 
 const LocalStorageNodeName = LocalStorageKeys.overviewTool;
@@ -49,7 +50,7 @@ class OverviewTool extends Control {
                 'data-tippy-content': `Area overview (${ShortcutKeys.overviewTool})`
             },
             listeners: {
-                'click': this.handleClick.bind(this)
+                'click': this.onClickTool.bind(this)
             }
         });
 
@@ -59,7 +60,7 @@ class OverviewTool extends Control {
         
         this.button = button;
         this.active = false;
-        this.options = { ...DefaultOptions, ...options };
+        this.options = _.merge(_.cloneDeep(DefaultOptions), options);
 
         this.localStorage = StateManager.getAndMergeStateObject(
             LocalStorageNodeName, 
@@ -83,8 +84,7 @@ class OverviewTool extends Control {
 
         this.uiRefOverviewToolbox = document.querySelector(`#${ID_PREFIX}-toolbox`);
 
-        const uiRefToggleableTriggers = this.uiRefOverviewToolbox.querySelectorAll('.oltb-toggleable');
-        uiRefToggleableTriggers.forEach((toggle) => {
+        this.uiRefOverviewToolbox.querySelectorAll('.oltb-toggleable').forEach((toggle) => {
             toggle.addEventListener(Events.browser.click, this.onToggleToolbox.bind(this, toggle));
         });
 
@@ -111,7 +111,9 @@ class OverviewTool extends Control {
         }
 
         const targetName = toggle.dataset.oltbToggleableTarget;
-        document.getElementById(targetName)?.slideToggle(Config.animationDuration.fast, (collapsed) => {
+        const targetNode = document.getElementById(targetName);
+        
+        targetNode?.slideToggle(Config.animationDuration.fast, (collapsed) => {
             this.localStorage.collapsed = collapsed;
             StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
         
@@ -130,20 +132,20 @@ class OverviewTool extends Control {
 
     onWindowKeyUp(event) {
         if(isShortcutKeyOnly(event, ShortcutKeys.overviewTool)) {
-            this.handleClick(event);
+            this.onClickTool(event);
         }
     }
     
     onWindowSettingsCleared() {
-        this.localStorage = { ...LocalStorageDefaults };
+        this.localStorage = _.cloneDeep(LocalStorageDefaults);
     }
 
-    handleClick() {
-        LogManager.logDebug(FILENAME, 'handleClick', 'User clicked tool');
+    onClickTool() {
+        LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
 
-        // User defined callback from constructor
-        if(this.options.click instanceof Function) {
-            this.options.click();
+        // Note: Consumer callback
+        if(this.options.onClick instanceof Function) {
+            this.options.onClick();
         }
 
         if(this.active) {

@@ -1,3 +1,4 @@
+import _ from "lodash";
 import { hasNestedProperty } from "../../helpers/browser/HasNestedProperty";
 import { metersPerSecondToKnots, roundDownToNearest, roundToNearest } from "../../helpers/Conversions";
 
@@ -77,7 +78,7 @@ const DefaultOptions = Object.freeze({
 });
 
 const getWindBarb = function(options = {}) {
-    options = { ...DefaultOptions, ...options };
+    options = _.merge(_.cloneDeep(DefaultOptions), options);
 
     // HEX Colors are not valid in SVG 
     // Unless they are replaced with URL alternative char

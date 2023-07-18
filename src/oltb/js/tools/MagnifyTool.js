@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { DOM } from '../helpers/browser/DOM';
 import { Keys } from '../helpers/constants/Keys';
 import { Toast } from '../common/Toast';
@@ -20,7 +21,7 @@ const DefaultOptions = Object.freeze({
     radius: 75,
     min: 25,
     max: 150,
-    click: undefined
+    onClick: undefined
 });
 
 const LocalStorageNodeName = LocalStorageKeys.magnifyTool;
@@ -50,7 +51,7 @@ class MagnifyTool extends Control {
                 'data-tippy-content': `Magnifier (${ShortcutKeys.magnifyTool})`
             },
             listeners: {
-                'click': this.handleClick.bind(this)
+                'click': this.onClickTool.bind(this)
             }
         });
 
@@ -59,7 +60,7 @@ class MagnifyTool extends Control {
         ]);
         
         this.button = button;
-        this.options = { ...DefaultOptions, ...options };
+        this.options = _.merge(_.cloneDeep(DefaultOptions), options);
 
         this.localStorage = StateManager.getAndMergeStateObject(
             LocalStorageNodeName, 
@@ -78,16 +79,16 @@ class MagnifyTool extends Control {
 
     onWindowKeyUp(event) {
         if(isShortcutKeyOnly(event, ShortcutKeys.magnifyTool)) {
-            this.handleClick(event);
+            this.onClickTool(event);
         }
     }
 
-    handleClick() {
-        LogManager.logDebug(FILENAME, 'handleClick', 'User clicked tool');
+    onClickTool() {
+        LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
         
-        // User defined callback from constructor
-        if(this.options.click instanceof Function) {
-            this.options.click();
+        // Note: Consumer callback
+        if(this.options.onClick instanceof Function) {
+            this.options.onClick();
         }
 
         if(this.active) {

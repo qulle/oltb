@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { DOM } from '../helpers/browser/DOM';
 import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
@@ -14,8 +15,8 @@ const FILENAME = 'tools/ThemeTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
 
 const DefaultOptions = Object.freeze({
-    click: undefined,
-    changed: undefined
+    onClick: undefined,
+    onChanged: undefined
 });
 
 // Note: The values are flipped
@@ -66,7 +67,12 @@ class ThemeTool extends Control {
                 )} (${ShortcutKeys.themeTool})`
             },
             listeners: {
-                'click': this.handleClick.bind(this)
+                'click': this.onClickTool.bind(this)
+            },
+            prototypes:{
+                getTippy: function() {
+                    return this._tippy;
+                }
             }
         });
 
@@ -76,7 +82,7 @@ class ThemeTool extends Control {
         
         this.button = button;
         this.active = false;
-        this.options = { ...DefaultOptions, ...options };
+        this.options = _.merge(_.cloneDeep(DefaultOptions), options);
 
         this.localStorage = StateManager.getAndMergeStateObject(
             LocalStorageNodeName, 
@@ -89,7 +95,7 @@ class ThemeTool extends Control {
 
     onWindowKeyUp(event) {
         if(isShortcutKeyOnly(event, ShortcutKeys.themeTool)) {
-            this.handleClick(event);
+            this.onClickTool(event);
         }
     }
 
@@ -98,12 +104,12 @@ class ThemeTool extends Control {
         this.swithThemeFromTo(active, ThemesData.light);
     }
 
-    handleClick() {
-        LogManager.logDebug(FILENAME, 'handleClick', 'User clicked tool');
+    onClickTool() {
+        LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
 
-        // User defined callback from constructor
-        if(this.options.click instanceof Function) {
-            this.options.click();
+        // Note: Consumer callback
+        if(this.options.onClick instanceof Function) {
+            this.options.onClick();
         }
         
         this.momentaryActivation();
@@ -112,10 +118,10 @@ class ThemeTool extends Control {
     momentaryActivation() {
         this.toggleTheme();
 
-        // User defined callback from constructor
-        if(this.options.changed instanceof Function) {
+        // Note: Consumer callback
+        if(this.options.onChanged instanceof Function) {
             const active = this.getActiveTheme();
-            this.options.changed(active.class);
+            this.options.onChanged(active.class);
         }
     }
 
@@ -141,7 +147,7 @@ class ThemeTool extends Control {
         // Update toolbar button
         this.button.removeChild(this.button.firstElementChild);
         this.button.insertAdjacentHTML('afterbegin', to.icon);
-        this.button._tippy.setContent(`${to.tippyContent} (${ShortcutKeys.themeTool})`);
+        this.button.getTippy().setContent(`${to.tippyContent} (${ShortcutKeys.themeTool})`);
     }
 
     getInActiveThem() {

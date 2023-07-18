@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { DOM } from '../helpers/browser/DOM';
 import { Toast } from '../common/Toast';
 import { Config } from '../core/Config';
@@ -27,9 +28,9 @@ const DefaultOptions = Object.freeze({
     enableHighAccuracy: true,
     timeout: 10000,
     description: 'This is the location that the browser was able to find. It might not be your actual location.',
-    click: undefined,
-    location: undefined,
-    error: undefined
+    onClick: undefined,
+    onLocation: undefined,
+    onError: undefined
 });
 
 class MyLocationTool extends Control {
@@ -54,7 +55,7 @@ class MyLocationTool extends Control {
                 'data-tippy-content': `My Location (${ShortcutKeys.myLocationTool})`
             },
             listeners: {
-                'click': this.handleClick.bind(this)
+                'click': this.onClickTool.bind(this)
             }
         });
 
@@ -63,23 +64,23 @@ class MyLocationTool extends Control {
         ]);
 
         this.button = button;
-        this.options = { ...DefaultOptions, ...options };
+        this.options = _.merge(_.cloneDeep(DefaultOptions), options);
 
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
     }
 
     onWindowKeyUp(event) {
         if(isShortcutKeyOnly(event, ShortcutKeys.myLocationTool)) {
-            this.handleClick(event);
+            this.onClickTool(event);
         }
     }
 
-    handleClick() {
-        LogManager.logDebug(FILENAME, 'handleClick', 'User clicked tool');
+    onClickTool() {
+        LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
         
-        // User defined callback from constructor
-        if(this.options.click instanceof Function) {
-            this.options.click();
+        // Note: Consumer callback
+        if(this.options.onClick instanceof Function) {
+            this.options.onClick();
         }
         
         this.momentaryActivation();
@@ -180,7 +181,6 @@ class MyLocationTool extends Control {
         });
         layerWrapper.getLayer().getSource().addFeature(marker);
 
-        // Focus Location in view
         const zoom = 6;
         goToView(map, [lon, lat], zoom);
 
@@ -189,12 +189,12 @@ class MyLocationTool extends Control {
             InfoWindowManager.showOverly(marker, fromLonLat([lon, lat]));
         }, Config.animationDuration.normal);
 
-        // User defined callback from constructor
-        if(this.options.location instanceof Function) {
-            this.options.location(location);
+        // Note: Consumer callback
+        if(this.options.onLocation instanceof Function) {
+            this.options.onLocation(location);
         }
 
-        this.loadingToast.remove();
+        DOM.removeElement(this.loadingToast);
     }
 
     onError(error, toastPtr = Toast.error) {
@@ -205,12 +205,12 @@ class MyLocationTool extends Control {
             message: error.message
         });
         
-        // User defined callback from constructor
-        if(this.options.error instanceof Function) {
-            this.options.error(error);
+        // Note: Consumer callback
+        if(this.options.onError instanceof Function) {
+            this.options.onError(error);
         }
 
-        this.loadingToast.remove();
+        DOM.removeElement(this.loadingToast);
     }
 }
 

@@ -8,7 +8,7 @@ const FILENAME = 'info-window-manager/CopyMarkerInfo.js';
 const copyMarkerInfo = async function(InfoWindowManager, dataToCopy) {
     copyToClipboard(dataToCopy)
         .then(() => {
-            Toast.success({
+            Toast.info({
                 title: 'Copied',
                 message: 'Marker info copied to clipboard', 
                 autoremove: Config.autoRemovalDuation.normal

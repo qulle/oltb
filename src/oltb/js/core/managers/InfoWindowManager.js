@@ -218,9 +218,11 @@ class InfoWindowManager {
     }
 
     static hideOverlay() {
-        this.#title.innerHTML = '';
-        this.#content.innerHTML = '';
-        this.#footer.innerHTML = '';
+        DOM.clearElements([
+            this.#title,
+            this.#content,
+            this.#footer
+        ])
         
         this.#overlay.setPosition(undefined);
     }

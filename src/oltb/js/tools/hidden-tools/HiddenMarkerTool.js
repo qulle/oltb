@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { Events } from '../../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { LogManager } from '../../core/managers/LogManager';
@@ -14,9 +15,9 @@ const CLASS_FUNC_BUTTON = 'oltb-func-btn';
 const ID_PREFIX_INFO_WINDOW = 'oltb-info-window-marker';
 
 const DefaultOptions = Object.freeze({
-    added: undefined,
-    removed: undefined,
-    edited: undefined
+    onAdded: undefined,
+    onRemoved: undefined,
+    onEdited: undefined
 });
 
 class HiddenMarkerTool extends Control {
@@ -27,7 +28,7 @@ class HiddenMarkerTool extends Control {
             element: ElementManager.getToolbarElement()
         });
 
-        this.options = { ...DefaultOptions, ...options };
+        this.options = _.merge(_.cloneDeep(DefaultOptions), options);
 
         const createIcon = getIcon({
             path: SvgPaths.plusLarge.stroked
@@ -94,16 +95,16 @@ class HiddenMarkerTool extends Control {
                 
         layerWrapper.getLayer().getSource().addFeature(marker);
     
-        // User defined callback from constructor
-        if(this.options.added instanceof Function) {
-            this.options.added(marker);
+        // Note: Consumer callback
+        if(this.options.onAdded instanceof Function) {
+            this.options.onAdded(marker);
         }
     }
 
     onWindowFeatureEdited(event) {
-        // User defined callback from constructor
-        if(this.options.edited instanceof Function) {
-            this.options.edited(
+        // Note: Consumer callback
+        if(this.options.onEdited instanceof Function) {
+            this.options.onEdited(
                 event.detail.before, 
                 event.detail.after
             );
@@ -111,9 +112,9 @@ class HiddenMarkerTool extends Control {
     }
 
     onWindowFeatureRemoved(event) {
-        // User defined callback from constructor
-        if(this.options.removed instanceof Function) {
-            this.options.removed(event.detail.feature);
+        // Note: Consumer callback
+        if(this.options.onRemoved instanceof Function) {
+            this.options.onRemoved(event.detail.feature);
         }
     }
 }

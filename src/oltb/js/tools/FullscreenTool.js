@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { DOM } from '../helpers/browser/DOM';
 import { Toast } from '../common/Toast';
 import { listen } from 'ol/events';
@@ -22,9 +23,9 @@ const FILENAME = 'tools/FullscreenTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
 
 const DefaultOptions = Object.freeze({
-    click: undefined,
-    enter: undefined,
-    leave: undefined
+    onClick: undefined,
+    onEnter: undefined,
+    onLeave: undefined
 });
 
 class FullscreenTool extends Control {
@@ -58,7 +59,12 @@ class FullscreenTool extends Control {
                 )} (${ShortcutKeys.fullscreenTool})`
             },
             listeners: {
-                'click': this.handleClick.bind(this)
+                'click': this.onClickTool.bind(this)
+            },
+            prototypes:{
+                getTippy: function() {
+                    return this._tippy;
+                }
             }
         });
 
@@ -68,7 +74,7 @@ class FullscreenTool extends Control {
         
         this.button = button;
         this.active = false;
-        this.options = { ...DefaultOptions, ...options };
+        this.options = _.merge(_.cloneDeep(DefaultOptions), options);
 
         document.addEventListener(Events.browser.fullScreenChange, this.onFullScreenChange.bind(this));
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
@@ -76,16 +82,16 @@ class FullscreenTool extends Control {
 
     onWindowKeyUp(event) {
         if(isShortcutKeyOnly(event, ShortcutKeys.fullscreenTool)) {
-            this.handleClick(event);
+            this.onClickTool(event);
         }
     }
 
-    handleClick() {
-        LogManager.logDebug(FILENAME, 'handleClick', 'User clicked tool');
+    onClickTool() {
+        LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
 
-        // User defined callback from constructor
-        if(this.options.click instanceof Function) {
-            this.options.click();
+        // Note: Consumer callback
+        if(this.options.onClick instanceof Function) {
+            this.options.onClick();
         }
 
         this.momentaryActivation();
@@ -124,18 +130,18 @@ class FullscreenTool extends Control {
 
     onFullScreenChange(event) {
         if(document.fullscreenElement) {
-            this.button._tippy.setContent(`Exit fullscreen (${ShortcutKeys.fullscreenTool})`);
+            this.button.getTippy().setContent(`Exit fullscreen (${ShortcutKeys.fullscreenTool})`);
 
-            // User defined callback from constructor
-            if(this.options.enter instanceof Function) {
-                this.options.enter(event);
+            // Note: Consumer callback
+            if(this.options.onEnter instanceof Function) {
+                this.options.onEnter(event);
             }
         }else {
-            this.button._tippy.setContent(`Enter fullscreen (${ShortcutKeys.fullscreenTool})`);
+            this.button.getTippy().setContent(`Enter fullscreen (${ShortcutKeys.fullscreenTool})`);
 
-            // User defined callback from constructor
-            if(this.options.leave instanceof Function) {
-                this.options.leave(event);
+            // Note: Consumer callback
+            if(this.options.onLeave instanceof Function) {
+                this.options.onLeave(event);
             }
         }
     }

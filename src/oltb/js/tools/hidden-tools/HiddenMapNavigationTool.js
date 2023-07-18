@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { Toast } from '../../common/Toast';
 import { Config } from '../../core/Config';
 import { Events } from '../../helpers/constants/Events';
@@ -57,7 +58,7 @@ class HiddenMapNavigationTool extends Control {
             element: ElementManager.getToolbarElement()
         });
 
-        this.options = { ...DefaultOptions, ...options };
+        this.options = _.merge(_.cloneDeep(DefaultOptions), options);
         this.coordinatesModal = undefined;
 
         this.localStorage = StateManager.getAndMergeStateObject(
@@ -125,7 +126,7 @@ class HiddenMapNavigationTool extends Control {
 
         try {
             const markerDataParsed = JSON.parse(markerString);
-            const markerData = { ...DefaultUrlMarker, ...markerDataParsed };
+            const markerData = _.merge(_.cloneDeep(DefaultUrlMarker), markerDataParsed);
 
             LogManager.logDebug(FILENAME, 'onCreateUrlMarker', markerData);
 

@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { DOM } from '../helpers/browser/DOM';
 import { Stroke } from 'ol/style';
 import { Events } from '../helpers/constants/Events';
@@ -20,7 +21,7 @@ const DefaultOptions = Object.freeze({
     width: 2,
     showLabels: true,
     wrapX: true,
-    click: undefined
+    onClick: undefined
 });
 
 const LocalStorageNodeName = LocalStorageKeys.graticuleTool;
@@ -50,7 +51,7 @@ class GraticuleTool extends Control {
                 'data-tippy-content': `Show graticule (${ShortcutKeys.graticuleTool})`
             },
             listeners: {
-                'click': this.handleClick.bind(this)
+                'click': this.onClickTool.bind(this)
             }
         });
 
@@ -60,7 +61,7 @@ class GraticuleTool extends Control {
         
         this.button = button;
         this.active = false;
-        this.options = { ...DefaultOptions, ...options };
+        this.options = _.merge(_.cloneDeep(DefaultOptions), options);
 
         this.localStorage = StateManager.getAndMergeStateObject(
             LocalStorageNodeName, 
@@ -90,16 +91,16 @@ class GraticuleTool extends Control {
 
     onWindowKeyUp(event) {
         if(isShortcutKeyOnly(event, ShortcutKeys.graticuleTool)) {
-            this.handleClick(event);
+            this.onClickTool(event);
         }
     }    
 
-    handleClick() {
-        LogManager.logDebug(FILENAME, 'handleClick', 'User clicked tool');
+    onClickTool() {
+        LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
 
-        // User defined callback from constructor
-        if(this.options.click instanceof Function) {
-            this.options.click();
+        // Note: Consumer callback
+        if(this.options.onClick instanceof Function) {
+            this.options.onClick();
         }
 
         if(this.active) {

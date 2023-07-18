@@ -1,3 +1,4 @@
+import _ from "lodash";
 import { Config } from "../Config";
 import { LogManager } from './LogManager';
 
@@ -66,7 +67,7 @@ class StateManager {
     }
 
     static getAndMergeStateObject(name, defaultObject) {
-        return { ...defaultObject, ...this.getStateObject(name) };
+        return _.merge(_.cloneDeep(defaultObject), this.getStateObject(name));
     }
 
     static saveState() {

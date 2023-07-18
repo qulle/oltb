@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { DOM } from '../helpers/browser/DOM';
 import { Toast } from '../common/Toast';
 import { Events } from '../helpers/constants/Events';
@@ -16,9 +17,9 @@ const FILENAME = 'tools/ImportVectorLayerTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
 
 const DefaultOptions = Object.freeze({
-    click: undefined,
-    imported: undefined,
-    error: undefined
+    onClick: undefined,
+    onImported: undefined,
+    onError: undefined
 });
 
 class ImportVectorLayerTool extends Control {
@@ -43,7 +44,7 @@ class ImportVectorLayerTool extends Control {
                 'data-tippy-content': `Import Vector layer (${ShortcutKeys.importVectorLayerTool})`
             },
             listeners: {
-                'click': this.handleClick.bind(this)
+                'click': this.onClickTool.bind(this)
             }
         });
 
@@ -54,7 +55,7 @@ class ImportVectorLayerTool extends Control {
         this.button = button;
         this.fileReader = undefined;
         this.importLayerModal = undefined;
-        this.options = { ...DefaultOptions, ...options };
+        this.options = _.merge(_.cloneDeep(DefaultOptions), options);
         
         this.inputDialog = DOM.createElement({
             element: 'input',
@@ -72,16 +73,16 @@ class ImportVectorLayerTool extends Control {
 
     onWindowKeyUp(event) {
         if(isShortcutKeyOnly(event, ShortcutKeys.importVectorLayerTool)) {
-            this.handleClick(event);
+            this.onClickTool(event);
         }
     }
 
-    handleClick() {
-        LogManager.logDebug(FILENAME, 'handleClick', 'User clicked tool');
+    onClickTool() {
+        LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
         
-        // User defined callback from constructor
-        if(this.options.click instanceof Function) {
-            this.options.click();
+        // Note: Consumer callback
+        if(this.options.onClick instanceof Function) {
+            this.options.onClick();
         }
         
         this.momentaryActivation();
@@ -154,9 +155,9 @@ class ImportVectorLayerTool extends Control {
             });
             layerWrapper.getLayer().getSource().addFeatures(features);
     
-            // User defined callback from constructor
-            if(this.options.imported instanceof Function) {
-                this.options.imported(features);
+            // Note: Consumer callback
+            if(this.options.onImported instanceof Function) {
+                this.options.onImported(features);
             }
         }catch(error) {
             const errorMessage = 'Failed to import vector layer';
@@ -170,9 +171,9 @@ class ImportVectorLayerTool extends Control {
                 message: errorMessage
             });
 
-            // User defined callback from constructor
-            if(this.options.error instanceof Function) {
-                this.options.error(file, error);
+            // Note: Consumer callback
+            if(this.options.onError instanceof Function) {
+                this.options.onError(file, error);
             }
         }
     }

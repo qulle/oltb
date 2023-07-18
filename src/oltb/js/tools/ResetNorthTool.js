@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { DOM } from '../helpers/browser/DOM';
 import { Toast } from '../common/Toast';
 import { Dialog } from '../common/Dialog';
@@ -18,8 +19,8 @@ const FILENAME = 'tools/ResetNorthTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
 
 const DefaultOptions = Object.freeze({
-    click: undefined,
-    reset: undefined
+    onClick: undefined,
+    onReset: undefined
 });
 
 class ResetNorthTool extends Control {
@@ -44,7 +45,7 @@ class ResetNorthTool extends Control {
                 'data-tippy-content': `Reset North (${ShortcutKeys.resetNorthTool})`
             },
             listeners: {
-                'click': this.handleClick.bind(this)
+                'click': this.onClickTool.bind(this)
             }
         });
 
@@ -53,7 +54,7 @@ class ResetNorthTool extends Control {
         ]);
 
         this.button = button;
-        this.options = { ...DefaultOptions, ...options };
+        this.options = _.merge(_.cloneDeep(DefaultOptions), options);
 
         ContextMenu.addItem({
             icon: icon, 
@@ -66,7 +67,7 @@ class ResetNorthTool extends Control {
 
     onWindowKeyUp(event) {
         if(isShortcutKeyOnly(event, ShortcutKeys.resetNorthTool)) {
-            this.handleClick(event);
+            this.onClickTool(event);
         }
     }
 
@@ -109,12 +110,12 @@ class ResetNorthTool extends Control {
         });
     }
 
-    handleClick() {
-        LogManager.logDebug(FILENAME, 'handleClick', 'User clicked tool');
+    onClickTool() {
+        LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
 
-        // User defined callback from constructor
-        if(this.options.click instanceof Function) {
-            this.options.click();
+        // Note: Consumer callback
+        if(this.options.onClick instanceof Function) {
+            this.options.onClick();
         }
         
         this.momentaryActivation();
@@ -133,9 +134,9 @@ class ResetNorthTool extends Control {
         goToView(map, coordinates, zoom, 0);
 
         window.setTimeout(() => {
-            // User defined callback from constructor
-            if(this.options.reset instanceof Function) {
-                this.options.reset();
+            // Note: Consumer callback
+            if(this.options.onReset instanceof Function) {
+                this.options.onReset();
             }
         }, Config.animationDuration.normal);
     }

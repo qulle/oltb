@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { DOM } from '../../helpers/browser/DOM';
 import { Config } from '../../core/Config';
 import { Events } from '../../helpers/constants/Events';
@@ -20,7 +21,7 @@ class ToastBase {
     constructor(options = {}) {
         LogManager.logDebug(FILENAME, 'constructor', 'init');
         
-        this.options = { ...DefaultOptions, ...options };
+        this.options = _.merge(_.cloneDeep(DefaultOptions), options);
         this.#createToast();
     }
 
@@ -79,7 +80,7 @@ class ToastBase {
 
         if(this.options.autoremove) {
             window.setTimeout(() => {
-                this.remove();
+                DOM.removeElement(this);
             }, this.options.autoremove);
         }
     }
@@ -89,7 +90,7 @@ class ToastBase {
     
         // Remove the toast from DOM after animation finishes
         window.setTimeout(() => {
-            this.toast.remove();
+            DOM.removeElement(this.toast);
             
             if(this.options.onRemove instanceof Function) {
                 this.options.onRemove();

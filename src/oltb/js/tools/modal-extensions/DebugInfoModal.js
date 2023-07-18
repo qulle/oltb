@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import BrowserDetector from 'browser-dtector';
 import { DOM } from '../../helpers/browser/DOM';
 import { Toast } from '../../common/Toast';
@@ -29,7 +30,7 @@ class DebugInfoModal extends ModalBase {
             options.onClose
         );
         
-        this.options = { ...DefaultOptions, ...options };
+        this.options = _.merge(_.cloneDeep(DefaultOptions), options);
         this.#createModal();
     }
 
@@ -37,8 +38,7 @@ class DebugInfoModal extends ModalBase {
         const modalContent = this.#generateModalContent();
         this.show(modalContent);
 
-        const uiRefToggleableTriggers = modalContent.querySelectorAll('.oltb-toggleable');
-        uiRefToggleableTriggers.forEach((toggle) => {
+        modalContent.querySelectorAll('.oltb-toggleable').forEach((toggle) => {
             toggle.addEventListener(Events.browser.click, this.onToggleSection.bind(this, toggle));
         });
     }
@@ -464,7 +464,7 @@ class DebugInfoModal extends ModalBase {
 
     actionLoggingMap() {
         console.dir(this.options.map);
-        Toast.success({
+        Toast.info({
             title: 'Logged',
             message: 'Map object logged to console <strong>(F12)</strong>', 
             autoremove: Config.autoRemovalDuation.normal
@@ -476,7 +476,7 @@ class DebugInfoModal extends ModalBase {
 
         const uiRefEventLog = document.getElementById('oltb-event-log');
         if(uiRefEventLog) {
-            uiRefEventLog.innerHTML = '';
+            DOM.clearElement(uiRefEventLog);
         }
 
         Toast.info({

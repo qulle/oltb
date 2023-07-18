@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { DOM } from '../helpers/browser/DOM';
 import { Config } from '../core/Config';
 import { Events } from '../helpers/constants/Events';
@@ -15,7 +16,7 @@ const CLASS_TOOL_BUTTON = 'oltb-tool-button';
 
 const DefaultOptions = Object.freeze({
     onlyWhenGetParameter: false,
-    click: undefined
+    onClick: undefined
 });
 
 class DebugInfoTool extends Control {
@@ -40,7 +41,7 @@ class DebugInfoTool extends Control {
                 'data-tippy-content': `Debug info (${ShortcutKeys.debugInfoTool})`
             },
             listeners: {
-                'click': this.handleClick.bind(this)
+                'click': this.onClickTool.bind(this)
             }
         });
 
@@ -50,7 +51,7 @@ class DebugInfoTool extends Control {
 
         this.button = button;
         this.debugInfoModal = undefined;
-        this.options = { ...DefaultOptions, ...options };
+        this.options = _.merge(_.cloneDeep(DefaultOptions), options);
         
         // If the tool only should be visible in debug mode
         const isDebug = UrlManager.getParameter(Config.urlParameters.debug) === 'true';
@@ -64,16 +65,16 @@ class DebugInfoTool extends Control {
 
     onWindowKeyUp(event) {
         if(isShortcutKeyOnly(event, ShortcutKeys.debugInfoTool)) {
-            this.handleClick(event);
+            this.onHandleClick(event);
         }
     }
 
-    handleClick() {
-        LogManager.logDebug(FILENAME, 'handleClick', 'User clicked tool');
+    onClickTool() {
+        LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
         
-        // User defined callback from constructor
-        if(this.options.click instanceof Function) {
-            this.options.click();
+        // Note: Consumer callback
+        if(this.options.onClick instanceof Function) {
+            this.options.onClick();
         }
 
         this.momentaryActivation();

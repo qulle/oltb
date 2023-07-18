@@ -51,6 +51,7 @@
         "browser-dtector": "^3.3.0",
         "html2canvas": "^1.4.1",
         "jsts": "^2.9.3",
+        "lodash": "^4.17.21",
         "moment": "^2.29.4",
         "ol": "^7.4.0",
         "proj4": "^2.9.0",

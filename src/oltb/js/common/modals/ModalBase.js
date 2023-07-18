@@ -114,9 +114,9 @@ class ModalBase {
 
     close() {
         this.backdrop.removeEventListener(Events.browser.keyDown, trapFocus);
-        this.backdrop.remove();
+        DOM.removeElement(this.backdrop);
 
-        // User defined callback from constructor
+        // Note: Consumer callback
         if(this.onClose instanceof Function) {
             this.onClose();
         }

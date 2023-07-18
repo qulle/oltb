@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { Events } from '../../helpers/constants/Events';
 import { LogManager } from '../managers/LogManager';
 import { v4 as uuidv4 } from 'uuid';
@@ -123,7 +124,7 @@ class LayerManager {
         layerWrapper.name = this.#validateName(layerWrapper.name);
         LogManager.logDebug(FILENAME, 'addMapLayer', layerWrapper.name);
 
-        const mergedOptions = { ...DefaultMapLayerOptions, ...options };
+        const mergedOptions = _.merge(_.cloneDeep(DefaultMapLayerOptions), options);
         this.#addPropertiesInterface(layerWrapper);
 
         if(!layerWrapper.getId()) {
@@ -227,7 +228,7 @@ class LayerManager {
     //-------------------------------------------
 
     static addFeatureLayer(options = {}) {
-        const mergedOptions = { ...DefaultFeatureLayerOptions, ...options };
+        const mergedOptions = _.merge(_.cloneDeep(DefaultMapLayerOptions), options);
         mergedOptions.name = this.#validateName(mergedOptions.name);
         LogManager.logDebug(FILENAME, 'addFeatureLayer', mergedOptions.name);
 

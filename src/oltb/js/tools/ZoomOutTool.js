@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { DOM } from '../helpers/browser/DOM';
 import { Config } from '../core/Config';
 import { Events } from '../helpers/constants/Events';
@@ -15,8 +16,8 @@ const CLASS_TOOL_BUTTON = 'oltb-tool-button';
 
 const DefaultOptions = Object.freeze({
     delta: -1,
-    click: undefined,
-    zoomed: undefined
+    onClick: undefined,
+    onZoomed: undefined
 });
 
 class ZoomOutTool extends Control {
@@ -41,7 +42,7 @@ class ZoomOutTool extends Control {
                 'data-tippy-content': `Zoom out (${ShortcutKeys.zoomOutTool})`
             },
             listeners: {
-                'click': this.handleClick.bind(this)
+                'click': this.onClickTool.bind(this)
             }
         });
 
@@ -50,23 +51,23 @@ class ZoomOutTool extends Control {
         ]);
 
         this.button = button;
-        this.options = { ...DefaultOptions, ...options };
+        this.options = _.merge(_.cloneDeep(DefaultOptions), options);
 
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
     }
 
     onWindowKeyUp(event) {
         if(isShortcutKeyOnly(event, ShortcutKeys.zoomOutTool)) {
-            this.handleClick(event);
+            this.onClickTool(event);
         }
     }
 
-    handleClick() {
-        LogManager.logDebug(FILENAME, 'handleClick', 'User clicked tool');
+    onClickTool() {
+        LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
 
-        // User defined callback from constructor
-        if(this.options.click instanceof Function) {
-            this.options.click();
+        // Note: Consumer callback
+        if(this.options.onClick instanceof Function) {
+            this.options.onClick();
         }
         
         this.momentaryActivation();
@@ -86,9 +87,9 @@ class ZoomOutTool extends Control {
         goToView(map, coordiantes, newZoom);
 
         window.setTimeout(() => {
-            // User defined callback from constructor
-            if(this.options.zoomed instanceof Function) {
-                this.options.zoomed();
+            // Note: Consumer callback
+            if(this.options.onZoomed instanceof Function) {
+                this.options.onZoomed();
             }
         }, Config.animationDuration.normal);
     }

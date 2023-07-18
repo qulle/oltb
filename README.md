@@ -47,6 +47,7 @@ Have a look at the [Internal Development Documentation](https://github.com/qulle
 10. [Browser Dtector 3.3.0](https://github.com/sibiraj-s/browser-dtector)
 11. [Sortable JS 1.15.0](https://github.com/SortableJS/Sortable)
 12. [UUID JS 9.0.0](https://github.com/uuidjs/uuid)
+13. [Lodash 4.17.21](https://github.com/lodash/lodash)
 
 ## Dev Dependencies
 1. [Parcel 2.9.2](https://parceljs.org/)

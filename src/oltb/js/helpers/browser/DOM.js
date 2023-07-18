@@ -37,6 +37,11 @@ class DOM {
         for(const attribute in options.attributes) {
             element.setAttribute(attribute, options.attributes[attribute]);
         }
+
+        // Custom element prototypes
+        for(const proto in options.prototypes) {
+            element[proto] = options.prototypes[proto];
+        }
     
         // Attach given listeners and callbacks
         for(const listener in options.listeners) {
@@ -53,6 +58,26 @@ class DOM {
         }
 
         return element;
+    }
+
+    static removeElements(elements = []) {
+        elements.forEach((element) => {
+            this.removeElement(element);
+        });
+    }
+
+    static removeElement(element) {
+        element.remove();
+    }
+
+    static clearElements(elements = []) {
+        elements.forEach((element) => {
+            this.clearElement(element);
+        });
+    }
+
+    static clearElement(element) {
+        element.innerHTML = '';
     }
 
     static appendChildren(element, children = []) {

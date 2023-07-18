@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { DOM } from '../helpers/browser/DOM';
 import { Draw } from 'ol/interaction';
 import { Keys } from '../helpers/constants/Keys';
@@ -30,12 +31,12 @@ const CLASS_TOOLBOX_SECTION = 'oltb-toolbox-section';
 const ID_PREFIX = 'oltb-draw';
 
 const DefaultOptions = Object.freeze({
-    click: undefined,
-    start: undefined,
-    end: undefined,
-    abort: undefined,
-    error: undefined,
-    intersected: undefined
+    onClick: undefined,
+    onStart: undefined,
+    onEnd: undefined,
+    onAbort: undefined,
+    onError: undefined,
+    onIntersected: undefined
 });
 
 const LocalStorageNodeName = LocalStorageKeys.drawTool;
@@ -70,7 +71,7 @@ class DrawTool extends Control {
                 'data-tippy-content': `Draw (${ShortcutKeys.drawTool})`
             },
             listeners: {
-                'click': this.handleClick.bind(this)
+                'click': this.onClickTool.bind(this)
             }
         });
 
@@ -81,7 +82,7 @@ class DrawTool extends Control {
         this.button = button;
         this.active = false;
         this.intersectedFeatures = [];
-        this.options = { ...DefaultOptions, ...options };
+        this.options = _.merge(_.cloneDeep(DefaultOptions), options);
 
         this.localStorage = StateManager.getAndMergeStateObject(
             LocalStorageNodeName, 
@@ -152,8 +153,7 @@ class DrawTool extends Control {
 
         this.uiRefDrawToolbox = document.querySelector(`#${ID_PREFIX}-toolbox`);
 
-        const uiRefToggleableTriggers = this.uiRefDrawToolbox.querySelectorAll('.oltb-toggleable');
-        uiRefToggleableTriggers.forEach((toggle) => {
+        this.uiRefDrawToolbox.querySelectorAll('.oltb-toggleable').forEach((toggle) => {
             toggle.addEventListener(Events.browser.click, this.onToggleToolbox.bind(this, toggle));
         });
 
@@ -184,7 +184,9 @@ class DrawTool extends Control {
 
     onToggleToolbox(toggle) {
         const targetName = toggle.dataset.oltbToggleableTarget;
-        document.getElementById(targetName)?.slideToggle(Config.animationDuration.fast, (collapsed) => {
+        const targetNode = document.getElementById(targetName);
+        
+        targetNode?.slideToggle(Config.animationDuration.fast, (collapsed) => {
             this.localStorage.collapsed = collapsed;
             StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
         });
@@ -212,15 +214,15 @@ class DrawTool extends Control {
                 this.interaction.removeLastPoint();
             }
         }else if(isShortcutKeyOnly(event, ShortcutKeys.drawTool)) {
-            this.handleClick(event);
+            this.onClickTool(event);
         }
     }
 
     onWindowSettingsCleared() {
         // Update runtime copy of localStorage to default
-        this.localStorage = { ...LocalStorageDefaults };
+        this.localStorage = _.cloneDeep(LocalStorageDefaults);
 
-        // Rest UI components
+        // Rest UI-components
         this.uiRefFillColor.setAttribute('data-oltb-color', this.localStorage.fillColor);
         this.uiRefFillColor.firstElementChild.style.backgroundColor = this.localStorage.fillColor;
 
@@ -263,12 +265,12 @@ class DrawTool extends Control {
         this.deActivateTool();
     }
 
-    handleClick() {
-        LogManager.logDebug(FILENAME, 'handleClick', 'User clicked tool');
+    onClickTool() {
+        LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
 
-        // User defined callback from constructor
-        if(this.options.click instanceof Function) {
-            this.options.click();
+        // Note: Consumer callback
+        if(this.options.onClick instanceof Function) {
+            this.options.onClick();
         }
 
         if(this.active) {
@@ -377,9 +379,9 @@ class DrawTool extends Control {
     }
 
     onDrawStart(event) {
-        // User defined callback from constructor
-        if(this.options.start instanceof Function) {
-            this.options.start(event);
+        // Note: Consumer callback
+        if(this.options.onStart instanceof Function) {
+            this.options.onStart(event);
         }
     }
 
@@ -418,9 +420,9 @@ class DrawTool extends Control {
 
         source.addFeature(feature);
 
-        // User defined callback from constructor
-        if(this.options.end instanceof Function) {
-            this.options.end(event);
+        // Note: Consumer callback
+        if(this.options.onEnd instanceof Function) {
+            this.options.onEnd(event);
         }
     }
 
@@ -454,25 +456,25 @@ class DrawTool extends Control {
             });
         }
 
-        // User defined callback from constructor
-        if(this.options.intersected instanceof Function) {
-            this.options.intersected(event, this.intersectedFeatures);
+        // Note: Consumer callback
+        if(this.options.onIntersected instanceof Function) {
+            this.options.onIntersected(event, this.intersectedFeatures);
         }
 
         this.intersectedFeatures = [];
     }
 
     onDrawAbort(event) {
-        // User defined callback from constructor
-        if(this.options.abort instanceof Function) {
-            this.options.abort(event);
+        // Note: Consumer callback
+        if(this.options.onAbort instanceof Function) {
+            this.options.onAbort(event);
         }
     }
 
     onDrawError(event) {
-        // User defined callback from constructor
-        if(this.options.error instanceof Function) {
-            this.options.error(event);
+        // Note: Consumer callback
+        if(this.options.onError instanceof Function) {
+            this.options.onError(event);
         }
     }
 }

@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { DOM } from '../../helpers/browser/DOM';
 import { DialogBase } from './DialogBase';
 import { LogManager } from '../../core/managers/LogManager';
@@ -18,7 +19,7 @@ class Alert extends DialogBase {
 
         super();
         
-        this.options = { ...DefaultOptions, ...options };
+        this.options = _.merge(_.cloneDeep(DefaultOptions), options);
         this.#createDialog();
     }
 

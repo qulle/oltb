@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { DOM } from '../helpers/browser/DOM';
 import { Keys } from '../helpers/constants/Keys';
 import { Config } from '../core/Config';
@@ -40,7 +41,7 @@ class ContextMenu extends Control {
             })
         });
 
-        this.options = { ...DefaultOptions, ...options };
+        this.options = _.merge(_.cloneDeep(DefaultOptions), options);
         this.menu = this.element;
 
         ContextMenu.#isDebug = UrlManager.getParameter(Config.urlParameters.debug) === 'true';

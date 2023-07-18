@@ -1,3 +1,5 @@
+import _ from "lodash";
+
 const SvgPaths = Object.freeze({
     arrowClockwise: Object.freeze({
         stroked: `
@@ -362,7 +364,7 @@ const DefaultOptions = Object.freeze({
 });
 
 const getIcon = function(options = {}) {
-    options = { ...DefaultOptions, ...options };
+    options = _.merge(_.cloneDeep(DefaultOptions), options);
 
     // HEX Colors are not valid in SVG 
     // Unless they are replaced with URL alternative char

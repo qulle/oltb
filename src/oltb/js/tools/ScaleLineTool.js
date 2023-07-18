@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { DOM } from '../helpers/browser/DOM';
 import { Events } from '../helpers/constants/Events';
 import { LogManager } from '../core/managers/LogManager';
@@ -14,7 +15,7 @@ const CLASS_TOOL_BUTTON = 'oltb-tool-button';
 
 const DefaultOptions = Object.freeze({
     units: 'metric',
-    click: undefined
+    onClick: undefined
 });
 
 const LocalStorageNodeName = LocalStorageKeys.scaleLineTool;
@@ -44,7 +45,7 @@ class ScaleLineTool extends Control {
                 'data-tippy-content': `Scale line (${ShortcutKeys.scaleLineTool})`
             },
             listeners: {
-                'click': this.handleClick.bind(this)
+                'click': this.onClickTool.bind(this)
             }
         });
 
@@ -54,7 +55,7 @@ class ScaleLineTool extends Control {
         
         this.button = button;
         this.active = false;
-        this.options = { ...DefaultOptions, ...options };
+        this.options = _.merge(_.cloneDeep(DefaultOptions), options);
         
         this.scaleLine = new ScaleLine({
             units: this.options.units
@@ -77,16 +78,16 @@ class ScaleLineTool extends Control {
 
     onWindowKeyUp(event) {
         if(isShortcutKeyOnly(event, ShortcutKeys.scaleLineTool)) {
-            this.handleClick(event);
+            this.onClickTool(event);
         }
     }
 
-    handleClick() {
-        LogManager.logDebug(FILENAME, 'handleClick', 'User clicked tool');
+    onClickTool() {
+        LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
 
-        // User defined callback from constructor
-        if(this.options.click instanceof Function) {
-            this.options.click();
+        // Note: Consumer callback
+        if(this.options.onClick instanceof Function) {
+            this.options.onClick();
         }
 
         if(this.active) {

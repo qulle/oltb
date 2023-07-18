@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { DOM } from '../../helpers/browser/DOM';
 import { ModalBase } from '../../common/modals/ModalBase';
 import { LogManager } from '../../core/managers/LogManager';
@@ -26,7 +27,7 @@ class SettingsModal extends ModalBase {
             options.onClose
         );
         
-        this.options = { ...DefaultOptions, ...options };
+        this.options = _.merge(_.cloneDeep(DefaultOptions), options);
         this.#createModal();
     }
 

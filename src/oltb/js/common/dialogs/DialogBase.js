@@ -47,7 +47,7 @@ class DialogBase {
 
     close() {
         this.backdrop.removeEventListener(Events.browser.keyDown, trapFocus);
-        this.backdrop.remove();
+        DOM.removeElement(this.backdrop);
     }
 }
 

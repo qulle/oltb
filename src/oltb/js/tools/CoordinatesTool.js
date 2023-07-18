@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { DOM } from '../helpers/browser/DOM';
 import { Toast } from '../common/Toast';
 import { Config } from '../core/Config';
@@ -27,8 +28,8 @@ const ID_PREFIX = 'oltb-coordinates';
 const KEY_TOOLTIP = 'coordinates';
 
 const DefaultOptions = Object.freeze({
-    click: undefined,
-    mapClicked: undefined
+    onClick: undefined,
+    onMapClicked: undefined
 });
 
 const LocalStorageNodeName = LocalStorageKeys.coordinatesTool;
@@ -59,7 +60,7 @@ class CoordinatesTool extends Control {
                 'data-tippy-content': `Show coordinates (${ShortcutKeys.coordinatesTool})`
             },
             listeners: {
-                'click': this.handleClick.bind(this)
+                'click': this.onClickTool.bind(this)
             }
         });
 
@@ -71,7 +72,7 @@ class CoordinatesTool extends Control {
         this.active = false;
         this.tooltipItem = undefined;
         this.projections = new Map();
-        this.options = { ...DefaultOptions, ...options };
+        this.options = _.merge(_.cloneDeep(DefaultOptions), options);
 
         this.localStorage = StateManager.getAndMergeStateObject(
             LocalStorageNodeName, 
@@ -110,8 +111,7 @@ class CoordinatesTool extends Control {
         this.uiRefCoordinatesFormat.value = this.localStorage.coordinatesFormat;
         this.uiRefCoordinatesFormat.addEventListener(Events.browser.change, this.onCoordinatesFormatChange.bind(this));
 
-        const uiRefToggleableTriggers = this.uiRefCoordinatesToolbox.querySelectorAll('.oltb-toggleable');
-        uiRefToggleableTriggers.forEach((toggle) => {
+        this.uiRefCoordinatesToolbox.querySelectorAll('.oltb-toggleable').forEach((toggle) => {
             toggle.addEventListener(Events.browser.click, this.onToggleToolbox.bind(this, toggle));
         });
 
@@ -131,7 +131,9 @@ class CoordinatesTool extends Control {
     
     onToggleToolbox(toggle) {
         const targetName = toggle.dataset.oltbToggleableTarget;
-        document.getElementById(targetName)?.slideToggle(Config.animationDuration.fast, (collapsed) => {
+        const targetNode = document.getElementById(targetName);
+        
+        targetNode?.slideToggle(Config.animationDuration.fast, (collapsed) => {
             this.localStorage.collapsed = collapsed;
             StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
         });
@@ -145,7 +147,7 @@ class CoordinatesTool extends Control {
 
     onWindowKeyDown(event) {
         if(isShortcutKeyOnly(event, ShortcutKeys.coordinatesTool)) {
-            this.handleClick(event);
+            this.onClickTool(event);
         }
     }
 
@@ -154,12 +156,12 @@ class CoordinatesTool extends Control {
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 
-    handleClick() {
-        LogManager.logDebug(FILENAME, 'handleClick', 'User clicked tool');
+    onClickTool() {
+        LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
 
-        // User defined callback from constructor
-        if(this.options.click instanceof Function) {
-            this.options.click();
+        // Note: Consumer callback
+        if(this.options.onClick instanceof Function) {
+            this.options.onClick();
         }
         
         if(this.active) {
@@ -226,7 +228,7 @@ class CoordinatesTool extends Control {
     }
 
     deActivateTool() {
-        this.uiRefCoordinatesTable.innerHTML = '';
+        DOM.clearElement(this.uiRefCoordinatesTable);
         TooltipManager.pop(KEY_TOOLTIP);
         
         unByKey(this.onPointerMoveListener);
@@ -316,9 +318,9 @@ class CoordinatesTool extends Control {
             });
         });
 
-        // User defined callback from constructor
-        if(this.options.mapClicked instanceof Function) {
-            this.options.mapClicked(allCoordinates);
+        // Note: Consumer callback
+        if(this.options.onMapClicked instanceof Function) {
+            this.options.onMapClicked(allCoordinates);
         }
     }
 
@@ -337,7 +339,7 @@ class CoordinatesTool extends Control {
 
         copyToClipboard(prettyCoordinates)
             .then(() => {
-                Toast.success({
+                Toast.info({
                     title: 'Copied',
                     message: 'Coordinates copied to clipboard', 
                     autoremove: Config.autoRemovalDuation.normal

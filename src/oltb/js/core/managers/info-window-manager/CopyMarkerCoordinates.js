@@ -8,7 +8,7 @@ const FILENAME = 'info-window-manager/CopyMarkerCoordinates.js';
 const copyMarkerCoordinates = async function(InfoWindowManager, data) {
     copyToClipboard(data)
         .then(() => {
-            Toast.success({
+            Toast.info({
                 title: 'Copied',
                 message: 'Marker coordinates copied to clipboard', 
                 autoremove: Config.autoRemovalDuation.normal

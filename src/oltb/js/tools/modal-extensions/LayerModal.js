@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { DOM } from '../../helpers/browser/DOM';
 import { Config } from '../../core/Config';
 import { ModalBase } from '../../common/modals/ModalBase';
@@ -29,7 +30,7 @@ class LayerModal extends ModalBase {
             options.onClose
         );
         
-        this.options = { ...DefaultOptions, ...options };
+        this.options = _.merge(_.cloneDeep(DefaultOptions), options);
         this.#createModal();
     }
 

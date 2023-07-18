@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { DOM } from '../helpers/browser/DOM';
 import { Toast } from '../common/Toast';
 import { Config } from '../core/Config';
@@ -18,8 +19,8 @@ const FILENAME = 'tools/SettingsTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
 
 const DefaultOptions = Object.freeze({
-    click: undefined,
-    cleared: undefined
+    onClick: undefined,
+    onCleared: undefined
 });
 
 class SettingsTool extends Control {
@@ -44,7 +45,7 @@ class SettingsTool extends Control {
                 'data-tippy-content': `Settings (${ShortcutKeys.settingsTool})`
             },
             listeners: {
-                'click': this.handleClick.bind(this)
+                'click': this.onClickTool.bind(this)
             }
         });
 
@@ -54,7 +55,7 @@ class SettingsTool extends Control {
 
         this.button = button;
         this.settingsModal = undefined;
-        this.options = { ...DefaultOptions, ...options };
+        this.options = _.merge(_.cloneDeep(DefaultOptions), options);
 
         ContextMenu.addItem({
             icon: icon, 
@@ -67,7 +68,7 @@ class SettingsTool extends Control {
 
     onWindowKeyUp(event) {
         if(isShortcutKeyOnly(event, ShortcutKeys.settingsTool)) {
-            this.handleClick(event);
+            this.onClickTool(event);
         }
     }
 
@@ -96,21 +97,21 @@ class SettingsTool extends Control {
             manager.clear();
         });
 
-        // User defined callback from constructor
-        if(this.options.cleared instanceof Function) {
-            this.options.cleared();
+        // Note: Consumer callback
+        if(this.options.onCleared instanceof Function) {
+            this.options.onCleared();
         }
 
         // Emit event so that any tool can clean up
         window.dispatchEvent(new CustomEvent(Events.custom.settingsCleared));
     }
 
-    handleClick() {
-        LogManager.logDebug(FILENAME, 'handleClick', 'User clicked tool');
+    onClickTool() {
+        LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
 
-        // User defined callback from constructor
-        if(this.options.click instanceof Function) {
-            this.options.click();
+        // Note: Consumer callback
+        if(this.options.onClick instanceof Function) {
+            this.options.onClick();
         }
 
         this.momentaryActivation();

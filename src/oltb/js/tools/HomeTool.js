@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { DOM } from '../helpers/browser/DOM';
 import { Toast } from '../common/Toast';
 import { Config } from '../core/Config';
@@ -19,8 +20,8 @@ const DefaultOptions = Object.freeze({
     lon: 18.1201,
     lat: 35.3518,
     zoom: 3,
-    click: undefined,
-    home: undefined
+    onClick: undefined,
+    onHome: undefined
 });
 
 class HomeTool extends Control {
@@ -45,7 +46,7 @@ class HomeTool extends Control {
                 'data-tippy-content': `Zoom home (${ShortcutKeys.homeTool})`
             },
             listeners: {
-                'click': this.handleClick.bind(this)
+                'click': this.onClickTool.bind(this)
             }
         });
 
@@ -54,7 +55,7 @@ class HomeTool extends Control {
         ]);
 
         this.button = button;
-        this.options = { ...DefaultOptions, ...options };
+        this.options = _.merge(_.cloneDeep(DefaultOptions), options);
 
         this.homeLocation = [this.options.lon, this.options.lat];
         this.homeZoom = this.options.zoom;
@@ -74,16 +75,16 @@ class HomeTool extends Control {
 
     onWindowKeyUp(event) {
         if(isShortcutKeyOnly(event, ShortcutKeys.homeTool)) {
-            this.handleClick(event);
+            this.onClickTool(event);
         }
     }
 
-    handleClick() {
-        LogManager.logDebug(FILENAME, 'handleClick', 'User clicked tool');
+    onClickTool() {
+        LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
 
-        // User defined callback from constructor
-        if(this.options.click instanceof Function) {
-            this.options.click();
+        // Note: Consumer callback
+        if(this.options.onClick instanceof Function) {
+            this.options.onClick();
         }
         
         this.momentaryActivation();
@@ -106,9 +107,9 @@ class HomeTool extends Control {
         goToView(map, coordiantes, zoom);
 
         window.setTimeout(() => {
-            // User defined callback from constructor
-            if(this.options.home instanceof Function) {
-                this.options.home();
+            // Note: Consumer callback
+            if(this.options.onHome instanceof Function) {
+                this.options.onHome();
             }
         }, Config.animationDuration.normal);
     }

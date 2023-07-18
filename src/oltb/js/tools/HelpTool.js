@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { DOM } from '../helpers/browser/DOM';
 import { Toast } from '../common/Toast';
 import { Dialog } from '../common/Dialog';
@@ -15,7 +16,7 @@ const CLASS_TOOL_BUTTON = 'oltb-tool-button';
 const DefaultOptions = Object.freeze({
     url: 'https://github.com/qulle/oltb',
     target: '_blank',
-    click: undefined
+    onClick: undefined
 });
 
 class HelpTool extends Control {
@@ -40,7 +41,7 @@ class HelpTool extends Control {
                 'data-tippy-content': `Help (${ShortcutKeys.helpTool})`
             },
             listeners: {
-                'click': this.handleClick.bind(this)
+                'click': this.onClickTool.bind(this)
             }
         });
 
@@ -49,7 +50,7 @@ class HelpTool extends Control {
         ]);
 
         this.button = button;
-        this.options = { ...DefaultOptions, ...options };
+        this.options = _.merge(_.cloneDeep(DefaultOptions), options);
 
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
     }
@@ -62,18 +63,18 @@ class HelpTool extends Control {
                 confirmClass: Dialog.Success,
                 confirmText: 'Open Help',
                 onConfirm: () => {
-                    this.handleClick();
+                    this.onClickTool();
                 }
             });
         }
     }
 
-    handleClick() {
-        LogManager.logDebug(FILENAME, 'handleClick', 'User clicked tool');
+    onClickTool() {
+        LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
         
-        // User defined callback from constructor
-        if(this.options.click instanceof Function) {
-            this.options.click();
+        // Note: Consumer callback
+        if(this.options.onClick instanceof Function) {
+            this.options.onClick();
         }
 
         this.momentaryActivation();

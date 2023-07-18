@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { Point } from 'ol/geom';
 import { Feature } from 'ol';
 import { fromLonLat } from 'ol/proj';
@@ -25,7 +26,7 @@ const DefaultOptions = Object.freeze({
 });
 
 const generateWindBarb = function(options = {}) {
-    options = { ...DefaultOptions, ...options };
+    options = _.merge(_.cloneDeep(DefaultOptions), options);
 
     const windBarb = new Feature({
         geometry: new Point(fromLonLat([

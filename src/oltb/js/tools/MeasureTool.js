@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { DOM } from '../helpers/browser/DOM';
 import { Draw } from 'ol/interaction';
 import { Keys } from '../helpers/constants/Keys';
@@ -32,11 +33,11 @@ const ID_PREFIX = 'oltb-measure';
 const KEY_TOOLTIP = 'measure';
 
 const DefaultOptions = Object.freeze({
-    click: undefined,
-    start: undefined,
-    end: undefined,
-    abort: undefined,
-    error: undefined
+    onClick: undefined,
+    onStart: undefined,
+    onEnd: undefined,
+    onAbort: undefined,
+    onError: undefined
 });
 
 const LocalStorageNodeName = LocalStorageKeys.measureTool;
@@ -70,7 +71,7 @@ class MeasureTool extends Control {
                 'data-tippy-content': `Measure (${ShortcutKeys.measureTool})`
             },
             listeners: {
-                'click': this.handleClick.bind(this)
+                'click': this.onClickTool.bind(this)
             }
         });
 
@@ -80,7 +81,7 @@ class MeasureTool extends Control {
         
         this.button = button;
         this.active = false;
-        this.options = { ...DefaultOptions, ...options };
+        this.options = _.merge(_.cloneDeep(DefaultOptions), options);
         
         this.localStorage = StateManager.getAndMergeStateObject(
             LocalStorageNodeName, 
@@ -122,8 +123,7 @@ class MeasureTool extends Control {
 
         this.uiRefMeasureToolbox = document.querySelector(`#${ID_PREFIX}-toolbox`);
 
-        const uiRefToggleableTriggers = this.uiRefMeasureToolbox.querySelectorAll('.oltb-toggleable');
-        uiRefToggleableTriggers.forEach((toggle) => {
+        this.uiRefMeasureToolbox.querySelectorAll('.oltb-toggleable').forEach((toggle) => {
             toggle.addEventListener(Events.browser.click, this.onToggleToolbox.bind(this, toggle));
         });
 
@@ -146,7 +146,9 @@ class MeasureTool extends Control {
 
     onToggleToolbox(toggle) {
         const targetName = toggle.dataset.oltbToggleableTarget;
-        document.getElementById(targetName)?.slideToggle(Config.animationDuration.fast, (collapsed) => {
+        const targetNode = document.getElementById(targetName);
+        
+        targetNode?.slideToggle(Config.animationDuration.fast, (collapsed) => {
             this.localStorage.collapsed = collapsed;
             StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
         });
@@ -170,15 +172,15 @@ class MeasureTool extends Control {
                 this.interaction.removeLastPoint();
             }
         }else if(isShortcutKeyOnly(event, ShortcutKeys.measureTool)) {
-            this.handleClick(event);
+            this.onClickTool(event);
         }
     }
     
     onWindowSettingsCleared() {
         // Update runtime copy of localStorage to default
-        this.localStorage = { ...LocalStorageDefaults };
+        this.localStorage = _.cloneDeep(LocalStorageDefaults);
 
-        // Rest UI components
+        // Rest UI-components
         this.uiRefFillColor.setAttribute('data-oltb-color', this.localStorage.fillColor);
         this.uiRefFillColor.firstElementChild.style.backgroundColor = this.localStorage.fillColor;
 
@@ -210,12 +212,12 @@ class MeasureTool extends Control {
         this.deActivateTool();
     }
 
-    handleClick() {
-        LogManager.logDebug(FILENAME, 'handleClick', 'User clicked tool');
+    onClickTool() {
+        LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
 
-        // User defined callback from constructor
-        if(this.options.click instanceof Function) {
-            this.options.click();
+        // Note: Consumer callback
+        if(this.options.onClick instanceof Function) {
+            this.options.onClick();
         }
         
         if(this.active) {
@@ -321,9 +323,9 @@ class MeasureTool extends Control {
             tooltipItem.innerHTML = `${measureValue.value} ${measureValue.unit}`;
         });
 
-        // User defined callback from constructor
-        if(this.options.start instanceof Function) {
-            this.options.start(event);
+        // Note: Consumer callback
+        if(this.options.onStart instanceof Function) {
+            this.options.onStart(event);
         }
     }
 
@@ -378,9 +380,9 @@ class MeasureTool extends Control {
             tooltip.getOverlay().setMap(null);
         }
 
-        // User defined callback from constructor
-        if(this.options.end instanceof Function) {
-            this.options.end(event);
+        // Note: Consumer callback
+        if(this.options.onEnd instanceof Function) {
+            this.options.onEnd(event);
         }
     }
 
@@ -389,16 +391,16 @@ class MeasureTool extends Control {
         
         TooltipManager.pop(KEY_TOOLTIP);
 
-        // User defined callback from constructor
-        if(this.options.abort instanceof Function) {
-            this.options.abort(event);
+        // Note: Consumer callback
+        if(this.options.onAbort instanceof Function) {
+            this.options.onAbort(event);
         }
     }
 
     onDrawError(event) {
-        // User defined callback from constructor
-        if(this.options.error instanceof Function) {
-            this.options.error(event);
+        // Note: Consumer callback
+        if(this.options.onError instanceof Function) {
+            this.options.onError(event);
         }
     }
 }

@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { DOM } from '../helpers/browser/DOM';
 import { Modal } from '../common/Modal';
 import { Config } from '../core/Config';
@@ -14,7 +15,7 @@ const CLASS_TOOL_BUTTON = 'oltb-tool-button';
 const URL_NOTIFICATION = 'https://raw.githubusercontent.com/qulle/notification-endpoints/main/endpoints/oltb.json';
 
 const DefaultOptions = Object.freeze({
-    click: undefined
+    onClick: undefined
 });
 
 class NotificationTool extends Control {
@@ -39,7 +40,7 @@ class NotificationTool extends Control {
                 'data-tippy-content': `Notifications (${ShortcutKeys.notificationsTool})`
             },
             listeners: {
-                'click': this.handleClick.bind(this)
+                'click': this.onClickTool.bind(this)
             }
         });
 
@@ -49,23 +50,23 @@ class NotificationTool extends Control {
 
         this.button = button;
         this.notificationModal = undefined;
-        this.options = { ...DefaultOptions, ...options };
+        this.options = _.merge(_.cloneDeep(DefaultOptions), options);
 
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
     }
 
     onWindowKeyUp(event) {
         if(isShortcutKeyOnly(event, ShortcutKeys.notificationsTool)) {
-            this.handleClick(event);
+            this.onClickTool(event);
         }
     }
 
-    handleClick() {
-        LogManager.logDebug(FILENAME, 'handleClick', 'User clicked tool');
+    onClickTool() {
+        LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
         
-        // User defined callback from constructor
-        if(this.options.click instanceof Function) {
-            this.options.click();
+        // Note: Consumer callback
+        if(this.options.onClick instanceof Function) {
+            this.options.onClick();
         }
 
         this.momentaryActivation();

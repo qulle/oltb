@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { Point } from 'ol/geom';
 import { Feature } from 'ol';
 import { fromLonLat } from 'ol/proj';
@@ -24,7 +25,7 @@ const DefaultOptions = Object.freeze({
 });
 
 const generateMarker = function(options = {}) {
-    options = { ...DefaultOptions, ...options };
+    options = _.merge(_.cloneDeep(DefaultOptions), options);
 
     const marker = new Feature({
         geometry: new Point(fromLonLat([

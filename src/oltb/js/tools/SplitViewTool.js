@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { DOM } from '../helpers/browser/DOM';
 import { Toast } from '../common/Toast';
 import { Config } from '../core/Config';
@@ -22,7 +23,7 @@ const CLASS_SLIDER = 'oltb-slider';
 const ID_PREFIX = 'oltb-split-view';
 
 const DefaultOptions = Object.freeze({
-    click: undefined
+    onClick: undefined
 });
 
 const LocalStorageNodeName = LocalStorageKeys.splitViewTool;
@@ -53,7 +54,7 @@ class SplitViewTool extends Control {
                 'data-tippy-content': `Split view (${ShortcutKeys.splitViewTool})`
             },
             listeners: {
-                'click': this.handleClick.bind(this)
+                'click': this.onClickTool.bind(this)
             }
         });
 
@@ -63,7 +64,7 @@ class SplitViewTool extends Control {
         
         this.button = button;
         this.active = false;
-        this.options = { ...DefaultOptions, ...options };
+        this.options = _.merge(_.cloneDeep(DefaultOptions), options);
 
         this.localStorage = StateManager.getAndMergeStateObject(
             LocalStorageNodeName, 
@@ -108,8 +109,7 @@ class SplitViewTool extends Control {
         this.uiRefRightSideSrc = this.uiRefSplitViewToolbox.querySelector(`#${ID_PREFIX}-right-src`);
         this.uiRefRightSideSrc.addEventListener(Events.browser.change, this.updateTool.bind(this));
 
-        const uiRefToggleableTriggers = this.uiRefSplitViewToolbox.querySelectorAll('.oltb-toggleable');
-        uiRefToggleableTriggers.forEach((toggle) => {
+        this.uiRefSplitViewToolbox.querySelectorAll('.oltb-toggleable').forEach((toggle) => {
             toggle.addEventListener(Events.browser.click, this.onToggleToolbox.bind(this, toggle));
         });
 
@@ -139,7 +139,9 @@ class SplitViewTool extends Control {
 
     onToggleToolbox(toggle) {
         const targetName = toggle.dataset.oltbToggleableTarget;
-        document.getElementById(targetName)?.slideToggle(Config.animationDuration.fast, (collapsed) => {
+        const targetNode = document.getElementById(targetName);
+        
+        targetNode?.slideToggle(Config.animationDuration.fast, (collapsed) => {
             this.localStorage.collapsed = collapsed;
             StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
         });
@@ -153,12 +155,12 @@ class SplitViewTool extends Control {
 
     onWindowKeyUp(event) {
         if(isShortcutKeyOnly(event, ShortcutKeys.splitViewTool)) {
-            this.handleClick(event);
+            this.onClickTool(event);
         }
     }
     
     onWindowSettingsCleared() {
-        this.localStorage = { ...LocalStorageDefaults };
+        this.localStorage = _.cloneDeep(LocalStorageDefaults);
     }
 
     onWindowMapLayerAdded(event) {
@@ -190,13 +192,13 @@ class SplitViewTool extends Control {
 
         this.uiRefLeftSideSrc.childNodes.forEach((option) => {
             if(option.value === layerWrapper.getId()) {
-                option.remove();
+                DOM.removeElement(option);
             }
         });
 
         this.uiRefRightSideSrc.childNodes.forEach((option) => {
             if(option.value === layerWrapper.getId()) {
-                option.remove();
+                DOM.removeElement(option);
             }
         });
 
@@ -210,12 +212,12 @@ class SplitViewTool extends Control {
         );
     }
 
-    handleClick() {
-        LogManager.logDebug(FILENAME, 'handleClick', 'User clicked tool');
+    onClickTool() {
+        LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
 
-        // User defined callback from constructor
-        if(this.options.click instanceof Function) {
-            this.options.click();
+        // Note: Consumer callback
+        if(this.options.onClick instanceof Function) {
+            this.options.onClick();
         }
 
         if(LayerManager.getMapLayerSize() <= 1) {

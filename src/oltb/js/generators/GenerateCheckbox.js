@@ -1,3 +1,4 @@
+import _ from "lodash";
 import { DOM } from "../helpers/browser/DOM";
 
 const DefaultOptions = Object.freeze({
@@ -8,7 +9,7 @@ const DefaultOptions = Object.freeze({
 });
 
 const generateCheckbox = function(options = {}) {
-    options = { ...DefaultOptions, ...options };
+    options = _.merge(_.cloneDeep(DefaultOptions), options);
 
     const wrapper = DOM.createElement({
         element: 'div',

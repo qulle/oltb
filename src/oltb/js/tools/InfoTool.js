@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { DOM } from '../helpers/browser/DOM';
 import { Modal } from '../common/Modal';
 import { Events } from '../helpers/constants/Events';
@@ -14,7 +15,7 @@ const CLASS_TOOL_BUTTON = 'oltb-tool-button';
 const DefaultOptions = Object.freeze({
     title: 'Hey!',
     content: 'This is the default content, try adding some content of your own.',
-    click: undefined
+    onClick: undefined
 });
 
 class InfoTool extends Control {
@@ -39,7 +40,7 @@ class InfoTool extends Control {
                 'data-tippy-content': `Info (${ShortcutKeys.infoTool})`
             },
             listeners: {
-                'click': this.handleClick.bind(this)
+                'click': this.onClickTool.bind(this)
             }
         });
 
@@ -49,23 +50,23 @@ class InfoTool extends Control {
 
         this.button = button;
         this.infoModal = undefined;
-        this.options = { ...DefaultOptions, ...options };
+        this.options = _.merge(_.cloneDeep(DefaultOptions), options);
 
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
     }
 
     onWindowKeyUp(event) {
         if(isShortcutKeyOnly(event, ShortcutKeys.infoTool)) {
-            this.handleClick(event);
+            this.onClickTool(event);
         }
     }    
 
-    handleClick() {
-        LogManager.logDebug(FILENAME, 'handleClick', 'User clicked tool');
+    onClickTool() {
+        LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
 
-        // User defined callback from constructor
-        if(this.options.click instanceof Function) {
-            this.options.click();
+        // Note: Consumer callback
+        if(this.options.onClick instanceof Function) {
+            this.options.onClick();
         }
 
         this.momentaryActivation();

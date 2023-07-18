@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { DOM } from '../helpers/browser/DOM';
 import { Config } from '../core/Config';
 import { Events } from '../helpers/constants/Events';
@@ -15,8 +16,8 @@ const FILENAME = 'tools/DirectionTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
 
 const DefaultOptions = Object.freeze({
-    click: undefined,
-    changed: undefined
+    onClick: undefined,
+    onChanged: undefined
 });
 
 // Note: The values are flipped
@@ -67,7 +68,12 @@ class DirectionTool extends Control {
                 )} (${ShortcutKeys.directionTool})`
             },
             listeners: {
-                'click': this.handleClick.bind(this)
+                'click': this.onClickTool.bind(this)
+            },
+            prototypes:{
+                getTippy: function() {
+                    return this._tippy;
+                }
             }
         });
 
@@ -77,7 +83,7 @@ class DirectionTool extends Control {
         
         this.button = button;
         this.active = false;
-        this.options = { ...DefaultOptions, ...options };
+        this.options = _.merge(_.cloneDeep(DefaultOptions), options);
         
         this.localStorage = StateManager.getAndMergeStateObject(
             LocalStorageNodeName, 
@@ -93,7 +99,7 @@ class DirectionTool extends Control {
 
     onWindowKeyUp(event) {
         if(isShortcutKeyOnly(event, ShortcutKeys.directionTool)) {
-            this.handleClick(event);
+            this.onClickTool(event);
         }
     }
 
@@ -110,12 +116,12 @@ class DirectionTool extends Control {
         this.swithDirectionFromTo(active, DirectionData.col);
     }
 
-    handleClick() {
-        LogManager.logDebug(FILENAME, 'handleClick', 'User clicked tool');
+    onClickTool() {
+        LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
 
-        // User defined callback from constructor
-        if(this.options.click instanceof Function) {
-            this.options.click();
+        // Note: Consumer callback
+        if(this.options.onClick instanceof Function) {
+            this.options.onClick();
         }
 
         this.momentaryActivation();
@@ -131,9 +137,9 @@ class DirectionTool extends Control {
             }
         }));
 
-        // User defined callback from constructor
-        if(this.options.changed instanceof Function) {
-            this.options.changed(active.class);
+        // Note: Consumer callback
+        if(this.options.onChanged instanceof Function) {
+            this.options.onChanged(active.class);
         }
     }
 
@@ -159,7 +165,7 @@ class DirectionTool extends Control {
         // Update toolbar button
         this.button.removeChild(this.button.firstElementChild);
         this.button.insertAdjacentHTML('afterbegin', to.icon);
-        this.button._tippy.setContent(`${to.tippyContent} (${ShortcutKeys.directionTool})`);
+        this.button.getTippy().setContent(`${to.tippyContent} (${ShortcutKeys.directionTool})`);
     }
 
     getInActiveDirection() {

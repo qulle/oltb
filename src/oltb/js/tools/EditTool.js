@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import jsts from 'jsts/dist/jsts.min';
 import { DOM } from '../helpers/browser/DOM';
 import { Keys } from '../helpers/constants/Keys';
@@ -47,17 +48,17 @@ const KEY_TOOLTIP = 'edit';
 
 const DefaultOptions = Object.freeze({
     hitTolerance: 5,
-    click: undefined,
-    styleChange: undefined,
-    shapeOperation: undefined,
-    selectadd: undefined,
-    selectremove: undefined,
-    modifystart: undefined,
-    modifyend: undefined,
-    translatestart: undefined,
-    translateend: undefined,
-    removedfeature: undefined,
-    error: undefined
+    onClick: undefined,
+    onStyleChange: undefined,
+    onShapeOperation: undefined,
+    onSelectAdd: undefined,
+    onSelectRemove: undefined,
+    onModifyStart: undefined,
+    onModifyEnd: undefined,
+    onTranslateStart: undefined,
+    onTranslatEnd: undefined,
+    onRemovedFeature: undefined,
+    onError: undefined
 });
 
 const LocalStorageNodeName = LocalStorageKeys.editTool;
@@ -119,7 +120,7 @@ class EditTool extends Control {
                 'data-tippy-content': `Edit (${ShortcutKeys.editTool})`
             },
             listeners: {
-                'click': this.handleClick.bind(this)
+                'click': this.onClickTool.bind(this)
             }
         });
 
@@ -130,7 +131,7 @@ class EditTool extends Control {
         this.button = button;
         this.active = false;
         this.lastStyle = undefined;
-        this.options = { ...DefaultOptions, ...options };
+        this.options = _.merge(_.cloneDeep(DefaultOptions), options);
 
         // JSTS
         this.parser = new jsts.io.OL3Parser();
@@ -211,8 +212,7 @@ class EditTool extends Control {
         this.uiRefStrokeColor = this.uiRefEditToolbox.querySelector(`#${ID_PREFIX}-stroke-color`);
         this.uiRefStrokeColor.addEventListener(Events.custom.colorChange, this.onFeatureColorChange.bind(this));
 
-        const uiRefToggleableTriggers = this.uiRefEditToolbox.querySelectorAll('.oltb-toggleable');
-        uiRefToggleableTriggers.forEach((toggle) => {
+        this.uiRefEditToolbox.querySelectorAll('.oltb-toggleable').forEach((toggle) => {
             toggle.addEventListener(Events.browser.click, this.onToggleToolbox.bind(this, toggle));
         });
 
@@ -258,9 +258,9 @@ class EditTool extends Control {
     }
 
     onSelectFeatureAdd(event) {
-        // User defined callback from constructor
-        if(this.options.selectadd instanceof Function) {
-            this.options.selectadd(event);
+        // Note: Consumer callback
+        if(this.options.onSelectAdd instanceof Function) {
+            this.options.onSelectAdd(event);
         }
     }
 
@@ -301,9 +301,9 @@ class EditTool extends Control {
                     feature.setStyle(style);
                 }
 
-                // User defined callback from constructor
-                if(this.options.styleChange instanceof Function) {
-                    this.options.styleChange(event, this.lastStyle);
+                // Note: Consumer callback
+                if(this.options.onStyleChange instanceof Function) {
+                    this.options.onStyleChange(event, this.lastStyle);
                 }
 
                 // Reset for the last deselected item
@@ -313,9 +313,9 @@ class EditTool extends Control {
             }
         });
 
-        // User defined callback from constructor
-        if(this.options.selectremove instanceof Function) {
-            this.options.selectremove(event);
+        // Note: Consumer callback
+        if(this.options.onSelectRemove instanceof Function) {
+            this.options.onSelectRemove(event);
         }
     }
 
@@ -328,9 +328,9 @@ class EditTool extends Control {
             }
         });
 
-        // User defined callback from constructor
-        if(this.options.modifystart instanceof Function) {
-            this.options.modifystart(event);
+        // Note: Consumer callback
+        if(this.options.onModifyStart instanceof Function) {
+            this.options.onModifyStart(event);
         }
     }
 
@@ -342,9 +342,9 @@ class EditTool extends Control {
             }
         });
 
-        // User defined callback from constructor
-        if(this.options.modifyend instanceof Function) {
-            this.options.modifyend(event);
+        // Note: Consumer callback
+        if(this.options.onModifyEnd instanceof Function) {
+            this.options.onModifyEnd(event);
         }
     }
 
@@ -357,9 +357,9 @@ class EditTool extends Control {
             }
         });
 
-        // User defined callback from constructor
-        if(this.options.translatestart instanceof Function) {
-            this.options.translatestart(event);
+        // Note: Consumer callback
+        if(this.options.onTranslateStart instanceof Function) {
+            this.options.onTranslateStart(event);
         }
     }
 
@@ -372,15 +372,17 @@ class EditTool extends Control {
             }
         });
 
-        // User defined callback from constructor
-        if(this.options.translateend instanceof Function) {
-            this.options.translateend(event);
+        // Note: Consumer callback
+        if(this.options.onTranslatEnd instanceof Function) {
+            this.options.onTranslatEnd(event);
         }
     }
 
     onToggleToolbox(toggle) {
         const targetName = toggle.dataset.oltbToggleableTarget;
-        document.getElementById(targetName)?.slideToggle(Config.animationDuration.fast, (collapsed) => {
+        const targetNode = document.getElementById(targetName);
+        
+        targetNode?.slideToggle(Config.animationDuration.fast, (collapsed) => {
             this.localStorage.collapsed = collapsed;
             StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
         });
@@ -388,14 +390,14 @@ class EditTool extends Control {
 
     onWindowKeyUp(event) {
         if(isShortcutKeyOnly(event, ShortcutKeys.editTool)) {
-            this.handleClick(event);
+            this.onClickTool(event);
         }else if(Boolean(this.active) && event.key === Keys.valueDelete) {
             this.onDeleteSelectedFeatures();
         }
     }
     
     onWindowSettingsCleared() {
-        this.localStorage = { ...LocalStorageDefaults };
+        this.localStorage = _.cloneDeep(LocalStorageDefaults);
 
         this.uiRefFillColor.setAttribute('data-oltb-color', this.localStorage.fillColor);
         this.uiRefFillColor.firstElementChild.style.backgroundColor = this.localStorage.fillColor;
@@ -455,9 +457,9 @@ class EditTool extends Control {
                         map.removeOverlay(feature.getProperties().oltb.tooltip);
                     }
 
-                    // User defined callback from constructor
-                    if(this.options.removedfeature instanceof Function) {
-                        this.options.removedfeature(feature);
+                    // Note: Consumer callback
+                    if(this.options.onRemovedFeature instanceof Function) {
+                        this.options.onRemovedFeature(feature);
                     }
                 }
             });
@@ -561,9 +563,9 @@ class EditTool extends Control {
             // Remove two original shapes
             this.deleteFeatures(features);
 
-            // User defined callback from constructor
-            if(this.options.shapeOperation instanceof Function) {
-                this.options.shapeOperation(type, a, b, feature);
+            // Note: Consumer callback
+            if(this.options.onShapeOperation instanceof Function) {
+                this.options.onShapeOperation(type, a, b, feature);
             }
         }catch(error) {
             const errorMessage = 'Failed to perform shape operation';
@@ -577,9 +579,9 @@ class EditTool extends Control {
                 message: errorMessage
             }); 
 
-            // User defined callback from constructor
-            if(this.options.error instanceof Function) {
-                this.options.error(error);
+            // Note: Consumer callback
+            if(this.options.onError instanceof Function) {
+                this.options.onError(error);
             }
         }
     }
@@ -664,12 +666,12 @@ class EditTool extends Control {
         this.deActivateTool();
     }
 
-    handleClick() {
-        LogManager.logDebug(FILENAME, 'handleClick', 'User clicked tool');
+    onClickTool() {
+        LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
         
-        // User defined callback from constructor
-        if(this.options.click instanceof Function) {
-            this.options.click();
+        // Note: Consumer callback
+        if(this.options.onClick instanceof Function) {
+            this.options.onClick();
         }
         
         if(this.active) {
