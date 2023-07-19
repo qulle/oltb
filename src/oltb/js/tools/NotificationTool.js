@@ -55,11 +55,9 @@ class NotificationTool extends Control {
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
     }
 
-    onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, ShortcutKeys.notificationsTool)) {
-            this.onClickTool(event);
-        }
-    }
+    // -------------------------------------------------------------------
+    // # Section: Tool Control
+    // -------------------------------------------------------------------
 
     onClickTool() {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
@@ -75,6 +73,20 @@ class NotificationTool extends Control {
     momentaryActivation() {
         this.fetchNotifications();
     }
+
+    // -------------------------------------------------------------------
+    // # Section: Window/Document Events
+    // -------------------------------------------------------------------
+
+    onWindowKeyUp(event) {
+        if(isShortcutKeyOnly(event, ShortcutKeys.notificationsTool)) {
+            this.onClickTool(event);
+        }
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Tool Specific
+    // -------------------------------------------------------------------
 
     fetchNotifications() {
         if(this.notificationModal) {

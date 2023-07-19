@@ -56,11 +56,9 @@ class ZoomOutTool extends Control {
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
     }
 
-    onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, ShortcutKeys.zoomOutTool)) {
-            this.onClickTool(event);
-        }
-    }
+    // -------------------------------------------------------------------
+    // # Section: Tool Control
+    // -------------------------------------------------------------------
 
     onClickTool() {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
@@ -92,6 +90,16 @@ class ZoomOutTool extends Control {
                 this.options.onZoomed();
             }
         }, Config.animationDuration.normal);
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Window/Document Events
+    // -------------------------------------------------------------------
+
+    onWindowKeyUp(event) {
+        if(isShortcutKeyOnly(event, ShortcutKeys.zoomOutTool)) {
+            this.onClickTool(event);
+        }
     }
 }
 

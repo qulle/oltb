@@ -65,11 +65,54 @@ class ResetNorthTool extends Control {
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
     }
 
+    // -------------------------------------------------------------------
+    // # Section: Tool Control
+    // -------------------------------------------------------------------
+
+    onClickTool() {
+        LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
+
+        // Note: Consumer callback
+        if(this.options.onClick instanceof Function) {
+            this.options.onClick();
+        }
+        
+        this.momentaryActivation();
+    }
+
+    momentaryActivation() {
+        const map = this.getMap();
+        if(!map) {
+            return;
+        }
+
+        const view = map.getView();
+        const zoom = view.getZoom();
+        const coordinates = toLonLat(view.getCenter());
+
+        goToView(map, coordinates, zoom, 0);
+
+        window.setTimeout(() => {
+            // Note: Consumer callback
+            if(this.options.onReset instanceof Function) {
+                this.options.onReset();
+            }
+        }, Config.animationDuration.normal);
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Window/Document Events
+    // -------------------------------------------------------------------
+
     onWindowKeyUp(event) {
         if(isShortcutKeyOnly(event, ShortcutKeys.resetNorthTool)) {
             this.onClickTool(event);
         }
     }
+
+    // -------------------------------------------------------------------
+    // # Section: Context Menu Methods
+    // -------------------------------------------------------------------
 
     onContextMenuSetRotation(map, coordinates, target) {
         const view = map.getView();
@@ -108,37 +151,6 @@ class ResetNorthTool extends Control {
                 }
             }
         });
-    }
-
-    onClickTool() {
-        LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
-
-        // Note: Consumer callback
-        if(this.options.onClick instanceof Function) {
-            this.options.onClick();
-        }
-        
-        this.momentaryActivation();
-    }
-
-    momentaryActivation() {
-        const map = this.getMap();
-        if(!map) {
-            return;
-        }
-
-        const view = map.getView();
-        const zoom = view.getZoom();
-        const coordinates = toLonLat(view.getCenter());
-
-        goToView(map, coordinates, zoom, 0);
-
-        window.setTimeout(() => {
-            // Note: Consumer callback
-            if(this.options.onReset instanceof Function) {
-                this.options.onReset();
-            }
-        }, Config.animationDuration.normal);
     }
 }
 

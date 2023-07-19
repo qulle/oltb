@@ -68,7 +68,18 @@ class GraticuleTool extends Control {
             LocalStorageDefaults
         );
         
-        this.graticule = new Graticule({
+        this.graticule = this.generateGraticule();
+
+        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(Events.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Generate Helpers
+    // -------------------------------------------------------------------
+
+    generateGraticule() {
+        return new Graticule({
             strokeStyle: new Stroke({
                 color: this.options.color,
                 width: this.options.width,
@@ -78,22 +89,11 @@ class GraticuleTool extends Control {
             visible: true,
             wrapX: this.options.wrapX,
         });
-
-        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
-        window.addEventListener(Events.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
     }
 
-    onDOMContentLoaded() {
-        if(this.localStorage.active) {
-            this.activateTool();
-        }
-    }
-
-    onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, ShortcutKeys.graticuleTool)) {
-            this.onClickTool(event);
-        }
-    }    
+    // -------------------------------------------------------------------
+    // # Section: Tool Control
+    // -------------------------------------------------------------------
 
     onClickTool() {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
@@ -133,6 +133,22 @@ class GraticuleTool extends Control {
 
         this.localStorage.active = false;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Window/Document Events
+    // -------------------------------------------------------------------
+
+    onDOMContentLoaded() {
+        if(this.localStorage.active) {
+            this.activateTool();
+        }
+    }
+
+    onWindowKeyUp(event) {
+        if(isShortcutKeyOnly(event, ShortcutKeys.graticuleTool)) {
+            this.onClickTool(event);
+        }
     }
 }
 

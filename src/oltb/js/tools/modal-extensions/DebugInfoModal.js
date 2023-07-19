@@ -13,6 +13,7 @@ import { ProjectionManager } from '../../core/managers/ProjectionManager';
 
 const FILENAME = 'modal-extensions/DebugInfoModal.js';
 const ID_PREFIX = 'oltb-debug';
+const CLASS_TOGGLEABLE = 'oltb-toggleable';
 
 const DefaultOptions = Object.freeze({
     map: undefined,
@@ -38,7 +39,7 @@ class DebugInfoModal extends ModalBase {
         const modalContent = this.#generateModalContent();
         this.show(modalContent);
 
-        modalContent.querySelectorAll('.oltb-toggleable').forEach((toggle) => {
+        modalContent.querySelectorAll(`.${CLASS_TOGGLEABLE}`).forEach((toggle) => {
             toggle.addEventListener(Events.browser.click, this.onToggleSection.bind(this, toggle));
         });
     }

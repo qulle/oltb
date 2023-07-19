@@ -28,6 +28,7 @@ import { createBox, createRegularPolygon } from 'ol/interaction/Draw';
 const FILENAME = 'tools/DrawTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
 const CLASS_TOOLBOX_SECTION = 'oltb-toolbox-section';
+const CLASS_TOGGLEABLE = 'oltb-toggleable';
 const ID_PREFIX = 'oltb-draw';
 
 const DefaultOptions = Object.freeze({
@@ -89,8 +90,41 @@ class DrawTool extends Control {
             LocalStorageDefaults
         );
 
-        const uiRefToolboxElement = ElementManager.getToolboxElement();
-        uiRefToolboxElement.insertAdjacentHTML('beforeend', `
+        this.initToolboxHTML();
+        this.uiRefToolboxSection = document.querySelector(`#${ID_PREFIX}-toolbox`);
+        this.initToggleables();
+
+        this.uiRefToolType = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-type`);
+        this.uiRefToolType.addEventListener(Events.browser.change, this.updateTool.bind(this));
+
+        this.uiRefIntersectionEnable = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-intersection-enable`);
+        this.uiRefIntersectionEnable.addEventListener(Events.browser.change, this.updateTool.bind(this));
+
+        this.uiRefFillColor = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-fill-color`);
+        this.uiRefFillColor.addEventListener(Events.custom.colorChange, this.updateTool.bind(this));
+
+        this.uiRefStrokeWidth = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-stroke-width`);
+        this.uiRefStrokeWidth.addEventListener(Events.browser.change, this.updateTool.bind(this));
+
+        this.uiRefStrokeColor = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-stroke-color`);
+        this.uiRefStrokeColor.addEventListener(Events.custom.colorChange, this.updateTool.bind(this));
+
+        // Set default selected values
+        this.uiRefToolType.value = this.localStorage.toolType;
+        this.uiRefStrokeWidth.value  = this.localStorage.strokeWidth;
+        this.uiRefIntersectionEnable.value = 'false';
+
+        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(Events.custom.settingsCleared, this.onWindowSettingsCleared.bind(this));
+        window.addEventListener(Events.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Init Helpers
+    // -------------------------------------------------------------------
+
+    initToolboxHTML() {
+        ElementManager.getToolboxElement().insertAdjacentHTML('beforeend', `
             <div id="${ID_PREFIX}-toolbox" class="${CLASS_TOOLBOX_SECTION}">
                 <div class="${CLASS_TOOLBOX_SECTION}__header">
                     <h4 class="${CLASS_TOOLBOX_SECTION}__title oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">
@@ -150,36 +184,100 @@ class DrawTool extends Control {
                 </div>
             </div>
         `);
+    }
 
-        this.uiRefDrawToolbox = document.querySelector(`#${ID_PREFIX}-toolbox`);
-
-        this.uiRefDrawToolbox.querySelectorAll('.oltb-toggleable').forEach((toggle) => {
+    initToggleables() {
+        this.uiRefToolboxSection.querySelectorAll(`.${CLASS_TOGGLEABLE}`).forEach((toggle) => {
             toggle.addEventListener(Events.browser.click, this.onToggleToolbox.bind(this, toggle));
         });
+    }
 
-        this.uiRefToolType = this.uiRefDrawToolbox.querySelector(`#${ID_PREFIX}-type`);
-        this.uiRefToolType.addEventListener(Events.browser.change, this.updateTool.bind(this));
+    // -------------------------------------------------------------------
+    // # Section: Tool Control
+    // -------------------------------------------------------------------
 
-        this.uiRefIntersectionEnable = this.uiRefDrawToolbox.querySelector(`#${ID_PREFIX}-intersection-enable`);
-        this.uiRefIntersectionEnable.addEventListener(Events.browser.change, this.updateTool.bind(this));
+    onClickTool() {
+        LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
 
-        this.uiRefFillColor = this.uiRefDrawToolbox.querySelector(`#${ID_PREFIX}-fill-color`);
-        this.uiRefFillColor.addEventListener(Events.custom.colorChange, this.updateTool.bind(this));
+        // Note: Consumer callback
+        if(this.options.onClick instanceof Function) {
+            this.options.onClick();
+        }
 
-        this.uiRefStrokeWidth = this.uiRefDrawToolbox.querySelector(`#${ID_PREFIX}-stroke-width`);
-        this.uiRefStrokeWidth.addEventListener(Events.browser.change, this.updateTool.bind(this));
+        if(this.active) {
+            this.deActivateTool();
+        }else {
+            this.activateTool();
+        }
+    }
 
-        this.uiRefStrokeColor = this.uiRefDrawToolbox.querySelector(`#${ID_PREFIX}-stroke-color`);
-        this.uiRefStrokeColor.addEventListener(Events.custom.colorChange, this.updateTool.bind(this));
+    activateTool() {
+        this.active = true;
+        this.uiRefToolboxSection.classList.add(`${CLASS_TOOLBOX_SECTION}--show`);
+        this.button.classList.add(`${CLASS_TOOL_BUTTON}--active`);
 
-        // Set default selected values
-        this.uiRefToolType.value = this.localStorage.toolType;
-        this.uiRefStrokeWidth.value  = this.localStorage.strokeWidth;
-        this.uiRefIntersectionEnable.value = 'false';
+        ToolManager.setActiveTool(this);
 
-        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
-        window.addEventListener(Events.custom.settingsCleared, this.onWindowSettingsCleared.bind(this));
-        window.addEventListener(Events.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
+        if(SettingsManager.getSetting(Settings.alwaysNewLayers)) {
+            LayerManager.addFeatureLayer({
+                name: 'Drawing layer'
+            });
+        }
+
+        // Triggers activation of the tool
+        eventDispatcher([this.uiRefToolType], Events.browser.change);
+
+        this.localStorage.active = true;
+        StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
+    }
+
+    deActivateTool() {
+        const map = this.getMap();
+        if(!map) {
+            return;
+        }
+
+        this.active = false;
+        this.uiRefToolboxSection.classList.remove(`${CLASS_TOOLBOX_SECTION}--show`);
+        this.button.classList.remove(`${CLASS_TOOL_BUTTON}--active`);
+
+        map.removeInteraction(this.interaction);
+        this.interaction = undefined;
+
+        ToolManager.removeActiveTool();
+
+        this.localStorage.active = false;
+        StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
+    }
+
+    deSelectTool() {
+        this.deActivateTool();
+    }
+
+    updateTool() {
+        // Store current values in local storage
+        this.localStorage.toolType = this.uiRefToolType.value;
+        this.localStorage.strokeWidth = this.uiRefStrokeWidth.value;
+        this.localStorage.fillColor = this.uiRefFillColor.getAttribute('data-oltb-color');
+        this.localStorage.strokeColor = this.uiRefStrokeColor.getAttribute('data-oltb-color');
+
+        StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
+
+        // IntersectionMode doesn't play well when tool is LineString or Point
+        if(this.uiRefToolType.value === GeometryType.LineString || this.uiRefToolType.value === GeometryType.Point) {
+            this.uiRefIntersectionEnable.value = 'false';
+            this.uiRefIntersectionEnable.disabled = true;
+        }else {
+            this.uiRefIntersectionEnable.disabled = false;
+        }
+
+        // Update the draw tool in the map
+        this.selectDraw(
+            this.uiRefToolType.value,
+            this.uiRefStrokeWidth.value,
+            this.uiRefFillColor.getAttribute('data-oltb-color'),
+            this.uiRefStrokeColor.getAttribute('data-oltb-color')
+        );
     }
 
     onToggleToolbox(toggle) {
@@ -192,14 +290,14 @@ class DrawTool extends Control {
         });
     }
 
+    // -------------------------------------------------------------------
+    // # Section: Window/Document Events
+    // -------------------------------------------------------------------
+
     onDOMContentLoaded() {
         if(this.localStorage.active) {
             this.activateTool();
         }
-    }
-
-    isIntersectionEnabled() {
-        return this.uiRefIntersectionEnable.value.toLowerCase() === 'true';
     }
 
     onWindowKeyUp(event) {
@@ -235,88 +333,12 @@ class DrawTool extends Control {
         }
     }
 
-    updateTool() {
-        // Store current values in local storage
-        this.localStorage.toolType = this.uiRefToolType.value;
-        this.localStorage.strokeWidth = this.uiRefStrokeWidth.value;
-        this.localStorage.fillColor = this.uiRefFillColor.getAttribute('data-oltb-color');
-        this.localStorage.strokeColor = this.uiRefStrokeColor.getAttribute('data-oltb-color');
+    // -------------------------------------------------------------------
+    // # Section: Tool Specific
+    // -------------------------------------------------------------------
 
-        StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
-
-        // IntersectionMode doesn't play well when tool is LineString or Point
-        if(this.uiRefToolType.value === GeometryType.LineString || this.uiRefToolType.value === GeometryType.Point) {
-            this.uiRefIntersectionEnable.value = 'false';
-            this.uiRefIntersectionEnable.disabled = true;
-        }else {
-            this.uiRefIntersectionEnable.disabled = false;
-        }
-
-        // Update the draw tool in the map
-        this.selectDraw(
-            this.uiRefToolType.value,
-            this.uiRefStrokeWidth.value,
-            this.uiRefFillColor.getAttribute('data-oltb-color'),
-            this.uiRefStrokeColor.getAttribute('data-oltb-color')
-        );
-    }
-
-    deSelect() {
-        this.deActivateTool();
-    }
-
-    onClickTool() {
-        LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
-
-        // Note: Consumer callback
-        if(this.options.onClick instanceof Function) {
-            this.options.onClick();
-        }
-
-        if(this.active) {
-            this.deActivateTool();
-        }else {
-            this.activateTool();
-        }
-    }
-
-    activateTool() {
-        this.active = true;
-        this.uiRefDrawToolbox.classList.add(`${CLASS_TOOLBOX_SECTION}--show`);
-        this.button.classList.add(`${CLASS_TOOL_BUTTON}--active`);
-
-        ToolManager.setActiveTool(this);
-
-        if(SettingsManager.getSetting(Settings.alwaysNewLayers)) {
-            LayerManager.addFeatureLayer({
-                name: 'Drawing layer'
-            });
-        }
-
-        // Triggers activation of the tool
-        eventDispatcher([this.uiRefToolType], Events.browser.change);
-
-        this.localStorage.active = true;
-        StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
-    }
-
-    deActivateTool() {
-        const map = this.getMap();
-        if(!map) {
-            return;
-        }
-
-        this.active = false;
-        this.uiRefDrawToolbox.classList.remove(`${CLASS_TOOLBOX_SECTION}--show`);
-        this.button.classList.remove(`${CLASS_TOOL_BUTTON}--active`);
-
-        map.removeInteraction(this.interaction);
-        this.interaction = undefined;
-
-        ToolManager.removeActiveTool();
-
-        this.localStorage.active = false;
-        StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
+    isIntersectionEnabled() {
+        return this.uiRefIntersectionEnable.value.toLowerCase() === 'true';
     }
 
     selectDraw(toolType, strokeWidth, fillColor, strokeColor) {
@@ -377,6 +399,10 @@ class DrawTool extends Control {
         this.interaction.on(Events.openLayers.drawAbort, this.onDrawAbort.bind(this));
         this.interaction.on(Events.openLayers.error, this.onDrawError.bind(this));
     }
+
+    // -------------------------------------------------------------------
+    // # Section: HTML/Map Callback
+    // -------------------------------------------------------------------
 
     onDrawStart(event) {
         // Note: Consumer callback

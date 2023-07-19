@@ -73,11 +73,9 @@ class HomeTool extends Control {
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
     }
 
-    onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, ShortcutKeys.homeTool)) {
-            this.onClickTool(event);
-        }
-    }
+    // -------------------------------------------------------------------
+    // # Section: Tool Control
+    // -------------------------------------------------------------------
 
     onClickTool() {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
@@ -96,13 +94,8 @@ class HomeTool extends Control {
             return;
         }
         
-        const zoom = this.userDefinedHomeZoom
-            ? this.userDefinedHomeZoom 
-            : this.homeZoom;
-
-        const coordiantes = this.userDefinedHomeLocation 
-            ? this.userDefinedHomeLocation 
-            : this.homeLocation;
+        const zoom = this.getZoom();
+        const coordiantes = this.getCoordinates();
 
         goToView(map, coordiantes, zoom);
 
@@ -114,10 +107,40 @@ class HomeTool extends Control {
         }, Config.animationDuration.normal);
     }
 
+    // -------------------------------------------------------------------
+    // # Section: Window/Document Events
+    // -------------------------------------------------------------------
+
+    onWindowKeyUp(event) {
+        if(isShortcutKeyOnly(event, ShortcutKeys.homeTool)) {
+            this.onClickTool(event);
+        }
+    }
+
     onWindowSettingsCleared() {
         this.userDefinedHomeLocation = undefined;
         this.userDefinedHomeZoom = undefined;
     }
+
+    // -------------------------------------------------------------------
+    // # Section: Tool Specific
+    // -------------------------------------------------------------------
+
+    getZoom() {
+        return this.userDefinedHomeZoom
+            ? this.userDefinedHomeZoom 
+            : this.homeZoom;
+    }
+
+    getCoordinates() {
+        return this.userDefinedHomeLocation 
+            ? this.userDefinedHomeLocation 
+            : this.homeLocation;
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: HTML/Map Callback
+    // -------------------------------------------------------------------
 
     onContextMenuSetHomeLocation() {
         const map = this.getMap();

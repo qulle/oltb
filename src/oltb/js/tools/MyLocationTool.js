@@ -69,11 +69,9 @@ class MyLocationTool extends Control {
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
     }
 
-    onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, ShortcutKeys.myLocationTool)) {
-            this.onClickTool(event);
-        }
-    }
+    // -------------------------------------------------------------------
+    // # Section: Tool Control
+    // -------------------------------------------------------------------
 
     onClickTool() {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
@@ -111,6 +109,20 @@ class MyLocationTool extends Control {
         }
     }
 
+    // -------------------------------------------------------------------
+    // # Section: Window/Document Events
+    // -------------------------------------------------------------------
+
+    onWindowKeyUp(event) {
+        if(isShortcutKeyOnly(event, ShortcutKeys.myLocationTool)) {
+            this.onClickTool(event);
+        }
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Tool Specific
+    // -------------------------------------------------------------------
+
     getGeoLocation() {
         if(this.loadingToast) {
             return;
@@ -141,6 +153,10 @@ class MyLocationTool extends Control {
             }, Toast.error);
         }
     }
+
+    // -------------------------------------------------------------------
+    // # Section: HTML/Map Callback
+    // -------------------------------------------------------------------
 
     onSuccess(location) {
         const map = this.getMap();
@@ -184,10 +200,11 @@ class MyLocationTool extends Control {
         const zoom = 6;
         goToView(map, [lon, lat], zoom);
 
-        // Trigger InfoWindow to show
-        window.setTimeout(() => {
-            InfoWindowManager.showOverly(marker, fromLonLat([lon, lat]));
-        }, Config.animationDuration.normal);
+        InfoWindowManager.showOverly(
+            marker, 
+            fromLonLat([lon, lat]),
+            Config.animationDuration.normal
+        );
 
         // Note: Consumer callback
         if(this.options.onLocation instanceof Function) {

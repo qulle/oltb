@@ -71,17 +71,9 @@ class MagnifyTool extends Control {
         window.addEventListener(Events.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
     }
 
-    onDOMContentLoaded() {
-        if(this.localStorage.active) {
-            this.activateTool();
-        }
-    }
-
-    onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, ShortcutKeys.magnifyTool)) {
-            this.onClickTool(event);
-        }
-    }
+    // -------------------------------------------------------------------
+    // # Section: Tool Control
+    // -------------------------------------------------------------------
 
     onClickTool() {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
@@ -99,26 +91,7 @@ class MagnifyTool extends Control {
     }
 
     activateTool() {
-        const map = this.getMap();
-        if(!map) {
-            return;
-        }
-
-        const mapContainer = map.getTarget();
-    
-        this.onMousemoveListenert = this.onMousemove.bind(this);
-        mapContainer.addEventListener(Events.browser.mouseMove, this.onMousemoveListenert);
-
-        this.onMouseoutListenert = this.onMouseout.bind(this);
-        mapContainer.addEventListener(Events.browser.mouseOut, this.onMouseoutListenert);
-
-        this.onKeydownListener = this.onKeydown.bind(this);
-        document.addEventListener(Events.browser.keyDown, this.onKeydownListener);
-
-        this.onPostrenderListeners = [];
-        map.getLayers().getArray().forEach((layer) => {
-            this.onPostrenderListeners.push(layer.on(Events.openLayers.postRender, this.onPostrender.bind(this)));
-        });
+        this.attachMapListeners();
 
         this.active = true;
         this.button.classList.add(`${CLASS_TOOL_BUTTON}--active`);
@@ -128,30 +101,29 @@ class MagnifyTool extends Control {
     }
 
     deActivateTool() {
-        const map = this.getMap();
-        if(!map) {
-            return;
-        }
-
-        const mapContainer = map.getTarget();
-
-        // Remove the eventlisteners
-        mapContainer.removeEventListener(Events.browser.mouseMove, this.onMousemoveListenert);
-        mapContainer.removeEventListener(Events.browser.mouseOut, this.onMouseoutListenert);
-        document.removeEventListener(Events.browser.keyDown, this.onKeydownListener);
-
-        this.onPostrenderListeners.forEach((listener) => {
-            unByKey(listener);
-        });
-
-        // Render to remove the magnifier
-        map.render();
+        this.detachMapListeners();
 
         this.active = false;
         this.button.classList.remove(`${CLASS_TOOL_BUTTON}--active`);
 
         this.localStorage.active = false;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Window/Document Events
+    // -------------------------------------------------------------------
+
+    onDOMContentLoaded() {
+        if(this.localStorage.active) {
+            this.activateTool();
+        }
+    }
+
+    onWindowKeyUp(event) {
+        if(isShortcutKeyOnly(event, ShortcutKeys.magnifyTool)) {
+            this.onClickTool(event);
+        }
     }
 
     onKeydown(event) {
@@ -173,6 +145,10 @@ class MagnifyTool extends Control {
 
         map.render();
     }
+
+    // -------------------------------------------------------------------
+    // # Section: HTML/Map Callback
+    // -------------------------------------------------------------------
 
     onMousemove(event) {
         const map = this.getMap();
@@ -270,6 +246,54 @@ class MagnifyTool extends Control {
                 });
             }
         }
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Tool Specific
+    // -------------------------------------------------------------------
+
+    attachMapListeners() {
+        const map = this.getMap();
+        if(!map) {
+            return;
+        }
+
+        const mapContainer = map.getTarget();
+    
+        this.onMousemoveListenert = this.onMousemove.bind(this);
+        mapContainer.addEventListener(Events.browser.mouseMove, this.onMousemoveListenert);
+
+        this.onMouseoutListenert = this.onMouseout.bind(this);
+        mapContainer.addEventListener(Events.browser.mouseOut, this.onMouseoutListenert);
+
+        this.onKeydownListener = this.onKeydown.bind(this);
+        document.addEventListener(Events.browser.keyDown, this.onKeydownListener);
+
+        this.onPostrenderListeners = [];
+        map.getLayers().getArray().forEach((layer) => {
+            this.onPostrenderListeners.push(layer.on(Events.openLayers.postRender, this.onPostrender.bind(this)));
+        });
+    }
+
+    detachMapListeners() {
+        const map = this.getMap();
+        if(!map) {
+            return;
+        }
+
+        const mapContainer = map.getTarget();
+
+        // Remove the eventlisteners
+        mapContainer.removeEventListener(Events.browser.mouseMove, this.onMousemoveListenert);
+        mapContainer.removeEventListener(Events.browser.mouseOut, this.onMouseoutListenert);
+        document.removeEventListener(Events.browser.keyDown, this.onKeydownListener);
+
+        this.onPostrenderListeners.forEach((listener) => {
+            unByKey(listener);
+        });
+
+        // Render to remove the magnifier
+        map.render();
     }
 }
 

@@ -103,6 +103,37 @@ class HiddenMapNavigationTool extends Control {
         window.addEventListener(Events.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
     }
 
+    // -------------------------------------------------------------------
+    // # Section: Context Menu Methods
+    // -------------------------------------------------------------------
+
+    onContextMenuCenterAtCoordinate(map, coordinates, target) {
+        if(this.coordinatesModal) {
+            return;
+        }
+
+        this.coordinatesModal = new CoordinateModal({
+            onNavigate: (coordinates) => {
+                goToView(map, coordinates, map.getView().getZoom());
+            },
+            onClose: () => {
+                this.coordinatesModal = undefined;
+            }
+        });
+    }
+
+    onContextMenuCenterMap(map, coordinates, target) {
+        goToView(map, coordinates, map.getView().getZoom());
+    }
+
+    onContextMenuFocusHere(map, coordinates, target) {
+        goToView(map, coordinates, this.options.focusZoom);
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Window/Document Events
+    // -------------------------------------------------------------------
+
     onDOMContentLoaded(event) {
         const map = this.getMap();
         if(!map) {
@@ -117,6 +148,10 @@ class HiddenMapNavigationTool extends Control {
             this.onCreateUrlMarker(marker);
         }
     }
+
+    // -------------------------------------------------------------------
+    // # Section: HTML/Map Callback
+    // -------------------------------------------------------------------
 
     onCreateUrlMarker(markerString) {
         const map = this.getMap();
@@ -205,10 +240,11 @@ class HiddenMapNavigationTool extends Control {
 
             goToView(map, coordinates, markerData.zoom);
 
-            // Trigger InfoWindow to show
-            window.setTimeout(() => {
-                InfoWindowManager.showOverly(marker, fromLonLat(coordinates));
-            }, Config.animationDuration.normal);
+            InfoWindowManager.showOverly(
+                marker, 
+                fromLonLat(coordinates),
+                Config.animationDuration.normal
+            );
         }catch(error) {
             const errorMessage = 'Failed to parse URL marker';
             LogManager.logError(FILENAME, 'onCreateUrlMarker', {
@@ -221,29 +257,6 @@ class HiddenMapNavigationTool extends Control {
                 message: errorMessage
             }); 
         }
-    }
-
-    onContextMenuCenterAtCoordinate(map, coordinates, target) {
-        if(this.coordinatesModal) {
-            return;
-        }
-
-        this.coordinatesModal = new CoordinateModal({
-            onNavigate: (coordinates) => {
-                goToView(map, coordinates, map.getView().getZoom());
-            },
-            onClose: () => {
-                this.coordinatesModal = undefined;
-            }
-        });
-    }
-
-    onContextMenuCenterMap(map, coordinates, target) {
-        goToView(map, coordinates, map.getView().getZoom());
-    }
-
-    onContextMenuFocusHere(map, coordinates, target) {
-        goToView(map, coordinates, this.options.focusZoom);
     }
 
     onMoveEnd(event) {

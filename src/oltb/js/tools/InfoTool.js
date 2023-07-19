@@ -55,11 +55,9 @@ class InfoTool extends Control {
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
     }
 
-    onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, ShortcutKeys.infoTool)) {
-            this.onClickTool(event);
-        }
-    }    
+    // -------------------------------------------------------------------
+    // # Section: Tool Control
+    // -------------------------------------------------------------------
 
     onClickTool() {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
@@ -84,6 +82,16 @@ class InfoTool extends Control {
                 this.infoModal = undefined;
             }
         });
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Window/Document Events
+    // -------------------------------------------------------------------
+
+    onWindowKeyUp(event) {
+        if(isShortcutKeyOnly(event, ShortcutKeys.infoTool)) {
+            this.onClickTool(event);
+        }
     }
 }
 

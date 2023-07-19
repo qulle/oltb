@@ -46,6 +46,10 @@ class HiddenMarkerTool extends Control {
         window.addEventListener(Events.custom.featureRemoved, this.onWindowFeatureRemoved.bind(this));
     }
 
+    // -------------------------------------------------------------------
+    // # Section: Context Menu Methods
+    // -------------------------------------------------------------------
+
     onContextMenuCreateMarker(map, coordinates, target) {
         new MarkerModal({
             coordinates: coordinates,
@@ -54,6 +58,31 @@ class HiddenMarkerTool extends Control {
             }
         });
     }
+
+    // -------------------------------------------------------------------
+    // # Section: Window/Document Events
+    // -------------------------------------------------------------------
+
+    onWindowFeatureEdited(event) {
+        // Note: Consumer callback
+        if(this.options.onEdited instanceof Function) {
+            this.options.onEdited(
+                event.detail.before, 
+                event.detail.after
+            );
+        }
+    }
+
+    onWindowFeatureRemoved(event) {
+        // Note: Consumer callback
+        if(this.options.onRemoved instanceof Function) {
+            this.options.onRemoved(event.detail.feature);
+        }
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: HTML/Map Callback
+    // -------------------------------------------------------------------
 
     onCreateMarker(result) {
         const coordinates = [
@@ -98,23 +127,6 @@ class HiddenMarkerTool extends Control {
         // Note: Consumer callback
         if(this.options.onAdded instanceof Function) {
             this.options.onAdded(marker);
-        }
-    }
-
-    onWindowFeatureEdited(event) {
-        // Note: Consumer callback
-        if(this.options.onEdited instanceof Function) {
-            this.options.onEdited(
-                event.detail.before, 
-                event.detail.after
-            );
-        }
-    }
-
-    onWindowFeatureRemoved(event) {
-        // Note: Consumer callback
-        if(this.options.onRemoved instanceof Function) {
-            this.options.onRemoved(event.detail.feature);
         }
     }
 }

@@ -29,6 +29,7 @@ import { getMeasureCoordinates, getMeasureValue } from '../helpers/Measurements'
 const FILENAME = 'tools/MeasureTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
 const CLASS_TOOLBOX_SECTION = 'oltb-toolbox-section';
+const CLASS_TOGGLEABLE = 'oltb-toggleable';
 const ID_PREFIX = 'oltb-measure';
 const KEY_TOOLTIP = 'measure';
 
@@ -88,8 +89,33 @@ class MeasureTool extends Control {
             LocalStorageDefaults
         );
 
-        const uiRefToolboxElement = ElementManager.getToolboxElement();
-        uiRefToolboxElement.insertAdjacentHTML('beforeend', `
+        this.initToolboxHTML();
+        this.uiRefToolboxSection = document.querySelector(`#${ID_PREFIX}-toolbox`);
+        this.initToggleables();
+
+        this.uiRefToolType = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-type`);
+        this.uiRefToolType.addEventListener(Events.browser.change, this.updateTool.bind(this));
+
+        this.uiRefFillColor = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-fill-color`);
+        this.uiRefFillColor.addEventListener(Events.custom.colorChange, this.updateTool.bind(this));
+
+        this.uiRefStrokeColor = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-stroke-color`);
+        this.uiRefStrokeColor.addEventListener(Events.custom.colorChange, this.updateTool.bind(this));
+
+        // Set default selected values
+        this.uiRefToolType.value = this.localStorage.toolType; 
+
+        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(Events.custom.settingsCleared, this.onWindowSettingsCleared.bind(this));
+        window.addEventListener(Events.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Init Helpers
+    // -------------------------------------------------------------------
+
+    initToolboxHTML() {
+        ElementManager.getToolboxElement().insertAdjacentHTML('beforeend', `
             <div id="${ID_PREFIX}-toolbox" class="${CLASS_TOOLBOX_SECTION}">
                 <div class="${CLASS_TOOLBOX_SECTION}__header">
                     <h4 class="${CLASS_TOOLBOX_SECTION}__title oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">
@@ -120,30 +146,91 @@ class MeasureTool extends Control {
                 </div>
             </div>
         `);
-
-        this.uiRefMeasureToolbox = document.querySelector(`#${ID_PREFIX}-toolbox`);
-
-        this.uiRefMeasureToolbox.querySelectorAll('.oltb-toggleable').forEach((toggle) => {
-            toggle.addEventListener(Events.browser.click, this.onToggleToolbox.bind(this, toggle));
-        });
-
-        this.uiRefToolType = this.uiRefMeasureToolbox.querySelector(`#${ID_PREFIX}-type`);
-        this.uiRefToolType.addEventListener(Events.browser.change, this.updateTool.bind(this));
-
-        this.uiRefFillColor = this.uiRefMeasureToolbox.querySelector(`#${ID_PREFIX}-fill-color`);
-        this.uiRefFillColor.addEventListener(Events.custom.colorChange, this.updateTool.bind(this));
-
-        this.uiRefStrokeColor = this.uiRefMeasureToolbox.querySelector(`#${ID_PREFIX}-stroke-color`);
-        this.uiRefStrokeColor.addEventListener(Events.custom.colorChange, this.updateTool.bind(this));
-
-        // Set default selected values
-        this.uiRefToolType.value = this.localStorage.toolType; 
-
-        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
-        window.addEventListener(Events.custom.settingsCleared, this.onWindowSettingsCleared.bind(this));
-        window.addEventListener(Events.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
     }
 
+    initToggleables() {
+        this.uiRefToolboxSection.querySelectorAll(`.${CLASS_TOGGLEABLE}`).forEach((toggle) => {
+            toggle.addEventListener(Events.browser.click, this.onToggleToolbox.bind(this, toggle));
+        });
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Tool Control
+    // -------------------------------------------------------------------
+
+    onClickTool() {
+        LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
+
+        // Note: Consumer callback
+        if(this.options.onClick instanceof Function) {
+            this.options.onClick();
+        }
+        
+        if(this.active) {
+            this.deActivateTool();
+        }else {
+            this.activateTool();
+        }   
+    }
+
+    activateTool() {
+        this.active = true;
+        this.uiRefToolboxSection.classList.add(`${CLASS_TOOLBOX_SECTION}--show`);
+        this.button.classList.add(`${CLASS_TOOL_BUTTON}--active`); 
+
+        ToolManager.setActiveTool(this);
+
+        if(SettingsManager.getSetting(Settings.alwaysNewLayers)) {
+            LayerManager.addFeatureLayer({
+                name: 'Measurements layer'
+            });
+        }
+
+        // Triggers activation of the measure tool
+        eventDispatcher([this.uiRefToolType], Events.browser.change);
+
+        this.localStorage.active = true;
+        StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
+    }
+
+    deActivateTool() {
+        const map = this.getMap();
+        if(!map) {
+            return;
+        }
+
+        this.active = false;
+        this.uiRefToolboxSection.classList.remove(`${CLASS_TOOLBOX_SECTION}--show`);
+        this.button.classList.remove(`${CLASS_TOOL_BUTTON}--active`); 
+
+        map.removeInteraction(this.interaction);
+        this.interaction = undefined;
+
+        ToolManager.removeActiveTool();
+
+        this.localStorage.active = false;
+        StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
+    }
+
+    deSelectTool() {
+        this.deActivateTool();
+    }
+
+    updateTool() {
+        // Store current values in local storage
+        this.localStorage.toolType = this.uiRefToolType.value;
+        this.localStorage.fillColor = this.uiRefFillColor.getAttribute('data-oltb-color');
+        this.localStorage.strokeColor = this.uiRefStrokeColor.getAttribute('data-oltb-color');
+
+        StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
+
+        this.selectMeasure(
+            this.uiRefToolType.value,
+            this.uiRefFillColor.getAttribute('data-oltb-color'),
+            this.uiRefStrokeColor.getAttribute('data-oltb-color')
+        );
+    }
+    
     onToggleToolbox(toggle) {
         const targetName = toggle.dataset.oltbToggleableTarget;
         const targetNode = document.getElementById(targetName);
@@ -153,6 +240,10 @@ class MeasureTool extends Control {
             StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
         });
     }
+
+    // -------------------------------------------------------------------
+    // # Section: Window/Document Events
+    // -------------------------------------------------------------------
 
     onDOMContentLoaded() {
         if(this.localStorage.active) {
@@ -193,78 +284,9 @@ class MeasureTool extends Control {
         }
     }
 
-    updateTool() {
-        // Store current values in local storage
-        this.localStorage.toolType = this.uiRefToolType.value;
-        this.localStorage.fillColor = this.uiRefFillColor.getAttribute('data-oltb-color');
-        this.localStorage.strokeColor = this.uiRefStrokeColor.getAttribute('data-oltb-color');
-
-        StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
-
-        this.selectMeasure(
-            this.uiRefToolType.value,
-            this.uiRefFillColor.getAttribute('data-oltb-color'),
-            this.uiRefStrokeColor.getAttribute('data-oltb-color')
-        );
-    }
-
-    deSelect() {
-        this.deActivateTool();
-    }
-
-    onClickTool() {
-        LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
-
-        // Note: Consumer callback
-        if(this.options.onClick instanceof Function) {
-            this.options.onClick();
-        }
-        
-        if(this.active) {
-            this.deActivateTool();
-        }else {
-            this.activateTool();
-        }   
-    }
-
-    activateTool() {
-        this.active = true;
-        this.uiRefMeasureToolbox.classList.add(`${CLASS_TOOLBOX_SECTION}--show`);
-        this.button.classList.add(`${CLASS_TOOL_BUTTON}--active`); 
-
-        ToolManager.setActiveTool(this);
-
-        if(SettingsManager.getSetting(Settings.alwaysNewLayers)) {
-            LayerManager.addFeatureLayer({
-                name: 'Measurements layer'
-            });
-        }
-
-        // Triggers activation of the measure tool
-        eventDispatcher([this.uiRefToolType], Events.browser.change);
-
-        this.localStorage.active = true;
-        StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
-    }
-
-    deActivateTool() {
-        const map = this.getMap();
-        if(!map) {
-            return;
-        }
-
-        this.active = false;
-        this.uiRefMeasureToolbox.classList.remove(`${CLASS_TOOLBOX_SECTION}--show`);
-        this.button.classList.remove(`${CLASS_TOOL_BUTTON}--active`); 
-
-        map.removeInteraction(this.interaction);
-        this.interaction = undefined;
-
-        ToolManager.removeActiveTool();
-
-        this.localStorage.active = false;
-        StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
-    }
+    // -------------------------------------------------------------------
+    // # Section: Tool Specific
+    // -------------------------------------------------------------------
 
     selectMeasure(toolType, fillColor, strokeColor) {
         const map = this.getMap();
@@ -313,6 +335,10 @@ class MeasureTool extends Control {
         this.interaction.on(Events.openLayers.drawAbort, this.onDrawAbort.bind(this));
         this.interaction.on(Events.openLayers.error, this.onDrawEnd.bind(this));
     }
+
+    // -------------------------------------------------------------------
+    // # Section: HTML/Map Callback
+    // -------------------------------------------------------------------
 
     onDrawStart(event) {
         const feature = event.feature;

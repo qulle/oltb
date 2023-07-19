@@ -55,17 +55,11 @@ class DirectionTool extends Control {
 
         const button = DOM.createElement({
             element: 'button',
-            html: isHorizontal() 
-                ? DirectionData.row.icon
-                : DirectionData.col.icon,
+            html: this.getToolIcon(),
             class: CLASS_TOOL_BUTTON,
             attributes: {
                 'type': 'button',
-                'data-tippy-content': `${(
-                    isHorizontal() 
-                        ? DirectionData.row.tippyContent
-                        : DirectionData.col.tippyContent
-                )} (${ShortcutKeys.directionTool})`
+                'data-tippy-content': `${this.getToolTippyContent()} (${ShortcutKeys.directionTool})`
             },
             listeners: {
                 'click': this.onClickTool.bind(this)
@@ -98,7 +92,7 @@ class DirectionTool extends Control {
     }
 
     // -------------------------------------------------------------------
-    // # Tool Control
+    // # Section: Tool Control
     // -------------------------------------------------------------------
 
     onClickTool() {
@@ -129,7 +123,7 @@ class DirectionTool extends Control {
     }
 
     // -------------------------------------------------------------------
-    // # Window/Document Events
+    // # Section: Window/Document Events
     // -------------------------------------------------------------------
 
     onWindowKeyUp(event) {
@@ -148,8 +142,32 @@ class DirectionTool extends Control {
     }
 
     // -------------------------------------------------------------------
-    // # Internal
+    // # Section: Tool Specific
     // -------------------------------------------------------------------
+
+    getToolTippyContent() {
+        return isHorizontal() 
+            ? DirectionData.row.tippyContent
+            : DirectionData.col.tippyContent;
+    }
+
+    getToolIcon() {
+        return isHorizontal() 
+            ? DirectionData.row.icon
+            : DirectionData.col.icon;
+    }
+
+    getInActiveDirection() {
+        return isHorizontal()
+            ? DirectionData.col
+            : DirectionData.row;
+    }
+
+    getActiveDirection() {
+        return isHorizontal()
+            ? DirectionData.row
+            : DirectionData.col;
+    }
 
     hideToolButton() {
         if(window.innerWidth <= Config.deviceWidth.sm) {
@@ -182,18 +200,6 @@ class DirectionTool extends Control {
         this.button.removeChild(this.button.firstElementChild);
         this.button.insertAdjacentHTML('afterbegin', to.icon);
         this.button.getTippy().setContent(`${to.tippyContent} (${ShortcutKeys.directionTool})`);
-    }
-
-    getInActiveDirection() {
-        return isHorizontal()
-            ? DirectionData.col
-            : DirectionData.row;
-    }
-
-    getActiveDirection() {
-        return isHorizontal()
-            ? DirectionData.row
-            : DirectionData.col;
     }
 }
 

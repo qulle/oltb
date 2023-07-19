@@ -33,6 +33,7 @@ const CLASS_TOOL_BUTTON = 'oltb-tool-button';
 const CLASS_TOOLBOX_SECTION = 'oltb-toolbox-section';
 const CLASS_TOOLBOX_LIST = 'oltb-toolbox-list';
 const CLASS_FUNC_BUTTON = 'oltb-func-btn';
+const CLASS_TOGGLEABLE = 'oltb-toggleable';
 const ID_PREFIX = 'oltb-layer';
 const SORTABLE_MAP_LAYERS = 'sortableMapLayers';
 const SORTABLE_FEATURE_LAYERS = 'sortableFeatureLayers';
@@ -114,8 +115,65 @@ class LayerTool extends Control {
             LocalStorageDefaults
         );
 
-        const uiRefToolboxElement = ElementManager.getToolboxElement();
-        uiRefToolboxElement.insertAdjacentHTML('beforeend', `
+        this.initToolboxHTML();
+        this.uiRefToolboxSection = document.querySelector(`#${ID_PREFIX}-toolbox`);
+        this.initToggleables();
+
+        this.uiRefMapLayerStack = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-map-stack`);
+        this.uiRefAddMapLayerButton = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-map-stack-add-button`);
+
+        this.sortableMapLayerStack = this.createSortable(this.uiRefMapLayerStack, {
+            group: SORTABLE_MAP_LAYERS,
+            callback: this.options.onMapLayerDragged,
+            setZIndex: LayerManager.setMapLayerZIndex.bind(LayerManager),
+            stack: this.localStorage.mapLayers
+        });
+
+        this.uiRefFeatureLayerStack = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-feature-stack`);
+        this.uiRefAddFeatureLayerButton = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-feature-stack-add-button`);
+        this.uiRefAddFeatureLayerText = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-feature-stack-add-text`);
+
+        this.sortableFeatureLayerStack = this.createSortable(this.uiRefFeatureLayerStack, {
+            group: SORTABLE_FEATURE_LAYERS,
+            callback: this.options.onFeatureLayerDragged,
+            setZIndex: LayerManager.setFeatureLayerZIndex.bind(LayerManager),
+            stack: this.localStorage.featureLayers
+        });
+
+        if(this.uiRefAddMapLayerButton) {
+            this.uiRefAddMapLayerButton.addEventListener(Events.browser.click, this.showAddMapLayerModal.bind(this));
+        }
+
+        if(this.uiRefAddFeatureLayerButton) {
+            this.uiRefAddFeatureLayerButton.addEventListener(Events.browser.click, this.onAddFeatureLayerByClick.bind(this));
+        }
+
+        if(this.uiRefAddFeatureLayerText) {
+            this.uiRefAddFeatureLayerText.addEventListener(Events.browser.keyUp, this.onAddFeatureLayerByKey.bind(this));
+        }
+
+        if(!this.options.disableMapCreateLayerButton) {
+            ContextMenu.addItem({
+                icon: icon, 
+                name: 'Add map layer', 
+                fn: this.onContextMenuAddMapLayerModal.bind(this)
+            });
+        }
+
+        window.addEventListener(Events.custom.mapLayerAdded, this.onWindowMapLayerAdded.bind(this));
+        window.addEventListener(Events.custom.mapLayerRemoved, this.onWindowMapLayerRemoved.bind(this));
+        window.addEventListener(Events.custom.featureLayerAdded, this.onWindowFeatureLayerAdded.bind(this));
+        window.addEventListener(Events.custom.featureLayerRemoved, this.onWindowFeatureLayerRemoved.bind(this));
+        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(Events.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Init Helpers
+    // -------------------------------------------------------------------
+
+    initToolboxHTML() {
+        ElementManager.getToolboxElement().insertAdjacentHTML('beforeend', `
             <div id="${ID_PREFIX}-toolbox" class="${CLASS_TOOLBOX_SECTION}">
                 <div class="${CLASS_TOOLBOX_SECTION}__header">
                     <h4 class="${CLASS_TOOLBOX_SECTION}__title oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-map-toolbox-collapsed">
@@ -169,161 +227,17 @@ class LayerTool extends Control {
                 </div>
             </div>
         `);
+    }
 
-        this.uiRefLayersToolbox = document.querySelector(`#${ID_PREFIX}-toolbox`);
-
-        this.uiRefLayersToolbox.querySelectorAll('.oltb-toggleable').forEach((toggle) => {
+    initToggleables() {
+        this.uiRefToolboxSection.querySelectorAll(`.${CLASS_TOGGLEABLE}`).forEach((toggle) => {
             toggle.addEventListener(Events.browser.click, this.onToggleToolbox.bind(this, toggle));
         });
-
-        this.uiRefMapLayerStack = this.uiRefLayersToolbox.querySelector(`#${ID_PREFIX}-map-stack`);
-        this.uiRefAddMapLayerButton = this.uiRefLayersToolbox.querySelector(`#${ID_PREFIX}-map-stack-add-button`);
-
-        this.sortableMapLayerStack = this.createSortable(this.uiRefMapLayerStack, {
-            group: SORTABLE_MAP_LAYERS,
-            callback: this.options.onMapLayerDragged,
-            setZIndex: LayerManager.setMapLayerZIndex.bind(LayerManager),
-            stack: this.localStorage.mapLayers
-        });
-
-        this.uiRefFeatureLayerStack = this.uiRefLayersToolbox.querySelector(`#${ID_PREFIX}-feature-stack`);
-        this.uiRefAddFeatureLayerButton = this.uiRefLayersToolbox.querySelector(`#${ID_PREFIX}-feature-stack-add-button`);
-        this.uiRefAddFeatureLayerText = this.uiRefLayersToolbox.querySelector(`#${ID_PREFIX}-feature-stack-add-text`);
-
-        this.sortableFeatureLayerStack = this.createSortable(this.uiRefFeatureLayerStack, {
-            group: SORTABLE_FEATURE_LAYERS,
-            callback: this.options.onFeatureLayerDragged,
-            setZIndex: LayerManager.setFeatureLayerZIndex.bind(LayerManager),
-            stack: this.localStorage.featureLayers
-        });
-
-        if(this.uiRefAddMapLayerButton) {
-            this.uiRefAddMapLayerButton.addEventListener(Events.browser.click, this.showAddMapLayerModal.bind(this));
-        }
-
-        if(this.uiRefAddFeatureLayerButton) {
-            this.uiRefAddFeatureLayerButton.addEventListener(Events.browser.click, this.onFeatureLayerAdd.bind(this));
-        }
-
-        if(this.uiRefAddFeatureLayerText) {
-            this.uiRefAddFeatureLayerText.addEventListener(Events.browser.keyUp, this.onFeatureLayerAdd.bind(this));
-        }
-
-        if(!this.options.disableMapCreateLayerButton) {
-            ContextMenu.addItem({
-                icon: icon, 
-                name: 'Add map layer', 
-                fn: this.onContextMenuAddMapLayerModal.bind(this)
-            });
-        }
-
-        window.addEventListener(Events.custom.mapLayerAdded, this.onWindowMapLayerAdded.bind(this));
-        window.addEventListener(Events.custom.mapLayerRemoved, this.onWindowMapLayerRemoved.bind(this));
-        window.addEventListener(Events.custom.featureLayerAdded, this.onWindowFeatureLayerAdded.bind(this));
-        window.addEventListener(Events.custom.featureLayerRemoved, this.onWindowFeatureLayerRemoved.bind(this));
-        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
-        window.addEventListener(Events.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
     }
 
-    onToggleToolbox(toggle) {
-        const targetName = toggle.dataset.oltbToggleableTarget;
-        const targetNode = document.getElementById(targetName);
-        
-        targetNode?.slideToggle(Config.animationDuration.fast, (collapsed) => {
-            this.localStorage[targetName] = collapsed;
-            StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
-        });
-    }
-
-    onDOMContentLoaded() {
-        if(this.localStorage.active) {
-            this.activateTool();
-        }
-    }
-
-    onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, ShortcutKeys.layerTool)) {
-            this.onClickTool(event);
-        }
-    }
-
-    onContextMenuAddMapLayerModal() {
-        this.showAddMapLayerModal();
-    }
-
-    onFeatureLayerAdd(event) {
-        if(
-            event.type === Events.browser.keyUp && 
-            event.key !== Keys.valueEnter
-        ) {
-            return;
-        }
-
-        LayerManager.addFeatureLayer({
-            name: this.uiRefAddFeatureLayerText.value
-        });
-        this.uiRefAddFeatureLayerText.value = '';
-    }
-
-    createSortable(element, options) {
-        return Sortable.create(element, {
-            group: options.group,
-            dataIdAttr: 'data-oltb-sort-index',
-            animation: Config.animationDuration.warp,
-            forceFallback: true,
-            handle: `.${CLASS_TOOLBOX_LIST}__handle`,
-            chosenClass: `${CLASS_TOOLBOX_LIST}__item--chosen`,
-            dragClass: `${CLASS_TOOLBOX_LIST}__item--drag`,
-            ghostClass: `${CLASS_TOOLBOX_LIST}__item--ghost`,
-            onEnd: (event) => {
-                // Callback data
-                // Note: The indexes are reversed, list is sorted in DESC order
-                const list = [];
-                const currentItem = {
-                    id: event.item.getAttribute('data-oltb-id'),
-                    oldIndex: event.newDraggableIndex,
-                    newIndex: event.oldDraggableIndex
-                };
-
-                const ul = event.to;
-                ul.childNodes.forEach((li, index) => {
-                    // Note: Reverse the index so that 0 is at bottom of list not top
-                    const reversedIndex = ul.childNodes.length - index - INDEX_OFFSET;
-
-                    // Update data-attribute, this is used by Sortable.js to do the sorting
-                    li.setAttribute('data-oltb-sort-index', reversedIndex);
-
-                    // Update state that is stored in localStorage
-                    // This will keep track of the sort after a reload
-                    const id = li.getAttribute('data-oltb-id');
-                    const item = options.stack.find((item) => {
-                        return item.id === id;
-                    });
-
-                    // Note: Use brackes, not certain that property is known all times
-                    if(item) {
-                        item['sortIndex'] = reversedIndex;
-                    }
-
-                    // Update each layer with the new ZIndex
-                    options.setZIndex(id, reversedIndex);
-
-                    // Update callback data
-                    list.push({
-                        id: id,
-                        index: reversedIndex
-                    });
-                });
-
-                StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
-
-                // Note: Consumer callback
-                if(options.callback instanceof Function) {
-                    options.callback(currentItem, list);
-                }
-            }
-        });
-    }
+    // -------------------------------------------------------------------
+    // # Section: Tool Control
+    // -------------------------------------------------------------------
 
     onClickTool() {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
@@ -342,7 +256,7 @@ class LayerTool extends Control {
 
     activateTool() {
         this.active = true;
-        this.uiRefLayersToolbox.classList.add(`${CLASS_TOOLBOX_SECTION}--show`);
+        this.uiRefToolboxSection.classList.add(`${CLASS_TOOLBOX_SECTION}--show`);
         this.button.classList.add(`${CLASS_TOOL_BUTTON}--active`);
 
         this.localStorage.active = true;
@@ -351,82 +265,36 @@ class LayerTool extends Control {
 
     deActivateTool() {
         this.active = false;
-        this.uiRefLayersToolbox.classList.remove(`${CLASS_TOOLBOX_SECTION}--show`);
+        this.uiRefToolboxSection.classList.remove(`${CLASS_TOOLBOX_SECTION}--show`);
         this.button.classList.remove(`${CLASS_TOOL_BUTTON}--active`);
 
         this.localStorage.active = false;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 
-    showAddMapLayerModal() {
-        new LayerModal({
-            onCreate: (result) => {
-                this.onCreateMapLayer(result);
-            }
+    onToggleToolbox(toggle) {
+        const targetName = toggle.dataset.oltbToggleableTarget;
+        const targetNode = document.getElementById(targetName);
+        
+        targetNode?.slideToggle(Config.animationDuration.fast, (collapsed) => {
+            this.localStorage[targetName] = collapsed;
+            StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
         });
     }
 
-    sortDesc(sortable, animate = false) {
-        const order = sortable.toArray().sort().reverse();
-        sortable.sort(order, animate);
+    // -------------------------------------------------------------------
+    // # Section: Window/Document Events
+    // -------------------------------------------------------------------
+
+    onDOMContentLoaded() {
+        if(this.localStorage.active) {
+            this.activateTool();
+        }
     }
 
-    getSortIndexFromLayerId(primary, secondary, id) {
-        const item = primary.find((item) => {
-            return item.id === id;
-        });
-
-        if(item && item.sortIndex !== undefined) {
-            return item.sortIndex;
-        }
-
-        return secondary.length;
-    }
-
-    onCreateMapLayer(result) {
-        if(!ProjectionManager.hasProjection(result.projection)) {
-            const errorMessage = `Must add projection definition for <strong>${result.projection}</strong>`;
-            LogManager.logError(FILENAME, 'onCreateMapLayer', errorMessage);
-
-            Toast.error({
-                title: 'Error',
-                message: `
-                    ${errorMessage} <br>
-                    <a href="https://epsg.io" target="_blank" class="oltb-link">https://epsg.io</a>
-                `
-            });
-
-            return;
-        }
-
-        try {
-            LayerManager.addMapLayer({
-                name: result.name,
-                layer: instantiateLayer(result.layer, {
-                    projection: result.projection || Config.projection.default,
-                    source: instantiateSource(result.source, {
-                        url: result.url,
-                        params: JSON.parse(result.parameters),
-                        wrapX: result.wrapX,
-                        attributions: result.attributions,
-                        ...(result.crossOrigin !== 'undefined' && {
-                            crossOrigin: result.crossOrigin
-                        }),
-                        format: instantiateFormat(result.source)
-                    })
-                })
-            });
-        }catch(error) {
-            const errorMessage = 'Failed to generate new layer';
-            LogManager.logError(FILENAME, 'onCreateMapLayer', {
-                message: errorMessage,
-                error: error
-            });
-
-            Toast.error({
-                title: 'Error',
-                message: errorMessage
-            });
+    onWindowKeyUp(event) {
+        if(isShortcutKeyOnly(event, ShortcutKeys.layerTool)) {
+            this.onClickTool(event);
         }
     }
 
@@ -452,17 +320,17 @@ class LayerTool extends Control {
             false
         );
 
-        this.createMapLayerItem(layerWrapper, {
+        this.createUIMapLayerItem(layerWrapper, {
             ...(!disableVisibilityButton && {visibilityButton: {
-                function: this.createVisibilityButton, 
+                function: this.createUIVisibilityButton, 
                 callback: this.options.onMapLayerVisibilityChanged
             }}),
             ...(!disableEditButton && {editButton: {
-                function: this.createEditButton,
+                function: this.createUIEditButton,
                 callback: this.options.onMapLayerRenamed
             }}),
             ...(!disableDeleteButton && {deleteButton: {
-                function: this.createDeleteButton,
+                function: this.createUIDeleteButton,
                 callback: LayerManager.removeMapLayer.bind(LayerManager)
             }})
         });
@@ -520,21 +388,21 @@ class LayerTool extends Control {
             false
         );
 
-        this.createFeatureLayerItem(layerWrapper, {
+        this.createUIFeatureLayerItem(layerWrapper, {
             ...(!disableVisibilityButton && {visibilityButton: {
-                function: this.createVisibilityButton, 
+                function: this.createUIVisibilityButton, 
                 callback: this.options.onFeatureLayerVisibilityChanged
             }}),
             ...(!disableEditButton && {editButton: {
-                function: this.createEditButton,
+                function: this.createUIEditButton,
                 callback: this.options.onFeatureLayerRenamed
             }}),
             ...(!disableDownloadButton && {downloadButton: {
-                function: this.createDownloadButton,
+                function: this.createUIDownloadButton,
                 callback: this.options.onFeatureLayerDownloaded
             }}),
             ...(!disableDeleteButton && {deleteButton: {
-                function: this.createDeleteButton,
+                function: this.createUIDeleteButton,
                 callback: LayerManager.removeFeatureLayer.bind(LayerManager)
             }})
         });
@@ -574,31 +442,214 @@ class LayerTool extends Control {
         }
     }
 
-    hasFeatureLayerInLocalStorage(layerWrapper) {
-        const exist = this.localStorage.featureLayers.find((item) => {
-            return item.id === layerWrapper.getId();
+    // -------------------------------------------------------------------
+    // # Section: Local Storage
+    // -------------------------------------------------------------------
+
+    getLocalStorageFeatureLayerById(id) {
+        const layer = this.localStorage.featureLayers.find((item) => {
+            return item.id === id;
         });
 
-        if(exist) {
+        return layer;
+    }
+
+    hasLocalStorageFeatureLayerById(id) {
+        const layer = this.getLocalStorageFeatureLayerById(id);
+
+        if(layer) {
             return true;
         }
 
         return false;
     }
 
-    hasMapLayerInLocalStorage(layerWrapper) {
-        const exist = this.localStorage.mapLayers.find((item) => {
-            return item.id === layerWrapper.getId();
+    getLocalStorageMapLayerById(id) {
+        const layer = this.localStorage.mapLayers.find((item) => {
+            return item.id === id;
         });
 
-        if(exist) {
+        return layer;
+    }
+
+    hasLocalStorageMapLayerById(id) {
+        const layer = this.getLocalStorageMapLayerById(id);
+
+        if(layer) {
             return true;
         }
 
         return false;
     }
 
-    attachLayerNameTippy(layerName) {
+    // -------------------------------------------------------------------
+    // # Section: Context Menu Methods
+    // -------------------------------------------------------------------
+
+    onContextMenuAddMapLayerModal() {
+        this.showAddMapLayerModal();
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Sortable
+    // -------------------------------------------------------------------
+
+    createSortable(element, options) {
+        return Sortable.create(element, {
+            group: options.group,
+            dataIdAttr: 'data-oltb-sort-index',
+            animation: Config.animationDuration.warp,
+            forceFallback: true,
+            handle: `.${CLASS_TOOLBOX_LIST}__handle`,
+            chosenClass: `${CLASS_TOOLBOX_LIST}__item--chosen`,
+            dragClass: `${CLASS_TOOLBOX_LIST}__item--drag`,
+            ghostClass: `${CLASS_TOOLBOX_LIST}__item--ghost`,
+            onEnd: (event) => {
+                // Callback data
+                // Note: The old/new are swapped due to the list beeing reversed in DESC order
+                const list = [];
+                const currentItem = {
+                    id: event.item.getAttribute('data-oltb-id'),
+                    oldIndex: event.newDraggableIndex,
+                    newIndex: event.oldDraggableIndex
+                };
+
+                const ul = event.to;
+                ul.childNodes.forEach((li, index) => {
+                    // Note: Reverse the index so that 0 is at bottom of list not top
+                    const reversedIndex = ul.childNodes.length - index - INDEX_OFFSET;
+
+                    // Update data-attribute, this is used by Sortable.js to do the sorting
+                    li.setAttribute('data-oltb-sort-index', reversedIndex);
+
+                    // Update state that is stored in localStorage
+                    // This will keep track of the sort after a reload
+                    const id = li.getAttribute('data-oltb-id');
+                    const item = options.stack.find((item) => {
+                        return item.id === id;
+                    });
+
+                    // Note: Use brackes, not certain that property is known all times
+                    if(item) {
+                        item['sortIndex'] = reversedIndex;
+                    }
+
+                    // Update each layer with the new ZIndex
+                    options.setZIndex(id, reversedIndex);
+
+                    // Update callback data
+                    list.push({
+                        id: id,
+                        index: reversedIndex
+                    });
+                });
+
+                StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
+
+                // Note: Consumer callback
+                if(options.callback instanceof Function) {
+                    options.callback(currentItem, list);
+                }
+            }
+        });
+    }
+
+    sortSortableDesc(sortable, animate = false) {
+        const order = sortable.toArray().sort().reverse();
+        sortable.sort(order, animate);
+    }
+
+    getSortableIndexFromLayerId(primary, secondary, id) {
+        const item = primary.find((item) => {
+            return item.id === id;
+        });
+
+        if(item && item.sortIndex !== undefined) {
+            return item.sortIndex;
+        }
+
+        return secondary.length;
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Conversions/Validation
+    // -------------------------------------------------------------------
+
+    isValidEnter(event) {
+        return event.type === Events.browser.keyUp && event.key === Keys.valueEnter;
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: HTML/Map Callback
+    // -------------------------------------------------------------------
+
+    onAddFeatureLayerByKey(event) {
+        if(!this.isValidEnter(event)) {
+            return;
+        }
+
+        this.onAddFeatureLayerByClick();
+    }
+
+    onAddFeatureLayerByClick(event) {
+        LayerManager.addFeatureLayer({
+            name: this.uiRefAddFeatureLayerText.value
+        });
+        this.uiRefAddFeatureLayerText.value = '';
+    }
+
+    onCreateMapLayer(result) {
+        if(!ProjectionManager.hasProjection(result.projection)) {
+            const errorMessage = `Must add projection definition for <strong>${result.projection}</strong>`;
+            LogManager.logError(FILENAME, 'onCreateMapLayer', errorMessage);
+
+            Toast.error({
+                title: 'Error',
+                message: `
+                    ${errorMessage} <br>
+                    <a href="https://epsg.io" target="_blank" class="oltb-link">https://epsg.io</a>
+                `
+            });
+
+            return;
+        }
+
+        try {
+            LayerManager.addMapLayer({
+                name: result.name,
+                layer: instantiateLayer(result.layer, {
+                    projection: result.projection || Config.projection.default,
+                    source: instantiateSource(result.source, {
+                        url: result.url,
+                        params: JSON.parse(result.parameters),
+                        wrapX: result.wrapX,
+                        attributions: result.attributions,
+                        ...(result.crossOrigin !== 'undefined' && {
+                            crossOrigin: result.crossOrigin
+                        }),
+                        format: instantiateFormat(result.source)
+                    })
+                })
+            });
+        }catch(error) {
+            const errorMessage = 'Failed to generate new layer';
+            LogManager.logError(FILENAME, 'onCreateMapLayer', {
+                message: errorMessage,
+                error: error
+            });
+
+            Toast.error({
+                title: 'Error',
+                message: errorMessage
+            });
+        }
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: UI
+    // -------------------------------------------------------------------
+
+    createUILayerNameTippy(layerName) {
         tippy(layerName, {
             content(reference) {
                 const title = reference.getAttribute('title');
@@ -611,31 +662,9 @@ class LayerTool extends Control {
         });
     }
 
-    removeActiveFeatureLayerClass() {
-        // Should just be one li-item that has the active class, but just in case
-        this.uiRefFeatureLayerStack.querySelectorAll('li').forEach((item) => {
-            item.classList.remove(`${CLASS_TOOLBOX_LIST}__item--active`);
-        });
-    }
-
-    attachButtonCallbacks(options, layerWrapper, rightWrapper, layerName) {
-        for(const name in options) {
-            const button = options[name].function.call(
-                this,
-                layerWrapper,
-                options[name].callback,
-                layerName
-            );
-
-            DOM.appendChildren(rightWrapper, [
-                button
-            ]);
-        }
-    }
-
-    createMapLayerItem(layerWrapper, options) {
+    createUIMapLayerItem(layerWrapper, options) {
         const layerId = layerWrapper.getId();
-        const sortIndex = this.getSortIndexFromLayerId(
+        const sortIndex = this.getSortableIndexFromLayerId(
             this.localStorage.mapLayers,
             this.uiRefMapLayerStack.childNodes,
             layerId
@@ -678,7 +707,7 @@ class LayerTool extends Control {
 
         // This tooltip can not be triggered by the delegated .oltb-tippy class
         // Because the tooltip instance can not be reached in the renaming function unless it is known during "compile time"
-        this.attachLayerNameTippy(layerName);
+        this.createUILayerNameTippy(layerName);
 
         const leftWrapper = DOM.createElement({
             element: 'div',
@@ -715,14 +744,14 @@ class LayerTool extends Control {
         ]);
 
         this.uiRefMapLayerStack.append(layerElement);
-        this.sortDesc(this.sortableMapLayerStack);
+        this.sortSortableDesc(this.sortableMapLayerStack);
     }
 
-    createFeatureLayerItem(layerWrapper, options) {
+    createUIFeatureLayerItem(layerWrapper, options) {
         this.removeActiveFeatureLayerClass();
 
         const layerId = layerWrapper.getId();
-        const sortIndex = this.getSortIndexFromLayerId(
+        const sortIndex = this.getSortableIndexFromLayerId(
             this.localStorage.featureLayers,
             this.uiRefFeatureLayerStack.childNodes,
             layerId
@@ -740,7 +769,7 @@ class LayerTool extends Control {
 
         const layer = layerWrapper.getLayer();
         
-        if(!this.hasFeatureLayerInLocalStorage(layerWrapper)) {
+        if(!this.hasLocalStorageFeatureLayerById(layerWrapper.getId())) {
             this.localStorage.featureLayers.push({
                 id: layerWrapper.getId(),
                 sortIndex: sortIndex,
@@ -771,7 +800,7 @@ class LayerTool extends Control {
 
         // This tooltip can not be triggered by the delegated .oltb-tippy class
         // Because the tooltip instance can not be reached in the renaming function unless it is known during "compile time"
-        this.attachLayerNameTippy(layerName);
+        this.createUILayerNameTippy(layerName);
 
         // Attach eventlistener for setting the active layer
         layerName.addEventListener(Events.browser.click, (event) => {
@@ -826,10 +855,10 @@ class LayerTool extends Control {
         ]);
 
         this.uiRefFeatureLayerStack.append(layerElement);
-        this.sortDesc(this.sortableFeatureLayerStack);
+        this.sortSortableDesc(this.sortableFeatureLayerStack);
     }
 
-    createDeleteButton(layerWrapper, callback) {
+    createUIDeleteButton(layerWrapper, callback) {
         const deleteButton = DOM.createElement({
             element: 'button',
             class: `${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--delete oltb-tippy`,
@@ -854,7 +883,7 @@ class LayerTool extends Control {
         return deleteButton;
     }
 
-    createDownloadButton(layerWrapper, callback) {
+    createUIDownloadButton(layerWrapper, callback) {
         const downloadButton = DOM.createElement({
             element: 'button', 
             class: `${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--download oltb-tippy`,
@@ -876,42 +905,7 @@ class LayerTool extends Control {
         return downloadButton;
     }
 
-    onDownloadLayer(layerWrapper, result) {
-        const format = instantiateFormat(result.format);
-            
-        if(!format) {
-            const errorMessage = `Layer format '<strong>${result.format})</strong>' is not supported`;
-            LogManager.logError(FILENAME, 'onDownloadLayer', errorMessage);
-
-            Toast.error({
-                title: 'Error',
-                message: errorMessage
-            });
-
-            return;
-        }
-
-        LogManager.logDebug(FILENAME, 'onDownloadLayer', {
-            layerName: layerWrapper.getName(),
-            formatName: result.format,
-            format: format
-        });
-            
-        const features = layerWrapper.getLayer().getSource().getFeatures();
-        const content = format.writeFeatures(features, {
-            featureProjection: Config.projection.default
-        });
-        
-        const filename = `${layerWrapper.getName()}.${result.format.toLowerCase()}`;
-        download(filename, content);
-            
-        // Note: Consumer callback
-        if(this.options.featureLayerDownloaded instanceof Function) {
-            this.options.featureLayerDownloaded(layerWrapper, filename, content);
-        }
-    }
-
-    createEditButton(layerWrapper, callback, layerName) {
+    createUIEditButton(layerWrapper, callback, layerName) {
         const editButton = DOM.createElement({
             element: 'button',
             class: `${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--edit oltb-tippy`,
@@ -949,7 +943,7 @@ class LayerTool extends Control {
         return editButton;
     }
 
-    createVisibilityButton(layerWrapper, callback, layerName) {
+    createUIVisibilityButton(layerWrapper, callback, layerName) {
         const map = this.getMap();
         if(!map) {
             return;
@@ -989,6 +983,79 @@ class LayerTool extends Control {
         });
 
         return visibilityButton;
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: HTML/Map Callback
+    // -------------------------------------------------------------------
+
+    onDownloadLayer(layerWrapper, result) {
+        const format = instantiateFormat(result.format);
+            
+        if(!format) {
+            const errorMessage = `Layer format '<strong>${result.format})</strong>' is not supported`;
+            LogManager.logError(FILENAME, 'onDownloadLayer', errorMessage);
+
+            Toast.error({
+                title: 'Error',
+                message: errorMessage
+            });
+
+            return;
+        }
+
+        LogManager.logDebug(FILENAME, 'onDownloadLayer', {
+            layerName: layerWrapper.getName(),
+            formatName: result.format,
+            format: format
+        });
+            
+        const features = layerWrapper.getLayer().getSource().getFeatures();
+        const content = format.writeFeatures(features, {
+            featureProjection: Config.projection.default
+        });
+        
+        const filename = `${layerWrapper.getName()}.${result.format.toLowerCase()}`;
+        download(filename, content);
+            
+        // Note: Consumer callback
+        if(this.options.featureLayerDownloaded instanceof Function) {
+            this.options.featureLayerDownloaded(layerWrapper, filename, content);
+        }
+    }
+    
+    // -------------------------------------------------------------------
+    // # Section: Tool Specific
+    // -------------------------------------------------------------------
+
+    showAddMapLayerModal() {
+        new LayerModal({
+            onCreate: (result) => {
+                this.onCreateMapLayer(result);
+            }
+        });
+    }
+
+    removeActiveFeatureLayerClass() {
+        // Should just be one li-item that has the active class, but just in case
+        this.uiRefFeatureLayerStack.querySelectorAll('li').forEach((item) => {
+            item.classList.remove(`${CLASS_TOOLBOX_LIST}__item--active`);
+        });
+    }
+
+    attachButtonCallbacks(options, layerWrapper, rightWrapper, layerName) {
+        for(const name in options) {
+            const button = options[name].function.call(
+                this,
+                layerWrapper,
+                options[name].callback,
+                layerName
+            );
+
+            DOM.appendChildren(rightWrapper, [
+                button
+            ]);
+        }
     }
 }
 

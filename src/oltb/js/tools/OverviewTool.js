@@ -16,6 +16,7 @@ import { Control, OverviewMap } from 'ol/control';
 const FILENAME = 'tools/OverviewTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
 const CLASS_TOOLBOX_SECTION = 'oltb-toolbox-section';
+const CLASS_TOGGLEABLE = 'oltb-toggleable';
 const ID_PREFIX = 'oltb-overview';
 
 const DefaultOptions = Object.freeze({
@@ -67,8 +68,23 @@ class OverviewTool extends Control {
             LocalStorageDefaults
         );
 
-        const uiRefToolboxElement = ElementManager.getToolboxElement();
-        uiRefToolboxElement.insertAdjacentHTML('beforeend', `
+        this.initToolboxHTML();
+        this.uiRefToolboxSection = document.querySelector(`#${ID_PREFIX}-toolbox`);
+        this.initToggleables();
+
+        this.overviewMap = this.generateOverviewMap();
+
+        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(Events.custom.settingsCleared, this.onWindowSettingsCleared.bind(this));
+        window.addEventListener(Events.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Init Helpers
+    // -------------------------------------------------------------------
+
+    initToolboxHTML() {
+        ElementManager.getToolboxElement().insertAdjacentHTML('beforeend', `
             <div id="${ID_PREFIX}-toolbox" class="${CLASS_TOOLBOX_SECTION}">
                 <div class="${CLASS_TOOLBOX_SECTION}__header">
                     <h4 class="${CLASS_TOOLBOX_SECTION}__title oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">
@@ -81,14 +97,20 @@ class OverviewTool extends Control {
                 </div>
             </div>
         `);
+    }
 
-        this.uiRefOverviewToolbox = document.querySelector(`#${ID_PREFIX}-toolbox`);
-
-        this.uiRefOverviewToolbox.querySelectorAll('.oltb-toggleable').forEach((toggle) => {
+    initToggleables() {
+        this.uiRefToolboxSection.querySelectorAll(`.${CLASS_TOGGLEABLE}`).forEach((toggle) => {
             toggle.addEventListener(Events.browser.click, this.onToggleToolbox.bind(this, toggle));
         });
+    }
 
-        this.overviewMap = new OverviewMap({
+    // -------------------------------------------------------------------
+    // # Section: Generate Helpers
+    // -------------------------------------------------------------------
+
+    generateOverviewMap() {
+        return new OverviewMap({
             target: 'oltb-overview-target',
             collapsed: false,
             collapsible: false,
@@ -98,47 +120,11 @@ class OverviewTool extends Control {
                 }),
             ]
         });
-
-        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
-        window.addEventListener(Events.custom.settingsCleared, this.onWindowSettingsCleared.bind(this));
-        window.addEventListener(Events.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
     }
 
-    onToggleToolbox(toggle) {
-        const map = this.getMap();
-        if(!map) {
-            return;
-        }
-
-        const targetName = toggle.dataset.oltbToggleableTarget;
-        const targetNode = document.getElementById(targetName);
-        
-        targetNode?.slideToggle(Config.animationDuration.fast, (collapsed) => {
-            this.localStorage.collapsed = collapsed;
-            StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
-        
-            // Force render of overview, 
-            // Other solutions will not render the dashed box correctly until the map is moved
-            this.overviewMap.setMap(null);
-            this.overviewMap.setMap(map);
-        });
-    }
-
-    onDOMContentLoaded() {
-        if(this.localStorage.active) {
-            this.activateTool();
-        }
-    }
-
-    onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, ShortcutKeys.overviewTool)) {
-            this.onClickTool(event);
-        }
-    }
-    
-    onWindowSettingsCleared() {
-        this.localStorage = _.cloneDeep(LocalStorageDefaults);
-    }
+    // -------------------------------------------------------------------
+    // # Section: Tool Control
+    // -------------------------------------------------------------------
 
     onClickTool() {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
@@ -162,7 +148,7 @@ class OverviewTool extends Control {
         }
 
         // The class must be added before setMap or the overview will not render correctly
-        this.uiRefOverviewToolbox.classList.add(`${CLASS_TOOLBOX_SECTION}--show`);
+        this.uiRefToolboxSection.classList.add(`${CLASS_TOOLBOX_SECTION}--show`);
         this.overviewMap.setMap(map);
 
         this.active = true;
@@ -177,10 +163,50 @@ class OverviewTool extends Control {
 
         this.active = false;
         this.button.classList.remove(`${CLASS_TOOL_BUTTON}--active`);
-        this.uiRefOverviewToolbox.classList.remove(`${CLASS_TOOLBOX_SECTION}--show`);
+        this.uiRefToolboxSection.classList.remove(`${CLASS_TOOLBOX_SECTION}--show`);
 
         this.localStorage.active = false;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
+    }
+
+    onToggleToolbox(toggle) {
+        const map = this.getMap();
+        if(!map) {
+            return;
+        }
+
+        const targetName = toggle.dataset.oltbToggleableTarget;
+        const targetNode = document.getElementById(targetName);
+        
+        targetNode?.slideToggle(Config.animationDuration.fast, (collapsed) => {
+            this.localStorage.collapsed = collapsed;
+            StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
+        
+            // Force render of overview, 
+            // Other solutions will not render the dashed box correctly until the map is moved
+            this.overviewMap.setMap(null);
+            this.overviewMap.setMap(map);
+        });
+    }
+    
+    // -------------------------------------------------------------------
+    // # Section: Window/Document Events
+    // -------------------------------------------------------------------
+
+    onDOMContentLoaded() {
+        if(this.localStorage.active) {
+            this.activateTool();
+        }
+    }
+
+    onWindowKeyUp(event) {
+        if(isShortcutKeyOnly(event, ShortcutKeys.overviewTool)) {
+            this.onClickTool(event);
+        }
+    }
+    
+    onWindowSettingsCleared() {
+        this.localStorage = _.cloneDeep(LocalStorageDefaults);
     }
 }
 

@@ -57,7 +57,17 @@ class ImportVectorLayerTool extends Control {
         this.importLayerModal = undefined;
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
         
-        this.inputDialog = DOM.createElement({
+        this.inputDialog = this.generateInputDialog();
+        
+        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Generate Helpers
+    // -------------------------------------------------------------------
+
+    generateInputDialog() {
+        return DOM.createElement({
             element: 'input',
             attributes: {
                 'type': 'file',
@@ -67,15 +77,11 @@ class ImportVectorLayerTool extends Control {
                 'change': this.onInputChange.bind(this)
             }
         });
-        
-        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
     }
 
-    onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, ShortcutKeys.importVectorLayerTool)) {
-            this.onClickTool(event);
-        }
-    }
+    // -------------------------------------------------------------------
+    // # Section: Tool Control
+    // -------------------------------------------------------------------
 
     onClickTool() {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
@@ -95,6 +101,20 @@ class ImportVectorLayerTool extends Control {
 
         this.inputDialog.click();
     }
+
+    // -------------------------------------------------------------------
+    // # Section: Window/Document Events
+    // -------------------------------------------------------------------
+
+    onWindowKeyUp(event) {
+        if(isShortcutKeyOnly(event, ShortcutKeys.importVectorLayerTool)) {
+            this.onClickTool(event);
+        }
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: HTML/Map Callback
+    // -------------------------------------------------------------------
 
     onInputChange(event) {
         const fileDialog = event.target;

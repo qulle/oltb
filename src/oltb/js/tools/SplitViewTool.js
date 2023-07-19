@@ -20,6 +20,7 @@ const FILENAME = 'tools/SplitViewTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
 const CLASS_TOOLBOX_SECTION = 'oltb-toolbox-section';
 const CLASS_SLIDER = 'oltb-slider';
+const CLASS_TOGGLEABLE = 'oltb-toggleable';
 const ID_PREFIX = 'oltb-split-view';
 
 const DefaultOptions = Object.freeze({
@@ -70,10 +71,39 @@ class SplitViewTool extends Control {
             LocalStorageNodeName, 
             LocalStorageDefaults
         );
+        
+        this.initToolboxHTML();
+        this.initMapHTML();
+        this.uiRefToolboxSection = document.querySelector(`#${ID_PREFIX}-toolbox`);
+        this.initToggleables();
 
-        const uiRefMapElement = ElementManager.getMapElement();
-        const uiRefToolboxElement = ElementManager.getToolboxElement();
-        uiRefToolboxElement.insertAdjacentHTML('beforeend', `
+        this.uiRefLeftSideSrc = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-left-src`);
+        this.uiRefLeftSideSrc.addEventListener(Events.browser.change, this.updateTool.bind(this));
+
+        this.uiRefRightSideSrc = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-right-src`);
+        this.uiRefRightSideSrc.addEventListener(Events.browser.change, this.updateTool.bind(this));
+
+        const uiRefSwapSidesButton = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-swap-button`);
+        uiRefSwapSidesButton.addEventListener(Events.browser.click, (event) => {
+            this.onSwapLayerSides();
+        });
+        
+        this.uiRefSplitViewSlider = ElementManager.getMapElement().querySelector(`#${ID_PREFIX}-slider`);
+        this.uiRefSplitViewSlider.addEventListener(Events.browser.input, this.onSliderInput.bind(this));
+
+        window.addEventListener(Events.custom.mapLayerAdded, this.onWindowMapLayerAdded.bind(this));
+        window.addEventListener(Events.custom.mapLayerRemoved, this.onWindowMapLayerRemoved.bind(this));
+        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(Events.custom.settingsCleared, this.onWindowSettingsCleared.bind(this));
+        window.addEventListener(Events.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Init Helpers
+    // -------------------------------------------------------------------
+
+    initToolboxHTML() {
+        ElementManager.getToolboxElement().insertAdjacentHTML('beforeend', `
             <div id="${ID_PREFIX}-toolbox" class="${CLASS_TOOLBOX_SECTION}">
                 <div class="${CLASS_TOOLBOX_SECTION}__header">
                     <h4 class="${CLASS_TOOLBOX_SECTION}__title oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">
@@ -96,45 +126,106 @@ class SplitViewTool extends Control {
                 </div>
             </div>
         `);
-
-        uiRefMapElement.insertAdjacentHTML('beforeend', `
-            <input type="range" min="0" max="100" value="50" class="oltb-slider" id="${ID_PREFIX}-slider">
-        `);
-
-        this.uiRefSplitViewToolbox = document.querySelector(`#${ID_PREFIX}-toolbox`);
-
-        this.uiRefLeftSideSrc = this.uiRefSplitViewToolbox.querySelector(`#${ID_PREFIX}-left-src`);
-        this.uiRefLeftSideSrc.addEventListener(Events.browser.change, this.updateTool.bind(this));
-
-        this.uiRefRightSideSrc = this.uiRefSplitViewToolbox.querySelector(`#${ID_PREFIX}-right-src`);
-        this.uiRefRightSideSrc.addEventListener(Events.browser.change, this.updateTool.bind(this));
-
-        this.uiRefSplitViewToolbox.querySelectorAll('.oltb-toggleable').forEach((toggle) => {
-            toggle.addEventListener(Events.browser.click, this.onToggleToolbox.bind(this, toggle));
-        });
-
-        const uiRefSwapSidesButton = this.uiRefSplitViewToolbox.querySelector(`#${ID_PREFIX}-swap-button`);
-        uiRefSwapSidesButton.addEventListener(Events.browser.click, (event) => {
-            this.swapSides();
-        });
-        
-        this.uiRefSplitViewSlider = uiRefMapElement.querySelector(`#${ID_PREFIX}-slider`);
-        this.uiRefSplitViewSlider.addEventListener(Events.browser.input, this.onSliderInput.bind(this));
-
-        window.addEventListener(Events.custom.mapLayerAdded, this.onWindowMapLayerAdded.bind(this));
-        window.addEventListener(Events.custom.mapLayerRemoved, this.onWindowMapLayerRemoved.bind(this));
-        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
-        window.addEventListener(Events.custom.settingsCleared, this.onWindowSettingsCleared.bind(this));
-        window.addEventListener(Events.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
     }
 
-    onSliderInput(event) {
+    initMapHTML() {
+        ElementManager.getMapElement().insertAdjacentHTML('beforeend', `
+            <input type="range" min="0" max="100" value="50" class="oltb-slider" id="${ID_PREFIX}-slider">
+        `);
+    }
+
+    initToggleables() {
+        this.uiRefToolboxSection.querySelectorAll(`.${CLASS_TOGGLEABLE}`).forEach((toggle) => {
+            toggle.addEventListener(Events.browser.click, this.onToggleToolbox.bind(this, toggle));
+        });
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Tool Control
+    // -------------------------------------------------------------------
+
+    onClickTool() {
+        LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
+
+        // Note: Consumer callback
+        if(this.options.onClick instanceof Function) {
+            this.options.onClick();
+        }
+
+        if(LayerManager.getMapLayerSize() <= 1) {
+            Toast.info({
+                title: 'Tip',
+                message: 'You must have more then one layer'
+            });
+            
+            return;
+        }
+
+        if(this.active) {
+            this.deActivateTool();
+        }else {
+            this.activateTool();
+        }
+    }
+
+    activateTool() {
+        // The active switch must be enabled first
+        // Events can be triggered by other tools that should not be handled if the tools is not in use 
+        this.active = true;
+
+        this.setDefaultSelectedIndexes().dispatchChangeEvent();
+
+        // Some layer related error, missing or rendering
+        // Triggered by eventDispatcher change-event
+        if(this.layerLoadingError) {
+            this.active = false;
+            return;
+        }
+        
+        this.uiRefToolboxSection.classList.add(`${CLASS_TOOLBOX_SECTION}--show`);
+        this.uiRefSplitViewSlider.classList.add(`${CLASS_SLIDER}--show`);
+        this.button.classList.add(`${CLASS_TOOL_BUTTON}--active`);
+
+        this.localStorage.active = true;
+        StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
+    }
+
+    deActivateTool() {
         const map = this.getMap();
         if(!map) {
             return;
         }
 
-        map.render();
+        // Remove previosly added listeners
+        unByKey(this.onPreRenderListener);
+        unByKey(this.onPostRenderListener);
+        
+        // Remove the ol-split-view-layers from the map
+        LayerManager.getMapLayers().forEach((layerWrapper) => {
+            map.removeLayer(layerWrapper.getLayer());
+        });
+
+        // Add back all the original layers to the map
+        LayerManager.getMapLayers().forEach((layerWrapper) => {
+            map.addLayer(layerWrapper.getLayer());
+        });
+
+        LayerManager.setTopMapLayerAsOnlyVisible();
+
+        this.active = false;
+        this.uiRefToolboxSection.classList.remove(`${CLASS_TOOLBOX_SECTION}--show`);
+        this.uiRefSplitViewSlider.classList.remove(`${CLASS_SLIDER}--show`);
+        this.button.classList.remove(`${CLASS_TOOL_BUTTON}--active`);
+
+        this.localStorage.active = false;
+        StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
+    }
+
+    updateTool() {
+        this.sourceChange(
+            this.uiRefLeftSideSrc.value, 
+            this.uiRefRightSideSrc.value
+        );
     }
 
     onToggleToolbox(toggle) {
@@ -146,6 +237,10 @@ class SplitViewTool extends Control {
             StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
         });
     }
+
+    // -------------------------------------------------------------------
+    // # Section: Window/Document Events
+    // -------------------------------------------------------------------
 
     onDOMContentLoaded() {
         if(this.localStorage.active) {
@@ -205,36 +300,9 @@ class SplitViewTool extends Control {
         this.dispatchChangeEvent();
     }
 
-    updateTool() {
-        this.sourceChange(
-            this.uiRefLeftSideSrc.value, 
-            this.uiRefRightSideSrc.value
-        );
-    }
-
-    onClickTool() {
-        LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
-
-        // Note: Consumer callback
-        if(this.options.onClick instanceof Function) {
-            this.options.onClick();
-        }
-
-        if(LayerManager.getMapLayerSize() <= 1) {
-            Toast.info({
-                title: 'Tip',
-                message: 'You must have more then one layer'
-            });
-            
-            return;
-        }
-
-        if(this.active) {
-            this.deActivateTool();
-        }else {
-            this.activateTool();
-        }
-    }
+    // -------------------------------------------------------------------
+    // # Section: Tool Specific
+    // -------------------------------------------------------------------
 
     setDefaultSelectedIndexes() {
         this.uiRefRightSideSrc.selectedIndex = '0';
@@ -248,69 +316,6 @@ class SplitViewTool extends Control {
             this.uiRefLeftSideSrc, 
             this.uiRefRightSideSrc
         ], Events.browser.change);
-    }
-
-    activateTool() {
-        // The active switch must be enabled first
-        // Events can be triggered by other tools that should not be handled if the tools is not in use 
-        this.active = true;
-
-        this.setDefaultSelectedIndexes().dispatchChangeEvent();
-
-        // Some layer related error, missing or rendering
-        // Triggered by eventDispatcher change-event
-        if(this.layerLoadingError) {
-            this.active = false;
-            return;
-        }
-        
-        this.uiRefSplitViewToolbox.classList.add(`${CLASS_TOOLBOX_SECTION}--show`);
-        this.uiRefSplitViewSlider.classList.add(`${CLASS_SLIDER}--show`);
-        this.button.classList.add(`${CLASS_TOOL_BUTTON}--active`);
-
-        this.localStorage.active = true;
-        StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
-    }
-
-    deActivateTool() {
-        const map = this.getMap();
-        if(!map) {
-            return;
-        }
-
-        // Remove previosly added listeners
-        unByKey(this.onPreRenderListener);
-        unByKey(this.onPostRenderListener);
-        
-        // Remove the ol-split-view-layers from the map
-        LayerManager.getMapLayers().forEach((layerWrapper) => {
-            map.removeLayer(layerWrapper.getLayer());
-        });
-
-        // Add back all the original layers to the map
-        LayerManager.getMapLayers().forEach((layerWrapper) => {
-            map.addLayer(layerWrapper.getLayer());
-        });
-
-        // Set first layer as the only one visible
-        LayerManager.setTopMapLayerAsOnlyVisible();
-
-        this.active = false;
-        this.uiRefSplitViewToolbox.classList.remove(`${CLASS_TOOLBOX_SECTION}--show`);
-        this.uiRefSplitViewSlider.classList.remove(`${CLASS_SLIDER}--show`);
-        this.button.classList.remove(`${CLASS_TOOL_BUTTON}--active`);
-
-        this.localStorage.active = false;
-        StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
-    }
-
-    swapSides() {
-        const currentRightId = this.uiRefRightSideSrc.value;
-
-        this.uiRefRightSideSrc.value = this.uiRefLeftSideSrc.value;
-        this.uiRefLeftSideSrc.value = currentRightId;
-
-        this.dispatchChangeEvent();
     }
 
     setLoadingError() {
@@ -380,6 +385,28 @@ class SplitViewTool extends Control {
             // Pre/Post render will only show part of the right map
             this.onPreRenderListener = rightSideLayer.on(Events.openLayers.preRender, this.onPreRender.bind(this));
             this.onPostRenderListener = rightSideLayer.on(Events.openLayers.postRender, this.onPostRender.bind(this));
+        }
+
+        map.render();
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: HTML/Map Callback
+    // -------------------------------------------------------------------
+    
+    onSwapLayerSides() {
+        const currentRightId = this.uiRefRightSideSrc.value;
+
+        this.uiRefRightSideSrc.value = this.uiRefLeftSideSrc.value;
+        this.uiRefLeftSideSrc.value = currentRightId;
+
+        this.dispatchChangeEvent();
+    }
+
+    onSliderInput(event) {
+        const map = this.getMap();
+        if(!map) {
+            return;
         }
 
         map.render();

@@ -31,6 +31,7 @@ const CLASS_TOOL_BUTTON = 'oltb-tool-button';
 const CLASS_TOOLBOX_SECTION = 'oltb-toolbox-section';
 const CLASS_TOOLBOX_LIST = 'oltb-toolbox-list';
 const CLASS_FUNC_BUTTON = 'oltb-func-btn';
+const CLASS_TOGGLEABLE = 'oltb-toggleable';
 const ID_PREFIX = 'oltb-bookmark';
 const ID_PREFIX_INFO_WINDOW = 'oltb-info-window-marker';
 const SORTABLE_BOOKMARKS = 'sortableBookmarks';
@@ -110,9 +111,49 @@ class BookmarkTool extends Control {
             LocalStorageDefaults
         );
 
-        // HTML for Toolbox
-        const uiRefToolboxElement = ElementManager.getToolboxElement();
-        uiRefToolboxElement.insertAdjacentHTML('beforeend', `
+        this.initToolboxHTML();
+        this.uiRefToolboxSection = document.querySelector(`#${ID_PREFIX}-toolbox`);
+        this.initToggleables();
+
+        this.uiRefBookmarkStack = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-stack`);
+                                
+        this.uiRefAddBookmarkText = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-add-text`);
+        this.uiRefAddBookmarkButton = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-add-button`);
+
+        this.uiRefAddBookmarkText.addEventListener(Events.browser.keyUp, this.onAddBookmarkByKey.bind(this));
+        this.uiRefAddBookmarkButton.addEventListener(Events.browser.click, this.onAddBookmarkByClick.bind(this));
+
+        this.sortableBookmarkStack = this.generateSortable(this.uiRefBookmarkStack, {
+            group: SORTABLE_BOOKMARKS,
+            callback: this.options.onDragged,
+            stack: this.localStorage.bookmarks
+        });
+
+        this.initState();
+
+        ContextMenu.addItem({
+            icon: icon, 
+            name: 'Add location as bookmark', 
+            fn: this.onContextMenuBookmarkAdd.bind(this)
+        });
+
+        ContextMenu.addItem({
+            icon: clearBookmarksIcon, 
+            name: 'Clear all bookmarks', 
+            fn: this.onContextMenuBookmarksClear.bind(this)
+        });
+
+        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(Events.custom.settingsCleared, this.onWindowSettingsCleared.bind(this));
+        window.addEventListener(Events.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Init Helpers
+    // -------------------------------------------------------------------
+
+    initToolboxHTML() {
+        ElementManager.getToolboxElement().insertAdjacentHTML('beforeend', `
             <div id="${ID_PREFIX}-toolbox" class="${CLASS_TOOLBOX_SECTION}">
                 <div class="${CLASS_TOOLBOX_SECTION}__header">
                     <h4 class="${CLASS_TOOLBOX_SECTION}__title oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">
@@ -142,50 +183,10 @@ class BookmarkTool extends Control {
                 </div>
             </div>
         `);
-
-        // UI References
-        this.uiRefToolboxSection = document.querySelector(`#${ID_PREFIX}-toolbox`);
-        this.uiRefBookmarkStack = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-stack`);
-                                
-        this.uiRefAddBookmarkText = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-add-text`);
-        this.uiRefAddBookmarkButton = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-add-button`);
-
-        this.uiRefAddBookmarkText.addEventListener(Events.browser.keyUp, this.onAddBookmarkByKey.bind(this));
-        this.uiRefAddBookmarkButton.addEventListener(Events.browser.click, this.onAddBookmarkByClick.bind(this));
-
-        // Sortables
-        this.sortableBookmarkStack = this.generateSortable(this.uiRefBookmarkStack, {
-            group: SORTABLE_BOOKMARKS,
-            callback: this.options.onDragged,
-            stack: this.localStorage.bookmarks
-        });
-
-        this.initToggleables()
-        this.initState();
-
-        ContextMenu.addItem({
-            icon: icon, 
-            name: 'Add location as bookmark', 
-            fn: this.onContextMenuBookmarkAdd.bind(this)
-        });
-
-        ContextMenu.addItem({
-            icon: clearBookmarksIcon, 
-            name: 'Clear all bookmarks', 
-            fn: this.onContextMenuBookmarksClear.bind(this)
-        });
-
-        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
-        window.addEventListener(Events.custom.settingsCleared, this.onWindowSettingsCleared.bind(this));
-        window.addEventListener(Events.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
     }
 
-    // -------------------------------------------------------------------
-    // # Init Helpers
-    // -------------------------------------------------------------------
-
     initToggleables() {
-        this.uiRefToolboxSection.querySelectorAll('.oltb-toggleable').forEach((toggle) => {
+        this.uiRefToolboxSection.querySelectorAll(`.${CLASS_TOGGLEABLE}`).forEach((toggle) => {
             toggle.addEventListener(Events.browser.click, this.onToggleToolbox.bind(this, toggle));
         });
     }
@@ -211,7 +212,7 @@ class BookmarkTool extends Control {
     }
 
     // -------------------------------------------------------------------
-    // # Tool Control
+    // # Section: Tool Control
     // -------------------------------------------------------------------
 
     onClickTool() {
@@ -258,7 +259,7 @@ class BookmarkTool extends Control {
     }
 
     // -------------------------------------------------------------------
-    // # Window/Document Events
+    // # Section: Window/Document Events
     // -------------------------------------------------------------------
 
     onWindowKeyUp(event) {
@@ -285,7 +286,7 @@ class BookmarkTool extends Control {
     }
 
     // -------------------------------------------------------------------
-    // # Local Storage
+    // # Section: Local Storage
     // -------------------------------------------------------------------
 
     getLocalStorageBookmarkById(id) {
@@ -297,9 +298,9 @@ class BookmarkTool extends Control {
     }
 
     hasLocalStorageBookmarkById(id) {
-        const target = this.getLocalStorageBookmarkById(id);
+        const bookmark = this.getLocalStorageBookmarkById(id);
 
-        if(target) {
+        if(bookmark) {
             return true;
         }
 
@@ -307,7 +308,7 @@ class BookmarkTool extends Control {
     }
 
     // -------------------------------------------------------------------
-    // # Context Menu Methods
+    // # Section: Context Menu Methods
     // -------------------------------------------------------------------
 
     onContextMenuBookmarkAdd(map, coordinates, target) {
@@ -332,7 +333,7 @@ class BookmarkTool extends Control {
     }
 
     // -------------------------------------------------------------------
-    // # OpenLayers Shortcut
+    // # Section: OpenLayers Shortcut
     // -------------------------------------------------------------------
 
     addMarkerToMap(marker) {
@@ -352,7 +353,7 @@ class BookmarkTool extends Control {
     }
 
     // -------------------------------------------------------------------
-    // # Sortable
+    // # Section: Sortable
     // -------------------------------------------------------------------
 
     generateSortable(element, options) {
@@ -424,7 +425,7 @@ class BookmarkTool extends Control {
     }
 
     // -------------------------------------------------------------------
-    // # Conversions/Validation
+    // # Section: Conversions/Validation
     // -------------------------------------------------------------------
 
     validateName(name) {
@@ -446,7 +447,7 @@ class BookmarkTool extends Control {
     }
 
     // -------------------------------------------------------------------
-    // # HTML/Map Callback
+    // # Section: HTML/Map Callback
     // -------------------------------------------------------------------
 
     onAddBookmarkByKey(event) {
@@ -465,7 +466,7 @@ class BookmarkTool extends Control {
     }
 
     // -------------------------------------------------------------------
-    // # UI
+    // # Section: UI
     // -------------------------------------------------------------------
 
     createUIBookmarkNameTippy(bookmarkName) {
@@ -652,7 +653,7 @@ class BookmarkTool extends Control {
     }
 
     // -------------------------------------------------------------------
-    // # Internal
+    // # Section: Tool Specific
     // -------------------------------------------------------------------
 
     addBookmark(name, coordinates) {
@@ -712,7 +713,7 @@ class BookmarkTool extends Control {
     }
 
     // -------------------------------------------------------------------
-    // # Bookmark Callback
+    // # Section: Bookmark Callback
     // -------------------------------------------------------------------
 
     onZoomToBookmark(bookmark) {
@@ -724,9 +725,11 @@ class BookmarkTool extends Control {
         goToView(map, bookmark.coordinates, bookmark.zoom);
 
         if(this.isLayerVisible()) {
-            window.setTimeout(() => {
-                InfoWindowManager.showOverly(bookmark.marker, fromLonLat(bookmark.coordinates));
-            }, Config.animationDuration.normal);
+            InfoWindowManager.showOverly(
+                bookmark.marker, 
+                fromLonLat(bookmark.coordinates),
+                Config.animationDuration.normal
+            );
         }
 
         // Note: Consumer callback

@@ -54,17 +54,11 @@ class ThemeTool extends Control {
 
         const button = DOM.createElement({
             element: 'button',
-            html: isDarkTheme() 
-                ? ThemesData.dark.icon
-                : ThemesData.light.icon,
+            html: this.getToolIcon(),
             class: CLASS_TOOL_BUTTON,
             attributes: {
                 'type': 'button',
-                'data-tippy-content': `${(
-                    isDarkTheme() 
-                        ? ThemesData.dark.tippyContent 
-                        : ThemesData.light.tippyContent
-                )} (${ShortcutKeys.themeTool})`
+                'data-tippy-content': `${this.getToolTippyContent()} (${ShortcutKeys.themeTool})`
             },
             listeners: {
                 'click': this.onClickTool.bind(this)
@@ -93,16 +87,9 @@ class ThemeTool extends Control {
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
     }
 
-    onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, ShortcutKeys.themeTool)) {
-            this.onClickTool(event);
-        }
-    }
-
-    onWindowSettingsCleared() {
-        const active = this.getActiveTheme();
-        this.swithThemeFromTo(active, ThemesData.light);
-    }
+    // -------------------------------------------------------------------
+    // # Section: Tool Control
+    // -------------------------------------------------------------------
 
     onClickTool() {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
@@ -123,6 +110,49 @@ class ThemeTool extends Control {
             const active = this.getActiveTheme();
             this.options.onChanged(active.class);
         }
+    }
+    
+    // -------------------------------------------------------------------
+    // # Section: Window/Document Events
+    // -------------------------------------------------------------------
+
+    onWindowKeyUp(event) {
+        if(isShortcutKeyOnly(event, ShortcutKeys.themeTool)) {
+            this.onClickTool(event);
+        }
+    }
+
+    onWindowSettingsCleared() {
+        const active = this.getActiveTheme();
+        this.swithThemeFromTo(active, ThemesData.light);
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Tool Specific
+    // -------------------------------------------------------------------
+
+    getToolTippyContent() {
+        return isDarkTheme() 
+            ? ThemesData.dark.tippyContent 
+            : ThemesData.light.tippyContent;
+    }
+
+    getToolIcon() {
+        return isDarkTheme() 
+            ? ThemesData.dark.icon
+            : ThemesData.light.icon;
+    }
+
+    getInActiveThem() {
+        return isDarkTheme()
+            ? ThemesData.light
+            : ThemesData.dark;
+    }
+
+    getActiveTheme() {
+        return isDarkTheme()
+            ? ThemesData.dark
+            : ThemesData.light;
     }
 
     toggleTheme() {
@@ -148,18 +178,6 @@ class ThemeTool extends Control {
         this.button.removeChild(this.button.firstElementChild);
         this.button.insertAdjacentHTML('afterbegin', to.icon);
         this.button.getTippy().setContent(`${to.tippyContent} (${ShortcutKeys.themeTool})`);
-    }
-
-    getInActiveThem() {
-        return isDarkTheme()
-            ? ThemesData.light
-            : ThemesData.dark;
-    }
-
-    getActiveTheme() {
-        return isDarkTheme()
-            ? ThemesData.dark
-            : ThemesData.light;
     }
 }
 

@@ -66,45 +66,9 @@ class SettingsTool extends Control {
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
     }
 
-    onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, ShortcutKeys.settingsTool)) {
-            this.onClickTool(event);
-        }
-    }
-
-    onContextMenuSettingsClear(map, coordinates, target) {
-        Dialog.confirm({
-            title: 'Clear settings',
-            message: 'Do you want to clear and reset all settings?',
-            confirmText: 'Clear',
-            onConfirm: () => {
-                this.clearSettings();
-
-                Toast.info({
-                    title: 'Cleared',
-                    message: "All stored settings was cleared", 
-                    autoremove: Config.autoRemovalDuation.normal
-                });
-            }
-        });
-    }
-
-    clearSettings() {
-        [
-            SettingsManager, 
-            StateManager
-        ].forEach((manager) => {
-            manager.clear();
-        });
-
-        // Note: Consumer callback
-        if(this.options.onCleared instanceof Function) {
-            this.options.onCleared();
-        }
-
-        // Emit event so that any tool can clean up
-        window.dispatchEvent(new CustomEvent(Events.custom.settingsCleared));
-    }
+    // -------------------------------------------------------------------
+    // # Section: Tool Control
+    // -------------------------------------------------------------------
 
     onClickTool() {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
@@ -134,6 +98,58 @@ class SettingsTool extends Control {
                 this.settingsModal = undefined;
             }
         });
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Window/Document Events
+    // -------------------------------------------------------------------
+
+    onWindowKeyUp(event) {
+        if(isShortcutKeyOnly(event, ShortcutKeys.settingsTool)) {
+            this.onClickTool(event);
+        }
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Context Menu Methods
+    // -------------------------------------------------------------------
+
+    onContextMenuSettingsClear(map, coordinates, target) {
+        Dialog.confirm({
+            title: 'Clear settings',
+            message: 'Do you want to clear and reset all settings?',
+            confirmText: 'Clear',
+            onConfirm: () => {
+                this.clearSettings();
+
+                Toast.info({
+                    title: 'Cleared',
+                    message: "All stored settings was cleared", 
+                    autoremove: Config.autoRemovalDuation.normal
+                });
+            }
+        });
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Tool Specific
+    // -------------------------------------------------------------------
+
+    clearSettings() {
+        [
+            SettingsManager, 
+            StateManager
+        ].forEach((manager) => {
+            manager.clear();
+        });
+
+        // Note: Consumer callback
+        if(this.options.onCleared instanceof Function) {
+            this.options.onCleared();
+        }
+
+        // Emit event so that any tool can clean up
+        window.dispatchEvent(new CustomEvent(Events.custom.settingsCleared));
     }
 }
 

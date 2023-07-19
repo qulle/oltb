@@ -56,26 +56,24 @@ class ExportPngTool extends Control {
 
         this.button = button;
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
-        this.isDebug = UrlManager.getParameter(Config.urlParameters.debug) === 'true';
         
+        this.initDebugState();
+
         window.addEventListener(Events.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
     }
 
-    onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, ShortcutKeys.exportPngTool)) {
-            this.onClickTool(event);
-        }
+    // -------------------------------------------------------------------
+    // # Section: Init Helpers
+    // -------------------------------------------------------------------
+
+    initDebugState() {
+        this.isDebug = UrlManager.getParameter(Config.urlParameters.debug) === 'true';
     }
 
-    onDOMContentLoaded() {
-        const uiRefMapElement = ElementManager.getMapElement();
-        const uiRefAttribution = uiRefMapElement.querySelector('.ol-attribution');
-
-        if(uiRefAttribution) {
-            uiRefAttribution.setAttribute('data-html2canvas-ignore', 'true');
-        }
-    }
+    // -------------------------------------------------------------------
+    // # Section: Tool Control
+    // -------------------------------------------------------------------
 
     onClickTool() {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
@@ -98,6 +96,29 @@ class ExportPngTool extends Control {
         map.once(Events.openLayers.renderComplete, this.onRenderCompleteAsync.bind(this));
         map.renderSync();
     }
+
+    // -------------------------------------------------------------------
+    // # Section: Window/Document Events
+    // -------------------------------------------------------------------
+
+    onWindowKeyUp(event) {
+        if(isShortcutKeyOnly(event, ShortcutKeys.exportPngTool)) {
+            this.onClickTool(event);
+        }
+    }
+
+    onDOMContentLoaded() {
+        const uiRefMapElement = ElementManager.getMapElement();
+        const uiRefAttribution = uiRefMapElement.querySelector('.ol-attribution');
+
+        if(uiRefAttribution) {
+            uiRefAttribution.setAttribute('data-html2canvas-ignore', 'true');
+        }
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: HTML/Map Callback
+    // -------------------------------------------------------------------
 
     async onRenderCompleteAsync() {
         const map = this.getMap();
@@ -162,6 +183,10 @@ class ExportPngTool extends Control {
             });
         }
     }
+
+    // -------------------------------------------------------------------
+    // # Section: Tool Specific
+    // -------------------------------------------------------------------
 
     downloadCanvas(pngCanvas) {
         const timestamp = this.options.appendTime 

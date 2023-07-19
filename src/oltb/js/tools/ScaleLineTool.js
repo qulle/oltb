@@ -57,30 +57,20 @@ class ScaleLineTool extends Control {
         this.active = false;
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
         
-        this.scaleLine = new ScaleLine({
-            units: this.options.units
-        });
-
         this.localStorage = StateManager.getAndMergeStateObject(
             LocalStorageNodeName, 
             LocalStorageDefaults
         );
+
+        this.scaleLine = this.generateScaleLine();
         
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
         window.addEventListener(Events.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
     }
 
-    onDOMContentLoaded() {
-        if(this.localStorage.active) {
-            this.activateTool();
-        }
-    }
-
-    onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, ShortcutKeys.scaleLineTool)) {
-            this.onClickTool(event);
-        }
-    }
+    // -------------------------------------------------------------------
+    // # Section: Tool Control
+    // -------------------------------------------------------------------
 
     onClickTool() {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
@@ -120,6 +110,32 @@ class ScaleLineTool extends Control {
 
         this.localStorage.active = false;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Generate Helpers
+    // -------------------------------------------------------------------
+
+    generateScaleLine() {
+        return new ScaleLine({
+            units: this.options.units
+        });
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Window/Document Events
+    // -------------------------------------------------------------------
+
+    onDOMContentLoaded() {
+        if(this.localStorage.active) {
+            this.activateTool();
+        }
+    }
+
+    onWindowKeyUp(event) {
+        if(isShortcutKeyOnly(event, ShortcutKeys.scaleLineTool)) {
+            this.onClickTool(event);
+        }
     }
 }
 

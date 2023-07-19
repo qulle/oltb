@@ -48,15 +48,11 @@ class FullscreenTool extends Control {
 
         const button = DOM.createElement({
             element: 'button',
-            html: isFullScreen() ? this.exitFullscreenIcon : this.enterFullscreenIcon,
+            html: this.getToolIcon(),
             class: CLASS_TOOL_BUTTON,
             attributes: {
                 'type': 'button',
-                'data-tippy-content': `${(
-                    isFullScreen() 
-                        ? 'Exit fullscreen' 
-                        : 'Enter fullscreen'
-                )} (${ShortcutKeys.fullscreenTool})`
+                'data-tippy-content': `${this.getToolTippyContent()} (${ShortcutKeys.fullscreenTool})`
             },
             listeners: {
                 'click': this.onClickTool.bind(this)
@@ -80,11 +76,9 @@ class FullscreenTool extends Control {
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
     }
 
-    onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, ShortcutKeys.fullscreenTool)) {
-            this.onClickTool(event);
-        }
-    }
+    // -------------------------------------------------------------------
+    // # Section: Tool Control
+    // -------------------------------------------------------------------
 
     onClickTool() {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
@@ -128,6 +122,16 @@ class FullscreenTool extends Control {
         }
     }
 
+    // -------------------------------------------------------------------
+    // # Section: Window/Document Events
+    // -------------------------------------------------------------------
+
+    onWindowKeyUp(event) {
+        if(isShortcutKeyOnly(event, ShortcutKeys.fullscreenTool)) {
+            this.onClickTool(event);
+        }
+    }
+
     onFullScreenChange(event) {
         if(document.fullscreenElement) {
             this.button.getTippy().setContent(`Exit fullscreen (${ShortcutKeys.fullscreenTool})`);
@@ -144,6 +148,22 @@ class FullscreenTool extends Control {
                 this.options.onLeave(event);
             }
         }
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Tool Specific
+    // -------------------------------------------------------------------
+
+    getToolTippyContent() {
+        return isFullScreen() 
+            ? 'Exit fullscreen' 
+            : 'Enter fullscreen';
+    }
+
+    getToolIcon() {
+        return isFullScreen() 
+            ? this.exitFullscreenIcon 
+            : this.enterFullscreenIcon;
     }
 
     handleFullScreenChange() {

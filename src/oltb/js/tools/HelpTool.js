@@ -55,19 +55,9 @@ class HelpTool extends Control {
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
     }
 
-    onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, ShortcutKeys.helpTool)) {
-            Dialog.confirm({
-                title: 'Help pages',
-                message: 'Browsers block automatic opening new windows, here is a button for you to press',
-                confirmClass: Dialog.Success,
-                confirmText: 'Open Help',
-                onConfirm: () => {
-                    this.onClickTool();
-                }
-            });
-        }
-    }
+    // -------------------------------------------------------------------
+    // # Section: Tool Control
+    // -------------------------------------------------------------------
 
     onClickTool() {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
@@ -93,6 +83,24 @@ class HelpTool extends Control {
             Toast.error({
                 title: 'Error',
                 message: errorMessage
+            });
+        }
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Window/Document Events
+    // -------------------------------------------------------------------
+
+    onWindowKeyUp(event) {
+        if(isShortcutKeyOnly(event, ShortcutKeys.helpTool)) {
+            Dialog.confirm({
+                title: 'Help pages',
+                message: 'Browsers block automatic opening new windows, here is a button for you to press',
+                confirmClass: Dialog.Success,
+                confirmText: 'Open Help',
+                onConfirm: () => {
+                    this.onClickTool();
+                }
             });
         }
     }

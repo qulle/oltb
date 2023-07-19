@@ -24,6 +24,7 @@ import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
 const FILENAME = 'tools/CoordiantesTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
 const CLASS_TOOLBOX_SECTION = 'oltb-toolbox-section';
+const CLASS_TOGGLEABLE = 'oltb-toggleable';
 const ID_PREFIX = 'oltb-coordinates';
 const KEY_TOOLTIP = 'coordinates';
 
@@ -79,9 +80,36 @@ class CoordinatesTool extends Control {
             LocalStorageDefaults
         );
 
-        // HTML for Toolbox
-        const uiRefToolboxElement = ElementManager.getToolboxElement();
-        uiRefToolboxElement.insertAdjacentHTML('beforeend', `
+        this.initToolboxHTML();
+        this.uiRefToolboxSection = document.querySelector(`#${ID_PREFIX}-toolbox`);
+        this.initToggleables();
+
+        this.uiRefCoordinatesTable = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-table`);
+        
+        this.uiRefCoordinatesFormat = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-format`);
+        this.uiRefCoordinatesFormat.value = this.localStorage.coordinatesFormat;
+        this.uiRefCoordinatesFormat.addEventListener(Events.browser.change, this.onCoordinatesFormatChange.bind(this));
+
+        SettingsManager.addSetting(Settings.copyCoordinatesOnClick, {
+            state: true, 
+            text: 'Copy coordinates on click'
+        });
+
+        SettingsManager.addSetting(Settings.updateToolboxCoordinatesOnHover, {
+            state: true, 
+            text: 'Update toolbox coordinates when hover'
+        });
+
+        window.addEventListener(Events.browser.keyDown, this.onWindowKeyDown.bind(this));
+        window.addEventListener(Events.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Init Helpers
+    // -------------------------------------------------------------------
+
+    initToolboxHTML() {
+        ElementManager.getToolboxElement().insertAdjacentHTML('beforeend', `
             <div id="${ID_PREFIX}-toolbox" class="${CLASS_TOOLBOX_SECTION}">
                 <div class="${CLASS_TOOLBOX_SECTION}__header">
                     <h4 class="${CLASS_TOOLBOX_SECTION}__title oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">
@@ -104,43 +132,16 @@ class CoordinatesTool extends Control {
                 </div>
             </div>
         `);
-
-        // UI References
-        this.uiRefToolboxSection = document.querySelector(`#${ID_PREFIX}-toolbox`);
-        this.uiRefCoordinatesTable = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-table`);
-        
-        this.uiRefCoordinatesFormat = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-format`);
-        this.uiRefCoordinatesFormat.value = this.localStorage.coordinatesFormat;
-        this.uiRefCoordinatesFormat.addEventListener(Events.browser.change, this.onCoordinatesFormatChange.bind(this));
-
-        this.initToggleables()
-
-        SettingsManager.addSetting(Settings.copyCoordinatesOnClick, {
-            state: true, 
-            text: 'Copy coordinates on click'
-        });
-
-        SettingsManager.addSetting(Settings.updateToolboxCoordinatesOnHover, {
-            state: true, 
-            text: 'Update toolbox coordinates when hover'
-        });
-
-        window.addEventListener(Events.browser.keyDown, this.onWindowKeyDown.bind(this));
-        window.addEventListener(Events.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
     }
 
-    // -------------------------------------------------------------------
-    // # Init Helpers
-    // -------------------------------------------------------------------
-
     initToggleables() {
-        this.uiRefToolboxSection.querySelectorAll('.oltb-toggleable').forEach((toggle) => {
+        this.uiRefToolboxSection.querySelectorAll(`.${CLASS_TOGGLEABLE}`).forEach((toggle) => {
             toggle.addEventListener(Events.browser.click, this.onToggleToolbox.bind(this, toggle));
         });
     }
 
     // -------------------------------------------------------------------
-    // # Tool Control
+    // # Section: Tool Control
     // -------------------------------------------------------------------
 
     onClickTool() {
@@ -191,7 +192,7 @@ class CoordinatesTool extends Control {
     }
 
     // -------------------------------------------------------------------
-    // # Window/Document Events
+    // # Section: Window/Document Events
     // -------------------------------------------------------------------
 
     onDOMContentLoaded() {
@@ -207,7 +208,7 @@ class CoordinatesTool extends Control {
     }
 
     // -------------------------------------------------------------------
-    // # HTML/Map Callback
+    // # Section: HTML/Map Callback
     // -------------------------------------------------------------------
 
     onCoordinatesFormatChange() {
@@ -255,7 +256,7 @@ class CoordinatesTool extends Control {
     }
 
     // -------------------------------------------------------------------
-    // # Conversions/Validation
+    // # Section: Conversions/Validation
     // -------------------------------------------------------------------
 
     toDecimalDegrees(cell, coordinates) {
@@ -271,7 +272,7 @@ class CoordinatesTool extends Control {
     }
 
     // -------------------------------------------------------------------
-    // # UI
+    // # Section: UI
     // -------------------------------------------------------------------
 
     removeUIProjections() {
@@ -332,7 +333,7 @@ class CoordinatesTool extends Control {
     }
 
     // -------------------------------------------------------------------
-    // # Internal
+    // # Section: Tool Specific
     // -------------------------------------------------------------------
 
     setTooltipCoordinates(event) {

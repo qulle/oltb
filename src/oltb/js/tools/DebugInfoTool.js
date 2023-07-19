@@ -59,7 +59,7 @@ class DebugInfoTool extends Control {
     }
 
     // -------------------------------------------------------------------
-    // # Init Helpers
+    // # Section: Init Helpers
     // -------------------------------------------------------------------
 
     initDebugState() {
@@ -70,7 +70,7 @@ class DebugInfoTool extends Control {
     }
 
     // -------------------------------------------------------------------
-    // # Tool Control
+    // # Section: Tool Control
     // -------------------------------------------------------------------
 
     onClickTool() {
@@ -103,7 +103,7 @@ class DebugInfoTool extends Control {
     }
 
     // -------------------------------------------------------------------
-    // # Window/Document Events
+    // # Section: Window/Document Events
     // -------------------------------------------------------------------
 
     onWindowKeyUp(event) {

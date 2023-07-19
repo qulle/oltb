@@ -30,6 +30,10 @@ class HiddenAboutTool extends Control {
         });
     }
 
+    // -------------------------------------------------------------------
+    // # Section: Context Menu Methods
+    // -------------------------------------------------------------------
+
     onContextMenuAbout(map, coordinates, target) {        
         if(this.aboutInfoModal) {
             return;

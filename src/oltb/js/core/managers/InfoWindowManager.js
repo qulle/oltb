@@ -161,60 +161,62 @@ class InfoWindowManager {
         this.#lastFeature = feature;
     }
 
-    static showOverly(marker, position) {
-        const infoWindow = marker.getProperties().oltb.infoWindow;
-        if(!infoWindow) {
-            return;
-        }
+    static showOverly(marker, position, delay = 0) {
+        window.setTimeout(() => {
+            const infoWindow = marker.getProperties().oltb.infoWindow;
+            if(!infoWindow) {
+                return;
+            }
 
-        this.#title.innerHTML = infoWindow.title;
-        this.#content.innerHTML = infoWindow.content;
-        this.#footer.innerHTML = infoWindow.footer;
+            this.#title.innerHTML = infoWindow.title;
+            this.#content.innerHTML = infoWindow.content;
+            this.#footer.innerHTML = infoWindow.footer;
 
-        if(position) {
-            this.#overlay.setPosition(position);
-        }else {
-            this.#overlay.setPosition(getCenter(
-                marker.getGeometry().getExtent()
-            ));
-        }
+            if(position) {
+                this.#overlay.setPosition(position);
+            }else {
+                this.#overlay.setPosition(getCenter(
+                    marker.getGeometry().getExtent()
+                ));
+            }
 
-        this.#infoWindow.focus();
-        
-        DOM.runAnimation(this.#infoWindow, CLASS_ANIMATION);
+            this.#infoWindow.focus();
+            
+            DOM.runAnimation(this.#infoWindow, CLASS_ANIMATION);
 
-        // Attach listeners to the function-buttons inside the infoWindow
-        const uiRefRemoveMarkerButton = this.#footer.querySelector(`#${ID_PREFIX_INFO_WINDOW}-remove`);
-        if(uiRefRemoveMarkerButton) {
-            uiRefRemoveMarkerButton.addEventListener(
-                Events.browser.click, 
-                removeMarker.bind(this, InfoWindowManager, marker)
-            );
-        }
+            // Attach listeners to the function-buttons inside the infoWindow
+            const uiRefRemoveMarkerButton = this.#footer.querySelector(`#${ID_PREFIX_INFO_WINDOW}-remove`);
+            if(uiRefRemoveMarkerButton) {
+                uiRefRemoveMarkerButton.addEventListener(
+                    Events.browser.click, 
+                    removeMarker.bind(this, InfoWindowManager, marker)
+                );
+            }
 
-        const uiRefCopyMarkerCoordinatesButton = this.#footer.querySelector(`#${ID_PREFIX_INFO_WINDOW}-copy-coordinates`);
-        if(uiRefCopyMarkerCoordinatesButton) {
-            uiRefCopyMarkerCoordinatesButton.addEventListener(
-                Events.browser.click, 
-                copyMarkerCoordinates.bind(this, InfoWindowManager, uiRefCopyMarkerCoordinatesButton.getAttribute('data-oltb-coordinates'))
-            );
-        }
+            const uiRefCopyMarkerCoordinatesButton = this.#footer.querySelector(`#${ID_PREFIX_INFO_WINDOW}-copy-coordinates`);
+            if(uiRefCopyMarkerCoordinatesButton) {
+                uiRefCopyMarkerCoordinatesButton.addEventListener(
+                    Events.browser.click, 
+                    copyMarkerCoordinates.bind(this, InfoWindowManager, uiRefCopyMarkerCoordinatesButton.getAttribute('data-oltb-coordinates'))
+                );
+            }
 
-        const uiRefCopyMarkerInfoButton = this.#footer.querySelector(`#${ID_PREFIX_INFO_WINDOW}-copy-text`);
-        if(uiRefCopyMarkerInfoButton) {
-            uiRefCopyMarkerInfoButton.addEventListener(
-                Events.browser.click, 
-                copyMarkerInfo.bind(this, InfoWindowManager, uiRefCopyMarkerInfoButton.getAttribute('data-oltb-copy'))
-            );
-        }
+            const uiRefCopyMarkerInfoButton = this.#footer.querySelector(`#${ID_PREFIX_INFO_WINDOW}-copy-text`);
+            if(uiRefCopyMarkerInfoButton) {
+                uiRefCopyMarkerInfoButton.addEventListener(
+                    Events.browser.click, 
+                    copyMarkerInfo.bind(this, InfoWindowManager, uiRefCopyMarkerInfoButton.getAttribute('data-oltb-copy'))
+                );
+            }
 
-        const uiRefEditMarkerButton = this.#footer.querySelector(`#${ID_PREFIX_INFO_WINDOW}-edit`);
-        if(uiRefEditMarkerButton) {
-            uiRefEditMarkerButton.addEventListener(
-                Events.browser.click, 
-                editMarker.bind(this, InfoWindowManager, marker)
-            );
-        }
+            const uiRefEditMarkerButton = this.#footer.querySelector(`#${ID_PREFIX_INFO_WINDOW}-edit`);
+            if(uiRefEditMarkerButton) {
+                uiRefEditMarkerButton.addEventListener(
+                    Events.browser.click, 
+                    editMarker.bind(this, InfoWindowManager, marker)
+                );
+            }
+        }, delay);
     }
 
     static hideOverlay() {
