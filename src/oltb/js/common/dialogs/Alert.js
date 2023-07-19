@@ -51,7 +51,7 @@ class Alert extends DialogBase {
             text: this.options.confirmText,
             class: 'oltb-dialog__btn oltb-btn oltb-btn--blue-mid',
             attributes: {
-                type: 'button'
+                'type': 'button'
             },
             listeners: {
                 'click': () => {

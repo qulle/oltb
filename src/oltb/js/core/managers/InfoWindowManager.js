@@ -44,7 +44,7 @@ class InfoWindowManager {
             element: 'div',
             class: 'oltb-info-window oltb-animation',
             attributes: {
-                tabindex: '-1'
+                'tabindex': '-1'
             },
             listeners: {
                 'keydown': trapFocus

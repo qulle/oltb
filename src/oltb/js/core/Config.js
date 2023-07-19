@@ -2,7 +2,7 @@ import { VERSION } from 'ol';
 import { version } from '../../../../package.json';
 
 const Config = Object.freeze({
-    classNames: Object.freeze({
+    className: Object.freeze({
         row: 'oltb-row',
         dark: 'oltb-dark'
     }),
@@ -34,6 +34,9 @@ const Config = Object.freeze({
     overlayOffset: Object.freeze({
         horizontal: 0,
         vertical: -8
+    }),
+    tippy: Object.freeze({
+        offset: [600, 100]
     }),
     deviceWidth: Object.freeze({
         xs: '0',

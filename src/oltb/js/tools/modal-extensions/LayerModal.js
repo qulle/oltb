@@ -138,7 +138,7 @@ class LayerModal extends ModalBase {
             text: 'Create layer',
             class: 'oltb-dialog__btn oltb-btn oltb-btn--green-mid', 
             attributes: {
-                type: 'button'
+                'type': 'button'
             },
             listeners: {
                 'click': () => {
@@ -167,7 +167,7 @@ class LayerModal extends ModalBase {
                 isDarkTheme() ? 'oltb-btn--gray-mid' : 'oltb-btn--gray-dark'
             }`,
             attributes: {
-                type: 'button'
+                'type': 'button'
             },
             listeners: {
                 'click': () => {

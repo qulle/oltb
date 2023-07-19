@@ -22,7 +22,7 @@ const generateInput = function(options = {}) {
         text: options.text,
         class: 'oltb-label', 
         attributes: {
-            for: `${options.idPrefix}${options.idPostfix}`
+            'for': `${options.idPrefix}${options.idPostfix}`
         }
     });
 
@@ -32,8 +32,8 @@ const generateInput = function(options = {}) {
         class: 'oltb-input',
         value: options.value, 
         attributes: {
-            type: 'text',
-            placeholder: options.placeholder
+            'type': 'text',
+            'placeholder': options.placeholder
         }
     });
 

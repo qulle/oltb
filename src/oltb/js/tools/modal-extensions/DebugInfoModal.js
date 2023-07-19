@@ -75,7 +75,7 @@ class DebugInfoModal extends ModalBase {
             text: 'Do action',
             class: 'oltb-btn oltb-btn--blue-mid oltb-ml-05',
             attributes: {
-                type: 'button'
+                'type': 'button'
             },
             listeners: {
                 'click': this.onDoAction.bind(this)
@@ -129,7 +129,7 @@ class DebugInfoModal extends ModalBase {
             title: 'Toggle section',
             class: 'oltb-debug__toggle oltb-btn oltb-btn--blank oltb-tippy',
             attributes: {
-                type: 'button'
+                'type': 'button'
             }
         });
 
@@ -290,7 +290,7 @@ class DebugInfoModal extends ModalBase {
             title: 'Toggle section',
             class: 'oltb-log__toggle oltb-btn oltb-btn--blank oltb-tippy',
             attributes: {
-                type: 'button'
+                'type': 'button'
             }
         });
 

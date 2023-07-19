@@ -9,7 +9,7 @@ const download = function(name, content) {
     const downloadTrigger = DOM.createElement({
         element: 'a', 
         attributes: {
-            download: name
+            'download': name
         }
     });
 

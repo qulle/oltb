@@ -54,7 +54,7 @@ class CoordinateModal extends ModalBase {
             text: 'Navigate to',
             class: 'oltb-dialog__btn oltb-btn oltb-btn--green-mid', 
             attributes: {
-                type: 'button'
+                'type': 'button'
             },
             listeners: {
                 'click': () => {
@@ -76,7 +76,7 @@ class CoordinateModal extends ModalBase {
                 isDarkTheme() ? 'oltb-btn--gray-mid' : 'oltb-btn--gray-dark'
             }`,
             attributes: {
-                type: 'button'
+                'type': 'button'
             },
             listeners: {
                 'click': () => {

@@ -40,7 +40,7 @@ class ImportVectorLayerTool extends Control {
             html: icon,
             class: CLASS_TOOL_BUTTON,
             attributes: {
-                type: 'button',
+                'type': 'button',
                 'data-tippy-content': `Import Vector layer (${ShortcutKeys.importVectorLayerTool})`
             },
             listeners: {
@@ -60,8 +60,8 @@ class ImportVectorLayerTool extends Control {
         this.inputDialog = DOM.createElement({
             element: 'input',
             attributes: {
-                type: 'file',
-                accept: '.geojson, .kml'
+                'type': 'file',
+                'accept': '.geojson, .kml'
             },
             listeners: {
                 'change': this.onInputChange.bind(this)

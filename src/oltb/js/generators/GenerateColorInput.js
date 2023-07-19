@@ -21,7 +21,7 @@ const generateColorInput = function(options = {}) {
         text: options.text,
         class: 'oltb-label', 
         attributes: {
-            for: `${options.idPrefix}${options.idPostfix}`
+            'for': `${options.idPrefix}${options.idPostfix}`
         }
     });
 
@@ -30,7 +30,7 @@ const generateColorInput = function(options = {}) {
         id: `${options.idPrefix}${options.idPostfix}`,
         class: 'oltb-color-input oltb-color-tippy',
         attributes: {
-            tabindex: 0,
+            'tabindex': 0,
             'data-oltb-color-target': `#${options.idPrefix}${options.idPostfix}`,
             'data-oltb-color': options.color
         }

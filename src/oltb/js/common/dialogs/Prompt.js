@@ -51,7 +51,7 @@ class Prompt extends DialogBase {
             element: 'input',
             class: 'oltb-dialog__input oltb-input', 
             attributes: {
-                type: 'text'
+                'type': 'text'
             }
         });
 
@@ -79,7 +79,7 @@ class Prompt extends DialogBase {
             text: this.options.confirmText,
             class: `oltb-dialog__btn oltb-btn ${this.options.confirmClass}`,
             attributes: {
-                type: 'button'
+                'type': 'button'
             },
             listeners: {
                 'click': () => {
@@ -96,7 +96,7 @@ class Prompt extends DialogBase {
                 isDarkTheme() ? 'oltb-btn--gray-mid' : 'oltb-btn--gray-dark'
             }`,
             attributes: {
-                type: 'button'
+                'type': 'button'
             },
             listeners: {
                 'click': () => {

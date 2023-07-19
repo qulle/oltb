@@ -38,7 +38,7 @@ class ZoomOutTool extends Control {
             html: icon,
             class: CLASS_TOOL_BUTTON,
             attributes: {
-                type: 'button',
+                'type': 'button',
                 'data-tippy-content': `Zoom out (${ShortcutKeys.zoomOutTool})`
             },
             listeners: {

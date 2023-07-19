@@ -22,7 +22,7 @@ const generateSelect = function(options = {}) {
         text: options.text,
         class: 'oltb-label', 
         attributes: {
-            for: `${options.idPrefix}${options.idPostfix}`
+            'for': `${options.idPrefix}${options.idPostfix}`
         }
     });
 

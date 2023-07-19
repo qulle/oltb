@@ -100,12 +100,12 @@ class ElementManager {
 
         // Add dark class to body, this will control the color for the entire project
         if(element.classList.contains('dark')) {
-            document.body.classList.add(Config.classNames.dark);
+            document.body.classList.add(Config.className.dark);
         }
 
         // For consistency also add the row class to the body
         if(element.classList.contains('row')) {
-            document.body.classList.add(Config.classNames.row);
+            document.body.classList.add(Config.className.row);
         }
 
         return element;

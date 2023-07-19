@@ -77,7 +77,7 @@ class BookmarkTool extends Control {
             html: icon,
             class: CLASS_TOOL_BUTTON,
             attributes: {
-                type: 'button',
+                'type': 'button',
                 'data-tippy-content': `Bookmarks (${ShortcutKeys.bookmarkTool})`
             },
             listeners: {
@@ -105,7 +105,10 @@ class BookmarkTool extends Control {
             disableFeatureLayerDeleteButton: true
         });
 
-        this.setLocalStorageToMergedState();
+        this.localStorage = StateManager.getAndMergeStateObject(
+            LocalStorageNodeName, 
+            LocalStorageDefaults
+        );
 
         // HTML for Toolbox
         const uiRefToolboxElement = ElementManager.getToolboxElement();
@@ -141,11 +144,11 @@ class BookmarkTool extends Control {
         `);
 
         // UI References
-        this.uiRefBookmarkToolbox = document.querySelector(`#${ID_PREFIX}-toolbox`);
-        this.uiRefBookmarkStack = this.uiRefBookmarkToolbox.querySelector(`#${ID_PREFIX}-stack`);
+        this.uiRefToolboxSection = document.querySelector(`#${ID_PREFIX}-toolbox`);
+        this.uiRefBookmarkStack = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-stack`);
                                 
-        this.uiRefAddBookmarkText = this.uiRefBookmarkToolbox.querySelector(`#${ID_PREFIX}-add-text`);
-        this.uiRefAddBookmarkButton = this.uiRefBookmarkToolbox.querySelector(`#${ID_PREFIX}-add-button`);
+        this.uiRefAddBookmarkText = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-add-text`);
+        this.uiRefAddBookmarkButton = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-add-button`);
 
         this.uiRefAddBookmarkText.addEventListener(Events.browser.keyUp, this.onAddBookmarkByKey.bind(this));
         this.uiRefAddBookmarkButton.addEventListener(Events.browser.click, this.onAddBookmarkByClick.bind(this));
@@ -178,11 +181,11 @@ class BookmarkTool extends Control {
     }
 
     // -------------------------------------------------------------------
-    // # Init Methods
+    // # Init Helpers
     // -------------------------------------------------------------------
 
     initToggleables() {
-        this.uiRefBookmarkToolbox.querySelectorAll('.oltb-toggleable').forEach((toggle) => {
+        this.uiRefToolboxSection.querySelectorAll('.oltb-toggleable').forEach((toggle) => {
             toggle.addEventListener(Events.browser.click, this.onToggleToolbox.bind(this, toggle));
         });
     }
@@ -195,7 +198,7 @@ class BookmarkTool extends Control {
                 bookmark.sortIndex = 0;
                 bookmark.isDynamicallyAdded = false;
 
-                this.addLocalStorageBookmark(bookmark);
+                this.localStorage.bookmarks.push(bookmark);
             }
         });
 
@@ -204,72 +207,11 @@ class BookmarkTool extends Control {
             this.createUIBookmark(bookmark);
         });
 
-        this.setLocalStorageToCurrentState();
-    }
-
-    // -------------------------------------------------------------------
-    // # Local Storage Methods
-    // -------------------------------------------------------------------
-
-    setLocalStorageToDefaultState() {
-        this.localStorage = _.cloneDeep(LocalStorageDefaults);
-        StateManager.setStateObject(LocalStorageNodeName, LocalStorageDefaults);
-    }
-
-    setLocalStorageToMergedState() {
-        this.localStorage = StateManager.getAndMergeStateObject(LocalStorageNodeName, LocalStorageDefaults);
-    }
-
-    setLocalStorageToCurrentState() {
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 
-    setLocalStorageBookmarksReducedIndex(sortIndex, amount = 1) {
-        this.localStorage.bookmarks.forEach((bookmark) => {
-            if(bookmark.sortIndex > sortIndex) {
-                bookmark.sortIndex -= amount;
-            }
-        });
-    }
-
-    setLocalStorageBookmarkNewSortIndex(id, sortIndex) {
-        const target = this.getLocalStorageBookmarkById(id);
-
-        if(target) {
-            target.sortIndex = sortIndex;
-        }
-    }
-
-    getLocalStorageBookmarkById(id) {
-        const bookmark = this.localStorage.bookmarks.find((item) => {
-            return item.id === id;
-        });
-
-        return bookmark;
-    }
-
-    hasLocalStorageBookmarkById(id) {
-        const target = this.getLocalStorageBookmarkById(id);
-
-        if(target) {
-            return true;
-        }
-
-        return false;
-    }
-
-    addLocalStorageBookmark(bookmark) {
-        this.localStorage.bookmarks.push(bookmark);
-    }
-
-    removeLocalStorageBookmarkById(id) {
-        this.localStorage.bookmarks = this.localStorage.bookmarks.filter((item) => {
-            return item.id !== id;
-        });
-    }
-
     // -------------------------------------------------------------------
-    // # Tool Control Methods
+    // # Tool Control
     // -------------------------------------------------------------------
 
     onClickTool() {
@@ -289,20 +231,20 @@ class BookmarkTool extends Control {
 
     activateTool() {
         this.active = true;
-        this.uiRefBookmarkToolbox.classList.add(`${CLASS_TOOLBOX_SECTION}--show`);
+        this.uiRefToolboxSection.classList.add(`${CLASS_TOOLBOX_SECTION}--show`);
         this.button.classList.add(`${CLASS_TOOL_BUTTON}--active`);
 
         this.localStorage.active = true;
-        this.setLocalStorageToCurrentState();
+        StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 
     deActivateTool() {
         this.active = false;
-        this.uiRefBookmarkToolbox.classList.remove(`${CLASS_TOOLBOX_SECTION}--show`);
+        this.uiRefToolboxSection.classList.remove(`${CLASS_TOOLBOX_SECTION}--show`);
         this.button.classList.remove(`${CLASS_TOOL_BUTTON}--active`);
 
         this.localStorage.active = false;
-        this.setLocalStorageToCurrentState();
+        StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 
     onToggleToolbox(toggle) {
@@ -311,7 +253,7 @@ class BookmarkTool extends Control {
 
         targetNode?.slideToggle(Config.animationDuration.fast, (collapsed) => {
             this.localStorage.collapsed = collapsed;
-            this.setLocalStorageToCurrentState();
+            StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
         });
     }
 
@@ -327,7 +269,9 @@ class BookmarkTool extends Control {
 
     onWindowSettingsCleared() {
         this.clearBookmarks();
-        this.setLocalStorageToDefaultState();
+        
+        this.localStorage = _.cloneDeep(LocalStorageDefaults);
+        StateManager.setStateObject(LocalStorageNodeName, LocalStorageDefaults);
 
         if(this.active) {
             this.deActivateTool();
@@ -341,11 +285,33 @@ class BookmarkTool extends Control {
     }
 
     // -------------------------------------------------------------------
+    // # Local Storage
+    // -------------------------------------------------------------------
+
+    getLocalStorageBookmarkById(id) {
+        const bookmark = this.localStorage.bookmarks.find((item) => {
+            return item.id === id;
+        });
+
+        return bookmark;
+    }
+
+    hasLocalStorageBookmarkById(id) {
+        const target = this.getLocalStorageBookmarkById(id);
+
+        if(target) {
+            return true;
+        }
+
+        return false;
+    }
+
+    // -------------------------------------------------------------------
     // # Context Menu Methods
     // -------------------------------------------------------------------
 
     onContextMenuBookmarkAdd(map, coordinates, target) {
-        this.addBookmark();
+        this.addBookmark('', coordinates);
     }
 
     onContextMenuBookmarksClear(map, coordinates, target) {
@@ -366,7 +332,7 @@ class BookmarkTool extends Control {
     }
 
     // -------------------------------------------------------------------
-    // # OpenLayers Shortcut Methods
+    // # OpenLayers Shortcut
     // -------------------------------------------------------------------
 
     addMarkerToMap(marker) {
@@ -386,7 +352,7 @@ class BookmarkTool extends Control {
     }
 
     // -------------------------------------------------------------------
-    // # Sortable Methods
+    // # Sortable
     // -------------------------------------------------------------------
 
     generateSortable(element, options) {
@@ -420,7 +386,11 @@ class BookmarkTool extends Control {
             li.setAttribute('data-oltb-sort-index', reversedIndex);
 
             const id = li.getAttribute('data-oltb-id');
-            this.setLocalStorageBookmarkNewSortIndex(id, reversedIndex);
+            const target = this.getLocalStorageBookmarkById(id);
+
+            if(target) {
+                target.sortIndex = reversedIndex;
+            }
 
             list.push({
                 id: id,
@@ -428,7 +398,7 @@ class BookmarkTool extends Control {
             });
         });
 
-        this.setLocalStorageToCurrentState();
+        StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
 
         // Note: Consumer callback
         if(options.callback instanceof Function) {
@@ -436,20 +406,9 @@ class BookmarkTool extends Control {
         }
     }
 
-    setSortableDesc(sortable, animate = false) {
+    sortSortableDesc(sortable, animate = false) {
         const order = sortable.toArray().sort().reverse();
         sortable.sort(order, animate);
-    }
-
-    setSortableNewSortIndex(sortIndex) {
-        this.uiRefBookmarkStack.childNodes.forEach((bookmark) => {
-            const prevSortIndex = Number(bookmark.getAttribute('data-oltb-sort-index'));
-
-            if(prevSortIndex > sortIndex) {
-                const nextSortIndex = prevSortIndex - 1;
-                bookmark.setAttribute('data-oltb-sort-index', nextSortIndex);
-            }
-        });
     }
 
     getSortableIndexFromBookmarkId(primary, secondary, id) {
@@ -465,7 +424,7 @@ class BookmarkTool extends Control {
     }
 
     // -------------------------------------------------------------------
-    // # Validation Methods
+    // # Conversions/Validation
     // -------------------------------------------------------------------
 
     validateName(name) {
@@ -487,7 +446,7 @@ class BookmarkTool extends Control {
     }
 
     // -------------------------------------------------------------------
-    // # HTML Callback Methods
+    // # HTML/Map Callback
     // -------------------------------------------------------------------
 
     onAddBookmarkByKey(event) {
@@ -506,63 +465,8 @@ class BookmarkTool extends Control {
     }
 
     // -------------------------------------------------------------------
-    // # Internal Methods
+    // # UI
     // -------------------------------------------------------------------
-
-    addBookmark(name = '') {
-        const map = this.getMap();
-        if(!map) {
-            return;
-        }
-
-        // Validate properties
-        name = this.validateName(name);
-
-        const view = map.getView();
-        const zoom = view.getZoom();
-        const coordinates = toLonLat(view.getCenter());
-
-        // Create Bookmark object
-        const bookmarkId = uuidv4();
-        const bookmark = {
-            id: bookmarkId,
-            name: name,
-            zoom: zoom,
-            coordinates: coordinates,
-            isDynamicallyAdded: true,
-            sortIndex: 0
-        };
-
-        this.createUIBookmark(bookmark);
-
-        // Note: Alert the user, the Bookmark was created when the tools was not active
-        if(!this.active) {
-            Toast.success({
-                title: 'New bookmark',
-                message: `A new bookmark created <strong>${name}</strong>`, 
-                autoremove: Config.autoRemovalDuation.normal
-            });
-        }
-
-        // Note: Consumer callback
-        if(this.options.onAdded instanceof Function) {
-            this.options.onAdded(bookmark);
-        }
-    }
-
-    clearBookmarks() {
-        LogManager.logInformation(FILENAME, 'clearBookmarks', 'All bookmarks cleared');
-        
-        DOM.clearElement(this.uiRefBookmarkStack);
-
-        this.clearMarkersFromMap();
-        this.setLocalStorageToDefaultState();
-
-        // Note: Consumer callback
-        if(this.options.onCleared instanceof Function) {
-            this.options.onCleared();
-        }
-    }
 
     createUIBookmarkNameTippy(bookmarkName) {
         tippy(bookmarkName, {
@@ -573,7 +477,7 @@ class BookmarkTool extends Control {
             },
             placement: 'top',
             theme: 'oltb oltb-themed',
-            delay: [600, 100]
+            delay: Config.tippy.offset
         });
     }
 
@@ -584,8 +488,8 @@ class BookmarkTool extends Control {
         this.createUIBookmarkMarker(bookmark);
 
         if(!this.hasLocalStorageBookmarkById(bookmark.id)) {
-            this.addLocalStorageBookmark(bookmark);
-            this.setLocalStorageToCurrentState();
+            this.localStorage.bookmarks.push(bookmark);
+            StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
         }
     }
 
@@ -648,7 +552,7 @@ class BookmarkTool extends Control {
             class: `${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--geo-pin oltb-tippy`,
             title: 'Zoom to coordinates',
             attributes: {
-                type: 'button'
+                'type': 'button'
             },
             listeners: {
                 'click': this.onZoomToBookmark.bind(this, bookmark)
@@ -660,7 +564,7 @@ class BookmarkTool extends Control {
             class: `${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--crosshair oltb-tippy`,
             title: 'Copy coordinates',
             attributes: {
-                type: 'button'
+                'type': 'button'
             },
             listeners: {
                 'click': this.onCopyBookmarkCoordinates.bind(this, bookmark)
@@ -672,7 +576,7 @@ class BookmarkTool extends Control {
             class: `${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--edit oltb-tippy`,
             title: 'Rename bookmark',
             attributes: {
-                type: 'button'
+                'type': 'button'
             },
             listeners: {
                 'click': this.onEditBookmark.bind(this, bookmark, bookmarkName)
@@ -684,7 +588,7 @@ class BookmarkTool extends Control {
             class: `${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--delete oltb-tippy`,
             title: 'Delete bookmark',
             attributes: {
-                type: 'button'
+                'type': 'button'
             },
             listeners: {
                 'click': this.onDeleteBookmark.bind(this, bookmark, bookmarkElement)
@@ -713,7 +617,7 @@ class BookmarkTool extends Control {
         ]);
 
         this.uiRefBookmarkStack.append(bookmarkElement);
-        this.setSortableDesc(this.sortableBookmarkStack);
+        this.sortSortableDesc(this.sortableBookmarkStack);
     }
 
     createUIBookmarkMarker(bookmark) {
@@ -748,7 +652,67 @@ class BookmarkTool extends Control {
     }
 
     // -------------------------------------------------------------------
-    // # Bookmark Callback Methods
+    // # Internal
+    // -------------------------------------------------------------------
+
+    addBookmark(name, coordinates) {
+        const map = this.getMap();
+        if(!map) {
+            return;
+        }
+
+        // Validate properties
+        name = this.validateName(name);
+
+        const view = map.getView();
+        const zoom = view.getZoom();
+        const transformedCoordinates = coordinates ?? toLonLat(view.getCenter());
+
+        // Create Bookmark object
+        const bookmarkId = uuidv4();
+        const bookmark = {
+            id: bookmarkId,
+            name: name,
+            zoom: zoom,
+            coordinates: transformedCoordinates,
+            isDynamicallyAdded: true,
+            sortIndex: 0
+        };
+
+        this.createUIBookmark(bookmark);
+
+        // Note: Alert the user, the Bookmark was created when the tools was not active
+        if(!this.active) {
+            Toast.success({
+                title: 'New bookmark',
+                message: `A new bookmark created <strong>${name}</strong>`, 
+                autoremove: Config.autoRemovalDuation.normal
+            });
+        }
+
+        // Note: Consumer callback
+        if(this.options.onAdded instanceof Function) {
+            this.options.onAdded(bookmark);
+        }
+    }
+
+    clearBookmarks() {
+        LogManager.logInformation(FILENAME, 'clearBookmarks', 'All bookmarks cleared');
+        
+        DOM.clearElement(this.uiRefBookmarkStack);
+        this.clearMarkersFromMap();
+
+        this.localStorage.bookmarks = [];
+        StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
+
+        // Note: Consumer callback
+        if(this.options.onCleared instanceof Function) {
+            this.options.onCleared();
+        }
+    }
+
+    // -------------------------------------------------------------------
+    // # Bookmark Callback
     // -------------------------------------------------------------------
 
     onZoomToBookmark(bookmark) {
@@ -807,15 +771,28 @@ class BookmarkTool extends Control {
                 LogManager.logInformation(FILENAME, 'onDeleteBookmark', bookmark);
 
                 DOM.removeElement(bookmarkElement);
-
                 this.removeMarkerFromMap(bookmark.marker);
-                this.removeLocalStorageBookmarkById(bookmark.id);
 
-                this.setLocalStorageBookmarksReducedIndex(bookmark.sortIndex);
-                this.setSortableNewSortIndex(bookmark.sortIndex);
+                this.localStorage.bookmarks = this.localStorage.bookmarks.filter((item) => {
+                    return item.id !== bookmark.id;
+                });
 
-                this.setSortableDesc(this.sortableBookmarkStack);
-                this.setLocalStorageToCurrentState();
+                this.localStorage.bookmarks.forEach((item) => {
+                    if(item.sortIndex > bookmark.sortIndex) {
+                        item.sortIndex -= 1;
+                    }
+                });
+
+                this.uiRefBookmarkStack.childNodes.forEach((item) => {
+                    const sortIndex = Number(item.getAttribute('data-oltb-sort-index'));
+        
+                    if(sortIndex > bookmark.sortIndex) {
+                        bookmarkElement.setAttribute('data-oltb-sort-index', sortIndex - 1);
+                    }
+                });
+
+                this.sortSortableDesc(this.sortableBookmarkStack);
+                StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
 
                 // Note: Consumer callback
                 if(this.options.onRemoved instanceof Function) {
@@ -836,8 +813,6 @@ class BookmarkTool extends Control {
             onConfirm: (result) => {
                 if(this.isValidResult(result)) {
                     bookmark.name = result;
-                    // this.setLocalStorageBookmark(bookmark);
-
                     bookmarkName.innerText = result.ellipsis(20);
                     bookmarkName.getTippy().setContent(result);
 
@@ -845,7 +820,7 @@ class BookmarkTool extends Control {
                     this.removeMarkerFromMap(bookmark.marker);
                     this.createUIBookmarkMarker(bookmark);
 
-                    this.setLocalStorageToCurrentState();
+                    StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
 
                     // Note: Consumer callback
                     if(this.options.onRenamed instanceof Function) {

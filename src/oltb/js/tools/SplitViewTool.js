@@ -50,7 +50,7 @@ class SplitViewTool extends Control {
             html: icon,
             class: CLASS_TOOL_BUTTON,
             attributes: {
-                type: 'button',
+                'type': 'button',
                 'data-tippy-content': `Split view (${ShortcutKeys.splitViewTool})`
             },
             listeners: {

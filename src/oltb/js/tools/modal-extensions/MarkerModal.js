@@ -110,7 +110,7 @@ class MarkerModal extends ModalBase {
             text: `${this.options.edit ? 'Save changes' : 'Create marker'}`, 
             class: 'oltb-dialog__btn oltb-btn oltb-btn--green-mid',
             attributes: {
-                type: 'button',
+                'type': 'button',
             },
             listeners: {
                 'click': () => {
@@ -137,7 +137,7 @@ class MarkerModal extends ModalBase {
                 isDarkTheme() ? 'oltb-btn--gray-mid' : 'oltb-btn--gray-dark'
             }`,
             attributes: {
-                type: 'button'
+                'type': 'button'
             },
             listeners: {
                 'click': () => {

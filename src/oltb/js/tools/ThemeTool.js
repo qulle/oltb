@@ -59,7 +59,7 @@ class ThemeTool extends Control {
                 : ThemesData.light.icon,
             class: CLASS_TOOL_BUTTON,
             attributes: {
-                type: 'button',
+                'type': 'button',
                 'data-tippy-content': `${(
                     isDarkTheme() 
                         ? ThemesData.dark.tippyContent 

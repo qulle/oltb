@@ -21,7 +21,7 @@ const generateCheckbox = function(options = {}) {
         text: options.text,
         class: 'oltb-checkbox-wrapper__title oltb-label--inline oltb-m-0',
         attributes: {
-            for: `${options.idPrefix}${options.idPostfix}`
+            'for': `${options.idPrefix}${options.idPostfix}`
         }
     });
 
@@ -30,7 +30,7 @@ const generateCheckbox = function(options = {}) {
         id: `${options.idPrefix}${options.idPostfix}`,
         class: 'oltb-checkbox-wrapper__checkbox',
         attributes: {
-            type: 'checkbox'
+            'type': 'checkbox'
         }
     });
 

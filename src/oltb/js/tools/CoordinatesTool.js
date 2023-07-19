@@ -56,7 +56,7 @@ class CoordinatesTool extends Control {
             html: icon,
             class: CLASS_TOOL_BUTTON,
             attributes: {
-                type: 'button',
+                'type': 'button',
                 'data-tippy-content': `Show coordinates (${ShortcutKeys.coordinatesTool})`
             },
             listeners: {
@@ -79,6 +79,7 @@ class CoordinatesTool extends Control {
             LocalStorageDefaults
         );
 
+        // HTML for Toolbox
         const uiRefToolboxElement = ElementManager.getToolboxElement();
         uiRefToolboxElement.insertAdjacentHTML('beforeend', `
             <div id="${ID_PREFIX}-toolbox" class="${CLASS_TOOLBOX_SECTION}">
@@ -104,16 +105,15 @@ class CoordinatesTool extends Control {
             </div>
         `);
 
-        this.uiRefCoordinatesToolbox = document.querySelector(`#${ID_PREFIX}-toolbox`);
-        this.uiRefCoordinatesTable = this.uiRefCoordinatesToolbox.querySelector(`#${ID_PREFIX}-table`);
+        // UI References
+        this.uiRefToolboxSection = document.querySelector(`#${ID_PREFIX}-toolbox`);
+        this.uiRefCoordinatesTable = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-table`);
         
-        this.uiRefCoordinatesFormat = this.uiRefCoordinatesToolbox.querySelector(`#${ID_PREFIX}-format`);
+        this.uiRefCoordinatesFormat = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-format`);
         this.uiRefCoordinatesFormat.value = this.localStorage.coordinatesFormat;
         this.uiRefCoordinatesFormat.addEventListener(Events.browser.change, this.onCoordinatesFormatChange.bind(this));
 
-        this.uiRefCoordinatesToolbox.querySelectorAll('.oltb-toggleable').forEach((toggle) => {
-            toggle.addEventListener(Events.browser.click, this.onToggleToolbox.bind(this, toggle));
-        });
+        this.initToggleables()
 
         SettingsManager.addSetting(Settings.copyCoordinatesOnClick, {
             state: true, 
@@ -128,33 +128,20 @@ class CoordinatesTool extends Control {
         window.addEventListener(Events.browser.keyDown, this.onWindowKeyDown.bind(this));
         window.addEventListener(Events.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
     }
-    
-    onToggleToolbox(toggle) {
-        const targetName = toggle.dataset.oltbToggleableTarget;
-        const targetNode = document.getElementById(targetName);
-        
-        targetNode?.slideToggle(Config.animationDuration.fast, (collapsed) => {
-            this.localStorage.collapsed = collapsed;
-            StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
+
+    // -------------------------------------------------------------------
+    // # Init Helpers
+    // -------------------------------------------------------------------
+
+    initToggleables() {
+        this.uiRefToolboxSection.querySelectorAll('.oltb-toggleable').forEach((toggle) => {
+            toggle.addEventListener(Events.browser.click, this.onToggleToolbox.bind(this, toggle));
         });
     }
 
-    onDOMContentLoaded() {
-        if(this.localStorage.active) {
-            this.activateTool();
-        }
-    }
-
-    onWindowKeyDown(event) {
-        if(isShortcutKeyOnly(event, ShortcutKeys.coordinatesTool)) {
-            this.onClickTool(event);
-        }
-    }
-
-    onCoordinatesFormatChange() {
-        this.localStorage.coordinatesFormat = this.uiRefCoordinatesFormat.value;
-        StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
-    }
+    // -------------------------------------------------------------------
+    // # Tool Control
+    // -------------------------------------------------------------------
 
     onClickTool() {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
@@ -172,6 +159,130 @@ class CoordinatesTool extends Control {
     }
 
     activateTool() {
+        this.createUIProjections();
+
+        this.active = true;
+        this.uiRefToolboxSection.classList.add(`${CLASS_TOOLBOX_SECTION}--show`);
+        this.button.classList.add(`${CLASS_TOOL_BUTTON}--active`);
+
+        this.localStorage.active = true;
+        StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
+    }
+
+    deActivateTool() {
+        this.removeUIProjections();
+
+        this.active = false;
+        this.uiRefToolboxSection.classList.remove(`${CLASS_TOOLBOX_SECTION}--show`);
+        this.button.classList.remove(`${CLASS_TOOL_BUTTON}--active`);
+
+        this.localStorage.active = false;
+        StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
+    }
+    
+    onToggleToolbox(toggle) {
+        const targetName = toggle.dataset.oltbToggleableTarget;
+        const targetNode = document.getElementById(targetName);
+        
+        targetNode?.slideToggle(Config.animationDuration.fast, (collapsed) => {
+            this.localStorage.collapsed = collapsed;
+            StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
+        });
+    }
+
+    // -------------------------------------------------------------------
+    // # Window/Document Events
+    // -------------------------------------------------------------------
+
+    onDOMContentLoaded() {
+        if(this.localStorage.active) {
+            this.activateTool();
+        }
+    }
+
+    onWindowKeyDown(event) {
+        if(isShortcutKeyOnly(event, ShortcutKeys.coordinatesTool)) {
+            this.onClickTool(event);
+        }
+    }
+
+    // -------------------------------------------------------------------
+    // # HTML/Map Callback
+    // -------------------------------------------------------------------
+
+    onCoordinatesFormatChange() {
+        this.localStorage.coordinatesFormat = this.uiRefCoordinatesFormat.value;
+        StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
+    }
+
+    onPointerMove(event) {
+        this.setTooltipCoordinates(event);
+
+        if(SettingsManager.getSetting(Settings.updateToolboxCoordinatesOnHover)) {
+            this.setToolboxCoordinates(event);
+        }
+    }
+
+    onMapClick(event) {        
+        this.copyCoordinates(event);
+
+        if(!SettingsManager.getSetting(Settings.updateToolboxCoordinatesOnHover)) {
+            this.toolboxCoordinates(event);
+        }
+
+        const allCoordinates = [];
+        const projections = ProjectionManager.getProjections();
+        projections.forEach((projection) => {
+            const coordinates = transform(
+                event.coordinate, 
+                Config.projection.default, 
+                projection.code
+            );
+
+            const prettyCoordinates = toStringHDMS(coordinates);
+            allCoordinates.push({
+                code: projection.code,
+                name: projection.name,
+                coordinates: coordinates,
+                prettyCoordinates: prettyCoordinates
+            });
+        });
+
+        // Note: Consumer callback
+        if(this.options.onMapClicked instanceof Function) {
+            this.options.onMapClicked(allCoordinates);
+        }
+    }
+
+    // -------------------------------------------------------------------
+    // # Conversions/Validation
+    // -------------------------------------------------------------------
+
+    toDecimalDegrees(cell, coordinates) {
+        cell.innerHTML = (`
+            ${parseFloat(coordinates[1]).toFixed(4)}, 
+            ${parseFloat(coordinates[0]).toFixed(4)}
+        `);
+    }
+
+    toDegreeMinutesSeconds(cell, coordinates) {
+        const prettyCoordinates = toStringHDMS(coordinates);
+        cell.innerHTML = prettyCoordinates;
+    }
+
+    // -------------------------------------------------------------------
+    // # UI
+    // -------------------------------------------------------------------
+
+    removeUIProjections() {
+        DOM.clearElement(this.uiRefCoordinatesTable);
+        TooltipManager.pop(KEY_TOOLTIP);
+        
+        unByKey(this.onPointerMoveListener);
+        unByKey(this.onMapClickListener);
+    }
+
+    createUIProjections() {
         const map = this.getMap();
         if(!map) {
             return;
@@ -218,31 +329,13 @@ class CoordinatesTool extends Control {
         this.tooltipItem = TooltipManager.push(KEY_TOOLTIP);
         this.onPointerMoveListener = map.on(Events.openLayers.pointerMove, this.onPointerMove.bind(this));
         this.onMapClickListener = map.on(Events.browser.click, this.onMapClick.bind(this));
-
-        this.active = true;
-        this.uiRefCoordinatesToolbox.classList.add(`${CLASS_TOOLBOX_SECTION}--show`);
-        this.button.classList.add(`${CLASS_TOOL_BUTTON}--active`);
-
-        this.localStorage.active = true;
-        StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 
-    deActivateTool() {
-        DOM.clearElement(this.uiRefCoordinatesTable);
-        TooltipManager.pop(KEY_TOOLTIP);
-        
-        unByKey(this.onPointerMoveListener);
-        unByKey(this.onMapClickListener);
+    // -------------------------------------------------------------------
+    // # Internal
+    // -------------------------------------------------------------------
 
-        this.active = false;
-        this.uiRefCoordinatesToolbox.classList.remove(`${CLASS_TOOLBOX_SECTION}--show`);
-        this.button.classList.remove(`${CLASS_TOOL_BUTTON}--active`);
-
-        this.localStorage.active = false;
-        StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
-    }
-
-    tooltipCoordinates(event) {
+    setTooltipCoordinates(event) {
         const coordinates = transform(
             event.coordinate, 
             Config.projection.default, 
@@ -253,7 +346,7 @@ class CoordinatesTool extends Control {
         this.tooltipItem.innerHTML = prettyCoordinates;
     }
 
-    toolboxCoordinates(event) {
+    setToolboxCoordinates(event) {
         const projections = ProjectionManager.getProjections();
         projections.forEach((projection) => {
             const coordinates = transform(
@@ -271,57 +364,6 @@ class CoordinatesTool extends Control {
                 this.toDecimalDegrees(cell, coordinates);
             }
         });
-    }
-
-    toDecimalDegrees(cell, coordinates) {
-        cell.innerHTML = `
-            ${parseFloat(coordinates[1]).toFixed(4)}, 
-            ${parseFloat(coordinates[0]).toFixed(4)}
-        `;
-    }
-
-    toDegreeMinutesSeconds(cell, coordinates) {
-        const prettyCoordinates = toStringHDMS(coordinates);
-        cell.innerHTML = prettyCoordinates;
-    }
-
-    onPointerMove(event) {
-        this.tooltipCoordinates(event);
-
-        if(SettingsManager.getSetting(Settings.updateToolboxCoordinatesOnHover)) {
-            this.toolboxCoordinates(event);
-        }
-    }
-
-    onMapClick(event) {        
-        this.copyCoordinates(event);
-
-        if(!SettingsManager.getSetting(Settings.updateToolboxCoordinatesOnHover)) {
-            this.toolboxCoordinates(event);
-        }
-
-        const allCoordinates = [];
-        const projections = ProjectionManager.getProjections();
-        projections.forEach((projection) => {
-            const coordinates = transform(
-                event.coordinate, 
-                Config.projection.default, 
-                projection.code
-            );
-
-            const prettyCoordinates = toStringHDMS(coordinates);
-            allCoordinates.push({
-                code: projection.code,
-                name: projection.name,
-                coordinates: coordinates,
-                prettyCoordinates: prettyCoordinates
-            });
-        });
-
-        // Note: Consumer callback
-        if(this.options.onMapClicked instanceof Function) {
-            this.options.onMapClicked(allCoordinates);
-        }
     }
 
     copyCoordinates(event) {
@@ -347,7 +389,7 @@ class CoordinatesTool extends Control {
             })
             .catch((error) => {
                 const errorMessage = 'Failed to copy coordinates';
-                LogManager.logError(FILENAME, 'copyCoordinates', {
+                LogManager.logError(FILENAME, 'onCopyCoordinates', {
                     message: errorMessage,
                     error: error
                 });

@@ -42,7 +42,7 @@ class ExportPngTool extends Control {
             html: icon,
             class: CLASS_TOOL_BUTTON,
             attributes: {
-                type: 'button',
+                'type': 'button',
                 'data-tippy-content': `Export PNG (${ShortcutKeys.exportPngTool})`
             },
             listeners: {
@@ -111,8 +111,8 @@ class ExportPngTool extends Control {
             const pngCanvas = DOM.createElement({
                 element: 'canvas',
                 attributes: {
-                    width: size[0],
-                    height: size[1]
+                    'width': size[0],
+                    'height': size[1]
                 }
             });
             

@@ -55,7 +55,7 @@ class Confirm extends DialogBase {
             text: this.options.confirmText, 
             class: `oltb-dialog__btn oltb-btn ${this.options.confirmClass}`,
             attributes: {
-                type: 'button' 
+                'type': 'button' 
             },
             listeners: {
                 'click': () => {
@@ -72,7 +72,7 @@ class Confirm extends DialogBase {
                 isDarkTheme() ? 'oltb-btn--gray-mid' : 'oltb-btn--gray-dark'
             }`,
             attributes: {
-                type: 'button'
+                'type': 'button'
             },
             listeners: {
                 'click': () => {

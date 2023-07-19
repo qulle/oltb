@@ -22,7 +22,7 @@ class ModalBase {
             element: 'div', 
             class: 'oltb-modal-backdrop oltb-modal-backdrop--fixed',
             attributes: {
-                tabindex: '-1'
+                'tabindex': '-1'
             },
             listeners: {
                 'click': this.bounceAnimation.bind(this),
@@ -57,7 +57,7 @@ class ModalBase {
             }),
             class: 'oltb-modal__close oltb-btn oltb-btn--blank',
             attributes: {
-                type: 'button'
+                'type': 'button'
             },
             listeners: {
                 'click': this.close.bind(this)

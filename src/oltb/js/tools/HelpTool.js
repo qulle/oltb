@@ -37,7 +37,7 @@ class HelpTool extends Control {
             html: icon,
             class: CLASS_TOOL_BUTTON,
             attributes: {
-                type: 'button',
+                'type': 'button',
                 'data-tippy-content': `Help (${ShortcutKeys.helpTool})`
             },
             listeners: {

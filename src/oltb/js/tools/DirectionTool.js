@@ -60,7 +60,7 @@ class DirectionTool extends Control {
                 : DirectionData.col.icon,
             class: CLASS_TOOL_BUTTON,
             attributes: {
-                type: 'button',
+                'type': 'button',
                 'data-tippy-content': `${(
                     isHorizontal() 
                         ? DirectionData.row.tippyContent
@@ -90,31 +90,16 @@ class DirectionTool extends Control {
             LocalStorageDefaults
         );
 
-        this.onWindowSizeCheck();
+        this.hideToolButton();
 
         window.addEventListener(Events.browser.resize, this.onWindowSizeCheck.bind(this));
         window.addEventListener(Events.custom.settingsCleared, this.onWindowSettingsCleared.bind(this));
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
     }
 
-    onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, ShortcutKeys.directionTool)) {
-            this.onClickTool(event);
-        }
-    }
-
-    onWindowSizeCheck(event) {
-        if(window.innerWidth <= Config.deviceWidth.sm) {
-            this.button.classList.add(`${CLASS_TOOL_BUTTON}--hidden`);
-        }else {
-            this.button.classList.remove(`${CLASS_TOOL_BUTTON}--hidden`);
-        }
-    }
-
-    onWindowSettingsCleared() {
-        const active = this.getActiveDirection();
-        this.swithDirectionFromTo(active, DirectionData.col);
-    }
+    // -------------------------------------------------------------------
+    // # Tool Control
+    // -------------------------------------------------------------------
 
     onClickTool() {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
@@ -140,6 +125,37 @@ class DirectionTool extends Control {
         // Note: Consumer callback
         if(this.options.onChanged instanceof Function) {
             this.options.onChanged(active.class);
+        }
+    }
+
+    // -------------------------------------------------------------------
+    // # Window/Document Events
+    // -------------------------------------------------------------------
+
+    onWindowKeyUp(event) {
+        if(isShortcutKeyOnly(event, ShortcutKeys.directionTool)) {
+            this.onClickTool(event);
+        }
+    }
+
+    onWindowSizeCheck(event) {
+        this.hideToolButton();
+    }
+
+    onWindowSettingsCleared() {
+        const active = this.getActiveDirection();
+        this.swithDirectionFromTo(active, DirectionData.col);
+    }
+
+    // -------------------------------------------------------------------
+    // # Internal
+    // -------------------------------------------------------------------
+
+    hideToolButton() {
+        if(window.innerWidth <= Config.deviceWidth.sm) {
+            this.button.classList.add(`${CLASS_TOOL_BUTTON}--hidden`);
+        }else {
+            this.button.classList.remove(`${CLASS_TOOL_BUTTON}--hidden`);
         }
     }
 

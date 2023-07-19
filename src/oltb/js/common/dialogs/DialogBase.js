@@ -15,7 +15,7 @@ class DialogBase {
             element: 'div', 
             class: 'oltb-dialog-backdrop oltb-dialog-backdrop--fixed',
             attributes: {
-                tabindex: '-1'
+                'tabindex': '-1'
             },
             listeners: {
                 'click': this.bounceAnimation.bind(this),

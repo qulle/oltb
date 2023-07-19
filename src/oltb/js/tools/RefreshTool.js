@@ -33,7 +33,7 @@ class RefreshTool extends Control {
             html: icon,
             class: CLASS_TOOL_BUTTON,
             attributes: {
-                type: 'button',
+                'type': 'button',
                 'data-tippy-content': `Refresh page (${ShortcutKeys.refreshPageTool})`
             },
             listeners: {

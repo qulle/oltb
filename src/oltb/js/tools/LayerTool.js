@@ -93,7 +93,7 @@ class LayerTool extends Control {
             html: icon,
             class: CLASS_TOOL_BUTTON,
             attributes: {
-                type: 'button',
+                'type': 'button',
                 'data-tippy-content': `Layers (${ShortcutKeys.layerTool})`
             },
             listeners: {
@@ -607,7 +607,7 @@ class LayerTool extends Control {
             },
             placement: 'top',
             theme: 'oltb oltb-themed',
-            delay: [600, 100]
+            delay: Config.tippy.offset
         });
     }
 
@@ -835,7 +835,7 @@ class LayerTool extends Control {
             class: `${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--delete oltb-tippy`,
             title: 'Delete layer',
             attributes: {
-                type: 'button'
+                'type': 'button'
             },
             listeners: {
                 'click': () => {
@@ -860,7 +860,7 @@ class LayerTool extends Control {
             class: `${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--download oltb-tippy`,
             title: 'Download layer',
             attributes: {
-                type: 'button'
+                'type': 'button'
             },
             listeners: {
                 'click': () => {
@@ -917,7 +917,7 @@ class LayerTool extends Control {
             class: `${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--edit oltb-tippy`,
             title: 'Rename layer',
             attributes: {
-                type: 'button'
+                'type': 'button'
             },
             listeners: {
                 'click': () => {
@@ -960,7 +960,7 @@ class LayerTool extends Control {
             class: `${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--visibility oltb-tippy`,
             title: 'Toggle visibility',
             attributes: {
-                type: 'button'
+                'type': 'button'
             },
             listeners: {
                 'click': () => {

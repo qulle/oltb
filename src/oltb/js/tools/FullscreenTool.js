@@ -51,7 +51,7 @@ class FullscreenTool extends Control {
             html: isFullScreen() ? this.exitFullscreenIcon : this.enterFullscreenIcon,
             class: CLASS_TOOL_BUTTON,
             attributes: {
-                type: 'button',
+                'type': 'button',
                 'data-tippy-content': `${(
                     isFullScreen() 
                         ? 'Exit fullscreen' 

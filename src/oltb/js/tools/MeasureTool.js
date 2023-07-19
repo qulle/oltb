@@ -67,7 +67,7 @@ class MeasureTool extends Control {
             html: icon,
             class: CLASS_TOOL_BUTTON,
             attributes: {
-                type: 'button',
+                'type': 'button',
                 'data-tippy-content': `Measure (${ShortcutKeys.measureTool})`
             },
             listeners: {

@@ -85,7 +85,7 @@ class TippyManager {
             placement: 'top',
             appendTo: uiRefMapElement,
             theme: 'oltb oltb-themed',
-            delay: [600, 100],
+            delay: Config.tippy.offset,
             touch: false
         });
     }

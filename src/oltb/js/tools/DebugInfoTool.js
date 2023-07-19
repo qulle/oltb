@@ -37,7 +37,7 @@ class DebugInfoTool extends Control {
             html: icon,
             class: CLASS_TOOL_BUTTON,
             attributes: {
-                type: 'button',
+                'type': 'button',
                 'data-tippy-content': `Debug info (${ShortcutKeys.debugInfoTool})`
             },
             listeners: {
@@ -53,21 +53,25 @@ class DebugInfoTool extends Control {
         this.debugInfoModal = undefined;
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
         
-        // If the tool only should be visible in debug mode
-        const isDebug = UrlManager.getParameter(Config.urlParameters.debug) === 'true';
-
-        if(!isDebug && Boolean(this.options.onlyWhenGetParameter)) {
-            button.classList.add(`${CLASS_TOOL_BUTTON}--hidden`);
-        }
+        this.initDebugState();
 
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
     }
 
-    onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, ShortcutKeys.debugInfoTool)) {
-            this.onHandleClick(event);
+    // -------------------------------------------------------------------
+    // # Init Helpers
+    // -------------------------------------------------------------------
+
+    initDebugState() {
+        const isDebug = UrlManager.getParameter(Config.urlParameters.debug) === 'true';
+        if(!isDebug && Boolean(this.options.onlyWhenGetParameter)) {
+            this.button.classList.add(`${CLASS_TOOL_BUTTON}--hidden`);
         }
     }
+
+    // -------------------------------------------------------------------
+    // # Tool Control
+    // -------------------------------------------------------------------
 
     onClickTool() {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
@@ -96,6 +100,16 @@ class DebugInfoTool extends Control {
                 this.debugInfoModal = undefined;
             }
         });
+    }
+
+    // -------------------------------------------------------------------
+    // # Window/Document Events
+    // -------------------------------------------------------------------
+
+    onWindowKeyUp(event) {
+        if(isShortcutKeyOnly(event, ShortcutKeys.debugInfoTool)) {
+            this.onHandleClick(event);
+        }
     }
 }
 

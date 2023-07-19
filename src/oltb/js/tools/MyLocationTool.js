@@ -51,7 +51,7 @@ class MyLocationTool extends Control {
             html: icon,
             class: CLASS_TOOL_BUTTON,
             attributes: {
-                type: 'button',
+                'type': 'button',
                 'data-tippy-content': `My Location (${ShortcutKeys.myLocationTool})`
             },
             listeners: {

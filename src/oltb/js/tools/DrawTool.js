@@ -67,7 +67,7 @@ class DrawTool extends Control {
             html: icon,
             class: CLASS_TOOL_BUTTON,
             attributes: {
-                type: 'button',
+                'type': 'button',
                 'data-tippy-content': `Draw (${ShortcutKeys.drawTool})`
             },
             listeners: {

@@ -41,7 +41,7 @@ class SettingsTool extends Control {
             html: icon,
             class: CLASS_TOOL_BUTTON,
             attributes: {
-                type: 'button',
+                'type': 'button',
                 'data-tippy-content': `Settings (${ShortcutKeys.settingsTool})`
             },
             listeners: {

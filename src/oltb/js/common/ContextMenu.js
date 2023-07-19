@@ -32,7 +32,7 @@ class ContextMenu extends Control {
                 element: 'ul',
                 class: CLASS_CONTEXT_MENU,
                 attributes: {
-                    tabindex: '-1',
+                    'tabindex': '-1',
                     'data-contextmenu': options.name
                 },
                 listeners: {
@@ -74,7 +74,7 @@ class ContextMenu extends Control {
                 class: `${CLASS_CONTEXT_MENU}__item`,
                 text: item.name,
                 attributes: {
-                    tabindex: '0'
+                    'tabindex': '0'
                 },
                 listeners: {
                     'click': this.click.bind(this, item),

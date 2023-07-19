@@ -66,7 +66,7 @@ class SettingsModal extends ModalBase {
             text: 'Save settings',
             class: 'oltb-dialog__btn oltb-btn oltb-btn--green-mid', 
             attributes: {
-                type: 'button'
+                'type': 'button'
             },
             listeners: {
                 'click': () => {
@@ -89,7 +89,7 @@ class SettingsModal extends ModalBase {
                 isDarkTheme() ? 'oltb-btn--gray-mid' : 'oltb-btn--gray-dark'
             }`,
             attributes: {
-                type: 'button'
+                'type': 'button'
             },
             listeners: {
                 'click': () => {
