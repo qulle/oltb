@@ -4,9 +4,9 @@ import { SvgPaths } from '../../core/icons/GetIcon';
 import { ModalBase } from '../../common/modals/ModalBase';
 import { LogManager } from '../../core/managers/LogManager';
 import { isDarkTheme } from '../../helpers/IsDarkTheme';
-import { generateInput } from '../../generators/GenerateInput';
-import { generateSelect } from '../../generators/GenerateSelect';
-import { generateColorInput } from '../../generators/GenerateColorInput';
+import { createUIInput } from '../../creators/CreateUIInput';
+import { createUISelect } from '../../creators/CreateUISelect';
+import { createUIColorInput } from '../../creators/CreateUIColorInput';
 
 const FILENAME = 'modal-extensions/MarkerModal.js';
 const ID_PREFIX = 'oltb-marker-modal-marker';
@@ -40,14 +40,14 @@ class MarkerModal extends ModalBase {
     }
 
     #createModal() {
-        const [ titleWrapper, titleInput ] = generateInput({
+        const [ titleWrapper, titleInput ] = createUIInput({
             idPrefix: ID_PREFIX,
             idPostfix: '-title',
             text: 'Title',
             value: this.options.title
         });
 
-        const [ descriptionWrapper, descriptionInput ] = generateInput({
+        const [ descriptionWrapper, descriptionInput ] = createUIInput({
             idPrefix: ID_PREFIX,
             idPostfix: '-description',
             text: 'Description',
@@ -64,7 +64,7 @@ class MarkerModal extends ModalBase {
             }
         }
 
-        const [ iconWrapper, iconSelect ] = generateSelect({
+        const [ iconWrapper, iconSelect ] = createUISelect({
             idPrefix: ID_PREFIX,
             idPostfix: '-icon',
             text: 'Icon',
@@ -72,28 +72,28 @@ class MarkerModal extends ModalBase {
             value: this.options.icon
         });
 
-        const [ latWrapper, latInput ] = generateInput({
+        const [ latWrapper, latInput ] = createUIInput({
             idPrefix: ID_PREFIX,
             idPostfix: '-lat',
             text: 'Latitud',
             value: this.options.coordinates[1],
         });
 
-        const [ lonWrapper, lonInput ] = generateInput({
+        const [ lonWrapper, lonInput ] = createUIInput({
             idPrefix: ID_PREFIX,
             idPostfix: '-lon',
             text: 'Longitud',
             value: this.options.coordinates[0],
         });
 
-        const [ fillWrapper, fillInput ] = generateColorInput({
+        const [ fillWrapper, fillInput ] = createUIColorInput({
             idPrefix: ID_PREFIX,
             idPostfix: '-fill',
             text: 'Fill color',
             color: this.options.fill,
         });
 
-        const [ strokeWrapper, strokeInput ] = generateColorInput({
+        const [ strokeWrapper, strokeInput ] = createUIColorInput({
             idPrefix: ID_PREFIX,
             idPostfix: '-stroke',
             text: 'Stroke color',

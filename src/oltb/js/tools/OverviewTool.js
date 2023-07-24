@@ -20,15 +20,24 @@ const CLASS_TOGGLEABLE = 'oltb-toggleable';
 const ID_PREFIX = 'oltb-overview';
 
 const DefaultOptions = Object.freeze({
-    onClick: undefined
+    onInitiated: undefined,
+    onClicked: undefined,
+    onBrowserStateCleared: undefined
 });
 
 const LocalStorageNodeName = LocalStorageKeys.overviewTool;
 const LocalStorageDefaults = Object.freeze({
-    active: false,
-    collapsed: false
+    isActive: false,
+    isCollapsed: false
 });
 
+/**
+ * About:
+ * Thumbnail overview
+ * 
+ * Description:
+ * See the Map and its current view in a thumbnail version of the Map.
+ */
 class OverviewTool extends Control {
     constructor(options = {}) {
         LogManager.logDebug(FILENAME, 'constructor', 'init');
@@ -60,7 +69,7 @@ class OverviewTool extends Control {
         ]);
         
         this.button = button;
-        this.active = false;
+        this.isActive = false;
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
 
         this.localStorage = StateManager.getAndMergeStateObject(
@@ -72,11 +81,16 @@ class OverviewTool extends Control {
         this.uiRefToolboxSection = document.querySelector(`#${ID_PREFIX}-toolbox`);
         this.initToggleables();
 
-        this.overviewMap = this.generateOverviewMap();
+        this.overviewMap = this.generateOLOverviewMap();
 
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
-        window.addEventListener(Events.custom.settingsCleared, this.onWindowSettingsCleared.bind(this));
         window.addEventListener(Events.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
+        window.addEventListener(Events.custom.browserStateCleared, this.onWindowBrowserStateCleared.bind(this));
+
+        // Note: Consumer callback
+        if(this.options.onInitiated instanceof Function) {
+            this.options.onInitiated();
+        }
     }
 
     // -------------------------------------------------------------------
@@ -92,7 +106,7 @@ class OverviewTool extends Control {
                         <span class="${CLASS_TOOLBOX_SECTION}__icon oltb-tippy" title="Toggle section"></span>
                     </h4>
                 </div>
-                <div class="${CLASS_TOOLBOX_SECTION}__groups" id="${ID_PREFIX}-toolbox-collapsed" style="display: ${this.localStorage.collapsed ? 'none' : 'block'}">
+                <div class="${CLASS_TOOLBOX_SECTION}__groups" id="${ID_PREFIX}-toolbox-collapsed" style="display: ${this.localStorage.isCollapsed ? 'none' : 'block'}">
                     <div class="${CLASS_TOOLBOX_SECTION}__group" id="${ID_PREFIX}-target"></div>
                 </div>
             </div>
@@ -109,10 +123,10 @@ class OverviewTool extends Control {
     // # Section: Generate Helpers
     // -------------------------------------------------------------------
 
-    generateOverviewMap() {
+    generateOLOverviewMap() {
         return new OverviewMap({
             target: 'oltb-overview-target',
-            collapsed: false,
+            isCollapsed: false,
             collapsible: false,
             layers: [
                 new Tile({
@@ -126,18 +140,18 @@ class OverviewTool extends Control {
     // # Section: Tool Control
     // -------------------------------------------------------------------
 
-    onClickTool() {
+    onClickTool(event) {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
 
-        // Note: Consumer callback
-        if(this.options.onClick instanceof Function) {
-            this.options.onClick();
-        }
-
-        if(this.active) {
+        if(this.isActive) {
             this.deActivateTool();
         }else {
             this.activateTool(); 
+        }
+
+        // Note: Consumer callback
+        if(this.options.onClicked instanceof Function) {
+            this.options.onClicked();
         }
     }
 
@@ -151,21 +165,21 @@ class OverviewTool extends Control {
         this.uiRefToolboxSection.classList.add(`${CLASS_TOOLBOX_SECTION}--show`);
         this.overviewMap.setMap(map);
 
-        this.active = true;
+        this.isActive = true;
         this.button.classList.add(`${CLASS_TOOL_BUTTON}--active`);
 
-        this.localStorage.active = true;
+        this.localStorage.isActive = true;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 
     deActivateTool() {
         this.overviewMap.setMap(null);
 
-        this.active = false;
+        this.isActive = false;
         this.button.classList.remove(`${CLASS_TOOL_BUTTON}--active`);
         this.uiRefToolboxSection.classList.remove(`${CLASS_TOOLBOX_SECTION}--show`);
 
-        this.localStorage.active = false;
+        this.localStorage.isActive = false;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 
@@ -179,7 +193,7 @@ class OverviewTool extends Control {
         const targetNode = document.getElementById(targetName);
         
         targetNode?.slideToggle(Config.animationDuration.fast, (collapsed) => {
-            this.localStorage.collapsed = collapsed;
+            this.localStorage.isCollapsed = collapsed;
             StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
         
             // Force render of overview, 
@@ -190,11 +204,11 @@ class OverviewTool extends Control {
     }
     
     // -------------------------------------------------------------------
-    // # Section: Window/Document Events
+    // # Section: Browser Events
     // -------------------------------------------------------------------
 
     onDOMContentLoaded() {
-        if(this.localStorage.active) {
+        if(this.localStorage.isActive) {
             this.activateTool();
         }
     }
@@ -205,8 +219,18 @@ class OverviewTool extends Control {
         }
     }
     
-    onWindowSettingsCleared() {
+    onWindowBrowserStateCleared() {
         this.localStorage = _.cloneDeep(LocalStorageDefaults);
+        StateManager.setStateObject(LocalStorageNodeName, LocalStorageDefaults);
+
+        if(this.isActive) {
+            this.deActivateTool();
+        }
+
+        // Note: Consumer callback
+        if(this.options.onBrowserStateCleared instanceof Function) {
+            this.options.onBrowserStateCleared();
+        }
     }
 }
 

@@ -15,7 +15,9 @@ const FILENAME = 'tools/ThemeTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
 
 const DefaultOptions = Object.freeze({
-    onClick: undefined,
+    onInitiated: undefined,
+    onClicked: undefined,
+    onBrowserStateCleared: undefined,
     onChanged: undefined
 });
 
@@ -44,6 +46,13 @@ const LocalStorageDefaults = Object.freeze({
     theme: ThemesData.light.class
 });
 
+/**
+ * About:
+ * Change theme of the Toolbar
+ * 
+ * Description:
+ * The Toolbar is light by default, via this tool the Toolbar can be made dark to be better seen against a bright Map image.
+ */
 class ThemeTool extends Control {
     constructor(options = {}) {
         LogManager.logDebug(FILENAME, 'constructor', 'init');
@@ -75,7 +84,7 @@ class ThemeTool extends Control {
         ]);
         
         this.button = button;
-        this.active = false;
+        this.isActive = false;
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
 
         this.localStorage = StateManager.getAndMergeStateObject(
@@ -83,23 +92,28 @@ class ThemeTool extends Control {
             LocalStorageDefaults
         );
 
-        window.addEventListener(Events.custom.settingsCleared, this.onWindowSettingsCleared.bind(this));
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(Events.custom.browserStateCleared, this.onWindowBrowserStateCleared.bind(this));
+
+        // Note: Consumer callback
+        if(this.options.onInitiated instanceof Function) {
+            this.options.onInitiated();
+        }
     }
 
     // -------------------------------------------------------------------
     // # Section: Tool Control
     // -------------------------------------------------------------------
 
-    onClickTool() {
+    onClickTool(event) {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
-
-        // Note: Consumer callback
-        if(this.options.onClick instanceof Function) {
-            this.options.onClick();
-        }
         
         this.momentaryActivation();
+
+        // Note: Consumer callback
+        if(this.options.onClicked instanceof Function) {
+            this.options.onClicked();
+        }
     }
 
     momentaryActivation() {
@@ -113,7 +127,7 @@ class ThemeTool extends Control {
     }
     
     // -------------------------------------------------------------------
-    // # Section: Window/Document Events
+    // # Section: Browser Events
     // -------------------------------------------------------------------
 
     onWindowKeyUp(event) {
@@ -122,13 +136,18 @@ class ThemeTool extends Control {
         }
     }
 
-    onWindowSettingsCleared() {
+    onWindowBrowserStateCleared() {
         const active = this.getActiveTheme();
         this.swithThemeFromTo(active, ThemesData.light);
+
+        // Note: Consumer callback
+        if(this.options.onBrowserStateCleared instanceof Function) {
+            this.options.onBrowserStateCleared();
+        }
     }
 
     // -------------------------------------------------------------------
-    // # Section: Tool Specific
+    // # Section: Tool Actions
     // -------------------------------------------------------------------
 
     getToolTippyContent() {

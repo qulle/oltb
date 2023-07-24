@@ -32,7 +32,9 @@ const CLASS_TOGGLEABLE = 'oltb-toggleable';
 const ID_PREFIX = 'oltb-draw';
 
 const DefaultOptions = Object.freeze({
-    onClick: undefined,
+    onInitiated: undefined,
+    onClicked: undefined,
+    onBrowserStateCleared: undefined,
     onStart: undefined,
     onEnd: undefined,
     onAbort: undefined,
@@ -42,14 +44,21 @@ const DefaultOptions = Object.freeze({
 
 const LocalStorageNodeName = LocalStorageKeys.drawTool;
 const LocalStorageDefaults = Object.freeze({
-    active: false,
-    collapsed: false,
+    isActive: false,
+    isCollapsed: false,
     toolType: GeometryType.Polygon,
     strokeWidth: '2.5',
     strokeColor: '#4A86B8FF',
     fillColor: '#D7E3FA80'
 });
 
+/**
+ * About:
+ * Draw objects on the Map
+ * 
+ * Description:
+ * Draw Circles, Squares, Rectangles, Lines, Points and Polygons. Ability to draw with different styles and colors.
+ */
 class DrawTool extends Control {
     constructor(options = {}) {
         LogManager.logDebug(FILENAME, 'constructor', 'init');
@@ -81,7 +90,7 @@ class DrawTool extends Control {
         ]);
         
         this.button = button;
-        this.active = false;
+        this.isActive = false;
         this.intersectedFeatures = [];
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
 
@@ -115,8 +124,13 @@ class DrawTool extends Control {
         this.uiRefIntersectionEnable.value = 'false';
 
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
-        window.addEventListener(Events.custom.settingsCleared, this.onWindowSettingsCleared.bind(this));
         window.addEventListener(Events.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
+        window.addEventListener(Events.custom.browserStateCleared, this.onWindowBrowserStateCleared.bind(this));
+
+        // Note: Consumer callback
+        if(this.options.onInitiated instanceof Function) {
+            this.options.onInitiated();
+        }
     }
 
     // -------------------------------------------------------------------
@@ -132,7 +146,7 @@ class DrawTool extends Control {
                         <span class="${CLASS_TOOLBOX_SECTION}__icon oltb-tippy" title="Toggle section"></span>
                     </h4>
                 </div>
-                <div class="${CLASS_TOOLBOX_SECTION}__groups" id="${ID_PREFIX}-toolbox-collapsed" style="display: ${this.localStorage.collapsed ? 'none' : 'block'}">
+                <div class="${CLASS_TOOLBOX_SECTION}__groups" id="${ID_PREFIX}-toolbox-collapsed" style="display: ${this.localStorage.isCollapsed ? 'none' : 'block'}">
                     <div class="${CLASS_TOOLBOX_SECTION}__group">
                         <label class="oltb-label" for="${ID_PREFIX}-type">Shape</label>
                         <select id="${ID_PREFIX}-type" class="oltb-select">
@@ -196,29 +210,29 @@ class DrawTool extends Control {
     // # Section: Tool Control
     // -------------------------------------------------------------------
 
-    onClickTool() {
+    onClickTool(event) {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
 
-        // Note: Consumer callback
-        if(this.options.onClick instanceof Function) {
-            this.options.onClick();
-        }
-
-        if(this.active) {
+        if(this.isActive) {
             this.deActivateTool();
         }else {
             this.activateTool();
         }
+
+        // Note: Consumer callback
+        if(this.options.onClicked instanceof Function) {
+            this.options.onClicked();
+        }
     }
 
     activateTool() {
-        this.active = true;
+        this.isActive = true;
         this.uiRefToolboxSection.classList.add(`${CLASS_TOOLBOX_SECTION}--show`);
         this.button.classList.add(`${CLASS_TOOL_BUTTON}--active`);
 
         ToolManager.setActiveTool(this);
 
-        if(SettingsManager.getSetting(Settings.alwaysNewLayers)) {
+        if(this.shouldAlwaysCreateNewLayer()) {
             LayerManager.addFeatureLayer({
                 name: 'Drawing layer'
             });
@@ -227,7 +241,7 @@ class DrawTool extends Control {
         // Triggers activation of the tool
         eventDispatcher([this.uiRefToolType], Events.browser.change);
 
-        this.localStorage.active = true;
+        this.localStorage.isActive = true;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 
@@ -237,16 +251,16 @@ class DrawTool extends Control {
             return;
         }
 
-        this.active = false;
+        this.isActive = false;
         this.uiRefToolboxSection.classList.remove(`${CLASS_TOOLBOX_SECTION}--show`);
         this.button.classList.remove(`${CLASS_TOOL_BUTTON}--active`);
 
-        map.removeInteraction(this.interaction);
-        this.interaction = undefined;
+        map.removeInteraction(this.interactionDraw);
+        this.interactionDraw = undefined;
 
         ToolManager.removeActiveTool();
 
-        this.localStorage.active = false;
+        this.localStorage.isActive = false;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 
@@ -285,17 +299,17 @@ class DrawTool extends Control {
         const targetNode = document.getElementById(targetName);
         
         targetNode?.slideToggle(Config.animationDuration.fast, (collapsed) => {
-            this.localStorage.collapsed = collapsed;
+            this.localStorage.isCollapsed = collapsed;
             StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
         });
     }
 
     // -------------------------------------------------------------------
-    // # Section: Window/Document Events
+    // # Section: Browser Events
     // -------------------------------------------------------------------
 
     onDOMContentLoaded() {
-        if(this.localStorage.active) {
+        if(this.localStorage.isActive) {
             this.activateTool();
         }
     }
@@ -304,21 +318,21 @@ class DrawTool extends Control {
         const key = event.key;
 
         if(key === Keys.valueEscape) {
-            if(this.interaction) {
-                this.interaction.abortDrawing();
+            if(this.interactionDraw) {
+                this.interactionDraw.abortDrawing();
             }
-        }else if(Boolean(event.ctrlKey) && key === Keys.valueZ) {
-            if(this.interaction) {
-                this.interaction.removeLastPoint();
+        }else if(event.ctrlKey && key === Keys.valueZ) {
+            if(this.interactionDraw) {
+                this.interactionDraw.removeLastPoint();
             }
         }else if(isShortcutKeyOnly(event, ShortcutKeys.drawTool)) {
             this.onClickTool(event);
         }
     }
 
-    onWindowSettingsCleared() {
-        // Update runtime copy of localStorage to default
+    onWindowBrowserStateCleared() {
         this.localStorage = _.cloneDeep(LocalStorageDefaults);
+        StateManager.setStateObject(LocalStorageNodeName, LocalStorageDefaults);
 
         // Rest UI-components
         this.uiRefFillColor.setAttribute('data-oltb-color', this.localStorage.fillColor);
@@ -327,81 +341,18 @@ class DrawTool extends Control {
         this.uiRefStrokeColor.setAttribute('data-oltb-color', this.localStorage.strokeColor);
         this.uiRefStrokeColor.firstElementChild.style.backgroundColor = this.localStorage.strokeColor;
 
-        // Update the tool to use the correct colors
-        if(this.active) {
-            this.updateTool();
+        if(this.isActive) {
+            this.deActivateTool();
+        }
+
+        // Note: Consumer callback
+        if(this.options.onBrowserStateClear instanceof Function) {
+            this.options.onBrowserStateClear();
         }
     }
 
     // -------------------------------------------------------------------
-    // # Section: Tool Specific
-    // -------------------------------------------------------------------
-
-    isIntersectionEnabled() {
-        return this.uiRefIntersectionEnable.value.toLowerCase() === 'true';
-    }
-
-    selectDraw(toolType, strokeWidth, fillColor, strokeColor) {
-        const map = this.getMap();
-        if(!map) {
-            return;
-        }
-
-        // Remove previous interaction if tool is changed
-        if(this.interaction) {
-            map.removeInteraction(this.interaction);
-        }
-
-        this.style = new Style({
-            image: new Circle({
-                fill: new Fill({
-                    color: fillColor
-                }),
-                stroke: new Stroke({
-                    color: strokeColor,
-                    width: strokeWidth
-                }),
-                radius: 5
-            }),
-            fill: new Fill({
-                color: fillColor
-            }),
-            stroke: new Stroke({
-                color: strokeColor,
-                width: strokeWidth
-            })
-        });
-
-        // A normal circle can not be serialized to json, approximated circle as polygon instead. 
-        // Also use circle to create square and rectangle
-        let geometryFunction = undefined;
-        if(toolType === GeometryType.Square) {
-            geometryFunction = createRegularPolygon(4);
-            toolType = GeometryType.Circle;
-        }else if(toolType === GeometryType.Rectangle) {
-            geometryFunction = createBox();
-            toolType = GeometryType.Circle;
-        }else if(toolType === GeometryType.Circle) {
-            geometryFunction = createRegularPolygon(32);
-        }
-
-        this.interaction = new Draw({
-            type: toolType,
-            style: this.style,
-            stopClick: true,
-            geometryFunction: geometryFunction
-        });
-
-        map.addInteraction(this.interaction);
-
-        this.interaction.on(Events.openLayers.drawStart, this.onDrawStart.bind(this));
-        this.interaction.on(Events.openLayers.drawEnd, this.onDrawEnd.bind(this));
-        this.interaction.on(Events.openLayers.drawAbort, this.onDrawAbort.bind(this));
-        this.interaction.on(Events.openLayers.error, this.onDrawError.bind(this));
-    }
-
-    // -------------------------------------------------------------------
-    // # Section: HTML/Map Callback
+    // # Section: Map/UI Callbacks
     // -------------------------------------------------------------------
 
     onDrawStart(event) {
@@ -502,6 +453,93 @@ class DrawTool extends Control {
         if(this.options.onError instanceof Function) {
             this.options.onError(event);
         }
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Conversions/Validation
+    // -------------------------------------------------------------------
+
+    shouldAlwaysCreateNewLayer() {
+        return SettingsManager.getSetting(Settings.alwaysNewLayers);
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Generator Helpers
+    // -------------------------------------------------------------------
+
+    generateOLInteractionDraw(type, geometryFunction) {
+        return new Draw({
+            type: type,
+            style: this.style,
+            stopClick: true,
+            geometryFunction: geometryFunction
+        });
+    }
+
+    generateOLStyleObject(strokeWidth, fillColor, strokeColor) {
+        return new Style({
+            image: new Circle({
+                fill: new Fill({
+                    color: fillColor
+                }),
+                stroke: new Stroke({
+                    color: strokeColor,
+                    width: strokeWidth
+                }),
+                radius: 5
+            }),
+            fill: new Fill({
+                color: fillColor
+            }),
+            stroke: new Stroke({
+                color: strokeColor,
+                width: strokeWidth
+            })
+        });
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Tool Actions
+    // -------------------------------------------------------------------
+
+    isIntersectionEnabled() {
+        return this.uiRefIntersectionEnable.value.toLowerCase() === 'true';
+    }
+
+    selectDraw(toolType, strokeWidth, fillColor, strokeColor) {
+        const map = this.getMap();
+        if(!map) {
+            return;
+        }
+
+        // Remove previous interaction if tool is changed
+        if(this.interactionDraw) {
+            map.removeInteraction(this.interactionDraw);
+        }
+
+        this.style = this.generateOLStyleObject(strokeWidth, fillColor, strokeColor);
+
+        // A normal circle can not be serialized to json, approximated circle as polygon instead. 
+        // Also use circle to create square and rectangle
+        let geometryFunction = undefined;
+
+        if(toolType === GeometryType.Square) {
+            geometryFunction = createRegularPolygon(4);
+            toolType = GeometryType.Circle;
+        }else if(toolType === GeometryType.Rectangle) {
+            geometryFunction = createBox();
+            toolType = GeometryType.Circle;
+        }else if(toolType === GeometryType.Circle) {
+            geometryFunction = createRegularPolygon(32);
+        }
+
+        this.interactionDraw = this.generateOLInteractionDraw(toolType, geometryFunction);
+        map.addInteraction(this.interactionDraw);
+
+        this.interactionDraw.on(Events.openLayers.drawStart, this.onDrawStart.bind(this));
+        this.interactionDraw.on(Events.openLayers.drawEnd, this.onDrawEnd.bind(this));
+        this.interactionDraw.on(Events.openLayers.drawAbort, this.onDrawAbort.bind(this));
+        this.interactionDraw.on(Events.openLayers.error, this.onDrawError.bind(this));
     }
 }
 

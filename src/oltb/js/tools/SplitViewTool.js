@@ -24,15 +24,24 @@ const CLASS_TOGGLEABLE = 'oltb-toggleable';
 const ID_PREFIX = 'oltb-split-view';
 
 const DefaultOptions = Object.freeze({
-    onClick: undefined
+    onInitiated: undefined,
+    onClicked: undefined,
+    onBrowserStateCleared: undefined
 });
 
 const LocalStorageNodeName = LocalStorageKeys.splitViewTool;
 const LocalStorageDefaults = Object.freeze({
-    active: false,
-    collapsed: false
+    isActive: false,
+    isCollapsed: false
 });
 
+/**
+ * About:
+ * Review two overlapping Map layers side by side
+ * 
+ * Description:
+ * Compares two different Map images and enables staggered overlap.
+ */
 class SplitViewTool extends Control {
     constructor(options = {}) {
         LogManager.logDebug(FILENAME, 'constructor', 'init');
@@ -64,7 +73,7 @@ class SplitViewTool extends Control {
         ]);
         
         this.button = button;
-        this.active = false;
+        this.isActive = false;
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
 
         this.localStorage = StateManager.getAndMergeStateObject(
@@ -91,11 +100,16 @@ class SplitViewTool extends Control {
         this.uiRefSplitViewSlider = ElementManager.getMapElement().querySelector(`#${ID_PREFIX}-slider`);
         this.uiRefSplitViewSlider.addEventListener(Events.browser.input, this.onSliderInput.bind(this));
 
+        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(Events.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
         window.addEventListener(Events.custom.mapLayerAdded, this.onWindowMapLayerAdded.bind(this));
         window.addEventListener(Events.custom.mapLayerRemoved, this.onWindowMapLayerRemoved.bind(this));
-        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
-        window.addEventListener(Events.custom.settingsCleared, this.onWindowSettingsCleared.bind(this));
-        window.addEventListener(Events.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
+        window.addEventListener(Events.custom.browserStateCleared, this.onWindowBrowserStateCleared.bind(this));
+
+        // Note: Consumer callback
+        if(this.options.onInitiated instanceof Function) {
+            this.options.onInitiated();
+        }
     }
 
     // -------------------------------------------------------------------
@@ -111,7 +125,7 @@ class SplitViewTool extends Control {
                         <span class="${CLASS_TOOLBOX_SECTION}__icon oltb-tippy" title="Toggle section"></span>
                     </h4>
                 </div>
-                <div class="${CLASS_TOOLBOX_SECTION}__groups" id="${ID_PREFIX}-toolbox-collapsed" style="display: ${this.localStorage.collapsed ? 'none' : 'block'}">
+                <div class="${CLASS_TOOLBOX_SECTION}__groups" id="${ID_PREFIX}-toolbox-collapsed" style="display: ${this.localStorage.isCollapsed ? 'none' : 'block'}">
                     <div class="${CLASS_TOOLBOX_SECTION}__group">
                         <label class="oltb-label" for="${ID_PREFIX}-left-src">Left side</label>
                         <select id="${ID_PREFIX}-left-src" class="oltb-select"></select>
@@ -144,13 +158,8 @@ class SplitViewTool extends Control {
     // # Section: Tool Control
     // -------------------------------------------------------------------
 
-    onClickTool() {
+    onClickTool(event) {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
-
-        // Note: Consumer callback
-        if(this.options.onClick instanceof Function) {
-            this.options.onClick();
-        }
 
         if(LayerManager.getMapLayerSize() <= 1) {
             Toast.info({
@@ -161,24 +170,29 @@ class SplitViewTool extends Control {
             return;
         }
 
-        if(this.active) {
+        if(this.isActive) {
             this.deActivateTool();
         }else {
             this.activateTool();
+        }
+
+        // Note: Consumer callback
+        if(this.options.onClicked instanceof Function) {
+            this.options.onClicked();
         }
     }
 
     activateTool() {
         // The active switch must be enabled first
         // Events can be triggered by other tools that should not be handled if the tools is not in use 
-        this.active = true;
+        this.isActive = true;
 
         this.setDefaultSelectedIndexes().dispatchChangeEvent();
 
         // Some layer related error, missing or rendering
         // Triggered by eventDispatcher change-event
         if(this.layerLoadingError) {
-            this.active = false;
+            this.isActive = false;
             return;
         }
         
@@ -186,7 +200,7 @@ class SplitViewTool extends Control {
         this.uiRefSplitViewSlider.classList.add(`${CLASS_SLIDER}--show`);
         this.button.classList.add(`${CLASS_TOOL_BUTTON}--active`);
 
-        this.localStorage.active = true;
+        this.localStorage.isActive = true;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 
@@ -212,12 +226,12 @@ class SplitViewTool extends Control {
 
         LayerManager.setTopMapLayerAsOnlyVisible();
 
-        this.active = false;
+        this.isActive = false;
         this.uiRefToolboxSection.classList.remove(`${CLASS_TOOLBOX_SECTION}--show`);
         this.uiRefSplitViewSlider.classList.remove(`${CLASS_SLIDER}--show`);
         this.button.classList.remove(`${CLASS_TOOL_BUTTON}--active`);
 
-        this.localStorage.active = false;
+        this.localStorage.isActive = false;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 
@@ -233,17 +247,17 @@ class SplitViewTool extends Control {
         const targetNode = document.getElementById(targetName);
         
         targetNode?.slideToggle(Config.animationDuration.fast, (collapsed) => {
-            this.localStorage.collapsed = collapsed;
+            this.localStorage.isCollapsed = collapsed;
             StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
         });
     }
 
     // -------------------------------------------------------------------
-    // # Section: Window/Document Events
+    // # Section: Browser Events
     // -------------------------------------------------------------------
 
     onDOMContentLoaded() {
-        if(this.localStorage.active) {
+        if(this.localStorage.isActive) {
             this.activateTool();
         }
     }
@@ -254,8 +268,18 @@ class SplitViewTool extends Control {
         }
     }
     
-    onWindowSettingsCleared() {
+    onWindowBrowserStateCleared() {
         this.localStorage = _.cloneDeep(LocalStorageDefaults);
+        StateManager.setStateObject(LocalStorageNodeName, LocalStorageDefaults);
+
+        if(this.isActive) {
+            this.deActivateTool();
+        }
+
+        // Note: Consumer callback
+        if(this.options.onBrowserStateCleared instanceof Function) {
+            this.options.onBrowserStateCleared();
+        }
     }
 
     onWindowMapLayerAdded(event) {
@@ -301,8 +325,78 @@ class SplitViewTool extends Control {
     }
 
     // -------------------------------------------------------------------
-    // # Section: Tool Specific
+    // # Section: Map/UI Callbacks
     // -------------------------------------------------------------------
+    
+    onSwapLayerSides() {
+        const currentRightId = this.uiRefRightSideSrc.value;
+
+        this.uiRefRightSideSrc.value = this.uiRefLeftSideSrc.value;
+        this.uiRefLeftSideSrc.value = currentRightId;
+
+        this.dispatchChangeEvent();
+    }
+
+    onSliderInput(event) {
+        const map = this.getMap();
+        if(!map) {
+            return;
+        }
+
+        map.render();
+    }
+
+    onPreRender(event) {
+        const map = this.getMap();
+        if(!map) {
+            return;
+        }
+
+        this.preRender(event);
+    }
+
+    onPostRender(event) {
+        event.context.restore();
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Tool Actions
+    // -------------------------------------------------------------------
+
+    preRender(event) {
+        const context = event.context;
+        const mapSize = map.getSize();
+
+        // Calculate offset for the handlebar. 
+        // The range slider is not perfectly linear towards the edges. 
+        const halfHandleWidth = Config.browser.rem;
+        const sliderWidth = this.uiRefSplitViewSlider.offsetWidth;
+        const sliderCenter = sliderWidth / 2;
+        const percentOfRange = (this.uiRefSplitViewSlider.value / (this.uiRefSplitViewSlider.max - this.uiRefSplitViewSlider.min));
+        const valuePxPosition = percentOfRange * sliderWidth;
+        const distFromCenter = valuePxPosition - sliderCenter;
+        const percentDistFromCenter = distFromCenter / sliderCenter;
+        const offset = percentDistFromCenter * halfHandleWidth;
+
+        const mapWidth = mapSize[0];
+        const mapHeight = mapSize[1];
+
+        // Displaying two maps next to each other.
+        const width = mapWidth * (this.uiRefSplitViewSlider.value / this.uiRefSplitViewSlider.max) - offset;
+        const tl = getRenderPixel(event, [width, 0]);
+        const tr = getRenderPixel(event, [mapWidth, 0]);
+        const bl = getRenderPixel(event, [width, mapHeight]);
+        const br = getRenderPixel(event, [mapWidth, mapHeight]);
+    
+        context.save();
+        context.beginPath();
+        context.moveTo(tl[0], tl[1]);
+        context.lineTo(bl[0], bl[1]);
+        context.lineTo(br[0], br[1]);
+        context.lineTo(tr[0], tr[1]);
+        context.closePath();
+        context.clip();
+    }
 
     setDefaultSelectedIndexes() {
         this.uiRefRightSideSrc.selectedIndex = '0';
@@ -343,7 +437,7 @@ class SplitViewTool extends Control {
     sourceChange(leftSideSrcId, rightSideSrcId) {
         // Block access for events that are captued when the tool is not activated
         // Example removing a layer in the LayerTool
-        if(!this.active) {
+        if(!this.isActive) {
             return;
         }
 
@@ -388,72 +482,6 @@ class SplitViewTool extends Control {
         }
 
         map.render();
-    }
-
-    // -------------------------------------------------------------------
-    // # Section: HTML/Map Callback
-    // -------------------------------------------------------------------
-    
-    onSwapLayerSides() {
-        const currentRightId = this.uiRefRightSideSrc.value;
-
-        this.uiRefRightSideSrc.value = this.uiRefLeftSideSrc.value;
-        this.uiRefLeftSideSrc.value = currentRightId;
-
-        this.dispatchChangeEvent();
-    }
-
-    onSliderInput(event) {
-        const map = this.getMap();
-        if(!map) {
-            return;
-        }
-
-        map.render();
-    }
-
-    onPreRender(event) {
-        const map = this.getMap();
-        if(!map) {
-            return;
-        }
-
-        const context = event.context;
-        const mapSize = map.getSize();
-
-        // Calculate offset for the handlebar. 
-        // The range slider is not perfectly linear towards the edges. 
-        const halfHandleWidth = Config.browser.rem;
-        const sliderWidth = this.uiRefSplitViewSlider.offsetWidth;
-        const sliderCenter = sliderWidth / 2;
-        const percentOfRange = (this.uiRefSplitViewSlider.value / (this.uiRefSplitViewSlider.max - this.uiRefSplitViewSlider.min));
-        const valuePxPosition = percentOfRange * sliderWidth;
-        const distFromCenter = valuePxPosition - sliderCenter;
-        const percentDistFromCenter = distFromCenter / sliderCenter;
-        const offset = percentDistFromCenter * halfHandleWidth;
-
-        const mapWidth = mapSize[0];
-        const mapHeight = mapSize[1];
-
-        // Displaying two maps next to each other.
-        const width = mapWidth * (this.uiRefSplitViewSlider.value / this.uiRefSplitViewSlider.max) - offset;
-        const tl = getRenderPixel(event, [width, 0]);
-        const tr = getRenderPixel(event, [mapWidth, 0]);
-        const bl = getRenderPixel(event, [width, mapHeight]);
-        const br = getRenderPixel(event, [mapWidth, mapHeight]);
-    
-        context.save();
-        context.beginPath();
-        context.moveTo(tl[0], tl[1]);
-        context.lineTo(bl[0], bl[1]);
-        context.lineTo(br[0], br[1]);
-        context.lineTo(tr[0], tr[1]);
-        context.closePath();
-        context.clip();
-    }
-
-    onPostRender(event) {
-        event.context.restore();
     }
 }
 

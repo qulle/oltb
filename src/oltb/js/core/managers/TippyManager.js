@@ -23,10 +23,10 @@ class TippyManager {
         this.#mapTippy = this.#createMapTippy();
         this.#colorTippy = this.#createColorTippy();
 
-        window.addEventListener(Events.custom.toolbarDirectionChange, this.#onPlacementChange.bind(this));
         window.addEventListener(Events.browser.resize, this.#onPlacementChange.bind(this));
         window.addEventListener(Events.browser.contentLoaded, this.#onDOMContentLoaded.bind(this));
-        window.addEventListener(Events.custom.settingsCleared, this.#onWindowSettingsCleared.bind(this));
+        window.addEventListener(Events.custom.toolbarDirectionChange, this.#onPlacementChange.bind(this));
+        window.addEventListener(Events.custom.browserStateCleared, this.#onWindowBrowserStateCleared.bind(this));
     }
 
     static setMap(map) { }
@@ -47,7 +47,7 @@ class TippyManager {
         });
     }
 
-    static #onWindowSettingsCleared() {
+    static #onWindowBrowserStateCleared() {
         this.#toolButtonTippy.setProps({
             placement: this.#isPlacementBottom()
                 ? 'bottom' 

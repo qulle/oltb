@@ -19,11 +19,20 @@ const CLASS_TOOL_BUTTON = 'oltb-tool-button';
 const DefaultOptions = Object.freeze({
     filename: 'map-image-export',
     appendTime: false,
-    onClick: undefined,
+    onInitiated: undefined,
+    onClicked: undefined,
     onExported: undefined,
     onError: undefined
 });
 
+/**
+ * About:
+ * Take a picture of the Map
+ * 
+ * Description:
+ * Instead of taking a screenshot, a complete PNG-image can be exported. 
+ * The export combines the actual canvas that makes up the Map with various overlays such as information boxes that are actual HTML elements.
+ */
 class ExportPngTool extends Control {
     constructor(options = {}) {
         LogManager.logDebug(FILENAME, 'constructor', 'init');
@@ -59,8 +68,13 @@ class ExportPngTool extends Control {
         
         this.initDebugState();
 
-        window.addEventListener(Events.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(Events.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
+
+        // Note: Consumer callback
+        if(this.options.onInitiated instanceof Function) {
+            this.options.onInitiated();
+        }
     }
 
     // -------------------------------------------------------------------
@@ -75,30 +89,23 @@ class ExportPngTool extends Control {
     // # Section: Tool Control
     // -------------------------------------------------------------------
 
-    onClickTool() {
+    onClickTool(event) {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
-        
-        // Note: Consumer callback
-        if(this.options.onClick instanceof Function) {
-            this.options.onClick();
-        }
 
         this.momentaryActivation();
+
+        // Note: Consumer callback
+        if(this.options.onClicked instanceof Function) {
+            this.options.onClicked();
+        }
     }
 
     momentaryActivation() {
-        const map = this.getMap();
-        if(!map) {
-            return;
-        }
-
-        // RenderSync will trigger the export the png
-        map.once(Events.openLayers.renderComplete, this.onRenderCompleteAsync.bind(this));
-        map.renderSync();
+        this.mapRenderOnce();
     }
 
     // -------------------------------------------------------------------
-    // # Section: Window/Document Events
+    // # Section: Browser Events
     // -------------------------------------------------------------------
 
     onWindowKeyUp(event) {
@@ -117,7 +124,7 @@ class ExportPngTool extends Control {
     }
 
     // -------------------------------------------------------------------
-    // # Section: HTML/Map Callback
+    // # Section: Map/UI Callbacks
     // -------------------------------------------------------------------
 
     async onRenderCompleteAsync() {
@@ -129,14 +136,7 @@ class ExportPngTool extends Control {
         try {
             const uiRefMapElement = ElementManager.getMapElement();
             const size = map.getSize();
-            const pngCanvas = DOM.createElement({
-                element: 'canvas',
-                attributes: {
-                    'width': size[0],
-                    'height': size[1]
-                }
-            });
-            
+            const pngCanvas = this.createUICanvas(size[0], size[1]);
             const pngContext = pngCanvas.getContext('2d');
 
             // Draw map layers (Canvases)
@@ -145,11 +145,7 @@ class ExportPngTool extends Control {
             const opacity = uiRefMapCanvas.parentNode.style.opacity;
             pngContext.globalAlpha = opacity === '' ? fullOpacity : Number(opacity);
     
-            const matrix = uiRefMapCanvas.style.transform
-                .match(/^matrix\(([^(]*)\)$/)[1]
-                .split(',')
-                .map(Number);
-
+            const matrix = this.getCanvasMatrix(uiRefMapCanvas);
             CanvasRenderingContext2D.prototype.setTransform.apply(pngContext, matrix);
             pngContext.drawImage(uiRefMapCanvas, 0, 0);
 
@@ -163,7 +159,6 @@ class ExportPngTool extends Control {
             });
 
             pngContext.drawImage(overlayCanvas, 0, 0);
-
             this.downloadCanvas(pngCanvas);
         }catch(error) {
             // Note: Consumer callback
@@ -185,8 +180,40 @@ class ExportPngTool extends Control {
     }
 
     // -------------------------------------------------------------------
-    // # Section: Tool Specific
+    // # Section: UI
     // -------------------------------------------------------------------
+
+    createUICanvas(width, height) {
+        return DOM.createElement({
+            element: 'canvas',
+            attributes: {
+                'width': width,
+                'height': height
+            }
+        }); 
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Tool Actions
+    // -------------------------------------------------------------------
+
+    getCanvasMatrix(uiRefCanvas) {
+        return uiRefCanvas.style.transform
+            .match(/^matrix\(([^(]*)\)$/)[1]
+            .split(',')
+            .map(Number);;
+    }
+
+    mapRenderOnce() {
+        const map = this.getMap();
+        if(!map) {
+            return;
+        }
+
+        // RenderSync will trigger the export the png
+        map.once(Events.openLayers.renderComplete, this.onRenderCompleteAsync.bind(this));
+        map.renderSync();
+    }
 
     downloadCanvas(pngCanvas) {
         const timestamp = this.options.appendTime 

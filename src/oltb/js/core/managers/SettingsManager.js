@@ -1,3 +1,4 @@
+import _ from "lodash";
 import { Settings } from "../../helpers/constants/Settings";
 import { LogManager } from './LogManager';
 import { StateManager } from "./StateManager";
@@ -49,7 +50,7 @@ const DefaultSettings = new Map([
 
 class SettingsManager {
     static #localStorage;
-    static #settings = structuredClone(DefaultSettings);
+    static #settings = _.cloneDeep(DefaultSettings);
 
     static init(options = {}) {
         LogManager.logDebug(FILENAME, 'init', 'Initialization started');
@@ -81,7 +82,7 @@ class SettingsManager {
     }
 
     static clear() {
-        this.#settings = structuredClone(DefaultSettings);
+        this.#settings = _.cloneDeep(DefaultSettings);
     }
 
     static addSetting(key, valueObj) {
@@ -92,7 +93,7 @@ class SettingsManager {
             valueObj.state = state;
         }
 
-        DefaultSettings.set(key, structuredClone(valueObj));
+        DefaultSettings.set(key, _.cloneDeep(valueObj));
         this.#settings.set(key, valueObj);
     }
 

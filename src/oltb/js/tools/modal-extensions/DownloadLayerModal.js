@@ -4,7 +4,7 @@ import { ModalBase } from '../../common/modals/ModalBase';
 import { LogManager } from '../../core/managers/LogManager';
 import { isDarkTheme } from '../../helpers/IsDarkTheme';
 import { FormatOptions } from '../../core/ol-types/FormatType';
-import { generateSelect } from '../../generators/GenerateSelect';
+import { createUISelect } from '../../creators/CreateUISelect';
 
 const FILENAME = 'modal-extensions/DownloadLayerModal.js';
 const ID_PREFIX = 'oltb-download-layer-modal';
@@ -31,11 +31,11 @@ class DownloadLayerModal extends ModalBase {
     }
 
     #createModal() {
-        const [ formatWrapper, formatSelect ] = generateSelect({
+        const [ formatWrapper, formatSelect ] = createUISelect({
             idPrefix: ID_PREFIX,
             idPostfix: '-format',
             text: 'Layer format',
-            options: structuredClone(FormatOptions)
+            options: _.cloneDeep(FormatOptions)
         });
 
         const buttonsWrapper = DOM.createElement({

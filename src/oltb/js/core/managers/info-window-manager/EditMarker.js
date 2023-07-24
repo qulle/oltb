@@ -4,7 +4,7 @@ import { transform } from 'ol/proj';
 import { MarkerModal } from "../../../tools/modal-extensions/MarkerModal";
 import { toStringHDMS } from 'ol/coordinate';
 import { LayerManager } from '../LayerManager';
-import { generateMarker } from '../../../generators/GenerateMarker';
+import { generateIconMarker } from '../../../generators/GenerateIconMarker';
 
 const ID_PREFIX_INFO_WINDOW = 'oltb-info-window-marker';
 const CLASS_FUNC_BUTTON = 'oltb-func-btn';
@@ -53,7 +53,7 @@ const onEditMarker = function(InfoWindowManager, beforeMarker, result) {
         `
     };
     
-    const afterMarker = new generateMarker({
+    const afterMarker = new generateIconMarker({
         lon: result.longitude,
         lat: result.latitude,
         title: result.title,

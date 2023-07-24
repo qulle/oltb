@@ -19,10 +19,18 @@ const FILENAME = 'tools/SettingsTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
 
 const DefaultOptions = Object.freeze({
-    onClick: undefined,
-    onCleared: undefined
+    onInitiated: undefined,
+    onClicked: undefined,
+    onBrowserStateCleared: undefined
 });
 
+/**
+ * About:
+ * Various settings for the Map and its tools
+ * 
+ * Description:
+ * Check settings for Map zooming, panning, rotating, copying coordinates, etc.
+ */
 class SettingsTool extends Control {
     constructor(options = {}) {
         LogManager.logDebug(FILENAME, 'constructor', 'init');
@@ -31,14 +39,14 @@ class SettingsTool extends Control {
             element: ElementManager.getToolbarElement()
         });
         
-        const icon = getIcon({
+        this.icon = getIcon({
             path: SvgPaths.gear.stroked,
             class: `${CLASS_TOOL_BUTTON}__icon`
         });
 
         const button = DOM.createElement({
             element: 'button',
-            html: icon,
+            html: this.icon,
             class: CLASS_TOOL_BUTTON,
             attributes: {
                 'type': 'button',
@@ -57,28 +65,41 @@ class SettingsTool extends Control {
         this.settingsModal = undefined;
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
 
-        ContextMenu.addItem({
-            icon: icon, 
-            name: 'Clear settings', 
-            fn: this.onContextMenuSettingsClear.bind(this)
-        });
+        this.initContextMenuItems();
 
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
+
+        // Note: Consumer callback
+        if(this.options.onInitiated instanceof Function) {
+            this.options.onInitiated();
+        }
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Init Helpers
+    // -------------------------------------------------------------------
+
+    initContextMenuItems() {
+        ContextMenu.addItem({
+            icon: this.icon, 
+            name: 'Clear Browser State', 
+            fn: this.onContextMenuBrowserStateClear.bind(this)
+        });
     }
 
     // -------------------------------------------------------------------
     // # Section: Tool Control
     // -------------------------------------------------------------------
 
-    onClickTool() {
+    onClickTool(event) {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
 
-        // Note: Consumer callback
-        if(this.options.onClick instanceof Function) {
-            this.options.onClick();
-        }
-
         this.momentaryActivation();
+
+        // Note: Consumer callback
+        if(this.options.onClicked instanceof Function) {
+            this.options.onClicked();
+        }
     }
 
     momentaryActivation() {
@@ -86,6 +107,45 @@ class SettingsTool extends Control {
             return;
         }
 
+        this.showSettingsModal();
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Browser Events
+    // -------------------------------------------------------------------
+
+    onWindowKeyUp(event) {
+        if(isShortcutKeyOnly(event, ShortcutKeys.settingsTool)) {
+            this.onClickTool(event);
+        }
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: ContextMenu Callbacks
+    // -------------------------------------------------------------------
+
+    onContextMenuBrowserStateClear(map, coordinates, target) {
+        Dialog.confirm({
+            title: 'Clear Browser State',
+            message: 'Do you want to reset <strong>all</strong> items to default state for the Toolbar?',
+            confirmText: 'Clear',
+            onConfirm: () => {
+                this.clearBrowserState();
+
+                Toast.info({
+                    title: 'Cleared',
+                    message: "All stored items was reset to default", 
+                    autoremove: Config.autoRemovalDuation.normal
+                });
+            }
+        });
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Tool Actions
+    // -------------------------------------------------------------------
+
+    showSettingsModal() {
         this.settingsModal = new SettingsModal({
             onSave: () => {
                 Toast.success({
@@ -100,42 +160,11 @@ class SettingsTool extends Control {
         });
     }
 
-    // -------------------------------------------------------------------
-    // # Section: Window/Document Events
-    // -------------------------------------------------------------------
+    clearBrowserState() {
+        // Emit event so that any tool can clean up
+        window.dispatchEvent(new CustomEvent(Events.custom.browserStateCleared));
 
-    onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, ShortcutKeys.settingsTool)) {
-            this.onClickTool(event);
-        }
-    }
-
-    // -------------------------------------------------------------------
-    // # Section: Context Menu Methods
-    // -------------------------------------------------------------------
-
-    onContextMenuSettingsClear(map, coordinates, target) {
-        Dialog.confirm({
-            title: 'Clear settings',
-            message: 'Do you want to clear and reset all settings?',
-            confirmText: 'Clear',
-            onConfirm: () => {
-                this.clearSettings();
-
-                Toast.info({
-                    title: 'Cleared',
-                    message: "All stored settings was cleared", 
-                    autoremove: Config.autoRemovalDuation.normal
-                });
-            }
-        });
-    }
-
-    // -------------------------------------------------------------------
-    // # Section: Tool Specific
-    // -------------------------------------------------------------------
-
-    clearSettings() {
+        // Reset Managers as last step
         [
             SettingsManager, 
             StateManager
@@ -144,12 +173,9 @@ class SettingsTool extends Control {
         });
 
         // Note: Consumer callback
-        if(this.options.onCleared instanceof Function) {
-            this.options.onCleared();
+        if(this.options.onBrowserStateCleared instanceof Function) {
+            this.options.onBrowserStateCleared();
         }
-
-        // Emit event so that any tool can clean up
-        window.dispatchEvent(new CustomEvent(Events.custom.settingsCleared));
     }
 }
 

@@ -37,7 +37,7 @@ const Events = Object.freeze({
     }),
     custom: Object.freeze({
         toolbarDirectionChange: 'oltb.toolbar.direction.change',
-        settingsCleared: 'oltb.settings.cleared',
+        browserStateCleared: 'oltb.browser.state.cleared',
         mapLayerAdded: 'oltb.mapLayer.added',
         mapLayerRemoved: 'oltb.mapLayer.removed',
         featureLayerAdded: 'oltb.featureLayer.added',

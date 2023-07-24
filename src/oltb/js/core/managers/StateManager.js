@@ -48,7 +48,7 @@ class StateManager {
             });
         }
 
-        LogManager.logDebug(FILENAME, 'getBrowserData', structuredClone(state));
+        LogManager.logDebug(FILENAME, 'getBrowserData', _.cloneDeep(state));
 
         return state;
     }
@@ -91,8 +91,7 @@ class StateManager {
     static clear() {
         LogManager.logDebug(FILENAME, 'clear', 'Clearing stored state from browser');
 
-        this.#runtimeState = {};
-        localStorage.clear();
+        this.#runtimeState = this.#getBrowserData();
     }
 }
 

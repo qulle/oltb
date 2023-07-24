@@ -16,9 +16,17 @@ const CLASS_TOOL_BUTTON = 'oltb-tool-button';
 const DefaultOptions = Object.freeze({
     url: 'https://github.com/qulle/oltb',
     target: '_blank',
-    onClick: undefined
+    onInitiated: undefined,
+    onClicked: undefined
 });
 
+/**
+ * About:
+ * Open help or documentation pages
+ * 
+ * Description:
+ * Open documentation for the functions of the Map or your application as a whole, corresponds to F1 in many computer applications.
+ */
 class HelpTool extends Control {
     constructor(options = {}) {
         LogManager.logDebug(FILENAME, 'constructor', 'init');
@@ -53,29 +61,42 @@ class HelpTool extends Control {
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
 
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
+
+        // Note: Consumer callback
+        if(this.options.onInitiated instanceof Function) {
+            this.options.onInitiated();
+        }
     }
 
     // -------------------------------------------------------------------
     // # Section: Tool Control
     // -------------------------------------------------------------------
 
-    onClickTool() {
+    onClickTool(event) {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
-        
-        // Note: Consumer callback
-        if(this.options.onClick instanceof Function) {
-            this.options.onClick();
-        }
 
         this.momentaryActivation();
+
+        // Note: Consumer callback
+        if(this.options.onClicked instanceof Function) {
+            this.options.onClicked();
+        }
     }
 
     momentaryActivation() {
+        this.openTabOrWindow();
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Browser Events
+    // -------------------------------------------------------------------
+
+    openTabOrWindow() {
         try {
-            window.open(this.options.url, this.options.target).focus();
+            this.openTabOrWindow();
         }catch(error) {
             const errorMessage = 'Action was restricted by browser settings';
-            LogManager.logError(FILENAME, 'momentaryActivation', {
+            LogManager.logError(FILENAME, 'openTabOrWindow', {
                 message: errorMessage,
                 error: error
             });
@@ -86,10 +107,6 @@ class HelpTool extends Control {
             });
         }
     }
-
-    // -------------------------------------------------------------------
-    // # Section: Window/Document Events
-    // -------------------------------------------------------------------
 
     onWindowKeyUp(event) {
         if(isShortcutKeyOnly(event, ShortcutKeys.helpTool)) {

@@ -3,7 +3,7 @@ import { DOM } from '../../helpers/browser/DOM';
 import { ModalBase } from '../../common/modals/ModalBase';
 import { LogManager } from '../../core/managers/LogManager';
 import { isDarkTheme } from '../../helpers/IsDarkTheme';
-import { generateInput } from '../../generators/GenerateInput';
+import { createUIInput } from '../../creators/CreateUIInput';
 
 const FILENAME = 'modal-extensions/CoordinateModal.js';
 const ID_PREFIX = 'oltb-coordinates-modal';
@@ -30,14 +30,14 @@ class CoordinateModal extends ModalBase {
     }
 
     #createModal() {
-        const [ latWrapper, latInput ] = generateInput({
+        const [ latWrapper, latInput ] = createUIInput({
             idPrefix: ID_PREFIX,
             idPostfix: '-lat',
             text: 'Latitud',
             placeholder: '51.5072'
         });
 
-        const [ lonWrapper, lonInput ] = generateInput({
+        const [ lonWrapper, lonInput ] = createUIInput({
             idPrefix: ID_PREFIX,
             idPostfix: '-lon',
             text: 'Longitud',

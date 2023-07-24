@@ -15,9 +15,17 @@ const CLASS_TOOL_BUTTON = 'oltb-tool-button';
 const DefaultOptions = Object.freeze({
     title: 'Hey!',
     content: 'This is the default content, try adding some content of your own.',
-    onClick: undefined
+    onInitiated: undefined,
+    onClicked: undefined
 });
 
+/**
+ * About:
+ * Display an information modal
+ * 
+ * Description:
+ * The information window can contain shorter help descriptions, news, shortcuts, operating information, etc.
+ */
 class InfoTool extends Control {
     constructor(options = {}) {
         LogManager.logDebug(FILENAME, 'constructor', 'init');
@@ -53,21 +61,26 @@ class InfoTool extends Control {
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
 
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
+
+        // Note: Consumer callback
+        if(this.options.onInitiated instanceof Function) {
+            this.options.onInitiated();
+        }
     }
 
     // -------------------------------------------------------------------
     // # Section: Tool Control
     // -------------------------------------------------------------------
 
-    onClickTool() {
+    onClickTool(event) {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
 
-        // Note: Consumer callback
-        if(this.options.onClick instanceof Function) {
-            this.options.onClick();
-        }
-
         this.momentaryActivation();
+
+        // Note: Consumer callback
+        if(this.options.onClicked instanceof Function) {
+            this.options.onClicked();
+        }
     }
 
     momentaryActivation() {
@@ -75,6 +88,14 @@ class InfoTool extends Control {
             return;
         }
 
+        this.showInfoModal();
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Browser Events
+    // -------------------------------------------------------------------
+
+    showInfoModal() {
         this.infoModal = Modal.create({
             title: this.options.title, 
             content: this.options.content,
@@ -83,10 +104,6 @@ class InfoTool extends Control {
             }
         });
     }
-
-    // -------------------------------------------------------------------
-    // # Section: Window/Document Events
-    // -------------------------------------------------------------------
 
     onWindowKeyUp(event) {
         if(isShortcutKeyOnly(event, ShortcutKeys.infoTool)) {

@@ -21,14 +21,23 @@ const DefaultOptions = Object.freeze({
     radius: 75,
     min: 25,
     max: 150,
-    onClick: undefined
+    onInitiated: undefined,
+    onClicked: undefined
 });
 
 const LocalStorageNodeName = LocalStorageKeys.magnifyTool;
 const LocalStorageDefaults = Object.freeze({
-    active: false
+    isActive: false
 });
 
+/**
+ * About:
+ * Enlarge parts of the Map under the mouse
+ * 
+ * Description:
+ * The magnifying glass allows you to enlarge parts of the map that are under the mouse. 
+ * The image often becomes pixelated as it is bitmap images that are enlarged.
+ */
 class MagnifyTool extends Control {
     constructor(options = {}) {
         LogManager.logDebug(FILENAME, 'constructor', 'init');
@@ -69,53 +78,58 @@ class MagnifyTool extends Control {
 
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
         window.addEventListener(Events.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
+
+        // Note: Consumer callback
+        if(this.options.onInitiated instanceof Function) {
+            this.options.onInitiated();
+        }
     }
 
     // -------------------------------------------------------------------
     // # Section: Tool Control
     // -------------------------------------------------------------------
 
-    onClickTool() {
+    onClickTool(event) {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
-        
-        // Note: Consumer callback
-        if(this.options.onClick instanceof Function) {
-            this.options.onClick();
-        }
 
-        if(this.active) {
+        if(this.isActive) {
             this.deActivateTool();
         }else {
             this.activateTool();
+        }
+
+        // Note: Consumer callback
+        if(this.options.onClicked instanceof Function) {
+            this.options.onClicked();
         }
     }
 
     activateTool() {
         this.attachMapListeners();
 
-        this.active = true;
+        this.isActive = true;
         this.button.classList.add(`${CLASS_TOOL_BUTTON}--active`);
 
-        this.localStorage.active = true;
+        this.localStorage.isActive = true;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 
     deActivateTool() {
         this.detachMapListeners();
 
-        this.active = false;
+        this.isActive = false;
         this.button.classList.remove(`${CLASS_TOOL_BUTTON}--active`);
 
-        this.localStorage.active = false;
+        this.localStorage.isActive = false;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 
     // -------------------------------------------------------------------
-    // # Section: Window/Document Events
+    // # Section: Browser Events
     // -------------------------------------------------------------------
 
     onDOMContentLoaded() {
-        if(this.localStorage.active) {
+        if(this.localStorage.isActive) {
             this.activateTool();
         }
     }
@@ -147,7 +161,7 @@ class MagnifyTool extends Control {
     }
 
     // -------------------------------------------------------------------
-    // # Section: HTML/Map Callback
+    // # Section: Map/UI Callbacks
     // -------------------------------------------------------------------
 
     onMousemove(event) {
@@ -171,86 +185,92 @@ class MagnifyTool extends Control {
     }
 
     onPostrender(event) {
-        if(this.mousePosition) {
-            const mousePosition = this.mousePosition;
-            const radius = this.options.radius;
-
-            const pixel = getRenderPixel(event, mousePosition);
-            const offset = getRenderPixel(event, [
-                mousePosition[0] + radius,
-                mousePosition[1] 
-            ]);
-
-            const half = Math.sqrt(
-                Math.pow(offset[0] - pixel[0], 2) + Math.pow(offset[1] - pixel[1], 2)
-            );
-            
-            const context = event.context;
-            const centerX = pixel[0];
-            const centerY = pixel[1];
-            const originX = centerX - half;
-            const originY = centerY - half;
-            const size = Math.round(2 * half + 1);
-
-            try {
-                const sourceData = context.getImageData(originX, originY, size, size).data;
-                const dest = context.createImageData(size, size);
-                const destData = dest.data;
-                
-                for(let j = 0; j < size; ++j) {
-                    for(let i = 0; i < size; ++i) {
-                        const dI = i - half;
-                        const dJ = j - half;
-                        const dist = Math.sqrt(dI * dI + dJ * dJ);
-                        let sourceI = i;
-                        let sourceJ = j;
-                        
-                        if(dist < half) {
-                            sourceI = Math.round(half + dI / 2);
-                            sourceJ = Math.round(half + dJ / 2);
-                        }
-                    
-                        const destOffset = (j * size + i) * 4;
-                        const sourceOffset = (sourceJ * size + sourceI) * 4;
-                        
-                        destData[destOffset] = sourceData[sourceOffset];
-                        destData[destOffset + 1] = sourceData[sourceOffset + 1];
-                        destData[destOffset + 2] = sourceData[sourceOffset + 2];
-                        destData[destOffset + 3] = sourceData[sourceOffset + 3];
-                    }
-                }
-    
-                context.beginPath();
-                context.arc(centerX, centerY, half, 0, 2 * Math.PI);
-                context.lineWidth = (3 * half) / radius;
-                context.strokeStyle = '#3b4352FF';
-                context.putImageData(dest, originX, originY);
-                context.stroke();
-                context.restore();
-            }catch(error) {
-                // Click the tool-button to deactivate
-                this.button.click();
-
-                const errorMessage = 'Unexpected error using magnifyer';
-                LogManager.logError(FILENAME, 'onPostrender', {
-                    message: errorMessage,
-                    error: error
-                });
-                
-                Toast.error({
-                    title: 'Error',
-                    message: (error.name === 'SecurityError' 
-                        ? 'CORS error with one of the layers'
-                        : errorMessage
-                    )
-                });
-            }
+        if(!this.mousePosition) {
+            return;
         }
+
+        this.postRender(event);
     }
 
     // -------------------------------------------------------------------
-    // # Section: Tool Specific
+    // # Section: Tool Actions
     // -------------------------------------------------------------------
+
+    postRender(event) {
+        const mousePosition = this.mousePosition;
+        const radius = this.options.radius;
+
+        const pixel = getRenderPixel(event, mousePosition);
+        const offset = getRenderPixel(event, [
+            mousePosition[0] + radius,
+            mousePosition[1] 
+        ]);
+
+        const half = Math.sqrt(
+            Math.pow(offset[0] - pixel[0], 2) + Math.pow(offset[1] - pixel[1], 2)
+        );
+            
+        const context = event.context;
+        const centerX = pixel[0];
+        const centerY = pixel[1];
+        const originX = centerX - half;
+        const originY = centerY - half;
+        const size = Math.round(2 * half + 1);
+
+        try {
+            const sourceData = context.getImageData(originX, originY, size, size).data;
+            const dest = context.createImageData(size, size);
+            const destData = dest.data;
+                
+            for(let j = 0; j < size; ++j) {
+                for(let i = 0; i < size; ++i) {
+                    const dI = i - half;
+                    const dJ = j - half;
+                    const dist = Math.sqrt(dI * dI + dJ * dJ);
+                    let sourceI = i;
+                    let sourceJ = j;
+                        
+                    if(dist < half) {
+                        sourceI = Math.round(half + dI / 2);
+                        sourceJ = Math.round(half + dJ / 2);
+                    }
+                    
+                    const destOffset = (j * size + i) * 4;
+                    const sourceOffset = (sourceJ * size + sourceI) * 4;
+                        
+                    destData[destOffset] = sourceData[sourceOffset];
+                    destData[destOffset + 1] = sourceData[sourceOffset + 1];
+                    destData[destOffset + 2] = sourceData[sourceOffset + 2];
+                    destData[destOffset + 3] = sourceData[sourceOffset + 3];
+                }
+            }
+    
+            context.beginPath();
+            context.arc(centerX, centerY, half, 0, 2 * Math.PI);
+            context.lineWidth = (3 * half) / radius;
+            context.strokeStyle = '#3b4352FF';
+            context.putImageData(dest, originX, originY);
+            context.stroke();
+            context.restore();
+        }catch(error) {
+            // Click the tool-button to deactivate
+            this.button.click();
+
+            const errorMessage = 'Unexpected error using magnifyer';
+            LogManager.logError(FILENAME, 'onPostrender', {
+                message: errorMessage,
+                error: error
+            });
+                
+            Toast.error({
+                title: 'Error',
+                message: (error.name === 'SecurityError' 
+                    ? 'CORS error with one of the layers'
+                    : errorMessage
+                )
+            });
+        }
+    }
 
     attachMapListeners() {
         const map = this.getMap();

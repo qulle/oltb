@@ -6,9 +6,9 @@ import { ContextMenu } from '../../common/ContextMenu';
 import { MarkerModal } from '../modal-extensions/MarkerModal';
 import { toStringHDMS } from 'ol/coordinate';
 import { LayerManager } from '../../core/managers/LayerManager';
-import { generateMarker } from '../../generators/GenerateMarker';
 import { ElementManager } from '../../core/managers/ElementManager';
 import { SvgPaths, getIcon } from '../../core/icons/GetIcon';
+import { generateIconMarker } from '../../generators/GenerateIconMarker';
 
 const FILENAME = 'hidden-tools/HiddenMarkerTool.js';
 const CLASS_FUNC_BUTTON = 'oltb-func-btn';
@@ -20,6 +20,13 @@ const DefaultOptions = Object.freeze({
     onEdited: undefined
 });
 
+/**
+ * About:
+ * Create Markers in the Map
+ * 
+ * Description:
+ * Create Markers with icons in the Map to visualize places, bookmarks, etc.
+ */
 class HiddenMarkerTool extends Control {
     constructor(options = {}) {
         LogManager.logDebug(FILENAME, 'constructor', 'init');
@@ -30,24 +37,32 @@ class HiddenMarkerTool extends Control {
 
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
 
-        const createIcon = getIcon({
+        this.createIcon = getIcon({
             path: SvgPaths.plusLarge.stroked
         });
 
-        ContextMenu.addItem({
-            icon: createIcon, 
-            name: 'Create marker', 
-            fn: this.onContextMenuCreateMarker.bind(this)
-        });
-        
-        ContextMenu.addItem({});
+        this.initContextMenuItems();
 
         window.addEventListener(Events.custom.featureEdited, this.onWindowFeatureEdited.bind(this));
         window.addEventListener(Events.custom.featureRemoved, this.onWindowFeatureRemoved.bind(this));
     }
 
     // -------------------------------------------------------------------
-    // # Section: Context Menu Methods
+    // # Section: Init Helpers
+    // -------------------------------------------------------------------
+
+    initContextMenuItems() {
+        ContextMenu.addItem({
+            icon: this.createIcon, 
+            name: 'Create Marker', 
+            fn: this.onContextMenuCreateMarker.bind(this)
+        });
+        
+        ContextMenu.addItem({});
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: ContextMenu Callbacks
     // -------------------------------------------------------------------
 
     onContextMenuCreateMarker(map, coordinates, target) {
@@ -60,7 +75,7 @@ class HiddenMarkerTool extends Control {
     }
 
     // -------------------------------------------------------------------
-    // # Section: Window/Document Events
+    // # Section: Browser Events
     // -------------------------------------------------------------------
 
     onWindowFeatureEdited(event) {
@@ -81,10 +96,18 @@ class HiddenMarkerTool extends Control {
     }
 
     // -------------------------------------------------------------------
-    // # Section: HTML/Map Callback
+    // # Section: Map/UI Callbacks
     // -------------------------------------------------------------------
 
     onCreateMarker(result) {
+        this.addMarker(result);
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Tool Actions
+    // -------------------------------------------------------------------
+
+    addMarker(result) {
         const coordinates = [
             Number(result.longitude),
             Number(result.latitude)
@@ -107,7 +130,7 @@ class HiddenMarkerTool extends Control {
             `
         };
         
-        const marker = new generateMarker({
+        const marker = new generateIconMarker({
             lon: result.longitude,
             lat: result.latitude,
             title: result.title,
@@ -123,12 +146,12 @@ class HiddenMarkerTool extends Control {
         });
                 
         layerWrapper.getLayer().getSource().addFeature(marker);
-    
+
         // Note: Consumer callback
         if(this.options.onAdded instanceof Function) {
             this.options.onAdded(marker);
         }
-    }
+    } 
 }
 
 export { HiddenMarkerTool };

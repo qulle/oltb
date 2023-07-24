@@ -15,9 +15,17 @@ const CLASS_TOOL_BUTTON = 'oltb-tool-button';
 const URL_NOTIFICATION = 'https://raw.githubusercontent.com/qulle/notification-endpoints/main/endpoints/oltb.json';
 
 const DefaultOptions = Object.freeze({
-    onClick: undefined
+    onInitiated: undefined,
+    onClicked: undefined
 });
 
+/**
+ * About:
+ * Notifications from the developer
+ * 
+ * Description:
+ * Get information about new version and ongoing new tools and features.
+ */
 class NotificationTool extends Control {
     constructor(options = {}) {
         LogManager.logDebug(FILENAME, 'constructor', 'init');
@@ -53,21 +61,26 @@ class NotificationTool extends Control {
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
 
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
+
+        // Note: Consumer callback
+        if(this.options.onInitiated instanceof Function) {
+            this.options.onInitiated();
+        }
     }
 
     // -------------------------------------------------------------------
     // # Section: Tool Control
     // -------------------------------------------------------------------
 
-    onClickTool() {
+    onClickTool(event) {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
-        
-        // Note: Consumer callback
-        if(this.options.onClick instanceof Function) {
-            this.options.onClick();
-        }
 
         this.momentaryActivation();
+
+        // Note: Consumer callback
+        if(this.options.onClicked instanceof Function) {
+            this.options.onClicked();
+        }
     }
 
     momentaryActivation() {
@@ -75,7 +88,7 @@ class NotificationTool extends Control {
     }
 
     // -------------------------------------------------------------------
-    // # Section: Window/Document Events
+    // # Section: Browser Events
     // -------------------------------------------------------------------
 
     onWindowKeyUp(event) {
@@ -85,7 +98,33 @@ class NotificationTool extends Control {
     }
 
     // -------------------------------------------------------------------
-    // # Section: Tool Specific
+    // # Section: Conversions/Validation
+    // -------------------------------------------------------------------
+
+    hasLatestVersionInfo(notification) {
+        return (
+            Boolean(notification.latest) && 
+            Boolean(notification.latest.version) && 
+            Boolean(notification.latest.released)
+        );
+    }
+
+    hasFeaturesUnderDevelopment(notification) {
+        return (
+            Boolean(notification.features) && 
+            notification.features.length > 0
+        );
+    }
+
+    hasError(notification) {
+        return (
+            Boolean(notification.error) && 
+            notification.error.length > 0
+        );
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Tool Actions
     // -------------------------------------------------------------------
 
     fetchNotifications() {
@@ -163,10 +202,7 @@ class NotificationTool extends Control {
                     v${Config.toolbar.version}
                 </a>
             </p>
-            ${
-                Boolean(notification.latest) && 
-                Boolean(notification.latest.version) && 
-                Boolean(notification.latest.released)
+            ${this.hasLatestVersionInfo() 
                 ? `
                     <h3>🚀 Latest version</h3>
                     <p>
@@ -176,17 +212,13 @@ class NotificationTool extends Control {
                     </p>
                 ` : ''
             }
-            ${
-                Boolean(notification.features) && 
-                notification.features.length > 0
+            ${this.hasFeaturesUnderDevelopment()
                 ? `
                     <h3>💡 New features under development</h3>
                     ${notification.features}
                 ` : ''
             }
-            ${
-                Boolean(notification.error) && 
-                notification.error.length > 0
+            ${this.hasError()
                 ? `
                     <h3>📡 Fetch error</h3>
                     <p>${notification.error}</p>

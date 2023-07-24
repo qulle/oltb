@@ -10,14 +10,14 @@ const FILENAME = 'modals/ModalBase.js';
 const CLASS_ANIMATION = 'oltb-animation--bounce';
 
 class ModalBase {
-    constructor(title, maximized, onClose) {
+    constructor(title, maximized, onClosed) {
         LogManager.logDebug(FILENAME, 'constructor', 'init');
         
-        this.#createModal(title, maximized, onClose);
+        this.#createModal(title, maximized, onClosed);
     }
 
-    #createModal(title, maximized, onClose) {
-        this.onClose = onClose;
+    #createModal(title, maximized, onClosed) {
+        this.onClosed = onClosed;
         this.backdrop = DOM.createElement({
             element: 'div', 
             class: 'oltb-modal-backdrop oltb-modal-backdrop--fixed',
@@ -117,8 +117,8 @@ class ModalBase {
         DOM.removeElement(this.backdrop);
 
         // Note: Consumer callback
-        if(this.onClose instanceof Function) {
-            this.onClose();
+        if(this.onClosed instanceof Function) {
+            this.onClosed();
         }
     }
 }

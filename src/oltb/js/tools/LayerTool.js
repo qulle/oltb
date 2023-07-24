@@ -49,7 +49,9 @@ const DefaultOptions = Object.freeze({
     disableFeatureLayerEditButton: false,
     disableFeatureLayerDeleteButton: false,
     disableFeatureLayerDownloadButton: false,
-    onClick: undefined,
+    onClicked: undefined,
+    onInitiated: undefined,
+    onBrowserStateCleared: undefined,
     onMapLayerAdded: undefined,
     onMapLayerRemoved: undefined,
     onMapLayerRenamed: undefined,
@@ -69,13 +71,21 @@ const DefaultOptions = Object.freeze({
 */
 const LocalStorageNodeName = LocalStorageKeys.layerTool;
 const LocalStorageDefaults = Object.freeze({
-    active: false,
+    isActive: false,
     mapLayers: [],
     featureLayers: [],
     'oltb-layer-map-toolbox-collapsed': false,
     'oltb-layer-feature-toolbox-collapsed': false,
 });
 
+/**
+ * About:
+ * Manage Map- and Feature layers
+ * 
+ * Description:
+ * Create and manage layers for both Map and Markers. 
+ * Sorting can be done by simple drag and drop.
+ */
 class LayerTool extends Control {
     constructor(options = {}) {
         LogManager.logDebug(FILENAME, 'constructor', 'init');
@@ -84,14 +94,14 @@ class LayerTool extends Control {
             element: ElementManager.getToolbarElement()
         });
         
-        const icon = getIcon({
+        this.icon = getIcon({
             path: SvgPaths.layers.stroked,
             class: `${CLASS_TOOL_BUTTON}__icon`
         });
 
         const button = DOM.createElement({
             element: 'button',
-            html: icon,
+            html: this.icon,
             class: CLASS_TOOL_BUTTON,
             attributes: {
                 'type': 'button',
@@ -107,7 +117,7 @@ class LayerTool extends Control {
         ]);
 
         this.button = button;
-        this.active = false;
+        this.isActive = false;
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
 
         this.localStorage = StateManager.getAndMergeStateObject(
@@ -122,10 +132,11 @@ class LayerTool extends Control {
         this.uiRefMapLayerStack = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-map-stack`);
         this.uiRefAddMapLayerButton = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-map-stack-add-button`);
 
-        this.sortableMapLayerStack = this.createSortable(this.uiRefMapLayerStack, {
+        this.sortableMapLayerStack = this.generateSortable(this.uiRefMapLayerStack, {
             group: SORTABLE_MAP_LAYERS,
             callback: this.options.onMapLayerDragged,
             setZIndex: LayerManager.setMapLayerZIndex.bind(LayerManager),
+            getLocalStorageItemById: this.getLocalStorageMapLayerById.bind(this),
             stack: this.localStorage.mapLayers
         });
 
@@ -133,10 +144,11 @@ class LayerTool extends Control {
         this.uiRefAddFeatureLayerButton = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-feature-stack-add-button`);
         this.uiRefAddFeatureLayerText = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-feature-stack-add-text`);
 
-        this.sortableFeatureLayerStack = this.createSortable(this.uiRefFeatureLayerStack, {
+        this.sortableFeatureLayerStack = this.generateSortable(this.uiRefFeatureLayerStack, {
             group: SORTABLE_FEATURE_LAYERS,
             callback: this.options.onFeatureLayerDragged,
             setZIndex: LayerManager.setFeatureLayerZIndex.bind(LayerManager),
+            getLocalStorageItemById: this.getLocalStorageFeatureLayerById.bind(this),
             stack: this.localStorage.featureLayers
         });
 
@@ -152,20 +164,20 @@ class LayerTool extends Control {
             this.uiRefAddFeatureLayerText.addEventListener(Events.browser.keyUp, this.onAddFeatureLayerByKey.bind(this));
         }
 
-        if(!this.options.disableMapCreateLayerButton) {
-            ContextMenu.addItem({
-                icon: icon, 
-                name: 'Add map layer', 
-                fn: this.onContextMenuAddMapLayerModal.bind(this)
-            });
-        }
+        this.initContextMenuItems();
 
+        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(Events.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
         window.addEventListener(Events.custom.mapLayerAdded, this.onWindowMapLayerAdded.bind(this));
         window.addEventListener(Events.custom.mapLayerRemoved, this.onWindowMapLayerRemoved.bind(this));
         window.addEventListener(Events.custom.featureLayerAdded, this.onWindowFeatureLayerAdded.bind(this));
         window.addEventListener(Events.custom.featureLayerRemoved, this.onWindowFeatureLayerRemoved.bind(this));
-        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
-        window.addEventListener(Events.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
+        window.addEventListener(Events.custom.browserStateCleared, this.onWindowBrowserStateCleared.bind(this));
+
+        // Note: Consumer callback
+        if(this.options.onInitiated instanceof Function) {
+            this.options.onInitiated();
+        }
     }
 
     // -------------------------------------------------------------------
@@ -235,40 +247,62 @@ class LayerTool extends Control {
         });
     }
 
+    initContextMenuItems() {
+        if(!this.options.disableMapCreateLayerButton || !this.options.disableFeatureCreateLayerButton) {
+            ContextMenu.addItem({});
+        }
+
+        if(!this.options.disableMapCreateLayerButton) {
+            ContextMenu.addItem({
+                icon: this.icon, 
+                name: 'Add Map Layer', 
+                fn: this.onContextMenuAddMapLayerModal.bind(this)
+            });
+        }
+
+        if(!this.options.disableFeatureCreateLayerButton) {
+            ContextMenu.addItem({
+                icon: this.icon, 
+                name: 'Add Feature Layer', 
+                fn: this.onContextMenuAddFeatureLayerModal.bind(this)
+            });
+        }
+    }
+
     // -------------------------------------------------------------------
     // # Section: Tool Control
     // -------------------------------------------------------------------
 
-    onClickTool() {
+    onClickTool(event) {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
         
-        // Note: Consumer callback
-        if(this.options.click instanceof Function) {
-            this.options.click();
-        }
-        
-        if(this.active) {
+        if(this.isActive) {
             this.deActivateTool();
         }else {
             this.activateTool();
         }
+
+        // Note: Consumer callback
+        if(this.options.onClicked instanceof Function) {
+            this.options.onClicked();
+        }
     }
 
     activateTool() {
-        this.active = true;
+        this.isActive = true;
         this.uiRefToolboxSection.classList.add(`${CLASS_TOOLBOX_SECTION}--show`);
         this.button.classList.add(`${CLASS_TOOL_BUTTON}--active`);
 
-        this.localStorage.active = true;
+        this.localStorage.isActive = true;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 
     deActivateTool() {
-        this.active = false;
+        this.isActive = false;
         this.uiRefToolboxSection.classList.remove(`${CLASS_TOOLBOX_SECTION}--show`);
         this.button.classList.remove(`${CLASS_TOOL_BUTTON}--active`);
 
-        this.localStorage.active = false;
+        this.localStorage.isActive = false;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 
@@ -283,11 +317,25 @@ class LayerTool extends Control {
     }
 
     // -------------------------------------------------------------------
-    // # Section: Window/Document Events
+    // # Section: Browser Events
     // -------------------------------------------------------------------
 
+    onWindowBrowserStateCleared() {
+        this.localStorage = _.cloneDeep(LocalStorageDefaults);
+        StateManager.setStateObject(LocalStorageNodeName, LocalStorageDefaults);
+
+        if(this.isActive) {
+            this.deActivateTool();
+        }
+
+        // Note: Consumer callback
+        if(this.options.onBrowserStateCleared instanceof Function) {
+            this.options.onBrowserStateCleared();
+        }
+    }
+
     onDOMContentLoaded() {
-        if(this.localStorage.active) {
+        if(this.localStorage.isActive) {
             this.activateTool();
         }
     }
@@ -299,7 +347,7 @@ class LayerTool extends Control {
     }
 
     onWindowMapLayerAdded(event) {
-        const silent = event.detail.silent;
+        const isSilent = event.detail.isSilent;
         const layerWrapper = event.detail.layerWrapper;
 
         const disableVisibilityButton = (
@@ -336,7 +384,7 @@ class LayerTool extends Control {
         });
 
         // Note: Consumer callback
-        if(!silent && this.options.onMapLayerAdded instanceof Function) {
+        if(!isSilent && this.options.onMapLayerAdded instanceof Function) {
             this.options.onMapLayerAdded(layerWrapper);
         }
     }
@@ -344,7 +392,7 @@ class LayerTool extends Control {
     onWindowMapLayerRemoved(event) {
         InfoWindowManager.hideOverlay();
 
-        const silent = event.detail.silent;
+        const isSilent = event.detail.isSilent;
         const layerWrapper = event.detail.layerWrapper;
         const layerId = layerWrapper.getId();
 
@@ -355,13 +403,13 @@ class LayerTool extends Control {
         }
 
         // Note: Consumer callback
-        if(!silent &&this.options.onMapLayerRemoved instanceof Function) {
+        if(!isSilent &&this.options.onMapLayerRemoved instanceof Function) {
             this.options.onMapLayerRemoved(layerWrapper);
         }
     }
 
     onWindowFeatureLayerAdded(event) {
-        const silent = event.detail.silent;
+        const isSilent = event.detail.isSilent;
         const layerWrapper = event.detail.layerWrapper;
 
         const disableVisibilityButton = (
@@ -408,7 +456,7 @@ class LayerTool extends Control {
         });
 
         // Note: Consumer callback
-        if(!silent && this.options.onFeatureLayerAdded instanceof Function) {
+        if(!isSilent && this.options.onFeatureLayerAdded instanceof Function) {
             this.options.onFeatureLayerAdded(layerWrapper);
         }
     }
@@ -416,7 +464,7 @@ class LayerTool extends Control {
     onWindowFeatureLayerRemoved(event) {
         InfoWindowManager.hideOverlay();
 
-        const silent = event.detail.silent;
+        const isSilent = event.detail.isSilent;
         const layerWrapper = event.detail.layerWrapper;
 
         // Remove layer from UI
@@ -437,13 +485,13 @@ class LayerTool extends Control {
         }
 
         // Note: Consumer callback
-        if(!silent && this.options.onFeatureLayerRemoved instanceof Function) {
+        if(!isSilent && this.options.onFeatureLayerRemoved instanceof Function) {
             this.options.onFeatureLayerRemoved(layerWrapper);
         }
     }
 
     // -------------------------------------------------------------------
-    // # Section: Local Storage
+    // # Section: LocalStorage Helpers
     // -------------------------------------------------------------------
 
     getLocalStorageFeatureLayerById(id) {
@@ -483,18 +531,25 @@ class LayerTool extends Control {
     }
 
     // -------------------------------------------------------------------
-    // # Section: Context Menu Methods
+    // # Section: ContextMenu Callbacks
     // -------------------------------------------------------------------
 
     onContextMenuAddMapLayerModal() {
         this.showAddMapLayerModal();
     }
 
+    onContextMenuAddFeatureLayerModal() {
+        this.addFeatureLayer({
+            name: '',
+            isDynamicallyAdded: true
+        });
+    }
+
     // -------------------------------------------------------------------
     // # Section: Sortable
     // -------------------------------------------------------------------
 
-    createSortable(element, options) {
+    generateSortable(element, options) {
         return Sortable.create(element, {
             group: options.group,
             dataIdAttr: 'data-oltb-sort-index',
@@ -504,54 +559,53 @@ class LayerTool extends Control {
             chosenClass: `${CLASS_TOOLBOX_LIST}__item--chosen`,
             dragClass: `${CLASS_TOOLBOX_LIST}__item--drag`,
             ghostClass: `${CLASS_TOOLBOX_LIST}__item--ghost`,
-            onEnd: (event) => {
-                // Callback data
-                // Note: The old/new are swapped due to the list beeing reversed in DESC order
-                const list = [];
-                const currentItem = {
-                    id: event.item.getAttribute('data-oltb-id'),
-                    oldIndex: event.newDraggableIndex,
-                    newIndex: event.oldDraggableIndex
-                };
-
-                const ul = event.to;
-                ul.childNodes.forEach((li, index) => {
-                    // Note: Reverse the index so that 0 is at bottom of list not top
-                    const reversedIndex = ul.childNodes.length - index - INDEX_OFFSET;
-
-                    // Update data-attribute, this is used by Sortable.js to do the sorting
-                    li.setAttribute('data-oltb-sort-index', reversedIndex);
-
-                    // Update state that is stored in localStorage
-                    // This will keep track of the sort after a reload
-                    const id = li.getAttribute('data-oltb-id');
-                    const item = options.stack.find((item) => {
-                        return item.id === id;
-                    });
-
-                    // Note: Use brackes, not certain that property is known all times
-                    if(item) {
-                        item['sortIndex'] = reversedIndex;
-                    }
-
-                    // Update each layer with the new ZIndex
-                    options.setZIndex(id, reversedIndex);
-
-                    // Update callback data
-                    list.push({
-                        id: id,
-                        index: reversedIndex
-                    });
-                });
-
-                StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
-
-                // Note: Consumer callback
-                if(options.callback instanceof Function) {
-                    options.callback(currentItem, list);
-                }
-            }
+            onEnd: (event) => this.onEndSortable(event, options)
         });
+    }
+
+    onEndSortable(event, options) {
+        // Callback data
+        // Note: The old/new are swapped due to the list beeing reversed in DESC order
+        const list = [];
+        const currentItem = {
+            id: event.item.getAttribute('data-oltb-id'),
+            oldIndex: event.newDraggableIndex,
+            newIndex: event.oldDraggableIndex
+        };
+
+        const ul = event.to;
+        ul.childNodes.forEach((li, index) => {
+            // Note: Reverse the index so that 0 is at bottom of list not top
+            const reversedIndex = ul.childNodes.length - index - INDEX_OFFSET;
+
+            // Update data-attribute, this is used by Sortable.js to do the sorting
+            li.setAttribute('data-oltb-sort-index', reversedIndex);
+
+            // Update state that is stored in localStorage
+            // This will keep track of the sort after a reload
+            const id = li.getAttribute('data-oltb-id');
+            const target = options.getLocalStorageItemById(id);
+
+            if(target) {
+                target.sortIndex = reversedIndex;
+            }
+
+            // Update each layer with the new ZIndex
+            options.setZIndex(id, reversedIndex);
+
+            // Update callback data
+            list.push({
+                id: id,
+                index: reversedIndex
+            });
+        });
+
+        StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
+
+        // Note: Consumer callback
+        if(options.callback instanceof Function) {
+            options.callback(currentItem, list);
+        }
     }
 
     sortSortableDesc(sortable, animate = false) {
@@ -579,29 +633,12 @@ class LayerTool extends Control {
         return event.type === Events.browser.keyUp && event.key === Keys.valueEnter;
     }
 
-    // -------------------------------------------------------------------
-    // # Section: HTML/Map Callback
-    // -------------------------------------------------------------------
+    hasProjection(projection) {
+        const hasProjection = ProjectionManager.hasProjection(projection);
 
-    onAddFeatureLayerByKey(event) {
-        if(!this.isValidEnter(event)) {
-            return;
-        }
-
-        this.onAddFeatureLayerByClick();
-    }
-
-    onAddFeatureLayerByClick(event) {
-        LayerManager.addFeatureLayer({
-            name: this.uiRefAddFeatureLayerText.value
-        });
-        this.uiRefAddFeatureLayerText.value = '';
-    }
-
-    onCreateMapLayer(result) {
-        if(!ProjectionManager.hasProjection(result.projection)) {
+        if(!hasProjection) {
             const errorMessage = `Must add projection definition for <strong>${result.projection}</strong>`;
-            LogManager.logError(FILENAME, 'onCreateMapLayer', errorMessage);
+            LogManager.logError(FILENAME, 'hasProjection', errorMessage);
 
             Toast.error({
                 title: 'Error',
@@ -610,27 +647,40 @@ class LayerTool extends Control {
                     <a href="https://epsg.io" target="_blank" class="oltb-link">https://epsg.io</a>
                 `
             });
+        }
 
+        return hasProjection;
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Map/UI Callbacks
+    // -------------------------------------------------------------------
+
+    onAddFeatureLayerByKey(event) {
+        if(!this.isValidEnter(event)) {
+            return;
+        }
+
+        this.onAddFeatureLayerByClick(event);
+    }
+
+    onAddFeatureLayerByClick(event) {
+        const name = this.uiRefAddFeatureLayerText.value;
+        this.uiRefAddFeatureLayerText.value = '';
+
+        this.addFeatureLayer({
+            name: name,
+            isDynamicallyAdded: true
+        });
+    }
+
+    onCreateMapLayer(result) {
+        if(!this.hasProjection(result.projection)) {
             return;
         }
 
         try {
-            LayerManager.addMapLayer({
-                name: result.name,
-                layer: instantiateLayer(result.layer, {
-                    projection: result.projection || Config.projection.default,
-                    source: instantiateSource(result.source, {
-                        url: result.url,
-                        params: JSON.parse(result.parameters),
-                        wrapX: result.wrapX,
-                        attributions: result.attributions,
-                        ...(result.crossOrigin !== 'undefined' && {
-                            crossOrigin: result.crossOrigin
-                        }),
-                        format: instantiateFormat(result.source)
-                    })
-                })
-            });
+            this.addMapLayer(result);
         }catch(error) {
             const errorMessage = 'Failed to generate new layer';
             LogManager.logError(FILENAME, 'onCreateMapLayer', {
@@ -650,7 +700,7 @@ class LayerTool extends Control {
     // -------------------------------------------------------------------
 
     createUILayerNameTippy(layerName) {
-        tippy(layerName, {
+        return tippy(layerName, {
             content(reference) {
                 const title = reference.getAttribute('title');
                 reference.removeAttribute('title');
@@ -986,7 +1036,7 @@ class LayerTool extends Control {
     }
 
     // -------------------------------------------------------------------
-    // # Section: HTML/Map Callback
+    // # Section: Map/UI Callbacks
     // -------------------------------------------------------------------
 
     onDownloadLayer(layerWrapper, result) {
@@ -1025,8 +1075,37 @@ class LayerTool extends Control {
     }
     
     // -------------------------------------------------------------------
-    // # Section: Tool Specific
+    // # Section: Tool Actions
     // -------------------------------------------------------------------
+
+    addMapLayer(options) {
+        LayerManager.addMapLayer({
+            name: options.name,
+            sortIndex: 0,
+            isDynamicallyAdded: options.isDynamicallyAdded,
+            layer: instantiateLayer(options.layer, {
+                projection: options.projection || Config.projection.default,
+                source: instantiateSource(options.source, {
+                    url: options.url,
+                    params: JSON.parse(options.parameters),
+                    wrapX: options.wrapX,
+                    attributions: options.attributions,
+                    ...(options.crossOrigin !== 'undefined' && {
+                        crossOrigin: options.crossOrigin
+                    }),
+                    format: instantiateFormat(options.source)
+                })
+            })
+        });
+    }
+
+    addFeatureLayer(options) {
+        LayerManager.addFeatureLayer({
+            name: options.name,
+            sortIndex: 0,
+            isDynamicallyAdded: options.isDynamicallyAdded
+        });
+    }
 
     showAddMapLayerModal() {
         new LayerModal({

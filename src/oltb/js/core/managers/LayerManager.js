@@ -15,8 +15,8 @@ const ZINDEX_BASE_FEATURE_LAYER = 1e6;
 
 const DefaultFeatureLayerOptions = Object.freeze({
     name: '',
-    visible: true,
-    silent: false,
+    isVisible: true,
+    isSilent: false,
     disableFeatureLayerVisibilityButton: false,
     disableFeatureLayerEditButton: false,
     disableFeatureLayerDownloadButton: false,
@@ -24,8 +24,8 @@ const DefaultFeatureLayerOptions = Object.freeze({
 });
 
 const DefaultMapLayerOptions = Object.freeze({
-    visible: true,
-    silent: false,
+    isVisible: true,
+    isSilent: false,
     disableMapLayerVisibilityButton: false,
     disableMapLayerEditButton: false,
     disableMapLayerDeleteButton: false
@@ -127,6 +127,10 @@ class LayerManager {
         const mergedOptions = _.merge(_.cloneDeep(DefaultMapLayerOptions), options);
         this.#addPropertiesInterface(layerWrapper);
 
+        if(!layerWrapper.isDynamicallyAdded) {
+            layerWrapper.isDynamicallyAdded = false;
+        }
+
         if(!layerWrapper.getId()) {
             const layerId = uuidv4();
             layerWrapper.setId(layerId);
@@ -149,7 +153,7 @@ class LayerManager {
         window.dispatchEvent(new CustomEvent(Events.custom.mapLayerAdded, {
             detail: {
                 layerWrapper: layerWrapper, 
-                silent: options.silent,
+                isSilent: options.isSilent,
                 disableMapLayerVisibilityButton: options.disableMapLayerVisibilityButton,
                 disableMapLayerEditButton: options.disableMapLayerEditButton,
                 disableMapLayerDeleteButton: options.disableMapLayerDeleteButton
@@ -157,7 +161,7 @@ class LayerManager {
         }));
     }
 
-    static removeMapLayer(layerWrapper, silent = false) {
+    static removeMapLayer(layerWrapper, isSilent = false) {
         LogManager.logDebug(FILENAME, 'removeMapLayer', layerWrapper.getName());
 
         // Remove the layer from the internal collection
@@ -171,7 +175,7 @@ class LayerManager {
         window.dispatchEvent(new CustomEvent(Events.custom.mapLayerRemoved, {
             detail: {
                 layerWrapper: layerWrapper, 
-                silent: silent
+                isSilent: isSilent
             }
         }));
     }
@@ -228,16 +232,18 @@ class LayerManager {
     //-------------------------------------------
 
     static addFeatureLayer(options = {}) {
-        const mergedOptions = _.merge(_.cloneDeep(DefaultMapLayerOptions), options);
+        const mergedOptions = _.merge(_.cloneDeep(DefaultFeatureLayerOptions), options);
         mergedOptions.name = this.#validateName(mergedOptions.name);
         LogManager.logDebug(FILENAME, 'addFeatureLayer', mergedOptions.name);
 
         const layerWrapper = {
             id: mergedOptions.id,
             name: mergedOptions.name,
+            sortIndex: options.sortIndex,
+            isDynamicallyAdded: options.isDynamicallyAdded,
             layer: new VectorLayer({
                 source: new VectorSource(),
-                visible: mergedOptions.visible
+                visible: mergedOptions.isVisible
             })
         };
 
@@ -269,7 +275,7 @@ class LayerManager {
         window.dispatchEvent(new CustomEvent(Events.custom.featureLayerAdded, {
             detail: {
                 layerWrapper: layerWrapper, 
-                silent: options.silent,
+                isSilent: options.isSilent,
                 disableFeatureLayerVisibilityButton: options.disableFeatureLayerVisibilityButton,
                 disableFeatureLayerEditButton: options.disableFeatureLayerEditButton,
                 disableFeatureLayerDownloadButton: options.disableFeatureLayerDownloadButton,
@@ -285,7 +291,7 @@ class LayerManager {
         );
     }
 
-    static removeFeatureLayer(layerWrapper, silent = false) {
+    static removeFeatureLayer(layerWrapper, isSilent = false) {
         LogManager.logDebug(FILENAME, 'removeFeatureLayer', layerWrapper.getName());
 
         // Remove the layer from the internal collection
@@ -311,7 +317,7 @@ class LayerManager {
         window.dispatchEvent(new CustomEvent(Events.custom.featureLayerRemoved, {
             detail: {
                 layerWrapper: layerWrapper, 
-                silent: silent
+                isSilent: isSilent
             }
         }));
     }
@@ -319,7 +325,8 @@ class LayerManager {
     static getActiveFeatureLayer(options = {}) {
         if(!this.#activeFeatureLayer) {
             this.addFeatureLayer({
-                name: options.fallback
+                name: options.fallback,
+                isDynamicallyAdded: true
             });
         }
 

@@ -8,7 +8,7 @@ const DefaultOptions = Object.freeze({
     checked: false
 });
 
-const generateCheckbox = function(options = {}) {
+const createUICheckbox = function(options = {}) {
     options = _.merge(_.cloneDeep(DefaultOptions), options);
 
     const wrapper = DOM.createElement({
@@ -46,4 +46,4 @@ const generateCheckbox = function(options = {}) {
     return [wrapper, checkbox];
 }
 
-export { generateCheckbox };
+export { createUICheckbox };

@@ -19,10 +19,18 @@ const FILENAME = 'tools/ResetNorthTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
 
 const DefaultOptions = Object.freeze({
-    onClick: undefined,
+    onInitiated: undefined,
+    onClicked: undefined,
     onReset: undefined
 });
 
+/**
+ * About:
+ * Reset the Map rotation to 0 degrees
+ * 
+ * Description:
+ * The Map can be rotated using keyboard shortcuts and the mouse or using a specific number of degrees.
+ */
 class ResetNorthTool extends Control {
     constructor(options = {}) {
         LogManager.logDebug(FILENAME, 'constructor', 'init');
@@ -31,14 +39,14 @@ class ResetNorthTool extends Control {
             element: ElementManager.getToolbarElement()
         });
         
-        const icon = getIcon({
+        this.icon = getIcon({
             path: SvgPaths.compass.stroked,
             class: `${CLASS_TOOL_BUTTON}__icon`
         });
 
         const button = DOM.createElement({
             element: 'button',
-            html: icon,
+            html: this.icon,
             class: CLASS_TOOL_BUTTON,
             attributes: {
                 'type': 'button',
@@ -56,28 +64,41 @@ class ResetNorthTool extends Control {
         this.button = button;
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
 
-        ContextMenu.addItem({
-            icon: icon, 
-            name: 'Rotate map', 
-            fn: this.onContextMenuSetRotation.bind(this)
-        });
+        this.initContextMenuItems();
 
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
+
+        // Note: Consumer callback
+        if(this.options.onInitiated instanceof Function) {
+            this.options.onInitiated();
+        }
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Init Helpers
+    // -------------------------------------------------------------------
+
+    initContextMenuItems() {
+        ContextMenu.addItem({
+            icon: this.icon, 
+            name: 'Rotate Map', 
+            fn: this.onContextMenuSetRotation.bind(this)
+        });
     }
 
     // -------------------------------------------------------------------
     // # Section: Tool Control
     // -------------------------------------------------------------------
 
-    onClickTool() {
+    onClickTool(event) {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
-
-        // Note: Consumer callback
-        if(this.options.onClick instanceof Function) {
-            this.options.onClick();
-        }
         
         this.momentaryActivation();
+
+        // Note: Consumer callback
+        if(this.options.onClicked instanceof Function) {
+            this.options.onClicked();
+        }
     }
 
     momentaryActivation() {
@@ -101,7 +122,7 @@ class ResetNorthTool extends Control {
     }
 
     // -------------------------------------------------------------------
-    // # Section: Window/Document Events
+    // # Section: Browser Events
     // -------------------------------------------------------------------
 
     onWindowKeyUp(event) {
@@ -111,10 +132,18 @@ class ResetNorthTool extends Control {
     }
 
     // -------------------------------------------------------------------
-    // # Section: Context Menu Methods
+    // # Section: ContextMenu Callbacks
     // -------------------------------------------------------------------
 
     onContextMenuSetRotation(map, coordinates, target) {
+        this.setRotation(map);
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Tool Actions
+    // -------------------------------------------------------------------
+
+    setRotation(map) {
         const view = map.getView();
 
         const zoom = view.getZoom();

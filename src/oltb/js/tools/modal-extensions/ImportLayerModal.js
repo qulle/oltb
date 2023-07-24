@@ -4,7 +4,7 @@ import { Config } from '../../core/Config';
 import { ModalBase } from '../../common/modals/ModalBase';
 import { LogManager } from '../../core/managers/LogManager';
 import { isDarkTheme } from '../../helpers/IsDarkTheme';
-import { generateSelect } from '../../generators/GenerateSelect';
+import { createUISelect } from '../../creators/CreateUISelect';
 import { ProjectionManager } from '../../core/managers/ProjectionManager';
 
 const FILENAME = 'modal-extensions/ImportLayerModal.js';
@@ -48,7 +48,7 @@ class ImportLayerModal extends ModalBase {
             });
         });
 
-        const [ featureProjectionWrapper, featureProjectionSelect ] = generateSelect({
+        const [ featureProjectionWrapper, featureProjectionSelect ] = createUISelect({
             idPrefix: ID_PREFIX,
             idPostfix: '-feature-projection',
             text: 'Feature projection',
@@ -56,7 +56,7 @@ class ImportLayerModal extends ModalBase {
             value: Config.projection.default
         });
 
-        const [ dataProjectionWrapper, dataProjectionSelect ] = generateSelect({
+        const [ dataProjectionWrapper, dataProjectionSelect ] = createUISelect({
             idPrefix: ID_PREFIX,
             idPostfix: '-data-projection',
             text: 'Data projection',

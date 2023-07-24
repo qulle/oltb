@@ -16,9 +16,18 @@ const CLASS_TOOL_BUTTON = 'oltb-tool-button';
 
 const DefaultOptions = Object.freeze({
     onlyWhenGetParameter: false,
-    onClick: undefined
+    onInitiated: undefined,
+    onClicked: undefined
 });
 
+/**
+ * About:
+ * Show debug information and event log
+ * 
+ * Description: 
+ * Errors happen and when they do this tool is a good place to start. 
+ * Check browser version, status in localStorage and a complete log of what happened in different parts of the Map.
+ */
 class DebugInfoTool extends Control {
     constructor(options = {}) {
         LogManager.logDebug(FILENAME, 'constructor', 'init');
@@ -56,6 +65,11 @@ class DebugInfoTool extends Control {
         this.initDebugState();
 
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
+
+        // Note: Consumer callback
+        if(this.options.onInitiated instanceof Function) {
+            this.options.onInitiated();
+        }
     }
 
     // -------------------------------------------------------------------
@@ -64,7 +78,7 @@ class DebugInfoTool extends Control {
 
     initDebugState() {
         const isDebug = UrlManager.getParameter(Config.urlParameters.debug) === 'true';
-        if(!isDebug && Boolean(this.options.onlyWhenGetParameter)) {
+        if(!isDebug && this.options.onlyWhenGetParameter) {
             this.button.classList.add(`${CLASS_TOOL_BUTTON}--hidden`);
         }
     }
@@ -73,15 +87,15 @@ class DebugInfoTool extends Control {
     // # Section: Tool Control
     // -------------------------------------------------------------------
 
-    onClickTool() {
+    onClickTool(event) {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
-        
-        // Note: Consumer callback
-        if(this.options.onClick instanceof Function) {
-            this.options.onClick();
-        }
 
         this.momentaryActivation();
+
+        // Note: Consumer callback
+        if(this.options.onClicked instanceof Function) {
+            this.options.onClicked();
+        }
     }
 
     momentaryActivation() {
@@ -89,6 +103,24 @@ class DebugInfoTool extends Control {
             return;
         }
 
+        this.showDebugInfoModal();
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Browser Events
+    // -------------------------------------------------------------------
+
+    onWindowKeyUp(event) {
+        if(isShortcutKeyOnly(event, ShortcutKeys.debugInfoTool)) {
+            this.onHandleClick(event);
+        }
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Tool Actions
+    // -------------------------------------------------------------------
+
+    showDebugInfoModal() {
         const map = this.getMap();
         if(!map) {
             return;
@@ -100,16 +132,6 @@ class DebugInfoTool extends Control {
                 this.debugInfoModal = undefined;
             }
         });
-    }
-
-    // -------------------------------------------------------------------
-    // # Section: Window/Document Events
-    // -------------------------------------------------------------------
-
-    onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, ShortcutKeys.debugInfoTool)) {
-            this.onHandleClick(event);
-        }
     }
 }
 

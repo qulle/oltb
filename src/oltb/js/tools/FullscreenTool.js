@@ -15,7 +15,6 @@ import {
     isFullScreenSupported,
     isFullScreen,
     requestFullScreen,
-    requestFullScreenWithKeys,
     exitFullScreen
 } from '../helpers/browser/Fullscreen';
 
@@ -23,11 +22,19 @@ const FILENAME = 'tools/FullscreenTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
 
 const DefaultOptions = Object.freeze({
-    onClick: undefined,
+    onInitiated: undefined,
+    onClicked: undefined,
     onEnter: undefined,
     onLeave: undefined
 });
 
+/**
+ * About:
+ * Use your entire screen and view the Map in full screen
+ * 
+ * Description:
+ * The Map element is rendered in full screen and any other panels in an external application are not included in what is shown on the screen.
+ */
 class FullscreenTool extends Control {
     constructor(options = {}) {
         LogManager.logDebug(FILENAME, 'constructor', 'init');
@@ -69,61 +76,47 @@ class FullscreenTool extends Control {
         ]);
         
         this.button = button;
-        this.active = false;
+        this.isActive = false;
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
 
-        document.addEventListener(Events.browser.fullScreenChange, this.onFullScreenChange.bind(this));
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
+        document.addEventListener(Events.browser.fullScreenChange, this.onFullScreenChange.bind(this));
+
+        // Note: Consumer callback
+        if(this.options.onInitiated instanceof Function) {
+            this.options.onInitiated();
+        }
     }
 
     // -------------------------------------------------------------------
     // # Section: Tool Control
     // -------------------------------------------------------------------
 
-    onClickTool() {
+    onClickTool(event) {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
 
-        // Note: Consumer callback
-        if(this.options.onClick instanceof Function) {
-            this.options.onClick();
-        }
-
         this.momentaryActivation();
+
+        // Note: Consumer callback
+        if(this.options.onClicked instanceof Function) {
+            this.options.onClicked();
+        }
     }
 
     momentaryActivation() {
-        if(!isFullScreenSupported()) {
-            const errorMessage = 'Fullscreen is not supported by this browser';
-            LogManager.logError(FILENAME, 'momentaryActivation', errorMessage);
-
-            Toast.error({
-                title: 'Error',
-                message: errorMessage
-            });
-            
+        if(!this.isFullScreenSupportedByBrowser()) {
             return;
         }
         
         if(isFullScreen()) {
             exitFullScreen();
         }else {
-            const map = this.getMap();
-            if(!map) {
-                return;
-            }
-
-            const element = map.getTargetElement();
-
-            if(this.keys) {
-                requestFullScreenWithKeys(element);
-            }else {
-                requestFullScreen(element);
-            }
+            this.enterFullScreen();
         }
     }
 
     // -------------------------------------------------------------------
-    // # Section: Window/Document Events
+    // # Section: Browser Events
     // -------------------------------------------------------------------
 
     onWindowKeyUp(event) {
@@ -133,6 +126,44 @@ class FullscreenTool extends Control {
     }
 
     onFullScreenChange(event) {
+        this.fullScreenChange();
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Conversions/Validation
+    // -------------------------------------------------------------------
+
+    isFullScreenSupportedByBrowser() {
+        const isSupported = isFullScreenSupported();
+
+        if(!isSupported) {
+            const errorMessage = 'Fullscreen is not supported by this browser';
+            LogManager.logError(FILENAME, 'momentaryActivation', errorMessage);
+
+            Toast.error({
+                title: 'Error',
+                message: errorMessage
+            });
+        }
+
+        return isSupported;
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Tool Actions
+    // -------------------------------------------------------------------
+
+    enterFullScreen() {
+        const map = this.getMap();
+        if(!map) {
+            return;
+        }
+
+        const element = map.getTargetElement();
+        requestFullScreen(element);
+    }
+
+    fullScreenChange() {
         if(document.fullscreenElement) {
             this.button.getTippy().setContent(`Exit fullscreen (${ShortcutKeys.fullscreenTool})`);
 
@@ -149,10 +180,6 @@ class FullscreenTool extends Control {
             }
         }
     }
-
-    // -------------------------------------------------------------------
-    // # Section: Tool Specific
-    // -------------------------------------------------------------------
 
     getToolTippyContent() {
         return isFullScreen() 
@@ -184,7 +211,7 @@ class FullscreenTool extends Control {
 
         map.updateSize();
 
-        this.active = !this.active;
+        this.isActive = !this.isActive;
         this.button.classList.toggle(`${CLASS_TOOL_BUTTON}--active`);
     }
 

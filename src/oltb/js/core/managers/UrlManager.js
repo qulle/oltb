@@ -24,11 +24,11 @@ class UrlManager {
         return urlParameters;
     }
 
-    static getParameter(name, lowerCase = true) {
+    static getParameter(name, isLowerCase = true) {
         const parameters = this.getParameters();
         const parameter = parameters.get(name) || '';
 
-        if(lowerCase) {
+        if(isLowerCase) {
             return parameter.toLowerCase();
         }
 

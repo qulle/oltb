@@ -4,7 +4,7 @@ import { ModalBase } from '../../common/modals/ModalBase';
 import { LogManager } from '../../core/managers/LogManager';
 import { isDarkTheme } from '../../helpers/IsDarkTheme';
 import { SettingsManager } from '../../core/managers/SettingsManager';
-import { generateCheckbox } from '../../generators/GenerateCheckbox';
+import { createUICheckbox } from '../../creators/CreateUICheckbox';
 
 const FILENAME = 'modal-extensions/SettingsModal.js';
 
@@ -36,7 +36,7 @@ class SettingsModal extends ModalBase {
         const settings = SettingsManager.getSettings();
         
         settings.forEach((settingObj, key) => {
-            const [ checkboxWrapper, checkbox ] = generateCheckbox({
+            const [ checkboxWrapper, checkbox ] = createUICheckbox({
                 idPrefix: key,
                 text: settingObj.text,
                 checked: settingObj.state

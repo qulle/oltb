@@ -16,7 +16,9 @@ const FILENAME = 'tools/DirectionTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
 
 const DefaultOptions = Object.freeze({
-    onClick: undefined,
+    onInitiated: undefined,
+    onClicked: undefined,
+    onBrowserStateCleared: undefined,
     onChanged: undefined
 });
 
@@ -45,6 +47,13 @@ const LocalStorageDefaults = Object.freeze({
     direction: DirectionData.col.class
 });
 
+/**
+ * About:
+ * Change direction of the Toolbar
+ * 
+ * Description:
+ * The Toolbar is vertical by default, via this tool the Toolbar can be made horizontal.
+ */
 class DirectionTool extends Control {
     constructor(options = {}) {
         LogManager.logDebug(FILENAME, 'constructor', 'init');
@@ -76,7 +85,7 @@ class DirectionTool extends Control {
         ]);
         
         this.button = button;
-        this.active = false;
+        this.isActive = false;
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
         
         this.localStorage = StateManager.getAndMergeStateObject(
@@ -84,26 +93,31 @@ class DirectionTool extends Control {
             LocalStorageDefaults
         );
 
-        this.hideToolButton();
+        this.shouldToolButtonBeHidden();
 
-        window.addEventListener(Events.browser.resize, this.onWindowSizeCheck.bind(this));
-        window.addEventListener(Events.custom.settingsCleared, this.onWindowSettingsCleared.bind(this));
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(Events.browser.resize, this.onWindowSizeCheck.bind(this));
+        window.addEventListener(Events.custom.browserStateCleared, this.onWindowBrowserStateCleared.bind(this));
+
+        // Note: Consumer callback
+        if(this.options.onInitiated instanceof Function) {
+            this.options.onInitiated();
+        }
     }
 
     // -------------------------------------------------------------------
     // # Section: Tool Control
     // -------------------------------------------------------------------
 
-    onClickTool() {
+    onClickTool(event) {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
 
-        // Note: Consumer callback
-        if(this.options.onClick instanceof Function) {
-            this.options.onClick();
-        }
-
         this.momentaryActivation();
+
+        // Note: Consumer callback
+        if(this.options.onClicked instanceof Function) {
+            this.options.onClicked();
+        }
     }
 
     momentaryActivation() {
@@ -123,7 +137,7 @@ class DirectionTool extends Control {
     }
 
     // -------------------------------------------------------------------
-    // # Section: Window/Document Events
+    // # Section: Browser Events
     // -------------------------------------------------------------------
 
     onWindowKeyUp(event) {
@@ -133,16 +147,21 @@ class DirectionTool extends Control {
     }
 
     onWindowSizeCheck(event) {
-        this.hideToolButton();
+        this.shouldToolButtonBeHidden();
     }
 
-    onWindowSettingsCleared() {
+    onWindowBrowserStateCleared() {
         const active = this.getActiveDirection();
         this.swithDirectionFromTo(active, DirectionData.col);
+
+        // Note: Consumer callback
+        if(this.options.onBrowserStateCleared instanceof Function) {
+            this.options.onBrowserStateCleared();
+        }
     }
 
     // -------------------------------------------------------------------
-    // # Section: Tool Specific
+    // # Section: Tool Actions
     // -------------------------------------------------------------------
 
     getToolTippyContent() {
@@ -169,7 +188,7 @@ class DirectionTool extends Control {
             : DirectionData.col;
     }
 
-    hideToolButton() {
+    shouldToolButtonBeHidden() {
         if(window.innerWidth <= Config.deviceWidth.sm) {
             this.button.classList.add(`${CLASS_TOOL_BUTTON}--hidden`);
         }else {

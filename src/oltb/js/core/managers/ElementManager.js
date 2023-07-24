@@ -25,12 +25,12 @@ class ElementManager {
         window.addEventListener(Events.browser.resize, this.#collisionDetection.bind(this));
         window.addEventListener(Events.browser.contentLoaded, this.#collisionDetection.bind(this));
         window.addEventListener(Events.custom.toolbarDirectionChange, this.#collisionDetection.bind(this));
-        window.addEventListener(Events.custom.settingsCleared, this.#onWindowSettingsCleared.bind(this));
+        window.addEventListener(Events.custom.browserStateCleared, this.#onWindowBrowserStateCleared.bind(this));
     }
 
     static setMap(map) { }
 
-    static #onWindowSettingsCleared(event) {
+    static #onWindowBrowserStateCleared(event) {
         if(window.innerWidth <= Config.deviceWidth.sm) {
             this.#uiRefToolboxElement.classList.add(`${CLASS_TOOLBOX_CONTAINER}--collision`);
         }else {

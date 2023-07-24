@@ -12,7 +12,7 @@ class ToolManager {
     static setMap(map) { }
 
     static setActiveTool(tool) {
-        if(Boolean(this.#tool) && this.#tool !== tool) {
+        if(this.#tool && this.#tool !== tool) {
             this.#tool.deSelectTool();
         }
 

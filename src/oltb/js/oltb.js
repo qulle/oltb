@@ -36,9 +36,11 @@ import { ColorPickerManager } from './core/managers/ColorPickerManager';
 import { AccessibilityManager } from './core/managers/AccessibilityManager';
 
 // Generator functions
-import { generateMarker } from './generators/GenerateMarker';
-import { generateTooltip } from './generators/GenerateTooltip';
 import { generateWindBarb } from './generators/GenerateWindBarb';
+import { generateIconMarker } from './generators/GenerateIconMarker';
+
+// Create UI functions
+import { createUITooltip } from './creators/CreateUITooltip';
 
 // Toolbar tools
 import { AllTools } from './tools/index';
@@ -73,8 +75,8 @@ class OLTB {
     static Modal = Modal;
     static Dialog = Dialog;
 
-    generateMarker = generateMarker;
-    generateTooltip = generateTooltip;
+    generateIconMarker = generateIconMarker;
+    createUITooltip = createUITooltip;
     generateWindBarb = generateWindBarb;
 
     #tools = {};

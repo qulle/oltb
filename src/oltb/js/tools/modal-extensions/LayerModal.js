@@ -6,8 +6,8 @@ import { LogManager } from '../../core/managers/LogManager';
 import { isDarkTheme } from '../../helpers/IsDarkTheme';
 import { LayerOptions } from '../../core/ol-types/LayerType';
 import { SourceOptions } from '../../core/ol-types/SourceType';
-import { generateInput } from '../../generators/GenerateInput';
-import { generateSelect } from '../../generators/GenerateSelect';
+import { createUIInput } from '../../creators/CreateUIInput';
+import { createUISelect } from '../../creators/CreateUISelect';
 import { ProjectionManager } from '../../core/managers/ProjectionManager';
 
 const FILENAME = 'modal-extensions/LayerModal.js';
@@ -35,25 +35,25 @@ class LayerModal extends ModalBase {
     }
 
     #createModal() {
-        const [ nameWrapper, nameInput ] = generateInput({
+        const [ nameWrapper, nameInput ] = createUIInput({
             idPrefix: ID_PREFIX,
             idPostfix: '-name',
             text: 'Name',
             value: 'New map layer'
         });
 
-        const [ typeWrapper, typeSelect ] = generateSelect({
+        const [ typeWrapper, typeSelect ] = createUISelect({
             idPrefix: ID_PREFIX,
             idPostfix: '-type',
             text: 'Layer',
-            options: structuredClone(LayerOptions)
+            options: _.cloneDeep(LayerOptions)
         });
 
-        const [ sourceWrapper, sourceSelect ] = generateSelect({
+        const [ sourceWrapper, sourceSelect ] = createUISelect({
             idPrefix: ID_PREFIX,
             idPostfix: '-source',
             text: 'Layer',
-            options: structuredClone(SourceOptions)
+            options: _.cloneDeep(SourceOptions)
         });
 
         const projectionOptions = [];
@@ -65,7 +65,7 @@ class LayerModal extends ModalBase {
             });
         });
 
-        const [ projectionWrapper, projectionSelect ] = generateSelect({
+        const [ projectionWrapper, projectionSelect ] = createUISelect({
             idPrefix: ID_PREFIX,
             idPostfix: '-projection',
             text: 'Projection',
@@ -73,20 +73,20 @@ class LayerModal extends ModalBase {
             value: Config.projection.default
         });
 
-        const [ urlWrapper, urlInput ] = generateInput({
+        const [ urlWrapper, urlInput ] = createUIInput({
             idPrefix: ID_PREFIX,
             idPostfix: '-url',
             text: 'URL'
         });
 
-        const [ parametersWrapper, parametersInput ] = generateInput({
+        const [ parametersWrapper, parametersInput ] = createUIInput({
             idPrefix: ID_PREFIX,
             idPostfix: '-parameters',
             text: 'Parameters (JSON)',
             placeholder: '{"Layers": "HPD_TRP"}'
         });
 
-        const [ wrapXWrapper, wrapXSelect ] = generateSelect({
+        const [ wrapXWrapper, wrapXSelect ] = createUISelect({
             idPrefix: ID_PREFIX,
             idPostfix: '-wrapx',
             text: 'WrapX',
@@ -102,7 +102,7 @@ class LayerModal extends ModalBase {
             ]
         });
 
-        const [ corsWrapper, corsSelect ] = generateSelect({
+        const [ corsWrapper, corsSelect ] = createUISelect({
             idPrefix: ID_PREFIX,
             idPostfix: '-cors',
             text: 'CORS',
@@ -122,7 +122,7 @@ class LayerModal extends ModalBase {
             ]
         });
 
-        const [ attributionsWrapper, attributionsInput ] = generateInput({
+        const [ attributionsWrapper, attributionsInput ] = createUIInput({
             idPrefix: ID_PREFIX,
             idPostfix: '-attributions',
             text: 'Attributions'
@@ -151,7 +151,8 @@ class LayerModal extends ModalBase {
                         parameters: parametersInput.value.trim() || '{}',
                         wrapX: wrapXSelect.value.trim(),
                         crossOrigin: corsSelect.value.trim(),
-                        attributions: attributionsInput.value.trim()
+                        attributions: attributionsInput.value.trim(),
+                        isDynamicallyAdded: true
                     };
 
                     this.close();

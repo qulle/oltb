@@ -20,10 +20,20 @@ const DefaultOptions = Object.freeze({
     lon: 18.1201,
     lat: 35.3518,
     zoom: 3,
-    onClick: undefined,
-    onHome: undefined
+    onInitiated: undefined,
+    onClicked: undefined,
+    onBrowserStateCleared: undefined,
+    onNavigatedHome: undefined
 });
 
+/**
+ * About:
+ * Navigate to your home location
+ * 
+ * Description:
+ * Your home position is a fixed point that you can have as a base to start from. 
+ * It can be set through the constructor and changed by the user.
+ */
 class HomeTool extends Control {
     constructor(options = {}) {
         LogManager.logDebug(FILENAME, 'constructor', 'init');
@@ -32,14 +42,14 @@ class HomeTool extends Control {
             element: ElementManager.getToolbarElement()
         });
         
-        const icon = getIcon({
+        this.icon = getIcon({
             path: SvgPaths.house.stroked,
             class: `${CLASS_TOOL_BUTTON}__icon`
         });
 
         const button = DOM.createElement({
             element: 'button',
-            html: icon,
+            html: this.icon,
             class: CLASS_TOOL_BUTTON,
             attributes: {
                 'type': 'button',
@@ -63,29 +73,42 @@ class HomeTool extends Control {
         this.userDefinedHomeLocation = undefined;
         this.userDefinedHomeZoom = undefined;
 
+        this.initContextMenuItems();
+
+        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(Events.custom.browserStateCleared, this.onWindowBrowserStateCleared.bind(this));
+
+        // Note: Consumer callback
+        if(this.options.onInitiated instanceof Function) {
+            this.options.onInitiated();
+        }
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Init Helpers
+    // -------------------------------------------------------------------
+
+    initContextMenuItems() {
         ContextMenu.addItem({
-            icon: icon, 
-            name: 'Set as home', 
+            icon: this.icon, 
+            name: 'Set Home', 
             fn: this.onContextMenuSetHomeLocation.bind(this)
         });
-
-        window.addEventListener(Events.custom.settingsCleared, this.onWindowSettingsCleared.bind(this));
-        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
     }
 
     // -------------------------------------------------------------------
     // # Section: Tool Control
     // -------------------------------------------------------------------
 
-    onClickTool() {
+    onClickTool(event) {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
-
-        // Note: Consumer callback
-        if(this.options.onClick instanceof Function) {
-            this.options.onClick();
-        }
         
         this.momentaryActivation();
+
+        // Note: Consumer callback
+        if(this.options.onClicked instanceof Function) {
+            this.options.onClicked();
+        }
     }
 
     momentaryActivation() {
@@ -101,14 +124,14 @@ class HomeTool extends Control {
 
         window.setTimeout(() => {
             // Note: Consumer callback
-            if(this.options.onHome instanceof Function) {
-                this.options.onHome();
+            if(this.options.onNavigatedHome instanceof Function) {
+                this.options.onNavigatedHome();
             }
         }, Config.animationDuration.normal);
     }
 
     // -------------------------------------------------------------------
-    // # Section: Window/Document Events
+    // # Section: Browser Events
     // -------------------------------------------------------------------
 
     onWindowKeyUp(event) {
@@ -117,32 +140,29 @@ class HomeTool extends Control {
         }
     }
 
-    onWindowSettingsCleared() {
+    onWindowBrowserStateCleared() {
         this.userDefinedHomeLocation = undefined;
         this.userDefinedHomeZoom = undefined;
+
+        // Note: Consumer callback
+        if(this.options.onBrowserStateCleared instanceof Function) {
+            this.options.onBrowserStateCleared();
+        }
     }
 
     // -------------------------------------------------------------------
-    // # Section: Tool Specific
-    // -------------------------------------------------------------------
-
-    getZoom() {
-        return this.userDefinedHomeZoom
-            ? this.userDefinedHomeZoom 
-            : this.homeZoom;
-    }
-
-    getCoordinates() {
-        return this.userDefinedHomeLocation 
-            ? this.userDefinedHomeLocation 
-            : this.homeLocation;
-    }
-
-    // -------------------------------------------------------------------
-    // # Section: HTML/Map Callback
+    // # Section: Map/UI Callbacks
     // -------------------------------------------------------------------
 
     onContextMenuSetHomeLocation() {
+        this.setHomeLocation();
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Tool Actions
+    // -------------------------------------------------------------------
+
+    setHomeLocation() {
         const map = this.getMap();
         if(!map) {
             return;
@@ -158,6 +178,18 @@ class HomeTool extends Control {
             message: 'New location was set as home',
             autoremove: Config.autoRemovalDuation.normal
         });
+    }
+
+    getZoom() {
+        return this.userDefinedHomeZoom
+            ? this.userDefinedHomeZoom 
+            : this.homeZoom;
+    }
+
+    getCoordinates() {
+        return this.userDefinedHomeLocation 
+            ? this.userDefinedHomeLocation 
+            : this.homeLocation;
     }
 }
 

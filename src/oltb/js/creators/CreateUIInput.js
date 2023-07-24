@@ -5,10 +5,11 @@ const DefaultOptions = Object.freeze({
     idPrefix: '',
     idPostfix: '',
     text: '',
-    color: ''
+    value: '',
+    placeholder: ''
 });
 
-const generateColorInput = function(options = {}) {
+const createUIInput = function(options = {}) {
     options = _.merge(_.cloneDeep(DefaultOptions), options);
 
     const wrapper = DOM.createElement({
@@ -26,25 +27,15 @@ const generateColorInput = function(options = {}) {
     });
 
     const input = DOM.createElement({
-        element: 'div',
+        element: 'input', 
         id: `${options.idPrefix}${options.idPostfix}`,
-        class: 'oltb-color-input oltb-color-tippy',
+        class: 'oltb-input',
+        value: options.value, 
         attributes: {
-            'tabindex': 0,
-            'data-oltb-color-target': `#${options.idPrefix}${options.idPostfix}`,
-            'data-oltb-color': options.color
+            'type': 'text',
+            'placeholder': options.placeholder
         }
     });
-
-    const inputInner = DOM.createElement({
-        element: 'div',
-        style: `background-color: ${options.color}`,
-        class: 'oltb-color-input__inner'
-    });
-
-    DOM.appendChildren(input, [
-        inputInner
-    ]);
 
     DOM.appendChildren(wrapper, [
         label,
@@ -54,4 +45,4 @@ const generateColorInput = function(options = {}) {
     return [wrapper, input];
 }
 
-export { generateColorInput };
+export { createUIInput };

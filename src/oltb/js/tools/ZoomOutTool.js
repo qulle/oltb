@@ -16,10 +16,18 @@ const CLASS_TOOL_BUTTON = 'oltb-tool-button';
 
 const DefaultOptions = Object.freeze({
     delta: -1,
-    onClick: undefined,
+    onInitiated: undefined,
+    onClicked: undefined,
     onZoomed: undefined
 });
 
+/**
+ * About:
+ * Zoom out of the Map
+ * 
+ * Description:
+ * Reduce zooming and get a more comprehensive view of the surroundings in the Map.
+ */
 class ZoomOutTool extends Control {
     constructor(options = {}) {
         LogManager.logDebug(FILENAME, 'constructor', 'init');
@@ -54,21 +62,26 @@ class ZoomOutTool extends Control {
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
 
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
+
+        // Note: Consumer callback
+        if(this.options.onInitiated instanceof Function) {
+            this.options.onInitiated();
+        }
     }
 
     // -------------------------------------------------------------------
     // # Section: Tool Control
     // -------------------------------------------------------------------
 
-    onClickTool() {
+    onClickTool(event) {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
-
-        // Note: Consumer callback
-        if(this.options.onClick instanceof Function) {
-            this.options.onClick();
-        }
         
         this.momentaryActivation();
+
+        // Note: Consumer callback
+        if(this.options.onClicked instanceof Function) {
+            this.options.onClicked();
+        }
     }
 
     momentaryActivation() {
@@ -77,6 +90,14 @@ class ZoomOutTool extends Control {
             return;
         }
         
+        this.zoomOut(map);
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Tool Actions
+    // -------------------------------------------------------------------
+
+    zoomOut(map) {
         const view = map.getView();
         const coordiantes = toLonLat(view.getCenter());
         const currentZoom = view.getZoom();
@@ -93,7 +114,7 @@ class ZoomOutTool extends Control {
     }
 
     // -------------------------------------------------------------------
-    // # Section: Window/Document Events
+    // # Section: Browser Events
     // -------------------------------------------------------------------
 
     onWindowKeyUp(event) {

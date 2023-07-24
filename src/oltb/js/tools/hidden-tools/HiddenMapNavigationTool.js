@@ -11,13 +11,13 @@ import { ContextMenu } from '../../common/ContextMenu';
 import { toStringHDMS } from 'ol/coordinate';
 import { LayerManager } from '../../core/managers/LayerManager';
 import { StateManager } from '../../core/managers/StateManager';
-import { generateMarker } from '../../generators/GenerateMarker';
 import { ElementManager } from '../../core/managers/ElementManager';
 import { CoordinateModal } from '../modal-extensions/CoordinateModal';
 import { LocalStorageKeys } from '../../helpers/constants/LocalStorageKeys';
 import { SvgPaths, getIcon } from '../../core/icons/GetIcon';
 import { InfoWindowManager } from '../../core/managers/InfoWindowManager';
 import { ProjectionManager } from '../../core/managers/ProjectionManager';
+import { generateIconMarker } from '../../generators/GenerateIconMarker';
 import { fromLonLat, toLonLat } from 'ol/proj';
 
 const FILENAME = 'hidden-tools/HiddenMapNavigationTool.js';
@@ -50,6 +50,13 @@ const DefaultUrlMarker = Object.freeze({
     zoom: 8
 });
 
+/**
+ * About:
+ * Extended navigation shortcuts
+ * 
+ * Description:
+ * Features to simplify navigation, centering and focusing the Map.
+ */
 class HiddenMapNavigationTool extends Control {
     constructor(options = {}) {
         LogManager.logDebug(FILENAME, 'constructor', 'init');
@@ -66,45 +73,51 @@ class HiddenMapNavigationTool extends Control {
             LocalStorageDefaults
         );
 
-        const coordinatesIcon = getIcon({
+        this.coordinatesIcon = getIcon({
             path: SvgPaths.crosshair.stroked
         });
 
-        const moveCenterIcon = getIcon({
+        this.moveCenterIcon = getIcon({
             path: SvgPaths.arrowsMove.stroked
         });
         
-        const focusHereIcon = getIcon({
+        this.focusHereIcon = getIcon({
             path: SvgPaths.aspectRatio.stroked
         });
 
-        ContextMenu.addItem({
-            icon: coordinatesIcon,
-            name: 'Navigate to coordinates',
-            fn: this.onContextMenuCenterAtCoordinate.bind(this)
-        })
+        this.initContextMenuItems();
 
-        ContextMenu.addItem({
-            icon: moveCenterIcon, 
-            name: 'Center map here', 
-            fn: this.onContextMenuCenterMap.bind(this)
-        });
-
-        ContextMenu.addItem({
-            icon: focusHereIcon, 
-            name: 'Focus here', 
-            fn: this.onContextMenuFocusHere.bind(this)
-        });
-        
-        ContextMenu.addItem({});
-
-        // Track changes to zoom, paning etc. store in localStorage
-        // Must wait until DOM is loaded before the reference to the map can be used
         window.addEventListener(Events.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
     }
 
     // -------------------------------------------------------------------
-    // # Section: Context Menu Methods
+    // # Section: Init Helpers
+    // -------------------------------------------------------------------
+
+    initContextMenuItems() {
+        ContextMenu.addItem({
+            icon: this.coordinatesIcon,
+            name: 'Navigate To',
+            fn: this.onContextMenuCenterAtCoordinate.bind(this)
+        })
+
+        ContextMenu.addItem({
+            icon: this.moveCenterIcon, 
+            name: 'Center Here', 
+            fn: this.onContextMenuCenterMap.bind(this)
+        });
+
+        ContextMenu.addItem({
+            icon: this.focusHereIcon, 
+            name: 'Focus Here', 
+            fn: this.onContextMenuFocusHere.bind(this)
+        });
+        
+        ContextMenu.addItem({});
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: ContextMenu Callbacks
     // -------------------------------------------------------------------
 
     onContextMenuCenterAtCoordinate(map, coordinates, target) {
@@ -112,14 +125,7 @@ class HiddenMapNavigationTool extends Control {
             return;
         }
 
-        this.coordinatesModal = new CoordinateModal({
-            onNavigate: (coordinates) => {
-                goToView(map, coordinates, map.getView().getZoom());
-            },
-            onClose: () => {
-                this.coordinatesModal = undefined;
-            }
-        });
+        this.showCoordinatesModal(map);
     }
 
     onContextMenuCenterMap(map, coordinates, target) {
@@ -131,7 +137,7 @@ class HiddenMapNavigationTool extends Control {
     }
 
     // -------------------------------------------------------------------
-    // # Section: Window/Document Events
+    // # Section: Browser Events
     // -------------------------------------------------------------------
 
     onDOMContentLoaded(event) {
@@ -143,14 +149,52 @@ class HiddenMapNavigationTool extends Control {
         // Bind to global map events
         map.on(Events.openLayers.moveEnd, this.onMoveEnd.bind(this));
 
-        const marker = UrlManager.getParameter(Config.urlParameters.marker, false);
-        if(marker) {
-            this.onCreateUrlMarker(marker);
-        }
+        this.detectUrlMarker();
     }
 
     // -------------------------------------------------------------------
-    // # Section: HTML/Map Callback
+    // # Section: Conversions/Validation
+    // -------------------------------------------------------------------
+
+    validateProjection(projection) {
+        projection = projection.toUpperCase();
+
+        if(!projection.startsWith('EPSG:')) {
+            projection = `EPSG:${projection}`;
+        }
+
+        return projection;
+    }
+
+    validateHexColor(color) {
+        if(color.startsWith('#')) {
+            return color;
+        }
+
+        return `#${color}`;
+    }
+
+    hasProjection(projection) {
+        const hasProjection = ProjectionManager.hasProjection(projection);
+
+        if(!hasProjection) {
+            const errorMessage = `Must add projection definition for <strong>${projection}</strong>`;
+            LogManager.logError(FILENAME, 'hasProjection', errorMessage);
+
+            Toast.error({
+                title: 'Error',
+                message: `
+                    ${errorMessage} <br>
+                    <a href="https://epsg.io" target="_blank" class="oltb-link">https://epsg.io</a>
+                `
+            });
+        }
+
+        return hasProjection;
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Map/UI Callbacks
     // -------------------------------------------------------------------
 
     onCreateUrlMarker(markerString) {
@@ -159,39 +203,60 @@ class HiddenMapNavigationTool extends Control {
             return;
         }
 
+        this.addMarkerFromUrl();
+    }
+
+    onMoveEnd(event) {
+        const map = this.getMap();
+        if(!map) {
+            return;
+        }
+
+        this.setLastPosition(map);
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Tool Actions
+    // -------------------------------------------------------------------
+
+    setLastPosition(map) {
+        const view = map.getView();
+        const center = toLonLat(view.getCenter());
+
+        this.localStorage.lon = center[0];
+        this.localStorage.lat = center[1];
+        this.localStorage.zoom = view.getZoom();
+        this.localStorage.rotation = view.getRotation();
+
+        StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
+    }
+
+    detectUrlMarker() {
+        const marker = UrlManager.getParameter(Config.urlParameters.marker, false);
+        if(marker) {
+            this.onCreateUrlMarker(marker);
+        }
+    }
+
+    addMarkerFromUrl() {
         try {
             const markerDataParsed = JSON.parse(markerString);
             const markerData = _.merge(_.cloneDeep(DefaultUrlMarker), markerDataParsed);
 
             LogManager.logDebug(FILENAME, 'onCreateUrlMarker', markerData);
 
-            // Make sure projection is formatted correctly
-            markerData.projection = markerData.projection.toUpperCase();
-            if(!markerData.projection.startsWith('EPSG:')) {
-                markerData.projection = `EPSG:${markerData.projection}`;
-            }
+            // Colors given in URL can't contain hashtag unless encoded as %23
+            // Easier to prepend with hashtag after URL data has been fetched and parsed
+            markerData.fill = this.validateHexColor(markerData.fill);
+            markerData.stroke = this.validateHexColor(markerData.stroke);
+            markerData.projection = this.validateProjection(markerData.projection);
 
-            if(!ProjectionManager.hasProjection(markerData.projection)) {
-                const errorMessage = `Must add projection definition for <strong>${markerData.projection}</strong>`;
-                LogManager.logError(FILENAME, 'onCreateUrlMarker', errorMessage);
-
-                Toast.error({
-                    title: 'Error',
-                    message: `
-                        ${errorMessage} <br>
-                        <a href="https://epsg.io" target="_blank" class="oltb-link">https://epsg.io</a>
-                    `
-                }); 
-
+            if(!this.hasProjection(markerData.projection)) {
                 return;
             }
 
-            // Transform coordinates to format that can be used in the map
             const coordinates = transform(
-                [
-                    Number(markerData.lon), 
-                    Number(markerData.lat)
-                ], 
+                [Number(markerData.lon), Number(markerData.lat)], 
                 markerData.projection, 
                 Config.projection.wgs84
             );
@@ -212,17 +277,7 @@ class HiddenMapNavigationTool extends Control {
                 `
             };
 
-            // Colors given in URL can't contain hashtag unless encoded as %23
-            // Easier to prepend with hashtag after URL data has been fetched and parsed
-            if(markerData.stroke[0] !== '#') {
-                markerData.stroke = `#${markerData.stroke}`;
-            }
-
-            if(markerData.fill[0] !== '#') {
-                markerData.fill = `#${markerData.fill}`;
-            }
-
-            const marker = new generateMarker({
+            const marker = new generateIconMarker({
                 lon: coordinates[0],
                 lat: coordinates[1],
                 title: markerData.title,
@@ -239,12 +294,7 @@ class HiddenMapNavigationTool extends Control {
             layerWrapper.getLayer().getSource().addFeature(marker);
 
             goToView(map, coordinates, markerData.zoom);
-
-            InfoWindowManager.showOverly(
-                marker, 
-                fromLonLat(coordinates),
-                Config.animationDuration.normal
-            );
+            InfoWindowManager.showOverlayDelayed(marker, fromLonLat(coordinates));
         }catch(error) {
             const errorMessage = 'Failed to parse URL marker';
             LogManager.logError(FILENAME, 'onCreateUrlMarker', {
@@ -259,21 +309,15 @@ class HiddenMapNavigationTool extends Control {
         }
     }
 
-    onMoveEnd(event) {
-        const map = this.getMap();
-        if(!map) {
-            return;
-        }
-
-        const view = map.getView();
-        const center = toLonLat(view.getCenter());
-
-        this.localStorage.lon = center[0];
-        this.localStorage.lat = center[1];
-        this.localStorage.zoom = view.getZoom();
-        this.localStorage.rotation = view.getRotation();
-
-        StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
+    showCoordinatesModal(map) {
+        this.coordinatesModal = new CoordinateModal({
+            onNavigate: (coordinates) => {
+                goToView(map, coordinates, map.getView().getZoom());
+            },
+            onClose: () => {
+                this.coordinatesModal = undefined;
+            }
+        });
     }
 }
 

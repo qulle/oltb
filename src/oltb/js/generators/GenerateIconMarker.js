@@ -24,7 +24,7 @@ const DefaultOptions = Object.freeze({
     replaceHashtag: true
 });
 
-const generateMarker = function(options = {}) {
+const generateIconMarker = function(options = {}) {
     options = _.merge(_.cloneDeep(DefaultOptions), options);
 
     const marker = new Feature({
@@ -95,4 +95,4 @@ const generateMarker = function(options = {}) {
     return marker;
 }
 
-export { generateMarker };
+export { generateIconMarker };

@@ -117,7 +117,7 @@ class InfoWindowManager {
 
         const infoWindow = feature?.getProperties()?.oltb?.infoWindow;
         if(infoWindow) {
-            this.showOverly(feature);
+            this.showOverlay(feature);
         }else {
             this.hideOverlay();
         }
@@ -128,7 +128,7 @@ class InfoWindowManager {
             return feature;
         });
 
-        if(this.#lastFeature && (Boolean(!feature) || this.#lastFeature !== feature)) {
+        if(this.#lastFeature && (!feature || this.#lastFeature !== feature)) {
             this.#lastFeature.setStyle(null);
         }
 
@@ -139,7 +139,8 @@ class InfoWindowManager {
 
         const infoWindow = feature?.getProperties()?.oltb?.infoWindow;
         const nodeName = event.originalEvent.target.nodeName;
-        if(Boolean(infoWindow) && nodeName === 'CANVAS') {
+
+        if(infoWindow && nodeName === 'CANVAS') {
             this.#map.getViewport().style.cursor = 'pointer';
         }else {
             this.#map.getViewport().style.cursor = 'default';
@@ -161,7 +162,11 @@ class InfoWindowManager {
         this.#lastFeature = feature;
     }
 
-    static showOverly(marker, position, delay = 0) {
+    static showOverlay(marker, position) {
+        this.showOverlayDelayed(marker, position, 0);
+    }
+
+    static showOverlayDelayed(marker, position, delay = Config.animationDuration.normal) {
         window.setTimeout(() => {
             const infoWindow = marker.getProperties().oltb.infoWindow;
             if(!infoWindow) {

@@ -21,14 +21,22 @@ const DefaultOptions = Object.freeze({
     width: 2,
     showLabels: true,
     wrapX: true,
-    onClick: undefined
+    onInitiated: undefined,
+    onClicked: undefined
 });
 
 const LocalStorageNodeName = LocalStorageKeys.graticuleTool;
 const LocalStorageDefaults = Object.freeze({
-    active: false
+    isActive: false
 });
 
+/**
+ * About:
+ * Graphical depiction of a coordinate system as a grid of lines
+ * 
+ * Description:
+ * Show a graphical depiction of a coordinate system as a grid of lines both in vertical and horizontal directions.
+ */
 class GraticuleTool extends Control {
     constructor(options = {}) {
         LogManager.logDebug(FILENAME, 'constructor', 'init');
@@ -60,7 +68,7 @@ class GraticuleTool extends Control {
         ]);
         
         this.button = button;
-        this.active = false;
+        this.isActive = false;
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
 
         this.localStorage = StateManager.getAndMergeStateObject(
@@ -68,17 +76,22 @@ class GraticuleTool extends Control {
             LocalStorageDefaults
         );
         
-        this.graticule = this.generateGraticule();
+        this.graticule = this.generateOLGraticule();
 
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
         window.addEventListener(Events.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
+
+        // Note: Consumer callback
+        if(this.options.onInitiated instanceof Function) {
+            this.options.onInitiated();
+        }
     }
 
     // -------------------------------------------------------------------
     // # Section: Generate Helpers
     // -------------------------------------------------------------------
 
-    generateGraticule() {
+    generateOLGraticule() {
         return new Graticule({
             strokeStyle: new Stroke({
                 color: this.options.color,
@@ -86,7 +99,7 @@ class GraticuleTool extends Control {
                 lineDash: this.options.dashed ? [1, 4] : [0, 0],
             }),
             showLabels: this.options.showLabels,
-            visible: true,
+            isVisible: true,
             wrapX: this.options.wrapX,
         });
     }
@@ -95,18 +108,18 @@ class GraticuleTool extends Control {
     // # Section: Tool Control
     // -------------------------------------------------------------------
 
-    onClickTool() {
+    onClickTool(event) {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
 
-        // Note: Consumer callback
-        if(this.options.onClick instanceof Function) {
-            this.options.onClick();
-        }
-
-        if(this.active) {
+        if(this.isActive) {
             this.deActivateTool();
         }else {
             this.activateTool();
+        }
+
+        // Note: Consumer callback
+        if(this.options.onClicked instanceof Function) {
+            this.options.onClicked();
         }
     }
 
@@ -118,29 +131,29 @@ class GraticuleTool extends Control {
 
         this.graticule.setMap(map);
 
-        this.active = true;
+        this.isActive = true;
         this.button.classList.add(`${CLASS_TOOL_BUTTON}--active`);
 
-        this.localStorage.active = true;
+        this.localStorage.isActive = true;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 
     deActivateTool() {
         this.graticule.setMap(null);
 
-        this.active = false;
+        this.isActive = false;
         this.button.classList.remove(`${CLASS_TOOL_BUTTON}--active`);
 
-        this.localStorage.active = false;
+        this.localStorage.isActive = false;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 
     // -------------------------------------------------------------------
-    // # Section: Window/Document Events
+    // # Section: Browser Events
     // -------------------------------------------------------------------
 
     onDOMContentLoaded() {
-        if(this.localStorage.active) {
+        if(this.localStorage.isActive) {
             this.activateTool();
         }
     }

@@ -2,7 +2,7 @@ import { DOM } from '../helpers/browser/DOM';
 import { Config } from '../core/Config';
 import { Overlay } from 'ol';
 
-const generateTooltip = function(data = '') {
+const createUITooltip = function(data = '') {
     const tooltip = DOM.createElement({
         element: 'div',
         class: 'oltb-overlay-tooltip'
@@ -40,4 +40,4 @@ const generateTooltip = function(data = '') {
     };
 }
 
-export { generateTooltip };
+export { createUITooltip };

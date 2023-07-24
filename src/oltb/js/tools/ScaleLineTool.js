@@ -15,14 +15,23 @@ const CLASS_TOOL_BUTTON = 'oltb-tool-button';
 
 const DefaultOptions = Object.freeze({
     units: 'metric',
-    onClick: undefined
+    onInitiated: undefined,
+    onClicked: undefined
 });
 
 const LocalStorageNodeName = LocalStorageKeys.scaleLineTool;
 const LocalStorageDefaults = Object.freeze({
-    active: false
+    isActive: false
 });
 
+/**
+ * About:
+ * Show current distance scaling
+ * 
+ * Description:
+ * Depending on zoom level and position on the Map, a fixed distance will vary in value. 
+ * This is reflected in the scaling component.
+ */
 class ScaleLineTool extends Control {
     constructor(options = {}) {
         LogManager.logDebug(FILENAME, 'constructor', 'init');
@@ -54,7 +63,7 @@ class ScaleLineTool extends Control {
         ]);
         
         this.button = button;
-        this.active = false;
+        this.isActive = false;
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
         
         this.localStorage = StateManager.getAndMergeStateObject(
@@ -62,28 +71,33 @@ class ScaleLineTool extends Control {
             LocalStorageDefaults
         );
 
-        this.scaleLine = this.generateScaleLine();
+        this.scaleLine = this.generateOLScaleLine();
         
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
         window.addEventListener(Events.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
+
+        // Note: Consumer callback
+        if(this.options.onInitiated instanceof Function) {
+            this.options.onInitiated();
+        }
     }
 
     // -------------------------------------------------------------------
     // # Section: Tool Control
     // -------------------------------------------------------------------
 
-    onClickTool() {
+    onClickTool(event) {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
 
-        // Note: Consumer callback
-        if(this.options.onClick instanceof Function) {
-            this.options.onClick();
-        }
-
-        if(this.active) {
+        if(this.isActive) {
             this.deActivateTool();
         }else {
             this.activateTool();
+        }
+
+        // Note: Consumer callback
+        if(this.options.onClicked instanceof Function) {
+            this.options.onClicked();
         }
     }
 
@@ -95,20 +109,20 @@ class ScaleLineTool extends Control {
 
         this.scaleLine.setMap(map);
 
-        this.active = true;
+        this.isActive = true;
         this.button.classList.add(`${CLASS_TOOL_BUTTON}--active`);
 
-        this.localStorage.active = true;
+        this.localStorage.isActive = true;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 
     deActivateTool() {
         this.scaleLine.setMap(null);
 
-        this.active = false;
+        this.isActive = false;
         this.button.classList.remove(`${CLASS_TOOL_BUTTON}--active`);
 
-        this.localStorage.active = false;
+        this.localStorage.isActive = false;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 
@@ -116,18 +130,18 @@ class ScaleLineTool extends Control {
     // # Section: Generate Helpers
     // -------------------------------------------------------------------
 
-    generateScaleLine() {
+    generateOLScaleLine() {
         return new ScaleLine({
             units: this.options.units
         });
     }
 
     // -------------------------------------------------------------------
-    // # Section: Window/Document Events
+    // # Section: Browser Events
     // -------------------------------------------------------------------
 
     onDOMContentLoaded() {
-        if(this.localStorage.active) {
+        if(this.localStorage.isActive) {
             this.activateTool();
         }
     }

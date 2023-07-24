@@ -9,7 +9,7 @@ const DefaultOptions = Object.freeze({
     value: undefined
 });
 
-const generateSelect = function(options = {}) {
+const createUISelect = function(options = {}) {
     options = _.merge(_.cloneDeep(DefaultOptions), options);
 
     const wrapper = DOM.createElement({
@@ -54,4 +54,4 @@ const generateSelect = function(options = {}) {
     return [wrapper, select];
 }
 
-export { generateSelect };
+export { createUISelect };

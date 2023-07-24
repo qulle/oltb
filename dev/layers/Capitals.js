@@ -3,7 +3,7 @@ import { Toast } from "../../src/oltb/js/common/Toast";
 import { LogManager } from "../../src/oltb/js/core/managers/LogManager";
 import { toStringHDMS } from "ol/coordinate";
 import { LayerManager } from "../../src/oltb/js/core/managers/LayerManager";
-import { generateMarker } from '../../src/oltb/js/generators/GenerateMarker';
+import { generateIconMarker } from '../../src/oltb/js/generators/GenerateIconMarker';
 
 const FILENAME = 'layers/Capitals.js';
 const CLASS_FUNC_BUTTON = 'oltb-func-btn';
@@ -12,8 +12,8 @@ const ID_PREFIX_INFO_WINDOW = 'oltb-info-window-marker';
 const LayerWrapper = LayerManager.addFeatureLayer({
     id: '73e8b36c-6aa2-42b9-a97d-0e8288916050',
     name: 'Capitals',
-    visible: true,
-    silent: true
+    isVisible: true,
+    isSilent: true
 });
 
 const getFillColor = function(continentName) {
@@ -73,7 +73,7 @@ const parseGeoJson = function(data) {
         };
 
         LayerWrapper.getLayer().getSource().addFeature(
-            new generateMarker({
+            new generateIconMarker({
                 lon: coordinates[0],
                 lat: coordinates[1],
                 title: countryName,

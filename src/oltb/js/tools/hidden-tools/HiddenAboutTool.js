@@ -8,6 +8,13 @@ import { SvgPaths, getIcon } from '../../core/icons/GetIcon';
 
 const FILENAME = 'hidden-tools/HiddenAboutTool.js';
 
+/**
+ * About:
+ * Show information about OLTB
+ * 
+ * Description:
+ * Show information about the project, version and links to the source code etc.
+ */
 class HiddenAboutTool extends Control {
     constructor() {
         LogManager.logDebug(FILENAME, 'constructor', 'init');
@@ -16,22 +23,30 @@ class HiddenAboutTool extends Control {
             element: ElementManager.getToolbarElement()
         });
 
-        const icon = getIcon({
+        this.icon = getIcon({
             path: SvgPaths.gitHub.mixed
         });
 
         this.aboutInfoModal = undefined;
 
+        this.initContextMenuItems();
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Init Helpers
+    // -------------------------------------------------------------------
+
+    initContextMenuItems() {
         ContextMenu.addItem({});
         ContextMenu.addItem({
-            icon: icon, 
+            icon: this.icon, 
             name: 'About OLTB', 
             fn: this.onContextMenuAbout.bind(this)
         });
     }
 
     // -------------------------------------------------------------------
-    // # Section: Context Menu Methods
+    // # Section: ContextMenu Callbacks
     // -------------------------------------------------------------------
 
     onContextMenuAbout(map, coordinates, target) {        
@@ -39,6 +54,14 @@ class HiddenAboutTool extends Control {
             return;
         }
 
+        this.showAboutModal();
+    }
+    
+    // -------------------------------------------------------------------
+    // # Section: Tool Actions
+    // -------------------------------------------------------------------
+
+    showAboutModal() {
         const content = (`
             <p>Version ${Config.toolbar.version}</p>
             <p>Developed by Qulle <a href="//github.com/qulle/oltb" target="_blank" class="oltb-link">github.com/qulle/oltb</a></p>

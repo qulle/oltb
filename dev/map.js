@@ -165,13 +165,13 @@ const map = new Map({
     }).extend([
         new HiddenMarkerTool({
             onAdded: function(marker) {
-                console.log('Marker added', marker);
+                console.log('HiddenMarkerTool: Marker added', marker);
             },
             onRemoved: function(marker) {
-                console.log('Marker removed', marker);
+                console.log('HiddenMarkerTool: Marker removed', marker);
             },
             onEdited: function(before, after) {
-                console.log('Marker edited', before, after);
+                console.log('HiddenMarkerTool: Marker edited', before, after);
             }
         }),
         new HiddenMapNavigationTool({
@@ -181,125 +181,161 @@ const map = new Map({
             lon: 18.1201,
             lat: 35.3518,
             zoom: 3,
-            onClick: function() {
-                console.log('HomeTool click');
+            onInitiated: function() {
+                console.log('HomeTool: Initiated');
             },
-            onHome: function() {
-                console.log('Map zoomed home');
+            onClicked: function() {
+                console.log('HomeTool: Clicked');
+            },
+            onBrowserStateCleared: function() {
+                console.log('HomeTool: State cleared');
+            },
+            onNavigatedHome: function() {
+                console.log('HomeTool: Zoomed home');
             }
         }),
         new ZoomInTool({
-            onClick: function() {
-                console.log('ZoomInTool clicked');
+            onInitiated: function() {
+                console.log('ZoomInTool: Initiated');
+            },
+            onClicked: function() {
+                console.log('ZoomInTool: Clicked');
             },
             onZoomed: function() {
-                console.log('Zoomed in');
+                console.log('ZoomInTool: Zoomed in');
             }
         }),
         new ZoomOutTool({
-            onClick: function() {
-                console.log('ZoomOutTool clicked');
+            onInitiated: function() {
+                console.log('ZoomOutTool: Initiated');
+            },
+            onClicked: function() {
+                console.log('ZoomOutTool: Clicked');
             },
             onZoomed: function() {
-                console.log('Zoomed out');
+                console.log('ZoomOutTool: Zoomed out');
             }
         }),
         new FullscreenTool({
-            onClick: function() {
-                console.log('FullscreenTool clicked');
+            onInitiated: function() {
+                console.log('FullscreenTool: Initiated');
+            },
+            onClicked: function() {
+                console.log('FullscreenTool: Clicked');
             },
             onEnter: function(event) {
-                console.log('Enter fullscreen mode', event);
+                console.log('FullscreenTool: Enter fullscreen', event);
             },
             onLeave: function(event) {
-                console.log('Leave fullscreen mode', event);
+                console.log('FullscreenTool: Leave fullscreen', event);
             }
         }),
         new ExportPngTool({
             filename: 'map-image-export',
             appendTime: true,
-            onClick: function() {
-                console.log('ExportPngTool clicked');
+            onInitiated: function() {
+                console.log('ExportPngTool: Initiated');
+            },
+            onClicked: function() {
+                console.log('ExportPngTool: Clicked');
             },
             onExported: function(filename, content) {
-                console.log('Map exported as png', filename, content);
+                console.log('ExportPngTool: PNG exported', filename, content);
             },
             onError: function(error) {
-                console.log('Error exporting png', error);
+                console.log('ExportPngTool: Error', error);
             }
         }),
         new DrawTool({
-            onClick: function() {
-                console.log('DrawTool clicked');
+            onInitiated: function() {
+                console.log('DrawTool: Initiated');
+            },
+            onClicked: function() {
+                console.log('DrawTool: Clicked');
+            },
+            onBrowserStateCleared: function() {
+                console.log('DrawTool: State cleared');
             },
             onStart: function(event) {
-                console.log('Draw Start');
+                console.log('DrawTool: Start');
             },
             onEnd: function(event) {
-                console.log('Draw end', event.feature);
+                console.log('DrawTool: End', event.feature);
             },
             onAbort: function(event) {
-                console.log('Draw abort');
+                console.log('DrawTool: Abort');
             },
             onError: function(event) {
-                console.log('Draw error');
+                console.log('DrawTool: Error');
             },
             onIntersected: function(event, intersectedFeatures) {
-                console.log('Draw end', event.feature);
-                console.log('Intersected features', intersectedFeatures);
+                console.log('DrawTool: Intersected', event.feature);
+                console.log('DrawTool: Intersected features', intersectedFeatures);
             }
         }),
         new MeasureTool({
-            onClick: function() {
-                console.log('MeasureTool clicked');
+            onInitiated: function() {
+                console.log('MeasureTool: Initiated');
+            },
+            onClicked: function() {
+                console.log('MeasureTool: Clicked');
+            },
+            onBrowserStateCleared: function() {
+                console.log('MeasureTool: State cleared');
             },
             onStart: function(event) {
-                console.log('Measure Start');
+                console.log('MeasureTool: Start');
             },
             onEnd: function(event) {
-                console.log('Measure end', event.feature);
+                console.log('MeasureTool: End', event.feature);
             },
             onAbort: function(event) {
-                console.log('Measure abort');
+                console.log('MeasureTool: Abort');
             },
             onError: function(event) {
-                console.log('Measure error');
+                console.log('MeasureTool: Error');
             }
         }),
         new EditTool({
             hitTolerance: 5,
-            onClick: function() {
-                console.log('EditTool clicked');
+            onInitiated: function() {
+                console.log('EditTool: Initiated');
+            },
+            onClicked: function() {
+                console.log('EditTool: Clicked');
+            },
+            onBrowserStateCleared: function() {
+                console.log('EditTool: Sstate cleared');
             },
             onStyleChange: function(event, style) {
-                console.log('Feature style changed');
+                console.log('EditTool: Style changed');
             },
             onShapeOperation: function(type, a, b, result) {
-                console.log('Shape operation', type);
+                console.log('EditTool: Shape operation', type);
             },
             onSelectAdd: function(event) {
-                console.log('Selected feature');
+                console.log('EditTool: Selected feature');
             },
             onSelectRemove: function(event) {
-                console.log('Deselected feature');
+                console.log('EditTool: Deselected feature');
             },
             onModifyStart: function(event) {
-                console.log('Modify start');
+                console.log('EditTool: Modify start');
             },
             onModifyEnd: function(event) {
-                console.log('Modify end');
+                console.log('EditTool: Modify end');
             },
             onTranslateStart: function(event) {
-                console.log('Translate start');
+                console.log('EditTool: Translate start');
             },
             onTranslatEend: function(event) {
-                console.log('Translate end');
+                console.log('EditTool: Translate end');
             },
             onRemovedFeature: function(feature) {
-                console.log('Removed feature', feature);
+                console.log('EditTool: Removed feature', feature);
             },
             onError: function(event) {
-                console.log('Edit error');
+                console.log('EditTool: Error');
             }
         }),
         new BookmarkTool({
@@ -310,74 +346,98 @@ const map = new Map({
                 zoom: 5,
                 coordinates: [57.123, 16.456]
             }],
-            onClick: function() {
-                console.log('BookmarkTool clicked');
+            onInitiated: function() {
+                console.log('BookmarkTool: Initiated');
+            },
+            onClicked: function() {
+                console.log('BookmarkTool: Clicked');
+            },
+            onBrowserStateCleared: function() {
+                console.log('BookmarkTool: State cleared');
             },
             onAdded: function(bookmark) {
-                console.log('Bookmark added', bookmark);
+                console.log('BookmarkTool: Added', bookmark);
             },
             onRemoved: function(bookmark) {
-                console.log('Bookmark removed', bookmark);
+                console.log('BookmarkTool: Removed', bookmark);
             },
             onRenamed: function(bookmark) {
-                console.log('Bookmark renamed', bookmark);
+                console.log('BookmarkTool: Renamed', bookmark);
             },
             onZoomedTo: function(bookmark) {
-                console.log('Zoomed to bookmark', bookmark);
+                console.log('BookmarkTool: Zoomed to', bookmark);
             },
             onCleared: function() {
-                console.log('Bookmarks cleared');
+                console.log('BookmarkTool: Cleared');
             },
             onDragged: function(item, list) {
-                console.log('Bookmark dragged', item, list);
+                console.log('BookmarkTool: Dragged', item, list);
             }
         }),
         new LayerTool({
-            onClick: function() {
-                console.log('LayerTool clicked');
+            onInitiated: function() {
+                console.log('LayerTool: Initiated');
+            },
+            onClicked: function() {
+                console.log('LayerTool: Clicked');
+            },
+            onBrowserStateCleared: function() {
+                console.log('LayerTool: State cleared');
             },
             onMapLayerAdded: function(layerWrapper) {
-                console.log('Map layer added', layerWrapper);
+                console.log('LayerTool: Map layer added', layerWrapper);
             },
             onMapLayerRemoved: function(layerWrapper) {
-                console.log('Map layer removed', layerWrapper);
+                console.log('LayerTool: Map layer removed', layerWrapper);
             },
             onMapLayerRenamed: function(layerWrapper) {
-                console.log('Map layer renamed', layerWrapper);
+                console.log('LayerTool: Map layer renamed', layerWrapper);
             },
             onMapLayerVisibilityChanged: function(layerWrapper) {
-                console.log('Map layer visibility change', layerWrapper);
+                console.log('LayerTool: Map layer visibility change', layerWrapper);
             },
             onMapLayerDragged(item, list) {
-                console.log('Map layer dragged', item, list);
+                console.log('LayerTool: Map layer dragged', item, list);
             },
             onFeatureLayerAdded: function(layerWrapper) {
-                console.log('Feature layer added', layerWrapper);
+                console.log('LayerTool: Feature layer added', layerWrapper);
             },
             onFeatureLayerRemoved: function(layerWrapper) {
-                console.log('Feature layer removed', layerWrapper);
+                console.log('LayerTool: Feature layer removed', layerWrapper);
             },
             onFeatureLayerRenamed: function(layerWrapper) {
-                console.log('Feature layer renamed', layerWrapper);
+                console.log('LayerTool: Feature layer renamed', layerWrapper);
             },
             onFeatureLayerVisibilityChanged: function(layerWrapper) {
-                console.log('Feature layer visibility change', layerWrapper);
+                console.log('LayerTool: Feature layer visibility change', layerWrapper);
             },
             onFeatureLayerDownloaded: function(layerWrapper, filename, content) {
-                console.log('Feature layer downloaded', layerWrapper, filename, content);
+                console.log('LayerTool: Feature layer downloaded', layerWrapper, filename, content);
             },
             onFeatureLayerDragged(item, list) {
-                console.log('Feature layer dragged', item, list);
+                console.log('LayerTool: Feature layer dragged', item, list);
             }
         }),
         new SplitViewTool({
-            onClick: function() {
-                console.log('SplitViewTool clicked');
+            onInitiated: function() {
+                console.log('SplitViewTool: Initiated');
+            },
+            onClicked: function() {
+                console.log('SplitViewTool: Clicked');
+            },
+            onBrowserStateCleared: function() {
+                console.log('SplitViewTool: State cleared');
             }
         }),
         new OverviewTool({
-            onClick: function() {
-                console.log('OverviewTool clicked');
+            onInitiated: function() {
+                console.log('OverviewTool: Initiated');
+            },
+            onClicked: function() {
+                console.log('OverviewTool: Clicked');
+            },
+            onBrowserStateCleared: function() {
+                console.log('OverviewTool: State cleared');
             }
         }),
         new GraticuleTool({
@@ -386,114 +446,165 @@ const map = new Map({
             width: 2,
             showLabels: true,
             wrapX: true,
-            onClick: function() {
-                console.log('GraticuleTool clicked');
+            onInitiated: function() {
+                console.log('GraticuleTool: Initiated');
+            },
+            onClicked: function() {
+                console.log('GraticuleTool: Clicked');
             }
         }),
         new MagnifyTool({
-            onClick: function() {
-                console.log('MagnifyTool clicked');
+            onInitiated: function() {
+                console.log('MagnifyTool: Initiated');
+            },
+            onClicked: function() {
+                console.log('MagnifyTool: Clicked');
             }
         }),
         new ResetNorthTool({
-            onClick: function() {
-                console.log('ResetNorthTool clicked');
+            onInitiated: function() {
+                console.log('ResetNorthTool: Initiated');
+            },
+            onClicked: function() {
+                console.log('ResetNorthTool: Clicked');
             },
             onReset: function() {
-                console.log('Map north reset');
+                console.log('ResetNorthTool: North reset');
             }
         }),
         new CoordinatesTool({
-            onClick: function() {
-                console.log('CoordinatesTool clicked');
+            onInitiated: function() {
+                console.log('CoordinatesTool: Initiated');
+            },
+            onClicked: function() {
+                console.log('CoordinatesTool: Clicked');
             },
             onMapClicked: function(coordinates) {
-                console.log('You clicked at', coordinates);
+                console.log('CoordinatesTool: Map clicked at', coordinates);
             }
         }),
         new MyLocationTool({
             enableHighAccuracy: true,
             timeout: 10000,
             description: 'This is the location that the browser was able to find. It might not be your actual location.',
-            onClick: function() {
-                console.log('MyLocationTool clicked');
+            onInitiated: function() {
+                console.log('MyLocationTool: Initiated');
             },
-            onLocation: function(location) {
-                console.log('Location', location);
+            onClicked: function() {
+                console.log('MyLocationTool: Clicked');
+            },
+            onLocationFound: function(location) {
+                console.log('MyLocationTool: Location found', location);
             },
             onError: function(error) {
-                console.log('Location error', error);
+                console.log('MyLocationTool: Error', error);
             }
         }),
         new ImportVectorLayerTool({
-            onClick: function() {
-                console.log('ImportVectorLayerTool clicked');
+            onInitiated: function() {
+                console.log('ImportVectorLayerTool: Initiated');
+            },
+            onClicked: function() {
+                console.log('ImportVectorLayerTool: Clicked');
             },
             onImported: function(features) {
-                console.log('Imported', features);
+                console.log('ImportVectorLayerTool: Imported', features);
             },
             onError: function(filename, error) {
-                console.log('Error when importing file:', filename, error);
+                console.log('ImportVectorLayerTool: Error', filename, error);
             }
         }),
         new ScaleLineTool({
             units: 'metric',
-            onClick: function() {
-                console.log('ScaleLineTool clicked');
+            onInitiated: function() {
+                console.log('ScaleLineTool: Initiated');
+            },
+            onClicked: function() {
+                console.log('ScaleLineTool: Clicked');
             }
         }),
         new RefreshTool({
-            onClick: function() {
-                console.log('RefreshTool clicked');
+            onInitiated: function() {
+                console.log('RefreshTool: Initiated');
+            },
+            onClicked: function() {
+                console.log('RefreshTool: Clicked');
             }
         }),
         new ThemeTool({
-            onClick: function() {
-                console.log('ThemeTool clicked');
+            onInitiated: function() {
+                console.log('ThemeTool: Initiated');
+            },
+            onClicked: function() {
+                console.log('ThemeTool: Clicked');
+            },
+            onBrowserStateCleared: function() {
+                console.log('ThemeTool: State cleared');
             },
             onChanged: function(theme) {
-                console.log('Theme changed to', theme);
+                console.log('ThemeTool: Changed to', theme);
             }
         }),
         new DirectionTool({
-            onClick: function() {
-                console.log('DirectionTool clicked');
+            onInitiated: function() {
+                console.log('DirectionTool: Initiated');
+            },
+            onClicked: function() {
+                console.log('DirectionTool: Clicked');
+            },
+            onBrowserStateCleared: function() {
+                console.log('DirectionTool: State cleared');
             },
             onChanged: function(direction) {
-                console.log('Direction changed to', direction);
+                console.log('DirectionTool: Changed to', direction);
             }
         }),
         new InfoTool({
             title: 'Hey!', 
             content: '<p>This is a <strong>modal window</strong>, here you can place some text about your application or links to external resources.</p>',
-            onClick: function() {
-                console.log('InfoTool clicked');
+            onInitiated: function() {
+                console.log('InfoTool: Initiated');
+            },
+            onClicked: function() {
+                console.log('InfoTool: Clicked');
             }
         }),
         new NotificationTool({
-            onClick: function() {
-                console.log('NotificationTool clicked');
+            onInitiated: function() {
+                console.log('NotificationTool: Initiated');
+            },
+            onClicked: function() {
+                console.log('NotificationTool: Clicked');
             }
         }),
         new HelpTool({
             url: 'https://github.com/qulle/oltb',
             target: '_blank',
-            onClick: function() {
-                console.log('HelpTool clicked');
+            onInitiated: function() {
+                console.log('HelpTool: Initiated');
+            },
+            onClicked: function() {
+                console.log('HelpTool: Clicked');
             }
         }),
         new SettingsTool({
-            onClick: function() {
-                console.log('SettingsTool clicked');
+            onInitiated: function() {
+                console.log('SettingsTool: Initiated');
             },
-            onCleared: function() {
-                console.log('Settings cleared');
+            onClicked: function() {
+                console.log('SettingsTool: Clicked');
+            },
+            onBrowserStateCleared: function() {
+                console.log('SettingsTool: State cleared');
             }
         }),
         new DebugInfoTool({
             onlyWhenGetParameter: false,
-            onClick: function() {
-                console.log('DebugInfoTool clicked');
+            onInitiated: function() {
+                console.log('DebugInfoTool: Initiated');
+            },
+            onClicked: function() {
+                console.log('DebugInfoTool: Clicked');
             }
         }),
         new HiddenAboutTool(),
