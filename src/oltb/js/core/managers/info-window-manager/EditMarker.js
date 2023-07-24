@@ -29,6 +29,13 @@ const editMarker = function(InfoWindowManager, beforeMarker) {
     });
 }
 
+const addMarkerToMap = function(marker) {
+    const layerWrapper = LayerManager.getActiveFeatureLayer({
+        fallback: 'Markers'
+    });
+    layerWrapper.getLayer().getSource().addFeature(marker);
+}
+
 const onEditMarker = function(InfoWindowManager, beforeMarker, result) {
     InfoWindowManager.hideOverlay();
     
@@ -36,7 +43,9 @@ const onEditMarker = function(InfoWindowManager, beforeMarker, result) {
     // Easier then updating the existing marker with new data.
     LayerManager.removeFeatureFromLayer(beforeMarker);
 
-    const prettyCoordinates = toStringHDMS([result.longitude, result.latitude]);
+    const coordinates = [result.longitude, result.latitude];
+    const prettyCoordinates = toStringHDMS(coordinates);
+
     const infoWindow = {
         title: result.title,
         content: `
@@ -54,8 +63,8 @@ const onEditMarker = function(InfoWindowManager, beforeMarker, result) {
     };
     
     const afterMarker = new generateIconMarker({
-        lon: result.longitude,
-        lat: result.latitude,
+        lon: coordinates[0],
+        lat: coordinates[1],
         title: result.title,
         description: result.description,
         icon: result.icon,
@@ -64,11 +73,7 @@ const onEditMarker = function(InfoWindowManager, beforeMarker, result) {
         infoWindow: infoWindow
     });
 
-    const layerWrapper = LayerManager.getActiveFeatureLayer({
-        fallback: 'Markers'
-    });
-    
-    layerWrapper.getLayer().getSource().addFeature(afterMarker);
+    addMarkerToMap(afterMarker);
 
     window.dispatchEvent(new CustomEvent(Events.custom.featureEdited, {
         detail: {

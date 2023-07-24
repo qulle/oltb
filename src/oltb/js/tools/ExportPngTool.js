@@ -82,7 +82,7 @@ class ExportPngTool extends Control {
     // -------------------------------------------------------------------
 
     initDebugState() {
-        this.isDebug = UrlManager.getParameter(Config.urlParameters.debug) === 'true';
+        this.isDebug = UrlManager.getParameter(Config.urlParameter.debug) === 'true';
     }
 
     // -------------------------------------------------------------------

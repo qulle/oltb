@@ -143,49 +143,13 @@ class MyLocationTool extends Control {
             return;
         }
 
-        const lat = location.coords.latitude;
-        const lon = location.coords.longitude;
-        const prettyCoordinates = toStringHDMS([lon, lat]);
-
-        const infoWindow = {
-            title: this.options.title,
-            content: `
-                <p>${this.options.description}</p>
-            `,
-            footer: `
-                <span class="oltb-info-window__coordinates">${prettyCoordinates}</span>
-                <div class="oltb-info-window__buttons-wrapper">
-                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--delete oltb-tippy" title="Delete marker" id="${ID_PREFIX_INFO_WINDOW}-remove"></button>
-                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--crosshair oltb-tippy" title="Copy marker coordinates" id="${ID_PREFIX_INFO_WINDOW}-copy-coordinates" data-oltb-coordinates="${prettyCoordinates}"></button>
-                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--copy oltb-tippy" title="Copy marker text" id="${ID_PREFIX_INFO_WINDOW}-copy-text" data-oltb-copy="${this.options.description}"></button>
-                </div>
-            `
-        };
+        DOM.removeElement(this.loadingToast);
+        this.addMarker(location);
         
-        const marker = new generateIconMarker({
-            lon: lon,
-            lat: lat,
-            title: this.options.title,
-            description: this.options.description,
-            icon: 'person.filled',
-            infoWindow: infoWindow
-        });
-
-        const layerWrapper = LayerManager.addFeatureLayer({
-            name: this.options.title
-        });
-        layerWrapper.getLayer().getSource().addFeature(marker);
-
-        const zoom = 6;
-        goToView(map, [lon, lat], zoom);
-        InfoWindowManager.showOverlayDelayed(marker, fromLonLat([lon, lat]));
-
         // Note: Consumer callback
         if(this.options.onLocationFound instanceof Function) {
             this.options.onLocationFound(location);
         }
-
-        DOM.removeElement(this.loadingToast);
     }
 
     onError(error, toastPtr = Toast.error) {
@@ -208,35 +172,75 @@ class MyLocationTool extends Control {
     // # Section: Tool Actions
     // -------------------------------------------------------------------
 
+    setFocusToMarker(map, marker, coordinates, zoom) {
+        goToView(map, coordinates, zoom);
+        InfoWindowManager.showOverlayDelayed(marker, fromLonLat(coordinates));
+    }
+
+    addMarkerToMap(marker) {
+        const layerWrapper = LayerManager.addFeatureLayer({
+            name: this.options.title
+        });
+        layerWrapper.getLayer().getSource().addFeature(marker);
+    }
+
+    addMarker(location) {
+        const coordinates = [location.coords.longitude, location.coords.latitude];
+        const prettyCoordinates = toStringHDMS(coordinates);
+
+        const infoWindow = {
+            title: this.options.title,
+            content: `
+                <p>${this.options.description}</p>
+            `,
+            footer: `
+                <span class="oltb-info-window__coordinates">${prettyCoordinates}</span>
+                <div class="oltb-info-window__buttons-wrapper">
+                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--delete oltb-tippy" title="Delete marker" id="${ID_PREFIX_INFO_WINDOW}-remove"></button>
+                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--crosshair oltb-tippy" title="Copy marker coordinates" id="${ID_PREFIX_INFO_WINDOW}-copy-coordinates" data-oltb-coordinates="${prettyCoordinates}"></button>
+                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--copy oltb-tippy" title="Copy marker text" id="${ID_PREFIX_INFO_WINDOW}-copy-text" data-oltb-copy="${this.options.description}"></button>
+                </div>
+            `
+        };
+        
+        const marker = new generateIconMarker({
+            lon: coordinates[0],
+            lat: coordinates[1],
+            title: this.options.title,
+            description: this.options.description,
+            icon: 'person.filled',
+            infoWindow: infoWindow
+        });
+
+        this.addMarkerToMap(marker);
+        this.setFocusToMarker(this.getMap(), marker, coordinates, Config.marker.focusZoom);
+    }
+
     getGeoLocation() {
         if(this.loadingToast) {
             return;
         }
 
-        if(navigator.geolocation) {
-            this.loadingToast = Toast.info({
-                title: 'Searching',
-                message: 'Trying to find your location...', 
-                clickToRemove: false,
-                spinner: true,
-                onRemove: () => {
-                    this.loadingToast = undefined;
-                }
-            });
-
-            navigator.geolocation.getCurrentPosition(
-                this.onSuccess.bind(this), 
-                this.onError.bind(this), 
-                {
-                    enableHighAccuracy: this.options.enableHighAccuracy,
-                    timeout: this.options.timeout
-                }
-            );
-        }else { 
-            this.onError({
+        if(!navigator.geolocation) {
+            return this.onError({
                 message: 'Geolocation is not supported'
             }, Toast.error);
         }
+        
+        this.loadingToast = Toast.info({
+            title: 'Searching',
+            message: 'Trying to find your location...', 
+            clickToRemove: false,
+            spinner: true,
+            onRemove: () => {
+                this.loadingToast = undefined;
+            }
+        });
+
+        navigator.geolocation.getCurrentPosition(this.onSuccess.bind(this), this.onError.bind(this), {
+            enableHighAccuracy: this.options.enableHighAccuracy,
+            timeout: this.options.timeout
+        });
     }
 }
 

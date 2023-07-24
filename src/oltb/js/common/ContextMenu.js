@@ -44,7 +44,7 @@ class ContextMenu extends Control {
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
         this.menu = this.element;
 
-        ContextMenu.#isDebug = UrlManager.getParameter(Config.urlParameters.debug) === 'true';
+        ContextMenu.#isDebug = UrlManager.getParameter(Config.urlParameter.debug) === 'true';
         ContextMenu.#items.forEach((item) => {
             this.addMenuItem(item);
         });

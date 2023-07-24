@@ -555,7 +555,7 @@ class BookmarkTool extends Control {
         LogManager.logInformation(FILENAME, 'createUIBookmark', bookmark);        
 
         this.createUIBookmarkItem(bookmark);
-        this.createUIBookmarkMarker(bookmark);
+        this.addMarker(bookmark);
 
         if(!this.hasLocalStorageBookmarkById(bookmark.id)) {
             this.localStorage.bookmarks.push(bookmark);
@@ -690,9 +690,14 @@ class BookmarkTool extends Control {
         this.sortSortableDesc(this.sortableBookmarkStack);
     }
 
-    createUIBookmarkMarker(bookmark) {
+    // -------------------------------------------------------------------
+    // # Section: Tool Actions
+    // -------------------------------------------------------------------
+
+    addMarker(bookmark) {
         const coordinates = bookmark.coordinates;
         const prettyCoordinates = toStringHDMS(coordinates);
+
         const infoWindow = {
             title: bookmark.name,
             content: '',
@@ -720,10 +725,6 @@ class BookmarkTool extends Control {
 
         this.addMarkerToMap(marker);
     }
-
-    // -------------------------------------------------------------------
-    // # Section: Tool Actions
-    // -------------------------------------------------------------------
 
     addBookmark(name, coordinates) {
         const map = this.getMap();
@@ -804,7 +805,7 @@ class BookmarkTool extends Control {
 
         // Note: Easiest to delete and add a new Marker at the same location
         this.removeMarkerFromMap(bookmark.marker);
-        this.createUIBookmarkMarker(bookmark);
+        this.addMarker(bookmark);
 
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
 

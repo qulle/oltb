@@ -81,10 +81,7 @@ class HiddenMarkerTool extends Control {
     onWindowFeatureEdited(event) {
         // Note: Consumer callback
         if(this.options.onEdited instanceof Function) {
-            this.options.onEdited(
-                event.detail.before, 
-                event.detail.after
-            );
+            this.options.onEdited(event.detail.before, event.detail.after);
         }
     }
 
@@ -106,6 +103,13 @@ class HiddenMarkerTool extends Control {
     // -------------------------------------------------------------------
     // # Section: Tool Actions
     // -------------------------------------------------------------------
+
+    addMarkerToMap(marker) {
+        const layerWrapper = LayerManager.getActiveFeatureLayer({
+            fallback: 'Markers'
+        });
+        layerWrapper.getLayer().getSource().addFeature(marker);
+    }
 
     addMarker(result) {
         const coordinates = [
@@ -131,8 +135,8 @@ class HiddenMarkerTool extends Control {
         };
         
         const marker = new generateIconMarker({
-            lon: result.longitude,
-            lat: result.latitude,
+            lon: coordinates[0],
+            lat: coordinates[1],
             title: result.title,
             description: result.description,
             icon: result.icon,
@@ -141,11 +145,7 @@ class HiddenMarkerTool extends Control {
             infoWindow: infoWindow
         });
     
-        const layerWrapper = LayerManager.getActiveFeatureLayer({
-            fallback: 'Markers'
-        });
-                
-        layerWrapper.getLayer().getSource().addFeature(marker);
+        this.addMarkerToMap(marker);
 
         // Note: Consumer callback
         if(this.options.onAdded instanceof Function) {

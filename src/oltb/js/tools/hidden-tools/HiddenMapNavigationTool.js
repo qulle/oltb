@@ -203,7 +203,7 @@ class HiddenMapNavigationTool extends Control {
             return;
         }
 
-        this.addMarkerFromUrl();
+        this.parselUrlMarker(markerString);
     }
 
     onMoveEnd(event) {
@@ -232,69 +232,20 @@ class HiddenMapNavigationTool extends Control {
     }
 
     detectUrlMarker() {
-        const marker = UrlManager.getParameter(Config.urlParameters.marker, false);
+        const marker = UrlManager.getParameter(Config.urlParameter.marker, false);
         if(marker) {
             this.onCreateUrlMarker(marker);
         }
     }
 
-    addMarkerFromUrl() {
+    parselUrlMarker(markerString) {
+        LogManager.logDebug(FILENAME, 'parselUrlMarker', markerData);
+
         try {
-            const markerDataParsed = JSON.parse(markerString);
-            const markerData = _.merge(_.cloneDeep(DefaultUrlMarker), markerDataParsed);
+            const markerParsed = JSON.parse(markerString);
+            const markerData = _.merge(_.cloneDeep(DefaultUrlMarker), markerParsed);
 
-            LogManager.logDebug(FILENAME, 'onCreateUrlMarker', markerData);
-
-            // Colors given in URL can't contain hashtag unless encoded as %23
-            // Easier to prepend with hashtag after URL data has been fetched and parsed
-            markerData.fill = this.validateHexColor(markerData.fill);
-            markerData.stroke = this.validateHexColor(markerData.stroke);
-            markerData.projection = this.validateProjection(markerData.projection);
-
-            if(!this.hasProjection(markerData.projection)) {
-                return;
-            }
-
-            const coordinates = transform(
-                [Number(markerData.lon), Number(markerData.lat)], 
-                markerData.projection, 
-                Config.projection.wgs84
-            );
-
-            const prettyCoordinates = toStringHDMS(coordinates);
-            const infoWindow = {
-                title: markerData.title,
-                content: `
-                    <p>${markerData.description}</p>
-                `,
-                footer: `
-                    <span class="oltb-info-window__coordinates">${prettyCoordinates}</span>
-                    <div class="oltb-info-window__buttons-wrapper">
-                        <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--delete oltb-tippy" title="Delete marker" id="${ID_PREFIX_INFO_WINDOW}-remove"></button>
-                        <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--crosshair oltb-tippy" title="Copy marker coordinates" id="${ID_PREFIX_INFO_WINDOW}-copy-coordinates" data-oltb-coordinates="${prettyCoordinates}"></button>
-                        <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--copy oltb-tippy" title="Copy marker text" id="${ID_PREFIX_INFO_WINDOW}-copy-text" data-oltb-copy="${markerData.title}, ${markerData.description}"></button>
-                    </div>
-                `
-            };
-
-            const marker = new generateIconMarker({
-                lon: coordinates[0],
-                lat: coordinates[1],
-                title: markerData.title,
-                description: markerData.description,
-                icon: markerData.icon,
-                fill: markerData.fill,
-                stroke: markerData.stroke,
-                infoWindow: infoWindow
-            });
-
-            const layerWrapper = LayerManager.addFeatureLayer({
-                name: markerData.layerName
-            });
-            layerWrapper.getLayer().getSource().addFeature(marker);
-
-            goToView(map, coordinates, markerData.zoom);
-            InfoWindowManager.showOverlayDelayed(marker, fromLonLat(coordinates));
+            this.addMarker(markerData);
         }catch(error) {
             const errorMessage = 'Failed to parse URL marker';
             LogManager.logError(FILENAME, 'onCreateUrlMarker', {
@@ -306,7 +257,68 @@ class HiddenMapNavigationTool extends Control {
                 title: 'Error',
                 message: errorMessage
             }); 
+        } 
+    }
+
+    setFocusToMarker(map, marker, coordinates, zoom) {
+        goToView(map, coordinates, zoom);
+        InfoWindowManager.showOverlayDelayed(marker, fromLonLat(coordinates));
+    }
+
+    addMarkerToMap(marker, coordinates, layerName, zoom) {
+        const layerWrapper = LayerManager.addFeatureLayer({
+            name: layerName
+        });
+        layerWrapper.getLayer().getSource().addFeature(marker);
+    }
+
+    addMarker(markerData) {
+        // Colors given in URL can't contain hashtag unless encoded as %23
+        // Easier to prepend with hashtag after URL data has been fetched and parsed
+        markerData.fill = this.validateHexColor(markerData.fill);
+        markerData.stroke = this.validateHexColor(markerData.stroke);
+        markerData.projection = this.validateProjection(markerData.projection);
+
+        if(!this.hasProjection(markerData.projection)) {
+            return;
         }
+
+        const coordinates = [Number(markerData.lon), Number(markerData.lat)];
+        const transformedCoordinates = transform(
+            coordinates, 
+            markerData.projection, 
+            Config.projection.wgs84
+        );
+
+        const prettyCoordinates = toStringHDMS(transformedCoordinates);
+        const infoWindow = {
+            title: markerData.title,
+            content: `
+                <p>${markerData.description}</p>
+            `,
+            footer: `
+                <span class="oltb-info-window__coordinates">${prettyCoordinates}</span>
+                <div class="oltb-info-window__buttons-wrapper">
+                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--delete oltb-tippy" title="Delete marker" id="${ID_PREFIX_INFO_WINDOW}-remove"></button>
+                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--crosshair oltb-tippy" title="Copy marker coordinates" id="${ID_PREFIX_INFO_WINDOW}-copy-coordinates" data-oltb-coordinates="${prettyCoordinates}"></button>
+                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--copy oltb-tippy" title="Copy marker text" id="${ID_PREFIX_INFO_WINDOW}-copy-text" data-oltb-copy="${markerData.title}, ${markerData.description}"></button>
+                </div>
+            `
+        };
+
+        const marker = new generateIconMarker({
+            lon: transformedCoordinates[0],
+            lat: transformedCoordinates[1],
+            title: markerData.title,
+            description: markerData.description,
+            icon: markerData.icon,
+            fill: markerData.fill,
+            stroke: markerData.stroke,
+            infoWindow: infoWindow
+        });
+
+        this.addMarkerToMap(marker);
+        this.setFocusToMarker(this.getMap(), marker, coordinates, Config.marker.focusZoom);
     }
 
     showCoordinatesModal(map) {

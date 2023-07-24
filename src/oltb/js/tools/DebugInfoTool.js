@@ -77,7 +77,7 @@ class DebugInfoTool extends Control {
     // -------------------------------------------------------------------
 
     initDebugState() {
-        const isDebug = UrlManager.getParameter(Config.urlParameters.debug) === 'true';
+        const isDebug = UrlManager.getParameter(Config.urlParameter.debug) === 'true';
         if(!isDebug && this.options.onlyWhenGetParameter) {
             this.button.classList.add(`${CLASS_TOOL_BUTTON}--hidden`);
         }
