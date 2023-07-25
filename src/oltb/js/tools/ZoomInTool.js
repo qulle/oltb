@@ -47,7 +47,7 @@ class ZoomInTool extends Control {
             class: CLASS_TOOL_BUTTON,
             attributes: {
                 'type': 'button',
-                'data-tippy-content': `Zoom in (${ShortcutKeys.zoomInTool})`
+                'data-tippy-content': `Zoom In (${ShortcutKeys.zoomInTool})`
             },
             listeners: {
                 'click': this.onClickTool.bind(this)

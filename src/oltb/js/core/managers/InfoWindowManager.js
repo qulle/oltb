@@ -156,7 +156,7 @@ class InfoWindowManager {
                 color: '#369ACDFF',
                 width: 1.5
             })
-        })
+        });
 
         feature.setStyle(style);
         this.#lastFeature = feature;

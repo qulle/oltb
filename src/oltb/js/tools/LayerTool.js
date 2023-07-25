@@ -189,8 +189,8 @@ class LayerTool extends Control {
             <div id="${ID_PREFIX}-toolbox" class="${CLASS_TOOLBOX_SECTION}">
                 <div class="${CLASS_TOOLBOX_SECTION}__header">
                     <h4 class="${CLASS_TOOLBOX_SECTION}__title oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-map-toolbox-collapsed">
-                        Map layers
-                        <span class="${CLASS_TOOLBOX_SECTION}__icon oltb-tippy" title="Toggle section"></span>
+                        Map Layers
+                        <span class="${CLASS_TOOLBOX_SECTION}__icon oltb-tippy" title="Toggle Section"></span>
                     </h4>
                 </div>
                 <div class="${CLASS_TOOLBOX_SECTION}__groups" id="${ID_PREFIX}-map-toolbox-collapsed" style="display: ${this.localStorage[`${ID_PREFIX}-map-toolbox-collapsed`] ? 'none' : 'block'}">
@@ -198,7 +198,7 @@ class LayerTool extends Control {
                         !this.options.disableMapCreateLayerButton ? 
                         `
                             <div class="${CLASS_TOOLBOX_SECTION}__group">
-                                <button type="button" id="${ID_PREFIX}-map-stack-add-button" class="oltb-btn oltb-btn--green-mid oltb-w-100">Create map layer</button>
+                                <button type="button" id="${ID_PREFIX}-map-stack-add-button" class="oltb-btn oltb-btn--green-mid oltb-w-100">Create Map Layer</button>
                             </div>
                         ` : ''
                     }
@@ -208,8 +208,8 @@ class LayerTool extends Control {
                 </div>
                 <div class="${CLASS_TOOLBOX_SECTION}__header">
                     <h4 class="${CLASS_TOOLBOX_SECTION}__title oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-feature-toolbox-collapsed">
-                        Feature layers
-                        <span class="${CLASS_TOOLBOX_SECTION}__icon oltb-tippy" title="Toggle section"></span>
+                        Feature Layers
+                        <span class="${CLASS_TOOLBOX_SECTION}__icon oltb-tippy" title="Toggle Section"></span>
                     </h4>
                 </div>
                 <div class="${CLASS_TOOLBOX_SECTION}__groups" id="${ID_PREFIX}-feature-toolbox-collapsed" style="display: ${this.localStorage[`${ID_PREFIX}-feature-toolbox-collapsed`] ? 'none' : 'block'}">
@@ -218,8 +218,8 @@ class LayerTool extends Control {
                             !this.options.disableFeatureCreateLayerButton ? 
                             `
                                 <div class="oltb-input-button-group">
-                                    <input type="text" id="${ID_PREFIX}-feature-stack-add-text" class="oltb-input" placeholder="Layer name">
-                                    <button type="button" id="${ID_PREFIX}-feature-stack-add-button" class="oltb-btn oltb-btn--green-mid oltb-tippy" title="Create feature layer">
+                                    <input type="text" id="${ID_PREFIX}-feature-stack-add-text" class="oltb-input" placeholder="Layer Name">
+                                    <button type="button" id="${ID_PREFIX}-feature-stack-add-button" class="oltb-btn oltb-btn--green-mid oltb-tippy" title="Create Feature Layer">
                                         ${getIcon({
                                             path: SvgPaths.plus.stroked,
                                             width: 20,
@@ -735,6 +735,14 @@ class LayerTool extends Control {
             layerElement.classList.add(`${CLASS_TOOLBOX_LIST}__item--hidden`);
         }
 
+        if(!this.hasLocalStorageMapLayerById(layerWrapper.getId())) {
+            this.localStorage.mapLayers.push({
+                id: layerWrapper.getId(),
+                sortIndex: sortIndex,
+                isVisible: layer.getVisible()
+            });
+        }
+
         // Eventlistener to update the UI if the visibility of the layer is changed
         // Other tools may change a layers visibility and the UI must be updated in this event
         layer.on(Events.openLayers.propertyChange, function(event) {
@@ -782,7 +790,7 @@ class LayerTool extends Control {
         const layerHandle = DOM.createElement({
             element: 'div',
             class: `${CLASS_TOOLBOX_LIST}__handle oltb-tippy`,
-            title: 'Drag to sort'
+            title: 'Drag To Sort'
         });
 
         DOM.appendChildren(rightWrapper, [
@@ -818,6 +826,9 @@ class LayerTool extends Control {
         });
 
         const layer = layerWrapper.getLayer();
+        if(!layer.getVisible()) {
+            layerElement.classList.add(`${CLASS_TOOLBOX_LIST}__item--hidden`);
+        }
         
         if(!this.hasLocalStorageFeatureLayerById(layerWrapper.getId())) {
             this.localStorage.featureLayers.push({
@@ -828,10 +839,6 @@ class LayerTool extends Control {
         }
 
         LayerManager.setFeatureLayerZIndex(layerId, sortIndex);
-        
-        if(!layer.getVisible()) {
-            layerElement.classList.add(`${CLASS_TOOLBOX_LIST}__item--hidden`);
-        }
 
         // Eventlistener to update the UI if the visibility of the layer is changed
         // Other tools may change a layers visibility and the UI must be updated in this event
@@ -893,7 +900,7 @@ class LayerTool extends Control {
         const layerHandle = DOM.createElement({
             element: 'div',
             class: `${CLASS_TOOLBOX_LIST}__handle oltb-tippy`,
-            title: 'Drag to sort'
+            title: 'Drag To Sort'
         });
 
         DOM.appendChildren(rightWrapper, [

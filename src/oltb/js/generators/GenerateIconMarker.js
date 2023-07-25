@@ -5,20 +5,27 @@ import { fromLonLat } from 'ol/proj';
 import { SvgPaths, getIcon } from '../core/icons/GetIcon';
 import { hasNestedProperty } from '../helpers/browser/HasNestedProperty';
 import { FeatureProperties } from '../helpers/constants/FeatureProperties';
-import { Circle, Fill, Icon, Stroke, Style } from 'ol/style';
+import { Circle, Fill, Icon, Text, Stroke, Style } from 'ol/style';
 
 const DefaultOptions = Object.freeze({
     lon: undefined,
     lat: undefined,
-    title: undefined,
-    description: undefined,
+    title: '',
+    description: '',
     width: 14,
     radius: 14,
-    fill: '#0166A5FF',
-    stroke: '#FFFFFFFF',
+    markerFill: '#0166A5FF',
+    markerStroke: '#FFFFFFFF',
     icon: 'geoPin.filled',
     iconWidth: 14,
     iconHeight: 14,
+    shouldRenderLabel: true,
+    shouldRenderLabelUpperCase: false,
+    label: '',
+    labelFill: '#FFFFFF',
+    labelStroke: '#3B4352CC',
+    labelStrokeWidth: 12,
+    labelFont: '14px Calibri',
     notSelectable: true,
     infoWindow: undefined,
     replaceHashtag: true
@@ -50,27 +57,54 @@ const generateIconMarker = function(options = {}) {
         replaceHashtag: options.replaceHashtag
     });
 
-    marker.setStyle([
-        new Style({
-            image: new Circle({
-                radius: options.radius,
-                fill: new Fill({
-                    color: options.fill
-                }),
-                stroke: new Stroke({
-                    color: `${options.fill.slice(0, -2)}66`,
-                    width: options.width,
-                })
-            })
-        }), 
-        new Style({
-            image: new Icon({
-                src: `data:image/svg+xml;utf8,${icon}`,
-                color: options.stroke
+    const circleStyle = new Style({
+        image: new Circle({
+            radius: options.radius,
+            fill: new Fill({
+                color: options.markerFill
+            }),
+            stroke: new Stroke({
+                color: `${options.markerFill.slice(0, -2)}66`,
+                width: options.width,
             })
         })
-    ]);
+    });
 
+    const iconStyle = new Style({
+        image: new Icon({
+            src: `data:image/svg+xml;utf8,${icon}`,
+            color: options.markerStroke
+        })
+    });
+
+    const label = options.shouldRenderLabelUpperCase 
+        ? options.label.toUpperCase() 
+        : options.label;
+    
+    const labelStyle =  new Style({
+        text: new Text({
+            font: options.labelFont,
+            text: label,
+            placement: 'point',
+            fill: new Fill({
+                color: options.labelFill
+            }),
+            stroke: new Stroke({
+                color: options.labelStroke,
+                width: options.labelStrokeWidth
+            }),
+            offsetY: -(options.radius * 2.5)
+        })
+    });
+
+    // Note: Circle- and Icon Style is always used
+    const style = [circleStyle, iconStyle];
+
+    if(options.shouldRenderLabel) {
+        style.push(labelStyle);
+    }
+
+    marker.setStyle(style);
     marker.setProperties({
         oltb: {
             lon: options.lon,
@@ -82,12 +116,17 @@ const generateIconMarker = function(options = {}) {
                 icon: options.icon,
                 title: options.title,
                 description: options.description,
+                label: options.label
             },
             style: {
                 width: options.width,
                 radius: options.radius,
-                fill: options.fill,
-                stroke: options.stroke
+                markerFill: options.markerFill,
+                markerStroke: options.markerStroke,
+                labelFill: options.labelFill,
+                labelStroke: options.labelStroke,
+                labelStrokeWidth: options.labelStrokeWidth,
+                labelFont: options.labelFont
             }
         }
     });

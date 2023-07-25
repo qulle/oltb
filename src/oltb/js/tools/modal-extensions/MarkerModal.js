@@ -16,8 +16,8 @@ const DefaultOptions = Object.freeze({
     coordinates: [0, 0],
     title: 'Marker',
     description: '',
-    fill: '#0166A5FF',
-    stroke: '#FFFFFFFF',
+    markerFill: '#0166A5FF',
+    markerStroke: '#FFFFFFFF',
     icon: 'geoPin.filled',
     maximized: false,
     onClose: undefined,
@@ -86,18 +86,18 @@ class MarkerModal extends ModalBase {
             value: this.options.coordinates[0],
         });
 
-        const [ fillWrapper, fillInput ] = createUIColorInput({
+        const [ markerFillWrapper, markerFillInput ] = createUIColorInput({
             idPrefix: ID_PREFIX,
-            idPostfix: '-fill',
-            text: 'Fill color',
-            color: this.options.fill,
+            idPostfix: '-marker-fill',
+            text: 'Marker Fill Color',
+            color: this.options.markerFill,
         });
 
-        const [ strokeWrapper, strokeInput ] = createUIColorInput({
+        const [ markerStrokeWrapper, markerStrokeInput ] = createUIColorInput({
             idPrefix: ID_PREFIX,
-            idPostfix: '-stroke',
-            text: 'Stroke color',
-            color: this.options.stroke,
+            idPostfix: '-marker-stroke',
+            text: 'Marker Stroke Color',
+            color: this.options.markerStroke,
         });
 
         const buttonsWrapper = DOM.createElement({
@@ -120,8 +120,8 @@ class MarkerModal extends ModalBase {
                         icon: iconSelect.value.trim(),
                         latitude: parseFloat(latInput.value.trim()),
                         longitude: parseFloat(lonInput.value.trim()),
-                        fill: fillInput.getAttribute('data-oltb-color'),
-                        stroke: strokeInput.getAttribute('data-oltb-color')
+                        markerFill: markerFillInput.getAttribute('data-oltb-color'),
+                        markerStroke: markerStrokeInput.getAttribute('data-oltb-color')
                     };
         
                     this.close();
@@ -163,8 +163,8 @@ class MarkerModal extends ModalBase {
             iconWrapper,
             latWrapper,
             lonWrapper,
-            fillWrapper,
-            strokeWrapper,
+            markerFillWrapper,
+            markerStrokeWrapper,
             buttonsWrapper
         ]);
 

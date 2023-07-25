@@ -68,7 +68,7 @@ class CoordinatesTool extends Control {
             class: CLASS_TOOL_BUTTON,
             attributes: {
                 'type': 'button',
-                'data-tippy-content': `Show coordinates (${ShortcutKeys.coordinatesTool})`
+                'data-tippy-content': `Show Coordinates (${ShortcutKeys.coordinatesTool})`
             },
             listeners: {
                 'click': this.onClickTool.bind(this)
@@ -119,16 +119,16 @@ class CoordinatesTool extends Control {
             <div id="${ID_PREFIX}-toolbox" class="${CLASS_TOOLBOX_SECTION}">
                 <div class="${CLASS_TOOLBOX_SECTION}__header">
                     <h4 class="${CLASS_TOOLBOX_SECTION}__title oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">
-                        Coordinates
-                        <span class="${CLASS_TOOLBOX_SECTION}__icon oltb-tippy" title="Toggle section"></span>
+                        Coordinates Tool
+                        <span class="${CLASS_TOOLBOX_SECTION}__icon oltb-tippy" title="Toggle Section"></span>
                     </h4>
                 </div>
                 <div class="${CLASS_TOOLBOX_SECTION}__groups" id="${ID_PREFIX}-toolbox-collapsed" style="display: ${this.localStorage.isCollapsed ? 'none' : 'block'}">
                     <div class="${CLASS_TOOLBOX_SECTION}__group">
                         <label class="oltb-label" for="${ID_PREFIX}-format">Format</label>
                         <select id="${ID_PREFIX}-format" class="oltb-select">
-                            <option value="DD">Decimal degrees</option>
-                            <option value="DMS">Degrees, minutes, seconds</option>
+                            <option value="DD">Decimal Degrees</option>
+                            <option value="DMS">Degrees, Minutes, Seconds</option>
                         </select>
                     </div>
                     <div class="${CLASS_TOOLBOX_SECTION}__group">
@@ -149,12 +149,12 @@ class CoordinatesTool extends Control {
     initSettings() {
         SettingsManager.addSetting(Settings.copyCoordinatesOnClick, {
             state: true, 
-            text: 'Copy coordinates on click'
+            text: 'Copy Coordinates On Click'
         });
 
         SettingsManager.addSetting(Settings.updateToolboxCoordinatesOnHover, {
             state: true, 
-            text: 'Update toolbox coordinates when hover'
+            text: 'Update Toolbox Coordinates When Hover'
         });
     }
 

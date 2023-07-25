@@ -49,7 +49,7 @@ class ImportVectorLayerTool extends Control {
             class: CLASS_TOOL_BUTTON,
             attributes: {
                 'type': 'button',
-                'data-tippy-content': `Import Vector layer (${ShortcutKeys.importVectorLayerTool})`
+                'data-tippy-content': `Import Vector Layer (${ShortcutKeys.importVectorLayerTool})`
             },
             listeners: {
                 'click': this.onClickTool.bind(this)

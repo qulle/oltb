@@ -13,37 +13,37 @@ const DefaultSettings = new Map([
     [
         Settings.mouseWheelZoom, {
             state: false, 
-            text: 'Enable zooming using mousewheel only'
+            text: 'Enable Zooming Using Mousewheel Only'
         }
     ], [
         Settings.altShiftDragRotate, {
             state: true, 
-            text: 'Enable rotate of map using Shift + Alt + Drag'
+            text: 'Enable Rotate Map Using Shift + Alt + Drag'
         }
     ], [
         Settings.dragPan, {
             state: true, 
-            text: 'Enable dragging using mouse only'
+            text: 'Enable Dragging Using Mouse Only'
         }
     ], [
         Settings.keyboardZoom, {
             state: true, 
-            text: 'Enable zooming using keyboard'
+            text: 'Enable Zooming Using Keyboard'
         }
     ], [
         Settings.keyboardPan, {
             state: true, 
-            text: 'Enable panning using keyboard'
+            text: 'Enable Panning Using Keyboard'
         }
     ], [
         Settings.selectVectorMapShapes, {
             state: false, 
-            text: 'Enable select of shapes in vector map layers'
+            text: 'Enable Select Shapes In Vector Map Layers'
         }
     ], [
         Settings.alwaysNewLayers, {
             state: false, 
-            text: 'Always create new layer when selecting tool'
+            text: 'Always Create New Layer When Selecting Tool'
         }
     ],
 ]);

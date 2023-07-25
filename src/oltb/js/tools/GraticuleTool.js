@@ -56,7 +56,7 @@ class GraticuleTool extends Control {
             class: CLASS_TOOL_BUTTON,
             attributes: {
                 'type': 'button',
-                'data-tippy-content': `Show graticule (${ShortcutKeys.graticuleTool})`
+                'data-tippy-content': `Show Graticule (${ShortcutKeys.graticuleTool})`
             },
             listeners: {
                 'click': this.onClickTool.bind(this)

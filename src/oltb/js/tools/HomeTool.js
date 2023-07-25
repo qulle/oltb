@@ -53,7 +53,7 @@ class HomeTool extends Control {
             class: CLASS_TOOL_BUTTON,
             attributes: {
                 'type': 'button',
-                'data-tippy-content': `Zoom home (${ShortcutKeys.homeTool})`
+                'data-tippy-content': `Zoom Home (${ShortcutKeys.homeTool})`
             },
             listeners: {
                 'click': this.onClickTool.bind(this)

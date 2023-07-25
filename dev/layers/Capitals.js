@@ -16,8 +16,8 @@ const LayerWrapper = LayerManager.addFeatureLayer({
     isSilent: true
 });
 
-const getFillColor = function(continentName) {
-    const fillColors = Object.freeze({
+const getMarkerFillColor = function(continentName) {
+    const colors = Object.freeze({
         'Europe': '#5B88D6FF',
         'Africa': '#68B9E5FF',
         'Antarctica': '#3CAEA3FF',
@@ -30,7 +30,7 @@ const getFillColor = function(continentName) {
         'US': '#9085E4FF'
     });
 
-    return fillColors[continentName] || '#6397C2FF';
+    return colors[continentName] || '#6397C2FF';
 }
 
 const parseGeoJson = function(data) {
@@ -47,8 +47,7 @@ const parseGeoJson = function(data) {
         const capitalName = capital.properties.capitalName;
         const continentName = capital.properties.continentName;
 
-        const fill = getFillColor(continentName);
-
+        const markerFill = getMarkerFillColor(continentName);
         const description = `
             ${countryName} is a country located in ${continentName}.
             Its capital is ${capitalName} and its country code is ${countryCode}
@@ -78,8 +77,13 @@ const parseGeoJson = function(data) {
                 lat: coordinates[1],
                 title: countryName,
                 description: description,
+                markerFill: markerFill,
+                label: countryName,
+                labelFill: '#FFFFFF',
+                labelStroke: '#3B4352CC',
+                labelStrokeWidth: 12,
+                labelFont: '14px Calibri',
                 icon: 'geoMarker.filled',
-                fill: fill,
                 notSelectable: true,
                 infoWindow: infoWindow
             })

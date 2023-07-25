@@ -28,6 +28,8 @@ const DefaultOptions = Object.freeze({
     enableHighAccuracy: true,
     timeout: 10000,
     description: 'This is the location that the browser was able to find. It might not be your actual location.',
+    shouldRenderMarkerLabel: true,
+    shouldRenderMarkerLabelUpperCase: false,
     onInitiated: undefined,
     onClicked: undefined,
     onLocationFound: undefined,
@@ -144,7 +146,10 @@ class MyLocationTool extends Control {
         }
 
         DOM.removeElement(this.loadingToast);
-        this.addMarker(location);
+        
+        const coordinates = [location.coords.longitude, location.coords.latitude];
+        const marker = this.addIconMarker(coordinates);
+        this.setFocusToMarker(map, marker, coordinates, Config.marker.focusZoom);
         
         // Note: Consumer callback
         if(this.options.onLocationFound instanceof Function) {
@@ -184,10 +189,8 @@ class MyLocationTool extends Control {
         layerWrapper.getLayer().getSource().addFeature(marker);
     }
 
-    addMarker(location) {
-        const coordinates = [location.coords.longitude, location.coords.latitude];
+    addIconMarker(coordinates) {
         const prettyCoordinates = toStringHDMS(coordinates);
-
         const infoWindow = {
             title: this.options.title,
             content: `
@@ -208,12 +211,16 @@ class MyLocationTool extends Control {
             lat: coordinates[1],
             title: this.options.title,
             description: this.options.description,
+            label: this.options.title,
+            shouldRenderLabel: this.options.shouldRenderMarkerLabel,
+            shouldRenderLabelUpperCase: this.options.shouldRenderMarkerLabelUpperCase,
             icon: 'person.filled',
             infoWindow: infoWindow
         });
 
         this.addMarkerToMap(marker);
-        this.setFocusToMarker(this.getMap(), marker, coordinates, Config.marker.focusZoom);
+
+        return marker;
     }
 
     getGeoLocation() {

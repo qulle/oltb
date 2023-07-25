@@ -202,7 +202,7 @@ class NotificationTool extends Control {
                     v${Config.toolbar.version}
                 </a>
             </p>
-            ${this.hasLatestVersionInfo() 
+            ${this.hasLatestVersionInfo(notification) 
                 ? `
                     <h3>🚀 Latest version</h3>
                     <p>
@@ -212,13 +212,13 @@ class NotificationTool extends Control {
                     </p>
                 ` : ''
             }
-            ${this.hasFeaturesUnderDevelopment()
+            ${this.hasFeaturesUnderDevelopment(notification)
                 ? `
                     <h3>💡 New features under development</h3>
                     ${notification.features}
                 ` : ''
             }
-            ${this.hasError()
+            ${this.hasError(notification)
                 ? `
                     <h3>📡 Fetch error</h3>
                     <p>${notification.error}</p>

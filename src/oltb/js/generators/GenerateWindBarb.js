@@ -2,24 +2,31 @@ import _ from 'lodash';
 import { Point } from 'ol/geom';
 import { Feature } from 'ol';
 import { fromLonLat } from 'ol/proj';
-import { Icon, Style } from 'ol/style';
 import { getWindBarb } from '../core/icons/GetWindBarb';
 import { degreesToRadians } from '../helpers/Conversions';
 import { FeatureProperties } from '../helpers/constants/FeatureProperties';
+import { Fill, Icon, Text, Stroke, Style } from 'ol/style';
 
 const DefaultOptions = Object.freeze({
     lon: undefined,
     lat: undefined,
-    title: undefined,
-    description: undefined,
+    title: '',
+    description: '',
     width: 250,
     height: 250,
-    fill: '#3B4352FF',
-    stroke: '#3B4352FF',
+    markerFill: '#3B4352FF',
+    markerStroke: '#3B4352FF',
+    markerStrokeWidth: 3,
     windSpeed: 0,
     rotation: 0,
-    strokeWidth: 3,
     scale: 1,
+    shouldRenderLabel: true,
+    shouldRenderLabelUpperCase: false,
+    label: '',
+    labelFill: '#FFFFFF',
+    labelStroke: '#3B4352CC',
+    labelStrokeWidth: 12,
+    labelFont: '14px Calibri',
     notSelectable: true,
     infoWindow: undefined,
     replaceHashtag: true
@@ -39,22 +46,53 @@ const generateWindBarb = function(options = {}) {
         windSpeed: options.windSpeed,
         width: options.width,
         height: options.height,
-        fill: options.fill,
-        stroke: options.stroke,
-        strokeWidth: options.strokeWidth,
+        fill: options.markerFill,
+        stroke: options.markerStroke,
+        strokeWidth: options.markerStrokeWidth,
         replaceHashtag: options.replaceHashtag
     });
 
-    windBarb.setStyle([
-        new Style({
-            image: new Icon({
-                src: `data:image/svg+xml;utf8,${icon}`,
-                rotation: degreesToRadians(options.rotation),
-                scale: options.scale
-            })
+    const iconStyle = new Style({
+        image: new Icon({
+            src: `data:image/svg+xml;utf8,${icon}`,
+            rotation: degreesToRadians(options.rotation),
+            scale: options.scale
         })
-    ]);
+    });
 
+    const label = options.shouldRenderLabelUpperCase 
+        ? options.label.toUpperCase() 
+        : options.label;
+
+    const labelOffsetY = 20;
+    const labelOffsetDirection = (
+        options.rotation >= 90 && options.rotation <= 270
+    ) ? -1 : 1;
+
+    const labelStyle =  new Style({
+        text: new Text({
+            font: options.labelFont,
+            text: label,
+            placement: 'point',
+            fill: new Fill({
+                color: options.labelFill
+            }),
+            stroke: new Stroke({
+                color: options.labelStroke,
+                width: options.labelStrokeWidth
+            }),
+            offsetY: labelOffsetY * labelOffsetDirection
+        })
+    });
+
+    // Note: Icon Style is always used
+    const style = [iconStyle];
+
+    if(options.shouldRenderLabel) {
+        style.push(labelStyle);
+    }
+
+    windBarb.setStyle(style);
     windBarb.setProperties({
         oltb: {
             lon: options.lon,
@@ -66,13 +104,18 @@ const generateWindBarb = function(options = {}) {
                 windSpeed: options.windSpeed,
                 title: options.title,
                 description: options.description,
+                label: options.label,
             },
             style: {
                 width: options.width,
                 height: options.height,
-                fill: options.fill,
-                stroke: options.stroke,
-                strokeWidth: options.strokeWidth
+                markerFill: options.markerFill,
+                markerStroke: options.markerStroke,
+                markerStrokeWidth: options.markerStrokeWidth,
+                labelFill: options.labelFill,
+                labelStroke: options.labelStroke,
+                labelStrokeWidth: options.labelStrokeWidth,
+                labelFont: options.labelFont
             }
         }
     });

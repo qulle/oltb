@@ -26,7 +26,7 @@ class DebugInfoModal extends ModalBase {
         LogManager.logDebug(FILENAME, 'constructor', 'init');
 
         super(
-            'Debug information', 
+            'Debug Information', 
             DefaultOptions.maximized, 
             options.onClose
         );
@@ -52,11 +52,11 @@ class DebugInfoModal extends ModalBase {
 
         [
             {
-                name: 'Log map to browser console',
+                name: 'Log Map To Browser Console',
                 action: 'log.map.to.console'
             },
             {
-                name: 'Clear event log',
+                name: 'Clear Event Log',
                 action: 'clear.event.log'
             }
         ].forEach((item) => {
@@ -127,7 +127,7 @@ class DebugInfoModal extends ModalBase {
                 width: 16,
                 height: 16,
             }),
-            title: 'Toggle section',
+            title: 'Toggle Section',
             class: 'oltb-debug__toggle oltb-btn oltb-btn--blank oltb-tippy',
             attributes: {
                 'type': 'button'
@@ -288,7 +288,7 @@ class DebugInfoModal extends ModalBase {
                 width: 16,
                 height: 16,
             }),
-            title: 'Toggle section',
+            title: 'Toggle Section',
             class: 'oltb-log__toggle oltb-btn oltb-btn--blank oltb-tippy',
             attributes: {
                 'type': 'button'

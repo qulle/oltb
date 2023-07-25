@@ -39,6 +39,8 @@ const INDEX_OFFSET = 1;
 
 const DefaultOptions = Object.freeze({
     markerLayerVisibleOnLoad: true,
+    shouldRenderMarkerLabel: true,
+    shouldRenderMarkerLabelUpperCase: false,
     bookmarks: [],
     onInitiated: undefined,
     onClicked: undefined,
@@ -151,13 +153,13 @@ class BookmarkTool extends Control {
                 <div class="${CLASS_TOOLBOX_SECTION}__header">
                     <h4 class="${CLASS_TOOLBOX_SECTION}__title oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">
                         Bookmarks
-                        <span class="${CLASS_TOOLBOX_SECTION}__icon oltb-tippy" title="Toggle section"></span>
+                        <span class="${CLASS_TOOLBOX_SECTION}__icon oltb-tippy" title="Toggle Section"></span>
                     </h4>
                 </div>
                 <div class="${CLASS_TOOLBOX_SECTION}__groups" id="${ID_PREFIX}-toolbox-collapsed" style="display: ${this.localStorage.isCollapsed ? 'none' : 'block'}">
                     <div class="${CLASS_TOOLBOX_SECTION}__group">
                         <div class="oltb-input-button-group">
-                            <input type="text" id="${ID_PREFIX}-add-text" class="oltb-input" placeholder="Bookmark name">
+                            <input type="text" id="${ID_PREFIX}-add-text" class="oltb-input" placeholder="Bookmark Name">
                             <button type="button" id="${ID_PREFIX}-add-button" class="oltb-btn oltb-btn--green-mid oltb-tippy" title="Add Bookmark">
                                 ${getIcon({
                                     path: SvgPaths.plus.stroked,
@@ -555,7 +557,7 @@ class BookmarkTool extends Control {
         LogManager.logInformation(FILENAME, 'createUIBookmark', bookmark);        
 
         this.createUIBookmarkItem(bookmark);
-        this.addMarker(bookmark);
+        this.addIconMarker(bookmark);
 
         if(!this.hasLocalStorageBookmarkById(bookmark.id)) {
             this.localStorage.bookmarks.push(bookmark);
@@ -675,7 +677,7 @@ class BookmarkTool extends Control {
         const layerHandle = DOM.createElement({
             element: 'div',
             class: `${CLASS_TOOLBOX_LIST}__handle oltb-tippy`,
-            title: 'Drag to sort'
+            title: 'Drag To Sort'
         });
 
         DOM.appendChildren(rightWrapper, [
@@ -694,7 +696,7 @@ class BookmarkTool extends Control {
     // # Section: Tool Actions
     // -------------------------------------------------------------------
 
-    addMarker(bookmark) {
+    addIconMarker(bookmark) {
         const coordinates = bookmark.coordinates;
         const prettyCoordinates = toStringHDMS(coordinates);
 
@@ -715,15 +717,20 @@ class BookmarkTool extends Control {
             lat: coordinates[1],
             title: bookmark.name,
             description: '',
+            label: bookmark.name,
+            shouldRenderLabel: this.options.shouldRenderMarkerLabel,
+            shouldRenderLabelUpperCase: this.options.shouldRenderMarkerLabelUpperCase,
             icon: 'bookmarkStar.filled',
-            fill: '#3B4352FF',
-            stroke: '#FFFFFFFF',
+            markerFill: '#3B4352FF',
+            markerStroke: '#FFFFFFFF',
             infoWindow: infoWindow
         });
 
         bookmark.marker = marker;
 
         this.addMarkerToMap(marker);
+
+        return marker;
     }
 
     addBookmark(name, coordinates) {
@@ -805,7 +812,7 @@ class BookmarkTool extends Control {
 
         // Note: Easiest to delete and add a new Marker at the same location
         this.removeMarkerFromMap(bookmark.marker);
-        this.addMarker(bookmark);
+        this.addIconMarker(bookmark);
 
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
 

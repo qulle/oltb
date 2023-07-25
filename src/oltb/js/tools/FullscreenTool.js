@@ -183,8 +183,8 @@ class FullscreenTool extends Control {
 
     getToolTippyContent() {
         return isFullScreen() 
-            ? 'Exit fullscreen' 
-            : 'Enter fullscreen';
+            ? 'Exit Fullscreen' 
+            : 'Enter Fullscreen';
     }
 
     getToolIcon() {

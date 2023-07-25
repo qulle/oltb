@@ -26,7 +26,7 @@ const DefaultOptions = Object.freeze({
 const DirectionData = Object.freeze({
     col: Object.freeze({
         class: 'col',
-        tippyContent: 'Horizontal toolbar',
+        tippyContent: 'Horizontal Toolbar',
         icon: getIcon({
             path: SvgPaths.symmetryHorizontal.mixed,
             class: `${CLASS_TOOL_BUTTON}__icon`
@@ -34,7 +34,7 @@ const DirectionData = Object.freeze({
     }),
     row: Object.freeze({
         class: 'row',
-        tippyContent: 'Vertical toolbar',
+        tippyContent: 'Vertical Toolbar',
         icon: getIcon({
             path: SvgPaths.symmetryVertical.mixed,
             class: `${CLASS_TOOL_BUTTON}__icon`

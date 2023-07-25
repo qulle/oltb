@@ -61,7 +61,7 @@ class SplitViewTool extends Control {
             class: CLASS_TOOL_BUTTON,
             attributes: {
                 'type': 'button',
-                'data-tippy-content': `Split view (${ShortcutKeys.splitViewTool})`
+                'data-tippy-content': `Split View (${ShortcutKeys.splitViewTool})`
             },
             listeners: {
                 'click': this.onClickTool.bind(this)
@@ -121,21 +121,21 @@ class SplitViewTool extends Control {
             <div id="${ID_PREFIX}-toolbox" class="${CLASS_TOOLBOX_SECTION}">
                 <div class="${CLASS_TOOLBOX_SECTION}__header">
                     <h4 class="${CLASS_TOOLBOX_SECTION}__title oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">
-                        Split view
-                        <span class="${CLASS_TOOLBOX_SECTION}__icon oltb-tippy" title="Toggle section"></span>
+                        Split View
+                        <span class="${CLASS_TOOLBOX_SECTION}__icon oltb-tippy" title="Toggle Section"></span>
                     </h4>
                 </div>
                 <div class="${CLASS_TOOLBOX_SECTION}__groups" id="${ID_PREFIX}-toolbox-collapsed" style="display: ${this.localStorage.isCollapsed ? 'none' : 'block'}">
                     <div class="${CLASS_TOOLBOX_SECTION}__group">
-                        <label class="oltb-label" for="${ID_PREFIX}-left-src">Left side</label>
+                        <label class="oltb-label" for="${ID_PREFIX}-left-src">Left Side</label>
                         <select id="${ID_PREFIX}-left-src" class="oltb-select"></select>
                     </div>
                     <div class="${CLASS_TOOLBOX_SECTION}__group">
-                        <label class="oltb-label" for="${ID_PREFIX}-src">Right side</label>
+                        <label class="oltb-label" for="${ID_PREFIX}-src">Right Side</label>
                         <select id="${ID_PREFIX}-right-src" class="oltb-select"></select>
                     </div>
                     <div class="${CLASS_TOOLBOX_SECTION}__group">
-                        <button type="button" id="${ID_PREFIX}-swap-button" class="oltb-btn oltb-btn--green-mid oltb-w-100">Swap sides</button>
+                        <button type="button" id="${ID_PREFIX}-swap-button" class="oltb-btn oltb-btn--green-mid oltb-w-100">Swap Sides</button>
                     </div>
                 </div>
             </div>
@@ -352,7 +352,7 @@ class SplitViewTool extends Control {
             return;
         }
 
-        this.preRender(event);
+        this.preRender(event, map);
     }
 
     onPostRender(event) {
@@ -363,7 +363,7 @@ class SplitViewTool extends Control {
     // # Section: Tool Actions
     // -------------------------------------------------------------------
 
-    preRender(event) {
+    preRender(event, map) {
         const context = event.context;
         const mapSize = map.getSize();
 

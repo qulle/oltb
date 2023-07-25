@@ -47,7 +47,7 @@ class DebugInfoTool extends Control {
             class: CLASS_TOOL_BUTTON,
             attributes: {
                 'type': 'button',
-                'data-tippy-content': `Debug info (${ShortcutKeys.debugInfoTool})`
+                'data-tippy-content': `Debug Info (${ShortcutKeys.debugInfoTool})`
             },
             listeners: {
                 'click': this.onClickTool.bind(this)

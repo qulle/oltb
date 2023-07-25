@@ -25,7 +25,7 @@ const DefaultOptions = Object.freeze({
 const ThemesData = Object.freeze({
     light: Object.freeze({
         class: 'light',
-        tippyContent: 'Dark theme',
+        tippyContent: 'Dark Theme',
         icon: getIcon({
             path: SvgPaths.moonStars.stroked,
             class: `${CLASS_TOOL_BUTTON}__icon`
@@ -33,7 +33,7 @@ const ThemesData = Object.freeze({
     }),
     dark: Object.freeze({
         class: 'dark',
-        tippyContent: 'Light theme',
+        tippyContent: 'Light Theme',
         icon: getIcon({
             path: SvgPaths.sun.stroked,
             class: `${CLASS_TOOL_BUTTON}__icon`

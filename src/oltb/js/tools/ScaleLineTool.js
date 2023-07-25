@@ -51,7 +51,7 @@ class ScaleLineTool extends Control {
             class: CLASS_TOOL_BUTTON,
             attributes: {
                 'type': 'button',
-                'data-tippy-content': `Scale line (${ShortcutKeys.scaleLineTool})`
+                'data-tippy-content': `Scale Line (${ShortcutKeys.scaleLineTool})`
             },
             listeners: {
                 'click': this.onClickTool.bind(this)

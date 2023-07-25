@@ -99,7 +99,7 @@ class HiddenMapNavigationTool extends Control {
             icon: this.coordinatesIcon,
             name: 'Navigate To',
             fn: this.onContextMenuCenterAtCoordinate.bind(this)
-        })
+        });
 
         ContextMenu.addItem({
             icon: this.moveCenterIcon, 
@@ -241,11 +241,18 @@ class HiddenMapNavigationTool extends Control {
     parselUrlMarker(markerString) {
         LogManager.logDebug(FILENAME, 'parselUrlMarker', markerData);
 
+        const map = this.getMap();
+        if(!map) {
+            return;
+        }
+
         try {
             const markerParsed = JSON.parse(markerString);
             const markerData = _.merge(_.cloneDeep(DefaultUrlMarker), markerParsed);
 
-            this.addMarker(markerData);
+            const coordinates = [Number(markerData.lon), Number(markerData.lat)];
+            const marker = this.addIconMarker(markerData, coordinates);
+            this.setFocusToMarker(map, marker, coordinates, Config.marker.focusZoom);
         }catch(error) {
             const errorMessage = 'Failed to parse URL marker';
             LogManager.logError(FILENAME, 'onCreateUrlMarker', {
@@ -272,7 +279,7 @@ class HiddenMapNavigationTool extends Control {
         layerWrapper.getLayer().getSource().addFeature(marker);
     }
 
-    addMarker(markerData) {
+    addIconMarker(markerData, coordinates) {
         // Colors given in URL can't contain hashtag unless encoded as %23
         // Easier to prepend with hashtag after URL data has been fetched and parsed
         markerData.fill = this.validateHexColor(markerData.fill);
@@ -283,7 +290,6 @@ class HiddenMapNavigationTool extends Control {
             return;
         }
 
-        const coordinates = [Number(markerData.lon), Number(markerData.lat)];
         const transformedCoordinates = transform(
             coordinates, 
             markerData.projection, 
@@ -312,13 +318,14 @@ class HiddenMapNavigationTool extends Control {
             title: markerData.title,
             description: markerData.description,
             icon: markerData.icon,
-            fill: markerData.fill,
-            stroke: markerData.stroke,
+            markerFill: markerData.fill,
+            markerStroke: markerData.stroke,
             infoWindow: infoWindow
         });
 
         this.addMarkerToMap(marker);
-        this.setFocusToMarker(this.getMap(), marker, coordinates, Config.marker.focusZoom);
+
+        return marker;
     }
 
     showCoordinatesModal(map) {

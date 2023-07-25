@@ -50,9 +50,8 @@ const parseGeoJson = function(data) {
         const continentName = capital.properties.continentName;
 
         // Get windspeed between 0 and 40m/s (75knots)
-        const windSpeed = randomNumber(0, 40);
-
         // Get example direction to not have all wind barbs facing the same way
+        const windSpeed = randomNumber(0, 40);
         const windDirection = getWindDirection(continentName);
 
         const description = `
@@ -80,9 +79,14 @@ const parseGeoJson = function(data) {
                 lat: coordinates[1],
                 title: countryName,
                 description: description,
-                fill: '#3B4352FF',
-                stroke: '#3B4352FF',
+                markerFill: '#3B4352FF',
+                markerStroke: '#3B4352FF',
                 scale: .8,
+                label: `${countryName} ${windSpeed}m/s`,
+                labelFill: '#FFFFFF',
+                labelStroke: '#3B4352CC',
+                labelStrokeWidth: 12,
+                labelFont: '14px Calibri',
                 windSpeed: windSpeed,
                 rotation: windDirection,
                 infoWindow: infoWindow

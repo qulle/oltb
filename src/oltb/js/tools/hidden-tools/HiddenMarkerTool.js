@@ -97,7 +97,7 @@ class HiddenMarkerTool extends Control {
     // -------------------------------------------------------------------
 
     onCreateMarker(result) {
-        this.addMarker(result);
+        this.addIconMarker(result);
     }
 
     // -------------------------------------------------------------------
@@ -111,7 +111,7 @@ class HiddenMarkerTool extends Control {
         layerWrapper.getLayer().getSource().addFeature(marker);
     }
 
-    addMarker(result) {
+    addIconMarker(result) {
         const coordinates = [
             Number(result.longitude),
             Number(result.latitude)
@@ -140,8 +140,8 @@ class HiddenMarkerTool extends Control {
             title: result.title,
             description: result.description,
             icon: result.icon,
-            fill: result.fill,
-            stroke: result.stroke,
+            markerFill: result.fill,
+            markerStroke: result.stroke,
             infoWindow: infoWindow
         });
     
@@ -151,6 +151,8 @@ class HiddenMarkerTool extends Control {
         if(this.options.onAdded instanceof Function) {
             this.options.onAdded(marker);
         }
+
+        return marker;
     } 
 }
 

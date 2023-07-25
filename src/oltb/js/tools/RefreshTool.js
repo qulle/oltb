@@ -42,7 +42,7 @@ class RefreshTool extends Control {
             class: CLASS_TOOL_BUTTON,
             attributes: {
                 'type': 'button',
-                'data-tippy-content': `Refresh page (${ShortcutKeys.refreshPageTool})`
+                'data-tippy-content': `Refresh Page (${ShortcutKeys.refreshPageTool})`
             },
             listeners: {
                 'click': this.onClickTool.bind(this)

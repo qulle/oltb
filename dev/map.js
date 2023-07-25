@@ -340,6 +340,8 @@ const map = new Map({
         }),
         new BookmarkTool({
             markerLayerVisibleOnLoad: true,
+            shouldRenderMarkerLabel: true,
+            shouldRenderMarkerLabelUpperCase: false,
             bookmarks: [{
                 id: '6812cc22-f490-46b7-a9f3-42eb9ea58ac2',
                 name: 'Custom bookmark',
@@ -487,6 +489,8 @@ const map = new Map({
             enableHighAccuracy: true,
             timeout: 10000,
             description: 'This is the location that the browser was able to find. It might not be your actual location.',
+            shouldRenderMarkerLabel: true,
+            shouldRenderMarkerLabelUpperCase: false,
             onInitiated: function() {
                 console.log('MyLocationTool: Initiated');
             },

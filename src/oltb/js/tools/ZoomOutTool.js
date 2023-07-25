@@ -47,7 +47,7 @@ class ZoomOutTool extends Control {
             class: CLASS_TOOL_BUTTON,
             attributes: {
                 'type': 'button',
-                'data-tippy-content': `Zoom out (${ShortcutKeys.zoomOutTool})`
+                'data-tippy-content': `Zoom Out (${ShortcutKeys.zoomOutTool})`
             },
             listeners: {
                 'click': this.onClickTool.bind(this)
