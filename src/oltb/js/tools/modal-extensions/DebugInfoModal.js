@@ -7,12 +7,14 @@ import { Events } from '../../helpers/constants/Events';
 import { toLonLat } from 'ol/proj';
 import { ModalBase } from '../../common/modals/ModalBase';
 import { LogManager } from '../../core/managers/LogManager';
+import { v4 as uuidv4 } from 'uuid';
 import { jsonReplacer } from '../../helpers/browser/JsonReplacer';
 import { SvgPaths, getIcon } from '../../core/icons/GetIcon';
 import { ProjectionManager } from '../../core/managers/ProjectionManager';
 
 const FILENAME = 'modal-extensions/DebugInfoModal.js';
 const ID_PREFIX = 'oltb-debug';
+const ID_EVENT_LOG = 'oltb-event-log';
 const CLASS_TOGGLEABLE = 'oltb-toggleable';
 
 const DefaultOptions = Object.freeze({
@@ -54,6 +56,10 @@ class DebugInfoModal extends ModalBase {
             {
                 name: 'Log Map To Browser Console',
                 action: 'log.map.to.console'
+            },
+            {
+                name: 'Generate UUID',
+                action: 'generate.uuid'
             },
             {
                 name: 'Clear Event Log',
@@ -192,7 +198,7 @@ class DebugInfoModal extends ModalBase {
     #generateLogSection(section) {
         const eventLog = DOM.createElement({
             element: 'div',
-            id: 'oltb-event-log',
+            id: ID_EVENT_LOG,
             class: 'oltb-log oltb-thin-scrollbars'
         });
 
@@ -454,6 +460,7 @@ class DebugInfoModal extends ModalBase {
         const action = this.commandsCollection.value;
         const actions = {
             'log.map.to.console': this.actionLoggingMap.bind(this),
+            'generate.uuid': this.actionGenerateUUID.bind(this),
             'clear.event.log': this.actionClearEventLog.bind(this)
         };
 
@@ -472,10 +479,21 @@ class DebugInfoModal extends ModalBase {
         });
     }
 
+    actionGenerateUUID() {
+        const uuid = uuidv4();
+        const entry = LogManager.logInformation(FILENAME, 'actionGenerateUUID', uuid);
+
+        const eventLog = document.getElementById(ID_EVENT_LOG);
+        const logItem = this.#generateTextLogItem(entry);
+        DOM.prependChildren(eventLog, [
+            logItem
+        ]);
+    }
+
     actionClearEventLog() {
         LogManager.clearLog();
 
-        const uiRefEventLog = document.getElementById('oltb-event-log');
+        const uiRefEventLog = document.getElementById(ID_EVENT_LOG);
         if(uiRefEventLog) {
             DOM.clearElement(uiRefEventLog);
         }

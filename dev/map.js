@@ -10,6 +10,7 @@ import { defaults as defaultInterctions, MouseWheelZoom, DragPan, DragRotate, Ke
 // Layers
 import './layers/Maps';
 import './layers/Wind';
+import './layers/Airports';
 import './layers/Capitals';
 import './layers/Countries';
 import './layers/Continents';

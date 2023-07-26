@@ -80,6 +80,12 @@ class DOM {
         element.innerHTML = '';
     }
 
+    static prependChildren(element, children = []) {
+        children.forEach((child) => {
+            element.prepend(child);
+        });
+    }
+
     static appendChildren(element, children = []) {
         children.forEach((child) => {
             element.appendChild(child);

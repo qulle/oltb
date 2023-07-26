@@ -436,6 +436,7 @@ class LayerTool extends Control {
             false
         );
 
+        this.removeActiveFeatureLayerClass();
         this.createUIFeatureLayerItem(layerWrapper, {
             ...(!disableVisibilityButton && {visibilityButton: {
                 function: this.createUIVisibilityButton, 
@@ -695,6 +696,34 @@ class LayerTool extends Control {
         }
     }
 
+    onMapLayerPropertyChange(id, layerElement, event) {
+        if(event.key === 'visible') {
+            layerElement.classList.toggle(`${CLASS_TOOLBOX_LIST}__item--hidden`);
+        }
+
+        const isVisible = !layerElement.classList.contains(`${CLASS_TOOLBOX_LIST}__item--hidden`);
+        const layer = this.getLocalStorageMapLayerById(id);
+
+        if(layer) {
+            layer.isVisible = isVisible;
+            StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
+        }
+    }
+
+    onFeatureLayerPropertyChange(id, layerElement, event) {
+        if(event.key === 'visible') {
+            layerElement.classList.toggle(`${CLASS_TOOLBOX_LIST}__item--hidden`);
+        }
+
+        const isVisible = !layerElement.classList.contains(`${CLASS_TOOLBOX_LIST}__item--hidden`);
+        const layer = this.getLocalStorageFeatureLayerById(id);
+
+        if(layer) {
+            layer.isVisible = isVisible;
+            StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
+        }
+    }
+
     // -------------------------------------------------------------------
     // # Section: UI
     // -------------------------------------------------------------------
@@ -713,6 +742,14 @@ class LayerTool extends Control {
     }
 
     createUIMapLayerItem(layerWrapper, options) {
+        // Note: The state of the layer is a combination of data stored from localStorage and 
+        // data if it is the first time the layer is added
+        const layerState = {
+            id: 0,
+            sortIndex: 0,
+            isVisible: false
+        };
+
         const layerId = layerWrapper.getId();
         const sortIndex = this.getSortableIndexFromLayerId(
             this.localStorage.mapLayers,
@@ -720,6 +757,16 @@ class LayerTool extends Control {
             layerId
         );
         
+        const layer = layerWrapper.getLayer();
+
+        if(!this.hasLocalStorageMapLayerById(layerWrapper.getId())) {
+            this.localStorage.mapLayers.push({
+                id: layerWrapper.getId(),
+                sortIndex: sortIndex,
+                isVisible: layer.getVisible()
+            });
+        }
+
         const layerElement = DOM.createElement({
             element: 'li', 
             id: `${ID_PREFIX}-map-${layerId}`,
@@ -730,26 +777,11 @@ class LayerTool extends Control {
             }
         });
 
-        const layer = layerWrapper.getLayer();
+        layer.on(Events.openLayers.propertyChange, this.onMapLayerPropertyChange.bind(this, layerId, layerElement));
+
         if(!layer.getVisible()) {
             layerElement.classList.add(`${CLASS_TOOLBOX_LIST}__item--hidden`);
         }
-
-        if(!this.hasLocalStorageMapLayerById(layerWrapper.getId())) {
-            this.localStorage.mapLayers.push({
-                id: layerWrapper.getId(),
-                sortIndex: sortIndex,
-                isVisible: layer.getVisible()
-            });
-        }
-
-        // Eventlistener to update the UI if the visibility of the layer is changed
-        // Other tools may change a layers visibility and the UI must be updated in this event
-        layer.on(Events.openLayers.propertyChange, function(event) {
-            if(event.key === 'visible') {
-                layerElement.classList.toggle(`${CLASS_TOOLBOX_LIST}__item--hidden`);
-            }
-        });
 
         const layerName = DOM.createElement({
             element: 'span', 
@@ -806,7 +838,13 @@ class LayerTool extends Control {
     }
 
     createUIFeatureLayerItem(layerWrapper, options) {
-        this.removeActiveFeatureLayerClass();
+        // Note: The state of the layer is a combination of data stored from localStorage and 
+        // data if it is the first time the layer is added
+        const layerState = {
+            id: 0,
+            sortIndex: 0,
+            isVisible: false
+        };
 
         const layerId = layerWrapper.getId();
         const sortIndex = this.getSortableIndexFromLayerId(
@@ -814,6 +852,16 @@ class LayerTool extends Control {
             this.uiRefFeatureLayerStack.childNodes,
             layerId
         );
+
+        const layer = layerWrapper.getLayer();
+
+        if(!this.hasLocalStorageFeatureLayerById(layerWrapper.getId())) {
+            this.localStorage.featureLayers.push({
+                id: layerWrapper.getId(),
+                sortIndex: sortIndex,
+                isVisible: layer.getVisible()
+            });
+        }
 
         const layerElement = DOM.createElement({
             element: 'li', 
@@ -825,28 +873,12 @@ class LayerTool extends Control {
             }
         });
 
-        const layer = layerWrapper.getLayer();
+        LayerManager.setFeatureLayerZIndex(layerId, sortIndex);
+        layer.on(Events.openLayers.propertyChange, this.onFeatureLayerPropertyChange.bind(this, layerId, layerElement));
+
         if(!layer.getVisible()) {
             layerElement.classList.add(`${CLASS_TOOLBOX_LIST}__item--hidden`);
         }
-        
-        if(!this.hasLocalStorageFeatureLayerById(layerWrapper.getId())) {
-            this.localStorage.featureLayers.push({
-                id: layerWrapper.getId(),
-                sortIndex: sortIndex,
-                isVisible: layer.getVisible()
-            });
-        }
-
-        LayerManager.setFeatureLayerZIndex(layerId, sortIndex);
-
-        // Eventlistener to update the UI if the visibility of the layer is changed
-        // Other tools may change a layers visibility and the UI must be updated in this event
-        layer.on(Events.openLayers.propertyChange, function(event) {
-            if(event.key === 'visible') {
-                layerElement.classList.toggle(`${CLASS_TOOLBOX_LIST}__item--hidden`);
-            }
-        });
 
         const layerName = DOM.createElement({
             element: 'span', 

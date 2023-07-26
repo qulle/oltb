@@ -58,13 +58,17 @@ class LogManager {
         const timestamp = moment();
         const timeFormat = Config.timeFormat;
 
-        this.#log.push({
+        const entry = {
             timestamp: timestamp.format(timeFormat),
             level: level,
             origin: origin,
             method: method,
             value: value
-        });
+        };
+
+        this.#log.push(entry);
+
+        return entry;
     }
 
     static getLog() {
@@ -76,23 +80,23 @@ class LogManager {
     }
 
     static logDebug(origin, method, value) {
-        this.#logSink(this.#levels.debug, origin, method, value);
+        return this.#logSink(this.#levels.debug, origin, method, value);
     }
 
     static logInformation(origin, method, value) {
-        this.#logSink(this.#levels.information, origin, method, value);
+        return this.#logSink(this.#levels.information, origin, method, value);
     }
 
     static logWarning(origin, method, value) {
-        this.#logSink(this.#levels.warning, origin, method, value);
+        return this.#logSink(this.#levels.warning, origin, method, value);
     }
 
     static logError(origin, method, value) {
-        this.#logSink(this.#levels.error, origin, method, value);
+        return this.#logSink(this.#levels.error, origin, method, value);
     }
 
     static logFatal(origin, method, value) {
-        this.#logSink(this.#levels.fatal, origin, method, value);
+        return this.#logSink(this.#levels.fatal, origin, method, value);
     }
 }
 
