@@ -336,6 +336,7 @@ const map = new Map({
         }),
         new BookmarkTool({
             markerLayerVisibleOnLoad: true,
+            markerLabelUseEllipsisAfter: 20,
             shouldRenderMarkerLabel: true,
             shouldRenderMarkerLabelUpperCase: false,
             bookmarks: [{
@@ -485,6 +486,7 @@ const map = new Map({
             enableHighAccuracy: true,
             timeout: 10000,
             description: 'This is the location that the browser was able to find. It might not be your actual location.',
+            markerLabelUseEllipsisAfter: 20,
             shouldRenderMarkerLabel: true,
             shouldRenderMarkerLabelUpperCase: false,
             onInitiated: function() {

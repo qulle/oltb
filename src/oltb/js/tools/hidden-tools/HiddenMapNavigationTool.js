@@ -44,8 +44,14 @@ const DefaultUrlMarker = Object.freeze({
     description: "Oops, this is the default description, have you forgot a parameter?",
     icon: "GeoMarker.Filled",
     layerName: "URL Marker",
-    fill: '#0166A5FF',
-    stroke: '#FFFFFFFF',
+    label: "Marker",
+    labelFill: '#FFFFFF',
+    labelStroke: '#3B4352CC',
+    labelStrokeWidth: 12,
+    labelFont: '14px Calibri',
+    labelUseEllipsisAfter: 20,
+    markerFill: '#0166A5FF',
+    markerStroke: '#FFFFFFFF',
     projection: Config.projection.wgs84,
     zoom: 8
 });
@@ -239,8 +245,6 @@ class HiddenMapNavigationTool extends Control {
     }
 
     parselUrlMarker(markerString) {
-        LogManager.logDebug(FILENAME, 'parselUrlMarker', markerData);
-
         const map = this.getMap();
         if(!map) {
             return;
@@ -249,6 +253,8 @@ class HiddenMapNavigationTool extends Control {
         try {
             const markerParsed = JSON.parse(markerString);
             const markerData = _.merge(_.cloneDeep(DefaultUrlMarker), markerParsed);
+
+            LogManager.logDebug(FILENAME, 'parselUrlMarker', markerData);
 
             const coordinates = [Number(markerData.lon), Number(markerData.lat)];
             const marker = this.addIconMarker(markerData, coordinates);
@@ -272,7 +278,7 @@ class HiddenMapNavigationTool extends Control {
         InfoWindowManager.showOverlayDelayed(marker, fromLonLat(coordinates));
     }
 
-    addMarkerToMap(marker, coordinates, layerName, zoom) {
+    addMarkerToMap(marker, layerName) {
         const layerWrapper = LayerManager.addFeatureLayer({
             name: layerName
         });
@@ -282,8 +288,8 @@ class HiddenMapNavigationTool extends Control {
     addIconMarker(markerData, coordinates) {
         // Colors given in URL can't contain hashtag unless encoded as %23
         // Easier to prepend with hashtag after URL data has been fetched and parsed
-        markerData.fill = this.validateHexColor(markerData.fill);
-        markerData.stroke = this.validateHexColor(markerData.stroke);
+        markerData.markerFill = this.validateHexColor(markerData.markerFill);
+        markerData.markerStroke = this.validateHexColor(markerData.markerStroke);
         markerData.projection = this.validateProjection(markerData.projection);
 
         if(!this.hasProjection(markerData.projection)) {
@@ -318,12 +324,18 @@ class HiddenMapNavigationTool extends Control {
             title: markerData.title,
             description: markerData.description,
             icon: markerData.icon,
-            markerFill: markerData.fill,
-            markerStroke: markerData.stroke,
+            label: markerData.label,
+            labelFill: markerData.labelFill,
+            labelStroke: markerData.labelStroke,
+            labelStrokeWidth: markerData.labelStrokeWidth,
+            labelFont: markerData.labelFont,
+            labelUseEllipsisAfter: markerData.labelUseEllipsisAfter,
+            markerFill: markerData.markerFill,
+            markerStroke: markerData.markerStroke,
             infoWindow: infoWindow
         });
 
-        this.addMarkerToMap(marker);
+        this.addMarkerToMap(marker, markerData.layerName);
 
         return marker;
     }

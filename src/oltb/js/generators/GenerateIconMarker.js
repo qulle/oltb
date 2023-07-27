@@ -26,6 +26,7 @@ const DefaultOptions = Object.freeze({
     labelStroke: '#3B4352CC',
     labelStrokeWidth: 12,
     labelFont: '14px Calibri',
+    labelUseEllipsisAfter: 20,
     notSelectable: true,
     infoWindow: undefined,
     replaceHashtag: true
@@ -84,7 +85,7 @@ const generateIconMarker = function(options = {}) {
     const labelStyle =  new Style({
         text: new Text({
             font: options.labelFont,
-            text: label,
+            text: label.ellipsis(options.labelUseEllipsisAfter),
             placement: 'point',
             fill: new Fill({
                 color: options.labelFill

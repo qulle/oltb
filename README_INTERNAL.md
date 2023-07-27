@@ -575,6 +575,7 @@ controls: defaultControls({
     }),
     new BookmarkTool({
         markerLayerVisibleOnLoad: true,
+        markerLabelUseEllipsisAfter: 20,
         shouldRenderMarkerLabel: true,
         shouldRenderMarkerLabelUpperCase: false,
         bookmarks: [{
@@ -727,6 +728,7 @@ controls: defaultControls({
         enableHighAccuracy: true,
         timeout: 10000,
         description: 'This is the location that the browser was able to find. It might not be your actual location.',
+        markerLabelUseEllipsisAfter: 20,
         shouldRenderMarkerLabel: true,
         shouldRenderMarkerLabelUpperCase: false,
         onInitiated: function() {
@@ -978,10 +980,10 @@ Other properties that you can add are:
 #### URL Markers
 A marker can be created by providing the `oltb-marker` object as the GET parameter with the following syntax.
 ```
-/?oltb-marker={"title":"Marker Title","description":"Information about the maker","icon":"exclamationTriangle.filled","fill":"EB4542FF","stroke":"FFFFFFFF","layerName":"URL Marker","projection":"EPSG:4326","lon":18.0685,"lat":59.3293,"zoom":8}
+/?oltb-marker={"title":"Marker Title", "label": "Marker Title","description":"Information about the maker","icon":"exclamationTriangle.filled","markerFill":"EB4542FF","markerStroke":"FFFFFFFF","layerName":"URL Marker","projection":"EPSG:4326","lon":18.0685,"lat":59.3293,"zoom":8}
 ```
 
-Test the marker above using the <a href='https://qulle.github.io/oltb/?oltb-marker={"title":"Marker Title","description":"Information about the maker","icon":"exclamationTriangle.filled","fill":"EB4542FF","stroke":"FFFFFFFF","layerName":"URL Marker","projection":"EPSG:4326","lon":18.0685,"lat":59.3293,"zoom":8}' target="_blank">demo page</a>.
+Test the marker above using the <a href='https://qulle.github.io/oltb/?oltb-marker={"title":"Marker Title", "label": "Marker Title","description":"Information about the maker","icon":"exclamationTriangle.filled","markerFill":"EB4542FF","markerStroke":"FFFFFFFF","layerName":"URL Marker","projection":"EPSG:4326","lon":18.0685,"lat":59.3293,"zoom":8}' target="_blank">demo page</a>.
 
 The JSON object has the following structure.
 ```json
@@ -989,8 +991,9 @@ The JSON object has the following structure.
     "title": "Marker Title",
     "description": "Information about the maker",
     "icon": "exclamationTriangle.filled",
-    "fill": "EB4542FF",
-    "stroke": "FFFFFFFF",
+    "label": "Marker Title",
+    "markerFill": "EB4542FF",
+    "markerStroke": "FFFFFFFF",
     "layerName": "URL Marker",
     "projection": "EPSG:4326",
     "lon": 18.0685,
@@ -998,6 +1001,9 @@ The JSON object has the following structure.
     "zoom": 8
 }
 ```
+
+### Wind Barbs
+// TODO
 
 ### Dialogs
 To use the custom dialogs in the map, include the following module. All the dialogs uses trap focus and circles the tab-key to always stay in the opened dialog.

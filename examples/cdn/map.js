@@ -243,6 +243,7 @@ const toolbar = new oltb({
         },
         BookmarkTool: {
             markerLayerVisibleOnLoad: true,
+            markerLabelUseEllipsisAfter: 20,
             shouldRenderMarkerLabel: true,
             shouldRenderMarkerLabelUpperCase: false,
             bookmarks: [{
@@ -392,6 +393,7 @@ const toolbar = new oltb({
             enableHighAccuracy: true,
             timeout: 10000,
             description: 'This is the location that the browser was able to find. It might not be your actual location.',
+            markerLabelUseEllipsisAfter: 20,
             shouldRenderMarkerLabel: true,
             shouldRenderMarkerLabelUpperCase: false,
             onInitiated: function() {

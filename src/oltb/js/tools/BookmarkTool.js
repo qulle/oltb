@@ -39,6 +39,7 @@ const INDEX_OFFSET = 1;
 
 const DefaultOptions = Object.freeze({
     markerLayerVisibleOnLoad: true,
+    markerLabelUseEllipsisAfter: 20,
     shouldRenderMarkerLabel: true,
     shouldRenderMarkerLabelUpperCase: false,
     bookmarks: [],
@@ -718,6 +719,7 @@ class BookmarkTool extends Control {
             title: bookmark.name,
             description: '',
             label: bookmark.name,
+            labelUseEllipsisAfter: this.options.markerLabelUseEllipsisAfter,
             shouldRenderLabel: this.options.shouldRenderMarkerLabel,
             shouldRenderLabelUpperCase: this.options.shouldRenderMarkerLabelUpperCase,
             icon: 'bookmarkStar.filled',
