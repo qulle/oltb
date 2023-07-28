@@ -10,11 +10,11 @@ const FILENAME = 'dialogs/Confirm.js';
 const DefaultOptions = Object.freeze({
     title: 'Confirm',
     message: 'Oops missing confirm message',
-    onConfirm: undefined,
-    onCancel: undefined,
     confirmClass: 'oltb-btn--red-mid',
     confirmText: 'Yes',
-    cancelText: 'Cancel'
+    cancelText: 'Cancel',
+    onConfirm: undefined,
+    onCancel: undefined
 });
 
 class Confirm extends DialogBase {

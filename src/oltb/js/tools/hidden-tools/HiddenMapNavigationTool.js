@@ -13,6 +13,7 @@ import { LayerManager } from '../../core/managers/LayerManager';
 import { StateManager } from '../../core/managers/StateManager';
 import { ElementManager } from '../../core/managers/ElementManager';
 import { CoordinateModal } from '../modal-extensions/CoordinateModal';
+import { copyToClipboard } from '../../helpers/browser/CopyToClipboard';
 import { LocalStorageKeys } from '../../helpers/constants/LocalStorageKeys';
 import { SvgPaths, getIcon } from '../../core/icons/GetIcon';
 import { InfoWindowManager } from '../../core/managers/InfoWindowManager';
@@ -79,6 +80,10 @@ class HiddenMapNavigationTool extends Control {
             LocalStorageDefaults
         );
 
+        this.clipboardIcon = getIcon({
+            path: SvgPaths.clipboard.stroked
+        });
+
         this.coordinatesIcon = getIcon({
             path: SvgPaths.crosshair.stroked
         });
@@ -102,9 +107,17 @@ class HiddenMapNavigationTool extends Control {
 
     initContextMenuItems() {
         ContextMenu.addItem({
+            icon: this.clipboardIcon,
+            name: 'Copy Coordinates',
+            fn: this.onContextMenuCopyCoordinates.bind(this)
+        });
+
+        ContextMenu.addItem({});
+
+        ContextMenu.addItem({
             icon: this.coordinatesIcon,
             name: 'Navigate To',
-            fn: this.onContextMenuCenterAtCoordinate.bind(this)
+            fn: this.onContextMenuCenterAtCoordinates.bind(this)
         });
 
         ContextMenu.addItem({
@@ -126,7 +139,11 @@ class HiddenMapNavigationTool extends Control {
     // # Section: ContextMenu Callbacks
     // -------------------------------------------------------------------
 
-    onContextMenuCenterAtCoordinate(map, coordinates, target) {
+    onContextMenuCopyCoordinates(map, coordinates, target) {
+        this.copyCoordinates(coordinates);
+    }
+
+    onContextMenuCenterAtCoordinates(map, coordinates, target) {
         if(this.coordinatesModal) {
             return;
         }
@@ -145,6 +162,24 @@ class HiddenMapNavigationTool extends Control {
     // -------------------------------------------------------------------
     // # Section: Browser Events
     // -------------------------------------------------------------------
+
+    onContextMenu(event) {
+        event.preventDefault();
+
+        const map = this.getMap();
+        if(!map) {
+            return;
+        }
+
+        const coordinates = transform(
+            map.getEventCoordinate(event), 
+            Config.projection.default, 
+            Config.projection.wgs84
+        );
+
+        console.log(this.contextMenuItemCoordinates);
+        // this.contextMenuItemCoordinates.innerHTML = coordinates;
+    }
 
     onDOMContentLoaded(event) {
         const map = this.getMap();
@@ -224,6 +259,31 @@ class HiddenMapNavigationTool extends Control {
     // -------------------------------------------------------------------
     // # Section: Tool Actions
     // -------------------------------------------------------------------
+
+    copyCoordinates(coordinates) {
+        const prettyCoordinates = toStringHDMS(coordinates);
+
+        copyToClipboard(prettyCoordinates)
+            .then(() => {
+                Toast.info({
+                    title: 'Copied',
+                    message: 'Coordinates copied to clipboard', 
+                    autoremove: Config.autoRemovalDuation.normal
+                });
+            })
+            .catch((error) => {
+                const errorMessage = 'Failed to copy coordinates';
+                LogManager.logError(FILENAME, 'copyCoordinates', {
+                    message: errorMessage,
+                    error: error
+                });
+                
+                Toast.error({
+                    title: 'Error',
+                    message: errorMessage
+                });
+            });
+    }
 
     setLastPosition(map) {
         const view = map.getView();

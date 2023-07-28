@@ -702,10 +702,11 @@ class LayerTool extends Control {
         }
 
         const isVisible = !layerElement.classList.contains(`${CLASS_TOOLBOX_LIST}__item--hidden`);
-        const layer = this.getLocalStorageMapLayerById(id);
+        const storedLayerState = this.getLocalStorageMapLayerById(id);
 
-        if(layer) {
-            layer.isVisible = isVisible;
+        // Note: storedLayerState is a reference to a object inside this.localStorage
+        if(storedLayerState) {
+            storedLayerState.isVisible = isVisible;
             StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
         }
     }
@@ -716,10 +717,11 @@ class LayerTool extends Control {
         }
 
         const isVisible = !layerElement.classList.contains(`${CLASS_TOOLBOX_LIST}__item--hidden`);
-        const layer = this.getLocalStorageFeatureLayerById(id);
+        const storedLayerState = this.getLocalStorageFeatureLayerById(id);
 
-        if(layer) {
-            layer.isVisible = isVisible;
+        // Note: storedLayerState is a reference to a object inside this.localStorage
+        if(storedLayerState) {
+            storedLayerState.isVisible = isVisible;
             StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
         }
     }
@@ -742,46 +744,52 @@ class LayerTool extends Control {
     }
 
     createUIMapLayerItem(layerWrapper, options) {
-        // Note: The state of the layer is a combination of data stored from localStorage and 
-        // data if it is the first time the layer is added
-        const layerState = {
-            id: 0,
-            sortIndex: 0,
-            isVisible: false
-        };
-
-        const layerId = layerWrapper.getId();
-        const sortIndex = this.getSortableIndexFromLayerId(
-            this.localStorage.mapLayers,
-            this.uiRefMapLayerStack.childNodes,
-            layerId
-        );
-        
         const layer = layerWrapper.getLayer();
 
-        if(!this.hasLocalStorageMapLayerById(layerWrapper.getId())) {
+        // Note: The state of the layer is a combination of data stored from localStorage and 
+        // data if it is the first time the layer is added
+        const layerId = layerWrapper.getId();
+        const defaultSortIndex = this.uiRefMapLayerStack.childNodes.length;
+        const defaultVisibility = layer.getVisible();
+        
+        const layerState = {
+            id: layerId,
+            sortIndex: defaultSortIndex,
+            isVisible: defaultVisibility
+        };
+
+        // Check if the state needs to be updated or stored for the first time
+        const storedLayerState = this.getLocalStorageMapLayerById(layerId);
+        if(storedLayerState) {
+            layerState.sortIndex = storedLayerState.sortIndex;
+            layerState.isVisible = storedLayerState.isVisible;
+
+            layer.setVisible(layerState.isVisible);
+        }else {
             this.localStorage.mapLayers.push({
-                id: layerWrapper.getId(),
-                sortIndex: sortIndex,
-                isVisible: layer.getVisible()
+                id: layerId,
+                sortIndex: layerState.sortIndex,
+                isVisible: layerState.isVisible
             });
         }
 
         const layerElement = DOM.createElement({
             element: 'li', 
             id: `${ID_PREFIX}-map-${layerId}`,
-            class: `${CLASS_TOOLBOX_LIST}__item`,
+            class: (`
+                ${CLASS_TOOLBOX_LIST}__item
+                ${!layerState.isVisible 
+                    ? `${CLASS_TOOLBOX_LIST}__item--hidden` 
+                    : ''
+                }
+            `),
             attributes: {
                 'data-oltb-id': layerId,
-                'data-oltb-sort-index': sortIndex
+                'data-oltb-sort-index': layerState.sortIndex
             }
         });
 
         layer.on(Events.openLayers.propertyChange, this.onMapLayerPropertyChange.bind(this, layerId, layerElement));
-
-        if(!layer.getVisible()) {
-            layerElement.classList.add(`${CLASS_TOOLBOX_LIST}__item--hidden`);
-        }
 
         const layerName = DOM.createElement({
             element: 'span', 
@@ -838,47 +846,55 @@ class LayerTool extends Control {
     }
 
     createUIFeatureLayerItem(layerWrapper, options) {
-        // Note: The state of the layer is a combination of data stored from localStorage and 
-        // data if it is the first time the layer is added
-        const layerState = {
-            id: 0,
-            sortIndex: 0,
-            isVisible: false
-        };
-
-        const layerId = layerWrapper.getId();
-        const sortIndex = this.getSortableIndexFromLayerId(
-            this.localStorage.featureLayers,
-            this.uiRefFeatureLayerStack.childNodes,
-            layerId
-        );
-
         const layer = layerWrapper.getLayer();
 
-        if(!this.hasLocalStorageFeatureLayerById(layerWrapper.getId())) {
+        // Note: The state of the layer is a combination of data stored from localStorage and 
+        // data if it is the first time the layer is added
+        const layerId = layerWrapper.getId();
+        const defaultSortIndex = this.uiRefFeatureLayerStack.childNodes.length;
+        const defaultVisibility = layer.getVisible();
+
+        const layerState = {
+            id: layerId,
+            sortIndex: defaultSortIndex,
+            isVisible: defaultVisibility
+        };
+
+        // Check if the state needs to be updated or stored for the first time
+        const storedLayerState = this.getLocalStorageFeatureLayerById(layerId);
+        if(storedLayerState) {
+            layerState.sortIndex = storedLayerState.sortIndex;
+            layerState.isVisible = storedLayerState.isVisible;
+
+            layer.setVisible(layerState.isVisible);
+        }else {
             this.localStorage.featureLayers.push({
-                id: layerWrapper.getId(),
-                sortIndex: sortIndex,
-                isVisible: layer.getVisible()
+                id: layerId,
+                sortIndex: layerState.sortIndex,
+                isVisible: layerState.isVisible
             });
         }
+
+        LayerManager.setFeatureLayerZIndex(layerId, layerState.sortIndex);
 
         const layerElement = DOM.createElement({
             element: 'li', 
             id: `${ID_PREFIX}-feature-${layerId}`,
-            class: `${CLASS_TOOLBOX_LIST}__item ${CLASS_TOOLBOX_LIST}__item--active`,
+            class: (`
+                ${CLASS_TOOLBOX_LIST}__item 
+                ${CLASS_TOOLBOX_LIST}__item--active
+                ${!layerState.isVisible 
+                    ? `${CLASS_TOOLBOX_LIST}__item--hidden` 
+                    : ''
+                }
+            `),
             attributes: {
                 'data-oltb-id': layerId,
-                'data-oltb-sort-index': sortIndex
+                'data-oltb-sort-index': layerState.sortIndex
             }
         });
 
-        LayerManager.setFeatureLayerZIndex(layerId, sortIndex);
         layer.on(Events.openLayers.propertyChange, this.onFeatureLayerPropertyChange.bind(this, layerId, layerElement));
-
-        if(!layer.getVisible()) {
-            layerElement.classList.add(`${CLASS_TOOLBOX_LIST}__item--hidden`);
-        }
 
         const layerName = DOM.createElement({
             element: 'span', 

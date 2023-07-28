@@ -9,8 +9,8 @@ const FILENAME = 'dialogs/Alert.js';
 const DefaultOptions = Object.freeze({
     title: 'Alert',
     message: 'Oops missing alert message',
-    onConfirm: undefined,
-    confirmText: 'Ok'
+    confirmText: 'Ok',
+    onConfirm: undefined
 });
 
 class Alert extends DialogBase {

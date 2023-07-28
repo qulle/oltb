@@ -959,21 +959,38 @@ const marker = generateIconMarker({
     lat: 59.3293,
     title: 'Marker Title',
     description: 'Marker description',
-    fill: '#0166A5FF',
-    stroke: '#FFFFFFFF',
-    icon: 'GeoPin.Filled'
+    label: 'Marker Title',
+    markerFill: '#0166A5FF',
+    markerStroke: '#FFFFFFFF',
+    icon: 'geoPin.filled'
 });
 ```
 
-Other properties that you can add are:
+All available properties:
 ```javascript
 ({
-    width: 14,           // Circle stroke width
-    radius: 14,          // Circle radius
-    iconWidth: 14,       // Height of icon (px)
-    iconHeight: 14,      // Width of icon (px)
-    infoWindow: '',      // HTML Content to show when user click on marker
-    notSelectable: true, // If the marker can be selected by the Edit Tool
+    lon: 18.0685,                      // Lon coordinate
+    lat: 59.3293,                      // Lat coordinate
+    title: 'Marker Title',             // Marker infowindow title
+    description: 'Marker description', // Marker infowindow description
+    width: 14,                         // Marker width
+    radius: 14,                        // Marker height
+    markerFill: '#0166A5FF',           // Marker fill color
+    markerStroke: '#FFFFFFFF',         // Marker stroke color
+    icon: 'geoPin.filled',             // Icon key
+    iconWidth: 14,                     // Icon width
+    iconHeight: 14,                    // Icon height
+    shouldRenderLabel: true,           // If label over marker should render
+    shouldRenderLabelUpperCase: false, // If label over marker should be uppercase
+    label: 'Marker Title',             // Label over marker
+    labelFill: '#FFFFFF',              // Label fill color
+    labelStroke: '#3B4352CC',          // Label stroke color
+    labelStrokeWidth: 12,              // Label stroke width
+    labelFont: '14px Calibri',         // Label font
+    labelUseEllipsisAfter: 20,         // Use ellipsis (...) dots if text is to long
+    notSelectable: true,               // If edit tool can select the marker
+    infoWindow: undefined,             // Info window to show on click
+    replaceHashtag: true               // Replace color hex (UrlMarkers)
 });
 ```
 
@@ -1022,10 +1039,13 @@ Dialog.alert({
 });
 ```
 
-Other properties that you can add are:
+All available properties:
 ```javascript
 ({
-    confirmText: 'Your text' // Changes text on the confirm button
+    title: 'Alert',           // Dialog title
+    message: 'Alert message', // Dialog message
+    confirmText: 'Ok',        // Confirm button text
+    onConfirm: undefined      // Void callback with no parameters
 });
 ```
 
@@ -1043,12 +1063,16 @@ Dialog.confirm({
 });
 ```
 
-Other properties that you can add are:
+All available properties:
 ```javascript
 ({
-    confirmClass: Dialog.Success, // Changes to a success dialog
-    confirmText: 'Your text',     // Changes text on the confirm button
-    cancelText: 'Your text'       // Changes text on the cancel button
+    title: 'Alert',               // Dialog title
+    message: 'Alert message',     // Dialog message
+    confirmClass: Dialog.Success, // Dialog style (good/bad)
+    confirmText: 'Confirm',       // Confirm button text
+    cancelText: 'Cancel',         // Cancel button text
+    onConfirm: undefined,         // Void callback with no parameters
+    onCancel: undefined           // Void callback with no parameters
 });
 ```
 
@@ -1067,12 +1091,19 @@ Dialog.prompt({
 });
 ```
 
-Other properties that you can add are:
+All available properties:
 ```javascript
 ({
-    confirmClass: Dialog.Danger, // Changes to a danger dialog
-    confirmText: 'Your text',    // Changes text on the confirm button
-    cancelText: 'Your text'      // Changes text on the cancel button
+    title: 'Prompt',             // Dialog title
+    message: 'Prompt message',   // Dialog message
+    placeholder: undefined,      // Placeholder to show if no value
+    value: 'Current value',      // Value to show in textbox 
+    confirmClass: Dialog.Danger, // Dialog style (good/bad)
+    confirmText: 'Confirm',      // Confirm button text
+    cancelText: 'Cancel'         // Cancel button text
+    onConfirm: undefined,        // Void callback with 1 string parameter
+    onCancel: undefined          // Void callback with no parameters,
+    onInput: undefined           // Void callback with 1 string parameter
 });
 ```
 

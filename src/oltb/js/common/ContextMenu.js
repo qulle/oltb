@@ -68,40 +68,42 @@ class ContextMenu extends Control {
             DOM.appendChildren(this.menu, [
                 li
             ]);
-        }else {
-            const li = DOM.createElement({
-                element: 'li',
-                class: `${CLASS_CONTEXT_MENU}__item`,
-                text: item.name,
-                attributes: {
-                    'tabindex': '0'
-                },
-                listeners: {
-                    'click': this.click.bind(this, item),
-                    'keyup': (event) => {
-                        const key = event.key;
 
-                        if(key === Keys.valueEnter) {
-                            this.click(event);
-                        }else if(key === Keys.valueEscape) {
-                            this.hide();
-                        }
+            return;
+        }
+
+        const li = DOM.createElement({
+            element: 'li',
+            class: `${CLASS_CONTEXT_MENU}__item`,
+            text: item.name,
+            attributes: {
+                'tabindex': '0'
+            },
+            listeners: {
+                'click': this.click.bind(this, item),
+                'keyup': (event) => {
+                    const key = event.key;
+
+                    if(key === Keys.valueEnter) {
+                        this.click(event);
+                    }else if(key === Keys.valueEscape) {
+                        this.hide();
                     }
                 }
-            });
+            }
+        });
             
-            const icon = DOM.createElement({
-                element: 'span',
-                html: item.icon,
-                class: `${CLASS_CONTEXT_MENU}__icon`
-            });
+        const icon = DOM.createElement({
+            element: 'span',
+            html: item.icon,
+            class: `${CLASS_CONTEXT_MENU}__icon`
+        });
 
-            li.prepend(icon);
+        li.prepend(icon);
 
-            DOM.appendChildren(this.menu, [
-                li
-            ]);
-        }
+        DOM.appendChildren(this.menu, [
+            li
+        ]);
     }
 
     show(event) {

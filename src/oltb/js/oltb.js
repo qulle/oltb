@@ -76,8 +76,9 @@ class OLTB {
     static Dialog = Dialog;
 
     generateIconMarker = generateIconMarker;
-    createUITooltip = createUITooltip;
     generateWindBarb = generateWindBarb;
+
+    createUITooltip = createUITooltip;
 
     #tools = {};
     #localStorage = {};
@@ -118,7 +119,7 @@ class OLTB {
             }
         });
 
-        // Always add the ContextMenu
+        // Note: Always add the ContextMenu last
         this.#tools['ContextMenu'] = new ContextMenu({});
     }
 

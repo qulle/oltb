@@ -12,11 +12,12 @@ const DefaultOptions = Object.freeze({
     message: 'Oops missing prompt text',
     placeholder: undefined,
     value: undefined,
-    onConfirm: undefined,
-    onCancel: undefined,
     confirmClass: 'oltb-btn--green-mid',
     confirmText: 'Confirm',
-    cancelText: 'Cancel'
+    cancelText: 'Cancel',
+    onConfirm: undefined,
+    onCancel: undefined,
+    onInput: undefined
 });
 
 class Prompt extends DialogBase {
@@ -52,6 +53,11 @@ class Prompt extends DialogBase {
             class: 'oltb-dialog__input oltb-input', 
             attributes: {
                 'type': 'text'
+            },
+            listeners: {
+                'input': () => {
+                    this.options.onInput instanceof Function && this.options.onInput(inputBox.value.trim());
+                }
             }
         });
 

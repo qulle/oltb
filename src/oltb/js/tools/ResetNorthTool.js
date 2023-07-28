@@ -163,6 +163,9 @@ class ResetNorthTool extends Control {
             message: 'Set map rotation by degrees',
             value: Math.round(normalizedRotation),
             confirmText: 'Rotate map',
+            onInput: (result) => {
+                console.log(result);
+            },
             onConfirm: (result) => {
                 if(result.isDigitsOnly()) {
                     goToView(map, centerCoordinates, zoom, degreesToRadians(result));
