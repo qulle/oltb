@@ -20,14 +20,13 @@ const DefaultOptions = Object.freeze({
     windSpeed: 0,
     rotation: 0,
     scale: 1,
-    shouldRenderLabel: true,
-    shouldRenderLabelUpperCase: false,
     label: '',
     labelFill: '#FFFFFF',
     labelStroke: '#3B4352CC',
     labelStrokeWidth: 12,
     labelFont: '14px Calibri',
     labelUseEllipsisAfter: 20,
+    labelUseUpperCase: false,
     notSelectable: true,
     infoWindow: undefined,
     replaceHashtag: true
@@ -61,7 +60,7 @@ const generateWindBarb = function(options = {}) {
         })
     });
 
-    const label = options.shouldRenderLabelUpperCase 
+    const label = options.labelUseUpperCase 
         ? options.label.toUpperCase() 
         : options.label;
 
@@ -86,12 +85,7 @@ const generateWindBarb = function(options = {}) {
         })
     });
 
-    // Note: Icon Style is always used
-    const style = [iconStyle];
-
-    if(options.shouldRenderLabel) {
-        style.push(labelStyle);
-    }
+    const style = [iconStyle, labelStyle];
 
     windBarb.setStyle(style);
     windBarb.setProperties({

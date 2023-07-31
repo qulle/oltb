@@ -32,10 +32,10 @@ const DefaultOptions = Object.freeze({
 // This is the same NODE_NAME and PROPS that the map.js file is using
 const LocalStorageNodeName = LocalStorageKeys.mapData;
 const LocalStorageDefaults = Object.freeze({
-    lon: 18.1201,
-    lat: 35.3518,
-    zoom: 4,
-    rotation: 0
+    lon: Config.defaultLocation.lon,
+    lat: Config.defaultLocation.lat,
+    zoom: Config.defaultLocation.zoom,
+    rotation: Config.defaultLocation.rotation,
 });
 
 const DefaultUrlMarker = Object.freeze({
@@ -140,15 +140,11 @@ class HiddenMapNavigationTool extends Control {
     // -------------------------------------------------------------------
 
     onContextMenuCopyCoordinates(map, coordinates, target) {
-        this.copyCoordinates(coordinates);
+        this.doCopyCoordinates(coordinates);
     }
 
     onContextMenuCenterAtCoordinates(map, coordinates, target) {
-        if(this.coordinatesModal) {
-            return;
-        }
-
-        this.showCoordinatesModal(map);
+        this.doShowCoordinatesModal(map);
     }
 
     onContextMenuCenterMap(map, coordinates, target) {
@@ -190,7 +186,7 @@ class HiddenMapNavigationTool extends Control {
         // Bind to global map events
         map.on(Events.openLayers.moveEnd, this.onMoveEnd.bind(this));
 
-        this.detectUrlMarker();
+        this.doDetectUrlMarker();
     }
 
     // -------------------------------------------------------------------
@@ -244,7 +240,7 @@ class HiddenMapNavigationTool extends Control {
             return;
         }
 
-        this.parselUrlMarker(markerString);
+        this.doParseUrlMarker(markerString);
     }
 
     onMoveEnd(event) {
@@ -257,33 +253,8 @@ class HiddenMapNavigationTool extends Control {
     }
 
     // -------------------------------------------------------------------
-    // # Section: Tool Actions
+    // # Section: Getters and Setters
     // -------------------------------------------------------------------
-
-    copyCoordinates(coordinates) {
-        const prettyCoordinates = toStringHDMS(coordinates);
-
-        copyToClipboard(prettyCoordinates)
-            .then(() => {
-                Toast.info({
-                    title: 'Copied',
-                    message: 'Coordinates copied to clipboard', 
-                    autoremove: Config.autoRemovalDuation.normal
-                });
-            })
-            .catch((error) => {
-                const errorMessage = 'Failed to copy coordinates';
-                LogManager.logError(FILENAME, 'copyCoordinates', {
-                    message: errorMessage,
-                    error: error
-                });
-                
-                Toast.error({
-                    title: 'Error',
-                    message: errorMessage
-                });
-            });
-    }
 
     setLastPosition(map) {
         const view = map.getView();
@@ -297,14 +268,43 @@ class HiddenMapNavigationTool extends Control {
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 
-    detectUrlMarker() {
+    // -------------------------------------------------------------------
+    // # Section: Tool DoActions
+    // -------------------------------------------------------------------
+
+    doCopyCoordinates(coordinates) {
+        const prettyCoordinates = toStringHDMS(coordinates);
+
+        copyToClipboard(prettyCoordinates)
+            .then(() => {
+                Toast.info({
+                    title: 'Copied',
+                    message: 'Coordinates copied to clipboard', 
+                    autoremove: Config.autoRemovalDuation.normal
+                });
+            })
+            .catch((error) => {
+                const errorMessage = 'Failed to copy coordinates';
+                LogManager.logError(FILENAME, 'doCopyCoordinates', {
+                    message: errorMessage,
+                    error: error
+                });
+                
+                Toast.error({
+                    title: 'Error',
+                    message: errorMessage
+                });
+            });
+    }
+
+    doDetectUrlMarker() {
         const marker = UrlManager.getParameter(Config.urlParameter.marker, false);
         if(marker) {
             this.onCreateUrlMarker(marker);
         }
     }
 
-    parselUrlMarker(markerString) {
+    doParseUrlMarker(markerString) {
         const map = this.getMap();
         if(!map) {
             return;
@@ -314,14 +314,14 @@ class HiddenMapNavigationTool extends Control {
             const markerParsed = JSON.parse(markerString);
             const markerData = _.merge(_.cloneDeep(DefaultUrlMarker), markerParsed);
 
-            LogManager.logDebug(FILENAME, 'parselUrlMarker', markerData);
+            LogManager.logDebug(FILENAME, 'doParseUrlMarker', markerData);
 
             const coordinates = [Number(markerData.lon), Number(markerData.lat)];
-            const marker = this.addIconMarker(markerData, coordinates);
-            this.setFocusToMarker(map, marker, coordinates, Config.marker.focusZoom);
+            const marker = this.doAddIconMarker(markerData, coordinates);
+            this.doFocusMarker(map, marker, coordinates, Config.marker.focusZoom);
         }catch(error) {
             const errorMessage = 'Failed to parse URL marker';
-            LogManager.logError(FILENAME, 'onCreateUrlMarker', {
+            LogManager.logError(FILENAME, 'doParseUrlMarker', {
                 message: errorMessage,
                 error: error
             });
@@ -333,19 +333,19 @@ class HiddenMapNavigationTool extends Control {
         } 
     }
 
-    setFocusToMarker(map, marker, coordinates, zoom) {
+    doFocusMarker(map, marker, coordinates, zoom) {
         goToView(map, coordinates, zoom);
         InfoWindowManager.showOverlayDelayed(marker, fromLonLat(coordinates));
     }
 
-    addMarkerToMap(marker, layerName) {
+    doAddMarkerToMap(marker, layerName) {
         const layerWrapper = LayerManager.addFeatureLayer({
             name: layerName
         });
         layerWrapper.getLayer().getSource().addFeature(marker);
     }
 
-    addIconMarker(markerData, coordinates) {
+    doAddIconMarker(markerData, coordinates) {
         // Colors given in URL can't contain hashtag unless encoded as %23
         // Easier to prepend with hashtag after URL data has been fetched and parsed
         markerData.markerFill = this.validateHexColor(markerData.markerFill);
@@ -383,6 +383,8 @@ class HiddenMapNavigationTool extends Control {
             lat: transformedCoordinates[1],
             title: markerData.title,
             description: markerData.description,
+            markerFill: markerData.markerFill,
+            markerStroke: markerData.markerStroke,
             icon: markerData.icon,
             label: markerData.label,
             labelFill: markerData.labelFill,
@@ -390,17 +392,19 @@ class HiddenMapNavigationTool extends Control {
             labelStrokeWidth: markerData.labelStrokeWidth,
             labelFont: markerData.labelFont,
             labelUseEllipsisAfter: markerData.labelUseEllipsisAfter,
-            markerFill: markerData.markerFill,
-            markerStroke: markerData.markerStroke,
             infoWindow: infoWindow
         });
 
-        this.addMarkerToMap(marker, markerData.layerName);
+        this.doAddMarkerToMap(marker, markerData.layerName);
 
         return marker;
     }
 
-    showCoordinatesModal(map) {
+    doShowCoordinatesModal(map) {
+        if(this.coordinatesModal) {
+            return;
+        }
+        
         this.coordinatesModal = new CoordinateModal({
             onNavigate: (coordinates) => {
                 goToView(map, coordinates, map.getView().getZoom());

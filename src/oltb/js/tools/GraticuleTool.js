@@ -129,7 +129,7 @@ class GraticuleTool extends Control {
             return;
         }
 
-        this.graticule.setMap(map);
+        this.doAddGraticuleLines(map);
 
         this.isActive = true;
         this.button.classList.add(`${CLASS_TOOL_BUTTON}--active`);
@@ -139,7 +139,7 @@ class GraticuleTool extends Control {
     }
 
     deActivateTool() {
-        this.graticule.setMap(null);
+        this.doRemoveGraticuleLines();
 
         this.isActive = false;
         this.button.classList.remove(`${CLASS_TOOL_BUTTON}--active`);
@@ -162,6 +162,18 @@ class GraticuleTool extends Control {
         if(isShortcutKeyOnly(event, ShortcutKeys.graticuleTool)) {
             this.onClickTool(event);
         }
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Tool DoActions
+    // -------------------------------------------------------------------
+
+    doAddGraticuleLines(map) {
+        this.graticule.setMap(map);
+    }
+
+    doRemoveGraticuleLines() {
+        this.graticule.setMap(null);
     }
 }
 

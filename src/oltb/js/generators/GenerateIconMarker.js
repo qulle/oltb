@@ -19,14 +19,13 @@ const DefaultOptions = Object.freeze({
     icon: 'geoPin.filled',
     iconWidth: 14,
     iconHeight: 14,
-    shouldRenderLabel: true,
-    shouldRenderLabelUpperCase: false,
     label: '',
     labelFill: '#FFFFFF',
     labelStroke: '#3B4352CC',
     labelStrokeWidth: 12,
     labelFont: '14px Calibri',
     labelUseEllipsisAfter: 20,
+    labelUseUpperCase: false,
     notSelectable: true,
     infoWindow: undefined,
     replaceHashtag: true
@@ -78,7 +77,7 @@ const generateIconMarker = function(options = {}) {
         })
     });
 
-    const label = options.shouldRenderLabelUpperCase 
+    const label = options.labelUseUpperCase 
         ? options.label.toUpperCase() 
         : options.label;
     
@@ -98,12 +97,7 @@ const generateIconMarker = function(options = {}) {
         })
     });
 
-    // Note: Circle- and Icon Style is always used
-    const style = [circleStyle, iconStyle];
-
-    if(options.shouldRenderLabel) {
-        style.push(labelStyle);
-    }
+    const style = [circleStyle, iconStyle, labelStyle];
 
     marker.setStyle(style);
     marker.setProperties({

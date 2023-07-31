@@ -84,7 +84,7 @@ class NotificationTool extends Control {
     }
 
     momentaryActivation() {
-        this.fetchNotifications();
+        this.doFetchNotifications();
     }
 
     // -------------------------------------------------------------------
@@ -124,14 +124,55 @@ class NotificationTool extends Control {
     }
 
     // -------------------------------------------------------------------
-    // # Section: Tool Actions
+    // # Section: Getters and Setters
     // -------------------------------------------------------------------
 
-    fetchNotifications() {
+    setModalContent(notification) {
+        const content = `
+            <h3>👋 From Qulle</h3>
+            <p>${notification.message}</p>
+            <h3>🔭 Your version</h3>
+            <p>
+                <a href="https://github.com/qulle/oltb/releases/tag/v${Config.toolbar.version}" target="_blank" class="oltb-link">
+                    v${Config.toolbar.version}
+                </a>
+            </p>
+            ${this.hasLatestVersionInfo(notification) 
+                ? `
+                    <h3>🚀 Latest version</h3>
+                    <p>
+                        <a href="https://github.com/qulle/oltb/releases/tag/v${notification.latest.version}" target="_blank" class="oltb-link">
+                            v${notification.latest.version} - ${new Date(notification.latest.released).toLocaleDateString(Config.locale)}
+                        </a>
+                    </p>
+                ` : ''
+            }
+            ${this.hasFeaturesUnderDevelopment(notification)
+                ? `
+                    <h3>💡 New features under development</h3>
+                    ${notification.features}
+                ` : ''
+            }
+            ${this.hasError(notification)
+                ? `
+                    <h3>📡 Fetch error</h3>
+                    <p>${notification.error}</p>
+                ` : ''
+            }
+        `;
+
+        this.notificationModal.setContent(content);
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Tool DoActions
+    // -------------------------------------------------------------------
+
+    doFetchNotifications() {
         if(this.notificationModal) {
             return;
         }
-
+        
         this.notificationModal = Modal.create({
             title: 'Notifications',
             content: '<p>Loading notifications...</p>',
@@ -178,7 +219,7 @@ class NotificationTool extends Control {
                 this.setModalContent(notification);
             })
             .catch((error) => {
-                LogManager.logError(FILENAME, 'fetchNotifications', {
+                LogManager.logError(FILENAME, 'doFetchNotifications', {
                     message: 'Failed to fetch notifications',
                     error: error
                 });
@@ -190,43 +231,6 @@ class NotificationTool extends Control {
 
                 this.setModalContent(notification);
             });
-    }
-
-    setModalContent(notification) {
-        const content = `
-            <h3>👋 From Qulle</h3>
-            <p>${notification.message}</p>
-            <h3>🔭 Your version</h3>
-            <p>
-                <a href="https://github.com/qulle/oltb/releases/tag/v${Config.toolbar.version}" target="_blank" class="oltb-link">
-                    v${Config.toolbar.version}
-                </a>
-            </p>
-            ${this.hasLatestVersionInfo(notification) 
-                ? `
-                    <h3>🚀 Latest version</h3>
-                    <p>
-                        <a href="https://github.com/qulle/oltb/releases/tag/v${notification.latest.version}" target="_blank" class="oltb-link">
-                            v${notification.latest.version} - ${new Date(notification.latest.released).toLocaleDateString(Config.locale)}
-                        </a>
-                    </p>
-                ` : ''
-            }
-            ${this.hasFeaturesUnderDevelopment(notification)
-                ? `
-                    <h3>💡 New features under development</h3>
-                    ${notification.features}
-                ` : ''
-            }
-            ${this.hasError(notification)
-                ? `
-                    <h3>📡 Fetch error</h3>
-                    <p>${notification.error}</p>
-                ` : ''
-            }
-        `;
-
-        this.notificationModal.setContent(content);
     }
 }
 

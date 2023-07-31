@@ -40,8 +40,7 @@ const INDEX_OFFSET = 1;
 const DefaultOptions = Object.freeze({
     markerLayerVisibleOnLoad: true,
     markerLabelUseEllipsisAfter: 20,
-    shouldRenderMarkerLabel: true,
-    shouldRenderMarkerLabelUpperCase: false,
+    markerLabelUseUpperCase: false,
     bookmarks: [],
     onInitiated: undefined,
     onClicked: undefined,
@@ -189,7 +188,7 @@ class BookmarkTool extends Control {
 
     initState() {
         // Process all Bookmarks from constructor
-        // Check if the id of the Bookmark is already in LS, if not, add it
+        // Check if the id of the Bookmark is already in local storage, if not, add it
         this.options.bookmarks.forEach((bookmark) => {
             if(!this.hasLocalStorageBookmarkById(bookmark.id)) {
                 bookmark.sortIndex = 0;
@@ -199,7 +198,6 @@ class BookmarkTool extends Control {
             }
         });
 
-        // Create all Bookmarks in Map and Toolbox
         this.localStorage.bookmarks.forEach((bookmark) => {
             this.createUIBookmark(bookmark);
         });
@@ -296,10 +294,8 @@ class BookmarkTool extends Control {
     }
 
     onWindowBrowserStateCleared() {
-        this.clearBookmarks();
-        
-        this.localStorage = _.cloneDeep(LocalStorageDefaults);
-        StateManager.setStateObject(LocalStorageNodeName, LocalStorageDefaults);
+        this.doClearBookmarks();
+        this.doClearState();
 
         if(this.isActive) {
             this.deActivateTool();
@@ -318,43 +314,23 @@ class BookmarkTool extends Control {
     }
 
     // -------------------------------------------------------------------
-    // # Section: Bookmark Callbacks
+    // # Section: Tool Callbacks
     // -------------------------------------------------------------------
 
     onZoomToBookmark(bookmark) {
-        this.zoomToBookmark(bookmark);
+        this.doZoomToBookmark(bookmark);
     }
     
     onCopyBookmarkCoordinates(bookmark) {
-        this.copyBookmarkCoordinates(bookmark);
+        this.doCopyBookmarkCoordinates(bookmark);
     }
 
     onDeleteBookmark(bookmark, bookmarkElement) {
-        Dialog.confirm({
-            title: 'Delete bookmark',
-            message: `Do you want to delete the <strong>${bookmark.name}</strong> bookmark?`,
-            confirmText: 'Delete',
-            onConfirm: () => {
-                InfoWindowManager.hideOverlay();
-                this.removeBookmark(bookmark, bookmarkElement);
-            }
-        });
+        this.askDeleteBookmark(bookmark, bookmarkElement);
     }
 
     onEditBookmark(bookmark, bookmarkName) {        
-        Dialog.prompt({
-            title: 'Edit name',
-            message: `You are editing the <strong>${bookmark.name}</strong> bookmark`,
-            value: bookmark.name,
-            confirmText: 'Rename',
-            onConfirm: (result) => {
-                InfoWindowManager.hideOverlay();
-                
-                if(this.isValid(result)) {
-                    this.editBookmark(bookmark, bookmarkName, result);
-                }
-            }
-        });
+        this.askEditBookmark(bookmark, bookmarkName);
     }
 
     // -------------------------------------------------------------------
@@ -362,24 +338,30 @@ class BookmarkTool extends Control {
     // -------------------------------------------------------------------
 
     onContextMenuBookmarkAdd(map, coordinates, target) {
-        this.addBookmark('', coordinates);
+        this.doAddBookmark('', coordinates);
     }
 
     onContextMenuBookmarksClear(map, coordinates, target) {
-        Dialog.confirm({
-            title: 'Clear bookmarks',
-            message: 'Do you want to clear <strong>all</strong> stored bookmarks?',
-            confirmText: 'Clear',
-            onConfirm: () => {
-                this.clearBookmarks();
+        this.askClearBookmarks();
+    }
 
-                Toast.info({
-                    title: 'Cleared',
-                    message: "All stored bookmarks was cleared", 
-                    autoremove: Config.autoRemovalDuation.normal
-                });
-            }
-        });
+    // -------------------------------------------------------------------
+    // # Section: Map/UI Callbacks
+    // -------------------------------------------------------------------
+
+    onAddBookmarkByKey(event) {
+        if(!this.isValidEnterKey(event)) {
+            return;
+        }
+
+        this.onAddBookmarkByClick(event);
+    }
+
+    onAddBookmarkByClick(event) {
+        const name = this.uiRefAddBookmarkText.value;
+        this.uiRefAddBookmarkText.value = '';
+
+        this.doAddBookmark(name);
     }
 
     // -------------------------------------------------------------------
@@ -519,26 +501,7 @@ class BookmarkTool extends Control {
     }
 
     // -------------------------------------------------------------------
-    // # Section: Map/UI Callbacks
-    // -------------------------------------------------------------------
-
-    onAddBookmarkByKey(event) {
-        if(!this.isValidEnterKey(event)) {
-            return;
-        }
-
-        this.onAddBookmarkByClick(event);
-    }
-
-    onAddBookmarkByClick(event) {
-        const name = this.uiRefAddBookmarkText.value;
-        this.uiRefAddBookmarkText.value = '';
-
-        this.addBookmark(name);
-    }
-
-    // -------------------------------------------------------------------
-    // # Section: UI
+    // # Section: User Interface
     // -------------------------------------------------------------------
 
     createUIBookmarkNameTippy(bookmarkName) {
@@ -558,7 +521,7 @@ class BookmarkTool extends Control {
         LogManager.logInformation(FILENAME, 'createUIBookmark', bookmark);        
 
         this.createUIBookmarkItem(bookmark);
-        this.addIconMarker(bookmark);
+        this.doAddIconMarker(bookmark);
 
         if(!this.hasLocalStorageBookmarkById(bookmark.id)) {
             this.localStorage.bookmarks.push(bookmark);
@@ -591,7 +554,7 @@ class BookmarkTool extends Control {
             text: bookmark.name.ellipsis(20),
             class: `${CLASS_TOOLBOX_LIST}__title`,
             title: bookmark.name,
-            prototypes:{
+            prototypes: {
                 getTippy: function() {
                     return this._tippy;
                 }
@@ -694,10 +657,64 @@ class BookmarkTool extends Control {
     }
 
     // -------------------------------------------------------------------
-    // # Section: Tool Actions
+    // # Section: Ask User
     // -------------------------------------------------------------------
 
-    addIconMarker(bookmark) {
+    askClearBookmarks() {
+        Dialog.confirm({
+            title: 'Clear bookmarks',
+            message: 'Do you want to clear <strong>all</strong> stored bookmarks?',
+            confirmText: 'Clear',
+            onConfirm: () => {
+                this.doClearBookmarks();
+
+                Toast.info({
+                    title: 'Cleared',
+                    message: "All stored bookmarks was cleared", 
+                    autoremove: Config.autoRemovalDuation.normal
+                });
+            }
+        });
+    }
+
+    askDeleteBookmark(bookmark, bookmarkElement) {
+        Dialog.confirm({
+            title: 'Delete bookmark',
+            message: `Do you want to delete the <strong>${bookmark.name}</strong> bookmark?`,
+            confirmText: 'Delete',
+            onConfirm: () => {
+                InfoWindowManager.hideOverlay();
+                this.doRemoveBookmark(bookmark, bookmarkElement);
+            }
+        });
+    }
+
+    askEditBookmark(bookmark, bookmarkName) {
+        Dialog.prompt({
+            title: 'Edit name',
+            message: `You are editing the <strong>${bookmark.name}</strong> bookmark`,
+            value: bookmark.name,
+            confirmText: 'Rename',
+            onConfirm: (result) => {
+                InfoWindowManager.hideOverlay();
+                
+                if(this.isValid(result)) {
+                    this.doEditBookmark(bookmark, bookmarkName, result);
+                }
+            }
+        });
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Tool DoActions
+    // -------------------------------------------------------------------
+
+    doClearState() {
+        this.localStorage = _.cloneDeep(LocalStorageDefaults);
+        StateManager.setStateObject(LocalStorageNodeName, LocalStorageDefaults);
+    }
+
+    doAddIconMarker(bookmark) {
         const coordinates = bookmark.coordinates;
         const prettyCoordinates = toStringHDMS(coordinates);
 
@@ -717,14 +734,12 @@ class BookmarkTool extends Control {
             lon: coordinates[0],
             lat: coordinates[1],
             title: bookmark.name,
-            description: '',
-            label: bookmark.name,
-            labelUseEllipsisAfter: this.options.markerLabelUseEllipsisAfter,
-            shouldRenderLabel: this.options.shouldRenderMarkerLabel,
-            shouldRenderLabelUpperCase: this.options.shouldRenderMarkerLabelUpperCase,
             icon: 'bookmarkStar.filled',
             markerFill: '#3B4352FF',
             markerStroke: '#FFFFFFFF',
+            label: bookmark.name,
+            labelUseEllipsisAfter: this.options.markerLabelUseEllipsisAfter,
+            labelUseUpperCase: this.options.markerLabelUseUpperCase,
             infoWindow: infoWindow
         });
 
@@ -735,7 +750,7 @@ class BookmarkTool extends Control {
         return marker;
     }
 
-    addBookmark(name, coordinates) {
+    doAddBookmark(name, coordinates) {
         const map = this.getMap();
         if(!map) {
             return;
@@ -776,7 +791,7 @@ class BookmarkTool extends Control {
         }
     }
 
-    removeBookmark(bookmark, bookmarkElement) {
+    doRemoveBookmark(bookmark, bookmarkElement) {
         DOM.removeElement(bookmarkElement);
         this.removeMarkerFromMap(bookmark.marker);
 
@@ -807,14 +822,14 @@ class BookmarkTool extends Control {
         }
     }
 
-    editBookmark(bookmark, bookmarkName, result) {
+    doEditBookmark(bookmark, bookmarkName, result) {
         bookmark.name = result;
         bookmarkName.innerText = result.ellipsis(20);
         bookmarkName.getTippy().setContent(result);
 
         // Note: Easiest to delete and add a new Marker at the same location
         this.removeMarkerFromMap(bookmark.marker);
-        this.addIconMarker(bookmark);
+        this.doAddIconMarker(bookmark);
 
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
 
@@ -824,8 +839,8 @@ class BookmarkTool extends Control {
         }
     }
 
-    clearBookmarks() {
-        LogManager.logInformation(FILENAME, 'clearBookmarks', 'All bookmarks cleared');
+    doClearBookmarks() {
+        LogManager.logInformation(FILENAME, 'doClearBookmarks', 'All bookmarks cleared');
         
         DOM.clearElement(this.uiRefBookmarkStack);
         this.clearMarkersFromMap();
@@ -839,7 +854,7 @@ class BookmarkTool extends Control {
         }
     }
 
-    zoomToBookmark(bookmark) {
+    doZoomToBookmark(bookmark) {
         const map = this.getMap();
         if(!map) {
             return;
@@ -857,7 +872,7 @@ class BookmarkTool extends Control {
         }
     }
 
-    copyBookmarkCoordinates(bookmark) {
+    doCopyBookmarkCoordinates(bookmark) {
         const prettyCoordinates = toStringHDMS(bookmark.coordinates);
 
         copyToClipboard(prettyCoordinates)
@@ -870,7 +885,7 @@ class BookmarkTool extends Control {
             })
             .catch((error) => {
                 const errorMessage = 'Failed to copy coordinates';
-                LogManager.logError(FILENAME, 'onCopyBookmarkCoordinates', {
+                LogManager.logError(FILENAME, 'doCopyBookmarkCoordinates', {
                     message: errorMessage,
                     error: error
                 });

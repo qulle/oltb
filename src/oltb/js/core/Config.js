@@ -2,6 +2,12 @@ import { VERSION } from 'ol';
 import { version } from '../../../../package.json';
 
 const Config = Object.freeze({
+    defaultLocation: Object.freeze({
+        lon: 18.1201,
+        lat: 35.3518,
+        zoom: 3,
+        rotation: 0
+    }),
     className: Object.freeze({
         row: 'oltb-row',
         dark: 'oltb-dark'

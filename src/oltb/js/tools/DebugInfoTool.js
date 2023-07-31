@@ -99,11 +99,7 @@ class DebugInfoTool extends Control {
     }
 
     momentaryActivation() {
-        if(this.debugInfoModal) {
-            return;
-        }
-
-        this.showDebugInfoModal();
+        this.doShowDebugInfoModal();
     }
 
     // -------------------------------------------------------------------
@@ -112,15 +108,19 @@ class DebugInfoTool extends Control {
 
     onWindowKeyUp(event) {
         if(isShortcutKeyOnly(event, ShortcutKeys.debugInfoTool)) {
-            this.onHandleClick(event);
+            this.onClickTool(event);
         }
     }
 
     // -------------------------------------------------------------------
-    // # Section: Tool Actions
+    // # Section: Tool DoActions
     // -------------------------------------------------------------------
 
-    showDebugInfoModal() {
+    doShowDebugInfoModal() {
+        if(this.debugInfoModal) {
+            return;
+        }
+        
         const map = this.getMap();
         if(!map) {
             return;

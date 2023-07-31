@@ -4,12 +4,13 @@ import { Toast } from '../common/Toast';
 import { Config } from '../core/Config';
 import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
-import { toLonLat } from 'ol/proj';
 import { goToView } from '../helpers/GoToView';
 import { LogManager } from '../core/managers/LogManager';
 import { ContextMenu } from '../common/ContextMenu';
+import { StateManager } from '../core/managers/StateManager';
 import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
 import { ElementManager } from '../core/managers/ElementManager';
+import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
 import { SvgPaths, getIcon } from '../core/icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
 
@@ -17,13 +18,22 @@ const FILENAME = 'tools/HomeTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
 
 const DefaultOptions = Object.freeze({
-    lon: 18.1201,
-    lat: 35.3518,
-    zoom: 3,
+    lon: Config.defaultLocation.lon,
+    lat: Config.defaultLocation.lat,
+    zoom: Config.defaultLocation.zoom,
+    rotation: Config.defaultLocation.rotation,
     onInitiated: undefined,
     onClicked: undefined,
     onBrowserStateCleared: undefined,
     onNavigatedHome: undefined
+});
+
+const LocalStorageNodeName = LocalStorageKeys.homeTool;
+const LocalStorageDefaults = Object.freeze({
+    lon: Config.defaultLocation.lon,
+    lat: Config.defaultLocation.lat,
+    zoom: Config.defaultLocation.zoom,
+    rotation: Config.defaultLocation.rotation,
 });
 
 /**
@@ -67,11 +77,10 @@ class HomeTool extends Control {
         this.button = button;
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
 
-        this.homeLocation = [this.options.lon, this.options.lat];
-        this.homeZoom = this.options.zoom;
-        
-        this.userDefinedHomeLocation = undefined;
-        this.userDefinedHomeZoom = undefined;
+        this.localStorage = StateManager.getAndMergeStateObject(
+            LocalStorageNodeName, 
+            LocalStorageDefaults
+        );
 
         this.initContextMenuItems();
 
@@ -112,15 +121,7 @@ class HomeTool extends Control {
     }
 
     momentaryActivation() {
-        const map = this.getMap();
-        if(!map) {
-            return;
-        }
-        
-        const zoom = this.getZoom();
-        const coordiantes = this.getCoordinates();
-
-        goToView(map, coordiantes, zoom);
+        this.doNavigateHome(map);
 
         window.setTimeout(() => {
             // Note: Consumer callback
@@ -141,8 +142,8 @@ class HomeTool extends Control {
     }
 
     onWindowBrowserStateCleared() {
-        this.userDefinedHomeLocation = undefined;
-        this.userDefinedHomeZoom = undefined;
+        this.doClearState();
+        this.doNavigateHome();
 
         // Note: Consumer callback
         if(this.options.onBrowserStateCleared instanceof Function) {
@@ -154,24 +155,67 @@ class HomeTool extends Control {
     // # Section: Map/UI Callbacks
     // -------------------------------------------------------------------
 
-    onContextMenuSetHomeLocation() {
-        this.setHomeLocation();
+    onContextMenuSetHomeLocation(map, coordinates, target) {
+        this.doCreateNewHome(coordinates);
     }
 
     // -------------------------------------------------------------------
-    // # Section: Tool Actions
+    // # Section: Getters and Setters
     // -------------------------------------------------------------------
 
-    setHomeLocation() {
+    getZoom() {
+        if(this.localStorage.zoom !== this.options.zoom) {
+            return this.localStorage.zoom;
+        }
+
+        return this.options.zoom;
+    }
+
+    getRotation() {
+        if(this.localStorage.rotation !== this.options.rotation) {
+            return this.localStorage.rotation;
+        }
+
+        return this.options.rotation;
+    }
+
+    getLocation() {
+        if(
+            this.localStorage.lon !== this.options.lon ||
+            this.localStorage.lat !== this.options.lat
+        ) {
+            return [
+                this.localStorage.lon,
+                this.localStorage.lat
+            ];
+        }
+
+        return [
+            this.options.lon,
+            this.options.lat
+        ];
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Tool DoActions
+    // -------------------------------------------------------------------
+
+    doCreateNewHome(coordinates) {
         const map = this.getMap();
         if(!map) {
             return;
         }
 
         const view = map.getView();
+        const zoom = view.getZoom();
+        const rotation = view.getRotation();
 
-        this.userDefinedHomeZoom = view.getZoom();
-        this.userDefinedHomeLocation = toLonLat(view.getCenter());
+        this.localStorage.zoom = zoom;
+        this.localStorage.rotation = rotation;
+        this.localStorage.lon = coordinates[0];
+        this.localStorage.lat = coordinates[1];
+        
+        StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
 
         Toast.success({
             title: 'New home',
@@ -180,16 +224,22 @@ class HomeTool extends Control {
         });
     }
 
-    getZoom() {
-        return this.userDefinedHomeZoom
-            ? this.userDefinedHomeZoom 
-            : this.homeZoom;
+    doNavigateHome() {
+        const map = this.getMap();
+        if(!map) {
+            return;
+        }
+
+        const zoom = this.getZoom();
+        const rotation = this.getRotation();
+        const location = this.getLocation();
+
+        goToView(map, location, zoom, rotation);
     }
 
-    getCoordinates() {
-        return this.userDefinedHomeLocation 
-            ? this.userDefinedHomeLocation 
-            : this.homeLocation;
+    doClearState() {
+        this.localStorage = _.cloneDeep(LocalStorageDefaults);
+        StateManager.setStateObject(LocalStorageNodeName, LocalStorageDefaults);
     }
 }
 

@@ -576,8 +576,7 @@ controls: defaultControls({
     new BookmarkTool({
         markerLayerVisibleOnLoad: true,
         markerLabelUseEllipsisAfter: 20,
-        shouldRenderMarkerLabel: true,
-        shouldRenderMarkerLabelUpperCase: false,
+        markerLabelUseUpperCase: false,
         bookmarks: [{
             id: '6812cc22-f490-46b7-a9f3-42eb9ea58ac2',
             name: 'Custom bookmark',
@@ -729,8 +728,7 @@ controls: defaultControls({
         timeout: 10000,
         description: 'This is the location that the browser was able to find. It might not be your actual location.',
         markerLabelUseEllipsisAfter: 20,
-        shouldRenderMarkerLabel: true,
-        shouldRenderMarkerLabelUpperCase: false,
+        markerLabelUseUpperCase: false,
         onInitiated: function() {
             console.log('MyLocationTool: Initiated');
         },
@@ -980,14 +978,13 @@ All available properties:
     icon: 'geoPin.filled',             // Icon key
     iconWidth: 14,                     // Icon width
     iconHeight: 14,                    // Icon height
-    shouldRenderLabel: true,           // If label over marker should render
-    shouldRenderLabelUpperCase: false, // If label over marker should be uppercase
     label: 'Marker Title',             // Label over marker
     labelFill: '#FFFFFF',              // Label fill color
     labelStroke: '#3B4352CC',          // Label stroke color
     labelStrokeWidth: 12,              // Label stroke width
     labelFont: '14px Calibri',         // Label font
     labelUseEllipsisAfter: 20,         // Use ellipsis (...) dots if text is to long
+    labelUseUpperCase: false,          // If label should be in uppercase
     notSelectable: true,               // If edit tool can select the marker
     infoWindow: undefined,             // Info window to show on click
     replaceHashtag: true               // Replace color hex (UrlMarkers)

@@ -121,10 +121,11 @@ class LayerManager {
     }
 
     static addMapLayer(layerWrapper, options = {}) {
+        const mergedOptions = _.merge(_.cloneDeep(DefaultMapLayerOptions), options);
         layerWrapper.name = this.#validateName(layerWrapper.name);
+        
         LogManager.logDebug(FILENAME, 'addMapLayer', layerWrapper.name);
 
-        const mergedOptions = _.merge(_.cloneDeep(DefaultMapLayerOptions), options);
         this.#addPropertiesInterface(layerWrapper);
 
         if(!layerWrapper.isDynamicallyAdded) {
@@ -234,13 +235,14 @@ class LayerManager {
     static addFeatureLayer(options = {}) {
         const mergedOptions = _.merge(_.cloneDeep(DefaultFeatureLayerOptions), options);
         mergedOptions.name = this.#validateName(mergedOptions.name);
+
         LogManager.logDebug(FILENAME, 'addFeatureLayer', mergedOptions.name);
 
         const layerWrapper = {
             id: mergedOptions.id,
             name: mergedOptions.name,
-            sortIndex: options.sortIndex,
-            isDynamicallyAdded: options.isDynamicallyAdded,
+            sortIndex: mergedOptions.sortIndex,
+            isDynamicallyAdded: mergedOptions.isDynamicallyAdded,
             layer: new VectorLayer({
                 source: new VectorSource(),
                 visible: mergedOptions.isVisible

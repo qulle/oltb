@@ -48,10 +48,10 @@ import { AllTools } from './tools/index';
 // This is the same NODE_NAME and PROPS that the MapNavigationTool.js is using
 const LocalStorageNodeName = LocalStorageKeys.mapData;
 const LocalStorageDefaults = Object.freeze({
-    lon: 18.1201,
-    lat: 35.3518,
-    zoom: 3,
-    rotation: 0
+    lon: Config.defaultLocation.lon,
+    lat: Config.defaultLocation.lat,
+    zoom: Config.defaultLocation.zoom,
+    rotation: Config.defaultLocation.rotation,
 });
 
 class OLTB {

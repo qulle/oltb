@@ -193,7 +193,55 @@ class MagnifyTool extends Control {
     }
 
     // -------------------------------------------------------------------
-    // # Section: Tool Actions
+    // # Section: Handle Listeners
+    // -------------------------------------------------------------------
+
+    attachMapListeners() {
+        const map = this.getMap();
+        if(!map) {
+            return;
+        }
+
+        const mapContainer = map.getTarget();
+    
+        this.onMousemoveListenert = this.onMousemove.bind(this);
+        mapContainer.addEventListener(Events.browser.mouseMove, this.onMousemoveListenert);
+
+        this.onMouseoutListenert = this.onMouseout.bind(this);
+        mapContainer.addEventListener(Events.browser.mouseOut, this.onMouseoutListenert);
+
+        this.onKeydownListener = this.onKeydown.bind(this);
+        document.addEventListener(Events.browser.keyDown, this.onKeydownListener);
+
+        this.onPostrenderListeners = [];
+        map.getLayers().getArray().forEach((layer) => {
+            this.onPostrenderListeners.push(layer.on(Events.openLayers.postRender, this.onPostrender.bind(this)));
+        });
+    }
+
+    detachMapListeners() {
+        const map = this.getMap();
+        if(!map) {
+            return;
+        }
+
+        const mapContainer = map.getTarget();
+
+        // Remove the eventlisteners
+        mapContainer.removeEventListener(Events.browser.mouseMove, this.onMousemoveListenert);
+        mapContainer.removeEventListener(Events.browser.mouseOut, this.onMouseoutListenert);
+        document.removeEventListener(Events.browser.keyDown, this.onKeydownListener);
+
+        this.onPostrenderListeners.forEach((listener) => {
+            unByKey(listener);
+        });
+
+        // Render to remove the magnifier
+        map.render();
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Tool DoActions
     // -------------------------------------------------------------------
 
     postRender(event) {
@@ -270,50 +318,6 @@ class MagnifyTool extends Control {
                 )
             });
         }
-    }
-
-    attachMapListeners() {
-        const map = this.getMap();
-        if(!map) {
-            return;
-        }
-
-        const mapContainer = map.getTarget();
-    
-        this.onMousemoveListenert = this.onMousemove.bind(this);
-        mapContainer.addEventListener(Events.browser.mouseMove, this.onMousemoveListenert);
-
-        this.onMouseoutListenert = this.onMouseout.bind(this);
-        mapContainer.addEventListener(Events.browser.mouseOut, this.onMouseoutListenert);
-
-        this.onKeydownListener = this.onKeydown.bind(this);
-        document.addEventListener(Events.browser.keyDown, this.onKeydownListener);
-
-        this.onPostrenderListeners = [];
-        map.getLayers().getArray().forEach((layer) => {
-            this.onPostrenderListeners.push(layer.on(Events.openLayers.postRender, this.onPostrender.bind(this)));
-        });
-    }
-
-    detachMapListeners() {
-        const map = this.getMap();
-        if(!map) {
-            return;
-        }
-
-        const mapContainer = map.getTarget();
-
-        // Remove the eventlisteners
-        mapContainer.removeEventListener(Events.browser.mouseMove, this.onMousemoveListenert);
-        mapContainer.removeEventListener(Events.browser.mouseOut, this.onMouseoutListenert);
-        document.removeEventListener(Events.browser.keyDown, this.onKeydownListener);
-
-        this.onPostrenderListeners.forEach((listener) => {
-            unByKey(listener);
-        });
-
-        // Render to remove the magnifier
-        map.render();
     }
 }
 

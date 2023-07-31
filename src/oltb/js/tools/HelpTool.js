@@ -84,19 +84,45 @@ class HelpTool extends Control {
     }
 
     momentaryActivation() {
-        this.openTabOrWindow();
+        this.doOpenTabOrWindow();
     }
 
     // -------------------------------------------------------------------
     // # Section: Browser Events
     // -------------------------------------------------------------------
 
-    openTabOrWindow() {
+    onWindowKeyUp(event) {
+        if(isShortcutKeyOnly(event, ShortcutKeys.helpTool)) {
+            this.onClickTool();
+        }
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Ask User
+    // -------------------------------------------------------------------
+
+    askToOpenTabOrWindow() {
+        Dialog.confirm({
+            title: 'Help pages',
+            message: 'Browsers block automatic opening new windows, here is a button for you to press',
+            confirmClass: Dialog.Success,
+            confirmText: 'Open Help',
+            onConfirm: () => {
+                this.doOpenTabOrWindow();
+            }
+        });
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Tool DoActions
+    // -------------------------------------------------------------------
+
+    doOpenTabOrWindow() {
         try {
-            this.openTabOrWindow();
+            window.open(this.options.url, this.options.target).focus();
         }catch(error) {
             const errorMessage = 'Action was restricted by browser settings';
-            LogManager.logError(FILENAME, 'openTabOrWindow', {
+            LogManager.logError(FILENAME, 'doOpenTabOrWindow', {
                 message: errorMessage,
                 error: error
             });
@@ -104,20 +130,6 @@ class HelpTool extends Control {
             Toast.error({
                 title: 'Error',
                 message: errorMessage
-            });
-        }
-    }
-
-    onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, ShortcutKeys.helpTool)) {
-            Dialog.confirm({
-                title: 'Help pages',
-                message: 'Browsers block automatic opening new windows, here is a button for you to press',
-                confirmClass: Dialog.Success,
-                confirmText: 'Open Help',
-                onConfirm: () => {
-                    this.onClickTool();
-                }
             });
         }
     }

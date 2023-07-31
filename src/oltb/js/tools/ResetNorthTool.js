@@ -136,14 +136,14 @@ class ResetNorthTool extends Control {
     // -------------------------------------------------------------------
 
     onContextMenuSetRotation(map, coordinates, target) {
-        this.setRotation(map);
+        this.askToSetRotation(map);
     }
 
     // -------------------------------------------------------------------
-    // # Section: Tool Actions
+    // # Section: Ask User
     // -------------------------------------------------------------------
 
-    setRotation(map) {
+    askToSetRotation(map) {
         const view = map.getView();
 
         const zoom = view.getZoom();
@@ -156,22 +156,19 @@ class ResetNorthTool extends Control {
 
         // Must use the center of the view
         // The method gets the coordinates where the user clicked
-        const centerCoordinates = toLonLat(view.getCenter());
+        const coordinates = toLonLat(view.getCenter());
 
         Dialog.prompt({
             title: 'Rotate map',
             message: 'Set map rotation by degrees',
             value: Math.round(normalizedRotation),
             confirmText: 'Rotate map',
-            onInput: (result) => {
-                console.log(result);
-            },
             onConfirm: (result) => {
                 if(result.isDigitsOnly()) {
-                    goToView(map, centerCoordinates, zoom, degreesToRadians(result));
+                    this.doRotation(map, coordinates, zoom, result);
                 }else {
                     const errorMessage = 'Only digits are allowed as input';
-                    LogManager.logError(FILENAME, 'onContextMenuSetRotation', {
+                    LogManager.logError(FILENAME, 'askToSetRotation', {
                         message: errorMessage,
                         result: result
                     });
@@ -183,6 +180,14 @@ class ResetNorthTool extends Control {
                 }
             }
         });
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Tool DoActions
+    // -------------------------------------------------------------------
+
+    doRotation(map, coordinates, zoom, degrees) {
+        goToView(map, coordinates, zoom, degreesToRadians(degrees));
     }
 }
 

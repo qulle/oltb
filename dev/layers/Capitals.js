@@ -77,13 +77,13 @@ const parseGeoJson = function(data) {
                 lat: coordinates[1],
                 title: countryName,
                 description: description,
+                icon: 'geoMarker.filled',
                 markerFill: markerFill,
+                markerStroke: '#FFFFFF',
                 label: countryName,
                 labelFill: '#FFFFFF',
                 labelStroke: '#3B4352CC',
                 labelStrokeWidth: 12,
-                labelFont: '14px Calibri',
-                icon: 'geoMarker.filled',
                 notSelectable: true,
                 infoWindow: infoWindow
             })

@@ -3,6 +3,7 @@
 const LocalStorageKeys = Object.freeze({
     mapData: 'common.mapdata',
     drawTool: 'tool.draw',
+    homeTool: 'tool.home',
     editTool: 'tool.edit',
     layerTool: 'tool.layer',
     themeTool: 'tool.theme',

@@ -59,13 +59,13 @@ const parseGeoJson = function(data) {
                 lat: coordinates[1],
                 title: name,
                 description: description,
+                icon: 'airplane.filled',
                 markerFill: '#E96B69FF',
+                markerStroke: '#FFFFFF',
                 label: name,
                 labelFill: '#FFFFFF',
                 labelStroke: '#3B4352CC',
                 labelStrokeWidth: 12,
-                labelFont: '14px Calibri',
-                icon: 'airplane.filled',
                 notSelectable: true,
                 infoWindow: infoWindow
             })

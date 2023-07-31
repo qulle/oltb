@@ -84,18 +84,28 @@ class InfoTool extends Control {
     }
 
     momentaryActivation() {
-        if(this.infoModal) {
-            return;
-        }
-
-        this.showInfoModal();
+        this.doShowInfoModal();
     }
 
     // -------------------------------------------------------------------
     // # Section: Browser Events
     // -------------------------------------------------------------------
 
-    showInfoModal() {
+    onWindowKeyUp(event) {
+        if(isShortcutKeyOnly(event, ShortcutKeys.infoTool)) {
+            this.onClickTool(event);
+        }
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Tool DoActions
+    // -------------------------------------------------------------------
+
+    doShowInfoModal() {
+        if(this.infoModal) {
+            return;
+        }
+        
         this.infoModal = Modal.create({
             title: this.options.title, 
             content: this.options.content,
@@ -103,12 +113,6 @@ class InfoTool extends Control {
                 this.infoModal = undefined;
             }
         });
-    }
-
-    onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, ShortcutKeys.infoTool)) {
-            this.onClickTool(event);
-        }
     }
 }
 

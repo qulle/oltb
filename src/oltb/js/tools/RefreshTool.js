@@ -80,7 +80,7 @@ class RefreshTool extends Control {
     }
 
     momentaryActivation() {
-        window.location.reload();
+        this.doWindowReload();
     }
 
     // -------------------------------------------------------------------
@@ -91,6 +91,14 @@ class RefreshTool extends Control {
         if(isShortcutKeyOnly(event, ShortcutKeys.refreshPageTool)) {
             this.onClickTool(event);
         }
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Tool DoActions
+    // -------------------------------------------------------------------
+
+    doWindowReload() {
+        window.location.reload();
     }
 }
 

@@ -35,7 +35,7 @@ class StateManager {
     }
 
     static #getBrowserData() {
-        LogManager.logDebug(FILENAME, 'logetBrowserDataadBrowserData', 'Loading stored state from browser');
+        LogManager.logDebug(FILENAME, 'getBrowserData', 'Loading stored state from browser');
 
         let state = {};
 

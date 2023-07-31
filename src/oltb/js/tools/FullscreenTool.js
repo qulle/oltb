@@ -64,7 +64,7 @@ class FullscreenTool extends Control {
             listeners: {
                 'click': this.onClickTool.bind(this)
             },
-            prototypes:{
+            prototypes: {
                 getTippy: function() {
                     return this._tippy;
                 }
@@ -111,7 +111,7 @@ class FullscreenTool extends Control {
         if(isFullScreen()) {
             exitFullScreen();
         }else {
-            this.enterFullScreen();
+            this.doRequestFullScreen();
         }
     }
 
@@ -126,7 +126,28 @@ class FullscreenTool extends Control {
     }
 
     onFullScreenChange(event) {
-        this.fullScreenChange();
+        if(document.fullscreenElement) {
+            this.button.removeChild(this.button.firstElementChild);
+            this.button.insertAdjacentHTML('afterbegin', this.exitFullscreenIcon);
+            this.button.getTippy().setContent(`Exit fullscreen (${ShortcutKeys.fullscreenTool})`);
+
+            // Note: Consumer callback
+            if(this.options.onEnter instanceof Function) {
+                this.options.onEnter(event);
+            }
+        }else {
+            this.button.removeChild(this.button.firstElementChild);
+            this.button.insertAdjacentHTML('afterbegin', this.enterFullscreenIcon);
+            this.button.getTippy().setContent(`Enter fullscreen (${ShortcutKeys.fullscreenTool})`);
+
+            // Note: Consumer callback
+            if(this.options.onLeave instanceof Function) {
+                this.options.onLeave(event);
+            }
+        }
+
+        this.isActive = !this.isActive;
+        this.button.classList.toggle(`${CLASS_TOOL_BUTTON}--active`);
     }
 
     // -------------------------------------------------------------------
@@ -138,7 +159,7 @@ class FullscreenTool extends Control {
 
         if(!isSupported) {
             const errorMessage = 'Fullscreen is not supported by this browser';
-            LogManager.logError(FILENAME, 'momentaryActivation', errorMessage);
+            LogManager.logError(FILENAME, 'isFullScreenSupportedByBrowser', errorMessage);
 
             Toast.error({
                 title: 'Error',
@@ -150,36 +171,8 @@ class FullscreenTool extends Control {
     }
 
     // -------------------------------------------------------------------
-    // # Section: Tool Actions
+    // # Section: Getters and Setters
     // -------------------------------------------------------------------
-
-    enterFullScreen() {
-        const map = this.getMap();
-        if(!map) {
-            return;
-        }
-
-        const element = map.getTargetElement();
-        requestFullScreen(element);
-    }
-
-    fullScreenChange() {
-        if(document.fullscreenElement) {
-            this.button.getTippy().setContent(`Exit fullscreen (${ShortcutKeys.fullscreenTool})`);
-
-            // Note: Consumer callback
-            if(this.options.onEnter instanceof Function) {
-                this.options.onEnter(event);
-            }
-        }else {
-            this.button.getTippy().setContent(`Enter fullscreen (${ShortcutKeys.fullscreenTool})`);
-
-            // Note: Consumer callback
-            if(this.options.onLeave instanceof Function) {
-                this.options.onLeave(event);
-            }
-        }
-    }
 
     getToolTippyContent() {
         return isFullScreen() 
@@ -193,39 +186,41 @@ class FullscreenTool extends Control {
             : this.enterFullscreenIcon;
     }
 
-    handleFullScreenChange() {
+    setMap(map) {
+        super.setMap(map);
+        
+        for(let i = 0, ii = FullscreenEvents.length; i < ii; ++i) {
+            this.listenerKeys.push(listen(document, FullscreenEvents[i], this.doHandleFullScreenChange, this));
+        }
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Tool DoActions
+    // -------------------------------------------------------------------
+
+    doRequestFullScreen() {
+        const map = this.getMap();
+        if(!map) {
+            return;
+        }
+
+        const element = map.getTargetElement();
+        requestFullScreen(element);
+    }
+
+    doHandleFullScreenChange() {
         const map = this.getMap();
         if(!map) {
             return;
         }
 
         if(isFullScreen()) {
-            this.button.removeChild(this.button.firstElementChild);
-            this.button.insertAdjacentHTML('afterbegin', this.exitFullscreenIcon);
             this.dispatchEvent(FullscreenEventTypes.enterFullScreen);
         }else {
-            this.button.removeChild(this.button.firstElementChild);
-            this.button.insertAdjacentHTML('afterbegin', this.enterFullscreenIcon);
             this.dispatchEvent(FullscreenEventTypes.leaveFullScreen);
         }
 
         map.updateSize();
-
-        this.isActive = !this.isActive;
-        this.button.classList.toggle(`${CLASS_TOOL_BUTTON}--active`);
-    }
-
-    setMap(map) {
-        super.setMap(map);
-        
-        for(let i = 0, ii = FullscreenEvents.length; i < ii; ++i) {
-            this.listenerKeys.push(listen(
-                document, 
-                FullscreenEvents[i], 
-                this.handleFullScreenChange, 
-                this
-            ));
-        }
     }
 }
 

@@ -3,10 +3,10 @@ import { Events } from '../../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { LogManager } from '../../core/managers/LogManager';
 import { ContextMenu } from '../../common/ContextMenu';
-import { MarkerModal } from '../modal-extensions/MarkerModal';
 import { toStringHDMS } from 'ol/coordinate';
 import { LayerManager } from '../../core/managers/LayerManager';
 import { ElementManager } from '../../core/managers/ElementManager';
+import { IconMarkerModal } from '../modal-extensions/IconMarkerModal';
 import { SvgPaths, getIcon } from '../../core/icons/GetIcon';
 import { generateIconMarker } from '../../generators/GenerateIconMarker';
 
@@ -66,7 +66,7 @@ class HiddenMarkerTool extends Control {
     // -------------------------------------------------------------------
 
     onContextMenuCreateMarker(map, coordinates, target) {
-        new MarkerModal({
+        new IconMarkerModal({
             coordinates: coordinates,
             onCreate: (result) => {
                 this.onCreateMarker(result);
@@ -101,7 +101,7 @@ class HiddenMarkerTool extends Control {
     }
 
     // -------------------------------------------------------------------
-    // # Section: Tool Actions
+    // # Section: Tool DoActions
     // -------------------------------------------------------------------
 
     addMarkerToMap(marker) {
@@ -142,6 +142,10 @@ class HiddenMarkerTool extends Control {
             icon: result.icon,
             markerFill: result.fill,
             markerStroke: result.stroke,
+            label: result.label,
+            labelFill: result.labelFill,
+            labelStrokeWidth: result.labelStrokeWidth,
+            labelStroke: result.labelStroke,
             infoWindow: infoWindow
         });
     

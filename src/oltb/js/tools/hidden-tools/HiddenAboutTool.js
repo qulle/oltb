@@ -50,18 +50,18 @@ class HiddenAboutTool extends Control {
     // -------------------------------------------------------------------
 
     onContextMenuAbout(map, coordinates, target) {        
-        if(this.aboutInfoModal) {
-            return;
-        }
-
-        this.showAboutModal();
+        this.doShowAboutModal();
     }
     
     // -------------------------------------------------------------------
-    // # Section: Tool Actions
+    // # Section: Tool DoActions
     // -------------------------------------------------------------------
 
-    showAboutModal() {
+    doShowAboutModal() {
+        if(this.aboutInfoModal) {
+            return;
+        }
+        
         const content = (`
             <p>Version ${Config.toolbar.version}</p>
             <p>Developed by Qulle <a href="//github.com/qulle/oltb" target="_blank" class="oltb-link">github.com/qulle/oltb</a></p>

@@ -72,7 +72,7 @@ class ThemeTool extends Control {
             listeners: {
                 'click': this.onClickTool.bind(this)
             },
-            prototypes:{
+            prototypes: {
                 getTippy: function() {
                     return this._tippy;
                 }
@@ -117,7 +117,7 @@ class ThemeTool extends Control {
     }
 
     momentaryActivation() {
-        this.toggleTheme();
+        this.doToggleTheme();
 
         // Note: Consumer callback
         if(this.options.onChanged instanceof Function) {
@@ -138,7 +138,7 @@ class ThemeTool extends Control {
 
     onWindowBrowserStateCleared() {
         const active = this.getActiveTheme();
-        this.swithThemeFromTo(active, ThemesData.light);
+        this.doSwitchThemeFromTo(active, ThemesData.light);
 
         // Note: Consumer callback
         if(this.options.onBrowserStateCleared instanceof Function) {
@@ -147,7 +147,7 @@ class ThemeTool extends Control {
     }
 
     // -------------------------------------------------------------------
-    // # Section: Tool Actions
+    // # Section: Getters and Setters
     // -------------------------------------------------------------------
 
     getToolTippyContent() {
@@ -174,14 +174,18 @@ class ThemeTool extends Control {
             : ThemesData.light;
     }
 
-    toggleTheme() {
+    // -------------------------------------------------------------------
+    // # Section: Tool DoActions
+    // -------------------------------------------------------------------
+
+    doToggleTheme() {
         const active = this.getActiveTheme();
         const inActive = this.getInActiveThem();
 
-        this.swithThemeFromTo(active, inActive);
+        this.doSwitchThemeFromTo(active, inActive);
     }
 
-    swithThemeFromTo(from, to) {
+    doSwitchThemeFromTo(from, to) {
         this.localStorage.theme = to.class;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
 

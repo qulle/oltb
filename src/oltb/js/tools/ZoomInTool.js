@@ -90,14 +90,24 @@ class ZoomInTool extends Control {
             return;
         }
 
-        this.zoomIn(map);
+        this.doZoomIn(map);
     }
 
     // -------------------------------------------------------------------
-    // # Section: Tool Actions
+    // # Section: Browser Events
     // -------------------------------------------------------------------
 
-    zoomIn(map) {
+    onWindowKeyUp(event) {
+        if(isShortcutKeyOnly(event, ShortcutKeys.zoomInTool)) {
+            this.onClickTool(event);
+        }
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Tool DoActions
+    // -------------------------------------------------------------------
+
+    doZoomIn(map) {
         const view = map.getView();
         const coordiantes = toLonLat(view.getCenter());
         const currentZoom = view.getZoom();
@@ -111,16 +121,6 @@ class ZoomInTool extends Control {
                 this.options.onZoomed();
             }
         }, Config.animationDuration.normal);
-    }
-
-    // -------------------------------------------------------------------
-    // # Section: Browser Events
-    // -------------------------------------------------------------------
-
-    onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, ShortcutKeys.zoomInTool)) {
-            this.onClickTool(event);
-        }
     }
 }
 

@@ -208,8 +208,7 @@ const toolbar = new OLTB({
         BookmarkTool: {
             markerLayerVisibleOnLoad: true,
             markerLabelUseEllipsisAfter: 20,
-            shouldRenderMarkerLabel: true,
-            shouldRenderMarkerLabelUpperCase: false,
+            markerLabelUseUpperCase: false,
             bookmarks: [{
                 id: 18151210,
                 name: 'Custom bookmark',
@@ -358,8 +357,7 @@ const toolbar = new OLTB({
             timeout: 10000,
             description: 'This is the location that the browser was able to find. It might not be your actual location.',
             markerLabelUseEllipsisAfter: 20,
-            shouldRenderMarkerLabel: true,
-            shouldRenderMarkerLabelUpperCase: false,
+            markerLabelUseUpperCase: false,
             onInitiated: function() {
                 console.log('MyLocationTool: Initiated');
             },

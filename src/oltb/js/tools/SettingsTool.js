@@ -103,11 +103,7 @@ class SettingsTool extends Control {
     }
 
     momentaryActivation() {
-        if(this.settingsModal) {
-            return;
-        }
-
-        this.showSettingsModal();
+        this.doShowSettingsModal();
     }
 
     // -------------------------------------------------------------------
@@ -125,12 +121,20 @@ class SettingsTool extends Control {
     // -------------------------------------------------------------------
 
     onContextMenuBrowserStateClear(map, coordinates, target) {
+        this.askToClearBrowserState();
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Tool DoActions
+    // -------------------------------------------------------------------
+
+    askToClearBrowserState() {
         Dialog.confirm({
             title: 'Clear Browser State',
             message: 'Do you want to reset <strong>all</strong> items to default state for the Toolbar?',
             confirmText: 'Clear',
             onConfirm: () => {
-                this.clearBrowserState();
+                this.doDispatchBrowserStateCleared();
 
                 Toast.info({
                     title: 'Cleared',
@@ -142,10 +146,14 @@ class SettingsTool extends Control {
     }
 
     // -------------------------------------------------------------------
-    // # Section: Tool Actions
+    // # Section: Tool DoActions
     // -------------------------------------------------------------------
 
-    showSettingsModal() {
+    doShowSettingsModal() {
+        if(this.settingsModal) {
+            return;
+        }
+        
         this.settingsModal = new SettingsModal({
             onSave: () => {
                 Toast.success({
@@ -160,7 +168,7 @@ class SettingsTool extends Control {
         });
     }
 
-    clearBrowserState() {
+    doDispatchBrowserStateCleared() {
         // Emit event so that any tool can clean up
         window.dispatchEvent(new CustomEvent(Events.custom.browserStateCleared));
 

@@ -187,7 +187,7 @@ class SplitViewTool extends Control {
         // Events can be triggered by other tools that should not be handled if the tools is not in use 
         this.isActive = true;
 
-        this.setDefaultSelectedIndexes().dispatchChangeEvent();
+        this.setDefaultSelectedIndexes().doDispatchChangeEvent();
 
         // Some layer related error, missing or rendering
         // Triggered by eventDispatcher change-event
@@ -236,7 +236,7 @@ class SplitViewTool extends Control {
     }
 
     updateTool() {
-        this.sourceChange(
+        this.doSourceChange(
             this.uiRefLeftSideSrc.value, 
             this.uiRefRightSideSrc.value
         );
@@ -269,8 +269,7 @@ class SplitViewTool extends Control {
     }
     
     onWindowBrowserStateCleared() {
-        this.localStorage = _.cloneDeep(LocalStorageDefaults);
-        StateManager.setStateObject(LocalStorageNodeName, LocalStorageDefaults);
+        this.doClearState();
 
         if(this.isActive) {
             this.deActivateTool();
@@ -321,7 +320,7 @@ class SplitViewTool extends Control {
             }
         });
 
-        this.dispatchChangeEvent();
+        this.doDispatchChangeEvent();
     }
 
     // -------------------------------------------------------------------
@@ -329,12 +328,8 @@ class SplitViewTool extends Control {
     // -------------------------------------------------------------------
     
     onSwapLayerSides() {
-        const currentRightId = this.uiRefRightSideSrc.value;
-
-        this.uiRefRightSideSrc.value = this.uiRefLeftSideSrc.value;
-        this.uiRefLeftSideSrc.value = currentRightId;
-
-        this.dispatchChangeEvent();
+        this.doSwapLayerSides();
+        this.doDispatchChangeEvent();
     }
 
     onSliderInput(event) {
@@ -352,7 +347,7 @@ class SplitViewTool extends Control {
             return;
         }
 
-        this.preRender(event, map);
+        this.doPreRender(event, map);
     }
 
     onPostRender(event) {
@@ -360,10 +355,38 @@ class SplitViewTool extends Control {
     }
 
     // -------------------------------------------------------------------
-    // # Section: Tool Actions
+    // # Getters and Setters
     // -------------------------------------------------------------------
 
-    preRender(event, map) {
+    setDefaultSelectedIndexes() {
+        this.uiRefRightSideSrc.selectedIndex = '0';
+        this.uiRefRightSideSrc.selectedIndex = '1';
+
+        return this;
+    }
+    
+    setLoadingError() {
+        this.layerLoadingError = true;
+
+        const errorMessage = 'One or both of the layers could not be loaded';
+        LogManager.logError(FILENAME, 'setLoadingError', errorMessage);
+
+        Toast.error({
+            title: 'Error',
+            message: errorMessage
+        });
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Tool DoActions
+    // -------------------------------------------------------------------
+
+    doClearState() {
+        this.localStorage = _.cloneDeep(LocalStorageDefaults);
+        StateManager.setStateObject(LocalStorageNodeName, LocalStorageDefaults);
+    }
+
+    doPreRender(event, map) {
         const context = event.context;
         const mapSize = map.getSize();
 
@@ -398,43 +421,31 @@ class SplitViewTool extends Control {
         context.clip();
     }
 
-    setDefaultSelectedIndexes() {
-        this.uiRefRightSideSrc.selectedIndex = '0';
-        this.uiRefRightSideSrc.selectedIndex = '1';
+    doSwapLayerSides() {
+        const currentRightId = this.uiRefRightSideSrc.value;
 
-        return this;
+        this.uiRefRightSideSrc.value = this.uiRefLeftSideSrc.value;
+        this.uiRefLeftSideSrc.value = currentRightId;
     }
 
-    dispatchChangeEvent() {
+    doDispatchChangeEvent() {
         eventDispatcher([
             this.uiRefLeftSideSrc, 
             this.uiRefRightSideSrc
         ], Events.browser.change);
     }
 
-    setLoadingError() {
-        this.layerLoadingError = true;
-
-        const errorMessage = 'One or both of the layers could not be loaded';
-        LogManager.logError(FILENAME, 'setLoadingError', errorMessage);
-
-        Toast.error({
-            title: 'Error',
-            message: errorMessage
-        });
-    }
-
-    addMapLayer(layer) {
+    doAddMapLayer(layer) {
         layer.setVisible(true);
         this.getMap().addLayer(layer);
     }
 
-    removeMapLayer(layer) {
+    doRemoveMapLayer(layer) {
         layer.setVisible(false);
         this.getMap().removeLayer(layer);
     }
 
-    sourceChange(leftSideSrcId, rightSideSrcId) {
+    doSourceChange(leftSideSrcId, rightSideSrcId) {
         // Block access for events that are captued when the tool is not activated
         // Example removing a layer in the LayerTool
         if(!this.isActive) {
@@ -453,7 +464,7 @@ class SplitViewTool extends Control {
         // Remove current layers from the map
         // Only the left and right layer will be added later
         LayerManager.getMapLayers().forEach((layerWrapper) => {
-            this.removeMapLayer(layerWrapper.getLayer());
+            this.doRemoveMapLayer(layerWrapper.getLayer());
         });
 
         // Get layers to view in split-mode
@@ -469,11 +480,11 @@ class SplitViewTool extends Control {
         const rightSideLayer = rightSideLayerWrapper.getLayer();
 
         // Left layer config
-        this.addMapLayer(leftSideLayer);
+        this.doAddMapLayer(leftSideLayer);
 
          // Right layer config, only if different source than left side
         if(leftSideSrcId !== rightSideSrcId) {
-            this.addMapLayer(rightSideLayer);
+            this.doAddMapLayer(rightSideLayer);
 
             // Attach listeners to the right layer. 
             // Pre/Post render will only show part of the right map

@@ -101,7 +101,7 @@ class ExportPngTool extends Control {
     }
 
     momentaryActivation() {
-        this.mapRenderOnce();
+        this.doRenderMapOnce();
     }
 
     // -------------------------------------------------------------------
@@ -133,6 +133,39 @@ class ExportPngTool extends Control {
             return;
         }
 
+        this.doRenderComplete(map);
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: User Interface
+    // -------------------------------------------------------------------
+
+    createUICanvas(width, height) {
+        return DOM.createElement({
+            element: 'canvas',
+            attributes: {
+                'width': width,
+                'height': height
+            }
+        }); 
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Getters and Setters
+    // -------------------------------------------------------------------
+
+    getCanvasMatrix(uiRefCanvas) {
+        return uiRefCanvas.style.transform
+            .match(/^matrix\(([^(]*)\)$/)[1]
+            .split(',')
+            .map(Number);;
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Tool DoActions
+    // -------------------------------------------------------------------
+
+    doRenderComplete(map) {
         try {
             const uiRefMapElement = ElementManager.getMapElement();
             const size = map.getSize();
@@ -159,7 +192,7 @@ class ExportPngTool extends Control {
             });
 
             pngContext.drawImage(overlayCanvas, 0, 0);
-            this.downloadCanvas(pngCanvas);
+            this.doDownloadCanvas(pngCanvas);
         }catch(error) {
             // Note: Consumer callback
             if(this.options.onError instanceof Function) {
@@ -167,7 +200,7 @@ class ExportPngTool extends Control {
             }
 
             const errorMessage = 'Failed to export canvas image';
-            LogManager.logError(FILENAME, 'onRenderCompleteAsync', {
+            LogManager.logError(FILENAME, 'doRenderComplete', {
                 message: errorMessage,
                 error: error
             });
@@ -179,32 +212,7 @@ class ExportPngTool extends Control {
         }
     }
 
-    // -------------------------------------------------------------------
-    // # Section: UI
-    // -------------------------------------------------------------------
-
-    createUICanvas(width, height) {
-        return DOM.createElement({
-            element: 'canvas',
-            attributes: {
-                'width': width,
-                'height': height
-            }
-        }); 
-    }
-
-    // -------------------------------------------------------------------
-    // # Section: Tool Actions
-    // -------------------------------------------------------------------
-
-    getCanvasMatrix(uiRefCanvas) {
-        return uiRefCanvas.style.transform
-            .match(/^matrix\(([^(]*)\)$/)[1]
-            .split(',')
-            .map(Number);;
-    }
-
-    mapRenderOnce() {
+    doMapRenderOnce() {
         const map = this.getMap();
         if(!map) {
             return;
@@ -215,7 +223,7 @@ class ExportPngTool extends Control {
         map.renderSync();
     }
 
-    downloadCanvas(pngCanvas) {
+    doDownloadCanvas(pngCanvas) {
         const timestamp = this.options.appendTime 
             ? `-${new Date().toLocaleString(Config.locale)}`
             : '';

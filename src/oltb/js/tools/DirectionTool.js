@@ -73,7 +73,7 @@ class DirectionTool extends Control {
             listeners: {
                 'click': this.onClickTool.bind(this)
             },
-            prototypes:{
+            prototypes: {
                 getTippy: function() {
                     return this._tippy;
                 }
@@ -121,7 +121,7 @@ class DirectionTool extends Control {
     }
 
     momentaryActivation() {
-        this.toggleDirection();
+        this.doToggleDirection();
 
         const active = this.getActiveDirection();
         window.dispatchEvent(new CustomEvent(Events.custom.toolbarDirectionChange, {
@@ -152,7 +152,7 @@ class DirectionTool extends Control {
 
     onWindowBrowserStateCleared() {
         const active = this.getActiveDirection();
-        this.swithDirectionFromTo(active, DirectionData.col);
+        this.doSwitchDirectionFromTo(active, DirectionData.col);
 
         // Note: Consumer callback
         if(this.options.onBrowserStateCleared instanceof Function) {
@@ -161,7 +161,19 @@ class DirectionTool extends Control {
     }
 
     // -------------------------------------------------------------------
-    // # Section: Tool Actions
+    // # Section: Conversions/Validation
+    // -------------------------------------------------------------------
+
+    shouldToolButtonBeHidden() {
+        if(window.innerWidth <= Config.deviceWidth.sm) {
+            this.button.classList.add(`${CLASS_TOOL_BUTTON}--hidden`);
+        }else {
+            this.button.classList.remove(`${CLASS_TOOL_BUTTON}--hidden`);
+        }
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Getters and Setters
     // -------------------------------------------------------------------
 
     getToolTippyContent() {
@@ -188,22 +200,18 @@ class DirectionTool extends Control {
             : DirectionData.col;
     }
 
-    shouldToolButtonBeHidden() {
-        if(window.innerWidth <= Config.deviceWidth.sm) {
-            this.button.classList.add(`${CLASS_TOOL_BUTTON}--hidden`);
-        }else {
-            this.button.classList.remove(`${CLASS_TOOL_BUTTON}--hidden`);
-        }
-    }
+    // -------------------------------------------------------------------
+    // # Section: Tool DoActions
+    // -------------------------------------------------------------------
 
-    toggleDirection() {
+    doToggleDirection() {
         const active = this.getActiveDirection();
         const inActive = this.getInActiveDirection();
 
-        this.swithDirectionFromTo(active, inActive);
+        this.doSwitchDirectionFromTo(active, inActive);
     }
 
-    swithDirectionFromTo(from, to) {
+    doSwitchDirectionFromTo(from, to) {
         this.localStorage.direction = to.class;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
 

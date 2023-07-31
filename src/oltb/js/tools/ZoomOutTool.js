@@ -90,14 +90,24 @@ class ZoomOutTool extends Control {
             return;
         }
         
-        this.zoomOut(map);
+        this.doZoomOut(map);
     }
 
     // -------------------------------------------------------------------
-    // # Section: Tool Actions
+    // # Section: Browser Events
     // -------------------------------------------------------------------
 
-    zoomOut(map) {
+    onWindowKeyUp(event) {
+        if(isShortcutKeyOnly(event, ShortcutKeys.zoomOutTool)) {
+            this.onClickTool(event);
+        }
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Tool DoActions
+    // -------------------------------------------------------------------
+
+    doZoomOut(map) {
         const view = map.getView();
         const coordiantes = toLonLat(view.getCenter());
         const currentZoom = view.getZoom();
@@ -111,16 +121,6 @@ class ZoomOutTool extends Control {
                 this.options.onZoomed();
             }
         }, Config.animationDuration.normal);
-    }
-
-    // -------------------------------------------------------------------
-    // # Section: Browser Events
-    // -------------------------------------------------------------------
-
-    onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, ShortcutKeys.zoomOutTool)) {
-            this.onClickTool(event);
-        }
     }
 }
 

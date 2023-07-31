@@ -220,8 +220,7 @@ class OverviewTool extends Control {
     }
     
     onWindowBrowserStateCleared() {
-        this.localStorage = _.cloneDeep(LocalStorageDefaults);
-        StateManager.setStateObject(LocalStorageNodeName, LocalStorageDefaults);
+        this.doClearState();
 
         if(this.isActive) {
             this.deActivateTool();
@@ -231,6 +230,15 @@ class OverviewTool extends Control {
         if(this.options.onBrowserStateCleared instanceof Function) {
             this.options.onBrowserStateCleared();
         }
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Tool DoActions
+    // -------------------------------------------------------------------
+
+    doClearState() {
+        this.localStorage = _.cloneDeep(LocalStorageDefaults);
+        StateManager.setStateObject(LocalStorageNodeName, LocalStorageDefaults);
     }
 }
 

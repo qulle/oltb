@@ -235,21 +235,21 @@ class CoordinatesTool extends Control {
     }
 
     onPointerMove(event) {
-        this.setTooltipCoordinates(event);
+        this.doCreateTooltipCoordinates(event);
 
         if(this.shouldUpdateToolboxCoordinatesOnHover()) {
-            this.setToolboxCoordinates(event);
+            this.doCreateToolboxCoordinates(event);
         }
     }
 
     onMapClick(event) {        
-        this.copyCoordinates(event);
+        this.doCopyCoordinates(event);
 
         if(!this.shouldCopyCoordinatesOnClick()) {
             this.toolboxCoordinates(event);
         }
 
-        const allCoordinates = this.getToolCoordinatesList(event.coordinate);
+        const allCoordinates = this.doCreateToolCoordinatesList(event.coordinate);
 
         // Note: Consumer callback
         if(this.options.onMapClicked instanceof Function) {
@@ -286,7 +286,7 @@ class CoordinatesTool extends Control {
     }
 
     // -------------------------------------------------------------------
-    // # Section: UI
+    // # Section: User Interface
     // -------------------------------------------------------------------
 
     createUIProjections() {
@@ -347,10 +347,10 @@ class CoordinatesTool extends Control {
     }
 
     // -------------------------------------------------------------------
-    // # Section: Tool Actions
+    // # Section: Tool DoActions
     // -------------------------------------------------------------------
 
-    getToolCoordinatesList(coordinates) {
+    doCreateToolCoordinatesList(coordinates) {
         const projections = ProjectionManager.getProjections();
         const result = [];
 
@@ -373,7 +373,7 @@ class CoordinatesTool extends Control {
         return result;
     }
 
-    setTooltipCoordinates(event) {
+    doCreateTooltipCoordinates(event) {
         const coordinates = transform(
             event.coordinate, 
             Config.projection.default, 
@@ -384,7 +384,7 @@ class CoordinatesTool extends Control {
         this.tooltipItem.innerHTML = prettyCoordinates;
     }
 
-    setToolboxCoordinates(event) {
+    doCreateToolboxCoordinates(event) {
         const projections = ProjectionManager.getProjections();
 
         projections.forEach((projection) => {
@@ -405,7 +405,7 @@ class CoordinatesTool extends Control {
         });
     }
 
-    copyCoordinates(event) {
+    doCopyCoordinates(event) {
         if(!this.should1() || ToolManager.hasActiveTool()) {
             return;
         }
@@ -428,7 +428,7 @@ class CoordinatesTool extends Control {
             })
             .catch((error) => {
                 const errorMessage = 'Failed to copy coordinates';
-                LogManager.logError(FILENAME, 'onCopyCoordinates', {
+                LogManager.logError(FILENAME, 'doCopyCoordinates', {
                     message: errorMessage,
                     error: error
                 });

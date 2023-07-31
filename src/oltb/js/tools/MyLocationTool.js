@@ -29,8 +29,7 @@ const DefaultOptions = Object.freeze({
     timeout: 10000,
     description: 'This is the location that the browser was able to find. It might not be your actual location.',
     markerLabelUseEllipsisAfter: 20,
-    shouldRenderMarkerLabel: true,
-    shouldRenderMarkerLabelUpperCase: false,
+    markerLabelUseUpperCase: false,
     onInitiated: undefined,
     onClicked: undefined,
     onLocationFound: undefined,
@@ -103,26 +102,9 @@ class MyLocationTool extends Control {
 
     momentaryActivation() {
         if(isFullScreen()) {
-            Dialog.confirm({
-                title: 'Exit fullscreen',
-                message: 'To use geolocation you must exit fullscreen',
-                confirmClass: Dialog.Success,
-                confirmText: 'Exit fullscreen',
-                onConfirm: () => {
-                    exitFullScreen()
-                        .then(() => {
-                            this.getGeoLocation();
-                        })
-                        .catch((error) => {
-                            LogManager.logError(FILENAME, 'momentaryActivation', {
-                                message: 'Error exiting fullscreen',
-                                error: error
-                            });
-                        });
-                }
-            });
+            this.askToExitFullScreen();
         }else {
-            this.getGeoLocation();
+            this.doGeoLocationSearch();
         }
     }
 
@@ -149,8 +131,9 @@ class MyLocationTool extends Control {
         DOM.removeElement(this.loadingToast);
         
         const coordinates = [location.coords.longitude, location.coords.latitude];
-        const marker = this.addIconMarker(coordinates);
-        this.setFocusToMarker(map, marker, coordinates, Config.marker.focusZoom);
+        const marker = this.doAddIconMarker(coordinates);
+        
+        this.doFocusMarker(map, marker, coordinates, Config.marker.focusZoom);
         
         // Note: Consumer callback
         if(this.options.onLocationFound instanceof Function) {
@@ -175,22 +158,47 @@ class MyLocationTool extends Control {
     }
 
     // -------------------------------------------------------------------
-    // # Section: Tool Actions
+    // # Section: Ask User
     // -------------------------------------------------------------------
 
-    setFocusToMarker(map, marker, coordinates, zoom) {
+    askToExitFullScreen() {
+        Dialog.confirm({
+            title: 'Exit fullscreen',
+            message: 'To use geolocation you must exit fullscreen',
+            confirmClass: Dialog.Success,
+            confirmText: 'Exit fullscreen',
+            onConfirm: () => {
+                exitFullScreen()
+                    .then(() => {
+                        this.doGeoLocationSearch();
+                    })
+                    .catch((error) => {
+                        LogManager.logError(FILENAME, 'askToExitFullScreen', {
+                            message: 'Error exiting fullscreen',
+                            error: error
+                        });
+                    });
+            }
+        });
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Tool DoActions
+    // -------------------------------------------------------------------
+
+    doFocusMarker(map, marker, coordinates, zoom) {
         goToView(map, coordinates, zoom);
         InfoWindowManager.showOverlayDelayed(marker, fromLonLat(coordinates));
     }
 
-    addMarkerToMap(marker) {
+    doAddMarkerToMap(marker) {
         const layerWrapper = LayerManager.addFeatureLayer({
             name: this.options.title
         });
         layerWrapper.getLayer().getSource().addFeature(marker);
     }
 
-    addIconMarker(coordinates) {
+    doAddIconMarker(coordinates) {
         const prettyCoordinates = toStringHDMS(coordinates);
         const infoWindow = {
             title: this.options.title,
@@ -212,20 +220,19 @@ class MyLocationTool extends Control {
             lat: coordinates[1],
             title: this.options.title,
             description: this.options.description,
+            icon: 'person.filled',
             label: this.options.title,
             labelUseEllipsisAfter: this.options.markerLabelUseEllipsisAfter,
-            shouldRenderLabel: this.options.shouldRenderMarkerLabel,
-            shouldRenderLabelUpperCase: this.options.shouldRenderMarkerLabelUpperCase,
-            icon: 'person.filled',
+            labelUseUpperCase: this.options.markerLabelUseUpperCase,
             infoWindow: infoWindow
         });
 
-        this.addMarkerToMap(marker);
+        this.doAddMarkerToMap(marker);
 
         return marker;
     }
 
-    getGeoLocation() {
+    doGeoLocationSearch() {
         if(this.loadingToast) {
             return;
         }

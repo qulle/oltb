@@ -1,9 +1,9 @@
 import { Config } from '../../Config';
 import { Events } from '../../../helpers/constants/Events';
 import { transform } from 'ol/proj';
-import { MarkerModal } from "../../../tools/modal-extensions/MarkerModal";
 import { toStringHDMS } from 'ol/coordinate';
 import { LayerManager } from '../LayerManager';
+import { IconMarkerModal } from "../../../tools/modal-extensions/IconMarkerModal";
 import { generateIconMarker } from '../../../generators/GenerateIconMarker';
 
 const ID_PREFIX_INFO_WINDOW = 'oltb-info-window-marker';
@@ -11,7 +11,7 @@ const CLASS_FUNC_BUTTON = 'oltb-func-btn';
 
 const editMarker = function(InfoWindowManager, beforeMarker) {
     const properties = beforeMarker.getProperties().oltb;
-    new MarkerModal({
+    new IconMarkerModal({
         edit: true,
         coordinates: transform(
             beforeMarker.getGeometry().getCoordinates(), 
@@ -20,9 +20,13 @@ const editMarker = function(InfoWindowManager, beforeMarker) {
         ),
         title: properties.marker.title,
         description: properties.marker.description,
+        icon: properties.marker.icon,
         markerFill: properties.style.markerFill,
         markerStroke: properties.style.markerStroke,
-        icon: properties.marker.icon,
+        label: properties.marker.label,
+        labelFill: properties.style.labelFill,
+        labelStrokeWidth: properties.style.labelStrokeWidth,
+        labelStroke: properties.style.labelStroke,
         onCreate: (result) => {
             onEditMarker(InfoWindowManager, beforeMarker, result);
         }
@@ -70,6 +74,10 @@ const onEditMarker = function(InfoWindowManager, beforeMarker, result) {
         icon: result.icon,
         markerFill: result.fill,
         markerStroke: result.stroke,
+        label: result.label,
+        labelFill: result.labelFill,
+        labelStrokeWidth: result.labelStrokeWidth,
+        labelStroke: result.labelStroke,
         infoWindow: infoWindow
     });
 

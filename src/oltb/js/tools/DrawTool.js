@@ -286,7 +286,7 @@ class DrawTool extends Control {
         }
 
         // Update the draw tool in the map
-        this.selectDraw(
+        this.doSelectDraw(
             this.uiRefToolType.value,
             this.uiRefStrokeWidth.value,
             this.uiRefFillColor.getAttribute('data-oltb-color'),
@@ -331,8 +331,7 @@ class DrawTool extends Control {
     }
 
     onWindowBrowserStateCleared() {
-        this.localStorage = _.cloneDeep(LocalStorageDefaults);
-        StateManager.setStateObject(LocalStorageNodeName, LocalStorageDefaults);
+        this.doClearState();
 
         // Rest UI-components
         this.uiRefFillColor.setAttribute('data-oltb-color', this.localStorage.fillColor);
@@ -463,6 +462,10 @@ class DrawTool extends Control {
         return SettingsManager.getSetting(Settings.alwaysNewLayers);
     }
 
+    isIntersectionEnabled() {
+        return this.uiRefIntersectionEnable.value.toLowerCase() === 'true';
+    }
+
     // -------------------------------------------------------------------
     // # Section: Generator Helpers
     // -------------------------------------------------------------------
@@ -499,14 +502,15 @@ class DrawTool extends Control {
     }
 
     // -------------------------------------------------------------------
-    // # Section: Tool Actions
+    // # Section: Tool DoActions
     // -------------------------------------------------------------------
 
-    isIntersectionEnabled() {
-        return this.uiRefIntersectionEnable.value.toLowerCase() === 'true';
+    doClearState() {
+        this.localStorage = _.cloneDeep(LocalStorageDefaults);
+        StateManager.setStateObject(LocalStorageNodeName, LocalStorageDefaults);
     }
 
-    selectDraw(toolType, strokeWidth, fillColor, strokeColor) {
+    doSelectDraw(toolType, strokeWidth, fillColor, strokeColor) {
         const map = this.getMap();
         if(!map) {
             return;

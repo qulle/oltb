@@ -79,7 +79,7 @@ class DebugInfoModal extends ModalBase {
 
         const actionButton = DOM.createElement({
             element: 'button',
-            text: 'Do action',
+            text: 'Do Action',
             class: 'oltb-btn oltb-btn--blue-mid oltb-ml-05',
             attributes: {
                 'type': 'button'

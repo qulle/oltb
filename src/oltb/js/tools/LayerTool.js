@@ -153,7 +153,7 @@ class LayerTool extends Control {
         });
 
         if(this.uiRefAddMapLayerButton) {
-            this.uiRefAddMapLayerButton.addEventListener(Events.browser.click, this.showAddMapLayerModal.bind(this));
+            this.uiRefAddMapLayerButton.addEventListener(Events.browser.click, this.doShowAddMapLayerModal.bind(this));
         }
 
         if(this.uiRefAddFeatureLayerButton) {
@@ -321,8 +321,7 @@ class LayerTool extends Control {
     // -------------------------------------------------------------------
 
     onWindowBrowserStateCleared() {
-        this.localStorage = _.cloneDeep(LocalStorageDefaults);
-        StateManager.setStateObject(LocalStorageNodeName, LocalStorageDefaults);
+        this.doClearState();
 
         if(this.isActive) {
             this.deActivateTool();
@@ -369,16 +368,16 @@ class LayerTool extends Control {
         );
 
         this.createUIMapLayerItem(layerWrapper, {
-            ...(!disableVisibilityButton && {visibilityButton: {
-                function: this.createUIVisibilityButton, 
-                callback: this.options.onMapLayerVisibilityChanged
+            ...(!disableVisibilityButton && { visibilityButton: {
+                function: this.createUIVisibilityButton.bind(this), 
+                callback: this.options.onMapLayerVisibilityChanged.bind(this)
             }}),
-            ...(!disableEditButton && {editButton: {
-                function: this.createUIEditButton,
-                callback: this.options.onMapLayerRenamed
+            ...(!disableEditButton && { editButton: {
+                function: this.createUIEditButton.bind(this),
+                callback: this.options.onMapLayerRenamed.bind(this)
             }}),
-            ...(!disableDeleteButton && {deleteButton: {
-                function: this.createUIDeleteButton,
+            ...(!disableDeleteButton && { deleteButton: {
+                function: this.createUIDeleteButton.bind(this),
                 callback: LayerManager.removeMapLayer.bind(LayerManager)
             }})
         });
@@ -436,22 +435,22 @@ class LayerTool extends Control {
             false
         );
 
-        this.removeActiveFeatureLayerClass();
+        this.doRemoveActiveFeatureLayerClass();
         this.createUIFeatureLayerItem(layerWrapper, {
-            ...(!disableVisibilityButton && {visibilityButton: {
-                function: this.createUIVisibilityButton, 
+            ...(!disableVisibilityButton && { visibilityButton: {
+                function: this.createUIVisibilityButton.bind(this), 
                 callback: this.options.onFeatureLayerVisibilityChanged
             }}),
-            ...(!disableEditButton && {editButton: {
-                function: this.createUIEditButton,
+            ...(!disableEditButton && { editButton: {
+                function: this.createUIEditButton.bind(this),
                 callback: this.options.onFeatureLayerRenamed
             }}),
-            ...(!disableDownloadButton && {downloadButton: {
-                function: this.createUIDownloadButton,
+            ...(!disableDownloadButton && { downloadButton: {
+                function: this.createUIDownloadButton.bind(this),
                 callback: this.options.onFeatureLayerDownloaded
             }}),
-            ...(!disableDeleteButton && {deleteButton: {
-                function: this.createUIDeleteButton,
+            ...(!disableDeleteButton && { deleteButton: {
+                function: this.createUIDeleteButton.bind(this),
                 callback: LayerManager.removeFeatureLayer.bind(LayerManager)
             }})
         });
@@ -475,7 +474,7 @@ class LayerTool extends Control {
         }
 
         // Set new active feature layer
-        this.removeActiveFeatureLayerClass();
+        this.doRemoveActiveFeatureLayerClass();
         const activeFeatureLayer = LayerManager.getActiveFeatureLayer();
         if(activeFeatureLayer) {
             this.uiRefFeatureLayerStack.querySelectorAll('li').forEach((item) => {
@@ -536,11 +535,11 @@ class LayerTool extends Control {
     // -------------------------------------------------------------------
 
     onContextMenuAddMapLayerModal() {
-        this.showAddMapLayerModal();
+        this.doShowAddMapLayerModal();
     }
 
     onContextMenuAddFeatureLayerModal() {
-        this.addFeatureLayer({
+        this.doAddFeatureLayer({
             name: '',
             isDynamicallyAdded: true
         });
@@ -634,6 +633,13 @@ class LayerTool extends Control {
         return event.type === Events.browser.keyUp && event.key === Keys.valueEnter;
     }
 
+    hasLayerFeatures(layer) {
+        return (
+            layer.getSource().getFeatures instanceof Function &&
+            layer.getSource().getFeatures().length > 0
+        );
+    } 
+
     hasProjection(projection) {
         const hasProjection = ProjectionManager.hasProjection(projection);
 
@@ -669,7 +675,7 @@ class LayerTool extends Control {
         const name = this.uiRefAddFeatureLayerText.value;
         this.uiRefAddFeatureLayerText.value = '';
 
-        this.addFeatureLayer({
+        this.doAddFeatureLayer({
             name: name,
             isDynamicallyAdded: true
         });
@@ -681,7 +687,7 @@ class LayerTool extends Control {
         }
 
         try {
-            this.addMapLayer(result);
+            this.doAddMapLayer(result);
         }catch(error) {
             const errorMessage = 'Failed to generate new layer';
             LogManager.logError(FILENAME, 'onCreateMapLayer', {
@@ -727,7 +733,7 @@ class LayerTool extends Control {
     }
 
     // -------------------------------------------------------------------
-    // # Section: UI
+    // # Section: User Interface
     // -------------------------------------------------------------------
 
     createUILayerNameTippy(layerName) {
@@ -796,7 +802,7 @@ class LayerTool extends Control {
             text: layerWrapper.getName().ellipsis(20),
             class: `${CLASS_TOOLBOX_LIST}__title`,
             title: layerWrapper.getName(),
-            prototypes:{
+            prototypes: {
                 getTippy: function() {
                     return this._tippy;
                 }
@@ -825,7 +831,7 @@ class LayerTool extends Control {
             class: `${CLASS_TOOLBOX_LIST}__wrapper`
         });
 
-        this.attachButtonCallbacks(options, layerWrapper, rightWrapper, layerName);
+        this.attachUIButtonCallbacks(options, layerWrapper, rightWrapper, layerName);
         
         const layerHandle = DOM.createElement({
             element: 'div',
@@ -900,7 +906,12 @@ class LayerTool extends Control {
             element: 'span', 
             text: layerWrapper.getName().ellipsis(20),
             class: `${CLASS_TOOLBOX_LIST}__title`,
-            title: layerWrapper.getName()
+            title: layerWrapper.getName(),
+            prototypes: {
+                getTippy: function() {
+                    return this._tippy;
+                }
+            }
         });
 
         // This tooltip can not be triggered by the delegated .oltb-tippy class
@@ -909,7 +920,7 @@ class LayerTool extends Control {
 
         // Attach eventlistener for setting the active layer
         layerName.addEventListener(Events.browser.click, (event) => {
-            this.removeActiveFeatureLayerClass();
+            this.doRemoveActiveFeatureLayerClass();
                     
             // Set the target layer as the active layer
             LayerManager.setActiveFeatureLayer(layerWrapper);
@@ -943,7 +954,7 @@ class LayerTool extends Control {
             class: `${CLASS_TOOLBOX_LIST}__wrapper`
         });
 
-        this.attachButtonCallbacks(options, layerWrapper, rightWrapper, layerName);
+        this.attachUIButtonCallbacks(options, layerWrapper, rightWrapper, layerName);
         
         const layerHandle = DOM.createElement({
             element: 'div',
@@ -972,16 +983,7 @@ class LayerTool extends Control {
                 'type': 'button'
             },
             listeners: {
-                'click': () => {
-                    Dialog.confirm({
-                        title: 'Delete layer',
-                        message: `Do you want to delete the <strong>${layerWrapper.getName()}</strong> layer?`,
-                        confirmText: 'Delete',
-                        onConfirm: function() {
-                            callback(layerWrapper);
-                        }
-                    });
-                }
+                'click': this.onLayerDelete.bind(this, layerWrapper, callback)
             }
         });
 
@@ -997,13 +999,7 @@ class LayerTool extends Control {
                 'type': 'button'
             },
             listeners: {
-                'click': () => {
-                    new DownloadLayerModal({
-                        onDownload: (result) => {   
-                            this.onDownloadLayer(layerWrapper, result);
-                        }
-                    });
-                }
+                'click': this.onLayerDownload.bind(this, layerWrapper, callback)
             }
         });
 
@@ -1019,29 +1015,7 @@ class LayerTool extends Control {
                 'type': 'button'
             },
             listeners: {
-                'click': () => {
-                    Dialog.prompt({
-                        title: 'Edit name',
-                        message: `You are editing the <strong>${layerWrapper.getName()}</strong> layer`,
-                        value: layerWrapper.getName(),
-                        confirmText: 'Rename',
-                        onConfirm: function(result) {
-                            if(result !== null && !!result.length) {
-                                // Update model
-                                layerWrapper.setName(result);
-                                
-                                // Update UI-item
-                                layerName.innerText = result.ellipsis(20);
-                                layerName.getTippy().setContent(result);
-                                
-                                // Note: Consumer callback
-                                if(callback instanceof Function) {
-                                    callback(layerWrapper);
-                                }
-                            }
-                        }
-                    });
-                }
+                'click': this.onLayerEdit.bind(this, layerWrapper, callback, layerName)
             }
         });
 
@@ -1062,23 +1036,110 @@ class LayerTool extends Control {
                 'type': 'button'
             },
             listeners: {
-                'click': () => {
-                    InfoWindowManager.hideOverlay();
+                'click': this.onLayerVisibilityChange.bind(this, layerWrapper, callback, layerName)
+            }
+        });
 
-                    const layer = layerWrapper.getLayer();
-                    const flippedVisibility = !layer.getVisible();
-                    layer.setVisible(flippedVisibility);
+        return visibilityButton;
+    }
+
+    attachUIButtonCallbacks(options, layerWrapper, rightWrapper, layerName) {
+        for(const name in options) {
+            const functionObject = options[name];
+            const button = functionObject.function.call(this, layerWrapper, functionObject.callback, layerName);
+
+            DOM.appendChildren(rightWrapper, [
+                button
+            ]);
+        }
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Map/UI Callbacks
+    // -------------------------------------------------------------------
+
+    onLayerDelete(layerWrapper, callback) {
+        this.askToDeleteLayer(layerWrapper, callback);
+    }
+
+    onLayerVisibilityChange(layerWrapper, callback, layerName) {
+        InfoWindowManager.hideOverlay();
+
+        const layer = layerWrapper.getLayer();
+        const flippedVisibility = !layer.getVisible();
+        layer.setVisible(flippedVisibility);
                      
-                    // Hide overlays associated with the layer
-                    const hasFeatures = layer.getSource().getFeatures instanceof Function;
-                    if(hasFeatures) {
-                        layer.getSource().getFeatures().forEach((feature) => {
-                            if(hasCustomFeatureProperty(feature.getProperties(), FeatureProperties.tooltip)) {
-                                feature.getProperties().oltb.tooltip.setMap(flippedVisibility ? map : null)
-                            }
-                        });
-                    }
+        // Hide overlays associated with the layer
+        if(this.hasLayerFeatures(layer)) {
+            layer.getSource().getFeatures().forEach((feature) => {
+                if(hasCustomFeatureProperty(feature.getProperties(), FeatureProperties.tooltip)) {
+                    feature.getProperties().oltb.tooltip.setMap(flippedVisibility ? map : null)
+                }
+            });
+        }
 
+        // Note: Consumer callback
+        if(callback instanceof Function) {
+            callback(layerWrapper);
+        }
+    }
+
+    onLayerEdit(layerWrapper, callback, layerName) {
+        this.askToRenameLayer(layerWrapper, callback, layerName);
+    }
+
+    onLayerDownload(layerWrapper, callback) {
+        new DownloadLayerModal({
+            onDownload: (result) => {   
+                const format = instantiateFormat(result.format);
+            
+                if(!format) {
+                    const errorMessage = `Layer format '<strong>${result.format})</strong>' is not supported`;
+                    LogManager.logError(FILENAME, 'onLayerDownload', errorMessage);
+
+                    Toast.error({
+                        title: 'Error',
+                        message: errorMessage
+                    });
+
+                    return;
+                }
+
+                LogManager.logDebug(FILENAME, 'onLayerDownload', {
+                    layerName: layerWrapper.getName(),
+                    formatName: result.format,
+                    format: format
+                });
+                    
+                this.doDownloadLayer(layerWrapper, format, result);
+                    
+                // Note: Consumer callback
+                if(callback instanceof Function) {
+                    callback(layerWrapper, filename, content);
+                }
+            }
+        });
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Ask User
+    // -------------------------------------------------------------------
+    
+    askToRenameLayer(layerWrapper, callback, layerName) {
+        Dialog.prompt({
+            title: 'Edit name',
+            message: `You are editing the <strong>${layerWrapper.getName()}</strong> layer`,
+            value: layerWrapper.getName(),
+            confirmText: 'Rename',
+            onConfirm: function(result) {
+                if(result !== null && !!result.length) {
+                    // Update model
+                    layerWrapper.setName(result);
+                    
+                    // Update UI-item
+                    layerName.innerText = result.ellipsis(20);
+                    layerName.getTippy().setContent(result);
+                    
                     // Note: Consumer callback
                     if(callback instanceof Function) {
                         callback(layerWrapper);
@@ -1086,35 +1147,29 @@ class LayerTool extends Control {
                 }
             }
         });
+    }
 
-        return visibilityButton;
+    askToDeleteLayer(layerWrapper, callback) {
+        Dialog.confirm({
+            title: 'Delete layer',
+            message: `Do you want to delete the <strong>${layerWrapper.getName()}</strong> layer?`,
+            confirmText: 'Delete',
+            onConfirm: function() {
+                callback(layerWrapper);
+            }
+        });
     }
 
     // -------------------------------------------------------------------
-    // # Section: Map/UI Callbacks
+    // # Section: Tool DoActions
     // -------------------------------------------------------------------
 
-    onDownloadLayer(layerWrapper, result) {
-        const format = instantiateFormat(result.format);
-            
-        if(!format) {
-            const errorMessage = `Layer format '<strong>${result.format})</strong>' is not supported`;
-            LogManager.logError(FILENAME, 'onDownloadLayer', errorMessage);
+    doClearState() {
+        this.localStorage = _.cloneDeep(LocalStorageDefaults);
+        StateManager.setStateObject(LocalStorageNodeName, LocalStorageDefaults);
+    }
 
-            Toast.error({
-                title: 'Error',
-                message: errorMessage
-            });
-
-            return;
-        }
-
-        LogManager.logDebug(FILENAME, 'onDownloadLayer', {
-            layerName: layerWrapper.getName(),
-            formatName: result.format,
-            format: format
-        });
-            
+    doDownloadLayer(layerWrapper, format, result) {
         const features = layerWrapper.getLayer().getSource().getFeatures();
         const content = format.writeFeatures(features, {
             featureProjection: Config.projection.default
@@ -1122,18 +1177,9 @@ class LayerTool extends Control {
         
         const filename = `${layerWrapper.getName()}.${result.format.toLowerCase()}`;
         download(filename, content);
-            
-        // Note: Consumer callback
-        if(this.options.featureLayerDownloaded instanceof Function) {
-            this.options.featureLayerDownloaded(layerWrapper, filename, content);
-        }
     }
-    
-    // -------------------------------------------------------------------
-    // # Section: Tool Actions
-    // -------------------------------------------------------------------
 
-    addMapLayer(options) {
+    doAddMapLayer(options) {
         LayerManager.addMapLayer({
             name: options.name,
             sortIndex: 0,
@@ -1154,7 +1200,7 @@ class LayerTool extends Control {
         });
     }
 
-    addFeatureLayer(options) {
+    doAddFeatureLayer(options) {
         LayerManager.addFeatureLayer({
             name: options.name,
             sortIndex: 0,
@@ -1162,7 +1208,7 @@ class LayerTool extends Control {
         });
     }
 
-    showAddMapLayerModal() {
+    doShowAddMapLayerModal() {
         new LayerModal({
             onCreate: (result) => {
                 this.onCreateMapLayer(result);
@@ -1170,26 +1216,11 @@ class LayerTool extends Control {
         });
     }
 
-    removeActiveFeatureLayerClass() {
+    doRemoveActiveFeatureLayerClass() {
         // Should just be one li-item that has the active class, but just in case
         this.uiRefFeatureLayerStack.querySelectorAll('li').forEach((item) => {
             item.classList.remove(`${CLASS_TOOLBOX_LIST}__item--active`);
         });
-    }
-
-    attachButtonCallbacks(options, layerWrapper, rightWrapper, layerName) {
-        for(const name in options) {
-            const button = options[name].function.call(
-                this,
-                layerWrapper,
-                options[name].callback,
-                layerName
-            );
-
-            DOM.appendChildren(rightWrapper, [
-                button
-            ]);
-        }
     }
 }
 

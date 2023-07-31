@@ -109,7 +109,7 @@ class ImportVectorLayerTool extends Control {
     }
 
     // -------------------------------------------------------------------
-    // # Section: UI
+    // # Section: User Interface
     // -------------------------------------------------------------------
 
     createUIInputDialog() {
@@ -138,6 +138,10 @@ class ImportVectorLayerTool extends Control {
     }
 
     onParseLayer(fileDialog) {
+        if(this.importLayerModal) {
+            return;
+        }
+        
         const file = fileDialog.files[0].name;
         
         this.importLayerModal = new ImportLayerModal({
@@ -151,15 +155,23 @@ class ImportVectorLayerTool extends Control {
     }
 
     onImportLayer(file, result) {
-        this.importLayer(file, result);
+        this.doImportLayer(file, result);
     }
 
     // -------------------------------------------------------------------
-    // # Section: Tool Actions
+    // # Section: Tool DoActions
     // -------------------------------------------------------------------
 
-    importLayer(file, result) {
-        LogManager.logInformation(FILENAME, 'importLayer', {
+    doAddFeaturesToMap(features, filename) {
+        const layerWrapper = LayerManager.addFeatureLayer({
+            name: `Import : ${filename}`
+        });
+        
+        layerWrapper.getLayer().getSource().addFeatures(features);
+    }
+
+    doImportLayer(file, result) {
+        LogManager.logInformation(FILENAME, 'doImportLayer', {
             file: file,
             featureProjection: result.featureProjection,
             dataProjection: result.dataProjection
@@ -176,7 +188,7 @@ class ImportVectorLayerTool extends Control {
             // Note: This should not happen since the format is set in the dialog using select element
             if(!format) {
                 const errorMessage = `This layer format (${format}) is not supported`;
-                LogManager.logError(FILENAME, 'importLayer', errorMessage);
+                LogManager.logError(FILENAME, 'doImportLayer', errorMessage);
 
                 Toast.error({
                     title: 'Error',
@@ -191,10 +203,7 @@ class ImportVectorLayerTool extends Control {
                 dataProjection: result.dataProjection
             });
     
-            const layerWrapper = LayerManager.addFeatureLayer({
-                name: `Import : ${filename}`
-            });
-            layerWrapper.getLayer().getSource().addFeatures(features);
+            this.doAddFeaturesToMap(features, filename);
     
             // Note: Consumer callback
             if(this.options.onImported instanceof Function) {
@@ -202,7 +211,7 @@ class ImportVectorLayerTool extends Control {
             }
         }catch(error) {
             const errorMessage = 'Failed to import vector layer';
-            LogManager.logError(FILENAME, 'parseLayer', {
+            LogManager.logError(FILENAME, 'doImportLayer', {
                 message: errorMessage,
                 error: error
             });

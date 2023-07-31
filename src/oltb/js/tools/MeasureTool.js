@@ -283,8 +283,7 @@ class MeasureTool extends Control {
     }
     
     onWindowBrowserStateCleared() {
-        this.localStorage = _.cloneDeep(LocalStorageDefaults);
-        StateManager.setStateObject(LocalStorageNodeName, LocalStorageDefaults);
+        this.doClearState();
 
         // Rest UI-components
         this.uiRefFillColor.setAttribute('data-oltb-color', this.localStorage.fillColor);
@@ -441,8 +440,13 @@ class MeasureTool extends Control {
     }
 
     // -------------------------------------------------------------------
-    // # Section: Tool Actions
+    // # Section: Tool DoActions
     // -------------------------------------------------------------------
+
+    doClearState() {
+        this.localStorage = _.cloneDeep(LocalStorageDefaults);
+        StateManager.setStateObject(LocalStorageNodeName, LocalStorageDefaults);
+    }
 
     selectMeasure(toolType, fillColor, strokeColor) {
         const map = this.getMap();

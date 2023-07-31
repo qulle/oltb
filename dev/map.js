@@ -79,10 +79,10 @@ import { HiddenMapNavigationTool } from '../src/oltb/js/tools/hidden-tools/Hidde
 // This is the same NodeName and Defaults that the HiddenMapNavigationTool.js is using
 const LocalStorageNodeName = LocalStorageKeys.mapData;
 const LocalStorageDefaults = Object.freeze({
-    lon: 18.1201,
-    lat: 35.3518,
-    zoom: 3,
-    rotation: 0
+    lon: Config.defaultLocation.lon,
+    lat: Config.defaultLocation.lat,
+    zoom: Config.defaultLocation.zoom,
+    rotation: Config.defaultLocation.rotation,
 });
 
 // Note: The init order is important
@@ -342,8 +342,7 @@ const map = new Map({
         new BookmarkTool({
             markerLayerVisibleOnLoad: true,
             markerLabelUseEllipsisAfter: 20,
-            shouldRenderMarkerLabel: true,
-            shouldRenderMarkerLabelUpperCase: false,
+            markerLabelUseUpperCase: false,
             bookmarks: [{
                 id: '6812cc22-f490-46b7-a9f3-42eb9ea58ac2',
                 name: 'Custom bookmark',
@@ -492,8 +491,7 @@ const map = new Map({
             timeout: 10000,
             description: 'This is the location that the browser was able to find. It might not be your actual location.',
             markerLabelUseEllipsisAfter: 20,
-            shouldRenderMarkerLabel: true,
-            shouldRenderMarkerLabelUpperCase: false,
+            markerLabelUseUpperCase: false,
             onInitiated: function() {
                 console.log('MyLocationTool: Initiated');
             },

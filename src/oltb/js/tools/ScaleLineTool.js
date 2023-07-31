@@ -107,7 +107,7 @@ class ScaleLineTool extends Control {
             return;
         }
 
-        this.scaleLine.setMap(map);
+        this.doAddScaleLine(map);
 
         this.isActive = true;
         this.button.classList.add(`${CLASS_TOOL_BUTTON}--active`);
@@ -117,7 +117,7 @@ class ScaleLineTool extends Control {
     }
 
     deActivateTool() {
-        this.scaleLine.setMap(null);
+        this.doRemoveScaleLine();
 
         this.isActive = false;
         this.button.classList.remove(`${CLASS_TOOL_BUTTON}--active`);
@@ -150,6 +150,18 @@ class ScaleLineTool extends Control {
         if(isShortcutKeyOnly(event, ShortcutKeys.scaleLineTool)) {
             this.onClickTool(event);
         }
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Tool DoActions
+    // -------------------------------------------------------------------
+
+    doAddScaleLine(map) {
+        this.scaleLine.setMap(map);
+    }
+
+    doRemoveScaleLine() {
+        this.scaleLine.setMap(null);
     }
 }
 

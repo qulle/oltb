@@ -391,8 +391,7 @@ class EditTool extends Control {
     }
     
     onWindowBrowserStateCleared() {
-        this.localStorage = _.cloneDeep(LocalStorageDefaults);
-        StateManager.setStateObject(LocalStorageNodeName, LocalStorageDefaults);
+        this.doClearState();
 
         this.uiRefFillColor.setAttribute('data-oltb-color', this.localStorage.fillColor);
         this.uiRefFillColor.firstElementChild.style.backgroundColor = this.localStorage.fillColor;
@@ -542,17 +541,7 @@ class EditTool extends Control {
             return;
         }
 
-        const genetiveLimit = 1;
-        const genetiveChar = featureLength > genetiveLimit ? 's': '';
-        Dialog.confirm({
-            title: 'Delete feature',
-            message: `Delete ${featureLength} selected feature${genetiveChar}?`,
-            confirmText: 'Delete',
-            onConfirm: () => {
-                const features = [ ...this.interactionSelect.getFeatures().getArray() ];
-                this.deleteFeatures(features);
-            }
-        });
+        this.askToDeleteFeatures();
     }
 
     onFeatureColorChange(event) {
@@ -664,7 +653,7 @@ class EditTool extends Control {
             source.addFeature(feature);
 
             // Remove two original shapes
-            this.deleteFeatures(features);
+            this.doDeleteFeatures(features);
 
             // Note: Consumer callback
             if(this.options.onShapeOperation instanceof Function) {
@@ -710,7 +699,7 @@ class EditTool extends Control {
     }
 
     // -------------------------------------------------------------------
-    // # Section: Tool Actions
+    // # Section: Conversions/Validation
     // -------------------------------------------------------------------
 
     isMeasurementType(feature) {
@@ -721,7 +710,34 @@ class EditTool extends Control {
         return features.length === 2;
     }
 
-    deleteFeatures(features) {
+
+    askToDeleteFeatures() {
+        const featureLength = this.interactionSelect.getFeatures().getArray().length;
+
+        const genetiveLimit = 1;
+        const genetiveChar = featureLength > genetiveLimit ? 's': '';
+
+        Dialog.confirm({
+            title: 'Delete feature',
+            message: `Delete ${featureLength} selected feature${genetiveChar}?`,
+            confirmText: 'Delete',
+            onConfirm: () => {
+                const features = [ ...this.interactionSelect.getFeatures().getArray() ];
+                this.doDeleteFeatures(features);
+            }
+        });
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Tool DoActions
+    // -------------------------------------------------------------------
+
+    doClearState() {
+        this.localStorage = _.cloneDeep(LocalStorageDefaults);
+        StateManager.setStateObject(LocalStorageNodeName, LocalStorageDefaults);
+    }
+
+    doDeleteFeatures(features) {
         const map = this.getMap();
         if(!map) {
             return;
