@@ -122,13 +122,6 @@ class HomeTool extends Control {
 
     momentaryActivation() {
         this.doNavigateHome(map);
-
-        window.setTimeout(() => {
-            // Note: Consumer callback
-            if(this.options.onNavigatedHome instanceof Function) {
-                this.options.onNavigatedHome();
-            }
-        }, Config.animationDuration.normal);
     }
 
     // -------------------------------------------------------------------
@@ -234,7 +227,18 @@ class HomeTool extends Control {
         const rotation = this.getRotation();
         const location = this.getLocation();
 
-        goToView(map, location, zoom, rotation);
+        goToView({
+            map: map,
+            coordinates: location,
+            zoom: zoom,
+            rotation: rotation,
+            onDone: (result) => {
+                // Note: Consumer callback
+                if(this.options.onNavigatedHome instanceof Function) {
+                    this.options.onNavigatedHome(result);
+                }
+            }
+        });
     }
 
     doClearState() {

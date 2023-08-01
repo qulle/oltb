@@ -94,8 +94,8 @@ const toolbar = new oltb({
             onBrowserStateCleared: function() {
                 console.log('HomeTool: State cleared');
             },
-            onNavigatedHome: function() {
-                console.log('HomeTool: Zoomed home');
+            onNavigatedHome: function(result) {
+                console.log('HomeTool: Navigated home', result);
             }
         },
         ZoomInTool: {
@@ -105,8 +105,8 @@ const toolbar = new oltb({
             onClicked: function() {
                 console.log('ZoomInTool: Clicked');
             },
-            onZoomed: function() {
-                console.log('ZoomInTool: Zoomed in');
+            onZoomed: function(result) {
+                console.log('ZoomInTool: Zoomed in', result);
             }
         },
         ZoomOutTool: {
@@ -116,8 +116,8 @@ const toolbar = new oltb({
             onClicked: function() {
                 console.log('ZoomOutTool: Clicked');
             },
-            onZoomed: function() {
-                console.log('ZoomOutTool: Zoomed out');
+            onZoomed: function(result) {
+                console.log('ZoomOutTool: Zoomed out', result);
             }
         },
         FullscreenTool: {
@@ -373,8 +373,8 @@ const toolbar = new oltb({
             onClicked: function() {
                 console.log('ResetNorthTool: Clicked');
             },
-            onReset: function() {
-                console.log('ResetNorthTool: North reset');
+            onReset: function(result) {
+                console.log('ResetNorthTool: North reset', result);
             }
         },
         CoordinatesTool: {

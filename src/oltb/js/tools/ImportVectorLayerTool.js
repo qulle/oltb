@@ -143,6 +143,21 @@ class ImportVectorLayerTool extends Control {
         }
         
         const file = fileDialog.files[0].name;
+        this.doShowImportLayerModal(file);
+    }
+
+    onImportLayer(file, result) {
+        this.doImportLayer(file, result);
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Tool DoActions
+    // -------------------------------------------------------------------
+
+    doShowImportLayerModal(file) {
+        if(this.importLayerModal) {
+            return;
+        }
         
         this.importLayerModal = new ImportLayerModal({
             onImport: (result) => {   
@@ -153,14 +168,6 @@ class ImportVectorLayerTool extends Control {
             }
         });
     }
-
-    onImportLayer(file, result) {
-        this.doImportLayer(file, result);
-    }
-
-    // -------------------------------------------------------------------
-    // # Section: Tool DoActions
-    // -------------------------------------------------------------------
 
     doAddFeaturesToMap(features, filename) {
         const layerWrapper = LayerManager.addFeatureLayer({

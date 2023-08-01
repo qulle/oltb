@@ -148,16 +148,36 @@ class HiddenMapNavigationTool extends Control {
     }
 
     onContextMenuCenterMap(map, coordinates, target) {
-        goToView(map, coordinates, map.getView().getZoom());
+        goToView({
+            map: map,
+            coordinates: coordinates,
+            zoom: map.getView().getZoom()
+        });
     }
 
     onContextMenuFocusHere(map, coordinates, target) {
-        goToView(map, coordinates, this.options.focusZoom);
+        goToView({
+            map: map,
+            coordinates: coordinates,
+            zoom: this.options.focusZoom
+        });
     }
 
     // -------------------------------------------------------------------
     // # Section: Browser Events
     // -------------------------------------------------------------------
+
+    onDOMContentLoaded(event) {
+        const map = this.getMap();
+        if(!map) {
+            return;
+        }
+
+        // Bind to global map events
+        map.on(Events.openLayers.moveEnd, this.onMoveEnd.bind(this));
+
+        this.doDetectUrlMarker();
+    }
 
     onContextMenu(event) {
         event.preventDefault();
@@ -175,18 +195,6 @@ class HiddenMapNavigationTool extends Control {
 
         console.log(this.contextMenuItemCoordinates);
         // this.contextMenuItemCoordinates.innerHTML = coordinates;
-    }
-
-    onDOMContentLoaded(event) {
-        const map = this.getMap();
-        if(!map) {
-            return;
-        }
-
-        // Bind to global map events
-        map.on(Events.openLayers.moveEnd, this.onMoveEnd.bind(this));
-
-        this.doDetectUrlMarker();
     }
 
     // -------------------------------------------------------------------
@@ -334,7 +342,12 @@ class HiddenMapNavigationTool extends Control {
     }
 
     doFocusMarker(map, marker, coordinates, zoom) {
-        goToView(map, coordinates, zoom);
+        goToView({
+            map: map,
+            coordinates: coordinates,
+            zoom: zoom
+        });
+
         InfoWindowManager.showOverlayDelayed(marker, fromLonLat(coordinates));
     }
 
@@ -407,7 +420,11 @@ class HiddenMapNavigationTool extends Control {
         
         this.coordinatesModal = new CoordinateModal({
             onNavigate: (coordinates) => {
-                goToView(map, coordinates, map.getView().getZoom());
+                goToView({
+                    map: map,
+                    coordinates: coordinates,
+                    zoom: map.getView().getZoom()
+                });
             },
             onClose: () => {
                 this.coordinatesModal = undefined;

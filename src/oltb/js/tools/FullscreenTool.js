@@ -9,14 +9,7 @@ import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
 import { ElementManager } from '../core/managers/ElementManager';
 import { SvgPaths, getIcon } from '../core/icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
-import {
-    FullscreenEvents,
-    FullscreenEventTypes,
-    isFullScreenSupported,
-    isFullScreen,
-    requestFullScreen,
-    exitFullScreen
-} from '../helpers/browser/Fullscreen';
+import { FullscreenEvents, FullscreenEventTypes, isFullScreenSupported, isFullScreen, requestFullScreen, exitFullScreen } from '../helpers/browser/Fullscreen';
 
 const FILENAME = 'tools/FullscreenTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
@@ -77,6 +70,7 @@ class FullscreenTool extends Control {
         
         this.button = button;
         this.isActive = false;
+        this.listenerKeys = [];
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
 
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));

@@ -123,38 +123,11 @@ class MyLocationTool extends Control {
     // -------------------------------------------------------------------
 
     onSuccess(location) {
-        const map = this.getMap();
-        if(!map) {
-            return;
-        }
-
-        DOM.removeElement(this.loadingToast);
-        
-        const coordinates = [location.coords.longitude, location.coords.latitude];
-        const marker = this.doAddIconMarker(coordinates);
-        
-        this.doFocusMarker(map, marker, coordinates, Config.marker.focusZoom);
-        
-        // Note: Consumer callback
-        if(this.options.onLocationFound instanceof Function) {
-            this.options.onLocationFound(location);
-        }
+        this.doLocationFound(location);
     }
 
-    onError(error, toastPtr = Toast.error) {
-        LogManager.logError(FILENAME, 'onError', error.message);
-
-        toastPtr({
-            title: 'Error',
-            message: error.message
-        });
-        
-        // Note: Consumer callback
-        if(this.options.onError instanceof Function) {
-            this.options.onError(error);
-        }
-
-        DOM.removeElement(this.loadingToast);
+    onError(error) {
+        this.doLocationError(error);
     }
 
     // -------------------------------------------------------------------
@@ -186,8 +159,50 @@ class MyLocationTool extends Control {
     // # Section: Tool DoActions
     // -------------------------------------------------------------------
 
+    doLocationFound(location) {
+        const map = this.getMap();
+        if(!map) {
+            return;
+        }
+
+        DOM.removeElement(this.loadingToast);
+        
+        const coordinates = [location.coords.longitude, location.coords.latitude];
+        const marker = this.doAddIconMarker(coordinates);
+        
+        this.doFocusMarker(map, marker, coordinates, Config.marker.focusZoom);
+        
+        // Note: Consumer callback
+        if(this.options.onLocationFound instanceof Function) {
+            this.options.onLocationFound(location);
+        }
+    }
+
+    doLocationError(error) {
+        LogManager.logError(FILENAME, 'doLocationError', error.message);
+
+        Toast.error({
+            title: 'Error',
+            message: error.message
+        });
+        
+        // Note: Consumer callback
+        if(this.options.onError instanceof Function) {
+            this.options.onError(error);
+        }
+
+        if(this.loadingToast) {
+            DOM.removeElement(this.loadingToast);
+        }
+    }
+
     doFocusMarker(map, marker, coordinates, zoom) {
-        goToView(map, coordinates, zoom);
+        goToView({
+            map: map, 
+            coordinates: coordinates,
+            zoom: zoom
+        });
+        
         InfoWindowManager.showOverlayDelayed(marker, fromLonLat(coordinates));
     }
 
@@ -240,7 +255,7 @@ class MyLocationTool extends Control {
         if(!navigator.geolocation) {
             return this.onError({
                 message: 'Geolocation is not supported'
-            }, Toast.error);
+            });
         }
         
         this.loadingToast = Toast.info({

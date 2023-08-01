@@ -198,16 +198,6 @@ class CoordinatesTool extends Control {
         this.localStorage.isActive = false;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
-    
-    onToggleToolbox(toggle) {
-        const targetName = toggle.dataset.oltbToggleableTarget;
-        const targetNode = document.getElementById(targetName);
-        
-        targetNode?.slideToggle(Config.animationDuration.fast, (collapsed) => {
-            this.localStorage.isCollapsed = collapsed;
-            StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
-        });
-    }
 
     // -------------------------------------------------------------------
     // # Section: Browser Events
@@ -228,6 +218,12 @@ class CoordinatesTool extends Control {
     // -------------------------------------------------------------------
     // # Section: Map/UI Callbacks
     // -------------------------------------------------------------------
+
+    onToggleToolbox(toggle) {
+        const targetName = toggle.dataset.oltbToggleableTarget;
+        
+        this.doToggleToolboxSection(targetName);
+    }
 
     onCoordinatesFormatChange() {
         this.localStorage.coordinatesFormat = this.uiRefCoordinatesFormat.value;
@@ -349,6 +345,15 @@ class CoordinatesTool extends Control {
     // -------------------------------------------------------------------
     // # Section: Tool DoActions
     // -------------------------------------------------------------------
+
+    doToggleToolboxSection(targetName) {
+        const targetNode = document.getElementById(targetName);
+        
+        targetNode?.slideToggle(Config.animationDuration.fast, (collapsed) => {
+            this.localStorage.isCollapsed = collapsed;
+            StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
+        });
+    }
 
     doCreateToolCoordinatesList(coordinates) {
         const projections = ProjectionManager.getProjections();

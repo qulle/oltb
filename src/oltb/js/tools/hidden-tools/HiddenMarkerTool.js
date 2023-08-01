@@ -66,12 +66,7 @@ class HiddenMarkerTool extends Control {
     // -------------------------------------------------------------------
 
     onContextMenuCreateMarker(map, coordinates, target) {
-        new IconMarkerModal({
-            coordinates: coordinates,
-            onCreate: (result) => {
-                this.onCreateMarker(result);
-            }
-        });
+        this.doShowCoordinateModal(coordinates);
     }
 
     // -------------------------------------------------------------------
@@ -97,21 +92,30 @@ class HiddenMarkerTool extends Control {
     // -------------------------------------------------------------------
 
     onCreateMarker(result) {
-        this.addIconMarker(result);
+        this.doAddIconMarker(result);
     }
 
     // -------------------------------------------------------------------
     // # Section: Tool DoActions
     // -------------------------------------------------------------------
 
-    addMarkerToMap(marker) {
+    doShowCoordinateModal(coordinates) {
+        new IconMarkerModal({
+            coordinates: coordinates,
+            onCreate: (result) => {
+                this.onCreateMarker(result);
+            }
+        });
+    }
+
+    doAddMarkerToMap(marker) {
         const layerWrapper = LayerManager.getActiveFeatureLayer({
             fallback: 'Markers'
         });
         layerWrapper.getLayer().getSource().addFeature(marker);
     }
 
-    addIconMarker(result) {
+    doAddIconMarker(result) {
         const coordinates = [
             Number(result.longitude),
             Number(result.latitude)
@@ -149,7 +153,7 @@ class HiddenMarkerTool extends Control {
             infoWindow: infoWindow
         });
     
-        this.addMarkerToMap(marker);
+        this.doAddMarkerToMap(marker);
 
         // Note: Consumer callback
         if(this.options.onAdded instanceof Function) {

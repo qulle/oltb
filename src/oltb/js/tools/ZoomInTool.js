@@ -111,16 +111,19 @@ class ZoomInTool extends Control {
         const view = map.getView();
         const coordiantes = toLonLat(view.getCenter());
         const currentZoom = view.getZoom();
-        const newZoom = view.getConstrainedZoom(currentZoom + this.options.delta);
+        const zoom = view.getConstrainedZoom(currentZoom + this.options.delta);
 
-        goToView(map, coordiantes, newZoom);
-
-        window.setTimeout(() => {
-            // Note: Consumer callback
-            if(this.options.onZoomed instanceof Function) {
-                this.options.onZoomed();
+        goToView({
+            map: map, 
+            coordiantes: coordiantes,
+            zoom: zoom,
+            onDone: (result) => {
+                // Note: Consumer callback
+                if(this.options.onZoomed instanceof Function) {
+                    this.options.onZoomed(result);
+                }
             }
-        }, Config.animationDuration.normal);
+        });
     }
 }
 

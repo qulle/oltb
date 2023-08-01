@@ -423,8 +423,8 @@ controls: defaultControls({
         onBrowserStateCleared: function() {
             console.log('HomeTool: State cleared');
         },
-        onZoomedHome: function() {
-            console.log('HomeTool: Zoomed home');
+        onNavigatedHome: function(result) {
+            console.log('HomeTool: Navigated home', result);
         }
     }),
     new ZoomInTool({
@@ -435,8 +435,8 @@ controls: defaultControls({
         onClicked: function() {
             console.log('ZoomInTool: Clicked');
         },
-        onZoomed: function() {
-            console.log('ZoomInTool: Zoomed in');
+        onZoomed: function(result) {
+            console.log('ZoomInTool: Zoomed in', result);
         }
     }),
     new ZoomOutTool({
@@ -447,8 +447,8 @@ controls: defaultControls({
         onClicked: function() {
             console.log('ZoomOutTool: Clicked');
         },
-        onZoomed: function() {
-            console.log('ZoomOutTool: Zoomed out');
+        onZoomed: function(result) {
+            console.log('ZoomOutTool: Zoomed out', result);
         }
     }),
     new FullscreenTool({
@@ -709,7 +709,7 @@ controls: defaultControls({
             console.log('ResetNorthTool: Clicked');
         },
         onReset: function() {
-            console.log('ResetNorthTool: North reset');
+            console.log('ResetNorthTool: North reset', result);
         }
     }),
     new CoordinatesTool({

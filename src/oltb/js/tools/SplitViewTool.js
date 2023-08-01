@@ -86,11 +86,11 @@ class SplitViewTool extends Control {
         this.uiRefToolboxSection = document.querySelector(`#${ID_PREFIX}-toolbox`);
         this.initToggleables();
 
-        this.uiRefLeftSideSrc = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-left-src`);
-        this.uiRefLeftSideSrc.addEventListener(Events.browser.change, this.updateTool.bind(this));
+        this.uiRefLeftSource = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-left-source`);
+        this.uiRefLeftSource.addEventListener(Events.browser.change, this.updateTool.bind(this));
 
-        this.uiRefRightSideSrc = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-right-src`);
-        this.uiRefRightSideSrc.addEventListener(Events.browser.change, this.updateTool.bind(this));
+        this.uiRefRightSource = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-right-source`);
+        this.uiRefRightSource.addEventListener(Events.browser.change, this.updateTool.bind(this));
 
         const uiRefSwapSidesButton = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-swap-button`);
         uiRefSwapSidesButton.addEventListener(Events.browser.click, (event) => {
@@ -127,12 +127,12 @@ class SplitViewTool extends Control {
                 </div>
                 <div class="${CLASS_TOOLBOX_SECTION}__groups" id="${ID_PREFIX}-toolbox-collapsed" style="display: ${this.localStorage.isCollapsed ? 'none' : 'block'}">
                     <div class="${CLASS_TOOLBOX_SECTION}__group">
-                        <label class="oltb-label" for="${ID_PREFIX}-left-src">Left Side</label>
-                        <select id="${ID_PREFIX}-left-src" class="oltb-select"></select>
+                        <label class="oltb-label" for="${ID_PREFIX}-left-source">Left Side</label>
+                        <select id="${ID_PREFIX}-left-source" class="oltb-select"></select>
                     </div>
                     <div class="${CLASS_TOOLBOX_SECTION}__group">
-                        <label class="oltb-label" for="${ID_PREFIX}-src">Right Side</label>
-                        <select id="${ID_PREFIX}-right-src" class="oltb-select"></select>
+                        <label class="oltb-label" for="${ID_PREFIX}-source">Right Side</label>
+                        <select id="${ID_PREFIX}-right-source" class="oltb-select"></select>
                     </div>
                     <div class="${CLASS_TOOLBOX_SECTION}__group">
                         <button type="button" id="${ID_PREFIX}-swap-button" class="oltb-btn oltb-btn--green-mid oltb-w-100">Swap Sides</button>
@@ -236,20 +236,10 @@ class SplitViewTool extends Control {
     }
 
     updateTool() {
-        this.doSourceChange(
-            this.uiRefLeftSideSrc.value, 
-            this.uiRefRightSideSrc.value
+        this.doUpdateTool(
+            this.uiRefLeftSource.value, 
+            this.uiRefRightSource.value
         );
-    }
-
-    onToggleToolbox(toggle) {
-        const targetName = toggle.dataset.oltbToggleableTarget;
-        const targetNode = document.getElementById(targetName);
-        
-        targetNode?.slideToggle(Config.animationDuration.fast, (collapsed) => {
-            this.localStorage.isCollapsed = collapsed;
-            StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
-        });
     }
 
     // -------------------------------------------------------------------
@@ -282,44 +272,11 @@ class SplitViewTool extends Control {
     }
 
     onWindowMapLayerAdded(event) {
-        const layerWrapper = event.detail.layerWrapper;
-
-        const leftOption = DOM.createElement({
-            element: 'option',
-            text: layerWrapper.getName(),
-            value: layerWrapper.getId().toString()
-        });
-
-        const rightOption = DOM.createElement({
-            element: 'option',
-            text: layerWrapper.getName(),
-            value: layerWrapper.getId().toString()
-        });
-
-        DOM.appendChildren(this.uiRefLeftSideSrc, [
-            leftOption
-        ]);
-
-        DOM.appendChildren(this.uiRefRightSideSrc, [
-            rightOption
-        ]);
+        this.doMapLayerAdded(event);
     }
 
     onWindowMapLayerRemoved(event) {
-        const layerWrapper = event.detail.layerWrapper;
-
-        this.uiRefLeftSideSrc.childNodes.forEach((option) => {
-            if(option.value === layerWrapper.getId()) {
-                DOM.removeElement(option);
-            }
-        });
-
-        this.uiRefRightSideSrc.childNodes.forEach((option) => {
-            if(option.value === layerWrapper.getId()) {
-                DOM.removeElement(option);
-            }
-        });
-
+        this.doMapLayerRemoved(event);
         this.doDispatchChangeEvent();
     }
 
@@ -327,6 +284,12 @@ class SplitViewTool extends Control {
     // # Section: Map/UI Callbacks
     // -------------------------------------------------------------------
     
+    onToggleToolbox(toggle) {
+        const targetName = toggle.dataset.oltbToggleableTarget;
+    
+        this.doToggleToolboxSection(targetName);
+    }
+
     onSwapLayerSides() {
         this.doSwapLayerSides();
         this.doDispatchChangeEvent();
@@ -359,8 +322,8 @@ class SplitViewTool extends Control {
     // -------------------------------------------------------------------
 
     setDefaultSelectedIndexes() {
-        this.uiRefRightSideSrc.selectedIndex = '0';
-        this.uiRefRightSideSrc.selectedIndex = '1';
+        this.uiRefRightSource.selectedIndex = '0';
+        this.uiRefRightSource.selectedIndex = '1';
 
         return this;
     }
@@ -380,6 +343,55 @@ class SplitViewTool extends Control {
     // -------------------------------------------------------------------
     // # Section: Tool DoActions
     // -------------------------------------------------------------------
+
+    doMapLayerRemoved(event) {
+        const layerWrapper = event.detail.layerWrapper;
+
+        this.uiRefLeftSource.childNodes.forEach((option) => {
+            if(option.value === layerWrapper.getId()) {
+                DOM.removeElement(option);
+            }
+        });
+
+        this.uiRefRightSource.childNodes.forEach((option) => {
+            if(option.value === layerWrapper.getId()) {
+                DOM.removeElement(option);
+            }
+        });
+    } 
+
+    doMapLayerAdded(event) {
+        const layerWrapper = event.detail.layerWrapper;
+
+        const leftOption = DOM.createElement({
+            element: 'option',
+            text: layerWrapper.getName(),
+            value: layerWrapper.getId().toString()
+        });
+
+        const rightOption = DOM.createElement({
+            element: 'option',
+            text: layerWrapper.getName(),
+            value: layerWrapper.getId().toString()
+        });
+
+        DOM.appendChildren(this.uiRefLeftSource, [
+            leftOption
+        ]);
+
+        DOM.appendChildren(this.uiRefRightSource, [
+            rightOption
+        ]);
+    }
+
+    doToggleToolboxSection(targetName) {
+        const targetNode = document.getElementById(targetName);
+        
+        targetNode?.slideToggle(Config.animationDuration.fast, (collapsed) => {
+            this.localStorage.isCollapsed = collapsed;
+            StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
+        });
+    }
 
     doClearState() {
         this.localStorage = _.cloneDeep(LocalStorageDefaults);
@@ -422,16 +434,16 @@ class SplitViewTool extends Control {
     }
 
     doSwapLayerSides() {
-        const currentRightId = this.uiRefRightSideSrc.value;
+        const currentRightId = this.uiRefRightSource.value;
 
-        this.uiRefRightSideSrc.value = this.uiRefLeftSideSrc.value;
-        this.uiRefLeftSideSrc.value = currentRightId;
+        this.uiRefRightSource.value = this.uiRefLeftSource.value;
+        this.uiRefLeftSource.value = currentRightId;
     }
 
     doDispatchChangeEvent() {
         eventDispatcher([
-            this.uiRefLeftSideSrc, 
-            this.uiRefRightSideSrc
+            this.uiRefLeftSource, 
+            this.uiRefRightSource
         ], Events.browser.change);
     }
 
@@ -445,8 +457,8 @@ class SplitViewTool extends Control {
         this.getMap().removeLayer(layer);
     }
 
-    doSourceChange(leftSideSrcId, rightSideSrcId) {
-        // Block access for events that are captued when the tool is not activated
+    doUpdateTool(leftId, rightId) {
+        // Note: Block access for events that are captued when the tool is not activated
         // Example removing a layer in the LayerTool
         if(!this.isActive) {
             return;
@@ -468,28 +480,27 @@ class SplitViewTool extends Control {
         });
 
         // Get layers to view in split-mode
-        const leftSideLayerWrapper = LayerManager.getMapLayerById(leftSideSrcId);
-        const rightSideLayerWrapper = LayerManager.getMapLayerById(rightSideSrcId);
+        const leftLayerWrapper = LayerManager.getMapLayerById(leftId);
+        const rightLayerWrapper = LayerManager.getMapLayerById(rightId);
 
         // This should not happen, but just in case
-        if(!leftSideLayerWrapper || !rightSideLayerWrapper) {
+        if(!leftLayerWrapper || !rightLayerWrapper) {
             return this.setLoadingError();
         }
 
-        const leftSideLayer = leftSideLayerWrapper.getLayer();
-        const rightSideLayer = rightSideLayerWrapper.getLayer();
+        const leftLayer = leftLayerWrapper.getLayer();
+        const rightLayer = rightLayerWrapper.getLayer();
 
-        // Left layer config
-        this.doAddMapLayer(leftSideLayer);
+        this.doAddMapLayer(leftLayer);
 
-         // Right layer config, only if different source than left side
-        if(leftSideSrcId !== rightSideSrcId) {
-            this.doAddMapLayer(rightSideLayer);
+        // Note: Only render right side layer if it is different from the left layer
+        if(leftId !== rightId) {
+            this.doAddMapLayer(rightLayer);
 
             // Attach listeners to the right layer. 
             // Pre/Post render will only show part of the right map
-            this.onPreRenderListener = rightSideLayer.on(Events.openLayers.preRender, this.onPreRender.bind(this));
-            this.onPostRenderListener = rightSideLayer.on(Events.openLayers.postRender, this.onPostRender.bind(this));
+            this.onPreRenderListener = rightLayer.on(Events.openLayers.preRender, this.onPreRender.bind(this));
+            this.onPostRenderListener = rightLayer.on(Events.openLayers.postRender, this.onPostRender.bind(this));
         }
 
         map.render();

@@ -273,19 +273,15 @@ class BookmarkTool extends Control {
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 
-    onToggleToolbox(toggle) {
-        const targetName = toggle.dataset.oltbToggleableTarget;
-        const targetNode = document.getElementById(targetName);
-
-        targetNode?.slideToggle(Config.animationDuration.fast, (collapsed) => {
-            this.localStorage.isCollapsed = collapsed;
-            StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
-        });
-    }
-
     // -------------------------------------------------------------------
     // # Section: Browser Events
     // -------------------------------------------------------------------
+
+    onDOMContentLoaded() {
+        if(this.localStorage.isActive) {
+            this.activateTool();
+        }
+    }
 
     onWindowKeyUp(event) {
         if(isShortcutKeyOnly(event, ShortcutKeys.bookmarkTool)) {
@@ -304,12 +300,6 @@ class BookmarkTool extends Control {
         // Note: Consumer callback
         if(this.options.onBrowserStateCleared instanceof Function) {
             this.options.onBrowserStateCleared();
-        }
-    }
-
-    onDOMContentLoaded() {
-        if(this.localStorage.isActive) {
-            this.activateTool();
         }
     }
 
@@ -348,6 +338,12 @@ class BookmarkTool extends Control {
     // -------------------------------------------------------------------
     // # Section: Map/UI Callbacks
     // -------------------------------------------------------------------
+
+    onToggleToolbox(toggle) {
+        const targetName = toggle.dataset.oltbToggleableTarget;
+        
+        this.doToggleToolboxSection(targetName);
+    }
 
     onAddBookmarkByKey(event) {
         if(!this.isValidEnterKey(event)) {
@@ -709,6 +705,15 @@ class BookmarkTool extends Control {
     // # Section: Tool DoActions
     // -------------------------------------------------------------------
 
+    doToggleToolboxSection(targetName) {
+        const targetNode = document.getElementById(targetName);
+
+        targetNode?.slideToggle(Config.animationDuration.fast, (collapsed) => {
+            this.localStorage.isCollapsed = collapsed;
+            StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
+        });
+    }
+
     doClearState() {
         this.localStorage = _.cloneDeep(LocalStorageDefaults);
         StateManager.setStateObject(LocalStorageNodeName, LocalStorageDefaults);
@@ -860,7 +865,11 @@ class BookmarkTool extends Control {
             return;
         }
 
-        goToView(map, bookmark.coordinates, bookmark.zoom);
+        goToView({
+            map: map,
+            coordinates: bookmark.coordinates,
+            zoom: bookmark.zoom
+        });
 
         if(this.isLayerVisible()) {
             InfoWindowManager.showOverlayDelayed(bookmark.marker, fromLonLat(bookmark.coordinates));

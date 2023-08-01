@@ -43,7 +43,7 @@ const createUICheckbox = function(options = {}) {
         label
     ]);
 
-    return [wrapper, checkbox];
+    return [ wrapper, checkbox ];
 }
 
 export { createUICheckbox };

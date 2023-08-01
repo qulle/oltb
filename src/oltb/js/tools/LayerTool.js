@@ -194,8 +194,7 @@ class LayerTool extends Control {
                     </h4>
                 </div>
                 <div class="${CLASS_TOOLBOX_SECTION}__groups" id="${ID_PREFIX}-map-toolbox-collapsed" style="display: ${this.localStorage[`${ID_PREFIX}-map-toolbox-collapsed`] ? 'none' : 'block'}">
-                    ${
-                        !this.options.disableMapCreateLayerButton ? 
+                    ${!this.options.disableMapCreateLayerButton ? 
                         `
                             <div class="${CLASS_TOOLBOX_SECTION}__group">
                                 <button type="button" id="${ID_PREFIX}-map-stack-add-button" class="oltb-btn oltb-btn--green-mid oltb-w-100">Create Map Layer</button>
@@ -214,8 +213,7 @@ class LayerTool extends Control {
                 </div>
                 <div class="${CLASS_TOOLBOX_SECTION}__groups" id="${ID_PREFIX}-feature-toolbox-collapsed" style="display: ${this.localStorage[`${ID_PREFIX}-feature-toolbox-collapsed`] ? 'none' : 'block'}">
                     <div class="${CLASS_TOOLBOX_SECTION}__group">
-                        ${
-                            !this.options.disableFeatureCreateLayerButton ? 
+                        ${!this.options.disableFeatureCreateLayerButton ? 
                             `
                                 <div class="oltb-input-button-group">
                                     <input type="text" id="${ID_PREFIX}-feature-stack-add-text" class="oltb-input" placeholder="Layer Name">
@@ -306,19 +304,15 @@ class LayerTool extends Control {
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 
-    onToggleToolbox(toggle) {
-        const targetName = toggle.dataset.oltbToggleableTarget;
-        const targetNode = document.getElementById(targetName);
-        
-        targetNode?.slideToggle(Config.animationDuration.fast, (collapsed) => {
-            this.localStorage[targetName] = collapsed;
-            StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
-        });
-    }
-
     // -------------------------------------------------------------------
     // # Section: Browser Events
     // -------------------------------------------------------------------
+
+    onDOMContentLoaded() {
+        if(this.localStorage.isActive) {
+            this.activateTool();
+        }
+    }
 
     onWindowBrowserStateCleared() {
         this.doClearState();
@@ -333,12 +327,6 @@ class LayerTool extends Control {
         }
     }
 
-    onDOMContentLoaded() {
-        if(this.localStorage.isActive) {
-            this.activateTool();
-        }
-    }
-
     onWindowKeyUp(event) {
         if(isShortcutKeyOnly(event, ShortcutKeys.layerTool)) {
             this.onClickTool(event);
@@ -346,148 +334,19 @@ class LayerTool extends Control {
     }
 
     onWindowMapLayerAdded(event) {
-        const isSilent = event.detail.isSilent;
-        const layerWrapper = event.detail.layerWrapper;
-
-        const disableVisibilityButton = (
-            event.detail.disableMapLayerVisibilityButton ||
-            this.options.disableMapLayerVisibilityButton ||
-            false
-        );
-
-        const disableEditButton = (
-            event.detail.disableMapLayerEditButton ||
-            this.options.disableMapLayerEditButton ||
-            false
-        );
-
-        const disableDeleteButton = (
-            event.detail.disableMapLayerDeleteButton ||
-            this.options.disableMapLayerDeleteButton ||
-            false
-        );
-
-        this.createUIMapLayerItem(layerWrapper, {
-            ...(!disableVisibilityButton && { visibilityButton: {
-                function: this.createUIVisibilityButton.bind(this), 
-                callback: this.options.onMapLayerVisibilityChanged.bind(this)
-            }}),
-            ...(!disableEditButton && { editButton: {
-                function: this.createUIEditButton.bind(this),
-                callback: this.options.onMapLayerRenamed.bind(this)
-            }}),
-            ...(!disableDeleteButton && { deleteButton: {
-                function: this.createUIDeleteButton.bind(this),
-                callback: LayerManager.removeMapLayer.bind(LayerManager)
-            }})
-        });
-
-        // Note: Consumer callback
-        if(!isSilent && this.options.onMapLayerAdded instanceof Function) {
-            this.options.onMapLayerAdded(layerWrapper);
-        }
+        this.doMapLayerAdded(event);
     }
 
     onWindowMapLayerRemoved(event) {
-        InfoWindowManager.hideOverlay();
-
-        const isSilent = event.detail.isSilent;
-        const layerWrapper = event.detail.layerWrapper;
-        const layerId = layerWrapper.getId();
-
-        // Remove layer from UI
-        const uiRefLayer = this.uiRefMapLayerStack.querySelector(`#${ID_PREFIX}-map-${layerId}`);
-        if(uiRefLayer) {
-            DOM.removeElement(uiRefLayer);
-        }
-
-        // Note: Consumer callback
-        if(!isSilent &&this.options.onMapLayerRemoved instanceof Function) {
-            this.options.onMapLayerRemoved(layerWrapper);
-        }
+        this.doMapLayerRemoved(event);
     }
 
     onWindowFeatureLayerAdded(event) {
-        const isSilent = event.detail.isSilent;
-        const layerWrapper = event.detail.layerWrapper;
-
-        const disableVisibilityButton = (
-            event.detail.disableFeatureLayerVisibilityButton ||
-            this.options.disableFeatureLayerVisibilityButton ||
-            false
-        );
-
-        const disableEditButton = (
-            event.detail.disableFeatureLayerEditButton ||
-            this.options.disableFeatureLayerEditButton ||
-            false
-        );
-
-        const disableDownloadButton = (
-            event.detail.disableFeatureLayerDownloadButton ||
-            this.options.disableFeatureLayerDownloadButton ||
-            false
-        );
-
-        const disableDeleteButton = (
-            event.detail.disableFeatureLayerDeleteButton ||
-            this.options.disableFeatureLayerDeleteButton ||
-            false
-        );
-
-        this.doRemoveActiveFeatureLayerClass();
-        this.createUIFeatureLayerItem(layerWrapper, {
-            ...(!disableVisibilityButton && { visibilityButton: {
-                function: this.createUIVisibilityButton.bind(this), 
-                callback: this.options.onFeatureLayerVisibilityChanged
-            }}),
-            ...(!disableEditButton && { editButton: {
-                function: this.createUIEditButton.bind(this),
-                callback: this.options.onFeatureLayerRenamed
-            }}),
-            ...(!disableDownloadButton && { downloadButton: {
-                function: this.createUIDownloadButton.bind(this),
-                callback: this.options.onFeatureLayerDownloaded
-            }}),
-            ...(!disableDeleteButton && { deleteButton: {
-                function: this.createUIDeleteButton.bind(this),
-                callback: LayerManager.removeFeatureLayer.bind(LayerManager)
-            }})
-        });
-
-        // Note: Consumer callback
-        if(!isSilent && this.options.onFeatureLayerAdded instanceof Function) {
-            this.options.onFeatureLayerAdded(layerWrapper);
-        }
+        this.doFeatureLayerAdded(event);
     }
 
     onWindowFeatureLayerRemoved(event) {
-        InfoWindowManager.hideOverlay();
-
-        const isSilent = event.detail.isSilent;
-        const layerWrapper = event.detail.layerWrapper;
-
-        // Remove layer from UI
-        const uiRefLayer = this.uiRefFeatureLayerStack.querySelector(`#${ID_PREFIX}-feature-${layerWrapper.getId()}`);
-        if(uiRefLayer) {
-            DOM.removeElement(uiRefLayer);
-        }
-
-        // Set new active feature layer
-        this.doRemoveActiveFeatureLayerClass();
-        const activeFeatureLayer = LayerManager.getActiveFeatureLayer();
-        if(activeFeatureLayer) {
-            this.uiRefFeatureLayerStack.querySelectorAll('li').forEach((item) => {
-                if(activeFeatureLayer.getId() === item.getAttribute('data-oltb-id')) {
-                    item.classList.add(`${CLASS_TOOLBOX_LIST}__item--active`);
-                }
-            });
-        }
-
-        // Note: Consumer callback
-        if(!isSilent && this.options.onFeatureLayerRemoved instanceof Function) {
-            this.options.onFeatureLayerRemoved(layerWrapper);
-        }
+        this.doFeatureLayerRemoved(event);
     }
 
     // -------------------------------------------------------------------
@@ -663,6 +522,12 @@ class LayerTool extends Control {
     // # Section: Map/UI Callbacks
     // -------------------------------------------------------------------
 
+    onToggleToolbox(toggle) {
+        const targetName = toggle.dataset.oltbToggleableTarget;
+        
+        this.doToggleToolboxSection(targetName);
+    }
+
     onAddFeatureLayerByKey(event) {
         if(!this.isValidEnter(event)) {
             return;
@@ -729,6 +594,21 @@ class LayerTool extends Control {
         if(storedLayerState) {
             storedLayerState.isVisible = isVisible;
             StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
+        }
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Listeners Subscriptions
+    // -------------------------------------------------------------------
+
+    attachUIButtonCallbacks(options, layerWrapper, rightWrapper, layerName) {
+        for(const name in options) {
+            const functionObject = options[name];
+            const button = functionObject.function.call(this, layerWrapper, functionObject.callback, layerName);
+
+            DOM.appendChildren(rightWrapper, [
+                button
+            ]);
         }
     }
 
@@ -809,7 +689,7 @@ class LayerTool extends Control {
             }
         });
 
-        // This tooltip can not be triggered by the delegated .oltb-tippy class
+        // Note: This tooltip can not be triggered by the delegated .oltb-tippy class
         // Because the tooltip instance can not be reached in the renaming function unless it is known during "compile time"
         this.createUILayerNameTippy(layerName);
 
@@ -914,7 +794,7 @@ class LayerTool extends Control {
             }
         });
 
-        // This tooltip can not be triggered by the delegated .oltb-tippy class
+        // Note: This tooltip can not be triggered by the delegated .oltb-tippy class
         // Because the tooltip instance can not be reached in the renaming function unless it is known during "compile time"
         this.createUILayerNameTippy(layerName);
 
@@ -1023,11 +903,6 @@ class LayerTool extends Control {
     }
 
     createUIVisibilityButton(layerWrapper, callback, layerName) {
-        const map = this.getMap();
-        if(!map) {
-            return;
-        }
-
         const visibilityButton = DOM.createElement({
             element: 'button',
             class: `${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--visibility oltb-tippy`,
@@ -1043,17 +918,6 @@ class LayerTool extends Control {
         return visibilityButton;
     }
 
-    attachUIButtonCallbacks(options, layerWrapper, rightWrapper, layerName) {
-        for(const name in options) {
-            const functionObject = options[name];
-            const button = functionObject.function.call(this, layerWrapper, functionObject.callback, layerName);
-
-            DOM.appendChildren(rightWrapper, [
-                button
-            ]);
-        }
-    }
-
     // -------------------------------------------------------------------
     // # Section: Map/UI Callbacks
     // -------------------------------------------------------------------
@@ -1063,25 +927,7 @@ class LayerTool extends Control {
     }
 
     onLayerVisibilityChange(layerWrapper, callback, layerName) {
-        InfoWindowManager.hideOverlay();
-
-        const layer = layerWrapper.getLayer();
-        const flippedVisibility = !layer.getVisible();
-        layer.setVisible(flippedVisibility);
-                     
-        // Hide overlays associated with the layer
-        if(this.hasLayerFeatures(layer)) {
-            layer.getSource().getFeatures().forEach((feature) => {
-                if(hasCustomFeatureProperty(feature.getProperties(), FeatureProperties.tooltip)) {
-                    feature.getProperties().oltb.tooltip.setMap(flippedVisibility ? map : null)
-                }
-            });
-        }
-
-        // Note: Consumer callback
-        if(callback instanceof Function) {
-            callback(layerWrapper);
-        }
+        this.doChangeLayerVisibility(layerWrapper, callback);
     }
 
     onLayerEdit(layerWrapper, callback, layerName) {
@@ -1089,6 +935,14 @@ class LayerTool extends Control {
     }
 
     onLayerDownload(layerWrapper, callback) {
+        this.askToDownloadLayer(layerWrapper, callback);
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Ask User
+    // -------------------------------------------------------------------
+    
+    askToDownloadLayer(layerWrapper, callback) {
         new DownloadLayerModal({
             onDownload: (result) => {   
                 const format = instantiateFormat(result.format);
@@ -1121,10 +975,6 @@ class LayerTool extends Control {
         });
     }
 
-    // -------------------------------------------------------------------
-    // # Section: Ask User
-    // -------------------------------------------------------------------
-    
     askToRenameLayer(layerWrapper, callback, layerName) {
         Dialog.prompt({
             title: 'Edit name',
@@ -1163,6 +1013,187 @@ class LayerTool extends Control {
     // -------------------------------------------------------------------
     // # Section: Tool DoActions
     // -------------------------------------------------------------------
+
+    doMapLayerAdded(event) {
+        const isSilent = event.detail.isSilent;
+        const layerWrapper = event.detail.layerWrapper;
+
+        const disableVisibilityButton = (
+            event.detail.disableMapLayerVisibilityButton ||
+            this.options.disableMapLayerVisibilityButton ||
+            false
+        );
+
+        const disableEditButton = (
+            event.detail.disableMapLayerEditButton ||
+            this.options.disableMapLayerEditButton ||
+            false
+        );
+
+        const disableDeleteButton = (
+            event.detail.disableMapLayerDeleteButton ||
+            this.options.disableMapLayerDeleteButton ||
+            false
+        );
+
+        this.createUIMapLayerItem(layerWrapper, {
+            ...(!disableVisibilityButton && { visibilityButton: {
+                function: this.createUIVisibilityButton.bind(this), 
+                callback: this.options.onMapLayerVisibilityChanged.bind(this)
+            }}),
+            ...(!disableEditButton && { editButton: {
+                function: this.createUIEditButton.bind(this),
+                callback: this.options.onMapLayerRenamed.bind(this)
+            }}),
+            ...(!disableDeleteButton && { deleteButton: {
+                function: this.createUIDeleteButton.bind(this),
+                callback: LayerManager.removeMapLayer.bind(LayerManager)
+            }})
+        });
+
+        // Note: Consumer callback
+        if(!isSilent && this.options.onMapLayerAdded instanceof Function) {
+            this.options.onMapLayerAdded(layerWrapper);
+        }
+    }
+
+    doMapLayerRemoved(event) {
+        InfoWindowManager.hideOverlay();
+
+        const isSilent = event.detail.isSilent;
+        const layerWrapper = event.detail.layerWrapper;
+        const layerId = layerWrapper.getId();
+
+        // Remove layer from UI
+        const uiRefLayer = this.uiRefMapLayerStack.querySelector(`#${ID_PREFIX}-map-${layerId}`);
+        if(uiRefLayer) {
+            DOM.removeElement(uiRefLayer);
+        }
+
+        // Note: Consumer callback
+        if(!isSilent && this.options.onMapLayerRemoved instanceof Function) {
+            this.options.onMapLayerRemoved(layerWrapper);
+        }
+    }
+
+    doFeatureLayerAdded(event) {
+        const isSilent = event.detail.isSilent;
+        const layerWrapper = event.detail.layerWrapper;
+
+        const disableVisibilityButton = (
+            event.detail.disableFeatureLayerVisibilityButton ||
+            this.options.disableFeatureLayerVisibilityButton ||
+            false
+        );
+
+        const disableEditButton = (
+            event.detail.disableFeatureLayerEditButton ||
+            this.options.disableFeatureLayerEditButton ||
+            false
+        );
+
+        const disableDownloadButton = (
+            event.detail.disableFeatureLayerDownloadButton ||
+            this.options.disableFeatureLayerDownloadButton ||
+            false
+        );
+
+        const disableDeleteButton = (
+            event.detail.disableFeatureLayerDeleteButton ||
+            this.options.disableFeatureLayerDeleteButton ||
+            false
+        );
+
+        this.doRemoveActiveFeatureLayerClass();
+        this.createUIFeatureLayerItem(layerWrapper, {
+            ...(!disableVisibilityButton && { visibilityButton: {
+                function: this.createUIVisibilityButton.bind(this), 
+                callback: this.options.onFeatureLayerVisibilityChanged
+            }}),
+            ...(!disableEditButton && { editButton: {
+                function: this.createUIEditButton.bind(this),
+                callback: this.options.onFeatureLayerRenamed
+            }}),
+            ...(!disableDownloadButton && { downloadButton: {
+                function: this.createUIDownloadButton.bind(this),
+                callback: this.options.onFeatureLayerDownloaded
+            }}),
+            ...(!disableDeleteButton && { deleteButton: {
+                function: this.createUIDeleteButton.bind(this),
+                callback: LayerManager.removeFeatureLayer.bind(LayerManager)
+            }})
+        });
+
+        // Note: Consumer callback
+        if(!isSilent && this.options.onFeatureLayerAdded instanceof Function) {
+            this.options.onFeatureLayerAdded(layerWrapper);
+        }
+    }
+
+    doFeatureLayerRemoved(event) {
+        InfoWindowManager.hideOverlay();
+
+        const isSilent = event.detail.isSilent;
+        const layerWrapper = event.detail.layerWrapper;
+
+        // Remove layer from UI
+        const uiRefLayer = this.uiRefFeatureLayerStack.querySelector(`#${ID_PREFIX}-feature-${layerWrapper.getId()}`);
+        if(uiRefLayer) {
+            DOM.removeElement(uiRefLayer);
+        }
+
+        // Set new active feature layer
+        this.doRemoveActiveFeatureLayerClass();
+        const activeFeatureLayer = LayerManager.getActiveFeatureLayer();
+        if(activeFeatureLayer) {
+            this.uiRefFeatureLayerStack.querySelectorAll('li').forEach((item) => {
+                if(activeFeatureLayer.getId() === item.getAttribute('data-oltb-id')) {
+                    item.classList.add(`${CLASS_TOOLBOX_LIST}__item--active`);
+                }
+            });
+        }
+
+        // Note: Consumer callback
+        if(!isSilent && this.options.onFeatureLayerRemoved instanceof Function) {
+            this.options.onFeatureLayerRemoved(layerWrapper);
+        }
+    }
+
+    doChangeLayerVisibility(layerWrapper, callback) {
+        const map = this.getMap();
+        if(!map) {
+            return;
+        }
+        
+        InfoWindowManager.hideOverlay();
+
+        const layer = layerWrapper.getLayer();
+        const flippedVisibility = !layer.getVisible();
+        layer.setVisible(flippedVisibility);
+                     
+        // Hide overlays associated with the layer
+        if(this.hasLayerFeatures(layer)) {
+            layer.getSource().getFeatures().forEach((feature) => {
+                if(hasCustomFeatureProperty(feature.getProperties(), FeatureProperties.tooltip)) {
+                    feature.getProperties().oltb.tooltip.setMap(flippedVisibility ? map : null)
+                }
+            });
+        }
+
+        // Note: Consumer callback
+        if(callback instanceof Function) {
+            callback(layerWrapper);
+        }
+    }
+
+    doToggleToolboxSection(targetName) {
+        const targetNode = document.getElementById(targetName);
+        
+        targetNode?.slideToggle(Config.animationDuration.fast, (collapsed) => {
+            this.localStorage[targetName] = collapsed;
+            StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
+        });
+    }
 
     doClearState() {
         this.localStorage = _.cloneDeep(LocalStorageDefaults);

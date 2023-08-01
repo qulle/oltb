@@ -51,7 +51,7 @@ const createUISelect = function(options = {}) {
         select
     ]);
 
-    return [wrapper, select];
+    return [ wrapper, select ];
 }
 
 export { createUISelect };

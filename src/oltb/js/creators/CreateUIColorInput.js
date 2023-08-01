@@ -51,7 +51,7 @@ const createUIColorInput = function(options = {}) {
         input
     ]);
 
-    return [wrapper, input];
+    return [ wrapper, input ];
 }
 
 export { createUIColorInput };

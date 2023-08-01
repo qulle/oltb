@@ -42,7 +42,7 @@ const createUIInput = function(options = {}) {
         input
     ]);
 
-    return [wrapper, input];
+    return [ wrapper, input ];
 }
 
 export { createUIInput };

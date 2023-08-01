@@ -172,7 +172,6 @@ class SettingsTool extends Control {
         // Emit event so that any tool can clean up
         window.dispatchEvent(new CustomEvent(Events.custom.browserStateCleared));
 
-        // Reset Managers as last step
         [
             SettingsManager, 
             StateManager

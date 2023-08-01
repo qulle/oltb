@@ -137,8 +137,8 @@ class NotificationTool extends Control {
                     v${Config.toolbar.version}
                 </a>
             </p>
-            ${this.hasLatestVersionInfo(notification) 
-                ? `
+            ${this.hasLatestVersionInfo(notification) ? 
+                `
                     <h3>🚀 Latest version</h3>
                     <p>
                         <a href="https://github.com/qulle/oltb/releases/tag/v${notification.latest.version}" target="_blank" class="oltb-link">
@@ -147,14 +147,14 @@ class NotificationTool extends Control {
                     </p>
                 ` : ''
             }
-            ${this.hasFeaturesUnderDevelopment(notification)
-                ? `
+            ${this.hasFeaturesUnderDevelopment(notification) ? 
+                `
                     <h3>💡 New features under development</h3>
                     ${notification.features}
                 ` : ''
             }
-            ${this.hasError(notification)
-                ? `
+            ${this.hasError(notification) ?
+                `
                     <h3>📡 Fetch error</h3>
                     <p>${notification.error}</p>
                 ` : ''

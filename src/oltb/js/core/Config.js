@@ -1,5 +1,5 @@
-import { VERSION } from 'ol';
-import { version } from '../../../../package.json';
+import { VERSION as olVersion } from 'ol';
+import { version as oltbVersion} from '../../../../package.json';
 
 const Config = Object.freeze({
     defaultLocation: Object.freeze({
@@ -13,11 +13,11 @@ const Config = Object.freeze({
         dark: 'oltb-dark'
     }),
     openLayers: Object.freeze({
-        version: VERSION,
+        version: olVersion,
         id: 'map'
     }),
     toolbar: Object.freeze({
-        version: version,
+        version: oltbVersion,
         id: 'oltb'
     }),
     urlParameter: {

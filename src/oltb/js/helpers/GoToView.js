@@ -1,24 +1,41 @@
+import _ from "lodash";
 import { Config } from "../core/Config";
 import { easeOut } from 'ol/easing';
 import { fromLonLat } from "ol/proj";
 
-const goToView = function(map, coordinates, zoom, rotation) {
-    if(!map) {
+const DefaultOptions = Object.freeze({
+    map: undefined,
+    coordinates: [0, 0],
+    zoom: undefined,
+    rotation: undefined,
+    duration: Config.animationDuration.normal,
+    onDone: undefined
+});
+
+const goToView = function(options) {
+    options = _.merge(_.cloneDeep(DefaultOptions), options);
+
+    if(!options.map) {
         return;
     }
 
-    const view = map.getView();
+    const view = options.map.getView();
     
     if(view.getAnimating()) {
         view.cancelAnimations();
     }
 
     view.animate({
-        rotation: rotation,
-        center: fromLonLat(coordinates),
-        zoom: zoom,
-        duration: Config.animationDuration.normal,
+        rotation: options.rotation,
+        center: fromLonLat(options.coordinates),
+        zoom: options.zoom,
+        duration: options.duration,
         easing: easeOut
+    }, function(result) {
+        // Note: Consumer callback
+        if(options.onDone instanceof Function) {
+            options.onDone(result);
+        }
     });
 }
 

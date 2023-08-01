@@ -1,4 +1,4 @@
-import _, { fill } from 'lodash';
+import _ from 'lodash';
 import { DOM } from '../helpers/browser/DOM';
 import { Draw } from 'ol/interaction';
 import { Keys } from '../helpers/constants/Keys';
@@ -239,21 +239,11 @@ class MeasureTool extends Control {
 
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
 
-        this.selectMeasure(
+        this.doUpdateTool(
             this.uiRefToolType.value,
             this.uiRefFillColor.getAttribute('data-oltb-color'),
             this.uiRefStrokeColor.getAttribute('data-oltb-color')
         );
-    }
-    
-    onToggleToolbox(toggle) {
-        const targetName = toggle.dataset.oltbToggleableTarget;
-        const targetNode = document.getElementById(targetName);
-        
-        targetNode?.slideToggle(Config.animationDuration.fast, (collapsed) => {
-            this.localStorage.isCollapsed = collapsed;
-            StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
-        });
     }
 
     // -------------------------------------------------------------------
@@ -284,13 +274,7 @@ class MeasureTool extends Control {
     
     onWindowBrowserStateCleared() {
         this.doClearState();
-
-        // Rest UI-components
-        this.uiRefFillColor.setAttribute('data-oltb-color', this.localStorage.fillColor);
-        this.uiRefFillColor.firstElementChild.style.backgroundColor = this.localStorage.fillColor;
-
-        this.uiRefStrokeColor.setAttribute('data-oltb-color', this.localStorage.strokeColor);
-        this.uiRefStrokeColor.firstElementChild.style.backgroundColor = this.localStorage.strokeColor;
+        this.doClearColors();
 
         if(this.isActive) {
             this.deActivateTool();
@@ -306,7 +290,76 @@ class MeasureTool extends Control {
     // # Section: Map/UI Callbacks
     // -------------------------------------------------------------------
 
+    onToggleToolbox(toggle) {
+        const targetName = toggle.dataset.oltbToggleableTarget;
+        
+        this.doToggleToolboxSection(targetName);
+    }
+
     onDrawStart(event) {
+        this.doDrawStart(event);
+    }
+
+    onDrawEnd(event) {
+        this.doDrawEnd(event);
+    }
+
+    onDrawAbort(event) {
+        this.doDrawAbort(event);
+    }
+
+    onDrawError(event) {
+        this.doDrawError(event);
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Conversions/Validation
+    // -------------------------------------------------------------------
+
+    shouldAlwaysCreateNewLayer() {
+        return SettingsManager.getSetting(Settings.alwaysNewLayer);
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Generator Helpers
+    // -------------------------------------------------------------------
+
+    generateOLInteractionDraw(type) {
+        return new Draw({
+            type: type,
+            stopClick: true,
+            style: this.styles
+        });
+    }
+
+    generateOLStyleObject(fillColor, strokeColor) {
+        return new Style({
+            image: new Circle({
+                fill: new Fill({
+                    color: fillColor
+                }),
+                stroke: new Stroke({
+                    color: strokeColor,
+                    width: 2
+                }),
+                radius: 5
+            }),
+            fill: new Fill({
+                color: fillColor
+            }),
+            stroke: new Stroke({
+                color: strokeColor,
+                lineDash: [2, 5],
+                width: 2.5
+            })
+        });
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Tool DoActions
+    // -------------------------------------------------------------------
+
+    doDrawStart(event) {
         const feature = event.feature;
         const tooltipItem = TooltipManager.push(KEY_TOOLTIP);
         
@@ -318,10 +371,10 @@ class MeasureTool extends Control {
         // Note: Consumer callback
         if(this.options.onStart instanceof Function) {
             this.options.onStart(event);
-        }
+        }   
     }
 
-    onDrawEnd(event) {
+    doDrawEnd(event) {
         const map = this.getMap();
         if(!map) {
             return;
@@ -378,7 +431,7 @@ class MeasureTool extends Control {
         }
     }
 
-    onDrawAbort(event) {
+    doDrawAbort(event) {
         unByKey(this.onChangeListener);
         
         TooltipManager.pop(KEY_TOOLTIP);
@@ -389,66 +442,36 @@ class MeasureTool extends Control {
         }
     }
 
-    onDrawError(event) {
+    doDrawError(event) {
         // Note: Consumer callback
         if(this.options.onError instanceof Function) {
             this.options.onError(event);
         }
     }
 
-    // -------------------------------------------------------------------
-    // # Section: Conversions/Validation
-    // -------------------------------------------------------------------
-
-    shouldAlwaysCreateNewLayer() {
-        return SettingsManager.getSetting(Settings.alwaysNewLayers);
-    }
-
-        // -------------------------------------------------------------------
-    // # Section: Generator Helpers
-    // -------------------------------------------------------------------
-
-    generateOLInteractionDraw(type) {
-        return new Draw({
-            type: type,
-            stopClick: true,
-            style: this.styles
+    doToggleToolboxSection(targetName) {
+        const targetNode = document.getElementById(targetName);
+        
+        targetNode?.slideToggle(Config.animationDuration.fast, (collapsed) => {
+            this.localStorage.isCollapsed = collapsed;
+            StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
         });
     }
 
-    generateOLStyleObject(fillColor, strokeColor) {
-        return new Style({
-            image: new Circle({
-                fill: new Fill({
-                    color: fillColor
-                }),
-                stroke: new Stroke({
-                    color: strokeColor,
-                    width: 2
-                }),
-                radius: 5
-            }),
-            fill: new Fill({
-                color: fillColor
-            }),
-            stroke: new Stroke({
-                color: strokeColor,
-                lineDash: [2, 5],
-                width: 2.5
-            })
-        });
-    }
+    doClearColors() {
+        this.uiRefFillColor.setAttribute('data-oltb-color', this.localStorage.fillColor);
+        this.uiRefFillColor.firstElementChild.style.backgroundColor = this.localStorage.fillColor;
 
-    // -------------------------------------------------------------------
-    // # Section: Tool DoActions
-    // -------------------------------------------------------------------
+        this.uiRefStrokeColor.setAttribute('data-oltb-color', this.localStorage.strokeColor);
+        this.uiRefStrokeColor.firstElementChild.style.backgroundColor = this.localStorage.strokeColor;
+    }
 
     doClearState() {
         this.localStorage = _.cloneDeep(LocalStorageDefaults);
         StateManager.setStateObject(LocalStorageNodeName, LocalStorageDefaults);
     }
 
-    selectMeasure(toolType, fillColor, strokeColor) {
+    doUpdateTool(toolType, fillColor, strokeColor) {
         const map = this.getMap();
         if(!map) {
             return;

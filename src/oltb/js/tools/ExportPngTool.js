@@ -108,18 +108,18 @@ class ExportPngTool extends Control {
     // # Section: Browser Events
     // -------------------------------------------------------------------
 
-    onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, ShortcutKeys.exportPngTool)) {
-            this.onClickTool(event);
-        }
-    }
-
     onDOMContentLoaded() {
         const uiRefMapElement = ElementManager.getMapElement();
         const uiRefAttribution = uiRefMapElement.querySelector('.ol-attribution');
 
         if(uiRefAttribution) {
             uiRefAttribution.setAttribute('data-html2canvas-ignore', 'true');
+        }
+    }
+
+    onWindowKeyUp(event) {
+        if(isShortcutKeyOnly(event, ShortcutKeys.exportPngTool)) {
+            this.onClickTool(event);
         }
     }
 
@@ -218,7 +218,7 @@ class ExportPngTool extends Control {
             return;
         }
 
-        // RenderSync will trigger the export the png
+        // Note: RenderSync will trigger the export the png
         map.once(Events.openLayers.renderComplete, this.onRenderCompleteAsync.bind(this));
         map.renderSync();
     }

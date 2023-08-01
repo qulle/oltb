@@ -183,6 +183,10 @@ class OverviewTool extends Control {
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 
+    // -------------------------------------------------------------------
+    // # Section: Map/UI Callbacks
+    // -------------------------------------------------------------------
+
     onToggleToolbox(toggle) {
         const map = this.getMap();
         if(!map) {
@@ -190,17 +194,7 @@ class OverviewTool extends Control {
         }
 
         const targetName = toggle.dataset.oltbToggleableTarget;
-        const targetNode = document.getElementById(targetName);
-        
-        targetNode?.slideToggle(Config.animationDuration.fast, (collapsed) => {
-            this.localStorage.isCollapsed = collapsed;
-            StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
-        
-            // Force render of overview, 
-            // Other solutions will not render the dashed box correctly until the map is moved
-            this.overviewMap.setMap(null);
-            this.overviewMap.setMap(map);
-        });
+        this.doToggleToolboxSection(targetName);
     }
     
     // -------------------------------------------------------------------
@@ -235,6 +229,20 @@ class OverviewTool extends Control {
     // -------------------------------------------------------------------
     // # Section: Tool DoActions
     // -------------------------------------------------------------------
+
+    doToggleToolboxSection(targetName) {
+        const targetNode = document.getElementById(targetName);
+        
+        targetNode?.slideToggle(Config.animationDuration.fast, (collapsed) => {
+            this.localStorage.isCollapsed = collapsed;
+            StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
+        
+            // Note: Force render of overview, 
+            // Other solutions will not render the dashed box correctly until the map is moved
+            this.overviewMap.setMap(null);
+            this.overviewMap.setMap(map);
+        });
+    }
 
     doClearState() {
         this.localStorage = _.cloneDeep(LocalStorageDefaults);

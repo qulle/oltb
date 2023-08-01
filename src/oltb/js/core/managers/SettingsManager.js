@@ -41,7 +41,7 @@ const DefaultSettings = new Map([
             text: 'Enable Select Shapes In Vector Map Layers'
         }
     ], [
-        Settings.alwaysNewLayers, {
+        Settings.alwaysNewLayer, {
             state: false, 
             text: 'Always Create New Layer When Selecting Tool'
         }
@@ -86,7 +86,7 @@ class SettingsManager {
     }
 
     static addSetting(key, valueObj) {
-        // Check if there exists a value already in the browser for this setting
+        // Note: Check if there exists a value already in the browser for this setting
         // Must overwrite the literal value that the tools is adding
         const state = this.#localStorage[key];
         if(state !== undefined) {

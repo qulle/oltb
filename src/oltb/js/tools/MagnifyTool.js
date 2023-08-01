@@ -193,7 +193,7 @@ class MagnifyTool extends Control {
     }
 
     // -------------------------------------------------------------------
-    // # Section: Handle Listeners
+    // # Section: Listeners Subscriptions
     // -------------------------------------------------------------------
 
     attachMapListeners() {
@@ -236,7 +236,7 @@ class MagnifyTool extends Control {
             unByKey(listener);
         });
 
-        // Render to remove the magnifier
+        // Note: Render to remove the magnifier
         map.render();
     }
 

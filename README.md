@@ -34,6 +34,23 @@ Examples for both the NPM and CDN version can be viewed in the [examples directo
 ## Documentation
 Have a look at the [Internal Development Documentation](https://github.com/qulle/oltb/blob/main/README_INTERNAL.md). Here you find detailed descriptions and code examples of how individual parts can be used.
 
+## Key Features
+- Draggable layers
+- Create map- and feature layers on the fly
+- Stores state in local storage
+- Draw objects including intersections
+- Measure both length and areas
+- Merge drawings and measurements with different shape operations
+- Generate markers
+- Generate wind barbs
+- Save locations as bookmarks
+- Export PNG of canvas and additional HTML objects
+- Compare maps side by side
+- Dark mode
+- Built in debugging help
+- Parameters for customizability
+- Callback functions for integrations
+
 ## Tools
 The following tools are implemented in the project. The tools are devided in two different categories, Hidden and Non-Hidden tools. The differenc is that Hidden tools are not displayed in the toolbar, but only add functionality in the contextmenu.
 

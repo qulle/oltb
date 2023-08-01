@@ -120,7 +120,7 @@ class DrawTool extends Control {
 
         // Set default selected values
         this.uiRefToolType.value = this.localStorage.toolType;
-        this.uiRefStrokeWidth.value  = this.localStorage.strokeWidth;
+        this.uiRefStrokeWidth.value = this.localStorage.strokeWidth;
         this.uiRefIntersectionEnable.value = 'false';
 
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
@@ -286,22 +286,12 @@ class DrawTool extends Control {
         }
 
         // Update the draw tool in the map
-        this.doSelectDraw(
+        this.doUpdateTool(
             this.uiRefToolType.value,
             this.uiRefStrokeWidth.value,
             this.uiRefFillColor.getAttribute('data-oltb-color'),
             this.uiRefStrokeColor.getAttribute('data-oltb-color')
         );
-    }
-
-    onToggleToolbox(toggle) {
-        const targetName = toggle.dataset.oltbToggleableTarget;
-        const targetNode = document.getElementById(targetName);
-        
-        targetNode?.slideToggle(Config.animationDuration.fast, (collapsed) => {
-            this.localStorage.isCollapsed = collapsed;
-            StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
-        });
     }
 
     // -------------------------------------------------------------------
@@ -332,13 +322,7 @@ class DrawTool extends Control {
 
     onWindowBrowserStateCleared() {
         this.doClearState();
-
-        // Rest UI-components
-        this.uiRefFillColor.setAttribute('data-oltb-color', this.localStorage.fillColor);
-        this.uiRefFillColor.firstElementChild.style.backgroundColor = this.localStorage.fillColor;
-
-        this.uiRefStrokeColor.setAttribute('data-oltb-color', this.localStorage.strokeColor);
-        this.uiRefStrokeColor.firstElementChild.style.backgroundColor = this.localStorage.strokeColor;
+        this.doClearColors();
 
         if(this.isActive) {
             this.deActivateTool();
@@ -354,104 +338,26 @@ class DrawTool extends Control {
     // # Section: Map/UI Callbacks
     // -------------------------------------------------------------------
 
+    onToggleToolbox(toggle) {
+        const targetName = toggle.dataset.oltbToggleableTarget;
+        
+        this.doToggleToolboxSection(targetName);
+    }
+
     onDrawStart(event) {
-        // Note: Consumer callback
-        if(this.options.onStart instanceof Function) {
-            this.options.onStart(event);
-        }
+        this.doDrawStart(event);
     }
 
     onDrawEnd(event) {
-        const layerWrapper = LayerManager.getActiveFeatureLayer({
-            fallback: 'Drawing layer'
-        });
-
-        const layer = layerWrapper.getLayer();
-        const source = layer.getSource();
-
-        if(this.isIntersectionEnabled()) {
-            this.onDrawEndIntersection(source, event);
-        }else {
-            this.onDrawEndNormal(source, event);
-        }
-
-        if(!layer.getVisible()) {
-            Toast.info({
-                title: 'Tip',
-                message: 'You are drawing in a hidden layer', 
-                autoremove: Config.autoRemovalDuation.normal
-            });
-        }
-    }
-
-    onDrawEndNormal(source, event) {
-        const feature = event.feature;
-        
-        feature.setStyle(this.style);
-        feature.setProperties({
-            oltb: {
-                type: FeatureProperties.type.drawing
-            }
-        });
-
-        source.addFeature(feature);
-
-        // Note: Consumer callback
-        if(this.options.onEnd instanceof Function) {
-            this.options.onEnd(event);
-        }
-    }
-
-    onDrawEndIntersection(source, event) {
-        const feature = event.feature;
-        const featureGeometry = feature.getGeometry();
-
-        source.forEachFeatureIntersectingExtent(featureGeometry.getExtent(), (intersectedFeature) => {
-            const type = intersectedFeature.getProperties()?.oltb?.type;
-            const geometry = intersectedFeature.getGeometry();
-
-            if(isFeatureIntersectable(type, geometry)) {
-                this.intersectedFeatures.push(intersectedFeature);
-            }
-        });
-
-        this.intersectedFeatures.forEach((intersected) => {
-            const coordinates = intersected.getGeometry().getCoordinates();
-            const geometry    = new Polygon(coordinates.slice(0, coordinates.length));
-            const linearRing  = new LinearRing(featureGeometry.getCoordinates()[0]);
-
-            geometry.appendLinearRing(linearRing);
-            intersected.setGeometry(geometry);
-        });
-
-        if(this.intersectedFeatures.length === 0) {
-            Toast.info({
-                title: 'Oops',
-                message: 'No intersecting objects found', 
-                autoremove: Config.autoRemovalDuation.normal
-            });
-        }
-
-        // Note: Consumer callback
-        if(this.options.onIntersected instanceof Function) {
-            this.options.onIntersected(event, this.intersectedFeatures);
-        }
-
-        this.intersectedFeatures = [];
+        this.doDrawEnd(event);
     }
 
     onDrawAbort(event) {
-        // Note: Consumer callback
-        if(this.options.onAbort instanceof Function) {
-            this.options.onAbort(event);
-        }
+        this.doDrawAbort(event);
     }
 
     onDrawError(event) {
-        // Note: Consumer callback
-        if(this.options.onError instanceof Function) {
-            this.options.onError(event);
-        }
+        this.doDrawError(event);
     }
 
     // -------------------------------------------------------------------
@@ -459,7 +365,7 @@ class DrawTool extends Control {
     // -------------------------------------------------------------------
 
     shouldAlwaysCreateNewLayer() {
-        return SettingsManager.getSetting(Settings.alwaysNewLayers);
+        return SettingsManager.getSetting(Settings.alwaysNewLayer);
     }
 
     isIntersectionEnabled() {
@@ -505,12 +411,129 @@ class DrawTool extends Control {
     // # Section: Tool DoActions
     // -------------------------------------------------------------------
 
+    doDrawStart(event) {
+        // Note: Consumer callback
+        if(this.options.onStart instanceof Function) {
+            this.options.onStart(event);
+        }
+    }
+
+    doDrawEnd(event) {
+        const layerWrapper = LayerManager.getActiveFeatureLayer({
+            fallback: 'Drawing layer'
+        });
+
+        const layer = layerWrapper.getLayer();
+        const source = layer.getSource();
+
+        if(this.isIntersectionEnabled()) {
+            this.doDrawEndIntersection(source, event);
+        }else {
+            this.doDrawEndNormal(source, event);
+        }
+
+        if(!layer.getVisible()) {
+            Toast.info({
+                title: 'Tip',
+                message: 'You are drawing in a hidden layer', 
+                autoremove: Config.autoRemovalDuation.normal
+            });
+        }
+    }
+
+    doDrawEndNormal(source, event) {
+        const feature = event.feature;
+        
+        feature.setStyle(this.style);
+        feature.setProperties({
+            oltb: {
+                type: FeatureProperties.type.drawing
+            }
+        });
+
+        source.addFeature(feature);
+
+        // Note: Consumer callback
+        if(this.options.onEnd instanceof Function) {
+            this.options.onEnd(event);
+        }
+    }
+
+    doDrawEndIntersection(source, event) {
+        const feature = event.feature;
+        const featureGeometry = feature.getGeometry();
+
+        source.forEachFeatureIntersectingExtent(featureGeometry.getExtent(), (intersectedFeature) => {
+            const type = intersectedFeature.getProperties()?.oltb?.type;
+            const geometry = intersectedFeature.getGeometry();
+
+            if(isFeatureIntersectable(type, geometry)) {
+                this.intersectedFeatures.push(intersectedFeature);
+            }
+        });
+
+        this.intersectedFeatures.forEach((intersected) => {
+            const coordinates = intersected.getGeometry().getCoordinates();
+            const geometry = new Polygon(coordinates.slice(0, coordinates.length));
+            const linearRing = new LinearRing(featureGeometry.getCoordinates()[0]);
+
+            geometry.appendLinearRing(linearRing);
+            intersected.setGeometry(geometry);
+        });
+
+        if(this.intersectedFeatures.length === 0) {
+            Toast.info({
+                title: 'Oops',
+                message: 'No intersecting objects found', 
+                autoremove: Config.autoRemovalDuation.normal
+            });
+        }
+
+        // Note: Consumer callback
+        if(this.options.onIntersected instanceof Function) {
+            this.options.onIntersected(event, this.intersectedFeatures);
+        }
+
+        this.intersectedFeatures = [];
+    }
+
+    doDrawAbort(event) {
+        // Note: Consumer callback
+        if(this.options.onAbort instanceof Function) {
+            this.options.onAbort(event);
+        }
+    }
+
+    doDrawError(event) {
+        // Note: Consumer callback
+        if(this.options.onError instanceof Function) {
+            this.options.onError(event);
+        }
+    }
+
+    doToggleToolboxSection(targetName) {
+        const targetNode = document.getElementById(targetName);
+        
+        targetNode?.slideToggle(Config.animationDuration.fast, (collapsed) => {
+            this.localStorage.isCollapsed = collapsed;
+            StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
+        });
+    }
+
+    doClearColors() {
+        this.uiRefFillColor.setAttribute('data-oltb-color', this.localStorage.fillColor);
+        this.uiRefFillColor.firstElementChild.style.backgroundColor = this.localStorage.fillColor;
+
+        this.uiRefStrokeColor.setAttribute('data-oltb-color', this.localStorage.strokeColor);
+        this.uiRefStrokeColor.firstElementChild.style.backgroundColor = this.localStorage.strokeColor;
+    }
+
     doClearState() {
         this.localStorage = _.cloneDeep(LocalStorageDefaults);
         StateManager.setStateObject(LocalStorageNodeName, LocalStorageDefaults);
     }
 
-    doSelectDraw(toolType, strokeWidth, fillColor, strokeColor) {
+    doUpdateTool(toolType, strokeWidth, fillColor, strokeColor) {
         const map = this.getMap();
         if(!map) {
             return;
@@ -523,7 +546,7 @@ class DrawTool extends Control {
 
         this.style = this.generateOLStyleObject(strokeWidth, fillColor, strokeColor);
 
-        // A normal circle can not be serialized to json, approximated circle as polygon instead. 
+        // Note: A normal circle can not be serialized to json, approximated circle as polygon instead. 
         // Also use circle to create square and rectangle
         let geometryFunction = undefined;
 

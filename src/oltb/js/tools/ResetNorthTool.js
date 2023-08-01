@@ -111,14 +111,18 @@ class ResetNorthTool extends Control {
         const zoom = view.getZoom();
         const coordinates = toLonLat(view.getCenter());
 
-        goToView(map, coordinates, zoom, 0);
-
-        window.setTimeout(() => {
-            // Note: Consumer callback
-            if(this.options.onReset instanceof Function) {
-                this.options.onReset();
-            }
-        }, Config.animationDuration.normal);
+        goToView({
+            map: map,
+            coordinates: coordinates,
+            zoom: zoom,
+            rotation: 0,
+            onDone: (result) => {
+                // Note: Consumer callback
+                if(this.options.onReset instanceof Function) {
+                    this.options.onReset(result);
+                }
+            } 
+        });
     }
 
     // -------------------------------------------------------------------
@@ -154,8 +158,7 @@ class ResetNorthTool extends Control {
             ? rotation + normalizationMaxLimit 
             : rotation;
 
-        // Must use the center of the view
-        // The method gets the coordinates where the user clicked
+        // Note: Must use the center of the view, not the clicked coordinates
         const coordinates = toLonLat(view.getCenter());
 
         Dialog.prompt({
@@ -187,7 +190,12 @@ class ResetNorthTool extends Control {
     // -------------------------------------------------------------------
 
     doRotation(map, coordinates, zoom, degrees) {
-        goToView(map, coordinates, zoom, degreesToRadians(degrees));
+        goToView({
+            map: map,
+            coordinates: coordinates,
+            zoome: zoom,
+            rotation: degreesToRadians(degrees)
+        });
     }
 }
 

@@ -362,16 +362,6 @@ class EditTool extends Control {
         this.deActivateTool();
     }
 
-    onToggleToolbox(toggle) {
-        const targetName = toggle.dataset.oltbToggleableTarget;
-        const targetNode = document.getElementById(targetName);
-        
-        targetNode?.slideToggle(Config.animationDuration.fast, (collapsed) => {
-            this.localStorage.isCollapsed = collapsed;
-            StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
-        });
-    }
-
     // -------------------------------------------------------------------
     // # Section: Browser Events
     // -------------------------------------------------------------------
@@ -417,115 +407,34 @@ class EditTool extends Control {
     // # Section: Map/UI Callbacks
     // -------------------------------------------------------------------
 
+    onToggleToolbox(toggle) {
+        const targetName = toggle.dataset.oltbToggleableTarget;
+        
+        this.doToggleToolboxSection(targetName);
+    }
+
     onSelectFeatureAdd(event) {
-        // Note: Consumer callback
-        if(this.options.onSelectAdd instanceof Function) {
-            this.options.onSelectAdd(event);
-        }
+        this.doSelectFeatureAdd(event);
     }
 
     onSelectFeatureRemove(event) {
-        const feature = event.element;
-
-        // Note: The setTimeout must be used
-        // If not, the style will be reset to the style used before the feature was selected
-        window.setTimeout(() => {
-            if(this.colorHasChanged) {
-                // Set the lastStyle as the default style
-                feature.setStyle(this.lastStyle);
-
-                if(this.isMeasurementType(feature)) {
-                    // To add lineDash, a new Style object must be used
-                    // If the lastStyle is used all object that is referenced with that object will get a dashed line
-                    const style = new Style({
-                        fill: new Fill({
-                            color: this.lastStyle.getFill().getColor()
-                        }),
-                        stroke: new Stroke({
-                            color: this.lastStyle.getStroke().getColor(),
-                            width: this.lastStyle.getStroke().getWidth(),
-                            lineDash: [2, 5]
-                        })
-                    });
-                    
-                    feature.setStyle(style);
-                }
-
-                // Note: Consumer callback
-                if(this.options.onStyleChange instanceof Function) {
-                    this.options.onStyleChange(event, this.lastStyle);
-                }
-
-                // Reset for the last deselected item
-                if(event.index === 0) {
-                    this.colorHasChanged = false;
-                }
-            }
-        });
-
-        // Note: Consumer callback
-        if(this.options.onSelectRemove instanceof Function) {
-            this.options.onSelectRemove(event);
-        }
+        this.doSelectFeatureRemove(event);
     }
 
     onModifyStart(event) {
-        const features = event.features;
-
-        features.forEach((feature) => {
-            if(hasCustomFeatureProperty(feature.getProperties(), FeatureProperties.tooltip)) {
-                this.attachOnChange(feature);
-            }
-        });
-
-        // Note: Consumer callback
-        if(this.options.onModifyStart instanceof Function) {
-            this.options.onModifyStart(event);
-        }
+        this.doModifyStart(event);
     }
 
     onModifyEnd(event) {
-        const features = event.features;
-        features.forEach((feature) => {
-            if(hasCustomFeatureProperty(feature.getProperties(), FeatureProperties.tooltip)) {
-                this.detachOnChange(feature);
-            }
-        });
-
-        // Note: Consumer callback
-        if(this.options.onModifyEnd instanceof Function) {
-            this.options.onModifyEnd(event);
-        }
+        this.doModifyEnd(event);
     }
 
     onTranslateStart(event) {
-        const features = event.features;
-
-        features.forEach((feature) => {
-            if(hasCustomFeatureProperty(feature.getProperties(), FeatureProperties.tooltip)) {
-                this.attachOnChange(feature);
-            }
-        });
-
-        // Note: Consumer callback
-        if(this.options.onTranslateStart instanceof Function) {
-            this.options.onTranslateStart(event);
-        }
+        this.doTranslateStart(event);
     }
 
     onTranslateEnd(event) {
-        const features = event.features;
-
-        features.forEach((feature) => {
-            if(hasCustomFeatureProperty(feature.getProperties(), FeatureProperties.tooltip)) {
-                this.detachOnChange(feature);
-            }
-        });
-
-        // Note: Consumer callback
-        if(this.options.onTranslatEnd instanceof Function) {
-            this.options.onTranslatEnd(event);
-        }
+        this.doTranslateEnd(event);
     }
 
     onDeleteSelectedFeatures() {
@@ -545,6 +454,232 @@ class EditTool extends Control {
     }
 
     onFeatureColorChange(event) {
+        this.doFeatureColorChange(event);
+    }
+
+    onFeatureChange(feature) {
+        this.doFeatureChange(feature);
+    }
+
+    onShapeOperator(operation, type) {
+        this.doShapeOperation(operation, type);
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Listeners Subscriptions
+    // -------------------------------------------------------------------
+
+    attachOnChange(feature) {
+        const selectedFeatures = this.interactionSelect.getFeatures().getArray();
+        const hasOtherTooltip = !TooltipManager.isEmpty();
+
+        if(hasOtherTooltip && selectedFeatures.length === 1) {
+            this.tooltipItem = TooltipManager.push(KEY_TOOLTIP);
+        }
+
+        const properties = feature.getProperties();
+        const hiddenTooltip = hasOtherTooltip && selectedFeatures.length === 1;
+
+        properties.oltb.tooltip.getElement().className = `oltb-overlay-tooltip ${
+            hiddenTooltip ? 'oltb-overlay-tooltip--hidden' : ''
+        }`;
+        properties.oltb.onChangeListener = feature.getGeometry().on(Events.openLayers.change, this.onFeatureChange.bind(this, feature));
+    }
+
+    detachOnChange(feature) {
+        const selectedFeatures = this.interactionSelect.getFeatures().getArray();
+        const hasOtherTooltip = !TooltipManager.isEmpty();
+        
+        if(hasOtherTooltip && selectedFeatures.length === 1) {
+            TooltipManager.pop(KEY_TOOLTIP);
+        }
+
+        const properties = feature.getProperties();
+        const geometry = feature.getGeometry();
+
+        unByKey(properties.oltb.onChangeListener);
+
+        const overlay = properties.oltb.tooltip;
+        overlay.setPosition(getMeasureCoordinates(geometry));
+
+        const tooltip = overlay.getElement();
+        tooltip.className = 'oltb-overlay-tooltip';
+
+        const measureValue = getMeasureValue(geometry);
+        tooltip.firstElementChild.innerHTML = `${measureValue.value} ${measureValue.unit}`;
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: JSTS Functions
+    // -------------------------------------------------------------------
+
+    unionFeatures(a, b) {
+        return jsts.operation.overlay.OverlayOp.union(a, b);
+    }
+
+    intersectFeatures(a, b) {
+        return jsts.operation.overlay.OverlayOp.intersection(a, b);
+    }
+
+    excludeFeatures(a, b) {
+        return jsts.operation.overlay.OverlayOp.symDifference(a, b);
+    }
+
+    differenceFeatures(a, b) {
+        return jsts.operation.overlay.OverlayOp.difference(a, b);
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Conversions/Validation
+    // -------------------------------------------------------------------
+
+    isMeasurementType(feature) {
+        return getCustomFeatureProperty(feature.getProperties(), 'type') === FeatureProperties.type.measurement;
+    }
+
+    isTwoAndOnlyTwoShapes(features) {
+        return features.length === 2;
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Ask User
+    // -------------------------------------------------------------------
+
+    askToDeleteFeatures() {
+        const featureLength = this.interactionSelect.getFeatures().getArray().length;
+
+        const genetiveLimit = 1;
+        const genetiveChar = featureLength > genetiveLimit ? 's': '';
+
+        Dialog.confirm({
+            title: 'Delete feature',
+            message: `Delete ${featureLength} selected feature${genetiveChar}?`,
+            confirmText: 'Delete',
+            onConfirm: () => {
+                const features = [ ...this.interactionSelect.getFeatures().getArray() ];
+                this.doDeleteFeatures(features);
+            }
+        });
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Tool DoActions
+    // -------------------------------------------------------------------
+
+    doSelectFeatureAdd(event) {
+        // Note: Consumer callback
+        if(this.options.onSelectAdd instanceof Function) {
+            this.options.onSelectAdd(event);
+        }
+    }
+
+    doSelectFeatureRemove(event) {
+        const feature = event.element;
+
+        // Note: The setTimeout must be used
+        // If not, the style will be reset to the style used before the feature was selected
+        window.setTimeout(() => {
+            if(!this.colorHasChanged) {
+                return;
+            }
+
+            // Set the lastStyle as the default style
+            feature.setStyle(this.lastStyle);
+
+            if(this.isMeasurementType(feature)) {
+                // To add lineDash, a new Style object must be used
+                // If the lastStyle is used all object that is referenced with that object will get a dashed line
+                const style = new Style({
+                    fill: new Fill({
+                        color: this.lastStyle.getFill().getColor()
+                    }),
+                    stroke: new Stroke({
+                        color: this.lastStyle.getStroke().getColor(),
+                        width: this.lastStyle.getStroke().getWidth(),
+                        lineDash: [2, 5]
+                    })
+                });
+                    
+                feature.setStyle(style);
+            }
+
+            // Note: Consumer callback
+            if(this.options.onStyleChange instanceof Function) {
+                this.options.onStyleChange(event, this.lastStyle);
+            }
+
+            // Reset for the last deselected item
+            if(event.index === 0) {
+                this.colorHasChanged = false;
+            }
+        });
+
+        // Note: Consumer callback
+        if(this.options.onSelectRemove instanceof Function) {
+            this.options.onSelectRemove(event);
+        }
+    }
+
+    doModifyStart(event) {
+        const features = event.features;
+
+        features.forEach((feature) => {
+            if(hasCustomFeatureProperty(feature.getProperties(), FeatureProperties.tooltip)) {
+                this.attachOnChange(feature);
+            }
+        });
+
+        // Note: Consumer callback
+        if(this.options.onModifyStart instanceof Function) {
+            this.options.onModifyStart(event);
+        }
+    }
+
+    doModifyEnd(event) {
+        const features = event.features;
+        features.forEach((feature) => {
+            if(hasCustomFeatureProperty(feature.getProperties(), FeatureProperties.tooltip)) {
+                this.detachOnChange(feature);
+            }
+        });
+
+        // Note: Consumer callback
+        if(this.options.onModifyEnd instanceof Function) {
+            this.options.onModifyEnd(event);
+        }
+    }
+
+    doTranslateStart(event) {
+        const features = event.features;
+
+        features.forEach((feature) => {
+            if(hasCustomFeatureProperty(feature.getProperties(), FeatureProperties.tooltip)) {
+                this.attachOnChange(feature);
+            }
+        });
+
+        // Note: Consumer callback
+        if(this.options.onTranslateStart instanceof Function) {
+            this.options.onTranslateStart(event);
+        }
+    }
+
+    doTranslateEnd(event) {
+        const features = event.features;
+
+        features.forEach((feature) => {
+            if(hasCustomFeatureProperty(feature.getProperties(), FeatureProperties.tooltip)) {
+                this.detachOnChange(feature);
+            }
+        });
+
+        // Note: Consumer callback
+        if(this.options.onTranslatEnd instanceof Function) {
+            this.options.onTranslatEnd(event);
+        }
+    }
+
+    doFeatureColorChange(event) {
         this.colorHasChanged = true;
 
         const fillColor = this.uiRefFillColor.getAttribute('data-oltb-color');
@@ -572,7 +707,7 @@ class EditTool extends Control {
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 
-    onFeatureChange(feature) {
+    doFeatureChange(feature) {
         const selectedFeatures = this.interactionSelect.getFeatures().getArray();
         const hasOtherTooltip = !TooltipManager.isEmpty();
 
@@ -590,7 +725,7 @@ class EditTool extends Control {
         }
     }
 
-    onShapeOperator(operation, type) {
+    doShapeOperation(operation, type) {
         const map = this.getMap();
         if(!map) {
             return;
@@ -678,59 +813,14 @@ class EditTool extends Control {
         }
     }
 
-    // -------------------------------------------------------------------
-    // # Section: JSTS Functions
-    // -------------------------------------------------------------------
-
-    unionFeatures(a, b) {
-        return jsts.operation.overlay.OverlayOp.union(a, b);
-    }
-
-    intersectFeatures(a, b) {
-        return jsts.operation.overlay.OverlayOp.intersection(a, b);
-    }
-
-    excludeFeatures(a, b) {
-        return jsts.operation.overlay.OverlayOp.symDifference(a, b);
-    }
-
-    differenceFeatures(a, b) {
-        return jsts.operation.overlay.OverlayOp.difference(a, b);
-    }
-
-    // -------------------------------------------------------------------
-    // # Section: Conversions/Validation
-    // -------------------------------------------------------------------
-
-    isMeasurementType(feature) {
-        return getCustomFeatureProperty(feature.getProperties(), 'type') === FeatureProperties.type.measurement;
-    }
-
-    isTwoAndOnlyTwoShapes(features) {
-        return features.length === 2;
-    }
-
-
-    askToDeleteFeatures() {
-        const featureLength = this.interactionSelect.getFeatures().getArray().length;
-
-        const genetiveLimit = 1;
-        const genetiveChar = featureLength > genetiveLimit ? 's': '';
-
-        Dialog.confirm({
-            title: 'Delete feature',
-            message: `Delete ${featureLength} selected feature${genetiveChar}?`,
-            confirmText: 'Delete',
-            onConfirm: () => {
-                const features = [ ...this.interactionSelect.getFeatures().getArray() ];
-                this.doDeleteFeatures(features);
-            }
+    doToggleToolboxSection(targetName) {
+        const targetNode = document.getElementById(targetName);
+        
+        targetNode?.slideToggle(Config.animationDuration.fast, (collapsed) => {
+            this.localStorage.isCollapsed = collapsed;
+            StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
         });
     }
-
-    // -------------------------------------------------------------------
-    // # Section: Tool DoActions
-    // -------------------------------------------------------------------
 
     doClearState() {
         this.localStorage = _.cloneDeep(LocalStorageDefaults);
@@ -745,68 +835,32 @@ class EditTool extends Control {
 
         const layerWrappers = LayerManager.getFeatureLayers();
 
-        // The user can select features from any layer
+        // Note: The user can select features from any layer
         // Each feature needs to be removed from its associated layer
         features.forEach((feature) => {
             layerWrappers.forEach((layerWrapper) => {
                 const source = layerWrapper.getLayer().getSource();
-                if(source.hasFeature(feature)) {
-                    // Remove feature from layer
-                    source.removeFeature(feature);
+                if(!source.hasFeature(feature)) {
+                    return;
+                }
 
-                    // Remove feature from selected collection
-                    this.interactionSelect.getFeatures().remove(feature);
+                // Remove feature from layer
+                source.removeFeature(feature);
 
-                    // Remove overlays associated with the feature
-                    if(hasCustomFeatureProperty(feature.getProperties(), FeatureProperties.tooltip)) {
-                        map.removeOverlay(feature.getProperties().oltb.tooltip);
-                    }
+                // Remove feature from selected collection
+                this.interactionSelect.getFeatures().remove(feature);
 
-                    // Note: Consumer callback
-                    if(this.options.onRemovedFeature instanceof Function) {
-                        this.options.onRemovedFeature(feature);
-                    }
+                // Remove overlays associated with the feature
+                if(hasCustomFeatureProperty(feature.getProperties(), FeatureProperties.tooltip)) {
+                    map.removeOverlay(feature.getProperties().oltb.tooltip);
+                }
+
+                // Note: Consumer callback
+                if(this.options.onRemovedFeature instanceof Function) {
+                    this.options.onRemovedFeature(feature);
                 }
             });
         });
-    }
-
-    attachOnChange(feature) {
-        const selectedFeatures = this.interactionSelect.getFeatures().getArray();
-        const hasOtherTooltip = !TooltipManager.isEmpty();
-
-        if(hasOtherTooltip && selectedFeatures.length === 1) {
-            this.tooltipItem = TooltipManager.push(KEY_TOOLTIP);
-        }
-
-        const properties = feature.getProperties();
-        const hiddenTooltip = hasOtherTooltip && selectedFeatures.length === 1;
-
-        properties.oltb.tooltip.getElement().className = `oltb-overlay-tooltip ${hiddenTooltip ? 'oltb-overlay-tooltip--hidden' : ''}`;
-        properties.oltb.onChangeListener = feature.getGeometry().on(Events.openLayers.change, this.onFeatureChange.bind(this, feature));
-    }
-
-    detachOnChange(feature) {
-        const selectedFeatures = this.interactionSelect.getFeatures().getArray();
-        const hasOtherTooltip = !TooltipManager.isEmpty();
-        
-        if(hasOtherTooltip && selectedFeatures.length === 1) {
-            TooltipManager.pop(KEY_TOOLTIP);
-        }
-
-        const properties = feature.getProperties();
-        const geometry = feature.getGeometry();
-
-        unByKey(properties.oltb.onChangeListener);
-
-        const overlay = properties.oltb.tooltip;
-        overlay.setPosition(getMeasureCoordinates(geometry));
-
-        const tooltip = overlay.getElement();
-        tooltip.className = 'oltb-overlay-tooltip';
-
-        const measureValue = getMeasureValue(geometry);
-        tooltip.firstElementChild.innerHTML = `${measureValue.value} ${measureValue.unit}`;
     }
 }
 
