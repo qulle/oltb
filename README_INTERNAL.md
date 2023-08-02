@@ -326,6 +326,7 @@ import { HelpTool } from 'oltb/js/tools/HelpTool';
 import { ThemeTool } from 'oltb/js/tools/ThemeTool';
 import { LayerTool } from 'oltb/js/tools/LayerTool';
 import { ZoomInTool } from 'oltb/js/tools/ZoomInTool';
+import { ZoomBoxTool } from 'oltb/js/tools/ZoomBoxTool';
 import { MeasureTool } from 'oltb/js/tools/MeasureTool';
 import { MagnifyTool } from 'oltb/js/tools/MagnifyTool';
 import { ZoomOutTool } from 'oltb/js/tools/ZoomOutTool';
@@ -361,6 +362,7 @@ controls: defaultControls({
     new HomeTool(),
     new ZoomInTool(),
     new ZoomOutTool(),
+    new ZoomBoxTool(),
     new FullscreenTool(),
     new ExportPngTool(),
     new DrawTool(),
@@ -449,6 +451,32 @@ controls: defaultControls({
         },
         onZoomed: function(result) {
             console.log('ZoomOutTool: Zoomed out', result);
+        }
+    }),
+    new ZoomBoxTool({
+        onInitiated: function() {
+            console.log('ZoomBoxTool: Initiated');
+        },
+        onClicked: function() {
+            console.log('ZoomBoxTool: Clicked');
+        },
+        onBrowserStateCleared: function() {
+            console.log('ZoomBoxTool: State cleared');
+        },
+        onStart: function(event) {
+            console.log('ZoomBoxTool: Start', event);
+        },
+        onEnd: function(event) {
+            console.log('ZoomBoxTool: End', event);
+        },
+        onDrag: function(event) {
+            console.log('ZoomBoxTool: Drag', event);
+        },
+        onCancel: function(event) {
+            console.log('ZoomBoxTool: Cancel', event);
+        },
+        onError: function(event) {
+            console.log('ZoomBoxTool: Error', event);
         }
     }),
     new FullscreenTool({

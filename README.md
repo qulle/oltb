@@ -87,6 +87,7 @@ The following tools are implemented in the project. The tools are devided in two
 - ThemeTool
 - ZoomInTool
 - ZoomOutTool
+- ZoomBoxTool
 
 ## License
 [BSD-2-Clause License](https://github.com/qulle/oltb/blob/main/LICENSE)

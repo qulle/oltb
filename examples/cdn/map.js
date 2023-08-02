@@ -120,6 +120,32 @@ const toolbar = new oltb({
                 console.log('ZoomOutTool: Zoomed out', result);
             }
         },
+        ZoomBoxTool: {
+            onInitiated: function() {
+                console.log('ZoomBoxTool: Initiated');
+            },
+            onClicked: function() {
+                console.log('ZoomBoxTool: Clicked');
+            },
+            onBrowserStateCleared: function() {
+                console.log('ZoomBoxTool: State cleared');
+            },
+            onStart: function(event) {
+                console.log('ZoomBoxTool: Start', event);
+            },
+            onEnd: function(event) {
+                console.log('ZoomBoxTool: End', event);
+            },
+            onDrag: function(event) {
+                console.log('ZoomBoxTool: Drag', event);
+            },
+            onCancel: function(event) {
+                console.log('ZoomBoxTool: Cancel', event);
+            },
+            onError: function(event) {
+                console.log('ZoomBoxTool: Error', event);
+            }
+        },
         FullscreenTool: {
             onInitiated: function() {
                 console.log('FullscreenTool: Initiated');

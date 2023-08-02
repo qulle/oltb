@@ -57,6 +57,7 @@ import { MeasureTool } from '../src/oltb/js/tools/MeasureTool';
 import { MagnifyTool } from '../src/oltb/js/tools/MagnifyTool';
 import { ZoomOutTool } from '../src/oltb/js/tools/ZoomOutTool';
 import { RefreshTool } from '../src/oltb/js/tools/RefreshTool';
+import { ZoomBoxTool } from '../src/oltb/js/tools/ZoomBoxTool';
 import { SettingsTool } from '../src/oltb/js/tools/SettingsTool';
 import { OverviewTool } from '../src/oltb/js/tools/OverviewTool';
 import { BookmarkTool } from '../src/oltb/js/tools/BookmarkTool';
@@ -215,6 +216,32 @@ const map = new Map({
             },
             onZoomed: function(result) {
                 console.log('ZoomOutTool: Zoomed out', result);
+            }
+        }),
+        new ZoomBoxTool({
+            onInitiated: function() {
+                console.log('ZoomBoxTool: Initiated');
+            },
+            onClicked: function() {
+                console.log('ZoomBoxTool: Clicked');
+            },
+            onBrowserStateCleared: function() {
+                console.log('ZoomBoxTool: State cleared');
+            },
+            onStart: function(event) {
+                console.log('ZoomBoxTool: Start', event);
+            },
+            onEnd: function(event) {
+                console.log('ZoomBoxTool: End', event);
+            },
+            onDrag: function(event) {
+                console.log('ZoomBoxTool: Drag', event);
+            },
+            onCancel: function(event) {
+                console.log('ZoomBoxTool: Cancel', event);
+            },
+            onError: function(event) {
+                console.log('ZoomBoxTool: Error', event);
             }
         }),
         new FullscreenTool({

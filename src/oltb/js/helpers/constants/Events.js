@@ -18,6 +18,10 @@ const Events = Object.freeze({
     openLayers: Object.freeze({
         add: 'add',
         remove: 'remove',
+        boxCancel: 'boxcancel',
+        boxDrag: 'boxdrag',
+        boxEnd: 'boxend',
+        boxStart: 'boxstart',
         drawStart: 'drawstart',
         drawEnd: 'drawend',
         drawAbort: 'drawabort',
