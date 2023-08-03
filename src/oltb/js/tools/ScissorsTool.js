@@ -1,50 +1,50 @@
-import _, { uniqueId } from 'lodash';
+import _ from 'lodash';
 import { DOM } from '../helpers/browser/DOM';
 import { Keys } from '../helpers/constants/Keys';
-import { click } from 'ol/events/condition';
-import { Config } from '../core/Config';
 import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
-import { DragZoom } from 'ol/interaction';
+import { Draw, Snap } from 'ol/interaction';
 import { LogManager } from '../core/managers/LogManager';
 import { ToolManager } from '../core/managers/ToolManager';
 import { StateManager } from '../core/managers/StateManager';
+import { GeometryType } from '../core/ol-types/GeometryType';
+import { LayerManager } from '../core/managers/LayerManager';
 import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
 import { ElementManager } from '../core/managers/ElementManager';
 import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
 import { SvgPaths, getIcon } from '../core/icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
-import { TooltipManager } from '../core/managers/TooltipManager';
+import { Fill, Stroke, Circle, Style } from 'ol/style';
 
-const FILENAME = 'tools/ZoomBoxTool.js';
+const FILENAME = 'tools/ScissorsTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
-const KEY_TOOLTIP = 'tool.zoombox';
 
 const DefaultOptions = Object.freeze({
+    strokeWidth: '2.5',
+    strokeColor: '#0166A5FF',
+    fillColor: '#D7E3FAFF',
     onInitiated: undefined,
     onClicked: undefined,
     onBrowserStateCleared: undefined,
     onStart: undefined,
     onEnd: undefined,
-    onDrag: undefined,
-    onCancel: undefined,
+    onAbort: undefined,
     onError: undefined
 });
 
-const LocalStorageNodeName = LocalStorageKeys.zoomBoxTool;
+const LocalStorageNodeName = LocalStorageKeys.scissorsTool;
 const LocalStorageDefaults = Object.freeze({
     isActive: false
 });
 
 /**
  * About:
- * Zoom using dragging a bounding box
+ * Cut polygon shapes in smaller parts
  * 
  * Description:
- * Increase or reduce zoom by dragging a bounding box selection. Hold down Ctrl to zoom out.
- * Note that this tools functionality is also available by pressing Shift + Drag without having the tool active.
+ * Draw a line to cut polygon shapes in half.
  */
-class ZoomBoxTool extends Control {
+class ScissorsTool extends Control {
     constructor(options = {}) {
         LogManager.logDebug(FILENAME, 'constructor', 'init');
 
@@ -53,7 +53,7 @@ class ZoomBoxTool extends Control {
         });
         
         const icon = getIcon({
-            path: SvgPaths.boundingBoxCircles.stroked,
+            path: SvgPaths.scissors.filled,
             class: `${CLASS_TOOL_BUTTON}__icon`
         });
 
@@ -63,7 +63,7 @@ class ZoomBoxTool extends Control {
             class: CLASS_TOOL_BUTTON,
             attributes: {
                 'type': 'button',
-                'data-tippy-content': `Zoom Box (${ShortcutKeys.zoomBoxTool})`
+                'data-tippy-content': `Polygon Scissors (${ShortcutKeys.scissorsTool})`
             },
             listeners: {
                 'click': this.onClickTool.bind(this)
@@ -76,8 +76,6 @@ class ZoomBoxTool extends Control {
         
         this.button = button;
         this.isActive = false;
-        this.isSpaceKeyPressed = false;
-        this.tooltip = undefined;
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
 
         this.localStorage = StateManager.getAndMergeStateObject(
@@ -85,16 +83,15 @@ class ZoomBoxTool extends Control {
             LocalStorageDefaults
         );
 
-        this.interactionDragZoom = this.generateOLInteractionDragZoom();
+        this.interactionDraw = this.generateOLInteractionDraw();
+        this.interactionSnap = this.generateOLInteractionSnap();
 
-        this.interactionDragZoom.on(Events.openLayers.boxStart, this.onBoxDragStart.bind(this));
-        this.interactionDragZoom.on(Events.openLayers.boxEnd, this.onBoxDragEnd.bind(this));
-        this.interactionDragZoom.on(Events.openLayers.boxDrag, this.onBoxDragDrag.bind(this));
-        this.interactionDragZoom.on(Events.openLayers.boxCancel, this.onBoxDragCancel.bind(this));
-        this.interactionDragZoom.on(Events.openLayers.error, this.onBoxDragError.bind(this));
+        this.interactionDraw.on(Events.openLayers.drawStart, this.onDrawStart.bind(this));
+        this.interactionDraw.on(Events.openLayers.drawEnd, this.onDrawEnd.bind(this));
+        this.interactionDraw.on(Events.openLayers.drawAbort, this.onDrawAbort.bind(this));
+        this.interactionDraw.on(Events.openLayers.error, this.onDrawError.bind(this));
 
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
-        window.addEventListener(Events.browser.keyDown, this.onWindowKeyDown.bind(this));
         window.addEventListener(Events.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
         window.addEventListener(Events.custom.browserStateCleared, this.onWindowBrowserStateCleared.bind(this));
 
@@ -130,8 +127,8 @@ class ZoomBoxTool extends Control {
         }
 
         ToolManager.setActiveTool(this);
-        this.doAddDragZoom();
-        this.doAddTooltip();
+        this.doAddDrawInteraction();
+        this.doAddSnapInteraction();
 
         this.isActive = true;
         this.button.classList.add(`${CLASS_TOOL_BUTTON}--active`);
@@ -147,8 +144,8 @@ class ZoomBoxTool extends Control {
         }
 
         ToolManager.removeActiveTool();
-        this.doRemoveDragZoom();
-        this.doRemoveTooltip();
+        this.doRemoveDrawInteraction();
+        this.doRemoveSnapInteraction();
 
         this.isActive = false;
         this.button.classList.remove(`${CLASS_TOOL_BUTTON}--active`);
@@ -172,30 +169,18 @@ class ZoomBoxTool extends Control {
     }
 
     onWindowKeyUp(event) {
-        this.isSpaceKeyPressed = false;
-
-        // Note: Setting the internal OL variable
-        // Option 1: Re-create the interaction to set the inverted out value
-        // Option 2: Have two interactions that are swapped with one beeing active at the time
-        this.interactionDragZoom['out_'] = false;
-
-        if(isShortcutKeyOnly(event, ShortcutKeys.zoomBoxTool)) {
-            this.onClickTool(event);
-        }
-    }
-
-    onWindowKeyDown(event) {
         const key = event.key;
 
-        if(key === Keys.valueSpace) {
-            this.isSpaceKeyPressed = true;
-        }
-
-        // Note: Setting the internal OL variable
-        // Option 1: Re-create the interaction to set the inverted out value
-        // Option 2: Have two interactions that are swapped with one beeing active at the time
-        if(event.ctrlKey) {
-            this.interactionDragZoom['out_'] = true;
+        if(key === Keys.valueEscape) {
+            if(this.interactionDraw) {
+                this.interactionDraw.abortDrawing();
+            }
+        }else if(event.ctrlKey && key === Keys.valueZ) {
+            if(this.interactionDraw) {
+                this.interactionDraw.removeLastPoint();
+            }
+        }else if(isShortcutKeyOnly(event, ShortcutKeys.scissorsTool)) {
+            this.onClickTool(event);
         }
     }
 
@@ -214,37 +199,63 @@ class ZoomBoxTool extends Control {
     // # Section: Map/UI Callbacks
     // -------------------------------------------------------------------
 
-    onBoxDragStart(event) {
-        this.doBoxDragStart(event);
+    onDrawStart(event) {
+        this.doDrawStart(event);
     }
 
-    onBoxDragEnd(event) {
-        this.doBoxDragEnd(event);
+    onDrawEnd(event) {
+        this.doDrawEnd(event);
     }
 
-    onBoxDragDrag(event) {
-        this.doBoxDragDrag(event);
+    onDrawAbort(event) {
+        this.doDrawAbort(event);
     }
 
-    onBoxDragCancel(event) {
-        this.doBoxDragCancel(event);
-    }
-
-    onBoxDragError(event) {
-        this.doBoxDragError(event);
+    onDrawError(event) {
+        this.doDrawError(event);
     }
 
     // -------------------------------------------------------------------
-    // # Section: Generator Helpers
+        // # Section: Generator Helpers
     // -------------------------------------------------------------------
 
-    generateOLInteractionDragZoom() {
-        return new DragZoom({
-            duration: Config.animationDuration.normal,           
-            condition: (event) => {
-                return click && !this.isSpaceKeyPressed;
-            },
-            out: false
+    generateOLInteractionDraw() {
+        const style = this.generateOLStyleObject();
+
+        return new Draw({
+            type: GeometryType.LineString,
+            stopClick: true,
+            style: style
+        });
+    }
+
+    generateOLInteractionSnap() {
+        const features = LayerManager.getSnapFeatures();
+
+        return new Snap({
+            features: features
+        });
+    }
+
+    generateOLStyleObject() {
+        return new Style({
+            image: new Circle({
+                fill: new Fill({
+                    color: this.options.fillColor
+                }),
+                stroke: new Stroke({
+                    color: this.options.strokeColor,
+                    width: this.options.strokeWidth
+                }),
+                radius: 5
+            }),
+            fill: new Fill({
+                color: this.options.fillColor
+            }),
+            stroke: new Stroke({
+                color: this.options.strokeColor,
+                width: this.options.strokeWidth
+            })
         });
     }
 
@@ -252,58 +263,49 @@ class ZoomBoxTool extends Control {
     // # Section: Tool DoActions
     // -------------------------------------------------------------------
     
-    doBoxDragStart(event) {
+    doDrawStart(event) {
         // Note: Consumer callback
         if(this.options.onStart instanceof Function) {
             this.options.onStart(event);
         }
     }
 
-    doBoxDragEnd(event) {
+    doDrawEnd(event) {
         // Note: Consumer callback
         if(this.options.onEnd instanceof Function) {
             this.options.onEnd(event);
         }
     }
 
-    doBoxDragDrag(event) {
+    doDrawAbort(event) {
         // Note: Consumer callback
-        if(this.options.onDrag instanceof Function) {
-            this.options.onDrag(event);
+        if(this.options.onAbort instanceof Function) {
+            this.options.onAbort(event);
         }
     }
 
-    doBoxDragCancel(event) {
-        // Note: Consumer callback
-        if(this.options.onCancel instanceof Function) {
-            this.options.onCancel(event);
-        }
-    }
-
-    doBoxDragError(event) {
+    doDrawError(event) {
         // Note: Consumer callback
         if(this.options.onError instanceof Function) {
             this.options.onError(event);
         }
     }
 
-    doAddDragZoom() {
-        this.getMap().addInteraction(this.interactionDragZoom);
+    doAddDrawInteraction() {
+        this.getMap().addInteraction(this.interactionDraw);
     }
 
-    doRemoveDragZoom() {
-        this.getMap().removeInteraction(this.interactionDragZoom);
+    doRemoveDrawInteraction() {
+        this.getMap().removeInteraction(this.interactionDraw);
     }
 
-    doAddTooltip() {
-        this.tooltip = TooltipManager.push(KEY_TOOLTIP);
-        this.tooltip.innerHTML = 'Drag To Zoom';
+    doAddSnapInteraction() {
+        this.getMap().addInteraction(this.interactionSnap);
     }
 
-    doRemoveTooltip() {
-        TooltipManager.pop(KEY_TOOLTIP);
-        this.tooltip = undefined;
+    doRemoveSnapInteraction() {
+        this.getMap().removeInteraction(this.interactionSnap);
     }
 }
 
-export { ZoomBoxTool };
+export { ScissorsTool };

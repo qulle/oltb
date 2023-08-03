@@ -237,7 +237,7 @@ const toolbar = new OLTB({
             markerLabelUseUpperCase: false,
             bookmarks: [{
                 id: 18151210,
-                name: 'Custom bookmark',
+                name: 'Custom Bookmark',
                 zoom: 5,
                 coordinates: [57.123, 16.456]
             }],

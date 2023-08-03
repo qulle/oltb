@@ -58,6 +58,7 @@ import { MagnifyTool } from '../src/oltb/js/tools/MagnifyTool';
 import { ZoomOutTool } from '../src/oltb/js/tools/ZoomOutTool';
 import { RefreshTool } from '../src/oltb/js/tools/RefreshTool';
 import { ZoomBoxTool } from '../src/oltb/js/tools/ZoomBoxTool';
+import { ScissorsTool } from '../src/oltb/js/tools/ScissorsTool';
 import { SettingsTool } from '../src/oltb/js/tools/SettingsTool';
 import { OverviewTool } from '../src/oltb/js/tools/OverviewTool';
 import { BookmarkTool } from '../src/oltb/js/tools/BookmarkTool';
@@ -366,13 +367,27 @@ const map = new Map({
                 console.log('EditTool: Error');
             }
         }),
+        new ScissorsTool({
+            onStart: function(event) {
+                console.log('ScissorsTool: Start');
+            },
+            onEnd: function(event) {
+                console.log('ScissorsTool: End', event.feature);
+            },
+            onAbort: function(event) {
+                console.log('ScissorsTool: Abort');
+            },
+            onError: function(event) {
+                console.log('ScissorsTool: Error');
+            }
+        }),
         new BookmarkTool({
             markerLayerVisibleOnLoad: true,
             markerLabelUseEllipsisAfter: 20,
             markerLabelUseUpperCase: false,
             bookmarks: [{
                 id: '6812cc22-f490-46b7-a9f3-42eb9ea58ac2',
-                name: 'Custom bookmark',
+                name: 'Custom Bookmark',
                 zoom: 5,
                 coordinates: [57.123, 16.456]
             }],

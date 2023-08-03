@@ -136,6 +136,7 @@ class LayerTool extends Control {
             group: SORTABLE_MAP_LAYERS,
             callback: this.options.onMapLayerDragged,
             setZIndex: LayerManager.setMapLayerZIndex.bind(LayerManager),
+            getLayerItemById: LayerManager.getMapLayerById.bind(LayerManager),
             getLocalStorageItemById: this.getLocalStorageMapLayerById.bind(this),
             stack: this.localStorage.mapLayers
         });
@@ -148,6 +149,7 @@ class LayerTool extends Control {
             group: SORTABLE_FEATURE_LAYERS,
             callback: this.options.onFeatureLayerDragged,
             setZIndex: LayerManager.setFeatureLayerZIndex.bind(LayerManager),
+            getLayerItemById: LayerManager.getFeatureLayerById.bind(LayerManager),
             getLocalStorageItemById: this.getLocalStorageFeatureLayerById.bind(this),
             stack: this.localStorage.featureLayers
         });
@@ -443,10 +445,18 @@ class LayerTool extends Control {
             // Update state that is stored in localStorage
             // This will keep track of the sort after a reload
             const id = li.getAttribute('data-oltb-id');
-            const target = options.getLocalStorageItemById(id);
 
-            if(target) {
-                target.sortIndex = reversedIndex;
+            // Note: Only meta data about a layer is stored in LocalStorage
+            // This is not true for the BookmarkTool that has slightly different logic
+            const layerMetaItem = options.getLocalStorageItemById(id);
+            if(layerMetaItem) {
+                layerMetaItem.sortIndex = reversedIndex;
+            }
+
+            // Note: The actual layer must also be updated
+            const layerItem = options.getLayerItemById(id);
+            if(layerItem) {
+                layerItem.sortIndex = reversedIndex;
             }
 
             // Update each layer with the new ZIndex
@@ -649,6 +659,8 @@ class LayerTool extends Control {
         if(storedLayerState) {
             layerState.sortIndex = storedLayerState.sortIndex;
             layerState.isVisible = storedLayerState.isVisible;
+            
+            layerWrapper.sortIndex = layerState.sortIndex;
 
             layer.setVisible(layerState.isVisible);
         }else {
@@ -751,6 +763,8 @@ class LayerTool extends Control {
         if(storedLayerState) {
             layerState.sortIndex = storedLayerState.sortIndex;
             layerState.isVisible = storedLayerState.isVisible;
+
+            layerWrapper.sortIndex = layerState.sortIndex;
 
             layer.setVisible(layerState.isVisible);
         }else {
@@ -858,7 +872,7 @@ class LayerTool extends Control {
         const deleteButton = DOM.createElement({
             element: 'button',
             class: `${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--delete oltb-tippy`,
-            title: 'Delete layer',
+            title: 'Delete Layer',
             attributes: {
                 'type': 'button'
             },
@@ -874,7 +888,7 @@ class LayerTool extends Control {
         const downloadButton = DOM.createElement({
             element: 'button', 
             class: `${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--download oltb-tippy`,
-            title: 'Download layer',
+            title: 'Download Layer',
             attributes: {
                 'type': 'button'
             },
@@ -890,7 +904,7 @@ class LayerTool extends Control {
         const editButton = DOM.createElement({
             element: 'button',
             class: `${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--edit oltb-tippy`,
-            title: 'Rename layer',
+            title: 'Rename Layer',
             attributes: {
                 'type': 'button'
             },
@@ -906,7 +920,7 @@ class LayerTool extends Control {
         const visibilityButton = DOM.createElement({
             element: 'button',
             class: `${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--visibility oltb-tippy`,
-            title: 'Toggle visibility',
+            title: 'Toggle Visibility',
             attributes: {
                 'type': 'button'
             },
@@ -977,7 +991,7 @@ class LayerTool extends Control {
 
     askToRenameLayer(layerWrapper, callback, layerName) {
         Dialog.prompt({
-            title: 'Edit name',
+            title: 'Edit Name',
             message: `You are editing the <strong>${layerWrapper.getName()}</strong> layer`,
             value: layerWrapper.getName(),
             confirmText: 'Rename',
@@ -1001,7 +1015,7 @@ class LayerTool extends Control {
 
     askToDeleteLayer(layerWrapper, callback) {
         Dialog.confirm({
-            title: 'Delete layer',
+            title: 'Delete Layer',
             message: `Do you want to delete the <strong>${layerWrapper.getName()}</strong> layer?`,
             confirmText: 'Delete',
             onConfirm: function() {

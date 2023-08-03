@@ -103,7 +103,7 @@ class HelpTool extends Control {
 
     askToOpenTabOrWindow() {
         Dialog.confirm({
-            title: 'Help pages',
+            title: 'Help Pages',
             message: 'Browsers block automatic opening new windows, here is a button for you to press',
             confirmClass: Dialog.Success,
             confirmText: 'Open Help',

@@ -395,13 +395,13 @@ class DebugInfoModal extends ModalBase {
         const sectionFragment = document.createDocumentFragment(); 
         [
             {
-                title: 'App data',
+                title: 'App Data',
                 content: appDataContent,
                 class: 'oltb-debug__json',
                 display: 'none',
                 json: true
             },{
-                title: 'Browser data',
+                title: 'Browser Data',
                 content: browserDataContent,
                 class: 'oltb-debug__json',
                 display: 'none',

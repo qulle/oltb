@@ -4,13 +4,13 @@ import { LayerManager } from '../LayerManager';
 
 const removeMarker = function(InfoWindowManager, marker) {
     Dialog.confirm({
-        title: 'Delete marker',
+        title: 'Delete Marker',
         message: 'Do you want to delete this marker?',
         confirmText: 'Delete',
         onConfirm: () => {
             this.hideOverlay();
 
-            LayerManager.removeFeatureFromLayer(marker);
+            LayerManager.removeFeatureFromFeatureLayers(marker);
             
             // Important to use feature as property key
             // Not only markers can be removed

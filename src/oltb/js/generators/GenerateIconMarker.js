@@ -80,7 +80,7 @@ const generateIconMarker = function(options = {}) {
     const label = options.labelUseUpperCase 
         ? options.label.toUpperCase() 
         : options.label;
-    
+        
     const labelStyle =  new Style({
         text: new Text({
             font: options.labelFont,

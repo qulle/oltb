@@ -45,7 +45,7 @@ const CLASS_TOOL_BUTTON = 'oltb-tool-button';
 const CLASS_TOOLBOX_SECTION = 'oltb-toolbox-section';
 const CLASS_TOGGLEABLE = 'oltb-toggleable';
 const ID_PREFIX = 'oltb-edit';
-const KEY_TOOLTIP = 'edit';
+const KEY_TOOLTIP = 'tool.edit';
 
 const DefaultOptions = Object.freeze({
     hitTolerance: 5,
@@ -68,7 +68,7 @@ const LocalStorageNodeName = LocalStorageKeys.editTool;
 const LocalStorageDefaults = Object.freeze({
     isActive: false,
     isCollapsed: false,
-    strokeColor: '#4A86B8FF',
+    strokeColor: '#0166A5FF',
     fillColor: '#D7E3FA80'
 });
 
@@ -85,7 +85,7 @@ const DefaultDrawingStyle = new Style({
         color: '#D7E3FA80'
     }),
     stroke: new Stroke({
-        color: '#4A86B8FF',
+        color: '#0166A5FF',
         width: 2.5
     })
 });
@@ -552,7 +552,7 @@ class EditTool extends Control {
         const genetiveChar = featureLength > genetiveLimit ? 's': '';
 
         Dialog.confirm({
-            title: 'Delete feature',
+            title: 'Delete Feature',
             message: `Delete ${featureLength} selected feature${genetiveChar}?`,
             confirmText: 'Delete',
             onConfirm: () => {
@@ -783,9 +783,7 @@ class EditTool extends Control {
 
             // Add the unioned shape
             const layerWrapper = LayerManager.getActiveFeatureLayer();
-            const source = layerWrapper.getLayer().getSource();
-
-            source.addFeature(feature);
+            LayerManager.addFeatureToLayer(feature, layerWrapper);
 
             // Remove two original shapes
             this.doDeleteFeatures(features);
@@ -845,7 +843,7 @@ class EditTool extends Control {
                 }
 
                 // Remove feature from layer
-                source.removeFeature(feature);
+                LayerManager.removeFeatureFromLayer(feature, layerWrapper);
 
                 // Remove feature from selected collection
                 this.interactionSelect.getFeatures().remove(feature);

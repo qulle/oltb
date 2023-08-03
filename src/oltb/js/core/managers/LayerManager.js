@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import { Events } from '../../helpers/constants/Events';
+import { Collection } from 'ol';
 import { LogManager } from '../managers/LogManager';
 import { v4 as uuidv4 } from 'uuid';
 import { FeatureProperties } from '../../helpers/constants/FeatureProperties';
@@ -35,6 +36,13 @@ class LayerManager {
     static #map;
     static #activeFeatureLayer;
 
+    // Note: When using Snap interaction
+    // Option 1: Using a dedicated source, not optimal, thus it is hard to know what layer each drawn feature belongs to
+    // There is an event that always sets the active feature layer to the targeted source for the Snap interaction
+    // Option 2: A collection of features, but requires some work to keep this collection updated
+    // The LayerManager must be the single point of adding/removing features from a layer, or the layer must be observed
+    static #snapFeatures = new Collection();
+
     static #queue = {
         mapLayers: [],
         featureLayers: []
@@ -59,20 +67,33 @@ class LayerManager {
 
         this.#map = map;
 
-        // Handle queue of map-layers that was added before the map was ready
+        this.#handleMapLayerQueue();
+        this.#handleFeatureLayerQueue();
+    }
+
+    // -------------------------------------------
+    // Section: Init
+    // -------------------------------------------
+
+    static #handleMapLayerQueue() {
         this.#queue.mapLayers.forEach((item) => {
             this.#addMapLayerToMap(item.layerWrapper, item.options);
         });
 
         this.#queue.mapLayers = [];
+    }
 
-        // Handle queue of feature-layers that was added before the map was ready
+    static #handleFeatureLayerQueue() {
         this.#queue.featureLayers.forEach((item) => {
             this.#addFeatureLayerToMap(item.layerWrapper, item.options);
         });
 
         this.#queue.featureLayers = [];
     }
+
+    // -------------------------------------------
+    // Section: Common
+    // -------------------------------------------
 
     static #addPropertiesInterface(layerWrapper) {
         layerWrapper.getLayer = function() {
@@ -110,9 +131,34 @@ class LayerManager {
         return name;
     }
 
-    //-------------------------------------------
-    // Map layers specific
-    //-------------------------------------------
+    static addFeatureToLayer(feature, layerWrapper) {
+        const layer = layerWrapper.getLayer();
+        const source = layer.getSource();
+
+        source.addFeature(feature);
+
+        this.#snapFeatures.push(feature);
+    }
+
+    static removeFeatureFromLayer(feature, layerWrapper) {
+        const layer = layerWrapper.getLayer();
+        const source = layer.getSource();
+
+        source.removeFeature(feature);
+        this.#snapFeatures.remove(feature);
+    }
+
+    static getSnapFeatures() {
+        return this.#snapFeatures;
+    }
+
+    static clearSnapFeatures() {
+        this.#snapFeatures = new Collection();
+    }
+
+    // -------------------------------------------
+    // Section: Map Layers Specific
+    // -------------------------------------------
 
     static addMapLayers(layerWrappers, options = {}) {
         for(let index in layerWrappers) {
@@ -170,8 +216,15 @@ class LayerManager {
             return layer.getId() !== layerWrapper.getId();
         }); 
 
+        const layer = layerWrapper.getLayer();
+        
+        // Remove all features from the Snap collection
+        layer.getSource().getFeatures().forEach((feature) => {
+            this.#snapFeatures.remove(feature);
+        });
+
         // Remove the actual ol layer
-        this.#map.removeLayer(layerWrapper.getLayer());
+        this.#map.removeLayer(layer);
 
         window.dispatchEvent(new CustomEvent(Events.custom.mapLayerRemoved, {
             detail: {
@@ -228,9 +281,9 @@ class LayerManager {
         layerWrapper.getLayer().setZIndex(ZINDEX_BASE_MAP_LAYER + index);
     }
 
-    //-------------------------------------------
-    // Feature layers specific
-    //-------------------------------------------
+    // -------------------------------------------
+    // Section: Feature Layers Specific
+    // -------------------------------------------
 
     static addFeatureLayer(options = {}) {
         const mergedOptions = _.merge(_.cloneDeep(DefaultFeatureLayerOptions), options);
@@ -251,12 +304,16 @@ class LayerManager {
 
         this.#addPropertiesInterface(layerWrapper);
 
+        if(!layerWrapper.isDynamicallyAdded) {
+            layerWrapper.isDynamicallyAdded = false;
+        }
+
         if(!layerWrapper.getId()) {
             const layerId = uuidv4();
             layerWrapper.setId(layerId);
         }
 
-        this.#activeFeatureLayer = layerWrapper;
+        this.setActiveFeatureLayer(layerWrapper);
 
         if(this.#map) {
             this.#addFeatureLayerToMap(layerWrapper, mergedOptions);
@@ -302,9 +359,12 @@ class LayerManager {
         }); 
 
         const layer = layerWrapper.getLayer();
-        
+
         // Remove overlays associated with each feature
+        // Remove all features from the Snap collection
         layer.getSource().getFeatures().forEach((feature) => {
+            this.#snapFeatures.remove(feature);
+
             if(hasCustomFeatureProperty(feature.getProperties(), FeatureProperties.tooltip)) {
                 this.#map.removeOverlay(feature.getProperties().oltb.tooltip);
             }
@@ -313,8 +373,7 @@ class LayerManager {
         // Remove the actual ol layer
         this.#map.removeLayer(layer);
 
-        // Sett another layer as active if exists
-        this.#activeFeatureLayer = this.#getNextActiveFeatureLayer();
+        this.setNextActiveFeatureLayer();
 
         window.dispatchEvent(new CustomEvent(Events.custom.featureLayerRemoved, {
             detail: {
@@ -335,8 +394,19 @@ class LayerManager {
         return this.#activeFeatureLayer;
     }
 
-    static setActiveFeatureLayer(layer) {
-        this.#activeFeatureLayer = layer;
+    static setNextActiveFeatureLayer() {
+        const nextLayer = this.#getNextActiveFeatureLayer();
+        this.setActiveFeatureLayer(nextLayer);
+    }
+
+    static setActiveFeatureLayer(layerWrapper) {
+        this.#activeFeatureLayer = layerWrapper;
+
+        window.dispatchEvent(new CustomEvent(Events.custom.activeFeatureLayerChange, {
+            detail: {
+                layerWrapper: layerWrapper
+            }
+        }));
     }
 
     static getFeatureLayers() {
@@ -352,7 +422,7 @@ class LayerManager {
         return result;
     }
 
-    static removeFeatureFromLayer(feature) {
+    static removeFeatureFromFeatureLayers(feature) {
         this.getFeatureLayers().forEach((layerWrapper) => {
             layerWrapper.getLayer().getSource().removeFeature(feature);
         });

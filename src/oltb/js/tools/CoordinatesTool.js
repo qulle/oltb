@@ -26,7 +26,7 @@ const CLASS_TOOL_BUTTON = 'oltb-tool-button';
 const CLASS_TOOLBOX_SECTION = 'oltb-toolbox-section';
 const CLASS_TOGGLEABLE = 'oltb-toggleable';
 const ID_PREFIX = 'oltb-coordinates';
-const KEY_TOOLTIP = 'coordinates';
+const KEY_TOOLTIP = 'tool.coordinates';
 const FORMAT_DECIMAL_DEGREES = 'DD';
 const FORMAT_DEGREE_MINUTES_SECONDS = 'DMS';
 
@@ -411,7 +411,7 @@ class CoordinatesTool extends Control {
     }
 
     doCopyCoordinates(event) {
-        if(!this.should1() || ToolManager.hasActiveTool()) {
+        if(!this.shouldCopyCoordinatesOnClick() || ToolManager.hasActiveTool()) {
             return;
         }
 

@@ -1,6 +1,5 @@
 import _ from 'lodash';
 import { DOM } from '../helpers/browser/DOM';
-import { Config } from '../core/Config';
 import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { toLonLat } from "ol/proj";
@@ -109,14 +108,14 @@ class ZoomInTool extends Control {
 
     doZoomIn(map) {
         const view = map.getView();
-        const coordiantes = toLonLat(view.getCenter());
+        const coordinates = toLonLat(view.getCenter());
         const currentZoom = view.getZoom();
-        const zoom = view.getConstrainedZoom(currentZoom + this.options.delta);
+        const calculatedZoom = view.getConstrainedZoom(currentZoom + this.options.delta);
 
         goToView({
             map: map, 
-            coordiantes: coordiantes,
-            zoom: zoom,
+            coordinates: coordinates,
+            zoom: calculatedZoom,
             onDone: (result) => {
                 // Note: Consumer callback
                 if(this.options.onZoomed instanceof Function) {

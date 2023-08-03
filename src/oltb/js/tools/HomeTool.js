@@ -211,7 +211,7 @@ class HomeTool extends Control {
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
 
         Toast.success({
-            title: 'New home',
+            title: 'New Home',
             message: 'New location was set as home',
             autoremove: Config.autoRemovalDuation.normal
         });

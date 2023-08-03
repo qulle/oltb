@@ -34,7 +34,7 @@ const Config = Object.freeze({
         rem: 16
     }),
     localStorage: Object.freeze({
-        key: 'oltb-state'
+        key: 'oltb.state'
     }),
     projection: Object.freeze({
         default: 'EPSG:3857',

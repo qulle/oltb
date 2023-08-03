@@ -36,17 +36,18 @@ Have a look at the [Internal Development Documentation](https://github.com/qulle
 
 ## Key Features
 - Draggable layers
-- Create map- and feature layers on the fly
+- Create Map- and Feature layers on the fly
 - Stores state in local storage
 - Draw objects including intersections
 - Measure both length and areas
 - Merge drawings and measurements with different shape operations
 - Generate markers
 - Generate wind barbs
-- Save locations as bookmarks
+- Save locations as Bookmarks
 - Export PNG of canvas and additional HTML objects
 - Compare maps side by side
-- Dark mode
+- Light and Dark mode
+- Vertical and Horizontal mode
 - Built in debugging help
 - Parameters for customizability
 - Callback functions for integrations
@@ -66,6 +67,7 @@ The following tools are implemented in the project. The tools are devided in two
 - DirectionTool
 - DrawTool
 - EditTool
+- ScissorsTool
 - ExportPngTool
 - FullscreenTool
 - GraticuleTool

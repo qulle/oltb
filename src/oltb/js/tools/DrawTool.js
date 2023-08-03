@@ -1,12 +1,12 @@
 import _ from 'lodash';
 import { DOM } from '../helpers/browser/DOM';
-import { Draw } from 'ol/interaction';
 import { Keys } from '../helpers/constants/Keys';
 import { Toast } from '../common/Toast';
 import { Config } from '../core/Config';
 import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { Settings } from '../helpers/constants/Settings';
+import { Draw, Snap } from 'ol/interaction';
 import { LogManager } from '../core/managers/LogManager';
 import { ToolManager } from '../core/managers/ToolManager';
 import { GeometryType } from '../core/ol-types/GeometryType';
@@ -48,7 +48,7 @@ const LocalStorageDefaults = Object.freeze({
     isCollapsed: false,
     toolType: GeometryType.Polygon,
     strokeWidth: '2.5',
-    strokeColor: '#4A86B8FF',
+    strokeColor: '#0166A5FF',
     fillColor: '#D7E3FA80'
 });
 
@@ -98,6 +98,8 @@ class DrawTool extends Control {
             LocalStorageNodeName, 
             LocalStorageDefaults
         );
+
+        this.interactionSnap = this.generateOLInteractionSnap();
 
         this.initToolboxHTML();
         this.uiRefToolboxSection = document.querySelector(`#${ID_PREFIX}-toolbox`);
@@ -230,6 +232,7 @@ class DrawTool extends Control {
         this.uiRefToolboxSection.classList.add(`${CLASS_TOOLBOX_SECTION}--show`);
         this.button.classList.add(`${CLASS_TOOL_BUTTON}--active`);
 
+        this.doAddSnapInteraction();
         ToolManager.setActiveTool(this);
 
         if(this.shouldAlwaysCreateNewLayer()) {
@@ -255,9 +258,8 @@ class DrawTool extends Control {
         this.uiRefToolboxSection.classList.remove(`${CLASS_TOOLBOX_SECTION}--show`);
         this.button.classList.remove(`${CLASS_TOOL_BUTTON}--active`);
 
-        map.removeInteraction(this.interactionDraw);
-        this.interactionDraw = undefined;
-
+        this.doRemoveSnapInteraction();
+        this.doRemoveDrawInteraction();
         ToolManager.removeActiveTool();
 
         this.localStorage.isActive = false;
@@ -269,7 +271,7 @@ class DrawTool extends Control {
     }
 
     updateTool() {
-        // Store current values in local storage
+        // Note: Remember options until next time
         this.localStorage.toolType = this.uiRefToolType.value;
         this.localStorage.strokeWidth = this.uiRefStrokeWidth.value;
         this.localStorage.fillColor = this.uiRefFillColor.getAttribute('data-oltb-color');
@@ -277,15 +279,14 @@ class DrawTool extends Control {
 
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
 
-        // IntersectionMode doesn't play well when tool is LineString or Point
-        if(this.uiRefToolType.value === GeometryType.LineString || this.uiRefToolType.value === GeometryType.Point) {
+        // Note: IntersectionMode doesn't play well when tool is LineString or Point
+        if(this.isIntersectionModeAvailable()) {
             this.uiRefIntersectionEnable.value = 'false';
             this.uiRefIntersectionEnable.disabled = true;
         }else {
             this.uiRefIntersectionEnable.disabled = false;
         }
 
-        // Update the draw tool in the map
         this.doUpdateTool(
             this.uiRefToolType.value,
             this.uiRefStrokeWidth.value,
@@ -368,6 +369,10 @@ class DrawTool extends Control {
         return SettingsManager.getSetting(Settings.alwaysNewLayer);
     }
 
+    isIntersectionModeAvailable() {
+        return this.uiRefToolType.value === GeometryType.LineString || this.uiRefToolType.value === GeometryType.Point;
+    }
+
     isIntersectionEnabled() {
         return this.uiRefIntersectionEnable.value.toLowerCase() === 'true';
     }
@@ -382,6 +387,14 @@ class DrawTool extends Control {
             style: this.style,
             stopClick: true,
             geometryFunction: geometryFunction
+        });
+    }
+
+    generateOLInteractionSnap() {
+        const features = LayerManager.getSnapFeatures();
+
+        return new Snap({
+            features: features
         });
     }
 
@@ -423,16 +436,13 @@ class DrawTool extends Control {
             fallback: 'Drawing layer'
         });
 
-        const layer = layerWrapper.getLayer();
-        const source = layer.getSource();
-
         if(this.isIntersectionEnabled()) {
-            this.doDrawEndIntersection(source, event);
+            this.doDrawEndIntersection(event);
         }else {
-            this.doDrawEndNormal(source, event);
+            this.doDrawEndNormal(layerWrapper, event);
         }
-
-        if(!layer.getVisible()) {
+        
+        if(!layerWrapper.getLayer().getVisible()) {
             Toast.info({
                 title: 'Tip',
                 message: 'You are drawing in a hidden layer', 
@@ -441,7 +451,7 @@ class DrawTool extends Control {
         }
     }
 
-    doDrawEndNormal(source, event) {
+    doDrawEndNormal(layerWrapper, event) {
         const feature = event.feature;
         
         feature.setStyle(this.style);
@@ -451,7 +461,7 @@ class DrawTool extends Control {
             }
         });
 
-        source.addFeature(feature);
+        LayerManager.addFeatureToLayer(feature, layerWrapper);
 
         // Note: Consumer callback
         if(this.options.onEnd instanceof Function) {
@@ -459,17 +469,24 @@ class DrawTool extends Control {
         }
     }
 
-    doDrawEndIntersection(source, event) {
+    doDrawEndIntersection(event) {
         const feature = event.feature;
         const featureGeometry = feature.getGeometry();
 
-        source.forEachFeatureIntersectingExtent(featureGeometry.getExtent(), (intersectedFeature) => {
-            const type = intersectedFeature.getProperties()?.oltb?.type;
-            const geometry = intersectedFeature.getGeometry();
+        // Search all layers to find all intersecting features that might not be in the active layer
+        const layerWrappers = LayerManager.getFeatureLayers();
+        layerWrappers.forEach((layerWrapper) => {
+            const layer = layerWrapper.getLayer();
+            const source = layer.getSource();
 
-            if(isFeatureIntersectable(type, geometry)) {
-                this.intersectedFeatures.push(intersectedFeature);
-            }
+            source.forEachFeatureIntersectingExtent(featureGeometry.getExtent(), (intersectedFeature) => {
+                const type = intersectedFeature.getProperties()?.oltb?.type;
+                const geometry = intersectedFeature.getGeometry();
+    
+                if(isFeatureIntersectable(type, geometry)) {
+                    this.intersectedFeatures.push(intersectedFeature);
+                }
+            });
         });
 
         this.intersectedFeatures.forEach((intersected) => {
@@ -539,9 +556,9 @@ class DrawTool extends Control {
             return;
         }
 
-        // Remove previous interaction if tool is changed
+        // Note: Remove previous interaction if tool is changed
         if(this.interactionDraw) {
-            map.removeInteraction(this.interactionDraw);
+            this.doRemoveDrawInteraction();
         }
 
         this.style = this.generateOLStyleObject(strokeWidth, fillColor, strokeColor);
@@ -561,12 +578,29 @@ class DrawTool extends Control {
         }
 
         this.interactionDraw = this.generateOLInteractionDraw(toolType, geometryFunction);
-        map.addInteraction(this.interactionDraw);
 
         this.interactionDraw.on(Events.openLayers.drawStart, this.onDrawStart.bind(this));
         this.interactionDraw.on(Events.openLayers.drawEnd, this.onDrawEnd.bind(this));
         this.interactionDraw.on(Events.openLayers.drawAbort, this.onDrawAbort.bind(this));
         this.interactionDraw.on(Events.openLayers.error, this.onDrawError.bind(this));
+
+        this.doAddDrawInteraction();
+    }
+
+    doAddDrawInteraction() {
+        this.getMap().addInteraction(this.interactionDraw);
+    }
+
+    doRemoveDrawInteraction() {
+        this.getMap().removeInteraction(this.interactionDraw);
+    }
+
+    doAddSnapInteraction() {
+        this.getMap().addInteraction(this.interactionSnap);
+    }
+
+    doRemoveSnapInteraction() {
+        this.getMap().removeInteraction(this.interactionSnap);
     }
 }
 

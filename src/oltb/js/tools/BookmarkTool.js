@@ -437,10 +437,12 @@ class BookmarkTool extends Control {
             li.setAttribute('data-oltb-sort-index', reversedIndex);
 
             const id = li.getAttribute('data-oltb-id');
-            const target = this.getLocalStorageBookmarkById(id);
 
-            if(target) {
-                target.sortIndex = reversedIndex;
+            // Note: The Bookmark item is one and the same for LocalStorage
+            // This is not true for the LayerTool that has slightly different logic
+            const bookmarkItem = this.getLocalStorageBookmarkById(id);
+            if(bookmarkItem) {
+                bookmarkItem.sortIndex = reversedIndex;
             }
 
             list.push({
@@ -582,7 +584,7 @@ class BookmarkTool extends Control {
         const zoomToButton = DOM.createElement({
             element: 'button',
             class: `${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--geo-pin oltb-tippy`,
-            title: 'Zoom to coordinates',
+            title: 'Zoom To Coordinates',
             attributes: {
                 'type': 'button'
             },
@@ -594,7 +596,7 @@ class BookmarkTool extends Control {
         const copyCoordinatesButton = DOM.createElement({
             element: 'button',
             class: `${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--crosshair oltb-tippy`,
-            title: 'Copy coordinates',
+            title: 'Copy Coordinates',
             attributes: {
                 'type': 'button'
             },
@@ -606,7 +608,7 @@ class BookmarkTool extends Control {
         const editButton = DOM.createElement({
             element: 'button',
             class: `${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--edit oltb-tippy`,
-            title: 'Rename bookmark',
+            title: 'Rename Bookmark',
             attributes: {
                 'type': 'button'
             },
@@ -618,7 +620,7 @@ class BookmarkTool extends Control {
         const deleteButton = DOM.createElement({
             element: 'button',
             class: `${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--delete oltb-tippy`,
-            title: 'Delete bookmark',
+            title: 'Delete Bookmark',
             attributes: {
                 'type': 'button'
             },
@@ -658,7 +660,7 @@ class BookmarkTool extends Control {
 
     askClearBookmarks() {
         Dialog.confirm({
-            title: 'Clear bookmarks',
+            title: 'Clear Bookmarks',
             message: 'Do you want to clear <strong>all</strong> stored bookmarks?',
             confirmText: 'Clear',
             onConfirm: () => {
@@ -675,7 +677,7 @@ class BookmarkTool extends Control {
 
     askDeleteBookmark(bookmark, bookmarkElement) {
         Dialog.confirm({
-            title: 'Delete bookmark',
+            title: 'Delete Bookmark',
             message: `Do you want to delete the <strong>${bookmark.name}</strong> bookmark?`,
             confirmText: 'Delete',
             onConfirm: () => {
@@ -687,7 +689,7 @@ class BookmarkTool extends Control {
 
     askEditBookmark(bookmark, bookmarkName) {
         Dialog.prompt({
-            title: 'Edit name',
+            title: 'Edit Name',
             message: `You are editing the <strong>${bookmark.name}</strong> bookmark`,
             value: bookmark.name,
             confirmText: 'Rename',
@@ -729,8 +731,8 @@ class BookmarkTool extends Control {
             footer: `
                 <span class="oltb-info-window__coordinates">${prettyCoordinates}</span>
                 <div class="oltb-info-window__buttons-wrapper">
-                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--crosshair oltb-tippy" title="Copy marker coordinates" id="${ID_PREFIX_INFO_WINDOW}-copy-coordinates" data-oltb-coordinates="${prettyCoordinates}"></button>
-                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--copy oltb-tippy" title="Copy marker text" id="${ID_PREFIX_INFO_WINDOW}-copy-text" data-oltb-copy="${bookmark.name}"></button>
+                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--crosshair oltb-tippy" title="Copy Marker Coordinates" id="${ID_PREFIX_INFO_WINDOW}-copy-coordinates" data-oltb-coordinates="${prettyCoordinates}"></button>
+                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--copy oltb-tippy" title="Copy Marker Text" id="${ID_PREFIX_INFO_WINDOW}-copy-text" data-oltb-copy="${bookmark.name}"></button>
                 </div>
             `
         };
@@ -784,7 +786,7 @@ class BookmarkTool extends Control {
         // Note: Alert the user, the Bookmark was created when the tools was not active
         if(!this.isActive) {
             Toast.success({
-                title: 'New bookmark',
+                title: 'New Bookmark',
                 message: `A new bookmark created <strong>${name}</strong>`, 
                 autoremove: Config.autoRemovalDuation.normal
             });

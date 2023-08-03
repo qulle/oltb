@@ -367,7 +367,7 @@ const map = new Map({
             markerLabelUseUpperCase: false,
             bookmarks: [{
                 id: '6812cc22-f490-46b7-a9f3-42eb9ea58ac2',
-                name: 'Custom bookmark',
+                name: 'Custom Bookmark',
                 zoom: 5,
                 coordinates: [57.123, 16.456]
             }],

@@ -1,6 +1,5 @@
 import _ from 'lodash';
 import { DOM } from '../helpers/browser/DOM';
-import { Draw } from 'ol/interaction';
 import { Keys } from '../helpers/constants/Keys';
 import { Toast } from '../common/Toast';
 import { Config } from '../core/Config';
@@ -8,6 +7,7 @@ import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { unByKey } from 'ol/Observable';
 import { Settings } from '../helpers/constants/Settings';
+import { Draw, Snap } from 'ol/interaction';
 import { LogManager } from '../core/managers/LogManager';
 import { ToolManager } from '../core/managers/ToolManager';
 import { GeometryType } from '../core/ol-types/GeometryType';
@@ -31,7 +31,7 @@ const CLASS_TOOL_BUTTON = 'oltb-tool-button';
 const CLASS_TOOLBOX_SECTION = 'oltb-toolbox-section';
 const CLASS_TOGGLEABLE = 'oltb-toggleable';
 const ID_PREFIX = 'oltb-measure';
-const KEY_TOOLTIP = 'measure';
+const KEY_TOOLTIP = 'tool.measure';
 
 const DefaultOptions = Object.freeze({
     onInitiated: undefined,
@@ -98,6 +98,8 @@ class MeasureTool extends Control {
             LocalStorageNodeName, 
             LocalStorageDefaults
         );
+
+        this.interactionSnap = this.generateOLInteractionSnap();
 
         this.initToolboxHTML();
         this.uiRefToolboxSection = document.querySelector(`#${ID_PREFIX}-toolbox`);
@@ -193,6 +195,7 @@ class MeasureTool extends Control {
         this.uiRefToolboxSection.classList.add(`${CLASS_TOOLBOX_SECTION}--show`);
         this.button.classList.add(`${CLASS_TOOL_BUTTON}--active`); 
 
+        this.doAddSnapInteraction();
         ToolManager.setActiveTool(this);
 
         if(this.shouldAlwaysCreateNewLayer()) {
@@ -218,9 +221,8 @@ class MeasureTool extends Control {
         this.uiRefToolboxSection.classList.remove(`${CLASS_TOOLBOX_SECTION}--show`);
         this.button.classList.remove(`${CLASS_TOOL_BUTTON}--active`); 
 
-        map.removeInteraction(this.interactionDraw);
-        this.interactionDraw = undefined;
-
+        this.doRemoveSnapInteraction();
+        this.doRemoveDrawInteraction();
         ToolManager.removeActiveTool();
 
         this.localStorage.isActive = false;
@@ -232,7 +234,7 @@ class MeasureTool extends Control {
     }
 
     updateTool() {
-        // Store current values in local storage
+        // Note: Remember options until next time
         this.localStorage.toolType = this.uiRefToolType.value;
         this.localStorage.fillColor = this.uiRefFillColor.getAttribute('data-oltb-color');
         this.localStorage.strokeColor = this.uiRefStrokeColor.getAttribute('data-oltb-color');
@@ -332,6 +334,14 @@ class MeasureTool extends Control {
         });
     }
 
+    generateOLInteractionSnap() {
+        const features = LayerManager.getSnapFeatures();
+
+        return new Snap({
+            features: features
+        });
+    }
+
     generateOLStyleObject(fillColor, strokeColor) {
         return new Style({
             image: new Circle({
@@ -405,8 +415,8 @@ class MeasureTool extends Control {
             fallback: 'Measurements layer'
         });
         
+        LayerManager.addFeatureToLayer(feature, layerWrapper);
         const layer = layerWrapper.getLayer();
-        layer.getSource().addFeature(feature);
         
         if(!layer.getVisible()) {
             Toast.info({
@@ -477,20 +487,36 @@ class MeasureTool extends Control {
             return;
         }
 
-        // Remove previous interaction if tool is changed
+        // Note: Remove previous interaction if tool is changed
         if(this.interactionDraw) {
-            map.removeInteraction(this.interactionDraw);
+            this.doRemoveDrawInteraction();
         }
         
         this.styles = this.generateOLStyleObject(fillColor, strokeColor);
         this.interactionDraw = this.generateOLInteractionDraw(toolType);
-        
-        map.addInteraction(this.interactionDraw);
 
         this.interactionDraw.on(Events.openLayers.drawStart, this.onDrawStart.bind(this));
         this.interactionDraw.on(Events.openLayers.drawEnd, this.onDrawEnd.bind(this));
         this.interactionDraw.on(Events.openLayers.drawAbort, this.onDrawAbort.bind(this));
         this.interactionDraw.on(Events.openLayers.error, this.onDrawEnd.bind(this));
+
+        this.doAddDrawInteraction();
+    }
+
+    doAddDrawInteraction() {
+        this.getMap().addInteraction(this.interactionDraw);
+    }
+
+    doRemoveDrawInteraction() {
+        this.getMap().removeInteraction(this.interactionDraw);
+    }
+
+    doAddSnapInteraction() {
+        this.getMap().addInteraction(this.interactionSnap);
+    }
+
+    doRemoveSnapInteraction() {
+        this.getMap().removeInteraction(this.interactionSnap);
     }
 }
 

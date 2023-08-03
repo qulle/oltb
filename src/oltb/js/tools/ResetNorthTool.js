@@ -162,10 +162,10 @@ class ResetNorthTool extends Control {
         const coordinates = toLonLat(view.getCenter());
 
         Dialog.prompt({
-            title: 'Rotate map',
+            title: 'Rotate Map',
             message: 'Set map rotation by degrees',
             value: Math.round(normalizedRotation),
-            confirmText: 'Rotate map',
+            confirmText: 'Rotate Map',
             onConfirm: (result) => {
                 if(result.isDigitsOnly()) {
                     this.doRotation(map, coordinates, zoom, result);

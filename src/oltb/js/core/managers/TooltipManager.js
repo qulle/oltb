@@ -48,6 +48,7 @@ class TooltipManager {
         if(this.isEmpty()) {
             this.#map.addOverlay(this.#tooltipOverlay);
             this.onPointerMoveListener = this.#map.on(Events.openLayers.pointerMove, this.onPointerMove.bind(this));
+            this.onMoveEndListerner = this.#map.on(Events.openLayers.moveEnd, this.onMoveEnd.bind(this));
         }
 
         this.#tooltips[key] = tooltipItemElement;
@@ -58,12 +59,13 @@ class TooltipManager {
 
     static pop(key) {
         const tooltipItemElement = this.#tooltips[key];
-
-        delete this.#tooltips[key];
         this.#tooltipOverlay.getElement().removeChild(tooltipItemElement);
+        delete this.#tooltips[key];
 
         if(this.isEmpty()) {
             unByKey(this.onPointerMoveListener);
+            unByKey(this.onMoveEndListerner);
+
             this.#map.removeOverlay(this.#tooltipOverlay);
             this.#tooltipOverlay.setPosition(null);
         }
@@ -72,6 +74,11 @@ class TooltipManager {
     }
 
     static onPointerMove(event) {
+        this.#tooltipOverlay.setPosition(event.coordinate);
+    }
+
+    static onMoveEnd(event) {
+        // TODO: Calculate the new position of the overlay based on how far the map moved
         this.#tooltipOverlay.setPosition(event.coordinate);
     }
 }

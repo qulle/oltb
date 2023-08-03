@@ -972,6 +972,8 @@ Layers can be added at any time during the applications lifetime. If the map is 
 
 There are two types of layers, `map`- and `feature`-layers. Exampels of adding different types of layers are available in the [examples directory](https://github.com/qulle/oltb/tree/main/examples/).
 
+**Note:** Both the DrawTool and MeasureTool add features through the LayerManager and not directly to the source of the layer. This is because the LayerManager also keeps tracks of all features so that the Snap interaction can work.
+
 ### Markers
 Markers can be created in the map using the following module.
 ```javascript
