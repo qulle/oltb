@@ -34,6 +34,10 @@ class LayerModal extends ModalBase {
         this.#createModal();
     }
 
+    getName() {
+        return FILENAME;
+    }
+
     #createModal() {
         const [ nameWrapper, nameInput ] = createUIInput({
             idPrefix: ID_PREFIX,

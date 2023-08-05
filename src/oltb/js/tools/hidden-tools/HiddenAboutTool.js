@@ -32,6 +32,10 @@ class HiddenAboutTool extends Control {
         this.initContextMenuItems();
     }
 
+    getName() {
+        return FILENAME;
+    }
+
     // -------------------------------------------------------------------
     // # Section: Init Helpers
     // -------------------------------------------------------------------

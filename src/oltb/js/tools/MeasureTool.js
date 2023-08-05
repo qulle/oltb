@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import { DOM } from '../helpers/browser/DOM';
+import { Draw } from 'ol/interaction';
 import { Keys } from '../helpers/constants/Keys';
 import { Toast } from '../common/Toast';
 import { Config } from '../core/Config';
@@ -7,9 +8,9 @@ import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { unByKey } from 'ol/Observable';
 import { Settings } from '../helpers/constants/Settings';
-import { Draw, Snap } from 'ol/interaction';
 import { LogManager } from '../core/managers/LogManager';
 import { ToolManager } from '../core/managers/ToolManager';
+import { SnapManager } from '../core/managers/SnapManager';
 import { GeometryType } from '../core/ol-types/GeometryType';
 import { LayerManager } from '../core/managers/LayerManager';
 import { StateManager } from '../core/managers/StateManager';
@@ -99,8 +100,6 @@ class MeasureTool extends Control {
             LocalStorageDefaults
         );
 
-        this.interactionSnap = this.generateOLInteractionSnap();
-
         this.initToolboxHTML();
         this.uiRefToolboxSection = document.querySelector(`#${ID_PREFIX}-toolbox`);
         this.initToggleables();
@@ -125,6 +124,10 @@ class MeasureTool extends Control {
         if(this.options.onInitiated instanceof Function) {
             this.options.onInitiated();
         }
+    }
+
+    getName() {
+        return FILENAME;
     }
 
     // -------------------------------------------------------------------
@@ -195,7 +198,6 @@ class MeasureTool extends Control {
         this.uiRefToolboxSection.classList.add(`${CLASS_TOOLBOX_SECTION}--show`);
         this.button.classList.add(`${CLASS_TOOL_BUTTON}--active`); 
 
-        this.doAddSnapInteraction();
         ToolManager.setActiveTool(this);
 
         if(this.shouldAlwaysCreateNewLayer()) {
@@ -221,9 +223,9 @@ class MeasureTool extends Control {
         this.uiRefToolboxSection.classList.remove(`${CLASS_TOOLBOX_SECTION}--show`);
         this.button.classList.remove(`${CLASS_TOOL_BUTTON}--active`); 
 
-        this.doRemoveSnapInteraction();
         this.doRemoveDrawInteraction();
         ToolManager.removeActiveTool();
+        SnapManager.removeSnap();
 
         this.localStorage.isActive = false;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
@@ -331,14 +333,6 @@ class MeasureTool extends Control {
             type: type,
             stopClick: true,
             style: this.styles
-        });
-    }
-
-    generateOLInteractionSnap() {
-        const features = LayerManager.getSnapFeatures();
-
-        return new Snap({
-            features: features
         });
     }
 
@@ -490,6 +484,7 @@ class MeasureTool extends Control {
         // Note: Remove previous interaction if tool is changed
         if(this.interactionDraw) {
             this.doRemoveDrawInteraction();
+            SnapManager.removeSnap();
         }
         
         this.styles = this.generateOLStyleObject(fillColor, strokeColor);
@@ -500,7 +495,9 @@ class MeasureTool extends Control {
         this.interactionDraw.on(Events.openLayers.drawAbort, this.onDrawAbort.bind(this));
         this.interactionDraw.on(Events.openLayers.error, this.onDrawEnd.bind(this));
 
+        // Note: The Snap interaction must be added last
         this.doAddDrawInteraction();
+        SnapManager.addSnap(this);
     }
 
     doAddDrawInteraction() {
@@ -509,14 +506,6 @@ class MeasureTool extends Control {
 
     doRemoveDrawInteraction() {
         this.getMap().removeInteraction(this.interactionDraw);
-    }
-
-    doAddSnapInteraction() {
-        this.getMap().addInteraction(this.interactionSnap);
-    }
-
-    doRemoveSnapInteraction() {
-        this.getMap().removeInteraction(this.interactionSnap);
     }
 }
 

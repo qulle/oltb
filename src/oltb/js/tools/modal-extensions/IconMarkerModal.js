@@ -43,6 +43,10 @@ class IconMarkerModal extends ModalBase {
         this.#createModal();
     }
 
+    getName() {
+        return FILENAME;
+    }
+
     #createModal() {
         const [ titleWrapper, titleInput ] = createUIInput({
             idPrefix: ID_PREFIX,

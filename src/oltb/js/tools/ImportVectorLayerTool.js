@@ -75,6 +75,10 @@ class ImportVectorLayerTool extends Control {
         }
     }
 
+    getName() {
+        return FILENAME;
+    }
+
     // -------------------------------------------------------------------
     // # Section: Tool Control
     // -------------------------------------------------------------------

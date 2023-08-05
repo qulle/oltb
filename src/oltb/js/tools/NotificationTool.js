@@ -68,6 +68,10 @@ class NotificationTool extends Control {
         }
     }
 
+    getName() {
+        return FILENAME;
+    }
+
     // -------------------------------------------------------------------
     // # Section: Tool Control
     // -------------------------------------------------------------------

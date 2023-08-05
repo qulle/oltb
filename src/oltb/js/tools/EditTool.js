@@ -202,6 +202,10 @@ class EditTool extends Control {
         }
     }
 
+    getName() {
+        return FILENAME;
+    }
+
     // -------------------------------------------------------------------
     // # Section: Init Helpers
     // -------------------------------------------------------------------
@@ -265,15 +269,17 @@ class EditTool extends Control {
     // -------------------------------------------------------------------
 
     generateOLInteractionSelect() {
+        const slef = this;
+
         return new Select({
             hitTolerance: this.options.hitTolerance,
             filter: function(feature, layer) {
-                const selectable = !hasCustomFeatureProperty(feature.getProperties(), FeatureProperties.notSelectable);
+                const isSelectable = !slef.isSelectable(feature);
                 const isFeatureLayer = LayerManager.getFeatureLayers().find((layerWrapper) => {
                     return layerWrapper.getLayer().getSource().hasFeature(feature);
                 });
                 
-                return (selectable && (isFeatureLayer || 
+                return (isSelectable && (isFeatureLayer || 
                     SettingsManager.getSetting(Settings.selectVectorMapShapes)
                 ));
             },
@@ -541,6 +547,14 @@ class EditTool extends Control {
         return features.length === 2;
     }
 
+    isSelectable(feature) {
+        return hasCustomFeatureProperty(feature.getProperties(), FeatureProperties.notSelectable);
+    }
+
+    hasTooltip(feature) {
+        return hasCustomFeatureProperty(feature.getProperties(), FeatureProperties.tooltip);
+    }
+
     // -------------------------------------------------------------------
     // # Section: Ask User
     // -------------------------------------------------------------------
@@ -624,7 +638,7 @@ class EditTool extends Control {
         const features = event.features;
 
         features.forEach((feature) => {
-            if(hasCustomFeatureProperty(feature.getProperties(), FeatureProperties.tooltip)) {
+            if(this.hasTooltip(feature)) {
                 this.attachOnChange(feature);
             }
         });
@@ -638,7 +652,7 @@ class EditTool extends Control {
     doModifyEnd(event) {
         const features = event.features;
         features.forEach((feature) => {
-            if(hasCustomFeatureProperty(feature.getProperties(), FeatureProperties.tooltip)) {
+            if(this.hasTooltip(feature)) {
                 this.detachOnChange(feature);
             }
         });
@@ -653,7 +667,7 @@ class EditTool extends Control {
         const features = event.features;
 
         features.forEach((feature) => {
-            if(hasCustomFeatureProperty(feature.getProperties(), FeatureProperties.tooltip)) {
+            if(this.hasTooltip(feature)) {
                 this.attachOnChange(feature);
             }
         });
@@ -668,7 +682,7 @@ class EditTool extends Control {
         const features = event.features;
 
         features.forEach((feature) => {
-            if(hasCustomFeatureProperty(feature.getProperties(), FeatureProperties.tooltip)) {
+            if(this.hasTooltip(feature)) {
                 this.detachOnChange(feature);
             }
         });
@@ -842,14 +856,11 @@ class EditTool extends Control {
                     return;
                 }
 
-                // Remove feature from layer
                 LayerManager.removeFeatureFromLayer(feature, layerWrapper);
-
-                // Remove feature from selected collection
                 this.interactionSelect.getFeatures().remove(feature);
 
                 // Remove overlays associated with the feature
-                if(hasCustomFeatureProperty(feature.getProperties(), FeatureProperties.tooltip)) {
+                if(this.hasTooltip(feature)) {
                     map.removeOverlay(feature.getProperties().oltb.tooltip);
                 }
 

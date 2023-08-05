@@ -26,6 +26,7 @@ import { LocalStorageKeys } from 'oltb/src/oltb/js/helpers/constants/LocalStorag
 import { LogManager } from 'oltb/src/oltb/js/core/managers/LogManager';
 import { UrlManager } from 'oltb/src/oltb/js/core/managers/UrlManager';
 import { ToolManager } from 'oltb/src/oltb/js/core/managers/ToolManager';
+import { SnapManager } from 'oltb/src/oltb/js/core/managers/SnapManager';
 import { LayerManager } from 'oltb/src/oltb/js/core/managers/LayerManager';
 import { StateManager } from 'oltb/src/oltb/js/core/managers/StateManager';
 import { TippyManager } from 'oltb/src/oltb/js/core/managers/TippyManager';
@@ -97,6 +98,7 @@ BootstrapManager.init([
     {manager: UrlManager},
     {manager: ToolManager},
     {manager: SettingsManager},
+    {manager: SnapManager},
     {manager: InfoWindowManager},
     {manager: AccessibilityManager}
 ]);

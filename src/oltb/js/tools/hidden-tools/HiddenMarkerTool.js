@@ -47,6 +47,10 @@ class HiddenMarkerTool extends Control {
         window.addEventListener(Events.custom.featureRemoved, this.onWindowFeatureRemoved.bind(this));
     }
 
+    getName() {
+        return FILENAME;
+    }
+
     // -------------------------------------------------------------------
     // # Section: Init Helpers
     // -------------------------------------------------------------------

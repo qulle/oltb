@@ -182,6 +182,10 @@ class LayerTool extends Control {
         }
     }
 
+    getName() {
+        return FILENAME;
+    }
+
     // -------------------------------------------------------------------
     // # Section: Init Helpers
     // -------------------------------------------------------------------
@@ -507,7 +511,11 @@ class LayerTool extends Control {
             layer.getSource().getFeatures instanceof Function &&
             layer.getSource().getFeatures().length > 0
         );
-    } 
+    }
+
+    hasTooltip(feature) {
+        return hasCustomFeatureProperty(feature.getProperties(), FeatureProperties.tooltip);
+    }
 
     hasProjection(projection) {
         const hasProjection = ProjectionManager.hasProjection(projection);
@@ -1188,7 +1196,7 @@ class LayerTool extends Control {
         // Hide overlays associated with the layer
         if(this.hasLayerFeatures(layer)) {
             layer.getSource().getFeatures().forEach((feature) => {
-                if(hasCustomFeatureProperty(feature.getProperties(), FeatureProperties.tooltip)) {
+                if(this.hasTooltip(feature)) {
                     feature.getProperties().oltb.tooltip.setMap(flippedVisibility ? map : null)
                 }
             });

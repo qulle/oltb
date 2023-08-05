@@ -86,6 +86,10 @@ class GraticuleTool extends Control {
             this.options.onInitiated();
         }
     }
+    
+    getName() {
+        return FILENAME;
+    }
 
     // -------------------------------------------------------------------
     // # Section: Generate Helpers

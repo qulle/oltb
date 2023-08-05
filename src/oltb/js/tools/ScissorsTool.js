@@ -1,20 +1,25 @@
 import _ from 'lodash';
+import jsts from 'jsts/dist/jsts.min';
 import { DOM } from '../helpers/browser/DOM';
+import { Draw } from 'ol/interaction';
 import { Keys } from '../helpers/constants/Keys';
 import { Events } from '../helpers/constants/Events';
+import { Feature } from 'ol';
 import { Control } from 'ol/control';
-import { Draw, Snap } from 'ol/interaction';
 import { LogManager } from '../core/managers/LogManager';
 import { ToolManager } from '../core/managers/ToolManager';
+import { SnapManager } from '../core/managers/SnapManager';
+import { LayerManager } from '../core/managers/LayerManager';
 import { StateManager } from '../core/managers/StateManager';
 import { GeometryType } from '../core/ol-types/GeometryType';
-import { LayerManager } from '../core/managers/LayerManager';
 import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
 import { ElementManager } from '../core/managers/ElementManager';
 import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
 import { SvgPaths, getIcon } from '../core/icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
+import { isFeatureIntersectable } from '../helpers/IsFeatureIntersectable';
 import { Fill, Stroke, Circle, Style } from 'ol/style';
+import { GeometryCollection, LinearRing, LineString, MultiLineString, MultiPoint, MultiPolygon, Point, Polygon } from 'ol/geom';
 
 const FILENAME = 'tools/ScissorsTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
@@ -22,7 +27,7 @@ const CLASS_TOOL_BUTTON = 'oltb-tool-button';
 const DefaultOptions = Object.freeze({
     strokeWidth: '2.5',
     strokeColor: '#0166A5FF',
-    fillColor: '#D7E3FAFF',
+    fillColor: '#D7E3FA80',
     onInitiated: undefined,
     onClicked: undefined,
     onBrowserStateCleared: undefined,
@@ -76,6 +81,7 @@ class ScissorsTool extends Control {
         
         this.button = button;
         this.isActive = false;
+        this.intersectedFeatures = [];
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
 
         this.localStorage = StateManager.getAndMergeStateObject(
@@ -83,8 +89,11 @@ class ScissorsTool extends Control {
             LocalStorageDefaults
         );
 
+        // JSTS
+        this.parser = new jsts.io.OL3Parser();
+        this.parser.inject(Point, LineString, LinearRing, Polygon, MultiPoint, MultiLineString, MultiPolygon, GeometryCollection);
+
         this.interactionDraw = this.generateOLInteractionDraw();
-        this.interactionSnap = this.generateOLInteractionSnap();
 
         this.interactionDraw.on(Events.openLayers.drawStart, this.onDrawStart.bind(this));
         this.interactionDraw.on(Events.openLayers.drawEnd, this.onDrawEnd.bind(this));
@@ -99,6 +108,10 @@ class ScissorsTool extends Control {
         if(this.options.onInitiated instanceof Function) {
             this.options.onInitiated();
         }
+    }
+
+    getName() {
+        return FILENAME;
     }
 
     // -------------------------------------------------------------------
@@ -126,9 +139,10 @@ class ScissorsTool extends Control {
             return;
         }
 
-        ToolManager.setActiveTool(this);
+        // Note: The Snap interaction must be added last
         this.doAddDrawInteraction();
-        this.doAddSnapInteraction();
+        ToolManager.setActiveTool(this);
+        SnapManager.addSnap(this);
 
         this.isActive = true;
         this.button.classList.add(`${CLASS_TOOL_BUTTON}--active`);
@@ -143,9 +157,9 @@ class ScissorsTool extends Control {
             return;
         }
 
-        ToolManager.removeActiveTool();
         this.doRemoveDrawInteraction();
-        this.doRemoveSnapInteraction();
+        ToolManager.removeActiveTool();
+        SnapManager.removeSnap();
 
         this.isActive = false;
         this.button.classList.remove(`${CLASS_TOOL_BUTTON}--active`);
@@ -215,6 +229,10 @@ class ScissorsTool extends Control {
         this.doDrawError(event);
     }
 
+    // onGeometryChange(event) {
+    //     this.doGeometryChange(event);
+    // }
+
     // -------------------------------------------------------------------
         // # Section: Generator Helpers
     // -------------------------------------------------------------------
@@ -226,14 +244,6 @@ class ScissorsTool extends Control {
             type: GeometryType.LineString,
             stopClick: true,
             style: style
-        });
-    }
-
-    generateOLInteractionSnap() {
-        const features = LayerManager.getSnapFeatures();
-
-        return new Snap({
-            features: features
         });
     }
 
@@ -262,7 +272,7 @@ class ScissorsTool extends Control {
     // -------------------------------------------------------------------
     // # Section: Tool DoActions
     // -------------------------------------------------------------------
-    
+
     doDrawStart(event) {
         // Note: Consumer callback
         if(this.options.onStart instanceof Function) {
@@ -271,10 +281,50 @@ class ScissorsTool extends Control {
     }
 
     doDrawEnd(event) {
+        const lineFeature = event.feature;
+        const featureGeometry = lineFeature.getGeometry();
+
+        // Note: Must search all layers thus features from different layers can be targeted
+        const layerWrappers = LayerManager.getFeatureLayers();
+        layerWrappers.forEach((layerWrapper) => {
+            const layer = layerWrapper.getLayer();
+
+            if(!layer.getVisible()) {
+                return;
+            }
+
+            const source = layer.getSource();
+            source.forEachFeatureIntersectingExtent(featureGeometry.getExtent(), (intersectedFeature) => {
+                const type = intersectedFeature.getProperties()?.oltb?.type;
+                const geometry = intersectedFeature.getGeometry();
+    
+                if(isFeatureIntersectable(type, geometry)) {
+                    this.intersectedFeatures.push(intersectedFeature);
+                }
+            });
+        });
+
+        this.intersectedFeatures.forEach((intersected) => {
+            const type = intersected.getGeometry().getType();
+            if(type === GeometryType.Polygon) {
+                this.doSplitPolygon(intersected, lineFeature);
+            }
+        });
+
+        if(this.intersectedFeatures.length === 0) {
+            Toast.info({
+                title: 'Oops',
+                message: 'No intersecting object found', 
+                autoremove: Config.autoRemovalDuation.normal
+            });
+        }
+
         // Note: Consumer callback
         if(this.options.onEnd instanceof Function) {
             this.options.onEnd(event);
         }
+
+        this.intersectedFeatures = [];
     }
 
     doDrawAbort(event) {
@@ -299,12 +349,51 @@ class ScissorsTool extends Control {
         this.getMap().removeInteraction(this.interactionDraw);
     }
 
-    doAddSnapInteraction() {
-        this.getMap().addInteraction(this.interactionSnap);
-    }
+    doSplitPolygon(polygonFeature, lineFeature) {
+        // Parse Polygon and Line geomtry to jsts type
+        const jstsPolygonFeature = this.parser.read(polygonFeature.getGeometry());
+        const jstsLineFeature = this.parser.read(lineFeature.getGeometry());             
+        
+        // Perform union of Polygon and Line and use Polygonizer to split the polygon by line        
+        const holes = jstsPolygonFeature._holes;
+        const union = jstsPolygonFeature.getExteriorRing().union(jstsLineFeature);
+        const polygonizer = new jsts.operation.polygonize.Polygonizer();
+        
+        // Splitting polygon in two part        
+        polygonizer.add(union);
+        
+        // Get splitted polygons
+        const polygons = polygonizer.getPolygons();
+        
+        // This will execute only if polygon is successfully splitted into two parts
+        if(polygons.array.length !== 2) {
+            return;
+        }
 
-    doRemoveSnapInteraction() {
-        this.getMap().removeInteraction(this.interactionSnap);
+        polygons.array.forEach((geometry) => {
+            // Logic for splitting polygon with holes
+            holes.forEach((hole) => {
+                const arr = [];
+                for (let i in hole.getCoordinates()){
+                    arr.push([hole.getCoordinates()[i].x, hole.getCoordinates()[i].y])
+                }
+
+                hole = this.parser.read(new Polygon([arr]));
+                geometry = geometry.difference(hole);
+            });
+
+            const style = this.generateOLStyleObject();
+            const splittedPolygonFeature = new Feature({
+                geometry: new Polygon(this.parser.write(geometry).getCoordinates()),
+            });
+
+            splittedPolygonFeature.setStyle(style);
+            
+            const layerWrapper = LayerManager.getActiveFeatureLayer();
+            LayerManager.addFeatureToLayer(splittedPolygonFeature, layerWrapper);
+        });
+
+        LayerManager.removeFeatureFromFeatureLayers(polygonFeature);
     }
 }
 

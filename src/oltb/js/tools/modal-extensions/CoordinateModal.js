@@ -29,6 +29,10 @@ class CoordinateModal extends ModalBase {
         this.#createModal();
     }
 
+    getName() {
+        return FILENAME;
+    }
+
     #createModal() {
         const [ latWrapper, latInput ] = createUIInput({
             idPrefix: ID_PREFIX,

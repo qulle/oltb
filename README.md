@@ -40,9 +40,10 @@ Have a look at the [Internal Development Documentation](https://github.com/qulle
 - Stores state in local storage
 - Draw objects including intersections
 - Measure both length and areas
+- Snap interactions
 - Merge drawings and measurements with different shape operations
-- Generate markers
-- Generate wind barbs
+- Generate Markers
+- Generate Wind Barbs
 - Save locations as Bookmarks
 - Export PNG of canvas and additional HTML objects
 - Compare maps side by side

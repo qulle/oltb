@@ -101,6 +101,10 @@ class HiddenMapNavigationTool extends Control {
         window.addEventListener(Events.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
     }
 
+    getName() {
+        return FILENAME;
+    }
+
     // -------------------------------------------------------------------
     // # Section: Init Helpers
     // -------------------------------------------------------------------

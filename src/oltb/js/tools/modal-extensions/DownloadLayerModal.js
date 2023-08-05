@@ -30,6 +30,10 @@ class DownloadLayerModal extends ModalBase {
         this.#createModal();
     }
 
+    getName() {
+        return FILENAME;
+    }
+
     #createModal() {
         const [ formatWrapper, formatSelect ] = createUISelect({
             idPrefix: ID_PREFIX,

@@ -916,6 +916,7 @@ BootstrapManager.init([
     {manager: UrlManager},
     {manager: ToolManager},
     {manager: SettingsManager},
+    {manager: SnapManager},
     {manager: InfoWindowManager},
     {manager: AccessibilityManager}
 ]);

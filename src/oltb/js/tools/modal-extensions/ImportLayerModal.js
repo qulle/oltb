@@ -31,6 +31,10 @@ class ImportLayerModal extends ModalBase {
         this.#createModal();
     }
 
+    getName() {
+        return FILENAME;
+    }
+
     #createModal() {
         const featureProjectionOptions = [];
         const dataProjectionOptions = [];

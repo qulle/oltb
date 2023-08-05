@@ -4,6 +4,7 @@ const Settings = Object.freeze({
     keyboardZoom: 'keyboard.zoom',
     mouseWheelZoom: 'mouse.wheel.zoom',
     alwaysNewLayers: 'always.new.layers',
+    snapInteraction: 'snap.interaction',
     altShiftDragRotate: 'alt.shift.drag.rotate',
     selectVectorMapShapes: 'select.vector.map.shapes',
     copyCoordinatesOnClick: 'copy.coordinates.on.click',

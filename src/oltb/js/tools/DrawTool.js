@@ -1,14 +1,15 @@
 import _ from 'lodash';
 import { DOM } from '../helpers/browser/DOM';
+import { Draw } from 'ol/interaction';
 import { Keys } from '../helpers/constants/Keys';
 import { Toast } from '../common/Toast';
 import { Config } from '../core/Config';
 import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { Settings } from '../helpers/constants/Settings';
-import { Draw, Snap } from 'ol/interaction';
 import { LogManager } from '../core/managers/LogManager';
 import { ToolManager } from '../core/managers/ToolManager';
+import { SnapManager } from '../core/managers/SnapManager';
 import { GeometryType } from '../core/ol-types/GeometryType';
 import { StateManager } from '../core/managers/StateManager';
 import { LayerManager } from '../core/managers/LayerManager';
@@ -99,8 +100,6 @@ class DrawTool extends Control {
             LocalStorageDefaults
         );
 
-        this.interactionSnap = this.generateOLInteractionSnap();
-
         this.initToolboxHTML();
         this.uiRefToolboxSection = document.querySelector(`#${ID_PREFIX}-toolbox`);
         this.initToggleables();
@@ -133,6 +132,10 @@ class DrawTool extends Control {
         if(this.options.onInitiated instanceof Function) {
             this.options.onInitiated();
         }
+    }
+
+    getName() {
+        return FILENAME;
     }
 
     // -------------------------------------------------------------------
@@ -232,7 +235,6 @@ class DrawTool extends Control {
         this.uiRefToolboxSection.classList.add(`${CLASS_TOOLBOX_SECTION}--show`);
         this.button.classList.add(`${CLASS_TOOL_BUTTON}--active`);
 
-        this.doAddSnapInteraction();
         ToolManager.setActiveTool(this);
 
         if(this.shouldAlwaysCreateNewLayer()) {
@@ -258,9 +260,9 @@ class DrawTool extends Control {
         this.uiRefToolboxSection.classList.remove(`${CLASS_TOOLBOX_SECTION}--show`);
         this.button.classList.remove(`${CLASS_TOOL_BUTTON}--active`);
 
-        this.doRemoveSnapInteraction();
         this.doRemoveDrawInteraction();
         ToolManager.removeActiveTool();
+        SnapManager.removeSnap();
 
         this.localStorage.isActive = false;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
@@ -390,14 +392,6 @@ class DrawTool extends Control {
         });
     }
 
-    generateOLInteractionSnap() {
-        const features = LayerManager.getSnapFeatures();
-
-        return new Snap({
-            features: features
-        });
-    }
-
     generateOLStyleObject(strokeWidth, fillColor, strokeColor) {
         return new Style({
             image: new Circle({
@@ -473,12 +467,16 @@ class DrawTool extends Control {
         const feature = event.feature;
         const featureGeometry = feature.getGeometry();
 
-        // Search all layers to find all intersecting features that might not be in the active layer
+        // Note: Must search all layers thus features from different layers can be targeted
         const layerWrappers = LayerManager.getFeatureLayers();
         layerWrappers.forEach((layerWrapper) => {
             const layer = layerWrapper.getLayer();
-            const source = layer.getSource();
 
+            if(!layer.getVisible()) {
+                return;
+            }
+
+            const source = layer.getSource();
             source.forEachFeatureIntersectingExtent(featureGeometry.getExtent(), (intersectedFeature) => {
                 const type = intersectedFeature.getProperties()?.oltb?.type;
                 const geometry = intersectedFeature.getGeometry();
@@ -501,7 +499,7 @@ class DrawTool extends Control {
         if(this.intersectedFeatures.length === 0) {
             Toast.info({
                 title: 'Oops',
-                message: 'No intersecting objects found', 
+                message: 'No intersecting object found', 
                 autoremove: Config.autoRemovalDuation.normal
             });
         }
@@ -559,6 +557,7 @@ class DrawTool extends Control {
         // Note: Remove previous interaction if tool is changed
         if(this.interactionDraw) {
             this.doRemoveDrawInteraction();
+            SnapManager.removeSnap();
         }
 
         this.style = this.generateOLStyleObject(strokeWidth, fillColor, strokeColor);
@@ -584,7 +583,9 @@ class DrawTool extends Control {
         this.interactionDraw.on(Events.openLayers.drawAbort, this.onDrawAbort.bind(this));
         this.interactionDraw.on(Events.openLayers.error, this.onDrawError.bind(this));
 
+        // Note: The Snap interaction must be added last
         this.doAddDrawInteraction();
+        SnapManager.addSnap(this);
     }
 
     doAddDrawInteraction() {
@@ -593,14 +594,6 @@ class DrawTool extends Control {
 
     doRemoveDrawInteraction() {
         this.getMap().removeInteraction(this.interactionDraw);
-    }
-
-    doAddSnapInteraction() {
-        this.getMap().addInteraction(this.interactionSnap);
-    }
-
-    doRemoveSnapInteraction() {
-        this.getMap().removeInteraction(this.interactionSnap);
     }
 }
 

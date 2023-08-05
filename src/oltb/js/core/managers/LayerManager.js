@@ -131,6 +131,10 @@ class LayerManager {
         return name;
     }
 
+    static #hasTooltip(feature) {
+        return hasCustomFeatureProperty(feature.getProperties(), FeatureProperties.tooltip);
+    }
+
     static addFeatureToLayer(feature, layerWrapper) {
         const layer = layerWrapper.getLayer();
         const source = layer.getSource();
@@ -365,7 +369,7 @@ class LayerManager {
         layer.getSource().getFeatures().forEach((feature) => {
             this.#snapFeatures.remove(feature);
 
-            if(hasCustomFeatureProperty(feature.getProperties(), FeatureProperties.tooltip)) {
+            if(this.#hasTooltip(feature)) {
                 this.#map.removeOverlay(feature.getProperties().oltb.tooltip);
             }
         });

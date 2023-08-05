@@ -31,6 +31,10 @@ class SettingsModal extends ModalBase {
         this.#createModal();
     }
 
+    getName() {
+        return FILENAME;
+    }
+
     #createModal() {
         const settingsFragment = document.createDocumentFragment();
         const settings = SettingsManager.getSettings();

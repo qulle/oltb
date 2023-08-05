@@ -37,6 +37,10 @@ class DebugInfoModal extends ModalBase {
         this.#createModal();
     }
 
+    getName() {
+        return FILENAME;
+    }
+
     #createModal() {
         const modalContent = this.#generateModalContent();
         this.show(modalContent);
