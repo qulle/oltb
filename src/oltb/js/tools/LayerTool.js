@@ -118,6 +118,7 @@ class LayerTool extends Control {
 
         this.button = button;
         this.isActive = false;
+        this.layerModal = undefined;
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
 
         this.localStorage = StateManager.getAndMergeStateObject(
@@ -678,6 +679,8 @@ class LayerTool extends Control {
                 isVisible: layerState.isVisible
             });
         }
+
+        LayerManager.setMapLayerZIndex(layerId, layerState.sortIndex);
 
         const layerElement = DOM.createElement({
             element: 'li', 
@@ -1262,9 +1265,16 @@ class LayerTool extends Control {
     }
 
     doShowAddMapLayerModal() {
-        new LayerModal({
+        if(this.layerModal) {
+            return;
+        }
+
+        this.layerModal = new LayerModal({
             onCreate: (result) => {
                 this.onCreateMapLayer(result);
+            },
+            onClose: () => {
+                this.layerModal = undefined;
             }
         });
     }

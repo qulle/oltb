@@ -767,7 +767,6 @@ class BookmarkTool extends Control {
             return;
         }
 
-        // Validate properties
         name = this.validateName(name);
 
         const view = map.getView();

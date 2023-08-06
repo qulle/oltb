@@ -35,6 +35,7 @@ class HiddenMarkerTool extends Control {
             element: ElementManager.getToolbarElement()
         });
 
+        this.coordinatesModal = undefined;
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
 
         this.createIcon = getIcon({
@@ -70,7 +71,7 @@ class HiddenMarkerTool extends Control {
     // -------------------------------------------------------------------
 
     onContextMenuCreateMarker(map, coordinates, target) {
-        this.doShowCoordinateModal(coordinates);
+        this.doShowCoordinatesModal(coordinates);
     }
 
     // -------------------------------------------------------------------
@@ -103,11 +104,18 @@ class HiddenMarkerTool extends Control {
     // # Section: Tool DoActions
     // -------------------------------------------------------------------
 
-    doShowCoordinateModal(coordinates) {
-        new IconMarkerModal({
+    doShowCoordinatesModal(coordinates) {
+        if(this.coordinatesModal) {
+            return;
+        }
+
+        this.coordinatesModal = new IconMarkerModal({
             coordinates: coordinates,
             onCreate: (result) => {
                 this.onCreateMarker(result);
+            },
+            onClose: () => {
+                this.coordinatesModal = undefined;
             }
         });
     }

@@ -3,6 +3,8 @@ import jsts from 'jsts/dist/jsts.min';
 import { DOM } from '../helpers/browser/DOM';
 import { Draw } from 'ol/interaction';
 import { Keys } from '../helpers/constants/Keys';
+import { Toast } from '../common/Toast';
+import { Config } from '../core/Config';
 import { Events } from '../helpers/constants/Events';
 import { Feature } from 'ol';
 import { Control } from 'ol/control';
@@ -229,12 +231,8 @@ class ScissorsTool extends Control {
         this.doDrawError(event);
     }
 
-    // onGeometryChange(event) {
-    //     this.doGeometryChange(event);
-    // }
-
     // -------------------------------------------------------------------
-        // # Section: Generator Helpers
+    // # Section: Generator Helpers
     // -------------------------------------------------------------------
 
     generateOLInteractionDraw() {
@@ -267,6 +265,10 @@ class ScissorsTool extends Control {
                 width: this.options.strokeWidth
             })
         });
+    }
+
+    generateJSTSPolygonizer() {
+        return new jsts.operation.polygonize.Polygonizer();
     }
 
     // -------------------------------------------------------------------
@@ -350,41 +352,43 @@ class ScissorsTool extends Control {
     }
 
     doSplitPolygon(polygonFeature, lineFeature) {
-        // Parse Polygon and Line geomtry to jsts type
-        const jstsPolygonFeature = this.parser.read(polygonFeature.getGeometry());
-        const jstsLineFeature = this.parser.read(lineFeature.getGeometry());             
-        
-        // Perform union of Polygon and Line and use Polygonizer to split the polygon by line        
-        const holes = jstsPolygonFeature._holes;
-        const union = jstsPolygonFeature.getExteriorRing().union(jstsLineFeature);
-        const polygonizer = new jsts.operation.polygonize.Polygonizer();
-        
-        // Splitting polygon in two part        
+        // Parse into JSTS objects
+        const parsedPolygon = this.parser.read(polygonFeature.getGeometry());
+        const parsedLine = this.parser.read(lineFeature.getGeometry());             
+
+        // Splitting polygon in two part
+        const polygonizer = this.generateJSTSPolygonizer();
+        const union = parsedPolygon.getExteriorRing().union(parsedLine);
+
         polygonizer.add(union);
-        
-        // Get splitted polygons
         const polygons = polygonizer.getPolygons();
         
-        // This will execute only if polygon is successfully splitted into two parts
+        // Note: Only proceed if two parts
         if(polygons.array.length !== 2) {
             return;
         }
 
+        const numHoles = parsedPolygon.getNumInteriorRing();
         polygons.array.forEach((geometry) => {
             // Logic for splitting polygon with holes
-            holes.forEach((hole) => {
-                const arr = [];
-                for (let i in hole.getCoordinates()){
-                    arr.push([hole.getCoordinates()[i].x, hole.getCoordinates()[i].y])
+            for(let a = 0; a < numHoles; a++) {
+                const hole = parsedPolygon.getInteriorRingN(a);
+                const holeCoordinates = [];
+
+                for(let b in hole.getCoordinates()) {
+                    holeCoordinates.push([hole.getCoordinates()[b].x, hole.getCoordinates()[b].y])
                 }
 
-                hole = this.parser.read(new Polygon([arr]));
+                hole = this.parser.read(new Polygon([holeCoordinates]));
                 geometry = geometry.difference(hole);
-            });
+            }
 
+            // Apply style and add the polygons to the layer
             const style = this.generateOLStyleObject();
+            const featureCoordiantes = this.parser.write(geometry).getCoordinates();
+
             const splittedPolygonFeature = new Feature({
-                geometry: new Polygon(this.parser.write(geometry).getCoordinates()),
+                geometry: new Polygon(featureCoordiantes),
             });
 
             splittedPolygonFeature.setStyle(style);
