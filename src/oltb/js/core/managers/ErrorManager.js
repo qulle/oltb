@@ -13,6 +13,8 @@ class ErrorManager {
 
     static globalErrorHandler(error) {
         error.preventDefault();
+
+        // Note: If the error is thrown before the application has launched, the console is always available
         console.error(error);
         
         LogManager.logFatal(FILENAME, 'globalErrorHandler', error.error);

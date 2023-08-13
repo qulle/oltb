@@ -6,10 +6,13 @@ import { unByKey } from 'ol/Observable';
 import { LogManager } from "./LogManager";
 
 const FILENAME = 'managers/TooltipManager.js';
+const CLASS_OVERLAY_TOOLTIP = 'oltb-overlay-tooltip';
 
 class TooltipManager {
     static #map;
     static #tooltipOverlay;
+    static #onPointerMoveListener;
+    static #onMoveEndListerner;
     static #tooltips = {}
 
     static init(options = {}) {
@@ -17,7 +20,7 @@ class TooltipManager {
 
         const tooltipElement = DOM.createElement({
             element: 'div',
-            class: 'oltb-overlay-tooltip'
+            class: CLASS_OVERLAY_TOOLTIP
         });
 
         this.#tooltipOverlay = new Overlay({
@@ -42,13 +45,13 @@ class TooltipManager {
     static push(key) {
         const tooltipItemElement = DOM.createElement({
             element: 'span',
-            class: 'oltb-overlay-tooltip__item'
+            class: `${CLASS_OVERLAY_TOOLTIP}__item`
         });
 
         if(this.isEmpty()) {
             this.#map.addOverlay(this.#tooltipOverlay);
-            this.onPointerMoveListener = this.#map.on(Events.openLayers.pointerMove, this.onPointerMove.bind(this));
-            this.onMoveEndListerner = this.#map.on(Events.openLayers.moveEnd, this.onMoveEnd.bind(this));
+            this.#onPointerMoveListener = this.#map.on(Events.openLayers.pointerMove, this.#onPointerMove.bind(this));
+            this.#onMoveEndListerner = this.#map.on(Events.openLayers.moveEnd, this.#onMoveEnd.bind(this));
         }
 
         this.#tooltips[key] = tooltipItemElement;
@@ -63,8 +66,8 @@ class TooltipManager {
         delete this.#tooltips[key];
 
         if(this.isEmpty()) {
-            unByKey(this.onPointerMoveListener);
-            unByKey(this.onMoveEndListerner);
+            unByKey(this.#onPointerMoveListener);
+            unByKey(this.#onMoveEndListerner);
 
             this.#map.removeOverlay(this.#tooltipOverlay);
             this.#tooltipOverlay.setPosition(null);
@@ -73,11 +76,11 @@ class TooltipManager {
         return tooltipItemElement;
     }
 
-    static onPointerMove(event) {
+    static #onPointerMove(event) {
         this.#tooltipOverlay.setPosition(event.coordinate);
     }
 
-    static onMoveEnd(event) {
+    static #onMoveEnd(event) {
         // TODO: Calculate the new position of the overlay based on how far the map moved
         this.#tooltipOverlay.setPosition(event.coordinate);
     }

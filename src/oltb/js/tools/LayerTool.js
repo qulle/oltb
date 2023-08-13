@@ -269,7 +269,7 @@ class LayerTool extends Control {
             ContextMenu.addItem({
                 icon: this.icon, 
                 name: 'Add Feature Layer', 
-                fn: this.onContextMenuAddFeatureLayerModal.bind(this)
+                fn: this.onContextMenuAddFeatureLayer.bind(this)
             });
         }
     }
@@ -404,11 +404,20 @@ class LayerTool extends Control {
         this.doShowAddMapLayerModal();
     }
 
-    onContextMenuAddFeatureLayerModal() {
+    onContextMenuAddFeatureLayer() {
         this.doAddFeatureLayer({
             name: '',
             isDynamicallyAdded: true
         });
+
+        // Note: Alert the user, the Layer was created when the tool was not active
+        if(!this.isActive) {
+            Toast.success({
+                title: 'New Layer',
+                message: 'A new Feature layer created', 
+                autoremove: Config.autoRemovalDuation.normal
+            });
+        }
     }
 
     // -------------------------------------------------------------------
@@ -522,7 +531,7 @@ class LayerTool extends Control {
         const hasProjection = ProjectionManager.hasProjection(projection);
 
         if(!hasProjection) {
-            const errorMessage = `Must add projection definition for <strong>${result.projection}</strong>`;
+            const errorMessage = `Must add projection definition for <strong>${projection}</strong>`;
             LogManager.logError(FILENAME, 'hasProjection', errorMessage);
 
             Toast.error({
@@ -990,12 +999,7 @@ class LayerTool extends Control {
                     format: format
                 });
                     
-                this.doDownloadLayer(layerWrapper, format, result);
-                    
-                // Note: Consumer callback
-                if(callback instanceof Function) {
-                    callback(layerWrapper, filename, content);
-                }
+                this.doDownloadLayer(layerWrapper, format, result, callback);
             }
         });
     }
@@ -1225,7 +1229,7 @@ class LayerTool extends Control {
         StateManager.setStateObject(LocalStorageNodeName, LocalStorageDefaults);
     }
 
-    doDownloadLayer(layerWrapper, format, result) {
+    doDownloadLayer(layerWrapper, format, result, callback) {
         const features = layerWrapper.getLayer().getSource().getFeatures();
         const content = format.writeFeatures(features, {
             featureProjection: Config.projection.default
@@ -1233,6 +1237,11 @@ class LayerTool extends Control {
         
         const filename = `${layerWrapper.getName()}.${result.format.toLowerCase()}`;
         download(filename, content);
+
+        // Note: Consumer callback
+        if(callback instanceof Function) {
+            callback(layerWrapper, filename, content);
+        }
     }
 
     doAddMapLayer(options) {

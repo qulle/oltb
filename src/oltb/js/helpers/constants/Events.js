@@ -32,6 +32,7 @@ const Events = Object.freeze({
         translateEnd: 'translateend',
         error: 'error',
         change: 'change',
+        snap: 'snap',
         propertyChange: 'propertychange',
         preRender: 'prerender',
         postRender: 'postrender',

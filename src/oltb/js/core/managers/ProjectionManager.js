@@ -5,7 +5,7 @@ import { LogManager } from './LogManager';
 const FILENAME = 'managers/ProjectionManager.js';
 
 class ProjectionManager {
-    // More projections can be fetched from here: https://epsg.io/
+    // Note: More projections can be fetched from here: https://epsg.io/
     static #projections = [{
         isActive: true,
         code: 'EPSG:3857',

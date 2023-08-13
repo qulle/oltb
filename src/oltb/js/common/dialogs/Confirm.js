@@ -6,6 +6,9 @@ import { isDarkTheme } from '../../helpers/IsDarkTheme';
 import { ElementManager } from '../../core/managers/ElementManager';
 
 const FILENAME = 'dialogs/Confirm.js';
+const CLASS_DIALOG = 'oltb-dialog';
+const CLASS_ANIMATION = 'oltb-animation';
+const CLASS_ANIMATION_BOUNCE = `${CLASS_ANIMATION}--bounce`;
 
 const DefaultOptions = Object.freeze({
     title: 'Confirm',
@@ -30,30 +33,30 @@ class Confirm extends DialogBase {
     #createDialog() {
         const dialog = DOM.createElement({
             element: 'div', 
-            class: 'oltb-dialog oltb-dialog--confirm oltb-animation oltb-animation--bounce'
+            class: `${CLASS_DIALOG} ${CLASS_DIALOG}--confirm ${CLASS_ANIMATION} ${CLASS_ANIMATION_BOUNCE}`
         });
 
         const title = DOM.createElement({
             element: 'h2',
-            class: 'oltb-dialog__title',
+            class: `${CLASS_DIALOG}__title`,
             text: this.options.title
         });
 
         const message = DOM.createElement({
             element: 'p',
-            class: 'oltb-dialog__message',
+            class: `${CLASS_DIALOG}__message`,
             html: this.options.message
         });
 
         const buttonWrapper = DOM.createElement({
             element: 'div', 
-            class: 'oltb-dialog__buttons-wrapper'
+            class: `${CLASS_DIALOG}__buttons-wrapper`
         });
 
         const confirmButton = DOM.createElement({
             element: 'button',
             text: this.options.confirmText, 
-            class: `oltb-dialog__btn oltb-btn ${this.options.confirmClass}`,
+            class: `${CLASS_DIALOG}__btn oltb-btn ${this.options.confirmClass}`,
             attributes: {
                 'type': 'button' 
             },
@@ -68,8 +71,9 @@ class Confirm extends DialogBase {
         const cancelButton = DOM.createElement({
             element: 'button',
             text: this.options.cancelText,
-            class: `oltb-dialog__btn oltb-btn ${
-                isDarkTheme() ? 'oltb-btn--gray-mid' : 'oltb-btn--gray-dark'
+            class: `${CLASS_DIALOG}__btn oltb-btn ${ isDarkTheme() 
+                ? 'oltb-btn--gray-mid' 
+                : 'oltb-btn--gray-dark'
             }`,
             attributes: {
                 'type': 'button'

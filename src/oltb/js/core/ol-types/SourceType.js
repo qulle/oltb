@@ -4,16 +4,13 @@ const SourceOptions = Object.freeze([
     {
         text: 'TileWMS',
         value: 'TileWMS'
-    },
-    {
+    }, {
         text: 'XYZ',
         value: 'XYZ'
-    },
-    {
+    }, {
         text: 'OSM',
         value: 'OSM'
-    },
-    {
+    }, {
         text: 'Vector',
         value: 'Vector'
     }

@@ -1,6 +1,8 @@
 import _ from "lodash";
 import { DOM } from "../helpers/browser/DOM";
 
+const CLASS_CHECKBOX_WRAPPER = 'oltb-checkbox-wrapper';
+
 const DefaultOptions = Object.freeze({
     idPrefix: '',
     idPostfix: '',
@@ -13,13 +15,13 @@ const createUICheckbox = function(options = {}) {
 
     const wrapper = DOM.createElement({
         element: 'div',
-        class: 'oltb-checkbox-wrapper'
+        class: CLASS_CHECKBOX_WRAPPER
     });
 
     const label = DOM.createElement({
         element: 'label',
         text: options.text,
-        class: 'oltb-checkbox-wrapper__title oltb-label--inline oltb-m-0',
+        class: `${CLASS_CHECKBOX_WRAPPER}__title oltb-label--inline oltb-m-0`,
         attributes: {
             'for': `${options.idPrefix}${options.idPostfix}`
         }
@@ -28,7 +30,7 @@ const createUICheckbox = function(options = {}) {
     const checkbox = DOM.createElement({
         element: 'input',
         id: `${options.idPrefix}${options.idPostfix}`,
-        class: 'oltb-checkbox-wrapper__checkbox',
+        class: `${CLASS_CHECKBOX_WRAPPER}__checkbox`,
         attributes: {
             'type': 'checkbox'
         }

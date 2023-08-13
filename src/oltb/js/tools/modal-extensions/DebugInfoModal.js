@@ -404,7 +404,7 @@ class DebugInfoModal extends ModalBase {
                 class: 'oltb-debug__json',
                 display: 'none',
                 json: true
-            },{
+            }, {
                 title: 'Browser Data',
                 content: browserDataContent,
                 class: 'oltb-debug__json',

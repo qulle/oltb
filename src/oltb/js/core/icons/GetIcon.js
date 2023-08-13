@@ -393,11 +393,13 @@ const DefaultOptions = Object.freeze({
 const getIcon = function(options = {}) {
     options = _.merge(_.cloneDeep(DefaultOptions), options);
 
-    // HEX Colors are not valid in SVG 
+    // Note: HEX Colors are not valid in SVG 
     // Unless they are replaced with URL alternative char
+    const ENCODED_HASHTAG = '%23';
+    
     if(options.replaceHashtag) {   
-        options.fill = options.fill.replace('#', '%23');
-        options.stroke = options.stroke.replace('#', '%23');
+        options.fill = options.fill.replace('#', ENCODED_HASHTAG);
+        options.stroke = options.stroke.replace('#', ENCODED_HASHTAG);
     }
 
     return (`

@@ -5,6 +5,9 @@ import { LogManager } from '../../core/managers/LogManager';
 import { ElementManager } from '../../core/managers/ElementManager';
 
 const FILENAME = 'dialogs/Alert.js';
+const CLASS_DIALOG = 'oltb-dialog';
+const CLASS_ANIMATION = 'oltb-animation';
+const CLASS_ANIMATION_BOUNCE = `${CLASS_ANIMATION}--bounce`;
 
 const DefaultOptions = Object.freeze({
     title: 'Alert',
@@ -26,30 +29,30 @@ class Alert extends DialogBase {
     #createDialog() {
         const dialog = DOM.createElement({
             element: 'div',
-            class: 'oltb-dialog oltb-dialog--alert oltb-animation oltb-animation--bounce'
+            class: `${CLASS_DIALOG} ${CLASS_DIALOG}--alert ${CLASS_ANIMATION} ${CLASS_ANIMATION_BOUNCE}`
         });
 
         const title = DOM.createElement({
             element: 'h2',
-            class: 'oltb-dialog__title',
+            class: `${CLASS_DIALOG}__title`,
             text: this.options.title
         });
 
         const message = DOM.createElement({
             element: 'p',
-            class: 'oltb-dialog__message',
+            class: `${CLASS_DIALOG}__message`,
             html: this.options.message
         });
 
         const buttonWrapper = DOM.createElement({
             element: 'div', 
-            class: 'oltb-dialog__buttons-wrapper'
+            class: `${CLASS_DIALOG}__buttons-wrapper`
         });
 
         const okButton = DOM.createElement({
             element: 'button',
             text: this.options.confirmText,
-            class: 'oltb-dialog__btn oltb-btn oltb-btn--blue-mid',
+            class: `${CLASS_DIALOG}__btn oltb-btn oltb-btn--blue-mid`,
             attributes: {
                 'type': 'button'
             },

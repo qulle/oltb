@@ -7,6 +7,10 @@ import { ElementManager } from '../../core/managers/ElementManager';
 
 const FILENAME = 'toasts/ToastBase.js';
 const CLASS_TOAST = 'oltb-toast';
+const CLASS_ANIMATION = 'oltb-animation';
+const CLASS_ANIMATION_SLIDE_IN = `${CLASS_ANIMATION}--slide-in`;
+const CLASS_ANIMATION_SLIDE_OUT = `${CLASS_ANIMATION}--slide-out`;
+const CLASS_ANIMATION_LINEAR_SPINNER = `${CLASS_ANIMATION}--linear-spinner`;
 
 const DefaultOptions = Object.freeze({
     title: 'Toast',
@@ -30,7 +34,7 @@ class ToastBase {
             element: 'div',
             class: `${CLASS_TOAST} ${CLASS_TOAST}--${
                 this.options.type
-            } oltb-animation oltb-animation--slide-in oltb-d-flex` 
+            } ${CLASS_ANIMATION} ${CLASS_ANIMATION_SLIDE_IN} oltb-d-flex` 
         });
         
         if(this.options.clickToRemove) {
@@ -41,7 +45,7 @@ class ToastBase {
         if(this.options.spinner) {
             const spinnerElement = DOM.createElement({
                 element: 'div',
-                class: 'oltb-spinner oltb-spinner--small oltb-animation oltb-animation--linear-spinner'
+                class: `oltb-spinner oltb-spinner--small ${CLASS_ANIMATION} ${CLASS_ANIMATION_LINEAR_SPINNER}`
             });
             
             DOM.appendChildren(this.toast, [
@@ -86,7 +90,7 @@ class ToastBase {
     }
 
     remove() {
-        this.toast.classList.add(`${CLASS_TOAST}--remove`, 'oltb-animation--slide-out');
+        this.toast.classList.add(`${CLASS_TOAST}--remove`, CLASS_ANIMATION_SLIDE_OUT);
     
         // Remove the toast from DOM after animation finishes
         window.setTimeout(() => {

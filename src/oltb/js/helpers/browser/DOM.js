@@ -4,7 +4,7 @@ class DOM {
     static createElement(options = {}) {
         const element = document.createElement(options.element);
 
-        // Common attributes
+        // Common element attributes
         if(options.id) {
             element.id = options.id;
         }

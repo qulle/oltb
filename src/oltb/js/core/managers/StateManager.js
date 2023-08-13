@@ -4,7 +4,7 @@ import { LogManager } from './LogManager';
 
 const FILENAME = 'managers/StateManager.js';
 
-// Some objects have properties that we don't want to store in localStorage
+// Note: Some objects have properties that we don't want to store in localStorage
 // Example: Bookmarks have a reference to the marker on the Map
 const IgnoredKeys = Object.freeze([
     'marker'

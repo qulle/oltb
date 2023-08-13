@@ -5,7 +5,9 @@ import { trapFocus } from '../../helpers/browser/TrapFocus';
 import { LogManager } from '../../core/managers/LogManager';
 
 const FILENAME = 'dialogs/DialogBase.js';
-const CLASS_ANIMATION = 'oltb-animation--bounce';
+const CLASS_ANIMATION = 'oltb-animation';
+const CLASS_ANIMATION_BOUNCE = `${CLASS_ANIMATION}--bounce`;
+const CLASS_DIALOG_BACKDROP = 'oltb-dialog-backdrop';
 
 class DialogBase {
     constructor() {
@@ -13,7 +15,7 @@ class DialogBase {
         
         this.backdrop = DOM.createElement({
             element: 'div', 
-            class: 'oltb-dialog-backdrop oltb-dialog-backdrop--fixed',
+            class: `${CLASS_DIALOG_BACKDROP} ${CLASS_DIALOG_BACKDROP}--fixed`,
             attributes: {
                 'tabindex': '-1'
             },
@@ -42,7 +44,7 @@ class DialogBase {
         }
 
         const dialog = this.backdrop.firstElementChild;
-        DOM.runAnimation(dialog, CLASS_ANIMATION);
+        DOM.runAnimation(dialog, CLASS_ANIMATION_BOUNCE);
     }
 
     close() {

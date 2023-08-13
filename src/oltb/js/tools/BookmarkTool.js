@@ -786,11 +786,11 @@ class BookmarkTool extends Control {
 
         this.createUIBookmark(bookmark);
 
-        // Note: Alert the user, the Bookmark was created when the tools was not active
+        // Note: Alert the user, the Bookmark was created when the tool was not active
         if(!this.isActive) {
             Toast.success({
                 title: 'New Bookmark',
-                message: `A new bookmark created <strong>${name}</strong>`, 
+                message: `A new Bookmark created <strong>${name}</strong>`, 
                 autoremove: Config.autoRemovalDuation.normal
             });
         }

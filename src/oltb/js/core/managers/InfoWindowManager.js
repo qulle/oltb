@@ -13,7 +13,9 @@ import { Fill, Stroke, Style } from 'ol/style';
 import { copyMarkerCoordinates } from './info-window-manager/CopyMarkerCoordinates';
 
 const FILENAME = 'managers/InfoWindowManager.js';
-const CLASS_ANIMATION = 'oltb-animation--centered-bounce';
+const CLASS_ANIMATION = 'oltb-animation';
+const CLASS_ANIMATION_CENTERED_BOUNCE = `${CLASS_ANIMATION}--centered-bounce`;
+const CLASS_INFO_WINDOW = 'oltb-info-window';
 const ID_PREFIX_INFO_WINDOW = 'oltb-info-window-marker';
 
 class InfoWindowManager {
@@ -42,7 +44,7 @@ class InfoWindowManager {
         // Create infoWindow
         this.#infoWindow = DOM.createElement({
             element: 'div',
-            class: 'oltb-info-window oltb-animation',
+            class: `${CLASS_INFO_WINDOW} ${CLASS_ANIMATION}`,
             attributes: {
                 'tabindex': '-1'
             },
@@ -53,12 +55,12 @@ class InfoWindowManager {
 
         const header = DOM.createElement({
             element: 'div',
-            class: 'oltb-info-window__header'
+            class: `${CLASS_INFO_WINDOW}__header`
         });
 
         this.#title = DOM.createElement({
             element: 'h3',
-            class: 'oltb-info-window__title'
+            class: `${CLASS_INFO_WINDOW}__title`
         });
 
         const closeButton = DOM.createElement({
@@ -68,7 +70,7 @@ class InfoWindowManager {
                 fill: 'none',
                 stroke: 'currentColor'
             }),
-            class: 'oltb-info-window__close oltb-btn oltb-btn--blank',
+            class: `${CLASS_INFO_WINDOW}__close oltb-btn oltb-btn--blank`,
             listeners: {
                 'click': this.hideOverlay.bind(this)
             }
@@ -76,12 +78,12 @@ class InfoWindowManager {
 
         this.#content = DOM.createElement({
             element: 'div',
-            class: 'oltb-info-window__content'
+            class: `${CLASS_INFO_WINDOW}__content`
         });
 
         this.#footer = DOM.createElement({
             element: 'div',
-            class: 'oltb-info-window__footer'
+            class: `${CLASS_INFO_WINDOW}__footer`
         });
 
         DOM.appendChildren(header, [
@@ -187,7 +189,7 @@ class InfoWindowManager {
 
             this.#infoWindow.focus();
             
-            DOM.runAnimation(this.#infoWindow, CLASS_ANIMATION);
+            DOM.runAnimation(this.#infoWindow, CLASS_ANIMATION_CENTERED_BOUNCE);
 
             // Attach listeners to the function-buttons inside the infoWindow
             const uiRefRemoveMarkerButton = this.#footer.querySelector(`#${ID_PREFIX_INFO_WINDOW}-remove`);

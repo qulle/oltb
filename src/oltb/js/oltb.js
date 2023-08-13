@@ -22,6 +22,7 @@ import { LocalStorageKeys } from './helpers/constants/LocalStorageKeys';
 import { LogManager } from './core/managers/LogManager';
 import { UrlManager } from './core/managers/UrlManager';
 import { ToolManager } from './core/managers/ToolManager';
+import { SnapManager } from './core/managers/SnapManager';
 import { LayerManager } from './core/managers/LayerManager';
 import { StateManager } from './core/managers/StateManager';
 import { TippyManager } from './core/managers/TippyManager';
@@ -66,6 +67,7 @@ class OLTB {
     static TooltipManager = TooltipManager;
     static UrlManager = UrlManager;
     static ToolManager = ToolManager;
+    static SnapManager = SnapManager;
     static SettingsManager = SettingsManager;
     static InfoWindowManager = InfoWindowManager;
     static ColorPickerManager = ColorPickerManager;

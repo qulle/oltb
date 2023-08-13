@@ -200,6 +200,9 @@ const toolbar = new oltb({
             onIntersected: function(event, intersectedFeatures) {
                 console.log('DrawTool: Intersected', event.feature);
                 console.log('DrawTool: Intersected features', intersectedFeatures);
+            },
+            onSnapped: function(event) {
+                console.log('DrawTool: Snapped');
             }
         },
         MeasureTool: {

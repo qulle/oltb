@@ -13,6 +13,10 @@ class UrlManager {
         window.location.assign(path);
     }
 
+    static replace(path) {
+        window.location.replace(path);
+    }
+
     static replaceParameter(parameters) {
         history.replaceState(null, null, `?${parameters.toString()}`);
     }

@@ -25,7 +25,7 @@ const DefaultOptions = Object.freeze({
  * Create Markers in the Map
  * 
  * Description:
- * Create Markers with icons in the Map to visualize places, bookmarks, etc.
+ * Create Markers with icons in the Map to visualize places, Bookmarks, etc.
  */
 class HiddenMarkerTool extends Control {
     constructor(options = {}) {

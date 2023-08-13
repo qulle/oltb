@@ -36,7 +36,8 @@ const DefaultOptions = Object.freeze({
     onStart: undefined,
     onEnd: undefined,
     onAbort: undefined,
-    onError: undefined
+    onError: undefined,
+    onSnapped: undefined
 });
 
 const LocalStorageNodeName = LocalStorageKeys.scissorsTool;
@@ -231,6 +232,10 @@ class ScissorsTool extends Control {
         this.doDrawError(event);
     }
 
+    onSnap(event) {
+        this.doSnap(event);
+    }
+
     // -------------------------------------------------------------------
     // # Section: Generator Helpers
     // -------------------------------------------------------------------
@@ -343,6 +348,13 @@ class ScissorsTool extends Control {
         }
     }
 
+    doSnap(event) {
+        // Note: Consumer callback
+        if(this.options.onSnapped instanceof Function) {
+            this.options.onSnapped(event);
+        }
+    }
+
     doAddDrawInteraction() {
         this.getMap().addInteraction(this.interactionDraw);
     }
@@ -372,7 +384,7 @@ class ScissorsTool extends Control {
         polygons.array.forEach((geometry) => {
             // Logic for splitting polygon with holes
             for(let a = 0; a < numHoles; a++) {
-                const hole = parsedPolygon.getInteriorRingN(a);
+                let hole = parsedPolygon.getInteriorRingN(a);
                 const holeCoordinates = [];
 
                 for(let b in hole.getCoordinates()) {

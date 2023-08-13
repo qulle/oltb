@@ -7,7 +7,10 @@ import { ElementManager } from '../../core/managers/ElementManager';
 import { SvgPaths, getIcon } from '../../core/icons/GetIcon';
 
 const FILENAME = 'modals/ModalBase.js';
-const CLASS_ANIMATION = 'oltb-animation--bounce';
+const CLASS_ANIMATION = 'oltb-animation';
+const CLASS_ANIMATION_BOUNCE = `${CLASS_ANIMATION}--bounce`;
+const CLASS_MODAL = 'oltb-modal';
+const CLASS_MODAL_BACKDROP = `${CLASS_MODAL}-backdrop`;
 
 class ModalBase {
     constructor(title, maximized, onClosed) {
@@ -20,7 +23,7 @@ class ModalBase {
         this.onClosed = onClosed;
         this.backdrop = DOM.createElement({
             element: 'div', 
-            class: 'oltb-modal-backdrop oltb-modal-backdrop--fixed',
+            class: `${CLASS_MODAL_BACKDROP} ${CLASS_MODAL_BACKDROP}--fixed`,
             attributes: {
                 'tabindex': '-1'
             },
@@ -32,20 +35,21 @@ class ModalBase {
 
         this.modal = DOM.createElement({
             element: 'div', 
-            class: `oltb-modal ${
-                maximized ? 'oltb-modal--maximized' : ''
-            } oltb-animation oltb-animation--bounce`
+            class: `${CLASS_MODAL} ${ maximized 
+                ? `${CLASS_MODAL}--maximized` 
+                : ''
+            } ${CLASS_ANIMATION} ${CLASS_ANIMATION_BOUNCE}`
         });
 
         const modalHeader = DOM.createElement({
             element: 'div', 
-            class: 'oltb-modal__header'
+            class: `${CLASS_MODAL}__header`
         });
 
         const modalTitle = DOM.createElement({
             element: 'h2', 
             html: title,
-            class: 'oltb-modal__title'
+            class: `${CLASS_MODAL}__title`
         });
 
         const modalClose = DOM.createElement({
@@ -55,7 +59,7 @@ class ModalBase {
                 fill: 'none', 
                 stroke: 'currentColor'
             }),
-            class: 'oltb-modal__close oltb-btn oltb-btn--blank',
+            class: `${CLASS_MODAL}__close oltb-btn oltb-btn--blank`,
             attributes: {
                 'type': 'button'
             },
@@ -96,7 +100,7 @@ class ModalBase {
         }
 
         const modal = this.backdrop.firstElementChild;
-        DOM.runAnimation(modal, CLASS_ANIMATION);
+        DOM.runAnimation(modal, CLASS_ANIMATION_BOUNCE);
     }
 
     show(modalContent) {

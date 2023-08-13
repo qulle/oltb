@@ -4,8 +4,7 @@ const LayerOptions = Object.freeze([
     {
         text: 'Tile',
         value: 'Tile'
-    },
-    {
+    }, {
         text: 'Vector',
         value: 'Vector'
     }

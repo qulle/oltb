@@ -46,6 +46,11 @@ const DefaultSettings = new Map([
             text: 'Snap Interaction'
         }
     ], [
+        Settings.snapHelpLines, {
+            state: true, 
+            text: 'Snap Help Lines'
+        }
+    ], [
         Settings.alwaysNewLayer, {
             state: false, 
             text: 'Create New Layer When Selecting Tool'
@@ -60,7 +65,7 @@ class SettingsManager {
     static init(options = {}) {
         LogManager.logDebug(FILENAME, 'init', 'Initialization started');
         
-        // Update the states of the settings with values from localStorage
+        // Note: The runtime state must be updated with values from localStorage
         this.#localStorage = this.#getBrowserData();
         this.#settings.forEach((value, key) => {
             if(key in this.#localStorage) {

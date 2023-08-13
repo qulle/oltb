@@ -40,7 +40,8 @@ const DefaultOptions = Object.freeze({
     onEnd: undefined,
     onAbort: undefined,
     onError: undefined,
-    onIntersected: undefined
+    onIntersected: undefined,
+    onSnapped: undefined
 });
 
 const LocalStorageNodeName = LocalStorageKeys.drawTool;
@@ -363,6 +364,10 @@ class DrawTool extends Control {
         this.doDrawError(event);
     }
 
+    onSnap(event) {
+        this.doSnap(event);
+    }
+
     // -------------------------------------------------------------------
     // # Section: Conversions/Validation
     // -------------------------------------------------------------------
@@ -523,6 +528,13 @@ class DrawTool extends Control {
         // Note: Consumer callback
         if(this.options.onError instanceof Function) {
             this.options.onError(event);
+        }
+    }
+
+    doSnap(event) {
+        // Note: Consumer callback
+        if(this.options.onSnapped instanceof Function) {
+            this.options.onSnapped(event);
         }
     }
 

@@ -49,7 +49,7 @@ Detailed documentation how the toolbar is structured, internal dependencies and 
 The `main` branch holds the latest features that are considered done and safe to use. The latest commit from the main branch is available on the [demo-page](https://qulle.github.io/oltb/) hosted in the `gh-pages` branch. Each released major, minor or patch version is tagged and can be checked out or downloaded from CDN and NPM.
 
 ## Get Started
-The dev-environment uses NPM so you need to have [Node.js](https://nodejs.org/en/) installed. I use Node version *18.12.0* and NPM version *8.16.0*.
+The dev-environment uses NPM so you need to have [Node.js](https://nodejs.org/en/) installed. I use Node version *18.12.0* and NPM version *9.8.1*.
 
 Clone the repo
 ```
@@ -534,6 +534,9 @@ controls: defaultControls({
         onIntersected: function(event, intersectedFeatures) {
             console.log('DrawTool: Intersected', event.feature);
             console.log('DrawTool: Intersected features', intersectedFeatures);
+        },
+        onSnapped: function(event) {
+            console.log('DrawTool: Snapped');
         }
     }),
     new MeasureTool({

@@ -251,7 +251,7 @@ class LayerManager {
         return result;
     }
 
-    static getOlMapLayers() {
+    static getOLMapLayers() {
         const layers = [];
 
         // Filter out the actual ol layer

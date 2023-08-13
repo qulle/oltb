@@ -1,4 +1,4 @@
-// Note: Square and Rectangle are not offocial gemetries
+// Note: Square and Rectangle are not official geometries
 // Replaced with Circle at runtime
 const GeometryType = Object.freeze({
     Square: 'Square',

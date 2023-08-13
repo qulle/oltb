@@ -5,8 +5,7 @@ const FormatOptions = Object.freeze([
     {
         text: 'GeoJSON',
         value: 'GeoJSON'
-    },
-    {
+    }, {
         text: 'KML',
         value: 'KML'
     }
