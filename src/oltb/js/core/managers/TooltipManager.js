@@ -8,6 +8,14 @@ import { LogManager } from "./LogManager";
 const FILENAME = 'managers/TooltipManager.js';
 const CLASS_OVERLAY_TOOLTIP = 'oltb-overlay-tooltip';
 
+/**
+ * About:
+ * TooltipManager
+ * 
+ * Description:
+ * Manages and the creation of Tooltips that follows the mouse. 
+ * Examples are coordinates tooltip, measurements etc.
+ */
 class TooltipManager {
     static #map;
     static #tooltipOverlay;
@@ -37,6 +45,23 @@ class TooltipManager {
     static setMap(map) {
         this.#map = map;
     }
+
+    // -------------------------------------------------------------------
+    // # Section: Events
+    // -------------------------------------------------------------------
+
+    static #onPointerMove(event) {
+        this.#tooltipOverlay.setPosition(event.coordinate);
+    }
+
+    static #onMoveEnd(event) {
+        // TODO: Calculate the new position of the overlay based on how far the map moved
+        this.#tooltipOverlay.setPosition(event.coordinate);
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Public API
+    // -------------------------------------------------------------------
 
     static isEmpty() {
         return Object.keys(this.#tooltips).length === 0;
@@ -74,15 +99,6 @@ class TooltipManager {
         }
 
         return tooltipItemElement;
-    }
-
-    static #onPointerMove(event) {
-        this.#tooltipOverlay.setPosition(event.coordinate);
-    }
-
-    static #onMoveEnd(event) {
-        // TODO: Calculate the new position of the overlay based on how far the map moved
-        this.#tooltipOverlay.setPosition(event.coordinate);
     }
 }
 

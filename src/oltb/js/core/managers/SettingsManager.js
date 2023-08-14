@@ -58,6 +58,14 @@ const DefaultSettings = new Map([
     ]
 ]);
 
+/**
+ * About:
+ * SettingsManager
+ * 
+ * Description:
+ * Manages all user settings. 
+ * The settings can be viewed and updated using the SettingsTool.
+ */
 class SettingsManager {
     static #localStorage;
     static #settings = _.cloneDeep(DefaultSettings);
@@ -76,6 +84,10 @@ class SettingsManager {
 
     static setMap(map) { }
 
+    // -------------------------------------------------------------------
+    // # Section: Internal
+    // -------------------------------------------------------------------
+
     static #getBrowserData() {
         LogManager.logDebug(FILENAME, 'getBrowserData', 'Loading settings from browser');
         
@@ -86,6 +98,10 @@ class SettingsManager {
 
         return localStorage;
     }
+
+    // -------------------------------------------------------------------
+    // # Section: Public API
+    // -------------------------------------------------------------------
 
     static getSettings() {
         return this.#settings;

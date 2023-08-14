@@ -3,6 +3,13 @@ import { LogManager } from "./LogManager";
 
 const FILENAME = 'managers/BootstrapManager.js';
 
+/**
+ * About:
+ * BootstrapManager
+ * 
+ * Description:
+ * Manages the init process and ensures that all code is executed in the correct order.
+ */
 class BootstrapManager {
     static #managers = [];
 

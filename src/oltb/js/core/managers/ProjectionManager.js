@@ -4,6 +4,13 @@ import { LogManager } from './LogManager';
 
 const FILENAME = 'managers/ProjectionManager.js';
 
+/**
+ * About:
+ * ProjectionManager
+ * 
+ * Description:
+ * Manages all EPSG projections.
+ */
 class ProjectionManager {
     // Note: More projections can be fetched from here: https://epsg.io/
     static #projections = [{
@@ -55,6 +62,10 @@ class ProjectionManager {
 
     static setMap(map) { }
 
+    // -------------------------------------------------------------------
+    // # Section: Internal
+    // -------------------------------------------------------------------
+
     static #registerProjections(projections) {
         proj4.defs(projections);
         register(proj4);
@@ -64,6 +75,10 @@ class ProjectionManager {
         proj4.defs(code, proj4def);
         register(proj4);
     }
+
+    // -------------------------------------------------------------------
+    // # Section: Public API
+    // -------------------------------------------------------------------
 
     static addProjection(code, name, proj4def, active) {
         this.#projections.push({

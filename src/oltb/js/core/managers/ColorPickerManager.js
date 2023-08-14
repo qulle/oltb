@@ -8,6 +8,13 @@ import { eventDispatcher } from '../../helpers/browser/EventDispatcher';
 
 const FILENAME = 'managers/ColorPickerManager.js';
 
+/**
+ * About:
+ * ColorPickerManager
+ * 
+ * Description:
+ * Manages and simplifies the usage of the ACP instance (A Color Picker).
+ */
 class ColorPickerManager {
     static #colorPickerElement;
     static #colorPicker;
@@ -20,6 +27,10 @@ class ColorPickerManager {
     }
 
     static setMap(map) { }
+
+    // -------------------------------------------------------------------
+    // # Section: User Interface
+    // -------------------------------------------------------------------
 
     static #createColorPickerElement() {
         const palette = Config.aColorPicker.palette.join('|');
@@ -39,11 +50,23 @@ class ColorPickerManager {
         });
     }
 
+    // -------------------------------------------------------------------
+    // # Section: Internal
+    // -------------------------------------------------------------------
+
     static #isToPlaceBottom() {
         return window.innerWidth <= Config.deviceWidth.sm || isHorizontal();
     }
 
-    static onColorPickerTooltipShow(instance) {
+    // -------------------------------------------------------------------
+    // # Section: Public API
+    // -------------------------------------------------------------------
+
+    static getColorPicker() {
+        return this.#colorPicker;
+    }
+
+    static show(instance) {
         instance.setProps({
             placement: this.#isToPlaceBottom() ? 'bottom' : 'left'
         });
@@ -65,10 +88,6 @@ class ColorPickerManager {
     
             eventDispatcher([instance.reference], Events.custom.colorChange);
         });
-    }
-
-    static getColorPicker() {
-        return this.#colorPicker;
     }
 }
 

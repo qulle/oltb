@@ -5,7 +5,7 @@
 <h1 align="center">Toolbar for OpenLayers</h1>
 
 ## OLTB v1.1.0
-OLTB is a portable mobile friendly GIS toolbar developed using OpenLayers 7.4.0. The toolbar can be filled with any number of tools and can be used in both horizontal and vertical mode and is available in both light and dark theme.
+OLTB is a portable mobile friendly GIS toolbar developed using OpenLayers 7.5.0. The toolbar can be filled with any number of tools and can be used in both horizontal and vertical mode and is available in both light and dark theme.
 
 ## Latest Build - [Demo](https://qulle.github.io/oltb/)
 The latest demo is built using the last official release but may contain more features that have been added since then.
@@ -88,9 +88,9 @@ The following tools are implemented in the project. The tools are devided in two
 - SettingsTool
 - SplitViewTool
 - ThemeTool
+- ZoomBoxTool
 - ZoomInTool
 - ZoomOutTool
-- ZoomBoxTool
 
 ## License
 [BSD-2-Clause License](https://github.com/qulle/oltb/blob/main/LICENSE)

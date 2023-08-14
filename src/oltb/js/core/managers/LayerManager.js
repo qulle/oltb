@@ -32,6 +32,13 @@ const DefaultMapLayerOptions = Object.freeze({
     disableMapLayerDeleteButton: false
 });
 
+/**
+ * About:
+ * LayerManager
+ * 
+ * Description:
+ * Manages all Map- and Feature layers as well as all added features that are tracked by the SnapManager.
+ */
 class LayerManager {
     static #map;
     static #activeFeatureLayer;
@@ -92,7 +99,7 @@ class LayerManager {
     }
 
     // -------------------------------------------
-    // Section: Common
+    // Section: Internal
     // -------------------------------------------
 
     static #addPropertiesInterface(layerWrapper) {

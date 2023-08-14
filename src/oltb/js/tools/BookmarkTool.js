@@ -799,6 +799,8 @@ class BookmarkTool extends Control {
         if(this.options.onAdded instanceof Function) {
             this.options.onAdded(bookmark);
         }
+
+        return bookmark;
     }
 
     doRemoveBookmark(bookmark, bookmarkElement) {

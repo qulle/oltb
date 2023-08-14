@@ -57,7 +57,7 @@ class OverviewTool extends Control {
             class: CLASS_TOOL_BUTTON,
             attributes: {
                 'type': 'button',
-                'data-tippy-content': `Map Oerview (${ShortcutKeys.overviewTool})`
+                'data-tippy-content': `Map Overview (${ShortcutKeys.overviewTool})`
             },
             listeners: {
                 'click': this.onClickTool.bind(this)
@@ -236,7 +236,8 @@ class OverviewTool extends Control {
 
     doToggleToolboxSection(targetName) {
         const targetNode = document.getElementById(targetName);
-        
+        const map = this.getMap();
+
         targetNode?.slideToggle(Config.animationDuration.fast, (collapsed) => {
             this.localStorage.isCollapsed = collapsed;
             StateManager.setStateObject(LocalStorageNodeName, this.localStorage);

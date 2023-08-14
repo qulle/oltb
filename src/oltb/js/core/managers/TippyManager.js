@@ -11,6 +11,13 @@ import { createSingleton, delegate } from 'tippy.js';
 const FILENAME = 'managers/TippyManager.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
 
+/**
+ * About:
+ * TippyManager
+ * 
+ * Description:
+ * Manages and simplifies the usage of the Tippy instance.
+ */
 class TippyManager {
     static #toolButtonTippy;
     static #mapTippy;
@@ -31,6 +38,10 @@ class TippyManager {
 
     static setMap(map) { }
 
+    // -------------------------------------------------------------------
+    // # Section: Internal
+    // -------------------------------------------------------------------
+
     static #isPlacementBottom() {
         return window.innerWidth <= Config.deviceWidth.sm;
     }
@@ -38,6 +49,10 @@ class TippyManager {
     static #isPlacementForcedBottom() {
         return this.#isPlacementBottom() || isHorizontal();
     }
+
+    // -------------------------------------------------------------------
+    // # Section: Events
+    // -------------------------------------------------------------------
 
     static #onPlacementChange(event) {
         this.#toolButtonTippy.setProps({
@@ -59,6 +74,10 @@ class TippyManager {
         this.#toolButtonTippy.setInstances(tippy(`.${CLASS_TOOL_BUTTON}`));
         this.#onPlacementChange(event);
     }
+
+    // -------------------------------------------------------------------
+    // # Section: User Interface
+    // -------------------------------------------------------------------
 
     static #createToolButtonTippy() {
         const uiRefMapElement = ElementManager.getMapElement();
@@ -103,7 +122,7 @@ class TippyManager {
             interactive: true,
             allowHTML: true,
             onShow(instance) {
-                ColorPickerManager.onColorPickerTooltipShow(instance);
+                ColorPickerManager.show(instance);
             },
             onHide(instance) {
                 ColorPickerManager.getColorPicker().off(Events.browser.change);
@@ -113,6 +132,10 @@ class TippyManager {
             }
         });
     }
+
+    // -------------------------------------------------------------------
+    // # Section: Public API
+    // -------------------------------------------------------------------
 
     static getToolButtonTippy() {
         return this.#toolButtonTippy;

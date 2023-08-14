@@ -3,6 +3,14 @@ import { Config } from "../Config";
 
 const FILENAME = 'managers/LogManager.js';
 
+/**
+ * About:
+ * LogManager
+ * 
+ * Description:
+ * Manages all Debug-, Information-, Warning-, Error- and Fatal log messages. 
+ * Can handle both simple string messages and complex JSON objects.
+ */
 class LogManager {
     static #log = [];
     static #levels = Object.freeze({
@@ -54,6 +62,10 @@ class LogManager {
 
     static setMap(map) { }
 
+    // -------------------------------------------------------------------
+    // # Section: Internal
+    // -------------------------------------------------------------------
+
     static #logSink(level, origin, method, value) {
         const timestamp = moment();
         const timeFormat = Config.timeFormat;
@@ -70,6 +82,10 @@ class LogManager {
 
         return entry;
     }
+
+    // -------------------------------------------------------------------
+    // # Section: Public API
+    // -------------------------------------------------------------------
 
     static getLog() {
         return this.#log;

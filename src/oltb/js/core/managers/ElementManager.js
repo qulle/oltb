@@ -8,6 +8,13 @@ import { LocalStorageKeys } from '../../helpers/constants/LocalStorageKeys';
 const FILENAME = 'managers/ElementManager.js';
 const CLASS_TOOLBOX_CONTAINER = 'oltb-toolbox-container';
 
+/**
+ * About:
+ * ElementManager
+ * 
+ * Description:
+ * Manages the global UI references to the Map-, Toast-, Toolbar- and Toolbox elements.
+ */
 class ElementManager {
     static #uiRefMapElement;
     static #uiRefToastElement;
@@ -22,32 +29,20 @@ class ElementManager {
         this.#uiRefToolbarElement = this.#createToolbarElement();
         this.#uiRefToolboxElement = this.#createToolboxElement();
 
-        window.addEventListener(Events.browser.resize, this.#collisionDetection.bind(this));
-        window.addEventListener(Events.browser.contentLoaded, this.#collisionDetection.bind(this));
-        window.addEventListener(Events.custom.toolbarDirectionChange, this.#collisionDetection.bind(this));
+        window.addEventListener(Events.browser.resize, this.#onCollisionDetection.bind(this));
+        window.addEventListener(Events.browser.contentLoaded, this.#onCollisionDetection.bind(this));
+        window.addEventListener(Events.custom.toolbarDirectionChange, this.#onCollisionDetection.bind(this));
         window.addEventListener(Events.custom.browserStateCleared, this.#onWindowBrowserStateCleared.bind(this));
     }
 
     static setMap(map) { }
 
-    static #onWindowBrowserStateCleared(event) {
-        if(window.innerWidth <= Config.deviceWidth.sm) {
-            this.#uiRefToolboxElement.classList.add(`${CLASS_TOOLBOX_CONTAINER}--collision`);
-        }else {
-            this.#uiRefToolboxElement.classList.remove(`${CLASS_TOOLBOX_CONTAINER}--collision`);
-        }
-    }
-
-    static #onMouseWheel(event) {
-        if(!event.ctrlKey) {
-            const zeroAxis = 0;
-            const distance = Config.scrollDistance;
-            this.scrollLeft += event.deltaY > zeroAxis ? distance : -distance;
-        }
-    }
+    // -------------------------------------------------------------------
+    // # Section: User Interface
+    // -------------------------------------------------------------------
 
     static #createMapElement() {
-        return document.getElementById(Config.openLayers.id);;
+        return document.getElementById(Config.openLayers.id);
     }
 
     static #createToastElement() {
@@ -127,7 +122,27 @@ class ElementManager {
         return element;
     }
 
-    static #collisionDetection(event) {
+    // -------------------------------------------------------------------
+    // # Section: Events
+    // -------------------------------------------------------------------
+
+    static #onWindowBrowserStateCleared(event) {
+        if(window.innerWidth <= Config.deviceWidth.sm) {
+            this.#uiRefToolboxElement.classList.add(`${CLASS_TOOLBOX_CONTAINER}--collision`);
+        }else {
+            this.#uiRefToolboxElement.classList.remove(`${CLASS_TOOLBOX_CONTAINER}--collision`);
+        }
+    }
+
+    static #onMouseWheel(event) {
+        if(!event.ctrlKey) {
+            const zeroAxis = 0;
+            const distance = Config.scrollDistance;
+            this.scrollLeft += event.deltaY > zeroAxis ? distance : -distance;
+        }
+    }
+
+    static #onCollisionDetection(event) {
         const collisionLimit = 0;
         const windowWidth = window.innerWidth;
         const toolbarWidth = this.#uiRefToolbarElement.offsetWidth;
@@ -139,6 +154,10 @@ class ElementManager {
             this.#uiRefToolboxElement.classList.remove(`${CLASS_TOOLBOX_CONTAINER}--collision`);
         }
     }
+
+    // -------------------------------------------------------------------
+    // # Section: Public API
+    // -------------------------------------------------------------------
 
     static getMapElement() {
         return this.#uiRefMapElement;

@@ -5,6 +5,14 @@ import { LogManager } from "./LogManager";
 const FILENAME = 'managers/AccessibilityManager.js';
 const CLASS_ACCESSIBILITY = 'oltb-using-keyboard';
 
+/**
+ * About:
+ * AccessibilityManager
+ * 
+ * Description:
+ * Manages toggle of class 'oltb-using-keyboard' on the body element that is used to enable specific
+ * styling on elements. Example button focus style.
+ */
 class AccessibilityManager {
     static init(options = {}) {
         LogManager.logDebug(FILENAME, 'init', 'Initialization started');
@@ -14,6 +22,10 @@ class AccessibilityManager {
     }
 
     static setMap(map) { }
+
+    // -------------------------------------------------------------------
+    // # Section: Events
+    // -------------------------------------------------------------------
 
     static #onKeyBoardDown(event) {
         if(event.key === Keys.valueTab) {

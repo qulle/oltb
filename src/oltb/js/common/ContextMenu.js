@@ -58,6 +58,10 @@ class ContextMenu extends Control {
         uiRefMapElement.addEventListener(Events.browser.click, this.hide.bind(this));
     }
 
+    // -------------------------------------------------------------------
+    // # Section: Public API
+    // -------------------------------------------------------------------
+
     addMenuItem(item) {
         if(!hasNestedProperty(item, 'name')) {
             const li = DOM.createElement({

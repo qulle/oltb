@@ -2,6 +2,13 @@ import { LogManager } from './LogManager';
 
 const FILENAME = 'managers/UrlManager.js';
 
+/**
+ * About:
+ * UrlManager
+ * 
+ * Description:
+ * Manages and simplifies the usage of any GET-query parameter and the overall Location object.
+ */
 class UrlManager {
     static init(options = {}) {
         LogManager.logDebug(FILENAME, 'init', 'Initialization started');
@@ -9,6 +16,10 @@ class UrlManager {
 
     static setMap(map) { }
     
+    // -------------------------------------------------------------------
+    // # Section: Public API
+    // -------------------------------------------------------------------
+
     static assign(path) {
         window.location.assign(path);
     }

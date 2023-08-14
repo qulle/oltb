@@ -84,11 +84,19 @@ class ModalBase {
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
     }
 
+    // -------------------------------------------------------------------
+    // # Section: Events
+    // -------------------------------------------------------------------
+
     onWindowKeyUp(event) {
         if(event.key === Keys.valueEscape) {
             this.close();
         }
     }
+
+    // -------------------------------------------------------------------
+    // # Section: Public API
+    // -------------------------------------------------------------------
 
     isBackdropClicked(event) {
         return event.target === this.backdrop;

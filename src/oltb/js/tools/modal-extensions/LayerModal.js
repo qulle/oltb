@@ -98,8 +98,7 @@ class LayerModal extends ModalBase {
                 {
                     text: 'False',
                     value: 'False'
-                },
-                {
+                }, {
                     text: 'True',
                     value: 'True'
                 }
@@ -114,12 +113,10 @@ class LayerModal extends ModalBase {
                 {
                     text: 'Anonymous',
                     value: 'anonymous'
-                }, 
-                {
+                }, {
                     text: 'Credentials',
                     value: 'use-credentials'
-                },
-                {
+                }, {
                     text: 'None',
                     value: 'undefined'
                 }

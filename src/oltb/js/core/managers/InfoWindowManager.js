@@ -18,6 +18,13 @@ const CLASS_ANIMATION_CENTERED_BOUNCE = `${CLASS_ANIMATION}--centered-bounce`;
 const CLASS_INFO_WINDOW = 'oltb-info-window';
 const ID_PREFIX_INFO_WINDOW = 'oltb-info-window-marker';
 
+/**
+ * About:
+ * InfoWindowManager
+ * 
+ * Description:
+ * Manages the Information Window that can be attached on Markers in the Map.
+ */
 class InfoWindowManager {
     static #map;
     static #infoWindow;
@@ -36,12 +43,15 @@ class InfoWindowManager {
         this.#map = map;
 
         this.#map.addOverlay(this.#overlay);
-        this.#map.on(Events.openLayers.singleClick, this.onSingleClick.bind(this));
-        this.#map.on(Events.openLayers.pointerMove, this.onPointerMove.bind(this));
+        this.#map.on(Events.openLayers.singleClick, this.#onSingleClick.bind(this));
+        this.#map.on(Events.openLayers.pointerMove, this.#onPointerMove.bind(this));
     }
 
+    // -------------------------------------------------------------------
+    // # Section: User Interface
+    // -------------------------------------------------------------------
+
     static #createInfoWindow() {
-        // Create infoWindow
         this.#infoWindow = DOM.createElement({
             element: 'div',
             class: `${CLASS_INFO_WINDOW} ${CLASS_ANIMATION}`,
@@ -112,7 +122,11 @@ class InfoWindowManager {
         });
     }
 
-    static onSingleClick(event) {
+    // -------------------------------------------------------------------
+    // # Section: Events
+    // -------------------------------------------------------------------
+
+    static #onSingleClick(event) {
         const feature = this.#map.forEachFeatureAtPixel(event.pixel, function(feature) {
             return feature;
         });
@@ -125,7 +139,7 @@ class InfoWindowManager {
         }
     }
 
-    static onPointerMove(event) {
+    static #onPointerMove(event) {
         const feature = this.#map.forEachFeatureAtPixel(event.pixel, function(feature) {
             return feature;
         });
@@ -148,6 +162,10 @@ class InfoWindowManager {
             this.#map.getViewport().style.cursor = 'default';
         }
     }
+
+    // -------------------------------------------------------------------
+    // # Section: Public API
+    // -------------------------------------------------------------------
 
     static hightlightVectorSection(feature) {
         const style = new Style({

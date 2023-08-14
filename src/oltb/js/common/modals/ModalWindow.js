@@ -35,6 +35,10 @@ class ModalWindow extends ModalBase {
         this.show(this.modalContent);
     }
 
+    // -------------------------------------------------------------------
+    // # Section: Public API
+    // -------------------------------------------------------------------
+
     setContent(content) {
         if(typeof content === 'string') {
             this.modalContent.innerHTML = content;

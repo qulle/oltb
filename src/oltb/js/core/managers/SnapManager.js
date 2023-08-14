@@ -13,6 +13,14 @@ const CLASS_OVERLAY_SNAP = 'oltb-overlay-snap';
 const STYLE_SNAPPED = 'border: 1px dashed #007C70;';
 const STYLE_NOT_SNAPPED = 'border: 1px dashed #EB4542;';
 
+/**
+ * About:
+ * SnapManager
+ * 
+ * Description:
+ * Manages the Snap interaction. 
+ * The Snap interaction can be requested by any tool that uses a Draw function such as the Draw-, Measure- and Scissors tool.
+ */
 class SnapManager {
     static #map;
     static #tool;
@@ -81,57 +89,9 @@ class SnapManager {
         this.#map = map;
     }
 
-    static isSnapEnabled() {
-        return SettingsManager.getSetting(Settings.snapInteraction);
-    }
-
-    static useSnapHelpLines() {
-        return SettingsManager.getSetting(Settings.snapHelpLines);
-    }
-
-    static addSnap(tool) {
-        const isEnabled = this.isSnapEnabled();
-
-        LogManager.logInformation(FILENAME, 'addSnap', {
-            info: 'Snap interaction requested',
-            isEnabled: isEnabled,
-            requestedBy: tool.getName()
-        });
-
-        if(!isEnabled) {
-            return;
-        }
-
-        this.#tool = tool;
-        this.#map.addInteraction(this.#interaction);
-
-        if(this.useSnapHelpLines()) {
-            this.#map.addOverlay(this.#snapOverlay);
-            this.#onPointerMoveListener = this.#map.on(Events.openLayers.pointerMove, this.#onPointerMove.bind(this));
-        }
-    }
-
-    static removeSnap() {
-        this.#tool = undefined;
-        this.#map.removeInteraction(this.#interaction);
-        this.#map.removeOverlay(this.#snapOverlay);
-
-        unByKey(this.#onPointerMoveListener);
-    }
-
-    static getActivatedBy() {
-        return this.#tool;
-    }
-
-    static #setCountersTo(value) {
-        this.#snapCounter = value;
-        this.#moveCounter = value;
-    }
-
-    static #setLineColorTo(value) {
-        this.#xLine.style = value;
-        this.#yLine.style = value;
-    }
+    // -------------------------------------------------------------------
+    // # Section: Events
+    // -------------------------------------------------------------------
 
     static #onSnap(event) {
         this.#tool.onSnap(event);
@@ -163,6 +123,68 @@ class SnapManager {
         // Note: Snap is released
         this.#setCountersTo(0);
         this.#setLineColorTo(STYLE_NOT_SNAPPED);
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Internal
+    // -------------------------------------------------------------------
+    
+    static #setCountersTo(value) {
+        this.#snapCounter = value;
+        this.#moveCounter = value;
+    }
+
+    static #setLineColorTo(value) {
+        this.#xLine.style = value;
+        this.#yLine.style = value;
+    }
+
+    static #isSnapEnabled() {
+        return SettingsManager.getSetting(Settings.snapInteraction);
+    }
+
+    static #useSnapHelpLines() {
+        return SettingsManager.getSetting(Settings.snapHelpLines);
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Public API
+    // -------------------------------------------------------------------
+
+    static addSnap(tool) {
+        const isEnabled = this.#isSnapEnabled();
+        const useSnapHelpLines = this.#useSnapHelpLines();
+
+        LogManager.logInformation(FILENAME, 'addSnap', {
+            info: 'Snap interaction requested',
+            isEnabled: isEnabled,
+            useSnapHelpLines: useSnapHelpLines,
+            requestedBy: tool.getName()
+        });
+
+        if(!isEnabled) {
+            return;
+        }
+
+        this.#tool = tool;
+        this.#map.addInteraction(this.#interaction);
+
+        if(this.#useSnapHelpLines()) {
+            this.#map.addOverlay(this.#snapOverlay);
+            this.#onPointerMoveListener = this.#map.on(Events.openLayers.pointerMove, this.#onPointerMove.bind(this));
+        }
+    }
+
+    static removeSnap() {
+        this.#tool = undefined;
+        this.#map.removeInteraction(this.#interaction);
+        this.#map.removeOverlay(this.#snapOverlay);
+
+        unByKey(this.#onPointerMoveListener);
+    }
+
+    static getActivatedBy() {
+        return this.#tool;
     }
 }
 

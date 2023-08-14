@@ -68,41 +68,41 @@ const Config = Object.freeze({
     }),
     aColorPicker: Object.freeze({
         palette: [
-            '#FFFFFF',
-            '#D7E3FA',
-            '#6397C2',
-            '#0166A5',
-            '#B1CAF6',
-            '#5B88D6',
-            '#2357B1',
-            '#D0CAFF',
-            '#9085E4',
-            '#493E9C',
-            '#FEE6FF',
-            '#E8A2EA',
-            '#914594',
-            '#BCF8FA',
-            '#56BABD',
-            '#00959A',
-            '#CEEEFF',
-            '#68B9E5',
-            '#0080C5',
-            '#BCFAF4',
-            '#3CAEA3',
-            '#007C70',
-            '#FFF1C5',
-            '#FBDD83',
-            '#FBBD02',
-            '#FFDDBC',
-            '#FCBE80',
-            '#F67D2C',
-            '#FDB5B4',
-            '#E96B69',
-            '#EB4542',
-            '#D3D9E6',
-            '#959DAD',
-            '#3B4352',
-            '#000000'
+            '#FFFFFF', // White
+            '#D7E3FA', // Blue Light
+            '#6397C2', // Blue Mid
+            '#0166A5', // Blue Dark
+            '#B1CAF6', // Indigo Light
+            '#5B88D6', // Indigo Mid
+            '#2357B1', // Indigo Dark
+            '#D0CAFF', // Purple Light
+            '#9085E4', // Purple Mid
+            '#493E9C', // Purple Dark
+            '#FEE6FF', // Pink Light
+            '#E8A2EA', // Pink Mid
+            '#914594', // Pink Dark
+            '#BCF8FA', // Teal Light
+            '#56BABD', // Teal Mid
+            '#00959A', // Teal Dark
+            '#CEEEFF', // Cyan Light
+            '#68B9E5', // Cyan Mid
+            '#0080C5', // Cyan Dark
+            '#BCFAF4', // Green Light
+            '#3CAEA3', // Green Mid
+            '#007C70', // Green Dark
+            '#FFF1C5', // Yellow Light
+            '#FBDD83', // Yellow Mid
+            '#FBBD02', // Yellow Dark
+            '#FFDDBC', // Orange Light
+            '#FCBE80', // Orange Mid
+            '#F67D2C', // Orange Dark
+            '#FDB5B4', // Red Light
+            '#E96B69', // Red Mid
+            '#EB4542', // Red Dark
+            '#D3D9E6', // Gray Light
+            '#959DAD', // Gray Mid
+            '#3B4352', // Gray Dark
+            '#000000'  // Black
         ]
     })
 });

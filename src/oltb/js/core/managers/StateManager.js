@@ -10,6 +10,14 @@ const IgnoredKeys = Object.freeze([
     'marker'
 ]);
 
+/**
+ * About:
+ * StateManager
+ * 
+ * Description:
+ * Manages the state that is stored in LocalStorage.
+ * The state contains information about active tools, user selections, Map position and zoom etc.
+ */
 class StateManager {
     static #ignoredKeys;
     static #runtimeState;
@@ -22,6 +30,10 @@ class StateManager {
     }
 
     static setMap(map) { }
+
+    // -------------------------------------------------------------------
+    // # Section: Internal
+    // -------------------------------------------------------------------
 
     static #getIgnoredKeys(options) {
         const ignoredKeys = Object.freeze([
@@ -52,6 +64,10 @@ class StateManager {
 
         return state;
     }
+
+    // -------------------------------------------------------------------
+    // # Section: Public API
+    // -------------------------------------------------------------------
 
     static setStateObject(name, value) {
         this.#runtimeState[name] = value;

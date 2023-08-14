@@ -2,6 +2,14 @@ import { LogManager } from './LogManager';
 
 const FILENAME = 'managers/ToolManager.js';
 
+/**
+ * About:
+ * ToolManager
+ * 
+ * Description:
+ * Manages the current active tool that cannot be used with all other tools.
+ * Examples are Edit-, Draw- and Measure tool.
+ */
 class ToolManager {
     static #tool;
 
@@ -10,6 +18,10 @@ class ToolManager {
     }
 
     static setMap(map) { }
+
+    // -------------------------------------------------------------------
+    // # Section: Public API
+    // -------------------------------------------------------------------
 
     static setActiveTool(tool) {
         if(this.#tool && this.#tool !== tool) {

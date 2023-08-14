@@ -60,12 +60,10 @@ class DebugInfoModal extends ModalBase {
             {
                 name: 'Log Map To Browser Console',
                 action: 'log.map.to.console'
-            },
-            {
+            }, {
                 name: 'Generate UUID',
                 action: 'generate.uuid'
-            },
-            {
+            }, {
                 name: 'Clear Event Log',
                 action: 'clear.event.log'
             }

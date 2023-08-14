@@ -105,7 +105,7 @@ class ExportPngTool extends Control {
     }
 
     momentaryActivation() {
-        this.doRenderMapOnce();
+        this.doRenderOnce();
     }
 
     // -------------------------------------------------------------------
@@ -137,7 +137,7 @@ class ExportPngTool extends Control {
             return;
         }
 
-        this.doRenderComplete(map);
+        this.doRenderCompleteAsync(map);
     }
 
     // -------------------------------------------------------------------
@@ -162,14 +162,14 @@ class ExportPngTool extends Control {
         return uiRefCanvas.style.transform
             .match(/^matrix\(([^(]*)\)$/)[1]
             .split(',')
-            .map(Number);;
+            .map(Number);
     }
 
     // -------------------------------------------------------------------
     // # Section: Tool DoActions
     // -------------------------------------------------------------------
 
-    doRenderComplete(map) {
+    async doRenderCompleteAsync(map) {
         try {
             const uiRefMapElement = ElementManager.getMapElement();
             const size = map.getSize();
@@ -204,7 +204,7 @@ class ExportPngTool extends Control {
             }
 
             const errorMessage = 'Failed to export canvas image';
-            LogManager.logError(FILENAME, 'doRenderComplete', {
+            LogManager.logError(FILENAME, 'doRenderCompleteAsync', {
                 message: errorMessage,
                 error: error
             });
@@ -216,7 +216,7 @@ class ExportPngTool extends Control {
         }
     }
 
-    doMapRenderOnce() {
+    doRenderOnce() {
         const map = this.getMap();
         if(!map) {
             return;
