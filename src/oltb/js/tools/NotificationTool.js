@@ -132,7 +132,7 @@ class NotificationTool extends Control {
     // -------------------------------------------------------------------
 
     setModalContent(notification) {
-        const content = `
+        const content = (`
             <h3>👋 From Qulle</h3>
             <p>${notification.message}</p>
             <h3>🔭 Your version</h3>
@@ -159,11 +159,11 @@ class NotificationTool extends Control {
             }
             ${this.hasError(notification) ?
                 `
-                    <h3>📡 Fetch error</h3>
+                    <h3>🐝 Fetch error</h3>
                     <p>${notification.error}</p>
                 ` : ''
             }
-        `;
+        `);
 
         this.notificationModal.setContent(content);
     }

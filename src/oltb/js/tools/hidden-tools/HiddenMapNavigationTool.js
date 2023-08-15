@@ -41,11 +41,11 @@ const LocalStorageDefaults = Object.freeze({
 const DefaultUrlMarker = Object.freeze({
     lon: 18.0685,
     lat: 59.3293,
-    title: "Marker",
-    description: "Oops, this is the default description, have you forgot a parameter?",
-    icon: "GeoMarker.Filled",
-    layerName: "URL Marker",
-    label: "Marker",
+    title: 'Marker',
+    description: 'Oops, this is the default description, have you forgot a parameter?',
+    icon: 'GeoMarker.Filled',
+    layerName: 'URL Marker',
+    label: 'Marker',
     labelFill: '#FFFFFF',
     labelStroke: '#3B4352CC',
     labelStrokeWidth: 12,
@@ -331,16 +331,18 @@ class HiddenMapNavigationTool extends Control {
         goToView({
             map: map,
             coordinates: coordinates,
-            zoom: zoom
+            zoom: zoom,
+            onDone: function(result) {
+                InfoWindowManager.showOverlay(marker, fromLonLat(coordinates));
+            }
         });
-
-        InfoWindowManager.showOverlayDelayed(marker, fromLonLat(coordinates));
     }
 
     doAddMarkerToMap(marker, layerName) {
         const layerWrapper = LayerManager.addFeatureLayer({
             name: layerName
         });
+        
         layerWrapper.getLayer().getSource().addFeature(marker);
     }
 

@@ -142,7 +142,7 @@ class SettingsTool extends Control {
 
                 Toast.info({
                     title: 'Cleared',
-                    message: "All stored items was reset to default", 
+                    message: 'All stored items was reset to default', 
                     autoremove: Config.autoRemovalDuation.normal
                 });
             }
@@ -162,7 +162,7 @@ class SettingsTool extends Control {
             onSave: () => {
                 Toast.success({
                     title: 'Saved',
-                    message: "All settings settings was saved", 
+                    message: 'All settings settings was saved', 
                     autoremove: Config.autoRemovalDuation.normal
                 });
             },
@@ -173,7 +173,7 @@ class SettingsTool extends Control {
     }
 
     doDispatchBrowserStateCleared() {
-        // Emit event so that any tool can clean up
+        // Note: Trigger event so that any tool can clean up
         window.dispatchEvent(new CustomEvent(Events.custom.browserStateCleared));
 
         [

@@ -37,6 +37,7 @@ const addMarkerToMap = function(marker) {
     const layerWrapper = LayerManager.getActiveFeatureLayer({
         fallback: 'Markers'
     });
+    
     layerWrapper.getLayer().getSource().addFeature(marker);
 }
 

@@ -9,9 +9,11 @@ import { ZoomInTool } from './ZoomInTool';
 import { MeasureTool } from './MeasureTool';
 import { MagnifyTool } from './MagnifyTool';
 import { ZoomOutTool } from './ZoomOutTool';
+import { ZoomBoxTool } from './ZoomBoxTool';
 import { RefreshTool } from './RefreshTool';
 import { SettingsTool } from './SettingsTool';
 import { OverviewTool } from './OverviewTool';
+import { ScissorsTool } from './ScissorsTool';
 import { BookmarkTool } from './BookmarkTool';
 import { DirectionTool } from './DirectionTool';
 import { DebugInfoTool } from './DebugInfoTool';
@@ -36,11 +38,13 @@ const AllTools = Object.freeze({
     HomeTool,
     ZoomInTool,
     ZoomOutTool,
+    ZoomBoxTool,
     FullscreenTool,
     ExportPngTool,
     DrawTool,
     MeasureTool,
     EditTool,
+    ScissorsTool,
     BookmarkTool,
     LayerTool,
     SplitViewTool,

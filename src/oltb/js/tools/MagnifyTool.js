@@ -8,6 +8,7 @@ import { unByKey } from 'ol/Observable';
 import { LogManager } from '../core/managers/LogManager';
 import { StateManager } from '../core/managers/StateManager';
 import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
+import { DOMExceptions } from '../helpers/constants/DOMExceptions';
 import { getRenderPixel } from 'ol/render';
 import { ElementManager } from '../core/managers/ElementManager';
 import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
@@ -316,7 +317,7 @@ class MagnifyTool extends Control {
                 
             Toast.error({
                 title: 'Error',
-                message: (error.name === 'SecurityError' 
+                message: (error.name === DOMExceptions.SecurityError
                     ? 'CORS error with one of the layers'
                     : errorMessage
                 )

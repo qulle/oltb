@@ -124,6 +124,7 @@ class HiddenMarkerTool extends Control {
         const layerWrapper = LayerManager.getActiveFeatureLayer({
             fallback: 'Markers'
         });
+        
         layerWrapper.getLayer().getSource().addFeature(marker);
     }
 

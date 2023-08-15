@@ -41,6 +41,10 @@ class DebugInfoModal extends ModalBase {
         return FILENAME;
     }
 
+    // -------------------------------------------------------------------
+    // # Section: User Interface
+    // -------------------------------------------------------------------
+
     #createModal() {
         const modalContent = this.#generateModalContent();
         this.show(modalContent);
@@ -87,7 +91,7 @@ class DebugInfoModal extends ModalBase {
                 'type': 'button'
             },
             listeners: {
-                'click': this.onDoAction.bind(this)
+                'click': this.onAction.bind(this)
             }
         });
         
@@ -453,17 +457,21 @@ class DebugInfoModal extends ModalBase {
         return modalContent;
     }
 
+    // -------------------------------------------------------------------
+    // # Section: Events
+    // -------------------------------------------------------------------
+
     onToggleSection(toggle) {
         const targetName = toggle.dataset.oltbToggleableTarget;
         document.getElementById(targetName)?.slideToggle(Config.animationDuration.fast);
     }
 
-    onDoAction() {
+    onAction() {
         const action = this.commandsCollection.value;
         const actions = {
-            'log.map.to.console': this.actionLoggingMap.bind(this),
-            'generate.uuid': this.actionGenerateUUID.bind(this),
-            'clear.event.log': this.actionClearEventLog.bind(this)
+            'log.map.to.console': this.doActionLoggingMap.bind(this),
+            'generate.uuid': this.doActionGenerateUUID.bind(this),
+            'clear.event.log': this.doActionClearEventLog.bind(this)
         };
 
         const actionMethod = actions[action];
@@ -472,7 +480,11 @@ class DebugInfoModal extends ModalBase {
         }
     }
 
-    actionLoggingMap() {
+    // -------------------------------------------------------------------
+    // # Section: DoActions
+    // -------------------------------------------------------------------
+
+    doActionLoggingMap() {
         console.dir(this.options.map);
         Toast.info({
             title: 'Logged',
@@ -481,7 +493,7 @@ class DebugInfoModal extends ModalBase {
         });
     }
 
-    actionGenerateUUID() {
+    doActionGenerateUUID() {
         const uuid = uuidv4();
         const entry = LogManager.logInformation(FILENAME, 'actionGenerateUUID', uuid);
 
@@ -492,7 +504,7 @@ class DebugInfoModal extends ModalBase {
         ]);
     }
 
-    actionClearEventLog() {
+    doActionClearEventLog() {
         LogManager.clearLog();
 
         const uiRefEventLog = document.getElementById(ID_EVENT_LOG);

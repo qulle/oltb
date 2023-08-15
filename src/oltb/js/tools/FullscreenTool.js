@@ -124,28 +124,7 @@ class FullscreenTool extends Control {
     }
 
     onFullScreenChange(event) {
-        if(document.fullscreenElement) {
-            this.button.removeChild(this.button.firstElementChild);
-            this.button.insertAdjacentHTML('afterbegin', this.exitFullscreenIcon);
-            this.button.getTippy().setContent(`Exit fullscreen (${ShortcutKeys.fullscreenTool})`);
-
-            // Note: Consumer callback
-            if(this.options.onEnter instanceof Function) {
-                this.options.onEnter(event);
-            }
-        }else {
-            this.button.removeChild(this.button.firstElementChild);
-            this.button.insertAdjacentHTML('afterbegin', this.enterFullscreenIcon);
-            this.button.getTippy().setContent(`Enter fullscreen (${ShortcutKeys.fullscreenTool})`);
-
-            // Note: Consumer callback
-            if(this.options.onLeave instanceof Function) {
-                this.options.onLeave(event);
-            }
-        }
-
-        this.isActive = !this.isActive;
-        this.button.classList.toggle(`${CLASS_TOOL_BUTTON}--active`);
+        this.doFullScreenChange(event);
     }
 
     // -------------------------------------------------------------------
@@ -219,6 +198,31 @@ class FullscreenTool extends Control {
         }
 
         map.updateSize();
+    }
+
+    doFullScreenChange(event) {
+        if(document.fullscreenElement) {
+            this.button.removeChild(this.button.firstElementChild);
+            this.button.insertAdjacentHTML('afterbegin', this.exitFullscreenIcon);
+            this.button.getTippy().setContent(`Exit fullscreen (${ShortcutKeys.fullscreenTool})`);
+
+            // Note: Consumer callback
+            if(this.options.onEnter instanceof Function) {
+                this.options.onEnter(event);
+            }
+        }else {
+            this.button.removeChild(this.button.firstElementChild);
+            this.button.insertAdjacentHTML('afterbegin', this.enterFullscreenIcon);
+            this.button.getTippy().setContent(`Enter fullscreen (${ShortcutKeys.fullscreenTool})`);
+
+            // Note: Consumer callback
+            if(this.options.onLeave instanceof Function) {
+                this.options.onLeave(event);
+            }
+        }
+
+        this.isActive = !this.isActive;
+        this.button.classList.toggle(`${CLASS_TOOL_BUTTON}--active`);
     }
 }
 

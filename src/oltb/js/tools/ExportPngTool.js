@@ -233,12 +233,12 @@ class ExportPngTool extends Control {
             : '';
 
         const filename = `${this.options.filename}${timestamp}.png`;
-        const content = navigator.msSaveBlob
+        const content = window.navigator.msSaveBlob
             ? pngCanvas.msToBlob()
             : pngCanvas.toDataURL();
 
-        if(navigator.msSaveBlob) {
-            navigator.msSaveBlob(content, filename);
+        if(window.navigator.msSaveBlob) {
+            window.navigator.msSaveBlob(content, filename);
         }else {
             download(filename, content);
         }

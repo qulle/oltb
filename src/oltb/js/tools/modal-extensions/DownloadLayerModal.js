@@ -34,6 +34,10 @@ class DownloadLayerModal extends ModalBase {
         return FILENAME;
     }
 
+    // -------------------------------------------------------------------
+    // # Section: User Interface
+    // -------------------------------------------------------------------
+
     #createModal() {
         const [ formatWrapper, formatSelect ] = createUISelect({
             idPrefix: ID_PREFIX,
@@ -55,14 +59,9 @@ class DownloadLayerModal extends ModalBase {
                 'type': 'button'
             },
             listeners: {
-                'click': () => {
-                    const result = {
-                        format: formatSelect.value.trim()
-                    };
-        
-                    this.close();
-                    this.options.onDownload instanceof Function && this.options.onDownload(result);
-                }
+                'click': this.#onClick.bind(this, {
+                    format: formatSelect.value.trim()
+                })
             }
         });
 
@@ -76,10 +75,7 @@ class DownloadLayerModal extends ModalBase {
                 'type': 'button'
             },
             listeners: {
-                'click': () => {
-                    this.close();
-                    this.options.onCancel instanceof Function && this.options.onCancel();
-                }
+                'click': this.#onCancel.bind(this)
             }
         });
 
@@ -99,6 +95,20 @@ class DownloadLayerModal extends ModalBase {
         ]);
 
         this.show(modalContent);
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Events
+    // -------------------------------------------------------------------
+
+    #onClick(result) {
+        this.close();
+        this.options.onDownload instanceof Function && this.options.onDownload(result);
+    }
+
+    #onCancel() {
+        this.close();
+        this.options.onCancel instanceof Function && this.options.onCancel();
     }
 }
 

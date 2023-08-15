@@ -38,6 +38,10 @@ class LayerModal extends ModalBase {
         return FILENAME;
     }
 
+    // -------------------------------------------------------------------
+    // # Section: User Interface
+    // -------------------------------------------------------------------
+
     #createModal() {
         const [ nameWrapper, nameInput ] = createUIInput({
             idPrefix: ID_PREFIX,
@@ -142,23 +146,18 @@ class LayerModal extends ModalBase {
                 'type': 'button'
             },
             listeners: {
-                'click': () => {
-                    const result = {
-                        name: nameInput.value.trim(),
-                        layer: typeSelect.value.trim(),
-                        source: sourceSelect.value.trim(),
-                        projection: projectionSelect.value.trim() || Config.projection.default,
-                        url: urlInput.value.trim(),
-                        parameters: parametersInput.value.trim() || '{}',
-                        wrapX: wrapXSelect.value.trim(),
-                        crossOrigin: corsSelect.value.trim(),
-                        attributions: attributionsInput.value.trim(),
-                        isDynamicallyAdded: true
-                    };
-
-                    this.close();
-                    this.options.onCreate instanceof Function && this.options.onCreate(result);
-                }
+                'click': this.#onClick.bind(this, {
+                    name: nameInput.value.trim(),
+                    layer: typeSelect.value.trim(),
+                    source: sourceSelect.value.trim(),
+                    projection: projectionSelect.value.trim() || Config.projection.default,
+                    url: urlInput.value.trim(),
+                    parameters: parametersInput.value.trim() || '{}',
+                    wrapX: wrapXSelect.value.trim(),
+                    crossOrigin: corsSelect.value.trim(),
+                    attributions: attributionsInput.value.trim(),
+                    isDynamicallyAdded: true
+                })
             }
         });
 
@@ -172,10 +171,7 @@ class LayerModal extends ModalBase {
                 'type': 'button'
             },
             listeners: {
-                'click': () => {
-                    this.close();
-                    this.options.onCancel instanceof Function && this.options.onCancel();
-                }
+                'click': this.#onCancel.bind(this)
             }
         });
 
@@ -203,6 +199,20 @@ class LayerModal extends ModalBase {
         ]);
 
         this.show(modalContent);
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Events
+    // -------------------------------------------------------------------
+
+    #onClick(result) {
+        this.close();
+        this.options.onCreate instanceof Function && this.options.onCreate(result);
+    }
+
+    #onCancel() {
+        this.close();
+        this.options.onCancel instanceof Function && this.options.onCancel();
     }
 }
 

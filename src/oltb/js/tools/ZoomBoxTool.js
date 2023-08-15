@@ -1,4 +1,4 @@
-import _, { uniqueId } from 'lodash';
+import _ from 'lodash';
 import { DOM } from '../helpers/browser/DOM';
 import { Keys } from '../helpers/constants/Keys';
 import { click } from 'ol/events/condition';
@@ -10,15 +10,16 @@ import { LogManager } from '../core/managers/LogManager';
 import { ToolManager } from '../core/managers/ToolManager';
 import { StateManager } from '../core/managers/StateManager';
 import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
+import { TooltipManager } from '../core/managers/TooltipManager';
 import { ElementManager } from '../core/managers/ElementManager';
 import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
 import { SvgPaths, getIcon } from '../core/icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
-import { TooltipManager } from '../core/managers/TooltipManager';
 
 const FILENAME = 'tools/ZoomBoxTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
 const KEY_TOOLTIP = 'tool.zoombox';
+const OL_INTERNAL_OUT = 'out_';
 
 const DefaultOptions = Object.freeze({
     onInitiated: undefined,
@@ -181,7 +182,7 @@ class ZoomBoxTool extends Control {
         // Note: Setting the internal OL variable
         // Option 1: Re-create the interaction to set the inverted out value
         // Option 2: Have two interactions that are swapped with one beeing active at the time
-        this.interactionDragZoom['out_'] = false;
+        this.interactionDragZoom[OL_INTERNAL_OUT] = false;
 
         if(isShortcutKeyOnly(event, ShortcutKeys.zoomBoxTool)) {
             this.onClickTool(event);
@@ -199,7 +200,7 @@ class ZoomBoxTool extends Control {
         // Option 1: Re-create the interaction to set the inverted out value
         // Option 2: Have two interactions that are swapped with one beeing active at the time
         if(event.ctrlKey) {
-            this.interactionDragZoom['out_'] = true;
+            this.interactionDragZoom[OL_INTERNAL_OUT] = true;
         }
     }
 

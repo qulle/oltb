@@ -35,6 +35,10 @@ class ImportLayerModal extends ModalBase {
         return FILENAME;
     }
 
+    // -------------------------------------------------------------------
+    // # Section: User Interface
+    // -------------------------------------------------------------------
+
     #createModal() {
         const featureProjectionOptions = [];
         const dataProjectionOptions = [];
@@ -81,15 +85,10 @@ class ImportLayerModal extends ModalBase {
                 'type': 'button'
             },
             listeners: {
-                'click': () => {
-                    const result = {
-                        featureProjection: featureProjectionSelect.value.trim(),
-                        dataProjection: dataProjectionSelect.value.trim()
-                    };
-        
-                    this.close();
-                    this.options.onImport instanceof Function && this.options.onImport(result);
-                }
+                'click': this.#onClick.bind(this, {
+                    featureProjection: featureProjectionSelect.value.trim(),
+                    dataProjection: dataProjectionSelect.value.trim()
+                })
             }
         });
 
@@ -103,10 +102,7 @@ class ImportLayerModal extends ModalBase {
                 'type': 'button'
             },
             listeners: {
-                'click': () => {
-                    this.close();
-                    this.options.onCancel instanceof Function && this.options.onCancel();
-                }
+                'click': this.#onCancel.bind(this)
             }
         });
 
@@ -127,6 +123,20 @@ class ImportLayerModal extends ModalBase {
         ]);
 
         this.show(modalContent);
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Events
+    // -------------------------------------------------------------------
+
+    #onClick(result) {
+        this.close();
+        this.options.onImport instanceof Function && this.options.onImport(result);
+    }
+
+    #onCancel() {
+        this.close();
+        this.options.onCancel instanceof Function && this.options.onCancel();
     }
 }
 

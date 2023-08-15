@@ -48,6 +48,10 @@ class IconMarkerModal extends ModalBase {
         return FILENAME;
     }
 
+    // -------------------------------------------------------------------
+    // # Section: User Interface
+    // -------------------------------------------------------------------
+
     #createModal() {
         const [ titleWrapper, titleInput ] = createUIInput({
             idPrefix: ID_PREFIX,
@@ -159,24 +163,19 @@ class IconMarkerModal extends ModalBase {
                 'type': 'button',
             },
             listeners: {
-                'click': () => {
-                    const result = {
-                        latitude: parseFloat(latInput.value.trim()),
-                        longitude: parseFloat(lonInput.value.trim()),
-                        title: titleInput.value.trim(),
-                        description: descriptionInput.value.trim(),
-                        icon: iconSelect.value.trim(),
-                        markerFill: markerFillInput.getAttribute('data-oltb-color'),
-                        markerStroke: markerStrokeInput.getAttribute('data-oltb-color'),
-                        label: labelInput.value.trim(),
-                        labelFill: labelFillInput.getAttribute('data-oltb-color'),
-                        labelStrokeWidth: labelStrokeWidthSelect.value.trim(),
-                        labelStroke: labelStrokeInput.getAttribute('data-oltb-color')
-                    };
-        
-                    this.close();
-                    this.options.onCreate instanceof Function && this.options.onCreate(result);
-                }
+                'click': this.#onClick.bind(this, {
+                    latitude: parseFloat(latInput.value.trim()),
+                    longitude: parseFloat(lonInput.value.trim()),
+                    title: titleInput.value.trim(),
+                    description: descriptionInput.value.trim(),
+                    icon: iconSelect.value.trim(),
+                    markerFill: markerFillInput.getAttribute('data-oltb-color'),
+                    markerStroke: markerStrokeInput.getAttribute('data-oltb-color'),
+                    label: labelInput.value.trim(),
+                    labelFill: labelFillInput.getAttribute('data-oltb-color'),
+                    labelStrokeWidth: labelStrokeWidthSelect.value.trim(),
+                    labelStroke: labelStrokeInput.getAttribute('data-oltb-color')
+                })
             }
         });
 
@@ -190,10 +189,7 @@ class IconMarkerModal extends ModalBase {
                 'type': 'button'
             },
             listeners: {
-                'click': () => {
-                    this.close();
-                    this.options.onCancel instanceof Function && this.options.onCancel();
-                }
+                'click': this.#onCancel.bind(this)
             }
         });
 
@@ -223,6 +219,20 @@ class IconMarkerModal extends ModalBase {
         ]);
 
         this.show(modalContent);
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Events
+    // -------------------------------------------------------------------
+
+    #onClick(result) {
+        this.close();
+        this.options.onCreate instanceof Function && this.options.onCreate(result);
+    }
+
+    #onCancel() {
+        this.close();
+        this.options.onCancel instanceof Function && this.options.onCancel();
     }
 }
 

@@ -22,6 +22,7 @@ const FILENAME = 'tools/MyLocationTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
 const CLASS_FUNC_BUTTON = 'oltb-func-btn';
 const ID_PREFIX_INFO_WINDOW = 'oltb-info-window-marker';
+const ID_MARKER_PATH = 'person.filled';
 
 const DefaultOptions = Object.freeze({
     title: 'My Location',
@@ -204,16 +205,18 @@ class MyLocationTool extends Control {
         goToView({
             map: map, 
             coordinates: coordinates,
-            zoom: zoom
+            zoom: zoom,
+            onDone: function(result) {
+                InfoWindowManager.showOverlay(marker, fromLonLat(coordinates));
+            }
         });
-        
-        InfoWindowManager.showOverlayDelayed(marker, fromLonLat(coordinates));
     }
 
     doAddMarkerToMap(marker) {
         const layerWrapper = LayerManager.addFeatureLayer({
             name: this.options.title
         });
+        
         layerWrapper.getLayer().getSource().addFeature(marker);
     }
 
@@ -239,7 +242,7 @@ class MyLocationTool extends Control {
             lat: coordinates[1],
             title: this.options.title,
             description: this.options.description,
-            icon: 'person.filled',
+            icon: ID_MARKER_PATH,
             label: this.options.title,
             labelUseEllipsisAfter: this.options.markerLabelUseEllipsisAfter,
             labelUseUpperCase: this.options.markerLabelUseUpperCase,
@@ -256,7 +259,7 @@ class MyLocationTool extends Control {
             return;
         }
 
-        if(!navigator.geolocation) {
+        if(!window.navigator.geolocation) {
             return this.onError({
                 message: 'Geolocation is not supported'
             });
@@ -272,7 +275,7 @@ class MyLocationTool extends Control {
             }
         });
 
-        navigator.geolocation.getCurrentPosition(this.onSuccess.bind(this), this.onError.bind(this), {
+        window.navigator.geolocation.getCurrentPosition(this.onSuccess.bind(this), this.onError.bind(this), {
             enableHighAccuracy: this.options.enableHighAccuracy,
             timeout: this.options.timeout
         });

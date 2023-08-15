@@ -33,6 +33,10 @@ class CoordinateModal extends ModalBase {
         return FILENAME;
     }
 
+    // -------------------------------------------------------------------
+    // # Section: User Interface
+    // -------------------------------------------------------------------
+
     #createModal() {
         const [ latWrapper, latInput ] = createUIInput({
             idPrefix: ID_PREFIX,
@@ -61,15 +65,10 @@ class CoordinateModal extends ModalBase {
                 'type': 'button'
             },
             listeners: {
-                'click': () => {
-                    const result = [
-                        lonInput.value.trim(), 
-                        latInput.value.trim()
-                    ];
-
-                    this.close();
-                    this.options.onNavigate instanceof Function && this.options.onNavigate(result);
-                }
+                'click': this.#onClick.bind(this, [
+                    lonInput.value.trim(), 
+                    latInput.value.trim()
+                ])
             }
         });
 
@@ -83,10 +82,7 @@ class CoordinateModal extends ModalBase {
                 'type': 'button'
             },
             listeners: {
-                'click': () => {
-                    this.close();
-                    this.options.onCancel instanceof Function && this.options.onCancel();
-                }
+                'click': this.#onCancel.bind(this)
             }
         });
 
@@ -114,6 +110,20 @@ class CoordinateModal extends ModalBase {
         ]);
 
         this.show(modalContent);
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Events
+    // -------------------------------------------------------------------
+
+    #onClick(result) {
+        this.close();
+        this.options.onNavigate instanceof Function && this.options.onNavigate(result);
+    }
+
+    #onCancel() {
+        this.close();
+        this.options.onCancel instanceof Function && this.options.onCancel();
     }
 }
 

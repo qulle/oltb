@@ -269,12 +269,10 @@ class EditTool extends Control {
     // -------------------------------------------------------------------
 
     generateOLInteractionSelect() {
-        const slef = this;
-
         return new Select({
             hitTolerance: this.options.hitTolerance,
-            filter: function(feature, layer) {
-                const isSelectable = !slef.isSelectable(feature);
+            filter: (feature, layer) => {
+                const isSelectable = !this.isSelectable(feature);
                 const isFeatureLayer = LayerManager.getFeatureLayers().find((layerWrapper) => {
                     return layerWrapper.getLayer().getSource().hasFeature(feature);
                 });
@@ -486,9 +484,9 @@ class EditTool extends Control {
         const properties = feature.getProperties();
         const hiddenTooltip = hasOtherTooltip && selectedFeatures.length === 1;
 
-        properties.oltb.tooltip.getElement().className = `oltb-overlay-tooltip ${
+        properties.oltb.tooltip.getElement().className = (`oltb-overlay-tooltip ${
             hiddenTooltip ? 'oltb-overlay-tooltip--hidden' : ''
-        }`;
+        }`);
         properties.oltb.onChangeListener = feature.getGeometry().on(Events.openLayers.change, this.onFeatureChange.bind(this, feature));
     }
 

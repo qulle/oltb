@@ -35,6 +35,10 @@ class SettingsModal extends ModalBase {
         return FILENAME;
     }
 
+    // -------------------------------------------------------------------
+    // # Section: User Interface
+    // -------------------------------------------------------------------
+
     #createModal() {
         const settingsFragment = document.createDocumentFragment();
         const settings = SettingsManager.getSettings();
@@ -73,16 +77,7 @@ class SettingsModal extends ModalBase {
                 'type': 'button'
             },
             listeners: {
-                'click': () => {
-                    this.#state.forEach((value, key) => {
-                        SettingsManager.setSetting(key, value);
-                    });
-
-                    this.#state.clear();
-
-                    this.close();
-                    this.options.onSave instanceof Function && this.options.onSave();
-                }
+                'click': this.#onClick.bind(this)
             }
         });
 
@@ -96,10 +91,7 @@ class SettingsModal extends ModalBase {
                 'type': 'button'
             },
             listeners: {
-                'click': () => {
-                    this.close();
-                    this.options.onCancel instanceof Function && this.options.onCancel();
-                }
+                'click': this.#onCancel.bind(this)
             }
         });
 
@@ -119,6 +111,26 @@ class SettingsModal extends ModalBase {
         ]);
 
         this.show(modalContent);
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Events
+    // -------------------------------------------------------------------
+
+    #onClick() {
+        this.#state.forEach((value, key) => {
+            SettingsManager.setSetting(key, value);
+        });
+
+        this.#state.clear();
+
+        this.close();
+        this.options.onSave instanceof Function && this.options.onSave();
+    }
+
+    #onCancel() {
+        this.close();
+        this.options.onCancel instanceof Function && this.options.onCancel();
     }
 }
 

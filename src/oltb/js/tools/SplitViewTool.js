@@ -22,6 +22,8 @@ const CLASS_TOOLBOX_SECTION = 'oltb-toolbox-section';
 const CLASS_SLIDER = 'oltb-slider';
 const CLASS_TOGGLEABLE = 'oltb-toggleable';
 const ID_PREFIX = 'oltb-split-view';
+const INDEX_DEFAULT_RIGHT = 0;
+const INDEX_DEFAULT_LEFT = 1;
 
 const DefaultOptions = Object.freeze({
     onInitiated: undefined,
@@ -187,7 +189,7 @@ class SplitViewTool extends Control {
     }
 
     activateTool() {
-        // The active switch must be enabled first
+        // Note: The active switch must be enabled first
         // Events can be triggered by other tools that should not be handled if the tools is not in use 
         this.isActive = true;
 
@@ -326,8 +328,8 @@ class SplitViewTool extends Control {
     // -------------------------------------------------------------------
 
     setDefaultSelectedIndexes() {
-        this.uiRefRightSource.selectedIndex = '0';
-        this.uiRefRightSource.selectedIndex = '1';
+        this.uiRefLeftSource.selectedIndex = String(INDEX_DEFAULT_LEFT);
+        this.uiRefRightSource.selectedIndex = String(INDEX_DEFAULT_RIGHT);
 
         return this;
     }

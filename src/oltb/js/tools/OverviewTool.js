@@ -18,6 +18,7 @@ const CLASS_TOOL_BUTTON = 'oltb-tool-button';
 const CLASS_TOOLBOX_SECTION = 'oltb-toolbox-section';
 const CLASS_TOGGLEABLE = 'oltb-toggleable';
 const ID_PREFIX = 'oltb-overview';
+const ID_CLASS_OVERVIEW_TARGET = 'oltb-overview-target';
 
 const DefaultOptions = Object.freeze({
     onInitiated: undefined,
@@ -129,7 +130,7 @@ class OverviewTool extends Control {
 
     generateOLOverviewMap() {
         return new OverviewMap({
-            target: 'oltb-overview-target',
+            target: ID_CLASS_OVERVIEW_TARGET,
             isCollapsed: false,
             collapsible: false,
             layers: [

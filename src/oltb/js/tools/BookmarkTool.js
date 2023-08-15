@@ -34,6 +34,7 @@ const CLASS_FUNC_BUTTON = 'oltb-func-btn';
 const CLASS_TOGGLEABLE = 'oltb-toggleable';
 const ID_PREFIX = 'oltb-bookmark';
 const ID_PREFIX_INFO_WINDOW = 'oltb-info-window-marker';
+const ID_MARKER_PATH = 'bookmarkStar.filled';
 const SORTABLE_BOOKMARKS = 'sortableBookmarks';
 const INDEX_OFFSET = 1;
 
@@ -425,7 +426,7 @@ class BookmarkTool extends Control {
     }
 
     onEndSortable(event, options) {
-        // Callback data
+        // User callback data
         // Note: The old/new are swapped due to the list beeing reversed in DESC order
         const list = [];
         const currentItem = {
@@ -672,7 +673,7 @@ class BookmarkTool extends Control {
 
                 Toast.info({
                     title: 'Cleared',
-                    message: "All stored bookmarks was cleared", 
+                    message: 'All stored bookmarks was cleared', 
                     autoremove: Config.autoRemovalDuation.normal
                 });
             }
@@ -745,7 +746,7 @@ class BookmarkTool extends Control {
             lon: coordinates[0],
             lat: coordinates[1],
             title: bookmark.name,
-            icon: 'bookmarkStar.filled',
+            icon: ID_MARKER_PATH,
             markerFill: '#3B4352FF',
             markerStroke: '#FFFFFFFF',
             label: bookmark.name,
@@ -875,12 +876,13 @@ class BookmarkTool extends Control {
         goToView({
             map: map,
             coordinates: bookmark.coordinates,
-            zoom: bookmark.zoom
+            zoom: bookmark.zoom,
+            onDone: function(result) {
+                if(this.isLayerVisible()) {
+                    InfoWindowManager.showOverlay(bookmark.marker, fromLonLat(bookmark.coordinates));
+                }
+            }
         });
-
-        if(this.isLayerVisible()) {
-            InfoWindowManager.showOverlayDelayed(bookmark.marker, fromLonLat(bookmark.coordinates));
-        }
 
         // Note: Consumer callback
         if(this.options.onZoomedTo instanceof Function) {

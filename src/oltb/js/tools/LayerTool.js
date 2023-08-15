@@ -155,6 +155,8 @@ class LayerTool extends Control {
             stack: this.localStorage.featureLayers
         });
 
+        // Note: The three refs below might be null due to the user
+        // disabled them in the constructor options
         if(this.uiRefAddMapLayerButton) {
             this.uiRefAddMapLayerButton.addEventListener(Events.browser.click, this.doShowAddMapLayerModal.bind(this));
         }
@@ -439,7 +441,7 @@ class LayerTool extends Control {
     }
 
     onEndSortable(event, options) {
-        // Callback data
+        // User callback data
         // Note: The old/new are swapped due to the list beeing reversed in DESC order
         const list = [];
         const currentItem = {
@@ -672,14 +674,13 @@ class LayerTool extends Control {
             isVisible: defaultVisibility
         };
 
-        // Check if the state needs to be updated or stored for the first time
+        // Note: Check if the state needs to be updated or stored for the first time
         const storedLayerState = this.getLocalStorageMapLayerById(layerId);
         if(storedLayerState) {
             layerState.sortIndex = storedLayerState.sortIndex;
             layerState.isVisible = storedLayerState.isVisible;
             
             layerWrapper.sortIndex = layerState.sortIndex;
-
             layer.setVisible(layerState.isVisible);
         }else {
             this.localStorage.mapLayers.push({
@@ -785,7 +786,6 @@ class LayerTool extends Control {
             layerState.isVisible = storedLayerState.isVisible;
 
             layerWrapper.sortIndex = layerState.sortIndex;
-
             layer.setVisible(layerState.isVisible);
         }else {
             this.localStorage.featureLayers.push({
@@ -1245,23 +1245,25 @@ class LayerTool extends Control {
     }
 
     doAddMapLayer(options) {
+        const layer = instantiateLayer(options.layer, {
+            projection: options.projection || Config.projection.default,
+            source: instantiateSource(options.source, {
+                url: options.url,
+                params: JSON.parse(options.parameters),
+                wrapX: options.wrapX,
+                attributions: options.attributions,
+                ...(options.crossOrigin !== 'undefined' && {
+                    crossOrigin: options.crossOrigin
+                }),
+                format: instantiateFormat(options.source)
+            })
+        });
+
         LayerManager.addMapLayer({
             name: options.name,
             sortIndex: 0,
             isDynamicallyAdded: options.isDynamicallyAdded,
-            layer: instantiateLayer(options.layer, {
-                projection: options.projection || Config.projection.default,
-                source: instantiateSource(options.source, {
-                    url: options.url,
-                    params: JSON.parse(options.parameters),
-                    wrapX: options.wrapX,
-                    attributions: options.attributions,
-                    ...(options.crossOrigin !== 'undefined' && {
-                        crossOrigin: options.crossOrigin
-                    }),
-                    format: instantiateFormat(options.source)
-                })
-            })
+            layer: layer
         });
     }
 
@@ -1289,7 +1291,8 @@ class LayerTool extends Control {
     }
 
     doRemoveActiveFeatureLayerClass() {
-        // Should just be one li-item that has the active class, but just in case
+        // Note: Should just be one li-item that has the active class
+        // Just in case, clean all items
         this.uiRefFeatureLayerStack.querySelectorAll('li').forEach((item) => {
             item.classList.remove(`${CLASS_TOOLBOX_LIST}__item--active`);
         });

@@ -14,6 +14,8 @@ import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
 
 const FILENAME = 'tools/GraticuleTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
+const DASHED_ON = [1, 4];
+const DASHED_OFF = [0, 0];
 
 const DefaultOptions = Object.freeze({
     color: '#3B4352E6',
@@ -100,7 +102,7 @@ class GraticuleTool extends Control {
             strokeStyle: new Stroke({
                 color: this.options.color,
                 width: this.options.width,
-                lineDash: this.options.dashed ? [1, 4] : [0, 0],
+                lineDash: this.options.dashed ? DASHED_ON : DASHED_OFF,
             }),
             showLabels: this.options.showLabels,
             isVisible: true,
