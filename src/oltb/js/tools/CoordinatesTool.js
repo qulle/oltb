@@ -269,10 +269,6 @@ class CoordinatesTool extends Control {
         return SettingsManager.getSetting(Settings.updateToolboxCoordinatesOnHover);
     }
 
-    shouldUpdateToolboxCoordinatesOnHover() {
-        return SettingsManager.getSetting(Settings.updateToolboxCoordinatesOnHover);
-    }
-
     toDecimalDegrees(cell, coordinates) {
         cell.innerHTML = (`
             ${parseFloat(coordinates[1]).toFixed(4)}, 

@@ -125,7 +125,7 @@ class HomeTool extends Control {
     }
 
     momentaryActivation() {
-        this.doNavigateHome(map);
+        this.doNavigateHome();
     }
 
     // -------------------------------------------------------------------
