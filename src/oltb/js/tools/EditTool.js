@@ -11,6 +11,7 @@ import { Control } from 'ol/control';
 import { unByKey } from 'ol/Observable';
 import { Settings } from '../helpers/constants/Settings';
 import { LogManager } from '../core/managers/LogManager';
+import { SnapManager } from '../core/managers/SnapManager';
 import { ToolManager } from '../core/managers/ToolManager';
 import { shiftKeyOnly } from 'ol/events/condition';
 import { LayerManager } from '../core/managers/LayerManager';
@@ -61,7 +62,8 @@ const DefaultOptions = Object.freeze({
     onTranslateStart: undefined,
     onTranslatEnd: undefined,
     onRemovedFeature: undefined,
-    onError: undefined
+    onError: undefined,
+    onSnapped: undefined
 });
 
 const LocalStorageNodeName = LocalStorageKeys.editTool;
@@ -156,6 +158,7 @@ class EditTool extends Control {
         this.initToolboxHTML();
         this.uiRefToolboxSection = document.querySelector(`#${ID_PREFIX}-toolbox`);
         this.initToggleables();
+        this.initSettings();
 
         this.uiRefDeleteSelectedButton = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-delete-selected-button`);
         this.uiRefDeleteSelectedButton.addEventListener(Events.browser.click, this.onDeleteSelectedFeatures.bind(this));
@@ -264,6 +267,13 @@ class EditTool extends Control {
         });
     }
 
+    initSettings() {
+        SettingsManager.addSetting(Settings.mouseOnlyToEditVectorShapes, {
+            state: true, 
+            text: 'Mouse Only To Edit Vector Shapes'
+        });
+    }
+
     // -------------------------------------------------------------------
     // # Section: Generate Helpers
     // -------------------------------------------------------------------
@@ -288,8 +298,8 @@ class EditTool extends Control {
     generateOLInteractionModify() {
         return new Modify({
             features: this.interactionSelect.getFeatures(),
-            condition: function(event) {
-                return shiftKeyOnly(event);
+            condition: (event) => {
+                return shiftKeyOnly(event) || this.useMouseOnlyToEditVectorShapes()
             }
         });
     }
@@ -334,6 +344,7 @@ class EditTool extends Control {
         });
 
         ToolManager.setActiveTool(this);
+        SnapManager.addSnap(this);
 
         this.isActive = true;
         this.uiRefToolboxSection.classList.add(`${CLASS_TOOLBOX_SECTION}--show`);
@@ -353,6 +364,7 @@ class EditTool extends Control {
         });
 
         ToolManager.removeActiveTool();
+        SnapManager.removeSnap();
 
         this.isActive = false;
         this.uiRefToolboxSection.classList.remove(`${CLASS_TOOLBOX_SECTION}--show`);
@@ -439,6 +451,10 @@ class EditTool extends Control {
 
     onTranslateEnd(event) {
         this.doTranslateEnd(event);
+    }
+
+    onSnap(event) {
+        this.doSnap(event);
     }
 
     onDeleteSelectedFeatures() {
@@ -536,6 +552,10 @@ class EditTool extends Control {
     // -------------------------------------------------------------------
     // # Section: Conversions/Validation
     // -------------------------------------------------------------------
+
+    useMouseOnlyToEditVectorShapes() {
+        return SettingsManager.getSetting(Settings.mouseOnlyToEditVectorShapes);
+    }
 
     isMeasurementType(feature) {
         return getCustomFeatureProperty(feature.getProperties(), 'type') === FeatureProperties.type.measurement;
@@ -688,6 +708,13 @@ class EditTool extends Control {
         // Note: Consumer callback
         if(this.options.onTranslatEnd instanceof Function) {
             this.options.onTranslatEnd(event);
+        }
+    }
+
+    doSnap(event) {
+        // Note: Consumer callback
+        if(this.options.onSnapped instanceof Function) {
+            this.options.onSnapped(event);
         }
     }
 

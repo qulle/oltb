@@ -4,11 +4,12 @@ const Settings = Object.freeze({
     keyboardZoom: 'keyboard.zoom',
     snapHelpLines: 'snap.help.lines',
     mouseWheelZoom: 'mouse.wheel.zoom',
-    alwaysNewLayers: 'always.new.layers',
     snapInteraction: 'snap.interaction',
+    alwaysNewLayers: 'always.new.layers',
     altShiftDragRotate: 'alt.shift.drag.rotate',
     selectVectorMapShapes: 'select.vector.map.shapes',
     copyCoordinatesOnClick: 'copy.coordinates.on.click',
+    mouseOnlyToEditVectorShapes: 'mouse.only.to.edit.vector.shapes',
     updateToolboxCoordinatesOnHover: 'update.toolbox.coordinates.on.hover'
 });
 

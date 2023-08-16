@@ -44,7 +44,7 @@ const addMarkerToMap = function(marker) {
 const onEditMarker = function(InfoWindowManager, beforeMarker, result) {
     InfoWindowManager.hideOverlay();
     
-    // Remove old marker and add new
+    // Note: Remove old marker and add new
     // Easier then updating the existing marker with new data.
     LayerManager.removeFeatureFromFeatureLayers(beforeMarker);
 
@@ -66,6 +66,8 @@ const onEditMarker = function(InfoWindowManager, beforeMarker, result) {
             </div>
         `
     };
+
+    console.dir(result);
     
     const afterMarker = new generateIconMarker({
         lon: coordinates[0],
@@ -73,8 +75,8 @@ const onEditMarker = function(InfoWindowManager, beforeMarker, result) {
         title: result.title,
         description: result.description,
         icon: result.icon,
-        markerFill: result.fill,
-        markerStroke: result.stroke,
+        markerFill: result.markerFill,
+        markerStroke: result.markerStroke,
         label: result.label,
         labelFill: result.labelFill,
         labelStrokeWidth: result.labelStrokeWidth,

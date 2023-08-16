@@ -25,7 +25,7 @@ class LayerModal extends ModalBase {
         LogManager.logDebug(FILENAME, 'constructor', 'init');
 
         super(
-            'Create map layer', 
+            'Create Map Layer', 
             options.maximized, 
             options.onClose
         );
@@ -146,18 +146,20 @@ class LayerModal extends ModalBase {
                 'type': 'button'
             },
             listeners: {
-                'click': this.#onClick.bind(this, {
-                    name: nameInput.value.trim(),
-                    layer: typeSelect.value.trim(),
-                    source: sourceSelect.value.trim(),
-                    projection: projectionSelect.value.trim() || Config.projection.default,
-                    url: urlInput.value.trim(),
-                    parameters: parametersInput.value.trim() || '{}',
-                    wrapX: wrapXSelect.value.trim(),
-                    crossOrigin: corsSelect.value.trim(),
-                    attributions: attributionsInput.value.trim(),
-                    isDynamicallyAdded: true
-                })
+                'click': () => {
+                    this.#onClick({
+                        name: nameInput.value.trim(),
+                        layer: typeSelect.value.trim(),
+                        source: sourceSelect.value.trim(),
+                        projection: projectionSelect.value.trim() || Config.projection.default,
+                        url: urlInput.value.trim(),
+                        parameters: parametersInput.value.trim() || '{}',
+                        wrapX: wrapXSelect.value.trim(),
+                        crossOrigin: corsSelect.value.trim(),
+                        attributions: attributionsInput.value.trim(),
+                        isDynamicallyAdded: true
+                    });
+                }
             }
         });
 

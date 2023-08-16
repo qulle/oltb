@@ -35,7 +35,7 @@ class IconMarkerModal extends ModalBase {
         LogManager.logDebug(FILENAME, 'constructor', 'init');
 
         super(
-            'Marker configuration', 
+            'Marker Configuration', 
             options.maximized, 
             options.onClose
         );
@@ -163,19 +163,21 @@ class IconMarkerModal extends ModalBase {
                 'type': 'button',
             },
             listeners: {
-                'click': this.#onClick.bind(this, {
-                    latitude: parseFloat(latInput.value.trim()),
-                    longitude: parseFloat(lonInput.value.trim()),
-                    title: titleInput.value.trim(),
-                    description: descriptionInput.value.trim(),
-                    icon: iconSelect.value.trim(),
-                    markerFill: markerFillInput.getAttribute('data-oltb-color'),
-                    markerStroke: markerStrokeInput.getAttribute('data-oltb-color'),
-                    label: labelInput.value.trim(),
-                    labelFill: labelFillInput.getAttribute('data-oltb-color'),
-                    labelStrokeWidth: labelStrokeWidthSelect.value.trim(),
-                    labelStroke: labelStrokeInput.getAttribute('data-oltb-color')
-                })
+                'click': () => {
+                    this.#onClick({
+                        latitude: parseFloat(latInput.value.trim()),
+                        longitude: parseFloat(lonInput.value.trim()),
+                        title: titleInput.value.trim(),
+                        description: descriptionInput.value.trim(),
+                        icon: iconSelect.value.trim(),
+                        markerFill: markerFillInput.getAttribute('data-oltb-color'),
+                        markerStroke: markerStrokeInput.getAttribute('data-oltb-color'),
+                        label: labelInput.value.trim(),
+                        labelFill: labelFillInput.getAttribute('data-oltb-color'),
+                        labelStrokeWidth: labelStrokeWidthSelect.value.trim(),
+                        labelStroke: labelStrokeInput.getAttribute('data-oltb-color')
+                    });
+                }
             }
         });
 

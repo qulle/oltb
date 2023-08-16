@@ -268,6 +268,26 @@ const toolbar = new oltb({
             },
             onError: function(event) {
                 console.log('EditTool: Error');
+            },
+            onSnapped: function(event) {
+                console.log('EditTool: Snapped');
+            }
+        },
+        ScissorsTool: {
+            onStart: function(event) {
+                console.log('ScissorsTool: Start');
+            },
+            onEnd: function(event) {
+                console.log('ScissorsTool: End', event.feature);
+            },
+            onAbort: function(event) {
+                console.log('ScissorsTool: Abort');
+            },
+            onError: function(event) {
+                console.log('ScissorsTool: Error');
+            },
+            onSnapped: function(event) {
+                console.log('ScissorsTool: Snapped');
             }
         },
         BookmarkTool: {

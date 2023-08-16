@@ -65,10 +65,12 @@ class CoordinateModal extends ModalBase {
                 'type': 'button'
             },
             listeners: {
-                'click': this.#onClick.bind(this, [
-                    lonInput.value.trim(), 
-                    latInput.value.trim()
-                ])
+                'click': () => {
+                    this.#onClick([
+                        lonInput.value.trim(), 
+                        latInput.value.trim()
+                    ]);
+                }
             }
         });
 

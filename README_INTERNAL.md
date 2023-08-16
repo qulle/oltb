@@ -333,6 +333,7 @@ import { ZoomOutTool } from 'oltb/js/tools/ZoomOutTool';
 import { RefreshTool } from 'oltb/js/tools/RefreshTool';
 import { SettingsTool } from 'oltb/js/tools/SettingsTool';
 import { OverviewTool } from 'oltb/js/tools/OverviewTool';
+import { ScissorsTool } from 'oltb/js/tools/ScissorsTool';
 import { BookmarkTool } from 'oltb/js/tools/BookmarkTool';
 import { DirectionTool } from 'oltb/js/tools/DirectionTool';
 import { DebugInfoTool } from 'oltb/js/tools/DebugInfoTool';
@@ -368,6 +369,7 @@ controls: defaultControls({
     new DrawTool(),
     new MeasureTool(),
     new EditTool(),
+    new ScissorsTool(),
     new BookmarkTool(),
     new LayerTool(),
     new SplitViewTool(),
@@ -602,6 +604,26 @@ controls: defaultControls({
         },
         onError: function(event) {
             console.log('EditTool: Error');
+        },
+        onSnapped: function(event) {
+            console.log('EditTool: Snapped');
+        }
+    }),
+    new ScissorsTool({
+        onStart: function(event) {
+            console.log('ScissorsTool: Start');
+        },
+        onEnd: function(event) {
+            console.log('ScissorsTool: End', event.feature);
+        },
+        onAbort: function(event) {
+            console.log('ScissorsTool: Abort');
+        },
+        onError: function(event) {
+            console.log('ScissorsTool: Error');
+        },
+        onSnapped: function(event) {
+            console.log('ScissorsTool: Snapped');
         }
     }),
     new BookmarkTool({

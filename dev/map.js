@@ -370,6 +370,9 @@ const map = new Map({
             },
             onError: function(event) {
                 console.log('EditTool: Error');
+            },
+            onSnapped: function(event) {
+                console.log('EditTool: Snapped');
             }
         }),
         new ScissorsTool({
@@ -384,6 +387,9 @@ const map = new Map({
             },
             onError: function(event) {
                 console.log('ScissorsTool: Error');
+            },
+            onSnapped: function(event) {
+                console.log('ScissorsTool: Snapped');
             }
         }),
         new BookmarkTool({

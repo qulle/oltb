@@ -21,7 +21,7 @@ class DownloadLayerModal extends ModalBase {
         LogManager.logDebug(FILENAME, 'constructor', 'init');
 
         super(
-            'Download layer', 
+            'Download Layer', 
             options.maximized, 
             options.onClose
         );
@@ -59,9 +59,11 @@ class DownloadLayerModal extends ModalBase {
                 'type': 'button'
             },
             listeners: {
-                'click': this.#onClick.bind(this, {
-                    format: formatSelect.value.trim()
-                })
+                'click': () => {
+                    this.#onClick({
+                        format: formatSelect.value.trim()
+                    });
+                }
             }
         });
 

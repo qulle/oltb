@@ -22,7 +22,7 @@ class ImportLayerModal extends ModalBase {
         LogManager.logDebug(FILENAME, 'constructor', 'init');
 
         super(
-            'Import layer', 
+            'Import Layer', 
             options.maximized, 
             options.onClose
         );
@@ -85,10 +85,12 @@ class ImportLayerModal extends ModalBase {
                 'type': 'button'
             },
             listeners: {
-                'click': this.#onClick.bind(this, {
-                    featureProjection: featureProjectionSelect.value.trim(),
-                    dataProjection: dataProjectionSelect.value.trim()
-                })
+                'click': () => {
+                    this.#onClick({
+                        featureProjection: featureProjectionSelect.value.trim(),
+                        dataProjection: dataProjectionSelect.value.trim()
+                    });
+                }
             }
         });
 
