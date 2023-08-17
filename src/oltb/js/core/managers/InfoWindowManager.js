@@ -34,9 +34,14 @@ class InfoWindowManager {
     static #footer;
     static #lastFeature;
 
-    static init(options = {}) {
-        LogManager.logDebug(FILENAME, 'init', 'Initialization started');
+    static async initAsync(options = {}) {
+        LogManager.logDebug(FILENAME, 'initAsync', 'Initialization started');
+        
         this.#createInfoWindow();
+
+        return new Promise((resolve) => {
+            resolve();
+        });
     }
 
     static setMap(map) {
@@ -45,6 +50,10 @@ class InfoWindowManager {
         this.#map.addOverlay(this.#overlay);
         this.#map.on(Events.openLayers.singleClick, this.#onSingleClick.bind(this));
         this.#map.on(Events.openLayers.pointerMove, this.#onPointerMove.bind(this));
+    }
+
+    static getName() {
+        return FILENAME;
     }
 
     // -------------------------------------------------------------------

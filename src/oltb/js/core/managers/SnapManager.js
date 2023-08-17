@@ -34,8 +34,8 @@ class SnapManager {
     static #xLine;
     static #yLine;
 
-    static init(options = {}) {
-        LogManager.logDebug(FILENAME, 'init', 'Initialization started');
+    static async initAsync(options = {}) {
+        LogManager.logDebug(FILENAME, 'initAsync', 'Initialization started');
 
         const features = LayerManager.getSnapFeatures();
         this.#interaction = new Snap({
@@ -83,10 +83,18 @@ class SnapManager {
         this.#setLineColorTo(STYLE_NOT_SNAPPED);
 
         this.#interaction.on(Events.openLayers.snap, this.#onSnap.bind(this));
+
+        return new Promise((resolve) => {
+            resolve();
+        });
     }
 
     static setMap(map) {
         this.#map = map;
+    }
+
+    static getName() {
+        return FILENAME;
     }
 
     // -------------------------------------------------------------------
@@ -155,7 +163,7 @@ class SnapManager {
         const isEnabled = this.#isSnapEnabled();
         const useSnapHelpLines = this.#useSnapHelpLines();
 
-        LogManager.logInformation(FILENAME, 'addSnap', {
+        LogManager.logDebug(FILENAME, 'addSnap', {
             info: 'Snap interaction requested',
             isEnabled: isEnabled,
             useSnapHelpLines: useSnapHelpLines,

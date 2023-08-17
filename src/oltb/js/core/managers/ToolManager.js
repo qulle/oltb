@@ -13,11 +13,19 @@ const FILENAME = 'managers/ToolManager.js';
 class ToolManager {
     static #tool;
 
-    static init(options = {}) {
-        LogManager.logDebug(FILENAME, 'init', 'Initialization started');
+    static async initAsync(options = {}) {
+        LogManager.logDebug(FILENAME, 'initAsync', 'Initialization started');
+
+        return new Promise((resolve) => {
+            resolve();
+        });
     }
 
     static setMap(map) { }
+
+    static getName() {
+        return FILENAME;
+    }
 
     // -------------------------------------------------------------------
     // # Section: Public API

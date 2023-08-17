@@ -23,8 +23,8 @@ class TooltipManager {
     static #onMoveEndListerner;
     static #tooltips = {}
 
-    static init(options = {}) {
-        LogManager.logDebug(FILENAME, 'init', 'Initialization started');
+    static async initAsync(options = {}) {
+        LogManager.logDebug(FILENAME, 'initAsync', 'Initialization started');
 
         const tooltipElement = DOM.createElement({
             element: 'div',
@@ -40,10 +40,18 @@ class TooltipManager {
                 Config.overlayOffset.vertical
             ]
         });
+
+        return new Promise((resolve) => {
+            resolve();
+        });
     }
 
     static setMap(map) {
         this.#map = map;
+    }
+
+    static getName() {
+        return FILENAME;
     }
 
     // -------------------------------------------------------------------

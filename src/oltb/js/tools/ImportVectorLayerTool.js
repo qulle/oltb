@@ -182,7 +182,7 @@ class ImportVectorLayerTool extends Control {
     }
 
     doImportLayer(file, result) {
-        LogManager.logInformation(FILENAME, 'doImportLayer', {
+        LogManager.logDebug(FILENAME, 'doImportLayer', {
             file: file,
             featureProjection: result.featureProjection,
             dataProjection: result.dataProjection

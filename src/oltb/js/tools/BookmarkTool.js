@@ -521,7 +521,7 @@ class BookmarkTool extends Control {
     }
 
     createUIBookmark(bookmark) {
-        LogManager.logInformation(FILENAME, 'createUIBookmark', bookmark);        
+        LogManager.logDebug(FILENAME, 'createUIBookmark', bookmark);        
 
         this.createUIBookmarkItem(bookmark);
         this.doAddIconMarker(bookmark);
@@ -853,7 +853,7 @@ class BookmarkTool extends Control {
     }
 
     doClearBookmarks() {
-        LogManager.logInformation(FILENAME, 'doClearBookmarks', 'All bookmarks cleared');
+        LogManager.logDebug(FILENAME, 'doClearBookmarks', 'All bookmarks cleared');
         
         DOM.clearElement(this.uiRefBookmarkStack);
         this.clearMarkersFromMap();
@@ -877,7 +877,7 @@ class BookmarkTool extends Control {
             map: map,
             coordinates: bookmark.coordinates,
             zoom: bookmark.zoom,
-            onDone: function(result) {
+            onDone: (result) => {
                 if(this.isLayerVisible()) {
                     InfoWindowManager.showOverlay(bookmark.marker, fromLonLat(bookmark.coordinates));
                 }

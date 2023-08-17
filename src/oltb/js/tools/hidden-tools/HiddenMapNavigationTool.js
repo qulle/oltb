@@ -332,7 +332,7 @@ class HiddenMapNavigationTool extends Control {
             map: map,
             coordinates: coordinates,
             zoom: zoom,
-            onDone: function(result) {
+            onDone: (result) => {
                 InfoWindowManager.showOverlay(marker, fromLonLat(coordinates));
             }
         });

@@ -21,8 +21,8 @@ class ElementManager {
     static #uiRefToolbarElement;
     static #uiRefToolboxElement;
 
-    static init(options = {}) {
-        LogManager.logDebug(FILENAME, 'init', 'Initialization started');
+    static async initAsync(options = {}) {
+        LogManager.logDebug(FILENAME, 'initAsync', 'Initialization started');
 
         this.#uiRefMapElement = this.#createMapElement();
         this.#uiRefToastElement = this.#createToastElement();
@@ -33,9 +33,17 @@ class ElementManager {
         window.addEventListener(Events.browser.contentLoaded, this.#onCollisionDetection.bind(this));
         window.addEventListener(Events.custom.toolbarDirectionChange, this.#onCollisionDetection.bind(this));
         window.addEventListener(Events.custom.browserStateCleared, this.#onWindowBrowserStateCleared.bind(this));
+
+        return new Promise((resolve) => {
+            resolve();
+        });
     }
 
     static setMap(map) { }
+
+    static getName() {
+        return FILENAME;
+    }
 
     // -------------------------------------------------------------------
     // # Section: User Interface

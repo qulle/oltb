@@ -60,12 +60,16 @@ class LayerManager {
         featureLayers: []
     };
 
-    static init(options = {}) {
-        LogManager.logDebug(FILENAME, 'init', 'Initialization started');
+    static async initAsync(options = {}) {
+        LogManager.logDebug(FILENAME, 'initAsync', 'Initialization started');
+
+        return new Promise((resolve) => {
+            resolve();
+        });
     }
 
     static setMap(map) { 
-        LogManager.logInformation(FILENAME, 'setMap', {
+        LogManager.logDebug(FILENAME, 'setMap', {
             adding: {
                 mapLayers: this.#queue.mapLayers.length,
                 featureLayers: this.#queue.featureLayers.length
@@ -76,6 +80,10 @@ class LayerManager {
 
         this.#handleMapLayerQueue();
         this.#handleFeatureLayerQueue();
+    }
+
+    static getName() {
+        return FILENAME;
     }
 
     // -------------------------------------------

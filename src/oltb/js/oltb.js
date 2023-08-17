@@ -134,31 +134,31 @@ class OLTB {
 
     constructor(options = {}) {
         // Note: The init order is important
-        BootstrapManager.init([
-            {manager: LogManager},
-            {manager: ErrorManager},
-            {manager: StateManager, options: {
+        BootstrapManager.initAsync([
+            { manager: LogManager },
+            { manager: ErrorManager },
+            { manager: StateManager, options: {
                 ignoredKeys: []
             }},
-            {manager: ElementManager},
-            {manager: ProjectionManager},
-            {manager: LayerManager},
-            {manager: ColorPickerManager},
-            {manager: TippyManager},
-            {manager: TooltipManager},
-            {manager: UrlManager},
-            {manager: ToolManager},
-            {manager: SettingsManager},
-            {manager: InfoWindowManager},
-            {manager: AccessibilityManager}
-        ]);
+            { manager: ElementManager },
+            { manager: ProjectionManager },
+            { manager: LayerManager },
+            { manager: ColorPickerManager },
+            { manager: TippyManager },
+            { manager: TooltipManager },
+            { manager: UrlManager },
+            { manager: ToolManager },
+            { manager: SettingsManager },
+            { manager: InfoWindowManager },
+            { manager: AccessibilityManager }
+        ]).then(() => {
+            this.#initLocalStorage();
+            this.#initTools(options);
 
-        this.#initLocalStorage();
-        this.#initTools(options);
-
-        if(options.map) {
-            this.setMap(options.map);
-        }
+            if(options.map) {
+                this.setMap(options.map);
+            }
+        });
     }
 
     setMap(map) {

@@ -11,12 +11,21 @@ const FILENAME = 'managers/ErrorManger.js';
  * Manages all uncaught errors.
  */
 class ErrorManager {
-    static init(options = {}) {
-        LogManager.logDebug(FILENAME, 'init', 'Initialization started');
+    static async initAsync(options = {}) {
+        LogManager.logDebug(FILENAME, 'initAsync', 'Initialization started');
+        
         window.addEventListener('error', this.#onError);
+
+        return new Promise((resolve) => {
+            resolve();
+        });
     }
 
     static setMap(map) { }
+
+    static getName() {
+        return FILENAME;
+    }
 
     // -------------------------------------------------------------------
     // # Section: Events

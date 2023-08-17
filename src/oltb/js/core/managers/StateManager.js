@@ -22,14 +22,22 @@ class StateManager {
     static #ignoredKeys;
     static #runtimeState;
 
-    static init(options = {}) {
-        LogManager.logDebug(FILENAME, 'init', 'Initialization started');
+    static async initAsync(options = {}) {
+        LogManager.logDebug(FILENAME, 'initAsync', 'Initialization started');
 
         this.#ignoredKeys = this.#getIgnoredKeys(options);
         this.#runtimeState = this.#getBrowserData();
+
+        return new Promise((resolve) => {
+            resolve();
+        });
     }
 
     static setMap(map) { }
+
+    static getName() {
+        return FILENAME;
+    }
 
     // -------------------------------------------------------------------
     // # Section: Internal
@@ -41,7 +49,7 @@ class StateManager {
             ...options?.ignoredKeys || []
         ]);
 
-        LogManager.logInformation(FILENAME, 'getIgnoredKeys', ignoredKeys);
+        LogManager.logDebug(FILENAME, 'getIgnoredKeys', ignoredKeys);
 
         return ignoredKeys;
     }

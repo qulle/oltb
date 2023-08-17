@@ -19,14 +19,22 @@ class ColorPickerManager {
     static #colorPickerElement;
     static #colorPicker;
 
-    static init(options = {}) {
-        LogManager.logDebug(FILENAME, 'init', 'Initialization started');
+    static async initAsync(options = {}) {
+        LogManager.logDebug(FILENAME, 'initAsync', 'Initialization started');
         
         this.#colorPickerElement = this.#createColorPickerElement();
         this.#colorPicker = AColorPicker.createPicker(this.#colorPickerElement);
+
+        return new Promise((resolve) => {
+            resolve();
+        });
     }
 
     static setMap(map) { }
+
+    static getName() {
+        return FILENAME;
+    }
 
     // -------------------------------------------------------------------
     // # Section: User Interface

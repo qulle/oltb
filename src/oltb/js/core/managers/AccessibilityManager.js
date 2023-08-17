@@ -14,14 +14,22 @@ const CLASS_ACCESSIBILITY = 'oltb-using-keyboard';
  * styling on elements. Example button focus style.
  */
 class AccessibilityManager {
-    static init(options = {}) {
-        LogManager.logDebug(FILENAME, 'init', 'Initialization started');
+    static async initAsync(options = {}) {
+        LogManager.logDebug(FILENAME, 'initAsync', 'Initialization started');
 
         document.body.addEventListener(Events.browser.mouseDown, this.#onMouseDown.bind(this));
         document.body.addEventListener(Events.browser.keyDown, this.#onKeyBoardDown.bind(this));
+
+        return new Promise((resolve) => {
+            resolve();
+        });
     }
 
     static setMap(map) { }
+
+    static getName() {
+        return FILENAME;
+    }
 
     // -------------------------------------------------------------------
     // # Section: Events

@@ -23,8 +23,8 @@ class TippyManager {
     static #mapTippy;
     static #colorTippy;
 
-    static init(options = {}) {
-        LogManager.logDebug(FILENAME, 'init', 'Initialization started');
+    static async initAsync(options = {}) {
+        LogManager.logDebug(FILENAME, 'initAsync', 'Initialization started');
         
         this.#toolButtonTippy = this.#createToolButtonTippy();
         this.#mapTippy = this.#createMapTippy();
@@ -34,9 +34,17 @@ class TippyManager {
         window.addEventListener(Events.browser.contentLoaded, this.#onDOMContentLoaded.bind(this));
         window.addEventListener(Events.custom.toolbarDirectionChange, this.#onPlacementChange.bind(this));
         window.addEventListener(Events.custom.browserStateCleared, this.#onWindowBrowserStateCleared.bind(this));
+
+        return new Promise((resolve) => {
+            resolve();
+        });
     }
 
     static setMap(map) { }
+
+    static getName() {
+        return FILENAME;
+    }
 
     // -------------------------------------------------------------------
     // # Section: Internal

@@ -70,8 +70,8 @@ class SettingsManager {
     static #localStorage;
     static #settings = _.cloneDeep(DefaultSettings);
 
-    static init(options = {}) {
-        LogManager.logDebug(FILENAME, 'init', 'Initialization started');
+    static async initAsync(options = {}) {
+        LogManager.logDebug(FILENAME, 'initAsync', 'Initialization started');
         
         // Note: The runtime state must be updated with values from localStorage
         this.#localStorage = this.#getBrowserData();
@@ -80,9 +80,17 @@ class SettingsManager {
                 value.state = this.#localStorage[key];
             }
         });
+
+        return new Promise((resolve) => {
+            resolve();
+        });
     }
 
     static setMap(map) { }
+
+    static getName() {
+        return FILENAME;
+    }
 
     // -------------------------------------------------------------------
     // # Section: Internal

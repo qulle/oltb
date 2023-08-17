@@ -13,23 +13,27 @@ const FILENAME = 'managers/BootstrapManager.js';
 class BootstrapManager {
     static #managers = [];
 
-    static init(managers = []) {
+    static async initAsync(items = []) {
+        LogManager.logInformation(FILENAME, 'initAsync', 'Manager initialization started');
+
         const oltbVersion = Config.toolbar.version;
         const openLayersVersion = Config.openLayers.version;
 
         document.documentElement.setAttribute('ol-version', openLayersVersion);
         document.documentElement.setAttribute('oltb-version', oltbVersion);
         
-        LogManager.logInformation(FILENAME, 'init', `Running OL version ${openLayersVersion}`);
-        LogManager.logInformation(FILENAME, 'init', `Running OLTB version ${oltbVersion}`);
+        LogManager.logInformation(FILENAME, 'initAsync', `Running OL version ${openLayersVersion}`);
+        LogManager.logInformation(FILENAME, 'initAsync', `Running OLTB version ${oltbVersion}`);
 
-        managers.forEach((item) => {
+        for(const item of items) {
             const manager = item.manager;
             const options = item.options || {};
 
             this.#managers.push(manager);
-            manager.init(options);
-        });
+            await manager.initAsync(options);
+        }
+
+        LogManager.logInformation(FILENAME, 'initAsync', 'Manager initialization ended');
     }
 
     static setMap(map) {
@@ -38,6 +42,10 @@ class BootstrapManager {
         this.#managers.forEach((manager) => {
             manager.setMap(map);
         });
+    }
+
+    static getName() {
+        return FILENAME;
     }
 }
 

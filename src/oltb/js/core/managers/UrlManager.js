@@ -10,11 +10,19 @@ const FILENAME = 'managers/UrlManager.js';
  * Manages and simplifies the usage of any GET-query parameter and the overall Location object.
  */
 class UrlManager {
-    static init(options = {}) {
-        LogManager.logDebug(FILENAME, 'init', 'Initialization started');
+    static async initAsync(options = {}) {
+        LogManager.logDebug(FILENAME, 'initAsync', 'Initialization started');
+
+        return new Promise((resolve) => {
+            resolve();
+        });
     }
 
     static setMap(map) { }
+
+    static getName() {
+        return FILENAME;
+    }
     
     // -------------------------------------------------------------------
     // # Section: Public API
