@@ -26,7 +26,10 @@ class ColorPickerManager {
         this.#colorPicker = AColorPicker.createPicker(this.#colorPickerElement);
 
         return new Promise((resolve) => {
-            resolve();
+            resolve({
+                filename: FILENAME,
+                result: true
+            });
         });
     }
 

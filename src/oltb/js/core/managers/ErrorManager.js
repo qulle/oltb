@@ -1,4 +1,5 @@
 import { Toast } from '../../common/Toast';
+import { Events } from '../../helpers/constants/Events';
 import { LogManager } from "./LogManager";
 
 const FILENAME = 'managers/ErrorManger.js';
@@ -14,10 +15,13 @@ class ErrorManager {
     static async initAsync(options = {}) {
         LogManager.logDebug(FILENAME, 'initAsync', 'Initialization started');
         
-        window.addEventListener('error', this.#onError);
+        window.addEventListener(Events.browser.error, this.#onError);
 
         return new Promise((resolve) => {
-            resolve();
+            resolve({
+                filename: FILENAME,
+                result: true
+            });
         });
     }
 

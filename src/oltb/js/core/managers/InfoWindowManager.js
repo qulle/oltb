@@ -40,7 +40,10 @@ class InfoWindowManager {
         this.#createInfoWindow();
 
         return new Promise((resolve) => {
-            resolve();
+            resolve({
+                filename: FILENAME,
+                result: true
+            });
         });
     }
 

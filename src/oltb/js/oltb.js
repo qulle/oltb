@@ -27,6 +27,7 @@ import { LayerManager } from './core/managers/LayerManager';
 import { StateManager } from './core/managers/StateManager';
 import { TippyManager } from './core/managers/TippyManager';
 import { ErrorManager } from './core/managers/ErrorManager';
+import { ConfigManager } from './core/managers/ConfigManager';
 import { ElementManager } from './core/managers/ElementManager';
 import { TooltipManager } from './core/managers/TooltipManager';
 import { SettingsManager } from './core/managers/SettingsManager';
@@ -61,6 +62,7 @@ class OLTB {
     static LogManager = LogManager;
     static StateManager = StateManager;
     static ElementManager = ElementManager;
+    static ConfigManager = ConfigManager;
     static ProjectionManager = ProjectionManager;
     static LayerManager = LayerManager;
     static TippyManager = TippyManager;
@@ -141,6 +143,7 @@ class OLTB {
                 ignoredKeys: []
             }},
             { manager: ElementManager },
+            { manager: ConfigManager },
             { manager: ProjectionManager },
             { manager: LayerManager },
             { manager: ColorPickerManager },

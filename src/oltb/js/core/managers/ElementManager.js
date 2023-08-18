@@ -35,7 +35,10 @@ class ElementManager {
         window.addEventListener(Events.custom.browserStateCleared, this.#onWindowBrowserStateCleared.bind(this));
 
         return new Promise((resolve) => {
-            resolve();
+            resolve({
+                filename: FILENAME,
+                result: true
+            });
         });
     }
 

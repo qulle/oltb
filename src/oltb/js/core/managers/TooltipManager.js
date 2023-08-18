@@ -26,23 +26,13 @@ class TooltipManager {
     static async initAsync(options = {}) {
         LogManager.logDebug(FILENAME, 'initAsync', 'Initialization started');
 
-        const tooltipElement = DOM.createElement({
-            element: 'div',
-            class: CLASS_OVERLAY_TOOLTIP
-        });
-
-        this.#tooltipOverlay = new Overlay({
-            stopEvent: false,
-            element: tooltipElement,
-            positioning: 'bottom-center',
-            offset: [
-                Config.overlayOffset.horizontal,
-                Config.overlayOffset.vertical
-            ]
-        });
+        this.#tooltipOverlay = this.#createTooltipOverlay();
 
         return new Promise((resolve) => {
-            resolve();
+            resolve({
+                filename: FILENAME,
+                result: true
+            });
         });
     }
 
@@ -52,6 +42,27 @@ class TooltipManager {
 
     static getName() {
         return FILENAME;
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: User Interface
+    // -------------------------------------------------------------------
+
+    static #createTooltipOverlay() {
+        const tooltipElement = DOM.createElement({
+            element: 'div',
+            class: CLASS_OVERLAY_TOOLTIP
+        });
+
+        return new Overlay({
+            stopEvent: false,
+            element: tooltipElement,
+            positioning: 'bottom-center',
+            offset: [
+                Config.overlayOffset.horizontal,
+                Config.overlayOffset.vertical
+            ]
+        });
     }
 
     // -------------------------------------------------------------------

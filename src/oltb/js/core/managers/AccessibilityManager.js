@@ -21,7 +21,10 @@ class AccessibilityManager {
         document.body.addEventListener(Events.browser.keyDown, this.#onKeyBoardDown.bind(this));
 
         return new Promise((resolve) => {
-            resolve();
+            resolve({
+                filename: FILENAME,
+                result: true
+            });
         });
     }
 

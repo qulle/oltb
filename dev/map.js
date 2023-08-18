@@ -36,6 +36,7 @@ import { LayerManager } from '../src/oltb/js/core/managers/LayerManager';
 import { StateManager } from '../src/oltb/js/core/managers/StateManager';
 import { TippyManager } from '../src/oltb/js/core/managers/TippyManager';
 import { ErrorManager } from '../src/oltb/js/core/managers/ErrorManager';
+import { ConfigManager } from '../src/oltb/js/core/managers/ConfigManager';
 import { ElementManager } from '../src/oltb/js/core/managers/ElementManager';
 import { TooltipManager } from '../src/oltb/js/core/managers/TooltipManager';
 import { SettingsManager } from '../src/oltb/js/core/managers/SettingsManager';
@@ -96,6 +97,7 @@ BootstrapManager.initAsync([
         ignoredKeys: []
     }},
     { manager: ElementManager },
+    { manager: ConfigManager },
     { manager: ProjectionManager },
     { manager: LayerManager },
     { manager: ColorPickerManager },

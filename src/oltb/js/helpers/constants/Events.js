@@ -13,7 +13,8 @@ const Events = Object.freeze({
         contentLoaded: 'DOMContentLoaded',
         fullScreenChange: 'fullscreenchange',
         load: 'load',
-        input: 'input'
+        input: 'input',
+        error: 'error',
     }),
     openLayers: Object.freeze({
         add: 'add',

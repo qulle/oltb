@@ -17,7 +17,10 @@ class ToolManager {
         LogManager.logDebug(FILENAME, 'initAsync', 'Initialization started');
 
         return new Promise((resolve) => {
-            resolve();
+            resolve({
+                filename: FILENAME,
+                result: true
+            });
         });
     }
 

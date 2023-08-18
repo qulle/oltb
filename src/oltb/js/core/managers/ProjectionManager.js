@@ -60,7 +60,10 @@ class ProjectionManager {
         this.#registerProjections(projectionsToAdd);
 
         return new Promise((resolve) => {
-            resolve();
+            resolve({
+                filename: FILENAME,
+                result: true
+            });
         });
     }
 

@@ -37,14 +37,35 @@ class SnapManager {
     static async initAsync(options = {}) {
         LogManager.logDebug(FILENAME, 'initAsync', 'Initialization started');
 
-        const features = LayerManager.getSnapFeatures();
-        this.#interaction = new Snap({
-            features: features,
-            pixelTolerance: 10,
-            edge: true,
-            vertex: true
-        });
+        this.#interaction = this.#createInteraction();
+        this.#interaction.on(Events.openLayers.snap, this.#onSnap.bind(this));
 
+        this.#snapOverlay = this.#createSnapOverlay();
+
+        this.#setCountersTo(0);
+        this.#setLineColorTo(STYLE_NOT_SNAPPED);
+
+        return new Promise((resolve) => {
+            resolve({
+                filename: FILENAME,
+                result: true
+            });
+        });
+    }
+
+    static setMap(map) {
+        this.#map = map;
+    }
+
+    static getName() {
+        return FILENAME;
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: User Interface
+    // -------------------------------------------------------------------
+
+    static #createSnapOverlay() {
         // Note: Not a perfect solution but will work for now.
         // The problem is that the overlay follows the cursor (and that is correct) but the lines only goes to the edges of the overlay
         // Making the overlay element bigger "solves" the problem (if the user not dragging the mouse to another screen)
@@ -73,28 +94,22 @@ class SnapManager {
             this.#yLine
         ]);
 
-        this.#snapOverlay = new Overlay({
+        return new Overlay({
             stopEvent: false,
             element: snapOverlayElement,
             positioning: 'center-center',
         });
+    }
 
-        this.#setCountersTo(0);
-        this.#setLineColorTo(STYLE_NOT_SNAPPED);
-
-        this.#interaction.on(Events.openLayers.snap, this.#onSnap.bind(this));
-
-        return new Promise((resolve) => {
-            resolve();
+    static #createInteraction() {
+        const features = LayerManager.getSnapFeatures();
+        
+        return new Snap({
+            features: features,
+            pixelTolerance: 10,
+            edge: true,
+            vertex: true
         });
-    }
-
-    static setMap(map) {
-        this.#map = map;
-    }
-
-    static getName() {
-        return FILENAME;
     }
 
     // -------------------------------------------------------------------

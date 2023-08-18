@@ -188,6 +188,7 @@ class NotificationTool extends Control {
         const timestamp = new Date().getTime().toString();
         fetch(`${URL_NOTIFICATION}?cache=${timestamp}`, {
                 method: 'GET',
+                cache: 'no-cache',
                 headers: {
                     'Accept': 'application/json'
                 },
@@ -202,25 +203,7 @@ class NotificationTool extends Control {
                 return response.json();
             })
             .then((data) => {
-                let features = '';
-                if(data.features.length === 0) {
-                    features = '<p>No features currently under development</p>';
-                }else {
-                    data.features.forEach((feature) => {
-                        features += `<p>${feature}</p>`;
-                    });
-                }
-
-                const notification = {
-                    message: data.message,
-                    latest: {
-                        version: data.latest.version,
-                        released: data.latest.released
-                    },
-                    features: features
-                };
-
-                this.setModalContent(notification);
+                this.doPrepareModalContent(data);
             })
             .catch((error) => {
                 LogManager.logError(FILENAME, 'doFetchNotifications', {
@@ -235,6 +218,28 @@ class NotificationTool extends Control {
 
                 this.setModalContent(notification);
             });
+    }
+
+    doPrepareModalContent(data) {
+        let features = '';
+        if(data.features.length === 0) {
+            features = '<p>No features currently under development</p>';
+        }else {
+            data.features.forEach((feature) => {
+                features += `<p>${feature}</p>`;
+            });
+        }
+
+        const notification = {
+            message: data.message,
+            latest: {
+                version: data.latest.version,
+                released: data.latest.released
+            },
+            features: features
+        };
+
+        this.setModalContent(notification);
     }
 }
 

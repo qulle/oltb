@@ -25,15 +25,18 @@ class BootstrapManager {
         LogManager.logInformation(FILENAME, 'initAsync', `Running OL version ${openLayersVersion}`);
         LogManager.logInformation(FILENAME, 'initAsync', `Running OLTB version ${oltbVersion}`);
 
+        const results = [];
         for(const item of items) {
             const manager = item.manager;
             const options = item.options || {};
 
             this.#managers.push(manager);
-            await manager.initAsync(options);
+            const result = await manager.initAsync(options);
+            results.push(result);
         }
 
         LogManager.logInformation(FILENAME, 'initAsync', 'Manager initialization ended');
+        LogManager.logInformation(FILENAME, 'initAsync', results);
     }
 
     static setMap(map) {

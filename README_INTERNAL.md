@@ -933,6 +933,7 @@ BootstrapManager.initAsync([
         ignoredKeys: []
     }},
     { manager: ElementManager },
+    { manager: ConfigManager },
     { manager: ProjectionManager },
     { manager: LayerManager },
     { manager: ColorPickerManager },

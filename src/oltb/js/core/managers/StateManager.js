@@ -29,7 +29,10 @@ class StateManager {
         this.#runtimeState = this.#getBrowserData();
 
         return new Promise((resolve) => {
-            resolve();
+            resolve({
+                filename: FILENAME,
+                result: true
+            });
         });
     }
 
