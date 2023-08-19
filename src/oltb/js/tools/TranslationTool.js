@@ -8,6 +8,7 @@ import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
 import { ElementManager } from '../core/managers/ElementManager';
 import { SvgPaths, getIcon } from '../core/icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
+import { TranslationManager } from '../core/managers/TranslationManager';
 
 const FILENAME = 'tools/TranslationTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
@@ -104,20 +105,13 @@ class TranslationTool extends Control {
     // -------------------------------------------------------------------
 
     askToChangeLanguage() {
-        const languages = [
-            {
-                text: 'Swedish (sv-se)',
-                value: 'sv-se'
-            }, {
-                text: 'English (en-us)',
-                value: 'en-us'
-            }
-        ];
+        const languages = TranslationManager.getLanguages();
+        const currentLang = TranslationManager.getActive();
 
         Dialog.select({
             title: 'Change Language',
-            message: `Current language is <strong>English (en-us)</strong>`,
-            value: 'en-us',
+            message: `Current language is <strong>${currentLang.text} (${currentLang.value})</strong>`,
+            value: currentLang.value,
             options: languages,
             confirmText: 'Translate',
             onConfirm: (from, to) => {

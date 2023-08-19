@@ -34,6 +34,7 @@ import { SettingsManager } from './core/managers/SettingsManager';
 import { BootstrapManager } from './core/managers/BootstrapManager';
 import { InfoWindowManager } from './core/managers/InfoWindowManager';
 import { ProjectionManager } from './core/managers/ProjectionManager';
+import { TranslationManager } from './core/managers/TranslationManager';
 import { ColorPickerManager } from './core/managers/ColorPickerManager';
 import { AccessibilityManager } from './core/managers/AccessibilityManager';
 
@@ -63,6 +64,7 @@ class OLTB {
     static StateManager = StateManager;
     static ElementManager = ElementManager;
     static ConfigManager = ConfigManager;
+    static TranslationManager = TranslationManager;
     static ProjectionManager = ProjectionManager;
     static LayerManager = LayerManager;
     static TippyManager = TippyManager;
@@ -81,7 +83,6 @@ class OLTB {
 
     generateIconMarker = generateIconMarker;
     generateWindBarb = generateWindBarb;
-
     createUITooltip = createUITooltip;
 
     #tools = {};
@@ -144,6 +145,7 @@ class OLTB {
             }},
             { manager: ElementManager },
             { manager: ConfigManager },
+            { manager: TranslationManager },
             { manager: ProjectionManager },
             { manager: LayerManager },
             { manager: ColorPickerManager },
@@ -168,8 +170,6 @@ class OLTB {
         Object.values(this.#tools).forEach((tool) => {
             tool.setMap(map);
         });
-
-        BootstrapManager.setMap(map);
 
         map.setTarget(ElementManager.getMapElement());
         map.getInteractions().extend([
@@ -227,6 +227,7 @@ class OLTB {
         view.setZoom(this.#localStorage.zoom);
         view.setRotation(this.#localStorage.rotation);
 
+        BootstrapManager.setMap(map);
         BootstrapManager.ready();
     }
 }

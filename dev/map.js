@@ -43,6 +43,7 @@ import { SettingsManager } from '../src/oltb/js/core/managers/SettingsManager';
 import { BootstrapManager } from '../src/oltb/js/core/managers/BootstrapManager';
 import { InfoWindowManager } from '../src/oltb/js/core/managers/InfoWindowManager';
 import { ProjectionManager } from '../src/oltb/js/core/managers/ProjectionManager';
+import { TranslationManager } from '../src/oltb/js/core/managers/TranslationManager';
 import { ColorPickerManager } from '../src/oltb/js/core/managers/ColorPickerManager';
 import { AccessibilityManager } from '../src/oltb/js/core/managers/AccessibilityManager';
 
@@ -99,6 +100,7 @@ BootstrapManager.initAsync([
     }},
     { manager: ElementManager },
     { manager: ConfigManager },
+    { manager: TranslationManager },
     { manager: ProjectionManager },
     { manager: LayerManager },
     { manager: ColorPickerManager },

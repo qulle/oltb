@@ -944,6 +944,7 @@ BootstrapManager.initAsync([
     }},
     { manager: ElementManager },
     { manager: ConfigManager },
+    { manager: TranslationManager },
     { manager: ProjectionManager },
     { manager: LayerManager },
     { manager: ColorPickerManager },
@@ -958,7 +959,7 @@ BootstrapManager.initAsync([
 ]);
 ```
 
-The second step is after the map has been created, passing the map-reference to all managers to complete the initiation process.
+The second and third step is to pass the created map as reference to all managers. After that the ready method is called which will fire of a event that components and managers will listen for in order to do the final configurations now when both the DOM, Map and Toolbar is ready to be used. 
 ```javascript
 BootstrapManager.setMap(map);
 ```
