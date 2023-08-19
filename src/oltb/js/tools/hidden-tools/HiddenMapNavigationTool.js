@@ -98,7 +98,7 @@ class HiddenMapNavigationTool extends Control {
 
         this.initContextMenuItems();
 
-        window.addEventListener(Events.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
+        window.addEventListener(Events.custom.ready, this.onOLTBReady.bind(this));
     }
 
     getName() {
@@ -171,7 +171,7 @@ class HiddenMapNavigationTool extends Control {
     // # Section: Browser Events
     // -------------------------------------------------------------------
 
-    onDOMContentLoaded(event) {
+    onOLTBReady(event) {
         const map = this.getMap();
         if(!map) {
             return;

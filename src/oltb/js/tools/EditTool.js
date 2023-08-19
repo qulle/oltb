@@ -195,7 +195,7 @@ class EditTool extends Control {
         this.interactionTranslate.addEventListener(Events.openLayers.translateEnd, this.onTranslateEnd.bind(this));
 
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
-        window.addEventListener(Events.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
+        window.addEventListener(Events.custom.ready, this.onOLTBReady.bind(this));
         window.addEventListener(Events.custom.browserStateCleared, this.onWindowBrowserStateCleared.bind(this));
         window.addEventListener(Events.custom.featureLayerRemoved, this.onWindowFeatureLayerRemoved.bind(this));
 
@@ -382,7 +382,7 @@ class EditTool extends Control {
     // # Section: Browser Events
     // -------------------------------------------------------------------
 
-    onDOMContentLoaded() {
+    onOLTBReady(event) {
         if(this.localStorage.isActive) {
             this.activateTool();
         }

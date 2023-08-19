@@ -69,7 +69,7 @@ class ExportPngTool extends Control {
         this.initDebugState();
 
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
-        window.addEventListener(Events.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
+        window.addEventListener(Events.custom.ready, this.onOLTBReady.bind(this));
 
         // Note: Consumer callback
         if(this.options.onInitiated instanceof Function) {
@@ -112,7 +112,7 @@ class ExportPngTool extends Control {
     // # Section: Browser Events
     // -------------------------------------------------------------------
 
-    onDOMContentLoaded() {
+    onOLTBReady(event) {
         const uiRefMapElement = ElementManager.getMapElement();
         const uiRefAttribution = uiRefMapElement.querySelector('.ol-attribution');
 

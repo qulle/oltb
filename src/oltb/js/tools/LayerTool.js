@@ -172,7 +172,7 @@ class LayerTool extends Control {
         this.initContextMenuItems();
 
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
-        window.addEventListener(Events.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
+        window.addEventListener(Events.custom.ready, this.onOLTBReady.bind(this));
         window.addEventListener(Events.custom.mapLayerAdded, this.onWindowMapLayerAdded.bind(this));
         window.addEventListener(Events.custom.mapLayerRemoved, this.onWindowMapLayerRemoved.bind(this));
         window.addEventListener(Events.custom.featureLayerAdded, this.onWindowFeatureLayerAdded.bind(this));
@@ -317,7 +317,7 @@ class LayerTool extends Control {
     // # Section: Browser Events
     // -------------------------------------------------------------------
 
-    onDOMContentLoaded() {
+    onOLTBReady(event) {
         if(this.localStorage.isActive) {
             this.activateTool();
         }
@@ -1010,7 +1010,7 @@ class LayerTool extends Control {
             message: `You are editing the <strong>${layerWrapper.getName()}</strong> layer`,
             value: layerWrapper.getName(),
             confirmText: 'Rename',
-            onConfirm: function(result) {
+            onConfirm: (result) => {
                 if(result !== null && !!result.length) {
                     // Update model
                     layerWrapper.setName(result);
@@ -1033,7 +1033,7 @@ class LayerTool extends Control {
             title: 'Delete Layer',
             message: `Do you want to delete the <strong>${layerWrapper.getName()}</strong> layer?`,
             confirmText: 'Delete',
-            onConfirm: function() {
+            onConfirm: () => {
                 callback(layerWrapper);
             }
         });

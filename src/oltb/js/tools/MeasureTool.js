@@ -118,7 +118,7 @@ class MeasureTool extends Control {
         this.uiRefToolType.value = this.localStorage.toolType; 
 
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
-        window.addEventListener(Events.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
+        window.addEventListener(Events.custom.ready, this.onOLTBReady.bind(this));
         window.addEventListener(Events.custom.browserStateCleared, this.onWindowBrowserStateCleared.bind(this));
 
         // Note: Consumer callback
@@ -255,7 +255,7 @@ class MeasureTool extends Control {
     // # Section: Browser Events
     // -------------------------------------------------------------------
 
-    onDOMContentLoaded() {
+    onOLTBReady(event) {
         if(this.localStorage.isActive) {
             this.activateTool();
         }

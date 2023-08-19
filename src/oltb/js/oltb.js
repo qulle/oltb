@@ -226,6 +226,8 @@ class OLTB {
         view.setCenter(coordinates);
         view.setZoom(this.#localStorage.zoom);
         view.setRotation(this.#localStorage.rotation);
+
+        BootstrapManager.ready();
     }
 }
 

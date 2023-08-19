@@ -345,6 +345,7 @@ import { MyLocationTool } from 'oltb/js/tools/MyLocationTool';
 import { ResetNorthTool } from 'oltb/js/tools/ResetNorthTool';
 import { FullscreenTool } from 'oltb/js/tools/FullscreenTool';
 import { CoordinatesTool } from 'oltb/js/tools/CoordinatesTool';
+import { TranslationTool } from 'oltb/js/tools/TranslationTool';
 import { HiddenAboutTool } from 'oltb/js/tools/hidden-tools/HiddenAboutTool';
 import { NotificationTool } from 'oltb/js/tools/NotificationTool';
 import { HiddenMarkerTool } from 'oltb/js/tools/hidden-tools/HiddenMarkerTool';
@@ -387,6 +388,7 @@ controls: defaultControls({
     new InfoTool(),
     new NotificationTool(),
     new HelpTool(),
+    new TranslationTool(),
     new SettingsTool(),
     new DebugInfoTool()
     new HiddenAboutTool()
@@ -882,6 +884,14 @@ controls: defaultControls({
             console.log('HelpTool: Clicked');
         }
     }),
+    new TranslationTool({
+        onInitiated: function() {
+            console.log('TranslationTool: Initiated');
+        },
+        onClicked: function() {
+            console.log('TranslationTool: Clicked');
+        },
+    }),
     new SettingsTool({
         onInitiated: function() {
             console.log('SettingsTool: Initiated');
@@ -1108,10 +1118,10 @@ All available properties:
 Dialog.confirm({
     title: 'Delete layer',
     message: 'Do you want to delete the selected layer?',
-    onConfirm: function() {
+    onConfirm: () => {
         console.log('Confirm button clicked');
     },
-    onCancel: function() {
+    onCancel: () => {
         console.log('Cancel button clicked');
     }
 });
@@ -1136,10 +1146,10 @@ Dialog.prompt({
     title: 'Edit name',
     message: 'You are editing the main layer name',
     value: 'Current name',
-    onConfirm: function(result) {
+    onConfirm: (result) => {
         console.log(result);
     },
-    onCancel: function() {
+    onCancel: () => {
         console.log('Cancel button clicked');
     }
 });
@@ -1158,6 +1168,52 @@ All available properties:
     onConfirm: undefined,        // Void callback with 1 string parameter
     onCancel: undefined          // Void callback with no parameters,
     onInput: undefined           // Void callback with 1 string parameter
+});
+```
+
+#### Select
+```javascript
+const languages = [
+    {
+        text: 'Swedish (sv-se)',
+        value: 'sv-se'
+    }, {
+        text: 'English (en-us)',
+        value: 'en-us'
+    }
+];
+
+Dialog.select({
+    title: 'Change Language',
+    message: `Current language is <strong>English (en-us)</strong>`,
+    value: 'en-us',
+    options: languages,
+    confirmText: 'Translate',
+    onConfirm: (from, to) => {
+        console.log(from, to);
+    },
+    onChange: (result) => {
+        console.log(result);
+    },
+    onCancel: () => {
+        console.log('Cancel button clicked');
+    }
+});
+```
+
+All available properties:
+```javascript
+({
+    title: 'Prompt',             // Dialog title
+    message: 'Select message',   // Dialog message
+    value: 'Current value',      // Option to be selected 
+    options: []                  // Options to show in select
+    confirmClass: Dialog.Danger, // Dialog style (good/bad)
+    confirmText: 'Confirm',      // Confirm button text
+    cancelText: 'Cancel'         // Cancel button text
+    onConfirm: undefined,        // Void callback with 2 string parameter (value, new value)
+    onCancel: undefined          // Void callback with no parameters,
+    onChange: undefined          // Void callback with 1 string parameter
 });
 ```
 
@@ -1333,7 +1389,7 @@ ContextMenu.addItem({
     fn: function(map, coordinates, target) {
         Dialog.confirm({
             text: 'Do you want to clear all settings?',
-            onConfirm: function() {
+            onConfirm: () => {
                 localStorage.clear();
             }
         });

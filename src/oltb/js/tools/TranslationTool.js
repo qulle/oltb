@@ -1,47 +1,39 @@
 import _ from 'lodash';
 import { DOM } from '../helpers/browser/DOM';
+import { Dialog } from '../common/Dialog';
 import { Events } from '../helpers/constants/Events';
+import { Control } from 'ol/control';
 import { LogManager } from '../core/managers/LogManager';
-import { StateManager } from '../core/managers/StateManager';
 import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
 import { ElementManager } from '../core/managers/ElementManager';
-import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
 import { SvgPaths, getIcon } from '../core/icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
-import { Control, ScaleLine } from 'ol/control';
 
-const FILENAME = 'tools/ScaleLineTool.js';
+const FILENAME = 'tools/TranslationTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
 
 const DefaultOptions = Object.freeze({
-    units: 'metric',
     onInitiated: undefined,
     onClicked: undefined
 });
 
-const LocalStorageNodeName = LocalStorageKeys.scaleLineTool;
-const LocalStorageDefaults = Object.freeze({
-    isActive: false
-});
-
 /**
  * About:
- * Show current distance scaling
+ * Display dialog to change current language
  * 
  * Description:
- * Depending on zoom level and position on the Map, a fixed distance will vary in value. 
- * This is reflected in the scaling component.
+ * The languag can be changed on the fly and also new languages can be added in the configuration without the need to rebuild the code.
  */
-class ScaleLineTool extends Control {
+class TranslationTool extends Control {
     constructor(options = {}) {
         LogManager.logDebug(FILENAME, 'constructor', 'init');
-        
+
         super({
             element: ElementManager.getToolbarElement()
         });
         
         const icon = getIcon({
-            path: SvgPaths.scaleLine.stroked,
+            path: SvgPaths.translate.mixed,
             class: `${CLASS_TOOL_BUTTON}__icon`
         });
 
@@ -51,7 +43,7 @@ class ScaleLineTool extends Control {
             class: CLASS_TOOL_BUTTON,
             attributes: {
                 'type': 'button',
-                'data-tippy-content': `Scale Line (${ShortcutKeys.scaleLineTool})`
+                'data-tippy-content': `Translate (${ShortcutKeys.translationTool})`
             },
             listeners: {
                 'click': this.onClickTool.bind(this)
@@ -61,20 +53,12 @@ class ScaleLineTool extends Control {
         DOM.appendChildren(this.element, [
             button
         ]);
-        
-        this.button = button;
-        this.isActive = false;
-        this.options = _.merge(_.cloneDeep(DefaultOptions), options);
-        
-        this.localStorage = StateManager.getAndMergeStateObject(
-            LocalStorageNodeName, 
-            LocalStorageDefaults
-        );
 
-        this.scaleLine = this.generateOLScaleLine();
-        
+        this.button = button;
+        this.infoModal = undefined;
+        this.options = _.merge(_.cloneDeep(DefaultOptions), options);
+
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
-        window.addEventListener(Events.custom.ready, this.onOLTBReady.bind(this));
 
         // Note: Consumer callback
         if(this.options.onInitiated instanceof Function) {
@@ -93,11 +77,7 @@ class ScaleLineTool extends Control {
     onClickTool(event) {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
 
-        if(this.isActive) {
-            this.deActivateTool();
-        }else {
-            this.activateTool();
-        }
+        this.momentaryActivation();
 
         // Note: Consumer callback
         if(this.options.onClicked instanceof Function) {
@@ -105,68 +85,57 @@ class ScaleLineTool extends Control {
         }
     }
 
-    activateTool() {
-        const map = this.getMap();
-        if(!map) {
-            return;
-        }
-
-        this.doAddScaleLine(map);
-
-        this.isActive = true;
-        this.button.classList.add(`${CLASS_TOOL_BUTTON}--active`);
-
-        this.localStorage.isActive = true;
-        StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
-    }
-
-    deActivateTool() {
-        this.doRemoveScaleLine();
-
-        this.isActive = false;
-        this.button.classList.remove(`${CLASS_TOOL_BUTTON}--active`);
-
-        this.localStorage.isActive = false;
-        StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
-    }
-
-    // -------------------------------------------------------------------
-    // # Section: Generate Helpers
-    // -------------------------------------------------------------------
-
-    generateOLScaleLine() {
-        return new ScaleLine({
-            units: this.options.units
-        });
+    momentaryActivation() {
+        this.askToChangeLanguage();
     }
 
     // -------------------------------------------------------------------
     // # Section: Browser Events
     // -------------------------------------------------------------------
 
-    onOLTBReady(event) {
-        if(this.localStorage.isActive) {
-            this.activateTool();
+    onWindowKeyUp(event) {
+        if(isShortcutKeyOnly(event, ShortcutKeys.translationTool)) {
+            this.onClickTool(event);
         }
     }
 
-    onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, ShortcutKeys.scaleLineTool)) {
-            this.onClickTool(event);
-        }
+    // -------------------------------------------------------------------
+    // # Section: Ask User
+    // -------------------------------------------------------------------
+
+    askToChangeLanguage() {
+        const languages = [
+            {
+                text: 'Swedish (sv-se)',
+                value: 'sv-se'
+            }, {
+                text: 'English (en-us)',
+                value: 'en-us'
+            }
+        ];
+
+        Dialog.select({
+            title: 'Change Language',
+            message: `Current language is <strong>English (en-us)</strong>`,
+            value: 'en-us',
+            options: languages,
+            confirmText: 'Translate',
+            onConfirm: (from, to) => {
+                this.doChangeLanguage(from, to);
+            },
+            onChange: (result) => {
+                console.log(result);
+            }
+        });
     }
 
     // -------------------------------------------------------------------
     // # Section: Tool DoActions
     // -------------------------------------------------------------------
 
-    doAddScaleLine(map) {
-        this.scaleLine.setMap(map);
-    }
-
-    doRemoveScaleLine() {
-        this.scaleLine.setMap(null);
+    doChangeLanguage(from, to) {
+        console.log(from, to);
     }
 }
 
-export { ScaleLineTool };
+export { TranslationTool };

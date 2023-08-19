@@ -102,7 +102,7 @@ class CoordinatesTool extends Control {
         this.uiRefCoordinatesFormat.addEventListener(Events.browser.change, this.onCoordinatesFormatChange.bind(this));
 
         window.addEventListener(Events.browser.keyDown, this.onWindowKeyDown.bind(this));
-        window.addEventListener(Events.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
+        window.addEventListener(Events.custom.ready, this.onOLTBReady.bind(this));
 
         // Note: Consumer callback
         if(this.options.onInitiated instanceof Function) {
@@ -207,7 +207,7 @@ class CoordinatesTool extends Control {
     // # Section: Browser Events
     // -------------------------------------------------------------------
 
-    onDOMContentLoaded() {
+    onOLTBReady(event) {
         if(this.localStorage.isActive) {
             this.activateTool();
         }

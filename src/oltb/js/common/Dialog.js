@@ -1,5 +1,6 @@
 import { Alert } from './dialogs/Alert';
 import { Prompt } from './dialogs/Prompt';
+import { Select } from './dialogs/Select';
 import { Confirm } from './dialogs/Confirm';
 
 class Dialog {
@@ -13,6 +14,10 @@ class Dialog {
 
     static prompt(options) {
         return new Prompt(options);
+    }
+
+    static select(options) {
+        return new Select(options);
     }
 
     static get Success() {

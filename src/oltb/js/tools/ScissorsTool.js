@@ -104,7 +104,7 @@ class ScissorsTool extends Control {
         this.interactionDraw.on(Events.openLayers.error, this.onDrawError.bind(this));
 
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
-        window.addEventListener(Events.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
+        window.addEventListener(Events.custom.read, this.onOLTBReady.bind(this));
         window.addEventListener(Events.custom.browserStateCleared, this.onWindowBrowserStateCleared.bind(this));
 
         // Note: Consumer callback
@@ -179,7 +179,7 @@ class ScissorsTool extends Control {
     // # Section: Browser Events
     // -------------------------------------------------------------------
 
-    onDOMContentLoaded() {
+    onOLTBReady(event) {
         if(this.localStorage.isActive) {
             this.activateTool();
         }

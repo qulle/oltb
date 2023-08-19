@@ -74,6 +74,7 @@ import { MyLocationTool } from '../src/oltb/js/tools/MyLocationTool';
 import { ResetNorthTool } from '../src/oltb/js/tools/ResetNorthTool';
 import { FullscreenTool } from '../src/oltb/js/tools/FullscreenTool';
 import { CoordinatesTool } from '../src/oltb/js/tools/CoordinatesTool';
+import { TranslationTool } from '../src/oltb/js/tools/TranslationTool';
 import { HiddenAboutTool } from '../src/oltb/js/tools/hidden-tools/HiddenAboutTool';
 import { NotificationTool } from '../src/oltb/js/tools/NotificationTool';
 import { HiddenMarkerTool } from '../src/oltb/js/tools/hidden-tools/HiddenMarkerTool';
@@ -650,6 +651,14 @@ const initMapAndToolbar = () => {
                     console.log('HelpTool: Clicked');
                 }
             }),
+            new TranslationTool({
+                onInitiated: function() {
+                    console.log('TranslationTool: Initiated');
+                },
+                onClicked: function() {
+                    console.log('TranslationTool: Clicked');
+                },
+            }),
             new SettingsTool({
                 onInitiated: function() {
                     console.log('SettingsTool: Initiated');
@@ -686,4 +695,5 @@ const initMapAndToolbar = () => {
     });
     
     BootstrapManager.setMap(map);
+    BootstrapManager.ready();
 }

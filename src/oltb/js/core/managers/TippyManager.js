@@ -31,8 +31,8 @@ class TippyManager {
         this.#colorTippy = this.#createColorTippy();
 
         window.addEventListener(Events.browser.resize, this.#onPlacementChange.bind(this));
-        window.addEventListener(Events.browser.contentLoaded, this.#onDOMContentLoaded.bind(this));
         window.addEventListener(Events.custom.toolbarDirectionChange, this.#onPlacementChange.bind(this));
+        window.addEventListener(Events.custom.ready, this.#onOLTBReady.bind(this));
         window.addEventListener(Events.custom.browserStateCleared, this.#onWindowBrowserStateCleared.bind(this));
 
         return new Promise((resolve) => {
@@ -65,7 +65,12 @@ class TippyManager {
     // # Section: Events
     // -------------------------------------------------------------------
 
-    static #onPlacementChange(event) {
+    static #onOLTBReady(event) {
+        this.#toolButtonTippy.setInstances(tippy(`.${CLASS_TOOL_BUTTON}`));
+        this.#onPlacementChange();
+    }
+
+    static #onPlacementChange() {
         this.#toolButtonTippy.setProps({
             placement: this.#isPlacementForcedBottom()
                 ? 'bottom' 
@@ -79,11 +84,6 @@ class TippyManager {
                 ? 'bottom' 
                 : 'right'
         });
-    }
-    
-    static #onDOMContentLoaded(event) {
-        this.#toolButtonTippy.setInstances(tippy(`.${CLASS_TOOL_BUTTON}`));
-        this.#onPlacementChange(event);
     }
 
     // -------------------------------------------------------------------

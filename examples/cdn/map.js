@@ -543,6 +543,14 @@ const toolbar = new oltb({
                 console.log('HelpTool: Clicked');
             }
         },
+        TranslationTool: {
+            onInitiated: function() {
+                console.log('TranslationTool: Initiated');
+            },
+            onClicked: function() {
+                console.log('TranslationTool: Clicked');
+            },
+        },
         SettingsTool: {
             onInitiated: function() {
                 console.log('SettingsTool: Initiated');

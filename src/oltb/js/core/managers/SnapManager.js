@@ -117,13 +117,13 @@ class SnapManager {
     // -------------------------------------------------------------------
 
     static #onSnap(event) {
-        this.#tool.onSnap(event);
+        this.#snapCounter += 1;
 
+        this.#tool.onSnap(event);
+        
         // Note: The help lines should now follow the Snapped vertext and not the mouse
         this.#snapOverlay.setPosition(event.vertex);
         this.#setLineColorTo(STYLE_SNAPPED);
-
-        this.#snapCounter += 1;
     }
 
     static #onPointerMove(event) {
@@ -146,6 +146,7 @@ class SnapManager {
         // Note: Snap is released
         this.#setCountersTo(0);
         this.#setLineColorTo(STYLE_NOT_SNAPPED);
+        this.#snapOverlay.setPosition(event.coordinate);
     }
 
     // -------------------------------------------------------------------

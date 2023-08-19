@@ -5,25 +5,25 @@ import { LogManager } from '../../core/managers/LogManager';
 import { isDarkTheme } from '../../helpers/IsDarkTheme';
 import { ElementManager } from '../../core/managers/ElementManager';
 
-const FILENAME = 'dialogs/Prompt.js';
+const FILENAME = 'dialogs/Select.js';
 const CLASS_DIALOG = 'oltb-dialog';
 const CLASS_ANIMATION = 'oltb-animation';
 const CLASS_ANIMATION_BOUNCE = `${CLASS_ANIMATION}--bounce`;
 
 const DefaultOptions = Object.freeze({
-    title: 'Prompt',
-    message: 'Oops missing prompt text',
-    placeholder: undefined,
+    title: 'Select',
+    message: 'Oops missing select text',
     value: undefined,
+    options: [],
     confirmClass: 'oltb-btn--green-mid',
     confirmText: 'Confirm',
     cancelText: 'Cancel',
     onConfirm: undefined,
     onCancel: undefined,
-    onInput: undefined
+    onChange: undefined
 });
 
-class Prompt extends DialogBase {
+class Select extends DialogBase {
     constructor(options = {}) {
         LogManager.logDebug(FILENAME, 'constructor', 'init');
         
@@ -55,26 +55,29 @@ class Prompt extends DialogBase {
             html: this.options.message
         });
 
-        const input = DOM.createElement({
-            element: 'input',
-            class: `${CLASS_DIALOG}__input oltb-input`, 
-            attributes: {
-                'type': 'text'
-            },
+        const select = DOM.createElement({
+            element: 'select',
+            class: `${CLASS_DIALOG}__select oltb-select`, 
             listeners: {
-                'input': () => {
-                    this.options.onInput instanceof Function && this.options.onInput(input.value.trim());
+                'change': () => {
+                    this.options.onChange instanceof Function && this.options.onChange(select.value.trim());
                 }
             }
         });
 
-        if(this.#isValid(this.options.placeholder)) {
-            input.setAttribute('placeholder', this.options.placeholder);
-        }
+        this.options.options.forEach((item) => {
+            const option = DOM.createElement({
+                element: 'option', 
+                text: item.text, 
+                value: item.value
+            });
+    
+            DOM.appendChildren(select, [
+                option
+            ]);
+        });
 
-        if(this.#isValid(this.options.value)) {
-            input.value = this.options.value;
-        }
+        select.value = this.options.value;
 
         const buttonWrapper = DOM.createElement({
             element: 'div',
@@ -91,7 +94,7 @@ class Prompt extends DialogBase {
             listeners: {
                 'click': () => {
                     this.close();
-                    this.options.onConfirm instanceof Function && this.options.onConfirm(inputBox.value.trim());
+                    this.options.onConfirm instanceof Function && this.options.onConfirm(this.options.value.trim(), select.value.trim());
                 }
             }
         });
@@ -122,7 +125,7 @@ class Prompt extends DialogBase {
         DOM.appendChildren(dialog, [
             title,
             message,
-            input,
+            select,
             buttonWrapper
         ]);
 
@@ -139,4 +142,4 @@ class Prompt extends DialogBase {
     }
 }
 
-export { Prompt };
+export { Select };

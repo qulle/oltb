@@ -81,7 +81,7 @@ class GraticuleTool extends Control {
         this.graticule = this.generateOLGraticule();
 
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
-        window.addEventListener(Events.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
+        window.addEventListener(Events.custom.ready, this.onOLTBReady.bind(this));
 
         // Note: Consumer callback
         if(this.options.onInitiated instanceof Function) {
@@ -158,7 +158,7 @@ class GraticuleTool extends Control {
     // # Section: Browser Events
     // -------------------------------------------------------------------
 
-    onDOMContentLoaded() {
+    onOLTBReady(event) {
         if(this.localStorage.isActive) {
             this.activateTool();
         }

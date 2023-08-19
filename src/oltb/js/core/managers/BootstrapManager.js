@@ -1,4 +1,5 @@
 import { Config } from "../Config";
+import { Events } from "../../helpers/constants/Events";
 import { LogManager } from "./LogManager";
 
 const FILENAME = 'managers/BootstrapManager.js';
@@ -45,6 +46,12 @@ class BootstrapManager {
         this.#managers.forEach((manager) => {
             manager.setMap(map);
         });
+    }
+
+    static ready() {
+        LogManager.logInformation(FILENAME, 'ready', 'OLTB is ready to use');
+
+        window.dispatchEvent(new CustomEvent(Events.custom.ready));
     }
 
     static getName() {

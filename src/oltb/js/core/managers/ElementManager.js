@@ -30,7 +30,7 @@ class ElementManager {
         this.#uiRefToolboxElement = this.#createToolboxElement();
 
         window.addEventListener(Events.browser.resize, this.#onCollisionDetection.bind(this));
-        window.addEventListener(Events.browser.contentLoaded, this.#onCollisionDetection.bind(this));
+        window.addEventListener(Events.custom.ready, this.#onCollisionDetection.bind(this));
         window.addEventListener(Events.custom.toolbarDirectionChange, this.#onCollisionDetection.bind(this));
         window.addEventListener(Events.custom.browserStateCleared, this.#onWindowBrowserStateCleared.bind(this));
 

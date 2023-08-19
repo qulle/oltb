@@ -51,7 +51,8 @@ const Events = Object.freeze({
         featureEdited: 'oltb.feature.edited',
         featureRemoved: 'oltb.feature.removed',
         colorChange: 'oltb.color.change',
-        activeFeatureLayerChange: 'oltb.active.feature.layer.change'
+        activeFeatureLayerChange: 'oltb.active.feature.layer.change',
+        ready: 'oltb.is.ready'
     })
 });
 

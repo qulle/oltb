@@ -25,6 +25,7 @@ import { MyLocationTool } from './MyLocationTool';
 import { ResetNorthTool } from './ResetNorthTool';
 import { FullscreenTool } from './FullscreenTool';
 import { CoordinatesTool } from './CoordinatesTool';
+import { TranslationTool } from './TranslationTool';
 import { HiddenAboutTool } from './hidden-tools/HiddenAboutTool';
 import { NotificationTool } from './NotificationTool';
 import { HiddenMarkerTool } from './hidden-tools/HiddenMarkerTool';
@@ -62,6 +63,7 @@ const AllTools = Object.freeze({
     InfoTool,
     NotificationTool,
     HelpTool,
+    TranslationTool,
     SettingsTool,
     DebugInfoTool,
     HiddenAboutTool
