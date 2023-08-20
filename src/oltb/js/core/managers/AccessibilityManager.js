@@ -1,6 +1,6 @@
-import { Keys } from "../../helpers/constants/Keys";
-import { Events } from "../../helpers/constants/Events";
-import { LogManager } from "./LogManager";
+import { Keys } from '../../helpers/constants/Keys';
+import { Events } from '../../helpers/constants/Events';
+import { LogManager } from './LogManager';
 
 const FILENAME = 'managers/AccessibilityManager.js';
 const CLASS_ACCESSIBILITY = 'oltb-using-keyboard';

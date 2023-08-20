@@ -1,5 +1,5 @@
-import _ from "lodash";
-import { LogManager } from "./LogManager";
+import _ from 'lodash';
+import { LogManager } from './LogManager';
 import { VERSION as olVersion } from 'ol';
 import { version as oltbVersion} from '../../../../../package.json';
 
@@ -10,6 +10,16 @@ const DefaultOptions = Object.freeze({
 });
 
 const DefaultConfig = Object.freeze({
+    localizations: Object.freeze([
+        Object.freeze({
+            text: 'English',
+            value: 'en-us'
+        }),
+        Object.freeze({
+            text: 'Swedish',
+            value: 'sv-se'
+        })
+    ]),
     defaultLocation: Object.freeze({
         lon: 18.1201,
         lat: 35.3518,
@@ -75,7 +85,7 @@ const DefaultConfig = Object.freeze({
         warp: 150
     }),
     aColorPicker: Object.freeze({
-        palette: [
+        palette: Object.freeze([
             '#FFFFFF', // White
             '#D7E3FA', // Blue Light
             '#6397C2', // Blue Mid
@@ -111,7 +121,7 @@ const DefaultConfig = Object.freeze({
             '#959DAD', // Gray Mid
             '#3B4352', // Gray Dark
             '#000000'  // Black
-        ]
+        ])
     })
 });
 

@@ -2,6 +2,16 @@ import { VERSION as olVersion } from 'ol';
 import { version as oltbVersion} from '../../../../package.json';
 
 const Config = Object.freeze({
+    localizations: Object.freeze([
+        Object.freeze({
+            text: 'English',
+            value: 'en-us'
+        }),
+        Object.freeze({
+            text: 'Swedish',
+            value: 'sv-se'
+        })
+    ]),
     defaultLocation: Object.freeze({
         lon: 18.1201,
         lat: 35.3518,
@@ -67,7 +77,7 @@ const Config = Object.freeze({
         warp: 150
     }),
     aColorPicker: Object.freeze({
-        palette: [
+        palette: Object.freeze([
             '#FFFFFF', // White
             '#D7E3FA', // Blue Light
             '#6397C2', // Blue Mid
@@ -103,7 +113,7 @@ const Config = Object.freeze({
             '#959DAD', // Gray Mid
             '#3B4352', // Gray Dark
             '#000000'  // Black
-        ]
+        ])
     })
 });
 

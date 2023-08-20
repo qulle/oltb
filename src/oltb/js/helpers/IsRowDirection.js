@@ -1,4 +1,4 @@
-import { Config } from "../core/Config";
+import { Config } from '../core/Config';
 
 const isHorizontal = function() {
     return document.body.classList.contains(Config.className.row);

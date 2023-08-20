@@ -507,14 +507,6 @@ const toolbar = new OLTB({
                 console.log('HelpTool: Clicked');
             }
         },
-        TranslationTool: {
-            onInitiated: function() {
-                console.log('TranslationTool: Initiated');
-            },
-            onClicked: function() {
-                console.log('TranslationTool: Clicked');
-            },
-        },
         SettingsTool: {
             onInitiated: function() {
                 console.log('SettingsTool: Initiated');
@@ -525,6 +517,14 @@ const toolbar = new OLTB({
             onBrowserStateCleared: function() {
                 console.log('SettingsTool: State cleared');
             }
+        },
+        TranslationTool: {
+            onInitiated: function() {
+                console.log('TranslationTool: Initiated');
+            },
+            onClicked: function() {
+                console.log('TranslationTool: Clicked');
+            },
         },
         DebugInfoTool: {
             onlyWhenGetParameter: false,

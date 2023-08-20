@@ -2,7 +2,7 @@ import _ from 'lodash';
 import { DOM } from '../helpers/browser/DOM';
 import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
-import { toLonLat } from "ol/proj";
+import { toLonLat } from 'ol/proj';
 import { goToView } from '../helpers/GoToView';
 import { LogManager } from '../core/managers/LogManager';
 import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';

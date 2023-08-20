@@ -533,6 +533,14 @@ const toolbar = new oltb({
                 console.log('NotificationTool: Clicked');
             }
         },
+        TranslationTool: {
+            onInitiated: function() {
+                console.log('TranslationTool: Initiated');
+            },
+            onClicked: function() {
+                console.log('TranslationTool: Clicked');
+            },
+        },
         HelpTool: {
             url: 'https://github.com/qulle/oltb',
             target: '_blank',
@@ -542,14 +550,6 @@ const toolbar = new oltb({
             onClicked: function() {
                 console.log('HelpTool: Clicked');
             }
-        },
-        TranslationTool: {
-            onInitiated: function() {
-                console.log('TranslationTool: Initiated');
-            },
-            onClicked: function() {
-                console.log('TranslationTool: Clicked');
-            },
         },
         SettingsTool: {
             onInitiated: function() {

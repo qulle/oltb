@@ -3,16 +3,16 @@ import urlCountriesGeoJson from 'url:../geojson/countries.geojson';
 
 // Module imports
 import { bbox } from 'ol/loadingstrategy';
-import { Toast } from "../../src/oltb/js/common/Toast";
+import { Toast } from '../../src/oltb/js/common/Toast';
 import { Config } from '../../src/oltb/js/core/Config';
 import { GeoJSON } from 'ol/format';
 import { transform } from 'ol/proj';
 import { getCenter } from 'ol/extent';
 import { LogManager } from '../../src/oltb/js/core/managers/LogManager';
-import { toStringHDMS } from "ol/coordinate";
-import { LayerManager } from "../../src/oltb/js/core/managers/LayerManager";
-import { getMeasureValue } from "../../src/oltb/js/helpers/Measurements";
-import { FeatureProperties } from "../../src/oltb/js/helpers/constants/FeatureProperties";
+import { toStringHDMS } from 'ol/coordinate';
+import { LayerManager } from '../../src/oltb/js/core/managers/LayerManager';
+import { getMeasureValue } from '../../src/oltb/js/helpers/Measurements';
+import { FeatureProperties } from '../../src/oltb/js/helpers/constants/FeatureProperties';
 import { Vector as VectorLayer } from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';
 

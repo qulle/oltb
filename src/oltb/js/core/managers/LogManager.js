@@ -1,5 +1,5 @@
-import moment from "moment/moment";
-import { Config } from "../Config";
+import moment from 'moment/moment';
+import { Config } from '../Config';
 
 const FILENAME = 'managers/LogManager.js';
 

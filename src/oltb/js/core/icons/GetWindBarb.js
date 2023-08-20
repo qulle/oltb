@@ -1,6 +1,6 @@
-import _ from "lodash";
-import { hasNestedProperty } from "../../helpers/browser/HasNestedProperty";
-import { metersPerSecondToKnots, roundDownToNearest, roundToNearest } from "../../helpers/Conversions";
+import _ from 'lodash';
+import { hasNestedProperty } from '../../helpers/browser/HasNestedProperty';
+import { metersPerSecondToKnots, roundDownToNearest, roundToNearest } from '../../helpers/Conversions';
 
 const WindBarb = Object.freeze({
     knot0: '<path fill="#1A232D" d="M125,120c2.762,0,5,2.239,5,5c0,2.762-2.238,5-5,5c-2.761,0-5-2.238-5-5C120,122.239,122.239,120,125,120z"/><path fill="none" stroke="#1A232D" stroke-width="2" d="M125,115c5.523,0,10,4.477,10,10c0,5.523-4.477,10-10,10 c-5.523,0-10-4.477-10-10C115,119.477,119.477,115,125,115z "/>',

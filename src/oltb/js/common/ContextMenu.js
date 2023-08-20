@@ -2,14 +2,14 @@ import _ from 'lodash';
 import { DOM } from '../helpers/browser/DOM';
 import { Keys } from '../helpers/constants/Keys';
 import { Config } from '../core/Config';
-import { Events } from "../helpers/constants/Events";
-import { Control } from "ol/control";
+import { Events } from '../helpers/constants/Events';
+import { Control } from 'ol/control';
 import { transform } from 'ol/proj';
 import { trapFocus } from '../helpers/browser/TrapFocus';
 import { UrlManager } from '../core/managers/UrlManager';
 import { LogManager } from '../core/managers/LogManager';
 import { ElementManager } from '../core/managers/ElementManager';
-import { hasNestedProperty } from "../helpers/browser/HasNestedProperty";
+import { hasNestedProperty } from '../helpers/browser/HasNestedProperty';
 
 const FILENAME = 'common/ContextMenu.js';
 const CLASS_CONTEXT_MENU = 'oltb-context-menu';

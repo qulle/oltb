@@ -1,4 +1,4 @@
-import { LogManager } from "../core/managers/LogManager";
+import { LogManager } from '../core/managers/LogManager';
 
 const FILENAME = 'helpers/Assert.js';
 

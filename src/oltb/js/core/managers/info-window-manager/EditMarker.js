@@ -3,7 +3,7 @@ import { Events } from '../../../helpers/constants/Events';
 import { transform } from 'ol/proj';
 import { toStringHDMS } from 'ol/coordinate';
 import { LayerManager } from '../LayerManager';
-import { IconMarkerModal } from "../../../tools/modal-extensions/IconMarkerModal";
+import { IconMarkerModal } from '../../../tools/modal-extensions/IconMarkerModal';
 import { generateIconMarker } from '../../../generators/GenerateIconMarker';
 
 const ID_PREFIX_INFO_WINDOW = 'oltb-info-window-marker';

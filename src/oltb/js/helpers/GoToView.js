@@ -1,7 +1,7 @@
-import _ from "lodash";
-import { Config } from "../core/Config";
+import _ from 'lodash';
+import { Config } from '../core/Config';
 import { easeOut } from 'ol/easing';
-import { fromLonLat } from "ol/proj";
+import { fromLonLat } from 'ol/proj';
 
 const DefaultOptions = Object.freeze({
     map: undefined,

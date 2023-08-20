@@ -1,5 +1,5 @@
-import _ from "lodash";
-import { DOM } from "../helpers/browser/DOM";
+import _ from 'lodash';
+import { DOM } from '../helpers/browser/DOM';
 
 const DefaultOptions = Object.freeze({
     idPrefix: '',

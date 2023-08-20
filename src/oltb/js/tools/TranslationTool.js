@@ -110,15 +110,12 @@ class TranslationTool extends Control {
 
         Dialog.select({
             title: 'Change Language',
-            message: `Current language is <strong>${currentLang.text} (${currentLang.value})</strong>`,
-            value: currentLang.value,
+            message: `Current language is <strong>${currentLang.text}</strong>`,
+            value: currentLang,
             options: languages,
             confirmText: 'Translate',
-            onConfirm: (from, to) => {
-                this.doChangeLanguage(from, to);
-            },
-            onChange: (result) => {
-                console.log(result);
+            onConfirm: (result) => {
+                this.doChangeLanguage(result);
             }
         });
     }
@@ -127,8 +124,13 @@ class TranslationTool extends Control {
     // # Section: Tool DoActions
     // -------------------------------------------------------------------
 
-    doChangeLanguage(from, to) {
-        console.log(from, to);
+    doChangeLanguage(result) {
+        LogManager.logDebug(FILENAME, 'doChangeLanguage', {
+            from: result.from,
+            to: result.to
+        });
+
+        TranslationManager.setActive(result.to);
     }
 }
 

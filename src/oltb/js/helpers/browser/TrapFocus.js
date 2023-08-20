@@ -1,4 +1,4 @@
-import { Keys } from "../constants/Keys";
+import { Keys } from '../constants/Keys';
 
 const trapFocus = function(event) {
     const isTabKey = event.key === Keys.valueTab;

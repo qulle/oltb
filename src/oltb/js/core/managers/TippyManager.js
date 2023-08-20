@@ -19,6 +19,7 @@ const CLASS_TOOL_BUTTON = 'oltb-tool-button';
  * Manages and simplifies the usage of the Tippy instance.
  */
 class TippyManager {
+    static #toolButtonInstances;
     static #toolButtonTippy;
     static #mapTippy;
     static #colorTippy;
@@ -26,6 +27,7 @@ class TippyManager {
     static async initAsync(options = {}) {
         LogManager.logDebug(FILENAME, 'initAsync', 'Initialization started');
         
+        this.#toolButtonInstances = [];
         this.#toolButtonTippy = this.#createToolButtonTippy();
         this.#mapTippy = this.#createMapTippy();
         this.#colorTippy = this.#createColorTippy();
@@ -61,13 +63,24 @@ class TippyManager {
         return this.#isPlacementBottom() || isHorizontal();
     }
 
+    static #setToolButtonInstances() {
+        // Note: Used when switching language
+        // Destroy each instance so that the new content with correct lang can be added in the new
+        this.#toolButtonInstances.forEach((instance) => {
+            instance.destroy();
+        });
+
+        this.#toolButtonInstances = tippy(`.${CLASS_TOOL_BUTTON}`);
+        this.#toolButtonTippy.setInstances(this.#toolButtonInstances);
+        this.#onPlacementChange();
+    }
+
     // -------------------------------------------------------------------
     // # Section: Events
     // -------------------------------------------------------------------
 
     static #onOLTBReady(event) {
-        this.#toolButtonTippy.setInstances(tippy(`.${CLASS_TOOL_BUTTON}`));
-        this.#onPlacementChange();
+        this.#setToolButtonInstances();
     }
 
     static #onPlacementChange() {
@@ -147,6 +160,10 @@ class TippyManager {
     // -------------------------------------------------------------------
     // # Section: Public API
     // -------------------------------------------------------------------
+
+    static applyLanguage() {
+        this.#setToolButtonInstances();
+    }
 
     static getToolButtonTippy() {
         return this.#toolButtonTippy;

@@ -1,5 +1,5 @@
 import * as AColorPicker from 'a-color-picker';
-import { DOM } from "../../helpers/browser/DOM";
+import { DOM } from '../../helpers/browser/DOM';
 import { Config } from '../Config';
 import { Events } from '../../helpers/constants/Events';
 import { LogManager } from './LogManager';

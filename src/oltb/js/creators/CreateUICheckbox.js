@@ -1,5 +1,5 @@
-import _ from "lodash";
-import { DOM } from "../helpers/browser/DOM";
+import _ from 'lodash';
+import { DOM } from '../helpers/browser/DOM';
 
 const CLASS_CHECKBOX_WRAPPER = 'oltb-checkbox-wrapper';
 

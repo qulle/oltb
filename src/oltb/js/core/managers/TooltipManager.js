@@ -1,9 +1,9 @@
-import { DOM } from "../../helpers/browser/DOM";
-import { Config } from "../Config";
+import { DOM } from '../../helpers/browser/DOM';
+import { Config } from '../Config';
 import { Events } from '../../helpers/constants/Events';
 import { Overlay } from 'ol';
 import { unByKey } from 'ol/Observable';
-import { LogManager } from "./LogManager";
+import { LogManager } from './LogManager';
 
 const FILENAME = 'managers/TooltipManager.js';
 const CLASS_OVERLAY_TOOLTIP = 'oltb-overlay-tooltip';

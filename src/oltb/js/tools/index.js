@@ -62,8 +62,8 @@ const AllTools = Object.freeze({
     DirectionTool,
     InfoTool,
     NotificationTool,
-    HelpTool,
     TranslationTool,
+    HelpTool,
     SettingsTool,
     DebugInfoTool,
     HiddenAboutTool

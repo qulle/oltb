@@ -1,6 +1,6 @@
 import { Toast } from '../../common/Toast';
 import { Events } from '../../helpers/constants/Events';
-import { LogManager } from "./LogManager";
+import { LogManager } from './LogManager';
 
 const FILENAME = 'managers/ErrorManger.js';
 

@@ -1,5 +1,5 @@
-import _ from "lodash";
-import { Config } from "../Config";
+import _ from 'lodash';
+import { Config } from '../Config';
 import { LogManager } from './LogManager';
 
 const FILENAME = 'managers/StateManager.js';

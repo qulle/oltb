@@ -33,10 +33,6 @@ class Select extends DialogBase {
         this.#createDialog();
     }
 
-    #isValid(value) {
-        return value !== undefined && value !== null;
-    }
-
     #createDialog() {
         const dialog = DOM.createElement({
             element: 'div', 
@@ -60,7 +56,10 @@ class Select extends DialogBase {
             class: `${CLASS_DIALOG}__select oltb-select`, 
             listeners: {
                 'change': () => {
-                    this.options.onChange instanceof Function && this.options.onChange(select.value.trim());
+                    this.options.onChange instanceof Function && this.options.onChange({
+                        text: select.options[select.selectedIndex].text.trim(),
+                        value: select.value.trim()
+                    });
                 }
             }
         });
@@ -77,7 +76,7 @@ class Select extends DialogBase {
             ]);
         });
 
-        select.value = this.options.value;
+        select.value = this.options.value.value;
 
         const buttonWrapper = DOM.createElement({
             element: 'div',
@@ -94,7 +93,16 @@ class Select extends DialogBase {
             listeners: {
                 'click': () => {
                     this.close();
-                    this.options.onConfirm instanceof Function && this.options.onConfirm(this.options.value.trim(), select.value.trim());
+                    this.options.onConfirm instanceof Function && this.options.onConfirm({
+                        from: {
+                            text: this.options.value.text,
+                            value: this.options.value.value
+                        },
+                        to: {
+                            text: select.options[select.selectedIndex].text.trim(),
+                            value: select.value.trim()
+                        }
+                    });
                 }
             }
         });
