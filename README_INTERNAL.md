@@ -5,7 +5,7 @@
 <h1 align="center">Toolbar for OpenLayers</h1>
 
 ## About
-Detailed documentation how the toolbar is structured, internal dependencies and how all parts are connected together.
+Detailed documentation how the Toolbar is structured, internal dependencies and how all parts are connected together.
 
 ## Table of contents
 1. [Branches](#branches)
@@ -13,10 +13,11 @@ Detailed documentation how the toolbar is structured, internal dependencies and 
 3. [Making A Release](#making-a-release)
 4. [Update Dependencies](#update-dependencies)
 5. [Browser Support](#browser-support)
-6. [Colors](#colors) 
+6. [Localizations](#localizations)
+7. [Colors](#colors) 
     1. [Theme Colors](#theme-colors)
     2. [Color Palette](#color-palette)
-7. [About The Code](#about-the-code)
+8. [About The Code](#about-the-code)
     1. [HTML](#html)
     2. [SCSS](#scss)
     3. [Import And Export](#import-and-export)
@@ -42,8 +43,8 @@ Detailed documentation how the toolbar is structured, internal dependencies and 
     18. [Debug Tool](#debug-tool)
     19. [Logging](#logging)
     20. [OLTB Namespace](#oltb-namespace)
-8. [License](#license)
-9. [Author](#author)
+9. [License](#license)
+10. [Author](#author)
 
 ## Branches
 The `main` branch holds the latest features that are considered done and safe to use. The latest commit from the main branch is available on the [demo-page](https://qulle.github.io/oltb/) hosted in the `gh-pages` branch. Each released major, minor or patch version is tagged and can be checked out or downloaded from CDN and NPM.
@@ -170,11 +171,14 @@ Manually tested in modern browsers (Mozilla Firefox, Microsoft Edge, Google Chro
 
 _IE is not supported, it's time to move on._
 
+## Localizations
+English is the default language. However the Toolbar can be extended with any other language. A second language (Swedish) is also shipped with the Toolbar in order to show how it is done. The available languages are controlled from `config.json` and added in to `/i18n/<code>.json`.
+
 ## Colors
 The project's Theme colors and the full color palette are described below.
 
 ### Theme Colors
-The toolbar is available in both `light` and `dark` mode. I have decided to go for a small set of colors in both themes. This enables for a solid look-and-feel and association between colors and functionality. The `mid` color is to consider as the default normal color. For some situations the `light` and `dark` color is used in the normal state.
+The Toolbar is available in both `light` and `dark` mode. I have decided to go for a small set of colors in both themes. This enables for a solid look-and-feel and association between colors and functionality. The `mid` color is to consider as the default normal color. For some situations the `light` and `dark` color is used in the normal state.
 <table>
     <tr>
         <th>Blue</th>
@@ -289,12 +293,12 @@ Below is the basic HTML and JavaScript structure used in the project. For a comp
 </html>
 ```
 
-The toolbar is vertical by default, add class `row` to change direction. The user can change the direction using the tool `DirectionTool`.
+The Toolbar is vertical by default, add class `row` to change direction. The user can change the direction using the tool `DirectionTool`.
 ```HTML
 <div id="oltb" class="row"></div>
 ```
 
-The toolbar theme is light by default, add class `dark` to change theme. The user can change the theme using the tool `ThemeTool`.
+The Toolbar theme is light by default, add class `dark` to change theme. The user can change the theme using the tool `ThemeTool`.
 ```HTML
 <div id="oltb" class="dark"></div>
 ```
@@ -316,7 +320,7 @@ The tools are located in the directory `src/oltb/js/tools`. Every tool has its o
 class CoordinatesTool extends Control {}
 ```
 
-When using the custom tools, all that is needed is to import the module(s) you want to have in your toolbar.
+When using the custom tools, all that is needed is to import the module(s) you want to have in your Toolbar.
 ```javascript
 import { HomeTool } from 'oltb/js/tools/HomeTool';
 import { DrawTool } from 'oltb/js/tools/DrawTool';
@@ -353,7 +357,7 @@ import { ImportVectorLayerTool } from 'oltb/js/tools/ImportVectorLayerTool';
 import { HiddenMapNavigationTool } from 'oltb/js/tools/hidden-tools/HiddenMapNavigationTool';
 ```
 
-Then call the constructor for each tool in the extend method. The tools are added to the toolbar in the order you include them in the array.
+Then call the constructor for each tool in the extend method. The tools are added to the Toolbar in the order you include them in the array.
 ```javascript
 controls: defaultControls({
     zoom: false, 
@@ -396,7 +400,7 @@ controls: defaultControls({
 ```
 
 ### Callback Functions And Constructor Parameters
-Tools that in any way change the map, create, modify or delete objects have several different callback functions that return data to you. All tools in the main toolbar have at least one callback that is named `click`.
+Tools that in any way change the map, create, modify or delete objects have several different callback functions that return data to you. All tools in the main Toolbar have at least one callback that is named `click`.
 ```javascript
 controls: defaultControls({
     zoom: false, 
@@ -921,7 +925,7 @@ controls: defaultControls({
 Tools refered to as hidden tools are tools that only add functionality via the context menu. The hidden tools are used to enable the same type of setup and callback functions that exists on all other tools. 
 
 ### Shortcut Keys
-All tools have a shortcut key for ease of use and speeds up the handling of the toolbar. The shortcut key is displayed in the tooltip on the corresponding tool. All shortcut keys are stored in the module `oltb/js/helpers/Constants/ShortcutKeys`.
+All tools have a shortcut key for ease of use and speeds up the handling of the Toolbar. The shortcut key is displayed in the tooltip on the corresponding tool. All shortcut keys are stored in the module `oltb/js/helpers/Constants/ShortcutKeys`.
 ```javascript
 const ShortcutKeys = Object.freeze({
     areaOverview: 'A',

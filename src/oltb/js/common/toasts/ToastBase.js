@@ -1,8 +1,8 @@
 import _ from 'lodash';
 import { DOM } from '../../helpers/browser/DOM';
-import { Config } from '../../core/Config';
 import { Events } from '../../helpers/constants/Events';
 import { LogManager } from '../../core/managers/LogManager';
+import { ConfigManager } from '../../core/managers/ConfigManager';
 import { ElementManager } from '../../core/managers/ElementManager';
 
 const FILENAME = 'toasts/ToastBase.js';
@@ -96,14 +96,15 @@ class ToastBase {
     remove() {
         this.toast.classList.add(`${CLASS_TOAST}--remove`, CLASS_ANIMATION_SLIDE_OUT);
     
-        // Remove the toast from DOM after animation finishes
+        // Note: Remove the toast from DOM after animation finishes
+        const duration = ConfigManager.getConfig().animationDuration.fast;
         window.setTimeout(() => {
             DOM.removeElement(this.toast);
             
             if(this.options.onRemove instanceof Function) {
                 this.options.onRemove();
             }
-        }, Config.animationDuration.fast);
+        }, duration);
     }
 
     static get Info() { 

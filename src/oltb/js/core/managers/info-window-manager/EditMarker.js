@@ -1,8 +1,8 @@
-import { Config } from '../../Config';
 import { Events } from '../../../helpers/constants/Events';
 import { transform } from 'ol/proj';
 import { toStringHDMS } from 'ol/coordinate';
 import { LayerManager } from '../LayerManager';
+import { ConfigManager } from '../ConfigManager';
 import { IconMarkerModal } from '../../../tools/modal-extensions/IconMarkerModal';
 import { generateIconMarker } from '../../../generators/GenerateIconMarker';
 
@@ -11,12 +11,14 @@ const CLASS_FUNC_BUTTON = 'oltb-func-btn';
 
 const editMarker = function(InfoWindowManager, beforeMarker) {
     const properties = beforeMarker.getProperties().oltb;
+    const projection = ConfigManager.getConfig().projection;
+
     new IconMarkerModal({
         edit: true,
         coordinates: transform(
             beforeMarker.getGeometry().getCoordinates(), 
-            Config.projection.default, 
-            Config.projection.wgs84
+            projection.default, 
+            projection.wgs84
         ),
         title: properties.marker.title,
         description: properties.marker.description,

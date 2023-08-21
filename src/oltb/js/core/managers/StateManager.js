@@ -1,6 +1,6 @@
 import _ from 'lodash';
-import { Config } from '../Config';
 import { LogManager } from './LogManager';
+import { ConfigManager } from './ConfigManager';
 
 const FILENAME = 'managers/StateManager.js';
 
@@ -63,7 +63,8 @@ class StateManager {
         let state = {};
 
         try {
-            state = JSON.parse(localStorage.getItem(Config.localStorage.key)) || {};
+            const key = ConfigManager.getConfig().localStorage.key;
+            state = JSON.parse(localStorage.getItem(key)) || {};
         }catch(error) {
             LogManager.logError(FILENAME, 'getBrowserData', {
                 message: 'Failed to load application state',
@@ -106,7 +107,9 @@ class StateManager {
 
                 return value;
             });
-            localStorage.setItem(Config.localStorage.key, serialized);
+
+            const key = ConfigManager.getConfig().localStorage.key;
+            localStorage.setItem(key, serialized);
         }catch(error) {
             LogManager.logError(FILENAME, 'saveState', {
                 message: 'Failed to save application state',

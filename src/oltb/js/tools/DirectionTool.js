@@ -1,12 +1,12 @@
 import _ from 'lodash';
 import { DOM } from '../helpers/browser/DOM';
-import { Config } from '../core/Config';
 import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { LogManager } from '../core/managers/LogManager';
 import { isHorizontal } from '../helpers/IsRowDirection';
 import { StateManager } from '../core/managers/StateManager';
 import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
+import { ConfigManager } from '../core/managers/ConfigManager';
 import { ElementManager } from '../core/managers/ElementManager';
 import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
 import { SvgPaths, getIcon } from '../core/icons/GetIcon';
@@ -169,7 +169,7 @@ class DirectionTool extends Control {
     // -------------------------------------------------------------------
 
     shouldToolButtonBeHidden() {
-        if(window.innerWidth <= Config.deviceWidth.sm) {
+        if(window.innerWidth <= ConfigManager.getConfig().deviceWidth.sm) {
             this.button.classList.add(`${CLASS_TOOL_BUTTON}--hidden`);
         }else {
             this.button.classList.remove(`${CLASS_TOOL_BUTTON}--hidden`);

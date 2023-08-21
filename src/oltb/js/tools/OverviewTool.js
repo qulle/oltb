@@ -2,11 +2,11 @@ import _ from 'lodash';
 import { OSM } from 'ol/source';
 import { DOM } from '../helpers/browser/DOM';
 import { Tile } from 'ol/layer';
-import { Config } from '../core/Config';
 import { Events } from '../helpers/constants/Events';
 import { LogManager } from '../core/managers/LogManager';
 import { StateManager } from '../core/managers/StateManager';
 import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
+import { ConfigManager } from '../core/managers/ConfigManager';
 import { ElementManager } from '../core/managers/ElementManager';
 import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
 import { SvgPaths, getIcon } from '../core/icons/GetIcon';
@@ -237,9 +237,10 @@ class OverviewTool extends Control {
 
     doToggleToolboxSection(targetName) {
         const targetNode = document.getElementById(targetName);
+        const duration = ConfigManager.getConfig().animationDuration.fast;
         const map = this.getMap();
 
-        targetNode?.slideToggle(Config.animationDuration.fast, (collapsed) => {
+        targetNode?.slideToggle(duration, (collapsed) => {
             this.localStorage.isCollapsed = collapsed;
             StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
         

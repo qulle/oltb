@@ -4,7 +4,6 @@ import Sortable from 'sortablejs';
 import { DOM } from '../helpers/browser/DOM';
 import { Keys } from '../helpers/constants/Keys';
 import { Toast } from '../common/Toast';
-import { Config } from '../core/Config';
 import { Dialog } from '../common/Dialog';
 import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
@@ -15,6 +14,7 @@ import { ContextMenu } from '../common/ContextMenu';
 import { StateManager } from '../core/managers/StateManager';
 import { LayerManager } from '../core/managers/LayerManager';
 import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
+import { ConfigManager } from '../core/managers/ConfigManager';
 import { ElementManager } from '../core/managers/ElementManager';
 import { instantiateLayer } from '../core/ol-types/LayerType';
 import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
@@ -417,7 +417,7 @@ class LayerTool extends Control {
             Toast.success({
                 title: 'New Layer',
                 message: 'A new Feature layer created', 
-                autoremove: Config.autoRemovalDuation.normal
+                autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
             });
         }
     }
@@ -427,10 +427,12 @@ class LayerTool extends Control {
     // -------------------------------------------------------------------
 
     generateSortable(element, options) {
+        const duration = ConfigManager.getConfig().animationDuration.warp;
+
         return Sortable.create(element, {
             group: options.group,
             dataIdAttr: 'data-oltb-sort-index',
-            animation: Config.animationDuration.warp,
+            animation: duration,
             forceFallback: true,
             handle: `.${CLASS_TOOLBOX_LIST}__handle`,
             chosenClass: `${CLASS_TOOLBOX_LIST}__item--chosen`,
@@ -655,7 +657,7 @@ class LayerTool extends Control {
             },
             placement: 'top',
             theme: 'oltb oltb-themed',
-            delay: Config.tippy.offset
+            delay: ConfigManager.getConfig().tippy.delay
         });
     }
 
@@ -1217,8 +1219,9 @@ class LayerTool extends Control {
 
     doToggleToolboxSection(targetName) {
         const targetNode = document.getElementById(targetName);
-        
-        targetNode?.slideToggle(Config.animationDuration.fast, (collapsed) => {
+        const duration = ConfigManager.getConfig().animationDuration.fast;
+
+        targetNode?.slideToggle(duration, (collapsed) => {
             this.localStorage[targetName] = collapsed;
             StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
         });
@@ -1232,7 +1235,7 @@ class LayerTool extends Control {
     doDownloadLayer(layerWrapper, format, result, callback) {
         const features = layerWrapper.getLayer().getSource().getFeatures();
         const content = format.writeFeatures(features, {
-            featureProjection: Config.projection.default
+            featureProjection: ConfigManager.getConfig().projection.default
         });
         
         const filename = `${layerWrapper.getName()}.${result.format.toLowerCase()}`;
@@ -1246,7 +1249,7 @@ class LayerTool extends Control {
 
     doAddMapLayer(options) {
         const layer = instantiateLayer(options.layer, {
-            projection: options.projection || Config.projection.default,
+            projection: options.projection || ConfigManager.getConfig().projection.default,
             source: instantiateSource(options.source, {
                 url: options.url,
                 params: JSON.parse(options.parameters),

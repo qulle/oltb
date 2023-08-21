@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import { DOM } from '../helpers/browser/DOM';
 import { Toast } from '../common/Toast';
-import { Config } from '../core/Config';
 import { Dialog } from '../common/Dialog';
 import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
@@ -11,6 +10,7 @@ import { LogManager } from '../core/managers/LogManager';
 import { toStringHDMS } from 'ol/coordinate';
 import { LayerManager } from '../core/managers/LayerManager';
 import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
+import { ConfigManager } from '../core/managers/ConfigManager';
 import { ElementManager } from '../core/managers/ElementManager';
 import { SvgPaths, getIcon } from '../core/icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
@@ -175,7 +175,7 @@ class MyLocationTool extends Control {
         const coordinates = [location.coords.longitude, location.coords.latitude];
         const marker = this.doAddIconMarker(coordinates);
         
-        this.doFocusMarker(map, marker, coordinates, Config.marker.focusZoom);
+        this.doFocusMarker(map, marker, coordinates, ConfigManager.getConfig().marker.focusZoom);
         
         // Note: Consumer callback
         if(this.options.onLocationFound instanceof Function) {

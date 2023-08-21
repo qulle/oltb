@@ -1,11 +1,11 @@
 import _ from 'lodash';
 import { DOM } from '../../helpers/browser/DOM';
-import { Config } from '../../core/Config';
 import { ModalBase } from '../../common/modals/ModalBase';
 import { LogManager } from '../../core/managers/LogManager';
 import { isDarkTheme } from '../../helpers/IsDarkTheme';
 import { LayerOptions } from '../../core/ol-types/LayerType';
 import { SourceOptions } from '../../core/ol-types/SourceType';
+import { ConfigManager } from '../../core/managers/ConfigManager';
 import { createUIInput } from '../../creators/CreateUIInput';
 import { createUISelect } from '../../creators/CreateUISelect';
 import { ProjectionManager } from '../../core/managers/ProjectionManager';
@@ -78,7 +78,7 @@ class LayerModal extends ModalBase {
             idPostfix: '-projection',
             text: 'Projection',
             options: projectionOptions,
-            value: Config.projection.default
+            value: ConfigManager.getConfig().projection.default
         });
 
         const [ urlWrapper, urlInput ] = createUIInput({
@@ -138,6 +138,7 @@ class LayerModal extends ModalBase {
             class: 'oltb-d-flex oltb-justify-content-between oltb-mt-15'
         });
 
+        const defaultProjection = ConfigManager.getConfig().projection.default;
         const createButton = DOM.createElement({
             element: 'button', 
             text: 'Create layer',
@@ -151,7 +152,7 @@ class LayerModal extends ModalBase {
                         name: nameInput.value.trim(),
                         layer: typeSelect.value.trim(),
                         source: sourceSelect.value.trim(),
-                        projection: projectionSelect.value.trim() || Config.projection.default,
+                        projection: projectionSelect.value.trim() || defaultProjection,
                         url: urlInput.value.trim(),
                         parameters: parametersInput.value.trim() || '{}',
                         wrapX: wrapXSelect.value.trim(),

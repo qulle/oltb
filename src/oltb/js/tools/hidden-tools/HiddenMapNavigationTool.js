@@ -1,6 +1,5 @@
 import _ from 'lodash';
 import { Toast } from '../../common/Toast';
-import { Config } from '../../core/Config';
 import { Events } from '../../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { goToView } from '../../helpers/GoToView';
@@ -11,6 +10,7 @@ import { ContextMenu } from '../../common/ContextMenu';
 import { toStringHDMS } from 'ol/coordinate';
 import { LayerManager } from '../../core/managers/LayerManager';
 import { StateManager } from '../../core/managers/StateManager';
+import { ConfigManager } from '../../core/managers/ConfigManager';
 import { ElementManager } from '../../core/managers/ElementManager';
 import { CoordinateModal } from '../modal-extensions/CoordinateModal';
 import { copyToClipboard } from '../../helpers/browser/CopyToClipboard';
@@ -29,15 +29,16 @@ const DefaultOptions = Object.freeze({
     focusZoom: 2
 });
 
-// This is the same NODE_NAME and PROPS that the map.js file is using
+const DefaultLocation = ConfigManager.getConfig().locations.default;
 const LocalStorageNodeName = LocalStorageKeys.mapData;
 const LocalStorageDefaults = Object.freeze({
-    lon: Config.defaultLocation.lon,
-    lat: Config.defaultLocation.lat,
-    zoom: Config.defaultLocation.zoom,
-    rotation: Config.defaultLocation.rotation,
+    lon: DefaultLocation.lon,
+    lat: DefaultLocation.lat,
+    zoom: DefaultLocation.zoom,
+    rotation: DefaultLocation.rotation,
 });
 
+const DefaultProjection = ConfigManager.getConfig().projection;
 const DefaultUrlMarker = Object.freeze({
     lon: 18.0685,
     lat: 59.3293,
@@ -53,7 +54,7 @@ const DefaultUrlMarker = Object.freeze({
     labelUseEllipsisAfter: 20,
     markerFill: '#0166A5FF',
     markerStroke: '#FFFFFFFF',
-    projection: Config.projection.wgs84,
+    projection: DefaultProjection.wgs84,
     zoom: 8
 });
 
@@ -274,7 +275,7 @@ class HiddenMapNavigationTool extends Control {
                 Toast.info({
                     title: 'Copied',
                     message: 'Coordinates copied to clipboard', 
-                    autoremove: Config.autoRemovalDuation.normal
+                    autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
                 });
             })
             .catch((error) => {
@@ -292,7 +293,9 @@ class HiddenMapNavigationTool extends Control {
     }
 
     doDetectUrlMarker() {
-        const marker = UrlManager.getParameter(Config.urlParameter.marker, false);
+        const markerKey = ConfigManager.getConfig().urlParameter.marker;
+        const marker = UrlManager.getParameter(markerKey, false);
+        
         if(marker) {
             this.onCreateUrlMarker(marker);
         }
@@ -312,7 +315,7 @@ class HiddenMapNavigationTool extends Control {
 
             const coordinates = [Number(markerData.lon), Number(markerData.lat)];
             const marker = this.doAddIconMarker(markerData, coordinates);
-            this.doFocusMarker(map, marker, coordinates, Config.marker.focusZoom);
+            this.doFocusMarker(map, marker, coordinates, ConfigManager.getConfig().marker.focusZoom);
         }catch(error) {
             const errorMessage = 'Failed to parse URL marker';
             LogManager.logError(FILENAME, 'doParseUrlMarker', {
@@ -360,7 +363,7 @@ class HiddenMapNavigationTool extends Control {
         const transformedCoordinates = transform(
             coordinates, 
             markerData.projection, 
-            Config.projection.wgs84
+            ConfigManager.getConfig().projection.wgs84
         );
 
         const prettyCoordinates = toStringHDMS(transformedCoordinates);

@@ -1,7 +1,8 @@
 import { VERSION as olVersion } from 'ol';
-import { version as oltbVersion} from '../../../../package.json';
+import { version as oltbVersion} from '../../../../../../package.json';
 
-const Config = Object.freeze({
+// Note: All config can be overridden, but that is not always a good thing to do.
+const DefaultConfig = Object.freeze({
     localizations: Object.freeze([
         Object.freeze({
             text: 'English',
@@ -12,11 +13,13 @@ const Config = Object.freeze({
             value: 'sv-se'
         })
     ]),
-    defaultLocation: Object.freeze({
-        lon: 18.1201,
-        lat: 35.3518,
-        zoom: 3,
-        rotation: 0
+    locations: Object.freeze({
+        default: Object.freeze({
+            lon: 18.1201,
+            lat: 35.3518,
+            zoom: 3,
+            rotation: 0
+        })
     }),
     className: Object.freeze({
         row: 'oltb-row',
@@ -55,7 +58,7 @@ const Config = Object.freeze({
         vertical: -8
     }),
     tippy: Object.freeze({
-        offset: [600, 100]
+        delay: [600, 100]
     }),
     deviceWidth: Object.freeze({
         xs: '0',
@@ -117,4 +120,4 @@ const Config = Object.freeze({
     })
 });
 
-export { Config };
+export { DefaultConfig };

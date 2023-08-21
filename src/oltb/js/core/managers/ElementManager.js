@@ -1,8 +1,8 @@
 import { DOM } from '../../helpers/browser/DOM';
-import { Config } from '../Config';
 import { Events } from '../../helpers/constants/Events';
 import { LogManager } from './LogManager';
 import { StateManager } from './StateManager';
+import { ConfigManager } from './ConfigManager';
 import { LocalStorageKeys } from '../../helpers/constants/LocalStorageKeys';
 
 const FILENAME = 'managers/ElementManager.js';
@@ -53,7 +53,7 @@ class ElementManager {
     // -------------------------------------------------------------------
 
     static #createMapElement() {
-        return document.getElementById(Config.openLayers.id);
+        return document.getElementById(ConfigManager.getConfig().openLayers.id);
     }
 
     static #createToastElement() {
@@ -73,7 +73,8 @@ class ElementManager {
     }
 
     static #createToolbarElement() {
-        const element = document.getElementById(Config.toolbar.id);
+        const config = ConfigManager.getConfig();
+        const element = document.getElementById(config.toolbar.id);
         element.setAttribute('data-html2canvas-ignore', 'true');
         element.addEventListener(Events.browser.wheel, this.#onMouseWheel.bind(element));
 
@@ -106,12 +107,12 @@ class ElementManager {
 
         // Add dark class to body, this will control the color for the entire project
         if(element.classList.contains('dark')) {
-            document.body.classList.add(Config.className.dark);
+            document.body.classList.add(config.className.dark);
         }
 
         // For consistency also add the row class to the body
         if(element.classList.contains('row')) {
-            document.body.classList.add(Config.className.row);
+            document.body.classList.add(config.className.row);
         }
 
         return element;
@@ -138,7 +139,7 @@ class ElementManager {
     // -------------------------------------------------------------------
 
     static #onWindowBrowserStateCleared(event) {
-        if(window.innerWidth <= Config.deviceWidth.sm) {
+        if(window.innerWidth <= ConfigManager.getConfig().deviceWidth.sm) {
             this.#uiRefToolboxElement.classList.add(`${CLASS_TOOLBOX_CONTAINER}--collision`);
         }else {
             this.#uiRefToolboxElement.classList.remove(`${CLASS_TOOLBOX_CONTAINER}--collision`);
@@ -148,7 +149,7 @@ class ElementManager {
     static #onMouseWheel(event) {
         if(!event.ctrlKey) {
             const zeroAxis = 0;
-            const distance = Config.scrollDistance;
+            const distance = ConfigManager.getConfig().scrollDistance;
             this.scrollLeft += event.deltaY > zeroAxis ? distance : -distance;
         }
     }
@@ -158,8 +159,9 @@ class ElementManager {
         const windowWidth = window.innerWidth;
         const toolbarWidth = this.#uiRefToolbarElement.offsetWidth;
         const toolboxWidth = this.#uiRefToolboxElement.offsetWidth;
+        const rem = ConfigManager.getConfig().browser.rem;
         
-        if(windowWidth - ((3 * Config.browser.rem) + toolbarWidth + toolboxWidth) <= collisionLimit) {
+        if(windowWidth - ((3 * rem) + toolbarWidth + toolboxWidth) <= collisionLimit) {
             this.#uiRefToolboxElement.classList.add(`${CLASS_TOOLBOX_CONTAINER}--collision`);
         }else {
             this.#uiRefToolboxElement.classList.remove(`${CLASS_TOOLBOX_CONTAINER}--collision`);

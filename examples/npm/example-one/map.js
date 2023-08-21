@@ -23,7 +23,7 @@ const map = new Map({
         rotate: false
     }),
     view: new View({
-        projection: getProjection(OLTB.Config.projection.default)
+        projection: getProjection(OLTB.ConfigManager.getConfig().projection.default)
     })
 });
 

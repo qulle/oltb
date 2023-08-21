@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import { DOM } from '../helpers/browser/DOM';
 import { Toast } from '../common/Toast';
-import { Config } from '../core/Config';
 import { Dialog } from '../common/Dialog';
 import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
@@ -9,6 +8,7 @@ import { LogManager } from '../core/managers/LogManager';
 import { ContextMenu } from '../common/ContextMenu';
 import { StateManager } from '../core/managers/StateManager';
 import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
+import { ConfigManager } from '../core/managers/ConfigManager';
 import { SettingsModal } from './modal-extensions/SettingsModal';
 import { ElementManager } from '../core/managers/ElementManager';
 import { SettingsManager } from '../core/managers/SettingsManager';
@@ -143,7 +143,7 @@ class SettingsTool extends Control {
                 Toast.info({
                     title: 'Cleared',
                     message: 'All stored items was reset to default', 
-                    autoremove: Config.autoRemovalDuation.normal
+                    autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
                 });
             }
         });
@@ -163,7 +163,7 @@ class SettingsTool extends Control {
                 Toast.success({
                     title: 'Saved',
                     message: 'All settings settings was saved', 
-                    autoremove: Config.autoRemovalDuation.normal
+                    autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
                 });
             },
             onClose: () => {

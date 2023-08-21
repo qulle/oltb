@@ -4,13 +4,13 @@ import urlCountriesGeoJson from 'url:../geojson/countries.geojson';
 // Module imports
 import { bbox } from 'ol/loadingstrategy';
 import { Toast } from '../../src/oltb/js/common/Toast';
-import { Config } from '../../src/oltb/js/core/Config';
 import { GeoJSON } from 'ol/format';
 import { transform } from 'ol/proj';
 import { getCenter } from 'ol/extent';
 import { LogManager } from '../../src/oltb/js/core/managers/LogManager';
 import { toStringHDMS } from 'ol/coordinate';
 import { LayerManager } from '../../src/oltb/js/core/managers/LayerManager';
+import { ConfigManager } from '../../src/oltb/js/core/managers/ConfigManager';
 import { getMeasureValue } from '../../src/oltb/js/helpers/Measurements';
 import { FeatureProperties } from '../../src/oltb/js/helpers/constants/FeatureProperties';
 import { Vector as VectorLayer } from 'ol/layer';
@@ -25,11 +25,12 @@ const parseGeoJson = function(context, data, projection) {
         featureProjection: projection.getCode()
     }).readFeatures(data);
 
+    const config = ConfigManager.getConfig();
     features.forEach((feature) => {
         const coordinates = transform(
             getCenter(feature.getGeometry().getExtent()), 
-            Config.projection.default, 
-            Config.projection.wgs84
+            config.projection.default, 
+            config.projection.wgs84
         );
 
         const prettyCoordinates = toStringHDMS(coordinates);
@@ -105,7 +106,7 @@ LayerManager.addMapLayers([
         layer: new VectorLayer({
             source: new VectorSource({
                 format: new GeoJSON({
-                    featureProjection: Config.projection.default
+                    featureProjection: ConfigManager.getConfig().projection.default
                 }),
                 loader: loadGeoJson, 
                 strategy: bbox,

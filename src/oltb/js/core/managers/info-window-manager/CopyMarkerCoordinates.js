@@ -1,6 +1,6 @@
 import { Toast } from '../../../common/Toast';
-import { Config } from '../../Config';
 import { LogManager } from '../LogManager';
+import { ConfigManager } from '../ConfigManager';
 import { copyToClipboard } from '../../../helpers/browser/CopyToClipboard';
 
 const FILENAME = 'info-window-manager/CopyMarkerCoordinates.js';
@@ -11,7 +11,7 @@ const copyMarkerCoordinates = async function(InfoWindowManager, data) {
             Toast.info({
                 title: 'Copied',
                 message: 'Marker coordinates copied to clipboard', 
-                autoremove: Config.autoRemovalDuation.normal
+                autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
             });
         })
         .catch((error) => {

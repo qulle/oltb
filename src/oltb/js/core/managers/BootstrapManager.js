@@ -1,6 +1,6 @@
-import { Config } from '../Config';
 import { Events } from '../../helpers/constants/Events';
 import { LogManager } from './LogManager';
+import { ConfigManager } from './ConfigManager';
 
 const FILENAME = 'managers/BootstrapManager.js';
 
@@ -17,8 +17,9 @@ class BootstrapManager {
     static async initAsync(items = []) {
         LogManager.logInformation(FILENAME, 'initAsync', 'Manager initialization started');
 
-        const oltbVersion = Config.toolbar.version;
-        const openLayersVersion = Config.openLayers.version;
+        const config = ConfigManager.getConfig();
+        const oltbVersion = config.toolbar.version;
+        const openLayersVersion = config.openLayers.version;
 
         document.documentElement.setAttribute('ol-version', openLayersVersion);
         document.documentElement.setAttribute('oltb-version', oltbVersion);

@@ -1,11 +1,11 @@
 import _ from 'lodash';
 import { DOM } from '../helpers/browser/DOM';
 import { Modal } from '../common/Modal';
-import { Config } from '../core/Config';
 import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { LogManager } from '../core/managers/LogManager';
 import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
+import { ConfigManager } from '../core/managers/ConfigManager';
 import { ElementManager } from '../core/managers/ElementManager';
 import { SvgPaths, getIcon } from '../core/icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
@@ -132,13 +132,15 @@ class NotificationTool extends Control {
     // -------------------------------------------------------------------
 
     setModalContent(notification) {
+        const locale = ConfigManager.getConfig().locale;
+        const version = ConfigManager.getConfig().toolbar.version;
         const content = (`
             <h3>👋 From Qulle</h3>
             <p>${notification.message}</p>
             <h3>🔭 Your version</h3>
             <p>
-                <a href="https://github.com/qulle/oltb/releases/tag/v${Config.toolbar.version}" target="_blank" class="oltb-link">
-                    v${Config.toolbar.version}
+                <a href="https://github.com/qulle/oltb/releases/tag/v${version}" target="_blank" class="oltb-link">
+                    v${version}
                 </a>
             </p>
             ${this.hasLatestVersionInfo(notification) ? 
@@ -146,7 +148,7 @@ class NotificationTool extends Control {
                     <h3>🚀 Latest version</h3>
                     <p>
                         <a href="https://github.com/qulle/oltb/releases/tag/v${notification.latest.version}" target="_blank" class="oltb-link">
-                            v${notification.latest.version} - ${new Date(notification.latest.released).toLocaleDateString(Config.locale)}
+                            v${notification.latest.version} - ${new Date(notification.latest.released).toLocaleDateString(locale)}
                         </a>
                     </p>
                 ` : ''

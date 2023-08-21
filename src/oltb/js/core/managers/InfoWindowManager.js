@@ -1,5 +1,4 @@
 import { DOM } from '../../helpers/browser/DOM';
-import { Config } from '../Config';
 import { Events } from '../../helpers/constants/Events';
 import { Overlay } from 'ol';
 import { getCenter } from 'ol/extent';
@@ -7,6 +6,7 @@ import { trapFocus } from '../../helpers/browser/TrapFocus';
 import { LogManager } from './LogManager';
 import { editMarker } from './info-window-manager/EditMarker';
 import { removeMarker } from './info-window-manager/RemoveMarker';
+import { ConfigManager } from './ConfigManager';
 import { copyMarkerInfo } from './info-window-manager/CopyMarkerInfo';
 import { SvgPaths, getIcon } from '../icons/GetIcon';
 import { Fill, Stroke, Style } from 'ol/style';
@@ -120,16 +120,17 @@ class InfoWindowManager {
         ]);
 
         // Create ol overlay to host infoWindow
+        const config = ConfigManager.getConfig();
         this.#overlay = new Overlay({
             element: this.#infoWindow,
             positioning: 'bottom-center',
             offset: [
-                Config.overlayOffset.horizontal,
-                Config.overlayOffset.vertical
+                config.overlayOffset.horizontal,
+                config.overlayOffset.vertical
             ],
             autoPan: true,
             autoPanAnimation: {
-                duration: Config.animationDuration.normal
+                duration: config.animationDuration.normal
             }
         });
     }
@@ -198,7 +199,7 @@ class InfoWindowManager {
         this.showOverlayDelayed(marker, position, 0);
     }
 
-    static showOverlayDelayed(marker, position, delay = Config.animationDuration.normal) {
+    static showOverlayDelayed(marker, position, delay = ConfigManager.getConfig().animationDuration.normal) {
         window.setTimeout(() => {
             const infoWindow = marker.getProperties().oltb.infoWindow;
             if(!infoWindow) {

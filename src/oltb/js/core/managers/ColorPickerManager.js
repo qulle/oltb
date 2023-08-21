@@ -1,9 +1,9 @@
 import * as AColorPicker from 'a-color-picker';
 import { DOM } from '../../helpers/browser/DOM';
-import { Config } from '../Config';
 import { Events } from '../../helpers/constants/Events';
 import { LogManager } from './LogManager';
 import { isHorizontal } from '../../helpers/IsRowDirection';
+import { ConfigManager } from './ConfigManager';
 import { eventDispatcher } from '../../helpers/browser/EventDispatcher';
 
 const FILENAME = 'managers/ColorPickerManager.js';
@@ -44,7 +44,7 @@ class ColorPickerManager {
     // -------------------------------------------------------------------
 
     static #createColorPickerElement() {
-        const palette = Config.aColorPicker.palette.join('|');
+        const palette = ConfigManager.getConfig().aColorPicker.palette.join('|');
 
         return DOM.createElement({
             element: 'div', 
@@ -66,7 +66,7 @@ class ColorPickerManager {
     // -------------------------------------------------------------------
 
     static #isToPlaceBottom() {
-        return window.innerWidth <= Config.deviceWidth.sm || isHorizontal();
+        return window.innerWidth <= ConfigManager.getConfig().deviceWidth.sm || isHorizontal();
     }
 
     // -------------------------------------------------------------------

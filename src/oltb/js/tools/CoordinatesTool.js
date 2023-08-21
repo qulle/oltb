@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import { DOM } from '../helpers/browser/DOM';
 import { Toast } from '../common/Toast';
-import { Config } from '../core/Config';
 import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { unByKey } from 'ol/Observable';
@@ -12,6 +11,7 @@ import { ToolManager } from '../core/managers/ToolManager';
 import { toStringHDMS } from 'ol/coordinate';
 import { StateManager } from '../core/managers/StateManager';
 import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
+import { ConfigManager } from '../core/managers/ConfigManager';
 import { ElementManager } from '../core/managers/ElementManager';
 import { TooltipManager } from '../core/managers/TooltipManager';
 import { SettingsManager } from '../core/managers/SettingsManager';
@@ -348,8 +348,9 @@ class CoordinatesTool extends Control {
 
     doToggleToolboxSection(targetName) {
         const targetNode = document.getElementById(targetName);
-        
-        targetNode?.slideToggle(Config.animationDuration.fast, (collapsed) => {
+        const duration = ConfigManager.getConfig().animationDuration.fast;
+
+        targetNode?.slideToggle(duration, (collapsed) => {
             this.localStorage.isCollapsed = collapsed;
             StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
         });
@@ -362,7 +363,7 @@ class CoordinatesTool extends Control {
         projections.forEach((projection) => {
             const transformedCoordinates = transform(
                 coordinates, 
-                Config.projection.default, 
+                ConfigManager.getConfig().projection.default, 
                 projection.code
             );
 
@@ -379,10 +380,11 @@ class CoordinatesTool extends Control {
     }
 
     doCreateTooltipCoordinates(event) {
+        const projection = ConfigManager.getConfig().projection;
         const coordinates = transform(
             event.coordinate, 
-            Config.projection.default, 
-            Config.projection.wgs84
+            projection.default, 
+            projection.wgs84
         );
         
         const prettyCoordinates = toStringHDMS(coordinates);
@@ -395,7 +397,7 @@ class CoordinatesTool extends Control {
         projections.forEach((projection) => {
             const coordinates = transform(
                 event.coordinate, 
-                Config.projection.default, 
+                ConfigManager.getConfig().projection.default, 
                 projection.code
             );
 
@@ -415,10 +417,11 @@ class CoordinatesTool extends Control {
             return;
         }
 
+        const projection = ConfigManager.getConfig().projection;
         const coordinates = transform(
             event.coordinate, 
-            Config.projection.default, 
-            Config.projection.wgs84
+            projection.default, 
+            projection.wgs84
         );
 
         const prettyCoordinates = toStringHDMS(coordinates);
@@ -428,7 +431,7 @@ class CoordinatesTool extends Control {
                 Toast.info({
                     title: 'Copied',
                     message: 'Coordinates copied to clipboard', 
-                    autoremove: Config.autoRemovalDuation.normal
+                    autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
                 });
             })
             .catch((error) => {

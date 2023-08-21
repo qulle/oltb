@@ -2,13 +2,13 @@ import _ from 'lodash';
 import html2canvas from 'html2canvas';
 import { DOM } from '../helpers/browser/DOM';
 import { Toast } from '../common/Toast';
-import { Config } from '../core/Config';
 import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { download } from '../helpers/browser/Download';
 import { LogManager } from '../core/managers/LogManager';
 import { UrlManager } from '../core/managers/UrlManager';
 import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
+import { ConfigManager } from '../core/managers/ConfigManager';
 import { ElementManager } from '../core/managers/ElementManager';
 import { SvgPaths, getIcon } from '../core/icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
@@ -86,7 +86,8 @@ class ExportPngTool extends Control {
     // -------------------------------------------------------------------
 
     initDebugState() {
-        this.isDebug = UrlManager.getParameter(Config.urlParameter.debug) === 'true';
+        const debugKey = ConfigManager.getConfig().urlParameter.debug;
+        this.isDebug = UrlManager.getParameter(debugKey) === 'true';
     }
 
     // -------------------------------------------------------------------
@@ -228,8 +229,9 @@ class ExportPngTool extends Control {
     }
 
     doDownloadCanvas(pngCanvas) {
+        const locale = ConfigManager.getConfig().locale;
         const timestamp = this.options.appendTime 
-            ? `-${new Date().toLocaleString(Config.locale)}`
+            ? `-${new Date().toLocaleString(locale)}`
             : '';
 
         const filename = `${this.options.filename}${timestamp}.png`;

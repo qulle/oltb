@@ -2,13 +2,13 @@ import _ from 'lodash';
 import BrowserDetector from 'browser-dtector';
 import { DOM } from '../../helpers/browser/DOM';
 import { Toast } from '../../common/Toast';
-import { Config } from '../../core/Config';
 import { Events } from '../../helpers/constants/Events';
 import { toLonLat } from 'ol/proj';
 import { ModalBase } from '../../common/modals/ModalBase';
 import { LogManager } from '../../core/managers/LogManager';
 import { v4 as uuidv4 } from 'uuid';
 import { jsonReplacer } from '../../helpers/browser/JsonReplacer';
+import { ConfigManager } from '../../core/managers/ConfigManager';
 import { SvgPaths, getIcon } from '../../core/icons/GetIcon';
 import { ProjectionManager } from '../../core/managers/ProjectionManager';
 
@@ -352,7 +352,7 @@ class DebugInfoModal extends ModalBase {
             rotation: view.getRotation(),
             projection: view.getProjection(),
             proj4Defs: ProjectionManager.getProjections(),
-            defaultConfig: Config
+            defaultConfig: ConfigManager.getConfig()
         } : {
             info: 'No map reference found'
         };
@@ -463,7 +463,9 @@ class DebugInfoModal extends ModalBase {
 
     onToggleSection(toggle) {
         const targetName = toggle.dataset.oltbToggleableTarget;
-        document.getElementById(targetName)?.slideToggle(Config.animationDuration.fast);
+        const duration = ConfigManager.getConfig().animationDuration.fast;
+        
+        document.getElementById(targetName)?.slideToggle(duration);
     }
 
     onAction() {
@@ -489,7 +491,7 @@ class DebugInfoModal extends ModalBase {
         Toast.info({
             title: 'Logged',
             message: 'Map object logged to console <strong>(F12)</strong>', 
-            autoremove: Config.autoRemovalDuation.normal
+            autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
         });
     }
 
@@ -515,7 +517,7 @@ class DebugInfoModal extends ModalBase {
         Toast.info({
             title: 'Cleared',
             message: 'Event log was cleared of all entries', 
-            autoremove: Config.autoRemovalDuation.normal
+            autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
         });
     }
 }

@@ -1,4 +1,4 @@
-import { Config } from '../../core/Config';
+import { ConfigManager } from '../../core/managers/ConfigManager';
 
 class DOM {
     static createElement(options = {}) {
@@ -100,9 +100,10 @@ class DOM {
 
         // Note: Config.animationDuration.fast matches the time given in _animations.scss
         // With the animation-class the html2canvas fails to render the exported PNG correctly
+        const duration = ConfigManager.getConfig().animationDuration.fast;
         window.setTimeout(() => {
             element.classList.remove(className);
-        }, Config.animationDuration.fast);
+        }, duration);
     }
 }
 

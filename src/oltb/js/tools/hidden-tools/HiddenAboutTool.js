@@ -1,8 +1,8 @@
 import { Modal } from '../../common/Modal';
-import { Config } from '../../core/Config';
 import { Control } from 'ol/control';
 import { LogManager } from '../../core/managers/LogManager';
 import { ContextMenu } from '../../common/ContextMenu';
+import { ConfigManager } from '../../core/managers/ConfigManager';
 import { ElementManager } from '../../core/managers/ElementManager';
 import { SvgPaths, getIcon } from '../../core/icons/GetIcon';
 
@@ -66,10 +66,11 @@ class HiddenAboutTool extends Control {
             return;
         }
         
+        const config = ConfigManager.getConfig();
         const content = (`
-            <p>Version ${Config.toolbar.version}</p>
+            <p>Version ${config.toolbar.version}</p>
             <p>Developed by Qulle <a href="//github.com/qulle/oltb" target="_blank" class="oltb-link">github.com/qulle/oltb</a></p>
-            <p>Using OpenLayers <a href="//openlayers.org/en/v${Config.openLayers.version}/apidoc/" target="_blank" class="oltb-link">${Config.openLayers.version}</a></p>
+            <p>Using OpenLayers <a href="//openlayers.org/en/v${config.openLayers.version}/apidoc/" target="_blank" class="oltb-link">${config.openLayers.version}</a></p>
         `);
 
         this.aboutInfoModal = Modal.create({

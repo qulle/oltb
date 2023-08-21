@@ -1,11 +1,11 @@
 import _ from 'lodash';
 import { DOM } from '../helpers/browser/DOM';
-import { Config } from '../core/Config';
 import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { LogManager } from '../core/managers/LogManager';
 import { UrlManager } from '../core/managers/UrlManager';
 import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
+import { ConfigManager } from '../core/managers/ConfigManager';
 import { ElementManager } from '../core/managers/ElementManager';
 import { DebugInfoModal } from './modal-extensions/DebugInfoModal';
 import { SvgPaths, getIcon } from '../core/icons/GetIcon';
@@ -81,7 +81,9 @@ class DebugInfoTool extends Control {
     // -------------------------------------------------------------------
 
     initDebugState() {
-        const isDebug = UrlManager.getParameter(Config.urlParameter.debug) === 'true';
+        const debugKey = ConfigManager.getConfig().urlParameter.debug;
+        const isDebug = UrlManager.getParameter(debugKey) === 'true';
+
         if(!isDebug && this.options.onlyWhenGetParameter) {
             this.button.classList.add(`${CLASS_TOOL_BUTTON}--hidden`);
         }

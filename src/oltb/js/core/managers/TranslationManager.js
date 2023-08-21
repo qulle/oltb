@@ -1,6 +1,6 @@
-import { Config } from '../Config';
 import { LogManager } from './LogManager';
 import { TippyManager } from './TippyManager';
+import { ConfigManager } from './ConfigManager';
 
 const FILENAME = 'managers/TranslationManager.js';
 
@@ -73,7 +73,7 @@ class TranslationManager {
     // -------------------------------------------------------------------
 
     static getLanguages() {
-        return Config.localizations;
+        return ConfigManager.getConfig().localizations;
     }
 
     static getActive() {

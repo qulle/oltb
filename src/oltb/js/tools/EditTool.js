@@ -3,7 +3,6 @@ import jsts from 'jsts/dist/jsts.min';
 import { DOM } from '../helpers/browser/DOM';
 import { Keys } from '../helpers/constants/Keys';
 import { Toast } from '../common/Toast';
-import { Config } from '../core/Config';
 import { Dialog } from '../common/Dialog';
 import { Events } from '../helpers/constants/Events';
 import { Feature } from 'ol';
@@ -17,6 +16,7 @@ import { shiftKeyOnly } from 'ol/events/condition';
 import { LayerManager } from '../core/managers/LayerManager';
 import { StateManager } from '../core/managers/StateManager';
 import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
+import { ConfigManager } from '../core/managers/ConfigManager';
 import { ElementManager } from '../core/managers/ElementManager';
 import { TooltipManager } from '../core/managers/TooltipManager';
 import { createUITooltip } from '../creators/CreateUITooltip';
@@ -464,7 +464,7 @@ class EditTool extends Control {
             Toast.info({
                 title: 'Oops',
                 message: 'No features selected to delete', 
-                autoremove: Config.autoRemovalDuation.normal
+                autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
             });
 
             return;
@@ -776,7 +776,7 @@ class EditTool extends Control {
             Toast.info({
                 title: 'Oops',
                 message: 'Strict two overlapping features must be selected', 
-                autoremove: Config.autoRemovalDuation.normal
+                autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
             });
 
             return;
@@ -852,8 +852,9 @@ class EditTool extends Control {
 
     doToggleToolboxSection(targetName) {
         const targetNode = document.getElementById(targetName);
-        
-        targetNode?.slideToggle(Config.animationDuration.fast, (collapsed) => {
+        const duration = ConfigManager.getConfig().animationDuration.fast;
+
+        targetNode?.slideToggle(duration, (collapsed) => {
             this.localStorage.isCollapsed = collapsed;
             StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
         });

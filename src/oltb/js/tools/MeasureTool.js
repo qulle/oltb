@@ -3,7 +3,6 @@ import { DOM } from '../helpers/browser/DOM';
 import { Draw } from 'ol/interaction';
 import { Keys } from '../helpers/constants/Keys';
 import { Toast } from '../common/Toast';
-import { Config } from '../core/Config';
 import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { unByKey } from 'ol/Observable';
@@ -15,6 +14,7 @@ import { GeometryType } from '../core/ol-types/GeometryType';
 import { LayerManager } from '../core/managers/LayerManager';
 import { StateManager } from '../core/managers/StateManager';
 import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
+import { ConfigManager } from '../core/managers/ConfigManager';
 import { ElementManager } from '../core/managers/ElementManager';
 import { TooltipManager } from '../core/managers/TooltipManager';
 import { createUITooltip } from '../creators/CreateUITooltip';
@@ -421,7 +421,7 @@ class MeasureTool extends Control {
             Toast.info({
                 title: 'Tip',
                 message: 'You are measuring in a hidden layer', 
-                autoremove: Config.autoRemovalDuation.normal
+                autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
             });
         }
 
@@ -467,8 +467,9 @@ class MeasureTool extends Control {
 
     doToggleToolboxSection(targetName) {
         const targetNode = document.getElementById(targetName);
-        
-        targetNode?.slideToggle(Config.animationDuration.fast, (collapsed) => {
+        const duration = ConfigManager.getConfig().animationDuration.fast;
+
+        targetNode?.slideToggle(duration, (collapsed) => {
             this.localStorage.isCollapsed = collapsed;
             StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
         });

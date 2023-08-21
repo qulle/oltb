@@ -12,7 +12,6 @@ import './helpers/prototypes/SlideToggle';
 import '../scss/oltb.scss';
 import { Toast } from './common/Toast';
 import { Modal } from './common/Modal';
-import { Config } from './core/Config';
 import { Dialog } from './common/Dialog';
 import { Settings } from './helpers/constants/Settings';
 import { ContextMenu } from './common/ContextMenu';
@@ -48,18 +47,7 @@ import { createUITooltip } from './creators/CreateUITooltip';
 // Toolbar tools
 import { AllTools } from './tools/index';
 
-// This is the same NODE_NAME and PROPS that the MapNavigationTool.js is using
-const LocalStorageNodeName = LocalStorageKeys.mapData;
-const LocalStorageDefaults = Object.freeze({
-    lon: Config.defaultLocation.lon,
-    lat: Config.defaultLocation.lat,
-    zoom: Config.defaultLocation.zoom,
-    rotation: Config.defaultLocation.rotation,
-});
-
 class OLTB {
-    static Config = Config;
-
     static LogManager = LogManager;
     static StateManager = StateManager;
     static ElementManager = ElementManager;
@@ -129,6 +117,15 @@ class OLTB {
     }
 
     #initLocalStorage() {
+        const defaultLocation = ConfigManager.getConfig().locations.default;
+        const LocalStorageNodeName = LocalStorageKeys.mapData;
+        const LocalStorageDefaults = Object.freeze({
+            lon: defaultLocation.lon,
+            lat: defaultLocation.lat,
+            zoom: defaultLocation.zoom,
+            rotation: defaultLocation.rotation,
+        });
+
         this.#localStorage = StateManager.getAndMergeStateObject(
             LocalStorageNodeName, 
             LocalStorageDefaults
@@ -221,7 +218,7 @@ class OLTB {
         const coordinates = fromLonLat([
             Number(this.#localStorage.lon),
             Number(this.#localStorage.lat)
-        ], Config.projection.default);
+        ], ConfigManager.getConfig().projection.default);
 
         view.setCenter(coordinates);
         view.setZoom(this.#localStorage.zoom);

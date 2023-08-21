@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import { DOM } from '../helpers/browser/DOM';
 import { Toast } from '../common/Toast';
-import { Config } from '../core/Config';
 import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { unByKey } from 'ol/Observable';
@@ -9,6 +8,7 @@ import { LogManager } from '../core/managers/LogManager';
 import { LayerManager } from '../core/managers/LayerManager';
 import { StateManager } from '../core/managers/StateManager';
 import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
+import { ConfigManager } from '../core/managers/ConfigManager';
 import { getRenderPixel } from 'ol/render';
 import { ElementManager } from '../core/managers/ElementManager';
 import { eventDispatcher } from '../helpers/browser/EventDispatcher';
@@ -392,8 +392,9 @@ class SplitViewTool extends Control {
 
     doToggleToolboxSection(targetName) {
         const targetNode = document.getElementById(targetName);
-        
-        targetNode?.slideToggle(Config.animationDuration.fast, (collapsed) => {
+        const duration = ConfigManager.getConfig().animationDuration.fast;
+
+        targetNode?.slideToggle(duration, (collapsed) => {
             this.localStorage.isCollapsed = collapsed;
             StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
         });
@@ -410,7 +411,7 @@ class SplitViewTool extends Control {
 
         // Calculate offset for the handlebar. 
         // The range slider is not perfectly linear towards the edges. 
-        const halfHandleWidth = Config.browser.rem;
+        const halfHandleWidth = ConfigManager.getConfig().browser.rem;
         const sliderWidth = this.uiRefSplitViewSlider.offsetWidth;
         const sliderCenter = sliderWidth / 2;
         const percentOfRange = (this.uiRefSplitViewSlider.value / (this.uiRefSplitViewSlider.max - this.uiRefSplitViewSlider.min));

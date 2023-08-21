@@ -1,9 +1,9 @@
 import _ from 'lodash';
 import { DOM } from '../../helpers/browser/DOM';
-import { Config } from '../../core/Config';
 import { ModalBase } from '../../common/modals/ModalBase';
 import { LogManager } from '../../core/managers/LogManager';
 import { isDarkTheme } from '../../helpers/IsDarkTheme';
+import { ConfigManager } from '../../core/managers/ConfigManager';
 import { createUISelect } from '../../creators/CreateUISelect';
 import { ProjectionManager } from '../../core/managers/ProjectionManager';
 
@@ -56,12 +56,13 @@ class ImportLayerModal extends ModalBase {
             });
         });
 
+        const projection = ConfigManager.getConfig().projection;
         const [ featureProjectionWrapper, featureProjectionSelect ] = createUISelect({
             idPrefix: ID_PREFIX,
             idPostfix: '-feature-projection',
             text: 'Feature projection',
             options: featureProjectionOptions,
-            value: Config.projection.default
+            value: projection.default
         });
 
         const [ dataProjectionWrapper, dataProjectionSelect ] = createUISelect({
@@ -69,7 +70,7 @@ class ImportLayerModal extends ModalBase {
             idPostfix: '-data-projection',
             text: 'Data projection',
             options: dataProjectionOptions,
-            value: Config.projection.wgs84
+            value: projection.wgs84
         });
 
         const buttonsWrapper = DOM.createElement({

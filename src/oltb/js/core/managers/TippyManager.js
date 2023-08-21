@@ -1,12 +1,12 @@
 import 'tippy.js/dist/tippy.css';
 import tippy from 'tippy.js';
-import { Config } from '../Config';
 import { Events } from '../../helpers/constants/Events';
 import { LogManager } from './LogManager';
 import { isHorizontal } from '../../helpers/IsRowDirection';
 import { ElementManager } from './ElementManager';
 import { ColorPickerManager } from './ColorPickerManager';
 import { createSingleton, delegate } from 'tippy.js';
+import { ConfigManager } from './ConfigManager';
 
 const FILENAME = 'managers/TippyManager.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
@@ -56,7 +56,7 @@ class TippyManager {
     // -------------------------------------------------------------------
 
     static #isPlacementBottom() {
-        return window.innerWidth <= Config.deviceWidth.sm;
+        return window.innerWidth <= ConfigManager.getConfig().deviceWidth.sm;
     }
 
     static #isPlacementForcedBottom() {
@@ -117,6 +117,7 @@ class TippyManager {
 
     static #createMapTippy() {
         const uiRefMapElement = ElementManager.getMapElement();
+        const offset = ConfigManager.getConfig().tippy.offset;
 
         return delegate(uiRefMapElement, {
             content(reference) {
@@ -128,8 +129,8 @@ class TippyManager {
             placement: 'top',
             appendTo: uiRefMapElement,
             theme: 'oltb oltb-themed',
-            delay: Config.tippy.offset,
-            touch: false
+            offset: offset,
+            touch: false,
         });
     }
 

@@ -1,13 +1,13 @@
 import _ from 'lodash';
 import { DOM } from '../helpers/browser/DOM';
 import { Keys } from '../helpers/constants/Keys';
-import { Config } from '../core/Config';
 import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { transform } from 'ol/proj';
 import { trapFocus } from '../helpers/browser/TrapFocus';
 import { UrlManager } from '../core/managers/UrlManager';
 import { LogManager } from '../core/managers/LogManager';
+import { ConfigManager } from '../core/managers/ConfigManager';
 import { ElementManager } from '../core/managers/ElementManager';
 import { hasNestedProperty } from '../helpers/browser/HasNestedProperty';
 
@@ -44,7 +44,8 @@ class ContextMenu extends Control {
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
         this.menu = this.element;
 
-        ContextMenu.#isDebug = UrlManager.getParameter(Config.urlParameter.debug) === 'true';
+        const debugKey = ConfigManager.getConfig().urlParameter.debug;
+        ContextMenu.#isDebug = UrlManager.getParameter(debugKey) === 'true';
         ContextMenu.#items.forEach((item) => {
             this.addMenuItem(item);
         });
@@ -121,10 +122,11 @@ class ContextMenu extends Control {
             return;
         }
 
+        const projection = ConfigManager.getConfig().projection;
         this.coordinates = transform(
             map.getEventCoordinate(event), 
-            Config.projection.default, 
-            Config.projection.wgs84
+            projection.default, 
+            projection.wgs84
         );
         
         this.menu.style.left = `${event.clientX}px`;

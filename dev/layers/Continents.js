@@ -2,9 +2,9 @@
 import urlContinentsGeoJson from 'url:../geojson/continents.geojson';
 
 // Module imports
-import { Config } from '../../src/oltb/js/core/Config';
 import { GeoJSON } from 'ol/format';
 import { LayerManager } from '../../src/oltb/js/core/managers/LayerManager';
+import { ConfigManager } from '../../src/oltb/js/core/managers/ConfigManager';
 import { Vector as VectorLayer } from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';
 
@@ -16,7 +16,7 @@ LayerManager.addMapLayers([
             source: new VectorSource({
                 url: urlContinentsGeoJson,
                 format: new GeoJSON({
-                    featureProjection: Config.projection.default
+                    featureProjection: ConfigManager.getConfig().projection.default
                 })
             }),
             visible: true

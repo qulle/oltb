@@ -1,9 +1,9 @@
 import { DOM } from '../../helpers/browser/DOM';
-import { Config } from '../Config';
 import { Events } from '../../helpers/constants/Events';
 import { Overlay } from 'ol';
 import { unByKey } from 'ol/Observable';
 import { LogManager } from './LogManager';
+import { ConfigManager } from './ConfigManager';
 
 const FILENAME = 'managers/TooltipManager.js';
 const CLASS_OVERLAY_TOOLTIP = 'oltb-overlay-tooltip';
@@ -49,6 +49,7 @@ class TooltipManager {
     // -------------------------------------------------------------------
 
     static #createTooltipOverlay() {
+        const overlayOffset = ConfigManager.getConfig().overlayOffset;
         const tooltipElement = DOM.createElement({
             element: 'div',
             class: CLASS_OVERLAY_TOOLTIP
@@ -59,8 +60,8 @@ class TooltipManager {
             element: tooltipElement,
             positioning: 'bottom-center',
             offset: [
-                Config.overlayOffset.horizontal,
-                Config.overlayOffset.vertical
+                overlayOffset.horizontal,
+                overlayOffset.vertical
             ]
         });
     }

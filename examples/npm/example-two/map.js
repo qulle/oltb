@@ -17,7 +17,6 @@ import 'oltb/src/oltb/js/helpers/prototypes/SlideToggle';
 
 // Core Toolbar
 import 'oltb/src/oltb/scss/oltb.scss';
-import { Config } from 'oltb/src/oltb/js/core/Config';
 import { Settings } from 'oltb/src/oltb/js/helpers/constants/Settings';
 import { ContextMenu } from 'oltb/src/oltb/js/common/ContextMenu';
 import { LocalStorageKeys } from 'oltb/src/oltb/js/helpers/constants/LocalStorageKeys';
@@ -76,15 +75,6 @@ import { HiddenMarkerTool } from 'oltb/src/oltb/js/tools/hidden-tools/HiddenMark
 import { ImportVectorLayerTool } from 'oltb/src/oltb/js/tools/ImportVectorLayerTool';
 import { HiddenMapNavigationTool } from 'oltb/src/oltb/js/tools/hidden-tools/HiddenMapNavigationTool';
 
-// This is the same NodeName and Defaults that the HiddenMapNavigationTool.js is using
-const LocalStorageNodeName = LocalStorageKeys.mapData;
-const LocalStorageDefaults = Object.freeze({
-    lon: Config.defaultLocation.lon,
-    lat: Config.defaultLocation.lat,
-    zoom: Config.defaultLocation.zoom,
-    rotation: Config.defaultLocation.rotation,
-});
-
 // Note: The init order is important
 BootstrapManager.initAsync([
     { manager: LogManager },
@@ -111,11 +101,21 @@ BootstrapManager.initAsync([
 });
 
 const initMapAndToolbar = () => {
-    const LocalStorage = StateManager.getAndMergeStateObject(
-        LocalStorageNodeName, 
-        LocalStorageDefaults
+    const defaultLocation = ConfigManager.getConfig().locations.default;
+    const localStorageNodeName = LocalStorageKeys.mapData;
+    const localStorageDefaults = Object.freeze({
+        lon: defaultLocation.lon,
+        lat: defaultLocation.lat,
+        zoom: defaultLocation.zoom,
+        rotation: defaultLocation.rotation,
+    });
+
+    const localStorage = StateManager.getAndMergeStateObject(
+        localStorageNodeName, 
+        localStorageDefaults
     );
     
+    const defaultProjection = ConfigManager.getConfig().projection.default;
     const map = new Map({
         interactions: defaultInterctions({
             mouseWheelZoom: false,
@@ -681,13 +681,13 @@ const initMapAndToolbar = () => {
         ]),
         target: ElementManager.getMapElement(),
         view: new View({
-            projection: getProjection(Config.projection.default),
+            projection: getProjection(defaultProjection),
             center: fromLonLat([
-                Number(LocalStorage.lon),
-                Number(LocalStorage.lat)
-            ], Config.projection.default),
-            zoom: LocalStorage.zoom,
-            rotation: LocalStorage.rotation
+                Number(localStorage.lon),
+                Number(localStorage.lat)
+            ], defaultProjection),
+            zoom: localStorage.zoom,
+            rotation: localStorage.rotation
         })
     });
     

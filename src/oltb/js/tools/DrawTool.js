@@ -3,7 +3,6 @@ import { DOM } from '../helpers/browser/DOM';
 import { Draw } from 'ol/interaction';
 import { Keys } from '../helpers/constants/Keys';
 import { Toast } from '../common/Toast';
-import { Config } from '../core/Config';
 import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { Settings } from '../helpers/constants/Settings';
@@ -14,6 +13,7 @@ import { GeometryType } from '../core/ol-types/GeometryType';
 import { StateManager } from '../core/managers/StateManager';
 import { LayerManager } from '../core/managers/LayerManager';
 import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
+import { ConfigManager } from '../core/managers/ConfigManager';
 import { ElementManager } from '../core/managers/ElementManager';
 import { SettingsManager } from '../core/managers/SettingsManager';
 import { eventDispatcher } from '../helpers/browser/EventDispatcher';
@@ -445,7 +445,7 @@ class DrawTool extends Control {
             Toast.info({
                 title: 'Tip',
                 message: 'You are drawing in a hidden layer', 
-                autoremove: Config.autoRemovalDuation.normal
+                autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
             });
         }
     }
@@ -505,7 +505,7 @@ class DrawTool extends Control {
             Toast.info({
                 title: 'Oops',
                 message: 'No intersecting object found', 
-                autoremove: Config.autoRemovalDuation.normal
+                autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
             });
         }
 
@@ -540,8 +540,9 @@ class DrawTool extends Control {
 
     doToggleToolboxSection(targetName) {
         const targetNode = document.getElementById(targetName);
-        
-        targetNode?.slideToggle(Config.animationDuration.fast, (collapsed) => {
+        const duration = ConfigManager.getConfig().animationDuration.fast;
+
+        targetNode?.slideToggle(duration, (collapsed) => {
             this.localStorage.isCollapsed = collapsed;
             StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
         });

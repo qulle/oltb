@@ -1,5 +1,5 @@
 import moment from 'moment/moment';
-import { Config } from '../Config';
+import { ConfigManager } from './ConfigManager';
 
 const FILENAME = 'managers/LogManager.js';
 
@@ -79,7 +79,7 @@ class LogManager {
 
     static #logSink(level, origin, method, value) {
         const timestamp = moment();
-        const timeFormat = Config.timeFormat;
+        const timeFormat = ConfigManager.getConfig().timeFormat;
 
         const entry = {
             timestamp: timestamp.format(timeFormat),

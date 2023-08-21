@@ -1,7 +1,7 @@
-import { Config } from '../core/Config';
+import { ConfigManager } from '../core/managers/ConfigManager';
 
 const isHorizontal = function() {
-    return document.body.classList.contains(Config.className.row);
+    return document.body.classList.contains(ConfigManager.getConfig().className.row);
 }
 
 export { isHorizontal };

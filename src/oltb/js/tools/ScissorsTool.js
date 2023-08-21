@@ -4,7 +4,6 @@ import { DOM } from '../helpers/browser/DOM';
 import { Draw } from 'ol/interaction';
 import { Keys } from '../helpers/constants/Keys';
 import { Toast } from '../common/Toast';
-import { Config } from '../core/Config';
 import { Events } from '../helpers/constants/Events';
 import { Feature } from 'ol';
 import { Control } from 'ol/control';
@@ -15,6 +14,7 @@ import { LayerManager } from '../core/managers/LayerManager';
 import { StateManager } from '../core/managers/StateManager';
 import { GeometryType } from '../core/ol-types/GeometryType';
 import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
+import { ConfigManager } from '../core/managers/ConfigManager';
 import { ElementManager } from '../core/managers/ElementManager';
 import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
 import { SvgPaths, getIcon } from '../core/icons/GetIcon';
@@ -322,7 +322,7 @@ class ScissorsTool extends Control {
             Toast.info({
                 title: 'Oops',
                 message: 'No intersecting object found', 
-                autoremove: Config.autoRemovalDuation.normal
+                autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
             });
         }
 

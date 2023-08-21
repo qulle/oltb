@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import { DOM } from '../helpers/browser/DOM';
 import { Toast } from '../common/Toast';
-import { Config } from '../core/Config';
 import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { goToView } from '../helpers/GoToView';
@@ -9,6 +8,7 @@ import { LogManager } from '../core/managers/LogManager';
 import { ContextMenu } from '../common/ContextMenu';
 import { StateManager } from '../core/managers/StateManager';
 import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
+import { ConfigManager } from '../core/managers/ConfigManager';
 import { ElementManager } from '../core/managers/ElementManager';
 import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
 import { SvgPaths, getIcon } from '../core/icons/GetIcon';
@@ -17,11 +17,12 @@ import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
 const FILENAME = 'tools/HomeTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
 
+const DefaultLocation = ConfigManager.getConfig().locations.default;
 const DefaultOptions = Object.freeze({
-    lon: Config.defaultLocation.lon,
-    lat: Config.defaultLocation.lat,
-    zoom: Config.defaultLocation.zoom,
-    rotation: Config.defaultLocation.rotation,
+    lon: DefaultLocation.lon,
+    lat: DefaultLocation.lat,
+    zoom: DefaultLocation.zoom,
+    rotation: DefaultLocation.rotation,
     onInitiated: undefined,
     onClicked: undefined,
     onBrowserStateCleared: undefined,
@@ -30,10 +31,10 @@ const DefaultOptions = Object.freeze({
 
 const LocalStorageNodeName = LocalStorageKeys.homeTool;
 const LocalStorageDefaults = Object.freeze({
-    lon: Config.defaultLocation.lon,
-    lat: Config.defaultLocation.lat,
-    zoom: Config.defaultLocation.zoom,
-    rotation: Config.defaultLocation.rotation,
+    lon: DefaultLocation.lon,
+    lat: DefaultLocation.lat,
+    zoom: DefaultLocation.zoom,
+    rotation: DefaultLocation.rotation,
 });
 
 /**
@@ -217,7 +218,7 @@ class HomeTool extends Control {
         Toast.success({
             title: 'New Home',
             message: 'New location was set as home',
-            autoremove: Config.autoRemovalDuation.normal
+            autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
         });
     }
 

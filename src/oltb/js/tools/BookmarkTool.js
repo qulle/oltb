@@ -4,7 +4,6 @@ import Sortable from 'sortablejs';
 import { DOM } from '../helpers/browser/DOM';
 import { Keys } from '../helpers/constants/Keys';
 import { Toast } from '../common/Toast';
-import { Config } from '../core/Config';
 import { Dialog } from '../common/Dialog';
 import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
@@ -16,6 +15,7 @@ import { toStringHDMS } from 'ol/coordinate';
 import { LayerManager } from '../core/managers/LayerManager';
 import { StateManager } from '../core/managers/StateManager';
 import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
+import { ConfigManager } from '../core/managers/ConfigManager';
 import { ElementManager } from '../core/managers/ElementManager';
 import { copyToClipboard } from '../helpers/browser/CopyToClipboard';
 import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
@@ -412,10 +412,12 @@ class BookmarkTool extends Control {
     // -------------------------------------------------------------------
 
     generateSortable(element, options) {
+        const duration = ConfigManager.getConfig().animationDuration.warp;
+
         return Sortable.create(element, {
             group: options.group,
             dataIdAttr: 'data-oltb-sort-index',
-            animation: Config.animationDuration.warp,
+            animation: duration,
             forceFallback: true,
             handle: `.${CLASS_TOOLBOX_LIST}__handle`,
             chosenClass: `${CLASS_TOOLBOX_LIST}__item--chosen`,
@@ -516,7 +518,7 @@ class BookmarkTool extends Control {
             },
             placement: 'top',
             theme: 'oltb oltb-themed',
-            delay: Config.tippy.offset
+            delay: ConfigManager.getConfig().tippy.delay
         });
     }
 
@@ -674,7 +676,7 @@ class BookmarkTool extends Control {
                 Toast.info({
                     title: 'Cleared',
                     message: 'All stored bookmarks was cleared', 
-                    autoremove: Config.autoRemovalDuation.normal
+                    autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
                 });
             }
         });
@@ -714,8 +716,9 @@ class BookmarkTool extends Control {
 
     doToggleToolboxSection(targetName) {
         const targetNode = document.getElementById(targetName);
+        const duration = ConfigManager.getConfig().animationDuration.fast;
 
-        targetNode?.slideToggle(Config.animationDuration.fast, (collapsed) => {
+        targetNode?.slideToggle(duration, (collapsed) => {
             this.localStorage.isCollapsed = collapsed;
             StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
         });
@@ -792,7 +795,7 @@ class BookmarkTool extends Control {
             Toast.success({
                 title: 'New Bookmark',
                 message: `A new Bookmark created <strong>${name}</strong>`, 
-                autoremove: Config.autoRemovalDuation.normal
+                autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
             });
         }
 
@@ -898,7 +901,7 @@ class BookmarkTool extends Control {
                 Toast.info({
                     title: 'Copied',
                     message: 'Coordinates copied to clipboard', 
-                    autoremove: Config.autoRemovalDuation.normal
+                    autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
                 });
             })
             .catch((error) => {

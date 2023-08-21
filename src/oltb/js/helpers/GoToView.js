@@ -1,14 +1,15 @@
 import _ from 'lodash';
-import { Config } from '../core/Config';
 import { easeOut } from 'ol/easing';
 import { fromLonLat } from 'ol/proj';
+import { ConfigManager } from '../core/managers/ConfigManager';
 
+const DurationNormal = ConfigManager.getConfig().animationDuration.normal;
 const DefaultOptions = Object.freeze({
     map: undefined,
     coordinates: [0, 0],
     zoom: undefined,
     rotation: undefined,
-    duration: Config.animationDuration.normal,
+    duration: DurationNormal,
     onDone: undefined
 });
 

@@ -2,7 +2,6 @@ import _ from 'lodash';
 import { DOM } from '../helpers/browser/DOM';
 import { Keys } from '../helpers/constants/Keys';
 import { click } from 'ol/events/condition';
-import { Config } from '../core/Config';
 import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { DragZoom } from 'ol/interaction';
@@ -10,6 +9,7 @@ import { LogManager } from '../core/managers/LogManager';
 import { ToolManager } from '../core/managers/ToolManager';
 import { StateManager } from '../core/managers/StateManager';
 import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
+import { ConfigManager } from '../core/managers/ConfigManager';
 import { TooltipManager } from '../core/managers/TooltipManager';
 import { ElementManager } from '../core/managers/ElementManager';
 import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
@@ -244,8 +244,10 @@ class ZoomBoxTool extends Control {
     // -------------------------------------------------------------------
 
     generateOLInteractionDragZoom() {
+        const duration = ConfigManager.getConfig().animationDuration.normal;
+        
         return new DragZoom({
-            duration: Config.animationDuration.normal,           
+            duration: duration,           
             condition: (event) => {
                 return click && !this.isSpaceKeyPressed;
             },

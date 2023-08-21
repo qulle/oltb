@@ -1,6 +1,6 @@
 import { DOM } from '../helpers/browser/DOM';
-import { Config } from '../core/Config';
 import { Overlay } from 'ol';
+import { ConfigManager } from '../core/managers/ConfigManager';
 
 const CLASS_OVERLAY_TOOLTIP = 'oltb-overlay-tooltip';
 
@@ -20,12 +20,13 @@ const createUITooltip = function(data = '') {
         item
     ]);
 
+    const overlayOffset = ConfigManager.getConfig().overlayOffset;
     const overlay = new Overlay({
         element: tooltip,
         positioning: 'bottom-center',
         offset: [
-            Config.overlayOffset.horizontal,
-            Config.overlayOffset.vertical
+            overlayOffset.horizontal,
+            overlayOffset.vertical
         ]
     });
 
