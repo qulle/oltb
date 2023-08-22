@@ -11,7 +11,7 @@ const CLASS_ANIMATION_BOUNCE = `${CLASS_ANIMATION}--bounce`;
 
 const DefaultOptions = Object.freeze({
     title: 'Alert',
-    message: 'Oops missing alert message',
+    message: 'Oops missing message',
     confirmText: 'Ok',
     onConfirm: undefined
 });

@@ -65,7 +65,7 @@ class ConfigManager {
                 result: true
             });
         }).catch((error) => {
-            LogManager.logError(FILENAME, 'loadConfigAsync', {
+            LogManager.logWarning(FILENAME, 'loadConfigAsync', {
                 message: 'Failed to fetch configuration',
                 error: error
             });

@@ -12,7 +12,7 @@ const CLASS_ANIMATION_BOUNCE = `${CLASS_ANIMATION}--bounce`;
 
 const DefaultOptions = Object.freeze({
     title: 'Prompt',
-    message: 'Oops missing prompt text',
+    message: 'Oops missing message',
     placeholder: undefined,
     value: undefined,
     confirmClass: 'oltb-btn--green-mid',
@@ -91,7 +91,7 @@ class Prompt extends DialogBase {
             listeners: {
                 'click': () => {
                     this.close();
-                    this.options.onConfirm instanceof Function && this.options.onConfirm(inputBox.value.trim());
+                    this.options.onConfirm instanceof Function && this.options.onConfirm(input.value.trim());
                 }
             }
         });

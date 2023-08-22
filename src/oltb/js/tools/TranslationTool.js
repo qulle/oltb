@@ -106,7 +106,7 @@ class TranslationTool extends Control {
 
     askToChangeLanguage() {
         const languages = TranslationManager.getLanguages();
-        const currentLang = TranslationManager.getActive();
+        const currentLang = TranslationManager.getActiveLanguage();
 
         Dialog.select({
             title: 'Change Language',

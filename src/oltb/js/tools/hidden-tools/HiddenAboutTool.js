@@ -5,6 +5,7 @@ import { ContextMenu } from '../../common/ContextMenu';
 import { ConfigManager } from '../../core/managers/ConfigManager';
 import { ElementManager } from '../../core/managers/ElementManager';
 import { SvgPaths, getIcon } from '../../core/icons/GetIcon';
+import { TranslationManager } from '../../core/managers/TranslationManager';
 
 const FILENAME = 'hidden-tools/HiddenAboutTool.js';
 
@@ -44,7 +45,7 @@ class HiddenAboutTool extends Control {
         ContextMenu.addItem({});
         ContextMenu.addItem({
             icon: this.icon, 
-            name: 'About OLTB', 
+            name: TranslationManager.get('tools.hiddenAboutTool.contextItems.about'), 
             fn: this.onContextMenuAbout.bind(this)
         });
     }
@@ -67,14 +68,15 @@ class HiddenAboutTool extends Control {
         }
         
         const config = ConfigManager.getConfig();
+        const i18n = TranslationManager.get('tools.hiddenAboutTool.modals.about');
         const content = (`
-            <p>Version ${config.toolbar.version}</p>
-            <p>Developed by Qulle <a href="//github.com/qulle/oltb" target="_blank" class="oltb-link">github.com/qulle/oltb</a></p>
-            <p>Using OpenLayers <a href="//openlayers.org/en/v${config.openLayers.version}/apidoc/" target="_blank" class="oltb-link">${config.openLayers.version}</a></p>
+            <p>${i18n.version} ${config.toolbar.version}</p>
+            <p>${i18n.developedBy} <a href="//github.com/qulle/oltb" target="_blank" class="oltb-link">github.com/qulle/oltb</a></p>
+            <p>${i18n.usingOpenLayers} <a href="//openlayers.org/en/v${config.openLayers.version}/apidoc/" target="_blank" class="oltb-link">${config.openLayers.version}</a></p>
         `);
 
         this.aboutInfoModal = Modal.create({
-            title: 'About OLTB',
+            title: i18n.title,
             content: content,
             onClose: () => {
                 this.aboutInfoModal = undefined;

@@ -19,6 +19,7 @@ import { SvgPaths, getIcon } from '../../core/icons/GetIcon';
 import { InfoWindowManager } from '../../core/managers/InfoWindowManager';
 import { ProjectionManager } from '../../core/managers/ProjectionManager';
 import { generateIconMarker } from '../../generators/GenerateIconMarker';
+import { TranslationManager } from '../../core/managers/TranslationManager';
 import { fromLonLat, toLonLat } from 'ol/proj';
 
 const FILENAME = 'hidden-tools/HiddenMapNavigationTool.js';
@@ -43,7 +44,7 @@ const DefaultUrlMarker = Object.freeze({
     lon: 18.0685,
     lat: 59.3293,
     title: 'Marker',
-    description: 'Oops, this is the default description, have you forgot a parameter?',
+    description: '',
     icon: 'GeoMarker.Filled',
     layerName: 'URL Marker',
     label: 'Marker',
@@ -113,7 +114,7 @@ class HiddenMapNavigationTool extends Control {
     initContextMenuItems() {
         ContextMenu.addItem({
             icon: this.clipboardIcon,
-            name: 'Copy Coordinates',
+            name: TranslationManager.get('tools.hiddenMapNavigationTool.contextItems.copy'),
             fn: this.onContextMenuCopyCoordinates.bind(this)
         });
 
@@ -121,19 +122,19 @@ class HiddenMapNavigationTool extends Control {
 
         ContextMenu.addItem({
             icon: this.coordinatesIcon,
-            name: 'Navigate To',
+            name: TranslationManager.get('tools.hiddenMapNavigationTool.contextItems.navigate'),
             fn: this.onContextMenuCenterAtCoordinates.bind(this)
         });
 
         ContextMenu.addItem({
             icon: this.moveCenterIcon, 
-            name: 'Center Here', 
+            name: TranslationManager.get('tools.hiddenMapNavigationTool.contextItems.move'),
             fn: this.onContextMenuCenterMap.bind(this)
         });
 
         ContextMenu.addItem({
             icon: this.focusHereIcon, 
-            name: 'Focus Here', 
+            name: TranslationManager.get('tools.hiddenMapNavigationTool.contextItems.focus'),
             fn: this.onContextMenuFocusHere.bind(this)
         });
         
@@ -272,9 +273,10 @@ class HiddenMapNavigationTool extends Control {
 
         copyToClipboard(prettyCoordinates)
             .then(() => {
+                const i18n = TranslationManager.get('tools.hiddenMapNavigationTool.toasts.copied');
                 Toast.info({
-                    title: 'Copied',
-                    message: 'Coordinates copied to clipboard', 
+                    title: i18n.title,
+                    message: i18n.message, 
                     autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
                 });
             })
@@ -366,6 +368,7 @@ class HiddenMapNavigationTool extends Control {
             ConfigManager.getConfig().projection.wgs84
         );
 
+        const i18n = TranslationManager.get('common.functionButtons');
         const prettyCoordinates = toStringHDMS(transformedCoordinates);
         const infoWindow = {
             title: markerData.title,
@@ -375,9 +378,9 @@ class HiddenMapNavigationTool extends Control {
             footer: `
                 <span class="oltb-info-window__coordinates">${prettyCoordinates}</span>
                 <div class="oltb-info-window__buttons-wrapper">
-                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--delete oltb-tippy" title="Delete Marker" id="${ID_PREFIX_INFO_WINDOW}-remove"></button>
-                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--crosshair oltb-tippy" title="Copy Marker Coordinates" id="${ID_PREFIX_INFO_WINDOW}-copy-coordinates" data-oltb-coordinates="${prettyCoordinates}"></button>
-                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--copy oltb-tippy" title="Copy Marker Text" id="${ID_PREFIX_INFO_WINDOW}-copy-text" data-oltb-copy="${markerData.title}, ${markerData.description}"></button>
+                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--delete oltb-tippy" title="${i18n.delete}" id="${ID_PREFIX_INFO_WINDOW}-remove"></button>
+                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--crosshair oltb-tippy" title="${i18n.copyCoordinates}" id="${ID_PREFIX_INFO_WINDOW}-copy-coordinates" data-oltb-coordinates="${prettyCoordinates}"></button>
+                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--copy oltb-tippy" title="${i18n.copyText}" id="${ID_PREFIX_INFO_WINDOW}-copy-text" data-oltb-copy="${markerData.title}, ${markerData.description}"></button>
                 </div>
             `
         };

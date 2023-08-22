@@ -8,7 +8,7 @@ const CLASS_MODAL = 'oltb-modal';
 
 const DefaultOptions = Object.freeze({
     title: 'Modal',
-    content: 'Oops missing modal content'
+    content: 'Oops missing content'
 });
 
 class ModalWindow extends ModalBase {

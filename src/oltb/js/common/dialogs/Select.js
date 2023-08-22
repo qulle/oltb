@@ -12,7 +12,7 @@ const CLASS_ANIMATION_BOUNCE = `${CLASS_ANIMATION}--bounce`;
 
 const DefaultOptions = Object.freeze({
     title: 'Select',
-    message: 'Oops missing select text',
+    message: 'Oops missing message',
     value: undefined,
     options: [],
     confirmClass: 'oltb-btn--green-mid',

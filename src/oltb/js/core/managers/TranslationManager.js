@@ -1,6 +1,8 @@
+import _ from 'lodash';
 import { LogManager } from './LogManager';
 import { TippyManager } from './TippyManager';
 import { ConfigManager } from './ConfigManager';
+import { DefaultLanguage } from './translation-manager/DefaultLanguage';
 
 const FILENAME = 'managers/TranslationManager.js';
 
@@ -13,13 +15,17 @@ const FILENAME = 'managers/TranslationManager.js';
  * The toolbar is shipped with two languages (English and Swedish).
  */
 class TranslationManager {
-    static #activeLang;
+    static #activeLanguage;
+    static #languages;
 
     static async initAsync(options = {}) {
         LogManager.logDebug(FILENAME, 'initAsync', 'Initialization started');
 
-        // TODO: Get from localstorage/config-manager
-        this.#activeLang = {
+        this.#languages = {
+            'en-us': DefaultLanguage
+        };
+
+        this.#activeLanguage = {
             text: 'English',
             value: 'en-us'
         };
@@ -38,11 +44,6 @@ class TranslationManager {
         return FILENAME;
     }
 
-    static #get(key) {
-        // TODO: Split key and fetch value from the loaded JSON structure 
-        return 'Zooma Hem';
-    }
-
     // -------------------------------------------------------------------
     // # Section: Internal
     // -------------------------------------------------------------------
@@ -53,7 +54,7 @@ class TranslationManager {
 
         elements.forEach((element) => {
             const key = element.getAttribute('');
-            const value = this.#get(key);
+            const value = this.get(key);
 
             // Note: Tippy instances mus be handle first
             const tippyKey = 'data-tippy-content';
@@ -76,12 +77,16 @@ class TranslationManager {
         return ConfigManager.getConfig().localizations;
     }
 
-    static getActive() {
-        return this.#activeLang;
+    static getActiveLanguage() {
+        return this.#activeLanguage;
+    }
+
+    static getActiveTranslation() {
+        return this.#languages[this.#activeLanguage.value] || DefaultLanguage;
     }
 
     static setActive(lang) {
-        this.#activeLang = lang;
+        this.#activeLanguage = lang;
 
         // TODO: Make method to load JSON
         this.#applyLanguage();
@@ -90,6 +95,13 @@ class TranslationManager {
         // }).catch((error) => {
         //     console.error(error);
         // });
+    }
+
+    static get(path) {
+        const translation = this.getActiveTranslation();
+        const keys = path.split('.');
+
+        return _.get(translation, keys, path);
     }
 }
 

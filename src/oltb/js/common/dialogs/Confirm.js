@@ -12,7 +12,7 @@ const CLASS_ANIMATION_BOUNCE = `${CLASS_ANIMATION}--bounce`;
 
 const DefaultOptions = Object.freeze({
     title: 'Confirm',
-    message: 'Oops missing confirm message',
+    message: 'Oops missing message',
     confirmClass: 'oltb-btn--red-mid',
     confirmText: 'Yes',
     cancelText: 'Cancel',
