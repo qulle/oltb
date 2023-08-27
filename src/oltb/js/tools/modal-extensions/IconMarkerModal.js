@@ -7,6 +7,7 @@ import { isDarkTheme } from '../../helpers/IsDarkTheme';
 import { createUIInput } from '../../creators/CreateUIInput';
 import { createUISelect } from '../../creators/CreateUISelect';
 import { createUIColorInput } from '../../creators/CreateUIColorInput';
+import { TranslationManager } from '../../core/managers/TranslationManager';
 
 const FILENAME = 'modal-extensions/IconMarkerModal.js';
 const ID_PREFIX = 'oltb-marker-modal-marker';
@@ -35,7 +36,7 @@ class IconMarkerModal extends ModalBase {
         LogManager.logDebug(FILENAME, 'constructor', 'init');
 
         super(
-            'Marker Configuration', 
+            TranslationManager.get('modalExtensions.iconMarkerModal.title'),
             options.maximized, 
             options.onClose
         );
@@ -53,17 +54,18 @@ class IconMarkerModal extends ModalBase {
     // -------------------------------------------------------------------
 
     #createModal() {
+        const i18n = TranslationManager.get('modalExtensions.iconMarkerModal.form');
         const [ titleWrapper, titleInput ] = createUIInput({
             idPrefix: ID_PREFIX,
             idPostfix: '-title',
-            text: 'Title',
+            text: i18n.title,
             value: this.options.title
         });
 
         const [ descriptionWrapper, descriptionInput ] = createUIInput({
             idPrefix: ID_PREFIX,
             idPostfix: '-description',
-            text: 'Description',
+            text: i18n.description,
             value: this.options.description
         });
 
@@ -80,7 +82,7 @@ class IconMarkerModal extends ModalBase {
         const [ iconWrapper, iconSelect ] = createUISelect({
             idPrefix: ID_PREFIX,
             idPostfix: '-icon',
-            text: 'Icon',
+            text: i18n.icon,
             options: iconOptions,
             value: this.options.icon
         });
@@ -88,42 +90,42 @@ class IconMarkerModal extends ModalBase {
         const [ latWrapper, latInput ] = createUIInput({
             idPrefix: ID_PREFIX,
             idPostfix: '-lat',
-            text: 'Latitud',
+            text: i18n.latitude,
             value: this.options.coordinates[1],
         });
 
         const [ lonWrapper, lonInput ] = createUIInput({
             idPrefix: ID_PREFIX,
             idPostfix: '-lon',
-            text: 'Longitud',
+            text: i18n.longitude,
             value: this.options.coordinates[0],
         });
 
         const [ markerFillWrapper, markerFillInput ] = createUIColorInput({
             idPrefix: ID_PREFIX,
             idPostfix: '-marker-fill',
-            text: 'Marker Fill',
+            text: i18n.markerFill,
             color: this.options.markerFill,
         });
 
         const [ markerStrokeWrapper, markerStrokeInput ] = createUIColorInput({
             idPrefix: ID_PREFIX,
             idPostfix: '-marker-stroke',
-            text: 'Marker Stroke',
+            text: i18n.markerStroke,
             color: this.options.markerStroke,
         });
 
         const [ labelWrapper, labelInput ] = createUIInput({
             idPrefix: ID_PREFIX,
             idPostfix: '-label',
-            text: 'Label',
+            text: i18n.label,
             value: this.options.label,
         });
 
         const [ labelFillWrapper, labelFillInput ] = createUIColorInput({
             idPrefix: ID_PREFIX,
             idPostfix: '-label-fill',
-            text: 'Label Fill',
+            text: i18n.labelFill,
             color: this.options.labelFill,
         });
 
@@ -138,7 +140,7 @@ class IconMarkerModal extends ModalBase {
         const [ labelStrokeWidthWrapper, labelStrokeWidthSelect ] = createUISelect({
             idPrefix: ID_PREFIX,
             idPostfix: '-label-stroke-width',
-            text: 'Label Stroke Width',
+            text: i18n.labelStrokeWidth,
             options: widthOptions,
             value: this.options.labelStrokeWidth
         });
@@ -146,7 +148,7 @@ class IconMarkerModal extends ModalBase {
         const [ labelStrokeWrapper, labelStrokeInput ] = createUIColorInput({
             idPrefix: ID_PREFIX,
             idPostfix: '-label-stroke',
-            text: 'Label Stroke',
+            text: i18n.labelStroke,
             color: this.options.labelStroke,
         });
 
@@ -157,7 +159,7 @@ class IconMarkerModal extends ModalBase {
 
         const createButton = DOM.createElement({
             element: 'button', 
-            text: `${this.options.edit ? 'Save changes' : 'Create marker'}`, 
+            text: `${this.options.edit ? i18n.saveChanges : i18n.createMarker}`, 
             class: 'oltb-dialog__btn oltb-btn oltb-btn--green-mid',
             attributes: {
                 'type': 'button',
@@ -183,7 +185,7 @@ class IconMarkerModal extends ModalBase {
 
         const cancelButton = DOM.createElement({
             element: 'button', 
-            text: 'Cancel',
+            text: i18n.cancel,
             class: `oltb-dialog__btn oltb-btn ${
                 isDarkTheme() ? 'oltb-btn--gray-mid' : 'oltb-btn--gray-dark'
             }`,

@@ -12,6 +12,7 @@ import { ConfigManager } from '../core/managers/ConfigManager';
 import { ElementManager } from '../core/managers/ElementManager';
 import { SvgPaths, getIcon } from '../core/icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
+import { TranslationManager } from '../core/managers/TranslationManager';
 
 const FILENAME = 'tools/ExportPngTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
@@ -46,13 +47,14 @@ class ExportPngTool extends Control {
             class: `${CLASS_TOOL_BUTTON}__icon`
         });
 
+        const i18n = TranslationManager.get('tools.exportPngTool');
         const button = DOM.createElement({
             element: 'button',
             html: icon,
             class: CLASS_TOOL_BUTTON,
             attributes: {
                 'type': 'button',
-                'data-tippy-content': `Export PNG (${ShortcutKeys.exportPngTool})`
+                'data-tippy-content': `${i18n.title} (${ShortcutKeys.exportPngTool})`
             },
             listeners: {
                 'click': this.onClickTool.bind(this)
@@ -204,15 +206,16 @@ class ExportPngTool extends Control {
                 this.options.onError(error);
             }
 
-            const errorMessage = 'Failed to export canvas image';
+            const i18n = TranslationManager.get('tools.exportPngTool.toasts.renderError');
+
             LogManager.logError(FILENAME, 'doRenderCompleteAsync', {
-                message: errorMessage,
+                message: i18n.message,
                 error: error
             });
             
             Toast.error({
-                title: 'Error',
-                message: errorMessage
+                title: i18n.title,
+                message: i18n.message
             });
         }
     }

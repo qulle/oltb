@@ -12,6 +12,7 @@ import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
 import { ElementManager } from '../core/managers/ElementManager';
 import { SvgPaths, getIcon } from '../core/icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
+import { TranslationManager } from '../core/managers/TranslationManager';
 import { degreesToRadians, radiansToDegrees } from '../helpers/Conversions';
 
 const FILENAME = 'tools/ResetNorthTool.js';
@@ -43,13 +44,14 @@ class ResetNorthTool extends Control {
             class: `${CLASS_TOOL_BUTTON}__icon`
         });
 
+        const i18n = TranslationManager.get('tools.resetNorthTool');
         const button = DOM.createElement({
             element: 'button',
             html: this.icon,
             class: CLASS_TOOL_BUTTON,
             attributes: {
                 'type': 'button',
-                'data-tippy-content': `Reset North (${ShortcutKeys.resetNorthTool})`
+                'data-tippy-content': `${i18n.title} (${ShortcutKeys.resetNorthTool})`
             },
             listeners: {
                 'click': this.onClickTool.bind(this)
@@ -84,7 +86,7 @@ class ResetNorthTool extends Control {
     initContextMenuItems() {
         ContextMenu.addItem({
             icon: this.icon, 
-            name: 'Rotate Map', 
+            name: TranslationManager.get('tools.resetNorthTool.contextItems.rotate'), 
             fn: this.onContextMenuSetRotation.bind(this)
         });
     }
@@ -163,25 +165,27 @@ class ResetNorthTool extends Control {
 
         // Note: Must use the center of the view, not the clicked coordinates
         const coordinates = toLonLat(view.getCenter());
+        const i18n = TranslationManager.get('tools.resetNorthTool.dialogs.rotateMap');
 
         Dialog.prompt({
-            title: 'Rotate Map',
-            message: 'Set map rotation by degrees',
+            title: i18n.title,
+            message: i18n.message,
             value: Math.round(normalizedRotation),
-            confirmText: 'Rotate Map',
+            confirmText: i18n.confirmText,
             onConfirm: (result) => {
                 if(result.isDigitsOnly()) {
                     this.doRotation(map, coordinates, zoom, result);
                 }else {
-                    const errorMessage = 'Only digits are allowed as input';
+                    const i18n = TranslationManager.get('tools.resetNorthTool.toasts.invalidInput');
+
                     LogManager.logError(FILENAME, 'askToSetRotation', {
-                        message: errorMessage,
+                        message: i18n.merge,
                         result: result
                     });
 
                     Toast.error({
-                        title: 'Error',
-                        message: errorMessage
+                        title: i18n.title,
+                        message: i18n.message
                     });
                 }
             }

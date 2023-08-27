@@ -10,6 +10,7 @@ import { ElementManager } from '../core/managers/ElementManager';
 import { DebugInfoModal } from './modal-extensions/DebugInfoModal';
 import { SvgPaths, getIcon } from '../core/icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
+import { TranslationManager } from '../core/managers/TranslationManager';
 
 const FILENAME = 'tools/DebugInfoTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
@@ -41,13 +42,14 @@ class DebugInfoTool extends Control {
             class: `${CLASS_TOOL_BUTTON}__icon`
         });
 
+        const i18n = TranslationManager.get('tools.debugInfoTool');
         const button = DOM.createElement({
             element: 'button',
             html: icon,
             class: CLASS_TOOL_BUTTON,
             attributes: {
                 'type': 'button',
-                'data-tippy-content': `Debug Info (${ShortcutKeys.debugInfoTool})`
+                'data-tippy-content': `${i18n.title} (${ShortcutKeys.debugInfoTool})`
             },
             listeners: {
                 'click': this.onClickTool.bind(this)

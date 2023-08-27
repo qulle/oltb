@@ -15,6 +15,7 @@ import { ElementManager } from '../core/managers/ElementManager';
 import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
 import { SvgPaths, getIcon } from '../core/icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
+import { TranslationManager } from '../core/managers/TranslationManager';
 
 const FILENAME = 'tools/ZoomBoxTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
@@ -58,13 +59,14 @@ class ZoomBoxTool extends Control {
             class: `${CLASS_TOOL_BUTTON}__icon`
         });
 
+        const i18n = TranslationManager.get('tools.zoomBoxTool');
         const button = DOM.createElement({
             element: 'button',
             html: icon,
             class: CLASS_TOOL_BUTTON,
             attributes: {
                 'type': 'button',
-                'data-tippy-content': `Zoom Box (${ShortcutKeys.zoomBoxTool})`
+                'data-tippy-content': `${i18n.title} (${ShortcutKeys.zoomBoxTool})`
             },
             listeners: {
                 'click': this.onClickTool.bind(this)
@@ -303,8 +305,10 @@ class ZoomBoxTool extends Control {
     }
 
     doAddTooltip() {
+        const i18n = TranslationManager.get('tools.zoomBoxTool.tooltips');
+
         this.tooltip = TooltipManager.push(KEY_TOOLTIP);
-        this.tooltip.innerHTML = 'Drag To Zoom';
+        this.tooltip.innerHTML = i18n.dragToZoom;
     }
 
     doRemoveTooltip() {

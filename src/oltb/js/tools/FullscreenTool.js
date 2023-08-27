@@ -9,6 +9,7 @@ import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
 import { ElementManager } from '../core/managers/ElementManager';
 import { SvgPaths, getIcon } from '../core/icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
+import { TranslationManager } from '../core/managers/TranslationManager';
 import { FullscreenEvents, FullscreenEventTypes, isFullScreenSupported, isFullScreen, requestFullScreen, exitFullScreen } from '../helpers/browser/Fullscreen';
 
 const FILENAME = 'tools/FullscreenTool.js';
@@ -135,12 +136,16 @@ class FullscreenTool extends Control {
         const isSupported = isFullScreenSupported();
 
         if(!isSupported) {
-            const errorMessage = 'Fullscreen is not supported by this browser';
-            LogManager.logError(FILENAME, 'isFullScreenSupportedByBrowser', errorMessage);
+            const i18n = TranslationManager.get('tools.fullscreenTool.toasts.fullscreenNotSupported');
+
+            LogManager.logError(FILENAME, 'isFullScreenSupportedByBrowser', {
+                title: i18n.title,
+                error: i18n.message
+            });
 
             Toast.error({
-                title: 'Error',
-                message: errorMessage
+                title: i18n.title,
+                message: i18n.message
             });
         }
 
@@ -152,9 +157,11 @@ class FullscreenTool extends Control {
     // -------------------------------------------------------------------
 
     getToolTippyContent() {
+        const i18n = TranslationManager.get('tools.fullscreenTool.titles');
+
         return isFullScreen() 
-            ? 'Exit Fullscreen' 
-            : 'Enter Fullscreen';
+            ? i18n.exit 
+            : i18n.enter;
     }
 
     getToolIcon() {

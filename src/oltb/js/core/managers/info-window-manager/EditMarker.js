@@ -68,8 +68,6 @@ const onEditMarker = function(InfoWindowManager, beforeMarker, result) {
             </div>
         `
     };
-
-    console.dir(result);
     
     const afterMarker = new generateIconMarker({
         lon: coordinates[0],

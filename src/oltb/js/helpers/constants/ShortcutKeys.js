@@ -28,7 +28,7 @@ const ShortcutKeys = Object.freeze({
     helpTool: '1',
     settingsTool: '2',
     debugInfoTool: '3',
-    notificationsTool: '4',
+    notificationTool: '4',
 });
 
 export { ShortcutKeys };

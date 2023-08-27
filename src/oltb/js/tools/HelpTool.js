@@ -9,6 +9,7 @@ import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
 import { ElementManager } from '../core/managers/ElementManager';
 import { SvgPaths, getIcon } from '../core/icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
+import { TranslationManager } from '../core/managers/TranslationManager';
 
 const FILENAME = 'tools/HelpTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
@@ -40,13 +41,14 @@ class HelpTool extends Control {
             class: `${CLASS_TOOL_BUTTON}__icon`
         });
 
+        const i18n = TranslationManager.get('tools.helpTool');
         const button = DOM.createElement({
             element: 'button',
             html: icon,
             class: CLASS_TOOL_BUTTON,
             attributes: {
                 'type': 'button',
-                'data-tippy-content': `Help (${ShortcutKeys.helpTool})`
+                'data-tippy-content': `${i18n.title} (${ShortcutKeys.helpTool})`
             },
             listeners: {
                 'click': this.onClickTool.bind(this)
@@ -106,11 +108,13 @@ class HelpTool extends Control {
     // -------------------------------------------------------------------
 
     askToOpenTabOrWindow() {
+        const i18n = TranslationManager.get('tools.helpTool.dialogs.openHelp');
+
         Dialog.confirm({
-            title: 'Help Pages',
-            message: 'Browsers block automatic opening new windows, here is a button for you to press',
+            title: i18n.title,
+            message: i18n.message,
             confirmClass: Dialog.Success,
-            confirmText: 'Open Help',
+            confirmText: i18n.confirmText,
             onConfirm: () => {
                 this.doOpenTabOrWindow();
             }
@@ -125,15 +129,16 @@ class HelpTool extends Control {
         try {
             window.open(this.options.url, this.options.target).focus();
         }catch(error) {
-            const errorMessage = 'Action was restricted by browser settings';
+            const i18n = TranslationManager.get('tools.helpTool.toasts.blockedByBrowserError');
+
             LogManager.logError(FILENAME, 'doOpenTabOrWindow', {
-                message: errorMessage,
+                message: i18n.message,
                 error: error
             });
             
             Toast.error({
-                title: 'Error',
-                message: errorMessage
+                title: i18n.title,
+                message: i18n.message
             });
         }
     }

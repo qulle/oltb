@@ -12,6 +12,7 @@ import { ImportLayerModal } from './modal-extensions/ImportLayerModal';
 import { SvgPaths, getIcon } from '../core/icons/GetIcon';
 import { instantiateFormat } from '../core/ol-types/FormatType';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
+import { TranslationManager } from '../core/managers/TranslationManager';
 
 const FILENAME = 'tools/ImportVectorLayerTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
@@ -43,13 +44,14 @@ class ImportVectorLayerTool extends Control {
             class: `${CLASS_TOOL_BUTTON}__icon`
         });
 
+        const i18n = TranslationManager.get('tools.importVectorLayerTool');
         const button = DOM.createElement({
             element: 'button',
             html: icon,
             class: CLASS_TOOL_BUTTON,
             attributes: {
                 'type': 'button',
-                'data-tippy-content': `Import Vector Layer (${ShortcutKeys.importVectorLayerTool})`
+                'data-tippy-content': `${i18n.title} (${ShortcutKeys.importVectorLayerTool})`
             },
             listeners: {
                 'click': this.onClickTool.bind(this)
@@ -175,7 +177,7 @@ class ImportVectorLayerTool extends Control {
 
     doAddFeaturesToMap(features, filename) {
         const layerWrapper = LayerManager.addFeatureLayer({
-            name: `Import : ${filename}`
+            name: filename
         });
         
         layerWrapper.getLayer().getSource().addFeatures(features);
@@ -198,12 +200,16 @@ class ImportVectorLayerTool extends Control {
 
             // Note: This should not happen since the format is set in the dialog using select element
             if(!format) {
-                const errorMessage = `This layer format (${format}) is not supported`;
-                LogManager.logError(FILENAME, 'doImportLayer', errorMessage);
+                const i18n = TranslationManager.get('tools.importVectorLayerTool.toasts.unsupportedFormatError');
+
+                LogManager.logError(FILENAME, 'doImportLayer', {
+                    title: i18n.title,
+                    message: `${i18n.message} (${format})`
+                });
 
                 Toast.error({
-                    title: 'Error',
-                    message: errorMessage
+                    title: i18n.title,
+                    message: `${i18n.message} (${format})`
                 });
 
                 return;
@@ -221,15 +227,16 @@ class ImportVectorLayerTool extends Control {
                 this.options.onImported(features);
             }
         }catch(error) {
-            const errorMessage = 'Failed to import vector layer';
+            const i18n = TranslationManager.get('tools.importVectorLayerTool.toasts.importError');
+
             LogManager.logError(FILENAME, 'doImportLayer', {
-                message: errorMessage,
+                message: i18n.message,
                 error: error
             });
             
             Toast.error({
-                title: 'Error',
-                message: errorMessage
+                title: i18n.title,
+                message: i18n.message
             });
 
             // Note: Consumer callback

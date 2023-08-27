@@ -20,6 +20,7 @@ import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
 import { SvgPaths, getIcon } from '../core/icons/GetIcon';
 import { ProjectionManager } from '../core/managers/ProjectionManager';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
+import { TranslationManager } from '../core/managers/TranslationManager';
 
 const FILENAME = 'tools/CoordiantesTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
@@ -62,13 +63,14 @@ class CoordinatesTool extends Control {
             class: `${CLASS_TOOL_BUTTON}__icon`
         });
 
+        const i18n = TranslationManager.get('tools.coordinatesTool');
         const button = DOM.createElement({
             element: 'button',
             html: icon,
             class: CLASS_TOOL_BUTTON,
             attributes: {
                 'type': 'button',
-                'data-tippy-content': `Show Coordinates (${ShortcutKeys.coordinatesTool})`
+                'data-tippy-content': `${i18n.title} (${ShortcutKeys.coordinatesTool})`
             },
             listeners: {
                 'click': this.onClickTool.bind(this)
@@ -119,24 +121,25 @@ class CoordinatesTool extends Control {
     // -------------------------------------------------------------------
 
     initToolboxHTML() {
+        const i18n = TranslationManager.get('tools.coordinatesTool.toolbox');
+        const i18nCommon = TranslationManager.get('common.titles');
+
         ElementManager.getToolboxElement().insertAdjacentHTML('beforeend', `
             <div id="${ID_PREFIX}-toolbox" class="${CLASS_TOOLBOX_SECTION}">
-                <div class="${CLASS_TOOLBOX_SECTION}__header">
-                    <h4 class="${CLASS_TOOLBOX_SECTION}__title oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">
-                        Coordinates Tool
-                        <span class="${CLASS_TOOLBOX_SECTION}__icon oltb-tippy" title="Toggle Section"></span>
-                    </h4>
+                <div class="${CLASS_TOOLBOX_SECTION}__header oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">
+                    <h4 class="${CLASS_TOOLBOX_SECTION}__title" data-oltb-i18n="tools.coordinatesTool.toolbox.titles.coordinates">${i18n.titles.coordiantes}</h4>
+                    <span class="${CLASS_TOOLBOX_SECTION}__icon oltb-tippy" data-oltb-i18n="common.titles.toggleSection" title="${i18nCommon.toggleSection}"></span>
                 </div>
                 <div class="${CLASS_TOOLBOX_SECTION}__groups" id="${ID_PREFIX}-toolbox-collapsed" style="display: ${this.localStorage.isCollapsed ? 'none' : 'block'}">
                     <div class="${CLASS_TOOLBOX_SECTION}__group">
-                        <label class="oltb-label" for="${ID_PREFIX}-format">Format</label>
+                        <label class="oltb-label" for="${ID_PREFIX}-format" data-oltb-i18n="tools.coordinatesTool.toolbox.groups.formats.title">${i18n.groups.formats.title}</label>
                         <select id="${ID_PREFIX}-format" class="oltb-select">
-                            <option value="DD">Decimal Degrees</option>
-                            <option value="DMS">Degrees, Minutes, Seconds</option>
+                            <option value="DD" data-oltb-i18n="tools.coordinatesTool.toolbox.groups.formats.dd">${i18n.groups.formats.dd}</option>
+                            <option value="DMS" data-oltb-i18n="tools.coordinatesTool.toolbox.groups.formats.dms">${i18n.groups.formats.dms}</option>
                         </select>
                     </div>
                     <div class="${CLASS_TOOLBOX_SECTION}__group">
-                        <label class="oltb-label">Coordinates <em>(Lat, Lon)</em></label>
+                        <label class="oltb-label" data-oltb-i18n="tools.coordinatesTool.toolbox.groups.coordinates.title">${i18n.groups.coordinates.title} <em>(Lat, Lon)</em></label>
                         <table class="oltb-table oltb-mt-05" id="${ID_PREFIX}-table"></table>
                     </div>
                 </div>
@@ -151,14 +154,15 @@ class CoordinatesTool extends Control {
     }
 
     initSettings() {
+        const i18n = TranslationManager.get('tools.coordinatesTool.settings');
         SettingsManager.addSetting(Settings.copyCoordinatesOnClick, {
             state: true, 
-            text: 'Copy Coordinates On Click'
+            text: i18n.copyOnClick
         });
 
         SettingsManager.addSetting(Settings.updateToolboxCoordinatesOnHover, {
             state: true, 
-            text: 'Update Toolbox Coordinates When Hover'
+            text: i18n.updateToolboxOnHover
         });
     }
 
@@ -425,25 +429,25 @@ class CoordinatesTool extends Control {
         );
 
         const prettyCoordinates = toStringHDMS(coordinates);
+        const i18n = TranslationManager.get('tools.coordinatesTool.toasts');
 
         copyToClipboard(prettyCoordinates)
             .then(() => {
                 Toast.info({
-                    title: 'Copied',
-                    message: 'Coordinates copied to clipboard', 
+                    title: i18n.copied.title,
+                    message: i18n.copied.message, 
                     autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
                 });
             })
             .catch((error) => {
-                const errorMessage = 'Failed to copy coordinates';
                 LogManager.logError(FILENAME, 'doCopyCoordinates', {
-                    message: errorMessage,
+                    message: i18n.copyError.message,
                     error: error
                 });
 
                 Toast.error({
-                    title: 'Error',
-                    message: errorMessage
+                    title: i18n.copyError.title,
+                    message: i18n.copyError.message
                 });
             });
     }

@@ -24,6 +24,7 @@ import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
 import { SvgPaths, getIcon } from '../core/icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
 import { FeatureProperties } from '../helpers/constants/FeatureProperties';
+import { TranslationManager } from '../core/managers/TranslationManager';
 import { Fill, Stroke, Circle, Style } from 'ol/style';
 import { getMeasureCoordinates, getMeasureValue } from '../helpers/Measurements';
 
@@ -75,13 +76,14 @@ class MeasureTool extends Control {
             class: `${CLASS_TOOL_BUTTON}__icon`
         });
 
+        const i18n = TranslationManager.get('tools.measureTool');
         const button = DOM.createElement({
             element: 'button',
             html: icon,
             class: CLASS_TOOL_BUTTON,
             attributes: {
                 'type': 'button',
-                'data-tippy-content': `Measure (${ShortcutKeys.measureTool})`
+                'data-tippy-content': `${i18n.title} (${ShortcutKeys.measureTool})`
             },
             listeners: {
                 'click': this.onClickTool.bind(this)
@@ -136,30 +138,31 @@ class MeasureTool extends Control {
     // -------------------------------------------------------------------
 
     initToolboxHTML() {
+        const i18n = TranslationManager.get('tools.measureTool.toolbox');
+        const i18nCommon = TranslationManager.get('common.titles');
+
         ElementManager.getToolboxElement().insertAdjacentHTML('beforeend', `
             <div id="${ID_PREFIX}-toolbox" class="${CLASS_TOOLBOX_SECTION}">
-                <div class="${CLASS_TOOLBOX_SECTION}__header">
-                    <h4 class="${CLASS_TOOLBOX_SECTION}__title oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">
-                        Measure Tool
-                        <span class="${CLASS_TOOLBOX_SECTION}__icon oltb-tippy" title="Toggle Section"></span>
-                    </h4>
+                <div class="${CLASS_TOOLBOX_SECTION}__header oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">
+                    <h4 class="${CLASS_TOOLBOX_SECTION}__title" data-oltb-i18n="tools.measureTool.toolbox.titles.measure">${i18n.titles.measure}</h4>
+                    <span class="${CLASS_TOOLBOX_SECTION}__icon oltb-tippy" data-oltb-i18n="common.titles.toggleSection" title="${i18nCommon.toggleSection}"></span>
                 </div>
                 <div class="${CLASS_TOOLBOX_SECTION}__groups" id="${ID_PREFIX}-toolbox-collapsed" style="display: ${this.localStorage.isCollapsed ? 'none' : 'block'}">
                     <div class="${CLASS_TOOLBOX_SECTION}__group">
-                        <label class="oltb-label" for="${ID_PREFIX}-type">Type</label>
+                        <label class="oltb-label" for="${ID_PREFIX}-type" data-oltb-i18n="tools.measureTool.toolbox.groups.type.title">${i18n.groups.type.title}</label>
                         <select id="${ID_PREFIX}-type" class="oltb-select">
-                            <option value="LineString">Length</option>
-                            <option value="Polygon">Area</option>
+                            <option value="LineString" data-oltb-i18n="tools.measureTool.toolbox.groups.type.lineString">${i18n.groups.type.lineString}</option>
+                            <option value="Polygon" data-oltb-i18n="tools.measureTool.toolbox.groups.type.polygon">${i18n.groups.type.polygon}</option>
                         </select>
                     </div>
                     <div class="${CLASS_TOOLBOX_SECTION}__group">
-                        <label class="oltb-label" for="${ID_PREFIX}-stroke-color">Stroke Color</label>
+                        <label class="oltb-label" for="${ID_PREFIX}-stroke-color" data-oltb-i18n="tools.measureTool.toolbox.groups.strokeColor.title">${i18n.groups.strokeColor.title}</label>
                         <div id="${ID_PREFIX}-stroke-color" class="oltb-color-input oltb-color-tippy" data-oltb-color-target="#${ID_PREFIX}-stroke-color" data-oltb-color="${this.localStorage.strokeColor}" tabindex="0">
                             <div class="oltb-color-input__inner" style="background-color: ${this.localStorage.strokeColor};"></div>
                         </div>
                     </div>
                     <div class="${CLASS_TOOLBOX_SECTION}__group">
-                        <label class="oltb-label" for="${ID_PREFIX}-fill-color">Fill Color</label>
+                        <label class="oltb-label" for="${ID_PREFIX}-fill-color" data-oltb-i18n="tools.measureTool.toolbox.groups.fillColor.title">${i18n.groups.fillColor.title}</label>
                         <div id="${ID_PREFIX}-fill-color" class="oltb-color-input oltb-color-tippy" data-oltb-color-target="#${ID_PREFIX}-fill-color" data-oltb-color="${this.localStorage.fillColor}" tabindex="0">
                             <div class="oltb-color-input__inner" style="background-color: ${this.localStorage.fillColor};"></div>
                         </div>
@@ -203,7 +206,7 @@ class MeasureTool extends Control {
 
         if(this.shouldAlwaysCreateNewLayer()) {
             LayerManager.addFeatureLayer({
-                name: 'Measurements layer'
+                name: TranslationManager.get('tools.measureTool.layers.defaultName')
             });
         }
 
@@ -411,16 +414,18 @@ class MeasureTool extends Control {
         tooltip.setData(`${measureValue.value} ${measureValue.unit}`);
 
         const layerWrapper = LayerManager.getActiveFeatureLayer({
-            fallback: 'Measurements layer'
+            fallback: TranslationManager.get('tools.measureTool.layers.defaultName')
         });
         
         LayerManager.addFeatureToLayer(feature, layerWrapper);
         const layer = layerWrapper.getLayer();
         
         if(!layer.getVisible()) {
+            const i18n = TranslationManager.get('tools.measureTool.toasts.measuringInHiddenLayer');
+
             Toast.info({
-                title: 'Tip',
-                message: 'You are measuring in a hidden layer', 
+                title: i18n.title,
+                message: i18n.message, 
                 autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
             });
         }

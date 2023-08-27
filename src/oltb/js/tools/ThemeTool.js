@@ -10,6 +10,7 @@ import { ElementManager } from '../core/managers/ElementManager';
 import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
 import { SvgPaths, getIcon } from '../core/icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
+import { TranslationManager } from '../core/managers/TranslationManager';
 
 const FILENAME = 'tools/ThemeTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
@@ -21,24 +22,23 @@ const DefaultOptions = Object.freeze({
     onChanged: undefined
 });
 
-// Note: The values are flipped
 const ThemesData = Object.freeze({
-    light: Object.freeze({
+    light: {
         class: 'light',
-        tippyContent: 'Dark Theme',
+        tippyContent: '',
         icon: getIcon({
             path: SvgPaths.moonStars.stroked,
             class: `${CLASS_TOOL_BUTTON}__icon`
         })
-    }),
-    dark: Object.freeze({
+    },
+    dark: {
         class: 'dark',
-        tippyContent: 'Light Theme',
+        tippyContent: '',
         icon: getIcon({
             path: SvgPaths.sun.stroked,
             class: `${CLASS_TOOL_BUTTON}__icon`
         })
-    })
+    }
 });
 
 const LocalStorageNodeName = LocalStorageKeys.themeTool;
@@ -60,6 +60,11 @@ class ThemeTool extends Control {
         super({
             element: ElementManager.getToolbarElement()
         });
+
+        // Note: The values are flipped
+        const i18n = TranslationManager.get('tools.themeTool.titles');
+        ThemesData.light.tippyContent = i18n.dark;
+        ThemesData.dark.tippyContent = i18n.light;
 
         const button = DOM.createElement({
             element: 'button',

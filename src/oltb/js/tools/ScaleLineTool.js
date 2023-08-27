@@ -9,6 +9,7 @@ import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
 import { SvgPaths, getIcon } from '../core/icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
 import { Control, ScaleLine } from 'ol/control';
+import { TranslationManager } from '../core/managers/TranslationManager';
 
 const FILENAME = 'tools/ScaleLineTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
@@ -45,13 +46,14 @@ class ScaleLineTool extends Control {
             class: `${CLASS_TOOL_BUTTON}__icon`
         });
 
+        const i18n = TranslationManager.get('tools.scaleLineTool');
         const button = DOM.createElement({
             element: 'button',
             html: icon,
             class: CLASS_TOOL_BUTTON,
             attributes: {
                 'type': 'button',
-                'data-tippy-content': `Scale Line (${ShortcutKeys.scaleLineTool})`
+                'data-tippy-content': `${i18n.title} (${ShortcutKeys.scaleLineTool})`
             },
             listeners: {
                 'click': this.onClickTool.bind(this)

@@ -9,6 +9,7 @@ import { ConfigManager } from '../../core/managers/ConfigManager';
 import { createUIInput } from '../../creators/CreateUIInput';
 import { createUISelect } from '../../creators/CreateUISelect';
 import { ProjectionManager } from '../../core/managers/ProjectionManager';
+import { TranslationManager } from '../../core/managers/TranslationManager';
 
 const FILENAME = 'modal-extensions/LayerModal.js';
 const ID_PREFIX = 'oltb-layer-modal';
@@ -25,7 +26,7 @@ class LayerModal extends ModalBase {
         LogManager.logDebug(FILENAME, 'constructor', 'init');
 
         super(
-            'Create Map Layer', 
+            TranslationManager.get('modalExtensions.layerModal.title'), 
             options.maximized, 
             options.onClose
         );
@@ -43,24 +44,25 @@ class LayerModal extends ModalBase {
     // -------------------------------------------------------------------
 
     #createModal() {
+        const i18n = TranslationManager.get('modalExtensions.layerModal.form');
         const [ nameWrapper, nameInput ] = createUIInput({
             idPrefix: ID_PREFIX,
             idPostfix: '-name',
-            text: 'Name',
+            text: i18n.name,
             value: 'New map layer'
         });
 
         const [ typeWrapper, typeSelect ] = createUISelect({
             idPrefix: ID_PREFIX,
             idPostfix: '-type',
-            text: 'Layer',
+            text: i18n.layer,
             options: _.cloneDeep(LayerOptions)
         });
 
         const [ sourceWrapper, sourceSelect ] = createUISelect({
             idPrefix: ID_PREFIX,
             idPostfix: '-source',
-            text: 'Layer',
+            text: i18n.source,
             options: _.cloneDeep(SourceOptions)
         });
 
@@ -76,7 +78,7 @@ class LayerModal extends ModalBase {
         const [ projectionWrapper, projectionSelect ] = createUISelect({
             idPrefix: ID_PREFIX,
             idPostfix: '-projection',
-            text: 'Projection',
+            text: i18n.projection,
             options: projectionOptions,
             value: ConfigManager.getConfig().projection.default
         });
@@ -84,20 +86,20 @@ class LayerModal extends ModalBase {
         const [ urlWrapper, urlInput ] = createUIInput({
             idPrefix: ID_PREFIX,
             idPostfix: '-url',
-            text: 'URL'
+            text: i18n.url
         });
 
         const [ parametersWrapper, parametersInput ] = createUIInput({
             idPrefix: ID_PREFIX,
             idPostfix: '-parameters',
-            text: 'Parameters (JSON)',
+            text: i18n.parameters,
             placeholder: '{"Layers": "HPD_TRP"}'
         });
 
         const [ wrapXWrapper, wrapXSelect ] = createUISelect({
             idPrefix: ID_PREFIX,
             idPostfix: '-wrapx',
-            text: 'WrapX',
+            text: i18n.wrapX,
             options: [
                 {
                     text: 'False',
@@ -112,7 +114,7 @@ class LayerModal extends ModalBase {
         const [ corsWrapper, corsSelect ] = createUISelect({
             idPrefix: ID_PREFIX,
             idPostfix: '-cors',
-            text: 'CORS',
+            text: i18n.cors,
             options: [
                 {
                     text: 'Anonymous',
@@ -141,7 +143,7 @@ class LayerModal extends ModalBase {
         const defaultProjection = ConfigManager.getConfig().projection.default;
         const createButton = DOM.createElement({
             element: 'button', 
-            text: 'Create layer',
+            text: i18n.createLayer,
             class: 'oltb-dialog__btn oltb-btn oltb-btn--green-mid', 
             attributes: {
                 'type': 'button'
@@ -166,7 +168,7 @@ class LayerModal extends ModalBase {
 
         const cancelButton = DOM.createElement({
             element: 'button', 
-            text: 'Cancel', 
+            text: i18n.cancel, 
             class: `oltb-dialog__btn oltb-btn ${
                 isDarkTheme() ? 'oltb-btn--gray-mid' : 'oltb-btn--gray-dark'
             }`,

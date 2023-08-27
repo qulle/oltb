@@ -4,6 +4,7 @@ import { ModalBase } from '../../common/modals/ModalBase';
 import { LogManager } from '../../core/managers/LogManager';
 import { isDarkTheme } from '../../helpers/IsDarkTheme';
 import { createUIInput } from '../../creators/CreateUIInput';
+import { TranslationManager } from '../../core/managers/TranslationManager';
 
 const FILENAME = 'modal-extensions/CoordinateModal.js';
 const ID_PREFIX = 'oltb-coordinates-modal';
@@ -20,7 +21,7 @@ class CoordinateModal extends ModalBase {
         LogManager.logDebug(FILENAME, 'constructor', 'init');
 
         super(
-            'Coordinates', 
+            TranslationManager.get(`modalExtensions.coordinateModal.title`), 
             options.maximized, 
             options.onClose
         );
@@ -38,17 +39,18 @@ class CoordinateModal extends ModalBase {
     // -------------------------------------------------------------------
 
     #createModal() {
+        const i18n = TranslationManager.get('modalExtensions.coordinateModal.form');
         const [ latWrapper, latInput ] = createUIInput({
             idPrefix: ID_PREFIX,
             idPostfix: '-lat',
-            text: 'Latitud',
+            text: i18n.latitude,
             placeholder: '51.5072'
         });
 
         const [ lonWrapper, lonInput ] = createUIInput({
             idPrefix: ID_PREFIX,
             idPostfix: '-lon',
-            text: 'Longitud',
+            text: i18n.longitude,
             placeholder: '0.1276'
         });
         
@@ -59,7 +61,7 @@ class CoordinateModal extends ModalBase {
 
         const navigateButton = DOM.createElement({
             element: 'button', 
-            text: 'Navigate to',
+            text: i18n.navigateTo,
             class: 'oltb-dialog__btn oltb-btn oltb-btn--green-mid', 
             attributes: {
                 'type': 'button'
@@ -76,7 +78,7 @@ class CoordinateModal extends ModalBase {
 
         const cancelButton = DOM.createElement({
             element: 'button', 
-            text: 'Cancel', 
+            text: i18n.cancel, 
             class: `oltb-dialog__btn oltb-btn ${
                 isDarkTheme() ? 'oltb-btn--gray-mid' : 'oltb-btn--gray-dark'
             }`,
@@ -100,7 +102,7 @@ class CoordinateModal extends ModalBase {
 
         const coordinatesLabel = DOM.createElement({
             element: 'label', 
-            text: 'Coordinates are given in WGS84/EPSG:4326',
+            text: i18n.description,
             class: 'oltb-label oltb-mt-1'
         });
 

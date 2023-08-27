@@ -23,6 +23,7 @@ import { SvgPaths, getIcon } from '../core/icons/GetIcon';
 import { InfoWindowManager } from '../core/managers/InfoWindowManager';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
 import { generateIconMarker } from '../generators/GenerateIconMarker';
+import { TranslationManager } from '../core/managers/TranslationManager';
 import { generateAnimalName } from '../helpers/name-generator/NameGenerator';
 import { fromLonLat, toLonLat } from 'ol/proj';
 
@@ -86,13 +87,14 @@ class BookmarkTool extends Control {
             path: SvgPaths.bookmarkX.stroked
         });
 
+        const i18n = TranslationManager.get('tools.bookmarkTool');
         const button = DOM.createElement({
             element: 'button',
             html: this.icon,
             class: CLASS_TOOL_BUTTON,
             attributes: {
                 'type': 'button',
-                'data-tippy-content': `Bookmarks (${ShortcutKeys.bookmarkTool})`
+                'data-tippy-content': `${i18n.title} (${ShortcutKeys.bookmarkTool})`
             },
             listeners: {
                 'click': this.onClickTool.bind(this)
@@ -153,19 +155,20 @@ class BookmarkTool extends Control {
     // -------------------------------------------------------------------
 
     initToolboxHTML() {
+        const i18n = TranslationManager.get('tools.bookmarkTool.toolbox');
+        const i18nCommon = TranslationManager.get('common.titles');
+
         ElementManager.getToolboxElement().insertAdjacentHTML('beforeend', `
             <div id="${ID_PREFIX}-toolbox" class="${CLASS_TOOLBOX_SECTION}">
-                <div class="${CLASS_TOOLBOX_SECTION}__header">
-                    <h4 class="${CLASS_TOOLBOX_SECTION}__title oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">
-                        Bookmarks
-                        <span class="${CLASS_TOOLBOX_SECTION}__icon oltb-tippy" title="Toggle Section"></span>
-                    </h4>
+                <div class="${CLASS_TOOLBOX_SECTION}__header oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">
+                    <h4 class="${CLASS_TOOLBOX_SECTION}__title" data-oltb-i18n="tools.bookmarkTool.toolbox.titles.bookmarks">${i18n.titles.bookmarks}</h4>
+                    <span class="${CLASS_TOOLBOX_SECTION}__icon oltb-tippy" data-oltb-i18n="common.titles.toggleSection" title="${i18nCommon.toggleSection}"></span>
                 </div>
                 <div class="${CLASS_TOOLBOX_SECTION}__groups" id="${ID_PREFIX}-toolbox-collapsed" style="display: ${this.localStorage.isCollapsed ? 'none' : 'block'}">
                     <div class="${CLASS_TOOLBOX_SECTION}__group">
                         <div class="oltb-input-button-group">
-                            <input type="text" id="${ID_PREFIX}-add-text" class="oltb-input" placeholder="Bookmark Name">
-                            <button type="button" id="${ID_PREFIX}-add-button" class="oltb-btn oltb-btn--green-mid oltb-tippy" title="Add Bookmark">
+                            <input type="text" id="${ID_PREFIX}-add-text" class="oltb-input" data-oltb-i18n="tools.bookmarkTool.toolbox.groups.addBookmark.placeholder" placeholder="${i18n.groups.addBookmark.placeholder}">
+                            <button type="button" id="${ID_PREFIX}-add-button" class="oltb-btn oltb-btn--green-mid oltb-tippy" data-oltb-i18n="tools.bookmarkTool.groups.addBookmark.add" title="${i18n.groups.addBookmark.add}">
                                 ${getIcon({
                                     path: SvgPaths.plus.stroked,
                                     width: 20,
@@ -213,13 +216,13 @@ class BookmarkTool extends Control {
     initContextMenuItems() {
         ContextMenu.addItem({
             icon: this.icon, 
-            name: 'Add Bookmark', 
+            name: TranslationManager.get('tools.bookmarkTool.contextItems.addBookmark'), 
             fn: this.onContextMenuBookmarkAdd.bind(this)
         });
 
         ContextMenu.addItem({
             icon: this.clearBookmarksIcon, 
-            name: 'Clear Bookmarks', 
+            name: TranslationManager.get('tools.bookmarkTool.contextItems.clearBookmarks'), 
             fn: this.onContextMenuBookmarksClear.bind(this)
         });
     }
@@ -231,7 +234,7 @@ class BookmarkTool extends Control {
     generateBookmarkLayer() {
         return LayerManager.addFeatureLayer({
             id: '1fde0d79-46f9-4c92-8f9c-eb0e98f46772',
-            name: 'Bookmarks', 
+            name: TranslationManager.get('tools.bookmarkTool.layers.bookmarks'), 
             visible: this.options.markerLayerVisibleOnLoad, 
             isSilent: true,
             disableFeatureLayerVisibilityButton: false,
@@ -588,10 +591,11 @@ class BookmarkTool extends Control {
             class: `${CLASS_TOOLBOX_LIST}__wrapper`
         });
 
+        const i18n = TranslationManager.get('common');
         const zoomToButton = DOM.createElement({
             element: 'button',
             class: `${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--geo-pin oltb-tippy`,
-            title: 'Zoom To Coordinates',
+            title: i18n.functionButtons.zoomToCoordinates,
             attributes: {
                 'type': 'button'
             },
@@ -603,7 +607,7 @@ class BookmarkTool extends Control {
         const copyCoordinatesButton = DOM.createElement({
             element: 'button',
             class: `${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--crosshair oltb-tippy`,
-            title: 'Copy Coordinates',
+            title: i18n.functionButtons.copyCoordinates,
             attributes: {
                 'type': 'button'
             },
@@ -615,7 +619,7 @@ class BookmarkTool extends Control {
         const editButton = DOM.createElement({
             element: 'button',
             class: `${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--edit oltb-tippy`,
-            title: 'Rename Bookmark',
+            title: i18n.functionButtons.rename,
             attributes: {
                 'type': 'button'
             },
@@ -627,7 +631,7 @@ class BookmarkTool extends Control {
         const deleteButton = DOM.createElement({
             element: 'button',
             class: `${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--delete oltb-tippy`,
-            title: 'Delete Bookmark',
+            title: i18n.functionButtons.delete,
             attributes: {
                 'type': 'button'
             },
@@ -646,7 +650,7 @@ class BookmarkTool extends Control {
         const layerHandle = DOM.createElement({
             element: 'div',
             class: `${CLASS_TOOLBOX_LIST}__handle oltb-tippy`,
-            title: 'Drag To Sort'
+            title: i18n.titles.dragToSort
         });
 
         DOM.appendChildren(rightWrapper, [
@@ -673,9 +677,10 @@ class BookmarkTool extends Control {
             onConfirm: () => {
                 this.doClearBookmarks();
 
+                const i18n = TranslationManager.get('tools.bookmarkTool.toasts.cleared');
                 Toast.info({
-                    title: 'Cleared',
-                    message: 'All stored bookmarks was cleared', 
+                    title: i18n.title,
+                    message: i18n.message, 
                     autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
                 });
             }
@@ -792,9 +797,10 @@ class BookmarkTool extends Control {
 
         // Note: Alert the user, the Bookmark was created when the tool was not active
         if(!this.isActive) {
+            const i18n = TranslationManager.get('tools.bookmarkTool.toasts.created');
             Toast.success({
-                title: 'New Bookmark',
-                message: `A new Bookmark created <strong>${name}</strong>`, 
+                title: i18n.title,
+                message: `${i18n.message} <strong>${name}</strong>`, 
                 autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
             });
         }
@@ -895,25 +901,25 @@ class BookmarkTool extends Control {
 
     doCopyBookmarkCoordinates(bookmark) {
         const prettyCoordinates = toStringHDMS(bookmark.coordinates);
+        const i18n = TranslationManager.get('tools.bookmarkTool.toasts');
 
         copyToClipboard(prettyCoordinates)
             .then(() => {
                 Toast.info({
-                    title: 'Copied',
-                    message: 'Coordinates copied to clipboard', 
+                    title: i18n.copied.title,
+                    message: i18n.copied.message, 
                     autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
                 });
             })
             .catch((error) => {
-                const errorMessage = 'Failed to copy coordinates';
                 LogManager.logError(FILENAME, 'doCopyBookmarkCoordinates', {
-                    message: errorMessage,
+                    message: i18n.copyError.message,
                     error: error
                 });
                 
                 Toast.error({
-                    title: 'Error',
-                    message: errorMessage
+                    title: i18n.copyError.title,
+                    message: i18n.copyError.message
                 });
             });
     }

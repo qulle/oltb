@@ -25,6 +25,7 @@ import { InfoWindowManager } from '../core/managers/InfoWindowManager';
 import { ProjectionManager } from '../core/managers/ProjectionManager';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
 import { FeatureProperties } from '../helpers/constants/FeatureProperties';
+import { TranslationManager } from '../core/managers/TranslationManager';
 import { DownloadLayerModal } from './modal-extensions/DownloadLayerModal';
 import { hasCustomFeatureProperty } from '../helpers/browser/HasNestedProperty';
 
@@ -99,13 +100,14 @@ class LayerTool extends Control {
             class: `${CLASS_TOOL_BUTTON}__icon`
         });
 
+        const i18n = TranslationManager.get('tools.layerTool');
         const button = DOM.createElement({
             element: 'button',
             html: this.icon,
             class: CLASS_TOOL_BUTTON,
             attributes: {
                 'type': 'button',
-                'data-tippy-content': `Layers (${ShortcutKeys.layerTool})`
+                'data-tippy-content': `${i18n.title} (${ShortcutKeys.layerTool})`
             },
             listeners: {
                 'click': this.onClickTool.bind(this)
@@ -194,19 +196,20 @@ class LayerTool extends Control {
     // -------------------------------------------------------------------
 
     initToolboxHTML() {
+        const i18n = TranslationManager.get('tools.layerTool.toolbox');
+        const i18nCommon = TranslationManager.get('common.titles');
+
         ElementManager.getToolboxElement().insertAdjacentHTML('beforeend', `
             <div id="${ID_PREFIX}-toolbox" class="${CLASS_TOOLBOX_SECTION}">
-                <div class="${CLASS_TOOLBOX_SECTION}__header">
-                    <h4 class="${CLASS_TOOLBOX_SECTION}__title oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-map-toolbox-collapsed">
-                        Map Layers
-                        <span class="${CLASS_TOOLBOX_SECTION}__icon oltb-tippy" title="Toggle Section"></span>
-                    </h4>
+                <div class="${CLASS_TOOLBOX_SECTION}__header oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-map-toolbox-collapsed">
+                    <h4 class="${CLASS_TOOLBOX_SECTION}__title" data-oltb-i18n="tools.layerTool.toolbox.titles.mapLayers">${i18n.titles.mapLayers}</h4>
+                    <span class="${CLASS_TOOLBOX_SECTION}__icon oltb-tippy" data-oltb-i18n="common.titles.toggleSection" title="${i18nCommon.toggleSection}"></span>
                 </div>
                 <div class="${CLASS_TOOLBOX_SECTION}__groups" id="${ID_PREFIX}-map-toolbox-collapsed" style="display: ${this.localStorage[`${ID_PREFIX}-map-toolbox-collapsed`] ? 'none' : 'block'}">
                     ${!this.options.disableMapCreateLayerButton ? 
                         `
                             <div class="${CLASS_TOOLBOX_SECTION}__group">
-                                <button type="button" id="${ID_PREFIX}-map-stack-add-button" class="oltb-btn oltb-btn--green-mid oltb-w-100">Create Map Layer</button>
+                                <button type="button" id="${ID_PREFIX}-map-stack-add-button" class="oltb-btn oltb-btn--green-mid oltb-w-100" data-oltb-i18n="tools.layerTool.toolbox.groups.createMapLayer.create">${i18n.groups.createMapLayer.create}</button>
                             </div>
                         ` : ''
                     }
@@ -214,19 +217,17 @@ class LayerTool extends Control {
                         <ul id="${ID_PREFIX}-map-stack" class="${CLASS_TOOLBOX_LIST}"></ul>
                     </div>
                 </div>
-                <div class="${CLASS_TOOLBOX_SECTION}__header">
-                    <h4 class="${CLASS_TOOLBOX_SECTION}__title oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-feature-toolbox-collapsed">
-                        Feature Layers
-                        <span class="${CLASS_TOOLBOX_SECTION}__icon oltb-tippy" title="Toggle Section"></span>
-                    </h4>
+                <div class="${CLASS_TOOLBOX_SECTION}__header oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-feature-toolbox-collapsed">
+                    <h4 class="${CLASS_TOOLBOX_SECTION}__title" data-oltb-i18n="tools.layerTool.toolbox.titles.featureLayers">${i18n.titles.featureLayers}</h4>
+                    <span class="${CLASS_TOOLBOX_SECTION}__icon oltb-tippy" data-oltb-i18n="common.titles.toggleSection" title="${i18nCommon.toggleSection}"></span>
                 </div>
                 <div class="${CLASS_TOOLBOX_SECTION}__groups" id="${ID_PREFIX}-feature-toolbox-collapsed" style="display: ${this.localStorage[`${ID_PREFIX}-feature-toolbox-collapsed`] ? 'none' : 'block'}">
                     <div class="${CLASS_TOOLBOX_SECTION}__group">
                         ${!this.options.disableFeatureCreateLayerButton ? 
                             `
                                 <div class="oltb-input-button-group">
-                                    <input type="text" id="${ID_PREFIX}-feature-stack-add-text" class="oltb-input" placeholder="Layer Name">
-                                    <button type="button" id="${ID_PREFIX}-feature-stack-add-button" class="oltb-btn oltb-btn--green-mid oltb-tippy" title="Create Feature Layer">
+                                    <input type="text" id="${ID_PREFIX}-feature-stack-add-text" class="oltb-input" data-oltb-i18n="tools.layerTool.toolbox.groups.createFeatureLayer.placeholder" placeholder="${i18n.groups.createFeatureLayer.placeholder}">
+                                    <button type="button" id="${ID_PREFIX}-feature-stack-add-button" class="oltb-btn oltb-btn--green-mid oltb-tippy" data-oltb-i18n="tools.layerTool.toolbox.groups.createFeatureLayer.create" title="${i18n.groups.createFeatureLayer.create}">
                                         ${getIcon({
                                             path: SvgPaths.plus.stroked,
                                             width: 20,
@@ -259,10 +260,12 @@ class LayerTool extends Control {
             ContextMenu.addItem({});
         }
 
+        const i18n = TranslationManager.get('tools.layerTool.contextItems');
+
         if(!this.options.disableMapCreateLayerButton) {
             ContextMenu.addItem({
                 icon: this.icon, 
-                name: 'Add Map Layer', 
+                name: i18n.addMapLayer, 
                 fn: this.onContextMenuAddMapLayerModal.bind(this)
             });
         }
@@ -270,7 +273,7 @@ class LayerTool extends Control {
         if(!this.options.disableFeatureCreateLayerButton) {
             ContextMenu.addItem({
                 icon: this.icon, 
-                name: 'Add Feature Layer', 
+                name: i18n.addFeatureLayer, 
                 fn: this.onContextMenuAddFeatureLayer.bind(this)
             });
         }
@@ -414,9 +417,11 @@ class LayerTool extends Control {
 
         // Note: Alert the user, the Layer was created when the tool was not active
         if(!this.isActive) {
+            const i18n = TranslationManager.get('tools.layerTool.toasts.newLayer');
+
             Toast.success({
-                title: 'New Layer',
-                message: 'A new Feature layer created', 
+                title: i18n.title,
+                message: i18n.message, 
                 autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
             });
         }
@@ -535,15 +540,19 @@ class LayerTool extends Control {
         const hasProjection = ProjectionManager.hasProjection(projection);
 
         if(!hasProjection) {
-            const errorMessage = `Must add projection definition for <strong>${projection}</strong>`;
-            LogManager.logError(FILENAME, 'hasProjection', errorMessage);
+            const i18n = TranslationManager.get('');
+
+            LogManager.logError(FILENAME, 'hasProjection', {
+                message: i18n.message,
+                projection: projection
+            });
 
             Toast.error({
-                title: 'Error',
-                message: `
-                    ${errorMessage} <br>
+                title: i18n.title,
+                message: (`
+                    ${i18n.message} <br>
                     <a href="https://epsg.io" target="_blank" class="oltb-link">https://epsg.io</a>
-                `
+                `)
             });
         }
 
@@ -586,15 +595,16 @@ class LayerTool extends Control {
         try {
             this.doAddMapLayer(result);
         }catch(error) {
-            const errorMessage = 'Failed to generate new layer';
+            const i18n = TranslationManager.get('tools.layerTool.toasts.newLayerError');
+
             LogManager.logError(FILENAME, 'onCreateMapLayer', {
-                message: errorMessage,
+                message: i18n.message,
                 error: error
             });
 
             Toast.error({
-                title: 'Error',
-                message: errorMessage
+                title: i18n.title,
+                message: i18n.message
             });
         }
     }
@@ -748,10 +758,11 @@ class LayerTool extends Control {
 
         this.attachUIButtonCallbacks(options, layerWrapper, rightWrapper, layerName);
         
+        const i18n = TranslationManager.get('common.titles');
         const layerHandle = DOM.createElement({
             element: 'div',
             class: `${CLASS_TOOLBOX_LIST}__handle oltb-tippy`,
-            title: 'Drag To Sort'
+            title: i18n.dragToSort
         });
 
         DOM.appendChildren(rightWrapper, [
@@ -872,10 +883,11 @@ class LayerTool extends Control {
 
         this.attachUIButtonCallbacks(options, layerWrapper, rightWrapper, layerName);
         
+        const i18n = TranslationManager.get('common.titles');
         const layerHandle = DOM.createElement({
             element: 'div',
             class: `${CLASS_TOOLBOX_LIST}__handle oltb-tippy`,
-            title: 'Drag To Sort'
+            title: i18n.dragToSort
         });
 
         DOM.appendChildren(rightWrapper, [
@@ -894,7 +906,7 @@ class LayerTool extends Control {
         const deleteButton = DOM.createElement({
             element: 'button',
             class: `${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--delete oltb-tippy`,
-            title: 'Delete Layer',
+            title: TranslationManager.get('common.functionButtons.delete'),
             attributes: {
                 'type': 'button'
             },
@@ -910,7 +922,7 @@ class LayerTool extends Control {
         const downloadButton = DOM.createElement({
             element: 'button', 
             class: `${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--download oltb-tippy`,
-            title: 'Download Layer',
+            title: TranslationManager.get('common.functionButtons.download'),
             attributes: {
                 'type': 'button'
             },
@@ -926,7 +938,7 @@ class LayerTool extends Control {
         const editButton = DOM.createElement({
             element: 'button',
             class: `${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--edit oltb-tippy`,
-            title: 'Rename Layer',
+            title: TranslationManager.get('common.functionButtons.rename'),
             attributes: {
                 'type': 'button'
             },
@@ -942,7 +954,7 @@ class LayerTool extends Control {
         const visibilityButton = DOM.createElement({
             element: 'button',
             class: `${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--visibility oltb-tippy`,
-            title: 'Toggle Visibility',
+            title: TranslationManager.get('common.functionButtons.toggleVisibility'),
             attributes: {
                 'type': 'button'
             },
@@ -984,12 +996,16 @@ class LayerTool extends Control {
                 const format = instantiateFormat(result.format);
             
                 if(!format) {
-                    const errorMessage = `Layer format '<strong>${result.format})</strong>' is not supported`;
-                    LogManager.logError(FILENAME, 'onLayerDownload', errorMessage);
+                    const i18n = TranslationManager.get('tools.layerTool.toasts.unsupportedFormatError');
+
+                    LogManager.logError(FILENAME, 'onLayerDownload', {
+                        title: i18n.title,
+                        message: `${i18n.message} (${format})`
+                    });
 
                     Toast.error({
-                        title: 'Error',
-                        message: errorMessage
+                        title: i18n.title,
+                        message: `${i18n.message} (${format})`
                     });
 
                     return;
@@ -1007,11 +1023,13 @@ class LayerTool extends Control {
     }
 
     askToRenameLayer(layerWrapper, callback, layerName) {
+        const i18n = TranslationManager.get('tools.layerTool.dialogs.renameLayer');
+
         Dialog.prompt({
-            title: 'Edit Name',
-            message: `You are editing the <strong>${layerWrapper.getName()}</strong> layer`,
+            title: i18n.title,
+            message: `${i18n.message} <strong>${layerWrapper.getName()}</strong>`,
             value: layerWrapper.getName(),
-            confirmText: 'Rename',
+            confirmText: i18n.confirmText,
             onConfirm: (result) => {
                 if(result !== null && !!result.length) {
                     // Update model
@@ -1031,10 +1049,12 @@ class LayerTool extends Control {
     }
 
     askToDeleteLayer(layerWrapper, callback) {
+        const i18n = TranslationManager.get('tools.layerTool.dialogs.deleteLayer');
+
         Dialog.confirm({
-            title: 'Delete Layer',
-            message: `Do you want to delete the <strong>${layerWrapper.getName()}</strong> layer?`,
-            confirmText: 'Delete',
+            title: i18n.title,
+            message: `${i18n.message} <strong>${layerWrapper.getName()}</strong>?`,
+            confirmText: i18n.confirmText,
             onConfirm: () => {
                 callback(layerWrapper);
             }

@@ -14,6 +14,7 @@ import { ElementManager } from '../core/managers/ElementManager';
 import { SettingsManager } from '../core/managers/SettingsManager';
 import { SvgPaths, getIcon } from '../core/icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
+import { TranslationManager } from '../core/managers/TranslationManager';
 
 const FILENAME = 'tools/SettingsTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
@@ -44,13 +45,14 @@ class SettingsTool extends Control {
             class: `${CLASS_TOOL_BUTTON}__icon`
         });
 
+        const i18n = TranslationManager.get('tools.settingsTool');
         const button = DOM.createElement({
             element: 'button',
             html: this.icon,
             class: CLASS_TOOL_BUTTON,
             attributes: {
                 'type': 'button',
-                'data-tippy-content': `Settings (${ShortcutKeys.settingsTool})`
+                'data-tippy-content': `${i18n.title} (${ShortcutKeys.settingsTool})`
             },
             listeners: {
                 'click': this.onClickTool.bind(this)
@@ -86,7 +88,7 @@ class SettingsTool extends Control {
     initContextMenuItems() {
         ContextMenu.addItem({
             icon: this.icon, 
-            name: 'Clear Browser State', 
+            name: TranslationManager.get('tools.settingsTool.contextItems.clearBrowserState'), 
             fn: this.onContextMenuBrowserStateClear.bind(this)
         });
     }
@@ -133,18 +135,14 @@ class SettingsTool extends Control {
     // -------------------------------------------------------------------
 
     askToClearBrowserState() {
-        Dialog.confirm({
-            title: 'Clear Browser State',
-            message: 'Do you want to reset <strong>all</strong> items to default state for the Toolbar?',
-            confirmText: 'Clear',
-            onConfirm: () => {
-                this.doDispatchBrowserStateCleared();
+        const i18n = TranslationManager.get('tools.settingsTool.dialogs.clearBrowserState');
 
-                Toast.info({
-                    title: 'Cleared',
-                    message: 'All stored items was reset to default', 
-                    autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
-                });
+        Dialog.confirm({
+            title: i18n.title,
+            message: i18n.message,
+            confirmText: i18n.confirmText,
+            onConfirm: () => {
+                this.doClearBrowserState();
             }
         });
     }
@@ -153,6 +151,17 @@ class SettingsTool extends Control {
     // # Section: Tool DoActions
     // -------------------------------------------------------------------
 
+    doClearBrowserState() {
+        this.doDispatchBrowserStateCleared();
+
+        const i18n = TranslationManager.get('tools.settingsTool.toasts.cleared');
+        Toast.info({
+            title: i18n.title,
+            message: i18n.message, 
+            autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
+        });
+    }
+
     doShowSettingsModal() {
         if(this.settingsModal) {
             return;
@@ -160,9 +169,10 @@ class SettingsTool extends Control {
         
         this.settingsModal = new SettingsModal({
             onSave: () => {
+                const i18n = TranslationManager.get('tools.settingsTool.toasts.saved');
                 Toast.success({
-                    title: 'Saved',
-                    message: 'All settings settings was saved', 
+                    title: i18n.title,
+                    message: i18n.message, 
                     autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
                 });
             },

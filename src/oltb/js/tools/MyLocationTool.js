@@ -16,6 +16,7 @@ import { SvgPaths, getIcon } from '../core/icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
 import { InfoWindowManager } from '../core/managers/InfoWindowManager';
 import { generateIconMarker } from '../generators/GenerateIconMarker';
+import { TranslationManager } from '../core/managers/TranslationManager';
 import { isFullScreen, exitFullScreen } from '../helpers/browser/Fullscreen';
 
 const FILENAME = 'tools/MyLocationTool.js';
@@ -58,13 +59,14 @@ class MyLocationTool extends Control {
             class: `${CLASS_TOOL_BUTTON}__icon`
         });
 
+        const i18n = TranslationManager.get('tools.myLocationTool');
         const button = DOM.createElement({
             element: 'button',
             html: icon,
             class: CLASS_TOOL_BUTTON,
             attributes: {
                 'type': 'button',
-                'data-tippy-content': `My Location (${ShortcutKeys.myLocationTool})`
+                'data-tippy-content': `${i18n.title} (${ShortcutKeys.myLocationTool})`
             },
             listeners: {
                 'click': this.onClickTool.bind(this)
@@ -140,20 +142,29 @@ class MyLocationTool extends Control {
     // -------------------------------------------------------------------
 
     askToExitFullScreen() {
+        const i18n = TranslationManager.get('tools.myLocationTool.dialogs.exitFullscreen');
+
         Dialog.confirm({
-            title: 'Exit Fullscreen',
-            message: 'To use geolocation you must exit fullscreen',
+            title: i18n.title,
+            message: i18n.message,
             confirmClass: Dialog.Success,
-            confirmText: 'Exit Fullscreen',
+            confirmText: i18n.confirmText,
             onConfirm: () => {
                 exitFullScreen()
                     .then(() => {
                         this.doGeoLocationSearch();
                     })
                     .catch((error) => {
+                        const i18n = TranslationManager.get('tools.myLocationTool.toasts.exitFullscreenError');
+
                         LogManager.logError(FILENAME, 'askToExitFullScreen', {
-                            message: 'Error exiting fullscreen',
+                            message: i18n.message,
                             error: error
+                        });
+
+                        Toast.error({
+                            title: i18n.title,
+                            message: error.message
                         });
                     });
             }
@@ -184,10 +195,15 @@ class MyLocationTool extends Control {
     }
 
     doLocationError(error) {
-        LogManager.logError(FILENAME, 'doLocationError', error.message);
+        const i18n = TranslationManager.get('tools.myLocationTool.toasts.locationError');
+
+        LogManager.logError(FILENAME, 'doLocationError', {
+            message: error.message,
+            error: error
+        });
 
         Toast.error({
-            title: 'Error',
+            title: i18n.title,
             message: error.message
         });
         
@@ -221,7 +237,9 @@ class MyLocationTool extends Control {
     }
 
     doAddIconMarker(coordinates) {
+        const i18n = TranslationManager.get('common.functionButtons');
         const prettyCoordinates = toStringHDMS(coordinates);
+
         const infoWindow = {
             title: this.options.title,
             content: `
@@ -230,9 +248,9 @@ class MyLocationTool extends Control {
             footer: `
                 <span class="oltb-info-window__coordinates">${prettyCoordinates}</span>
                 <div class="oltb-info-window__buttons-wrapper">
-                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--delete oltb-tippy" title="Delete Marker" id="${ID_PREFIX_INFO_WINDOW}-remove"></button>
-                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--crosshair oltb-tippy" title="Copy Marker Coordinates" id="${ID_PREFIX_INFO_WINDOW}-copy-coordinates" data-oltb-coordinates="${prettyCoordinates}"></button>
-                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--copy oltb-tippy" title="Copy Marker Text" id="${ID_PREFIX_INFO_WINDOW}-copy-text" data-oltb-copy="${this.options.description}"></button>
+                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--delete oltb-tippy" data-oltb-i18n="common.functionButtons.delete" title="${i18n.delete}" id="${ID_PREFIX_INFO_WINDOW}-remove"></button>
+                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--crosshair oltb-tippy" data-oltb-i18n="common.functionButtons.copyCoordinates" title="${i18n.copyCoordinates}" id="${ID_PREFIX_INFO_WINDOW}-copy-coordinates" data-oltb-coordinates="${prettyCoordinates}"></button>
+                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--copy oltb-tippy" data-oltb-i18n="common.functionButtons.copyText" title="${i18n.copyText}" id="${ID_PREFIX_INFO_WINDOW}-copy-text" data-oltb-copy="${this.options.description}"></button>
                 </div>
             `
         };
@@ -260,14 +278,18 @@ class MyLocationTool extends Control {
         }
 
         if(!window.navigator.geolocation) {
-            return this.onError({
-                message: 'Geolocation is not supported'
+            this.onError({
+                message: TranslationManager.get('tools.myLocation.toasts.geoLocationNotSupported')
             });
+
+            return;
         }
         
+        const i18n = TranslationManager.get('tools.myLocationTool.toasts.geoSearching');
+
         this.loadingToast = Toast.info({
-            title: 'Searching',
-            message: 'Trying to find your location...', 
+            title: i18n.title,
+            message: i18n.message, 
             clickToRemove: false,
             spinner: true,
             onRemove: () => {

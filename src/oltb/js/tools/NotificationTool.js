@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import { DOM } from '../helpers/browser/DOM';
 import { Modal } from '../common/Modal';
+import { Toast } from '../common/Toast';
 import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { LogManager } from '../core/managers/LogManager';
@@ -9,6 +10,7 @@ import { ConfigManager } from '../core/managers/ConfigManager';
 import { ElementManager } from '../core/managers/ElementManager';
 import { SvgPaths, getIcon } from '../core/icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
+import { TranslationManager } from '../core/managers/TranslationManager';
 
 const FILENAME = 'tools/NotificationTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
@@ -39,13 +41,14 @@ class NotificationTool extends Control {
             class: `${CLASS_TOOL_BUTTON}__icon`
         });
 
+        const i18n = TranslationManager.get('tools.notificationTool');
         const button = DOM.createElement({
             element: 'button',
             html: icon,
             class: CLASS_TOOL_BUTTON,
             attributes: {
                 'type': 'button',
-                'data-tippy-content': `Notifications (${ShortcutKeys.notificationsTool})`
+                'data-tippy-content': `${i18n.title} (${ShortcutKeys.notificationTool})`
             },
             listeners: {
                 'click': this.onClickTool.bind(this)
@@ -96,7 +99,7 @@ class NotificationTool extends Control {
     // -------------------------------------------------------------------
 
     onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, ShortcutKeys.notificationsTool)) {
+        if(isShortcutKeyOnly(event, ShortcutKeys.notificationTool)) {
             this.onClickTool(event);
         }
     }
@@ -120,24 +123,19 @@ class NotificationTool extends Control {
         );
     }
 
-    hasError(notification) {
-        return (
-            Boolean(notification.error) && 
-            notification.error.length > 0
-        );
-    }
-
     // -------------------------------------------------------------------
     // # Section: Getters and Setters
     // -------------------------------------------------------------------
 
     setModalContent(notification) {
+        const i18n = TranslationManager.get('tools.notificationTool.modals.notifications');
         const locale = ConfigManager.getConfig().locale;
         const version = ConfigManager.getConfig().toolbar.version;
+
         const content = (`
-            <h3>👋 From Qulle</h3>
+            <h3>👋 ${i18n.from}</h3>
             <p>${notification.message}</p>
-            <h3>🔭 Your version</h3>
+            <h3>🔭 ${i18n.yourVersion}</h3>
             <p>
                 <a href="https://github.com/qulle/oltb/releases/tag/v${version}" target="_blank" class="oltb-link">
                     v${version}
@@ -145,7 +143,7 @@ class NotificationTool extends Control {
             </p>
             ${this.hasLatestVersionInfo(notification) ? 
                 `
-                    <h3>🚀 Latest version</h3>
+                    <h3>🚀 ${i18n.latestVersion}</h3>
                     <p>
                         <a href="https://github.com/qulle/oltb/releases/tag/v${notification.latest.version}" target="_blank" class="oltb-link">
                             v${notification.latest.version} - ${new Date(notification.latest.released).toLocaleDateString(locale)}
@@ -155,14 +153,8 @@ class NotificationTool extends Control {
             }
             ${this.hasFeaturesUnderDevelopment(notification) ? 
                 `
-                    <h3>💡 New features under development</h3>
+                    <h3>💡 ${i18n.news}</h3>
                     ${notification.features}
-                ` : ''
-            }
-            ${this.hasError(notification) ?
-                `
-                    <h3>🐝 Fetch error</h3>
-                    <p>${notification.error}</p>
                 ` : ''
             }
         `);
@@ -179,9 +171,11 @@ class NotificationTool extends Control {
             return;
         }
         
+        const i18n = TranslationManager.get('tools.notificationTool.modals.notifications');
+
         this.notificationModal = Modal.create({
-            title: 'Notifications',
-            content: '<p>Loading notifications...</p>',
+            title: i18n.title,
+            content: `<p>${i18n.content}</p>`,
             onClose: () => {
                 this.notificationModal = undefined;
             }
@@ -208,24 +202,26 @@ class NotificationTool extends Control {
                 this.doPrepareModalContent(data);
             })
             .catch((error) => {
+                const i18n = TranslationManager.get('tools.notificationTool.toasts.fetchError');
+
                 LogManager.logError(FILENAME, 'doFetchNotifications', {
-                    message: 'Failed to fetch notifications',
+                    message: i18n.message,
                     error: error
                 });
 
-                const notification = {
-                    message: 'Glad you are using my App, hope you find it useful!',
-                    error: 'Data from the GitHub repo could not be fetched'
-                };
-
-                this.setModalContent(notification);
+                Toast.error({
+                    title: i18n.title,
+                    message: error.message
+                });
             });
     }
 
     doPrepareModalContent(data) {
+        const i18n = TranslationManager.get('tools.notificationTool.modals.notifications');
+
         let features = '';
         if(data.features.length === 0) {
-            features = '<p>No features currently under development</p>';
+            features = `<p>${i18n.noNews}</p>`;
         }else {
             data.features.forEach((feature) => {
                 features += `<p>${feature}</p>`;

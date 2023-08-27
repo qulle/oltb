@@ -11,6 +11,7 @@ import { ElementManager } from '../core/managers/ElementManager';
 import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
 import { SvgPaths, getIcon } from '../core/icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
+import { TranslationManager } from '../core/managers/TranslationManager';
 import { Control, OverviewMap } from 'ol/control';
 
 const FILENAME = 'tools/OverviewTool.js';
@@ -52,13 +53,14 @@ class OverviewTool extends Control {
             class: `${CLASS_TOOL_BUTTON}__icon`
         });
 
+        const i18n = TranslationManager.get('tools.overviewTool');
         const button = DOM.createElement({
             element: 'button',
             html: icon,
             class: CLASS_TOOL_BUTTON,
             attributes: {
                 'type': 'button',
-                'data-tippy-content': `Map Overview (${ShortcutKeys.overviewTool})`
+                'data-tippy-content': `${i18n.title} (${ShortcutKeys.overviewTool})`
             },
             listeners: {
                 'click': this.onClickTool.bind(this)
@@ -103,13 +105,14 @@ class OverviewTool extends Control {
     // -------------------------------------------------------------------
 
     initToolboxHTML() {
+        const i18n = TranslationManager.get('tools.overviewTool.toolbox');
+        const i18nCommon = TranslationManager.get('common.titles');
+
         ElementManager.getToolboxElement().insertAdjacentHTML('beforeend', `
             <div id="${ID_PREFIX}-toolbox" class="${CLASS_TOOLBOX_SECTION}">
-                <div class="${CLASS_TOOLBOX_SECTION}__header">
-                    <h4 class="${CLASS_TOOLBOX_SECTION}__title oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">
-                        Map Overview
-                        <span class="${CLASS_TOOLBOX_SECTION}__icon oltb-tippy" title="Toggle Section"></span>
-                    </h4>
+                <div class="${CLASS_TOOLBOX_SECTION}__header oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">
+                <h4 class="${CLASS_TOOLBOX_SECTION}__title" data-oltb-i18n="tools.overviewTool.toolbox.titles.overview">${i18n.titles.overview}</h4>
+                    <span class="${CLASS_TOOLBOX_SECTION}__icon oltb-tippy" data-oltb-i18n="common.titles.toggleSection" title="${i18nCommon.toggleSection}"></span>
                 </div>
                 <div class="${CLASS_TOOLBOX_SECTION}__groups" id="${ID_PREFIX}-toolbox-collapsed" style="display: ${this.localStorage.isCollapsed ? 'none' : 'block'}">
                     <div class="${CLASS_TOOLBOX_SECTION}__group" id="${ID_PREFIX}-target"></div>

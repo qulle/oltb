@@ -3,16 +3,13 @@ import { version as oltbVersion} from '../../../../../../package.json';
 
 // Note: All config can be overridden, but that is not always a good thing to do.
 const DefaultConfig = Object.freeze({
-    localizations: Object.freeze([
-        Object.freeze({
+    localizations: Object.freeze({
+        default: {
             text: 'English',
-            value: 'en-us'
-        }),
-        Object.freeze({
-            text: 'Swedish',
-            value: 'sv-se'
-        })
-    ]),
+            code: 'en-us'
+        },
+        languages: Object.freeze([])
+    }),
     locations: Object.freeze({
         default: Object.freeze({
             lon: 18.1201,

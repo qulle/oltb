@@ -11,6 +11,7 @@ import { ElementManager } from '../core/managers/ElementManager';
 import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
 import { SvgPaths, getIcon } from '../core/icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
+import { TranslationManager } from '../core/managers/TranslationManager';
 
 const FILENAME = 'tools/DirectionTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
@@ -22,24 +23,23 @@ const DefaultOptions = Object.freeze({
     onChanged: undefined
 });
 
-// Note: The values are flipped
 const DirectionData = Object.freeze({
-    col: Object.freeze({
+    col: {
         class: 'col',
-        tippyContent: 'Horizontal Toolbar',
+        tippyContent: '',
         icon: getIcon({
             path: SvgPaths.symmetryHorizontal.mixed,
             class: `${CLASS_TOOL_BUTTON}__icon`
         })
-    }),
-    row: Object.freeze({
+    },
+    row: {
         class: 'row',
-        tippyContent: 'Vertical Toolbar',
+        tippyContent: '',
         icon: getIcon({
             path: SvgPaths.symmetryVertical.mixed,
             class: `${CLASS_TOOL_BUTTON}__icon`
         })
-    })
+    }
 });
 
 const LocalStorageNodeName = LocalStorageKeys.directionTool;
@@ -61,6 +61,11 @@ class DirectionTool extends Control {
         super({
             element: ElementManager.getToolbarElement()
         });
+
+        // Note: The values are flipped
+        const i18n = TranslationManager.get('tools.directionTool.titles');
+        DirectionData.col.tippyContent = i18n.horizontal;
+        DirectionData.row.tippyContent = i18n.vertical;
 
         const button = DOM.createElement({
             element: 'button',

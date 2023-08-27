@@ -11,6 +11,7 @@ import { ElementManager } from '../core/managers/ElementManager';
 import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
 import { SvgPaths, getIcon } from '../core/icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
+import { TranslationManager } from '../core/managers/TranslationManager';
 
 const FILENAME = 'tools/GraticuleTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
@@ -52,13 +53,14 @@ class GraticuleTool extends Control {
             class: `${CLASS_TOOL_BUTTON}__icon`
         });
 
+        const i18n = TranslationManager.get('tools.graticuleTool');
         const button = DOM.createElement({
             element: 'button',
             html: icon,
             class: CLASS_TOOL_BUTTON,
             attributes: {
                 'type': 'button',
-                'data-tippy-content': `Show Graticule (${ShortcutKeys.graticuleTool})`
+                'data-tippy-content': `${i18n.title} (${ShortcutKeys.graticuleTool})`
             },
             listeners: {
                 'click': this.onClickTool.bind(this)

@@ -23,7 +23,7 @@ class ConfigManager {
 
         options = _.merge(_.cloneDeep(DefaultOptions), options);
 
-        return this.#loadConfigAsync(options.url);
+        return this.#loadConfigFileAsync(options.url);
     }
 
     static setMap(map) { }
@@ -38,7 +38,7 @@ class ConfigManager {
         return this.#config || DefaultConfig;
     }
 
-    static async #loadConfigAsync(url) {
+    static async #loadConfigFileAsync(url) {
         const timestamp = Date.now().toString();
         
         return fetch(`${url}?cache=${timestamp}`, {
@@ -58,14 +58,14 @@ class ConfigManager {
         }).then((config) => {
             this.#config = _.merge(_.cloneDeep(DefaultConfig), config);
 
-            LogManager.logDebug(FILENAME, 'loadConfigAsync', _.cloneDeep(this.#config));
+            LogManager.logDebug(FILENAME, 'loadConfigFileAsync', _.cloneDeep(this.#config));
 
             return Promise.resolve({
                 filename: FILENAME,
                 result: true
             });
         }).catch((error) => {
-            LogManager.logWarning(FILENAME, 'loadConfigAsync', {
+            LogManager.logWarning(FILENAME, 'loadConfigFileAsync', {
                 message: 'Failed to fetch configuration',
                 error: error
             });

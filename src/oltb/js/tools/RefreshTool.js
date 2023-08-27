@@ -7,6 +7,7 @@ import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
 import { ElementManager } from '../core/managers/ElementManager';
 import { SvgPaths, getIcon } from '../core/icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
+import { TranslationManager } from '../core/managers/TranslationManager';
 
 const FILENAME = 'tools/RefreshTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
@@ -36,13 +37,14 @@ class RefreshTool extends Control {
             class: `${CLASS_TOOL_BUTTON}__icon`
         });
 
+        const i18n = TranslationManager.get('tools.refreshTool');
         const button = DOM.createElement({
             element: 'button',
             html: icon,
             class: CLASS_TOOL_BUTTON,
             attributes: {
                 'type': 'button',
-                'data-tippy-content': `Refresh Page (${ShortcutKeys.refreshPageTool})`
+                'data-tippy-content': `${i18n.title} (${ShortcutKeys.refreshPageTool})`
             },
             listeners: {
                 'click': this.onClickTool.bind(this)

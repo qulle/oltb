@@ -19,6 +19,7 @@ import { ElementManager } from '../core/managers/ElementManager';
 import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
 import { SvgPaths, getIcon } from '../core/icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
+import { TranslationManager } from '../core/managers/TranslationManager';
 import { isFeatureIntersectable } from '../helpers/IsFeatureIntersectable';
 import { Fill, Stroke, Circle, Style } from 'ol/style';
 import { GeometryCollection, LinearRing, LineString, MultiLineString, MultiPoint, MultiPolygon, Point, Polygon } from 'ol/geom';
@@ -65,13 +66,14 @@ class ScissorsTool extends Control {
             class: `${CLASS_TOOL_BUTTON}__icon`
         });
 
+        const i18n = TranslationManager.get('tools.scissorsTool');
         const button = DOM.createElement({
             element: 'button',
             html: icon,
             class: CLASS_TOOL_BUTTON,
             attributes: {
                 'type': 'button',
-                'data-tippy-content': `Polygon Scissors (${ShortcutKeys.scissorsTool})`
+                'data-tippy-content': `${i18n.title} (${ShortcutKeys.scissorsTool})`
             },
             listeners: {
                 'click': this.onClickTool.bind(this)
@@ -319,9 +321,11 @@ class ScissorsTool extends Control {
         });
 
         if(this.intersectedFeatures.length === 0) {
+            const i18n = TranslationManager.get('tools.scissorsTool.toasts.noIntersecting');
+
             Toast.info({
-                title: 'Oops',
-                message: 'No intersecting object found', 
+                title: i18n.title,
+                message: i18n.message, 
                 autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
             });
         }

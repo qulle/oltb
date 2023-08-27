@@ -5,6 +5,7 @@ import { LogManager } from '../../core/managers/LogManager';
 import { isDarkTheme } from '../../helpers/IsDarkTheme';
 import { FormatOptions } from '../../core/ol-types/FormatType';
 import { createUISelect } from '../../creators/CreateUISelect';
+import { TranslationManager } from '../../core/managers/TranslationManager';
 
 const FILENAME = 'modal-extensions/DownloadLayerModal.js';
 const ID_PREFIX = 'oltb-download-layer-modal';
@@ -21,7 +22,7 @@ class DownloadLayerModal extends ModalBase {
         LogManager.logDebug(FILENAME, 'constructor', 'init');
 
         super(
-            'Download Layer', 
+            TranslationManager.get('modalExtensions.downloadLayerModal.title'),
             options.maximized, 
             options.onClose
         );
@@ -39,10 +40,11 @@ class DownloadLayerModal extends ModalBase {
     // -------------------------------------------------------------------
 
     #createModal() {
+        const i18n = TranslationManager.get('modalExtensions.downloadLayerModal.form');
         const [ formatWrapper, formatSelect ] = createUISelect({
             idPrefix: ID_PREFIX,
             idPostfix: '-format',
-            text: 'Layer format',
+            text: i18n.layerFormat,
             options: _.cloneDeep(FormatOptions)
         });
 
@@ -53,7 +55,7 @@ class DownloadLayerModal extends ModalBase {
 
         const downloadButton = DOM.createElement({
             element: 'button', 
-            text: 'Download layer',
+            text: i18n.download,
             class: 'oltb-dialog__btn oltb-btn oltb-btn--green-mid', 
             attributes: {
                 'type': 'button'
@@ -69,7 +71,7 @@ class DownloadLayerModal extends ModalBase {
 
         const cancelButton = DOM.createElement({
             element: 'button', 
-            text: 'Cancel', 
+            text: i18n.cancel, 
             class: `oltb-dialog__btn oltb-btn ${
                 isDarkTheme() ? 'oltb-btn--gray-mid' : 'oltb-btn--gray-dark'
             }`,

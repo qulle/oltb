@@ -1,8 +1,9 @@
 import _ from 'lodash';
+import { EnUs } from './translation-manager/en-us';
+import { SvSe } from './translation-manager/sv-se';
 import { LogManager } from './LogManager';
 import { TippyManager } from './TippyManager';
 import { ConfigManager } from './ConfigManager';
-import { DefaultLanguage } from './translation-manager/DefaultLanguage';
 
 const FILENAME = 'managers/TranslationManager.js';
 
@@ -21,14 +22,14 @@ class TranslationManager {
     static async initAsync(options = {}) {
         LogManager.logDebug(FILENAME, 'initAsync', 'Initialization started');
 
+        // Note: Two Default languages that is shipped with project
         this.#languages = {
-            'en-us': DefaultLanguage
+            'en-us': EnUs,
+            'sv-se': SvSe,
         };
 
-        this.#activeLanguage = {
-            text: 'English',
-            value: 'en-us'
-        };
+        // TODO: Check if other has been saved in LocalStorage
+        this.#activeLanguage = ConfigManager.getConfig().localizations.default;
 
         return new Promise((resolve) => {
             resolve({
@@ -82,19 +83,12 @@ class TranslationManager {
     }
 
     static getActiveTranslation() {
-        return this.#languages[this.#activeLanguage.value] || DefaultLanguage;
+        return this.#languages[this.#activeLanguage.value] || EnUs;
     }
 
     static setActive(lang) {
         this.#activeLanguage = lang;
-
-        // TODO: Make method to load JSON
         this.#applyLanguage();
-        // this.#loadLanguageAsync().then((result) => {
-        //     this.#applyLanguage(result);
-        // }).catch((error) => {
-        //     console.error(error);
-        // });
     }
 
     static get(path) {

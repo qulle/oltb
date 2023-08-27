@@ -13,6 +13,7 @@ import { ElementManager } from '../core/managers/ElementManager';
 import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
 import { SvgPaths, getIcon } from '../core/icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
+import { TranslationManager } from '../core/managers/TranslationManager';
 
 const FILENAME = 'tools/HomeTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
@@ -58,13 +59,14 @@ class HomeTool extends Control {
             class: `${CLASS_TOOL_BUTTON}__icon`
         });
 
+        const i18n = TranslationManager.get('tools.homeTool');
         const button = DOM.createElement({
             element: 'button',
             html: this.icon,
             class: CLASS_TOOL_BUTTON,
             attributes: {
                 'type': 'button',
-                'data-tippy-content': `Zoom Home (${ShortcutKeys.homeTool})`
+                'data-tippy-content': `${i18n.title} (${ShortcutKeys.homeTool})`
             },
             listeners: {
                 'click': this.onClickTool.bind(this)
@@ -105,7 +107,7 @@ class HomeTool extends Control {
     initContextMenuItems() {
         ContextMenu.addItem({
             icon: this.icon, 
-            name: 'Set Home', 
+            name: TranslationManager.get('tools.homeTool.contextItems.setHome'), 
             fn: this.onContextMenuSetHomeLocation.bind(this)
         });
     }
@@ -215,9 +217,11 @@ class HomeTool extends Control {
         
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
 
+        const i18n = TranslationManager.get('tools.homeTool.toasts.newHome');
+
         Toast.success({
-            title: 'New Home',
-            message: 'New location was set as home',
+            title: i18n.title,
+            message: i18n.message,
             autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
         });
     }

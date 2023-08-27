@@ -38,13 +38,14 @@ class TranslationTool extends Control {
             class: `${CLASS_TOOL_BUTTON}__icon`
         });
 
+        const i18n = TranslationManager.get('tools.translationTool');
         const button = DOM.createElement({
             element: 'button',
             html: icon,
             class: CLASS_TOOL_BUTTON,
             attributes: {
                 'type': 'button',
-                'data-tippy-content': `Translate (${ShortcutKeys.translationTool})`
+                'data-tippy-content': `${i18n.title} (${ShortcutKeys.translationTool})`
             },
             listeners: {
                 'click': this.onClickTool.bind(this)
@@ -107,13 +108,14 @@ class TranslationTool extends Control {
     askToChangeLanguage() {
         const languages = TranslationManager.getLanguages();
         const currentLang = TranslationManager.getActiveLanguage();
+        const i18n = TranslationManager.get('tools.translationTool.dialogs.changeLanguage');
 
         Dialog.select({
-            title: 'Change Language',
-            message: `Current language is <strong>${currentLang.text}</strong>`,
+            title: i18n.title,
+            message: `${i18n.message} <strong>${currentLang.text}</strong>`,
             value: currentLang,
             options: languages,
-            confirmText: 'Translate',
+            confirmText: i18n.confirmText,
             onConfirm: (result) => {
                 this.doChangeLanguage(result);
             }

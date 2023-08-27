@@ -9,7 +9,6 @@ const copyToClipboard = async function(text = '') {
         })
         .catch((error) => {
             LogManager.logError(FILENAME, 'copyToClipboard', {
-                message: 'Error copying data',
                 error: error
             });
             

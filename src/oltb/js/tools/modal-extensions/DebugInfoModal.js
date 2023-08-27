@@ -11,6 +11,7 @@ import { jsonReplacer } from '../../helpers/browser/JsonReplacer';
 import { ConfigManager } from '../../core/managers/ConfigManager';
 import { SvgPaths, getIcon } from '../../core/icons/GetIcon';
 import { ProjectionManager } from '../../core/managers/ProjectionManager';
+import { TranslationManager } from '../../core/managers/TranslationManager';
 
 const FILENAME = 'modal-extensions/DebugInfoModal.js';
 const ID_PREFIX = 'oltb-debug';
@@ -28,7 +29,7 @@ class DebugInfoModal extends ModalBase {
         LogManager.logDebug(FILENAME, 'constructor', 'init');
 
         super(
-            'Debug Information', 
+            TranslationManager.get('modalExtensions.debugInfoModal.title'), 
             DefaultOptions.maximized, 
             options.onClose
         );
@@ -55,6 +56,7 @@ class DebugInfoModal extends ModalBase {
     }
 
     #generateCommandSection() {
+        const i18n = TranslationManager.get('modalExtensions.debugInfoModal.form');
         const commandsCollection = DOM.createElement({
             element: 'select',
             class: 'oltb-select'
@@ -62,13 +64,13 @@ class DebugInfoModal extends ModalBase {
 
         [
             {
-                name: 'Log Map To Browser Console',
+                name: i18n.logToBrowser,
                 action: 'log.map.to.console'
             }, {
-                name: 'Generate UUID',
+                name: i18n.generateUUID,
                 action: 'generate.uuid'
             }, {
-                name: 'Clear Event Log',
+                name: i18n.clearLog,
                 action: 'clear.event.log'
             }
         ].forEach((item) => {
@@ -85,7 +87,7 @@ class DebugInfoModal extends ModalBase {
 
         const actionButton = DOM.createElement({
             element: 'button',
-            text: 'Do Action',
+            text: i18n.doAction,
             class: 'oltb-btn oltb-btn--blue-mid oltb-ml-05',
             attributes: {
                 'type': 'button'
@@ -111,6 +113,7 @@ class DebugInfoModal extends ModalBase {
     }
 
     #generateSection(section, index) {
+        const i18n = TranslationManager.get('common.titles');
         const sectionWrapper = DOM.createElement({
             element: 'div',
             class: 'oltb-debug'
@@ -139,7 +142,7 @@ class DebugInfoModal extends ModalBase {
                 width: 16,
                 height: 16,
             }),
-            title: 'Toggle Section',
+            title: i18n.toggleSection,
             class: 'oltb-debug__toggle oltb-btn oltb-btn--blank oltb-tippy',
             attributes: {
                 'type': 'button'
@@ -267,6 +270,7 @@ class DebugInfoModal extends ModalBase {
     }
 
     #generateObjectLogItem(entry, index) {
+        const i18n = TranslationManager.get('common.titles');
         const logHeader = DOM.createElement({
             element: 'div',
             class: 'oltb-log__header oltb-log__header--toggleable oltb-toggleable',
@@ -300,7 +304,7 @@ class DebugInfoModal extends ModalBase {
                 width: 16,
                 height: 16,
             }),
-            title: 'Toggle Section',
+            title: i18n.toggleSection,
             class: 'oltb-log__toggle oltb-btn oltb-btn--blank oltb-tippy',
             attributes: {
                 'type': 'button'
@@ -354,7 +358,7 @@ class DebugInfoModal extends ModalBase {
             proj4Defs: ProjectionManager.getProjections(),
             defaultConfig: ConfigManager.getConfig()
         } : {
-            info: 'No map reference found'
+            info: TranslationManager.get('modalExtensions.debugInfoModal.noMapFound')
         };
 
         const browser = new BrowserDetector(window.navigator.userAgent);
@@ -398,40 +402,41 @@ class DebugInfoModal extends ModalBase {
         const eventlog = LogManager.getLog().slice().reverse();
 
         // Generate sections
+        const i18n = TranslationManager.get('modalExtensions.debugInfoModal.sections');
         const sectionFragment = document.createDocumentFragment(); 
         [
             {
-                title: 'App Data',
+                title: i18n.appData,
                 content: appDataContent,
                 class: 'oltb-debug__json',
                 display: 'none',
                 json: true
             }, {
-                title: 'Browser Data',
+                title: i18n.browserData,
                 content: browserDataContent,
                 class: 'oltb-debug__json',
                 display: 'none',
                 json: true
             }, {
-                title: 'Local Storage',
+                title: i18n.localStorage,
                 content: localStorageContent,
                 class: 'oltb-debug__json',
                 display: 'none',
                 json: true
             }, {
-                title: 'Session Storage',
+                title: i18n.sessionStorage,
                 content: sessionStorageContent,
                 class: 'oltb-debug__json',
                 display: 'none',
                 json: true
             }, {
-                title: 'Cookies',
+                title: i18n.cookies,
                 content: cookiesContent,
                 class: 'oltb-debug__json',
                 display: 'none',
                 json: true
             }, {
-                title: 'Eventlog',
+                title: i18n.eventlog,
                 content: eventlog,
                 class: 'oltb-debug__json',
                 display: 'block',
@@ -488,9 +493,11 @@ class DebugInfoModal extends ModalBase {
 
     doActionLoggingMap() {
         console.dir(this.options.map);
+
+        const i18n = TranslationManager.get('modalExtensions.debugInfoModal.toasts.logged');
         Toast.info({
-            title: 'Logged',
-            message: 'Map object logged to console <strong>(F12)</strong>', 
+            title: i18n.title,
+            message: `${i18n.message} <strong>(F12)</strong>`, 
             autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
         });
     }
@@ -514,9 +521,10 @@ class DebugInfoModal extends ModalBase {
             DOM.clearElement(uiRefEventLog);
         }
 
+        const i18n = TranslationManager.get('modalExtensions.debugInfoModal.toasts.logged');
         Toast.info({
-            title: 'Cleared',
-            message: 'Event log was cleared of all entries', 
+            title: i18n.title,
+            message: i18n.message, 
             autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
         });
     }

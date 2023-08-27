@@ -5,6 +5,7 @@ import { LogManager } from '../../core/managers/LogManager';
 import { isDarkTheme } from '../../helpers/IsDarkTheme';
 import { SettingsManager } from '../../core/managers/SettingsManager';
 import { createUICheckbox } from '../../creators/CreateUICheckbox';
+import { TranslationManager } from '../../core/managers/TranslationManager';
 
 const FILENAME = 'modal-extensions/SettingsModal.js';
 
@@ -22,7 +23,7 @@ class SettingsModal extends ModalBase {
         LogManager.logDebug(FILENAME, 'constructor', 'init');
 
         super(
-            'Settings', 
+            TranslationManager.get('modalExtensions.settingsModal.title'), 
             options.maximized, 
             options.onClose
         );
@@ -40,6 +41,7 @@ class SettingsModal extends ModalBase {
     // -------------------------------------------------------------------
 
     #createModal() {
+        const i18n = TranslationManager.get('modalExtensions.settingsModal.form');
         const settingsFragment = document.createDocumentFragment();
         const settings = SettingsManager.getSettings();
         
@@ -71,7 +73,7 @@ class SettingsModal extends ModalBase {
 
         const saveButton = DOM.createElement({
             element: 'button', 
-            text: 'Save settings',
+            text: i18n.save,
             class: 'oltb-dialog__btn oltb-btn oltb-btn--green-mid', 
             attributes: {
                 'type': 'button'
@@ -83,7 +85,7 @@ class SettingsModal extends ModalBase {
 
         const cancelButton = DOM.createElement({
             element: 'button', 
-            text: 'Cancel', 
+            text: i18n.cancel, 
             class: `oltb-dialog__btn oltb-btn ${
                 isDarkTheme() ? 'oltb-btn--gray-mid' : 'oltb-btn--gray-dark'
             }`,

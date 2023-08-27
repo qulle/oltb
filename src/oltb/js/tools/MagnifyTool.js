@@ -14,6 +14,7 @@ import { ElementManager } from '../core/managers/ElementManager';
 import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
 import { SvgPaths, getIcon } from '../core/icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
+import { TranslationManager } from '../core/managers/TranslationManager';
 
 const FILENAME = 'tools/MagnifyTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
@@ -52,13 +53,14 @@ class MagnifyTool extends Control {
             class: `${CLASS_TOOL_BUTTON}__icon`
         });
 
+        const i18n = TranslationManager.get('tools.magnifyTool');
         const button = DOM.createElement({
             element: 'button',
             html: icon,
             class: CLASS_TOOL_BUTTON,
             attributes: {
                 'type': 'button',
-                'data-tippy-content': `Magnifier (${ShortcutKeys.magnifyTool})`
+                'data-tippy-content': `${i18n.title} (${ShortcutKeys.magnifyTool})`
             },
             listeners: {
                 'click': this.onClickTool.bind(this)
@@ -309,17 +311,18 @@ class MagnifyTool extends Control {
             // Click the tool-button to deactivate
             this.button.click();
 
-            const errorMessage = 'Unexpected error using magnifyer';
+            const i18n = TranslationManager.get('tools.magnifyTool.toasts.unexpectedError');
+
             LogManager.logError(FILENAME, 'onPostrender', {
-                message: errorMessage,
+                message: i18n.message,
                 error: error
             });
                 
             Toast.error({
-                title: 'Error',
+                title: i18n.title,
                 message: (error.name === DOMExceptions.SecurityError
-                    ? 'CORS error with one of the layers'
-                    : errorMessage
+                    ? i18n.corsMessage
+                    : i18n.message
                 )
             });
         }

@@ -6,6 +6,7 @@ import { isDarkTheme } from '../../helpers/IsDarkTheme';
 import { ConfigManager } from '../../core/managers/ConfigManager';
 import { createUISelect } from '../../creators/CreateUISelect';
 import { ProjectionManager } from '../../core/managers/ProjectionManager';
+import { TranslationManager } from '../../core/managers/TranslationManager';
 
 const FILENAME = 'modal-extensions/ImportLayerModal.js';
 const ID_PREFIX = 'oltb-import-layer-modal';
@@ -22,7 +23,7 @@ class ImportLayerModal extends ModalBase {
         LogManager.logDebug(FILENAME, 'constructor', 'init');
 
         super(
-            'Import Layer', 
+            TranslationManager.get('modalExtensions.importLayerModal.title'), 
             options.maximized, 
             options.onClose
         );
@@ -40,6 +41,7 @@ class ImportLayerModal extends ModalBase {
     // -------------------------------------------------------------------
 
     #createModal() {
+        const i18n = TranslationManager.get('modalExtensions.importLayerModal.form');
         const featureProjectionOptions = [];
         const dataProjectionOptions = [];
 
@@ -60,7 +62,7 @@ class ImportLayerModal extends ModalBase {
         const [ featureProjectionWrapper, featureProjectionSelect ] = createUISelect({
             idPrefix: ID_PREFIX,
             idPostfix: '-feature-projection',
-            text: 'Feature projection',
+            text: i18n.featureProjection,
             options: featureProjectionOptions,
             value: projection.default
         });
@@ -68,7 +70,7 @@ class ImportLayerModal extends ModalBase {
         const [ dataProjectionWrapper, dataProjectionSelect ] = createUISelect({
             idPrefix: ID_PREFIX,
             idPostfix: '-data-projection',
-            text: 'Data projection',
+            text: i18n.dataProjection,
             options: dataProjectionOptions,
             value: projection.wgs84
         });
@@ -80,7 +82,7 @@ class ImportLayerModal extends ModalBase {
 
         const importButton = DOM.createElement({
             element: 'button', 
-            text: 'Import layer',
+            text: i18n.import,
             class: 'oltb-dialog__btn oltb-btn oltb-btn--green-mid', 
             attributes: {
                 'type': 'button'
@@ -97,7 +99,7 @@ class ImportLayerModal extends ModalBase {
 
         const cancelButton = DOM.createElement({
             element: 'button', 
-            text: 'Cancel', 
+            text: i18n.cancel, 
             class: `oltb-dialog__btn oltb-btn ${
                 isDarkTheme() ? 'oltb-btn--gray-mid' : 'oltb-btn--gray-dark'
             }`,

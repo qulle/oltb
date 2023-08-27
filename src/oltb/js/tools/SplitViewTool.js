@@ -15,6 +15,7 @@ import { eventDispatcher } from '../helpers/browser/EventDispatcher';
 import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
 import { SvgPaths, getIcon } from '../core/icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
+import { TranslationManager } from '../core/managers/TranslationManager';
 
 const FILENAME = 'tools/SplitViewTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
@@ -57,13 +58,14 @@ class SplitViewTool extends Control {
             class: `${CLASS_TOOL_BUTTON}__icon`
         });
 
+        const i18n = TranslationManager.get('tools.splitViewTool');
         const button = DOM.createElement({
             element: 'button',
             html: icon,
             class: CLASS_TOOL_BUTTON,
             attributes: {
                 'type': 'button',
-                'data-tippy-content': `Split View (${ShortcutKeys.splitViewTool})`
+                'data-tippy-content': `${i18n.title} (${ShortcutKeys.splitViewTool})`
             },
             listeners: {
                 'click': this.onClickTool.bind(this)
@@ -123,25 +125,26 @@ class SplitViewTool extends Control {
     // -------------------------------------------------------------------
 
     initToolboxHTML() {
+        const i18n = TranslationManager.get('tools.splitViewTool.toolbox');
+        const i18nCommon = TranslationManager.get('common.titles');
+
         ElementManager.getToolboxElement().insertAdjacentHTML('beforeend', `
             <div id="${ID_PREFIX}-toolbox" class="${CLASS_TOOLBOX_SECTION}">
-                <div class="${CLASS_TOOLBOX_SECTION}__header">
-                    <h4 class="${CLASS_TOOLBOX_SECTION}__title oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">
-                        Split View
-                        <span class="${CLASS_TOOLBOX_SECTION}__icon oltb-tippy" title="Toggle Section"></span>
-                    </h4>
+                <div class="${CLASS_TOOLBOX_SECTION}__header oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">
+                    <h4 class="${CLASS_TOOLBOX_SECTION}__title" data-oltb-i18n="tools.splitViewTool.toolbox.titles.splitView">${i18n.titles.splitView}</h4>
+                    <span class="${CLASS_TOOLBOX_SECTION}__icon oltb-tippy" data-oltb-i18n="common.titles.toggleSection" title="${i18nCommon.toggleSection}"></span>
                 </div>
                 <div class="${CLASS_TOOLBOX_SECTION}__groups" id="${ID_PREFIX}-toolbox-collapsed" style="display: ${this.localStorage.isCollapsed ? 'none' : 'block'}">
                     <div class="${CLASS_TOOLBOX_SECTION}__group">
-                        <label class="oltb-label" for="${ID_PREFIX}-left-source">Left Side</label>
+                        <label class="oltb-label" for="${ID_PREFIX}-left-source" data-oltb-i18n="tools.splitViewTool.toolbox.groups.leftSide.title">${i18n.groups.leftSide.title}</label>
                         <select id="${ID_PREFIX}-left-source" class="oltb-select"></select>
                     </div>
                     <div class="${CLASS_TOOLBOX_SECTION}__group">
-                        <label class="oltb-label" for="${ID_PREFIX}-source">Right Side</label>
+                        <label class="oltb-label" for="${ID_PREFIX}-source" data-oltb-i18n="tools.splitViewTool.toolbox.groups.rightSide.title">${i18n.groups.rightSide.title}</label>
                         <select id="${ID_PREFIX}-right-source" class="oltb-select"></select>
                     </div>
                     <div class="${CLASS_TOOLBOX_SECTION}__group">
-                        <button type="button" id="${ID_PREFIX}-swap-button" class="oltb-btn oltb-btn--green-mid oltb-w-100">Swap Sides</button>
+                        <button type="button" id="${ID_PREFIX}-swap-button" class="oltb-btn oltb-btn--green-mid oltb-w-100" data-oltb-i18n="tools.splitViewTool.toolbox.groups.swapSides.swap">${i18n.groups.swapSides.swap}</button>
                     </div>
                 </div>
             </div>
@@ -168,9 +171,11 @@ class SplitViewTool extends Control {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
 
         if(LayerManager.getMapLayerSize() <= 1) {
+            const i18n = TranslationManager.get('tools.splitViewTool.toasts.onlyOneLayer');
+
             Toast.info({
-                title: 'Tip',
-                message: 'You must have more then one layer'
+                title: i18n.title,
+                message: i18n.message
             });
             
             return;
@@ -337,12 +342,15 @@ class SplitViewTool extends Control {
     setLoadingError() {
         this.layerLoadingError = true;
 
-        const errorMessage = 'One or both of the layers could not be loaded';
-        LogManager.logError(FILENAME, 'setLoadingError', errorMessage);
+        const i18n = TranslationManager.get('tools.splitViewTool.toasts.layerError');
+
+        LogManager.logError(FILENAME, 'setLoadingError', {
+            message: i18n.message
+        });
 
         Toast.error({
-            title: 'Error',
-            message: errorMessage
+            title: i18n.title,
+            message: i18n.message
         });
     }
 
