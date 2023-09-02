@@ -4,7 +4,18 @@ export const EnUs = Object.freeze({
         code: 'en-us'
     },
     managers: {
+        infoWindowManager: {
 
+        },
+        errorManager: {
+
+        },
+        layerManager: {
+
+        },
+        settingsManager: {
+            
+        }
     },
     common: {
         functionButtons: {

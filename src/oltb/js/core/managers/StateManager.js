@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import { Toast } from '../../common/Toast';
 import { LogManager } from './LogManager';
 import { ConfigManager } from './ConfigManager';
 
@@ -69,6 +70,11 @@ class StateManager {
             LogManager.logError(FILENAME, 'getBrowserData', {
                 message: 'Failed to load application state',
                 error: error
+            });
+            
+            Toast.error({
+                title: 'Error',
+                message: 'Failed to load application state'
             });
         }
 

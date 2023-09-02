@@ -132,7 +132,7 @@ class TranslationTool extends Control {
             to: result.to
         });
 
-        TranslationManager.setActive(result.to);
+        TranslationManager.setActiveLanguage(result.to);
     }
 }
 

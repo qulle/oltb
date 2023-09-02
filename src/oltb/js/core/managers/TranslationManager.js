@@ -7,6 +7,18 @@ import { ConfigManager } from './ConfigManager';
 
 const FILENAME = 'managers/TranslationManager.js';
 
+const DefaultLanguages = Object.freeze([
+    {
+        text: 'English',
+        value: 'en-us'
+    }, {
+        text: 'Swedish',
+        value: 'sv-se'
+    }
+]);
+
+const DefaultLanguage = DefaultLanguages[0];
+
 /**
  * About:
  * TranslationManager
@@ -18,18 +30,48 @@ const FILENAME = 'managers/TranslationManager.js';
 class TranslationManager {
     static #activeLanguage;
     static #languages;
+    static #translations;
 
     static async initAsync(options = {}) {
         LogManager.logDebug(FILENAME, 'initAsync', 'Initialization started');
 
-        // Note: Two Default languages that is shipped with project
-        this.#languages = {
+        // Note: Default Translations
+        this.#translations = {
             'en-us': EnUs,
-            'sv-se': SvSe,
+            'sv-se': SvSe
         };
 
+        // Note: Default languages
+        this.#languages = [];
+        DefaultLanguages.forEach((language) => {
+            this.#languages.push({
+                text: language.text,
+                value: language.value
+            });
+        });
+
+        // Note: Languages added by user in Config.json
+        const languages = ConfigManager.getConfig().localizations.languages;
+        languages.forEach((language) => {
+            const exists = this.#languages.find((item) => {
+                return item.value === language.value;
+            });
+
+            if(!exists) {
+                this.#languages.push({
+                    text: language.text,
+                    value: language.value
+                });
+            }
+        });
+
         // TODO: Check if other has been saved in LocalStorage
-        this.#activeLanguage = ConfigManager.getConfig().localizations.default;
+        const activeLanguageValue = ConfigManager.getConfig().localizations.active;
+        const activeLanguage = this.#languages.find((language) => {
+            return language.value === activeLanguageValue;
+        });
+
+        this.#activeLanguage = activeLanguage ?? DefaultLanguage;  
 
         return new Promise((resolve) => {
             resolve({
@@ -54,8 +96,8 @@ class TranslationManager {
         const elements = document.querySelectorAll(`[${i18nKey}]`);
 
         elements.forEach((element) => {
-            const key = element.getAttribute('');
-            const value = this.get(key);
+            const path = element.getAttribute(i18nKey);
+            const value = this.get(path);
 
             // Note: Tippy instances mus be handle first
             const tippyKey = 'data-tippy-content';
@@ -75,27 +117,40 @@ class TranslationManager {
     // -------------------------------------------------------------------
 
     static getLanguages() {
-        return ConfigManager.getConfig().localizations;
+        return this.#languages;
     }
 
     static getActiveLanguage() {
         return this.#activeLanguage;
     }
 
-    static getActiveTranslation() {
-        return this.#languages[this.#activeLanguage.value] || EnUs;
-    }
-
-    static setActive(lang) {
+    static setActiveLanguage(lang) {
         this.#activeLanguage = lang;
         this.#applyLanguage();
+    }
+
+    static getActiveTranslation() {
+        return this.#translations[this.#activeLanguage.value] || DefaultLanguage;
     }
 
     static get(path) {
         const translation = this.getActiveTranslation();
         const keys = path.split('.');
 
-        return _.get(translation, keys, path);
+        const result = _.get(translation, keys, path);
+
+        // Note: Check if the path is the same as result
+        // If so then we failed to find a translation
+        if(result === path) {
+            LogManager.logWarning(FILENAME, 'get', {
+                info: 'No translation found',
+                translation: translation,
+                keys: keys,
+                path: path
+            });
+        }
+
+        return result;
     }
 }
 

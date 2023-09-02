@@ -66,7 +66,7 @@ class ConfigManager {
             });
         }).catch((error) => {
             LogManager.logWarning(FILENAME, 'loadConfigFileAsync', {
-                message: 'Failed to fetch configuration',
+                message: 'No user config.json was found',
                 error: error
             });
 
