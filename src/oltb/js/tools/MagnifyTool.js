@@ -18,6 +18,7 @@ import { TranslationManager } from '../core/managers/TranslationManager';
 
 const FILENAME = 'tools/MagnifyTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
+const I18N_BASE = 'tools.magnifyTool';
 
 const DefaultOptions = Object.freeze({
     radius: 75,
@@ -53,7 +54,7 @@ class MagnifyTool extends Control {
             class: `${CLASS_TOOL_BUTTON}__icon`
         });
 
-        const i18n = TranslationManager.get('tools.magnifyTool');
+        const i18n = TranslationManager.get(I18N_BASE);
         const button = DOM.createElement({
             element: 'button',
             html: icon,
@@ -311,7 +312,7 @@ class MagnifyTool extends Control {
             // Click the tool-button to deactivate
             this.button.click();
 
-            const i18n = TranslationManager.get('tools.magnifyTool.toasts.unexpectedError');
+            const i18n = TranslationManager.get(`${I18N_BASE}.toasts.unexpectedError`);
 
             LogManager.logError(FILENAME, 'onPostrender', {
                 message: i18n.message,

@@ -13,6 +13,7 @@ import { TranslationManager } from '../core/managers/TranslationManager';
 
 const FILENAME = 'tools/ZoomOutTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
+const I18N_BASE = 'tools.zoomOutTool';
 
 const DefaultOptions = Object.freeze({
     delta: -1,
@@ -41,7 +42,7 @@ class ZoomOutTool extends Control {
             class: `${CLASS_TOOL_BUTTON}__icon`
         });
 
-        const i18n = TranslationManager.get('tools.zoomOutTool');
+        const i18n = TranslationManager.get(I18N_BASE);
         const button = DOM.createElement({
             element: 'button',
             html: icon,

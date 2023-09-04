@@ -16,6 +16,7 @@ import { TranslationManager } from '../core/managers/TranslationManager';
 
 const FILENAME = 'tools/ExportPngTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
+const I18N_BASE = 'tools.exportPngTool';
 
 const DefaultOptions = Object.freeze({
     filename: 'map-image-export',
@@ -47,7 +48,7 @@ class ExportPngTool extends Control {
             class: `${CLASS_TOOL_BUTTON}__icon`
         });
 
-        const i18n = TranslationManager.get('tools.exportPngTool');
+        const i18n = TranslationManager.get(I18N_BASE);
         const button = DOM.createElement({
             element: 'button',
             html: icon,
@@ -206,7 +207,7 @@ class ExportPngTool extends Control {
                 this.options.onError(error);
             }
 
-            const i18n = TranslationManager.get('tools.exportPngTool.toasts.renderError');
+            const i18n = TranslationManager.get(`${I18N_BASE}.toasts.renderError`);
 
             LogManager.logError(FILENAME, 'doRenderCompleteAsync', {
                 message: i18n.message,

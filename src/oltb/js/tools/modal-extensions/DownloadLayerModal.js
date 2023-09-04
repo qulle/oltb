@@ -9,6 +9,7 @@ import { TranslationManager } from '../../core/managers/TranslationManager';
 
 const FILENAME = 'modal-extensions/DownloadLayerModal.js';
 const ID_PREFIX = 'oltb-download-layer-modal';
+const I18N_BASE = 'modalExtensions.downloadLayerModal';
 
 const DefaultOptions = Object.freeze({
     maximized: false,
@@ -22,7 +23,7 @@ class DownloadLayerModal extends ModalBase {
         LogManager.logDebug(FILENAME, 'constructor', 'init');
 
         super(
-            TranslationManager.get('modalExtensions.downloadLayerModal.title'),
+            TranslationManager.get(`${I18N_BASE}.title`),
             options.maximized, 
             options.onClose
         );
@@ -40,7 +41,7 @@ class DownloadLayerModal extends ModalBase {
     // -------------------------------------------------------------------
 
     #createModal() {
-        const i18n = TranslationManager.get('modalExtensions.downloadLayerModal.form');
+        const i18n = TranslationManager.get(`${I18N_BASE}.form`);
         const [ formatWrapper, formatSelect ] = createUISelect({
             idPrefix: ID_PREFIX,
             idPostfix: '-format',

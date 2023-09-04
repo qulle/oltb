@@ -15,6 +15,7 @@ import { TranslationManager } from '../core/managers/TranslationManager';
 const FILENAME = 'tools/NotificationTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
 const URL_NOTIFICATION = 'https://raw.githubusercontent.com/qulle/notification-endpoints/main/endpoints/oltb.json';
+const I18N_BASE = 'tools.notificationTool';
 
 const DefaultOptions = Object.freeze({
     onInitiated: undefined,
@@ -41,7 +42,7 @@ class NotificationTool extends Control {
             class: `${CLASS_TOOL_BUTTON}__icon`
         });
 
-        const i18n = TranslationManager.get('tools.notificationTool');
+        const i18n = TranslationManager.get(I18N_BASE);
         const button = DOM.createElement({
             element: 'button',
             html: icon,
@@ -128,7 +129,7 @@ class NotificationTool extends Control {
     // -------------------------------------------------------------------
 
     setModalContent(notification) {
-        const i18n = TranslationManager.get('tools.notificationTool.modals.notifications');
+        const i18n = TranslationManager.get(`${I18N_BASE}.modals.notifications`);
         const locale = ConfigManager.getConfig().locale;
         const version = ConfigManager.getConfig().toolbar.version;
 
@@ -171,7 +172,7 @@ class NotificationTool extends Control {
             return;
         }
         
-        const i18n = TranslationManager.get('tools.notificationTool.modals.notifications');
+        const i18n = TranslationManager.get(`${I18N_BASE}.modals.notifications`);
 
         this.notificationModal = Modal.create({
             title: i18n.title,
@@ -202,7 +203,7 @@ class NotificationTool extends Control {
                 this.doPrepareModalContent(data);
             })
             .catch((error) => {
-                const i18n = TranslationManager.get('tools.notificationTool.toasts.fetchError');
+                const i18n = TranslationManager.get(`${I18N_BASE}.toasts.fetchError`);
 
                 LogManager.logError(FILENAME, 'doFetchNotifications', {
                     message: i18n.message,
@@ -217,7 +218,7 @@ class NotificationTool extends Control {
     }
 
     doPrepareModalContent(data) {
-        const i18n = TranslationManager.get('tools.notificationTool.modals.notifications');
+        const i18n = TranslationManager.get(`${I18N_BASE}.modals.notifications`);
 
         let features = '';
         if(data.features.length === 0) {

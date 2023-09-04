@@ -11,6 +11,7 @@ import { TranslationManager } from '../core/managers/TranslationManager';
 
 const FILENAME = 'tools/RefreshTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
+const I18N_BASE = 'tools.refreshTool';
 
 const DefaultOptions = Object.freeze({
     onInitiated: undefined,
@@ -37,7 +38,7 @@ class RefreshTool extends Control {
             class: `${CLASS_TOOL_BUTTON}__icon`
         });
 
-        const i18n = TranslationManager.get('tools.refreshTool');
+        const i18n = TranslationManager.get(I18N_BASE);
         const button = DOM.createElement({
             element: 'button',
             html: icon,

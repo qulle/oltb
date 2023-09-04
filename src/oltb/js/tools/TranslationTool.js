@@ -12,6 +12,7 @@ import { TranslationManager } from '../core/managers/TranslationManager';
 
 const FILENAME = 'tools/TranslationTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
+const I18N_BASE = 'tools.translationTool';
 
 const DefaultOptions = Object.freeze({
     onInitiated: undefined,
@@ -38,7 +39,7 @@ class TranslationTool extends Control {
             class: `${CLASS_TOOL_BUTTON}__icon`
         });
 
-        const i18n = TranslationManager.get('tools.translationTool');
+        const i18n = TranslationManager.get(I18N_BASE);
         const button = DOM.createElement({
             element: 'button',
             html: icon,
@@ -108,7 +109,7 @@ class TranslationTool extends Control {
     askToChangeLanguage() {
         const languages = TranslationManager.getLanguages();
         const currentLang = TranslationManager.getActiveLanguage();
-        const i18n = TranslationManager.get('tools.translationTool.dialogs.changeLanguage');
+        const i18n = TranslationManager.get(`${I18N_BASE}.dialogs.changeLanguage`);
 
         Dialog.select({
             title: i18n.title,

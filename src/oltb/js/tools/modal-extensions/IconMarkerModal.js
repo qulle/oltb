@@ -11,6 +11,7 @@ import { TranslationManager } from '../../core/managers/TranslationManager';
 
 const FILENAME = 'modal-extensions/IconMarkerModal.js';
 const ID_PREFIX = 'oltb-marker-modal-marker';
+const I18N_BASE = 'modalExtensions.iconMarkerModal';
 
 const DefaultOptions = Object.freeze({
     edit: false,
@@ -36,7 +37,7 @@ class IconMarkerModal extends ModalBase {
         LogManager.logDebug(FILENAME, 'constructor', 'init');
 
         super(
-            TranslationManager.get('modalExtensions.iconMarkerModal.title'),
+            TranslationManager.get(`${I18N_BASE}.title`),
             options.maximized, 
             options.onClose
         );
@@ -54,7 +55,7 @@ class IconMarkerModal extends ModalBase {
     // -------------------------------------------------------------------
 
     #createModal() {
-        const i18n = TranslationManager.get('modalExtensions.iconMarkerModal.form');
+        const i18n = TranslationManager.get(`${I18N_BASE}.form`);
         const [ titleWrapper, titleInput ] = createUIInput({
             idPrefix: ID_PREFIX,
             idPostfix: '-title',

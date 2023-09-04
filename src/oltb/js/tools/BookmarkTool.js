@@ -593,7 +593,7 @@ class BookmarkTool extends Control {
             class: `${CLASS_TOOLBOX_LIST}__wrapper`
         });
 
-        const i18n = TranslationManager.get('common');
+        const i18n = TranslationManager.get(I18N_BASE_COMMON);
         const zoomToButton = DOM.createElement({
             element: 'button',
             class: `${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--geo-pin oltb-tippy`,

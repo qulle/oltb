@@ -14,6 +14,7 @@ import { TranslationManager } from '../core/managers/TranslationManager';
 
 const FILENAME = 'tools/ThemeTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
+const I18N_BASE = 'tools.themeTool';
 
 const DefaultOptions = Object.freeze({
     onInitiated: undefined,
@@ -62,7 +63,7 @@ class ThemeTool extends Control {
         });
 
         // Note: The values are flipped
-        const i18n = TranslationManager.get('tools.themeTool.titles');
+        const i18n = TranslationManager.get(`${I18N_BASE}.titles`);
         ThemesData.light.tippyContent = i18n.dark;
         ThemesData.dark.tippyContent = i18n.light;
 

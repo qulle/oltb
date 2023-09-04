@@ -8,6 +8,7 @@ import { TranslationManager } from '../../core/managers/TranslationManager';
 
 const FILENAME = 'modal-extensions/CoordinateModal.js';
 const ID_PREFIX = 'oltb-coordinates-modal';
+const I18N_BASE = 'modalExtensions.coordinateModal';
 
 const DefaultOptions = Object.freeze({
     maximized: false,
@@ -21,7 +22,7 @@ class CoordinateModal extends ModalBase {
         LogManager.logDebug(FILENAME, 'constructor', 'init');
 
         super(
-            TranslationManager.get(`modalExtensions.coordinateModal.title`), 
+            TranslationManager.get(`${I18N_BASE}.title`), 
             options.maximized, 
             options.onClose
         );
@@ -39,7 +40,7 @@ class CoordinateModal extends ModalBase {
     // -------------------------------------------------------------------
 
     #createModal() {
-        const i18n = TranslationManager.get('modalExtensions.coordinateModal.form');
+        const i18n = TranslationManager.get(`${I18N_BASE}.form`);
         const [ latWrapper, latInput ] = createUIInput({
             idPrefix: ID_PREFIX,
             idPostfix: '-lat',

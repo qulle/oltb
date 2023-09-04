@@ -16,6 +16,7 @@ import { TranslationManager } from '../core/managers/TranslationManager';
 
 const FILENAME = 'tools/ImportVectorLayerTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
+const I18N_BASE = 'tools.importVectorLayerTool';
 
 const DefaultOptions = Object.freeze({
     onInitiated: undefined,
@@ -44,7 +45,7 @@ class ImportVectorLayerTool extends Control {
             class: `${CLASS_TOOL_BUTTON}__icon`
         });
 
-        const i18n = TranslationManager.get('tools.importVectorLayerTool');
+        const i18n = TranslationManager.get(I18N_BASE);
         const button = DOM.createElement({
             element: 'button',
             html: icon,
@@ -200,7 +201,7 @@ class ImportVectorLayerTool extends Control {
 
             // Note: This should not happen since the format is set in the dialog using select element
             if(!format) {
-                const i18n = TranslationManager.get('tools.importVectorLayerTool.toasts.unsupportedFormatError');
+                const i18n = TranslationManager.get(`${I18N_BASE}.toasts.unsupportedFormatError`);
 
                 LogManager.logError(FILENAME, 'doImportLayer', {
                     title: i18n.title,
@@ -227,7 +228,7 @@ class ImportVectorLayerTool extends Control {
                 this.options.onImported(features);
             }
         }catch(error) {
-            const i18n = TranslationManager.get('tools.importVectorLayerTool.toasts.importError');
+            const i18n = TranslationManager.get(`${I18N_BASE}.toasts.importError`);
 
             LogManager.logError(FILENAME, 'doImportLayer', {
                 message: i18n.message,

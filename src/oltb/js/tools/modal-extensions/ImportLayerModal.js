@@ -10,6 +10,7 @@ import { TranslationManager } from '../../core/managers/TranslationManager';
 
 const FILENAME = 'modal-extensions/ImportLayerModal.js';
 const ID_PREFIX = 'oltb-import-layer-modal';
+const I18N_BASE = 'modalExtensions.importLayerModal';
 
 const DefaultOptions = Object.freeze({
     maximized: false,
@@ -23,7 +24,7 @@ class ImportLayerModal extends ModalBase {
         LogManager.logDebug(FILENAME, 'constructor', 'init');
 
         super(
-            TranslationManager.get('modalExtensions.importLayerModal.title'), 
+            TranslationManager.get(`${I18N_BASE}.title`), 
             options.maximized, 
             options.onClose
         );
@@ -41,7 +42,7 @@ class ImportLayerModal extends ModalBase {
     // -------------------------------------------------------------------
 
     #createModal() {
-        const i18n = TranslationManager.get('modalExtensions.importLayerModal.form');
+        const i18n = TranslationManager.get(`${I18N_BASE}.form`);
         const featureProjectionOptions = [];
         const dataProjectionOptions = [];
 

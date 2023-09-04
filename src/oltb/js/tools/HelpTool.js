@@ -13,6 +13,7 @@ import { TranslationManager } from '../core/managers/TranslationManager';
 
 const FILENAME = 'tools/HelpTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
+const I18N_BASE = 'tools.helpTool';
 
 const DefaultOptions = Object.freeze({
     url: 'https://github.com/qulle/oltb',
@@ -41,7 +42,7 @@ class HelpTool extends Control {
             class: `${CLASS_TOOL_BUTTON}__icon`
         });
 
-        const i18n = TranslationManager.get('tools.helpTool');
+        const i18n = TranslationManager.get(I18N_BASE);
         const button = DOM.createElement({
             element: 'button',
             html: icon,
@@ -108,7 +109,7 @@ class HelpTool extends Control {
     // -------------------------------------------------------------------
 
     askToOpenTabOrWindow() {
-        const i18n = TranslationManager.get('tools.helpTool.dialogs.openHelp');
+        const i18n = TranslationManager.get(`${I18N_BASE}.dialogs.openHelp`);
 
         Dialog.confirm({
             title: i18n.title,
@@ -129,7 +130,7 @@ class HelpTool extends Control {
         try {
             window.open(this.options.url, this.options.target).focus();
         }catch(error) {
-            const i18n = TranslationManager.get('tools.helpTool.toasts.blockedByBrowserError');
+            const i18n = TranslationManager.get(`${I18N_BASE}.toasts.blockedByBrowserError`);
 
             LogManager.logError(FILENAME, 'doOpenTabOrWindow', {
                 message: i18n.message,

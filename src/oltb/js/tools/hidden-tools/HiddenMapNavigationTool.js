@@ -25,6 +25,8 @@ import { fromLonLat, toLonLat } from 'ol/proj';
 const FILENAME = 'hidden-tools/HiddenMapNavigationTool.js';
 const CLASS_FUNC_BUTTON = 'oltb-func-btn';
 const ID_PREFIX_INFO_WINDOW = 'oltb-info-window-marker';
+const I18N_BASE = 'tools.hiddenMapNavigationTool';
+const I18N_BASE_COMMON = 'common';
 
 const DefaultOptions = Object.freeze({
     focusZoom: 2
@@ -114,7 +116,7 @@ class HiddenMapNavigationTool extends Control {
     initContextMenuItems() {
         ContextMenu.addItem({
             icon: this.clipboardIcon,
-            name: TranslationManager.get('tools.hiddenMapNavigationTool.contextItems.copy'),
+            name: TranslationManager.get(`${I18N_BASE}.contextItems.copy`),
             fn: this.onContextMenuCopyCoordinates.bind(this)
         });
 
@@ -122,19 +124,19 @@ class HiddenMapNavigationTool extends Control {
 
         ContextMenu.addItem({
             icon: this.coordinatesIcon,
-            name: TranslationManager.get('tools.hiddenMapNavigationTool.contextItems.navigate'),
+            name: TranslationManager.get(`${I18N_BASE}.contextItems.navigate`),
             fn: this.onContextMenuCenterAtCoordinates.bind(this)
         });
 
         ContextMenu.addItem({
             icon: this.moveCenterIcon, 
-            name: TranslationManager.get('tools.hiddenMapNavigationTool.contextItems.move'),
+            name: TranslationManager.get(`${I18N_BASE}.contextItems.move`),
             fn: this.onContextMenuCenterMap.bind(this)
         });
 
         ContextMenu.addItem({
             icon: this.focusHereIcon, 
-            name: TranslationManager.get('tools.hiddenMapNavigationTool.contextItems.focus'),
+            name: TranslationManager.get(`${I18N_BASE}.contextItems.focus`),
             fn: this.onContextMenuFocusHere.bind(this)
         });
         
@@ -273,7 +275,7 @@ class HiddenMapNavigationTool extends Control {
 
         copyToClipboard(prettyCoordinates)
             .then(() => {
-                const i18n = TranslationManager.get('tools.hiddenMapNavigationTool.toasts.copied');
+                const i18n = TranslationManager.get(`${I18N_BASE}.toasts.copied`);
                 Toast.info({
                     title: i18n.title,
                     message: i18n.message, 
@@ -368,7 +370,7 @@ class HiddenMapNavigationTool extends Control {
             ConfigManager.getConfig().projection.wgs84
         );
 
-        const i18n = TranslationManager.get('common.functionButtons');
+        const i18n = TranslationManager.get(`${I18N_BASE_COMMON}.functionButtons`);
         const prettyCoordinates = toStringHDMS(transformedCoordinates);
         const infoWindow = {
             title: markerData.title,

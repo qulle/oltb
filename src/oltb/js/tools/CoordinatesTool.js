@@ -30,6 +30,8 @@ const ID_PREFIX = 'oltb-coordinates';
 const KEY_TOOLTIP = 'tool.coordinates';
 const FORMAT_DECIMAL_DEGREES = 'DD';
 const FORMAT_DEGREE_MINUTES_SECONDS = 'DMS';
+const I18N_BASE = 'tools.coordinatesTool';
+const I18N_BASE_COMMON = 'common';
 
 const DefaultOptions = Object.freeze({
     onInitiated: undefined,
@@ -63,7 +65,7 @@ class CoordinatesTool extends Control {
             class: `${CLASS_TOOL_BUTTON}__icon`
         });
 
-        const i18n = TranslationManager.get('tools.coordinatesTool');
+        const i18n = TranslationManager.get(I18N_BASE);
         const button = DOM.createElement({
             element: 'button',
             html: icon,
@@ -121,25 +123,25 @@ class CoordinatesTool extends Control {
     // -------------------------------------------------------------------
 
     initToolboxHTML() {
-        const i18n = TranslationManager.get('tools.coordinatesTool.toolbox');
-        const i18nCommon = TranslationManager.get('common.titles');
+        const i18n = TranslationManager.get(`${I18N_BASE}.toolbox`);
+        const i18nCommon = TranslationManager.get(`${I18N_BASE_COMMON}.titles`);
 
         ElementManager.getToolboxElement().insertAdjacentHTML('beforeend', `
             <div id="${ID_PREFIX}-toolbox" class="${CLASS_TOOLBOX_SECTION}">
                 <div class="${CLASS_TOOLBOX_SECTION}__header oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">
-                    <h4 class="${CLASS_TOOLBOX_SECTION}__title" data-oltb-i18n="tools.coordinatesTool.toolbox.titles.coordinates">${i18n.titles.coordiantes}</h4>
-                    <span class="${CLASS_TOOLBOX_SECTION}__icon oltb-tippy" data-oltb-i18n="common.titles.toggleSection" title="${i18nCommon.toggleSection}"></span>
+                    <h4 class="${CLASS_TOOLBOX_SECTION}__title" data-oltb-i18n="${I18N_BASE}.toolbox.titles.coordinates">${i18n.titles.coordiantes}</h4>
+                    <span class="${CLASS_TOOLBOX_SECTION}__icon oltb-tippy" data-oltb-i18n="${I18N_BASE_COMMON}.titles.toggleSection" title="${i18nCommon.toggleSection}"></span>
                 </div>
                 <div class="${CLASS_TOOLBOX_SECTION}__groups" id="${ID_PREFIX}-toolbox-collapsed" style="display: ${this.localStorage.isCollapsed ? 'none' : 'block'}">
                     <div class="${CLASS_TOOLBOX_SECTION}__group">
-                        <label class="oltb-label" for="${ID_PREFIX}-format" data-oltb-i18n="tools.coordinatesTool.toolbox.groups.formats.title">${i18n.groups.formats.title}</label>
+                        <label class="oltb-label" for="${ID_PREFIX}-format" data-oltb-i18n="${I18N_BASE}.toolbox.groups.formats.title">${i18n.groups.formats.title}</label>
                         <select id="${ID_PREFIX}-format" class="oltb-select">
-                            <option value="DD" data-oltb-i18n="tools.coordinatesTool.toolbox.groups.formats.dd">${i18n.groups.formats.dd}</option>
-                            <option value="DMS" data-oltb-i18n="tools.coordinatesTool.toolbox.groups.formats.dms">${i18n.groups.formats.dms}</option>
+                            <option value="DD" data-oltb-i18n="${I18N_BASE}.toolbox.groups.formats.dd">${i18n.groups.formats.dd}</option>
+                            <option value="DMS" data-oltb-i18n="${I18N_BASE}.toolbox.groups.formats.dms">${i18n.groups.formats.dms}</option>
                         </select>
                     </div>
                     <div class="${CLASS_TOOLBOX_SECTION}__group">
-                        <label class="oltb-label" data-oltb-i18n="tools.coordinatesTool.toolbox.groups.coordinates.title">${i18n.groups.coordinates.title} <em>(Lat, Lon)</em></label>
+                        <label class="oltb-label" data-oltb-i18n="${I18N_BASE}.toolbox.groups.coordinates.title">${i18n.groups.coordinates.title} <em>(Lat, Lon)</em></label>
                         <table class="oltb-table oltb-mt-05" id="${ID_PREFIX}-table"></table>
                     </div>
                 </div>
@@ -154,7 +156,7 @@ class CoordinatesTool extends Control {
     }
 
     initSettings() {
-        const i18n = TranslationManager.get('tools.coordinatesTool.settings');
+        const i18n = TranslationManager.get(`${I18N_BASE}.settings`);
         SettingsManager.addSetting(Settings.copyCoordinatesOnClick, {
             state: true, 
             text: i18n.copyOnClick
@@ -429,7 +431,7 @@ class CoordinatesTool extends Control {
         );
 
         const prettyCoordinates = toStringHDMS(coordinates);
-        const i18n = TranslationManager.get('tools.coordinatesTool.toasts');
+        const i18n = TranslationManager.get(`${I18N_BASE}.toasts`);
 
         copyToClipboard(prettyCoordinates)
             .then(() => {

@@ -17,6 +17,7 @@ import { degreesToRadians, radiansToDegrees } from '../helpers/Conversions';
 
 const FILENAME = 'tools/ResetNorthTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
+const I18N_BASE = 'tools.resetNorthTool';
 
 const DefaultOptions = Object.freeze({
     onInitiated: undefined,
@@ -44,7 +45,7 @@ class ResetNorthTool extends Control {
             class: `${CLASS_TOOL_BUTTON}__icon`
         });
 
-        const i18n = TranslationManager.get('tools.resetNorthTool');
+        const i18n = TranslationManager.get(I18N_BASE);
         const button = DOM.createElement({
             element: 'button',
             html: this.icon,
@@ -86,7 +87,7 @@ class ResetNorthTool extends Control {
     initContextMenuItems() {
         ContextMenu.addItem({
             icon: this.icon, 
-            name: TranslationManager.get('tools.resetNorthTool.contextItems.rotate'), 
+            name: TranslationManager.get(`${I18N_BASE}.contextItems.rotate`), 
             fn: this.onContextMenuSetRotation.bind(this)
         });
     }
@@ -165,7 +166,7 @@ class ResetNorthTool extends Control {
 
         // Note: Must use the center of the view, not the clicked coordinates
         const coordinates = toLonLat(view.getCenter());
-        const i18n = TranslationManager.get('tools.resetNorthTool.dialogs.rotateMap');
+        const i18n = TranslationManager.get(`${I18N_BASE}.dialogs.rotateMap`);
 
         Dialog.prompt({
             title: i18n.title,
@@ -176,7 +177,7 @@ class ResetNorthTool extends Control {
                 if(result.isDigitsOnly()) {
                     this.doRotation(map, coordinates, zoom, result);
                 }else {
-                    const i18n = TranslationManager.get('tools.resetNorthTool.toasts.invalidInput');
+                    const i18n = TranslationManager.get(`${I18N_BASE}.toasts.invalidInput`);
 
                     LogManager.logError(FILENAME, 'askToSetRotation', {
                         message: i18n.merge,

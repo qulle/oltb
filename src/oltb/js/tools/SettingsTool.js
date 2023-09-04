@@ -18,6 +18,7 @@ import { TranslationManager } from '../core/managers/TranslationManager';
 
 const FILENAME = 'tools/SettingsTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
+const I18N_BASE = 'tools.settingsTool';
 
 const DefaultOptions = Object.freeze({
     onInitiated: undefined,
@@ -45,7 +46,7 @@ class SettingsTool extends Control {
             class: `${CLASS_TOOL_BUTTON}__icon`
         });
 
-        const i18n = TranslationManager.get('tools.settingsTool');
+        const i18n = TranslationManager.get(I18N_BASE);
         const button = DOM.createElement({
             element: 'button',
             html: this.icon,
@@ -88,7 +89,7 @@ class SettingsTool extends Control {
     initContextMenuItems() {
         ContextMenu.addItem({
             icon: this.icon, 
-            name: TranslationManager.get('tools.settingsTool.contextItems.clearBrowserState'), 
+            name: TranslationManager.get(`${I18N_BASE}.contextItems.clearBrowserState`), 
             fn: this.onContextMenuBrowserStateClear.bind(this)
         });
     }
@@ -135,7 +136,7 @@ class SettingsTool extends Control {
     // -------------------------------------------------------------------
 
     askToClearBrowserState() {
-        const i18n = TranslationManager.get('tools.settingsTool.dialogs.clearBrowserState');
+        const i18n = TranslationManager.get(`${I18N_BASE}.dialogs.clearBrowserState`);
 
         Dialog.confirm({
             title: i18n.title,
@@ -154,7 +155,7 @@ class SettingsTool extends Control {
     doClearBrowserState() {
         this.doDispatchBrowserStateCleared();
 
-        const i18n = TranslationManager.get('tools.settingsTool.toasts.cleared');
+        const i18n = TranslationManager.get(`${I18N_BASE}.toasts.cleared`);
         Toast.info({
             title: i18n.title,
             message: i18n.message, 
@@ -169,7 +170,7 @@ class SettingsTool extends Control {
         
         this.settingsModal = new SettingsModal({
             onSave: () => {
-                const i18n = TranslationManager.get('tools.settingsTool.toasts.saved');
+                const i18n = TranslationManager.get(`${I18N_BASE}.toasts.saved`);
                 Toast.success({
                     title: i18n.title,
                     message: i18n.message, 

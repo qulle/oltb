@@ -20,6 +20,7 @@ import { TranslationManager } from '../core/managers/TranslationManager';
 const FILENAME = 'tools/ZoomBoxTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
 const KEY_TOOLTIP = 'tool.zoombox';
+const I18N_BASE = 'tools.zoomBoxTool';
 const OL_INTERNAL_OUT = 'out_';
 
 const DefaultOptions = Object.freeze({
@@ -59,7 +60,7 @@ class ZoomBoxTool extends Control {
             class: `${CLASS_TOOL_BUTTON}__icon`
         });
 
-        const i18n = TranslationManager.get('tools.zoomBoxTool');
+        const i18n = TranslationManager.get(I18N_BASE);
         const button = DOM.createElement({
             element: 'button',
             html: icon,
@@ -305,7 +306,7 @@ class ZoomBoxTool extends Control {
     }
 
     doAddTooltip() {
-        const i18n = TranslationManager.get('tools.zoomBoxTool.tooltips');
+        const i18n = TranslationManager.get(`${I18N_BASE}.tooltips`);
 
         this.tooltip = TooltipManager.push(KEY_TOOLTIP);
         this.tooltip.innerHTML = i18n.dragToZoom;

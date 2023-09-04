@@ -24,6 +24,8 @@ const CLASS_TOOL_BUTTON = 'oltb-tool-button';
 const CLASS_FUNC_BUTTON = 'oltb-func-btn';
 const ID_PREFIX_INFO_WINDOW = 'oltb-info-window-marker';
 const ID_MARKER_PATH = 'person.filled';
+const I18N_BASE = 'tools.myLocationTool';
+const I18N_BASE_COMMON = 'common';
 
 const DefaultOptions = Object.freeze({
     title: 'My Location',
@@ -59,7 +61,7 @@ class MyLocationTool extends Control {
             class: `${CLASS_TOOL_BUTTON}__icon`
         });
 
-        const i18n = TranslationManager.get('tools.myLocationTool');
+        const i18n = TranslationManager.get(I18N_BASE);
         const button = DOM.createElement({
             element: 'button',
             html: icon,
@@ -142,7 +144,7 @@ class MyLocationTool extends Control {
     // -------------------------------------------------------------------
 
     askToExitFullScreen() {
-        const i18n = TranslationManager.get('tools.myLocationTool.dialogs.exitFullscreen');
+        const i18n = TranslationManager.get(`${I18N_BASE}.dialogs.exitFullscreen`);
 
         Dialog.confirm({
             title: i18n.title,
@@ -155,7 +157,7 @@ class MyLocationTool extends Control {
                         this.doGeoLocationSearch();
                     })
                     .catch((error) => {
-                        const i18n = TranslationManager.get('tools.myLocationTool.toasts.exitFullscreenError');
+                        const i18n = TranslationManager.get(`${I18N_BASE}.toasts.exitFullscreenError`);
 
                         LogManager.logError(FILENAME, 'askToExitFullScreen', {
                             message: i18n.message,
@@ -195,7 +197,7 @@ class MyLocationTool extends Control {
     }
 
     doLocationError(error) {
-        const i18n = TranslationManager.get('tools.myLocationTool.toasts.locationError');
+        const i18n = TranslationManager.get(`${I18N_BASE}.toasts.locationError`);
 
         LogManager.logError(FILENAME, 'doLocationError', {
             message: error.message,
@@ -237,7 +239,7 @@ class MyLocationTool extends Control {
     }
 
     doAddIconMarker(coordinates) {
-        const i18n = TranslationManager.get('common.functionButtons');
+        const i18n = TranslationManager.get(`${I18N_BASE_COMMON}.functionButtons`);
         const prettyCoordinates = toStringHDMS(coordinates);
 
         const infoWindow = {
@@ -248,9 +250,9 @@ class MyLocationTool extends Control {
             footer: `
                 <span class="oltb-info-window__coordinates">${prettyCoordinates}</span>
                 <div class="oltb-info-window__buttons-wrapper">
-                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--delete oltb-tippy" data-oltb-i18n="common.functionButtons.delete" title="${i18n.delete}" id="${ID_PREFIX_INFO_WINDOW}-remove"></button>
-                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--crosshair oltb-tippy" data-oltb-i18n="common.functionButtons.copyCoordinates" title="${i18n.copyCoordinates}" id="${ID_PREFIX_INFO_WINDOW}-copy-coordinates" data-oltb-coordinates="${prettyCoordinates}"></button>
-                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--copy oltb-tippy" data-oltb-i18n="common.functionButtons.copyText" title="${i18n.copyText}" id="${ID_PREFIX_INFO_WINDOW}-copy-text" data-oltb-copy="${this.options.description}"></button>
+                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--delete oltb-tippy" data-oltb-i18n="${I18N_BASE_COMMON}.functionButtons.delete" title="${i18n.delete}" id="${ID_PREFIX_INFO_WINDOW}-remove"></button>
+                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--crosshair oltb-tippy" data-oltb-i18n="${I18N_BASE_COMMON}.functionButtons.copyCoordinates" title="${i18n.copyCoordinates}" id="${ID_PREFIX_INFO_WINDOW}-copy-coordinates" data-oltb-coordinates="${prettyCoordinates}"></button>
+                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--copy oltb-tippy" data-oltb-i18n="${I18N_BASE_COMMON}.functionButtons.copyText" title="${i18n.copyText}" id="${ID_PREFIX_INFO_WINDOW}-copy-text" data-oltb-copy="${this.options.description}"></button>
                 </div>
             `
         };
@@ -279,13 +281,13 @@ class MyLocationTool extends Control {
 
         if(!window.navigator.geolocation) {
             this.onError({
-                message: TranslationManager.get('tools.myLocation.toasts.geoLocationNotSupported')
+                message: TranslationManager.get(`${I18N_BASE}.toasts.geoLocationNotSupported`)
             });
 
             return;
         }
         
-        const i18n = TranslationManager.get('tools.myLocationTool.toasts.geoSearching');
+        const i18n = TranslationManager.get(`${I18N_BASE}.toasts.geoSearching`);
 
         this.loadingToast = Toast.info({
             title: i18n.title,

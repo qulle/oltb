@@ -26,6 +26,7 @@ import { GeometryCollection, LinearRing, LineString, MultiLineString, MultiPoint
 
 const FILENAME = 'tools/ScissorsTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
+const I18N_BASE = 'tools.scissorsTool';
 
 const DefaultOptions = Object.freeze({
     strokeWidth: '2.5',
@@ -66,7 +67,7 @@ class ScissorsTool extends Control {
             class: `${CLASS_TOOL_BUTTON}__icon`
         });
 
-        const i18n = TranslationManager.get('tools.scissorsTool');
+        const i18n = TranslationManager.get(I18N_BASE);
         const button = DOM.createElement({
             element: 'button',
             html: icon,
@@ -321,7 +322,7 @@ class ScissorsTool extends Control {
         });
 
         if(this.intersectedFeatures.length === 0) {
-            const i18n = TranslationManager.get('tools.scissorsTool.toasts.noIntersecting');
+            const i18n = TranslationManager.get(`${I18N_BASE}.toasts.noIntersecting`);
 
             Toast.info({
                 title: i18n.title,

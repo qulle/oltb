@@ -15,6 +15,7 @@ import { TranslationManager } from '../core/managers/TranslationManager';
 
 const FILENAME = 'tools/DirectionTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
+const I18N_BASE = 'tools.directionTool';
 
 const DefaultOptions = Object.freeze({
     onInitiated: undefined,
@@ -63,7 +64,7 @@ class DirectionTool extends Control {
         });
 
         // Note: The values are flipped
-        const i18n = TranslationManager.get('tools.directionTool.titles');
+        const i18n = TranslationManager.get(`${I18N_BASE}.directionTool.titles`);
         DirectionData.col.tippyContent = i18n.horizontal;
         DirectionData.row.tippyContent = i18n.vertical;
 

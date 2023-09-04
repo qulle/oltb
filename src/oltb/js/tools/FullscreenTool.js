@@ -14,6 +14,7 @@ import { FullscreenEvents, FullscreenEventTypes, isFullScreenSupported, isFullSc
 
 const FILENAME = 'tools/FullscreenTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
+const I18N_BASE = 'tools.fullscreenTool';
 
 const DefaultOptions = Object.freeze({
     onInitiated: undefined,
@@ -136,7 +137,7 @@ class FullscreenTool extends Control {
         const isSupported = isFullScreenSupported();
 
         if(!isSupported) {
-            const i18n = TranslationManager.get('tools.fullscreenTool.toasts.fullscreenNotSupported');
+            const i18n = TranslationManager.get(`${I18N_BASE}.toasts.fullscreenNotSupported`);
 
             LogManager.logError(FILENAME, 'isFullScreenSupportedByBrowser', {
                 title: i18n.title,
@@ -157,7 +158,7 @@ class FullscreenTool extends Control {
     // -------------------------------------------------------------------
 
     getToolTippyContent() {
-        const i18n = TranslationManager.get('tools.fullscreenTool.titles');
+        const i18n = TranslationManager.get(`${I18N_BASE}.titles`);
 
         return isFullScreen() 
             ? i18n.exit 

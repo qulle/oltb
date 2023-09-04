@@ -17,6 +17,8 @@ const FILENAME = 'modal-extensions/DebugInfoModal.js';
 const ID_PREFIX = 'oltb-debug';
 const ID_EVENT_LOG = 'oltb-event-log';
 const CLASS_TOGGLEABLE = 'oltb-toggleable';
+const I18N_BASE = 'modalExtensions.debugInfoModal';
+const I18N_BASE_COMMON = 'common';
 
 const DefaultOptions = Object.freeze({
     map: undefined,
@@ -29,7 +31,7 @@ class DebugInfoModal extends ModalBase {
         LogManager.logDebug(FILENAME, 'constructor', 'init');
 
         super(
-            TranslationManager.get('modalExtensions.debugInfoModal.title'), 
+            TranslationManager.get(`${I18N_BASE}.title`), 
             DefaultOptions.maximized, 
             options.onClose
         );
@@ -56,7 +58,7 @@ class DebugInfoModal extends ModalBase {
     }
 
     #generateCommandSection() {
-        const i18n = TranslationManager.get('modalExtensions.debugInfoModal.form');
+        const i18n = TranslationManager.get(`${I18N_BASE}.form`);
         const commandsCollection = DOM.createElement({
             element: 'select',
             class: 'oltb-select'
@@ -113,7 +115,7 @@ class DebugInfoModal extends ModalBase {
     }
 
     #generateSection(section, index) {
-        const i18n = TranslationManager.get('common.titles');
+        const i18n = TranslationManager.get(`${I18N_BASE_COMMON}.titles`);
         const sectionWrapper = DOM.createElement({
             element: 'div',
             class: 'oltb-debug'
@@ -270,7 +272,7 @@ class DebugInfoModal extends ModalBase {
     }
 
     #generateObjectLogItem(entry, index) {
-        const i18n = TranslationManager.get('common.titles');
+        const i18n = TranslationManager.get(`${I18N_BASE_COMMON}.titles`);
         const logHeader = DOM.createElement({
             element: 'div',
             class: 'oltb-log__header oltb-log__header--toggleable oltb-toggleable',
@@ -358,7 +360,7 @@ class DebugInfoModal extends ModalBase {
             proj4Defs: ProjectionManager.getProjections(),
             defaultConfig: ConfigManager.getConfig()
         } : {
-            info: TranslationManager.get('modalExtensions.debugInfoModal.noMapFound')
+            info: TranslationManager.get(`${I18N_BASE}.noMapFound`)
         };
 
         const browser = new BrowserDetector(window.navigator.userAgent);
@@ -402,7 +404,7 @@ class DebugInfoModal extends ModalBase {
         const eventlog = LogManager.getLog().slice().reverse();
 
         // Generate sections
-        const i18n = TranslationManager.get('modalExtensions.debugInfoModal.sections');
+        const i18n = TranslationManager.get(`${I18N_BASE}.sections`);
         const sectionFragment = document.createDocumentFragment(); 
         [
             {
@@ -494,7 +496,7 @@ class DebugInfoModal extends ModalBase {
     doActionLoggingMap() {
         console.dir(this.options.map);
 
-        const i18n = TranslationManager.get('modalExtensions.debugInfoModal.toasts.logged');
+        const i18n = TranslationManager.get(`${I18N_BASE}.toasts.logged`);
         Toast.info({
             title: i18n.title,
             message: `${i18n.message} <strong>(F12)</strong>`, 
@@ -521,7 +523,7 @@ class DebugInfoModal extends ModalBase {
             DOM.clearElement(uiRefEventLog);
         }
 
-        const i18n = TranslationManager.get('modalExtensions.debugInfoModal.toasts.logged');
+        const i18n = TranslationManager.get(`${I18N_BASE}.toasts.logged`);
         Toast.info({
             title: i18n.title,
             message: i18n.message, 

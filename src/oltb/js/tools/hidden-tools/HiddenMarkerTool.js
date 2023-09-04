@@ -14,6 +14,8 @@ import { TranslationManager } from '../../core/managers/TranslationManager';
 const FILENAME = 'hidden-tools/HiddenMarkerTool.js';
 const CLASS_FUNC_BUTTON = 'oltb-func-btn';
 const ID_PREFIX_INFO_WINDOW = 'oltb-info-window-marker';
+const I18N_BASE = 'tools.hiddenMarkerTool';
+const I18N_BASE_COMMON = 'common';
 
 const DefaultOptions = Object.freeze({
     onAdded: undefined,
@@ -60,7 +62,7 @@ class HiddenMarkerTool extends Control {
     initContextMenuItems() {
         ContextMenu.addItem({
             icon: this.createIcon, 
-            name: TranslationManager.get('tools.hiddenMarkerTool.contextItems.createMarker'), 
+            name: TranslationManager.get(`${I18N_BASE}.contextItems.createMarker`), 
             fn: this.onContextMenuCreateMarker.bind(this)
         });
         
@@ -135,7 +137,7 @@ class HiddenMarkerTool extends Control {
             Number(result.latitude)
         ];
 
-        const i18n = TranslationManager.get('common.functionButtons');
+        const i18n = TranslationManager.get(`${I18N_BASE_COMMON}.functionButtons`);
         const prettyCoordinates = toStringHDMS(coordinates);
         const infoWindow = {
             title: result.title,

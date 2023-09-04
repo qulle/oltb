@@ -48,6 +48,8 @@ const CLASS_TOOLBOX_SECTION = 'oltb-toolbox-section';
 const CLASS_TOGGLEABLE = 'oltb-toggleable';
 const ID_PREFIX = 'oltb-edit';
 const KEY_TOOLTIP = 'tool.edit';
+const I18N_BASE = 'tools.editTool';
+const I18N_BASE_COMMON = 'common';
 
 const DefaultOptions = Object.freeze({
     hitTolerance: 5,
@@ -125,7 +127,7 @@ class EditTool extends Control {
             class: `${CLASS_TOOL_BUTTON}__icon`
         });
 
-        const i18n = TranslationManager.get('tools.debugInfoTool');
+        const i18n = TranslationManager.get(I18N_BASE);
         const button = DOM.createElement({
             element: 'button',
             html: icon,
@@ -216,24 +218,24 @@ class EditTool extends Control {
     // -------------------------------------------------------------------
 
     initToolboxHTML() {
-        const i18n = TranslationManager.get('tools.editTool.toolbox');
-        const i18nCommon = TranslationManager.get('common.titles');
+        const i18n = TranslationManager.get(`${I18N_BASE}.toolbox`);
+        const i18nCommon = TranslationManager.get(`${I18N_BASE_COMMON}.titles`);
 
         ElementManager.getToolboxElement().insertAdjacentHTML('beforeend', `
             <div id="${ID_PREFIX}-toolbox" class="${CLASS_TOOLBOX_SECTION}">
                 <div class="${CLASS_TOOLBOX_SECTION}__header oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">
-                    <h4 class="${CLASS_TOOLBOX_SECTION}__title" data-oltb-i18n="tools.editTool.toolbox.titles.draw">${i18n.titles.edit}</h4>
-                    <span class="${CLASS_TOOLBOX_SECTION}__icon oltb-tippy" data-oltb-i18n="common.titles.toggleSection" title="${i18nCommon.toggleSection}"></span>
+                    <h4 class="${CLASS_TOOLBOX_SECTION}__title" data-oltb-i18n="${I18N_BASE}.toolbox.titles.draw">${i18n.titles.edit}</h4>
+                    <span class="${CLASS_TOOLBOX_SECTION}__icon oltb-tippy" data-oltb-i18n="${I18N_BASE_COMMON}.titles.toggleSection" title="${i18nCommon.toggleSection}"></span>
                 </div>
                 <div class="${CLASS_TOOLBOX_SECTION}__groups" id="${ID_PREFIX}-toolbox-collapsed" style="display: ${this.localStorage.isCollapsed ? 'none' : 'block'}">
                     <div class="${CLASS_TOOLBOX_SECTION}__group">
-                        <label class="oltb-label" data-oldb-i18n="tools.editTool.toolbox.groups.misc">${i18n.groups.misc}</label>
+                        <label class="oltb-label" data-oldb-i18n="${I18N_BASE}.toolbox.groups.misc">${i18n.groups.misc}</label>
                         <button type="button" id="${ID_PREFIX}-delete-selected-button" class="oltb-btn oltb-btn--blue-mid oltb-tippy" title="Delete">
                             ${getIcon({ ...DefaultButtonProps, path: SvgPaths.trash.stroked })}
                         </button>
                     </div>
                     <div class="${CLASS_TOOLBOX_SECTION}__group ${CLASS_TOOLBOX_SECTION}__group--sub-toolbar">
-                        <label class="oltb-label" data-oldb-i18n="tools.editTool.toolbox.groups.shapes">${i18n.groups.misc}</label>
+                        <label class="oltb-label" data-oldb-i18n="${I18N_BASE}.toolbox.groups.shapes">${i18n.groups.misc}</label>
                         <button type="button" id="${ID_PREFIX}-union-selected-button" class="oltb-btn oltb-btn--blue-mid oltb-tippy" title="Union">
                             ${getIcon({ ...DefaultButtonProps, path: SvgPaths.union.mixed })}
                         </button>
@@ -248,13 +250,13 @@ class EditTool extends Control {
                         </button>
                     </div>
                     <div class="${CLASS_TOOLBOX_SECTION}__group">
-                        <label class="oltb-label" for="${ID_PREFIX}-stroke-color" data-oldb-i18n="tools.editTool.toolbox.groups.strokeColor">${i18n.groups.strokeColor}</label>
+                        <label class="oltb-label" for="${ID_PREFIX}-stroke-color" data-oldb-i18n="${I18N_BASE}.toolbox.groups.strokeColor">${i18n.groups.strokeColor}</label>
                         <div id="${ID_PREFIX}-stroke-color" class="oltb-color-input oltb-color-tippy" data-oltb-color-target="#${ID_PREFIX}-stroke-color" data-oltb-color="${this.localStorage.strokeColor}" tabindex="0">
                             <div class="oltb-color-input__inner" style="background-color: ${this.localStorage.strokeColor};"></div>
                         </div>
                     </div>
                     <div class="${CLASS_TOOLBOX_SECTION}__group">
-                        <label class="oltb-label" for="${ID_PREFIX}-fill-color" data-oldb-i18n="tools.editTool.toolbox.groups.fillColor">${i18n.groups.fillColor}</label>
+                        <label class="oltb-label" for="${ID_PREFIX}-fill-color" data-oldb-i18n="${I18N_BASE}.toolbox.groups.fillColor">${i18n.groups.fillColor}</label>
                         <div id="${ID_PREFIX}-fill-color" class="oltb-color-input oltb-color-tippy" data-oltb-color-target="#${ID_PREFIX}-fill-color" data-oltb-color="${this.localStorage.fillColor}" tabindex="0">
                             <div class="oltb-color-input__inner" style="background-color: ${this.localStorage.fillColor};"></div>
                         </div>
@@ -271,7 +273,7 @@ class EditTool extends Control {
     }
 
     initSettings() {
-        const i18n = TranslationManager.get('tools.editTool.settings');
+        const i18n = TranslationManager.get(`${I18N_BASE}.settings`);
         SettingsManager.addSetting(Settings.mouseOnlyToEditVectorShapes, {
             state: true, 
             text: i18n.mouseOnlyToEditVectorShapes
@@ -465,7 +467,7 @@ class EditTool extends Control {
         const featureLength = this.interactionSelect.getFeatures().getArray().length;
 
         if(featureLength === 0) {
-            const i18n = TranslationManager.get('tools.editTool.toasts.noSelected');
+            const i18n = TranslationManager.get(`${I18N_BASE}.toasts.noSelected`);
 
             Toast.info({
                 title: i18n.title,
@@ -585,7 +587,7 @@ class EditTool extends Control {
 
     askToDeleteFeatures() {
         const featureLength = this.interactionSelect.getFeatures().getArray().length;
-        const i18n = TranslationManager.get('tools.editTool.dialogs.deleteFeatures');
+        const i18n = TranslationManager.get(`${I18N_BASE}.dialogs.deleteFeatures`);
 
         Dialog.confirm({
             title: i18n.title,
@@ -777,7 +779,7 @@ class EditTool extends Control {
         const features = [ ...this.interactionSelect.getFeatures().getArray() ];
 
         if(!this.isTwoAndOnlyTwoShapes(features)) {
-            const i18n = TranslationManager.get('tools.editTool.toasts.strictTwoShapes');
+            const i18n = TranslationManager.get(`${I18N_BASE}.toasts.strictTwoShapes`);
 
             Toast.info({
                 title: i18n.title,
@@ -838,7 +840,7 @@ class EditTool extends Control {
                 this.options.onShapeOperation(type, a, b, feature);
             }
         }catch(error) {
-            const i18n = TranslationManager.get('tools.editTool.toasts.shapeOperationError');
+            const i18n = TranslationManager.get(`${I18N_BASE}.toasts.shapeOperationError`);
 
             LogManager.logError(FILENAME, 'onShapeOperator', {
                 message: i18n.message,

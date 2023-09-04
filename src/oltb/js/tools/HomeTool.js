@@ -17,6 +17,7 @@ import { TranslationManager } from '../core/managers/TranslationManager';
 
 const FILENAME = 'tools/HomeTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
+const I18N_BASE = 'tools.homeTool';
 
 const DefaultLocation = ConfigManager.getConfig().locations.default;
 const DefaultOptions = Object.freeze({
@@ -59,7 +60,7 @@ class HomeTool extends Control {
             class: `${CLASS_TOOL_BUTTON}__icon`
         });
 
-        const i18n = TranslationManager.get('tools.homeTool');
+        const i18n = TranslationManager.get(I18N_BASE);
         const button = DOM.createElement({
             element: 'button',
             html: this.icon,
@@ -107,7 +108,7 @@ class HomeTool extends Control {
     initContextMenuItems() {
         ContextMenu.addItem({
             icon: this.icon, 
-            name: TranslationManager.get('tools.homeTool.contextItems.setHome'), 
+            name: TranslationManager.get(`${I18N_BASE}.contextItems.setHome`), 
             fn: this.onContextMenuSetHomeLocation.bind(this)
         });
     }
@@ -217,7 +218,7 @@ class HomeTool extends Control {
         
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
 
-        const i18n = TranslationManager.get('tools.homeTool.toasts.newHome');
+        const i18n = TranslationManager.get(`${I18N_BASE}.toasts.newHome`);
 
         Toast.success({
             title: i18n.title,
