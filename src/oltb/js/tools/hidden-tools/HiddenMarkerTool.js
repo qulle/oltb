@@ -1,15 +1,15 @@
 import _ from 'lodash';
 import { Events } from '../../helpers/constants/Events';
 import { Control } from 'ol/control';
-import { LogManager } from '../../core/managers/LogManager';
+import { LogManager } from '../../managers/LogManager';
 import { ContextMenu } from '../../common/ContextMenu';
 import { toStringHDMS } from 'ol/coordinate';
-import { LayerManager } from '../../core/managers/LayerManager';
-import { ElementManager } from '../../core/managers/ElementManager';
+import { LayerManager } from '../../managers/LayerManager';
+import { ElementManager } from '../../managers/ElementManager';
 import { IconMarkerModal } from '../modal-extensions/IconMarkerModal';
-import { SvgPaths, getIcon } from '../../core/icons/GetIcon';
+import { SvgPaths, getIcon } from '../../icons/GetIcon';
 import { generateIconMarker } from '../../generators/GenerateIconMarker';
-import { TranslationManager } from '../../core/managers/TranslationManager';
+import { TranslationManager } from '../../managers/TranslationManager';
 
 const FILENAME = 'hidden-tools/HiddenMarkerTool.js';
 const CLASS_FUNC_BUTTON = 'oltb-func-btn';

@@ -1,5 +1,5 @@
-import { Dialog } from '../../../common/Dialog';
-import { Events } from '../../../helpers/constants/Events';
+import { Dialog } from '../../common/Dialog';
+import { Events } from '../../helpers/constants/Events';
 import { LayerManager } from '../LayerManager';
 
 const removeMarker = function(InfoWindowManager, marker) {

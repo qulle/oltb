@@ -2,7 +2,7 @@ import _ from 'lodash';
 import { Point } from 'ol/geom';
 import { Feature } from 'ol';
 import { fromLonLat } from 'ol/proj';
-import { getWindBarb } from '../core/icons/GetWindBarb';
+import { getWindBarb } from '../icons/GetWindBarb';
 import { degreesToRadians } from '../helpers/Conversions';
 import { FeatureProperties } from '../helpers/constants/FeatureProperties';
 import { Fill, Icon, Text, Stroke, Style } from 'ol/style';

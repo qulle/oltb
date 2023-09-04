@@ -8,22 +8,22 @@ import { Dialog } from '../common/Dialog';
 import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { goToView } from '../helpers/GoToView';
-import { LogManager } from '../core/managers/LogManager';
+import { LogManager } from '../managers/LogManager';
 import { ContextMenu } from '../common/ContextMenu';
 import { v4 as uuidv4 } from 'uuid';
 import { toStringHDMS } from 'ol/coordinate';
-import { LayerManager } from '../core/managers/LayerManager';
-import { StateManager } from '../core/managers/StateManager';
+import { LayerManager } from '../managers/LayerManager';
+import { StateManager } from '../managers/StateManager';
 import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
-import { ConfigManager } from '../core/managers/ConfigManager';
-import { ElementManager } from '../core/managers/ElementManager';
+import { ConfigManager } from '../managers/ConfigManager';
+import { ElementManager } from '../managers/ElementManager';
 import { copyToClipboard } from '../helpers/browser/CopyToClipboard';
 import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
-import { SvgPaths, getIcon } from '../core/icons/GetIcon';
-import { InfoWindowManager } from '../core/managers/InfoWindowManager';
+import { SvgPaths, getIcon } from '../icons/GetIcon';
+import { InfoWindowManager } from '../managers/InfoWindowManager';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
 import { generateIconMarker } from '../generators/GenerateIconMarker';
-import { TranslationManager } from '../core/managers/TranslationManager';
+import { TranslationManager } from '../managers/TranslationManager';
 import { generateAnimalName } from '../helpers/name-generator/NameGenerator';
 import { fromLonLat, toLonLat } from 'ol/proj';
 
@@ -915,7 +915,7 @@ class BookmarkTool extends Control {
             })
             .catch((error) => {
                 LogManager.logError(FILENAME, 'doCopyBookmarkCoordinates', {
-                    message: i18n.copyError.message,
+                    message: 'Failed to copy coordinates',
                     error: error
                 });
                 

@@ -1,10 +1,10 @@
 import _ from 'lodash';
 import { DOM } from '../../helpers/browser/DOM';
 import { ModalBase } from '../../common/modals/ModalBase';
-import { LogManager } from '../../core/managers/LogManager';
+import { LogManager } from '../../managers/LogManager';
 import { isDarkTheme } from '../../helpers/IsDarkTheme';
 import { createUIInput } from '../../creators/CreateUIInput';
-import { TranslationManager } from '../../core/managers/TranslationManager';
+import { TranslationManager } from '../../managers/TranslationManager';
 
 const FILENAME = 'modal-extensions/CoordinateModal.js';
 const ID_PREFIX = 'oltb-coordinates-modal';

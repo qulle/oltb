@@ -1,8 +1,8 @@
 import 'tippy.js/dist/tippy.css';
 import tippy from 'tippy.js';
-import { Events } from '../../helpers/constants/Events';
+import { Events } from '../helpers/constants/Events';
 import { LogManager } from './LogManager';
-import { isHorizontal } from '../../helpers/IsRowDirection';
+import { isHorizontal } from '../helpers/IsRowDirection';
 import { ElementManager } from './ElementManager';
 import { ColorPickerManager } from './ColorPickerManager';
 import { createSingleton, delegate } from 'tippy.js';

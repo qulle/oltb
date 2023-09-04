@@ -6,28 +6,28 @@ import { Control } from 'ol/control';
 import { unByKey } from 'ol/Observable';
 import { Settings } from '../helpers/constants/Settings';
 import { transform } from 'ol/proj';
-import { LogManager } from '../core/managers/LogManager';
-import { ToolManager } from '../core/managers/ToolManager';
+import { LogManager } from '../managers/LogManager';
+import { ToolManager } from '../managers/ToolManager';
 import { toStringHDMS } from 'ol/coordinate';
-import { StateManager } from '../core/managers/StateManager';
+import { StateManager } from '../managers/StateManager';
 import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
-import { ConfigManager } from '../core/managers/ConfigManager';
-import { ElementManager } from '../core/managers/ElementManager';
-import { TooltipManager } from '../core/managers/TooltipManager';
-import { SettingsManager } from '../core/managers/SettingsManager';
+import { ConfigManager } from '../managers/ConfigManager';
+import { ElementManager } from '../managers/ElementManager';
+import { TooltipManager } from '../managers/TooltipManager';
+import { SettingsManager } from '../managers/SettingsManager';
 import { copyToClipboard } from '../helpers/browser/CopyToClipboard';
 import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
-import { SvgPaths, getIcon } from '../core/icons/GetIcon';
-import { ProjectionManager } from '../core/managers/ProjectionManager';
+import { SvgPaths, getIcon } from '../icons/GetIcon';
+import { ProjectionManager } from '../managers/ProjectionManager';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
-import { TranslationManager } from '../core/managers/TranslationManager';
+import { TranslationManager } from '../managers/TranslationManager';
 
 const FILENAME = 'tools/CoordiantesTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
 const CLASS_TOOLBOX_SECTION = 'oltb-toolbox-section';
 const CLASS_TOGGLEABLE = 'oltb-toggleable';
 const ID_PREFIX = 'oltb-coordinates';
-const KEY_TOOLTIP = 'tool.coordinates';
+const KEY_TOOLTIP = 'tools.coordinatesTool';
 const FORMAT_DECIMAL_DEGREES = 'DD';
 const FORMAT_DEGREE_MINUTES_SECONDS = 'DMS';
 const I18N_BASE = 'tools.coordinatesTool';
@@ -443,7 +443,7 @@ class CoordinatesTool extends Control {
             })
             .catch((error) => {
                 LogManager.logError(FILENAME, 'doCopyCoordinates', {
-                    message: i18n.copyError.message,
+                    message: 'Failed to copy coordinates',
                     error: error
                 });
 

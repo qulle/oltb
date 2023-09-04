@@ -3,16 +3,16 @@ import { DOM } from '../helpers/browser/DOM';
 import { Toast } from '../common/Toast';
 import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
-import { LogManager } from '../core/managers/LogManager';
-import { FormatType } from '../core/ol-types/FormatType';
-import { LayerManager } from '../core/managers/LayerManager';
+import { LogManager } from '../managers/LogManager';
+import { FormatType } from '../ol-types/FormatType';
+import { LayerManager } from '../managers/LayerManager';
 import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
-import { ElementManager } from '../core/managers/ElementManager';
+import { ElementManager } from '../managers/ElementManager';
 import { ImportLayerModal } from './modal-extensions/ImportLayerModal';
-import { SvgPaths, getIcon } from '../core/icons/GetIcon';
-import { instantiateFormat } from '../core/ol-types/FormatType';
+import { SvgPaths, getIcon } from '../icons/GetIcon';
+import { instantiateFormat } from '../ol-types/FormatType';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
-import { TranslationManager } from '../core/managers/TranslationManager';
+import { TranslationManager } from '../managers/TranslationManager';
 
 const FILENAME = 'tools/ImportVectorLayerTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
@@ -201,13 +201,12 @@ class ImportVectorLayerTool extends Control {
 
             // Note: This should not happen since the format is set in the dialog using select element
             if(!format) {
-                const i18n = TranslationManager.get(`${I18N_BASE}.toasts.unsupportedFormatError`);
-
                 LogManager.logError(FILENAME, 'doImportLayer', {
-                    title: i18n.title,
-                    message: `${i18n.message} (${format})`
+                    title: 'Error',
+                    message: `The layer format is not supported (${format})`
                 });
 
+                const i18n = TranslationManager.get(`${I18N_BASE}.toasts.unsupportedFormatError`);
                 Toast.error({
                     title: i18n.title,
                     message: `${i18n.message} (${format})`
@@ -228,13 +227,12 @@ class ImportVectorLayerTool extends Control {
                 this.options.onImported(features);
             }
         }catch(error) {
-            const i18n = TranslationManager.get(`${I18N_BASE}.toasts.importError`);
-
             LogManager.logError(FILENAME, 'doImportLayer', {
-                message: i18n.message,
+                message: 'Failed to import vector layer',
                 error: error
             });
             
+            const i18n = TranslationManager.get(`${I18N_BASE}.toasts.importError`);
             Toast.error({
                 title: i18n.title,
                 message: i18n.message

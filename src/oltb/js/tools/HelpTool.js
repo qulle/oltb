@@ -4,12 +4,12 @@ import { Toast } from '../common/Toast';
 import { Dialog } from '../common/Dialog';
 import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
-import { LogManager } from '../core/managers/LogManager';
+import { LogManager } from '../managers/LogManager';
 import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
-import { ElementManager } from '../core/managers/ElementManager';
-import { SvgPaths, getIcon } from '../core/icons/GetIcon';
+import { ElementManager } from '../managers/ElementManager';
+import { SvgPaths, getIcon } from '../icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
-import { TranslationManager } from '../core/managers/TranslationManager';
+import { TranslationManager } from '../managers/TranslationManager';
 
 const FILENAME = 'tools/HelpTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
@@ -130,13 +130,12 @@ class HelpTool extends Control {
         try {
             window.open(this.options.url, this.options.target).focus();
         }catch(error) {
-            const i18n = TranslationManager.get(`${I18N_BASE}.toasts.blockedByBrowserError`);
-
             LogManager.logError(FILENAME, 'doOpenTabOrWindow', {
-                message: i18n.message,
+                message: 'Action was restricted by browser settings',
                 error: error
             });
             
+            const i18n = TranslationManager.get(`${I18N_BASE}.toasts.blockedByBrowserError`);
             Toast.error({
                 title: i18n.title,
                 message: i18n.message

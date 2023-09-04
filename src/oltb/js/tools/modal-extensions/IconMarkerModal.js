@@ -1,13 +1,13 @@
 import _ from 'lodash';
 import { DOM } from '../../helpers/browser/DOM';
-import { SvgPaths } from '../../core/icons/GetIcon';
+import { SvgPaths } from '../../icons/GetIcon';
 import { ModalBase } from '../../common/modals/ModalBase';
-import { LogManager } from '../../core/managers/LogManager';
+import { LogManager } from '../../managers/LogManager';
 import { isDarkTheme } from '../../helpers/IsDarkTheme';
 import { createUIInput } from '../../creators/CreateUIInput';
 import { createUISelect } from '../../creators/CreateUISelect';
 import { createUIColorInput } from '../../creators/CreateUIColorInput';
-import { TranslationManager } from '../../core/managers/TranslationManager';
+import { TranslationManager } from '../../managers/TranslationManager';
 
 const FILENAME = 'modal-extensions/IconMarkerModal.js';
 const ID_PREFIX = 'oltb-marker-modal-marker';

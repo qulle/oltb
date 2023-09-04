@@ -936,7 +936,7 @@ const ShortcutKeys = Object.freeze({
 ```
 
 ### Managers
-There are a number of so-called managers located in `oltb/js/core/managers`. These are to be considered as self-isolated classes that have no dependencies to the tools, but the other way around. The managers are the central hub of the application that provides data to all other parties and among themselves.
+There are a number of so-called managers located in `oltb/js/managers`. These are to be considered as self-isolated classes that have no dependencies to the tools, but the other way around. The managers are the central hub of the application that provides data to all other parties and among themselves.
 
 The managers are initiated in two steps. The first one is the base initiation that is done before the map is created.
 ```javascript
@@ -969,7 +969,7 @@ BootstrapManager.setMap(map);
 ```
 
 ### Custom Projections
-You can define custom projections in the file `oltb/js/core/managers/ProjectionManager.js`. This manager keeps track of all added projections. If you want to change the default projection used, there is a general config module `oltb/js/core/Config` where you can change that. More projections can be fetched at [https://epsg.io/](https://epsg.io/).
+You can define custom projections in the file `oltb/js/managers/ProjectionManager.js`. This manager keeps track of all added projections. If you want to change the default projection used, there is a general config module `oltb/js/Config` where you can change that. More projections can be fetched at [https://epsg.io/](https://epsg.io/).
 
 The map uses `EPSG:3857` as the default projection. Tools that can receive coordinates expect these to be given in the projection `EPSG:4326`:
 
@@ -1332,7 +1332,7 @@ There are two modules for using SVG icons. One is for basic icons and the other 
 #### Basic Icons
 Most of the icons are from [icons.getbootstrap.com](https://icons.getbootstrap.com/). Icons have been added on a as needed basis and far from all icons have been added.
 ```javascript
-import { SvgPaths, getIcon } from 'oltb/js/core/GetIcon';
+import { SvgPaths, getIcon } from 'oltb/js/GetIcon';
 
 const icon = getIcon({
     path: SvgPaths.geoMarker.filled,
@@ -1354,7 +1354,7 @@ const path = SvgPaths[name][version]; // The 'getIcon' function wrapps the path 
 #### WindBarb Icons
 The Wind Barbs are available from 0 to 190 knots (0 to 97.5m/s). To get more information about the Wind Barbs visit my other project [github.com/qulle/svg-wind-barbs](https://github.com/qulle/svg-wind-barbs).
 ```javascript
-import { getWindBarb } from 'oltb/js/core/GetWindBarb';
+import { getWindBarb } from 'oltb/js/GetWindBarb';
 
 const icon = getWindBarb({
     windSpeed: 25,
@@ -1412,7 +1412,7 @@ ContextMenu.addItem({});
 ### State Management
 To use state management start by importing the following module.
 ```javascript
-import { StateManager } from 'oltb/js/core/managers/StateManager';
+import { StateManager } from 'oltb/js/managers/StateManager';
 ```
 
 State management is done through localStorage under the key `oltb-state`. First add a node name and an object to store default values.

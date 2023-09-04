@@ -1,9 +1,9 @@
 import _ from 'lodash';
 import { DOM } from '../../helpers/browser/DOM';
 import { Events } from '../../helpers/constants/Events';
-import { LogManager } from '../../core/managers/LogManager';
-import { ConfigManager } from '../../core/managers/ConfigManager';
-import { ElementManager } from '../../core/managers/ElementManager';
+import { LogManager } from '../../managers/LogManager';
+import { ConfigManager } from '../../managers/ConfigManager';
+import { ElementManager } from '../../managers/ElementManager';
 
 const FILENAME = 'toasts/ToastBase.js';
 const CLASS_TOAST = 'oltb-toast';

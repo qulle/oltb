@@ -2,16 +2,16 @@ import _ from 'lodash';
 import { DOM } from '../helpers/browser/DOM';
 import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
-import { LogManager } from '../core/managers/LogManager';
+import { LogManager } from '../managers/LogManager';
 import { isHorizontal } from '../helpers/IsRowDirection';
-import { StateManager } from '../core/managers/StateManager';
+import { StateManager } from '../managers/StateManager';
 import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
-import { ConfigManager } from '../core/managers/ConfigManager';
-import { ElementManager } from '../core/managers/ElementManager';
+import { ConfigManager } from '../managers/ConfigManager';
+import { ElementManager } from '../managers/ElementManager';
 import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
-import { SvgPaths, getIcon } from '../core/icons/GetIcon';
+import { SvgPaths, getIcon } from '../icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
-import { TranslationManager } from '../core/managers/TranslationManager';
+import { TranslationManager } from '../managers/TranslationManager';
 
 const FILENAME = 'tools/DirectionTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
@@ -64,7 +64,7 @@ class DirectionTool extends Control {
         });
 
         // Note: The values are flipped
-        const i18n = TranslationManager.get(`${I18N_BASE}.directionTool.titles`);
+        const i18n = TranslationManager.get(`${I18N_BASE}.titles`);
         DirectionData.col.tippyContent = i18n.horizontal;
         DirectionData.row.tippyContent = i18n.vertical;
 

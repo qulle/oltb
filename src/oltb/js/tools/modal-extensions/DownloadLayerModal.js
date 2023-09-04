@@ -1,11 +1,11 @@
 import _ from 'lodash';
 import { DOM } from '../../helpers/browser/DOM';
 import { ModalBase } from '../../common/modals/ModalBase';
-import { LogManager } from '../../core/managers/LogManager';
+import { LogManager } from '../../managers/LogManager';
 import { isDarkTheme } from '../../helpers/IsDarkTheme';
-import { FormatOptions } from '../../core/ol-types/FormatType';
+import { FormatOptions } from '../../ol-types/FormatType';
 import { createUISelect } from '../../creators/CreateUISelect';
-import { TranslationManager } from '../../core/managers/TranslationManager';
+import { TranslationManager } from '../../managers/TranslationManager';
 
 const FILENAME = 'modal-extensions/DownloadLayerModal.js';
 const ID_PREFIX = 'oltb-download-layer-modal';

@@ -1,22 +1,22 @@
-import { Toast } from '../../../common/Toast';
+import { Toast } from '../../common/Toast';
 import { LogManager } from '../LogManager';
 import { ConfigManager } from '../ConfigManager';
-import { copyToClipboard } from '../../../helpers/browser/CopyToClipboard';
+import { copyToClipboard } from '../../helpers/browser/CopyToClipboard';
 
-const FILENAME = 'info-window-manager/CopyMarkerInfo.js';
+const FILENAME = 'info-window-manager/CopyMarkerCoordinates.js';
 
-const copyMarkerInfo = async function(InfoWindowManager, dataToCopy) {
-    copyToClipboard(dataToCopy)
+const copyMarkerCoordinates = async function(InfoWindowManager, data) {
+    copyToClipboard(data)
         .then(() => {
             Toast.info({
                 title: 'Copied',
-                message: 'Marker info copied to clipboard', 
+                message: 'Marker coordinates copied to clipboard', 
                 autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
             });
         })
         .catch((error) => {
-            const errorMessage = 'Failed to copy marker info';
-            LogManager.logError(FILENAME, 'copyMarkerInfo', {
+            const errorMessage = 'Failed to copy marker coordinates';
+            LogManager.logError(FILENAME, 'copyMarkerCoordinates', {
                 message: errorMessage,
                 error: error
             });
@@ -28,4 +28,4 @@ const copyMarkerInfo = async function(InfoWindowManager, dataToCopy) {
         });
 }
 
-export { copyMarkerInfo };
+export { copyMarkerCoordinates };

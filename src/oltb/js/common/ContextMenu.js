@@ -5,10 +5,10 @@ import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { transform } from 'ol/proj';
 import { trapFocus } from '../helpers/browser/TrapFocus';
-import { UrlManager } from '../core/managers/UrlManager';
-import { LogManager } from '../core/managers/LogManager';
-import { ConfigManager } from '../core/managers/ConfigManager';
-import { ElementManager } from '../core/managers/ElementManager';
+import { UrlManager } from '../managers/UrlManager';
+import { LogManager } from '../managers/LogManager';
+import { ConfigManager } from '../managers/ConfigManager';
+import { ElementManager } from '../managers/ElementManager';
 import { hasNestedProperty } from '../helpers/browser/HasNestedProperty';
 
 const FILENAME = 'common/ContextMenu.js';

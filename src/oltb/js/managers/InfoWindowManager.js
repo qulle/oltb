@@ -1,8 +1,8 @@
-import { DOM } from '../../helpers/browser/DOM';
-import { Events } from '../../helpers/constants/Events';
+import { DOM } from '../helpers/browser/DOM';
+import { Events } from '../helpers/constants/Events';
 import { Overlay } from 'ol';
 import { getCenter } from 'ol/extent';
-import { trapFocus } from '../../helpers/browser/TrapFocus';
+import { trapFocus } from '../helpers/browser/TrapFocus';
 import { LogManager } from './LogManager';
 import { editMarker } from './info-window-manager/EditMarker';
 import { removeMarker } from './info-window-manager/RemoveMarker';

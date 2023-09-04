@@ -1,11 +1,11 @@
 import { Modal } from '../../common/Modal';
 import { Control } from 'ol/control';
-import { LogManager } from '../../core/managers/LogManager';
+import { LogManager } from '../../managers/LogManager';
 import { ContextMenu } from '../../common/ContextMenu';
-import { ConfigManager } from '../../core/managers/ConfigManager';
-import { ElementManager } from '../../core/managers/ElementManager';
-import { SvgPaths, getIcon } from '../../core/icons/GetIcon';
-import { TranslationManager } from '../../core/managers/TranslationManager';
+import { ConfigManager } from '../../managers/ConfigManager';
+import { ElementManager } from '../../managers/ElementManager';
+import { SvgPaths, getIcon } from '../../icons/GetIcon';
+import { TranslationManager } from '../../managers/TranslationManager';
 
 const FILENAME = 'hidden-tools/HiddenAboutTool.js';
 const I18N_BASE = 'tools.hiddenAboutTool';

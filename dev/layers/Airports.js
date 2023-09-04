@@ -1,8 +1,8 @@
 import urlAirportsGeoJson from 'url:../geojson/airports.geojson';
 import { Toast } from '../../src/oltb/js/common/Toast';
-import { LogManager } from '../../src/oltb/js/core/managers/LogManager';
+import { LogManager } from '../../src/oltb/js/managers/LogManager';
 import { toStringHDMS } from 'ol/coordinate';
-import { LayerManager } from '../../src/oltb/js/core/managers/LayerManager';
+import { LayerManager } from '../../src/oltb/js/managers/LayerManager';
 import { generateIconMarker } from '../../src/oltb/js/generators/GenerateIconMarker';
 
 const FILENAME = 'layers/Airports.js';

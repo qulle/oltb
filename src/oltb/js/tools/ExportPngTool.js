@@ -5,14 +5,14 @@ import { Toast } from '../common/Toast';
 import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { download } from '../helpers/browser/Download';
-import { LogManager } from '../core/managers/LogManager';
-import { UrlManager } from '../core/managers/UrlManager';
+import { LogManager } from '../managers/LogManager';
+import { UrlManager } from '../managers/UrlManager';
 import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
-import { ConfigManager } from '../core/managers/ConfigManager';
-import { ElementManager } from '../core/managers/ElementManager';
-import { SvgPaths, getIcon } from '../core/icons/GetIcon';
+import { ConfigManager } from '../managers/ConfigManager';
+import { ElementManager } from '../managers/ElementManager';
+import { SvgPaths, getIcon } from '../icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
-import { TranslationManager } from '../core/managers/TranslationManager';
+import { TranslationManager } from '../managers/TranslationManager';
 
 const FILENAME = 'tools/ExportPngTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
@@ -207,13 +207,12 @@ class ExportPngTool extends Control {
                 this.options.onError(error);
             }
 
-            const i18n = TranslationManager.get(`${I18N_BASE}.toasts.renderError`);
-
             LogManager.logError(FILENAME, 'doRenderCompleteAsync', {
-                message: i18n.message,
+                message: 'Failed to export canvas image',
                 error: error
             });
             
+            const i18n = TranslationManager.get(`${I18N_BASE}.toasts.renderError`);
             Toast.error({
                 title: i18n.title,
                 message: i18n.message

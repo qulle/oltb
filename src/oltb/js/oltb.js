@@ -18,24 +18,24 @@ import { ContextMenu } from './common/ContextMenu';
 import { LocalStorageKeys } from './helpers/constants/LocalStorageKeys';
 
 // Core Managers
-import { LogManager } from './core/managers/LogManager';
-import { UrlManager } from './core/managers/UrlManager';
-import { ToolManager } from './core/managers/ToolManager';
-import { SnapManager } from './core/managers/SnapManager';
-import { LayerManager } from './core/managers/LayerManager';
-import { StateManager } from './core/managers/StateManager';
-import { TippyManager } from './core/managers/TippyManager';
-import { ErrorManager } from './core/managers/ErrorManager';
-import { ConfigManager } from './core/managers/ConfigManager';
-import { ElementManager } from './core/managers/ElementManager';
-import { TooltipManager } from './core/managers/TooltipManager';
-import { SettingsManager } from './core/managers/SettingsManager';
-import { BootstrapManager } from './core/managers/BootstrapManager';
-import { InfoWindowManager } from './core/managers/InfoWindowManager';
-import { ProjectionManager } from './core/managers/ProjectionManager';
-import { TranslationManager } from './core/managers/TranslationManager';
-import { ColorPickerManager } from './core/managers/ColorPickerManager';
-import { AccessibilityManager } from './core/managers/AccessibilityManager';
+import { LogManager } from './managers/LogManager';
+import { UrlManager } from './managers/UrlManager';
+import { ToolManager } from './managers/ToolManager';
+import { SnapManager } from './managers/SnapManager';
+import { LayerManager } from './managers/LayerManager';
+import { StateManager } from './managers/StateManager';
+import { TippyManager } from './managers/TippyManager';
+import { ErrorManager } from './managers/ErrorManager';
+import { ConfigManager } from './managers/ConfigManager';
+import { ElementManager } from './managers/ElementManager';
+import { TooltipManager } from './managers/TooltipManager';
+import { SettingsManager } from './managers/SettingsManager';
+import { BootstrapManager } from './managers/BootstrapManager';
+import { InfoWindowManager } from './managers/InfoWindowManager';
+import { ProjectionManager } from './managers/ProjectionManager';
+import { TranslationManager } from './managers/TranslationManager';
+import { ColorPickerManager } from './managers/ColorPickerManager';
+import { AccessibilityManager } from './managers/AccessibilityManager';
 
 // Generator functions
 import { generateWindBarb } from './generators/GenerateWindBarb';

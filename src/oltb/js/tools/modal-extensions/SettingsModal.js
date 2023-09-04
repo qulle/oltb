@@ -1,11 +1,11 @@
 import _ from 'lodash';
 import { DOM } from '../../helpers/browser/DOM';
 import { ModalBase } from '../../common/modals/ModalBase';
-import { LogManager } from '../../core/managers/LogManager';
+import { LogManager } from '../../managers/LogManager';
 import { isDarkTheme } from '../../helpers/IsDarkTheme';
-import { SettingsManager } from '../../core/managers/SettingsManager';
+import { SettingsManager } from '../../managers/SettingsManager';
 import { createUICheckbox } from '../../creators/CreateUICheckbox';
-import { TranslationManager } from '../../core/managers/TranslationManager';
+import { TranslationManager } from '../../managers/TranslationManager';
 
 const FILENAME = 'modal-extensions/SettingsModal.js';
 const I18N_BASE = 'modalExtensions.settingsModal';

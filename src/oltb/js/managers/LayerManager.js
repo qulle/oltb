@@ -1,12 +1,12 @@
 import _ from 'lodash';
-import { Events } from '../../helpers/constants/Events';
+import { Events } from '../helpers/constants/Events';
 import { Collection } from 'ol';
 import { LogManager } from '../managers/LogManager';
 import { v4 as uuidv4 } from 'uuid';
-import { FeatureProperties } from '../../helpers/constants/FeatureProperties';
+import { FeatureProperties } from '../helpers/constants/FeatureProperties';
 import { Vector as VectorLayer } from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';
-import { hasCustomFeatureProperty } from '../../helpers/browser/HasNestedProperty';
+import { hasCustomFeatureProperty } from '../helpers/browser/HasNestedProperty';
 
 const FILENAME = 'managers/LayerManager.js';
 const DEFAULT_LAYER_NAME = 'New layer';

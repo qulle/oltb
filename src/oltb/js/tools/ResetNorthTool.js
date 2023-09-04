@@ -6,13 +6,13 @@ import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { toLonLat } from 'ol/proj';
 import { goToView } from '../helpers/GoToView';
-import { LogManager } from '../core/managers/LogManager';
+import { LogManager } from '../managers/LogManager';
 import { ContextMenu } from '../common/ContextMenu';
 import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
-import { ElementManager } from '../core/managers/ElementManager';
-import { SvgPaths, getIcon } from '../core/icons/GetIcon';
+import { ElementManager } from '../managers/ElementManager';
+import { SvgPaths, getIcon } from '../icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
-import { TranslationManager } from '../core/managers/TranslationManager';
+import { TranslationManager } from '../managers/TranslationManager';
 import { degreesToRadians, radiansToDegrees } from '../helpers/Conversions';
 
 const FILENAME = 'tools/ResetNorthTool.js';
@@ -177,13 +177,12 @@ class ResetNorthTool extends Control {
                 if(result.isDigitsOnly()) {
                     this.doRotation(map, coordinates, zoom, result);
                 }else {
-                    const i18n = TranslationManager.get(`${I18N_BASE}.toasts.invalidInput`);
-
                     LogManager.logError(FILENAME, 'askToSetRotation', {
-                        message: i18n.merge,
+                        message: 'Only digits are allowed as input',
                         result: result
                     });
 
+                    const i18n = TranslationManager.get(`${I18N_BASE}.toasts.invalidInput`);
                     Toast.error({
                         title: i18n.title,
                         message: i18n.message

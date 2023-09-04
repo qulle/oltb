@@ -4,13 +4,13 @@ import { Modal } from '../common/Modal';
 import { Toast } from '../common/Toast';
 import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
-import { LogManager } from '../core/managers/LogManager';
+import { LogManager } from '../managers/LogManager';
 import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
-import { ConfigManager } from '../core/managers/ConfigManager';
-import { ElementManager } from '../core/managers/ElementManager';
-import { SvgPaths, getIcon } from '../core/icons/GetIcon';
+import { ConfigManager } from '../managers/ConfigManager';
+import { ElementManager } from '../managers/ElementManager';
+import { SvgPaths, getIcon } from '../icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
-import { TranslationManager } from '../core/managers/TranslationManager';
+import { TranslationManager } from '../managers/TranslationManager';
 
 const FILENAME = 'tools/NotificationTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
@@ -203,13 +203,12 @@ class NotificationTool extends Control {
                 this.doPrepareModalContent(data);
             })
             .catch((error) => {
-                const i18n = TranslationManager.get(`${I18N_BASE}.toasts.fetchError`);
-
                 LogManager.logError(FILENAME, 'doFetchNotifications', {
-                    message: i18n.message,
+                    message: 'Failed to fetch notifications',
                     error: error
                 });
 
+                const i18n = TranslationManager.get(`${I18N_BASE}.toasts.fetchError`);
                 Toast.error({
                     title: i18n.title,
                     message: error.message

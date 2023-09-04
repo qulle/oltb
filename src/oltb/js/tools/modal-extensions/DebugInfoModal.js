@@ -5,13 +5,13 @@ import { Toast } from '../../common/Toast';
 import { Events } from '../../helpers/constants/Events';
 import { toLonLat } from 'ol/proj';
 import { ModalBase } from '../../common/modals/ModalBase';
-import { LogManager } from '../../core/managers/LogManager';
+import { LogManager } from '../../managers/LogManager';
 import { v4 as uuidv4 } from 'uuid';
 import { jsonReplacer } from '../../helpers/browser/JsonReplacer';
-import { ConfigManager } from '../../core/managers/ConfigManager';
-import { SvgPaths, getIcon } from '../../core/icons/GetIcon';
-import { ProjectionManager } from '../../core/managers/ProjectionManager';
-import { TranslationManager } from '../../core/managers/TranslationManager';
+import { ConfigManager } from '../../managers/ConfigManager';
+import { SvgPaths, getIcon } from '../../icons/GetIcon';
+import { ProjectionManager } from '../../managers/ProjectionManager';
+import { TranslationManager } from '../../managers/TranslationManager';
 
 const FILENAME = 'modal-extensions/DebugInfoModal.js';
 const ID_PREFIX = 'oltb-debug';

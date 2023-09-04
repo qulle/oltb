@@ -1,10 +1,21 @@
-export const SvSe = Object.freeze({
+export const EnUs = Object.freeze({
     lang: {
-        text: 'Swedish',
-        code: 'sv-se'
+        text: 'English',
+        code: 'en-us'
     },
     managers: {
+        infoWindowManager: {
 
+        },
+        errorManager: {
+
+        },
+        layerManager: {
+
+        },
+        settingsManager: {
+            
+        }
     },
     common: {
         functionButtons: {
@@ -152,6 +163,18 @@ export const SvSe = Object.freeze({
                 copied: {
                     title: 'Copied',
                     message: 'Coordinates copied to clipboard'
+                },
+                copyError: {
+                    title: 'Error',
+                    message: 'Failed to copy coordinates'
+                },
+                parseUrlMarkerError: {
+                    title: 'Error',
+                    message: 'Failed to parse URL Marker'
+                },
+                missingProjectionError: {
+                    title: 'Error',
+                    message: 'Missing projection definition'
                 }
             }
         },
@@ -365,14 +388,14 @@ export const SvSe = Object.freeze({
             }
         },
         homeTool: {
-            title: 'Zooma Hem',
+            title: 'Zoom Home',
             contextItems: {
-                setHome: 'Sätt Hem'
+                setHome: 'Set Home'
             },
             toasts: {
                 newHome: {
-                    title: 'Ny Hem',
-                    message: 'Ny plats sparad som Hem'
+                    title: 'New Home',
+                    message: 'New location was set as Home'
                 }
             }
         },
@@ -496,7 +519,7 @@ export const SvSe = Object.freeze({
             toasts: {
                 exitFullscreenError: {
                     title: 'Error',
-                    message: 'Error exiting fullscreen'
+                    message: 'Failed to exit fullscreen'
                 },
                 locationError: {
                     title: 'Error'

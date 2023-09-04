@@ -1,5 +1,5 @@
-import { DOM } from '../../helpers/browser/DOM';
-import { Events } from '../../helpers/constants/Events';
+import { DOM } from '../helpers/browser/DOM';
+import { Events } from '../helpers/constants/Events';
 import { Overlay } from 'ol';
 import { unByKey } from 'ol/Observable';
 import { LogManager } from './LogManager';

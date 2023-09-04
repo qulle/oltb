@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { Toast } from '../../common/Toast';
+import { Toast } from '../common/Toast';
 import { LogManager } from './LogManager';
 import { ConfigManager } from './ConfigManager';
 

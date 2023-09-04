@@ -1,5 +1,5 @@
 import { VERSION as olVersion } from 'ol';
-import { version as oltbVersion} from '../../../../../../package.json';
+import { version as oltbVersion} from '../../../../../package.json';
 
 // Note: All config can be overridden, but that is not always a good thing to do.
 const DefaultConfig = Object.freeze({

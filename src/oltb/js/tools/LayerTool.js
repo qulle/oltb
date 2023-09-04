@@ -8,24 +8,24 @@ import { Dialog } from '../common/Dialog';
 import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { download } from '../helpers/browser/Download';
-import { LogManager } from '../core/managers/LogManager';
+import { LogManager } from '../managers/LogManager';
 import { LayerModal } from './modal-extensions/LayerModal';
 import { ContextMenu } from '../common/ContextMenu';
-import { StateManager } from '../core/managers/StateManager';
-import { LayerManager } from '../core/managers/LayerManager';
+import { StateManager } from '../managers/StateManager';
+import { LayerManager } from '../managers/LayerManager';
 import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
-import { ConfigManager } from '../core/managers/ConfigManager';
-import { ElementManager } from '../core/managers/ElementManager';
-import { instantiateLayer } from '../core/ol-types/LayerType';
+import { ConfigManager } from '../managers/ConfigManager';
+import { ElementManager } from '../managers/ElementManager';
+import { instantiateLayer } from '../ol-types/LayerType';
 import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
-import { SvgPaths, getIcon } from '../core/icons/GetIcon';
-import { instantiateSource } from '../core/ol-types/SourceType';
-import { instantiateFormat } from '../core/ol-types/FormatType';
-import { InfoWindowManager } from '../core/managers/InfoWindowManager';
-import { ProjectionManager } from '../core/managers/ProjectionManager';
+import { SvgPaths, getIcon } from '../icons/GetIcon';
+import { instantiateSource } from '../ol-types/SourceType';
+import { instantiateFormat } from '../ol-types/FormatType';
+import { InfoWindowManager } from '../managers/InfoWindowManager';
+import { ProjectionManager } from '../managers/ProjectionManager';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
 import { FeatureProperties } from '../helpers/constants/FeatureProperties';
-import { TranslationManager } from '../core/managers/TranslationManager';
+import { TranslationManager } from '../managers/TranslationManager';
 import { DownloadLayerModal } from './modal-extensions/DownloadLayerModal';
 import { hasCustomFeatureProperty } from '../helpers/browser/HasNestedProperty';
 
@@ -542,13 +542,12 @@ class LayerTool extends Control {
         const hasProjection = ProjectionManager.hasProjection(projection);
 
         if(!hasProjection) {
-            const i18n = TranslationManager.get(`${I18N_BASE}.toasts.missingProjectionError`);
-
             LogManager.logError(FILENAME, 'hasProjection', {
-                message: i18n.message,
+                message: 'Missing projection definition',
                 projection: projection
             });
 
+            const i18n = TranslationManager.get(`${I18N_BASE}.toasts.missingProjectionError`);
             Toast.error({
                 title: i18n.title,
                 message: (`
@@ -597,13 +596,12 @@ class LayerTool extends Control {
         try {
             this.doAddMapLayer(result);
         }catch(error) {
-            const i18n = TranslationManager.get(`${I18N_BASE}.toasts.newLayerError`);
-
             LogManager.logError(FILENAME, 'onCreateMapLayer', {
-                message: i18n.message,
+                message: 'Failed to create new layer',
                 error: error
             });
 
+            const i18n = TranslationManager.get(`${I18N_BASE}.toasts.newLayerError`);
             Toast.error({
                 title: i18n.title,
                 message: i18n.message
@@ -998,13 +996,12 @@ class LayerTool extends Control {
                 const format = instantiateFormat(result.format);
             
                 if(!format) {
-                    const i18n = TranslationManager.get(`${I18N_BASE}.toasts.unsupportedFormatError`);
-
                     LogManager.logError(FILENAME, 'onLayerDownload', {
-                        title: i18n.title,
-                        message: `${i18n.message} (${format})`
+                        title: 'Error',
+                        message: `The layer format is not supported (${format})`
                     });
 
+                    const i18n = TranslationManager.get(`${I18N_BASE}.toasts.unsupportedFormatError`);
                     Toast.error({
                         title: i18n.title,
                         message: `${i18n.message} (${format})`

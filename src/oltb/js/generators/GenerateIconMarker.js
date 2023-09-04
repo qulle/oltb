@@ -2,7 +2,7 @@ import _ from 'lodash';
 import { Point } from 'ol/geom';
 import { Feature } from 'ol';
 import { fromLonLat } from 'ol/proj';
-import { SvgPaths, getIcon } from '../core/icons/GetIcon';
+import { SvgPaths, getIcon } from '../icons/GetIcon';
 import { hasNestedProperty } from '../helpers/browser/HasNestedProperty';
 import { FeatureProperties } from '../helpers/constants/FeatureProperties';
 import { Circle, Fill, Icon, Text, Stroke, Style } from 'ol/style';

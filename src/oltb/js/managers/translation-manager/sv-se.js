@@ -1,7 +1,7 @@
-export const EnUs = Object.freeze({
+export const SvSe = Object.freeze({
     lang: {
-        text: 'English',
-        code: 'en-us'
+        text: 'Swedish',
+        code: 'sv-se'
     },
     managers: {
         infoWindowManager: {
@@ -163,6 +163,18 @@ export const EnUs = Object.freeze({
                 copied: {
                     title: 'Copied',
                     message: 'Coordinates copied to clipboard'
+                },
+                copyError: {
+                    title: 'Error',
+                    message: 'Failed to copy coordinates'
+                },
+                parseUrlMarkerError: {
+                    title: 'Error',
+                    message: 'Failed to parse URL Marker'
+                },
+                missingProjectionError: {
+                    title: 'Error',
+                    message: 'Missing projection definition'
                 }
             }
         },
@@ -507,7 +519,7 @@ export const EnUs = Object.freeze({
             toasts: {
                 exitFullscreenError: {
                     title: 'Error',
-                    message: 'Error exiting fullscreen'
+                    message: 'Failed to exit fullscreen'
                 },
                 locationError: {
                     title: 'Error'

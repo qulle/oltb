@@ -4,12 +4,12 @@ import { Toast } from '../common/Toast';
 import { listen } from 'ol/events';
 import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
-import { LogManager } from '../core/managers/LogManager';
+import { LogManager } from '../managers/LogManager';
 import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
-import { ElementManager } from '../core/managers/ElementManager';
-import { SvgPaths, getIcon } from '../core/icons/GetIcon';
+import { ElementManager } from '../managers/ElementManager';
+import { SvgPaths, getIcon } from '../icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
-import { TranslationManager } from '../core/managers/TranslationManager';
+import { TranslationManager } from '../managers/TranslationManager';
 import { FullscreenEvents, FullscreenEventTypes, isFullScreenSupported, isFullScreen, requestFullScreen, exitFullScreen } from '../helpers/browser/Fullscreen';
 
 const FILENAME = 'tools/FullscreenTool.js';
@@ -137,13 +137,12 @@ class FullscreenTool extends Control {
         const isSupported = isFullScreenSupported();
 
         if(!isSupported) {
-            const i18n = TranslationManager.get(`${I18N_BASE}.toasts.fullscreenNotSupported`);
-
             LogManager.logError(FILENAME, 'isFullScreenSupportedByBrowser', {
-                title: i18n.title,
-                error: i18n.message
+                title: 'Error',
+                error: 'Fullscreen is not supported by this browser'
             });
 
+            const i18n = TranslationManager.get(`${I18N_BASE}.toasts.fullscreenNotSupported`);
             Toast.error({
                 title: i18n.title,
                 message: i18n.message

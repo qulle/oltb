@@ -4,22 +4,22 @@ import { Events } from '../../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { goToView } from '../../helpers/GoToView';
 import { transform } from 'ol/proj';
-import { LogManager } from '../../core/managers/LogManager';
-import { UrlManager } from '../../core/managers/UrlManager';
+import { LogManager } from '../../managers/LogManager';
+import { UrlManager } from '../../managers/UrlManager';
 import { ContextMenu } from '../../common/ContextMenu';
 import { toStringHDMS } from 'ol/coordinate';
-import { LayerManager } from '../../core/managers/LayerManager';
-import { StateManager } from '../../core/managers/StateManager';
-import { ConfigManager } from '../../core/managers/ConfigManager';
-import { ElementManager } from '../../core/managers/ElementManager';
+import { LayerManager } from '../../managers/LayerManager';
+import { StateManager } from '../../managers/StateManager';
+import { ConfigManager } from '../../managers/ConfigManager';
+import { ElementManager } from '../../managers/ElementManager';
 import { CoordinateModal } from '../modal-extensions/CoordinateModal';
 import { copyToClipboard } from '../../helpers/browser/CopyToClipboard';
 import { LocalStorageKeys } from '../../helpers/constants/LocalStorageKeys';
-import { SvgPaths, getIcon } from '../../core/icons/GetIcon';
-import { InfoWindowManager } from '../../core/managers/InfoWindowManager';
-import { ProjectionManager } from '../../core/managers/ProjectionManager';
+import { SvgPaths, getIcon } from '../../icons/GetIcon';
+import { InfoWindowManager } from '../../managers/InfoWindowManager';
+import { ProjectionManager } from '../../managers/ProjectionManager';
 import { generateIconMarker } from '../../generators/GenerateIconMarker';
-import { TranslationManager } from '../../core/managers/TranslationManager';
+import { TranslationManager } from '../../managers/TranslationManager';
 import { fromLonLat, toLonLat } from 'ol/proj';
 
 const FILENAME = 'hidden-tools/HiddenMapNavigationTool.js';
@@ -213,13 +213,16 @@ class HiddenMapNavigationTool extends Control {
         const hasProjection = ProjectionManager.hasProjection(projection);
 
         if(!hasProjection) {
-            const errorMessage = `Must add projection definition for <strong>${projection}</strong>`;
-            LogManager.logError(FILENAME, 'hasProjection', errorMessage);
+            LogManager.logError(FILENAME, 'hasProjection', {
+                message: 'Missing projection definition',
+                projection: projection
+            });
 
+            const i18n = TranslationManager.get(`${I18N_BASE}.toasts.missingProjectionError`);
             Toast.error({
-                title: 'Error',
+                title: i18n.title,
                 message: `
-                    ${errorMessage} <br>
+                    ${i18n.message} (<strong>${projection}</strong>) <br>
                     <a href="https://epsg.io" target="_blank" class="oltb-link">https://epsg.io</a>
                 `
             });
@@ -283,15 +286,15 @@ class HiddenMapNavigationTool extends Control {
                 });
             })
             .catch((error) => {
-                const errorMessage = 'Failed to copy coordinates';
                 LogManager.logError(FILENAME, 'doCopyCoordinates', {
-                    message: errorMessage,
+                    message: 'Failed to copy coordinates',
                     error: error
                 });
                 
+                const i18n = TranslationManager.get(`${I18N_BASE}.toasts.copyError`)
                 Toast.error({
-                    title: 'Error',
-                    message: errorMessage
+                    title: i18n.title,
+                    message: i18n.message
                 });
             });
     }
@@ -321,15 +324,15 @@ class HiddenMapNavigationTool extends Control {
             const marker = this.doAddIconMarker(markerData, coordinates);
             this.doFocusMarker(map, marker, coordinates, ConfigManager.getConfig().marker.focusZoom);
         }catch(error) {
-            const errorMessage = 'Failed to parse URL marker';
             LogManager.logError(FILENAME, 'doParseUrlMarker', {
-                message: errorMessage,
+                message: 'Failed to parse URL Marker',
                 error: error
             });
             
+            const i18n = TranslationManager.get(`${I18N_BASE}.toasts.parseUrlMarkerError`)
             Toast.error({
-                title: 'Error',
-                message: errorMessage
+                title: i18n.title,
+                message: i18n.message
             }); 
         } 
     }

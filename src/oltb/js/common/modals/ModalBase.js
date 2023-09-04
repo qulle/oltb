@@ -2,9 +2,9 @@ import { DOM } from '../../helpers/browser/DOM';
 import { Keys } from '../../helpers/constants/Keys';
 import { Events } from '../../helpers/constants/Events';
 import { trapFocus } from '../../helpers/browser/TrapFocus';
-import { LogManager } from '../../core/managers/LogManager';
-import { ElementManager } from '../../core/managers/ElementManager';
-import { SvgPaths, getIcon } from '../../core/icons/GetIcon';
+import { LogManager } from '../../managers/LogManager';
+import { ElementManager } from '../../managers/ElementManager';
+import { SvgPaths, getIcon } from '../../icons/GetIcon';
 
 const FILENAME = 'modals/ModalBase.js';
 const CLASS_ANIMATION = 'oltb-animation';

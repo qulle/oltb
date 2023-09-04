@@ -22,24 +22,24 @@ import { ContextMenu } from 'oltb/src/oltb/js/common/ContextMenu';
 import { LocalStorageKeys } from 'oltb/src/oltb/js/helpers/constants/LocalStorageKeys';
 
 // Core Managers
-import { LogManager } from 'oltb/src/oltb/js/core/managers/LogManager';
-import { UrlManager } from 'oltb/src/oltb/js/core/managers/UrlManager';
-import { ToolManager } from 'oltb/src/oltb/js/core/managers/ToolManager';
-import { SnapManager } from 'oltb/src/oltb/js/core/managers/SnapManager';
-import { LayerManager } from 'oltb/src/oltb/js/core/managers/LayerManager';
-import { StateManager } from 'oltb/src/oltb/js/core/managers/StateManager';
-import { TippyManager } from 'oltb/src/oltb/js/core/managers/TippyManager';
-import { ErrorManager } from 'oltb/src/oltb/js/core/managers/ErrorManager';
-import { ConfigManager } from 'oltb/src/oltb/js/core/managers/ConfigManager';
-import { ElementManager } from 'oltb/src/oltb/js/core/managers/ElementManager';
-import { TooltipManager } from 'oltb/src/oltb/js/core/managers/TooltipManager';
-import { SettingsManager } from 'oltb/src/oltb/js/core/managers/SettingsManager';
-import { BootstrapManager } from 'oltb/src/oltb/js/core/managers/BootstrapManager';
-import { InfoWindowManager } from 'oltb/src/oltb/js/core/managers/InfoWindowManager';
-import { ProjectionManager } from 'oltb/src/oltb/js/core/managers/ProjectionManager';
-import { TranslationManager } from 'oltb/src/oltb/js/core/managers/TranslationManager';
-import { ColorPickerManager } from 'oltb/src/oltb/js/core/managers/ColorPickerManager';
-import { AccessibilityManager } from 'oltb/src/oltb/js/core/managers/AccessibilityManager';
+import { LogManager } from 'oltb/src/oltb/js/managers/LogManager';
+import { UrlManager } from 'oltb/src/oltb/js/managers/UrlManager';
+import { ToolManager } from 'oltb/src/oltb/js/managers/ToolManager';
+import { SnapManager } from 'oltb/src/oltb/js/managers/SnapManager';
+import { LayerManager } from 'oltb/src/oltb/js/managers/LayerManager';
+import { StateManager } from 'oltb/src/oltb/js/managers/StateManager';
+import { TippyManager } from 'oltb/src/oltb/js/managers/TippyManager';
+import { ErrorManager } from 'oltb/src/oltb/js/managers/ErrorManager';
+import { ConfigManager } from 'oltb/src/oltb/js/managers/ConfigManager';
+import { ElementManager } from 'oltb/src/oltb/js/managers/ElementManager';
+import { TooltipManager } from 'oltb/src/oltb/js/managers/TooltipManager';
+import { SettingsManager } from 'oltb/src/oltb/js/managers/SettingsManager';
+import { BootstrapManager } from 'oltb/src/oltb/js/managers/BootstrapManager';
+import { InfoWindowManager } from 'oltb/src/oltb/js/managers/InfoWindowManager';
+import { ProjectionManager } from 'oltb/src/oltb/js/managers/ProjectionManager';
+import { TranslationManager } from 'oltb/src/oltb/js/managers/TranslationManager';
+import { ColorPickerManager } from 'oltb/src/oltb/js/managers/ColorPickerManager';
+import { AccessibilityManager } from 'oltb/src/oltb/js/managers/AccessibilityManager';
 
 // Toolbar tools
 import { HomeTool } from 'oltb/src/oltb/js/tools/HomeTool';

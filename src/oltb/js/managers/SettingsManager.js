@@ -1,8 +1,8 @@
 import _ from 'lodash';
-import { Settings } from '../../helpers/constants/Settings';
+import { Settings } from '../helpers/constants/Settings';
 import { LogManager } from './LogManager';
 import { StateManager } from './StateManager';
-import { LocalStorageKeys } from '../../helpers/constants/LocalStorageKeys';
+import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
 
 const FILENAME = 'managers/SettingsManager.js';
 

@@ -1,12 +1,12 @@
 import _ from 'lodash';
 import { DOM } from '../../helpers/browser/DOM';
 import { ModalBase } from '../../common/modals/ModalBase';
-import { LogManager } from '../../core/managers/LogManager';
+import { LogManager } from '../../managers/LogManager';
 import { isDarkTheme } from '../../helpers/IsDarkTheme';
-import { ConfigManager } from '../../core/managers/ConfigManager';
+import { ConfigManager } from '../../managers/ConfigManager';
 import { createUISelect } from '../../creators/CreateUISelect';
-import { ProjectionManager } from '../../core/managers/ProjectionManager';
-import { TranslationManager } from '../../core/managers/TranslationManager';
+import { ProjectionManager } from '../../managers/ProjectionManager';
+import { TranslationManager } from '../../managers/TranslationManager';
 
 const FILENAME = 'modal-extensions/ImportLayerModal.js';
 const ID_PREFIX = 'oltb-import-layer-modal';

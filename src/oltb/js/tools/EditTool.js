@@ -9,23 +9,23 @@ import { Feature } from 'ol';
 import { Control } from 'ol/control';
 import { unByKey } from 'ol/Observable';
 import { Settings } from '../helpers/constants/Settings';
-import { LogManager } from '../core/managers/LogManager';
-import { SnapManager } from '../core/managers/SnapManager';
-import { ToolManager } from '../core/managers/ToolManager';
+import { LogManager } from '../managers/LogManager';
+import { SnapManager } from '../managers/SnapManager';
+import { ToolManager } from '../managers/ToolManager';
 import { shiftKeyOnly } from 'ol/events/condition';
-import { LayerManager } from '../core/managers/LayerManager';
-import { StateManager } from '../core/managers/StateManager';
+import { LayerManager } from '../managers/LayerManager';
+import { StateManager } from '../managers/StateManager';
 import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
-import { ConfigManager } from '../core/managers/ConfigManager';
-import { ElementManager } from '../core/managers/ElementManager';
-import { TooltipManager } from '../core/managers/TooltipManager';
+import { ConfigManager } from '../managers/ConfigManager';
+import { ElementManager } from '../managers/ElementManager';
+import { TooltipManager } from '../managers/TooltipManager';
 import { createUITooltip } from '../creators/CreateUITooltip';
-import { SettingsManager } from '../core/managers/SettingsManager';
+import { SettingsManager } from '../managers/SettingsManager';
 import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
-import { SvgPaths, getIcon } from '../core/icons/GetIcon';
+import { SvgPaths, getIcon } from '../icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
 import { FeatureProperties } from '../helpers/constants/FeatureProperties';
-import { TranslationManager } from '../core/managers/TranslationManager';
+import { TranslationManager } from '../managers/TranslationManager';
 import { Fill, Stroke, Style } from 'ol/style';
 import { hasCustomFeatureProperty } from '../helpers/browser/HasNestedProperty';
 import { getCustomFeatureProperty } from '../helpers/browser/GetNestedProperty';
@@ -47,7 +47,7 @@ const CLASS_TOOL_BUTTON = 'oltb-tool-button';
 const CLASS_TOOLBOX_SECTION = 'oltb-toolbox-section';
 const CLASS_TOGGLEABLE = 'oltb-toggleable';
 const ID_PREFIX = 'oltb-edit';
-const KEY_TOOLTIP = 'tool.edit';
+const KEY_TOOLTIP = 'tools.editTool';
 const I18N_BASE = 'tools.editTool';
 const I18N_BASE_COMMON = 'common';
 
@@ -840,13 +840,12 @@ class EditTool extends Control {
                 this.options.onShapeOperation(type, a, b, feature);
             }
         }catch(error) {
-            const i18n = TranslationManager.get(`${I18N_BASE}.toasts.shapeOperationError`);
-
             LogManager.logError(FILENAME, 'onShapeOperator', {
-                message: i18n.message,
+                message: 'Failed to perform shape operation',
                 error: error
             });
             
+            const i18n = TranslationManager.get(`${I18N_BASE}.toasts.shapeOperationError`);
             Toast.error({
                 title: i18n.title,
                 message: i18n.message

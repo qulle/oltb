@@ -1,15 +1,15 @@
 import _ from 'lodash';
 import { DOM } from '../helpers/browser/DOM';
 import { Events } from '../helpers/constants/Events';
-import { LogManager } from '../core/managers/LogManager';
-import { StateManager } from '../core/managers/StateManager';
+import { LogManager } from '../managers/LogManager';
+import { StateManager } from '../managers/StateManager';
 import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
-import { ElementManager } from '../core/managers/ElementManager';
+import { ElementManager } from '../managers/ElementManager';
 import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
-import { SvgPaths, getIcon } from '../core/icons/GetIcon';
+import { SvgPaths, getIcon } from '../icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
 import { Control, ScaleLine } from 'ol/control';
-import { TranslationManager } from '../core/managers/TranslationManager';
+import { TranslationManager } from '../managers/TranslationManager';
 
 const FILENAME = 'tools/ScaleLineTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';

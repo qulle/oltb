@@ -5,16 +5,16 @@ import { Toast } from '../common/Toast';
 import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { unByKey } from 'ol/Observable';
-import { LogManager } from '../core/managers/LogManager';
-import { StateManager } from '../core/managers/StateManager';
+import { LogManager } from '../managers/LogManager';
+import { StateManager } from '../managers/StateManager';
 import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
 import { DOMExceptions } from '../helpers/constants/DOMExceptions';
 import { getRenderPixel } from 'ol/render';
-import { ElementManager } from '../core/managers/ElementManager';
+import { ElementManager } from '../managers/ElementManager';
 import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
-import { SvgPaths, getIcon } from '../core/icons/GetIcon';
+import { SvgPaths, getIcon } from '../icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
-import { TranslationManager } from '../core/managers/TranslationManager';
+import { TranslationManager } from '../managers/TranslationManager';
 
 const FILENAME = 'tools/MagnifyTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
@@ -312,13 +312,12 @@ class MagnifyTool extends Control {
             // Click the tool-button to deactivate
             this.button.click();
 
-            const i18n = TranslationManager.get(`${I18N_BASE}.toasts.unexpectedError`);
-
             LogManager.logError(FILENAME, 'onPostrender', {
-                message: i18n.message,
+                message: 'Unexpected error using magnifyer',
                 error: error
             });
-                
+
+            const i18n = TranslationManager.get(`${I18N_BASE}.toasts.unexpectedError`);
             Toast.error({
                 title: i18n.title,
                 message: (error.name === DOMExceptions.SecurityError

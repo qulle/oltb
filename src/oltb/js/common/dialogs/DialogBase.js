@@ -2,7 +2,7 @@ import { DOM } from '../../helpers/browser/DOM';
 import { Keys } from '../../helpers/constants/Keys';
 import { Events } from '../../helpers/constants/Events';
 import { trapFocus } from '../../helpers/browser/TrapFocus';
-import { LogManager } from '../../core/managers/LogManager';
+import { LogManager } from '../../managers/LogManager';
 
 const FILENAME = 'dialogs/DialogBase.js';
 const CLASS_ANIMATION = 'oltb-animation';

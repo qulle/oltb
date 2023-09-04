@@ -1,9 +1,9 @@
 import _ from 'lodash';
 import { DOM } from '../../helpers/browser/DOM';
 import { DialogBase } from './DialogBase';
-import { LogManager } from '../../core/managers/LogManager';
+import { LogManager } from '../../managers/LogManager';
 import { isDarkTheme } from '../../helpers/IsDarkTheme';
-import { ElementManager } from '../../core/managers/ElementManager';
+import { ElementManager } from '../../managers/ElementManager';
 
 const FILENAME = 'dialogs/Confirm.js';
 const CLASS_DIALOG = 'oltb-dialog';

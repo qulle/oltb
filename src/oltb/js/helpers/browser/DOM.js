@@ -1,4 +1,4 @@
-import { ConfigManager } from '../../core/managers/ConfigManager';
+import { ConfigManager } from '../../managers/ConfigManager';
 
 class DOM {
     static createElement(options = {}) {

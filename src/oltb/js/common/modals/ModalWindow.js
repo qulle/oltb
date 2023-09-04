@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { DOM } from '../../helpers/browser/DOM';
 import { ModalBase } from './ModalBase';
-import { LogManager } from '../../core/managers/LogManager';
+import { LogManager } from '../../managers/LogManager';
 
 const FILENAME = 'modals/ModalWindow.js';
 const CLASS_MODAL = 'oltb-modal';

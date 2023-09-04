@@ -1,4 +1,4 @@
-import { Events } from '../../helpers/constants/Events';
+import { Events } from '../helpers/constants/Events';
 import { LogManager } from './LogManager';
 import { ConfigManager } from './ConfigManager';
 

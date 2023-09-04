@@ -1,5 +1,5 @@
 import { Tile } from 'ol/layer';
-import { LayerManager } from 'oltb/src/oltb/js/core/managers/LayerManager';
+import { LayerManager } from 'oltb/src/oltb/js/managers/LayerManager';
 import { OSM, XYZ, Stamen } from 'ol/source';
 
 LayerManager.addMapLayers([

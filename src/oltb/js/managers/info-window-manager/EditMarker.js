@@ -1,10 +1,10 @@
-import { Events } from '../../../helpers/constants/Events';
+import { Events } from '../../helpers/constants/Events';
 import { transform } from 'ol/proj';
 import { toStringHDMS } from 'ol/coordinate';
 import { LayerManager } from '../LayerManager';
 import { ConfigManager } from '../ConfigManager';
-import { IconMarkerModal } from '../../../tools/modal-extensions/IconMarkerModal';
-import { generateIconMarker } from '../../../generators/GenerateIconMarker';
+import { IconMarkerModal } from '../../tools/modal-extensions/IconMarkerModal';
+import { generateIconMarker } from '../../generators/GenerateIconMarker';
 
 const ID_PREFIX_INFO_WINDOW = 'oltb-info-window-marker';
 const CLASS_FUNC_BUTTON = 'oltb-func-btn';

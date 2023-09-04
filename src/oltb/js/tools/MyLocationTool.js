@@ -6,17 +6,17 @@ import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { goToView } from '../helpers/GoToView';
 import { fromLonLat } from 'ol/proj';
-import { LogManager } from '../core/managers/LogManager';
+import { LogManager } from '../managers/LogManager';
 import { toStringHDMS } from 'ol/coordinate';
-import { LayerManager } from '../core/managers/LayerManager';
+import { LayerManager } from '../managers/LayerManager';
 import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
-import { ConfigManager } from '../core/managers/ConfigManager';
-import { ElementManager } from '../core/managers/ElementManager';
-import { SvgPaths, getIcon } from '../core/icons/GetIcon';
+import { ConfigManager } from '../managers/ConfigManager';
+import { ElementManager } from '../managers/ElementManager';
+import { SvgPaths, getIcon } from '../icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
-import { InfoWindowManager } from '../core/managers/InfoWindowManager';
+import { InfoWindowManager } from '../managers/InfoWindowManager';
 import { generateIconMarker } from '../generators/GenerateIconMarker';
-import { TranslationManager } from '../core/managers/TranslationManager';
+import { TranslationManager } from '../managers/TranslationManager';
 import { isFullScreen, exitFullScreen } from '../helpers/browser/Fullscreen';
 
 const FILENAME = 'tools/MyLocationTool.js';
@@ -157,13 +157,12 @@ class MyLocationTool extends Control {
                         this.doGeoLocationSearch();
                     })
                     .catch((error) => {
-                        const i18n = TranslationManager.get(`${I18N_BASE}.toasts.exitFullscreenError`);
-
                         LogManager.logError(FILENAME, 'askToExitFullScreen', {
-                            message: i18n.message,
+                            message: 'Failed to exit fullscreen',
                             error: error
                         });
 
+                        const i18n = TranslationManager.get(`${I18N_BASE}.toasts.exitFullscreenError`);
                         Toast.error({
                             title: i18n.title,
                             message: error.message
@@ -197,13 +196,12 @@ class MyLocationTool extends Control {
     }
 
     doLocationError(error) {
-        const i18n = TranslationManager.get(`${I18N_BASE}.toasts.locationError`);
-
         LogManager.logError(FILENAME, 'doLocationError', {
             message: error.message,
             error: error
         });
 
+        const i18n = TranslationManager.get(`${I18N_BASE}.toasts.locationError`);
         Toast.error({
             title: i18n.title,
             message: error.message

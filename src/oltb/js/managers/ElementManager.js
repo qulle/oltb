@@ -1,9 +1,9 @@
-import { DOM } from '../../helpers/browser/DOM';
-import { Events } from '../../helpers/constants/Events';
+import { DOM } from '../helpers/browser/DOM';
+import { Events } from '../helpers/constants/Events';
 import { LogManager } from './LogManager';
 import { StateManager } from './StateManager';
 import { ConfigManager } from './ConfigManager';
-import { LocalStorageKeys } from '../../helpers/constants/LocalStorageKeys';
+import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
 
 const FILENAME = 'managers/ElementManager.js';
 const CLASS_TOOLBOX_CONTAINER = 'oltb-toolbox-container';

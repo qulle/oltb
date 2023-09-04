@@ -4,18 +4,18 @@ import { Toast } from '../common/Toast';
 import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { unByKey } from 'ol/Observable';
-import { LogManager } from '../core/managers/LogManager';
-import { LayerManager } from '../core/managers/LayerManager';
-import { StateManager } from '../core/managers/StateManager';
+import { LogManager } from '../managers/LogManager';
+import { LayerManager } from '../managers/LayerManager';
+import { StateManager } from '../managers/StateManager';
 import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
-import { ConfigManager } from '../core/managers/ConfigManager';
+import { ConfigManager } from '../managers/ConfigManager';
 import { getRenderPixel } from 'ol/render';
-import { ElementManager } from '../core/managers/ElementManager';
+import { ElementManager } from '../managers/ElementManager';
 import { eventDispatcher } from '../helpers/browser/EventDispatcher';
 import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
-import { SvgPaths, getIcon } from '../core/icons/GetIcon';
+import { SvgPaths, getIcon } from '../icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
-import { TranslationManager } from '../core/managers/TranslationManager';
+import { TranslationManager } from '../managers/TranslationManager';
 
 const FILENAME = 'tools/SplitViewTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
@@ -343,13 +343,12 @@ class SplitViewTool extends Control {
     
     setLoadingError() {
         this.layerLoadingError = true;
-
-        const i18n = TranslationManager.get(`${I18N_BASE}.toasts.layerError`);
-
+        
         LogManager.logError(FILENAME, 'setLoadingError', {
-            message: i18n.message
+            message: 'One or both of the layers could not be loaded'
         });
 
+        const i18n = TranslationManager.get(`${I18N_BASE}.toasts.layerError`);
         Toast.error({
             title: i18n.title,
             message: i18n.message

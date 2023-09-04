@@ -3,8 +3,8 @@ import urlContinentsGeoJson from 'url:../geojson/continents.geojson';
 
 // Module imports
 import { GeoJSON } from 'ol/format';
-import { LayerManager } from '../../src/oltb/js/core/managers/LayerManager';
-import { ConfigManager } from '../../src/oltb/js/core/managers/ConfigManager';
+import { LayerManager } from '../../src/oltb/js/managers/LayerManager';
+import { ConfigManager } from '../../src/oltb/js/managers/ConfigManager';
 import { Vector as VectorLayer } from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';
 
