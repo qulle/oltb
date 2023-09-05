@@ -87,7 +87,7 @@ class ResetNorthTool extends Control {
     initContextMenuItems() {
         ContextMenu.addItem({
             icon: this.icon, 
-            name: TranslationManager.get(`${I18N_BASE}.contextItems.rotate`), 
+            i18nKey: `${I18N_BASE}.contextItems.rotate`, 
             fn: this.onContextMenuSetRotation.bind(this)
         });
     }

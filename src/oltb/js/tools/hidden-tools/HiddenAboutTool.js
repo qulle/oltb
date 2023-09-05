@@ -46,7 +46,7 @@ class HiddenAboutTool extends Control {
         ContextMenu.addItem({});
         ContextMenu.addItem({
             icon: this.icon, 
-            name: TranslationManager.get(`${I18N_BASE}.contextItems.about`), 
+            i18nKey: `${I18N_BASE}.contextItems.about`, 
             fn: this.onContextMenuAbout.bind(this)
         });
     }

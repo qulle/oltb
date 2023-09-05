@@ -62,7 +62,7 @@ class HiddenMarkerTool extends Control {
     initContextMenuItems() {
         ContextMenu.addItem({
             icon: this.createIcon, 
-            name: TranslationManager.get(`${I18N_BASE}.contextItems.createMarker`), 
+            i18nKey: `${I18N_BASE}.contextItems.createMarker`, 
             fn: this.onContextMenuCreateMarker.bind(this)
         });
         

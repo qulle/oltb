@@ -89,7 +89,7 @@ class SettingsTool extends Control {
     initContextMenuItems() {
         ContextMenu.addItem({
             icon: this.icon, 
-            name: TranslationManager.get(`${I18N_BASE}.contextItems.clearBrowserState`), 
+            i18nKey: `${I18N_BASE}.contextItems.clearBrowserState`, 
             fn: this.onContextMenuBrowserStateClear.bind(this)
         });
     }

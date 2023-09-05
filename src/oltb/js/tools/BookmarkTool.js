@@ -218,13 +218,13 @@ class BookmarkTool extends Control {
     initContextMenuItems() {
         ContextMenu.addItem({
             icon: this.icon, 
-            name: TranslationManager.get(`${I18N_BASE}.contextItems.addBookmark`),
+            i18nKey: `${I18N_BASE}.contextItems.addBookmark`,
             fn: this.onContextMenuBookmarkAdd.bind(this)
         });
 
         ContextMenu.addItem({
             icon: this.clearBookmarksIcon, 
-            name: TranslationManager.get(`${I18N_BASE}.contextItems.clearBookmarks`), 
+            i18nKey: `${I18N_BASE}.contextItems.clearBookmarks`, 
             fn: this.onContextMenuBookmarksClear.bind(this)
         });
     }

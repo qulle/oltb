@@ -116,7 +116,7 @@ class HiddenMapNavigationTool extends Control {
     initContextMenuItems() {
         ContextMenu.addItem({
             icon: this.clipboardIcon,
-            name: TranslationManager.get(`${I18N_BASE}.contextItems.copy`),
+            i18nKey: `${I18N_BASE}.contextItems.copy`,
             fn: this.onContextMenuCopyCoordinates.bind(this)
         });
 
@@ -124,19 +124,19 @@ class HiddenMapNavigationTool extends Control {
 
         ContextMenu.addItem({
             icon: this.coordinatesIcon,
-            name: TranslationManager.get(`${I18N_BASE}.contextItems.navigate`),
+            i18nKey: `${I18N_BASE}.contextItems.navigate`,
             fn: this.onContextMenuCenterAtCoordinates.bind(this)
         });
 
         ContextMenu.addItem({
             icon: this.moveCenterIcon, 
-            name: TranslationManager.get(`${I18N_BASE}.contextItems.move`),
+            i18nKey: `${I18N_BASE}.contextItems.move`,
             fn: this.onContextMenuCenterMap.bind(this)
         });
 
         ContextMenu.addItem({
             icon: this.focusHereIcon, 
-            name: TranslationManager.get(`${I18N_BASE}.contextItems.focus`),
+            i18nKey: `${I18N_BASE}.contextItems.focus`,
             fn: this.onContextMenuFocusHere.bind(this)
         });
         

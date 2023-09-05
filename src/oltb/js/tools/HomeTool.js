@@ -108,7 +108,7 @@ class HomeTool extends Control {
     initContextMenuItems() {
         ContextMenu.addItem({
             icon: this.icon, 
-            name: TranslationManager.get(`${I18N_BASE}.contextItems.setHome`), 
+            i18nKey: `${I18N_BASE}.contextItems.setHome`, 
             fn: this.onContextMenuSetHomeLocation.bind(this)
         });
     }

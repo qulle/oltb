@@ -262,12 +262,10 @@ class LayerTool extends Control {
             ContextMenu.addItem({});
         }
 
-        const i18n = TranslationManager.get(`${I18N_BASE}.contextItems`);
-
         if(!this.options.disableMapCreateLayerButton) {
             ContextMenu.addItem({
                 icon: this.icon, 
-                name: i18n.addMapLayer, 
+                i18nKey: `${I18N_BASE}.contextItems.addMapLayer`, 
                 fn: this.onContextMenuAddMapLayerModal.bind(this)
             });
         }
@@ -275,7 +273,7 @@ class LayerTool extends Control {
         if(!this.options.disableFeatureCreateLayerButton) {
             ContextMenu.addItem({
                 icon: this.icon, 
-                name: i18n.addFeatureLayer, 
+                i18nKey: `${I18N_BASE}.contextItems.addFeatureLayer`, 
                 fn: this.onContextMenuAddFeatureLayer.bind(this)
             });
         }

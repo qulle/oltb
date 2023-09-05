@@ -10,11 +10,14 @@ import { LogManager } from '../managers/LogManager';
 import { ConfigManager } from '../managers/ConfigManager';
 import { ElementManager } from '../managers/ElementManager';
 import { hasNestedProperty } from '../helpers/browser/HasNestedProperty';
+import { TranslationManager } from '../managers/TranslationManager';
 
 const FILENAME = 'common/ContextMenu.js';
 const CLASS_CONTEXT_MENU = 'oltb-context-menu';
 
-const DefaultOptions = Object.freeze({});
+const DefaultOptions = Object.freeze({
+    name: 'MainContextMenu'
+});
 
 class ContextMenu extends Control {
     static #isDebug;
@@ -32,8 +35,7 @@ class ContextMenu extends Control {
                 element: 'ul',
                 class: CLASS_CONTEXT_MENU,
                 attributes: {
-                    'tabindex': '-1',
-                    'data-contextmenu': options.name
+                    'tabindex': '-1'
                 },
                 listeners: {
                     'keydown': trapFocus
@@ -64,7 +66,7 @@ class ContextMenu extends Control {
     // -------------------------------------------------------------------
 
     addMenuItem(item) {
-        if(!hasNestedProperty(item, 'name')) {
+        if(!hasNestedProperty(item, 'i18nKey')) {
             const li = DOM.createElement({
                 element: 'li',
                 class: `${CLASS_CONTEXT_MENU}__divider`
@@ -77,12 +79,14 @@ class ContextMenu extends Control {
             return;
         }
 
+        const i18n = TranslationManager.get(item.i18nKey);
         const li = DOM.createElement({
             element: 'li',
             class: `${CLASS_CONTEXT_MENU}__item`,
-            text: item.name,
+            text: i18n,
             attributes: {
-                'tabindex': '0'
+                'tabindex': '0',
+                'data-oltb-i18n': item.i18nKey
             },
             listeners: {
                 'click': this.click.bind(this, item),
