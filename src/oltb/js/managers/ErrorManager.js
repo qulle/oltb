@@ -1,8 +1,10 @@
 import { Toast } from '../common/Toast';
 import { Events } from '../helpers/constants/Events';
 import { LogManager } from './LogManager';
+import { TranslationManager } from './TranslationManager';
 
 const FILENAME = 'managers/ErrorManger.js';
+const I18N_BASE = 'managers.errorManager';
 
 /**
  * About:
@@ -47,9 +49,10 @@ class ErrorManager {
             error: error.error
         });
 
+        const i18n = TranslationManager.get(`${I18N_BASE}.toasts.globalError`);
         Toast.error({
-            title: 'Error',
-            message: 'An unexpected error occurred'
+            title: i18n.title,
+            message: i18n.message
         });
     }
 }

@@ -2,8 +2,10 @@ import _ from 'lodash';
 import { Toast } from '../common/Toast';
 import { LogManager } from './LogManager';
 import { ConfigManager } from './ConfigManager';
+import { TranslationManager } from './TranslationManager';
 
 const FILENAME = 'managers/StateManager.js';
+const I18N_BASE = 'managers.stateManager';
 
 // Note: Some objects have properties that we don't want to store in localStorage
 // Example: Bookmarks have a reference to the marker on the Map
@@ -72,9 +74,10 @@ class StateManager {
                 error: error
             });
             
+            const i18n = TranslationManager.get(`${I18N_BASE}.toasts.getBrowserDataError`);
             Toast.error({
-                title: 'Error',
-                message: 'Failed to load application state'
+                title: i18n.title,
+                message: i18n.message
             });
         }
 

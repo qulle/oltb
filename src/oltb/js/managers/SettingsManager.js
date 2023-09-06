@@ -3,58 +3,33 @@ import { Settings } from '../helpers/constants/Settings';
 import { LogManager } from './LogManager';
 import { StateManager } from './StateManager';
 import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
+import { TranslationManager } from './TranslationManager';
 
 const FILENAME = 'managers/SettingsManager.js';
+const I18N_BASE = 'managers.settingsManager';
 
 const LocalStorageNodeName = LocalStorageKeys.settingsManager;
 const LocalStorageDefaults = Object.freeze({});
 
 const DefaultSettings = new Map([
     [
-        Settings.mouseWheelZoom, {
-            state: false, 
-            text: 'Zoom Map Using Mousewheel Only'
-        }
+        Settings.mouseWheelZoom, { state: false }
     ], [
-        Settings.altShiftDragRotate, {
-            state: true, 
-            text: 'Rotate Map Using Shift + Alt + Drag'
-        }
+        Settings.altShiftDragRotate, { state: true }
     ], [
-        Settings.dragPan, {
-            state: true, 
-            text: 'Drag Map Using Mouse Only'
-        }
+        Settings.dragPan, { state: true }
     ], [
-        Settings.keyboardZoom, {
-            state: true, 
-            text: 'Zoom Map Using Keyboard'
-        }
+        Settings.keyboardZoom, { state: true }
     ], [
-        Settings.keyboardPan, {
-            state: true, 
-            text: 'Pan Map Using Keyboard'
-        }
+        Settings.keyboardPan, { state: true }
     ], [
-        Settings.selectVectorMapShapes, {
-            state: false, 
-            text: 'Select Shapes In Vector Map Layers'
-        }
+        Settings.selectVectorMapShapes, { state: false }
     ], [
-        Settings.snapInteraction, {
-            state: true, 
-            text: 'Snap Interaction'
-        }
+        Settings.snapInteraction, { state: true }
     ], [
-        Settings.snapHelpLines, {
-            state: true, 
-            text: 'Snap Help Lines'
-        }
+        Settings.snapHelpLines, { state: true }
     ], [
-        Settings.alwaysNewLayer, {
-            state: false, 
-            text: 'Create New Layer When Selecting Tool'
-        }
+        Settings.alwaysNewLayers, { state: false }
     ]
 ]);
 
@@ -68,14 +43,20 @@ const DefaultSettings = new Map([
  */
 class SettingsManager {
     static #localStorage;
-    static #settings = _.cloneDeep(DefaultSettings);
+    static #settings;
 
     static async initAsync(options = {}) {
         LogManager.logDebug(FILENAME, 'initAsync', 'Initialization started');
         
-        // Note: The runtime state must be updated with values from localStorage
         this.#localStorage = this.#getBrowserData();
+        this.#settings = _.cloneDeep(DefaultSettings);
+
+        // Note: The runtime state must be updated with values from localStorage
+        // Note: The actual text for a setting must be added
+        const i18n = TranslationManager.get(`${I18N_BASE}.settings`);
         this.#settings.forEach((value, key) => {
+            value.text = i18n[key];
+
             if(key in this.#localStorage) {
                 value.state = this.#localStorage[key];
             }

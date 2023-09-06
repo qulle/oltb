@@ -4,17 +4,61 @@ export const EnUs = Object.freeze({
         code: 'en-us'
     },
     managers: {
-        infoWindowManager: {
-
-        },
-        errorManager: {
-
-        },
-        layerManager: {
-
+        stateManager: {
+            toasts: {
+                getBrowserDataError: {
+                    title: 'Error',
+                    message: 'Failed to load application state'
+                }
+            }
         },
         settingsManager: {
-            
+            settings: {
+                mouseWheelZoom: 'Zoom Map Using Mousewheel Only',
+                altShiftDragRotate: 'Rotate Map Using Shift + Alt + Drag',
+                dragPan: 'Drag Map Using Mouse Only',
+                keyboardZoom: 'Zoom Map Using Keyboard',
+                keyboardPan: 'Pan Map Using Keyboard',
+                selectVectorMapShapes: 'Select Shapes In Vector Map Layers',
+                snapInteraction: 'Snap Interaction',
+                snapHelpLines: 'Snap Help Lines',
+                alwaysNewLayers: 'Create New Layer When Selecting Tool'
+            }
+        },
+        errorManager: {
+            toasts: {
+                globalError: {
+                    title: 'Error',
+                    message: 'An unexpected error occurred'
+                }
+            }
+        },
+        infoWindowManager: {
+            toasts: {
+                markerCoordinatesCopied: {
+                    title: 'Copied',
+                    message: 'Marker coordinates copied to clipboard'
+                },
+                markerCoordinatesCopyError: {
+                    title: 'Error',
+                    message: 'Failed to copy Marker coordinates'
+                },
+                markerInfoCopied: {
+                    title: 'Copied',
+                    message: 'Marker info copied to clipboard'
+                },
+                markerInfoCopyError: {
+                    title: 'Error',
+                    message: 'Failed to copy Marker info'
+                }
+            },
+            dialogs: {
+                deleteMarker: {
+                    title: 'Delete Marker',
+                    message: 'Do you want to delete this Marker?',
+                    confirmText: 'Delete'
+                }
+            }
         }
     },
     common: {

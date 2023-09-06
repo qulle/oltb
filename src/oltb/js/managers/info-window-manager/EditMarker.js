@@ -4,10 +4,12 @@ import { toStringHDMS } from 'ol/coordinate';
 import { LayerManager } from '../LayerManager';
 import { ConfigManager } from '../ConfigManager';
 import { IconMarkerModal } from '../../tools/modal-extensions/IconMarkerModal';
+import { TranslationManager } from '../TranslationManager';
 import { generateIconMarker } from '../../generators/GenerateIconMarker';
 
 const ID_PREFIX_INFO_WINDOW = 'oltb-info-window-marker';
 const CLASS_FUNC_BUTTON = 'oltb-func-btn';
+const I18N_BASE_COMMON = 'common';
 
 const editMarker = function(InfoWindowManager, beforeMarker) {
     const properties = beforeMarker.getProperties().oltb;
@@ -50,6 +52,7 @@ const onEditMarker = function(InfoWindowManager, beforeMarker, result) {
     // Easier then updating the existing marker with new data.
     LayerManager.removeFeatureFromFeatureLayers(beforeMarker);
 
+    const i18n = TranslationManager.get(`${I18N_BASE_COMMON}.functionButtons`);
     const coordinates = [result.longitude, result.latitude];
     const prettyCoordinates = toStringHDMS(coordinates);
 
@@ -61,10 +64,10 @@ const onEditMarker = function(InfoWindowManager, beforeMarker, result) {
         footer: `
             <span class="oltb-info-window__coordinates">${prettyCoordinates}</span>
             <div class="oltb-info-window__buttons-wrapper">
-                <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--delete oltb-tippy" title="Delete Marker" id="${ID_PREFIX_INFO_WINDOW}-remove"></button>
-                <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--crosshair oltb-tippy" title="Copy Marker Coordinates" id="${ID_PREFIX_INFO_WINDOW}-copy-coordinates" data-oltb-coordinates="${prettyCoordinates}"></button>
-                <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--copy oltb-tippy" title="Copy Marker Text" id="${ID_PREFIX_INFO_WINDOW}-copy-text" data-oltb-copy="${result.title} ${result.description}"></button>
-                <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--edit oltb-tippy" title="Edit Marker" id="${ID_PREFIX_INFO_WINDOW}-edit"></button>
+                <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--delete oltb-tippy" data-oltb-i18n="${I18N_BASE_COMMON}.delete" title="${i18n.delete}" id="${ID_PREFIX_INFO_WINDOW}-remove"></button>
+                <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--crosshair oltb-tippy" data-oltb-i18n="${I18N_BASE_COMMON}.copyCoordinates" title="${i18n.copyCoordinates}" id="${ID_PREFIX_INFO_WINDOW}-copy-coordinates" data-oltb-coordinates="${prettyCoordinates}"></button>
+                <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--copy oltb-tippy" data-oltb-i18n="${I18N_BASE_COMMON}.copyText" title="${i18n.copyText}" id="${ID_PREFIX_INFO_WINDOW}-copy-text" data-oltb-copy="${result.title} ${result.description}"></button>
+                <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--edit oltb-tippy" data-oltb-i18n="${I18N_BASE_COMMON}.edit" title="${i18n.edit}" id="${ID_PREFIX_INFO_WINDOW}-edit"></button>
             </div>
         `
     };

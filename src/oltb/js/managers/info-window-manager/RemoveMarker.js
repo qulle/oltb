@@ -1,12 +1,17 @@
 import { Dialog } from '../../common/Dialog';
 import { Events } from '../../helpers/constants/Events';
 import { LayerManager } from '../LayerManager';
+import { TranslationManager } from '../TranslationManager';
+
+const I18N_BASE = 'managers.infoWindowManager';
 
 const removeMarker = function(InfoWindowManager, marker) {
+    const i18n = TranslationManager.get(`${I18N_BASE}.dialogs.deleteMarker`);
+
     Dialog.confirm({
-        title: 'Delete Marker',
-        message: 'Do you want to delete this marker?',
-        confirmText: 'Delete',
+        title: i18n.title,
+        message: i18n.message,
+        confirmText: i18n.confirmText,
         onConfirm: () => {
             this.hideOverlay();
 
