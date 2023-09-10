@@ -423,11 +423,8 @@ class MeasureTool extends Control {
         const layer = layerWrapper.getLayer();
         
         if(!layer.getVisible()) {
-            const i18n = TranslationManager.get(`${I18N_BASE}.toasts.measuringInHiddenLayer`);
-
             Toast.info({
-                title: i18n.title,
-                message: i18n.message, 
+                i18nKey: `${I18N_BASE}.toasts.measuringInHiddenLayer`, 
                 autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
             });
         }

@@ -1,7 +1,6 @@
 import { Toast } from '../common/Toast';
 import { Events } from '../helpers/constants/Events';
 import { LogManager } from './LogManager';
-import { TranslationManager } from './TranslationManager';
 
 const FILENAME = 'managers/ErrorManger.js';
 const I18N_BASE = 'managers.errorManager';
@@ -49,10 +48,8 @@ class ErrorManager {
             error: error.error
         });
 
-        const i18n = TranslationManager.get(`${I18N_BASE}.toasts.globalError`);
         Toast.error({
-            title: i18n.title,
-            message: i18n.message
+            i18nKey: `${I18N_BASE}.toasts.globalError`
         });
     }
 }

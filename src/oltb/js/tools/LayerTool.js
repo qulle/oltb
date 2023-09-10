@@ -417,11 +417,8 @@ class LayerTool extends Control {
 
         // Note: Alert the user, the Layer was created when the tool was not active
         if(!this.isActive) {
-            const i18n = TranslationManager.get(`${I18N_BASE}.toasts.newLayer`);
-
             Toast.success({
-                title: i18n.title,
-                message: i18n.message, 
+                i18nKey: `${I18N_BASE}.toasts.newLayer`,
                 autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
             });
         }
@@ -545,13 +542,8 @@ class LayerTool extends Control {
                 projection: projection
             });
 
-            const i18n = TranslationManager.get(`${I18N_BASE}.toasts.missingProjectionError`);
             Toast.error({
-                title: i18n.title,
-                message: (`
-                    ${i18n.message} <br>
-                    <a href="https://epsg.io" target="_blank" class="oltb-link">https://epsg.io</a>
-                `)
+                i18nKey: `${I18N_BASE}.toasts.missingProjectionError`
             });
         }
 
@@ -599,10 +591,8 @@ class LayerTool extends Control {
                 error: error
             });
 
-            const i18n = TranslationManager.get(`${I18N_BASE}.toasts.newLayerError`);
             Toast.error({
-                title: i18n.title,
-                message: i18n.message
+                i18nKey: `${I18N_BASE}.toasts.newLayerError`
             });
         }
     }
@@ -998,11 +988,9 @@ class LayerTool extends Control {
                         title: 'Error',
                         message: `The layer format is not supported (${format})`
                     });
-
-                    const i18n = TranslationManager.get(`${I18N_BASE}.toasts.unsupportedFormatError`);
+                    
                     Toast.error({
-                        title: i18n.title,
-                        message: `${i18n.message} (${format})`
+                        i18nKey: `${I18N_BASE}.toasts.unsupportedFormatError`
                     });
 
                     return;

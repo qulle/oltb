@@ -162,10 +162,8 @@ class MyLocationTool extends Control {
                             error: error
                         });
 
-                        const i18n = TranslationManager.get(`${I18N_BASE}.toasts.exitFullscreenError`);
                         Toast.error({
-                            title: i18n.title,
-                            message: error.message
+                            i18nKey: `${I18N_BASE}.toasts.exitFullscreenError`
                         });
                     });
             }
@@ -201,10 +199,8 @@ class MyLocationTool extends Control {
             error: error
         });
 
-        const i18n = TranslationManager.get(`${I18N_BASE}.toasts.locationError`);
         Toast.error({
-            title: i18n.title,
-            message: error.message
+            i18nKey: `${I18N_BASE}.toasts.locationError`
         });
         
         // Note: Consumer callback
@@ -285,11 +281,8 @@ class MyLocationTool extends Control {
             return;
         }
         
-        const i18n = TranslationManager.get(`${I18N_BASE}.toasts.geoSearching`);
-
         this.loadingToast = Toast.info({
-            title: i18n.title,
-            message: i18n.message, 
+            i18nKey: `${I18N_BASE}.toasts.geoSearching`,
             clickToRemove: false,
             spinner: true,
             onRemove: () => {

@@ -496,10 +496,8 @@ class DebugInfoModal extends ModalBase {
     doActionLoggingMap() {
         console.dir(this.options.map);
 
-        const i18n = TranslationManager.get(`${I18N_BASE}.toasts.logged`);
         Toast.info({
-            title: i18n.title,
-            message: `${i18n.message} <strong>(F12)</strong>`, 
+            i18nKey: `${I18N_BASE}.toasts.logged`,
             autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
         });
     }
@@ -522,11 +520,9 @@ class DebugInfoModal extends ModalBase {
         if(uiRefEventLog) {
             DOM.clearElement(uiRefEventLog);
         }
-
-        const i18n = TranslationManager.get(`${I18N_BASE}.toasts.logged`);
+        
         Toast.info({
-            title: i18n.title,
-            message: i18n.message, 
+            i18nKey: `${I18N_BASE}.toasts.logged`,
             autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
         });
     }

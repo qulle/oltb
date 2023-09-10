@@ -431,13 +431,11 @@ class CoordinatesTool extends Control {
         );
 
         const prettyCoordinates = toStringHDMS(coordinates);
-        const i18n = TranslationManager.get(`${I18N_BASE}.toasts`);
-
+        
         copyToClipboard(prettyCoordinates)
             .then(() => {
                 Toast.info({
-                    title: i18n.copied.title,
-                    message: i18n.copied.message, 
+                    i18nKey: `${I18N_BASE}.toasts.copied`,
                     autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
                 });
             })
@@ -448,8 +446,7 @@ class CoordinatesTool extends Control {
                 });
 
                 Toast.error({
-                    title: i18n.copyError.title,
-                    message: i18n.copyError.message
+                    i18nKey: `${I18N_BASE}.toasts.copyError`
                 });
             });
     }

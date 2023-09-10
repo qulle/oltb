@@ -679,10 +679,8 @@ class BookmarkTool extends Control {
             onConfirm: () => {
                 this.doClearBookmarks();
 
-                const i18n = TranslationManager.get(`${I18N_BASE}.toasts.cleared`);
                 Toast.info({
-                    title: i18n.title,
-                    message: i18n.message, 
+                    i18nKey: `${I18N_BASE}.toasts.cleared`,
                     autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
                 });
             }
@@ -799,10 +797,8 @@ class BookmarkTool extends Control {
 
         // Note: Alert the user, the Bookmark was created when the tool was not active
         if(!this.isActive) {
-            const i18n = TranslationManager.get(`${I18N_BASE}.toasts.created`);
             Toast.success({
-                title: i18n.title,
-                message: `${i18n.message} <strong>${name}</strong>`, 
+                i18nKey: `${I18N_BASE}.toasts.created`,
                 autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
             });
         }
@@ -903,13 +899,11 @@ class BookmarkTool extends Control {
 
     doCopyBookmarkCoordinates(bookmark) {
         const prettyCoordinates = toStringHDMS(bookmark.coordinates);
-        const i18n = TranslationManager.get(`${I18N_BASE}.toasts`);
-
+        
         copyToClipboard(prettyCoordinates)
             .then(() => {
                 Toast.info({
-                    title: i18n.copied.title,
-                    message: i18n.copied.message, 
+                    i18nKey: `${I18N_BASE}.toasts.copied`,
                     autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
                 });
             })
@@ -920,8 +914,7 @@ class BookmarkTool extends Control {
                 });
                 
                 Toast.error({
-                    title: i18n.copyError.title,
-                    message: i18n.copyError.message
+                    i18nKey: `${I18N_BASE}.toasts.copyError`
                 });
             });
     }

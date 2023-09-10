@@ -4,6 +4,7 @@ import { Events } from '../../helpers/constants/Events';
 import { LogManager } from '../../managers/LogManager';
 import { ConfigManager } from '../../managers/ConfigManager';
 import { ElementManager } from '../../managers/ElementManager';
+import { TranslationManager } from '../../managers/TranslationManager';
 
 const FILENAME = 'toasts/ToastBase.js';
 const CLASS_TOAST = 'oltb-toast';
@@ -15,6 +16,7 @@ const CLASS_ANIMATION_LINEAR_SPINNER = `${CLASS_ANIMATION}--linear-spinner`;
 const DefaultOptions = Object.freeze({
     title: 'Toast',
     message: '',
+    i18nKey: undefined,
     type: 'info',
     autoremove: undefined,
     clickToRemove: true,
@@ -58,16 +60,28 @@ class ToastBase {
             class: `${CLASS_TOAST}__container ${this.options.spinner ? 'oltb-ml-0625' : ''}`
         });
 
+        if(this.options.i18nKey) {
+            const i18n = TranslationManager.get(this.options.i18nKey);
+            this.options.title = i18n.title;
+            this.options.message = i18n.message;
+        }
+
         const title = DOM.createElement({
             element: 'h4',
             text: this.options.title,
-            class: `${CLASS_TOAST}__title`
+            class: `${CLASS_TOAST}__title`,
+            ...(this.options.i18nKey && { attributes: {
+                'data-oltb-i18n': `${this.options.i18nKey}.title`
+            }}),
         });
 
         const message = DOM.createElement({
             element: 'p', 
             html: this.options.message,
-            class: `${CLASS_TOAST}__message`
+            class: `${CLASS_TOAST}__message`,
+            ...(this.options.i18nKey && { attributes: {
+                'data-oltb-i18n': `${this.options.i18nKey}.message`
+            }}),
         });
     
         DOM.appendChildren(container, [

@@ -322,11 +322,8 @@ class ScissorsTool extends Control {
         });
 
         if(this.intersectedFeatures.length === 0) {
-            const i18n = TranslationManager.get(`${I18N_BASE}.toasts.noIntersecting`);
-
             Toast.info({
-                title: i18n.title,
-                message: i18n.message, 
+                i18nKey: `${I18N_BASE}.toasts.noIntersecting`,
                 autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
             });
         }

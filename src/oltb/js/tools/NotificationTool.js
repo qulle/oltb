@@ -207,11 +207,9 @@ class NotificationTool extends Control {
                     message: 'Failed to fetch notifications',
                     error: error
                 });
-
-                const i18n = TranslationManager.get(`${I18N_BASE}.toasts.fetchError`);
+                
                 Toast.error({
-                    title: i18n.title,
-                    message: error.message
+                    i18nKey: `${I18N_BASE}.toasts.fetchError`
                 });
             });
     }

@@ -8,7 +8,6 @@ import { unByKey } from 'ol/Observable';
 import { LogManager } from '../managers/LogManager';
 import { StateManager } from '../managers/StateManager';
 import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
-import { DOMExceptions } from '../helpers/constants/DOMExceptions';
 import { getRenderPixel } from 'ol/render';
 import { ElementManager } from '../managers/ElementManager';
 import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
@@ -316,14 +315,9 @@ class MagnifyTool extends Control {
                 message: 'Unexpected error using magnifyer',
                 error: error
             });
-
-            const i18n = TranslationManager.get(`${I18N_BASE}.toasts.unexpectedError`);
+            
             Toast.error({
-                title: i18n.title,
-                message: (error.name === DOMExceptions.SecurityError
-                    ? i18n.corsMessage
-                    : i18n.message
-                )
+                i18nKey: `${I18N_BASE}.toasts.unexpectedError`
             });
         }
     }

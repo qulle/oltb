@@ -218,13 +218,8 @@ class HiddenMapNavigationTool extends Control {
                 projection: projection
             });
 
-            const i18n = TranslationManager.get(`${I18N_BASE}.toasts.missingProjectionError`);
             Toast.error({
-                title: i18n.title,
-                message: `
-                    ${i18n.message} (<strong>${projection}</strong>) <br>
-                    <a href="https://epsg.io" target="_blank" class="oltb-link">https://epsg.io</a>
-                `
+                i18nKey: `${I18N_BASE}.toasts.missingProjectionError`
             });
         }
 
@@ -278,10 +273,8 @@ class HiddenMapNavigationTool extends Control {
 
         copyToClipboard(prettyCoordinates)
             .then(() => {
-                const i18n = TranslationManager.get(`${I18N_BASE}.toasts.copied`);
                 Toast.info({
-                    title: i18n.title,
-                    message: i18n.message, 
+                    i18nKey: `${I18N_BASE}.toasts.copied`,
                     autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
                 });
             })
@@ -290,11 +283,9 @@ class HiddenMapNavigationTool extends Control {
                     message: 'Failed to copy coordinates',
                     error: error
                 });
-                
-                const i18n = TranslationManager.get(`${I18N_BASE}.toasts.copyError`)
+
                 Toast.error({
-                    title: i18n.title,
-                    message: i18n.message
+                    i18nKey: `${I18N_BASE}.toasts.copyError`
                 });
             });
     }
@@ -329,10 +320,8 @@ class HiddenMapNavigationTool extends Control {
                 error: error
             });
             
-            const i18n = TranslationManager.get(`${I18N_BASE}.toasts.parseUrlMarkerError`)
             Toast.error({
-                title: i18n.title,
-                message: i18n.message
+                i18nKey: `${I18N_BASE}.toasts.parseUrlMarkerError`
             }); 
         } 
     }

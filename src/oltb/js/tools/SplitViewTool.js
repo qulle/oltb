@@ -173,11 +173,8 @@ class SplitViewTool extends Control {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
 
         if(LayerManager.getMapLayerSize() <= 1) {
-            const i18n = TranslationManager.get(`${I18N_BASE}.toasts.onlyOneLayer`);
-
             Toast.info({
-                title: i18n.title,
-                message: i18n.message
+                i18nKey: `${I18N_BASE}.toasts.onlyOneLayer`
             });
             
             return;
@@ -347,11 +344,9 @@ class SplitViewTool extends Control {
         LogManager.logError(FILENAME, 'setLoadingError', {
             message: 'One or both of the layers could not be loaded'
         });
-
-        const i18n = TranslationManager.get(`${I18N_BASE}.toasts.layerError`);
+        
         Toast.error({
-            title: i18n.title,
-            message: i18n.message
+            i18nKey: `${I18N_BASE}.toasts.layerError`
         });
     }
 

@@ -135,10 +135,8 @@ class HelpTool extends Control {
                 error: error
             });
             
-            const i18n = TranslationManager.get(`${I18N_BASE}.toasts.blockedByBrowserError`);
             Toast.error({
-                title: i18n.title,
-                message: i18n.message
+                i18nKey: `${I18N_BASE}.toasts.blockedByBrowserError`
             });
         }
     }

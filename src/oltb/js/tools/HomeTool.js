@@ -217,12 +217,9 @@ class HomeTool extends Control {
         this.localStorage.lat = coordinates[1];
         
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
-
-        const i18n = TranslationManager.get(`${I18N_BASE}.toasts.newHome`);
-
+        
         Toast.success({
-            title: i18n.title,
-            message: i18n.message,
+            i18nKey: `${I18N_BASE}.toasts.newHome`,
             autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
         });
     }

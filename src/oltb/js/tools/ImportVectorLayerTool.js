@@ -206,10 +206,8 @@ class ImportVectorLayerTool extends Control {
                     message: `The layer format is not supported (${format})`
                 });
 
-                const i18n = TranslationManager.get(`${I18N_BASE}.toasts.unsupportedFormatError`);
                 Toast.error({
-                    title: i18n.title,
-                    message: `${i18n.message} (${format})`
+                    i18nKey: `${I18N_BASE}.toasts.unsupportedFormatError`,
                 });
 
                 return;
@@ -232,10 +230,8 @@ class ImportVectorLayerTool extends Control {
                 error: error
             });
             
-            const i18n = TranslationManager.get(`${I18N_BASE}.toasts.importError`);
             Toast.error({
-                title: i18n.title,
-                message: i18n.message
+                i18nKey: `${I18N_BASE}.toasts.importError`
             });
 
             // Note: Consumer callback

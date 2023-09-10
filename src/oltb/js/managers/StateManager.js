@@ -2,7 +2,6 @@ import _ from 'lodash';
 import { Toast } from '../common/Toast';
 import { LogManager } from './LogManager';
 import { ConfigManager } from './ConfigManager';
-import { TranslationManager } from './TranslationManager';
 
 const FILENAME = 'managers/StateManager.js';
 const I18N_BASE = 'managers.stateManager';
@@ -74,10 +73,8 @@ class StateManager {
                 error: error
             });
             
-            const i18n = TranslationManager.get(`${I18N_BASE}.toasts.getBrowserDataError`);
             Toast.error({
-                title: i18n.title,
-                message: i18n.message
+                i18nKey: `${I18N_BASE}.toasts.getBrowserDataError`
             });
         }
 

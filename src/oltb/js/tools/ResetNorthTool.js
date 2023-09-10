@@ -181,11 +181,9 @@ class ResetNorthTool extends Control {
                         message: 'Only digits are allowed as input',
                         result: result
                     });
-
-                    const i18n = TranslationManager.get(`${I18N_BASE}.toasts.invalidInput`);
+                    
                     Toast.error({
-                        title: i18n.title,
-                        message: i18n.message
+                        i18nKey: `${I18N_BASE}.toasts.invalidInput`
                     });
                 }
             }

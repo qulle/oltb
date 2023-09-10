@@ -155,10 +155,8 @@ class SettingsTool extends Control {
     doClearBrowserState() {
         this.doDispatchBrowserStateCleared();
 
-        const i18n = TranslationManager.get(`${I18N_BASE}.toasts.cleared`);
         Toast.info({
-            title: i18n.title,
-            message: i18n.message, 
+            i18nKey: `${I18N_BASE}.toasts.cleared`,
             autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
         });
     }
@@ -170,10 +168,8 @@ class SettingsTool extends Control {
         
         this.settingsModal = new SettingsModal({
             onSave: () => {
-                const i18n = TranslationManager.get(`${I18N_BASE}.toasts.saved`);
                 Toast.success({
-                    title: i18n.title,
-                    message: i18n.message, 
+                    i18nKey: `${I18N_BASE}.toasts.saved`,
                     autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
                 });
             },

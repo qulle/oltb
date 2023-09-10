@@ -142,10 +142,8 @@ class FullscreenTool extends Control {
                 error: 'Fullscreen is not supported by this browser'
             });
 
-            const i18n = TranslationManager.get(`${I18N_BASE}.toasts.fullscreenNotSupported`);
             Toast.error({
-                title: i18n.title,
-                message: i18n.message
+                i18nKey: `${I18N_BASE}.toasts.fullscreenNotSupported`
             });
         }
 
