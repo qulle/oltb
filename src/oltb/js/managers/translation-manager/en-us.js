@@ -6,9 +6,11 @@ export const EnUs = Object.freeze({
     managers: {
         stateManager: {
             toasts: {
-                getBrowserDataError: {
-                    title: 'Error',
-                    message: 'Failed to load application state'
+                errors: {
+                    parseBrowserData: {
+                        title: 'Error',
+                        message: 'Failed to load application state'
+                    }
                 }
             }
         },
@@ -27,54 +29,60 @@ export const EnUs = Object.freeze({
         },
         errorManager: {
             toasts: {
-                globalError: {
-                    title: 'Error',
-                    message: 'An unexpected error occurred'
+                errors: {
+                    uncaughtException: {
+                        title: 'Error',
+                        message: 'An unexpected error occurred'
+                    }
                 }
             }
         },
         infoWindowManager: {
             toasts: {
-                markerCoordinatesCopied: {
-                    title: 'Copied',
-                    message: 'Marker coordinates copied to clipboard'
+                infos: {
+                    copyMarkerCoordinates: {
+                        title: 'Copied',
+                        message: 'Marker coordinates copied to clipboard'
+                    },
+                    copyMarkerInfo: {
+                        title: 'Copied',
+                        message: 'Marker info copied to clipboard'
+                    },
                 },
-                markerCoordinatesCopyError: {
-                    title: 'Error',
-                    message: 'Failed to copy Marker coordinates'
-                },
-                markerInfoCopied: {
-                    title: 'Copied',
-                    message: 'Marker info copied to clipboard'
-                },
-                markerInfoCopyError: {
-                    title: 'Error',
-                    message: 'Failed to copy Marker info'
+                errors: {
+                    copyMarkerInfo: {
+                        title: 'Error',
+                        message: 'Failed to copy Marker info'
+                    },
+                    copyMarkerCoordinates: {
+                        title: 'Error',
+                        message: 'Failed to copy Marker coordinates'
+                    },
                 }
             },
             dialogs: {
-                deleteMarker: {
-                    title: 'Delete Marker',
-                    message: 'Do you want to delete this Marker?',
-                    confirmText: 'Delete'
+                confirms: {
+                    deleteMarker: {
+                        title: 'Delete Marker',
+                        message: 'Do you want to delete this Marker?',
+                        confirmText: 'Delete'
+                    }
                 }
             }
         }
     },
     common: {
-        functionButtons: {
+        titles: {
+            edit: 'Edit',
             delete: 'Delete',
             rename: 'Rename',
-            edit: 'Edit',
             download: 'Download',
-            copyCoordinates: 'Copy Coordinates',
             copyText: 'Copy Text',
-            zoomToCoordinates: 'Zoom To Coordinates',
-            toggleVisibility: 'Toggle Visibility'
-        },
-        titles: {
+            copyCoordinates: 'Copy Coordinates',
+            dragToSort: 'Drag To Sort',
             toggleSection: 'Toggle Section',
-            dragToSort: 'Drag To Sort'
+            toggleVisibility: 'Toggle Visibility',
+            zoomToCoordinates: 'Zoom To Coordinates'
         }
     },
     modalExtensions: {
@@ -106,20 +114,15 @@ export const EnUs = Object.freeze({
                 eventlog: 'Eventlog'
             },
             toasts: {
-                logged: {
-                    title: 'Logged',
-                    message: 'Map object logged to console'
-                },
-                cleared: {
-                    title: 'Cleared',
-                    message: 'Event log was cleared of all entries'
-                },
-                geoLocationNotSupported: {
-                    message: 'Geolocation is not supported'
-                },
-                geoSearching: {
-                    title: 'Searching',
-                    message: 'Trying to find your location...'
+                infos: {
+                    logMapObject: {
+                        title: 'Logged',
+                        message: 'Map object logged to console'
+                    },
+                    clearLog: {
+                        title: 'Cleared',
+                        message: 'Event log was cleared of all entries'
+                    }
                 }
             }
         },
@@ -198,27 +201,31 @@ export const EnUs = Object.freeze({
         },
         hiddenMapNavigationTool: {
             contextItems: {
-                copy: 'Copy Coordinates',
-                navigate: 'Navigate To',
-                move: 'Center Here',
-                focus: 'Focus Here'
+                copyCoordinates: 'Copy Coordinates',
+                navigateToCoordinates: 'Navigate To',
+                centerMap: 'Center Here',
+                focusMap: 'Focus Here'
             },
             toasts: {
-                copied: {
-                    title: 'Copied',
-                    message: 'Coordinates copied to clipboard'
+                infos: {
+                    coordinatesCopied: {
+                        title: 'Copied',
+                        message: 'Coordinates copied to clipboard'
+                    }
                 },
-                copyError: {
-                    title: 'Error',
-                    message: 'Failed to copy coordinates'
-                },
-                parseUrlMarkerError: {
-                    title: 'Error',
-                    message: 'Failed to parse URL Marker'
-                },
-                missingProjectionError: {
-                    title: 'Error',
-                    message: 'Missing projection definition'
+                errors: {
+                    coordinatesCopy: {
+                        title: 'Error',
+                        message: 'Failed to copy coordinates'
+                    },
+                    parseUrlMarker: {
+                        title: 'Error',
+                        message: 'Failed to parse URL Marker'
+                    },
+                    missingProjection: {
+                        title: 'Error',
+                        message: 'Missing projection definition'
+                    }
                 }
             }
         },
@@ -248,21 +255,25 @@ export const EnUs = Object.freeze({
                 bookmarks: 'Bookmarks'
             },
             toasts: {
-                cleared: {
-                    title: 'Cleared',
-                    message: 'All stored bookmarks was cleared'
+                infos: {
+                    clearBookmarks: {
+                        title: 'Cleared',
+                        message: 'All stored bookmarks was cleared'
+                    },
+                    createBookmark: {
+                        title: 'New Bookmark',
+                        message: 'A new Bookmark created'
+                    },
+                    copyCoordinates: {
+                        title: 'Copied',
+                        message: 'Coordinates copied to clipboard'
+                    }
                 },
-                created: {
-                    title: 'New Bookmark',
-                    message: 'A new Bookmark created'
-                },
-                copied: {
-                    title: 'Copied',
-                    message: 'Coordinates copied to clipboard'
-                },
-                copyError: {
-                    title: 'Error',
-                    message: 'Failed to copy coordinates'
+                errors: {
+                    copyCoordinates: {
+                        title: 'Error',
+                        message: 'Failed to copy coordinates'
+                    }
                 }
             }
         },
@@ -288,13 +299,17 @@ export const EnUs = Object.freeze({
                 updateToolboxOnHover: 'Update Toolbox Coordinates When Hover'
             },
             toasts: {
-                copied: {
-                    title: 'Copied',
-                    message: 'Coordinates copied to clipboard'
+                infos: {
+                    copyCoordinates: {
+                        title: 'Copied',
+                        message: 'Coordinates copied to clipboard'
+                    },
                 },
-                copyError: {
-                    title: 'Error',
-                    message: 'Failed to copy coordinates'
+                errors: {
+                    copyCoordinates: {
+                        title: 'Error',
+                        message: 'Failed to copy coordinates'
+                    }
                 }
             }
         },
@@ -343,13 +358,15 @@ export const EnUs = Object.freeze({
                 defaultName: 'Drawing layer'
             },
             toasts: {
-                drawingInHiddenLayer: {
-                    title: 'Tip',
-                    message: 'You are drawing in a hidden layer'
-                },
-                noIntersecting: {
-                    title: 'Oops',
-                    message: 'No intersecting object found'
+                infos: {
+                    drawInHiddenLayer: {
+                        title: 'Tip',
+                        message: 'You are drawing in a hidden layer'
+                    },
+                    missingIntersections: {
+                        title: 'Oops',
+                        message: 'No intersecting object found'
+                    }
                 }
             }
         },
@@ -370,33 +387,41 @@ export const EnUs = Object.freeze({
                 mouseOnlyToEditVectorShapes: 'Mouse Only To Edit Vector Shapes',
             },
             toasts: {
-                noSelected: {
-                    title: 'Oops',
-                    message: 'No features selected to delete'
+                infos: {
+                    missingFeatures: {
+                        title: 'Oops',
+                        message: 'No features selected to delete'
+                    },
+                    strictTwoFeatures: {
+                        title: 'Oops',
+                        message: 'Strict two overlapping features must be selected'
+                    }
                 },
-                strictTwoShapes: {
-                    title: 'Oops',
-                    message: 'Strict two overlapping features must be selected'
-                },
-                shapeOperationError: {
-                    title: 'Error',
-                    message: 'Failed to perform shape operation'
+                errors: {
+                    operationFailed: {
+                        title: 'Error',
+                        message: 'Failed to perform shape operation'
+                    }
                 }
             },
             dialogs: {
-                deleteFeatures: {
-                    title: 'Delete Feature',
-                    message: 'Delete selected feature',
-                    confirmText: 'Delete'
+                confirms: {
+                    deleteFeatures: {
+                        title: 'Delete Feature',
+                        message: 'Delete selected feature',
+                        confirmText: 'Delete'
+                    }
                 }
             }
         },
         exportPngTool: {
             title: 'Export PNG',
             toasts: {
-                renderError: {
-                    title: 'Error',
-                    message: 'Failed to export canvas image'
+                errors: {
+                    renderCanvas: {
+                        title: 'Error',
+                        message: 'Failed to export canvas image'
+                    }
                 }
             }
         },
@@ -406,9 +431,11 @@ export const EnUs = Object.freeze({
                 enter: 'Enter Fullscreen'
             },
             toasts: {
-                fullscreenNotSupported: {
-                    title: 'Error',
-                    message: 'Fullscreen is not supported by this browser'
+                errors: {
+                    missingFullScreenSupport: {
+                        title: 'Error',
+                        message: 'Fullscreen is not supported by this browser'
+                    }
                 }
             }
         },
@@ -418,16 +445,20 @@ export const EnUs = Object.freeze({
         helpTool: {
             title: 'Help',
             dialogs: {
-                openHelp: {
-                    title: 'Help Pages',
-                    message: 'Browsers block automatic opening new windows, here is a button for you to press',
-                    confirmText: 'Open Help'
+                confirms: {
+                    openHelp: {
+                        title: 'Help Pages',
+                        message: 'Browsers block automatic opening new windows, here is a button for you to press',
+                        confirmText: 'Open Help'
+                    }
                 }
             },
             toasts: {
-                blockedByBrowserError: {
-                    title: 'Error',
-                    message: 'Action was restricted by browser settings'
+                errors: {
+                    blockedByBrowser: {
+                        title: 'Error',
+                        message: 'Action was restricted by browser settings'
+                    }
                 }
             }
         },
@@ -437,22 +468,26 @@ export const EnUs = Object.freeze({
                 setHome: 'Set Home'
             },
             toasts: {
-                newHome: {
-                    title: 'New Home',
-                    message: 'New location was set as Home'
+                infos: {
+                    setHomeLocation: {
+                        title: 'New Home',
+                        message: 'New location was set as Home'
+                    }
                 }
             }
         },
         importVectorLayerTool: {
             title: 'Import Vector Layer',
             toasts: {
-                unsupportedFormatError: {
-                    title: 'Error',
-                    message: 'The layer format is not supported'
-                },
-                importError: {
-                    title: 'Error',
-                    message: 'Failed to import vector layer'
+                errors: {
+                    unsupportedFormat: {
+                        title: 'Error',
+                        message: 'The layer format is not supported'
+                    },
+                    importFailed: {
+                        title: 'Error',
+                        message: 'Failed to import vector layer'
+                    }
                 }
             }
         },
@@ -481,43 +516,52 @@ export const EnUs = Object.freeze({
                 addFeatureLayer: 'Add Feature Layer'
             },
             toasts: {
-                newLayer: {
-                    title: 'New Layer',
-                    message: 'A new Feature layer created'
+                infos: {
+                    addFeatureLayer: {
+                        title: 'New Layer',
+                        message: 'A new Feature layer created'
+                    }
                 },
-                missingProjectionError: {
-                    title: 'Error',
-                    message: 'Missing projection definition'
-                },
-                newLayerError: {
-                    title: 'Error',
-                    message: 'Failed to create new layer'
-                },
-                unsupportedFormatError: {
-                    title: 'Error',
-                    message: 'The layer format is not supported'
+                errors: {
+                    addFeatureLayer: {
+                        title: 'Error',
+                        message: 'Failed to create new layer'
+                    },
+                    missingProjection: {
+                        title: 'Error',
+                        message: 'Missing projection definition'
+                    },
+                    unsupportedFormat: {
+                        title: 'Error',
+                        message: 'The layer format is not supported'
+                    }
                 }
             },
             dialogs: {
-                renameLayer: {
-                    title: 'Edit Name',
-                    message: 'Edit name for layer',
-                    confirmText: 'Rename'
+                prompts: {
+                    renameLayer: {
+                        title: 'Edit Name',
+                        message: 'Edit name for layer',
+                        confirmText: 'Rename'
+                    }
                 },
-                deleteLayer: {
-                    title: 'Delete Layer',
-                    message: 'Do you want to delete layer',
-                    confirmText: 'Delete'
+                confirms: {
+                    deleteLayer: {
+                        title: 'Delete Layer',
+                        message: 'Do you want to delete layer',
+                        confirmText: 'Delete'
+                    }
                 }
             }
         },
         magnifyTool: {
             title: 'Magnify',
             toasts: {
-                unexpectedError: {
-                    title: 'Error',
-                    message: 'Unexpected error using magnifyer',
-                    corsMessage: 'CORS error with one of the layers'
+                errors: {
+                    renderCanvas: {
+                        title: 'Error',
+                        message: 'Unexpected error using magnifyer',
+                    }
                 }
             }
         },
@@ -545,28 +589,41 @@ export const EnUs = Object.freeze({
                 defaultName: 'Measurements layer'
             },
             toasts: {
-                measuringInHiddenLayer: {
-                    title: 'Tip',
-                    message: 'You are measuring in a hidden layer'
+                infos: {
+                    drawInHiddenLayer: {
+                        title: 'Tip',
+                        message: 'You are measuring in a hidden layer'
+                    }
                 }
             }
         },
         myLocationTool: {
             title: 'My Location',
             dialogs: {
-                exitFullscreen: {
-                    title: 'Exit Fullscreen',
-                    message: 'To use geolocation you must exit fullscreen',
-                    confirmText: 'Exit Fullscreen'
+                confirms: {
+                    exitFullscreen: {
+                        title: 'Exit Fullscreen',
+                        message: 'To use geolocation you must exit fullscreen',
+                        confirmText: 'Exit Fullscreen'
+                    }
                 }
             },
             toasts: {
-                exitFullscreenError: {
-                    title: 'Error',
-                    message: 'Failed to exit fullscreen'
+                infos: {
+                    fetchLocation: {
+                        title: 'Searching',
+                        message: 'Trying to find your location...'
+                    }
                 },
-                locationError: {
-                    title: 'Error'
+                errors: {
+                    exitFullscreen: {
+                        title: 'Error',
+                        message: 'Failed to exit fullscreen'
+                    },
+                    locationNotFound: {
+                        title: 'Error',
+                        message: 'Failed to find location'
+                    }
                 }
             }
         },
@@ -584,9 +641,11 @@ export const EnUs = Object.freeze({
                 }
             },
             toasts: {
-                fetchError: {
-                    title: 'Error',
-                    message: 'Failed to fetch notifications'
+                errors: {
+                    fetchFailed: {
+                        title: 'Error',
+                        message: 'Failed to fetch notifications'
+                    }
                 }
             }
         },
@@ -607,16 +666,20 @@ export const EnUs = Object.freeze({
                 rotate: 'Rotate Map'
             },
             dialogs: {
-                rotateMap: {
-                    title: 'Rotate Map',
-                    message: 'Set map rotation by degrees',
-                    confirmText: 'Rotate Map'
+                prompts: {
+                    rotateMap: {
+                        title: 'Rotate Map',
+                        message: 'Set map rotation by degrees',
+                        confirmText: 'Rotate Map'
+                    }
                 }
             },
             toasts: {
-                invalidInput: {
-                    title: 'Error',
-                    message: 'Only digits are allowed as input'
+                errors: {
+                    invalidValue: {
+                        title: 'Error',
+                        message: 'Only digits are allowed as input'
+                    }
                 }
             }
         },
@@ -626,9 +689,11 @@ export const EnUs = Object.freeze({
         scissorsTool: {
             title: 'Polygon Scissors',
             toasts: {
-                noIntersecting: {
-                    title: 'Oops',
-                    message: 'No intersecting object found'
+                infos: {
+                    missingIntersections: {
+                        title: 'Oops',
+                        message: 'No intersecting object found'
+                    }
                 }
             }
         },
@@ -638,20 +703,26 @@ export const EnUs = Object.freeze({
                 clearBrowserState: 'Clear Browser State'
             },
             dialogs: {
-                clearBrowserState: {
-                    title: 'Clear Browser State',
-                    message: 'Do you want to reset all items to default state for the Toolbar?',
-                    confirmText: 'Clear'
+                confirms: {
+                    clearBrowserState: {
+                        title: 'Clear Browser State',
+                        message: 'Do you want to reset all items to default state for the Toolbar?',
+                        confirmText: 'Clear'
+                    }
                 }
             },
             toasts: {
-                cleared: {
-                    title: 'Cleared',
-                    message: 'All stored items was reset to default'
+                infos: {
+                    clearBrowserState: {
+                        title: 'Cleared',
+                        message: 'All stored items was reset to default'
+                    }
                 },
-                saved: {
-                    title: 'Saved',
-                    message: 'All settings was saved'
+                successes: {
+                    savedSettings: {
+                        title: 'Saved',
+                        message: 'All settings was saved'
+                    }
                 }
             }
         },
@@ -673,13 +744,17 @@ export const EnUs = Object.freeze({
                     }
                 },
                 toasts: {
-                    onlyOneLayer: {
-                        title: 'Tip',
-                        message: 'You must have more then one layer'
+                    infos: {
+                        strictOneLayer: {
+                            title: 'Tip',
+                            message: 'You must have more then one layer'
+                        }
                     },
-                    layerError: {
-                        title: 'Error',
-                        message: 'One or both of the layers could not be loaded'
+                    errors: {
+                        layerFailedToLoad: {
+                            title: 'Error',
+                            message: 'Layer(s) could not be loaded'
+                        }
                     }
                 }
             }
@@ -693,10 +768,12 @@ export const EnUs = Object.freeze({
         translationTool: {
             title: 'Translate',
             dialogs: {
-                changeLanguage: {
-                    title: 'Change Language',
-                    message: 'Current language is',
-                    confirmText: 'Translate'
+                selects: {
+                    changeLanguage: {
+                        title: 'Change Language',
+                        message: 'Current language is',
+                        confirmText: 'Translate'
+                    }
                 }
             }
         },

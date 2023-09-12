@@ -116,7 +116,7 @@ class HiddenMapNavigationTool extends Control {
     initContextMenuItems() {
         ContextMenu.addItem({
             icon: this.clipboardIcon,
-            i18nKey: `${I18N_BASE}.contextItems.copy`,
+            i18nKey: `${I18N_BASE}.contextItems.copyCoordinates`,
             fn: this.onContextMenuCopyCoordinates.bind(this)
         });
 
@@ -124,19 +124,19 @@ class HiddenMapNavigationTool extends Control {
 
         ContextMenu.addItem({
             icon: this.coordinatesIcon,
-            i18nKey: `${I18N_BASE}.contextItems.navigate`,
+            i18nKey: `${I18N_BASE}.contextItems.navigateToCoordinates`,
             fn: this.onContextMenuCenterAtCoordinates.bind(this)
         });
 
         ContextMenu.addItem({
             icon: this.moveCenterIcon, 
-            i18nKey: `${I18N_BASE}.contextItems.move`,
+            i18nKey: `${I18N_BASE}.contextItems.centerMap`,
             fn: this.onContextMenuCenterMap.bind(this)
         });
 
         ContextMenu.addItem({
             icon: this.focusHereIcon, 
-            i18nKey: `${I18N_BASE}.contextItems.focus`,
+            i18nKey: `${I18N_BASE}.contextItems.focusMap`,
             fn: this.onContextMenuFocusHere.bind(this)
         });
         
@@ -219,7 +219,7 @@ class HiddenMapNavigationTool extends Control {
             });
 
             Toast.error({
-                i18nKey: `${I18N_BASE}.toasts.missingProjectionError`
+                i18nKey: `${I18N_BASE}.toasts.errors.missingProjection`
             });
         }
 
@@ -274,7 +274,7 @@ class HiddenMapNavigationTool extends Control {
         copyToClipboard(prettyCoordinates)
             .then(() => {
                 Toast.info({
-                    i18nKey: `${I18N_BASE}.toasts.copied`,
+                    i18nKey: `${I18N_BASE}.toasts.infos.coordinatesCopied`,
                     autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
                 });
             })
@@ -285,7 +285,7 @@ class HiddenMapNavigationTool extends Control {
                 });
 
                 Toast.error({
-                    i18nKey: `${I18N_BASE}.toasts.copyError`
+                    i18nKey: `${I18N_BASE}.toasts.errors.coordinatesCopy`
                 });
             });
     }
@@ -321,7 +321,7 @@ class HiddenMapNavigationTool extends Control {
             });
             
             Toast.error({
-                i18nKey: `${I18N_BASE}.toasts.parseUrlMarkerError`
+                i18nKey: `${I18N_BASE}.toasts.errors.parseUrlMarker`
             }); 
         } 
     }
@@ -362,7 +362,7 @@ class HiddenMapNavigationTool extends Control {
             ConfigManager.getConfig().projection.wgs84
         );
 
-        const i18n = TranslationManager.get(`${I18N_BASE_COMMON}.functionButtons`);
+        const i18n = TranslationManager.get(`${I18N_BASE_COMMON}.titles`);
         const prettyCoordinates = toStringHDMS(transformedCoordinates);
         const infoWindow = {
             title: markerData.title,
@@ -372,9 +372,9 @@ class HiddenMapNavigationTool extends Control {
             footer: `
                 <span class="oltb-info-window__coordinates">${prettyCoordinates}</span>
                 <div class="oltb-info-window__buttons-wrapper">
-                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--delete oltb-tippy" data-oltb-i18n="${I18N_BASE_COMMON}.delete" title="${i18n.delete}" id="${ID_PREFIX_INFO_WINDOW}-remove"></button>
-                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--crosshair oltb-tippy" data-oltb-i18n="${I18N_BASE_COMMON}.copyCoordinates" title="${i18n.copyCoordinates}" id="${ID_PREFIX_INFO_WINDOW}-copy-coordinates" data-oltb-coordinates="${prettyCoordinates}"></button>
-                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--copy oltb-tippy" data-oltb-i18n="${I18N_BASE_COMMON}.copyText" title="${i18n.copyText}" id="${ID_PREFIX_INFO_WINDOW}-copy-text" data-oltb-copy="${markerData.title}, ${markerData.description}"></button>
+                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--delete oltb-tippy" data-oltb-i18n="${I18N_BASE_COMMON}.titles.delete" title="${i18n.delete}" id="${ID_PREFIX_INFO_WINDOW}-remove"></button>
+                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--crosshair oltb-tippy" data-oltb-i18n="${I18N_BASE_COMMON}.titles.copyCoordinates" title="${i18n.copyCoordinates}" id="${ID_PREFIX_INFO_WINDOW}-copy-coordinates" data-oltb-coordinates="${prettyCoordinates}"></button>
+                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--copy oltb-tippy" data-oltb-i18n="${I18N_BASE_COMMON}.titles.copyText" title="${i18n.copyText}" id="${ID_PREFIX_INFO_WINDOW}-copy-text" data-oltb-copy="${markerData.title}, ${markerData.description}"></button>
                 </div>
             `
         };

@@ -418,7 +418,7 @@ class LayerTool extends Control {
         // Note: Alert the user, the Layer was created when the tool was not active
         if(!this.isActive) {
             Toast.success({
-                i18nKey: `${I18N_BASE}.toasts.newLayer`,
+                i18nKey: `${I18N_BASE}.toasts.infos.addFeatureLayer`,
                 autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
             });
         }
@@ -543,7 +543,7 @@ class LayerTool extends Control {
             });
 
             Toast.error({
-                i18nKey: `${I18N_BASE}.toasts.missingProjectionError`
+                i18nKey: `${I18N_BASE}.toasts.errors.missingProjection`
             });
         }
 
@@ -592,7 +592,7 @@ class LayerTool extends Control {
             });
 
             Toast.error({
-                i18nKey: `${I18N_BASE}.toasts.newLayerError`
+                i18nKey: `${I18N_BASE}.toasts.errors.addFeatureLayer`
             });
         }
     }
@@ -894,7 +894,7 @@ class LayerTool extends Control {
         const deleteButton = DOM.createElement({
             element: 'button',
             class: `${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--delete oltb-tippy`,
-            title: TranslationManager.get(`${I18N_BASE_COMMON}.functionButtons.delete`),
+            title: TranslationManager.get(`${I18N_BASE_COMMON}.titles.delete`),
             attributes: {
                 'type': 'button'
             },
@@ -910,7 +910,7 @@ class LayerTool extends Control {
         const downloadButton = DOM.createElement({
             element: 'button', 
             class: `${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--download oltb-tippy`,
-            title: TranslationManager.get(`${I18N_BASE_COMMON}.functionButtons.download`),
+            title: TranslationManager.get(`${I18N_BASE_COMMON}.titles.download`),
             attributes: {
                 'type': 'button'
             },
@@ -926,7 +926,7 @@ class LayerTool extends Control {
         const editButton = DOM.createElement({
             element: 'button',
             class: `${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--edit oltb-tippy`,
-            title: TranslationManager.get(`${I18N_BASE_COMMON}.functionButtons.rename`),
+            title: TranslationManager.get(`${I18N_BASE_COMMON}.titles.rename`),
             attributes: {
                 'type': 'button'
             },
@@ -942,7 +942,7 @@ class LayerTool extends Control {
         const visibilityButton = DOM.createElement({
             element: 'button',
             class: `${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--visibility oltb-tippy`,
-            title: TranslationManager.get(`${I18N_BASE_COMMON}.functionButtons.toggleVisibility`),
+            title: TranslationManager.get(`${I18N_BASE_COMMON}.titles.toggleVisibility`),
             attributes: {
                 'type': 'button'
             },
@@ -990,7 +990,7 @@ class LayerTool extends Control {
                     });
                     
                     Toast.error({
-                        i18nKey: `${I18N_BASE}.toasts.unsupportedFormatError`
+                        i18nKey: `${I18N_BASE}.toasts.errors.unsupportedFormat`
                     });
 
                     return;
@@ -1008,7 +1008,7 @@ class LayerTool extends Control {
     }
 
     askToRenameLayer(layerWrapper, callback, layerName) {
-        const i18n = TranslationManager.get(`${I18N_BASE}.dialogs.renameLayer`);
+        const i18n = TranslationManager.get(`${I18N_BASE}.dialogs.prompts.renameLayer`);
 
         Dialog.prompt({
             title: i18n.title,
@@ -1034,7 +1034,7 @@ class LayerTool extends Control {
     }
 
     askToDeleteLayer(layerWrapper, callback) {
-        const i18n = TranslationManager.get(`${I18N_BASE}.dialogs.deleteLayer`);
+        const i18n = TranslationManager.get(`${I18N_BASE}.dialogs.confirms.deleteLayer`);
 
         Dialog.confirm({
             title: i18n.title,

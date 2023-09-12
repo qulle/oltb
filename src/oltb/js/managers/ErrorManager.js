@@ -49,7 +49,7 @@ class ErrorManager {
         });
 
         Toast.error({
-            i18nKey: `${I18N_BASE}.toasts.globalError`
+            i18nKey: `${I18N_BASE}.toasts.errors.uncaughtException`
         });
     }
 }

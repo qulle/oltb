@@ -74,7 +74,7 @@ class StateManager {
             });
             
             Toast.error({
-                i18nKey: `${I18N_BASE}.toasts.getBrowserDataError`
+                i18nKey: `${I18N_BASE}.toasts.errors.parseBrowserData`
             });
         }
 

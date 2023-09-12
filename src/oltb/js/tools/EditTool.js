@@ -468,7 +468,7 @@ class EditTool extends Control {
 
         if(featureLength === 0) {
             Toast.info({
-                i18nKey: `${I18N_BASE}.toasts.noSelected`,
+                i18nKey: `${I18N_BASE}.toasts.infos.missingFeatures`,
                 autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
             });
 
@@ -584,7 +584,7 @@ class EditTool extends Control {
 
     askToDeleteFeatures() {
         const featureLength = this.interactionSelect.getFeatures().getArray().length;
-        const i18n = TranslationManager.get(`${I18N_BASE}.dialogs.deleteFeatures`);
+        const i18n = TranslationManager.get(`${I18N_BASE}.dialogs.confirms.deleteFeatures`);
 
         Dialog.confirm({
             title: i18n.title,
@@ -777,7 +777,7 @@ class EditTool extends Control {
 
         if(!this.isTwoAndOnlyTwoShapes(features)) {
             Toast.info({
-                i18nKey: `${I18N_BASE}.toasts.strictTwoShapes`,
+                i18nKey: `${I18N_BASE}.toasts.infos.strictTwoFeatures`,
                 autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
             });
 
@@ -840,7 +840,7 @@ class EditTool extends Control {
             });
             
             Toast.error({
-                i18nKey: `${I18N_BASE}.toasts.shapeOperationError`
+                i18nKey: `${I18N_BASE}.toasts.operationFailed`
             }); 
 
             // Note: Consumer callback

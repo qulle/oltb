@@ -207,7 +207,7 @@ class ImportVectorLayerTool extends Control {
                 });
 
                 Toast.error({
-                    i18nKey: `${I18N_BASE}.toasts.unsupportedFormatError`,
+                    i18nKey: `${I18N_BASE}.toasts.errors.unsupportedFormat`,
                 });
 
                 return;
@@ -231,7 +231,7 @@ class ImportVectorLayerTool extends Control {
             });
             
             Toast.error({
-                i18nKey: `${I18N_BASE}.toasts.importError`
+                i18nKey: `${I18N_BASE}.toasts.errors.importFailed`
             });
 
             // Note: Consumer callback

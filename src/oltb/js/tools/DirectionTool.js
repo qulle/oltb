@@ -233,7 +233,6 @@ class DirectionTool extends Control {
         uiRefToolbarElement.classList.add(to.class);
         document.body.classList.add(`oltb-${to.class}`);
 
-        // Update toolbar button
         this.button.removeChild(this.button.firstElementChild);
         this.button.insertAdjacentHTML('afterbegin', to.icon);
         this.button.getTippy().setContent(`${to.tippyContent} (${ShortcutKeys.directionTool})`);

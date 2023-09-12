@@ -143,7 +143,7 @@ class FullscreenTool extends Control {
             });
 
             Toast.error({
-                i18nKey: `${I18N_BASE}.toasts.fullscreenNotSupported`
+                i18nKey: `${I18N_BASE}.toasts.errors.missingFullScreenSupport`
             });
         }
 

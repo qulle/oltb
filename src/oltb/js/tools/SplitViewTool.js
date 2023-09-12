@@ -174,7 +174,7 @@ class SplitViewTool extends Control {
 
         if(LayerManager.getMapLayerSize() <= 1) {
             Toast.info({
-                i18nKey: `${I18N_BASE}.toasts.onlyOneLayer`
+                i18nKey: `${I18N_BASE}.toasts.infos.strictOneLayer`
             });
             
             return;
@@ -346,7 +346,7 @@ class SplitViewTool extends Control {
         });
         
         Toast.error({
-            i18nKey: `${I18N_BASE}.toasts.layerError`
+            i18nKey: `${I18N_BASE}.toasts.errors.layerFailedToLoad`
         });
     }
 
@@ -496,7 +496,9 @@ class SplitViewTool extends Control {
 
         // This should not happen, but just in case
         if(!leftLayerWrapper || !rightLayerWrapper) {
-            return this.setLoadingError();
+            this.setLoadingError();
+
+            return;
         }
 
         const leftLayer = leftLayerWrapper.getLayer();

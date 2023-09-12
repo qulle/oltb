@@ -6,7 +6,7 @@ import { TranslationManager } from '../TranslationManager';
 const I18N_BASE = 'managers.infoWindowManager';
 
 const removeMarker = function(InfoWindowManager, marker) {
-    const i18n = TranslationManager.get(`${I18N_BASE}.dialogs.deleteMarker`);
+    const i18n = TranslationManager.get(`${I18N_BASE}.dialogs.confirms.deleteMarker`);
 
     Dialog.confirm({
         title: i18n.title,

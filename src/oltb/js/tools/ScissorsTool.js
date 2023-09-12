@@ -323,7 +323,7 @@ class ScissorsTool extends Control {
 
         if(this.intersectedFeatures.length === 0) {
             Toast.info({
-                i18nKey: `${I18N_BASE}.toasts.noIntersecting`,
+                i18nKey: `${I18N_BASE}.toasts.infos.missingIntersections`,
                 autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
             });
         }

@@ -219,7 +219,7 @@ class HomeTool extends Control {
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
         
         Toast.success({
-            i18nKey: `${I18N_BASE}.toasts.newHome`,
+            i18nKey: `${I18N_BASE}.toasts.infos.setHomeLocation`,
             autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
         });
     }

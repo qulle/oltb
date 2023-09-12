@@ -597,7 +597,7 @@ class BookmarkTool extends Control {
         const zoomToButton = DOM.createElement({
             element: 'button',
             class: `${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--geo-pin oltb-tippy`,
-            title: i18n.functionButtons.zoomToCoordinates,
+            title: i18n.titles.zoomToCoordinates,
             attributes: {
                 'type': 'button'
             },
@@ -609,7 +609,7 @@ class BookmarkTool extends Control {
         const copyCoordinatesButton = DOM.createElement({
             element: 'button',
             class: `${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--crosshair oltb-tippy`,
-            title: i18n.functionButtons.copyCoordinates,
+            title: i18n.titles.copyCoordinates,
             attributes: {
                 'type': 'button'
             },
@@ -621,7 +621,7 @@ class BookmarkTool extends Control {
         const editButton = DOM.createElement({
             element: 'button',
             class: `${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--edit oltb-tippy`,
-            title: i18n.functionButtons.rename,
+            title: i18n.titles.rename,
             attributes: {
                 'type': 'button'
             },
@@ -633,7 +633,7 @@ class BookmarkTool extends Control {
         const deleteButton = DOM.createElement({
             element: 'button',
             class: `${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--delete oltb-tippy`,
-            title: i18n.functionButtons.delete,
+            title: i18n.titles.delete,
             attributes: {
                 'type': 'button'
             },
@@ -680,7 +680,7 @@ class BookmarkTool extends Control {
                 this.doClearBookmarks();
 
                 Toast.info({
-                    i18nKey: `${I18N_BASE}.toasts.cleared`,
+                    i18nKey: `${I18N_BASE}.toasts.infos.clearBookmarks`,
                     autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
                 });
             }
@@ -798,7 +798,7 @@ class BookmarkTool extends Control {
         // Note: Alert the user, the Bookmark was created when the tool was not active
         if(!this.isActive) {
             Toast.success({
-                i18nKey: `${I18N_BASE}.toasts.created`,
+                i18nKey: `${I18N_BASE}.toasts.infos.createBookmark`,
                 autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
             });
         }
@@ -903,7 +903,7 @@ class BookmarkTool extends Control {
         copyToClipboard(prettyCoordinates)
             .then(() => {
                 Toast.info({
-                    i18nKey: `${I18N_BASE}.toasts.copied`,
+                    i18nKey: `${I18N_BASE}.toasts.infos.copyCoordinates`,
                     autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
                 });
             })
@@ -914,7 +914,7 @@ class BookmarkTool extends Control {
                 });
                 
                 Toast.error({
-                    i18nKey: `${I18N_BASE}.toasts.copyError`
+                    i18nKey: `${I18N_BASE}.toasts.errors.copyCoordinates`
                 });
             });
     }

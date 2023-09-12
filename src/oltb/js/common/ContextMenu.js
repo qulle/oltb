@@ -57,8 +57,20 @@ class ContextMenu extends Control {
             this.menu
         ]);
 
-        uiRefMapElement.addEventListener(Events.browser.contextMenu, this.show.bind(this));
-        uiRefMapElement.addEventListener(Events.browser.click, this.hide.bind(this));
+        uiRefMapElement.addEventListener(Events.browser.contextMenu, this.onContextMenu.bind(this));
+        uiRefMapElement.addEventListener(Events.browser.click, this.onMapClick.bind(this));
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Events
+    // -------------------------------------------------------------------
+
+    onContextMenu(event) {
+        this.show(event);
+    }
+
+    onMapClick(event) {
+        this.hide(event);
     }
 
     // -------------------------------------------------------------------
@@ -116,7 +128,7 @@ class ContextMenu extends Control {
     }
 
     show(event) {
-        // Disable native context menu
+        // Note: Disable native context menu
         if(!ContextMenu.#isDebug) {
             event.preventDefault();
         }

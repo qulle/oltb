@@ -166,7 +166,7 @@ class ResetNorthTool extends Control {
 
         // Note: Must use the center of the view, not the clicked coordinates
         const coordinates = toLonLat(view.getCenter());
-        const i18n = TranslationManager.get(`${I18N_BASE}.dialogs.rotateMap`);
+        const i18n = TranslationManager.get(`${I18N_BASE}.dialogs.prompts.rotateMap`);
 
         Dialog.prompt({
             title: i18n.title,
@@ -183,7 +183,7 @@ class ResetNorthTool extends Control {
                     });
                     
                     Toast.error({
-                        i18nKey: `${I18N_BASE}.toasts.invalidInput`
+                        i18nKey: `${I18N_BASE}.toasts.errors.invalidValue`
                     });
                 }
             }

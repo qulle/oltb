@@ -213,7 +213,7 @@ class ExportPngTool extends Control {
             });
             
             Toast.error({
-                i18nKey: `${I18N_BASE}.toasts.renderError`
+                i18nKey: `${I18N_BASE}.toasts.errors.renderCanvas`
             });
         }
     }

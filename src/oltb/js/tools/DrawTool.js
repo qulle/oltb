@@ -448,7 +448,7 @@ class DrawTool extends Control {
         
         if(!layerWrapper.getLayer().getVisible()) {
             Toast.info({
-                i18nKey: `${I18N_BASE}.toasts.drawingInHiddenLayer`,
+                i18nKey: `${I18N_BASE}.toasts.infos.drawInHiddenLayer`,
                 autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
             });
         }
@@ -507,7 +507,7 @@ class DrawTool extends Control {
 
         if(this.intersectedFeatures.length === 0) {
             Toast.info({
-                i18nKey: `${I18N_BASE}.toasts.noIntersecting`,
+                i18nKey: `${I18N_BASE}.toasts.infos.missingIntersections`,
                 autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
             });
         }

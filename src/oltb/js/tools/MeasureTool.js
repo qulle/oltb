@@ -424,7 +424,7 @@ class MeasureTool extends Control {
         
         if(!layer.getVisible()) {
             Toast.info({
-                i18nKey: `${I18N_BASE}.toasts.measuringInHiddenLayer`, 
+                i18nKey: `${I18N_BASE}.toasts.infos.drawInHiddenLayer`, 
                 autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
             });
         }

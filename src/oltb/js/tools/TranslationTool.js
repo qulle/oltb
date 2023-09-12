@@ -109,7 +109,7 @@ class TranslationTool extends Control {
     askToChangeLanguage() {
         const languages = TranslationManager.getLanguages();
         const currentLang = TranslationManager.getActiveLanguage();
-        const i18n = TranslationManager.get(`${I18N_BASE}.dialogs.changeLanguage`);
+        const i18n = TranslationManager.get(`${I18N_BASE}.dialogs.selects.changeLanguage`);
 
         Dialog.select({
             title: i18n.title,

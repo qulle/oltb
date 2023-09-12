@@ -136,7 +136,7 @@ class SettingsTool extends Control {
     // -------------------------------------------------------------------
 
     askToClearBrowserState() {
-        const i18n = TranslationManager.get(`${I18N_BASE}.dialogs.clearBrowserState`);
+        const i18n = TranslationManager.get(`${I18N_BASE}.dialogs.confirms.clearBrowserState`);
 
         Dialog.confirm({
             title: i18n.title,
@@ -156,7 +156,7 @@ class SettingsTool extends Control {
         this.doDispatchBrowserStateCleared();
 
         Toast.info({
-            i18nKey: `${I18N_BASE}.toasts.cleared`,
+            i18nKey: `${I18N_BASE}.toasts.infos.clearBrowserState`,
             autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
         });
     }
@@ -169,7 +169,7 @@ class SettingsTool extends Control {
         this.settingsModal = new SettingsModal({
             onSave: () => {
                 Toast.success({
-                    i18nKey: `${I18N_BASE}.toasts.saved`,
+                    i18nKey: `${I18N_BASE}.toasts.successes.savedSettings`,
                     autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
                 });
             },

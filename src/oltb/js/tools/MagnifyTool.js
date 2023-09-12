@@ -317,7 +317,7 @@ class MagnifyTool extends Control {
             });
             
             Toast.error({
-                i18nKey: `${I18N_BASE}.toasts.unexpectedError`
+                i18nKey: `${I18N_BASE}.toasts.errors.renderCanvas`
             });
         }
     }

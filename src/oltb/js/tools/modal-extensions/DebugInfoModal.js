@@ -497,7 +497,7 @@ class DebugInfoModal extends ModalBase {
         console.dir(this.options.map);
 
         Toast.info({
-            i18nKey: `${I18N_BASE}.toasts.logged`,
+            i18nKey: `${I18N_BASE}.toasts.infos.logMapObject`,
             autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
         });
     }
@@ -522,7 +522,7 @@ class DebugInfoModal extends ModalBase {
         }
         
         Toast.info({
-            i18nKey: `${I18N_BASE}.toasts.logged`,
+            i18nKey: `${I18N_BASE}.toasts.infos.clearLog`,
             autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
         });
     }

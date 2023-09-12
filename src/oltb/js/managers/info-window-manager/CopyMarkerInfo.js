@@ -10,7 +10,7 @@ const copyMarkerInfo = async function(InfoWindowManager, dataToCopy) {
     copyToClipboard(dataToCopy)
         .then(() => {
             Toast.info({
-                i18nKey: `${I18N_BASE}.toasts.markerInfoCopied`,
+                i18nKey: `${I18N_BASE}.toasts.infos.copyMarkerInfo`,
                 autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
             });
         })
@@ -21,7 +21,7 @@ const copyMarkerInfo = async function(InfoWindowManager, dataToCopy) {
             });
             
             Toast.error({
-                i18nKey: `${I18N_BASE}.toasts.markerInfoCopyError`
+                i18nKey: `${I18N_BASE}.toasts.errors.copyMarkerInfo`
             });
         });
 }

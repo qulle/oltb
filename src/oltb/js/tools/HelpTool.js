@@ -109,7 +109,7 @@ class HelpTool extends Control {
     // -------------------------------------------------------------------
 
     askToOpenTabOrWindow() {
-        const i18n = TranslationManager.get(`${I18N_BASE}.dialogs.openHelp`);
+        const i18n = TranslationManager.get(`${I18N_BASE}.dialogs.confirms.openHelp`);
 
         Dialog.confirm({
             title: i18n.title,
@@ -136,7 +136,7 @@ class HelpTool extends Control {
             });
             
             Toast.error({
-                i18nKey: `${I18N_BASE}.toasts.blockedByBrowserError`
+                i18nKey: `${I18N_BASE}.toasts.errors.blockedByBrowser`
             });
         }
     }

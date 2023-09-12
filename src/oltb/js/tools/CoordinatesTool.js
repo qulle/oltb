@@ -435,7 +435,7 @@ class CoordinatesTool extends Control {
         copyToClipboard(prettyCoordinates)
             .then(() => {
                 Toast.info({
-                    i18nKey: `${I18N_BASE}.toasts.copied`,
+                    i18nKey: `${I18N_BASE}.toasts.infos.copyCoordinates`,
                     autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
                 });
             })
@@ -446,7 +446,7 @@ class CoordinatesTool extends Control {
                 });
 
                 Toast.error({
-                    i18nKey: `${I18N_BASE}.toasts.copyError`
+                    i18nKey: `${I18N_BASE}.toasts.errors.copyCoordinates`
                 });
             });
     }
