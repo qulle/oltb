@@ -109,7 +109,9 @@ class LayerTool extends Control {
             class: CLASS_TOOL_BUTTON,
             attributes: {
                 'type': 'button',
-                'data-tippy-content': `${i18n.title} (${ShortcutKeys.layerTool})`
+                'data-tippy-content': `${i18n.title} (${ShortcutKeys.layerTool})`,
+                'data-tippy-content-post': `(${ShortcutKeys.layerTool})`,
+                'data-oltb-i18n': `${I18N_BASE}.title`
             },
             listeners: {
                 'click': this.onClickTool.bind(this)
@@ -731,6 +733,15 @@ class LayerTool extends Control {
             class: `${CLASS_TOOLBOX_LIST}__wrapper`
         });
 
+        const layerActiveDot = DOM.createElement({
+            element: 'div',
+            class: `${CLASS_TOOLBOX_LIST}__dot`
+        });
+
+        DOM.appendChildren(leftWrapper, [
+            layerActiveDot
+        ]);
+
         DOM.appendChildren(leftWrapper, [
             layerName
         ]);
@@ -847,13 +858,13 @@ class LayerTool extends Control {
             class: `${CLASS_TOOLBOX_LIST}__wrapper`
         });
 
-        const layerActiveStrip = DOM.createElement({
+        const layerActiveDot = DOM.createElement({
             element: 'div',
-            class: `${CLASS_TOOLBOX_LIST}__strip`
+            class: `${CLASS_TOOLBOX_LIST}__dot`
         });
 
         DOM.appendChildren(leftWrapper, [
-            layerActiveStrip
+            layerActiveDot
         ]);
 
         DOM.appendChildren(leftWrapper, [
@@ -875,7 +886,10 @@ class LayerTool extends Control {
         const layerHandle = DOM.createElement({
             element: 'div',
             class: `${CLASS_TOOLBOX_LIST}__handle oltb-tippy`,
-            title: i18n.dragToSort
+            title: i18n.dragToSort,
+            attributes: {
+                'data-oltb-i18n': `${I18N_BASE_COMMON}.titles.dragToSort`
+            }
         });
 
         DOM.appendChildren(rightWrapper, [
@@ -891,12 +905,14 @@ class LayerTool extends Control {
     }
 
     createUIDeleteButton(layerWrapper, callback) {
+        const i18nKey = `${I18N_BASE_COMMON}.titles.delete`;
         const deleteButton = DOM.createElement({
             element: 'button',
             class: `${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--delete oltb-tippy`,
-            title: TranslationManager.get(`${I18N_BASE_COMMON}.titles.delete`),
+            title: TranslationManager.get(i18nKey),
             attributes: {
-                'type': 'button'
+                'type': 'button',
+                'data-oltb-i18n': i18nKey
             },
             listeners: {
                 'click': this.onLayerDelete.bind(this, layerWrapper, callback)
@@ -907,12 +923,14 @@ class LayerTool extends Control {
     }
 
     createUIDownloadButton(layerWrapper, callback) {
+        const i18nKey = `${I18N_BASE_COMMON}.titles.download`;
         const downloadButton = DOM.createElement({
             element: 'button', 
             class: `${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--download oltb-tippy`,
-            title: TranslationManager.get(`${I18N_BASE_COMMON}.titles.download`),
+            title: TranslationManager.get(i18nKey),
             attributes: {
-                'type': 'button'
+                'type': 'button',
+                'data-oltb-i18n': i18nKey
             },
             listeners: {
                 'click': this.onLayerDownload.bind(this, layerWrapper, callback)
@@ -923,12 +941,14 @@ class LayerTool extends Control {
     }
 
     createUIEditButton(layerWrapper, callback, layerName) {
+        const i18nKey = `${I18N_BASE_COMMON}.titles.rename`;
         const editButton = DOM.createElement({
             element: 'button',
             class: `${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--edit oltb-tippy`,
-            title: TranslationManager.get(`${I18N_BASE_COMMON}.titles.rename`),
+            title: TranslationManager.get(i18nKey),
             attributes: {
-                'type': 'button'
+                'type': 'button',
+                'data-oltb-i18n': i18nKey
             },
             listeners: {
                 'click': this.onLayerEdit.bind(this, layerWrapper, callback, layerName)
@@ -939,12 +959,14 @@ class LayerTool extends Control {
     }
 
     createUIVisibilityButton(layerWrapper, callback, layerName) {
+        const i18nKey = `${I18N_BASE_COMMON}.titles.toggleVisibility`;
         const visibilityButton = DOM.createElement({
             element: 'button',
             class: `${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--visibility oltb-tippy`,
-            title: TranslationManager.get(`${I18N_BASE_COMMON}.titles.toggleVisibility`),
+            title: TranslationManager.get(i18nKey),
             attributes: {
-                'type': 'button'
+                'type': 'button',
+                'data-oltb-i18n': i18nKey
             },
             listeners: {
                 'click': this.onLayerVisibilityChange.bind(this, layerWrapper, callback, layerName)

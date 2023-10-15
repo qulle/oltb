@@ -26,7 +26,6 @@ const DefaultOptions = Object.freeze({
 const ThemesData = Object.freeze({
     light: {
         class: 'light',
-        tippyContent: '',
         icon: getIcon({
             path: SvgPaths.moonStars.stroked,
             class: `${CLASS_TOOL_BUTTON}__icon`
@@ -34,7 +33,6 @@ const ThemesData = Object.freeze({
     },
     dark: {
         class: 'dark',
-        tippyContent: '',
         icon: getIcon({
             path: SvgPaths.sun.stroked,
             class: `${CLASS_TOOL_BUTTON}__icon`
@@ -62,18 +60,16 @@ class ThemeTool extends Control {
             element: ElementManager.getToolbarElement()
         });
 
-        // Note: The values are flipped
-        const i18n = TranslationManager.get(`${I18N_BASE}.titles`);
-        ThemesData.light.tippyContent = i18n.dark;
-        ThemesData.dark.tippyContent = i18n.light;
-
+        const i18n = TranslationManager.get(I18N_BASE);
         const button = DOM.createElement({
             element: 'button',
             html: this.getToolIcon(),
             class: CLASS_TOOL_BUTTON,
             attributes: {
                 'type': 'button',
-                'data-tippy-content': `${this.getToolTippyContent()} (${ShortcutKeys.themeTool})`
+                'data-tippy-content': `${i18n.title} (${ShortcutKeys.themeTool})`,
+                'data-tippy-content-post': `(${ShortcutKeys.themeTool})`,
+                'data-oltb-i18n': `${I18N_BASE}.title`
             },
             listeners: {
                 'click': this.onClickTool.bind(this)
@@ -160,12 +156,6 @@ class ThemeTool extends Control {
     // # Section: Getters and Setters
     // -------------------------------------------------------------------
 
-    getToolTippyContent() {
-        return isDarkTheme() 
-            ? ThemesData.dark.tippyContent 
-            : ThemesData.light.tippyContent;
-    }
-
     getToolIcon() {
         return isDarkTheme() 
             ? ThemesData.dark.icon
@@ -209,7 +199,6 @@ class ThemeTool extends Control {
 
         this.button.removeChild(this.button.firstElementChild);
         this.button.insertAdjacentHTML('afterbegin', to.icon);
-        this.button.getTippy().setContent(`${to.tippyContent} (${ShortcutKeys.themeTool})`);
     }
 }
 

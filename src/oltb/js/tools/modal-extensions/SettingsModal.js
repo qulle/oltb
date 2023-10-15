@@ -17,6 +17,10 @@ const DefaultOptions = Object.freeze({
     onCancel: undefined
 });
 
+/**
+ * About:
+ * Manager that handles settings
+ */
 class SettingsModal extends ModalBase {
     #state = new Map();
 

@@ -16,18 +16,18 @@ class LogManager {
     static #levels = Object.freeze({
         debug: {
             value: 1,
-            icon: '🐳',
+            icon: '👾',
             info: 'Debug',
             color: '#0166A5FF',
-            backgroundColor: '#D7E3FAFF',
+            backgroundColor: '#D7E3FA66',
             method: window.console.log
         },
         information: {
             value: 2,
-            icon: '🐸',
+            icon: '🐳',
             info: 'Information',
             color: '#3B4352FF',
-            backgroundColor: '#D3D9E6FF',
+            backgroundColor: '#D3D9E666',
             method: window.console.info
         },
         warning: {
@@ -35,7 +35,7 @@ class LogManager {
             icon: '🐠',
             info: 'Warning',
             color: '#FBBD02FF',
-            backgroundColor: '#FFF1C5FF',
+            backgroundColor: '#FFF1C566',
             method: window.console.warn
         },
         error: {
@@ -43,7 +43,7 @@ class LogManager {
             icon: '🐝',
             info: 'Error',
             color: '#EB4542FF',
-            backgroundColor: '#FDB5B4FF',
+            backgroundColor: '#FDB5B466',
             method: window.console.error
         },
         fatal: {
@@ -51,7 +51,7 @@ class LogManager {
             icon: '🐞',
             info: 'Fatal',
             color: '#493E9CFF',
-            backgroundColor: '#D0CAFFFF',
+            backgroundColor: '#D0CAFF66',
             method: window.console.error
         }
     });

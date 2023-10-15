@@ -48,13 +48,16 @@ class FullscreenTool extends Control {
             class: `${CLASS_TOOL_BUTTON}__icon`
         });
 
+        const i18n = TranslationManager.get(I18N_BASE);
         const button = DOM.createElement({
             element: 'button',
             html: this.getToolIcon(),
             class: CLASS_TOOL_BUTTON,
             attributes: {
                 'type': 'button',
-                'data-tippy-content': `${this.getToolTippyContent()} (${ShortcutKeys.fullscreenTool})`
+                'data-tippy-content': `${i18n.title} (${ShortcutKeys.fullscreenTool})`,
+                'data-tippy-content-post': `(${ShortcutKeys.fullscreenTool})`,
+                'data-oltb-i18n': `${I18N_BASE}.title`
             },
             listeners: {
                 'click': this.onClickTool.bind(this)
@@ -154,14 +157,6 @@ class FullscreenTool extends Control {
     // # Section: Getters and Setters
     // -------------------------------------------------------------------
 
-    getToolTippyContent() {
-        const i18n = TranslationManager.get(`${I18N_BASE}.titles`);
-
-        return isFullScreen() 
-            ? i18n.exit 
-            : i18n.enter;
-    }
-
     getToolIcon() {
         return isFullScreen() 
             ? this.exitFullscreenIcon 
@@ -209,7 +204,6 @@ class FullscreenTool extends Control {
         if(document.fullscreenElement) {
             this.button.removeChild(this.button.firstElementChild);
             this.button.insertAdjacentHTML('afterbegin', this.exitFullscreenIcon);
-            this.button.getTippy().setContent(`Exit fullscreen (${ShortcutKeys.fullscreenTool})`);
 
             // Note: Consumer callback
             if(this.options.onEnter instanceof Function) {
@@ -218,7 +212,6 @@ class FullscreenTool extends Control {
         }else {
             this.button.removeChild(this.button.firstElementChild);
             this.button.insertAdjacentHTML('afterbegin', this.enterFullscreenIcon);
-            this.button.getTippy().setContent(`Enter fullscreen (${ShortcutKeys.fullscreenTool})`);
 
             // Note: Consumer callback
             if(this.options.onLeave instanceof Function) {

@@ -19,6 +19,10 @@ const DefaultOptions = Object.freeze({
     onCancel: undefined
 });
 
+/**
+ * About:
+ * Manager that handles importing of vector layers
+ */
 class ImportLayerModal extends ModalBase {
     constructor(options = {}) {
         LogManager.logDebug(FILENAME, 'constructor', 'init');

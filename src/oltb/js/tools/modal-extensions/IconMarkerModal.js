@@ -32,6 +32,10 @@ const DefaultOptions = Object.freeze({
     onCancel: undefined
 });
 
+/**
+ * About:
+ * Manager that handles creation of Icon-Markers
+ */
 class IconMarkerModal extends ModalBase {
     constructor(options = {}) {
         LogManager.logDebug(FILENAME, 'constructor', 'init');

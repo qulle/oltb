@@ -21,7 +21,7 @@ const CLASS_TOOL_BUTTON = 'oltb-tool-button';
 class TippyManager {
     static #toolButtonInstances;
     static #toolButtonTippy;
-    static #mapTippy;
+    static #dynamicTippy;
     static #colorTippy;
 
     static async initAsync(options = {}) {
@@ -29,7 +29,7 @@ class TippyManager {
         
         this.#toolButtonInstances = [];
         this.#toolButtonTippy = this.#createToolButtonTippy();
-        this.#mapTippy = this.#createMapTippy();
+        this.#dynamicTippy = this.#createDynamicTippy();
         this.#colorTippy = this.#createColorTippy();
 
         window.addEventListener(Events.browser.resize, this.#onPlacementChange.bind(this));
@@ -115,22 +115,47 @@ class TippyManager {
         });
     }
 
-    static #createMapTippy() {
+    static #createDynamicTippy() {
         const uiRefMapElement = ElementManager.getMapElement();
         const offset = ConfigManager.getConfig().tippy.offset;
 
         return delegate(uiRefMapElement, {
-            content(reference) {
-                const title = reference.getAttribute('title');
-                reference.removeAttribute('title');
-                return title;
-            },
             target: '.oltb-tippy',
             placement: 'top',
             appendTo: uiRefMapElement,
             theme: 'oltb oltb-themed',
             offset: offset,
             touch: false,
+            onShow(instance) {
+                const element = instance.reference;
+                const title = (
+                    element.getAttribute('title') ||
+                    element.getAttribute('data-tippy-value') ||
+                    ''
+                );
+
+                // Store the title to not have multiple tooltips
+                element.setAttribute('data-tippy-value', title);
+                element.removeAttribute('title');
+                
+                // Apply title in the custom tooltip
+                instance.setContent(title);
+            },
+            onHidden(instance) {
+                const element = instance.reference;
+                const title = (
+                    element.getAttribute('data-tippy-value') ||
+                    element.getAttribute('title') ||
+                    ''
+                );
+                
+                // Add back the title as pure title attribute for next time will be displayed
+                element.setAttribute('title', title);
+                element.removeAttribute('data-tippy-value');
+
+                // Remove title from the custom tooltip
+                instance.setContent('');
+            }
         });
     }
 
@@ -170,8 +195,8 @@ class TippyManager {
         return this.#toolButtonTippy;
     }
 
-    static getMapTippy() {
-        return this.#mapTippy;
+    static getDynamicTippy() {
+        return this.#dynamicTippy;
     }
 
     static getColorTippy() {

@@ -75,7 +75,9 @@ class TooltipManager {
     }
 
     static #onMoveEnd(event) {
-        // TODO: Calculate the new position of the overlay based on how far the map moved
+        // TODO:
+        // AsIs: Tooltip is still at old location until the mouse is moved
+        // ToBe: Calculate the new position of the overlay based on how far the map moved
         this.#tooltipOverlay.setPosition(event.coordinate);
     }
 

@@ -4,669 +4,782 @@ export const SvSe = Object.freeze({
         code: 'sv-se'
     },
     managers: {
-        infoWindowManager: {
-
-        },
-        errorManager: {
-
-        },
-        layerManager: {
-
+        stateManager: {
+            toasts: {
+                errors: {
+                    parseBrowserData: {
+                        title: 'Error',
+                        message: 'Misslyckades att läsa in applikationsdata'
+                    }
+                }
+            }
         },
         settingsManager: {
-            
+            settings: {
+                mouseWheelZoom: 'Zooma Karta Endast Med Mushjul',
+                altShiftDragRotate: 'Rotera Kartan Med Shift + Alt + Drag',
+                dragPan: 'Dra Kartan Endast Med Mus',
+                keyboardZoom: 'Zooma Kartan Med Tangentbordet',
+                keyboardPan: 'Panorera Kartan Med Tangentbordet',
+                selectVectorMapShapes: 'Markera Objekt i Vektorkartlager',
+                snapInteraction: 'Använd Snap Funktion',
+                snapHelpLines: 'Använd Hjälplinjer',
+                alwaysNewLayers: 'Skapa Lager När Verktyg Väljs'
+            }
+        },
+        errorManager: {
+            toasts: {
+                errors: {
+                    uncaughtException: {
+                        title: 'Error',
+                        message: 'Ett oväntat fel uppstod'
+                    }
+                }
+            }
+        },
+        infoWindowManager: {
+            toasts: {
+                infos: {
+                    copyMarkerCoordinates: {
+                        title: 'Kopierat',
+                        message: 'Markörkoordinater har kopierats till urklipp'
+                    },
+                    copyMarkerInfo: {
+                        title: 'Kopierat',
+                        message: 'Markörinformation har kopierats till urklipp'
+                    },
+                },
+                errors: {
+                    copyMarkerInfo: {
+                        title: 'Error',
+                        message: 'Misslyckades att kopiera Markörinformation'
+                    },
+                    copyMarkerCoordinates: {
+                        title: 'Error',
+                        message: 'Misslyckades att kopiera Markörkoordinater'
+                    },
+                }
+            },
+            dialogs: {
+                confirms: {
+                    deleteMarker: {
+                        title: 'Radera Markör',
+                        message: 'Vill du radera vald Markör?',
+                        confirmText: 'Radera'
+                    }
+                }
+            }
         }
     },
     common: {
-        functionButtons: {
-            delete: 'Delete',
-            rename: 'Rename',
-            edit: 'Edit',
-            download: 'Download',
-            copyCoordinates: 'Copy Coordinates',
-            copyText: 'Copy Text',
-            zoomToCoordinates: 'Zoom To Coordinates',
-            toggleVisibility: 'Toggle Visibility'
-        },
         titles: {
-            toggleSection: 'Toggle Section',
-            dragToSort: 'Drag To Sort'
+            edit: 'Redigera',
+            delete: 'Radera',
+            dragToSort: 'Dra För Att Sortera',
+            download: 'Ladda Ner',
+            copyText: 'Kopiera Text',
+            copyCoordinates: 'Kopiera Koordinater',
+            rename: 'Ändra Namn',
+            toggleSection: 'Toggla Sektion',
+            toggleVisibility: 'Toggla Synlighet',
+            zoomToCoordinates: 'Zooma Till Koordinater'
         }
     },
     modalExtensions: {
         coordinateModal: {
-            title: 'Coordinates',
+            title: 'Koordinater',
             form: {
-                latitude: 'Latitude',
-                longitude: 'Longitude',
-                navigateTo: 'Navigate To',
-                cancel: 'Cancel',
-                description: 'Coordinates are given in WGS84/EPSG:4326'
+                latitude: 'Latitud',
+                longitude: 'Longitud',
+                navigateTo: 'Navigera Till',
+                cancel: 'Avbryt',
+                description: 'Koordinater anges i WGS84/EPSG:4326'
             }
         },
         debugInfoModal: {
-            title: 'Debug Information',
-            noMapFound: 'No map reference found',
+            title: 'Debuginformation',
+            noMapFound: 'Ingen Kartreferens hittades',
             form: {
-                logToBrowser: 'Log Map To Browser Console',
-                generateUUID: 'Generate UUID',
-                clearLog: 'Clear Event Log',
-                doAction: 'Do Action',
+                logToBrowser: 'Logga Kartan Till Webbläsarkonsolen',
+                generateUUID: 'Generera UUID',
+                clearLog: 'Rensa Händelselogg',
+                doAction: 'Utför',
             },
             sections: {
-                appData: 'App Data',
-                browserData: 'Browser Data',
+                appData: 'Applikationsdata',
+                browserData: 'Webbläsardata',
                 localStorage: 'Local Storage',
                 sessionStorage: 'Session Storage',
-                cookies: 'Cookies',
-                eventlog: 'Eventlog'
+                cookies: 'Kakor',
+                eventlog: 'Händelselogg'
             },
             toasts: {
-                logged: {
-                    title: 'Logged',
-                    message: 'Map object logged to console'
-                },
-                cleared: {
-                    title: 'Cleared',
-                    message: 'Event log was cleared of all entries'
-                },
-                geoLocationNotSupported: {
-                    message: 'Geolocation is not supported'
-                },
-                geoSearching: {
-                    title: 'Searching',
-                    message: 'Trying to find your location...'
+                infos: {
+                    logMapObject: {
+                        title: 'Loggad',
+                        message: 'Kartobjekt loggat till konsolen'
+                    },
+                    clearLog: {
+                        title: 'Rensat',
+                        message: 'Händelseloggen rensades från alla poster'
+                    }
                 }
             }
         },
         downloadLayerModal: {
-            title: 'Download Layer',
+            title: 'Ladda Ner Lager',
             form: {
-                layerFormat: 'Layer format',
-                download: 'Download layer',
-                cancel: 'Cancel'
+                layerFormat: 'Lagerformat',
+                download: 'Ladda ner lager',
+                cancel: 'Avbryt'
             }
         },
         iconMarkerModal: {
-            title: 'Marker Configuration',
+            title: 'Markörkonfiguration',
             form: {
-                title: 'Title',
-                description: 'Description',
-                icon: 'Icon',
-                latitude: 'Latitude',
-                longitude: 'Longitude',
-                markerFill: 'Marker Fill',
-                markerStroke: 'Marker Stroke',
-                label: 'Label',
-                labelFill: 'Label Fill',
-                labelStrokeWidth: 'Label Stroke Width',
-                labelStroke: 'Label Stroke',
-                saveChanges: 'Save Changes',
-                createMarker: 'Create Marker',
-                cancel: 'Cancel'
+                title: 'Titel',
+                description: 'Beskrivning',
+                icon: 'Ikon',
+                latitude: 'Latitud',
+                longitude: 'Longitud',
+                markerFill: 'Markörfyllning',
+                markerStroke: 'Markörlinje',
+                label: 'Etikett',
+                labelFill: 'Ettikettfyllning',
+                labelStrokeWidth: 'Ettikettbredd',
+                labelStroke: 'Etikettfyllning',
+                saveChanges: 'Spara Ändringar',
+                createMarker: 'Skapa Markör',
+                cancel: 'Avbryt'
             }
         },
         importLayerModal: {
-            title: 'Import Layer',
+            title: 'Importera Lager',
             form: {
-                featureProjection: 'Feature Projection',
-                dataProjection: 'Data Projection',
-                import: 'Import Layer',
-                cancel: 'Cancel'
+                featureProjection: 'Funktionsprojektion',
+                dataProjection: 'Dataprojektion',
+                import: 'Importera Lager',
+                cancel: 'Avbryt'
             }
         },
         layerModal: {
-            title: 'Create Map Layer',
+            title: 'Skapa Kartlager',
             form: {
-                name: 'Name',
-                layer: 'Layer',
-                source: 'Source',
-                projection: 'Projection',
+                name: 'Namn',
+                layer: 'Lager',
+                source: 'Källa',
+                projection: 'Projektion',
                 url: 'URL',
-                parameters: 'Parameters (JSON)',
+                parameters: 'Parametrar (JSON)',
                 wrapX: 'WrapX',
                 cors: 'CORS',
-                createLayer: 'Create Layer',
-                cancel: 'Cancel'
+                attributions: 'Tillskrivs',
+                createLayer: 'Skapa Lager',
+                cancel: 'Avbryt'
             }
         },
         settingsModal: {
-            title: 'Settings',
+            title: 'Inställningar',
             form: {
-                save: 'Save Settings',
-                cancel: 'Cancel'
+                save: 'Spara Inställningar',
+                cancel: 'Avbryt'
             }
         }
     },
     tools: {
         hiddenAboutTool: {
             contextItems: {
-                about: 'About OLTB'
+                about: 'Om OLTB'
             },
             modals: {
                 about: {
-                    title: 'About OLTB',
+                    title: 'Om OLTB',
                     version: 'Version',
-                    developedBy: 'Developed by Qulle',
-                    usingOpenLayers: 'Using OpenLayers'
+                    developedBy: 'Utvecklat av Qulle',
+                    usingOpenLayers: 'Använder OpenLayers'
                 }
             }
         },
         hiddenMapNavigationTool: {
             contextItems: {
-                copy: 'Copy Coordinates',
-                navigate: 'Navigate To',
-                move: 'Center Here',
-                focus: 'Focus Here'
+                copyCoordinates: 'Kopiera Koordinater',
+                navigateToCoordinates: 'Navigera Till',
+                centerMap: 'Centrera',
+                focusMap: 'Fokusera'
             },
             toasts: {
-                copied: {
-                    title: 'Copied',
-                    message: 'Coordinates copied to clipboard'
+                infos: {
+                    coordinatesCopied: {
+                        title: 'Kopierad',
+                        message: 'Koordinaterna har kopierats till urklipp'
+                    }
                 },
-                copyError: {
-                    title: 'Error',
-                    message: 'Failed to copy coordinates'
-                },
-                parseUrlMarkerError: {
-                    title: 'Error',
-                    message: 'Failed to parse URL Marker'
-                },
-                missingProjectionError: {
-                    title: 'Error',
-                    message: 'Missing projection definition'
+                errors: {
+                    coordinatesCopy: {
+                        title: 'Error',
+                        message: 'Misslyckades att kopiera koordinater'
+                    },
+                    parseUrlMarker: {
+                        title: 'Error',
+                        message: 'Misslyckades att konverta URL Markör'
+                    },
+                    missingProjection: {
+                        title: 'Error',
+                        message: 'Saknar projektionsdefinition'
+                    }
                 }
             }
         },
         hiddenMarkerTool: {
             contextItems: {
-                createMarker: 'Create Marker'
+                createMarker: 'Skapa Markör'
             }
         },
         bookmarkTool: {
-            title: 'Bookmarks',
+            title: 'Bokmärken',
             toolbox: {
                 titles: {
-                    bookmarks: 'Bookmarks'
+                    bookmarks: 'Bokmärken'
                 },
                 groups: {
                     addBookmark: {
-                        placeholder: 'Bookmark Name',
-                        add: 'Add Bookmark'
+                        placeholder: 'Namn',
+                        add: 'Skapa Bokmärke'
                     }
                 }
             },
             contextItems: {
-                addBookmark: 'Add Bookmark',
-                clearBookmarks: 'Clear Bookmarks'
+                addBookmark: 'Skapa Bokmärke',
+                clearBookmarks: 'Rensa Bokmärken'
             },
             layers: {
-                bookmarks: 'Bookmarks'
+                bookmarks: 'Bokmärken'
             },
             toasts: {
-                cleared: {
-                    title: 'Cleared',
-                    message: 'All stored bookmarks was cleared'
+                infos: {
+                    clearBookmarks: {
+                        title: 'Rensat',
+                        message: 'Alla lagrade Bokmärken raderades'
+                    },
+                    createBookmark: {
+                        title: 'Nytt Bokmärke',
+                        message: 'Ett nytt Bokmärke skapat'
+                    },
+                    copyCoordinates: {
+                        title: 'Kopierad',
+                        message: 'Koordinaterna har kopierats till urklipp'
+                    }
                 },
-                created: {
-                    title: 'New Bookmark',
-                    message: 'A new Bookmark created'
-                },
-                copied: {
-                    title: 'Copied',
-                    message: 'Coordinates copied to clipboard'
-                },
-                copyError: {
-                    title: 'Error',
-                    message: 'Failed to copy coordinates'
+                errors: {
+                    copyCoordinates: {
+                        title: 'Error',
+                        message: 'Misslyckades att kopiera koordinater'
+                    }
                 }
             }
         },
         coordinatesTool: {
-            title: 'Show Coordinates',
+            title: 'Visa Koordinater',
             toolbox: {
                 titles: {
-                    coordinates: 'Coordinates'
+                    coordinates: 'Koordinater'
                 },
                 groups: {
                     formats: {
                         title: 'Format',
-                        dd: 'Decimal Degrees',
-                        dms: 'Degrees, Minutes, Seconds'
+                        dd: 'Decimalgrader',
+                        dms: 'Grader, Minuter, Sekunder'
                     },
                     coordinates: {
-                        title: 'Coordinates'
+                        title: 'Koordinater'
                     }
                 }
             },
             settings: {
-                copyOnClick: 'Copy Coordinates On Click',
-                updateToolboxOnHover: 'Update Toolbox Coordinates When Hover'
+                copyOnClick: 'Kopiera Koordinater Vid Klick',
+                updateToolboxOnHover: 'Uppdatera Verktygslådan Vid Förflyttning'
             },
             toasts: {
-                copied: {
-                    title: 'Copied',
-                    message: 'Coordinates copied to clipboard'
+                infos: {
+                    copyCoordinates: {
+                        title: 'Kopierad',
+                        message: 'Koordinaterna har kopierats till urklipp'
+                    },
                 },
-                copyError: {
-                    title: 'Error',
-                    message: 'Failed to copy coordinates'
+                errors: {
+                    copyCoordinates: {
+                        title: 'Error',
+                        message: 'Misslyckades att kopiera koordinater'
+                    }
                 }
             }
         },
         debugInfoTool: {
-            title: 'Debug Info'
+            title: 'Debuginformation'
         },
         directionTool: {
-            titles: {
-                horizontal: 'Horizontal Toolbar',
-                vertical: 'Vertical Toolbar'
-            }
+            title: 'Toggla Riktning'
         },
         drawTool: {
-            title: 'Draw',
+            title: 'Rita',
             toolbox: {
                 titles: {
-                    draw: 'Draw'
+                    draw: 'Rita'
                 },
                 groups: {
                     shapes: {
-                        title: 'Shape',
-                        circle: 'Circle',
-                        square: 'Square',
-                        rectangle: 'Rectangle',
-                        lineString: 'Line',
-                        point: 'Point',
+                        title: 'Form',
+                        circle: 'Cirkel',
+                        square: 'Kvadrat',
+                        rectangle: 'Rektangel',
+                        lineString: 'Linje',
+                        point: 'Punkt',
                         polygon: 'Polygon'
                     },
                     intersectable: {
-                        title: 'Intersection',
-                        true: 'True',
-                        false: 'Fals'
+                        title: 'Genomskärning',
+                        true: 'Ja',
+                        false: 'Nej'
                     },
                     strokeWidth: {
-                        title: 'Stroke width'
+                        title: 'Linjebredd'
                     },
                     strokeColor: {
-                        title: 'Stroke Color'
+                        title: 'Linjefärg'
                     },
                     fillColor: {
-                        title: 'Fill Color'
+                        title: 'Fyllnadsfärg'
                     }
                 }
             },
             layers: {
-                defaultName: 'Drawing layer'
+                defaultName: 'Ritlager'
             },
             toasts: {
-                drawingInHiddenLayer: {
-                    title: 'Tip',
-                    message: 'You are drawing in a hidden layer'
-                },
-                noIntersecting: {
-                    title: 'Oops',
-                    message: 'No intersecting object found'
+                infos: {
+                    drawInHiddenLayer: {
+                        title: 'Tips',
+                        message: 'Du ritar i ett dolt lager'
+                    },
+                    missingIntersections: {
+                        title: 'Hoppsan',
+                        message: 'Inga korsande objekt hittades'
+                    }
                 }
             }
         },
         editTool: {
-            title: 'Edit',
+            title: 'Redigera',
             toolbox: {
                 titles: {
-                    edit: 'Edit'
+                    edit: 'Redigera'
                 },
                 groups: {
-                    misc: 'Misc',
-                    shapes: 'Shapes',
-                    strokeColor: 'Stroke Color',
-                    fillColor: 'Fill Color'
+                    misc: 'Övrigt',
+                    shapes: 'Former',
+                    strokeColor: 'Linjefärg',
+                    fillColor: 'Fyllnadsfärg'
                 }
             },
             settings: {
-                mouseOnlyToEditVectorShapes: 'Mouse Only To Edit Vector Shapes',
+                mouseOnlyToEditVectorShapes: 'Endast Mus För Att Redigera Vektorformer',
             },
             toasts: {
-                noSelected: {
-                    title: 'Oops',
-                    message: 'No features selected to delete'
+                infos: {
+                    missingFeatures: {
+                        title: 'Hoppsan',
+                        message: 'Inga objekt har markerats för borttagning'
+                    },
+                    strictTwoFeatures: {
+                        title: 'Hoppsan',
+                        message: 'Endast två överlappande objekt kan hanteras'
+                    }
                 },
-                strictTwoShapes: {
-                    title: 'Oops',
-                    message: 'Strict two overlapping features must be selected'
-                },
-                shapeOperationError: {
-                    title: 'Error',
-                    message: 'Failed to perform shape operation'
+                errors: {
+                    operationFailed: {
+                        title: 'Error',
+                        message: 'Misslyckades att utföra transformationen'
+                    }
                 }
             },
             dialogs: {
-                deleteFeatures: {
-                    title: 'Delete Feature',
-                    message: 'Delete selected feature',
-                    confirmText: 'Delete'
+                confirms: {
+                    deleteFeatures: {
+                        title: 'Radera Objekt',
+                        message: 'Radera markerade objekt',
+                        confirmText: 'Radera'
+                    }
                 }
             }
         },
         exportPngTool: {
-            title: 'Export PNG',
+            title: 'Exportera PNG',
             toasts: {
-                renderError: {
-                    title: 'Error',
-                    message: 'Failed to export canvas image'
+                errors: {
+                    renderCanvas: {
+                        title: 'Error',
+                        message: 'Misslyckades att exportera Canvas'
+                    }
                 }
             }
         },
         fullscreenTool: {
-            titles: {
-                exit: 'Exit Fullscreen',
-                enter: 'Enter Fullscreen'
-            },
+            title: 'Toggla Fullskärm',
             toasts: {
-                fullscreenNotSupported: {
-                    title: 'Error',
-                    message: 'Fullscreen is not supported by this browser'
+                errors: {
+                    missingFullScreenSupport: {
+                        title: 'Error',
+                        message: 'Fullskärm stöds inte av webbläsaren'
+                    }
                 }
             }
         },
         graticuleTool: {
-            title: 'Show Graticule'
+            title: 'Visa Graticule'
         },
         helpTool: {
-            title: 'Help',
+            title: 'Hjälp',
             dialogs: {
-                openHelp: {
-                    title: 'Help Pages',
-                    message: 'Browsers block automatic opening new windows, here is a button for you to press',
-                    confirmText: 'Open Help'
+                confirms: {
+                    openHelp: {
+                        title: 'Hjälpsidor',
+                        message: 'Webbläsare blockerar automatisk öppning av nya fönster, här är en knapp som du kan trycka på',
+                        confirmText: 'Öppna Hjälpsidor'
+                    }
                 }
             },
             toasts: {
-                blockedByBrowserError: {
-                    title: 'Error',
-                    message: 'Action was restricted by browser settings'
+                errors: {
+                    blockedByBrowser: {
+                        title: 'Error',
+                        message: 'Åtgärden begränsades av webbläsarinställningar'
+                    }
                 }
             }
         },
         homeTool: {
-            title: 'Zoom Home',
+            title: 'Zooma Hem',
             contextItems: {
-                setHome: 'Set Home'
+                setHome: 'Sätt Hem'
             },
             toasts: {
-                newHome: {
-                    title: 'New Home',
-                    message: 'New location was set as Home'
+                infos: {
+                    setHomeLocation: {
+                        title: 'Nytt Hem',
+                        message: 'Ny plats sattes som Hem'
+                    }
                 }
             }
         },
         importVectorLayerTool: {
-            title: 'Import Vector Layer',
+            title: 'Importera Vektorlager',
             toasts: {
-                unsupportedFormatError: {
-                    title: 'Error',
-                    message: 'The layer format is not supported'
-                },
-                importError: {
-                    title: 'Error',
-                    message: 'Failed to import vector layer'
+                errors: {
+                    unsupportedFormat: {
+                        title: 'Error',
+                        message: 'Lagerformatet stöds inte'
+                    },
+                    importFailed: {
+                        title: 'Error',
+                        message: 'Misslyckades att importera lager'
+                    }
                 }
             }
         },
         infoTool: {
-            title: 'Info'
+            title: 'Information'
         },
         layerTool: {
-            title: 'Layers',
+            title: 'Lager',
             toolbox: {
                 titles: {
-                    mapLayers: 'Map Layers',
-                    featureLayers: 'Feature Layers'
+                    mapLayers: 'Kartlager',
+                    featureLayers: 'Objektlager'
                 },
                 groups: {
                     createMapLayer: {
-                        create: 'Create Map Layer'
+                        create: 'Skapa Kartlager'
                     },
                     createFeatureLayer: {
-                        placeholder: 'Layer Name', 
-                        create: 'Create Feature Layer'
+                        placeholder: 'Namn', 
+                        create: 'Skapa Objektlager'
                     }
                 }
             },
             contextItems: {
-                addMapLayer: 'Add Map Layer',
-                addFeatureLayer: 'Add Feature Layer'
+                addMapLayer: 'Skapa Kartlager',
+                addFeatureLayer: 'Skapa Objektlager'
             },
             toasts: {
-                newLayer: {
-                    title: 'New Layer',
-                    message: 'A new Feature layer created'
+                infos: {
+                    addFeatureLayer: {
+                        title: 'Nytt Lager',
+                        message: 'Ett nytt Objektlager skapades'
+                    }
                 },
-                missingProjectionError: {
-                    title: 'Error',
-                    message: 'Missing projection definition'
-                },
-                newLayerError: {
-                    title: 'Error',
-                    message: 'Failed to create new layer'
-                },
-                unsupportedFormatError: {
-                    title: 'Error',
-                    message: 'The layer format is not supported'
+                errors: {
+                    addFeatureLayer: {
+                        title: 'Error',
+                        message: 'Misslyckades skapa nytt lager'
+                    },
+                    missingProjection: {
+                        title: 'Error',
+                        message: 'Saknar projektionsdefinition'
+                    },
+                    unsupportedFormat: {
+                        title: 'Error',
+                        message: 'Lagerformatet stöds inte'
+                    }
                 }
             },
             dialogs: {
-                renameLayer: {
-                    title: 'Edit Name',
-                    message: 'Edit name for layer',
-                    confirmText: 'Rename'
+                prompts: {
+                    renameLayer: {
+                        title: 'Redigera Namn',
+                        message: 'Redigera lagernamn',
+                        confirmText: 'Ändra Namn'
+                    }
                 },
-                deleteLayer: {
-                    title: 'Delete Layer',
-                    message: 'Do you want to delete layer',
-                    confirmText: 'Delete'
+                confirms: {
+                    deleteLayer: {
+                        title: 'Radera Lager',
+                        message: 'Vill du radera lager',
+                        confirmText: 'Radera'
+                    }
                 }
             }
         },
         magnifyTool: {
-            title: 'Magnify',
+            title: 'Förstoringsglas',
             toasts: {
-                unexpectedError: {
-                    title: 'Error',
-                    message: 'Unexpected error using magnifyer',
-                    corsMessage: 'CORS error with one of the layers'
+                errors: {
+                    renderCanvas: {
+                        title: 'Error',
+                        message: 'Oväntat fel med förstoringsglaset',
+                    }
                 }
             }
         },
         measureTool: {
-            title: 'Measure',
+            title: 'Mäta',
             toolbox: {
                 titles: {
-                    measure: 'Measure'
+                    measure: 'Mäta'
                 },
                 groups: {
                     type: {
-                        title: 'Type',
-                        lineString: 'Length',
+                        title: 'Typ',
+                        lineString: 'Längd',
                         polygon: 'Area'
                     },
                     strokeColor: {
-                        title: 'Stroke Color'
+                        title: 'Linjefärg'
                     },
                     fillColor: {
-                        title: 'Fill Color'
+                        title: 'Fyllnadsfärg'
                     }
                 }
             },
             layers: {
-                defaultName: 'Measurements layer'
+                defaultName: 'Måttlager'
             },
             toasts: {
-                measuringInHiddenLayer: {
-                    title: 'Tip',
-                    message: 'You are measuring in a hidden layer'
+                infos: {
+                    drawInHiddenLayer: {
+                        title: 'Tips',
+                        message: 'Du mäter i ett dolt lager'
+                    }
                 }
             }
         },
         myLocationTool: {
-            title: 'My Location',
+            title: 'Min Position',
             dialogs: {
-                exitFullscreen: {
-                    title: 'Exit Fullscreen',
-                    message: 'To use geolocation you must exit fullscreen',
-                    confirmText: 'Exit Fullscreen'
+                confirms: {
+                    exitFullscreen: {
+                        title: 'Avsluta Fullskärm',
+                        message: 'För att använda geolokalisering måste du avsluta fullskärm',
+                        confirmText: 'Avsluta Fullskärm'
+                    }
                 }
             },
             toasts: {
-                exitFullscreenError: {
-                    title: 'Error',
-                    message: 'Failed to exit fullscreen'
+                infos: {
+                    fetchLocation: {
+                        title: 'Söker',
+                        message: 'Försöker hitta din position...'
+                    }
                 },
-                locationError: {
-                    title: 'Error'
+                errors: {
+                    exitFullscreen: {
+                        title: 'Error',
+                        message: 'Misslyckades att avsluta fullskärm'
+                    },
+                    locationNotFound: {
+                        title: 'Error',
+                        message: 'Misslyckades att hitta din position'
+                    }
                 }
             }
         },
         notificationTool: {
-            title: 'Notifications',
+            title: 'Aviseringar',
             modals: {
                 notifications: {
-                    title: 'Notifications',
-                    content: 'Loading notifications...',
-                    from: 'From Qulle',
-                    yourVersion: 'Your Version',
-                    latestVersion: 'Latest Version',
-                    news: 'New Features Under Development',
-                    noNews: 'No features currently under development'
+                    title: 'Aviseringar',
+                    content: 'Laddar aviseringar...',
+                    from: 'Från Qulle',
+                    yourVersion: 'Din Version',
+                    latestVersion: 'Senaste Version',
+                    news: 'Funktioner Under Utveckling',
+                    noNews: 'Inga funktioner under utveckling för närvarande'
                 }
             },
             toasts: {
-                fetchError: {
-                    title: 'Error',
-                    message: 'Failed to fetch notifications'
+                errors: {
+                    fetchFailed: {
+                        title: 'Error',
+                        message: 'Misslyckades att hämta aviseringar'
+                    }
                 }
             }
         },
         overviewTool: {
-            title: 'Map Overview',
+            title: 'Kartöversikt',
             toolbox: {
                 titles: {
-                    overview: 'Map Overview'
+                    overview: 'Kartöversikt'
                 }
             }
         },
         refreshTool: {
-            title: 'Refresh Page'
+            title: 'Uppdatera Sidan'
         },
         resetNorthTool: {
-            title: 'Reset North',
+            title: 'Återställ Norr',
             contextItems: {
-                rotate: 'Rotate Map'
+                rotate: 'Rotera Karta'
             },
             dialogs: {
-                rotateMap: {
-                    title: 'Rotate Map',
-                    message: 'Set map rotation by degrees',
-                    confirmText: 'Rotate Map'
+                prompts: {
+                    rotateMap: {
+                        title: 'Rotera Karta',
+                        message: 'Ange kartas rotation i grader',
+                        confirmText: 'Rotera Kartan'
+                    }
                 }
             },
             toasts: {
-                invalidInput: {
-                    title: 'Error',
-                    message: 'Only digits are allowed as input'
+                errors: {
+                    invalidValue: {
+                        title: 'Error',
+                        message: 'Endast siffror är tillåtna som inmatning'
+                    }
                 }
             }
         },
         scaleLineTool: {
-            title: 'Scale Line'
+            title: 'Måttstock'
         },
         scissorsTool: {
-            title: 'Polygon Scissors',
+            title: 'Polygonsax',
             toasts: {
-                noIntersecting: {
-                    title: 'Oops',
-                    message: 'No intersecting object found'
+                infos: {
+                    missingIntersections: {
+                        title: 'Hoppsan',
+                        message: 'Inga korsande objekt hittades'
+                    }
                 }
             }
         },
         settingsTool: {
-            title: 'Settings',
+            title: 'Inställningar',
             contextItems: {
-                clearBrowserState: 'Clear Browser State'
+                clearBrowserState: 'Rensa Webbläsaredata'
             },
             dialogs: {
-                clearBrowserState: {
-                    title: 'Clear Browser State',
-                    message: 'Do you want to reset all items to default state for the Toolbar?',
-                    confirmText: 'Clear'
+                confirms: {
+                    clearBrowserState: {
+                        title: 'Rensa Webbläsaredata',
+                        message: 'Vill du rensa alla objekt till standardläget för Verktygsfältet?',
+                        confirmText: 'Rensa'
+                    }
                 }
             },
             toasts: {
-                cleared: {
-                    title: 'Cleared',
-                    message: 'All stored items was reset to default'
+                infos: {
+                    clearBrowserState: {
+                        title: 'Rensat',
+                        message: 'Alla lagrade objekt har återställts till standard'
+                    }
                 },
-                saved: {
-                    title: 'Saved',
-                    message: 'All settings was saved'
+                successes: {
+                    savedSettings: {
+                        title: 'Sparad',
+                        message: 'Alla inställningar sparades'
+                    }
                 }
             }
         },
         splitViewTool: {
-            title: 'Split View',
+            title: 'Delad Vy',
             toolbox: {
                 titles: {
-                    splitView: 'Split View'
+                    splitView: 'Delad Vy'
                 },
                 groups: {
                     leftSide: {
-                        title: 'Left Side'
+                        title: 'Vänster Sida'
                     },
                     rightSide: {
-                        title: 'Right Side'
+                        title: 'Höger Sida'
                     },
                     swapSides: {
-                        swap: 'Swap Sides'
+                        swap: 'Byt Sidor'
                     }
                 },
                 toasts: {
-                    onlyOneLayer: {
-                        title: 'Tip',
-                        message: 'You must have more then one layer'
+                    infos: {
+                        strictOneLayer: {
+                            title: 'Tips',
+                            message: 'Du måste ha mer än ett lager'
+                        }
                     },
-                    layerError: {
-                        title: 'Error',
-                        message: 'One or both of the layers could not be loaded'
+                    errors: {
+                        layerFailedToLoad: {
+                            title: 'Error',
+                            message: 'Lager kunde inte laddas'
+                        }
                     }
                 }
             }
         },
         themeTool: {
-            titles: {
-                light: 'Light Theme',
-                dark: 'Dark Theme'
-            }
+            title: 'Toggla Tema'
         },
         translationTool: {
-            title: 'Translate',
+            title: 'Översätt',
             dialogs: {
-                changeLanguage: {
-                    title: 'Change Language',
-                    message: 'Current language is',
-                    confirmText: 'Translate'
+                selects: {
+                    changeLanguage: {
+                        title: 'Språkval',
+                        message: 'Nuvarande språk är',
+                        confirmText: 'Byt Språk'
+                    }
                 }
             }
         },
         zoomBoxTool: {
-            title: 'Zoom Box',
+            title: 'Zoom Markering',
             tooltips: {
-                dragToZoom: 'Drag To Zoom'
+                dragToZoom: 'Dra För Att Zooma'
             }
         },
         zoomInTool: {
-            title: 'Zoom In'
+            title: 'Zooma In'
         },
         zoomOutTool: {
-            title: 'Zoom Out'
+            title: 'Zooma Ut'
         }
     }
 });

@@ -1,8 +1,19 @@
 // Version 0: Default version
 .oltb-toolbox-list {
     padding: 0;
-    margin: 0;
+    margin: 0 0 0 1rem;
     list-style-type: none;
+    position: relative;
+
+    &::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        top: 0;
+        margin-left: -.75rem;
+        border: 1px dashed $color-gray-light;
+    }
 
     &__wrapper {
         display: flex;
@@ -10,10 +21,20 @@
         align-items: center;
     }
 
+    &__dot {
+        width: .5rem;
+        height: .5rem;
+        margin-right: .75rem;
+        margin-left: -1.25rem;
+        background-color: $color-gray-light;
+        border-radius: $border-radius;
+        box-shadow: 0 0 0 $shadow-focus-width rgba($color-gray-light, .3);
+    }
+
     &__item {
+        min-height: 33px; // Help when no layer function buttons exists
         padding: 4px;
         margin-bottom: .25rem;
-        min-height: 33px; // Help when no layer function buttons exists
         border-radius: $border-radius;
         color: $color-dark;
         font-size: 1rem;
@@ -82,19 +103,10 @@
     &__item--active {
         font-weight: bold;
 
-        .oltb-toolbox-list__strip {
+        .oltb-toolbox-list__dot {
             background-color: $color-green-mid;
+            box-shadow: 0 0 0 $shadow-focus-width rgba($color-green-light, .3);
         }
-    }
-
-    &__strip {
-        width: .25rem;
-        height: 1.5rem;
-        background-color: $color-gray-light;
-        border-radius: $border-radius;
-        box-shadow: $box-shadow-light;
-        margin-right: .5rem;
-        margin-left: -.75rem;
     }
 
     &__title {

@@ -96,7 +96,9 @@ class BookmarkTool extends Control {
             class: CLASS_TOOL_BUTTON,
             attributes: {
                 'type': 'button',
-                'data-tippy-content': `${i18n.title} (${ShortcutKeys.bookmarkTool})`
+                'data-tippy-content': `${i18n.title} (${ShortcutKeys.bookmarkTool})`,
+                'data-tippy-content-post': `(${ShortcutKeys.bookmarkTool})`,
+                'data-oltb-i18n': `${I18N_BASE}.title`
             },
             listeners: {
                 'click': this.onClickTool.bind(this)
@@ -170,7 +172,7 @@ class BookmarkTool extends Control {
                     <div class="${CLASS_TOOLBOX_SECTION}__group">
                         <div class="oltb-input-button-group">
                             <input type="text" id="${ID_PREFIX}-add-text" class="oltb-input" data-oltb-i18n="${I18N_BASE}.toolbox.groups.addBookmark.placeholder" placeholder="${i18n.groups.addBookmark.placeholder}">
-                            <button type="button" id="${ID_PREFIX}-add-button" class="oltb-btn oltb-btn--green-mid oltb-tippy" data-oltb-i18n="${I18N_BASE}.groups.addBookmark.add" title="${i18n.groups.addBookmark.add}">
+                            <button type="button" id="${ID_PREFIX}-add-button" class="oltb-btn oltb-btn--green-mid oltb-tippy" data-oltb-i18n="${I18N_BASE}.toolbox.groups.addBookmark.add" title="${i18n.groups.addBookmark.add}">
                                 ${getIcon({
                                     path: SvgPaths.plus.stroked,
                                     width: 20,
@@ -579,6 +581,15 @@ class BookmarkTool extends Control {
             element: 'div', 
             class: `${CLASS_TOOLBOX_LIST}__wrapper`
         });
+
+        const layerActiveDot = DOM.createElement({
+            element: 'div',
+            class: `${CLASS_TOOLBOX_LIST}__dot`
+        });
+
+        DOM.appendChildren(leftWrapper, [
+            layerActiveDot
+        ]);
 
         DOM.appendChildren(leftWrapper, [
             bookmarkName

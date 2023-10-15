@@ -134,7 +134,9 @@ class EditTool extends Control {
             class: CLASS_TOOL_BUTTON,
             attributes: {
                 'type': 'button',
-                'data-tippy-content': `${i18n.title} (${ShortcutKeys.editTool})`
+                'data-tippy-content': `${i18n.title} (${ShortcutKeys.editTool})`,
+                'data-tippy-content-post': `(${ShortcutKeys.editTool})`,
+                'data-oltb-i18n': `${I18N_BASE}.title`
             },
             listeners: {
                 'click': this.onClickTool.bind(this)
@@ -224,7 +226,7 @@ class EditTool extends Control {
         ElementManager.getToolboxElement().insertAdjacentHTML('beforeend', `
             <div id="${ID_PREFIX}-toolbox" class="${CLASS_TOOLBOX_SECTION}">
                 <div class="${CLASS_TOOLBOX_SECTION}__header oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">
-                    <h4 class="${CLASS_TOOLBOX_SECTION}__title" data-oltb-i18n="${I18N_BASE}.toolbox.titles.draw">${i18n.titles.edit}</h4>
+                    <h4 class="${CLASS_TOOLBOX_SECTION}__title" data-oltb-i18n="${I18N_BASE}.toolbox.titles.edit">${i18n.titles.edit}</h4>
                     <span class="${CLASS_TOOLBOX_SECTION}__icon oltb-tippy" data-oltb-i18n="${I18N_BASE_COMMON}.titles.toggleSection" title="${i18nCommon.toggleSection}"></span>
                 </div>
                 <div class="${CLASS_TOOLBOX_SECTION}__groups" id="${ID_PREFIX}-toolbox-collapsed" style="display: ${this.localStorage.isCollapsed ? 'none' : 'block'}">

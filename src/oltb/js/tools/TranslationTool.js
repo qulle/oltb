@@ -46,7 +46,9 @@ class TranslationTool extends Control {
             class: CLASS_TOOL_BUTTON,
             attributes: {
                 'type': 'button',
-                'data-tippy-content': `${i18n.title} (${ShortcutKeys.translationTool})`
+                'data-tippy-content': `${i18n.title} (${ShortcutKeys.translationTool})`,
+                'data-tippy-content-post': `(${ShortcutKeys.translationTool})`,
+                'data-oltb-i18n': `${I18N_BASE}.title`
             },
             listeners: {
                 'click': this.onClickTool.bind(this)
@@ -128,7 +130,7 @@ class TranslationTool extends Control {
     // -------------------------------------------------------------------
 
     doChangeLanguage(result) {
-        LogManager.logDebug(FILENAME, 'doChangeLanguage', {
+        LogManager.logInformation(FILENAME, 'doChangeLanguage', {
             from: result.from,
             to: result.to
         });

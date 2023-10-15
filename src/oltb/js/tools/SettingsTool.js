@@ -53,7 +53,9 @@ class SettingsTool extends Control {
             class: CLASS_TOOL_BUTTON,
             attributes: {
                 'type': 'button',
-                'data-tippy-content': `${i18n.title} (${ShortcutKeys.settingsTool})`
+                'data-tippy-content': `${i18n.title} (${ShortcutKeys.settingsTool})`,
+                'data-tippy-content-post': `(${ShortcutKeys.settingsTool})`,
+                'data-oltb-i18n': `${I18N_BASE}.title`
             },
             listeners: {
                 'click': this.onClickTool.bind(this)
@@ -87,6 +89,7 @@ class SettingsTool extends Control {
     // -------------------------------------------------------------------
 
     initContextMenuItems() {
+        ContextMenu.addItem({});
         ContextMenu.addItem({
             icon: this.icon, 
             i18nKey: `${I18N_BASE}.contextItems.clearBrowserState`, 

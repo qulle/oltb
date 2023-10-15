@@ -26,6 +26,10 @@ const DefaultOptions = Object.freeze({
     onClose: undefined
 });
 
+/**
+ * About:
+ * Manager providing debugging information
+ */
 class DebugInfoModal extends ModalBase {
     constructor(options = {}) {
         LogManager.logDebug(FILENAME, 'constructor', 'init');
@@ -250,8 +254,7 @@ class DebugInfoModal extends ModalBase {
                     entry.method
                 } &rarr; ${
                     entry.value
-                }
-            `
+                }` // <- Note: Enter/space will cause space in output, not good when copying GUID/UUID
         }); 
 
         DOM.appendChildren(logHeader, [
@@ -293,8 +296,7 @@ class DebugInfoModal extends ModalBase {
                     entry.origin
                 } &rarr; ${
                     entry.method
-                }
-            `
+                }` // <- Note: Enter/space will cause space in output, not good when copying GUID/UUID
         }); 
 
         const logToggle = DOM.createElement({
@@ -366,7 +368,21 @@ class DebugInfoModal extends ModalBase {
         const browser = new BrowserDetector(window.navigator.userAgent);
         const userAgent = browser.parseUserAgent();
         const browserDataContent = {
-            userAgent: userAgent
+            userAgent: userAgent,
+            device: {
+                screen: {
+                    width: window.screen.width,
+                    height: window.screen.height
+                },
+                window: {
+                    width: window.innerWidth,
+                    height: window.innerHeight,
+                    pixelRatio: {
+                        scalar: window.devicePixelRatio,
+                        percentage: `${window.devicePixelRatio * 100}%`
+                    }
+                }
+            }
         };
 
         // Browser LocalStorage

@@ -84,7 +84,9 @@ class DrawTool extends Control {
             class: CLASS_TOOL_BUTTON,
             attributes: {
                 'type': 'button',
-                'data-tippy-content': `${i18n.title} (${ShortcutKeys.drawTool})`
+                'data-tippy-content': `${i18n.title} (${ShortcutKeys.drawTool})`,
+                'data-tippy-content-post': `(${ShortcutKeys.drawTool})`,
+                'data-oltb-i18n': `${I18N_BASE}.title`
             },
             listeners: {
                 'click': this.onClickTool.bind(this)
@@ -170,7 +172,7 @@ class DrawTool extends Control {
                         </select>
                     </div>
                     <div class="${CLASS_TOOLBOX_SECTION}__group">
-                        <label class="oltb-label" for="${ID_PREFIX}-intersection-enable" data-oltb-i18n="${I18N_BASE}.toolbox.groups.shapes.intersectable.title">${i18n.groups.intersectable.title}</label>
+                        <label class="oltb-label" for="${ID_PREFIX}-intersection-enable" data-oltb-i18n="${I18N_BASE}.toolbox.groups.intersectable.title">${i18n.groups.intersectable.title}</label>
                         <select id="${ID_PREFIX}-intersection-enable" class="oltb-select">
                             <option value="false" data-oltb-i18n="${I18N_BASE}.toolbox.groups.intersectable.false">${i18n.groups.intersectable.false}</option>
                             <option value="true" data-oltb-i18n="${I18N_BASE}.toolbox.groups.intersectable.true">${i18n.groups.intersectable.true}</option>
@@ -378,7 +380,7 @@ class DrawTool extends Control {
     // -------------------------------------------------------------------
 
     shouldAlwaysCreateNewLayer() {
-        return SettingsManager.getSetting(Settings.alwaysNewLayer);
+        return SettingsManager.getSetting(Settings.alwaysNewLayers);
     }
 
     isIntersectionModeAvailable() {

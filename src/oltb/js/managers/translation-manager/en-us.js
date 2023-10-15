@@ -22,8 +22,8 @@ export const EnUs = Object.freeze({
                 keyboardZoom: 'Zoom Map Using Keyboard',
                 keyboardPan: 'Pan Map Using Keyboard',
                 selectVectorMapShapes: 'Select Shapes In Vector Map Layers',
-                snapInteraction: 'Snap Interaction',
-                snapHelpLines: 'Snap Help Lines',
+                snapInteraction: 'Use Snap Interaction',
+                snapHelpLines: 'Use Snap Help Lines',
                 alwaysNewLayers: 'Create New Layer When Selecting Tool'
             }
         },
@@ -75,11 +75,11 @@ export const EnUs = Object.freeze({
         titles: {
             edit: 'Edit',
             delete: 'Delete',
-            rename: 'Rename',
+            dragToSort: 'Drag To Sort',
             download: 'Download',
             copyText: 'Copy Text',
             copyCoordinates: 'Copy Coordinates',
-            dragToSort: 'Drag To Sort',
+            rename: 'Rename',
             toggleSection: 'Toggle Section',
             toggleVisibility: 'Toggle Visibility',
             zoomToCoordinates: 'Zoom To Coordinates'
@@ -98,7 +98,7 @@ export const EnUs = Object.freeze({
         },
         debugInfoModal: {
             title: 'Debug Information',
-            noMapFound: 'No map reference found',
+            noMapFound: 'No Map reference found',
             form: {
                 logToBrowser: 'Log Map To Browser Console',
                 generateUUID: 'Generate UUID',
@@ -173,6 +173,7 @@ export const EnUs = Object.freeze({
                 parameters: 'Parameters (JSON)',
                 wrapX: 'WrapX',
                 cors: 'CORS',
+                attributions: 'Attributions',
                 createLayer: 'Create Layer',
                 cancel: 'Cancel'
             }
@@ -242,7 +243,7 @@ export const EnUs = Object.freeze({
                 },
                 groups: {
                     addBookmark: {
-                        placeholder: 'Bookmark Name',
+                        placeholder: 'Name',
                         add: 'Add Bookmark'
                     }
                 }
@@ -317,10 +318,7 @@ export const EnUs = Object.freeze({
             title: 'Debug Info'
         },
         directionTool: {
-            titles: {
-                horizontal: 'Horizontal Toolbar',
-                vertical: 'Vertical Toolbar'
-            }
+            title: 'Toggle Direction'
         },
         drawTool: {
             title: 'Draw',
@@ -340,11 +338,11 @@ export const EnUs = Object.freeze({
                     },
                     intersectable: {
                         title: 'Intersection',
-                        true: 'True',
-                        false: 'Fals'
+                        true: 'Yes',
+                        false: 'No'
                     },
                     strokeWidth: {
-                        title: 'Stroke width'
+                        title: 'Stroke Width'
                     },
                     strokeColor: {
                         title: 'Stroke Color'
@@ -390,11 +388,11 @@ export const EnUs = Object.freeze({
                 infos: {
                     missingFeatures: {
                         title: 'Oops',
-                        message: 'No features selected to delete'
+                        message: 'No objects selected to delete'
                     },
                     strictTwoFeatures: {
                         title: 'Oops',
-                        message: 'Strict two overlapping features must be selected'
+                        message: 'Strict two overlapping objects must be selected'
                     }
                 },
                 errors: {
@@ -407,7 +405,7 @@ export const EnUs = Object.freeze({
             dialogs: {
                 confirms: {
                     deleteFeatures: {
-                        title: 'Delete Feature',
+                        title: 'Delete Features',
                         message: 'Delete selected feature',
                         confirmText: 'Delete'
                     }
@@ -420,16 +418,13 @@ export const EnUs = Object.freeze({
                 errors: {
                     renderCanvas: {
                         title: 'Error',
-                        message: 'Failed to export canvas image'
+                        message: 'Failed to export Canvas'
                     }
                 }
             }
         },
         fullscreenTool: {
-            titles: {
-                exit: 'Exit Fullscreen',
-                enter: 'Enter Fullscreen'
-            },
+            title: 'Toggle Fullscreen',
             toasts: {
                 errors: {
                     missingFullScreenSupport: {
@@ -506,7 +501,7 @@ export const EnUs = Object.freeze({
                         create: 'Create Map Layer'
                     },
                     createFeatureLayer: {
-                        placeholder: 'Layer Name', 
+                        placeholder: 'Name', 
                         create: 'Create Feature Layer'
                     }
                 }
@@ -560,7 +555,7 @@ export const EnUs = Object.freeze({
                 errors: {
                     renderCanvas: {
                         title: 'Error',
-                        message: 'Unexpected error using magnifyer',
+                        message: 'Unexpected error using magnifier',
                     }
                 }
             }
@@ -669,7 +664,7 @@ export const EnUs = Object.freeze({
                 prompts: {
                     rotateMap: {
                         title: 'Rotate Map',
-                        message: 'Set map rotation by degrees',
+                        message: 'Set Map rotation by degrees',
                         confirmText: 'Rotate Map'
                     }
                 }
@@ -747,7 +742,7 @@ export const EnUs = Object.freeze({
                     infos: {
                         strictOneLayer: {
                             title: 'Tip',
-                            message: 'You must have more then one layer'
+                            message: 'You must have more than one layer'
                         }
                     },
                     errors: {
@@ -760,19 +755,16 @@ export const EnUs = Object.freeze({
             }
         },
         themeTool: {
-            titles: {
-                light: 'Light Theme',
-                dark: 'Dark Theme'
-            }
+            title: 'Toggle Theme'
         },
         translationTool: {
             title: 'Translate',
             dialogs: {
                 selects: {
                     changeLanguage: {
-                        title: 'Change Language',
+                        title: 'Language',
                         message: 'Current language is',
-                        confirmText: 'Translate'
+                        confirmText: 'Switch Language'
                     }
                 }
             }

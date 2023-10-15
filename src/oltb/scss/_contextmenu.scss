@@ -46,6 +46,10 @@
             height: 20px;
         }
     }
+
+    &__text {
+        margin: 0;
+    }
   
     &__divider {
         background-color: rgba(0, 0, 0, .15);

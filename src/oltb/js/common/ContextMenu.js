@@ -95,10 +95,8 @@ class ContextMenu extends Control {
         const li = DOM.createElement({
             element: 'li',
             class: `${CLASS_CONTEXT_MENU}__item`,
-            text: i18n,
             attributes: {
-                'tabindex': '0',
-                'data-oltb-i18n': item.i18nKey
+                'tabindex': '0'
             },
             listeners: {
                 'click': this.click.bind(this, item),
@@ -106,7 +104,7 @@ class ContextMenu extends Control {
                     const key = event.key;
 
                     if(key === Keys.valueEnter) {
-                        this.click(event);
+                        this.click(item);
                     }else if(key === Keys.valueEscape) {
                         this.hide();
                     }
@@ -120,7 +118,19 @@ class ContextMenu extends Control {
             class: `${CLASS_CONTEXT_MENU}__icon`
         });
 
-        li.prepend(icon);
+        const text = DOM.createElement({
+            element: 'span',
+            text: i18n,
+            class: `${CLASS_CONTEXT_MENU}__text`,
+            attributes: {
+                'data-oltb-i18n': item.i18nKey
+            },
+        });
+
+        DOM.appendChildren(li, [
+            icon,
+            text
+        ]);
 
         DOM.appendChildren(this.menu, [
             li

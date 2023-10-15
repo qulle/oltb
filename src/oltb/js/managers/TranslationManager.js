@@ -100,9 +100,26 @@ class TranslationManager {
             const value = this.get(path);
 
             // Note: Tippy instances mus be handle first
+            // This targets tool-buttons in the toolbar
             const tippyKey = 'data-tippy-content';
             if(element.hasAttribute(tippyKey)) {
-                return element.setAttribute(tippyKey, value);
+                // Check if element should have pre or post content added
+                const preValue = element.getAttribute('data-tippy-content-pre') || '';
+                const postValue = element.getAttribute('data-tippy-content-post') || '';
+
+                const concatedValue = `${preValue} ${value} ${postValue}`.trim();
+                element.setAttribute(tippyKey, concatedValue);
+
+                return;
+            }
+
+            // Note: Tippy instances mus be handle first
+            // This targets all runtime delegates where the title attribute holds the tippy
+            const tippyClass = 'oltb-tippy';
+            if(element.classList.contains(tippyClass)) {
+                element.setAttribute('title', value);
+
+                return;
             }
 
             element.innerHTML = value;
@@ -134,17 +151,18 @@ class TranslationManager {
     }
 
     static get(path) {
-        const translation = this.getActiveTranslation();
         const keys = path.split('.');
-
+        const translation = this.getActiveTranslation();
         const result = _.get(translation, keys, path);
 
         // Note: Check if the path is the same as result
         // If so then we failed to find a translation
+        // Note: Not all missing translations are found
+        // An object with many translations can be returned and the view/controller might try and access one 
+        // using the wrong name, this will cause 'empty'/undefined to be displayed in view
         if(result === path) {
             LogManager.logWarning(FILENAME, 'get', {
                 info: 'No translation found',
-                translation: translation,
                 keys: keys,
                 path: path
             });

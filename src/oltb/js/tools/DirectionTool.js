@@ -27,7 +27,6 @@ const DefaultOptions = Object.freeze({
 const DirectionData = Object.freeze({
     col: {
         class: 'col',
-        tippyContent: '',
         icon: getIcon({
             path: SvgPaths.symmetryHorizontal.mixed,
             class: `${CLASS_TOOL_BUTTON}__icon`
@@ -35,7 +34,6 @@ const DirectionData = Object.freeze({
     },
     row: {
         class: 'row',
-        tippyContent: '',
         icon: getIcon({
             path: SvgPaths.symmetryVertical.mixed,
             class: `${CLASS_TOOL_BUTTON}__icon`
@@ -63,18 +61,16 @@ class DirectionTool extends Control {
             element: ElementManager.getToolbarElement()
         });
 
-        // Note: The values are flipped
-        const i18n = TranslationManager.get(`${I18N_BASE}.titles`);
-        DirectionData.col.tippyContent = i18n.horizontal;
-        DirectionData.row.tippyContent = i18n.vertical;
-
+        const i18n = TranslationManager.get(I18N_BASE);
         const button = DOM.createElement({
             element: 'button',
             html: this.getToolIcon(),
             class: CLASS_TOOL_BUTTON,
             attributes: {
                 'type': 'button',
-                'data-tippy-content': `${this.getToolTippyContent()} (${ShortcutKeys.directionTool})`
+                'data-tippy-content': `${i18n.title} (${ShortcutKeys.directionTool})`,
+                'data-tippy-content-post': `(${ShortcutKeys.directionTool})`,
+                'data-oltb-i18n': `${I18N_BASE}.title`
             },
             listeners: {
                 'click': this.onClickTool.bind(this)
@@ -186,12 +182,6 @@ class DirectionTool extends Control {
     // # Section: Getters and Setters
     // -------------------------------------------------------------------
 
-    getToolTippyContent() {
-        return isHorizontal() 
-            ? DirectionData.row.tippyContent
-            : DirectionData.col.tippyContent;
-    }
-
     getToolIcon() {
         return isHorizontal() 
             ? DirectionData.row.icon
@@ -235,7 +225,6 @@ class DirectionTool extends Control {
 
         this.button.removeChild(this.button.firstElementChild);
         this.button.insertAdjacentHTML('afterbegin', to.icon);
-        this.button.getTippy().setContent(`${to.tippyContent} (${ShortcutKeys.directionTool})`);
     }
 }
 

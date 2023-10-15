@@ -50,7 +50,9 @@ class DebugInfoTool extends Control {
             class: CLASS_TOOL_BUTTON,
             attributes: {
                 'type': 'button',
-                'data-tippy-content': `${i18n.title} (${ShortcutKeys.debugInfoTool})`
+                'data-tippy-content': `${i18n.title} (${ShortcutKeys.debugInfoTool})`,
+                'data-tippy-content-post': `(${ShortcutKeys.debugInfoTool})`,
+                'data-oltb-i18n': `${I18N_BASE}.title`
             },
             listeners: {
                 'click': this.onClickTool.bind(this)

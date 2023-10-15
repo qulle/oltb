@@ -638,14 +638,6 @@ const initMapAndToolbar = () => {
                     console.log('NotificationTool: Clicked');
                 }
             }),
-            new TranslationTool({
-                onInitiated: function() {
-                    console.log('TranslationTool: Initiated');
-                },
-                onClicked: function() {
-                    console.log('TranslationTool: Clicked');
-                },
-            }),
             new HelpTool({
                 url: 'https://github.com/qulle/oltb',
                 target: '_blank',
@@ -666,6 +658,14 @@ const initMapAndToolbar = () => {
                 onBrowserStateCleared: function() {
                     console.log('SettingsTool: State cleared');
                 }
+            }),
+            new TranslationTool({
+                onInitiated: function() {
+                    console.log('TranslationTool: Initiated');
+                },
+                onClicked: function() {
+                    console.log('TranslationTool: Clicked');
+                },
             }),
             new DebugInfoTool({
                 onlyWhenGetParameter: false,

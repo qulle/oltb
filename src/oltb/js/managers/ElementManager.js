@@ -161,7 +161,7 @@ class ElementManager {
         const toolboxWidth = this.#uiRefToolboxElement.offsetWidth;
         const rem = ConfigManager.getConfig().browser.rem;
         
-        if(windowWidth - ((3 * rem) + toolbarWidth + toolboxWidth) <= collisionLimit) {
+        if(windowWidth - ((3.5 * rem) + toolbarWidth + toolboxWidth) <= collisionLimit) {
             this.#uiRefToolboxElement.classList.add(`${CLASS_TOOLBOX_CONTAINER}--collision`);
         }else {
             this.#uiRefToolboxElement.classList.remove(`${CLASS_TOOLBOX_CONTAINER}--collision`);

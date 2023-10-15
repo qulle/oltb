@@ -85,7 +85,10 @@ const generateWindBarb = function(options = {}) {
         })
     });
 
-    const style = [iconStyle, labelStyle];
+    const style = [
+        iconStyle, 
+        labelStyle
+    ];
 
     windBarb.setStyle(style);
     windBarb.setProperties({

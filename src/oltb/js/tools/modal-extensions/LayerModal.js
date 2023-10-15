@@ -13,7 +13,7 @@ import { TranslationManager } from '../../managers/TranslationManager';
 
 const FILENAME = 'modal-extensions/LayerModal.js';
 const ID_PREFIX = 'oltb-layer-modal';
-const I18N_BASE = 'modalExtensions.importLayerModal';
+const I18N_BASE = 'modalExtensions.layerModal';
 
 const DefaultOptions = Object.freeze({
     maximized: false,
@@ -22,6 +22,10 @@ const DefaultOptions = Object.freeze({
     onCancel: undefined
 });
 
+/**
+ * About:
+ * Manager that handles creation of Map-Layers
+ */
 class LayerModal extends ModalBase {
     constructor(options = {}) {
         LogManager.logDebug(FILENAME, 'constructor', 'init');
@@ -133,7 +137,7 @@ class LayerModal extends ModalBase {
         const [ attributionsWrapper, attributionsInput ] = createUIInput({
             idPrefix: ID_PREFIX,
             idPostfix: '-attributions',
-            text: 'Attributions'
+            text: i18n.attributions
         });
 
         const buttonsWrapper = DOM.createElement({

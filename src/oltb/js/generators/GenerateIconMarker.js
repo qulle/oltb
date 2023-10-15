@@ -5,6 +5,7 @@ import { fromLonLat } from 'ol/proj';
 import { SvgPaths, getIcon } from '../icons/GetIcon';
 import { hasNestedProperty } from '../helpers/browser/HasNestedProperty';
 import { FeatureProperties } from '../helpers/constants/FeatureProperties';
+import { HexTransparencies } from '../helpers/constants/HexTransparencies';
 import { Circle, Fill, Icon, Text, Stroke, Style } from 'ol/style';
 
 const DefaultOptions = Object.freeze({
@@ -56,7 +57,8 @@ const generateIconMarker = function(options = {}) {
         stroke: 'none',
         replaceHashtag: options.replaceHashtag
     });
-
+    
+    const hex = HexTransparencies[40];
     const circleStyle = new Style({
         image: new Circle({
             radius: options.radius,
@@ -64,7 +66,7 @@ const generateIconMarker = function(options = {}) {
                 color: options.markerFill
             }),
             stroke: new Stroke({
-                color: `${options.markerFill.slice(0, -2)}66`,
+                color: `${options.markerFill.slice(0, -2)}${hex}`,
                 width: options.width,
             })
         })
@@ -97,7 +99,11 @@ const generateIconMarker = function(options = {}) {
         })
     });
 
-    const style = [circleStyle, iconStyle, labelStyle];
+    const style = [ 
+        circleStyle, 
+        iconStyle, 
+        labelStyle
+    ];
 
     marker.setStyle(style);
     marker.setProperties({

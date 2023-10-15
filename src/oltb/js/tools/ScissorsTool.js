@@ -74,7 +74,9 @@ class ScissorsTool extends Control {
             class: CLASS_TOOL_BUTTON,
             attributes: {
                 'type': 'button',
-                'data-tippy-content': `${i18n.title} (${ShortcutKeys.scissorsTool})`
+                'data-tippy-content': `${i18n.title} (${ShortcutKeys.scissorsTool})`,
+                'data-tippy-content-post': `(${ShortcutKeys.scissorsTool})`,
+                'data-oltb-i18n': `${I18N_BASE}.title`
             },
             listeners: {
                 'click': this.onClickTool.bind(this)
