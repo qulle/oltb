@@ -122,6 +122,15 @@ class TranslationManager {
                 return;
             }
 
+            // Note: Input-fields with a placeholder value
+            const placeholderKey = 'placeholder';
+            if(element.hasAttribute(placeholderKey)) {
+                element.setAttribute(placeholderKey, value);
+
+                return;
+            }
+
+            // Note: Default is to replace the innerHTML for normal elements
             element.innerHTML = value;
         });
 

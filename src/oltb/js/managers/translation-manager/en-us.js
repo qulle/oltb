@@ -764,7 +764,8 @@ export const EnUs = Object.freeze({
                     changeLanguage: {
                         title: 'Language',
                         message: 'Current language is',
-                        confirmText: 'Switch Language'
+                        confirmText: 'Switch Language',
+                        cancelText: 'Cancel',
                     }
                 }
             }

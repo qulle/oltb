@@ -237,7 +237,7 @@ class EditTool extends Control {
                         </button>
                     </div>
                     <div class="${CLASS_TOOLBOX_SECTION}__group ${CLASS_TOOLBOX_SECTION}__group--sub-toolbar">
-                        <label class="oltb-label" data-oldb-i18n="${I18N_BASE}.toolbox.groups.shapes">${i18n.groups.misc}</label>
+                        <label class="oltb-label" data-oldb-i18n="${I18N_BASE}.toolbox.groups.shapes">${i18n.groups.shapes}</label>
                         <button type="button" id="${ID_PREFIX}-union-selected-button" class="oltb-btn oltb-btn--blue-mid oltb-tippy" title="Union">
                             ${getIcon({ ...DefaultButtonProps, path: SvgPaths.union.mixed })}
                         </button>

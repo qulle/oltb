@@ -7,7 +7,8 @@ const DefaultOptions = Object.freeze({
     idPrefix: '',
     idPostfix: '',
     text: '',
-    checked: false
+    checked: false,
+    bottomMargin: false
 });
 
 const createUICheckbox = function(options = {}) {
@@ -15,7 +16,10 @@ const createUICheckbox = function(options = {}) {
 
     const wrapper = DOM.createElement({
         element: 'div',
-        class: CLASS_CHECKBOX_WRAPPER
+        class: `${CLASS_CHECKBOX_WRAPPER} ${ options.bottomMargin 
+            ? `${CLASS_CHECKBOX_WRAPPER}--margin` 
+            : ''
+        }`
     });
 
     const label = DOM.createElement({
@@ -38,6 +42,20 @@ const createUICheckbox = function(options = {}) {
 
     if(options.checked) {
         checkbox.setAttribute('checked', '');
+    }
+
+    // Attach given listeners and callbacks
+    for(const listener in options.listeners) {
+        const callbacks = options.listeners[listener];
+
+        // The callback(s) can be given as a single reference or as a array of many 
+        if(Array.isArray(callbacks)) {
+            callbacks.forEach((callback) => {
+                checkbox.addEventListener(listener, callback);
+            });
+        }else {
+            checkbox.addEventListener(listener, callbacks);
+        }
     }
 
     DOM.appendChildren(wrapper, [

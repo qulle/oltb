@@ -50,7 +50,7 @@ class BootstrapManager {
     }
 
     static ready() {
-        LogManager.logInformation(FILENAME, 'ready', 'OLTB is ready to use');
+        LogManager.logInformation(FILENAME, 'ready', 'OLTB is ready to use 🚀');
 
         window.dispatchEvent(new CustomEvent(Events.custom.ready));
     }

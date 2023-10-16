@@ -333,7 +333,7 @@ class MeasureTool extends Control {
     // -------------------------------------------------------------------
 
     shouldAlwaysCreateNewLayer() {
-        return SettingsManager.getSetting(Settings.alwaysNewLayer);
+        return SettingsManager.getSetting(Settings.alwaysNewLayers);
     }
 
     // -------------------------------------------------------------------

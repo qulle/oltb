@@ -18,7 +18,6 @@ const DefaultFeatureLayerOptions = Object.freeze({
     name: '',
     isVisible: true,
     isSilent: false,
-    disableFeatureLayerVisibilityButton: false,
     disableFeatureLayerEditButton: false,
     disableFeatureLayerDownloadButton: false,
     disableFeatureLayerDeleteButton: false
@@ -27,7 +26,6 @@ const DefaultFeatureLayerOptions = Object.freeze({
 const DefaultMapLayerOptions = Object.freeze({
     isVisible: true,
     isSilent: false,
-    disableMapLayerVisibilityButton: false,
     disableMapLayerEditButton: false,
     disableMapLayerDeleteButton: false
 });
@@ -223,7 +221,6 @@ class LayerManager {
             detail: {
                 layerWrapper: layerWrapper, 
                 isSilent: options.isSilent,
-                disableMapLayerVisibilityButton: options.disableMapLayerVisibilityButton,
                 disableMapLayerEditButton: options.disableMapLayerEditButton,
                 disableMapLayerDeleteButton: options.disableMapLayerDeleteButton
             }
@@ -357,7 +354,6 @@ class LayerManager {
             detail: {
                 layerWrapper: layerWrapper, 
                 isSilent: options.isSilent,
-                disableFeatureLayerVisibilityButton: options.disableFeatureLayerVisibilityButton,
                 disableFeatureLayerEditButton: options.disableFeatureLayerEditButton,
                 disableFeatureLayerDownloadButton: options.disableFeatureLayerDownloadButton,
                 disableFeatureLayerDeleteButton: options.disableFeatureLayerDeleteButton,

@@ -241,7 +241,6 @@ class BookmarkTool extends Control {
             name: TranslationManager.get(`${I18N_BASE}.layers.bookmarks`), 
             visible: this.options.markerLayerVisibleOnLoad, 
             isSilent: true,
-            disableFeatureLayerVisibilityButton: false,
             disableFeatureLayerEditButton: false,
             disableFeatureLayerDownloadButton: true,
             disableFeatureLayerDeleteButton: true

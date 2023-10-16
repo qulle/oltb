@@ -119,6 +119,7 @@ class TranslationTool extends Control {
             value: currentLang,
             options: languages,
             confirmText: i18n.confirmText,
+            cancelText: i18n.cancelText,
             onConfirm: (result) => {
                 this.doChangeLanguage(result);
             }

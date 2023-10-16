@@ -17,6 +17,7 @@ import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
 import { ConfigManager } from '../managers/ConfigManager';
 import { ElementManager } from '../managers/ElementManager';
 import { instantiateLayer } from '../ol-types/LayerType';
+import { createUICheckbox } from '../creators/CreateUICheckbox';
 import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
 import { SvgPaths, getIcon } from '../icons/GetIcon';
 import { instantiateSource } from '../ol-types/SourceType';
@@ -44,11 +45,9 @@ const I18N_BASE_COMMON = 'common';
 
 const DefaultOptions = Object.freeze({
     disableMapCreateLayerButton: false,
-    disableMapLayerVisibilityButton: false,
     disableMapLayerEditButton: false,
     disableMapLayerDeleteButton: false,
     disableFeatureCreateLayerButton: false,
-    disableFeatureLayerVisibilityButton: false,
     disableFeatureLayerEditButton: false,
     disableFeatureLayerDeleteButton: false,
     disableFeatureLayerDownloadButton: false,
@@ -733,13 +732,26 @@ class LayerTool extends Control {
             class: `${CLASS_TOOLBOX_LIST}__wrapper`
         });
 
-        const layerActiveDot = DOM.createElement({
+        const [ checkboxWrapper ] = createUICheckbox({
+            checked: layerState.isVisible,
+            listeners: {
+                'click': this.onLayerVisibilityChange.bind(
+                    this, 
+                    layerWrapper, 
+                    this.options.onMapLayerVisibilityChanged, 
+                    layerName
+                )
+            }
+        });
+
+        const layerDot = DOM.createElement({
             element: 'div',
             class: `${CLASS_TOOLBOX_LIST}__dot`
         });
 
         DOM.appendChildren(leftWrapper, [
-            layerActiveDot
+            layerDot,
+            checkboxWrapper
         ]);
 
         DOM.appendChildren(leftWrapper, [
@@ -858,13 +870,26 @@ class LayerTool extends Control {
             class: `${CLASS_TOOLBOX_LIST}__wrapper`
         });
 
-        const layerActiveDot = DOM.createElement({
+        const [ checkboxWrapper ] = createUICheckbox({
+            checked: layerState.isVisible,
+            listeners: {
+                'click': this.onLayerVisibilityChange.bind(
+                    this, 
+                    layerWrapper, 
+                    this.options.onFeatureLayerVisibilityChanged, 
+                    layerName
+                )
+            }
+        });
+
+        const layerDot = DOM.createElement({
             element: 'div',
             class: `${CLASS_TOOLBOX_LIST}__dot`
         });
 
         DOM.appendChildren(leftWrapper, [
-            layerActiveDot
+            layerDot,
+            checkboxWrapper
         ]);
 
         DOM.appendChildren(leftWrapper, [
@@ -1076,12 +1101,6 @@ class LayerTool extends Control {
         const isSilent = event.detail.isSilent;
         const layerWrapper = event.detail.layerWrapper;
 
-        const disableVisibilityButton = (
-            event.detail.disableMapLayerVisibilityButton ||
-            this.options.disableMapLayerVisibilityButton ||
-            false
-        );
-
         const disableEditButton = (
             event.detail.disableMapLayerEditButton ||
             this.options.disableMapLayerEditButton ||
@@ -1095,10 +1114,10 @@ class LayerTool extends Control {
         );
 
         this.createUIMapLayerItem(layerWrapper, {
-            ...(!disableVisibilityButton && { visibilityButton: {
-                function: this.createUIVisibilityButton.bind(this), 
-                callback: this.options.onMapLayerVisibilityChanged.bind(this)
-            }}),
+            // ...(!disableVisibilityButton && { visibilityButton: {
+            //     function: this.createUIVisibilityButton.bind(this), 
+            //     callback: this.options.onMapLayerVisibilityChanged.bind(this)
+            // }}),
             ...(!disableEditButton && { editButton: {
                 function: this.createUIEditButton.bind(this),
                 callback: this.options.onMapLayerRenamed.bind(this)
@@ -1138,12 +1157,6 @@ class LayerTool extends Control {
         const isSilent = event.detail.isSilent;
         const layerWrapper = event.detail.layerWrapper;
 
-        const disableVisibilityButton = (
-            event.detail.disableFeatureLayerVisibilityButton ||
-            this.options.disableFeatureLayerVisibilityButton ||
-            false
-        );
-
         const disableEditButton = (
             event.detail.disableFeatureLayerEditButton ||
             this.options.disableFeatureLayerEditButton ||
@@ -1164,10 +1177,6 @@ class LayerTool extends Control {
 
         this.doRemoveActiveFeatureLayerClass();
         this.createUIFeatureLayerItem(layerWrapper, {
-            ...(!disableVisibilityButton && { visibilityButton: {
-                function: this.createUIVisibilityButton.bind(this), 
-                callback: this.options.onFeatureLayerVisibilityChanged
-            }}),
             ...(!disableEditButton && { editButton: {
                 function: this.createUIEditButton.bind(this),
                 callback: this.options.onFeatureLayerRenamed

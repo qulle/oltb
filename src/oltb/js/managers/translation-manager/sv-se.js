@@ -764,7 +764,8 @@ export const SvSe = Object.freeze({
                     changeLanguage: {
                         title: 'Språkval',
                         message: 'Nuvarande språk är',
-                        confirmText: 'Byt Språk'
+                        confirmText: 'Byt Språk',
+                        cancelText: 'Avbryt',
                     }
                 }
             }

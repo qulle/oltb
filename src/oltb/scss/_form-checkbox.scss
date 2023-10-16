@@ -1,14 +1,17 @@
 .oltb-checkbox-wrapper {
     display: flex;
     align-items: center;
-    margin-bottom: 1rem;
+    
+    &--margin {
+        margin-bottom: 1rem;
+    }
 
     &:last-child {
         margin-bottom: 0;
     }
 
     &__checkbox {
-        margin: .25rem .625rem .25rem .25rem;
+        margin: .25rem .625rem .25rem 0;
         width: 1.25rem;
         height: 1.25rem;
         flex-shrink: 0;

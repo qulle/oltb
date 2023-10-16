@@ -54,15 +54,17 @@ class SettingsModal extends ModalBase {
             const [ checkboxWrapper, checkbox ] = createUICheckbox({
                 idPrefix: key,
                 text: settingObj.text,
-                checked: settingObj.state
+                checked: settingObj.state,
+                bottomMargin: true,
+                listeners: {
+                    'click': () => {
+                        // Update local state with new value
+                        // Is saved when save button is pressed
+                        this.#state.set(key, checkbox.checked);
+                    }
+                }
             });
-
-            checkbox.addEventListener('click', () => {
-                // Update local state with new value
-                // Is saved when save button is pressed
-                this.#state.set(key, checkbox.checked);
-            });
-
+            
             // Copy current state of each setting
             this.#state.set(key, settingObj.state);
 
