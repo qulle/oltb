@@ -370,6 +370,10 @@ class DebugInfoModal extends ModalBase {
         const browserDataContent = {
             userAgent: userAgent,
             device: {
+                protocol: window.location.protocol,
+                domain: window.location.hostname,
+                port: window.location.port,
+                isSecureContext: window.isSecureContext,
                 screen: {
                     width: window.screen.width,
                     height: window.screen.height
