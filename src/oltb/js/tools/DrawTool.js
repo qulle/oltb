@@ -33,7 +33,7 @@ const CLASS_TOOLBOX_SECTION = 'oltb-toolbox-section';
 const CLASS_TOGGLEABLE = 'oltb-toggleable';
 const ID_PREFIX = 'oltb-draw';
 const I18N_BASE = 'tools.drawTool';
-const I18N_BASE_COMMON = 'common';
+const I18N_BASE_COMMON = 'commons';
 
 const DefaultOptions = Object.freeze({
     onInitiated: undefined,

@@ -35,7 +35,7 @@ const CLASS_TOGGLEABLE = 'oltb-toggleable';
 const ID_PREFIX = 'oltb-measure';
 const KEY_TOOLTIP = 'tools.measureTool';
 const I18N_BASE = 'tools.measureTool';
-const I18N_BASE_COMMON = 'common';
+const I18N_BASE_COMMON = 'commons';
 
 const DefaultOptions = Object.freeze({
     onInitiated: undefined,

@@ -18,7 +18,7 @@ const ID_PREFIX = 'oltb-debug';
 const ID_EVENT_LOG = 'oltb-event-log';
 const CLASS_TOGGLEABLE = 'oltb-toggleable';
 const I18N_BASE = 'modalExtensions.debugInfoModal';
-const I18N_BASE_COMMON = 'common';
+const I18N_BASE_COMMON = 'commons';
 
 const DefaultOptions = Object.freeze({
     map: undefined,

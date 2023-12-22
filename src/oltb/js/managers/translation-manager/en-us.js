@@ -3,6 +3,20 @@ export const EnUs = Object.freeze({
         text: 'English',
         code: 'en-us'
     },
+    commons: {
+        titles: {
+            edit: 'Edit',
+            delete: 'Delete',
+            dragToSort: 'Drag To Sort',
+            download: 'Download',
+            copyText: 'Copy Text',
+            copyCoordinates: 'Copy Coordinates',
+            rename: 'Rename',
+            toggleSection: 'Toggle Section',
+            toggleVisibility: 'Toggle Visibility',
+            zoomToCoordinates: 'Zoom To Coordinates'
+        }
+    },
     managers: {
         stateManager: {
             toasts: {
@@ -65,24 +79,11 @@ export const EnUs = Object.freeze({
                     deleteMarker: {
                         title: 'Delete Marker',
                         message: 'Do you want to delete this Marker?',
-                        confirmText: 'Delete'
+                        confirmText: 'Delete',
+                        cancelText: 'Cancel'
                     }
                 }
             }
-        }
-    },
-    common: {
-        titles: {
-            edit: 'Edit',
-            delete: 'Delete',
-            dragToSort: 'Drag To Sort',
-            download: 'Download',
-            copyText: 'Copy Text',
-            copyCoordinates: 'Copy Coordinates',
-            rename: 'Rename',
-            toggleSection: 'Toggle Section',
-            toggleVisibility: 'Toggle Visibility',
-            zoomToCoordinates: 'Zoom To Coordinates'
         }
     },
     modalExtensions: {
@@ -276,6 +277,30 @@ export const EnUs = Object.freeze({
                         message: 'Failed to copy coordinates'
                     }
                 }
+            },
+            dialogs: {
+                confirms: {
+                    clearBookmarks: {
+                        title: 'Clear Bookmarks',
+                        message: 'Do you want to clear all Bookmarks?',
+                        confirmText: 'Clear',
+                        cancelText: 'Cancel'
+                    },
+                    deleteBookmark: {
+                        title: 'Delete Bookmark',
+                        message: 'Do you want to delete bookmark',
+                        confirmText: 'Delete',
+                        cancelText: 'Cancel'
+                    }
+                },
+                prompts: {
+                    editBookmark: {
+                        title: 'Edit Name',
+                        message: 'You are editing bookmark',
+                        confirmText: 'Rename',
+                        cancelText: 'Cancel'
+                    }
+                }
             }
         },
         coordinatesTool: {
@@ -407,7 +432,8 @@ export const EnUs = Object.freeze({
                     deleteFeatures: {
                         title: 'Delete Features',
                         message: 'Delete selected feature',
-                        confirmText: 'Delete'
+                        confirmText: 'Delete',
+                        cancelText: 'Cancel'
                     }
                 }
             }
@@ -444,7 +470,8 @@ export const EnUs = Object.freeze({
                     openHelp: {
                         title: 'Help Pages',
                         message: 'Browsers block automatic opening new windows, here is a button for you to press',
-                        confirmText: 'Open Help'
+                        confirmText: 'Open Help',
+                        cancelText: 'Cancel'
                     }
                 }
             },
@@ -537,14 +564,16 @@ export const EnUs = Object.freeze({
                     renameLayer: {
                         title: 'Edit Name',
                         message: 'Edit name for layer',
-                        confirmText: 'Rename'
+                        confirmText: 'Rename',
+                        cancelText: 'Cancel'
                     }
                 },
                 confirms: {
                     deleteLayer: {
                         title: 'Delete Layer',
                         message: 'Do you want to delete layer',
-                        confirmText: 'Delete'
+                        confirmText: 'Delete',
+                        cancelText: 'Cancel'
                     }
                 }
             }
@@ -599,7 +628,8 @@ export const EnUs = Object.freeze({
                     exitFullscreen: {
                         title: 'Exit Fullscreen',
                         message: 'To use geolocation you must exit fullscreen',
-                        confirmText: 'Exit Fullscreen'
+                        confirmText: 'Exit Fullscreen',
+                        cancelText: 'Cancel'
                     }
                 }
             },
@@ -665,7 +695,8 @@ export const EnUs = Object.freeze({
                     rotateMap: {
                         title: 'Rotate Map',
                         message: 'Set Map rotation by degrees',
-                        confirmText: 'Rotate Map'
+                        confirmText: 'Rotate Map',
+                        cancelText: 'Cancel'
                     }
                 }
             },
@@ -697,15 +728,6 @@ export const EnUs = Object.freeze({
             contextItems: {
                 clearBrowserState: 'Clear Browser State'
             },
-            dialogs: {
-                confirms: {
-                    clearBrowserState: {
-                        title: 'Clear Browser State',
-                        message: 'Do you want to reset all items to default state for the Toolbar?',
-                        confirmText: 'Clear'
-                    }
-                }
-            },
             toasts: {
                 infos: {
                     clearBrowserState: {
@@ -717,6 +739,16 @@ export const EnUs = Object.freeze({
                     savedSettings: {
                         title: 'Saved',
                         message: 'All settings was saved'
+                    }
+                }
+            },
+            dialogs: {
+                confirms: {
+                    clearBrowserState: {
+                        title: 'Clear Browser State',
+                        message: 'Do you want to reset all items to default state for the Toolbar?',
+                        confirmText: 'Clear',
+                        cancelText: 'Cancel'
                     }
                 }
             }

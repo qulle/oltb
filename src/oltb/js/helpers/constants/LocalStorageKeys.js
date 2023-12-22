@@ -18,7 +18,8 @@ const LocalStorageKeys = Object.freeze({
     graticuleTool: 'graticuleTool',
     scaleLineTool: 'scalelineTool',
     coordinatesTool: 'coordinatesTool',
-    settingsManager: 'settingsManager'
+    settingsManager: 'settingsManager',
+    translationManager: 'translationManager'
 });
 
 export { LocalStorageKeys };

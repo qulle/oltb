@@ -15,7 +15,7 @@ const FILENAME = 'hidden-tools/HiddenMarkerTool.js';
 const CLASS_FUNC_BUTTON = 'oltb-func-btn';
 const ID_PREFIX_INFO_WINDOW = 'oltb-info-window-marker';
 const I18N_BASE = 'tools.hiddenMarkerTool';
-const I18N_BASE_COMMON = 'common';
+const I18N_BASE_COMMON = 'commons';
 
 const DefaultOptions = Object.freeze({
     onAdded: undefined,

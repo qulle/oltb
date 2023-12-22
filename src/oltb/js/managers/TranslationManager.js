@@ -3,7 +3,9 @@ import { EnUs } from './translation-manager/en-us';
 import { SvSe } from './translation-manager/sv-se';
 import { LogManager } from './LogManager';
 import { TippyManager } from './TippyManager';
+// import { StateManager } from './StateManager';
 import { ConfigManager } from './ConfigManager';
+// import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
 
 const FILENAME = 'managers/TranslationManager.js';
 
@@ -18,6 +20,11 @@ const DefaultLanguages = Object.freeze([
 ]);
 
 const DefaultLanguage = DefaultLanguages[0];
+
+// const LocalStorageNodeName = LocalStorageKeys.translationManager;
+// const LocalStorageDefaults = Object.freeze({
+//     activeLanguage: DefaultLanguage
+// });
 
 /**
  * About:
@@ -50,7 +57,7 @@ class TranslationManager {
             });
         });
 
-        // Note: Languages added by user in Config.json
+        // Note: Languages added by user in config.json
         const languages = ConfigManager.getConfig().localizations.languages;
         languages.forEach((language) => {
             const exists = this.#languages.find((item) => {
@@ -65,12 +72,15 @@ class TranslationManager {
             }
         });
 
-        // TODO: Check if other has been saved in LocalStorage
         const activeLanguageValue = ConfigManager.getConfig().localizations.active;
         const activeLanguage = this.#languages.find((language) => {
             return language.value === activeLanguageValue;
         });
-
+        
+        // Note: Decide the active language based on three conditions
+        // 1. Stored language in localStorage
+        // 2. Given active lang in config.json
+        // 3. Fallback default language
         this.#activeLanguage = activeLanguage ?? DefaultLanguage;  
 
         return new Promise((resolve) => {
@@ -142,6 +152,10 @@ class TranslationManager {
     // # Section: Public API
     // -------------------------------------------------------------------
 
+    static getDefaultLanguage() {
+        return DefaultLanguage;
+    }
+
     static getLanguages() {
         return this.#languages;
     }
@@ -153,6 +167,8 @@ class TranslationManager {
     static setActiveLanguage(lang) {
         this.#activeLanguage = lang;
         this.#applyLanguage();
+
+        // StateManager.setStateObject();
     }
 
     static getActiveTranslation() {

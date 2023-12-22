@@ -9,7 +9,7 @@ import { generateIconMarker } from '../../generators/GenerateIconMarker';
 
 const ID_PREFIX_INFO_WINDOW = 'oltb-info-window-marker';
 const CLASS_FUNC_BUTTON = 'oltb-func-btn';
-const I18N_BASE_COMMON = 'common';
+const I18N_BASE_COMMON = 'commons';
 
 const editMarker = function(InfoWindowManager, beforeMarker) {
     const properties = beforeMarker.getProperties().oltb;

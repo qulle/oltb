@@ -175,6 +175,7 @@ class ResetNorthTool extends Control {
             message: i18n.message,
             value: Math.round(normalizedRotation),
             confirmText: i18n.confirmText,
+            cancelText: i18n.cancelText,
             onConfirm: (result) => {
                 if(result.isDigitsOnly()) {
                     this.doRotation(map, coordinates, zoom, result);

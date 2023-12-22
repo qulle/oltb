@@ -118,6 +118,7 @@ class HelpTool extends Control {
             message: i18n.message,
             confirmClass: Dialog.Success,
             confirmText: i18n.confirmText,
+            cancelText: i18n.cancelText,
             onConfirm: () => {
                 this.doOpenTabOrWindow();
             }

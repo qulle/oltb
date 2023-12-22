@@ -26,7 +26,7 @@ const FILENAME = 'hidden-tools/HiddenMapNavigationTool.js';
 const CLASS_FUNC_BUTTON = 'oltb-func-btn';
 const ID_PREFIX_INFO_WINDOW = 'oltb-info-window-marker';
 const I18N_BASE = 'tools.hiddenMapNavigationTool';
-const I18N_BASE_COMMON = 'common';
+const I18N_BASE_COMMON = 'commons';
 
 const DefaultOptions = Object.freeze({
     focusZoom: 2

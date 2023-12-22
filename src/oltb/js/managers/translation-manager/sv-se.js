@@ -3,6 +3,20 @@ export const SvSe = Object.freeze({
         text: 'Swedish',
         code: 'sv-se'
     },
+    commons: {
+        titles: {
+            edit: 'Redigera',
+            delete: 'Radera',
+            dragToSort: 'Dra För Att Sortera',
+            download: 'Ladda Ner',
+            copyText: 'Kopiera Text',
+            copyCoordinates: 'Kopiera Koordinater',
+            rename: 'Ändra Namn',
+            toggleSection: 'Toggla Sektion',
+            toggleVisibility: 'Toggla Synlighet',
+            zoomToCoordinates: 'Zooma Till Koordinater'
+        }
+    },
     managers: {
         stateManager: {
             toasts: {
@@ -65,24 +79,11 @@ export const SvSe = Object.freeze({
                     deleteMarker: {
                         title: 'Radera Markör',
                         message: 'Vill du radera vald Markör?',
-                        confirmText: 'Radera'
+                        confirmText: 'Radera',
+                        cancelText: 'Avbryt'
                     }
                 }
             }
-        }
-    },
-    common: {
-        titles: {
-            edit: 'Redigera',
-            delete: 'Radera',
-            dragToSort: 'Dra För Att Sortera',
-            download: 'Ladda Ner',
-            copyText: 'Kopiera Text',
-            copyCoordinates: 'Kopiera Koordinater',
-            rename: 'Ändra Namn',
-            toggleSection: 'Toggla Sektion',
-            toggleVisibility: 'Toggla Synlighet',
-            zoomToCoordinates: 'Zooma Till Koordinater'
         }
     },
     modalExtensions: {
@@ -276,6 +277,30 @@ export const SvSe = Object.freeze({
                         message: 'Misslyckades att kopiera koordinater'
                     }
                 }
+            },
+            dialogs: {
+                confirms: {
+                    clearBookmarks: {
+                        title: 'Radera Bokmärken',
+                        message: 'Vill du radera alla Bokmärken',
+                        confirmText: 'Radera',
+                        cancelText: 'Avbryt'
+                    },
+                    deleteBookmark: {
+                        title: 'Radera Bokmärke',
+                        message: 'Vill du radera bokmärke',
+                        confirmText: 'Radera',
+                        cancelText: 'Avbryt'
+                    }
+                },
+                prompts: {
+                    editBookmark: {
+                        title: 'Redigera Namn',
+                        message: 'Du redigerar bokmärke',
+                        confirmText: 'Ändra Namn',
+                        cancelText: 'Avbryt'
+                    }
+                }
             }
         },
         coordinatesTool: {
@@ -407,7 +432,8 @@ export const SvSe = Object.freeze({
                     deleteFeatures: {
                         title: 'Radera Objekt',
                         message: 'Radera markerade objekt',
-                        confirmText: 'Radera'
+                        confirmText: 'Radera',
+                        cancelText: 'Avbryt'
                     }
                 }
             }
@@ -444,7 +470,8 @@ export const SvSe = Object.freeze({
                     openHelp: {
                         title: 'Hjälpsidor',
                         message: 'Webbläsare blockerar automatisk öppning av nya fönster, här är en knapp som du kan trycka på',
-                        confirmText: 'Öppna Hjälpsidor'
+                        confirmText: 'Öppna Hjälpsidor',
+                        cancelText: 'Avbryt'
                     }
                 }
             },
@@ -537,14 +564,16 @@ export const SvSe = Object.freeze({
                     renameLayer: {
                         title: 'Redigera Namn',
                         message: 'Redigera lagernamn',
-                        confirmText: 'Ändra Namn'
+                        confirmText: 'Ändra Namn',
+                        cancelText: 'Avbryt'
                     }
                 },
                 confirms: {
                     deleteLayer: {
                         title: 'Radera Lager',
                         message: 'Vill du radera lager',
-                        confirmText: 'Radera'
+                        confirmText: 'Radera',
+                        cancelText: 'Avbryt'
                     }
                 }
             }
@@ -599,7 +628,8 @@ export const SvSe = Object.freeze({
                     exitFullscreen: {
                         title: 'Avsluta Fullskärm',
                         message: 'För att använda geolokalisering måste du avsluta fullskärm',
-                        confirmText: 'Avsluta Fullskärm'
+                        confirmText: 'Avsluta Fullskärm',
+                        cancelText: 'Avbryt'
                     }
                 }
             },
@@ -665,7 +695,8 @@ export const SvSe = Object.freeze({
                     rotateMap: {
                         title: 'Rotera Karta',
                         message: 'Ange kartas rotation i grader',
-                        confirmText: 'Rotera Kartan'
+                        confirmText: 'Rotera Kartan',
+                        cancelText: 'Avbryt'
                     }
                 }
             },
@@ -697,15 +728,6 @@ export const SvSe = Object.freeze({
             contextItems: {
                 clearBrowserState: 'Rensa Webbläsaredata'
             },
-            dialogs: {
-                confirms: {
-                    clearBrowserState: {
-                        title: 'Rensa Webbläsaredata',
-                        message: 'Vill du rensa alla objekt till standardläget för Verktygsfältet?',
-                        confirmText: 'Rensa'
-                    }
-                }
-            },
             toasts: {
                 infos: {
                     clearBrowserState: {
@@ -717,6 +739,16 @@ export const SvSe = Object.freeze({
                     savedSettings: {
                         title: 'Sparad',
                         message: 'Alla inställningar sparades'
+                    }
+                }
+            },
+            dialogs: {
+                confirms: {
+                    clearBrowserState: {
+                        title: 'Rensa Webbläsaredata',
+                        message: 'Vill du rensa alla objekt till standardläget för Verktygsfältet?',
+                        confirmText: 'Rensa',
+                        cancelText: 'Avbryt'
                     }
                 }
             }

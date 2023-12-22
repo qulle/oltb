@@ -26,7 +26,7 @@ const ID_PREFIX = 'oltb-split-view';
 const INDEX_DEFAULT_RIGHT = 0;
 const INDEX_DEFAULT_LEFT = 1;
 const I18N_BASE = 'tools.splitViewTool';
-const I18N_BASE_COMMON = 'common';
+const I18N_BASE_COMMON = 'commons';
 
 const DefaultOptions = Object.freeze({
     onInitiated: undefined,

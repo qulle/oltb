@@ -21,7 +21,7 @@ const CLASS_TOGGLEABLE = 'oltb-toggleable';
 const ID_PREFIX = 'oltb-overview';
 const ID_CLASS_OVERVIEW_TARGET = 'oltb-overview-target';
 const I18N_BASE = 'tools.overviewTool';
-const I18N_BASE_COMMON = 'common';
+const I18N_BASE_COMMON = 'commons';
 
 const DefaultOptions = Object.freeze({
     onInitiated: undefined,

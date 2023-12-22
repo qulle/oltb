@@ -25,7 +25,7 @@ const CLASS_FUNC_BUTTON = 'oltb-func-btn';
 const ID_PREFIX_INFO_WINDOW = 'oltb-info-window-marker';
 const ID_MARKER_PATH = 'person.filled';
 const I18N_BASE = 'tools.myLocationTool';
-const I18N_BASE_COMMON = 'common';
+const I18N_BASE_COMMON = 'commons';
 
 const DefaultOptions = Object.freeze({
     title: 'My Location',
@@ -153,6 +153,7 @@ class MyLocationTool extends Control {
             message: i18n.message,
             confirmClass: Dialog.Success,
             confirmText: i18n.confirmText,
+            cancelText: i18n.cancelText,
             onConfirm: () => {
                 exitFullScreen()
                     .then(() => {

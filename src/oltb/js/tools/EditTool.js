@@ -49,7 +49,7 @@ const CLASS_TOGGLEABLE = 'oltb-toggleable';
 const ID_PREFIX = 'oltb-edit';
 const KEY_TOOLTIP = 'tools.editTool';
 const I18N_BASE = 'tools.editTool';
-const I18N_BASE_COMMON = 'common';
+const I18N_BASE_COMMON = 'commons';
 
 const DefaultOptions = Object.freeze({
     hitTolerance: 5,
@@ -592,6 +592,7 @@ class EditTool extends Control {
             title: i18n.title,
             message: `${i18n.message} ${featureLength}st?`,
             confirmText: i18n.confirmText,
+            cancelText: i18n.cancelText,
             onConfirm: () => {
                 const features = [ ...this.interactionSelect.getFeatures().getArray() ];
                 this.doDeleteFeatures(features);

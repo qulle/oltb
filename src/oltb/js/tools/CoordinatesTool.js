@@ -31,7 +31,7 @@ const KEY_TOOLTIP = 'tools.coordinatesTool';
 const FORMAT_DECIMAL_DEGREES = 'DD';
 const FORMAT_DEGREE_MINUTES_SECONDS = 'DMS';
 const I18N_BASE = 'tools.coordinatesTool';
-const I18N_BASE_COMMON = 'common';
+const I18N_BASE_COMMON = 'commons';
 
 const DefaultOptions = Object.freeze({
     onInitiated: undefined,

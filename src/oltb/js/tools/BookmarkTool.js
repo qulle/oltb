@@ -39,7 +39,7 @@ const ID_MARKER_PATH = 'bookmarkStar.filled';
 const SORTABLE_BOOKMARKS = 'sortableBookmarks';
 const INDEX_OFFSET = 1;
 const I18N_BASE = 'tools.bookmarkTool';
-const I18N_BASE_COMMON = 'common';
+const I18N_BASE_COMMON = 'commons';
 
 const DefaultOptions = Object.freeze({
     markerLayerVisibleOnLoad: true,
@@ -682,10 +682,13 @@ class BookmarkTool extends Control {
     // -------------------------------------------------------------------
 
     askClearBookmarks() {
+        const i18n = TranslationManager.get(`${I18N_BASE}.dialogs.confirms.clearBookmarks`);
+
         Dialog.confirm({
-            title: 'Clear Bookmarks',
-            message: 'Do you want to clear <strong>all</strong> stored bookmarks?',
-            confirmText: 'Clear',
+            title: i18n.title,
+            message: i18n.message,
+            confirmText: i18n.confirmText,
+            cancelText: i18n.cancelText,
             onConfirm: () => {
                 this.doClearBookmarks();
 
@@ -698,10 +701,13 @@ class BookmarkTool extends Control {
     }
 
     askDeleteBookmark(bookmark, bookmarkElement) {
+        const i18n = TranslationManager.get(`${I18N_BASE}.dialogs.confirms.clearBookmarks`);
+
         Dialog.confirm({
-            title: 'Delete Bookmark',
-            message: `Do you want to delete the <strong>${bookmark.name}</strong> bookmark?`,
-            confirmText: 'Delete',
+            title: i18n.title,
+            message: `${i18n.message} <strong>${bookmark.name}</strong>?`,
+            confirmText: i18n.confirmText,
+            cancelText: i18n.cancelText,
             onConfirm: () => {
                 InfoWindowManager.hideOverlay();
                 this.doRemoveBookmark(bookmark, bookmarkElement);
@@ -710,11 +716,14 @@ class BookmarkTool extends Control {
     }
 
     askEditBookmark(bookmark, bookmarkName) {
+        const i18n = TranslationManager.get(`${I18N_BASE}.dialogs.prompts.editBookmark`);
+
         Dialog.prompt({
-            title: 'Edit Name',
-            message: `You are editing the <strong>${bookmark.name}</strong> bookmark`,
+            title: i18n.title,
+            message: `${i18n.message} <strong>${bookmark.name}</strong>`,
             value: bookmark.name,
-            confirmText: 'Rename',
+            confirmText: i18n.confirmText,
+            cancelText: i18n.cancelText,
             onConfirm: (result) => {
                 InfoWindowManager.hideOverlay();
                 

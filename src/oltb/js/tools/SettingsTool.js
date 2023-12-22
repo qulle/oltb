@@ -145,6 +145,7 @@ class SettingsTool extends Control {
             title: i18n.title,
             message: i18n.message,
             confirmText: i18n.confirmText,
+            cancelText: i18n.cancelText,
             onConfirm: () => {
                 this.doClearBrowserState();
             }

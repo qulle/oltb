@@ -41,7 +41,7 @@ const SORTABLE_MAP_LAYERS = 'sortableMapLayers';
 const SORTABLE_FEATURE_LAYERS = 'sortableFeatureLayers';
 const INDEX_OFFSET = 1;
 const I18N_BASE = 'tools.layerTool';
-const I18N_BASE_COMMON = 'common';
+const I18N_BASE_COMMON = 'commons';
 
 const DefaultOptions = Object.freeze({
     disableMapCreateLayerButton: false,
@@ -1062,6 +1062,7 @@ class LayerTool extends Control {
             message: `${i18n.message} <strong>${layerWrapper.getName()}</strong>`,
             value: layerWrapper.getName(),
             confirmText: i18n.confirmText,
+            cancelText: i18n.cancelText,
             onConfirm: (result) => {
                 if(result !== null && !!result.length) {
                     // Update model
@@ -1087,6 +1088,7 @@ class LayerTool extends Control {
             title: i18n.title,
             message: `${i18n.message} <strong>${layerWrapper.getName()}</strong>?`,
             confirmText: i18n.confirmText,
+            cancelText: i18n.cancelText,
             onConfirm: () => {
                 callback(layerWrapper);
             }

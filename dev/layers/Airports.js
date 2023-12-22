@@ -11,7 +11,7 @@ const ID_PREFIX_INFO_WINDOW = 'oltb-info-window-marker';
 
 const LayerWrapper = LayerManager.addFeatureLayer({
     id: '91a9a06f-7e49-4f85-a204-58dc7ab6a95e',
-    name: '50 Busiest Airports',
+    name: '50 Airports',
     isVisible: false,
     isSilent: true
 });
