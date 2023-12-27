@@ -72,7 +72,8 @@ class ResetNorthTool extends Control {
 
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onInitiated instanceof Function) {
             this.options.onInitiated();
         }
@@ -103,7 +104,8 @@ class ResetNorthTool extends Control {
         
         this.momentaryActivation();
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onClicked instanceof Function) {
             this.options.onClicked();
         }
@@ -125,7 +127,8 @@ class ResetNorthTool extends Control {
             zoom: zoom,
             rotation: 0,
             onDone: (result) => {
-                // Note: Consumer callback
+                // Note: 
+                // @Consumer callback
                 if(this.options.onReset instanceof Function) {
                     this.options.onReset(result);
                 }
@@ -166,7 +169,8 @@ class ResetNorthTool extends Control {
             ? rotation + normalizationMaxLimit 
             : rotation;
 
-        // Note: Must use the center of the view, not the clicked coordinates
+        // Note: 
+        // Must use the center of the view, not the clicked coordinates
         const coordinates = toLonLat(view.getCenter());
         const i18n = TranslationManager.get(`${I18N_BASE}.dialogs.prompts.rotateMap`);
 

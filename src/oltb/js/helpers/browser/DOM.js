@@ -98,7 +98,8 @@ class DOM {
         void element.offsetWidth;
         element.classList.add(className);
 
-        // Note: Config.animationDuration.fast matches the time given in _animations.scss
+        // Note: 
+        // Config.animationDuration.fast matches the time given in _animations.scss
         // With the animation-class the html2canvas fails to render the exported PNG correctly
         const duration = ConfigManager.getConfig().animationDuration.fast;
         window.setTimeout(() => {

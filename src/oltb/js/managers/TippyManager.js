@@ -64,7 +64,8 @@ class TippyManager {
     }
 
     static #setToolButtonInstances() {
-        // Note: Used when switching language
+        // Note: 
+        // Used when switching language
         // Destroy each instance so that the new content with correct lang can be added in the new
         this.#toolButtonInstances.forEach((instance) => {
             instance.destroy();

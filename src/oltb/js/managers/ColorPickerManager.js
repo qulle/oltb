@@ -21,7 +21,7 @@ class ColorPickerManager {
 
     static async initAsync(options = {}) {
         LogManager.logDebug(FILENAME, 'initAsync', 'Initialization started');
-        
+
         this.#colorPickerElement = this.#createColorPickerElement();
         this.#colorPicker = AColorPicker.createPicker(this.#colorPickerElement);
 
@@ -44,7 +44,12 @@ class ColorPickerManager {
     // -------------------------------------------------------------------
 
     static #createColorPickerElement() {
-        const palette = ConfigManager.getConfig().aColorPicker.palette.join('|');
+        const palette = ConfigManager.getConfig().aColorPicker.palette;
+
+        LogManager.logDebug(FILENAME, 'initAsync', {
+            count: palette.length,
+            palette: palette
+        });
 
         return DOM.createElement({
             element: 'div', 
@@ -56,7 +61,7 @@ class ColorPickerManager {
                 'acp-show-rgb': 'no',
                 'acp-show-hsl': 'no',
                 'acp-show-hex': 'yes',
-                'acp-palette': palette
+                'acp-palette': palette.join('|')
             }
         });
     }
@@ -89,7 +94,8 @@ class ColorPickerManager {
     
         this.#colorPicker.setColor(instance.reference.getAttribute('data-oltb-color'));
         this.#colorPicker.on(Events.browser.change, (picker, color) => {
-            // Note: Important to always be HEX with Alpha value
+            // Note: 
+            // Important to always be HEX with Alpha value
             // Sometimes the two last digits are replaced with fixed alpha value
             color = AColorPicker.parseColor(color, 'hexcss4');
     

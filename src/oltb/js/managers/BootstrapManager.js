@@ -15,7 +15,7 @@ class BootstrapManager {
     static #managers = [];
 
     static async initAsync(items = []) {
-        LogManager.logInformation(FILENAME, 'initAsync', 'Manager initialization started');
+        LogManager.logInformation(FILENAME, 'initAsync', 'Manager initialization started 😴');
 
         const config = ConfigManager.getConfig();
         const oltbVersion = config.toolbar.version;
@@ -37,12 +37,12 @@ class BootstrapManager {
             results.push(result);
         }
 
-        LogManager.logInformation(FILENAME, 'initAsync', 'Manager initialization ended');
+        LogManager.logInformation(FILENAME, 'initAsync', 'Manager initialization ended 🥳');
         LogManager.logInformation(FILENAME, 'initAsync', results);
     }
 
     static setMap(map) {
-        LogManager.logInformation(FILENAME, 'setMap', 'Map is ready to use');
+        LogManager.logInformation(FILENAME, 'setMap', 'OL is ready to use 🚀');
 
         this.#managers.forEach((manager) => {
             manager.setMap(map);

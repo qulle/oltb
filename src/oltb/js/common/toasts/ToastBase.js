@@ -110,7 +110,8 @@ class ToastBase {
     remove() {
         this.toast.classList.add(`${CLASS_TOAST}--remove`, CLASS_ANIMATION_SLIDE_OUT);
     
-        // Note: Remove the toast from DOM after animation finishes
+        // Note: 
+        // Remove the toast from DOM after animation finishes
         const duration = ConfigManager.getConfig().animationDuration.fast;
         window.setTimeout(() => {
             DOM.removeElement(this.toast);

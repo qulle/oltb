@@ -144,7 +144,8 @@ class BookmarkTool extends Control {
         window.addEventListener(Events.custom.ready, this.onOLTBReady.bind(this));
         window.addEventListener(Events.custom.browserStateCleared, this.onWindowBrowserStateCleared.bind(this));
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onInitiated instanceof Function) {
             this.options.onInitiated();
         }
@@ -260,7 +261,8 @@ class BookmarkTool extends Control {
             this.activateTool();
         }
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onClicked instanceof Function) {
             this.options.onClicked();
         }
@@ -308,7 +310,8 @@ class BookmarkTool extends Control {
             this.deActivateTool();
         }
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onBrowserStateCleared instanceof Function) {
             this.options.onBrowserStateCleared();
         }
@@ -434,8 +437,9 @@ class BookmarkTool extends Control {
     }
 
     onEndSortable(event, options) {
+        // Note: 
         // User callback data
-        // Note: The old/new are swapped due to the list beeing reversed in DESC order
+        // The old/new are swapped due to the list beeing reversed in DESC order
         const list = [];
         const currentItem = {
             id: event.item.getAttribute('data-oltb-id'),
@@ -445,13 +449,15 @@ class BookmarkTool extends Control {
 
         const ul = event.to;
         ul.childNodes.forEach((li, index) => {
-            // Note: Reverse the index so that 0 is at bottom of list not top
+            // Note: 
+            // Reverse the index so that 0 is at bottom of list not top
             const reversedIndex = ul.childNodes.length - index - INDEX_OFFSET;
             li.setAttribute('data-oltb-sort-index', reversedIndex);
 
             const id = li.getAttribute('data-oltb-id');
 
-            // Note: The Bookmark item is one and the same for LocalStorage
+            // Note: 
+            // The Bookmark item is one and the same for LocalStorage
             // This is not true for the LayerTool that has slightly different logic
             const bookmarkItem = this.getLocalStorageBookmarkById(id);
             if(bookmarkItem) {
@@ -466,7 +472,8 @@ class BookmarkTool extends Control {
 
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(options.callback instanceof Function) {
             options.callback(currentItem, list);
         }
@@ -547,7 +554,8 @@ class BookmarkTool extends Control {
             bookmark.id
         );
 
-        // Note: This is the current true sortIndex
+        // Note: 
+        // This is the current true sortIndex
         bookmark.sortIndex = sortIndex;
 
         const bookmarkElement = DOM.createElement({
@@ -572,7 +580,8 @@ class BookmarkTool extends Control {
             }
         });
 
-        // Note: This tooltip can not be triggered by the delegated .oltb-tippy class
+        // Note: 
+        // This tooltip can not be triggered by the delegated .oltb-tippy class
         // Because the tooltip instance can not be reached in the renaming function unless it is known during "compile time"
         this.createUIBookmarkNameTippy(bookmarkName);
 
@@ -814,7 +823,8 @@ class BookmarkTool extends Control {
 
         this.createUIBookmark(bookmark);
 
-        // Note: Alert the user, the Bookmark was created when the tool was not active
+        // Note: 
+        // Alert the user, the Bookmark was created when the tool was not active
         if(!this.isActive) {
             Toast.success({
                 i18nKey: `${I18N_BASE}.toasts.infos.createBookmark`,
@@ -822,7 +832,8 @@ class BookmarkTool extends Control {
             });
         }
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onAdded instanceof Function) {
             this.options.onAdded(bookmark);
         }
@@ -855,7 +866,8 @@ class BookmarkTool extends Control {
         this.sortSortableDesc(this.sortableBookmarkStack);
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onRemoved instanceof Function) {
             this.options.onRemoved(bookmark);
         }
@@ -866,13 +878,15 @@ class BookmarkTool extends Control {
         bookmarkName.innerText = result.ellipsis(20);
         bookmarkName.getTippy().setContent(result);
 
-        // Note: Easiest to delete and add a new Marker at the same location
+        // Note: 
+        // Easiest to delete and add a new Marker at the same location
         this.removeMarkerFromMap(bookmark.marker);
         this.doAddIconMarker(bookmark);
 
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onRenamed instanceof Function) {
             this.options.onRenamed(bookmark);
         }
@@ -887,7 +901,8 @@ class BookmarkTool extends Control {
         this.localStorage.bookmarks = [];
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onCleared instanceof Function) {
             this.options.onCleared();
         }
@@ -910,32 +925,33 @@ class BookmarkTool extends Control {
             }
         });
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onZoomedTo instanceof Function) {
             this.options.onZoomedTo(bookmark);
         }
     }
 
-    doCopyBookmarkCoordinates(bookmark) {
+    async doCopyBookmarkCoordinates(bookmark) {
         const prettyCoordinates = toStringHDMS(bookmark.coordinates);
         
-        copyToClipboard(prettyCoordinates)
-            .then(() => {
-                Toast.info({
-                    i18nKey: `${I18N_BASE}.toasts.infos.copyCoordinates`,
-                    autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
-                });
-            })
-            .catch((error) => {
-                LogManager.logError(FILENAME, 'doCopyBookmarkCoordinates', {
-                    message: 'Failed to copy coordinates',
-                    error: error
-                });
-                
-                Toast.error({
-                    i18nKey: `${I18N_BASE}.toasts.errors.copyCoordinates`
-                });
+        try {
+            await copyToClipboard(prettyCoordinates);
+
+            Toast.info({
+                i18nKey: `${I18N_BASE}.toasts.infos.copyCoordinates`,
+                autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
             });
+        }catch(error) {
+            LogManager.logError(FILENAME, 'doCopyBookmarkCoordinates', {
+                message: 'Failed to copy coordinates',
+                error: error
+            });
+            
+            Toast.error({
+                i18nKey: `${I18N_BASE}.toasts.errors.copyCoordinates`
+            });
+        }
     }
 }
 

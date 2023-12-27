@@ -74,7 +74,8 @@ class ImportVectorLayerTool extends Control {
         
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onInitiated instanceof Function) {
             this.options.onInitiated();
         }
@@ -93,7 +94,8 @@ class ImportVectorLayerTool extends Control {
         
         this.momentaryActivation();
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onClicked instanceof Function) {
             this.options.onClicked();
         }
@@ -201,7 +203,8 @@ class ImportVectorLayerTool extends Control {
                 return key.toLowerCase() === fileExtension;
             });
 
-            // Note: This should not happen since the format is set in the dialog using select element
+            // Note: 
+            // This should not happen since the format is set in the dialog using select element
             if(!format) {
                 LogManager.logError(FILENAME, 'doImportLayer', {
                     title: 'Error',
@@ -222,7 +225,8 @@ class ImportVectorLayerTool extends Control {
     
             this.doAddFeaturesToMap(features, filename);
     
-            // Note: Consumer callback
+            // Note: 
+            // @Consumer callback
             if(this.options.onImported instanceof Function) {
                 this.options.onImported(features);
             }
@@ -236,7 +240,8 @@ class ImportVectorLayerTool extends Control {
                 i18nKey: `${I18N_BASE}.toasts.errors.importFailed`
             });
 
-            // Note: Consumer callback
+            // Note: 
+            // @Consumer callback
             if(this.options.onError instanceof Function) {
                 this.options.onError(file, error);
             }

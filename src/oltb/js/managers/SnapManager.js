@@ -66,7 +66,8 @@ class SnapManager {
     // -------------------------------------------------------------------
 
     static #createSnapOverlay() {
-        // Note: Not a perfect solution but will work for now.
+        // Note: 
+        // Not a perfect solution but will work for now.
         // The problem is that the overlay follows the cursor (and that is correct) but the lines only goes to the edges of the overlay
         // Making the overlay element bigger "solves" the problem (if the user not dragging the mouse to another screen)
         const dimensionFactor = 2;
@@ -121,29 +122,34 @@ class SnapManager {
 
         this.#tool.onSnap(event);
         
-        // Note: The help lines should now follow the Snapped vertext and not the mouse
+        // Note: 
+        // The help lines should now follow the Snapped vertext and not the mouse
         this.#snapOverlay.setPosition(event.vertex);
         this.#setLineColorTo(STYLE_SNAPPED);
     }
 
     static #onPointerMove(event) {
-        // Note: Only follow the mouse exactly if we are not snapped
+        // Note: 
+        // Only follow the mouse exactly if we are not snapped
         // The onSnap sets the positon to the vertex when Snapped
         if(this.#snapCounter === 0 && this.#moveCounter === 0) {
             this.#snapOverlay.setPosition(event.coordinate);
         }
         
-        // Note: A snap event must first have triggered
+        // Note: 
+        // A snap event must first have triggered
         if(this.#snapCounter !== 0) {
             this.#moveCounter += 1;
         }
 
-        // Note: No snap event or is still snapped
+        // Note: 
+        // No snap event or is still snapped
         if(this.#snapCounter === this.#moveCounter) {
             return;
         }
 
-        // Note: Snap is released
+        // Note: 
+        // Snap is released
         this.#setCountersTo(0);
         this.#setLineColorTo(STYLE_NOT_SNAPPED);
         this.#snapOverlay.setPosition(event.coordinate);

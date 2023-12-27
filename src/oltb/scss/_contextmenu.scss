@@ -29,8 +29,8 @@
   
         &:hover,
         &:focus {
-            background-color: $color-blue-light;
-            color: $color-blue-dark;
+            background-color: $color-blue-200;
+            color: $color-blue-400;
         }
     }
 
@@ -70,7 +70,7 @@ body.oltb-dark .oltb-context-menu {
 
         &:hover,
         &:focus {
-            background-color: $color-blue-mid;
+            background-color: $color-blue-300;
             color: $color-light;
         }
     }

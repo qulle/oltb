@@ -101,7 +101,8 @@ class DirectionTool extends Control {
         window.addEventListener(Events.browser.resize, this.onWindowSizeCheck.bind(this));
         window.addEventListener(Events.custom.browserStateCleared, this.onWindowBrowserStateCleared.bind(this));
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onInitiated instanceof Function) {
             this.options.onInitiated();
         }
@@ -120,7 +121,8 @@ class DirectionTool extends Control {
 
         this.momentaryActivation();
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onClicked instanceof Function) {
             this.options.onClicked();
         }
@@ -136,7 +138,8 @@ class DirectionTool extends Control {
             }
         }));
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onChanged instanceof Function) {
             this.options.onChanged(active.class);
         }
@@ -160,7 +163,8 @@ class DirectionTool extends Control {
         const active = this.getActiveDirection();
         this.doSwitchDirectionFromTo(active, DirectionData.col);
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onBrowserStateCleared instanceof Function) {
             this.options.onBrowserStateCleared();
         }

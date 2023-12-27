@@ -76,7 +76,7 @@ class Select extends DialogBase {
             ]);
         });
 
-        select.value = this.options.value.value;
+        select.value = this.options.value || this.options.options[0].value;
 
         const buttonWrapper = DOM.createElement({
             element: 'div',
@@ -93,14 +93,23 @@ class Select extends DialogBase {
             listeners: {
                 'click': () => {
                     this.close();
+
+                    const fromValue = this.options.value;
+                    const fromOption = this.options.options.find((option) => {
+                        return option.value === fromValue;
+                    });
+                    
+                    const toValue = select.value;
+                    const toOption = select.options[select.selectedIndex];
+
                     this.options.onConfirm instanceof Function && this.options.onConfirm({
                         from: {
-                            text: this.options.value.text,
-                            value: this.options.value.value
+                            text: fromOption.text.trim(),
+                            value: fromValue.trim()
                         },
                         to: {
-                            text: select.options[select.selectedIndex].text.trim(),
-                            value: select.value.trim()
+                            text: toOption.text.trim(),
+                            value: toValue.trim()
                         }
                     });
                 }

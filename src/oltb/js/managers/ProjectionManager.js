@@ -12,7 +12,8 @@ const FILENAME = 'managers/ProjectionManager.js';
  * Manages all EPSG projections.
  */
 class ProjectionManager {
-    // Note: More projections can be fetched from here: https://epsg.io/
+    // Note: 
+    // More projections can be fetched from here: https://epsg.io/
     static #projections = [{
         isActive: true,
         code: 'EPSG:3857',

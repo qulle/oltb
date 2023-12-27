@@ -33,7 +33,8 @@ class ConfigManager {
     }
 
     static getConfig() {
-        // Note: In some edge cases (LogManager as example)
+        // Note: 
+        // In some edge cases (LogManager as example)
         // The Config is required before it has loaded, return the DefaultConfig
         return this.#config || DefaultConfig;
     }
@@ -58,7 +59,8 @@ class ConfigManager {
         }).then((config) => {
             this.#config = _.merge(_.cloneDeep(DefaultConfig), config);
 
-            LogManager.logDebug(FILENAME, 'loadConfigFileAsync', _.cloneDeep(this.#config));
+            LogManager.logInformation(FILENAME, 'loadConfigFileAsync', _.cloneDeep(config));
+            LogManager.logInformation(FILENAME, 'loadConfigFileAsync', _.cloneDeep(this.#config));
 
             return Promise.resolve({
                 filename: FILENAME,
@@ -66,7 +68,7 @@ class ConfigManager {
             });
         }).catch((error) => {
             LogManager.logWarning(FILENAME, 'loadConfigFileAsync', {
-                message: 'No user config.json was found',
+                message: 'No user defined config.json was found',
                 error: error
             });
 

@@ -44,7 +44,7 @@
             
             &:hover,
             &--active {
-                background-color: $color-blue-mid;
+                background-color: $color-blue-300;
                 color: $color-light;
             }
         }
@@ -67,8 +67,8 @@
 
     &:hover,
     &--active {
-        background-color: $color-blue-light;
-        color: $color-blue-dark;
+        background-color: $color-blue-200;
+        color: $color-blue-400;
     }
 
     &--hidden {
@@ -89,7 +89,7 @@ body.oltb-using-keyboard #oltb {
         .oltb-tool-button {
             &:focus,
             &:active {
-                background-color: $color-blue-mid;
+                background-color: $color-blue-300;
                 color: $color-light;
             }
         }
@@ -98,8 +98,8 @@ body.oltb-using-keyboard #oltb {
     .oltb-tool-button {
         &:focus,
         &:active {
-            background-color: $color-blue-light;
-            color: $color-blue-dark;
+            background-color: $color-blue-200;
+            color: $color-blue-400;
         }
     }
 }

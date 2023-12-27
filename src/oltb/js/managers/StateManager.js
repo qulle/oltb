@@ -6,7 +6,8 @@ import { ConfigManager } from './ConfigManager';
 const FILENAME = 'managers/StateManager.js';
 const I18N_BASE = 'managers.stateManager';
 
-// Note: Some objects have properties that we don't want to store in localStorage
+// Note: 
+// Some objects have properties that we don't want to store in localStorage
 // Example: Bookmarks have a reference to the marker on the Map
 const IgnoredKeys = Object.freeze([
     'marker'

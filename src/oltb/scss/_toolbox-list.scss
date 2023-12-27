@@ -12,7 +12,7 @@
         bottom: 0;
         top: 0;
         margin-left: -.75rem;
-        border: 1px dashed $color-gray-light;
+        border: 1px dashed $color-gray-200;
     }
 
     &__wrapper {
@@ -26,9 +26,9 @@
         height: .5rem;
         margin-right: .75rem;
         margin-left: -1.25rem;
-        background-color: $color-gray-light;
+        background-color: $color-gray-200;
         border-radius: $border-radius;
-        box-shadow: 0 0 0 $shadow-focus-width rgba($color-gray-light, .3);
+        box-shadow: 0 0 0 $shadow-focus-width rgba($color-gray-200, .3);
     }
 
     &__item {
@@ -50,23 +50,23 @@
 
         // Item is clicked and not dragged yet
         &--chosen {
-            background-color: $color-blue-light;
-            color: $color-blue-dark;
-            border-color: $color-blue-dark;
+            background-color: $color-blue-200;
+            color: $color-blue-400;
+            border-color: $color-blue-400;
         }
         
         // Item is beeing dragged
         &--drag {
-            background-color: $color-gray-light;
-            color: $color-gray-dark;
-            border-color: $color-gray-dark;
+            background-color: $color-gray-200;
+            color: $color-gray-400;
+            border-color: $color-gray-400;
         }
 
         // Item mock to show where it will go after dragged
         &--ghost {
-            background-color: $color-blue-light;
-            color: $color-blue-dark;
-            border-color: $color-blue-dark;
+            background-color: $color-blue-200;
+            color: $color-blue-400;
+            border-color: $color-blue-400;
         }
 
         &--hidden {
@@ -104,8 +104,8 @@
         font-weight: bold;
 
         .oltb-toolbox-list__dot {
-            background-color: $color-green-mid;
-            box-shadow: 0 0 0 $shadow-focus-width rgba($color-green-light, .3);
+            background-color: $color-green-300;
+            box-shadow: 0 0 0 $shadow-focus-width rgba($color-green-200, .3);
         }
     }
 
@@ -119,15 +119,15 @@ body.oltb-dark .oltb-toolbox-list {
         color: $color-light;
 
         &--chosen {
-            color: $color-blue-dark;
+            color: $color-blue-400;
         }
         
         &--drag {
-            color: $color-gray-dark;
+            color: $color-gray-400;
         }
 
         &--ghost {
-            color: $color-blue-dark;
+            color: $color-blue-400;
         }
     }
 

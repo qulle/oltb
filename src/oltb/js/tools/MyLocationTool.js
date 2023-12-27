@@ -86,7 +86,8 @@ class MyLocationTool extends Control {
 
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onInitiated instanceof Function) {
             this.options.onInitiated();
         }
@@ -105,7 +106,8 @@ class MyLocationTool extends Control {
         
         this.momentaryActivation();
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onClicked instanceof Function) {
             this.options.onClicked();
         }
@@ -190,7 +192,8 @@ class MyLocationTool extends Control {
         
         this.doFocusMarker(map, marker, coordinates, ConfigManager.getConfig().marker.focusZoom);
         
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onLocationFound instanceof Function) {
             this.options.onLocationFound(location);
         }
@@ -206,7 +209,8 @@ class MyLocationTool extends Control {
             i18nKey: `${I18N_BASE}.toasts.errors.locationNotFound`
         });
         
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onError instanceof Function) {
             this.options.onError(error);
         }

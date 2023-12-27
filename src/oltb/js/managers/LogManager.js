@@ -18,40 +18,40 @@ class LogManager {
             value: 1,
             icon: '👾',
             info: 'Debug',
-            color: '#0166A5FF',
-            backgroundColor: '#D7E3FA66',
-            method: window.console.log
+            color: '#00385B',
+            backgroundColor: '#F0F6FF',
+            method: window.console.debug
         },
         information: {
             value: 2,
             icon: '🐳',
             info: 'Information',
-            color: '#3B4352FF',
-            backgroundColor: '#D3D9E666',
+            color: '#1A1E24',
+            backgroundColor: '#F3F4F5',
             method: window.console.info
         },
         warning: {
             value: 3,
             icon: '🐠',
             info: 'Warning',
-            color: '#FBBD02FF',
-            backgroundColor: '#FFF1C566',
+            color: '#493B10',
+            backgroundColor: '#FFF8E1',
             method: window.console.warn
         },
         error: {
             value: 4,
             icon: '🐝',
             info: 'Error',
-            color: '#EB4542FF',
-            backgroundColor: '#FDB5B466',
+            color: '#8D2120',
+            backgroundColor: '#FFD5D4',
             method: window.console.error
         },
         fatal: {
             value: 5,
             icon: '🐞',
             info: 'Fatal',
-            color: '#493E9CFF',
-            backgroundColor: '#D0CAFF66',
+            color: '#212529',
+            backgroundColor: '#DFDBFF',
             method: window.console.error
         }
     });
@@ -77,12 +77,20 @@ class LogManager {
     // # Section: Internal
     // -------------------------------------------------------------------
 
+    static #logToConsole(level, origin, method, value, formattedTimestamp) {
+        level.method(origin, method, value, formattedTimestamp);
+    }
+
     static #logSink(level, origin, method, value) {
+        const config = ConfigManager.getConfig();
+        const timeFormat = config.timeFormat.pretty;
+        const logToConsole = config.logging.logToConsole;
+
         const timestamp = moment();
-        const timeFormat = ConfigManager.getConfig().timeFormat;
+        const formattedTimestamp = timestamp.format(timeFormat);
 
         const entry = {
-            timestamp: timestamp.format(timeFormat),
+            timestamp: formattedTimestamp,
             level: level,
             origin: origin,
             method: method,
@@ -90,6 +98,10 @@ class LogManager {
         };
 
         this.#log.push(entry);
+
+        if(logToConsole) {
+            this.#logToConsole(level, origin, method, value, formattedTimestamp);
+        }
 
         return entry;
     }

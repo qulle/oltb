@@ -104,7 +104,8 @@ class ZoomBoxTool extends Control {
         window.addEventListener(Events.custom.ready, this.onOLTBReady.bind(this));
         window.addEventListener(Events.custom.browserStateCleared, this.onWindowBrowserStateCleared.bind(this));
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onInitiated instanceof Function) {
             this.options.onInitiated();
         }
@@ -127,7 +128,8 @@ class ZoomBoxTool extends Control {
             this.activateTool();
         }
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onClicked instanceof Function) {
             this.options.onClicked();
         }
@@ -184,7 +186,8 @@ class ZoomBoxTool extends Control {
     onWindowKeyUp(event) {
         this.isSpaceKeyPressed = false;
 
-        // Note: Setting the internal OL variable
+        // Note: 
+        // Setting the internal OL variable
         // Option 1: Re-create the interaction to set the inverted out value
         // Option 2: Have two interactions that are swapped with one beeing active at the time
         this.interactionDragZoom[OL_INTERNAL_OUT] = false;
@@ -201,7 +204,8 @@ class ZoomBoxTool extends Control {
             this.isSpaceKeyPressed = true;
         }
 
-        // Note: Setting the internal OL variable
+        // Note: 
+        // Setting the internal OL variable
         // Option 1: Re-create the interaction to set the inverted out value
         // Option 2: Have two interactions that are swapped with one beeing active at the time
         if(event.ctrlKey) {
@@ -214,7 +218,8 @@ class ZoomBoxTool extends Control {
             this.deActivateTool();
         }
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onBrowserStateClear instanceof Function) {
             this.options.onBrowserStateClear();
         }
@@ -265,35 +270,40 @@ class ZoomBoxTool extends Control {
     // -------------------------------------------------------------------
     
     doBoxDragStart(event) {
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onStart instanceof Function) {
             this.options.onStart(event);
         }
     }
 
     doBoxDragEnd(event) {
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onEnd instanceof Function) {
             this.options.onEnd(event);
         }
     }
 
     doBoxDragDrag(event) {
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onDrag instanceof Function) {
             this.options.onDrag(event);
         }
     }
 
     doBoxDragCancel(event) {
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onCancel instanceof Function) {
             this.options.onCancel(event);
         }
     }
 
     doBoxDragError(event) {
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onError instanceof Function) {
             this.options.onError(event);
         }

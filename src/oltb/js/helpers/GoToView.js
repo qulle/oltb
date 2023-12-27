@@ -33,7 +33,8 @@ const goToView = function(options) {
         duration: options.duration,
         easing: easeOut
     }, function(result) {
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(options.onDone instanceof Function) {
             options.onDone(result);
         }

@@ -1,7 +1,7 @@
 import _ from 'lodash';
-import { Settings } from '../helpers/constants/Settings';
 import { LogManager } from './LogManager';
 import { StateManager } from './StateManager';
+import { DefaultSettings } from './settings-manager/DefaultSettings';
 import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
 import { TranslationManager } from './TranslationManager';
 
@@ -10,28 +10,6 @@ const I18N_BASE = 'managers.settingsManager';
 
 const LocalStorageNodeName = LocalStorageKeys.settingsManager;
 const LocalStorageDefaults = Object.freeze({});
-
-const DefaultSettings = new Map([
-    [
-        Settings.mouseWheelZoom, { state: false }
-    ], [
-        Settings.altShiftDragRotate, { state: true }
-    ], [
-        Settings.dragPan, { state: true }
-    ], [
-        Settings.keyboardZoom, { state: true }
-    ], [
-        Settings.keyboardPan, { state: true }
-    ], [
-        Settings.selectVectorMapShapes, { state: false }
-    ], [
-        Settings.snapInteraction, { state: true }
-    ], [
-        Settings.snapHelpLines, { state: true }
-    ], [
-        Settings.alwaysNewLayers, { state: false }
-    ]
-]);
 
 /**
  * About:
@@ -51,8 +29,9 @@ class SettingsManager {
         this.#localStorage = this.#getBrowserData();
         this.#settings = _.cloneDeep(DefaultSettings);
 
-        // Note: The runtime state must be updated with values from localStorage
-        // Note: The actual text for a setting must be added
+        // Note: 
+        // The runtime state must be updated with values from localStorage
+        // The actual text for a setting must be added
         const i18n = TranslationManager.get(`${I18N_BASE}.settings`);
         this.#settings.forEach((value, key) => {
             value.text = i18n[key];
@@ -104,7 +83,8 @@ class SettingsManager {
     }
 
     static addSetting(key, valueObj) {
-        // Note: Check if there exists a value already in the browser for this setting
+        // Note: 
+        // Check if there exists a value already in the browser for this setting
         // Must overwrite the literal value that the tools is adding
         const state = this.#localStorage[key];
         if(state !== undefined) {

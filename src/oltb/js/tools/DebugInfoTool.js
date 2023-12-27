@@ -71,7 +71,8 @@ class DebugInfoTool extends Control {
 
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onInitiated instanceof Function) {
             this.options.onInitiated();
         }
@@ -103,7 +104,8 @@ class DebugInfoTool extends Control {
 
         this.momentaryActivation();
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onClicked instanceof Function) {
             this.options.onClicked();
         }

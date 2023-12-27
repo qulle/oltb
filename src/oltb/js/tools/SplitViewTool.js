@@ -114,7 +114,8 @@ class SplitViewTool extends Control {
         window.addEventListener(Events.custom.mapLayerRemoved, this.onWindowMapLayerRemoved.bind(this));
         window.addEventListener(Events.custom.browserStateCleared, this.onWindowBrowserStateCleared.bind(this));
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onInitiated instanceof Function) {
             this.options.onInitiated();
         }
@@ -188,14 +189,16 @@ class SplitViewTool extends Control {
             this.activateTool();
         }
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onClicked instanceof Function) {
             this.options.onClicked();
         }
     }
 
     activateTool() {
-        // Note: The active switch must be enabled first
+        // Note: 
+        // The active switch must be enabled first
         // Events can be triggered by other tools that should not be handled if the tools is not in use 
         this.isActive = true;
 
@@ -277,7 +280,8 @@ class SplitViewTool extends Control {
             this.deActivateTool();
         }
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onBrowserStateCleared instanceof Function) {
             this.options.onBrowserStateCleared();
         }
@@ -471,7 +475,8 @@ class SplitViewTool extends Control {
     }
 
     doUpdateTool(leftId, rightId) {
-        // Note: Block access for events that are captued when the tool is not activated
+        // Note: 
+        // Block access for events that are captued when the tool is not activated
         // Example removing a layer in the LayerTool
         if(!this.isActive) {
             return;
@@ -508,7 +513,8 @@ class SplitViewTool extends Control {
 
         this.doAddMapLayer(leftLayer);
 
-        // Note: Only render right side layer if it is different from the left layer
+        // Note: 
+        // Only render right side layer if it is different from the left layer
         if(leftId !== rightId) {
             this.doAddMapLayer(rightLayer);
 

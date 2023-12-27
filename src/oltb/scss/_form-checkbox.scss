@@ -29,8 +29,8 @@
         transition: border-color 150ms ease-in-out, box-shadow 150ms ease-in-out;
     
         &:checked {
-            background-color: $color-blue-mid;
-            border-color: $color-blue-mid;
+            background-color: $color-blue-300;
+            border-color: $color-blue-300;
         }
     
         &:checked[type="checkbox"] {
@@ -39,8 +39,8 @@
         }
     
         &:focus {
-            border: 1px solid $color-blue-mid;
-            box-shadow: 0 0 0 $shadow-focus-width rgba($color-blue-mid, .3);
+            border: 1px solid $color-blue-300;
+            box-shadow: 0 0 0 $shadow-focus-width rgba($color-blue-300, .3);
         }
     }
 }
@@ -51,16 +51,16 @@ body.oltb-dark .oltb-checkbox-wrapper {
     }
 
     &__checkbox {
-        background-color: $color-gray-mid;
+        background-color: $color-gray-300;
         border: none;
 
         &:checked {
-            background-color: $color-blue-mid;
+            background-color: $color-blue-300;
         }
 
         &:focus {
             border: none;
-            box-shadow: 0 0 0 $shadow-focus-width rgba($color-blue-light, .7);
+            box-shadow: 0 0 0 $shadow-focus-width rgba($color-blue-200, .7);
         }
     }
 }

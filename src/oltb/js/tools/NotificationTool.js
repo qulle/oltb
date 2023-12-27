@@ -68,7 +68,8 @@ class NotificationTool extends Control {
 
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onInitiated instanceof Function) {
             this.options.onInitiated();
         }
@@ -87,7 +88,8 @@ class NotificationTool extends Control {
 
         this.momentaryActivation();
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onClicked instanceof Function) {
             this.options.onClicked();
         }
@@ -132,7 +134,7 @@ class NotificationTool extends Control {
 
     setModalContent(notification) {
         const i18n = TranslationManager.get(`${I18N_BASE}.modals.notifications`);
-        const locale = ConfigManager.getConfig().locale;
+        const locale = ConfigManager.getConfig().localization.active;
         const version = ConfigManager.getConfig().toolbar.version;
 
         const content = (`

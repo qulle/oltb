@@ -101,7 +101,7 @@ BootstrapManager.initAsync([
 });
 
 const initMapAndToolbar = () => {
-    const defaultLocation = ConfigManager.getConfig().locations.default;
+    const defaultLocation = ConfigManager.getConfig().location.default;
     const localStorageNodeName = LocalStorageKeys.mapData;
     const localStorageDefaults = Object.freeze({
         lon: defaultLocation.lon,

@@ -97,7 +97,8 @@ class ThemeTool extends Control {
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
         window.addEventListener(Events.custom.browserStateCleared, this.onWindowBrowserStateCleared.bind(this));
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onInitiated instanceof Function) {
             this.options.onInitiated();
         }
@@ -116,7 +117,8 @@ class ThemeTool extends Control {
         
         this.momentaryActivation();
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onClicked instanceof Function) {
             this.options.onClicked();
         }
@@ -125,7 +127,8 @@ class ThemeTool extends Control {
     momentaryActivation() {
         this.doToggleTheme();
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onChanged instanceof Function) {
             const active = this.getActiveTheme();
             this.options.onChanged(active.class);
@@ -146,7 +149,8 @@ class ThemeTool extends Control {
         const active = this.getActiveTheme();
         this.doSwitchThemeFromTo(active, ThemesData.light);
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onBrowserStateCleared instanceof Function) {
             this.options.onBrowserStateCleared();
         }

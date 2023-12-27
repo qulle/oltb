@@ -399,7 +399,8 @@ const DefaultOptions = Object.freeze({
 const getIcon = function(options = {}) {
     options = _.merge(_.cloneDeep(DefaultOptions), options);
 
-    // Note: HEX Colors are not valid in SVG 
+    // Note: 
+    // HEX Colors are not valid in SVG 
     // Unless they are replaced with URL alternative char
     const ENCODED_HASHTAG = '%23';
     

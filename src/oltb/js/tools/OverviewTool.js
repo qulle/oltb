@@ -94,7 +94,8 @@ class OverviewTool extends Control {
         window.addEventListener(Events.custom.ready, this.onOLTBReady.bind(this));
         window.addEventListener(Events.custom.browserStateCleared, this.onWindowBrowserStateCleared.bind(this));
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onInitiated instanceof Function) {
             this.options.onInitiated();
         }
@@ -161,7 +162,8 @@ class OverviewTool extends Control {
             this.activateTool(); 
         }
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onClicked instanceof Function) {
             this.options.onClicked();
         }
@@ -232,7 +234,8 @@ class OverviewTool extends Control {
             this.deActivateTool();
         }
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onBrowserStateCleared instanceof Function) {
             this.options.onBrowserStateCleared();
         }
@@ -251,7 +254,8 @@ class OverviewTool extends Control {
             this.localStorage.isCollapsed = collapsed;
             StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
         
-            // Note: Force render of overview, 
+            // Note: 
+            // Force render of overview, 
             // Other solutions will not render the dashed box correctly until the map is moved
             this.overviewMap.setMap(null);
             this.overviewMap.setMap(map);

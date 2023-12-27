@@ -48,19 +48,19 @@
     }
 
     &--info {
-        border-left-color: $color-blue-mid;
+        border-left-color: $color-blue-400;
     }
 
     &--warning {
-        border-left-color: $color-orange-mid;
+        border-left-color: $color-orange-400;
     }
 
     &--error {
-        border-left-color: $color-red-mid;
+        border-left-color: $color-red-400;
     }
 
     &--success {
-        border-left-color: $color-green-mid;
+        border-left-color: $color-green-400;
     }
 }
 

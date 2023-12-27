@@ -127,7 +127,8 @@ class MeasureTool extends Control {
         window.addEventListener(Events.custom.ready, this.onOLTBReady.bind(this));
         window.addEventListener(Events.custom.browserStateCleared, this.onWindowBrowserStateCleared.bind(this));
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onInitiated instanceof Function) {
             this.options.onInitiated();
         }
@@ -195,7 +196,8 @@ class MeasureTool extends Control {
             this.activateTool();
         }
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onClicked instanceof Function) {
             this.options.onClicked();
         }
@@ -244,7 +246,8 @@ class MeasureTool extends Control {
     }
 
     updateTool() {
-        // Note: Remember options until next time
+        // Note: 
+        // Remember options until next time
         this.localStorage.toolType = this.uiRefToolType.value;
         this.localStorage.fillColor = this.uiRefFillColor.getAttribute('data-oltb-color');
         this.localStorage.strokeColor = this.uiRefStrokeColor.getAttribute('data-oltb-color');
@@ -292,7 +295,8 @@ class MeasureTool extends Control {
             this.deActivateTool();
         }
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onBrowserStateCleared instanceof Function) {
             this.options.onBrowserStateCleared();
         }
@@ -384,7 +388,8 @@ class MeasureTool extends Control {
             tooltipItem.innerHTML = `${measureValue.value} ${measureValue.unit}`;
         });
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onStart instanceof Function) {
             this.options.onStart(event);
         }   
@@ -440,7 +445,8 @@ class MeasureTool extends Control {
             tooltip.getOverlay().setMap(null);
         }
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onEnd instanceof Function) {
             this.options.onEnd(event);
         }
@@ -451,21 +457,24 @@ class MeasureTool extends Control {
         
         TooltipManager.pop(KEY_TOOLTIP);
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onAbort instanceof Function) {
             this.options.onAbort(event);
         }
     }
 
     doDrawError(event) {
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onError instanceof Function) {
             this.options.onError(event);
         }
     }
 
     doSnap(event) {
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onSnapped instanceof Function) {
             this.options.onSnapped(event);
         }
@@ -500,7 +509,8 @@ class MeasureTool extends Control {
             return;
         }
 
-        // Note: Remove previous interaction if tool is changed
+        // Note: 
+        // Remove previous interaction if tool is changed
         if(this.interactionDraw) {
             this.doRemoveDrawInteraction();
             SnapManager.removeSnap();
@@ -514,7 +524,8 @@ class MeasureTool extends Control {
         this.interactionDraw.on(Events.openLayers.drawAbort, this.onDrawAbort.bind(this));
         this.interactionDraw.on(Events.openLayers.error, this.onDrawEnd.bind(this));
 
-        // Note: The Snap interaction must be added last
+        // Note: 
+        // The Snap interaction must be added last
         this.doAddDrawInteraction();
         SnapManager.addSnap(this);
     }

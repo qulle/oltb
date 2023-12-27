@@ -101,18 +101,33 @@ export const SvSe = Object.freeze({
             title: 'Debuginformation',
             noMapFound: 'Ingen Kartreferens hittades',
             form: {
-                logToBrowser: 'Logga Kartan Till Webbläsarkonsolen',
-                generateUUID: 'Generera UUID',
-                clearLog: 'Rensa Händelselogg',
                 doAction: 'Utför',
+                defaultItem: {
+                    title: 'Välj Alternativ'
+                },
+                miscGroup: {
+                    title: 'Övrigt',
+                    items: {
+                        logToBrowser: 'Logga Kartan Till Webbläsarkonsolen',
+                        generateUUID: 'Generera UUID',
+                    }
+                },
+                eventLogGroup: {
+                    title: 'Händelselogg',
+                    items: {
+                        copyEventLog: 'Kopiera Händelselogg',
+                        clearEventLog: 'Rensa Händelselogg',
+                    }
+                }
             },
             sections: {
                 appData: 'Applikationsdata',
+                mapData: 'Kartdata',
                 browserData: 'Webbläsardata',
                 localStorage: 'Local Storage',
                 sessionStorage: 'Session Storage',
                 cookies: 'Kakor',
-                eventlog: 'Händelselogg'
+                eventLog: 'Händelselogg'
             },
             toasts: {
                 infos: {
@@ -120,9 +135,19 @@ export const SvSe = Object.freeze({
                         title: 'Loggad',
                         message: 'Kartobjekt loggat till konsolen'
                     },
-                    clearLog: {
+                    copyEventLog: {
+                        title: 'Kopierad',
+                        message: 'Händelseloggen kopierad till urklipp'
+                    },
+                    clearEventLog: {
                         title: 'Rensat',
                         message: 'Händelseloggen rensades från alla poster'
+                    }
+                },
+                errors: {
+                    copyEventLog: {
+                        title: 'Error',
+                        message: 'Misslyckades att kopiera Händelseloggen'
                     }
                 }
             }

@@ -112,7 +112,8 @@ class ScissorsTool extends Control {
         window.addEventListener(Events.custom.read, this.onOLTBReady.bind(this));
         window.addEventListener(Events.custom.browserStateCleared, this.onWindowBrowserStateCleared.bind(this));
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onInitiated instanceof Function) {
             this.options.onInitiated();
         }
@@ -135,7 +136,8 @@ class ScissorsTool extends Control {
             this.activateTool();
         }
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onClicked instanceof Function) {
             this.options.onClicked();
         }
@@ -147,7 +149,8 @@ class ScissorsTool extends Control {
             return;
         }
 
-        // Note: The Snap interaction must be added last
+        // Note: 
+        // The Snap interaction must be added last
         this.doAddDrawInteraction();
         ToolManager.setActiveTool(this);
         SnapManager.addSnap(this);
@@ -211,7 +214,8 @@ class ScissorsTool extends Control {
             this.deActivateTool();
         }
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onBrowserStateClear instanceof Function) {
             this.options.onBrowserStateClear();
         }
@@ -286,7 +290,8 @@ class ScissorsTool extends Control {
     // -------------------------------------------------------------------
 
     doDrawStart(event) {
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onStart instanceof Function) {
             this.options.onStart(event);
         }
@@ -296,7 +301,8 @@ class ScissorsTool extends Control {
         const lineFeature = event.feature;
         const featureGeometry = lineFeature.getGeometry();
 
-        // Note: Must search all layers thus features from different layers can be targeted
+        // Note: 
+        // Must search all layers thus features from different layers can be targeted
         const layerWrappers = LayerManager.getFeatureLayers();
         layerWrappers.forEach((layerWrapper) => {
             const layer = layerWrapper.getLayer();
@@ -330,7 +336,8 @@ class ScissorsTool extends Control {
             });
         }
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onEnd instanceof Function) {
             this.options.onEnd(event);
         }
@@ -339,21 +346,24 @@ class ScissorsTool extends Control {
     }
 
     doDrawAbort(event) {
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onAbort instanceof Function) {
             this.options.onAbort(event);
         }
     }
 
     doDrawError(event) {
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onError instanceof Function) {
             this.options.onError(event);
         }
     }
 
     doSnap(event) {
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onSnapped instanceof Function) {
             this.options.onSnapped(event);
         }
@@ -379,7 +389,8 @@ class ScissorsTool extends Control {
         polygonizer.add(union);
         const polygons = polygonizer.getPolygons();
         
-        // Note: Only proceed if two parts
+        // Note: 
+        // Only proceed if two parts
         if(polygons.array.length !== 2) {
             return;
         }

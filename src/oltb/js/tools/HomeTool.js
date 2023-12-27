@@ -19,7 +19,7 @@ const FILENAME = 'tools/HomeTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
 const I18N_BASE = 'tools.homeTool';
 
-const DefaultLocation = ConfigManager.getConfig().locations.default;
+const DefaultLocation = ConfigManager.getConfig().location.default;
 const DefaultOptions = Object.freeze({
     lon: DefaultLocation.lon,
     lat: DefaultLocation.lat,
@@ -93,7 +93,8 @@ class HomeTool extends Control {
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
         window.addEventListener(Events.custom.browserStateCleared, this.onWindowBrowserStateCleared.bind(this));
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onInitiated instanceof Function) {
             this.options.onInitiated();
         }
@@ -124,7 +125,8 @@ class HomeTool extends Control {
         
         this.momentaryActivation();
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onClicked instanceof Function) {
             this.options.onClicked();
         }
@@ -148,7 +150,8 @@ class HomeTool extends Control {
         this.doClearState();
         this.doNavigateHome();
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onBrowserStateCleared instanceof Function) {
             this.options.onBrowserStateCleared();
         }
@@ -242,7 +245,8 @@ class HomeTool extends Control {
             zoom: zoom,
             rotation: rotation,
             onDone: (result) => {
-                // Note: Consumer callback
+                // Note: 
+                // @Consumer callback
                 if(this.options.onNavigatedHome instanceof Function) {
                     this.options.onNavigatedHome(result);
                 }

@@ -76,7 +76,8 @@ class ExportPngTool extends Control {
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
         window.addEventListener(Events.custom.ready, this.onOLTBReady.bind(this));
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onInitiated instanceof Function) {
             this.options.onInitiated();
         }
@@ -104,7 +105,8 @@ class ExportPngTool extends Control {
 
         this.momentaryActivation();
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onClicked instanceof Function) {
             this.options.onClicked();
         }
@@ -204,7 +206,8 @@ class ExportPngTool extends Control {
             pngContext.drawImage(overlayCanvas, 0, 0);
             this.doDownloadCanvas(pngCanvas);
         }catch(error) {
-            // Note: Consumer callback
+            // Note: 
+            // @Consumer callback
             if(this.options.onError instanceof Function) {
                 this.options.onError(error);
             }
@@ -226,13 +229,14 @@ class ExportPngTool extends Control {
             return;
         }
 
-        // Note: RenderSync will trigger the export the png
+        // Note: 
+        // RenderSync will trigger the export the png
         map.once(Events.openLayers.renderComplete, this.onRenderCompleteAsync.bind(this));
         map.renderSync();
     }
 
     doDownloadCanvas(pngCanvas) {
-        const locale = ConfigManager.getConfig().locale;
+        const locale = ConfigManager.getConfig().localization.active;
         const timestamp = this.options.appendTime 
             ? `-${new Date().toLocaleString(locale)}`
             : '';
@@ -248,7 +252,8 @@ class ExportPngTool extends Control {
             download(filename, content);
         }
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onExported instanceof Function) {
             this.options.onExported(filename, content);
         }

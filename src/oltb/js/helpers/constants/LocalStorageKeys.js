@@ -1,5 +1,6 @@
-// Note: These properties are placed inside the oltb object in localStorage
-// So the don't need to be prefixed
+// Note: 
+// These properties are placed inside the oltb object in localStorage
+// So the don't need to be prefixed with oltb
 const LocalStorageKeys = Object.freeze({
     mapData: 'mapData',
     drawTool: 'drawTool',

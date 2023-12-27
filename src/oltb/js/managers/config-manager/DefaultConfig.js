@@ -1,13 +1,30 @@
 import { VERSION as olVersion } from 'ol';
 import { version as oltbVersion} from '../../../../../package.json';
 
-// Note: All config can be overridden, but that is not always a good thing to do.
+// Note: 
+// All config can be overridden by defining a custom config.json file. 
+// That file is requested during the initAsync process by the ConfigManager.
 const DefaultConfig = Object.freeze({
-    localizations: Object.freeze({
-        active: 'en-us',
-        languages: Object.freeze([])
+    timeFormat: Object.freeze({
+        pretty: 'YYYY-MM-DD HH:mm:ss:SSS',
+        gmt: 'YYYY-MM-DD HH:mm:ss:SSS'
     }),
-    locations: Object.freeze({
+    localization: Object.freeze({
+        active: 'en-us',
+        languages: Object.freeze([
+            {
+                text: 'English',
+                value: 'en-us'
+            }, {
+                text: 'Swedish',
+                value: 'sv-se'
+            }
+        ])
+    }),
+    logging: Object.freeze({
+        logToConsole: false
+    }),
+    location: Object.freeze({
         default: Object.freeze({
             lon: 18.1201,
             lat: 35.3518,
@@ -27,21 +44,24 @@ const DefaultConfig = Object.freeze({
         version: oltbVersion,
         id: 'oltb'
     }),
-    urlParameter: {
+    urlParameter: Object.freeze({
         debug: 'oltb-debug',
         marker: 'oltb-marker'
-    },
-    marker: {
+    }),
+    marker: Object.freeze({
         focusZoom: 6
-    },
-    locale: 'en-us',
-    timeFormat: 'YYYY-MM-DD HH:mm:ss:SSS',
-    scrollDistance: 100,
+    }),
+    scroll: Object.freeze({
+        distance: 100
+    }),
     browser: Object.freeze({
         rem: 16
     }),
+    sessionStorage: Object.freeze({
+        key: 'oltb'
+    }),
     localStorage: Object.freeze({
-        key: 'oltb.state'
+        key: 'oltb'
     }),
     projection: Object.freeze({
         default: 'EPSG:3857',
@@ -52,7 +72,10 @@ const DefaultConfig = Object.freeze({
         vertical: -8
     }),
     tippy: Object.freeze({
-        delay: [600, 100]
+        delay: [
+            600, 
+            100
+        ]
     }),
     deviceWidth: Object.freeze({
         xs: '0',
@@ -76,39 +99,61 @@ const DefaultConfig = Object.freeze({
     aColorPicker: Object.freeze({
         palette: Object.freeze([
             '#FFFFFF', // White
-            '#D7E3FA', // Blue Light
-            '#6397C2', // Blue Mid
-            '#0166A5', // Blue Dark
-            '#B1CAF6', // Indigo Light
-            '#5B88D6', // Indigo Mid
-            '#2357B1', // Indigo Dark
-            '#D0CAFF', // Purple Light
-            '#9085E4', // Purple Mid
-            '#493E9C', // Purple Dark
-            '#FEE6FF', // Pink Light
-            '#E8A2EA', // Pink Mid
-            '#914594', // Pink Dark
-            '#BCF8FA', // Teal Light
-            '#56BABD', // Teal Mid
-            '#00959A', // Teal Dark
-            '#CEEEFF', // Cyan Light
-            '#68B9E5', // Cyan Mid
-            '#0080C5', // Cyan Dark
-            '#BCFAF4', // Green Light
-            '#3CAEA3', // Green Mid
-            '#007C70', // Green Dark
-            '#FFF1C5', // Yellow Light
-            '#FBDD83', // Yellow Mid
-            '#FBBD02', // Yellow Dark
-            '#FFDDBC', // Orange Light
-            '#FCBE80', // Orange Mid
-            '#F67D2C', // Orange Dark
-            '#FDB5B4', // Red Light
-            '#E96B69', // Red Mid
-            '#EB4542', // Red Dark
-            '#D3D9E6', // Gray Light
-            '#959DAD', // Gray Mid
-            '#3B4352', // Gray Dark
+            '#F0F6FF', // Blue 100
+            '#D7E3FA', // Blue 200
+            '#6397C2', // Blue 300
+            '#0166A5', // Blue 400
+            '#00385B', // Blue 500
+            '#CFE1FF', // Indigo 100
+            '#B1CAF6', // Indigo 200
+            '#5B88D6', // Indigo 300
+            '#2357B1', // Indigo 400
+            '#103677', // Indigo 500
+            '#DFDBFF', // Purple 100
+            '#D0CAFF', // Purple 200
+            '#9085E4', // Purple 300
+            '#493E9C', // Purple 400
+            '#2E2769', // Purple 500
+            '#FEEDFF', // Pink 100
+            '#FEE6FF', // Pink 200
+            '#E8A2EA', // Pink 300
+            '#914594', // Pink 400
+            '#59275A', // Pink 500
+            '#DDFEFF', // Teal 100
+            '#BCF8FA', // Teal 200
+            '#56BABD', // Teal 300
+            '#00959A', // Teal 400
+            '#005255', // Teal 500
+            '#DFFFFC', // Green 100
+            '#BCFAF4', // Green 200
+            '#3CAEA3', // Green 300
+            '#007C70', // Green 400
+            '#004942', // Green 500
+            '#E0F4FF', // Cyan 100
+            '#CEEEFF', // Cyan 200
+            '#68B9E5', // Cyan 300
+            '#0080C5', // Cyan 400
+            '#004367', // Cyan 500
+            '#FFF8E1', // Yellow 100
+            '#FFF1C5', // Yellow 200
+            '#FBDD83', // Yellow 300
+            '#FBBD02', // Yellow 400
+            '#493B10', // Yellow 500
+            '#FFEDDB', // Orange 100
+            '#FFDDBC', // Orange 200
+            '#FCBE80', // Orange 300
+            '#F67D2C', // Orange 400
+            '#8A4111', // Orange 500
+            '#FFD5D4', // Red 100
+            '#FDB5B4', // Red 200
+            '#E96B69', // Red 300
+            '#EB4542', // Red 400
+            '#8D2120', // Red 500
+            '#F3F4F5', // Gray 100
+            '#D3D9E6', // Gray 200
+            '#959DAD', // Gray 300
+            '#3B4352', // Gray 400
+            '#212529', // Gray 500
             '#000000'  // Black
         ])
     })

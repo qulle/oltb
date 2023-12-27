@@ -112,12 +112,13 @@ class OLTB {
             }
         });
 
-        // Note: Always add the ContextMenu last
+        // Note: 
+        // Always add the ContextMenu last
         this.#tools['ContextMenu'] = new ContextMenu({});
     }
 
     #initLocalStorage() {
-        const defaultLocation = ConfigManager.getConfig().locations.default;
+        const defaultLocation = ConfigManager.getConfig().location.default;
         const LocalStorageNodeName = LocalStorageKeys.mapData;
         const LocalStorageDefaults = Object.freeze({
             lon: defaultLocation.lon,
@@ -133,7 +134,8 @@ class OLTB {
     }
 
     constructor(options = {}) {
-        // Note: The init order is important
+        // Note: 
+        // The init order is important
         BootstrapManager.initAsync([
             { manager: LogManager },
             { manager: ErrorManager },
@@ -229,6 +231,7 @@ class OLTB {
     }
 }
 
-// Note: This must be a default export
+// Note: 
+// This must be a default export
 // Rollup won't build the CDN-lib correctly if named export is used
 export default OLTB;

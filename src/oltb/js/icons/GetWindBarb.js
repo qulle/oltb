@@ -46,7 +46,8 @@ const WindBarb = Object.freeze({
 });
 
 const getSvgPath = function(windSpeed) {
-    // Note: Base case that breaks the pattern of 2.5 m/s steps
+    // Note: 
+    // Base case that breaks the pattern of 2.5 m/s steps
     if(windSpeed >= 1.0  && windSpeed < 2.5) {
         return WindBarb.knot2;
     }
@@ -80,7 +81,8 @@ const DefaultOptions = Object.freeze({
 const getWindBarb = function(options = {}) {
     options = _.merge(_.cloneDeep(DefaultOptions), options);
 
-    // Note: HEX Colors are not valid in SVG 
+    // Note: 
+    // HEX Colors are not valid in SVG 
     // Unless they are replaced with URL alternative char
     const ENCODED_HASHTAG = '%23';
 

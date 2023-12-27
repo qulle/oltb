@@ -9,6 +9,7 @@ import { LogManager } from '../../managers/LogManager';
 import { v4 as uuidv4 } from 'uuid';
 import { jsonReplacer } from '../../helpers/browser/JsonReplacer';
 import { ConfigManager } from '../../managers/ConfigManager';
+import { copyToClipboard } from '../../helpers/browser/CopyToClipboard';
 import { SvgPaths, getIcon } from '../../icons/GetIcon';
 import { ProjectionManager } from '../../managers/ProjectionManager';
 import { TranslationManager } from '../../managers/TranslationManager';
@@ -68,27 +69,69 @@ class DebugInfoModal extends ModalBase {
             class: 'oltb-select'
         });
 
+        // Default item, the top element that tells user to pick an item
+        const option = DOM.createElement({
+            element: 'option', 
+            text: i18n.defaultItem.title,
+            attributes: {
+                disabled: 'disabled',
+                selected: 'selected'
+            }
+        });
+
+        DOM.appendChildren(commandsCollection, [
+            option
+        ]);
+
+        // All groups that will contain selectable elements as children
         [
             {
-                name: i18n.logToBrowser,
-                action: 'log.map.to.console'
+                name: i18n.miscGroup.title,
+                items: [
+                    {
+                        name: i18n.miscGroup.items.logToBrowser,
+                        action: 'log.map.to.console'
+                    }, {
+                        name: i18n.miscGroup.items.generateUUID,
+                        action: 'generate.uuid'
+                    }
+                ]
             }, {
-                name: i18n.generateUUID,
-                action: 'generate.uuid'
-            }, {
-                name: i18n.clearLog,
-                action: 'clear.event.log'
+                name: i18n.eventLogGroup.title,
+                items: [
+                    {
+                        name: i18n.eventLogGroup.items.copyEventLog,
+                        action: 'copy.event.log'
+                    }, {
+                        name: i18n.eventLogGroup.items.clearEventLog,
+                        action: 'clear.event.log'
+                    }
+                ]
             }
-        ].forEach((item) => {
-            const option = DOM.createElement({
-                element: 'option', 
-                text: item.name, 
-                value: item.action
+        ].forEach((group) => {
+            const optgroup = DOM.createElement({
+                element: 'optgroup', 
+                attributes: {
+                    label: group.name
+                }
             });
 
             DOM.appendChildren(commandsCollection, [
-                option
+                optgroup
             ]);
+
+            // Children to each group (the selectable items)
+            group.items.forEach((item) => {
+                const option = DOM.createElement({
+                    element: 'option', 
+                    text: item.name, 
+                    value: item.action
+                });
+    
+                DOM.appendChildren(optgroup, [
+                    option
+                ]);
+            });
         });
 
         const actionButton = DOM.createElement({
@@ -351,16 +394,29 @@ class DebugInfoModal extends ModalBase {
 
     #generateModalContent() {
         const commandsWrapper = this.#generateCommandSection();
+        const config = ConfigManager.getConfig();
 
-        // OpenLayer Information
+        // App Information
+        const appDataContent = {
+            oltb: {
+                version: config.toolbar.version,
+                url: 'https://github.com/qulle/oltb'
+            },
+            ol: {
+                version: config.openLayers.version,
+                url: `https://openlayers.org/en/v${config.openLayers.version}/apidoc/`
+            },
+            defaultConfig: config
+        };
+
+        // Map Information
         const view = this.options.map?.getView();
-        const appDataContent = view ? {
+        const mapDataContent = view ? {
             zoom: view.getZoom(),
             location: toLonLat(view.getCenter()),
             rotation: view.getRotation(),
             projection: view.getProjection(),
-            proj4Defs: ProjectionManager.getProjections(),
-            defaultConfig: ConfigManager.getConfig()
+            proj4Defs: ProjectionManager.getProjections()
         } : {
             info: TranslationManager.get(`${I18N_BASE}.noMapFound`)
         };
@@ -370,10 +426,13 @@ class DebugInfoModal extends ModalBase {
         const browserDataContent = {
             userAgent: userAgent,
             device: {
-                protocol: window.location.protocol,
-                domain: window.location.hostname,
-                port: window.location.port,
                 isSecureContext: window.isSecureContext,
+                location: {
+                    protocol: window.location.protocol,
+                    domain: window.location.hostname,
+                    path: window.location.pathname,
+                    port: window.location.port
+                }, 
                 screen: {
                     width: window.screen.width,
                     height: window.screen.height
@@ -421,7 +480,7 @@ class DebugInfoModal extends ModalBase {
         }));
 
         // Eventlog
-        const eventlog = LogManager.getLog().slice().reverse();
+        const eventLog = LogManager.getLog().slice().reverse();
 
         // Generate sections
         const i18n = TranslationManager.get(`${I18N_BASE}.sections`);
@@ -430,6 +489,12 @@ class DebugInfoModal extends ModalBase {
             {
                 title: i18n.appData,
                 content: appDataContent,
+                class: 'oltb-debug__json',
+                display: 'none',
+                json: true
+            }, {
+                title: i18n.mapData,
+                content: mapDataContent,
                 class: 'oltb-debug__json',
                 display: 'none',
                 json: true
@@ -458,8 +523,8 @@ class DebugInfoModal extends ModalBase {
                 display: 'none',
                 json: true
             }, {
-                title: i18n.eventlog,
-                content: eventlog,
+                title: i18n.eventLog,
+                content: eventLog,
                 class: 'oltb-debug__json',
                 display: 'block',
                 json: false
@@ -500,6 +565,7 @@ class DebugInfoModal extends ModalBase {
         const actions = {
             'log.map.to.console': this.doActionLoggingMap.bind(this),
             'generate.uuid': this.doActionGenerateUUID.bind(this),
+            'copy.event.log': this.doActionCopyEventLog.bind(this),
             'clear.event.log': this.doActionClearEventLog.bind(this)
         };
 
@@ -533,6 +599,35 @@ class DebugInfoModal extends ModalBase {
         ]);
     }
 
+    async doActionCopyEventLog() {
+        const eventLog = LogManager.getLog().slice().reverse();
+        
+        try {
+            const indentation = 4;
+            const serialized = JSON.stringify(
+                JSON.retrocycle(eventLog),
+                jsonReplacer, 
+                indentation
+            );
+
+            await copyToClipboard(serialized);
+
+            Toast.info({
+                i18nKey: `${I18N_BASE}.toasts.infos.copyEventLog`,
+                autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
+            });
+        }catch(error) {
+            LogManager.logError(FILENAME, 'doActionCopyEventLog', {
+                message: 'Failed to copy Event Log',
+                error: error
+            });
+                
+            Toast.error({
+                i18nKey: `${I18N_BASE}.toasts.errors.copyEventLog`,
+            });
+        }
+    }
+
     doActionClearEventLog() {
         LogManager.clearLog();
 
@@ -542,7 +637,7 @@ class DebugInfoModal extends ModalBase {
         }
         
         Toast.info({
-            i18nKey: `${I18N_BASE}.toasts.infos.clearLog`,
+            i18nKey: `${I18N_BASE}.toasts.infos.clearEventLog`,
             autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
         });
     }

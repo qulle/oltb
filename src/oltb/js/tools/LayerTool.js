@@ -160,7 +160,8 @@ class LayerTool extends Control {
             stack: this.localStorage.featureLayers
         });
 
-        // Note: The three refs below might be null due to the user
+        // Note: 
+        // The three refs below might be null due to the user
         // disabled them in the constructor options
         if(this.uiRefAddMapLayerButton) {
             this.uiRefAddMapLayerButton.addEventListener(Events.browser.click, this.doShowAddMapLayerModal.bind(this));
@@ -184,7 +185,8 @@ class LayerTool extends Control {
         window.addEventListener(Events.custom.featureLayerRemoved, this.onWindowFeatureLayerRemoved.bind(this));
         window.addEventListener(Events.custom.browserStateCleared, this.onWindowBrowserStateCleared.bind(this));
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onInitiated instanceof Function) {
             this.options.onInitiated();
         }
@@ -293,7 +295,8 @@ class LayerTool extends Control {
             this.activateTool();
         }
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onClicked instanceof Function) {
             this.options.onClicked();
         }
@@ -334,7 +337,8 @@ class LayerTool extends Control {
             this.deActivateTool();
         }
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onBrowserStateCleared instanceof Function) {
             this.options.onBrowserStateCleared();
         }
@@ -416,7 +420,8 @@ class LayerTool extends Control {
             isDynamicallyAdded: true
         });
 
-        // Note: Alert the user, the Layer was created when the tool was not active
+        // Note: 
+        // Alert the user, the Layer was created when the tool was not active
         if(!this.isActive) {
             Toast.success({
                 i18nKey: `${I18N_BASE}.toasts.infos.addFeatureLayer`,
@@ -446,8 +451,9 @@ class LayerTool extends Control {
     }
 
     onEndSortable(event, options) {
+        // Note: 
         // User callback data
-        // Note: The old/new are swapped due to the list beeing reversed in DESC order
+        // The old/new are swapped due to the list beeing reversed in DESC order
         const list = [];
         const currentItem = {
             id: event.item.getAttribute('data-oltb-id'),
@@ -457,7 +463,8 @@ class LayerTool extends Control {
 
         const ul = event.to;
         ul.childNodes.forEach((li, index) => {
-            // Note: Reverse the index so that 0 is at bottom of list not top
+            // Note: 
+            // Reverse the index so that 0 is at bottom of list not top
             const reversedIndex = ul.childNodes.length - index - INDEX_OFFSET;
 
             // Update data-attribute, this is used by Sortable.js to do the sorting
@@ -467,14 +474,16 @@ class LayerTool extends Control {
             // This will keep track of the sort after a reload
             const id = li.getAttribute('data-oltb-id');
 
-            // Note: Only meta data about a layer is stored in LocalStorage
+            // Note: 
+            // Only meta data about a layer is stored in LocalStorage
             // This is not true for the BookmarkTool that has slightly different logic
             const layerMetaItem = options.getLocalStorageItemById(id);
             if(layerMetaItem) {
                 layerMetaItem.sortIndex = reversedIndex;
             }
 
-            // Note: The actual layer must also be updated
+            // Note: 
+            // The actual layer must also be updated
             const layerItem = options.getLayerItemById(id);
             if(layerItem) {
                 layerItem.sortIndex = reversedIndex;
@@ -492,7 +501,8 @@ class LayerTool extends Control {
 
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(options.callback instanceof Function) {
             options.callback(currentItem, list);
         }
@@ -606,7 +616,8 @@ class LayerTool extends Control {
         const isVisible = !layerElement.classList.contains(`${CLASS_TOOLBOX_LIST}__item--hidden`);
         const storedLayerState = this.getLocalStorageMapLayerById(id);
 
-        // Note: storedLayerState is a reference to a object inside this.localStorage
+        // Note: 
+        // storedLayerState is a reference to a object inside this.localStorage
         if(storedLayerState) {
             storedLayerState.isVisible = isVisible;
             StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
@@ -621,7 +632,8 @@ class LayerTool extends Control {
         const isVisible = !layerElement.classList.contains(`${CLASS_TOOLBOX_LIST}__item--hidden`);
         const storedLayerState = this.getLocalStorageFeatureLayerById(id);
 
-        // Note: storedLayerState is a reference to a object inside this.localStorage
+        // Note: 
+        // storedLayerState is a reference to a object inside this.localStorage
         if(storedLayerState) {
             storedLayerState.isVisible = isVisible;
             StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
@@ -663,7 +675,8 @@ class LayerTool extends Control {
     createUIMapLayerItem(layerWrapper, options) {
         const layer = layerWrapper.getLayer();
 
-        // Note: The state of the layer is a combination of data stored from localStorage and 
+        // Note: 
+        // The state of the layer is a combination of data stored from localStorage and 
         // data if it is the first time the layer is added
         const layerId = layerWrapper.getId();
         const defaultSortIndex = this.uiRefMapLayerStack.childNodes.length;
@@ -675,7 +688,8 @@ class LayerTool extends Control {
             isVisible: defaultVisibility
         };
 
-        // Note: Check if the state needs to be updated or stored for the first time
+        // Note: 
+        // Check if the state needs to be updated or stored for the first time
         const storedLayerState = this.getLocalStorageMapLayerById(layerId);
         if(storedLayerState) {
             layerState.sortIndex = storedLayerState.sortIndex;
@@ -723,7 +737,8 @@ class LayerTool extends Control {
             }
         });
 
-        // Note: This tooltip can not be triggered by the delegated .oltb-tippy class
+        // Note: 
+        // This tooltip can not be triggered by the delegated .oltb-tippy class
         // Because the tooltip instance can not be reached in the renaming function unless it is known during "compile time"
         this.createUILayerNameTippy(layerName);
 
@@ -791,7 +806,8 @@ class LayerTool extends Control {
     createUIFeatureLayerItem(layerWrapper, options) {
         const layer = layerWrapper.getLayer();
 
-        // Note: The state of the layer is a combination of data stored from localStorage and 
+        // Note: 
+        // The state of the layer is a combination of data stored from localStorage and 
         // data if it is the first time the layer is added
         const layerId = layerWrapper.getId();
         const defaultSortIndex = this.uiRefFeatureLayerStack.childNodes.length;
@@ -852,7 +868,8 @@ class LayerTool extends Control {
             }
         });
 
-        // Note: This tooltip can not be triggered by the delegated .oltb-tippy class
+        // Note: 
+        // This tooltip can not be triggered by the delegated .oltb-tippy class
         // Because the tooltip instance can not be reached in the renaming function unless it is known during "compile time"
         this.createUILayerNameTippy(layerName);
 
@@ -1072,7 +1089,8 @@ class LayerTool extends Control {
                     layerName.innerText = result.ellipsis(20);
                     layerName.getTippy().setContent(result);
                     
-                    // Note: Consumer callback
+                    // Note: 
+                    // @Consumer callback
                     if(callback instanceof Function) {
                         callback(layerWrapper);
                     }
@@ -1130,7 +1148,8 @@ class LayerTool extends Control {
             }})
         });
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(!isSilent && this.options.onMapLayerAdded instanceof Function) {
             this.options.onMapLayerAdded(layerWrapper);
         }
@@ -1149,7 +1168,8 @@ class LayerTool extends Control {
             DOM.removeElement(uiRefLayer);
         }
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(!isSilent && this.options.onMapLayerRemoved instanceof Function) {
             this.options.onMapLayerRemoved(layerWrapper);
         }
@@ -1193,7 +1213,8 @@ class LayerTool extends Control {
             }})
         });
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(!isSilent && this.options.onFeatureLayerAdded instanceof Function) {
             this.options.onFeatureLayerAdded(layerWrapper);
         }
@@ -1222,7 +1243,8 @@ class LayerTool extends Control {
             });
         }
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(!isSilent && this.options.onFeatureLayerRemoved instanceof Function) {
             this.options.onFeatureLayerRemoved(layerWrapper);
         }
@@ -1249,7 +1271,8 @@ class LayerTool extends Control {
             });
         }
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(callback instanceof Function) {
             callback(layerWrapper);
         }
@@ -1279,7 +1302,8 @@ class LayerTool extends Control {
         const filename = `${layerWrapper.getName()}.${result.format.toLowerCase()}`;
         download(filename, content);
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(callback instanceof Function) {
             callback(layerWrapper, filename, content);
         }
@@ -1332,7 +1356,8 @@ class LayerTool extends Control {
     }
 
     doRemoveActiveFeatureLayerClass() {
-        // Note: Should just be one li-item that has the active class
+        // Note: 
+        // Should just be one li-item that has the active class
         // Just in case, clean all items
         this.uiRefFeatureLayerStack.querySelectorAll('li').forEach((item) => {
             item.classList.remove(`${CLASS_TOOLBOX_LIST}__item--active`);

@@ -149,7 +149,7 @@ class ElementManager {
     static #onMouseWheel(event) {
         if(!event.ctrlKey) {
             const zeroAxis = 0;
-            const distance = ConfigManager.getConfig().scrollDistance;
+            const distance = ConfigManager.getConfig().scroll.distance;
             this.scrollLeft += event.deltaY > zeroAxis ? distance : -distance;
         }
     }

@@ -32,7 +32,8 @@ import { HiddenMarkerTool } from './hidden-tools/HiddenMarkerTool';
 import { ImportVectorLayerTool } from './ImportVectorLayerTool';
 import { HiddenMapNavigationTool } from './hidden-tools/HiddenMapNavigationTool';
 
-// Note: The order decides order in the Toolbar
+// Note: 
+// The order decides order in the Toolbar
 const AllTools = Object.freeze({
     HiddenMarkerTool,
     HiddenMapNavigationTool,

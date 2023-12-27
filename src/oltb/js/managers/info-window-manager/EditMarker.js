@@ -48,7 +48,8 @@ const addMarkerToMap = function(marker) {
 const onEditMarker = function(InfoWindowManager, beforeMarker, result) {
     InfoWindowManager.hideOverlay();
     
-    // Note: Remove old marker and add new
+    // Note: 
+    // Remove old marker and add new
     // Easier then updating the existing marker with new data.
     LayerManager.removeFeatureFromFeatureLayers(beforeMarker);
 

@@ -38,90 +38,90 @@
     }
 
     &--blue-light {
-        background-color: $color-blue-light;
+        background-color: $color-blue-200;
 
         &:focus {
-            box-shadow: 0 0 0 $shadow-focus-width rgba($color-blue-light, .5);
+            box-shadow: 0 0 0 $shadow-focus-width rgba($color-blue-200, .5);
         }
     }
 
     &--blue-mid {
-        background-color: $color-blue-mid;
+        background-color: $color-blue-300;
 
         &:focus {
-            box-shadow: 0 0 0 $shadow-focus-width rgba($color-blue-mid, .5);
+            box-shadow: 0 0 0 $shadow-focus-width rgba($color-blue-300, .5);
         }
     }
 
     &--blue-dark {
-        background-color: $color-blue-dark;
+        background-color: $color-blue-400;
 
         &:focus {
-            box-shadow: 0 0 0 $shadow-focus-width rgba($color-blue-dark, .5);
+            box-shadow: 0 0 0 $shadow-focus-width rgba($color-blue-400, .5);
         }
     }
 
     &--green-light {
-        background-color: $color-green-light;
+        background-color: $color-green-200;
 
         &:focus {
-            box-shadow: 0 0 0 $shadow-focus-width rgba($color-green-light, .5);
+            box-shadow: 0 0 0 $shadow-focus-width rgba($color-green-200, .5);
         }
     }
 
     &--green-mid {
-        background-color: $color-green-mid;
+        background-color: $color-green-300;
 
         &:focus {
-            box-shadow: 0 0 0 $shadow-focus-width rgba($color-green-mid, .5);
+            box-shadow: 0 0 0 $shadow-focus-width rgba($color-green-300, .5);
         }
     }
 
     &--green-dark {
-        background-color: $color-green-dark;
+        background-color: $color-green-400;
 
         &:focus {
-            box-shadow: 0 0 0 $shadow-focus-width rgba($color-green-dark, .5);
+            box-shadow: 0 0 0 $shadow-focus-width rgba($color-green-400, .5);
         }
     }
 
     &--red-light {
-        background-color: $color-red-light;
+        background-color: $color-red-200;
 
         &:focus {
-            box-shadow: 0 0 0 $shadow-focus-width rgba($color-red-light, .5);
+            box-shadow: 0 0 0 $shadow-focus-width rgba($color-red-200, .5);
         }
     }
 
     &--red-mid {
-        background-color: $color-red-mid;
+        background-color: $color-red-300;
 
         &:focus {
-            box-shadow: 0 0 0 $shadow-focus-width rgba($color-red-mid, .5);
+            box-shadow: 0 0 0 $shadow-focus-width rgba($color-red-300, .5);
         }
     }
 
     &--red-dark {
-        background-color: $color-red-dark;
+        background-color: $color-red-400;
 
         &:focus {
-            box-shadow: 0 0 0 $shadow-focus-width rgba($color-red-dark, .5);
+            box-shadow: 0 0 0 $shadow-focus-width rgba($color-red-400, .5);
         }
     }
 
     &--gray-light {
-        background-color: $color-gray-light;
+        background-color: $color-gray-200;
 
         &:focus {
-            box-shadow: 0 0 0 $shadow-focus-width rgba($color-gray-light, .5);
+            box-shadow: 0 0 0 $shadow-focus-width rgba($color-gray-200, .5);
         }
     }
 
     &--gray-mid {
-        background-color: $color-gray-mid;
+        background-color: $color-gray-300;
 
         &:focus {
-            box-shadow: 0 0 0 $shadow-focus-width rgba($color-gray-mid, .5);
+            box-shadow: 0 0 0 $shadow-focus-width rgba($color-gray-300, .5);
         }
     }
 
@@ -129,11 +129,11 @@
         background-color: $color-dark;
 
         &:focus {
-            box-shadow: 0 0 0 $shadow-focus-width rgba($color-gray-dark, .5);
+            box-shadow: 0 0 0 $shadow-focus-width rgba($color-gray-400, .5);
         }
     }
 }
 
 body.oltb-using-keyboard .oltb-btn--blank:focus {
-    box-shadow: 0 0 0 $shadow-focus-width rgba($color-gray-mid, .5);
+    box-shadow: 0 0 0 $shadow-focus-width rgba($color-gray-300, .5);
 }

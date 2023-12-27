@@ -138,7 +138,8 @@ class ContextMenu extends Control {
     }
 
     show(event) {
-        // Note: Disable native context menu
+        // Note: 
+        // Disable native context menu
         if(!ContextMenu.#isDebug) {
             event.preventDefault();
         }

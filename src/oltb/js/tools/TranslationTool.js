@@ -65,7 +65,8 @@ class TranslationTool extends Control {
 
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onInitiated instanceof Function) {
             this.options.onInitiated();
         }
@@ -84,7 +85,8 @@ class TranslationTool extends Control {
 
         this.momentaryActivation();
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onClicked instanceof Function) {
             this.options.onClicked();
         }
@@ -110,13 +112,13 @@ class TranslationTool extends Control {
 
     askToChangeLanguage() {
         const languages = TranslationManager.getLanguages();
-        const currentLang = TranslationManager.getActiveLanguage();
+        const currentLanguage = TranslationManager.getActiveLanguage();
         const i18n = TranslationManager.get(`${I18N_BASE}.dialogs.selects.changeLanguage`);
 
         Dialog.select({
             title: i18n.title,
-            message: `${i18n.message} <strong>${currentLang.text}</strong>`,
-            value: currentLang,
+            message: `${i18n.message} <strong>${currentLanguage.text}</strong>`,
+            value: currentLanguage.value,
             options: languages,
             confirmText: i18n.confirmText,
             cancelText: i18n.cancelText,

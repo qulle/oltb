@@ -205,7 +205,8 @@ class EditTool extends Control {
         window.addEventListener(Events.custom.browserStateCleared, this.onWindowBrowserStateCleared.bind(this));
         window.addEventListener(Events.custom.featureLayerRemoved, this.onWindowFeatureLayerRemoved.bind(this));
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onInitiated instanceof Function) {
             this.options.onInitiated();
         }
@@ -331,7 +332,8 @@ class EditTool extends Control {
             this.activateTool();
         }
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onClicked instanceof Function) {
             this.options.onClicked();
         }
@@ -417,7 +419,8 @@ class EditTool extends Control {
             this.deActivateTool();
         }
 
-        // Note: Consumer callback
+        // Note:
+        // @Consumer callback
         if(this.options.onBrowserStateCleared instanceof Function) {
             this.options.onBrowserStateCleared();
         }
@@ -605,7 +608,8 @@ class EditTool extends Control {
     // -------------------------------------------------------------------
 
     doSelectFeatureAdd(event) {
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onSelectAdd instanceof Function) {
             this.options.onSelectAdd(event);
         }
@@ -614,7 +618,8 @@ class EditTool extends Control {
     doSelectFeatureRemove(event) {
         const feature = event.element;
 
-        // Note: The setTimeout must be used
+        // Note: 
+        // The setTimeout must be used
         // If not, the style will be reset to the style used before the feature was selected
         window.setTimeout(() => {
             if(!this.colorHasChanged) {
@@ -641,7 +646,8 @@ class EditTool extends Control {
                 feature.setStyle(style);
             }
 
-            // Note: Consumer callback
+            // Note: 
+            // @Consumer callback
             if(this.options.onStyleChange instanceof Function) {
                 this.options.onStyleChange(event, this.lastStyle);
             }
@@ -652,7 +658,8 @@ class EditTool extends Control {
             }
         });
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onSelectRemove instanceof Function) {
             this.options.onSelectRemove(event);
         }
@@ -667,7 +674,8 @@ class EditTool extends Control {
             }
         });
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onModifyStart instanceof Function) {
             this.options.onModifyStart(event);
         }
@@ -681,7 +689,8 @@ class EditTool extends Control {
             }
         });
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onModifyEnd instanceof Function) {
             this.options.onModifyEnd(event);
         }
@@ -696,7 +705,8 @@ class EditTool extends Control {
             }
         });
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onTranslateStart instanceof Function) {
             this.options.onTranslateStart(event);
         }
@@ -711,14 +721,16 @@ class EditTool extends Control {
             }
         });
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onTranslatEnd instanceof Function) {
             this.options.onTranslatEnd(event);
         }
     }
 
     doSnap(event) {
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onSnapped instanceof Function) {
             this.options.onSnapped(event);
         }
@@ -832,7 +844,8 @@ class EditTool extends Control {
             // Remove two original shapes
             this.doDeleteFeatures(features);
 
-            // Note: Consumer callback
+            // Note: 
+            // @Consumer callback
             if(this.options.onShapeOperation instanceof Function) {
                 this.options.onShapeOperation(type, a, b, feature);
             }
@@ -846,7 +859,8 @@ class EditTool extends Control {
                 i18nKey: `${I18N_BASE}.toasts.operationFailed`
             }); 
 
-            // Note: Consumer callback
+            // Note: 
+            // @Consumer callback
             if(this.options.onError instanceof Function) {
                 this.options.onError(error);
             }
@@ -876,7 +890,8 @@ class EditTool extends Control {
 
         const layerWrappers = LayerManager.getFeatureLayers();
 
-        // Note: The user can select features from any layer
+        // Note: 
+        // The user can select features from any layer
         // Each feature needs to be removed from its associated layer
         features.forEach((feature) => {
             layerWrappers.forEach((layerWrapper) => {
@@ -893,7 +908,8 @@ class EditTool extends Control {
                     map.removeOverlay(feature.getProperties().oltb.tooltip);
                 }
 
-                // Note: Consumer callback
+                // Note: 
+                // @Consumer callback
                 if(this.options.onRemovedFeature instanceof Function) {
                     this.options.onRemovedFeature(feature);
                 }

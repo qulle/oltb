@@ -2,20 +2,29 @@ import _ from 'lodash';
 import { EnUs } from './translation-manager/en-us';
 import { SvSe } from './translation-manager/sv-se';
 import { LogManager } from './LogManager';
+import { StateManager } from './StateManager';
 import { TippyManager } from './TippyManager';
-// import { StateManager } from './StateManager';
 import { ConfigManager } from './ConfigManager';
-// import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
+import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
+import { hasNestedProperty } from '../helpers/browser/HasNestedProperty';
 
 const FILENAME = 'managers/TranslationManager.js';
+
+const LocalStorageNodeName = LocalStorageKeys.translationManager;
+const LocalStorageDefaults = Object.freeze({
+    activeLanguageValue: 'en-us' 
+});
 
 const DefaultLanguages = Object.freeze([
     {
         text: 'English',
-        value: 'en-us'
-    }, {
+        value: 'en-us',
+        translation: EnUs
+    },
+    {
         text: 'Swedish',
-        value: 'sv-se'
+        value: 'sv-se',
+        translation: SvSe
     }
 ]);
 
@@ -37,51 +46,63 @@ const DefaultLanguage = DefaultLanguages[0];
 class TranslationManager {
     static #activeLanguage;
     static #languages;
-    static #translations;
+    static #localStorage;
 
     static async initAsync(options = {}) {
         LogManager.logDebug(FILENAME, 'initAsync', 'Initialization started');
 
-        // Note: Default Translations
-        this.#translations = {
-            'en-us': EnUs,
-            'sv-se': SvSe
-        };
+        this.#localStorage = StateManager.getAndMergeStateObject(
+            LocalStorageNodeName, 
+            LocalStorageDefaults
+        );
 
-        // Note: Default languages
-        this.#languages = [];
-        DefaultLanguages.forEach((language) => {
-            this.#languages.push({
-                text: language.text,
-                value: language.value
+        // Note:
+        // These languages are shiped with the application
+        this.#languages = _.cloneDeep(DefaultLanguages);
+
+        // Note:
+        // Languages added by user in config.json
+        const userLanguages = ConfigManager.getConfig().localization.languages;
+        userLanguages.forEach((userLanguage) => {
+            const existsLanguage = this.#languages.find((language) => {
+                return language.value === userLanguage.value;
             });
-        });
-
-        // Note: Languages added by user in config.json
-        const languages = ConfigManager.getConfig().localizations.languages;
-        languages.forEach((language) => {
-            const exists = this.#languages.find((item) => {
-                return item.value === language.value;
-            });
-
-            if(!exists) {
-                this.#languages.push({
-                    text: language.text,
-                    value: language.value
+            
+            if(existsLanguage) {
+                LogManager.logWarning(FILENAME, 'initAsync', {
+                    info: 'Language already exists',
+                    language: userLanguage
                 });
+
+                return;
             }
+
+            // Note:
+            // The language was not one of the default languages and should be added to the list of languages
+            // TODO: Must load and parse the JSON for that language, for now use EnUs
+            this.#languages.push({
+                text: userLanguage.text,
+                value: userLanguage.value,
+                translation: _.cloneDeep(EnUs)
+            });
         });
 
-        const activeLanguageValue = ConfigManager.getConfig().localizations.active;
-        const activeLanguage = this.#languages.find((language) => {
-            return language.value === activeLanguageValue;
-        });
-        
-        // Note: Decide the active language based on three conditions
+        // Note:
+        // Decide the active language based on three conditions
         // 1. Stored language in localStorage
         // 2. Given active lang in config.json
         // 3. Fallback default language
-        this.#activeLanguage = activeLanguage ?? DefaultLanguage;  
+        const storedLanguageValue = this.#localStorage.activeLanguageValue;
+        const storedLanguage = this.#languages.find((language) => {
+            return language.value === storedLanguageValue;
+        });
+
+        const activeLanguageValue = ConfigManager.getConfig().localization.active;
+        const activeLanguage = this.#languages.find((language) => {
+            return language.value === activeLanguageValue;
+        });
+
+        this.#activeLanguage = storedLanguage ?? activeLanguage ?? _.cloneDeep(DefaultLanguage);  
 
         return new Promise((resolve) => {
             resolve({
@@ -109,7 +130,8 @@ class TranslationManager {
             const path = element.getAttribute(i18nKey);
             const value = this.get(path);
 
-            // Note: Tippy instances mus be handle first
+            // Note: 
+            // Tippy instances mus be handle first
             // This targets tool-buttons in the toolbar
             const tippyKey = 'data-tippy-content';
             if(element.hasAttribute(tippyKey)) {
@@ -123,7 +145,8 @@ class TranslationManager {
                 return;
             }
 
-            // Note: Tippy instances mus be handle first
+            // Note: 
+            // Tippy instances mus be handle first
             // This targets all runtime delegates where the title attribute holds the tippy
             const tippyClass = 'oltb-tippy';
             if(element.classList.contains(tippyClass)) {
@@ -132,7 +155,8 @@ class TranslationManager {
                 return;
             }
 
-            // Note: Input-fields with a placeholder value
+            // Note: 
+            // Input-fields with a placeholder value
             const placeholderKey = 'placeholder';
             if(element.hasAttribute(placeholderKey)) {
                 element.setAttribute(placeholderKey, value);
@@ -140,11 +164,13 @@ class TranslationManager {
                 return;
             }
 
-            // Note: Default is to replace the innerHTML for normal elements
+            // Note: 
+            // Default is to replace the innerHTML for normal elements
             element.innerHTML = value;
         });
 
-        // Note: The Tippy instances needs to be re-created
+        // Note: 
+        // The Tippy instances needs to be re-created
         TippyManager.applyLanguage();
     }
 
@@ -153,7 +179,7 @@ class TranslationManager {
     // -------------------------------------------------------------------
 
     static getDefaultLanguage() {
-        return DefaultLanguage;
+        return _.cloneDeep(DefaultLanguage);
     }
 
     static getLanguages() {
@@ -161,28 +187,39 @@ class TranslationManager {
     }
 
     static getActiveLanguage() {
-        return this.#activeLanguage;
+        return this.#activeLanguage || _.cloneDeep(DefaultLanguage);
     }
 
-    static setActiveLanguage(lang) {
-        this.#activeLanguage = lang;
+    static setActiveLanguage(toLanguage) {
+        const language = this.#languages.find((language) => {
+            return language.value === toLanguage.value;
+        });
+
+        if(!language || !hasNestedProperty(language, 'translation')) {
+            LogManager.logWarning(FILENAME, 'setActiveLanguage', {
+                info: 'Selected language not found',
+                language: toLanguage
+            });
+
+            return;
+        }
+
+        this.#localStorage.activeLanguageValue = language.value;
+        this.#activeLanguage = language;
         this.#applyLanguage();
 
-        // StateManager.setStateObject();
-    }
-
-    static getActiveTranslation() {
-        return this.#translations[this.#activeLanguage.value] || DefaultLanguage;
+        StateManager.setStateObject(LocalStorageNodeName, this.#localStorage);
     }
 
     static get(path) {
         const keys = path.split('.');
-        const translation = this.getActiveTranslation();
-        const result = _.get(translation, keys, path);
+        const language = this.getActiveLanguage();
+        const result = _.get(language.translation, keys, path);
 
-        // Note: Check if the path is the same as result
+        // Note: 
+        // Check if the path is the same as result
         // If so then we failed to find a translation
-        // Note: Not all missing translations are found
+        // Not all missing translations are found
         // An object with many translations can be returned and the view/controller might try and access one 
         // using the wrong name, this will cause 'empty'/undefined to be displayed in view
         if(result === path) {

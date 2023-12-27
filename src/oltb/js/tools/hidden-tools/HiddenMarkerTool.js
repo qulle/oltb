@@ -82,14 +82,16 @@ class HiddenMarkerTool extends Control {
     // -------------------------------------------------------------------
 
     onWindowFeatureEdited(event) {
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onEdited instanceof Function) {
             this.options.onEdited(event.detail.before, event.detail.after);
         }
     }
 
     onWindowFeatureRemoved(event) {
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onRemoved instanceof Function) {
             this.options.onRemoved(event.detail.feature);
         }
@@ -172,7 +174,8 @@ class HiddenMarkerTool extends Control {
     
         this.doAddMarkerToMap(marker);
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onAdded instanceof Function) {
             this.options.onAdded(marker);
         }

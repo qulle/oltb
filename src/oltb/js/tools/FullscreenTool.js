@@ -81,7 +81,8 @@ class FullscreenTool extends Control {
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
         document.addEventListener(Events.browser.fullScreenChange, this.onFullScreenChange.bind(this));
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onInitiated instanceof Function) {
             this.options.onInitiated();
         }
@@ -100,7 +101,8 @@ class FullscreenTool extends Control {
 
         this.momentaryActivation();
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onClicked instanceof Function) {
             this.options.onClicked();
         }
@@ -205,7 +207,8 @@ class FullscreenTool extends Control {
             this.button.removeChild(this.button.firstElementChild);
             this.button.insertAdjacentHTML('afterbegin', this.exitFullscreenIcon);
 
-            // Note: Consumer callback
+            // Note: 
+            // @Consumer callback
             if(this.options.onEnter instanceof Function) {
                 this.options.onEnter(event);
             }
@@ -213,7 +216,8 @@ class FullscreenTool extends Control {
             this.button.removeChild(this.button.firstElementChild);
             this.button.insertAdjacentHTML('afterbegin', this.enterFullscreenIcon);
 
-            // Note: Consumer callback
+            // Note: 
+            // @Consumer callback
             if(this.options.onLeave instanceof Function) {
                 this.options.onLeave(event);
             }

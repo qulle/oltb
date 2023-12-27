@@ -41,7 +41,8 @@ class LayerManager {
     static #map;
     static #activeFeatureLayer;
 
-    // Note: When using Snap interaction
+    // Note: 
+    // When using Snap interaction
     // Option 1: Using a dedicated source, not optimal, thus it is hard to know what layer each drawn feature belongs to
     // There is an event that always sets the active feature layer to the targeted source for the Snap interaction
     // Option 2: A collection of features, but requires some work to keep this collection updated
@@ -258,7 +259,8 @@ class LayerManager {
     }
 
     static getMapLayerById(id) {
-        // Note: The id is a string UUID
+        // Note: 
+        // The id is a string UUID
         const result = this.#layers.mapLayers.find((layerWrapper) => {
             return layerWrapper.getId() === id;
         });
@@ -432,7 +434,8 @@ class LayerManager {
     }
 
     static getFeatureLayerById(id) {
-        // Note: The id is a string UUID
+        // Note: 
+        // The id is a string UUID
         const result = this.#layers.featureLayers.find((layerWrapper) => {
             return layerWrapper.getId() === id;
         });

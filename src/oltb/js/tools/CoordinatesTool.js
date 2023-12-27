@@ -110,7 +110,8 @@ class CoordinatesTool extends Control {
         window.addEventListener(Events.browser.keyDown, this.onWindowKeyDown.bind(this));
         window.addEventListener(Events.custom.ready, this.onOLTBReady.bind(this));
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onInitiated instanceof Function) {
             this.options.onInitiated();
         }
@@ -183,7 +184,8 @@ class CoordinatesTool extends Control {
             this.activateTool();
         }
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onClicked instanceof Function) {
             this.options.onClicked();
         }
@@ -259,7 +261,8 @@ class CoordinatesTool extends Control {
 
         const allCoordinates = this.doCreateToolCoordinatesList(event.coordinate);
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onMapClicked instanceof Function) {
             this.options.onMapClicked(allCoordinates);
         }
@@ -420,7 +423,7 @@ class CoordinatesTool extends Control {
         });
     }
 
-    doCopyCoordinates(event) {
+    async doCopyCoordinates(event) {
         if(!this.shouldCopyCoordinatesOnClick() || ToolManager.hasActiveTool()) {
             return;
         }
@@ -434,23 +437,23 @@ class CoordinatesTool extends Control {
 
         const prettyCoordinates = toStringHDMS(coordinates);
         
-        copyToClipboard(prettyCoordinates)
-            .then(() => {
-                Toast.info({
-                    i18nKey: `${I18N_BASE}.toasts.infos.copyCoordinates`,
-                    autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
-                });
-            })
-            .catch((error) => {
-                LogManager.logError(FILENAME, 'doCopyCoordinates', {
-                    message: 'Failed to copy coordinates',
-                    error: error
-                });
+        try {
+            await copyToClipboard(prettyCoordinates);
 
-                Toast.error({
-                    i18nKey: `${I18N_BASE}.toasts.errors.copyCoordinates`
-                });
+            Toast.info({
+                i18nKey: `${I18N_BASE}.toasts.infos.copyCoordinates`,
+                autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
             });
+        }catch(error) {
+            LogManager.logError(FILENAME, 'doCopyCoordinates', {
+                message: 'Failed to copy coordinates',
+                error: error
+            });
+
+            Toast.error({
+                i18nKey: `${I18N_BASE}.toasts.errors.copyCoordinates`
+            });
+        }
     }
 }
 

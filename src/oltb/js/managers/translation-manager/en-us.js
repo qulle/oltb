@@ -101,18 +101,33 @@ export const EnUs = Object.freeze({
             title: 'Debug Information',
             noMapFound: 'No Map reference found',
             form: {
-                logToBrowser: 'Log Map To Browser Console',
-                generateUUID: 'Generate UUID',
-                clearLog: 'Clear Event Log',
                 doAction: 'Do Action',
+                defaultItem: {
+                    title: 'Select Action'
+                },
+                miscGroup: {
+                    title: 'Misc',
+                    items: {
+                        logToBrowser: 'Log Map To Browser Console',
+                        generateUUID: 'Generate UUID',
+                    }
+                },
+                eventLogGroup: {
+                    title: 'Event Log',
+                    items: {
+                        copyEventLog: 'Copy Event Log',
+                        clearEventLog: 'Clear Event Log',
+                    }
+                }
             },
             sections: {
                 appData: 'App Data',
+                mapData: 'Map Data',
                 browserData: 'Browser Data',
                 localStorage: 'Local Storage',
                 sessionStorage: 'Session Storage',
                 cookies: 'Cookies',
-                eventlog: 'Eventlog'
+                eventLog: 'Eventlog'
             },
             toasts: {
                 infos: {
@@ -120,9 +135,19 @@ export const EnUs = Object.freeze({
                         title: 'Logged',
                         message: 'Map object logged to console'
                     },
-                    clearLog: {
+                    copyEventLog: {
+                        title: 'Copied',
+                        message: 'Event log copied to clipboard'
+                    },
+                    clearEventLog: {
                         title: 'Cleared',
                         message: 'Event log was cleared of all entries'
+                    }
+                },
+                errors: {
+                    copyEventLog: {
+                        title: 'Error',
+                        message: 'Failed to copy Event log to clipboard'
                     }
                 }
             }

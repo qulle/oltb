@@ -67,7 +67,8 @@ class ZoomInTool extends Control {
 
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onInitiated instanceof Function) {
             this.options.onInitiated();
         }
@@ -86,7 +87,8 @@ class ZoomInTool extends Control {
         
         this.momentaryActivation();
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onClicked instanceof Function) {
             this.options.onClicked();
         }
@@ -126,7 +128,8 @@ class ZoomInTool extends Control {
             coordinates: coordinates,
             zoom: calculatedZoom,
             onDone: (result) => {
-                // Note: Consumer callback
+                // Note: 
+                // @Consumer callback
                 if(this.options.onZoomed instanceof Function) {
                     this.options.onZoomed(result);
                 }

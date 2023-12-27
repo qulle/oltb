@@ -32,7 +32,7 @@ const DefaultOptions = Object.freeze({
     focusZoom: 2
 });
 
-const DefaultLocation = ConfigManager.getConfig().locations.default;
+const DefaultLocation = ConfigManager.getConfig().location.default;
 const LocalStorageNodeName = LocalStorageKeys.mapData;
 const LocalStorageDefaults = Object.freeze({
     lon: DefaultLocation.lon,
@@ -268,26 +268,26 @@ class HiddenMapNavigationTool extends Control {
     // # Section: Tool DoActions
     // -------------------------------------------------------------------
 
-    doCopyCoordinates(coordinates) {
+    async doCopyCoordinates(coordinates) {
         const prettyCoordinates = toStringHDMS(coordinates);
 
-        copyToClipboard(prettyCoordinates)
-            .then(() => {
-                Toast.info({
-                    i18nKey: `${I18N_BASE}.toasts.infos.coordinatesCopied`,
-                    autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
-                });
-            })
-            .catch((error) => {
-                LogManager.logError(FILENAME, 'doCopyCoordinates', {
-                    message: 'Failed to copy coordinates',
-                    error: error
-                });
+        try {
+            await copyToClipboard(prettyCoordinates);
 
-                Toast.error({
-                    i18nKey: `${I18N_BASE}.toasts.errors.coordinatesCopy`
-                });
+            Toast.info({
+                i18nKey: `${I18N_BASE}.toasts.infos.coordinatesCopied`,
+                autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
             });
+        }catch(error) {
+            LogManager.logError(FILENAME, 'doCopyCoordinates', {
+                message: 'Failed to copy coordinates',
+                error: error
+            });
+
+            Toast.error({
+                i18nKey: `${I18N_BASE}.toasts.errors.coordinatesCopy`
+            });
+        }
     }
 
     doDetectUrlMarker() {

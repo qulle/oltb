@@ -135,7 +135,8 @@ class DrawTool extends Control {
         window.addEventListener(Events.custom.ready, this.onOLTBReady.bind(this));
         window.addEventListener(Events.custom.browserStateCleared, this.onWindowBrowserStateCleared.bind(this));
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onInitiated instanceof Function) {
             this.options.onInitiated();
         }
@@ -232,7 +233,8 @@ class DrawTool extends Control {
             this.activateTool();
         }
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onClicked instanceof Function) {
             this.options.onClicked();
         }
@@ -281,7 +283,8 @@ class DrawTool extends Control {
     }
 
     updateTool() {
-        // Note: Remember options until next time
+        // Note: 
+        // Remember options until next time
         this.localStorage.toolType = this.uiRefToolType.value;
         this.localStorage.strokeWidth = this.uiRefStrokeWidth.value;
         this.localStorage.fillColor = this.uiRefFillColor.getAttribute('data-oltb-color');
@@ -289,7 +292,8 @@ class DrawTool extends Control {
 
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
 
-        // Note: IntersectionMode doesn't play well when tool is LineString or Point
+        // Note: 
+        // IntersectionMode doesn't play well when tool is LineString or Point
         if(this.isIntersectionModeAvailable()) {
             this.uiRefIntersectionEnable.value = 'false';
             this.uiRefIntersectionEnable.disabled = true;
@@ -339,7 +343,8 @@ class DrawTool extends Control {
             this.deActivateTool();
         }
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onBrowserStateClear instanceof Function) {
             this.options.onBrowserStateClear();
         }
@@ -431,7 +436,8 @@ class DrawTool extends Control {
     // -------------------------------------------------------------------
 
     doDrawStart(event) {
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onStart instanceof Function) {
             this.options.onStart(event);
         }
@@ -468,7 +474,8 @@ class DrawTool extends Control {
 
         LayerManager.addFeatureToLayer(feature, layerWrapper);
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onEnd instanceof Function) {
             this.options.onEnd(event);
         }
@@ -478,7 +485,8 @@ class DrawTool extends Control {
         const feature = event.feature;
         const featureGeometry = feature.getGeometry();
 
-        // Note: Must search all layers thus features from different layers can be targeted
+        // Note: 
+        // Must search all layers thus features from different layers can be targeted
         const layerWrappers = LayerManager.getFeatureLayers();
         layerWrappers.forEach((layerWrapper) => {
             const layer = layerWrapper.getLayer();
@@ -514,7 +522,8 @@ class DrawTool extends Control {
             });
         }
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onIntersected instanceof Function) {
             this.options.onIntersected(event, this.intersectedFeatures);
         }
@@ -523,21 +532,24 @@ class DrawTool extends Control {
     }
 
     doDrawAbort(event) {
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onAbort instanceof Function) {
             this.options.onAbort(event);
         }
     }
 
     doDrawError(event) {
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onError instanceof Function) {
             this.options.onError(event);
         }
     }
 
     doSnap(event) {
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onSnapped instanceof Function) {
             this.options.onSnapped(event);
         }
@@ -572,7 +584,8 @@ class DrawTool extends Control {
             return;
         }
 
-        // Note: Remove previous interaction if tool is changed
+        // Note: 
+        // Remove previous interaction if tool is changed
         if(this.interactionDraw) {
             this.doRemoveDrawInteraction();
             SnapManager.removeSnap();
@@ -580,7 +593,8 @@ class DrawTool extends Control {
 
         this.style = this.generateOLStyleObject(strokeWidth, fillColor, strokeColor);
 
-        // Note: A normal circle can not be serialized to json, approximated circle as polygon instead. 
+        // Note: 
+        // A normal circle can not be serialized to json, approximated circle as polygon instead. 
         // Also use circle to create square and rectangle
         let geometryFunction = undefined;
 
@@ -601,7 +615,8 @@ class DrawTool extends Control {
         this.interactionDraw.on(Events.openLayers.drawAbort, this.onDrawAbort.bind(this));
         this.interactionDraw.on(Events.openLayers.error, this.onDrawError.bind(this));
 
-        // Note: The Snap interaction must be added last
+        // Note: 
+        // The Snap interaction must be added last
         this.doAddDrawInteraction();
         SnapManager.addSnap(this);
     }

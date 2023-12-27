@@ -74,7 +74,8 @@ class SettingsTool extends Control {
 
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onInitiated instanceof Function) {
             this.options.onInitiated();
         }
@@ -106,7 +107,8 @@ class SettingsTool extends Control {
 
         this.momentaryActivation();
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onClicked instanceof Function) {
             this.options.onClicked();
         }
@@ -184,7 +186,8 @@ class SettingsTool extends Control {
     }
 
     doDispatchBrowserStateCleared() {
-        // Note: Trigger event so that any tool can clean up
+        // Note: 
+        // Trigger event so that any tool can clean up
         window.dispatchEvent(new CustomEvent(Events.custom.browserStateCleared));
 
         [
@@ -194,7 +197,8 @@ class SettingsTool extends Control {
             manager.clear();
         });
 
-        // Note: Consumer callback
+        // Note: 
+        // @Consumer callback
         if(this.options.onBrowserStateCleared instanceof Function) {
             this.options.onBrowserStateCleared();
         }

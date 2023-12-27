@@ -39,7 +39,8 @@ class ErrorManager {
     static #onError(error) {
         error.preventDefault();
 
-        // Note: If the error is thrown before the application has launched
+        // Note: 
+        // If the error is thrown before the application has launched
         // The console is always available
         console.error(error);
         
