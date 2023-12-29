@@ -23,30 +23,6 @@ LayerManager.addMapLayers([
             }),
             visible: false
         })
-    }, {
-        id: '5cfbaa02-38e7-45bd-9923-4eaba539aa9b',
-        name: 'Stamen Watercolor',
-        layer: new Tile({
-            maxZoom: 12,
-            source: new Stamen({
-                crossOrigin: 'anonymous',
-                layer: 'watercolor',
-                attributions: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://creativecommons.org/licenses/by-sa/3.0">CC BY SA</a>.'
-            }),
-            visible: false
-        })
-    }, {
-        id: 'b1646bdb-b201-4a88-9240-78fca6f6d8c4',
-        name: 'Stamen Terrain',
-        layer: new Tile({
-            maxZoom: 12,
-            source: new Stamen({
-                crossOrigin: 'anonymous',
-                layer: 'terrain',
-                attributions: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://www.openstreetmap.org/copyright">ODbL</a>.'
-            }),
-            visible: false
-        })
     }
 ], {
     isSilent: true

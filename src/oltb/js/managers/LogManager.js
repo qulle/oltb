@@ -16,40 +16,40 @@ class LogManager {
     static #levels = Object.freeze({
         debug: {
             value: 1,
-            icon: '👾',
-            info: 'Debug',
+            icon: '🐳',
+            name: 'Debug',
             color: '#00385B',
             backgroundColor: '#F0F6FF',
             method: window.console.debug
         },
         information: {
             value: 2,
-            icon: '🐳',
-            info: 'Information',
+            icon: '🦝',
+            name: 'Information',
             color: '#1A1E24',
             backgroundColor: '#F3F4F5',
             method: window.console.info
         },
         warning: {
             value: 3,
-            icon: '🐠',
-            info: 'Warning',
+            icon: '🐱',
+            name: 'Warning',
             color: '#493B10',
             backgroundColor: '#FFF8E1',
             method: window.console.warn
         },
         error: {
             value: 4,
-            icon: '🐝',
-            info: 'Error',
+            icon: '🐞',
+            name: 'Error',
             color: '#8D2120',
             backgroundColor: '#FFD5D4',
             method: window.console.error
         },
         fatal: {
             value: 5,
-            icon: '🐞',
-            info: 'Fatal',
+            icon: '👾',
+            name: 'Fatal',
             color: '#212529',
             backgroundColor: '#DFDBFF',
             method: window.console.error
@@ -116,6 +116,10 @@ class LogManager {
 
     static clearLog() {
         this.#log = [];
+    }
+
+    static getLogLevels() {
+        return this.#levels;
     }
 
     static logDebug(origin, method, value) {

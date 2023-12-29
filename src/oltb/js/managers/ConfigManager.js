@@ -5,7 +5,7 @@ import { DefaultConfig } from './config-manager/DefaultConfig';
 const FILENAME = 'managers/ConfigManager.js';
 
 const DefaultOptions = Object.freeze({
-    url: '/config.json'
+    url: '/assets/config/config.json'
 });
 
 /**
@@ -17,13 +17,14 @@ const DefaultOptions = Object.freeze({
  */
 class ConfigManager {
     static #config;
+    static #options;
 
     static async initAsync(options = {}) {
+        this.#options = _.merge(_.cloneDeep(DefaultOptions), options);
+
         LogManager.logDebug(FILENAME, 'initAsync', 'Initialization started');
 
-        options = _.merge(_.cloneDeep(DefaultOptions), options);
-
-        return this.#loadConfigFileAsync(options.url);
+        return this.#loadConfigFileAsync(this.#options.url);
     }
 
     static setMap(map) { }
@@ -57,7 +58,16 @@ class ConfigManager {
 
             return response.json();
         }).then((config) => {
-            this.#config = _.merge(_.cloneDeep(DefaultConfig), config);
+            // Note: 
+            // Use _.mergeWith and not _.merge to have merging of empty arrays behave as 'expected'
+            // If a empty array is given in the custom config.json it will now replace the array in the default-object
+            this.#config = _.mergeWith(_.cloneDeep(DefaultConfig), config, (a, b) => {
+                if(_.isArray(b)) {
+                    return b;
+                }
+                
+                return undefined;
+            });
 
             LogManager.logInformation(FILENAME, 'loadConfigFileAsync', _.cloneDeep(config));
             LogManager.logInformation(FILENAME, 'loadConfigFileAsync', _.cloneDeep(this.#config));
@@ -68,7 +78,7 @@ class ConfigManager {
             });
         }).catch((error) => {
             LogManager.logWarning(FILENAME, 'loadConfigFileAsync', {
-                message: 'No user defined config.json was found',
+                message: 'Failed to load configurations from /assets/config/config.json directory',
                 error: error
             });
 

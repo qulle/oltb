@@ -16,6 +16,10 @@
         &:last-child {
             margin-bottom: 0;
         }
+
+        &--hidden {
+            display: none;
+        }
     }
 
     &__header {

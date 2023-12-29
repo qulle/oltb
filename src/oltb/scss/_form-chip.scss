@@ -1,4 +1,4 @@
-.oltb-btn {
+.oltb-chip {
     display: inline-flex;
     flex-shrink: 0;
     justify-content: center;
@@ -10,28 +10,20 @@
     box-shadow: $box-shadow-mid;
     text-shadow: $text-shadow-light;
     border: none;
-    border-radius: $border-radius;
+    border-radius: 1rem;
     font-size: 1rem;
     padding: .5rem;
     color: $color-light;
     background-color: transparent;
+    margin: 0 0 0 0.5rem;
 
-    &:disabled {
-        opacity: .5;
-        cursor: not-allowed;
+    &:first-child {
+        margin: 0;
     }
 
-    &__icon {
-        filter: $drop-shadow-filter-light;
-    }
-
-    &--round {
-        border-radius: 50%;
-    }
-
-    &--blank {
-        box-shadow: none;
-        padding: 0;
+    &--deactivated {
+        text-decoration: line-through;
+        font-style: italic;
     }
 
     &--blue-light {
@@ -129,8 +121,4 @@
             box-shadow: 0 0 0 $shadow-focus-width rgba($color-gray-400, .5);
         }
     }
-}
-
-body.oltb-using-keyboard .oltb-btn--blank:focus {
-    box-shadow: 0 0 0 $shadow-focus-width rgba($color-gray-300, .5);
 }

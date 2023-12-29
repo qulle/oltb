@@ -1,39 +1,28 @@
 import _ from 'lodash';
-import { EnUs } from './translation-manager/en-us';
-import { SvSe } from './translation-manager/sv-se';
 import { LogManager } from './LogManager';
 import { StateManager } from './StateManager';
 import { TippyManager } from './TippyManager';
 import { ConfigManager } from './ConfigManager';
 import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
 import { hasNestedProperty } from '../helpers/browser/HasNestedProperty';
+import { DefaultTranslation } from './translation-manager/DefaultTranslation';
 
 const FILENAME = 'managers/TranslationManager.js';
 
-const LocalStorageNodeName = LocalStorageKeys.translationManager;
-const LocalStorageDefaults = Object.freeze({
-    activeLanguageValue: 'en-us' 
+const DefaultOptions = Object.freeze({
+    url: '/assets/i18n'
 });
 
-const DefaultLanguages = Object.freeze([
-    {
-        text: 'English',
-        value: 'en-us',
-        translation: EnUs
-    },
-    {
-        text: 'Swedish',
-        value: 'sv-se',
-        translation: SvSe
-    }
-]);
+const DefaultLanguage = Object.freeze({
+    text: 'English',
+    value: 'en-us',
+    translation: DefaultTranslation
+});
 
-const DefaultLanguage = DefaultLanguages[0];
-
-// const LocalStorageNodeName = LocalStorageKeys.translationManager;
-// const LocalStorageDefaults = Object.freeze({
-//     activeLanguage: DefaultLanguage
-// });
+const LocalStorageNodeName = LocalStorageKeys.translationManager;
+const LocalStorageDefaults = Object.freeze({
+    activeLanguageValue: DefaultLanguage.value 
+});
 
 /**
  * About:
@@ -41,14 +30,26 @@ const DefaultLanguage = DefaultLanguages[0];
  * 
  * Description:
  * Manages loading and switching between different localizations.
- * The toolbar is shipped with two languages (English and Swedish).
+ * 
+ * Note:
+ * In this context a:
+ * 'translation' is data containing the acually key-value translations
+ *    'language' is a object holding three value in the following format
+ * {
+ *     text: 'English',
+ *     value: 'en-us',
+ *     translation: translation
+ * }
  */
 class TranslationManager {
     static #activeLanguage;
     static #languages;
     static #localStorage;
+    static #options;
 
     static async initAsync(options = {}) {
+        this.#options = _.merge(_.cloneDeep(DefaultOptions), options);
+
         LogManager.logDebug(FILENAME, 'initAsync', 'Initialization started');
 
         this.#localStorage = StateManager.getAndMergeStateObject(
@@ -56,60 +57,15 @@ class TranslationManager {
             LocalStorageDefaults
         );
 
-        // Note:
-        // These languages are shiped with the application
-        this.#languages = _.cloneDeep(DefaultLanguages);
+        this.#languages = [];
 
         // Note:
         // Languages added by user in config.json
-        const userLanguages = ConfigManager.getConfig().localization.languages;
-        userLanguages.forEach((userLanguage) => {
-            const existsLanguage = this.#languages.find((language) => {
-                return language.value === userLanguage.value;
-            });
-            
-            if(existsLanguage) {
-                LogManager.logWarning(FILENAME, 'initAsync', {
-                    info: 'Language already exists',
-                    language: userLanguage
-                });
-
-                return;
-            }
-
-            // Note:
-            // The language was not one of the default languages and should be added to the list of languages
-            // TODO: Must load and parse the JSON for that language, for now use EnUs
-            this.#languages.push({
-                text: userLanguage.text,
-                value: userLanguage.value,
-                translation: _.cloneDeep(EnUs)
-            });
-        });
+        const languageValues = this.#getLanguageValues();
 
         // Note:
-        // Decide the active language based on three conditions
-        // 1. Stored language in localStorage
-        // 2. Given active lang in config.json
-        // 3. Fallback default language
-        const storedLanguageValue = this.#localStorage.activeLanguageValue;
-        const storedLanguage = this.#languages.find((language) => {
-            return language.value === storedLanguageValue;
-        });
-
-        const activeLanguageValue = ConfigManager.getConfig().localization.active;
-        const activeLanguage = this.#languages.find((language) => {
-            return language.value === activeLanguageValue;
-        });
-
-        this.#activeLanguage = storedLanguage ?? activeLanguage ?? _.cloneDeep(DefaultLanguage);  
-
-        return new Promise((resolve) => {
-            resolve({
-                filename: FILENAME,
-                result: true
-            });
-        });
+        // Asynchronously load all i18n-JSON-files defined by the user
+        return this.#loadLanguagesAsync(languageValues);
     }
 
     static setMap(map) { }
@@ -119,7 +75,121 @@ class TranslationManager {
     }
 
     // -------------------------------------------------------------------
-    // # Section: Internal
+    // # Section: Fetching JSON-Languages
+    // -------------------------------------------------------------------
+
+    static async #fetchLanguagesAsync(values) {
+        const timestamp = Date.now().toString();
+        const requests = values.map(async (value) => {
+            return fetch(`${this.#options.url}/${value}.json?cache=${timestamp}`, {
+                method: 'GET',
+                cache: 'no-cache',
+                headers: {
+                    'Accept': 'application/json'
+                },
+            }).then((result) => {
+                return result.json();
+            })
+        });
+
+        return await Promise.allSettled(requests);
+    }
+
+    static async #loadLanguagesAsync(values) {
+        return this.#fetchLanguagesAsync(values).then((responses) => {
+            responses.forEach((response) => {
+                if(response.status === 'rejected') {
+                    LogManager.logWarning(FILENAME, 'loadLanguagesAsync', {
+                        info: 'Failed to load language(s)',
+                        reason: response.reason,
+                        status: response.status
+                    });
+
+                    return;
+                }
+
+                // Note:
+                // The loaded translation must be paired with the correct language object
+                // The meta object inside the <ab-cd>.json file has the text and value to use for this translation
+                const loadedText = response.value.meta.text;
+                const loadedValue = response.value.meta.value;
+
+                if(!loadedText || !loadedValue) {
+                    LogManager.logWarning(FILENAME, 'loadLanguagesAsync', {
+                        info: 'Failed to find translation information in the meta section'
+                    });
+
+                    return;
+                }
+
+                const language = {
+                    text: loadedText,
+                    value: loadedValue,
+                    translation: response.value
+                };
+
+                this.#languages.push(language);
+            });
+
+            if(this.#languages.length <= 0) {
+                LogManager.logWarning(FILENAME, 'loadLanguagesAsync', {
+                    info: 'No languages loaded, fallback to default language instance',
+                    value: DefaultLanguage.value
+                });
+
+                this.#languages.push(_.cloneDeep(DefaultLanguage));
+            }
+
+            // Note:
+            // Decide the active language based on three conditions
+            // 1. Stored language in localStorage
+            // 2. Given active lang in config.json
+            // 3. Fallback default language
+            const storedLanguageValue = this.#localStorage.activeLanguageValue;
+            const storedLanguage = this.#languages.find((language) => {
+                return language.value === storedLanguageValue;
+            });
+
+            const activeLanguageValue = ConfigManager.getConfig().localization.active;
+            const activeLanguage = this.#languages.find((language) => {
+                return language.value === activeLanguageValue;
+            });
+
+            this.#activeLanguage = storedLanguage ?? activeLanguage ?? _.cloneDeep(DefaultLanguage);
+
+            return Promise.resolve({
+                filename: FILENAME,
+                result: true
+            });
+        });
+    }
+
+    static #getLanguageValues() {
+        const values = [];
+        const userValues = ConfigManager.getConfig().localization.languages;
+    
+        userValues.forEach((value) => {
+            const exists = values.find((item) => {
+                return item === value;
+            });
+            
+            if(exists) {
+                LogManager.logWarning(FILENAME, 'getLanguageValues', {
+                    info: 'Language already added to be loaded',
+                    value: value
+                });
+
+                return;
+            }
+
+            values.push(value);
+        });
+
+        return values;
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Changing Languages
     // -------------------------------------------------------------------
 
     static #applyLanguage() {
@@ -191,6 +261,16 @@ class TranslationManager {
     }
 
     static setActiveLanguage(toLanguage) {
+        if(this.#activeLanguage.value === toLanguage.value) {
+            LogManager.logWarning(FILENAME, 'setActiveLanguage', {
+                info: 'Aborting language change, current and next language is the same',
+                to: toLanguage.value,
+                active: this.#activeLanguage.value
+            });
+
+            return;
+        }
+
         const language = this.#languages.find((language) => {
             return language.value === toLanguage.value;
         });
@@ -204,10 +284,15 @@ class TranslationManager {
             return;
         }
 
-        this.#localStorage.activeLanguageValue = language.value;
         this.#activeLanguage = language;
+        this.#localStorage.activeLanguageValue = language.value;
+        
+        // Note:
+        // The apply method will do the actuall replacing of values in the UI
         this.#applyLanguage();
 
+        // Note:
+        // To remember the current chosen language after a reload/reopen of the browser
         StateManager.setStateObject(LocalStorageNodeName, this.#localStorage);
     }
 
@@ -219,7 +304,7 @@ class TranslationManager {
         // Note: 
         // Check if the path is the same as result
         // If so then we failed to find a translation
-        // Not all missing translations are found
+        // Not all missing translations are found by this comparison
         // An object with many translations can be returned and the view/controller might try and access one 
         // using the wrong name, this will cause 'empty'/undefined to be displayed in view
         if(result === path) {

@@ -1,21 +1,23 @@
 .oltb-func-btn {
     display: inline-flex;
-    margin-left: 5px;
+    flex-shrink: 0;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+    font-weight: 400;
+    text-align: center;
     box-shadow: $box-shadow-mid;
+    border: none;
+    border-radius: 50%;
+    width: 1.875rem;
+    height: 1.875rem;
+    background-color: $color-blue-300;
     background-repeat: no-repeat;
     background-position: center center;
     background-size: 16px 16px;
-    background-color: $color-blue-300;
     transition: background-color 100ms ease-in-out;
-    width: 1.875rem;
-    height: 1.875rem;
-    border-radius: 50%;
-    border: none;
-    cursor: pointer;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
+    margin-left: 5px;
 
     &:focus {
         box-shadow: 0 0 0 $shadow-focus-width rgba($color-blue-300, .5);

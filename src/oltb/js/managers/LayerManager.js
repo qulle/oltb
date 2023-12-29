@@ -72,6 +72,7 @@ class LayerManager {
 
     static setMap(map) { 
         LogManager.logDebug(FILENAME, 'setMap', {
+            info: 'Handling map-queues for layers that were added before the map was ready',
             adding: {
                 mapLayers: this.#queue.mapLayers.length,
                 featureLayers: this.#queue.featureLayers.length
@@ -254,6 +255,16 @@ class LayerManager {
         }));
     }
 
+    static hasMapLayerWithId(id) {
+        const layer = this.getMapLayerById(id);
+        
+        if(layer) {
+            return true;
+        }
+
+        return false;
+    }
+
     static getMapLayers() {
         return this.#layers.mapLayers;
     }
@@ -427,6 +438,16 @@ class LayerManager {
                 layerWrapper: layerWrapper
             }
         }));
+    }
+
+    static hasFeatureLayerWithId(id) {
+        const layer = this.getFeatureLayerById(id);
+        
+        if(layer) {
+            return true;
+        }
+
+        return false;
     }
 
     static getFeatureLayers() {

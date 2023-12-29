@@ -328,6 +328,11 @@ class LayerTool extends Control {
         if(this.localStorage.isActive) {
             this.activateTool();
         }
+
+        // Note:
+        // Need to clean unused map- and feature layers
+        // These can be layers that the user have created and that (at this point) is not persisted when app is reloaded
+        this.removeUnusedLayers();
     }
 
     onWindowBrowserStateCleared() {
@@ -369,6 +374,46 @@ class LayerTool extends Control {
     // -------------------------------------------------------------------
     // # Section: LocalStorage Helpers
     // -------------------------------------------------------------------
+
+    removeUnusedLayers() {
+        // Note:
+        // MapLayers
+        const mapLayersToRemove = [];
+        this.localStorage.mapLayers.forEach((layer) => {
+            if(!LayerManager.hasMapLayerWithId(layer.id)) {
+                mapLayersToRemove.push(layer);
+            }
+        });
+
+        mapLayersToRemove.forEach((layerToRemove) => {
+            this.localStorage.mapLayers = this.localStorage.mapLayers.filter((layer) => {
+                return layerToRemove.id !== layer.id;
+            }); 
+        });
+
+        // Note:
+        // FeatureLayers
+        const featureLayersToRemove = [];
+        this.localStorage.featureLayers.forEach((layer) => {
+            if(!LayerManager.hasFeatureLayerWithId(layer.id)) {
+                featureLayersToRemove.push(layer);
+            }
+        });
+
+        featureLayersToRemove.forEach((layerToRemove) => {
+            this.localStorage.featureLayers = this.localStorage.featureLayers.filter((layer) => {
+                return layerToRemove.id !== layer.id;
+            }); 
+        });
+
+        StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
+        
+        LogManager.logDebug(FILENAME, 'removeUnusedLayers', {
+            info: 'Removing unused layers',
+            mapLayers: mapLayersToRemove,
+            featureLayers: featureLayersToRemove
+        });
+    }
 
     getLocalStorageFeatureLayerById(id) {
         const layer = this.localStorage.featureLayers.find((item) => {

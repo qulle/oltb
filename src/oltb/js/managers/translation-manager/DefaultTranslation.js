@@ -1,4 +1,4 @@
-export const EnUs = Object.freeze({
+export const DefaultTranslation = Object.freeze({
     lang: {
         text: 'English',
         code: 'en-us'

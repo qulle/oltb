@@ -12,13 +12,8 @@ const DefaultConfig = Object.freeze({
     localization: Object.freeze({
         active: 'en-us',
         languages: Object.freeze([
-            {
-                text: 'English',
-                value: 'en-us'
-            }, {
-                text: 'Swedish',
-                value: 'sv-se'
-            }
+            'en-us',
+            'sv-se'
         ])
     }),
     logging: Object.freeze({

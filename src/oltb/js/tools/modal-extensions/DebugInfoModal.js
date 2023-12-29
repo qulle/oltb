@@ -254,6 +254,20 @@ class DebugInfoModal extends ModalBase {
     }
 
     #generateLogSection(section) {
+        // Note:
+        // Defining the default Map to contain all levels regardless of the log contains that level or not
+        const chips = new Map();
+        const defaultLevels = LogManager.getLogLevels();
+        for(const [key, value] of Object.entries(defaultLevels)) {
+            chips.set(value.name, {
+                count: 0,
+                name: value.name,
+                icon: value.icon,
+                color: value.color,
+                backgroundColor: value.backgroundColor
+            });
+        }
+
         const eventLog = DOM.createElement({
             element: 'div',
             id: ID_EVENT_LOG,
@@ -261,6 +275,19 @@ class DebugInfoModal extends ModalBase {
         });
 
         section.content.forEach((entry, index) => {
+            // Note:
+            // To create a filter using chips above the eventlog
+            const current = chips.get(entry.level.name);
+            chips.set(entry.level.name, {
+                count: current.count + 1,
+                name: entry.level.name,
+                icon: entry.level.icon,
+                color: entry.level.color,
+                backgroundColor: entry.level.backgroundColor
+            });
+
+            // Note:
+            // Both normal strings and complex JSON structures can be logged
             if(typeof entry.value === 'string') {
                 const logItem = this.#generateTextLogItem(entry);
                 DOM.appendChildren(eventLog, [
@@ -274,20 +301,52 @@ class DebugInfoModal extends ModalBase {
             }
         });
 
-        return eventLog;
+        const eventLogWrapper = DOM.createElement({
+            element: 'div'
+        });
+
+        const chipWrapper = DOM.createElement({
+            element: 'div',
+            style: 'margin: 1rem 0;'
+        });
+
+        DOM.appendChildren(eventLogWrapper, [
+            chipWrapper,
+            eventLog
+        ]);
+
+        chips.forEach((value, key, map) => {
+            const chip = DOM.createElement({
+                element: 'span',
+                class: 'oltb-chip',
+                style: `background-color: ${value.backgroundColor}; color: ${value.color};`,
+                text: `${value.icon} ${key} (${value.count})`,
+                listeners: {
+                    click: () => {
+                        this.doFilterEventLog(chip, value.name, eventLog)
+                    }
+                }
+            });
+    
+            DOM.appendChildren(chipWrapper, [
+                chip
+            ]);
+        });
+
+        return eventLogWrapper;
     }
 
     #generateTextLogItem(entry) {
         const logHeader = DOM.createElement({
             element: 'div',
-            class: 'oltb-log__header',
+            class: 'oltb-log__header'
         });
 
         const logTitle = DOM.createElement({
             element: 'div',
-            class: 'oltb-log__title', 
+            class: 'oltb-log__title',
             html: `
-                <span class="oltb-tippy oltb-log__level-icon" title="${entry.level.info}">${
+                <span class="oltb-tippy oltb-log__level-icon" title="${entry.level.name}">${
                     entry.level.icon
                 }</span><span class="oltb-log__timestamp">${
                     entry.timestamp
@@ -307,7 +366,10 @@ class DebugInfoModal extends ModalBase {
         const logItem = DOM.createElement({
             element: 'div',
             style: `background-color: ${entry.level.backgroundColor}; color: ${entry.level.color};`,
-            class: 'oltb-log__item'
+            class: 'oltb-log__item',
+            attributes: {
+                'data-oltb-log-name': entry.level.name
+            }
         });
 
         DOM.appendChildren(logItem, [
@@ -329,9 +391,9 @@ class DebugInfoModal extends ModalBase {
 
         const logTitle = DOM.createElement({
             element: 'div',
-            class: 'oltb-log__title', 
+            class: 'oltb-log__title',
             html: `
-                <span class="oltb-tippy oltb-log__level-icon" title="${entry.level.info}">${
+                <span class="oltb-tippy oltb-log__level-icon" title="${entry.level.name}">${
                     entry.level.icon
                 }</span><span class="oltb-log__timestamp">${
                     entry.timestamp
@@ -381,7 +443,10 @@ class DebugInfoModal extends ModalBase {
         const logItem = DOM.createElement({
             element: 'div',
             style: `background-color: ${entry.level.backgroundColor}; color: ${entry.level.color};`,
-            class: 'oltb-log__item'
+            class: 'oltb-log__item',
+            attributes: {
+                'data-oltb-log-name': entry.level.name
+            }
         });
 
         DOM.appendChildren(logItem, [
@@ -408,6 +473,21 @@ class DebugInfoModal extends ModalBase {
             },
             defaultConfig: config
         };
+
+        // Loaded Translations
+        const languages = TranslationManager.getLanguages();
+        const languageSections = [];
+        languages.forEach((language) => {
+            const section = {
+                title: `${language.text} | ${language.value}.json`,
+                content: language.translation,
+                class: 'oltb-debug__json',
+                display: 'none',
+                json: true
+            };
+
+            languageSections.push(section);
+        });
 
         // Map Information
         const view = this.options.map?.getView();
@@ -522,7 +602,7 @@ class DebugInfoModal extends ModalBase {
                 class: 'oltb-debug__json',
                 display: 'none',
                 json: true
-            }, {
+            }, ...languageSections, {
                 title: i18n.eventLog,
                 content: eventLog,
                 class: 'oltb-debug__json',
@@ -578,6 +658,15 @@ class DebugInfoModal extends ModalBase {
     // -------------------------------------------------------------------
     // # Section: DoActions
     // -------------------------------------------------------------------
+
+    doFilterEventLog(chip, value, eventLog) {
+        chip.classList.toggle('oltb-chip--deactivated');
+
+        const logItems = eventLog.querySelectorAll(`[data-oltb-log-name="${value}"]`);
+        logItems.forEach((item) => {
+            item.classList.toggle('oltb-log__item--hidden');
+        });
+    }
 
     doActionLoggingMap() {
         console.dir(this.options.map);
