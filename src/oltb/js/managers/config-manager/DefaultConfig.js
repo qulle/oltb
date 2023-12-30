@@ -104,7 +104,7 @@ const DefaultConfig = Object.freeze({
             '#5B88D6', // Indigo 300
             '#2357B1', // Indigo 400
             '#103677', // Indigo 500
-            '#DFDBFF', // Purple 100
+            '#E8E6FF', // Purple 100
             '#D0CAFF', // Purple 200
             '#9085E4', // Purple 300
             '#493E9C', // Purple 400
@@ -139,7 +139,7 @@ const DefaultConfig = Object.freeze({
             '#FCBE80', // Orange 300
             '#F67D2C', // Orange 400
             '#8A4111', // Orange 500
-            '#FFD5D4', // Red 100
+            '#FFE6E6', // Red 100
             '#FDB5B4', // Red 200
             '#E96B69', // Red 300
             '#EB4542', // Red 400

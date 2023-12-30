@@ -102,7 +102,7 @@ const loadGeoJson = function(extent, resolution, projection, success, failure) {
 LayerManager.addMapLayers([
     {
         id: '90fcb696-0eca-43cf-897c-268f1d7d070f',
-        name: 'Countries overlay',
+        name: 'Countries Overlay',
         layer: new VectorLayer({
             source: new VectorSource({
                 format: new GeoJSON({

@@ -40,7 +40,7 @@ class DebugInfoModal extends ModalBase {
             DefaultOptions.maximized, 
             options.onClose
         );
-        
+            
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
         this.#createModal();
     }
@@ -302,12 +302,13 @@ class DebugInfoModal extends ModalBase {
         });
 
         const eventLogWrapper = DOM.createElement({
-            element: 'div'
+            element: 'div',
+            class: 'oltb-log__wrapper'
         });
 
         const chipWrapper = DOM.createElement({
             element: 'div',
-            style: 'margin: 1rem 0;'
+            class: 'oltb-log__filter oltb-hide-scrollbars'
         });
 
         DOM.appendChildren(eventLogWrapper, [
@@ -321,6 +322,9 @@ class DebugInfoModal extends ModalBase {
                 class: 'oltb-chip',
                 style: `background-color: ${value.backgroundColor}; color: ${value.color};`,
                 text: `${value.icon} ${key} (${value.count})`,
+                attributes: {
+                    'data-oltb-reset-value': `${value.icon} ${key} (0)`
+                },
                 listeners: {
                     click: () => {
                         this.doFilterEventLog(chip, value.name, eventLog)
@@ -479,7 +483,7 @@ class DebugInfoModal extends ModalBase {
         const languageSections = [];
         languages.forEach((language) => {
             const section = {
-                title: `${language.text} | ${language.value}.json`,
+                title: `${language.value}.json | ${language.text}`,
                 content: language.translation,
                 class: 'oltb-debug__json',
                 display: 'none',
@@ -720,11 +724,19 @@ class DebugInfoModal extends ModalBase {
     doActionClearEventLog() {
         LogManager.clearLog();
 
+        // Clear eventlog
         const uiRefEventLog = document.getElementById(ID_EVENT_LOG);
         if(uiRefEventLog) {
             DOM.clearElement(uiRefEventLog);
         }
         
+        // Reset chips to zero value
+        const chipResetKey = 'data-oltb-reset-value';
+        const uiRefChips = document.querySelectorAll(`[${chipResetKey}]`);
+        uiRefChips.forEach((chip) => {
+            chip.innerHTML = chip.getAttribute(chipResetKey);
+        });
+
         Toast.info({
             i18nKey: `${I18N_BASE}.toasts.infos.clearEventLog`,
             autoremove: ConfigManager.getConfig().autoRemovalDuation.normal

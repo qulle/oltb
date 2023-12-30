@@ -43,7 +43,7 @@ class LogManager {
             icon: '🐞',
             name: 'Error',
             color: '#8D2120',
-            backgroundColor: '#FFD5D4',
+            backgroundColor: '#FFE6E6',
             method: window.console.error
         },
         fatal: {
@@ -51,7 +51,7 @@ class LogManager {
             icon: '👾',
             name: 'Fatal',
             color: '#212529',
-            backgroundColor: '#DFDBFF',
+            backgroundColor: '#E8E6FF',
             method: window.console.error
         }
     });

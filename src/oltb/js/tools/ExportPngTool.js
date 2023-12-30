@@ -145,7 +145,7 @@ class ExportPngTool extends Control {
             return;
         }
 
-        this.doRenderCompleteAsync(map);
+        await this.doRenderCompleteAsync(map);
     }
 
     // -------------------------------------------------------------------
@@ -184,9 +184,13 @@ class ExportPngTool extends Control {
             const pngCanvas = this.createUICanvas(size[0], size[1]);
             const pngContext = pngCanvas.getContext('2d');
 
+            // Note:
+            // When the overview tool is active a second map-canvas is present in the DOM
+            // Appending the :not selector in the querySelector makes it possible to target the correct canvas 
             // Draw map layers (Canvases)
             const fullOpacity = 1;
-            const uiRefMapCanvas = uiRefMapElement.querySelector('.ol-layer canvas');
+            const uiRefMapCanvas = uiRefMapElement.querySelector('.ol-layer canvas:not(.ol-overviewmap-map canvas)');
+            console.log(uiRefMapCanvas);
             const opacity = uiRefMapCanvas.parentNode.style.opacity;
             pngContext.globalAlpha = opacity === '' ? fullOpacity : Number(opacity);
     
@@ -194,8 +198,11 @@ class ExportPngTool extends Control {
             CanvasRenderingContext2D.prototype.setTransform.apply(pngContext, matrix);
             pngContext.drawImage(uiRefMapCanvas, 0, 0);
 
+            // Note:
+            // When the overview tool is active a second map-canvas is present in the DOM
+            // Appending the :not selector in the querySelector makes it possible to target the correct canvas 
             // Draw overlays souch as Tooltips and InfoWindows
-            const uiRefOverlay = uiRefMapElement.querySelector('.ol-overlaycontainer-stopevent');
+            const uiRefOverlay = uiRefMapElement.querySelector('.ol-overlaycontainer-stopevent:not(.ol-overviewmap-map .ol-overlaycontainer-stopevent)');
             const overlayCanvas = await html2canvas(uiRefOverlay, {
                 scrollX: 0,
                 scrollY: 0,
