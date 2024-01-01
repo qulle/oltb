@@ -45,10 +45,11 @@ const DefaultConfig = Object.freeze({
     }),
     marker: Object.freeze({
         focusZoom: 6,
-        selectedAnimation: {
-            enabled: true,
-            duration: 3000,
-            color: '#FF0000'
+        pulseAnimation: {
+            isEnabled: true,
+            duration: 2000,
+            shouldLoop: true,
+            strokeWidth: 1 
         }
     }),
     scroll: Object.freeze({

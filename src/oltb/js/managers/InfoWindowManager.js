@@ -1,7 +1,9 @@
 import { DOM } from '../helpers/browser/DOM';
 import { Events } from '../helpers/constants/Events';
 import { Overlay } from 'ol';
-import { getCenter, getSize } from 'ol/extent';
+import { easeOut } from 'ol/easing.js';
+import { unByKey } from 'ol/Observable';
+import { getCenter } from 'ol/extent';
 import { trapFocus } from '../helpers/browser/TrapFocus';
 import { LogManager } from './LogManager';
 import { editMarker } from './info-window-manager/EditMarker';
@@ -10,11 +12,10 @@ import { ConfigManager } from './ConfigManager';
 import { copyMarkerInfo } from './info-window-manager/CopyMarkerInfo';
 import { getVectorContext } from 'ol/render';
 import { SvgPaths, getIcon } from '../icons/GetIcon';
-import { Fill, Stroke, Style, Circle as CircleStyle } from 'ol/style';
-import { copyMarkerCoordinates } from './info-window-manager/CopyMarkerCoordinates';
-import { unByKey } from 'ol/Observable';
-import { easeOut } from 'ol/easing.js';
 import { HexTransparencies } from '../helpers/constants/HexTransparencies';
+import { FeatureProperties } from '../helpers/constants/FeatureProperties';
+import { copyMarkerCoordinates } from './info-window-manager/CopyMarkerCoordinates';
+import { Fill, Stroke, Style, Circle as CircleStyle } from 'ol/style';
 
 const FILENAME = 'managers/InfoWindowManager.js';
 const CLASS_ANIMATION = 'oltb-animation';
@@ -37,7 +38,7 @@ class InfoWindowManager {
     static #content;
     static #footer;
     static #lastHighlightedFeature;
-    static #selectedMarker;
+    static #selectedFeature;
 
     static async initAsync(options = {}) {
         LogManager.logDebug(FILENAME, 'initAsync', 'Initialization started');
@@ -151,14 +152,15 @@ class InfoWindowManager {
 
         if(!results) {
             this.hideOverlay();
-            this.deSelectMarker();
+            this.deSelectFeature();
 
             return;
         }
 
-        const [feature, layer] = results;
+        const feature = results[0];
+        const layer = results[1];
 
-        this.selectMarker(feature, layer);
+        this.selectFeature(feature, layer);
 
         const infoWindow = feature?.getProperties()?.oltb?.infoWindow;
         if(infoWindow) {
@@ -197,12 +199,13 @@ class InfoWindowManager {
     // -------------------------------------------------------------------
 
     static pulseAnimation(feature, layer) {
-        const type = 'marker';
+        const type = FeatureProperties.type.marker;
         const oltb = feature.getProperties()?.oltb;
+        const animationConfig = ConfigManager.getConfig().marker.pulseAnimation;
 
         // Note:
         // Only animate the pure markers, not windbarbs and other features
-        if(!oltb || oltb.type !== type) {
+        if(!oltb || oltb.type !== type || !animationConfig.isEnabled) {
             return;
         }
 
@@ -210,7 +213,10 @@ class InfoWindowManager {
         const color = oltb.style.markerFill;
         const startSize = oltb.style.radius;
         const endSize = oltb.style.radius + (oltb.style.radius / 2);
-        const duration = 2000;
+        
+        const duration = animationConfig.duration;
+        const shouldLoop = animationConfig.shouldLoop;
+        const strokeWidth = animationConfig.strokeWidth;
 
         const pulseGeometry = feature.getGeometry().clone();
         const listenerKey = layer.on(Events.openLayers.postRender, animate.bind(this));
@@ -223,14 +229,14 @@ class InfoWindowManager {
             const frameState = event.frameState;
             const elapsed = frameState.time - start;
             
-            if (elapsed >= duration || !this.#selectedMarker) {
+            if (elapsed >= duration || !this.#selectedFeature) {
                 // Note:
                 // Cancel active animation
                 unByKey(listenerKey);
 
                 // Note:
                 // If the feature still selected, rerun the animation
-                if(this.#selectedMarker === feature) {
+                if(this.#selectedFeature === feature && shouldLoop) {
                     this.pulseAnimation(feature, layer);
                 }
 
@@ -251,7 +257,7 @@ class InfoWindowManager {
                     radius: radius,
                     stroke: new Stroke({
                         color: `${color.slice(0, -2)}${hex}`,
-                        width: 1 + opacity,
+                        width: strokeWidth + opacity,
                     })
                 })
             });
@@ -260,27 +266,26 @@ class InfoWindowManager {
             vectorContext.drawGeometry(pulseGeometry);
 
             // Note:
-            // Continue to render the map until the animation has completed elapsed >= duration
+            // Continue to render the map until the animation has completed
             this.#map.render();
         }
     }
 
-    static selectMarker(feature, layer, animate = true) {
-        // Note:
-        // If a Marker is already selected and anotherone is clicked
-        if(this.#selectedMarker) {
-            this.deSelectMarker();
+    static selectFeature(feature, layer) {
+        if(this.#selectedFeature) {
+            this.deSelectFeature();
         }
 
-        this.#selectedMarker = feature;
-
-        if(animate) {
-            this.pulseAnimation(feature, layer);
-        }
+        this.#selectedFeature = feature;
+        this.pulseAnimation(feature, layer);
     }
 
-    static deSelectMarker() {
-        this.#selectedMarker = undefined;
+    static deSelectFeature() {
+        this.#selectedFeature = undefined;
+    }
+
+    static getSelectedFeature() {
+        return this.#selectedFeature;
     }
 
     static hightlightVectorSection(feature) {
@@ -361,7 +366,7 @@ class InfoWindowManager {
     }
 
     static hideOverlay() {
-        this.deSelectMarker();
+        this.deSelectFeature();
 
         DOM.clearElements([
             this.#title,
