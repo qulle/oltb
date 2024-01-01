@@ -58,7 +58,8 @@ const generateIconMarker = function(options = {}) {
         replaceHashtag: options.replaceHashtag
     });
     
-    const hex = HexTransparencies[40];
+    const hexPercentage = 40;
+    const hex = HexTransparencies[hexPercentage];
     const circleStyle = new Style({
         image: new Circle({
             radius: options.radius,

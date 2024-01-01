@@ -44,7 +44,12 @@ const DefaultConfig = Object.freeze({
         marker: 'oltb-marker'
     }),
     marker: Object.freeze({
-        focusZoom: 6
+        focusZoom: 6,
+        selectedAnimation: {
+            enabled: true,
+            duration: 3000,
+            color: '#FF0000'
+        }
     }),
     scroll: Object.freeze({
         distance: 100

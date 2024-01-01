@@ -666,10 +666,22 @@ class DebugInfoModal extends ModalBase {
     doFilterEventLog(chip, value, eventLog) {
         chip.classList.toggle('oltb-chip--deactivated');
 
+        // Apply filter to the targeted log-items
         const logItems = eventLog.querySelectorAll(`[data-oltb-log-name="${value}"]`);
         logItems.forEach((item) => {
             item.classList.toggle('oltb-log__item--hidden');
         });
+
+        // Note:
+        // :empty is difficult to use beacuase of white spaces
+        // Check if all items in the log are hidden
+        // Then apply helper class to the eventLog itself
+        const logItemsNotHidden = eventLog.querySelectorAll('.oltb-log__item:not(.oltb-log__item--hidden)');
+        if(logItemsNotHidden.length === 0) {
+            eventLog.classList.add('oltb-log--empty');
+        }else {
+            eventLog.classList.remove('oltb-log--empty');
+        }
     }
 
     doActionLoggingMap() {

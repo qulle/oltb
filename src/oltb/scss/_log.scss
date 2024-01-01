@@ -4,7 +4,8 @@
     overflow-y: scroll;
     max-height: 600px;
 
-    &:empty {
+    &:empty,
+    &--empty {
         display: none;
     }
     

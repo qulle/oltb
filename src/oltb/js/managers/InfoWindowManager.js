@@ -1,16 +1,20 @@
 import { DOM } from '../helpers/browser/DOM';
 import { Events } from '../helpers/constants/Events';
 import { Overlay } from 'ol';
-import { getCenter } from 'ol/extent';
+import { getCenter, getSize } from 'ol/extent';
 import { trapFocus } from '../helpers/browser/TrapFocus';
 import { LogManager } from './LogManager';
 import { editMarker } from './info-window-manager/EditMarker';
 import { removeMarker } from './info-window-manager/RemoveMarker';
 import { ConfigManager } from './ConfigManager';
 import { copyMarkerInfo } from './info-window-manager/CopyMarkerInfo';
+import { getVectorContext } from 'ol/render';
 import { SvgPaths, getIcon } from '../icons/GetIcon';
-import { Fill, Stroke, Style } from 'ol/style';
+import { Fill, Stroke, Style, Circle as CircleStyle } from 'ol/style';
 import { copyMarkerCoordinates } from './info-window-manager/CopyMarkerCoordinates';
+import { unByKey } from 'ol/Observable';
+import { easeOut } from 'ol/easing.js';
+import { HexTransparencies } from '../helpers/constants/HexTransparencies';
 
 const FILENAME = 'managers/InfoWindowManager.js';
 const CLASS_ANIMATION = 'oltb-animation';
@@ -32,7 +36,8 @@ class InfoWindowManager {
     static #title;
     static #content;
     static #footer;
-    static #lastFeature;
+    static #lastHighlightedFeature;
+    static #selectedMarker;
 
     static async initAsync(options = {}) {
         LogManager.logDebug(FILENAME, 'initAsync', 'Initialization started');
@@ -140,9 +145,20 @@ class InfoWindowManager {
     // -------------------------------------------------------------------
 
     static #onSingleClick(event) {
-        const feature = this.#map.forEachFeatureAtPixel(event.pixel, function(feature) {
-            return feature;
+        const results = this.#map.forEachFeatureAtPixel(event.pixel, function(feature, layer) {
+            return [feature, layer];
         });
+
+        if(!results) {
+            this.hideOverlay();
+            this.deSelectMarker();
+
+            return;
+        }
+
+        const [feature, layer] = results;
+
+        this.selectMarker(feature, layer);
 
         const infoWindow = feature?.getProperties()?.oltb?.infoWindow;
         if(infoWindow) {
@@ -157,8 +173,8 @@ class InfoWindowManager {
             return feature;
         });
 
-        if(this.#lastFeature && (!feature || this.#lastFeature !== feature)) {
-            this.#lastFeature.setStyle(null);
+        if(this.#lastHighlightedFeature && (!feature || this.#lastHighlightedFeature !== feature)) {
+            this.#lastHighlightedFeature.setStyle(null);
         }
 
         const hightlight = feature?.getProperties()?.oltb?.highlightOnHover;
@@ -180,6 +196,93 @@ class InfoWindowManager {
     // # Section: Public API
     // -------------------------------------------------------------------
 
+    static pulseAnimation(feature, layer) {
+        const type = 'marker';
+        const oltb = feature.getProperties()?.oltb;
+
+        // Note:
+        // Only animate the pure markers, not windbarbs and other features
+        if(!oltb || oltb.type !== type) {
+            return;
+        }
+
+        const start = Date.now();
+        const color = oltb.style.markerFill;
+        const startSize = oltb.style.radius;
+        const endSize = oltb.style.radius + (oltb.style.radius / 2);
+        const duration = 2000;
+
+        const pulseGeometry = feature.getGeometry().clone();
+        const listenerKey = layer.on(Events.openLayers.postRender, animate.bind(this));
+
+        // Note:
+        // Render the map will trigger the postrender that runs the animation
+        this.#map.render();
+
+        function animate(event) {
+            const frameState = event.frameState;
+            const elapsed = frameState.time - start;
+            
+            if (elapsed >= duration || !this.#selectedMarker) {
+                // Note:
+                // Cancel active animation
+                unByKey(listenerKey);
+
+                // Note:
+                // If the feature still selected, rerun the animation
+                if(this.#selectedMarker === feature) {
+                    this.pulseAnimation(feature, layer);
+                }
+
+                return;
+            }
+
+            const vectorContext = getVectorContext(event);
+            const elapsedRatio = elapsed / duration;
+
+            const radius = easeOut(elapsedRatio) * endSize + startSize;
+            const opacity = easeOut(1 - elapsedRatio);
+            
+            const hexPercentage = Math.round(opacity * 100);
+            const hex = HexTransparencies[hexPercentage];
+
+            const style = new Style({
+                image: new CircleStyle({
+                    radius: radius,
+                    stroke: new Stroke({
+                        color: `${color.slice(0, -2)}${hex}`,
+                        width: 1 + opacity,
+                    })
+                })
+            });
+
+            vectorContext.setStyle(style);
+            vectorContext.drawGeometry(pulseGeometry);
+
+            // Note:
+            // Continue to render the map until the animation has completed elapsed >= duration
+            this.#map.render();
+        }
+    }
+
+    static selectMarker(feature, layer, animate = true) {
+        // Note:
+        // If a Marker is already selected and anotherone is clicked
+        if(this.#selectedMarker) {
+            this.deSelectMarker();
+        }
+
+        this.#selectedMarker = feature;
+
+        if(animate) {
+            this.pulseAnimation(feature, layer);
+        }
+    }
+
+    static deSelectMarker() {
+        this.#selectedMarker = undefined;
+    }
+
     static hightlightVectorSection(feature) {
         const style = new Style({
             fill: new Fill({
@@ -192,7 +295,7 @@ class InfoWindowManager {
         });
 
         feature.setStyle(style);
-        this.#lastFeature = feature;
+        this.#lastHighlightedFeature = feature;
     }
 
     static showOverlay(marker, position) {
@@ -258,6 +361,8 @@ class InfoWindowManager {
     }
 
     static hideOverlay() {
+        this.deSelectMarker();
+
         DOM.clearElements([
             this.#title,
             this.#content,
