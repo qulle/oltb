@@ -1,5 +1,6 @@
 import { DOM } from '../helpers/browser/DOM';
 import { Events } from '../helpers/constants/Events';
+import { getUid } from 'ol/util';
 import { Overlay } from 'ol';
 import { easeOut } from 'ol/easing.js';
 import { unByKey } from 'ol/Observable';
@@ -7,6 +8,7 @@ import { getCenter } from 'ol/extent';
 import { trapFocus } from '../helpers/browser/TrapFocus';
 import { LogManager } from './LogManager';
 import { editMarker } from './info-window-manager/EditMarker';
+import { LayerManager } from './LayerManager';
 import { removeMarker } from './info-window-manager/RemoveMarker';
 import { ConfigManager } from './ConfigManager';
 import { copyMarkerInfo } from './info-window-manager/CopyMarkerInfo';
@@ -37,7 +39,7 @@ class InfoWindowManager {
     static #title;
     static #content;
     static #footer;
-    static #lastHighlightedFeature;
+    static #selectedVectorSection;
     static #selectedFeature;
 
     static async initAsync(options = {}) {
@@ -152,7 +154,7 @@ class InfoWindowManager {
 
         if(!results) {
             this.hideOverlay();
-            this.deSelectFeature();
+            this.#deselectFeature();
 
             return;
         }
@@ -160,7 +162,7 @@ class InfoWindowManager {
         const feature = results[0];
         const layer = results[1];
 
-        this.selectFeature(feature, layer);
+        this.pulseAnimation(feature, layer);
 
         const infoWindow = feature?.getProperties()?.oltb?.infoWindow;
         if(infoWindow) {
@@ -175,18 +177,18 @@ class InfoWindowManager {
             return feature;
         });
 
-        if(this.#lastHighlightedFeature && (!feature || this.#lastHighlightedFeature !== feature)) {
-            this.#lastHighlightedFeature.setStyle(null);
+        if(this.#selectedVectorSection && (!feature || this.#selectedVectorSection !== feature)) {
+            this.#deselectVectorSection();
         }
 
         const hightlight = feature?.getProperties()?.oltb?.highlightOnHover;
         if(hightlight) {
-            this.hightlightVectorSection(feature);
+            this.#selectVectorSection(feature);
         }
 
-        const infoWindow = feature?.getProperties()?.oltb?.infoWindow;
         const nodeName = event.originalEvent.target.nodeName;
-
+        const infoWindow = feature?.getProperties()?.oltb?.infoWindow;
+        
         if(infoWindow && nodeName === 'CANVAS') {
             this.#map.getViewport().style.cursor = 'pointer';
         }else {
@@ -195,10 +197,53 @@ class InfoWindowManager {
     }
 
     // -------------------------------------------------------------------
+    // # Section: Internal
+    // -------------------------------------------------------------------
+
+    static #selectFeature(feature) {
+        this.#selectedFeature = feature;
+    }
+
+    static #deselectFeature() {
+        if(!this.#selectedFeature) {
+            return;
+        }
+
+        this.#selectedFeature = undefined;
+    }
+
+    static #selectVectorSection(section) {
+        if(!section) {
+            return;
+        }
+
+        const style = new Style({
+            fill: new Fill({
+                color: '#254372AA'
+            }),
+            stroke: new Stroke({
+                color: '#369ACDFF',
+                width: 1.5
+            })
+        });
+
+        section.setStyle(style);
+        this.#selectedVectorSection = section;
+    }
+
+    static #deselectVectorSection() {
+        if(!this.#selectedVectorSection) {
+            return;
+        }
+
+        this.#selectedVectorSection.setStyle(null);
+    }
+
+    // -------------------------------------------------------------------
     // # Section: Public API
     // -------------------------------------------------------------------
 
-    static pulseAnimation(feature, layer) {
+    static pulseAnimation(feature, layer = undefined) {
         const type = FeatureProperties.type.marker;
         const oltb = feature.getProperties()?.oltb;
         const animationConfig = ConfigManager.getConfig().marker.pulseAnimation;
@@ -208,6 +253,24 @@ class InfoWindowManager {
         if(!oltb || oltb.type !== type || !animationConfig.isEnabled) {
             return;
         }
+
+        // Note:
+        // This mehtod might be invoked when the layer is "unknown", example navigating to a bookmark
+        // Try and find the layer from the LayerManager
+        if(!layer) {
+            layer = LayerManager.getLayerFromFeature(feature);
+        }
+
+        if(!layer) {
+            LogManager.logWarning(FILENAME, 'pulseAnimation', {
+                info: 'No layer found for feature',
+                featureId: getUid(feature)
+            });
+
+            return;
+        }
+
+        this.#selectFeature(feature);
 
         const start = Date.now();
         const color = oltb.style.markerFill;
@@ -271,45 +334,13 @@ class InfoWindowManager {
         }
     }
 
-    static selectFeature(feature, layer) {
-        if(this.#selectedFeature) {
-            this.deSelectFeature();
-        }
-
-        this.#selectedFeature = feature;
-        this.pulseAnimation(feature, layer);
+    static showOverlay(feature, position) {
+        this.showOverlayDelayed(feature, position, 0);
     }
 
-    static deSelectFeature() {
-        this.#selectedFeature = undefined;
-    }
-
-    static getSelectedFeature() {
-        return this.#selectedFeature;
-    }
-
-    static hightlightVectorSection(feature) {
-        const style = new Style({
-            fill: new Fill({
-                color: '#254372AA'
-            }),
-            stroke: new Stroke({
-                color: '#369ACDFF',
-                width: 1.5
-            })
-        });
-
-        feature.setStyle(style);
-        this.#lastHighlightedFeature = feature;
-    }
-
-    static showOverlay(marker, position) {
-        this.showOverlayDelayed(marker, position, 0);
-    }
-
-    static showOverlayDelayed(marker, position, delay = ConfigManager.getConfig().animationDuration.normal) {
+    static showOverlayDelayed(feature, position, delay = ConfigManager.getConfig().animationDuration.normal) {
         window.setTimeout(() => {
-            const infoWindow = marker.getProperties().oltb.infoWindow;
+            const infoWindow = feature.getProperties().oltb.infoWindow;
             if(!infoWindow) {
                 return;
             }
@@ -322,7 +353,7 @@ class InfoWindowManager {
                 this.#overlay.setPosition(position);
             }else {
                 this.#overlay.setPosition(getCenter(
-                    marker.getGeometry().getExtent()
+                    feature.getGeometry().getExtent()
                 ));
             }
 
@@ -331,42 +362,44 @@ class InfoWindowManager {
             DOM.runAnimation(this.#infoWindow, CLASS_ANIMATION_CENTERED_BOUNCE);
 
             // Attach listeners to the function-buttons inside the infoWindow
-            const uiRefRemoveMarkerButton = this.#footer.querySelector(`#${ID_PREFIX_INFO_WINDOW}-remove`);
-            if(uiRefRemoveMarkerButton) {
-                uiRefRemoveMarkerButton.addEventListener(
+            const uiRefRemoveButton = this.#footer.querySelector(`#${ID_PREFIX_INFO_WINDOW}-remove`);
+            if(uiRefRemoveButton) {
+                uiRefRemoveButton.addEventListener(
                     Events.browser.click, 
-                    removeMarker.bind(this, InfoWindowManager, marker)
+                    removeMarker.bind(this, InfoWindowManager, feature)
                 );
             }
 
-            const uiRefCopyMarkerCoordinatesButton = this.#footer.querySelector(`#${ID_PREFIX_INFO_WINDOW}-copy-coordinates`);
-            if(uiRefCopyMarkerCoordinatesButton) {
-                uiRefCopyMarkerCoordinatesButton.addEventListener(
+            const uiRefCopyCoordinatesButton = this.#footer.querySelector(`#${ID_PREFIX_INFO_WINDOW}-copy-coordinates`);
+            if(uiRefCopyCoordinatesButton) {
+                const value = uiRefCopyCoordinatesButton.getAttribute('data-oltb-coordinates');
+                uiRefCopyCoordinatesButton.addEventListener(
                     Events.browser.click, 
-                    copyMarkerCoordinates.bind(this, InfoWindowManager, uiRefCopyMarkerCoordinatesButton.getAttribute('data-oltb-coordinates'))
+                    copyMarkerCoordinates.bind(this, InfoWindowManager, value)
                 );
             }
 
-            const uiRefCopyMarkerInfoButton = this.#footer.querySelector(`#${ID_PREFIX_INFO_WINDOW}-copy-text`);
-            if(uiRefCopyMarkerInfoButton) {
-                uiRefCopyMarkerInfoButton.addEventListener(
+            const uiRefCopyInfoButton = this.#footer.querySelector(`#${ID_PREFIX_INFO_WINDOW}-copy-text`);
+            if(uiRefCopyInfoButton) {
+                const value = uiRefCopyInfoButton.getAttribute('data-oltb-copy');
+                uiRefCopyInfoButton.addEventListener(
                     Events.browser.click, 
-                    copyMarkerInfo.bind(this, InfoWindowManager, uiRefCopyMarkerInfoButton.getAttribute('data-oltb-copy'))
+                    copyMarkerInfo.bind(this, InfoWindowManager, value)
                 );
             }
 
-            const uiRefEditMarkerButton = this.#footer.querySelector(`#${ID_PREFIX_INFO_WINDOW}-edit`);
-            if(uiRefEditMarkerButton) {
-                uiRefEditMarkerButton.addEventListener(
+            const uiRefEditButton = this.#footer.querySelector(`#${ID_PREFIX_INFO_WINDOW}-edit`);
+            if(uiRefEditButton) {
+                uiRefEditButton.addEventListener(
                     Events.browser.click, 
-                    editMarker.bind(this, InfoWindowManager, marker)
+                    editMarker.bind(this, InfoWindowManager, feature)
                 );
             }
         }, delay);
     }
 
     static hideOverlay() {
-        this.deSelectFeature();
+        this.#deselectFeature();
 
         DOM.clearElements([
             this.#title,

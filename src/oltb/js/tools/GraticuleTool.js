@@ -124,7 +124,7 @@ class GraticuleTool extends Control {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
 
         if(this.isActive) {
-            this.deActivateTool();
+            this.deactivateTool();
         }else {
             this.activateTool();
         }
@@ -151,7 +151,7 @@ class GraticuleTool extends Control {
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 
-    deActivateTool() {
+    deactivateTool() {
         this.doRemoveGraticuleLines();
 
         this.isActive = false;

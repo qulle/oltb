@@ -184,7 +184,7 @@ class SplitViewTool extends Control {
         }
 
         if(this.isActive) {
-            this.deActivateTool();
+            this.deactivateTool();
         }else {
             this.activateTool();
         }
@@ -219,7 +219,7 @@ class SplitViewTool extends Control {
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 
-    deActivateTool() {
+    deactivateTool() {
         const map = this.getMap();
         if(!map) {
             return;
@@ -277,7 +277,7 @@ class SplitViewTool extends Control {
         this.doClearState();
 
         if(this.isActive) {
-            this.deActivateTool();
+            this.deactivateTool();
         }
 
         // Note: 

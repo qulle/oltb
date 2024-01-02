@@ -131,7 +131,7 @@ class ScissorsTool extends Control {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
 
         if(this.isActive) {
-            this.deActivateTool();
+            this.deactivateTool();
         }else {
             this.activateTool();
         }
@@ -162,7 +162,7 @@ class ScissorsTool extends Control {
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 
-    deActivateTool() {
+    deactivateTool() {
         const map = this.getMap();
         if(!map) {
             return;
@@ -179,8 +179,8 @@ class ScissorsTool extends Control {
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 
-    deSelectTool() {
-        this.deActivateTool();
+    deselectTool() {
+        this.deactivateTool();
     }
 
     // -------------------------------------------------------------------
@@ -211,7 +211,7 @@ class ScissorsTool extends Control {
 
     onWindowBrowserStateCleared() {
         if(this.isActive) {
-            this.deActivateTool();
+            this.deactivateTool();
         }
 
         // Note: 

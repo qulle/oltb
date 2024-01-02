@@ -327,7 +327,7 @@ class EditTool extends Control {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
         
         if(this.isActive) {
-            this.deActivateTool();
+            this.deactivateTool();
         }else {
             this.activateTool();
         }
@@ -364,7 +364,7 @@ class EditTool extends Control {
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 
-    deActivateTool() {
+    deactivateTool() {
         [
             this.interactionSelect,
             this.interactionTranslate,
@@ -384,8 +384,8 @@ class EditTool extends Control {
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 
-    deSelectTool() {
-        this.deActivateTool();
+    deselectTool() {
+        this.deactivateTool();
     }
 
     // -------------------------------------------------------------------
@@ -416,7 +416,7 @@ class EditTool extends Control {
         this.uiRefStrokeColor.firstElementChild.style.backgroundColor = this.localStorage.strokeColor;
 
         if(this.isActive) {
-            this.deActivateTool();
+            this.deactivateTool();
         }
 
         // Note:

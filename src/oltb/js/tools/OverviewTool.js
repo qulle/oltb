@@ -157,7 +157,7 @@ class OverviewTool extends Control {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
 
         if(this.isActive) {
-            this.deActivateTool();
+            this.deactivateTool();
         }else {
             this.activateTool(); 
         }
@@ -186,7 +186,7 @@ class OverviewTool extends Control {
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 
-    deActivateTool() {
+    deactivateTool() {
         this.overviewMap.setMap(null);
 
         this.isActive = false;
@@ -231,7 +231,7 @@ class OverviewTool extends Control {
         this.doClearState();
 
         if(this.isActive) {
-            this.deActivateTool();
+            this.deactivateTool();
         }
 
         // Note: 

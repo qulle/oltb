@@ -191,7 +191,7 @@ class MeasureTool extends Control {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
         
         if(this.isActive) {
-            this.deActivateTool();
+            this.deactivateTool();
         }else {
             this.activateTool();
         }
@@ -223,7 +223,7 @@ class MeasureTool extends Control {
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 
-    deActivateTool() {
+    deactivateTool() {
         const map = this.getMap();
         if(!map) {
             return;
@@ -241,8 +241,8 @@ class MeasureTool extends Control {
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 
-    deSelectTool() {
-        this.deActivateTool();
+    deselectTool() {
+        this.deactivateTool();
     }
 
     updateTool() {
@@ -292,7 +292,7 @@ class MeasureTool extends Control {
         this.doClearColors();
 
         if(this.isActive) {
-            this.deActivateTool();
+            this.deactivateTool();
         }
 
         // Note: 

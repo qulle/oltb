@@ -179,7 +179,7 @@ class CoordinatesTool extends Control {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
         
         if(this.isActive) {
-            this.deActivateTool();
+            this.deactivateTool();
         }else {
             this.activateTool();
         }
@@ -202,7 +202,7 @@ class CoordinatesTool extends Control {
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 
-    deActivateTool() {
+    deactivateTool() {
         this.removeUIProjections();
 
         this.isActive = false;

@@ -228,7 +228,7 @@ class DrawTool extends Control {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
 
         if(this.isActive) {
-            this.deActivateTool();
+            this.deactivateTool();
         }else {
             this.activateTool();
         }
@@ -260,7 +260,7 @@ class DrawTool extends Control {
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 
-    deActivateTool() {
+    deactivateTool() {
         const map = this.getMap();
         if(!map) {
             return;
@@ -278,8 +278,8 @@ class DrawTool extends Control {
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 
-    deSelectTool() {
-        this.deActivateTool();
+    deselectTool() {
+        this.deactivateTool();
     }
 
     updateTool() {
@@ -340,7 +340,7 @@ class DrawTool extends Control {
         this.doClearColors();
 
         if(this.isActive) {
-            this.deActivateTool();
+            this.deactivateTool();
         }
 
         // Note: 

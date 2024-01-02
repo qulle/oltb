@@ -290,7 +290,7 @@ class LayerTool extends Control {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
         
         if(this.isActive) {
-            this.deActivateTool();
+            this.deactivateTool();
         }else {
             this.activateTool();
         }
@@ -311,7 +311,7 @@ class LayerTool extends Control {
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 
-    deActivateTool() {
+    deactivateTool() {
         this.isActive = false;
         this.uiRefToolboxSection.classList.remove(`${CLASS_TOOLBOX_SECTION}--show`);
         this.button.classList.remove(`${CLASS_TOOL_BUTTON}--active`);
@@ -339,7 +339,7 @@ class LayerTool extends Control {
         this.doClearState();
 
         if(this.isActive) {
-            this.deActivateTool();
+            this.deactivateTool();
         }
 
         // Note: 

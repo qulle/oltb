@@ -100,7 +100,7 @@ class ScaleLineTool extends Control {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
 
         if(this.isActive) {
-            this.deActivateTool();
+            this.deactivateTool();
         }else {
             this.activateTool();
         }
@@ -127,7 +127,7 @@ class ScaleLineTool extends Control {
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 
-    deActivateTool() {
+    deactivateTool() {
         this.doRemoveScaleLine();
 
         this.isActive = false;

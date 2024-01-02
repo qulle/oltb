@@ -36,7 +36,7 @@ class ToolManager {
 
     static setActiveTool(tool) {
         if(this.#tool && this.#tool !== tool) {
-            this.#tool.deSelectTool();
+            this.#tool.deselectTool();
         }
 
         this.#tool = tool;

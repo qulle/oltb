@@ -153,6 +153,32 @@ class LayerManager {
         return hasCustomFeatureProperty(feature.getProperties(), FeatureProperties.tooltip);
     }
 
+    static #getLayerWrapperFromFeature(target, layers) {
+        for(let i = 0; i < layers.length; i++) {
+            const layerWrapper = layers[i];
+            const layer = layerWrapper.getLayer();
+
+            if(!this.isVectorLayer(layer)) {
+                continue;
+            }
+
+            const source = layer.getSource();
+            const features = source.getFeatures();
+
+            for(let j = 0; j < features.length; j++) {
+                if(target === features[j]) {
+                    return layerWrapper;
+                }
+            }
+        }
+
+        return undefined
+    }
+
+    // -------------------------------------------
+    // Section: Common Layers
+    // -------------------------------------------
+
     static addFeatureToLayer(feature, layerWrapper) {
         const layer = layerWrapper.getLayer();
         const source = layer.getSource();
@@ -176,6 +202,40 @@ class LayerManager {
 
     static clearSnapFeatures() {
         this.#snapFeatures = new Collection();
+    }
+
+    static isVectorLayer(layer) {
+        return layer instanceof VectorLayer;
+    }
+
+    static isVectorSource(source) {
+        return source instanceof VectorSource;
+    }
+
+    static getLayerFromFeature(feature) {
+        const layerWrapper = this.getLayerWrapperFromFeature(feature);
+
+        if(layerWrapper) {
+            return layerWrapper.getLayer();
+        }
+
+        return undefined;
+    }
+
+    static getLayerWrapperFromFeature(feature) {
+        let result = undefined;
+
+        result = this.#getLayerWrapperFromFeature(feature, this.#layers.mapLayers);
+        
+        // Note:
+        // The layer was found in the MapLayers, no need to look in the FeatureLayers
+        if(result) {
+            return result;
+        }
+
+        result = this.#getLayerWrapperFromFeature(feature, this.#layers.featureLayers);
+
+        return result;
     }
 
     // -------------------------------------------
