@@ -58,8 +58,9 @@ class SettingsModal extends ModalBase {
                 bottomMargin: true,
                 listeners: {
                     'click': () => {
-                        // Update local state with new value
-                        // Is saved when save button is pressed
+                        // Note:
+                        // Update local state contained in the modal
+                        // The state is saved persistently when the save button in the modal is pressed
                         this.#state.set(key, checkbox.checked);
                     }
                 }

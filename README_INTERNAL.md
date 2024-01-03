@@ -10,14 +10,12 @@ Detailed documentation how the Toolbar is structured, internal dependencies and 
 ## Table of contents
 1. [Branches](#branches)
 2. [Get Started](#get-started)
-3. [Making A Release](#making-a-release)
-4. [Update Dependencies](#update-dependencies)
-5. [Browser Support](#browser-support)
-6. [Localizations](#localizations)
-7. [Colors](#colors) 
+3. [Browser Support](#browser-support)
+4. [Localizations](#localizations)
+5. [Colors](#colors) 
     1. [Theme Colors](#theme-colors)
     2. [Color Palette](#color-palette)
-8. [About The Code](#about-the-code)
+6. [About The Code](#about-the-code)
     1. [HTML](#html)
     2. [SCSS](#scss)
     3. [Import And Export](#import-and-export)
@@ -43,7 +41,9 @@ Detailed documentation how the Toolbar is structured, internal dependencies and 
     18. [Debug Tool](#debug-tool)
     19. [Logging](#logging)
     20. [OLTB Namespace](#oltb-namespace)
-9. [License](#license)
+7. [License](#license)
+8. [Making A Release](#making-a-release)
+9. [Update Dependencies](#update-dependencies)
 10. [Author](#author)
 
 ## Branches
@@ -76,103 +76,13 @@ $ npm config set script-shell "C:\\Program Files (x86)\\git\\bin\\bash.exe"
 $ npm config set script-shell "C:\\Program Files\\git\\bin\\bash.exe"
 ```
 
-## Making A Release
-```bash
-# (1). Checkout and update main branch
-$ git checkout main
-$ git pull
-
-# (2). Clean old data
-$ npm run clean
-
-# (3). Update version in: 
-#      - package.json
-#      - README.md
-
-# (4). Update version, date and dependencies in:
-#      - rollup.cssbanner.mjs
-#      - rollup.jsbanner.mjs
-
-# (5). Create new dist
-$ bash tasks/npm-dist.sh
-
-# (6). Clean package.json in dist:
-#      - repository
-#      - scripts
-#      - lint-staged
-#      - files
-#      - devDependencies
-
-# (7). Setup examples
-$ bash tasks/dist-examples-setup.sh
-
-# (8). Manually update examples:
-#      - NPM x 2
-#      - CDN (also bump ol CDN-links in index.html)
-
-# (9). Verify examples
-$ npm run example:one
-$ npm run example:two
-$ npm run example:three
-
-# (10). Cleanup examples
-$ bash tasks/dist-examples-cleanup.sh
-
-# (11). Publish package to NPM
-$ bash tasks/npm-publish.sh
-
-# (12). Commit and push updated examples to GitHub
-$ git add .
-$ git commit -m "New release vx.y.z"
-$ git push
-
-# (13). Create new demo, this will build the GitHub demo using the NPM version
-$ bash tasks/github-demo.sh
-
-# (14). Commit and push demo to GitHub
-$ git push origin --delete gh-pages
-$ git add demo -f
-$ git commit -m "gh-pages demo release vx.y.z"
-$ git subtree push --prefix demo origin gh-pages
-
-# (15). Verify new demo
-# https://qulle.github.io/oltb/
-
-# (16). Clean temp demo commit
-$ git reset --hard HEAD~1
-
-# (17). Tag the release
-$ git tag -a vx.y.x -m "vx.y.x"
-$ git push origin --tags
-
-# (18). Clean github.com/qulle/notification-endpoints
-```
-
-## Update Dependencies
-Check for dependency updates
-```
-$ npm outdated
-```
-
-Check for dependency security issues
-```
-$ npm audit
-```
-
-Install dependency updates
-```
-$ npm update --save
-```
-
-**Note:** that from npm version `7.0.0` the command `$ npm update` does not longer update the package.json file. From npm version `8.3.2` the command to run is `$ npm update --save` or to always apply the save option add `save=true` to the `.npmrc` file.
-
 ## Browser Support 
 Manually tested in modern browsers (Mozilla Firefox, Microsoft Edge, Google Chrome).
 
 _IE is not supported, it's time to move on._
 
 ## Localizations
-English is the default language. However the Toolbar can be extended with any other language. A second language (Swedish) is also shipped with the Toolbar in order to show how it is done. The available languages are controlled from `config.json` and added in to `/i18n/<code>.json`.
+English is the default language. However the Toolbar can be extended with any other language. A second language (Swedish) is also shipped with the Toolbar in order to show how it is done. The available languages are controlled from `/assets/config/config.json`. The translation files are put in to `/assets/i18n/<ab-cd>.json`.
 
 ## Colors
 The project's Theme colors and the full color palette are described below.
@@ -428,7 +338,7 @@ controls: defaultControls({
 ```
 
 ### Callback Functions And Constructor Parameters
-Tools that in any way change the map, create, modify or delete objects have several different callback functions that return data to you. All tools in the main Toolbar have at least one callback that is named `click`.
+Tools that in any way change the map, create, modify or delete objects have several different callback functions that return data to you. All tools in the main Toolbar have at least one callback that is named `onInitiated`. They often have a callback named `onClicked` aswell.
 ```javascript
 controls: defaultControls({
     zoom: false, 
@@ -1055,9 +965,7 @@ To create a marker use the following object properties.
 const marker = generateIconMarker({
     lon: 18.0685,
     lat: 59.3293,
-    title: 'Marker Title',
-    description: 'Marker description',
-    label: 'Marker Title',
+    label: 'Label Title',
     markerFill: '#0166A5FF',
     markerStroke: '#FFFFFFFF',
     icon: 'geoPin.filled'
@@ -1067,27 +975,27 @@ const marker = generateIconMarker({
 All available properties:
 ```javascript
 ({
-    lon: 18.0685,                      // Lon coordinate
-    lat: 59.3293,                      // Lat coordinate
-    title: 'Marker Title',             // Marker infowindow title
-    description: 'Marker description', // Marker infowindow description
-    width: 14,                         // Marker width
-    radius: 14,                        // Marker height
-    markerFill: '#0166A5FF',           // Marker fill color
-    markerStroke: '#FFFFFFFF',         // Marker stroke color
-    icon: 'geoPin.filled',             // Icon key
-    iconWidth: 14,                     // Icon width
-    iconHeight: 14,                    // Icon height
-    label: 'Marker Title',             // Label over marker
-    labelFill: '#FFFFFF',              // Label fill color
-    labelStroke: '#3B4352CC',          // Label stroke color
-    labelStrokeWidth: 12,              // Label stroke width
-    labelFont: '14px Calibri',         // Label font
-    labelUseEllipsisAfter: 20,         // Use ellipsis (...) dots if text is to long
-    labelUseUpperCase: false,          // If label should be in uppercase
-    notSelectable: true,               // If edit tool can select the marker
-    infoWindow: undefined,             // Info window to show on click
-    replaceHashtag: true               // Replace color hex (UrlMarkers)
+    lon: 18.0685,               // Lon coordinate
+    lat: 59.3293,               // Lat coordinate
+    title: 'Title',             // Marker infowindow title
+    description: 'Description', // Marker infowindow description
+    width: 14,                  // Marker width
+    radius: 14,                 // Marker radius
+    markerFill: '#0166A5FF',    // Marker fill color
+    markerStroke: '#FFFFFFFF',  // Marker stroke color
+    icon: 'geoPin.filled',      // Icon key
+    iconWidth: 14,              // Icon width
+    iconHeight: 14,             // Icon height
+    label: 'Label Title',       // Label over marker
+    labelFill: '#FFFFFF',       // Label fill color
+    labelStroke: '#3B4352CC',   // Label stroke color
+    labelStrokeWidth: 12,       // Label stroke width
+    labelFont: '14px Calibri',  // Label font
+    labelUseEllipsisAfter: 20,  // Use ellipsis (...) dots if text is to long
+    labelUseUpperCase: false,   // If label should be in uppercase
+    notSelectable: true,        // If edit tool can select the marker
+    infoWindow: undefined,      // Info window to show on click
+    replaceHashtag: true        // Replace color hex (UrlMarkers)
 });
 ```
 
@@ -1117,7 +1025,52 @@ The JSON object has the following structure.
 ```
 
 ### Wind Barbs
-// TODO
+Wind barbs can be created in the map using the following module.
+```javascript
+import { generateWindBarb } from 'oltb/js/generators/GenerateWindBarb';
+```
+
+To create a wind barb use the following object properties.
+```javascript
+const windSpeed = 12.5;
+const windBarb = generateWindBarb({
+    lon: 18.0685,
+    lat: 59.3293,
+    markerFill: '#0166A5FF',
+    markerStroke: '#FFFFFFFF',
+    label: `${windSpeed}m/s`,
+    windSpeed: windSpeed,
+    rotation: 210
+});
+```
+
+All available properties:
+```javascript
+({
+    lon: 18.0685,               // Lon coordinate
+    lat: 59.3293,               // Lat coordinate
+    title: 'Title',             // Wind barb infowindow title
+    description: 'Description', // Wind barb infowindow description
+    width: 250,                 // Wind barb width
+    height: 250,                // Wind barb height
+    markerFill: '#0166A5FF',    // Wind barb fill color
+    markerStroke: '#FFFFFFFF',  // Wind barb stroke color
+    markerStrokeWidth: 3,       // Wind barb stroke width
+    windSpeed: 0,               // Converted to correct wind barb level
+    rotation: 0,                // Wind barb rotation (degrees)
+    scale: 1,                   // Wind barb scale
+    label: 'Label Title',       // Label over wind barb
+    labelFill: '#FFFFFF',       // Label fill color
+    labelStroke: '#3B4352CC',   // Label stroke color
+    labelStrokeWidth: 12,       // Label stroke width
+    labelFont: '14px Calibri',  // Label font
+    labelUseEllipsisAfter: 20,  // Use ellipsis (...) dots if text is to long
+    labelUseUpperCase: false,   // If label should be in uppercase
+    notSelectable: true,        // If edit tool can select the wind barb
+    infoWindow: undefined,      // Info window to show on click
+    replaceHashtag: true        // Replace color hex
+});
+```
 
 ### Dialogs
 To use the custom dialogs in the map, include the following module. All the dialogs uses trap focus and circles the tab-key to always stay in the opened dialog.
@@ -1497,39 +1450,128 @@ LogManager.logDebug(FILENAME, 'handleClick', {
 All classes and id:s in the project are prefixed with the namespace `oltb`.
 
 ## Dependencies
-1. [OpenLayers 7.4.0](https://openlayers.org/en/v7.4.0/apidoc/)
-2. [Proj4 2.9.0](http://proj4js.org/)   
+1. [OpenLayers 8.2.0](https://openlayers.org/en/v8.2.0/apidoc/)
+2. [Proj4 2.9.2](http://proj4js.org/)   
 3. [Tippy.js 6.3.7](https://atomiks.github.io/tippyjs/)
 4. [Bootstrap Icons](https://icons.getbootstrap.com/)
-5. [Moment 2.29.4](https://momentjs.com/)
+5. [Moment 2.30.1](https://momentjs.com/)
 6. [A Color Picker 1.2.1](https://github.com/narsenico/a-color-picker)
 7. [Plain JS Slidetoggle 2.0.0](https://github.com/ericbutler555/plain-js-slidetoggle)
-8. [JSTS 2.9.3](https://github.com/bjornharrtell/jsts)
+8. [JSTS 2.11.0](https://github.com/bjornharrtell/jsts)
 9. [Cycle.js](https://github.com/douglascrockford/JSON-js)
-10. [Browser Dtector 3.3.0](https://github.com/sibiraj-s/browser-dtector)
-11. [Sortable JS 1.15.0](https://github.com/SortableJS/Sortable)
-12. [UUID JS 9.0.0](https://github.com/uuidjs/uuid)
+10. [Browser Dtector 4.1.0](https://github.com/sibiraj-s/browser-dtector)
+11. [Sortable JS 1.15.1](https://github.com/SortableJS/Sortable)
+12. [UUID JS 9.0.1](https://github.com/uuidjs/uuid)
 13. [Lodash 4.17.21](https://github.com/lodash/lodash)
 
 ## Dev Dependencies
-1. [Parcel 2.9.2](https://parceljs.org/)
-2. [@parcel/transformer-sass 2.9.2](https://github.com/parcel-bundler/parcel)
-3. [Rollup 3.25.1](https://github.com/rollup/rollup)
-4. [@rollup/plugin-commonjs 25.0.2](https://github.com/rollup/plugins/tree/master/packages/commonjs)
-5. [@rollup/plugin-json 6.0.0](https://github.com/rollup/plugins/tree/master/packages/json)
-6. [@rollup/plugin-node-resolve 15.1.0](https://github.com/rollup/plugins/tree/master/packages/node-resolve)
-7. [@rollup-plugin-replace 5.0.2](https://github.com/rollup/plugins/tree/master/packages/replace)
-8. [@rollup/plugin-terser 0.4.3](https://github.com/rollup/plugins/tree/master/packages/terser)
-9. [rollup-plugin-license 3.0.1](https://github.com/mjeanroy/rollup-plugin-license)
+1. [Parcel 2.10.3](https://parceljs.org/)
+2. [@parcel/transformer-sass 2.10.3](https://github.com/parcel-bundler/parcel)
+3. [Rollup 4.9.2](https://github.com/rollup/rollup)
+4. [@rollup/plugin-commonjs 25.0.7](https://github.com/rollup/plugins/tree/master/packages/commonjs)
+5. [@rollup/plugin-json 6.1.0](https://github.com/rollup/plugins/tree/master/packages/json)
+6. [@rollup/plugin-node-resolve 15.2.3](https://github.com/rollup/plugins/tree/master/packages/node-resolve)
+7. [@rollup-plugin-replace 5.0.5](https://github.com/rollup/plugins/tree/master/packages/replace)
+8. [@rollup/plugin-terser 0.4.4](https://github.com/rollup/plugins/tree/master/packages/terser)
+9. [rollup-plugin-license 3.2.0](https://github.com/mjeanroy/rollup-plugin-license)
 10. [rollup-plugin-scss 4.0.0](https://github.com/thgh/rollup-plugin-scss)
 
 ## Maps
 1. [Open Street Map](https://www.openstreetmap.org/)
-2. [Stamen Maps](http://maps.stamen.com/)
-3. [ArcGIS World Topo](https://www.arcgis.com/index.html)
+2. [ArcGIS World Topo](https://www.arcgis.com/index.html)
 
 ## License
 [BSD-2-Clause License](https://github.com/qulle/oltb/blob/main/LICENSE)
+
+## Making A Release
+```bash
+# (1). Checkout and update main branch
+$ git checkout main
+$ git pull
+
+# (2). Clean old data
+$ npm run clean
+
+# (3). Update version in: 
+#      - package.json
+#      - README.md
+
+# (4). Update version, date and dependencies in:
+#      - rollup.cssbanner.mjs
+#      - rollup.jsbanner.mjs
+
+# (5). Create new dist
+$ bash tasks/npm-dist.sh
+
+# (6). Clean package.json in dist:
+#      - repository
+#      - scripts
+#      - lint-staged
+#      - files
+#      - devDependencies
+
+# (7). Setup examples
+$ bash tasks/dist-examples-setup.sh
+
+# (8). Manually update examples:
+#      - NPM x 2
+#      - CDN (also bump ol CDN-links in index.html)
+
+# (9). Verify examples
+$ npm run example:one
+$ npm run example:two
+$ npm run example:three
+
+# (10). Cleanup examples
+$ bash tasks/dist-examples-cleanup.sh
+
+# (11). Publish package to NPM
+$ bash tasks/npm-publish.sh
+
+# (12). Commit and push updated examples to GitHub
+$ git add .
+$ git commit -m "New release vx.y.z"
+$ git push
+
+# (13). Create new demo, this will build the GitHub demo using the NPM version
+$ bash tasks/github-demo.sh
+
+# (14). Commit and push demo to GitHub
+$ git push origin --delete gh-pages
+$ git add demo -f
+$ git commit -m "gh-pages demo release vx.y.z"
+$ git subtree push --prefix demo origin gh-pages
+
+# (15). Verify new demo
+# https://qulle.github.io/oltb/
+
+# (16). Clean temp demo commit
+$ git reset --hard HEAD~1
+
+# (17). Tag the release
+$ git tag -a vx.y.x -m "vx.y.x"
+$ git push origin --tags
+
+# (18). Clean github.com/qulle/notification-endpoints
+```
+
+## Update Dependencies
+Check for dependency updates
+```
+$ npm outdated
+```
+
+Install dependency updates
+```
+$ npm update --save
+```
+
+Check for dependency security issues
+```
+$ npm audit
+```
+
+**Note:** that from npm version `7.0.0` the command `$ npm update` does not longer update the package.json file. From npm version `8.3.2` the command to run is `$ npm update --save` or to always apply the save option add `save=true` to the `.npmrc` file.
 
 ## Author
 [Qulle](https://github.com/qulle/)

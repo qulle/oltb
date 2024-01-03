@@ -48,6 +48,7 @@ const createUICheckbox = function(options = {}) {
     for(const listener in options.listeners) {
         const callbacks = options.listeners[listener];
 
+        // Note:
         // The callback(s) can be given as a single reference or as a array of many 
         if(Array.isArray(callbacks)) {
             callbacks.forEach((callback) => {

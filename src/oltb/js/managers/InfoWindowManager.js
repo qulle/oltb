@@ -298,7 +298,7 @@ class InfoWindowManager {
                 unByKey(listenerKey);
 
                 // Note:
-                // If the feature still selected, rerun the animation
+                // If the feature is still selected, rerun the animation
                 if(this.#selectedFeature === feature && shouldLoop) {
                     this.pulseAnimation(feature, layer);
                 }

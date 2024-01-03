@@ -73,25 +73,25 @@ const parseGeoJson = function(data) {
             `
         };
 
-        LayerWrapper.getLayer().getSource().addFeature(
-            new generateWindBarb({
-                lon: coordinates[0],
-                lat: coordinates[1],
-                title: countryName,
-                description: description,
-                markerFill: '#3B4352FF',
-                markerStroke: '#3B4352FF',
-                scale: .8,
-                label: `${countryName} ${windSpeed}m/s`,
-                labelFill: '#FFFFFF',
-                labelStroke: '#3B4352CC',
-                labelStrokeWidth: 12,
-                labelFont: '14px Calibri',
-                windSpeed: windSpeed,
-                rotation: windDirection,
-                infoWindow: infoWindow
-            })
-        );
+        const windBarb = new generateWindBarb({
+            lon: coordinates[0],
+            lat: coordinates[1],
+            title: countryName,
+            description: description,
+            markerFill: '#3B4352FF',
+            markerStroke: '#3B4352FF',
+            scale: .8,
+            label: `${countryName} ${windSpeed}m/s`,
+            labelFill: '#FFFFFF',
+            labelStroke: '#3B4352CC',
+            labelStrokeWidth: 12,
+            labelFont: '14px Calibri',
+            windSpeed: windSpeed,
+            rotation: windDirection,
+            infoWindow: infoWindow
+        });
+
+        LayerWrapper.getLayer().getSource().addFeature(windBarb);
     });
 }
 

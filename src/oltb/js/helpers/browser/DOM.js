@@ -4,6 +4,7 @@ class DOM {
     static createElement(options = {}) {
         const element = document.createElement(options.element);
 
+        // Note:
         // Common element attributes
         if(options.id) {
             element.id = options.id;
@@ -33,6 +34,7 @@ class DOM {
             element.title = options.title;
         }
 
+        // Note:
         // Attributes that needs to be set using setAttribute
         for(const attribute in options.attributes) {
             element.setAttribute(attribute, options.attributes[attribute]);
@@ -47,6 +49,7 @@ class DOM {
         for(const listener in options.listeners) {
             const callbacks = options.listeners[listener];
 
+            // Note:
             // The callback(s) can be given as a single reference or as a array of many 
             if(Array.isArray(callbacks)) {
                 callbacks.forEach((callback) => {

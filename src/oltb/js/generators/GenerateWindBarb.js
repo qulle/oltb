@@ -52,10 +52,11 @@ const generateWindBarb = function(options = {}) {
         replaceHashtag: options.replaceHashtag
     });
 
+    const rotation = degreesToRadians(options.rotation);
     const iconStyle = new Style({
         image: new Icon({
             src: `data:image/svg+xml;utf8,${icon}`,
-            rotation: degreesToRadians(options.rotation),
+            rotation: rotation,
             scale: options.scale
         })
     });
