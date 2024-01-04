@@ -159,15 +159,16 @@ class CoordinatesTool extends Control {
     }
 
     initSettings() {
-        const i18n = TranslationManager.get(`${I18N_BASE}.settings`);
         SettingsManager.addSetting(Settings.copyCoordinatesOnClick, {
             state: true, 
-            text: i18n.copyOnClick
+            i18nBase: `${I18N_BASE}.settings`,
+            i18nKey: 'copyOnClick'
         });
 
         SettingsManager.addSetting(Settings.updateToolboxCoordinatesOnHover, {
             state: true, 
-            text: i18n.updateToolboxOnHover
+            i18nBase: `${I18N_BASE}.settings`,
+            i18nKey: 'updateToolboxOnHover'
         });
     }
 

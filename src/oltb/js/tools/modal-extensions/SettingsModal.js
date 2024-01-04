@@ -53,7 +53,7 @@ class SettingsModal extends ModalBase {
         settings.forEach((settingObj, key) => {
             const [ checkboxWrapper, checkbox ] = createUICheckbox({
                 idPrefix: key,
-                text: settingObj.text,
+                i18nKey: `${settingObj.i18nBase}.${settingObj.i18nKey}`,
                 checked: settingObj.state,
                 bottomMargin: true,
                 listeners: {

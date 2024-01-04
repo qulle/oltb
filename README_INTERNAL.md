@@ -1150,9 +1150,9 @@ All available properties:
     value: 'Current value',      // Value to show in textbox 
     confirmClass: Dialog.Danger, // Dialog style (good/bad)
     confirmText: 'Confirm',      // Confirm button text
-    cancelText: 'Cancel'         // Cancel button text
+    cancelText: 'Cancel',        // Cancel button text
     onConfirm: undefined,        // Void callback with 1 string parameter
-    onCancel: undefined          // Void callback with no parameters,
+    onCancel: undefined,         // Void callback with no parameters,
     onInput: undefined           // Void callback with 1 string parameter
 });
 ```
@@ -1193,12 +1193,12 @@ All available properties:
     title: 'Prompt',             // Dialog title
     message: 'Select message',   // Dialog message
     value: 'Current value',      // Option to be selected 
-    options: []                  // Options to show in select
+    options: [],                 // Options to show in select
     confirmClass: Dialog.Danger, // Dialog style (good/bad)
     confirmText: 'Confirm',      // Confirm button text
-    cancelText: 'Cancel'         // Cancel button text
+    cancelText: 'Cancel',        // Cancel button text
     onConfirm: undefined,        // Void callback with 2 string parameter (value, new value)
-    onCancel: undefined          // Void callback with no parameters,
+    onCancel: undefined,         // Void callback with no parameters,
     onChange: undefined          // Void callback with 1 string parameter
 });
 ```
@@ -1224,7 +1224,7 @@ Modal.create({
 A reference to the created modal is returned from the create function. This can be used to block the creation of a second modal if a button or shortcut key is pressed again. The `onClose` callback can be used to release the lock.
 ```javascript
 infoToolClick() {
-    if(Boolean(this.infoModal)) {
+    if(this.infoModal) {
         return;
     }
 
@@ -1267,6 +1267,23 @@ Toast.error({
 });
 ```
 
+Another usecase is to only supply the key to the property in the translation file. The toast will now handle fetching of the title and message of the active language. This will also make it possible for the toast to do hot-swapping of the language if it is changed while a toast is displayed.
+```javascript
+Toast.info({
+    i18nKey: 'bookmarkTool.toasts.infos.clearBookmarks'
+});
+```
+
+Important that the targeted property in the translation-file has a `title` and `message` property as children.
+```json
+{
+    "clearBookmarks": {
+        "title": "Cleared",
+        "message": "All stored bookmarks was cleared"
+    }
+}
+```
+
 To remove the toast after a specific time (ms), add the `autoremove` property.
 ```javascript
 Toast.success({
@@ -1282,7 +1299,7 @@ this.loadingToast = Toast.info({
     title: 'Info',
     message: 'Trying to find your location...', 
     clickToRemove: false,
-    spinner: true,
+    spinner: true
 });
 
 this.loadingToast.remove();
@@ -1291,7 +1308,7 @@ this.loadingToast.remove();
 The returned reference to the toast can be used to block further actions while a task is being performed. The `onRemove` callback can be used to release the lock.
 ```javascript
 myLocationToolClick() {
-    if(Boolean(this.loadingToast)) {
+    if(this.loadingToast) {
         return;
     }
 

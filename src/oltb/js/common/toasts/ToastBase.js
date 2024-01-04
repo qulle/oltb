@@ -60,6 +60,10 @@ class ToastBase {
             class: `${CLASS_TOAST}__container ${this.options.spinner ? 'oltb-ml-0625' : ''}`
         });
 
+        // Note:
+        // If the i18nKey is specified, the language must be fetched
+        // The key is also appended to the title and message element
+        // so that a active toast can do a hot-swap of the displayed language
         if(this.options.i18nKey) {
             const i18n = TranslationManager.get(this.options.i18nKey);
             this.options.title = i18n.title;

@@ -276,10 +276,10 @@ class EditTool extends Control {
     }
 
     initSettings() {
-        const i18n = TranslationManager.get(`${I18N_BASE}.settings`);
         SettingsManager.addSetting(Settings.mouseOnlyToEditVectorShapes, {
             state: true, 
-            text: i18n.mouseOnlyToEditVectorShapes
+            i18nBase: `${I18N_BASE}.settings`,
+            i18nKey: 'mouseOnlyToEditVectorShapes'
         });
     }
 

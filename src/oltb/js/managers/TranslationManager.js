@@ -263,7 +263,7 @@ class TranslationManager {
     static setActiveLanguage(toLanguage) {
         if(this.#activeLanguage.value === toLanguage.value) {
             LogManager.logWarning(FILENAME, 'setActiveLanguage', {
-                info: 'Aborting language change, current and next language is the same',
+                info: 'Aborting language change, selected language is already active',
                 to: toLanguage.value,
                 active: this.#activeLanguage.value
             });

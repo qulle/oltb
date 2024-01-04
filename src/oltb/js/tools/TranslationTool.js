@@ -60,7 +60,7 @@ class TranslationTool extends Control {
         ]);
 
         this.button = button;
-        this.infoModal = undefined;
+        this.languageDialog = undefined;
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
 
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
@@ -111,11 +111,15 @@ class TranslationTool extends Control {
     // -------------------------------------------------------------------
 
     askToChangeLanguage() {
+        if(this.languageDialog) {
+            return;
+        }
+
         const languages = TranslationManager.getLanguages();
         const currentLanguage = TranslationManager.getActiveLanguage();
         const i18n = TranslationManager.get(`${I18N_BASE}.dialogs.selects.changeLanguage`);
 
-        Dialog.select({
+        this.languageDialog = Dialog.select({
             title: i18n.title,
             message: `${i18n.message} <strong>${currentLanguage.text}</strong>`,
             value: currentLanguage.value,
@@ -124,6 +128,10 @@ class TranslationTool extends Control {
             cancelText: i18n.cancelText,
             onConfirm: (result) => {
                 this.doChangeLanguage(result);
+                this.languageDialog = undefined;
+            },
+            onCancel: () => {
+                this.languageDialog = undefined;
             }
         });
     }

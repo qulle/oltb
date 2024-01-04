@@ -3,10 +3,9 @@ import { LogManager } from './LogManager';
 import { StateManager } from './StateManager';
 import { DefaultSettings } from './settings-manager/DefaultSettings';
 import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
-import { TranslationManager } from './TranslationManager';
 
 const FILENAME = 'managers/SettingsManager.js';
-const I18N_BASE = 'managers.settingsManager';
+const I18N_BASE = 'managers.settingsManager.settings';
 
 const LocalStorageNodeName = LocalStorageKeys.settingsManager;
 const LocalStorageDefaults = Object.freeze({});
@@ -31,10 +30,12 @@ class SettingsManager {
 
         // Note: 
         // The runtime state must be updated with values from localStorage
-        // The actual text for a setting must be added
-        const i18n = TranslationManager.get(`${I18N_BASE}.settings`);
         this.#settings.forEach((value, key) => {
-            value.text = i18n[key];
+            // Note:
+            // Append the i18n data, the actual text for the current language
+            // will be fetched when the SettingsModal is created each time
+            value.i18nKey = key;
+            value.i18nBase = I18N_BASE;
 
             if(key in this.#localStorage) {
                 value.state = this.#localStorage[key];
@@ -74,10 +75,6 @@ class SettingsManager {
     // # Section: Public API
     // -------------------------------------------------------------------
 
-    static getSettings() {
-        return this.#settings;
-    }
-
     static clear() {
         this.#settings = _.cloneDeep(DefaultSettings);
     }
@@ -104,6 +101,10 @@ class SettingsManager {
 
     static getSetting(key) {
         return this.#settings.get(key).state;
+    }
+
+    static getSettings() {
+        return this.#settings;
     }
 }
 
