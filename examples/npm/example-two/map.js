@@ -54,7 +54,8 @@ import { MeasureTool } from 'oltb/src/oltb/js/tools/MeasureTool';
 import { MagnifyTool } from 'oltb/src/oltb/js/tools/MagnifyTool';
 import { ZoomOutTool } from 'oltb/src/oltb/js/tools/ZoomOutTool';
 import { RefreshTool } from 'oltb/src/oltb/js/tools/RefreshTool';
-import { ZoomBoxTool } from 'oltb/src/oltb/js/tools/ZoomBoxTool';
+import { ZoomboxTool } from 'oltb/src/oltb/js/tools/ZoomboxTool';
+import { ToolboxTool } from 'oltb/src/oltb/js/tools/ToolboxTool';
 import { SettingsTool } from 'oltb/src/oltb/js/tools/SettingsTool';
 import { OverviewTool } from 'oltb/src/oltb/js/tools/OverviewTool';
 import { BookmarkTool } from 'oltb/src/oltb/js/tools/BookmarkTool';
@@ -223,30 +224,30 @@ const initMapAndToolbar = () => {
                     console.log('ZoomOutTool: Zoomed out', result);
                 }
             }),
-            new ZoomBoxTool({
+            new ZoomboxTool({
                 onInitiated: function() {
-                    console.log('ZoomBoxTool: Initiated');
+                    console.log('ZoomboxTool: Initiated');
                 },
                 onClicked: function() {
-                    console.log('ZoomBoxTool: Clicked');
+                    console.log('ZoomboxTool: Clicked');
                 },
                 onBrowserStateCleared: function() {
-                    console.log('ZoomBoxTool: State cleared');
+                    console.log('ZoomboxTool: State cleared');
                 },
                 onStart: function(event) {
-                    console.log('ZoomBoxTool: Start', event);
+                    console.log('ZoomboxTool: Start', event);
                 },
                 onEnd: function(event) {
-                    console.log('ZoomBoxTool: End', event);
+                    console.log('ZoomboxTool: End', event);
                 },
                 onDrag: function(event) {
-                    console.log('ZoomBoxTool: Drag', event);
+                    console.log('ZoomboxTool: Drag', event);
                 },
                 onCancel: function(event) {
-                    console.log('ZoomBoxTool: Cancel', event);
+                    console.log('ZoomboxTool: Cancel', event);
                 },
                 onError: function(event) {
-                    console.log('ZoomBoxTool: Error', event);
+                    console.log('ZoomboxTool: Error', event);
                 }
             }),
             new FullscreenTool({
@@ -618,6 +619,20 @@ const initMapAndToolbar = () => {
                 },
                 onChanged: function(direction) {
                     console.log('DirectionTool: Changed to', direction);
+                }
+            }),
+            new ToolboxTool({
+                onInitiated: function() {
+                    console.log('ToolboxTool: Initiated');
+                },
+                onClicked: function() {
+                    console.log('ToolboxTool: Clicked');
+                },
+                onBrowserStateCleared: function() {
+                    console.log('ToolboxTool: State cleared');
+                },
+                onChanged: function() {
+                    console.log('ToolboxTool: Changed to');
                 }
             }),
             new InfoTool({

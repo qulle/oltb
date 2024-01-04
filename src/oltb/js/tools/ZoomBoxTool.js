@@ -17,10 +17,10 @@ import { SvgPaths, getIcon } from '../icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
 import { TranslationManager } from '../managers/TranslationManager';
 
-const FILENAME = 'tools/ZoomBoxTool.js';
+const FILENAME = 'tools/ZoomboxTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
-const KEY_TOOLTIP = 'tools.zoomBoxTool';
-const I18N_BASE = 'tools.zoomBoxTool';
+const KEY_TOOLTIP = 'tools.zoomboxTool';
+const I18N_BASE = 'tools.zoomboxTool';
 const OL_INTERNAL_OUT = 'out_';
 
 const DefaultOptions = Object.freeze({
@@ -34,7 +34,7 @@ const DefaultOptions = Object.freeze({
     onError: undefined
 });
 
-const LocalStorageNodeName = LocalStorageKeys.zoomBoxTool;
+const LocalStorageNodeName = LocalStorageKeys.zoomboxTool;
 const LocalStorageDefaults = Object.freeze({
     isActive: false
 });
@@ -47,7 +47,7 @@ const LocalStorageDefaults = Object.freeze({
  * Increase or reduce zoom by dragging a bounding box selection. Hold down Ctrl to zoom out.
  * Note that this tools functionality is also available by pressing Shift + Drag without having the tool active.
  */
-class ZoomBoxTool extends Control {
+class ZoomboxTool extends Control {
     constructor(options = {}) {
         LogManager.logDebug(FILENAME, 'constructor', 'init');
 
@@ -67,8 +67,8 @@ class ZoomBoxTool extends Control {
             class: CLASS_TOOL_BUTTON,
             attributes: {
                 'type': 'button',
-                'data-tippy-content': `${i18n.title} (${ShortcutKeys.zoomBoxTool})`,
-                'data-tippy-content-post': `(${ShortcutKeys.zoomBoxTool})`,
+                'data-tippy-content': `${i18n.title} (${ShortcutKeys.zoomboxTool})`,
+                'data-tippy-content-post': `(${ShortcutKeys.zoomboxTool})`,
                 'data-oltb-i18n': `${I18N_BASE}.title`
             },
             listeners: {
@@ -192,7 +192,7 @@ class ZoomBoxTool extends Control {
         // Option 2: Have two interactions that are swapped with one beeing active at the time
         this.interactionDragZoom[OL_INTERNAL_OUT] = false;
 
-        if(isShortcutKeyOnly(event, ShortcutKeys.zoomBoxTool)) {
+        if(isShortcutKeyOnly(event, ShortcutKeys.zoomboxTool)) {
             this.onClickTool(event);
         }
     }
@@ -330,4 +330,4 @@ class ZoomBoxTool extends Control {
     }
 }
 
-export { ZoomBoxTool };
+export { ZoomboxTool };

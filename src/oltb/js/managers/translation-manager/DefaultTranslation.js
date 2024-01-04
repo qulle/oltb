@@ -814,6 +814,9 @@ export const DefaultTranslation = Object.freeze({
         themeTool: {
             title: 'Toggle Theme'
         },
+        toolboxTool: {
+            title: 'Toggle Toolbox'
+        },
         translationTool: {
             title: 'Translate',
             dialogs: {
@@ -827,8 +830,8 @@ export const DefaultTranslation = Object.freeze({
                 }
             }
         },
-        zoomBoxTool: {
-            title: 'Zoom Box',
+        zoomboxTool: {
+            title: 'Zoombox',
             tooltips: {
                 dragToZoom: 'Drag To Zoom'
             }

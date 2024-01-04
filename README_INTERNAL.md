@@ -268,7 +268,7 @@ import { HelpTool } from 'oltb/js/tools/HelpTool';
 import { ThemeTool } from 'oltb/js/tools/ThemeTool';
 import { LayerTool } from 'oltb/js/tools/LayerTool';
 import { ZoomInTool } from 'oltb/js/tools/ZoomInTool';
-import { ZoomBoxTool } from 'oltb/js/tools/ZoomBoxTool';
+import { ZoomboxTool } from 'oltb/js/tools/ZoomboxTool';
 import { MeasureTool } from 'oltb/js/tools/MeasureTool';
 import { MagnifyTool } from 'oltb/js/tools/MagnifyTool';
 import { ZoomOutTool } from 'oltb/js/tools/ZoomOutTool';
@@ -306,7 +306,7 @@ controls: defaultControls({
     new HomeTool(),
     new ZoomInTool(),
     new ZoomOutTool(),
-    new ZoomBoxTool(),
+    new ZoomboxTool(),
     new FullscreenTool(),
     new ExportPngTool(),
     new DrawTool(),
@@ -399,30 +399,30 @@ controls: defaultControls({
             console.log('ZoomOutTool: Zoomed out', result);
         }
     }),
-    new ZoomBoxTool({
+    new ZoomboxTool({
         onInitiated: function() {
-            console.log('ZoomBoxTool: Initiated');
+            console.log('ZoomboxTool: Initiated');
         },
         onClicked: function() {
-            console.log('ZoomBoxTool: Clicked');
+            console.log('ZoomboxTool: Clicked');
         },
         onBrowserStateCleared: function() {
-            console.log('ZoomBoxTool: State cleared');
+            console.log('ZoomboxTool: State cleared');
         },
         onStart: function(event) {
-            console.log('ZoomBoxTool: Start', event);
+            console.log('ZoomboxTool: Start', event);
         },
         onEnd: function(event) {
-            console.log('ZoomBoxTool: End', event);
+            console.log('ZoomboxTool: End', event);
         },
         onDrag: function(event) {
-            console.log('ZoomBoxTool: Drag', event);
+            console.log('ZoomboxTool: Drag', event);
         },
         onCancel: function(event) {
-            console.log('ZoomBoxTool: Cancel', event);
+            console.log('ZoomboxTool: Cancel', event);
         },
         onError: function(event) {
-            console.log('ZoomBoxTool: Error', event);
+            console.log('ZoomboxTool: Error', event);
         }
     }),
     new FullscreenTool({

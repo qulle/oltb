@@ -9,7 +9,8 @@ import { ZoomInTool } from './ZoomInTool';
 import { MeasureTool } from './MeasureTool';
 import { MagnifyTool } from './MagnifyTool';
 import { ZoomOutTool } from './ZoomOutTool';
-import { ZoomBoxTool } from './ZoomBoxTool';
+import { ZoomboxTool } from './ZoomboxTool';
+import { ToolboxTool } from './ToolboxTool';
 import { RefreshTool } from './RefreshTool';
 import { SettingsTool } from './SettingsTool';
 import { OverviewTool } from './OverviewTool';
@@ -40,7 +41,7 @@ const AllTools = Object.freeze({
     HomeTool,
     ZoomInTool,
     ZoomOutTool,
-    ZoomBoxTool,
+    ZoomboxTool,
     FullscreenTool,
     ExportPngTool,
     DrawTool,
@@ -61,6 +62,7 @@ const AllTools = Object.freeze({
     RefreshTool,
     ThemeTool,
     DirectionTool,
+    ToolboxTool,
     InfoTool,
     NotificationTool,
     TranslationTool,

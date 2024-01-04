@@ -545,6 +545,11 @@ class LayerTool extends Control {
         });
 
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
+        
+        LogManager.logDebug(FILENAME, 'onEndSortable', {
+            currentItem: currentItem,
+            list: list
+        });
 
         // Note: 
         // @Consumer callback

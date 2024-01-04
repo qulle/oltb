@@ -814,6 +814,9 @@
         "themeTool": {
             "title": "Toggla Tema"
         },
+        "toolboxTool": {
+            "title": "Toggla Verktygsfält"
+        },
         "translationTool": {
             "title": "Översätt",
             "dialogs": {
@@ -827,8 +830,8 @@
                 }
             }
         },
-        "zoomBoxTool": {
-            "title": "Zoom Markering",
+        "zoomboxTool": {
+            "title": "Zoomlåda",
             "tooltips": {
                 "dragToZoom": "Dra För Att Zooma"
             }

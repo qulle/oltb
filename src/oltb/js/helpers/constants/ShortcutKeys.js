@@ -19,7 +19,7 @@ const ShortcutKeys = Object.freeze({
     refreshPageTool: 'R',
     splitViewTool: 'S',
     themeTool: 'T',
-    zoomBoxTool: 'U',
+    zoomboxTool: 'U',
     editTool: 'V',
     zoomOutTool: 'W',
     scissorsTool: 'X',
@@ -29,7 +29,7 @@ const ShortcutKeys = Object.freeze({
     settingsTool: '2',
     translationTool: '3',
     debugInfoTool: '4',
-    
+    toolboxTool: '5'
 });
 
 export { ShortcutKeys };
