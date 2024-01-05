@@ -1167,6 +1167,21 @@ class LayerTool extends Control {
     // # Section: Tool DoActions
     // -------------------------------------------------------------------
 
+    doClearState() {
+        this.localStorage = _.cloneDeep(LocalStorageDefaults);
+        StateManager.setStateObject(LocalStorageNodeName, LocalStorageDefaults);
+    }
+
+    doToggleToolboxSection(targetName) {
+        const targetNode = document.getElementById(targetName);
+        const duration = ConfigManager.getConfig().animationDuration.fast;
+
+        targetNode?.slideToggle(duration, (collapsed) => {
+            this.localStorage[targetName] = collapsed;
+            StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
+        });
+    }
+
     doMapLayerAdded(event) {
         const isSilent = event.detail.isSilent;
         const layerWrapper = event.detail.layerWrapper;
@@ -1184,10 +1199,6 @@ class LayerTool extends Control {
         );
 
         this.createUIMapLayerItem(layerWrapper, {
-            // ...(!disableVisibilityButton && { visibilityButton: {
-            //     function: this.createUIVisibilityButton.bind(this), 
-            //     callback: this.options.onMapLayerVisibilityChanged.bind(this)
-            // }}),
             ...(!disableEditButton && { editButton: {
                 function: this.createUIEditButton.bind(this),
                 callback: this.options.onMapLayerRenamed.bind(this)
@@ -1326,21 +1337,6 @@ class LayerTool extends Control {
         if(callback instanceof Function) {
             callback(layerWrapper);
         }
-    }
-
-    doToggleToolboxSection(targetName) {
-        const targetNode = document.getElementById(targetName);
-        const duration = ConfigManager.getConfig().animationDuration.fast;
-
-        targetNode?.slideToggle(duration, (collapsed) => {
-            this.localStorage[targetName] = collapsed;
-            StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
-        });
-    }
-
-    doClearState() {
-        this.localStorage = _.cloneDeep(LocalStorageDefaults);
-        StateManager.setStateObject(LocalStorageNodeName, LocalStorageDefaults);
     }
 
     doDownloadLayer(layerWrapper, format, result, callback) {

@@ -5,7 +5,6 @@ import { Control } from 'ol/control';
 import { LogManager } from '../managers/LogManager';
 import { StateManager } from '../managers/StateManager';
 import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
-import { ConfigManager } from '../managers/ConfigManager';
 import { ElementManager } from '../managers/ElementManager';
 import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
 import { SvgPaths, getIcon } from '../icons/GetIcon';
@@ -14,6 +13,7 @@ import { TranslationManager } from '../managers/TranslationManager';
 
 const FILENAME = 'tools/ToolboxTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
+const CLASS_TOOLBOX_HIDDEN = 'oltb-toolbox-container--hidden';
 const I18N_BASE = 'tools.toolboxTool';
 
 const DefaultOptions = Object.freeze({
@@ -30,10 +30,10 @@ const LocalStorageDefaults = Object.freeze({
 
 /**
  * About:
- * Change theme of the Toolbar
+ * Collapse/Hide the Toolbox-container
  * 
  * Description:
- * The Toolbar is light by default, via this tool the Toolbar can be made dark to be better seen against a bright Map image.
+ * Via this tool the Toolbox can be swiped of-canvas with a small animation.
  */
 class ToolboxTool extends Control {
     constructor(options = {}) {
@@ -83,8 +83,8 @@ class ToolboxTool extends Control {
         );
 
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
-        window.addEventListener(Events.custom.browserStateCleared, this.onWindowBrowserStateCleared.bind(this));
         window.addEventListener(Events.custom.ready, this.onOLTBReady.bind(this));
+        window.addEventListener(Events.custom.browserStateCleared, this.onWindowBrowserStateCleared.bind(this));
 
         // Note: 
         // @Consumer callback
@@ -154,7 +154,12 @@ class ToolboxTool extends Control {
     }
 
     onWindowBrowserStateCleared() {
-        // TODO: What is the action here
+        this.doShowToolbox();
+        this.doClearState();
+
+        if(this.isActive) {
+            this.deactivateTool();
+        }
 
         // Note: 
         // @Consumer callback
@@ -167,22 +172,19 @@ class ToolboxTool extends Control {
     // # Section: Tool DoActions
     // -------------------------------------------------------------------
 
-    doSetToolboxValue(value) {
-        const uiRefToolboxElement = ElementManager.getToolboxElement();
-        uiRefToolboxElement.style.right = `${value}px`;
+    doClearState() {
+        this.localStorage = _.cloneDeep(LocalStorageDefaults);
+        StateManager.setStateObject(LocalStorageNodeName, LocalStorageDefaults);
     }
 
     doShowToolbox() {
-        const value = ConfigManager.getConfig().browser.rem;
-
-        this.doSetToolboxValue(value);
+        const uiRefToolboxElement = ElementManager.getToolboxElement();
+        uiRefToolboxElement.classList.remove(CLASS_TOOLBOX_HIDDEN);
     }
 
     doHideToolbox() {
         const uiRefToolboxElement = ElementManager.getToolboxElement();
-        const value = -Math.abs(uiRefToolboxElement.offsetWidth);
-
-        this.doSetToolboxValue(value);
+        uiRefToolboxElement.classList.add(CLASS_TOOLBOX_HIDDEN);
     }
 }
 

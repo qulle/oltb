@@ -245,6 +245,11 @@ class OverviewTool extends Control {
     // # Section: Tool DoActions
     // -------------------------------------------------------------------
 
+    doClearState() {
+        this.localStorage = _.cloneDeep(LocalStorageDefaults);
+        StateManager.setStateObject(LocalStorageNodeName, LocalStorageDefaults);
+    }
+
     doToggleToolboxSection(targetName) {
         const targetNode = document.getElementById(targetName);
         const duration = ConfigManager.getConfig().animationDuration.fast;
@@ -260,11 +265,6 @@ class OverviewTool extends Control {
             this.overviewMap.setMap(null);
             this.overviewMap.setMap(map);
         });
-    }
-
-    doClearState() {
-        this.localStorage = _.cloneDeep(LocalStorageDefaults);
-        StateManager.setStateObject(LocalStorageNodeName, LocalStorageDefaults);
     }
 }
 

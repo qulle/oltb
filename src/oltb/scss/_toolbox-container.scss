@@ -10,7 +10,7 @@
     background-color: $background-theme-light;
     box-shadow: $box-shadow-mid;
     padding: 0 1rem;
-    transition: right 450ms ease-in-out;
+    transition: transform 450ms ease-in-out;
 
     overflow-y: auto;
     -ms-overflow-style: none;
@@ -23,6 +23,10 @@
     &--collision {
         top: 4.5rem;
         max-height: calc(100% - 5.5rem);
+    }
+
+    &--hidden {
+        transform: translateX(100%) translateX(1rem);
     }
 }
 

@@ -210,6 +210,8 @@ class ScissorsTool extends Control {
     }
 
     onWindowBrowserStateCleared() {
+        this.doClearState();
+
         if(this.isActive) {
             this.deactivateTool();
         }
@@ -288,6 +290,11 @@ class ScissorsTool extends Control {
     // -------------------------------------------------------------------
     // # Section: Tool DoActions
     // -------------------------------------------------------------------
+
+    doClearState() {
+        this.localStorage = _.cloneDeep(LocalStorageDefaults);
+        StateManager.setStateObject(LocalStorageNodeName, LocalStorageDefaults);
+    }
 
     doDrawStart(event) {
         // Note: 

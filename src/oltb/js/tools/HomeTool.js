@@ -206,6 +206,11 @@ class HomeTool extends Control {
     // # Section: Tool DoActions
     // -------------------------------------------------------------------
 
+    doClearState() {
+        this.localStorage = _.cloneDeep(LocalStorageDefaults);
+        StateManager.setStateObject(LocalStorageNodeName, LocalStorageDefaults);
+    }
+
     doCreateNewHome(coordinates) {
         const map = this.getMap();
         if(!map) {
@@ -252,11 +257,6 @@ class HomeTool extends Control {
                 }
             }
         });
-    }
-
-    doClearState() {
-        this.localStorage = _.cloneDeep(LocalStorageDefaults);
-        StateManager.setStateObject(LocalStorageNodeName, LocalStorageDefaults);
     }
 }
 

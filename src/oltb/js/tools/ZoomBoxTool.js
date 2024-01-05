@@ -214,6 +214,8 @@ class ZoomboxTool extends Control {
     }
 
     onWindowBrowserStateCleared() {
+        this.doClearState();
+
         if(this.isActive) {
             this.deactivateTool();
         }
@@ -269,6 +271,11 @@ class ZoomboxTool extends Control {
     // # Section: Tool DoActions
     // -------------------------------------------------------------------
     
+    doClearState() {
+        this.localStorage = _.cloneDeep(LocalStorageDefaults);
+        StateManager.setStateObject(LocalStorageNodeName, LocalStorageDefaults);
+    }
+
     doBoxDragStart(event) {
         // Note: 
         // @Consumer callback

@@ -36,7 +36,8 @@ const I18N_BASE_COMMON = 'commons';
 const DefaultOptions = Object.freeze({
     onInitiated: undefined,
     onClicked: undefined,
-    onMapClicked: undefined
+    onMapClicked: undefined,
+    onBrowserStateCleared: undefined
 });
 
 const LocalStorageNodeName = LocalStorageKeys.coordinatesTool;
@@ -109,6 +110,7 @@ class CoordinatesTool extends Control {
 
         window.addEventListener(Events.browser.keyDown, this.onWindowKeyDown.bind(this));
         window.addEventListener(Events.custom.ready, this.onOLTBReady.bind(this));
+        window.addEventListener(Events.custom.browserStateCleared, this.onWindowBrowserStateCleared.bind(this));
 
         // Note: 
         // @Consumer callback
@@ -227,6 +229,20 @@ class CoordinatesTool extends Control {
     onWindowKeyDown(event) {
         if(isShortcutKeyOnly(event, ShortcutKeys.coordinatesTool)) {
             this.onClickTool(event);
+        }
+    }
+
+    onWindowBrowserStateCleared() {
+        this.doClearState();
+    
+        if(this.isActive) {
+            this.deactivateTool();
+        }
+    
+        // Note: 
+        // @Consumer callback
+        if(this.options.onBrowserStateCleared instanceof Function) {
+            this.options.onBrowserStateCleared();
         }
     }
 
@@ -357,6 +373,11 @@ class CoordinatesTool extends Control {
     // -------------------------------------------------------------------
     // # Section: Tool DoActions
     // -------------------------------------------------------------------
+
+    doClearState() {
+        this.localStorage = _.cloneDeep(LocalStorageDefaults);
+        StateManager.setStateObject(LocalStorageNodeName, LocalStorageDefaults);
+    }
 
     doToggleToolboxSection(targetName) {
         const targetNode = document.getElementById(targetName);

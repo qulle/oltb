@@ -269,6 +269,7 @@ import { ThemeTool } from 'oltb/js/tools/ThemeTool';
 import { LayerTool } from 'oltb/js/tools/LayerTool';
 import { ZoomInTool } from 'oltb/js/tools/ZoomInTool';
 import { ZoomboxTool } from 'oltb/js/tools/ZoomboxTool';
+import { ToolboxTool } from 'oltb/js/tools/ToolboxTool';
 import { MeasureTool } from 'oltb/js/tools/MeasureTool';
 import { MagnifyTool } from 'oltb/js/tools/MagnifyTool';
 import { ZoomOutTool } from 'oltb/js/tools/ZoomOutTool';
@@ -327,6 +328,7 @@ controls: defaultControls({
     new RefreshTool(),
     new ThemeTool(),
     new DirectionTool(),
+    new ToolboxTool(),
     new InfoTool(),
     new NotificationTool(),
     new TranslationTool(),
@@ -685,6 +687,9 @@ controls: defaultControls({
         },
         onClicked: function() {
             console.log('GraticuleTool: Clicked');
+        },
+        onBrowserStateCleared: function() {
+            console.log('GraticuleTool: State cleared');
         }
     }),
     new MagnifyTool({
@@ -696,6 +701,9 @@ controls: defaultControls({
         },
         onClicked: function() {
             console.log('MagnifyTool: Clicked');
+        },
+        onBrowserStateCleared: function() {
+            console.log('MagnifyTool: State cleared');
         }
     }),
     new ResetNorthTool({
@@ -715,6 +723,9 @@ controls: defaultControls({
         },
         onClicked: function() {
             console.log('CoordinatesTool: Clicked');
+        },
+        onBrowserStateCleared: function() {
+            console.log('CoordinatesTool: State cleared');
         },
         onMapClicked: function(coordinates) {
             console.log('CoordinatesTool: Map clicked at', coordinates);
@@ -760,6 +771,9 @@ controls: defaultControls({
         },
         onClicked: function() {
             console.log('ScaleLineTool: Clicked');
+        },
+        onBrowserStateCleared: function() {
+            console.log('ScaleLineTool: State cleared');
         }
     }),
     new RefreshTool({
@@ -796,6 +810,20 @@ controls: defaultControls({
         },
         onChanged: function(direction) {
             console.log('DirectionTool: Changed to', direction);
+        }
+    }),
+    new ToolboxTool({
+        onInitiated: function() {
+            console.log('ToolboxTool: Initiated');
+        },
+        onClicked: function() {
+            console.log('ToolboxTool: Clicked');
+        },
+        onBrowserStateCleared: function() {
+            console.log('ToolboxTool: State cleared');
+        },
+        onChanged: function() {
+            console.log('ToolboxTool: Changed to');
         }
     }),
     new InfoTool({

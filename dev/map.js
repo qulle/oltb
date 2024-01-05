@@ -516,6 +516,9 @@ const initMapAndToolbar = () => {
                 },
                 onClicked: function() {
                     console.log('GraticuleTool: Clicked');
+                },
+                onBrowserStateCleared: function() {
+                    console.log('GraticuleTool: State cleared');
                 }
             }),
             new MagnifyTool({
@@ -524,6 +527,9 @@ const initMapAndToolbar = () => {
                 },
                 onClicked: function() {
                     console.log('MagnifyTool: Clicked');
+                },
+                onBrowserStateCleared: function() {
+                    console.log('MagnifyTool: State cleared');
                 }
             }),
             new ResetNorthTool({
@@ -543,6 +549,9 @@ const initMapAndToolbar = () => {
                 },
                 onClicked: function() {
                     console.log('CoordinatesTool: Clicked');
+                },
+                onBrowserStateCleared: function() {
+                    console.log('CoordinatesTool: State cleared');
                 },
                 onMapClicked: function(coordinates) {
                     console.log('CoordinatesTool: Map clicked at', coordinates);
@@ -588,6 +597,9 @@ const initMapAndToolbar = () => {
                 },
                 onClicked: function() {
                     console.log('ScaleLineTool: Clicked');
+                },
+                onBrowserStateCleared: function() {
+                    console.log('ScaleLineTool: State cleared');
                 }
             }),
             new RefreshTool({

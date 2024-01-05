@@ -379,6 +379,21 @@ class MeasureTool extends Control {
     // # Section: Tool DoActions
     // -------------------------------------------------------------------
 
+    doClearState() {
+        this.localStorage = _.cloneDeep(LocalStorageDefaults);
+        StateManager.setStateObject(LocalStorageNodeName, LocalStorageDefaults);
+    }
+
+    doToggleToolboxSection(targetName) {
+        const targetNode = document.getElementById(targetName);
+        const duration = ConfigManager.getConfig().animationDuration.fast;
+
+        targetNode?.slideToggle(duration, (collapsed) => {
+            this.localStorage.isCollapsed = collapsed;
+            StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
+        });
+    }
+
     doDrawStart(event) {
         const feature = event.feature;
         const tooltipItem = TooltipManager.push(KEY_TOOLTIP);
@@ -480,27 +495,12 @@ class MeasureTool extends Control {
         }
     }
 
-    doToggleToolboxSection(targetName) {
-        const targetNode = document.getElementById(targetName);
-        const duration = ConfigManager.getConfig().animationDuration.fast;
-
-        targetNode?.slideToggle(duration, (collapsed) => {
-            this.localStorage.isCollapsed = collapsed;
-            StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
-        });
-    }
-
     doClearColors() {
         this.uiRefFillColor.setAttribute('data-oltb-color', this.localStorage.fillColor);
         this.uiRefFillColor.firstElementChild.style.backgroundColor = this.localStorage.fillColor;
 
         this.uiRefStrokeColor.setAttribute('data-oltb-color', this.localStorage.strokeColor);
         this.uiRefStrokeColor.firstElementChild.style.backgroundColor = this.localStorage.strokeColor;
-    }
-
-    doClearState() {
-        this.localStorage = _.cloneDeep(LocalStorageDefaults);
-        StateManager.setStateObject(LocalStorageNodeName, LocalStorageDefaults);
     }
 
     doUpdateTool(toolType, fillColor, strokeColor) {

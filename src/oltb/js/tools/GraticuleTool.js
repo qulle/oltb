@@ -26,7 +26,8 @@ const DefaultOptions = Object.freeze({
     showLabels: true,
     wrapX: true,
     onInitiated: undefined,
-    onClicked: undefined
+    onClicked: undefined,
+    onBrowserStateCleared: undefined
 });
 
 const LocalStorageNodeName = LocalStorageKeys.graticuleTool;
@@ -87,6 +88,7 @@ class GraticuleTool extends Control {
 
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
         window.addEventListener(Events.custom.ready, this.onOLTBReady.bind(this));
+        window.addEventListener(Events.custom.browserStateCleared, this.onWindowBrowserStateCleared.bind(this));
 
         // Note: 
         // @Consumer callback
@@ -177,9 +179,28 @@ class GraticuleTool extends Control {
         }
     }
 
+    onWindowBrowserStateCleared() {
+        this.doClearState();
+    
+        if(this.isActive) {
+            this.deactivateTool();
+        }
+    
+        // Note: 
+        // @Consumer callback
+        if(this.options.onBrowserStateCleared instanceof Function) {
+            this.options.onBrowserStateCleared();
+        }
+    }
+
     // -------------------------------------------------------------------
     // # Section: Tool DoActions
     // -------------------------------------------------------------------
+
+    doClearState() {
+        this.localStorage = _.cloneDeep(LocalStorageDefaults);
+        StateManager.setStateObject(LocalStorageNodeName, LocalStorageDefaults);
+    }
 
     doAddGraticuleLines(map) {
         this.graticule.setMap(map);

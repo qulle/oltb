@@ -408,12 +408,7 @@ class EditTool extends Control {
     
     onWindowBrowserStateCleared() {
         this.doClearState();
-
-        this.uiRefFillColor.setAttribute('data-oltb-color', this.localStorage.fillColor);
-        this.uiRefFillColor.firstElementChild.style.backgroundColor = this.localStorage.fillColor;
-
-        this.uiRefStrokeColor.setAttribute('data-oltb-color', this.localStorage.strokeColor);
-        this.uiRefStrokeColor.firstElementChild.style.backgroundColor = this.localStorage.strokeColor;
+        this.doClearColors();
 
         if(this.isActive) {
             this.deactivateTool();
@@ -606,6 +601,21 @@ class EditTool extends Control {
     // -------------------------------------------------------------------
     // # Section: Tool DoActions
     // -------------------------------------------------------------------
+
+    doClearState() {
+        this.localStorage = _.cloneDeep(LocalStorageDefaults);
+        StateManager.setStateObject(LocalStorageNodeName, LocalStorageDefaults);
+    }
+
+    doToggleToolboxSection(targetName) {
+        const targetNode = document.getElementById(targetName);
+        const duration = ConfigManager.getConfig().animationDuration.fast;
+
+        targetNode?.slideToggle(duration, (collapsed) => {
+            this.localStorage.isCollapsed = collapsed;
+            StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
+        });
+    }
 
     doSelectFeatureAdd(event) {
         // Note: 
@@ -867,19 +877,12 @@ class EditTool extends Control {
         }
     }
 
-    doToggleToolboxSection(targetName) {
-        const targetNode = document.getElementById(targetName);
-        const duration = ConfigManager.getConfig().animationDuration.fast;
+    doClearColors() {
+        this.uiRefFillColor.setAttribute('data-oltb-color', this.localStorage.fillColor);
+        this.uiRefFillColor.firstElementChild.style.backgroundColor = this.localStorage.fillColor;
 
-        targetNode?.slideToggle(duration, (collapsed) => {
-            this.localStorage.isCollapsed = collapsed;
-            StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
-        });
-    }
-
-    doClearState() {
-        this.localStorage = _.cloneDeep(LocalStorageDefaults);
-        StateManager.setStateObject(LocalStorageNodeName, LocalStorageDefaults);
+        this.uiRefStrokeColor.setAttribute('data-oltb-color', this.localStorage.strokeColor);
+        this.uiRefStrokeColor.firstElementChild.style.backgroundColor = this.localStorage.strokeColor;
     }
 
     doDeleteFeatures(features) {

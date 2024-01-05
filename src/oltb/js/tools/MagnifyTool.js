@@ -24,7 +24,8 @@ const DefaultOptions = Object.freeze({
     min: 25,
     max: 150,
     onInitiated: undefined,
-    onClicked: undefined
+    onClicked: undefined,
+    onBrowserStateCleared: undefined
 });
 
 const LocalStorageNodeName = LocalStorageKeys.magnifyTool;
@@ -83,6 +84,7 @@ class MagnifyTool extends Control {
 
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
         window.addEventListener(Events.custom.ready, this.onOLTBReady.bind(this));
+        window.addEventListener(Events.custom.browserStateCleared, this.onWindowBrowserStateCleared.bind(this));
 
         // Note: 
         // @Consumer callback
@@ -171,6 +173,20 @@ class MagnifyTool extends Control {
         map.render();
     }
 
+    onWindowBrowserStateCleared() {
+        this.doClearState();
+    
+        if(this.isActive) {
+            this.deactivateTool();
+        }
+    
+        // Note: 
+        // @Consumer callback
+        if(this.options.onBrowserStateCleared instanceof Function) {
+            this.options.onBrowserStateCleared();
+        }
+    }
+
     // -------------------------------------------------------------------
     // # Section: Map/UI Callbacks
     // -------------------------------------------------------------------
@@ -200,7 +216,7 @@ class MagnifyTool extends Control {
             return;
         }
 
-        this.postRender(event);
+        this.doPostRender(event);
     }
 
     // -------------------------------------------------------------------
@@ -256,7 +272,12 @@ class MagnifyTool extends Control {
     // # Section: Tool DoActions
     // -------------------------------------------------------------------
 
-    postRender(event) {
+    doClearState() {
+        this.localStorage = _.cloneDeep(LocalStorageDefaults);
+        StateManager.setStateObject(LocalStorageNodeName, LocalStorageDefaults);
+    }
+
+    doPostRender(event) {
         const mousePosition = this.mousePosition;
         const radius = this.options.radius;
 

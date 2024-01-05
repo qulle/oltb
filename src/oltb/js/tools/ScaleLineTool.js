@@ -18,7 +18,8 @@ const I18N_BASE = 'tools.scaleLineTool';
 const DefaultOptions = Object.freeze({
     units: 'metric',
     onInitiated: undefined,
-    onClicked: undefined
+    onClicked: undefined,
+    onBrowserStateCleared: undefined
 });
 
 const LocalStorageNodeName = LocalStorageKeys.scaleLineTool;
@@ -80,6 +81,7 @@ class ScaleLineTool extends Control {
         
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
         window.addEventListener(Events.custom.ready, this.onOLTBReady.bind(this));
+        window.addEventListener(Events.custom.browserStateCleared, this.onWindowBrowserStateCleared.bind(this));
 
         // Note: 
         // @Consumer callback
@@ -163,9 +165,28 @@ class ScaleLineTool extends Control {
         }
     }
 
+    onWindowBrowserStateCleared() {
+        this.doClearState();
+    
+        if(this.isActive) {
+            this.deactivateTool();
+        }
+    
+        // Note: 
+        // @Consumer callback
+        if(this.options.onBrowserStateCleared instanceof Function) {
+            this.options.onBrowserStateCleared();
+        }
+    }
+
     // -------------------------------------------------------------------
     // # Section: Tool DoActions
     // -------------------------------------------------------------------
+
+    doClearState() {
+        this.localStorage = _.cloneDeep(LocalStorageDefaults);
+        StateManager.setStateObject(LocalStorageNodeName, LocalStorageDefaults);
+    }
 
     doAddScaleLine(map) {
         this.scaleLine.setMap(map);

@@ -381,6 +381,9 @@ const toolbar = new oltb({
             },
             onClicked: function() {
                 console.log('GraticuleTool: Clicked');
+            },
+            onBrowserStateCleared: function() {
+                console.log('GraticuleTool: State cleared');
             }
         },
         MagnifyTool: {
@@ -389,6 +392,9 @@ const toolbar = new oltb({
             },
             onClicked: function() {
                 console.log('MagnifyTool: Clicked');
+            },
+            onBrowserStateCleared: function() {
+                console.log('MagnifyTool: State cleared');
             }
         },
         ResetNorthTool: {
@@ -408,6 +414,9 @@ const toolbar = new oltb({
             },
             onClicked: function() {
                 console.log('CoordinatesTool: Clicked');
+            },
+            onBrowserStateCleared: function() {
+                console.log('CoordinatesTool: State cleared');
             },
             onMapClicked: function(coordinates) {
                 console.log('CoordinatesTool: Map clicked at', coordinates);
@@ -453,6 +462,9 @@ const toolbar = new oltb({
             },
             onClicked: function() {
                 console.log('ScaleLineTool: Clicked');
+            },
+            onBrowserStateCleared: function() {
+                console.log('ScaleLineTool: State cleared');
             }
         },
         RefreshTool: {

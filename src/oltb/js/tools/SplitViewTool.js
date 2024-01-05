@@ -360,6 +360,21 @@ class SplitViewTool extends Control {
     // # Section: Tool DoActions
     // -------------------------------------------------------------------
 
+    doClearState() {
+        this.localStorage = _.cloneDeep(LocalStorageDefaults);
+        StateManager.setStateObject(LocalStorageNodeName, LocalStorageDefaults);
+    }
+
+    doToggleToolboxSection(targetName) {
+        const targetNode = document.getElementById(targetName);
+        const duration = ConfigManager.getConfig().animationDuration.fast;
+
+        targetNode?.slideToggle(duration, (collapsed) => {
+            this.localStorage.isCollapsed = collapsed;
+            StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
+        });
+    }
+
     doMapLayerRemoved(event) {
         const layerWrapper = event.detail.layerWrapper;
 
@@ -398,21 +413,6 @@ class SplitViewTool extends Control {
         DOM.appendChildren(this.uiRefRightSource, [
             rightOption
         ]);
-    }
-
-    doToggleToolboxSection(targetName) {
-        const targetNode = document.getElementById(targetName);
-        const duration = ConfigManager.getConfig().animationDuration.fast;
-
-        targetNode?.slideToggle(duration, (collapsed) => {
-            this.localStorage.isCollapsed = collapsed;
-            StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
-        });
-    }
-
-    doClearState() {
-        this.localStorage = _.cloneDeep(LocalStorageDefaults);
-        StateManager.setStateObject(LocalStorageNodeName, LocalStorageDefaults);
     }
 
     doPreRender(event, map) {
