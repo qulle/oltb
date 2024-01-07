@@ -16,6 +16,13 @@ const LayerWrapper = LayerManager.addFeatureLayer({
     isSilent: true
 });
 
+const getMarkerColor = function() {
+    return {
+        fill: '#FCBE80FF', 
+        stroke: '#8A4111FF'
+    };
+}
+
 const parseGeoJson = function(data) {
     data.features.forEach((airport) => {
         const coordinates = [
@@ -53,6 +60,7 @@ const parseGeoJson = function(data) {
             `
         };
 
+        const markerColor = getMarkerColor();
         LayerWrapper.getLayer().getSource().addFeature(
             new generateIconMarker({
                 lon: coordinates[0],
@@ -60,8 +68,8 @@ const parseGeoJson = function(data) {
                 title: name,
                 description: description,
                 icon: 'airplane.filled',
-                markerFill: '#E96B69FF',
-                markerStroke: '#FFFFFF',
+                markerFill: markerColor.fill,
+                markerStroke: markerColor.stroke,
                 label: name,
                 labelFill: '#FFFFFF',
                 labelStroke: '#3B4352CC',

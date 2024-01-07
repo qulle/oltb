@@ -55,7 +55,7 @@ const parseGeoJson = function(data) {
         const windDirection = getWindDirection(continentName);
 
         const description = `
-            Current wind speed is ${windSpeed}m/s. The direction is ${windDirection}deg
+            Current wind speed is ${windSpeed}m/s. The direction is ${windDirection}deg.
         `;
         
         const infoWindow = {

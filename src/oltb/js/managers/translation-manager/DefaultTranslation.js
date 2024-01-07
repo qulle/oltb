@@ -1,7 +1,8 @@
 export const DefaultTranslation = Object.freeze({
     lang: {
         text: 'English',
-        code: 'en-us'
+        code: 'en-us',
+        info: 'This is the default translation instance and not the loaded en-us.json file'
     },
     commons: {
         titles: {
@@ -763,7 +764,7 @@ export const DefaultTranslation = Object.freeze({
                 successes: {
                     savedSettings: {
                         title: 'Saved',
-                        message: 'All settings was saved'
+                        message: 'All settings saved in browser storage'
                     }
                 }
             },

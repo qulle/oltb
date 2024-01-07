@@ -113,7 +113,7 @@ const DefaultConfig = Object.freeze({
             '#E8E6FF', // Purple 100
             '#D0CAFF', // Purple 200
             '#9085E4', // Purple 300
-            '#493E9C', // Purple 400
+            '#52489B', // Purple 400
             '#2E2769', // Purple 500
             '#FEEDFF', // Pink 100
             '#FEE6FF', // Pink 200
@@ -143,12 +143,12 @@ const DefaultConfig = Object.freeze({
             '#FFEDDB', // Orange 100
             '#FFDDBC', // Orange 200
             '#FCBE80', // Orange 300
-            '#F67D2C', // Orange 400
-            '#8A4111', // Orange 500
+            '#F08741', // Orange 400
+            '#6B310A', // Orange 500
             '#FFE6E6', // Red 100
             '#FDB5B4', // Red 200
             '#E96B69', // Red 300
-            '#EB4542', // Red 400
+            '#D64B49', // Red 400
             '#8D2120', // Red 500
             '#F3F4F5', // Gray 100
             '#D3D9E6', // Gray 200

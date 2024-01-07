@@ -16,21 +16,54 @@ const LayerWrapper = LayerManager.addFeatureLayer({
     isSilent: true
 });
 
-const getMarkerFillColor = function(continentName) {
+const getMarkerColor = function(name) {
     const colors = Object.freeze({
-        'Europe': '#5B88D6FF',
-        'Africa': '#68B9E5FF',
-        'Antarctica': '#3CAEA3FF',
-        'Asia': '#56BABDFF',
-        'Australia': '#6397C2FF',
-        'Central America': '#9085E4FF',
-        'North America': '#9085E4FF',
-        'South America': '#9085E4FF',
-        'UM': '#9085E4FF',
-        'US': '#9085E4FF'
+        'Europe': {
+            fill: '#0166A5FF', 
+            stroke: '#FFFFFFFF'
+        },
+        'Africa': {
+            fill: '#00959AFF', 
+            stroke: '#FFFFFFFF'
+        },
+        'Antarctica': {
+            fill: '#52489BFF', 
+            stroke: '#FFFFFFFF'
+        },
+        'Asia': {
+            fill: '#52489BFF', 
+            stroke: '#FFFFFFFF'
+        },
+        'Australia': {
+            fill: '#0080C5FF', 
+            stroke: '#FFFFFFFF'
+        },
+        'Central America': {
+            fill: '#0080C5FF', 
+            stroke: '#FFFFFFFF'
+        },
+        'North America': {
+            fill: '#0080C5FF', 
+            stroke: '#FFFFFFFF'
+        },
+        'South America': {
+            fill: '#0080C5FF', 
+            stroke: '#FFFFFFFF'
+        },
+        'UM': {
+            fill: '#0080C5FF', 
+            stroke: '#FFFFFFFF'
+        },
+        'US': {
+            fill: '#0080C5FF', 
+            stroke: '#FFFFFFFF'
+        }
     });
 
-    return colors[continentName] || '#6397C2FF';
+    return colors[name] || {
+        fill: '#0166A5FF', 
+        stroke: '#FFFFFFFF'
+    };
 }
 
 const parseGeoJson = function(data) {
@@ -47,10 +80,10 @@ const parseGeoJson = function(data) {
         const capitalName = capital.properties.capitalName;
         const continentName = capital.properties.continentName;
 
-        const markerFill = getMarkerFillColor(continentName);
+        const markerColor = getMarkerColor(continentName);
         const description = `
             ${countryName} is a country located in ${continentName}.
-            Its capital is ${capitalName} and its country code is ${countryCode}
+            Its capital is ${capitalName} and its country code is ${countryCode}.
         `;
 
         const infoWindow = {
@@ -58,7 +91,7 @@ const parseGeoJson = function(data) {
             content: `
                 <p>${description}</p>
                 <p>
-                    Google has more information about <a href="//www.google.com/search?q=${countryName}" target="_blank" class="oltb-link">${countryName}</a> 
+                    Google has more information about <a href="//www.google.com/search?q=${countryName}" target="_blank" class="oltb-link">${countryName}</a>.
                 </p>
             `,
             footer: `
@@ -78,8 +111,8 @@ const parseGeoJson = function(data) {
                 title: countryName,
                 description: description,
                 icon: 'geoMarker.filled',
-                markerFill: markerFill,
-                markerStroke: '#FFFFFF',
+                markerFill: markerColor.fill,
+                markerStroke: markerColor.stroke,
                 label: countryName,
                 labelFill: '#FFFFFF',
                 labelStroke: '#3B4352CC',

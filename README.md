@@ -8,7 +8,7 @@
 OLTB is a Vanilla JS, portable mobile friendly GIS Toolbar, developed using OpenLayers 8.2.0. The Toolbar can be filled with any number of tools and can be used in both horizontal and vertical mode and is available in both light and dark theme.
 
 ## Latest Build - [Demo](https://qulle.github.io/oltb/)
-The latest demo is built using the last official release but may contain more features that have been added since then.
+The latest demo is built using the last official release.
 
 ## Screenshots
 ![Screenshot Light Theme](https://raw.githubusercontent.com/qulle/oltb/main/images/demo-light.png?raw=true "Screenshot Light Theme")
@@ -91,6 +91,7 @@ The following tools are implemented in the project. The tools are devided in two
 - SettingsTool
 - SplitViewTool
 - ThemeTool
+- ToolboxTool
 - ZoomBoxTool
 - ZoomInTool
 - ZoomOutTool

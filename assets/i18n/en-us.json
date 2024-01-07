@@ -763,7 +763,7 @@
                 "successes": {
                     "savedSettings": {
                         "title": "Saved",
-                        "message": "All settings was saved"
+                        "message": "All settings saved in browser storage"
                     }
                 }
             },

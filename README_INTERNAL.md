@@ -729,6 +729,9 @@ controls: defaultControls({
         },
         onMapClicked: function(coordinates) {
             console.log('CoordinatesTool: Map clicked at', coordinates);
+        },
+        onSnapped: function(event) {
+            console.log('CoordinatesTool: Snapped');
         }
     }),
     new MyLocationTool({
