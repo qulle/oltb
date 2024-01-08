@@ -18,6 +18,7 @@ const removeMarker = function(InfoWindowManager, marker) {
 
             LayerManager.removeFeatureFromFeatureLayers(marker);
             
+            // Note:
             // Important to use feature as property key
             // Not only markers can be removed
             window.dispatchEvent(new CustomEvent(Events.custom.featureRemoved, {

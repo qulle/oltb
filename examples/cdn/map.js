@@ -513,8 +513,8 @@ const toolbar = new oltb({
             onBrowserStateCleared: function() {
                 console.log('ToolboxTool: State cleared');
             },
-            onChanged: function() {
-                console.log('ToolboxTool: Changed to');
+            onChanged: function(state) {
+                console.log('ToolboxTool: Changed to', state);
             }
         },
         InfoTool: {
@@ -525,14 +525,6 @@ const toolbar = new oltb({
             },
             onClicked: function() {
                 console.log('InfoTool: Clicked');
-            }
-        },
-        NotificationTool: {
-            onInitiated: function() {
-                console.log('NotificationTool: Initiated');
-            },
-            onClicked: function() {
-                console.log('NotificationTool: Clicked');
             }
         },
         HelpTool: {

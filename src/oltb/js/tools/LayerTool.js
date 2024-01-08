@@ -1050,24 +1050,6 @@ class LayerTool extends Control {
         return editButton;
     }
 
-    createUIVisibilityButton(layerWrapper, callback, layerName) {
-        const i18nKey = `${I18N_BASE_COMMON}.titles.toggleVisibility`;
-        const visibilityButton = DOM.createElement({
-            element: 'button',
-            class: `${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--visibility oltb-tippy`,
-            title: TranslationManager.get(i18nKey),
-            attributes: {
-                'type': 'button',
-                'data-oltb-i18n': i18nKey
-            },
-            listeners: {
-                'click': this.onLayerVisibilityChange.bind(this, layerWrapper, callback, layerName)
-            }
-        });
-
-        return visibilityButton;
-    }
-
     // -------------------------------------------------------------------
     // # Section: Map/UI Callbacks
     // -------------------------------------------------------------------

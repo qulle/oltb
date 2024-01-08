@@ -11,6 +11,7 @@
             "download": "Ladda Ner",
             "copyText": "Kopiera Text",
             "copyCoordinates": "Kopiera Koordinater",
+            "showLayer": "Visa Lager",
             "rename": "Ändra Namn",
             "toggleSection": "Toggla Sektion",
             "toggleVisibility": "Toggla Synlighet",
@@ -673,28 +674,6 @@
                     "locationNotFound": {
                         "title": "Error",
                         "message": "Misslyckades att hitta din position"
-                    }
-                }
-            }
-        },
-        "notificationTool": {
-            "title": "Aviseringar",
-            "modals": {
-                "notifications": {
-                    "title": "Aviseringar",
-                    "content": "Laddar aviseringar...",
-                    "from": "Från Qulle",
-                    "yourVersion": "Din Version",
-                    "latestVersion": "Senaste Version",
-                    "news": "Funktioner Under Utveckling",
-                    "noNews": "Inga funktioner under utveckling för närvarande"
-                }
-            },
-            "toasts": {
-                "errors": {
-                    "fetchFailed": {
-                        "title": "Error",
-                        "message": "Misslyckades att hämta aviseringar"
                     }
                 }
             }

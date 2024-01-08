@@ -290,7 +290,6 @@ import { FullscreenTool } from 'oltb/js/tools/FullscreenTool';
 import { CoordinatesTool } from 'oltb/js/tools/CoordinatesTool';
 import { TranslationTool } from 'oltb/js/tools/TranslationTool';
 import { HiddenAboutTool } from 'oltb/js/tools/hidden-tools/HiddenAboutTool';
-import { NotificationTool } from 'oltb/js/tools/NotificationTool';
 import { HiddenMarkerTool } from 'oltb/js/tools/hidden-tools/HiddenMarkerTool';
 import { ImportVectorLayerTool } from 'oltb/js/tools/ImportVectorLayerTool';
 import { HiddenMapNavigationTool } from 'oltb/js/tools/hidden-tools/HiddenMapNavigationTool';
@@ -330,7 +329,6 @@ controls: defaultControls({
     new DirectionTool(),
     new ToolboxTool(),
     new InfoTool(),
-    new NotificationTool(),
     new TranslationTool(),
     new HelpTool(),
     new SettingsTool(),
@@ -825,8 +823,8 @@ controls: defaultControls({
         onBrowserStateCleared: function() {
             console.log('ToolboxTool: State cleared');
         },
-        onChanged: function() {
-            console.log('ToolboxTool: Changed to');
+        onChanged: function(state) {
+            console.log('ToolboxTool: Changed to', state);
         }
     }),
     new InfoTool({
@@ -837,14 +835,6 @@ controls: defaultControls({
         },
         onClicked: function() {
             console.log('InfoTool: Clicked');
-        }
-    }),
-    new NotificationTool({
-        onInitiated: function() {
-            console.log('NotificationTool: Initiated');
-        },
-        onClicked: function() {
-            console.log('NotificationTool: Clicked');
         }
     }),
     new TranslationTool({
@@ -1599,8 +1589,6 @@ $ git reset --hard HEAD~1
 # (17). Tag the release
 $ git tag -a vx.y.x -m "vx.y.x"
 $ git push origin --tags
-
-# (18). Clean github.com/qulle/notification-endpoints
 ```
 
 ## Update Dependencies

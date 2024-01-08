@@ -56,6 +56,7 @@ const parseGeoJson = function(context, data, projection) {
                         <span class="oltb-info-window__coordinates">${prettyCoordinates}</span>
                         <div class="oltb-info-window__buttons-wrapper">
                             <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--copy oltb-tippy" title="Copy Marker Text" id="${ID_PREFIX_INFO_WINDOW}-copy-text" data-oltb-copy="${description}"></button>
+                            <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--layer oltb-tippy" title="Show Layer" id="${ID_PREFIX_INFO_WINDOW}-show-layer"></button>
                         </div>
                     `
                 }

@@ -28,7 +28,6 @@ import { FullscreenTool } from './FullscreenTool';
 import { CoordinatesTool } from './CoordinatesTool';
 import { TranslationTool } from './TranslationTool';
 import { HiddenAboutTool } from './hidden-tools/HiddenAboutTool';
-import { NotificationTool } from './NotificationTool';
 import { HiddenMarkerTool } from './hidden-tools/HiddenMarkerTool';
 import { ImportVectorLayerTool } from './ImportVectorLayerTool';
 import { HiddenMapNavigationTool } from './hidden-tools/HiddenMapNavigationTool';
@@ -64,7 +63,6 @@ const AllTools = Object.freeze({
     DirectionTool,
     ToolboxTool,
     InfoTool,
-    NotificationTool,
     TranslationTool,
     HelpTool,
     SettingsTool,

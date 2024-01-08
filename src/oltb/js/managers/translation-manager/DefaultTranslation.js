@@ -12,6 +12,7 @@ export const DefaultTranslation = Object.freeze({
             download: 'Download',
             copyText: 'Copy Text',
             copyCoordinates: 'Copy Coordinates',
+            showLayer: 'Show Layer',
             rename: 'Rename',
             toggleSection: 'Toggle Section',
             toggleVisibility: 'Toggle Visibility',
@@ -674,28 +675,6 @@ export const DefaultTranslation = Object.freeze({
                     locationNotFound: {
                         title: 'Error',
                         message: 'Failed to find location'
-                    }
-                }
-            }
-        },
-        notificationTool: {
-            title: 'Notifications',
-            modals: {
-                notifications: {
-                    title: 'Notifications',
-                    content: 'Loading notifications...',
-                    from: 'From Qulle',
-                    yourVersion: 'Your Version',
-                    latestVersion: 'Latest Version',
-                    news: 'New Features Under Development',
-                    noNews: 'No features currently under development'
-                }
-            },
-            toasts: {
-                errors: {
-                    fetchFailed: {
-                        title: 'Error',
-                        message: 'Failed to fetch notifications'
                     }
                 }
             }

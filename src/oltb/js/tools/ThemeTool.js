@@ -126,13 +126,6 @@ class ThemeTool extends Control {
 
     momentaryActivation() {
         this.doToggleTheme();
-
-        // Note: 
-        // @Consumer callback
-        if(this.options.onChanged instanceof Function) {
-            const active = this.getActiveTheme();
-            this.options.onChanged(active.class);
-        }
     }
     
     // -------------------------------------------------------------------
@@ -187,6 +180,12 @@ class ThemeTool extends Control {
         const inActive = this.getInActiveThem();
 
         this.doSwitchThemeFromTo(active, inActive);
+
+        // Note: 
+        // @Consumer callback
+        if(this.options.onChanged instanceof Function) {
+            this.options.onChanged(inActive.class);
+        }
     }
 
     doSwitchThemeFromTo(from, to) {

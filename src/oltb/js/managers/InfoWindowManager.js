@@ -12,6 +12,7 @@ import { LayerManager } from './LayerManager';
 import { removeMarker } from './info-window-manager/RemoveMarker';
 import { ConfigManager } from './ConfigManager';
 import { copyMarkerInfo } from './info-window-manager/CopyMarkerInfo';
+import { showMarkerLayer } from './info-window-manager/ShowMarkerLayer';
 import { getVectorContext } from 'ol/render';
 import { SvgPaths, getIcon } from '../icons/GetIcon';
 import { HexTransparencies } from '../helpers/constants/HexTransparencies';
@@ -393,6 +394,14 @@ class InfoWindowManager {
                 uiRefEditButton.addEventListener(
                     Events.browser.click, 
                     editMarker.bind(this, InfoWindowManager, feature)
+                );
+            }
+
+            const uiRefShowLayer = this.#footer.querySelector(`#${ID_PREFIX_INFO_WINDOW}-show-layer`);
+            if(uiRefShowLayer) {
+                uiRefShowLayer.addEventListener(
+                    Events.browser.click, 
+                    showMarkerLayer.bind(this, InfoWindowManager, feature)
                 );
             }
         }, delay);

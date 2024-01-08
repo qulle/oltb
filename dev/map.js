@@ -77,7 +77,6 @@ import { FullscreenTool } from '../src/oltb/js/tools/FullscreenTool';
 import { CoordinatesTool } from '../src/oltb/js/tools/CoordinatesTool';
 import { TranslationTool } from '../src/oltb/js/tools/TranslationTool';
 import { HiddenAboutTool } from '../src/oltb/js/tools/hidden-tools/HiddenAboutTool';
-import { NotificationTool } from '../src/oltb/js/tools/NotificationTool';
 import { HiddenMarkerTool } from '../src/oltb/js/tools/hidden-tools/HiddenMarkerTool';
 import { ImportVectorLayerTool } from '../src/oltb/js/tools/ImportVectorLayerTool';
 import { HiddenMapNavigationTool } from '../src/oltb/js/tools/hidden-tools/HiddenMapNavigationTool';
@@ -648,8 +647,8 @@ const initMapAndToolbar = () => {
                 onBrowserStateCleared: function() {
                     console.log('ToolboxTool: State cleared');
                 },
-                onChanged: function() {
-                    console.log('ToolboxTool: Changed to');
+                onChanged: function(state) {
+                    console.log('ToolboxTool: Changed to', state);
                 }
             }),
             new InfoTool({
@@ -660,14 +659,6 @@ const initMapAndToolbar = () => {
                 },
                 onClicked: function() {
                     console.log('InfoTool: Clicked');
-                }
-            }),
-            new NotificationTool({
-                onInitiated: function() {
-                    console.log('NotificationTool: Initiated');
-                },
-                onClicked: function() {
-                    console.log('NotificationTool: Clicked');
                 }
             }),
             new HelpTool({

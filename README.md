@@ -83,7 +83,6 @@ The following tools are implemented in the project. The tools are devided in two
 - MagnifyTool
 - MeasureTool
 - MyLocationTool
-- NotificationTool
 - OverviewTool
 - RefreshTool
 - ResetNorthTool

@@ -6,9 +6,9 @@ import { copyToClipboard } from '../../helpers/browser/CopyToClipboard';
 const FILENAME = 'info-window-manager/CopyMarkerInfo.js';
 const I18N_BASE = 'managers.infoWindowManager';
 
-const copyMarkerInfo = async function(InfoWindowManager, dataToCopy) {
+const copyMarkerInfo = async function(InfoWindowManager, data) {
     try {
-        await copyToClipboard(dataToCopy);
+        await copyToClipboard(data);
 
         Toast.info({
             i18nKey: `${I18N_BASE}.toasts.infos.copyMarkerInfo`,

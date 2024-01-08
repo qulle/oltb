@@ -180,11 +180,23 @@ class ToolboxTool extends Control {
     doShowToolbox() {
         const uiRefToolboxElement = ElementManager.getToolboxElement();
         uiRefToolboxElement.classList.remove(CLASS_TOOLBOX_HIDDEN);
+
+        // Note: 
+        // @Consumer callback
+        if(this.options.onChanged instanceof Function) {
+            this.options.onChanged('visible');
+        }
     }
 
     doHideToolbox() {
         const uiRefToolboxElement = ElementManager.getToolboxElement();
         uiRefToolboxElement.classList.add(CLASS_TOOLBOX_HIDDEN);
+
+        // Note: 
+        // @Consumer callback
+        if(this.options.onChanged instanceof Function) {
+            this.options.onChanged('hidden');
+        }
     }
 }
 

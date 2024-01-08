@@ -302,7 +302,6 @@ class SplitViewTool extends Control {
     
     onToggleToolbox(toggle) {
         const targetName = toggle.dataset.oltbToggleableTarget;
-    
         this.doToggleToolboxSection(targetName);
     }
 
@@ -476,7 +475,7 @@ class SplitViewTool extends Control {
 
     doUpdateTool(leftId, rightId) {
         // Note: 
-        // Block access for events that are captued when the tool is not activated
+        // Block access for events that are captured when the tool is not activated
         // Example removing a layer in the LayerTool
         if(!this.isActive) {
             return;

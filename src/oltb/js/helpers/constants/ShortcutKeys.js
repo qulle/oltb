@@ -23,13 +23,12 @@ const ShortcutKeys = Object.freeze({
     editTool: 'V',
     zoomOutTool: 'W',
     scissorsTool: 'X',
-    notificationTool: 'Y',
+    toolboxTool: 'Y',
     magnifyTool: 'Z',
     helpTool: '1',
     settingsTool: '2',
     translationTool: '3',
-    debugInfoTool: '4',
-    toolboxTool: '5'
+    debugInfoTool: '4'
 });
 
 export { ShortcutKeys };

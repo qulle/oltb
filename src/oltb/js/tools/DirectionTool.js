@@ -137,12 +137,6 @@ class DirectionTool extends Control {
                 direction: active.class
             }
         }));
-
-        // Note: 
-        // @Consumer callback
-        if(this.options.onChanged instanceof Function) {
-            this.options.onChanged(active.class);
-        }
     }
 
     // -------------------------------------------------------------------
@@ -213,6 +207,12 @@ class DirectionTool extends Control {
         const inActive = this.getInActiveDirection();
 
         this.doSwitchDirectionFromTo(active, inActive);
+
+        // Note: 
+        // @Consumer callback
+        if(this.options.onChanged instanceof Function) {
+            this.options.onChanged(inActive.class);
+        }
     }
 
     doSwitchDirectionFromTo(from, to) {
