@@ -1,7 +1,15 @@
 import moment from 'moment/moment';
-import { ConfigManager } from './ConfigManager';
 
 const FILENAME = 'managers/LogManager.js';
+const Config = Object.freeze({
+    logging: Object.freeze({
+        logToConsole: false
+    }),
+    timeFormat: Object.freeze({
+        pretty: 'YYYY-MM-DD HH:mm:ss:SSS',
+        gmt: 'YYYY-MM-DDTHH:mm:ssZ:SSS'
+    })
+});
 
 /**
  * About:
@@ -10,6 +18,10 @@ const FILENAME = 'managers/LogManager.js';
  * Description:
  * Manages all Debug-, Information-, Warning-, Error- and Fatal log messages. 
  * Can handle both simple string messages and complex JSON objects.
+ * 
+ * Note:
+ * To avoid circular dependencies, the LogManager cannot fetch settings from the ConfigManager.
+ * Unfortunately this also means that this local Config-object cannot be changed by the user.
  */
 class LogManager {
     static #log = [];
@@ -82,9 +94,8 @@ class LogManager {
     }
 
     static #logSink(level, origin, method, value) {
-        const config = ConfigManager.getConfig();
-        const timeFormat = config.timeFormat.pretty;
-        const logToConsole = config.logging.logToConsole;
+        const timeFormat = Config.timeFormat.pretty;
+        const logToConsole = Config.logging.logToConsole;
 
         const timestamp = moment();
         const formattedTimestamp = timestamp.format(timeFormat);

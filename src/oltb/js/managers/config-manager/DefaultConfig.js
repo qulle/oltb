@@ -7,7 +7,7 @@ import { version as oltbVersion} from '../../../../../package.json';
 const DefaultConfig = Object.freeze({
     timeFormat: Object.freeze({
         pretty: 'YYYY-MM-DD HH:mm:ss:SSS',
-        gmt: 'YYYY-MM-DD HH:mm:ss:SSS'
+        gmt: 'YYYY-MM-DDTHH:mm:ssZ:SSS'
     }),
     localization: Object.freeze({
         active: 'en-us',
@@ -15,9 +15,6 @@ const DefaultConfig = Object.freeze({
             'en-us',
             'sv-se'
         ])
-    }),
-    logging: Object.freeze({
-        logToConsole: false
     }),
     location: Object.freeze({
         default: Object.freeze({

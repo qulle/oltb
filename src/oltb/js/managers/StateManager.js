@@ -1,10 +1,8 @@
 import _ from 'lodash';
-import { Toast } from '../common/Toast';
 import { LogManager } from './LogManager';
 import { ConfigManager } from './ConfigManager';
 
 const FILENAME = 'managers/StateManager.js';
-const I18N_BASE = 'managers.stateManager';
 
 // Note: 
 // Some objects have properties that we don't want to store in localStorage
@@ -72,10 +70,6 @@ class StateManager {
             LogManager.logError(FILENAME, 'getBrowserData', {
                 message: 'Failed to load application state',
                 error: error
-            });
-            
-            Toast.error({
-                i18nKey: `${I18N_BASE}.toasts.errors.parseBrowserData`
             });
         }
 

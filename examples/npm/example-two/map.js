@@ -56,6 +56,7 @@ import { ZoomOutTool } from 'oltb/src/oltb/js/tools/ZoomOutTool';
 import { RefreshTool } from 'oltb/src/oltb/js/tools/RefreshTool';
 import { ZoomboxTool } from 'oltb/src/oltb/js/tools/ZoomboxTool';
 import { ToolboxTool } from 'oltb/src/oltb/js/tools/ToolboxTool';
+import { ScissorsTool } from 'oltb/src/oltb/js/tools/ScissorsTool';
 import { SettingsTool } from 'oltb/src/oltb/js/tools/SettingsTool';
 import { OverviewTool } from 'oltb/src/oltb/js/tools/OverviewTool';
 import { BookmarkTool } from 'oltb/src/oltb/js/tools/BookmarkTool';

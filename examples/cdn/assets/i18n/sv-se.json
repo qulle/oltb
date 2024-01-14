@@ -19,16 +19,6 @@
         }
     },
     "managers": {
-        "stateManager": {
-            "toasts": {
-                "errors": {
-                    "parseBrowserData": {
-                        "title": "Error",
-                        "message": "Misslyckades att läsa in applikationsdata"
-                    }
-                }
-            }
-        },
         "settingsManager": {
             "settings": {
                 "mouseWheelZoom": "Zooma Karta Endast Med Mushjul",
