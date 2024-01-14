@@ -91,7 +91,7 @@ The following tools are implemented in the project. The tools are devided in two
 - SplitViewTool
 - ThemeTool
 - ToolboxTool
-- ZoomBoxTool
+- ZoomboxTool
 - ZoomInTool
 - ZoomOutTool
 

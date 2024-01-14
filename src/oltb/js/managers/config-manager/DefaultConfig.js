@@ -99,14 +99,13 @@ const DefaultConfig = Object.freeze({
     }),
     aColorPicker: Object.freeze({
         palette: Object.freeze([
-            '#FFFFFF', // White
             '#F0F6FF', // Blue 100
             '#D7E3FA', // Blue 200
             '#6397C2', // Blue 300
             '#0166A5', // Blue 400
             '#00385B', // Blue 500
-            '#CFE1FF', // Indigo 100
-            '#B1CAF6', // Indigo 200
+            '#E7EFFF', // Indigo 100
+            '#C7D9F8', // Indigo 200
             '#5B88D6', // Indigo 300
             '#2357B1', // Indigo 400
             '#103677', // Indigo 500
@@ -155,7 +154,8 @@ const DefaultConfig = Object.freeze({
             '#959DAD', // Gray 300
             '#3B4352', // Gray 400
             '#212529', // Gray 500
-            '#000000'  // Black
+            '#000000', // Black
+            '#FFFFFF'  // White
         ])
     })
 });

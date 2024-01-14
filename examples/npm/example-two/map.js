@@ -75,7 +75,8 @@ import { HiddenMarkerTool } from 'oltb/src/oltb/js/tools/hidden-tools/HiddenMark
 import { ImportVectorLayerTool } from 'oltb/src/oltb/js/tools/ImportVectorLayerTool';
 import { HiddenMapNavigationTool } from 'oltb/src/oltb/js/tools/hidden-tools/HiddenMapNavigationTool';
 
-// Note: The init order is important
+// Note: 
+// The init order is important
 BootstrapManager.initAsync([
     { manager: LogManager },
     { manager: ErrorManager },

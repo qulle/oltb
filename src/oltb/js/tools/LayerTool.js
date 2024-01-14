@@ -658,13 +658,20 @@ class LayerTool extends Control {
         }
     }
 
-    onMapLayerPropertyChange(id, layerElement, event) {
-        if(event.key === 'visible') {
-            layerElement.classList.toggle(`${CLASS_TOOLBOX_LIST}__item--hidden`);
+    onMapLayerPropertyChange(id, layerElement, checkbox, event) {
+        // Note:
+        // Only run for visibility changes
+        const property = event.key;
+        if(property !== 'visible') {
+            return;
         }
+
+        layerElement.classList.toggle(`${CLASS_TOOLBOX_LIST}__item--hidden`);
 
         const isVisible = !layerElement.classList.contains(`${CLASS_TOOLBOX_LIST}__item--hidden`);
         const storedLayerState = this.getLocalStorageMapLayerById(id);
+
+        checkbox.checked = isVisible;
 
         // Note: 
         // storedLayerState is a reference to a object inside this.localStorage
@@ -674,13 +681,20 @@ class LayerTool extends Control {
         }
     }
 
-    onFeatureLayerPropertyChange(id, layerElement, event) {
-        if(event.key === 'visible') {
-            layerElement.classList.toggle(`${CLASS_TOOLBOX_LIST}__item--hidden`);
+    onFeatureLayerPropertyChange(id, layerElement, checkbox, event) {
+        // Note:
+        // Only run for visibility changes
+        const property = event.key;
+        if(property !== 'visible') {
+            return;
         }
+
+        layerElement.classList.toggle(`${CLASS_TOOLBOX_LIST}__item--hidden`);
 
         const isVisible = !layerElement.classList.contains(`${CLASS_TOOLBOX_LIST}__item--hidden`);
         const storedLayerState = this.getLocalStorageFeatureLayerById(id);
+
+        checkbox.checked = isVisible;
 
         // Note: 
         // storedLayerState is a reference to a object inside this.localStorage
@@ -773,8 +787,6 @@ class LayerTool extends Control {
             }
         });
 
-        layer.on(Events.openLayers.propertyChange, this.onMapLayerPropertyChange.bind(this, layerId, layerElement));
-
         const layerName = DOM.createElement({
             element: 'span', 
             text: layerWrapper.getName().ellipsis(20),
@@ -797,7 +809,7 @@ class LayerTool extends Control {
             class: `${CLASS_TOOLBOX_LIST}__wrapper`
         });
 
-        const [ checkboxWrapper ] = createUICheckbox({
+        const [ checkboxWrapper, checkbox ] = createUICheckbox({
             checked: layerState.isVisible,
             listeners: {
                 'click': this.onLayerVisibilityChange.bind(
@@ -808,6 +820,8 @@ class LayerTool extends Control {
                 )
             }
         });
+
+        layer.on(Events.openLayers.propertyChange, this.onMapLayerPropertyChange.bind(this, layerId, layerElement, checkbox));
 
         const layerDot = DOM.createElement({
             element: 'div',
@@ -904,8 +918,6 @@ class LayerTool extends Control {
             }
         });
 
-        layer.on(Events.openLayers.propertyChange, this.onFeatureLayerPropertyChange.bind(this, layerId, layerElement));
-
         const layerName = DOM.createElement({
             element: 'span', 
             text: layerWrapper.getName().ellipsis(20),
@@ -937,7 +949,7 @@ class LayerTool extends Control {
             class: `${CLASS_TOOLBOX_LIST}__wrapper`
         });
 
-        const [ checkboxWrapper ] = createUICheckbox({
+        const [ checkboxWrapper, checkbox ] = createUICheckbox({
             checked: layerState.isVisible,
             listeners: {
                 'click': this.onLayerVisibilityChange.bind(
@@ -948,6 +960,8 @@ class LayerTool extends Control {
                 )
             }
         });
+
+        layer.on(Events.openLayers.propertyChange, this.onFeatureLayerPropertyChange.bind(this, layerId, layerElement, checkbox));
 
         const layerDot = DOM.createElement({
             element: 'div',

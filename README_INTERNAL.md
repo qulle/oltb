@@ -11,11 +11,12 @@ Detailed documentation how the Toolbar is structured, internal dependencies and 
 1. [Branches](#branches)
 2. [Get Started](#get-started)
 3. [Browser Support](#browser-support)
-4. [Localizations](#localizations)
-5. [Colors](#colors) 
+4. [Migrating](#migrating)
+5. [Localizations](#localizations)
+6. [Colors](#colors) 
     1. [Theme Colors](#theme-colors)
     2. [Color Palette](#color-palette)
-6. [About The Code](#about-the-code)
+7. [About The Code](#about-the-code)
     1. [HTML](#html)
     2. [SCSS](#scss)
     3. [Import And Export](#import-and-export)
@@ -41,10 +42,10 @@ Detailed documentation how the Toolbar is structured, internal dependencies and 
     18. [Debug Tool](#debug-tool)
     19. [Logging](#logging)
     20. [OLTB Namespace](#oltb-namespace)
-7. [License](#license)
-8. [Making A Release](#making-a-release)
-9. [Update Dependencies](#update-dependencies)
-10. [Author](#author)
+8. [License](#license)
+9. [Making A Release](#making-a-release)
+10. [Update Dependencies](#update-dependencies)
+11. [Author](#author)
 
 ## Branches
 The `main` branch holds the latest features that are considered done and safe to use. The latest commit from the main branch is available on the [demo-page](https://qulle.github.io/oltb/) hosted in the `gh-pages` branch. Each released major, minor or patch version is tagged and can be checked out or downloaded from CDN and NPM.
@@ -80,6 +81,12 @@ $ npm config set script-shell "C:\\Program Files\\git\\bin\\bash.exe"
 Manually tested in modern browsers (Mozilla Firefox, Microsoft Edge, Google Chrome).
 
 _IE is not supported, it's time to move on._
+
+## Migrating
+If you switch between different versions of the Toolbar, it may be a good idea to clear your browser's LocalStorage data for the targeted domain.
+```javascript
+localStorage.clear();
+```
 
 ## Localizations
 English is the default language. However the Toolbar can be extended with any other language. A second language (Swedish) is also shipped with the Toolbar in order to show how it is done. The available languages are controlled from `/assets/config/config.json`. The translation files are put in to `/assets/i18n/<ab-cd>.json`.
