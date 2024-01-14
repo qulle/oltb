@@ -1,10 +1,11 @@
-import { Config } from "../../core/Config";
+import { ConfigManager } from '../../managers/ConfigManager';
 
 class DOM {
     static createElement(options = {}) {
         const element = document.createElement(options.element);
 
-        // Common attributes
+        // Note:
+        // Common element attributes
         if(options.id) {
             element.id = options.id;
         }
@@ -33,15 +34,22 @@ class DOM {
             element.title = options.title;
         }
 
+        // Note:
         // Attributes that needs to be set using setAttribute
         for(const attribute in options.attributes) {
             element.setAttribute(attribute, options.attributes[attribute]);
+        }
+
+        // Custom element prototypes
+        for(const proto in options.prototypes) {
+            element[proto] = options.prototypes[proto];
         }
     
         // Attach given listeners and callbacks
         for(const listener in options.listeners) {
             const callbacks = options.listeners[listener];
 
+            // Note:
             // The callback(s) can be given as a single reference or as a array of many 
             if(Array.isArray(callbacks)) {
                 callbacks.forEach((callback) => {
@@ -53,6 +61,32 @@ class DOM {
         }
 
         return element;
+    }
+
+    static removeElements(elements = []) {
+        elements.forEach((element) => {
+            this.removeElement(element);
+        });
+    }
+
+    static removeElement(element) {
+        element.remove();
+    }
+
+    static clearElements(elements = []) {
+        elements.forEach((element) => {
+            this.clearElement(element);
+        });
+    }
+
+    static clearElement(element) {
+        element.innerHTML = '';
+    }
+
+    static prependChildren(element, children = []) {
+        children.forEach((child) => {
+            element.prepend(child);
+        });
     }
 
     static appendChildren(element, children = []) {
@@ -67,11 +101,13 @@ class DOM {
         void element.offsetWidth;
         element.classList.add(className);
 
+        // Note: 
         // Config.animationDuration.fast matches the time given in _animations.scss
         // With the animation-class the html2canvas fails to render the exported PNG correctly
+        const duration = ConfigManager.getConfig().animationDuration.fast;
         window.setTimeout(() => {
             element.classList.remove(className);
-        }, Config.animationDuration.fast);
+        }, duration);
     }
 }
 

@@ -12,58 +12,54 @@ import './helpers/prototypes/SlideToggle';
 import '../scss/oltb.scss';
 import { Toast } from './common/Toast';
 import { Modal } from './common/Modal';
-import { Config } from './core/Config';
 import { Dialog } from './common/Dialog';
 import { Settings } from './helpers/constants/Settings';
 import { ContextMenu } from './common/ContextMenu';
 import { LocalStorageKeys } from './helpers/constants/LocalStorageKeys';
 
 // Core Managers
-import { LogManager } from './core/managers/LogManager';
-import { UrlManager } from './core/managers/UrlManager';
-import { ToolManager } from './core/managers/ToolManager';
-import { LayerManager } from './core/managers/LayerManager';
-import { StateManager } from './core/managers/StateManager';
-import { TippyManager } from './core/managers/TippyManager';
-import { ErrorManager } from './core/managers/ErrorManager';
-import { ElementManager } from './core/managers/ElementManager';
-import { TooltipManager } from './core/managers/TooltipManager';
-import { SettingsManager } from './core/managers/SettingsManager';
-import { BootstrapManager } from './core/managers/BootstrapManager';
-import { InfoWindowManager } from './core/managers/InfoWindowManager';
-import { ProjectionManager } from './core/managers/ProjectionManager';
-import { ColorPickerManager } from './core/managers/ColorPickerManager';
-import { AccessibilityManager } from './core/managers/AccessibilityManager';
+import { LogManager } from './managers/LogManager';
+import { UrlManager } from './managers/UrlManager';
+import { ToolManager } from './managers/ToolManager';
+import { SnapManager } from './managers/SnapManager';
+import { LayerManager } from './managers/LayerManager';
+import { StateManager } from './managers/StateManager';
+import { TippyManager } from './managers/TippyManager';
+import { ErrorManager } from './managers/ErrorManager';
+import { ConfigManager } from './managers/ConfigManager';
+import { ElementManager } from './managers/ElementManager';
+import { TooltipManager } from './managers/TooltipManager';
+import { SettingsManager } from './managers/SettingsManager';
+import { BootstrapManager } from './managers/BootstrapManager';
+import { InfoWindowManager } from './managers/InfoWindowManager';
+import { ProjectionManager } from './managers/ProjectionManager';
+import { TranslationManager } from './managers/TranslationManager';
+import { ColorPickerManager } from './managers/ColorPickerManager';
+import { AccessibilityManager } from './managers/AccessibilityManager';
 
 // Generator functions
-import { generateMarker } from './generators/GenerateMarker';
-import { generateTooltip } from './generators/GenerateTooltip';
 import { generateWindBarb } from './generators/GenerateWindBarb';
+import { generateIconMarker } from './generators/GenerateIconMarker';
+
+// Create UI functions
+import { createUITooltip } from './creators/CreateUITooltip';
 
 // Toolbar tools
 import { AllTools } from './tools/index';
 
-// This is the same NODE_NAME and PROPS that the MapNavigationTool.js is using
-const LocalStorageNodeName = LocalStorageKeys.mapData;
-const LocalStorageDefaults = Object.freeze({
-    lon: 18.1201,
-    lat: 35.3518,
-    zoom: 3,
-    rotation: 0
-});
-
 class OLTB {
-    static Config = Config;
-
     static LogManager = LogManager;
     static StateManager = StateManager;
     static ElementManager = ElementManager;
+    static ConfigManager = ConfigManager;
+    static TranslationManager = TranslationManager;
     static ProjectionManager = ProjectionManager;
     static LayerManager = LayerManager;
     static TippyManager = TippyManager;
     static TooltipManager = TooltipManager;
     static UrlManager = UrlManager;
     static ToolManager = ToolManager;
+    static SnapManager = SnapManager;
     static SettingsManager = SettingsManager;
     static InfoWindowManager = InfoWindowManager;
     static ColorPickerManager = ColorPickerManager;
@@ -73,9 +69,9 @@ class OLTB {
     static Modal = Modal;
     static Dialog = Dialog;
 
-    generateMarker = generateMarker;
-    generateTooltip = generateTooltip;
+    generateIconMarker = generateIconMarker;
     generateWindBarb = generateWindBarb;
+    createUITooltip = createUITooltip;
 
     #tools = {};
     #localStorage = {};
@@ -116,11 +112,21 @@ class OLTB {
             }
         });
 
-        // Always add the ContextMenu
+        // Note: 
+        // Always add the ContextMenu last
         this.#tools['ContextMenu'] = new ContextMenu({});
     }
 
     #initLocalStorage() {
+        const defaultLocation = ConfigManager.getConfig().location.default;
+        const LocalStorageNodeName = LocalStorageKeys.mapData;
+        const LocalStorageDefaults = Object.freeze({
+            lon: defaultLocation.lon,
+            lat: defaultLocation.lat,
+            zoom: defaultLocation.zoom,
+            rotation: defaultLocation.rotation,
+        });
+
         this.#localStorage = StateManager.getAndMergeStateObject(
             LocalStorageNodeName, 
             LocalStorageDefaults
@@ -128,40 +134,42 @@ class OLTB {
     }
 
     constructor(options = {}) {
-        // Note: The init order is important
-        BootstrapManager.init([
-            {manager: LogManager},
-            {manager: ErrorManager},
-            {manager: StateManager, options: {
+        // Note: 
+        // The init order is important
+        BootstrapManager.initAsync([
+            { manager: LogManager },
+            { manager: ErrorManager },
+            { manager: StateManager, options: {
                 ignoredKeys: []
             }},
-            {manager: ElementManager},
-            {manager: ProjectionManager},
-            {manager: LayerManager},
-            {manager: ColorPickerManager},
-            {manager: TippyManager},
-            {manager: TooltipManager},
-            {manager: UrlManager},
-            {manager: ToolManager},
-            {manager: SettingsManager},
-            {manager: InfoWindowManager},
-            {manager: AccessibilityManager}
-        ]);
+            { manager: ElementManager },
+            { manager: ConfigManager },
+            { manager: TranslationManager },
+            { manager: ProjectionManager },
+            { manager: LayerManager },
+            { manager: ColorPickerManager },
+            { manager: TippyManager },
+            { manager: TooltipManager },
+            { manager: UrlManager },
+            { manager: ToolManager },
+            { manager: SettingsManager },
+            { manager: SnapManager },
+            { manager: InfoWindowManager },
+            { manager: AccessibilityManager }
+        ]).then(() => {
+            this.#initLocalStorage();
+            this.#initTools(options);
 
-        this.#initLocalStorage();
-        this.#initTools(options);
-
-        if(options.map) {
-            this.setMap(options.map);
-        }
+            if(options.map) {
+                this.setMap(options.map);
+            }
+        });
     }
 
     setMap(map) {
         Object.values(this.#tools).forEach((tool) => {
             tool.setMap(map);
         });
-
-        BootstrapManager.setMap(map);
 
         map.setTarget(ElementManager.getMapElement());
         map.getInteractions().extend([
@@ -213,14 +221,18 @@ class OLTB {
         const coordinates = fromLonLat([
             Number(this.#localStorage.lon),
             Number(this.#localStorage.lat)
-        ], Config.projection.default);
+        ], ConfigManager.getConfig().projection.default);
 
         view.setCenter(coordinates);
         view.setZoom(this.#localStorage.zoom);
         view.setRotation(this.#localStorage.rotation);
+
+        BootstrapManager.setMap(map);
+        BootstrapManager.ready();
     }
 }
 
-// Note: This must be a default export
+// Note: 
+// This must be a default export
 // Rollup won't build the CDN-lib correctly if named export is used
 export default OLTB;

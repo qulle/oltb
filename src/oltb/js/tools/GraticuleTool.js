@@ -1,18 +1,23 @@
+import _ from 'lodash';
 import { DOM } from '../helpers/browser/DOM';
 import { Stroke } from 'ol/style';
 import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { Graticule } from 'ol/layer';
-import { LogManager } from '../core/managers/LogManager';
-import { StateManager } from '../core/managers/StateManager';
+import { LogManager } from '../managers/LogManager';
+import { StateManager } from '../managers/StateManager';
 import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
-import { ElementManager } from '../core/managers/ElementManager';
+import { ElementManager } from '../managers/ElementManager';
 import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
-import { SvgPaths, getIcon } from '../core/icons/GetIcon';
+import { SvgPaths, getIcon } from '../icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
+import { TranslationManager } from '../managers/TranslationManager';
 
 const FILENAME = 'tools/GraticuleTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
+const I18N_BASE = 'tools.graticuleTool';
+const DASHED_ON = [1, 4];
+const DASHED_OFF = [0, 0];
 
 const DefaultOptions = Object.freeze({
     color: '#3B4352E6',
@@ -20,14 +25,23 @@ const DefaultOptions = Object.freeze({
     width: 2,
     showLabels: true,
     wrapX: true,
-    click: undefined
+    onInitiated: undefined,
+    onClicked: undefined,
+    onBrowserStateCleared: undefined
 });
 
 const LocalStorageNodeName = LocalStorageKeys.graticuleTool;
 const LocalStorageDefaults = Object.freeze({
-    active: false
+    isActive: false
 });
 
+/**
+ * About:
+ * Graphical depiction of a coordinate system as a grid of lines
+ * 
+ * Description:
+ * Show a graphical depiction of a coordinate system as a grid of lines both in vertical and horizontal directions.
+ */
 class GraticuleTool extends Control {
     constructor(options = {}) {
         LogManager.logDebug(FILENAME, 'constructor', 'init');
@@ -41,16 +55,19 @@ class GraticuleTool extends Control {
             class: `${CLASS_TOOL_BUTTON}__icon`
         });
 
+        const i18n = TranslationManager.get(I18N_BASE);
         const button = DOM.createElement({
             element: 'button',
             html: icon,
             class: CLASS_TOOL_BUTTON,
             attributes: {
-                type: 'button',
-                'data-tippy-content': `Show graticule (${ShortcutKeys.graticuleTool})`
+                'type': 'button',
+                'data-tippy-content': `${i18n.title} (${ShortcutKeys.graticuleTool})`,
+                'data-tippy-content-post': `(${ShortcutKeys.graticuleTool})`,
+                'data-oltb-i18n': `${I18N_BASE}.title`
             },
             listeners: {
-                'click': this.handleClick.bind(this)
+                'click': this.onClickTool.bind(this)
             }
         });
 
@@ -59,53 +76,65 @@ class GraticuleTool extends Control {
         ]);
         
         this.button = button;
-        this.active = false;
-        this.options = { ...DefaultOptions, ...options };
+        this.isActive = false;
+        this.options = _.merge(_.cloneDeep(DefaultOptions), options);
 
         this.localStorage = StateManager.getAndMergeStateObject(
             LocalStorageNodeName, 
             LocalStorageDefaults
         );
         
-        this.graticule = new Graticule({
+        this.graticule = this.generateOLGraticule();
+
+        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(Events.custom.ready, this.onOLTBReady.bind(this));
+        window.addEventListener(Events.custom.browserStateCleared, this.onWindowBrowserStateCleared.bind(this));
+
+        // Note: 
+        // @Consumer callback
+        if(this.options.onInitiated instanceof Function) {
+            this.options.onInitiated();
+        }
+    }
+    
+    getName() {
+        return FILENAME;
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Generate Helpers
+    // -------------------------------------------------------------------
+
+    generateOLGraticule() {
+        return new Graticule({
             strokeStyle: new Stroke({
                 color: this.options.color,
                 width: this.options.width,
-                lineDash: this.options.dashed ? [1, 4] : [0, 0],
+                lineDash: this.options.dashed ? DASHED_ON : DASHED_OFF,
             }),
             showLabels: this.options.showLabels,
-            visible: true,
+            isVisible: true,
             wrapX: this.options.wrapX,
         });
-
-        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
-        window.addEventListener(Events.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
     }
 
-    onDOMContentLoaded() {
-        if(this.localStorage.active) {
-            this.activateTool();
-        }
-    }
+    // -------------------------------------------------------------------
+    // # Section: Tool Control
+    // -------------------------------------------------------------------
 
-    onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, ShortcutKeys.graticuleTool)) {
-            this.handleClick(event);
-        }
-    }    
+    onClickTool(event) {
+        LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
 
-    handleClick() {
-        LogManager.logDebug(FILENAME, 'handleClick', 'User clicked tool');
-
-        // User defined callback from constructor
-        if(this.options.click instanceof Function) {
-            this.options.click();
-        }
-
-        if(this.active) {
-            this.deActivateTool();
+        if(this.isActive) {
+            this.deactivateTool();
         }else {
             this.activateTool();
+        }
+
+        // Note: 
+        // @Consumer callback
+        if(this.options.onClicked instanceof Function) {
+            this.options.onClicked();
         }
     }
 
@@ -115,23 +144,70 @@ class GraticuleTool extends Control {
             return;
         }
 
-        this.graticule.setMap(map);
+        this.doAddGraticuleLines(map);
 
-        this.active = true;
+        this.isActive = true;
         this.button.classList.add(`${CLASS_TOOL_BUTTON}--active`);
 
-        this.localStorage.active = true;
+        this.localStorage.isActive = true;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 
-    deActivateTool() {
-        this.graticule.setMap(null);
+    deactivateTool() {
+        this.doRemoveGraticuleLines();
 
-        this.active = false;
+        this.isActive = false;
         this.button.classList.remove(`${CLASS_TOOL_BUTTON}--active`);
 
-        this.localStorage.active = false;
+        this.localStorage.isActive = false;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Browser Events
+    // -------------------------------------------------------------------
+
+    onOLTBReady(event) {
+        if(this.localStorage.isActive) {
+            this.activateTool();
+        }
+    }
+
+    onWindowKeyUp(event) {
+        if(isShortcutKeyOnly(event, ShortcutKeys.graticuleTool)) {
+            this.onClickTool(event);
+        }
+    }
+
+    onWindowBrowserStateCleared() {
+        this.doClearState();
+    
+        if(this.isActive) {
+            this.deactivateTool();
+        }
+    
+        // Note: 
+        // @Consumer callback
+        if(this.options.onBrowserStateCleared instanceof Function) {
+            this.options.onBrowserStateCleared();
+        }
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Tool DoActions
+    // -------------------------------------------------------------------
+
+    doClearState() {
+        this.localStorage = _.cloneDeep(LocalStorageDefaults);
+        StateManager.setStateObject(LocalStorageNodeName, LocalStorageDefaults);
+    }
+
+    doAddGraticuleLines(map) {
+        this.graticule.setMap(map);
+    }
+
+    doRemoveGraticuleLines() {
+        this.graticule.setMap(null);
     }
 }
 

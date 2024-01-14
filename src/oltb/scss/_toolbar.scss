@@ -44,7 +44,7 @@
             
             &:hover,
             &--active {
-                background-color: $color-blue-mid;
+                background-color: $color-blue-300;
                 color: $color-light;
             }
         }
@@ -56,8 +56,8 @@
     border-radius: $border-radius;
     margin: .25rem 0 0 0;
     color: $color-dark;
-    height: 2.125rem;
-    width: 2.125rem;
+    height: 2.25rem;
+    width: 2.25rem;
     padding: 0;
     background-color: transparent;
     transition: background-color 100ms ease-in-out;
@@ -67,8 +67,8 @@
 
     &:hover,
     &--active {
-        background-color: $color-blue-light;
-        color: $color-blue-dark;
+        background-color: $color-blue-200;
+        color: $color-blue-400;
     }
 
     &--hidden {
@@ -89,7 +89,7 @@ body.oltb-using-keyboard #oltb {
         .oltb-tool-button {
             &:focus,
             &:active {
-                background-color: $color-blue-mid;
+                background-color: $color-blue-300;
                 color: $color-light;
             }
         }
@@ -98,8 +98,8 @@ body.oltb-using-keyboard #oltb {
     .oltb-tool-button {
         &:focus,
         &:active {
-            background-color: $color-blue-light;
-            color: $color-blue-dark;
+            background-color: $color-blue-200;
+            color: $color-blue-400;
         }
     }
 }

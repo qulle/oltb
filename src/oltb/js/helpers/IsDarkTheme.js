@@ -1,7 +1,7 @@
-import { Config } from "../core/Config";
+import { ConfigManager } from '../managers/ConfigManager';
 
 const isDarkTheme = function() {
-    return document.body.classList.contains(Config.classNames.dark);
+    return document.body.classList.contains(ConfigManager.getConfig().className.dark);
 }
 
 export { isDarkTheme };

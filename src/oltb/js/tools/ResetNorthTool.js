@@ -1,27 +1,37 @@
+import _ from 'lodash';
 import { DOM } from '../helpers/browser/DOM';
 import { Toast } from '../common/Toast';
 import { Dialog } from '../common/Dialog';
-import { Config } from '../core/Config';
 import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { toLonLat } from 'ol/proj';
 import { goToView } from '../helpers/GoToView';
-import { LogManager } from '../core/managers/LogManager';
+import { LogManager } from '../managers/LogManager';
 import { ContextMenu } from '../common/ContextMenu';
 import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
-import { ElementManager } from '../core/managers/ElementManager';
-import { SvgPaths, getIcon } from '../core/icons/GetIcon';
+import { ElementManager } from '../managers/ElementManager';
+import { SvgPaths, getIcon } from '../icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
+import { TranslationManager } from '../managers/TranslationManager';
 import { degreesToRadians, radiansToDegrees } from '../helpers/Conversions';
 
 const FILENAME = 'tools/ResetNorthTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
+const I18N_BASE = 'tools.resetNorthTool';
 
 const DefaultOptions = Object.freeze({
-    click: undefined,
-    reset: undefined
+    onInitiated: undefined,
+    onClicked: undefined,
+    onReset: undefined
 });
 
+/**
+ * About:
+ * Reset the Map rotation to 0 degrees
+ * 
+ * Description:
+ * The Map can be rotated using keyboard shortcuts and the mouse or using a specific number of degrees.
+ */
 class ResetNorthTool extends Control {
     constructor(options = {}) {
         LogManager.logDebug(FILENAME, 'constructor', 'init');
@@ -30,21 +40,24 @@ class ResetNorthTool extends Control {
             element: ElementManager.getToolbarElement()
         });
         
-        const icon = getIcon({
+        this.icon = getIcon({
             path: SvgPaths.compass.stroked,
             class: `${CLASS_TOOL_BUTTON}__icon`
         });
 
+        const i18n = TranslationManager.get(I18N_BASE);
         const button = DOM.createElement({
             element: 'button',
-            html: icon,
+            html: this.icon,
             class: CLASS_TOOL_BUTTON,
             attributes: {
-                type: 'button',
-                'data-tippy-content': `Reset North (${ShortcutKeys.resetNorthTool})`
+                'type': 'button',
+                'data-tippy-content': `${i18n.title} (${ShortcutKeys.resetNorthTool})`,
+                'data-tippy-content-post': `(${ShortcutKeys.resetNorthTool})`,
+                'data-oltb-i18n': `${I18N_BASE}.title`
             },
             listeners: {
-                'click': this.handleClick.bind(this)
+                'click': this.onClickTool.bind(this)
             }
         });
 
@@ -53,71 +66,49 @@ class ResetNorthTool extends Control {
         ]);
 
         this.button = button;
-        this.options = { ...DefaultOptions, ...options };
+        this.options = _.merge(_.cloneDeep(DefaultOptions), options);
 
-        ContextMenu.addItem({
-            icon: icon, 
-            name: 'Rotate map', 
-            fn: this.onContextMenuSetRotation.bind(this)
-        });
+        this.initContextMenuItems();
 
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
-    }
 
-    onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, ShortcutKeys.resetNorthTool)) {
-            this.handleClick(event);
+        // Note: 
+        // @Consumer callback
+        if(this.options.onInitiated instanceof Function) {
+            this.options.onInitiated();
         }
     }
 
-    onContextMenuSetRotation(map, coordinates, target) {
-        const view = map.getView();
+    getName() {
+        return FILENAME;
+    }
 
-        const zoom = view.getZoom();
-        const rotation = radiansToDegrees(view.getRotation());
-        const normalizationMinLimit = 0;
-        const normalizationMaxLimit = 360;
-        const normalizedRotation = rotation < normalizationMinLimit 
-            ? rotation + normalizationMaxLimit 
-            : rotation;
+    // -------------------------------------------------------------------
+    // # Section: Init Helpers
+    // -------------------------------------------------------------------
 
-        // Must use the center of the view
-        // The method gets the coordinates where the user clicked
-        const centerCoordinates = toLonLat(view.getCenter());
-
-        Dialog.prompt({
-            title: 'Rotate map',
-            message: 'Set map rotation by degrees',
-            value: Math.round(normalizedRotation),
-            confirmText: 'Rotate map',
-            onConfirm: (result) => {
-                if(result.isDigitsOnly()) {
-                    goToView(map, centerCoordinates, zoom, degreesToRadians(result));
-                }else {
-                    const errorMessage = 'Only digits are allowed as input';
-                    LogManager.logError(FILENAME, 'onContextMenuSetRotation', {
-                        message: errorMessage,
-                        result: result
-                    });
-
-                    Toast.error({
-                        title: 'Error',
-                        message: errorMessage
-                    });
-                }
-            }
+    initContextMenuItems() {
+        ContextMenu.addItem({
+            icon: this.icon, 
+            i18nKey: `${I18N_BASE}.contextItems.rotate`, 
+            fn: this.onContextMenuSetRotation.bind(this)
         });
     }
 
-    handleClick() {
-        LogManager.logDebug(FILENAME, 'handleClick', 'User clicked tool');
+    // -------------------------------------------------------------------
+    // # Section: Tool Control
+    // -------------------------------------------------------------------
 
-        // User defined callback from constructor
-        if(this.options.click instanceof Function) {
-            this.options.click();
-        }
+    onClickTool(event) {
+        LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
         
         this.momentaryActivation();
+
+        // Note: 
+        // @Consumer callback
+        if(this.options.onClicked instanceof Function) {
+            this.options.onClicked();
+        }
     }
 
     momentaryActivation() {
@@ -130,14 +121,93 @@ class ResetNorthTool extends Control {
         const zoom = view.getZoom();
         const coordinates = toLonLat(view.getCenter());
 
-        goToView(map, coordinates, zoom, 0);
+        goToView({
+            map: map,
+            coordinates: coordinates,
+            zoom: zoom,
+            rotation: 0,
+            onDone: (result) => {
+                // Note: 
+                // @Consumer callback
+                if(this.options.onReset instanceof Function) {
+                    this.options.onReset(result);
+                }
+            } 
+        });
+    }
 
-        window.setTimeout(() => {
-            // User defined callback from constructor
-            if(this.options.reset instanceof Function) {
-                this.options.reset();
+    // -------------------------------------------------------------------
+    // # Section: Browser Events
+    // -------------------------------------------------------------------
+
+    onWindowKeyUp(event) {
+        if(isShortcutKeyOnly(event, ShortcutKeys.resetNorthTool)) {
+            this.onClickTool(event);
+        }
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: ContextMenu Callbacks
+    // -------------------------------------------------------------------
+
+    onContextMenuSetRotation(map, coordinates, target) {
+        this.askToSetRotation(map);
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Ask User
+    // -------------------------------------------------------------------
+
+    askToSetRotation(map) {
+        const view = map.getView();
+
+        const zoom = view.getZoom();
+        const rotation = radiansToDegrees(view.getRotation());
+        const normalizationMinLimit = 0;
+        const normalizationMaxLimit = 360;
+        const normalizedRotation = rotation < normalizationMinLimit 
+            ? rotation + normalizationMaxLimit 
+            : rotation;
+
+        // Note: 
+        // Must use the center of the view, not the clicked coordinates
+        const coordinates = toLonLat(view.getCenter());
+        const i18n = TranslationManager.get(`${I18N_BASE}.dialogs.prompts.rotateMap`);
+
+        Dialog.prompt({
+            title: i18n.title,
+            message: i18n.message,
+            value: Math.round(normalizedRotation),
+            confirmText: i18n.confirmText,
+            cancelText: i18n.cancelText,
+            onConfirm: (result) => {
+                if(result.isDigitsOnly()) {
+                    this.doRotation(map, coordinates, zoom, result);
+                }else {
+                    LogManager.logError(FILENAME, 'askToSetRotation', {
+                        message: 'Only digits are allowed as input',
+                        result: result
+                    });
+                    
+                    Toast.error({
+                        i18nKey: `${I18N_BASE}.toasts.errors.invalidValue`
+                    });
+                }
             }
-        }, Config.animationDuration.normal);
+        });
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Tool DoActions
+    // -------------------------------------------------------------------
+
+    doRotation(map, coordinates, zoom, degrees) {
+        goToView({
+            map: map,
+            coordinates: coordinates,
+            zoome: zoom,
+            rotation: degreesToRadians(degrees)
+        });
     }
 }
 

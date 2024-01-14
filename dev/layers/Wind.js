@@ -2,21 +2,22 @@
 import urlCapitalsGeoJson from 'url:../geojson/capitals.geojson';
 
 // Module imports
-import { Toast } from "../../src/oltb/js/common/Toast";
-import { LogManager } from "../../src/oltb/js/core/managers/LogManager";
-import { toStringHDMS } from "ol/coordinate";
-import { randomNumber } from "../../src/oltb/js/helpers/browser/Random";
-import { LayerManager } from "../../src/oltb/js/core/managers/LayerManager";
-import { generateWindBarb } from "../../src/oltb/js/generators/GenerateWindBarb";
+import { Toast } from '../../src/oltb/js/common/Toast';
+import { LogManager } from '../../src/oltb/js/managers/LogManager';
+import { toStringHDMS } from 'ol/coordinate';
+import { randomNumber } from '../../src/oltb/js/helpers/browser/Random';
+import { LayerManager } from '../../src/oltb/js/managers/LayerManager';
+import { generateWindBarb } from '../../src/oltb/js/generators/GenerateWindBarb';
 
 const FILENAME = 'layers/Wind.js';
 const CLASS_FUNC_BUTTON = 'oltb-func-btn';
 const ID_PREFIX_INFO_WINDOW = 'oltb-info-window-marker';
 
 const LayerWrapper = LayerManager.addFeatureLayer({
+    id: 'fd319a29-d2ac-4b2b-b018-dc86cff22600',
     name: 'Wind Barbs',
-    visible: false,
-    silent: true
+    isVisible: false,
+    isSilent: true
 });
 
 const getWindDirection = function(continentName) {
@@ -49,13 +50,12 @@ const parseGeoJson = function(data) {
         const continentName = capital.properties.continentName;
 
         // Get windspeed between 0 and 40m/s (75knots)
-        const windSpeed = randomNumber(0, 40);
-
         // Get example direction to not have all wind barbs facing the same way
+        const windSpeed = randomNumber(0, 40);
         const windDirection = getWindDirection(continentName);
 
         const description = `
-            Current wind speed is ${windSpeed}m/s. The direction is ${windDirection}deg
+            Current wind speed is ${windSpeed}m/s. The direction is ${windDirection}deg.
         `;
         
         const infoWindow = {
@@ -66,27 +66,33 @@ const parseGeoJson = function(data) {
             footer: `
                 <span class="oltb-info-window__coordinates">${prettyCoordinates}</span>
                 <div class="oltb-info-window__buttons-wrapper">
-                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--delete oltb-tippy" title="Delete marker" id="${ID_PREFIX_INFO_WINDOW}-remove"></button>
-                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--crosshair oltb-tippy" title="Copy marker coordinates" id="${ID_PREFIX_INFO_WINDOW}-copy-coordinates" data-coordinates="${prettyCoordinates}"></button>
-                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--copy oltb-tippy" title="Copy marker text" id="${ID_PREFIX_INFO_WINDOW}-copy-text" data-copy="${description}"></button>
+                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--delete oltb-tippy" title="Delete Marker" id="${ID_PREFIX_INFO_WINDOW}-remove"></button>
+                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--crosshair oltb-tippy" title="Copy Marker Coordinates" id="${ID_PREFIX_INFO_WINDOW}-copy-coordinates" data-oltb-coordinates="${prettyCoordinates}"></button>
+                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--copy oltb-tippy" title="Copy Marker Text" id="${ID_PREFIX_INFO_WINDOW}-copy-text" data-oltb-copy="${description}"></button>
+                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--layer oltb-tippy" title="Show Layer" id="${ID_PREFIX_INFO_WINDOW}-show-layer"></button>
                 </div>
             `
         };
 
-        LayerWrapper.getLayer().getSource().addFeature(
-            new generateWindBarb({
-                lon: coordinates[0],
-                lat: coordinates[1],
-                title: countryName,
-                description: description,
-                fill: '#3B4352FF',
-                stroke: '#3B4352FF',
-                scale: .8,
-                windSpeed: windSpeed,
-                rotation: windDirection,
-                infoWindow: infoWindow
-            })
-        );
+        const windBarb = new generateWindBarb({
+            lon: coordinates[0],
+            lat: coordinates[1],
+            title: countryName,
+            description: description,
+            markerFill: '#3B4352FF',
+            markerStroke: '#3B4352FF',
+            scale: .8,
+            label: `${countryName} ${windSpeed}m/s`,
+            labelFill: '#FFFFFF',
+            labelStroke: '#3B4352CC',
+            labelStrokeWidth: 12,
+            labelFont: '14px Calibri',
+            windSpeed: windSpeed,
+            rotation: windDirection,
+            infoWindow: infoWindow
+        });
+
+        LayerWrapper.getLayer().getSource().addFeature(windBarb);
     });
 }
 

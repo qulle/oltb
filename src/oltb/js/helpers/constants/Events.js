@@ -13,11 +13,16 @@ const Events = Object.freeze({
         contentLoaded: 'DOMContentLoaded',
         fullScreenChange: 'fullscreenchange',
         load: 'load',
-        input: 'input'
+        input: 'input',
+        error: 'error',
     }),
     openLayers: Object.freeze({
         add: 'add',
         remove: 'remove',
+        boxCancel: 'boxcancel',
+        boxDrag: 'boxdrag',
+        boxEnd: 'boxend',
+        boxStart: 'boxstart',
         drawStart: 'drawstart',
         drawEnd: 'drawend',
         drawAbort: 'drawabort',
@@ -28,6 +33,7 @@ const Events = Object.freeze({
         translateEnd: 'translateend',
         error: 'error',
         change: 'change',
+        snap: 'snap',
         propertyChange: 'propertychange',
         preRender: 'prerender',
         postRender: 'postrender',
@@ -37,14 +43,16 @@ const Events = Object.freeze({
     }),
     custom: Object.freeze({
         toolbarDirectionChange: 'oltb.toolbar.direction.change',
-        settingsCleared: 'oltb.settings.cleared',
+        browserStateCleared: 'oltb.browser.state.cleared',
         mapLayerAdded: 'oltb.mapLayer.added',
         mapLayerRemoved: 'oltb.mapLayer.removed',
         featureLayerAdded: 'oltb.featureLayer.added',
         featureLayerRemoved: 'oltb.featureLayer.removed',
         featureEdited: 'oltb.feature.edited',
         featureRemoved: 'oltb.feature.removed',
-        colorChange: 'oltb.color.change'
+        colorChange: 'oltb.color.change',
+        activeFeatureLayerChange: 'oltb.active.feature.layer.change',
+        ready: 'oltb.is.ready'
     })
 });
 

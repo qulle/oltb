@@ -3,16 +3,16 @@ import urlCountriesGeoJson from 'url:../geojson/countries.geojson';
 
 // Module imports
 import { bbox } from 'ol/loadingstrategy';
-import { Toast } from "../../src/oltb/js/common/Toast";
-import { Config } from '../../src/oltb/js/core/Config';
+import { Toast } from '../../src/oltb/js/common/Toast';
 import { GeoJSON } from 'ol/format';
 import { transform } from 'ol/proj';
 import { getCenter } from 'ol/extent';
-import { LogManager } from '../../src/oltb/js/core/managers/LogManager';
-import { toStringHDMS } from "ol/coordinate";
-import { LayerManager } from "../../src/oltb/js/core/managers/LayerManager";
-import { getMeasureValue } from "../../src/oltb/js/helpers/Measurements";
-import { FeatureProperties } from "../../src/oltb/js/helpers/constants/FeatureProperties";
+import { LogManager } from '../../src/oltb/js/managers/LogManager';
+import { toStringHDMS } from 'ol/coordinate';
+import { LayerManager } from '../../src/oltb/js/managers/LayerManager';
+import { ConfigManager } from '../../src/oltb/js/managers/ConfigManager';
+import { getMeasureValue } from '../../src/oltb/js/helpers/Measurements';
+import { FeatureProperties } from '../../src/oltb/js/helpers/constants/FeatureProperties';
 import { Vector as VectorLayer } from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';
 
@@ -25,11 +25,12 @@ const parseGeoJson = function(context, data, projection) {
         featureProjection: projection.getCode()
     }).readFeatures(data);
 
+    const config = ConfigManager.getConfig();
     features.forEach((feature) => {
         const coordinates = transform(
             getCenter(feature.getGeometry().getExtent()), 
-            Config.projection.default, 
-            Config.projection.wgs84
+            config.projection.default, 
+            config.projection.wgs84
         );
 
         const prettyCoordinates = toStringHDMS(coordinates);
@@ -54,7 +55,8 @@ const parseGeoJson = function(context, data, projection) {
                     footer: `
                         <span class="oltb-info-window__coordinates">${prettyCoordinates}</span>
                         <div class="oltb-info-window__buttons-wrapper">
-                            <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--copy oltb-tippy" title="Copy marker text" id="${ID_PREFIX_INFO_WINDOW}-copy-text" data-copy="${description}"></button>
+                            <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--copy oltb-tippy" title="Copy Marker Text" id="${ID_PREFIX_INFO_WINDOW}-copy-text" data-oltb-copy="${description}"></button>
+                            <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--layer oltb-tippy" title="Show Layer" id="${ID_PREFIX_INFO_WINDOW}-show-layer"></button>
                         </div>
                     `
                 }
@@ -100,11 +102,12 @@ const loadGeoJson = function(extent, resolution, projection, success, failure) {
 
 LayerManager.addMapLayers([
     {
-        name: 'Countries overlay',
+        id: '90fcb696-0eca-43cf-897c-268f1d7d070f',
+        name: 'Countries Overlay',
         layer: new VectorLayer({
             source: new VectorSource({
                 format: new GeoJSON({
-                    featureProjection: Config.projection.default
+                    featureProjection: ConfigManager.getConfig().projection.default
                 }),
                 loader: loadGeoJson, 
                 strategy: bbox,
@@ -113,5 +116,5 @@ LayerManager.addMapLayers([
         })
     }
 ], {
-    silent: true
+    isSilent: true
 });

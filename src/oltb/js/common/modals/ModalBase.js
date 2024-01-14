@@ -2,27 +2,30 @@ import { DOM } from '../../helpers/browser/DOM';
 import { Keys } from '../../helpers/constants/Keys';
 import { Events } from '../../helpers/constants/Events';
 import { trapFocus } from '../../helpers/browser/TrapFocus';
-import { LogManager } from '../../core/managers/LogManager';
-import { ElementManager } from '../../core/managers/ElementManager';
-import { SvgPaths, getIcon } from '../../core/icons/GetIcon';
+import { LogManager } from '../../managers/LogManager';
+import { ElementManager } from '../../managers/ElementManager';
+import { SvgPaths, getIcon } from '../../icons/GetIcon';
 
 const FILENAME = 'modals/ModalBase.js';
-const CLASS_ANIMATION = 'oltb-animation--bounce';
+const CLASS_ANIMATION = 'oltb-animation';
+const CLASS_ANIMATION_BOUNCE = `${CLASS_ANIMATION}--bounce`;
+const CLASS_MODAL = 'oltb-modal';
+const CLASS_MODAL_BACKDROP = `${CLASS_MODAL}-backdrop`;
 
 class ModalBase {
-    constructor(title, maximized, onClose) {
+    constructor(title, maximized, onClosed) {
         LogManager.logDebug(FILENAME, 'constructor', 'init');
         
-        this.#createModal(title, maximized, onClose);
+        this.#createModal(title, maximized, onClosed);
     }
 
-    #createModal(title, maximized, onClose) {
-        this.onClose = onClose;
+    #createModal(title, maximized, onClosed) {
+        this.onClosed = onClosed;
         this.backdrop = DOM.createElement({
             element: 'div', 
-            class: 'oltb-modal-backdrop oltb-modal-backdrop--fixed',
+            class: `${CLASS_MODAL_BACKDROP} ${CLASS_MODAL_BACKDROP}--fixed`,
             attributes: {
-                tabindex: '-1'
+                'tabindex': '-1'
             },
             listeners: {
                 'click': this.bounceAnimation.bind(this),
@@ -32,20 +35,21 @@ class ModalBase {
 
         this.modal = DOM.createElement({
             element: 'div', 
-            class: `oltb-modal ${
-                maximized ? 'oltb-modal--maximized' : ''
-            } oltb-animation oltb-animation--bounce`
+            class: `${CLASS_MODAL} ${ maximized 
+                ? `${CLASS_MODAL}--maximized` 
+                : ''
+            } ${CLASS_ANIMATION} ${CLASS_ANIMATION_BOUNCE}`
         });
 
         const modalHeader = DOM.createElement({
             element: 'div', 
-            class: 'oltb-modal__header'
+            class: `${CLASS_MODAL}__header`
         });
 
         const modalTitle = DOM.createElement({
             element: 'h2', 
             html: title,
-            class: 'oltb-modal__title'
+            class: `${CLASS_MODAL}__title`
         });
 
         const modalClose = DOM.createElement({
@@ -55,9 +59,9 @@ class ModalBase {
                 fill: 'none', 
                 stroke: 'currentColor'
             }),
-            class: 'oltb-modal__close oltb-btn oltb-btn--blank',
+            class: `${CLASS_MODAL}__close oltb-btn oltb-btn--blank`,
             attributes: {
-                type: 'button'
+                'type': 'button'
             },
             listeners: {
                 'click': this.close.bind(this)
@@ -80,11 +84,19 @@ class ModalBase {
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
     }
 
+    // -------------------------------------------------------------------
+    // # Section: Events
+    // -------------------------------------------------------------------
+
     onWindowKeyUp(event) {
         if(event.key === Keys.valueEscape) {
             this.close();
         }
     }
+
+    // -------------------------------------------------------------------
+    // # Section: Public API
+    // -------------------------------------------------------------------
 
     isBackdropClicked(event) {
         return event.target === this.backdrop;
@@ -96,7 +108,7 @@ class ModalBase {
         }
 
         const modal = this.backdrop.firstElementChild;
-        DOM.runAnimation(modal, CLASS_ANIMATION);
+        DOM.runAnimation(modal, CLASS_ANIMATION_BOUNCE);
     }
 
     show(modalContent) {
@@ -104,8 +116,8 @@ class ModalBase {
             modalContent
         ]);
 
-        const mapElement = ElementManager.getMapElement();
-        DOM.appendChildren(mapElement, [
+        const uiRefMapElement = ElementManager.getMapElement();
+        DOM.appendChildren(uiRefMapElement, [
             this.backdrop
         ]);
 
@@ -114,11 +126,12 @@ class ModalBase {
 
     close() {
         this.backdrop.removeEventListener(Events.browser.keyDown, trapFocus);
-        this.backdrop.remove();
+        DOM.removeElement(this.backdrop);
 
-        // User defined callback from constructor
-        if(this.onClose instanceof Function) {
-            this.onClose();
+        // Note: 
+        // @Consumer callback
+        if(this.onClosed instanceof Function) {
+            this.onClosed();
         }
     }
 }

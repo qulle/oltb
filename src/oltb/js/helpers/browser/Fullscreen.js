@@ -1,4 +1,4 @@
-import { LogManager } from '../../core/managers/LogManager';
+import { LogManager } from '../../managers/LogManager';
 
 const FILENAME = 'browser/Fullscreen.js';
 

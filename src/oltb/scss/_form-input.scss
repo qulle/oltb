@@ -5,9 +5,9 @@
     font-size: 1rem;
     font-weight: 400;
     line-height: 1.5;
-    color: #212529;
-    background-color: $background-theme-light;
+    color: $color-gray-500;
     background-clip: padding-box;
+    background-color: $color-gray-100;
     border: 1px solid $form-input-border-color-light;
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -17,8 +17,13 @@
     outline: none;
 
     &:focus {
-        border: 1px solid rgba($color-blue-mid, .5);
-        box-shadow: 0 0 0 $shadow-focus-width rgba($color-blue-mid, .3);
+        border: 1px solid rgba($color-blue-300, .5);
+        box-shadow: 0 0 0 $shadow-focus-width rgba($color-blue-300, .3);
+    }
+
+    &:disabled {
+        background-color: $background-theme-light-disabled;
+        cursor: not-allowed;
     }
 }
 
@@ -32,10 +37,14 @@
 }
 
 body.oltb-dark .oltb-input {
-    background-color: $color-gray-mid;
+    background-color: $color-gray-300;
     border: 1px solid $form-input-border-color-dark;
 
     &:focus {
-        box-shadow: 0 0 0 $shadow-focus-width rgba($color-gray-mid, .5);
+        box-shadow: 0 0 0 $shadow-focus-width rgba($color-gray-300, .3);
+    }
+
+    &:disabled {
+        background-color: $background-theme-dark-disabled;
     }
 }

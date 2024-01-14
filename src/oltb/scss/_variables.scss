@@ -1,57 +1,96 @@
-$color-blue-light: #D7E3FA;
-$color-blue-mid: #6397C2;
-$color-blue-dark: #0166A5;
-$color-indigo-light: #B1CAF6;
-$color-indigo-mid: #5B88D6;
-$color-indigo-dark: #2357B1;
-$color-purple-light: #D0CAFF;
-$color-purple-mid: #9085E4;
-$color-purple-dark: #493E9C;
-$color-pink-light: #FEE6FF;
-$color-pink-mid: #E8A2EA;
-$color-pink-dark: #914594;
-$color-teal-light: #BCF8FA;
-$color-teal-mid: #56BABD;
-$color-teal-dark: #00959A;
-$color-green-light: #BCFAF4;
-$color-green-mid: #3CAEA3;
-$color-green-dark: #007C70;
-$color-cyan-light: #CEEEFF;
-$color-cyan-mid: #68B9E5;
-$color-cyan-dark: #0080C5;
-$color-yellow-light: #FFF1C5;
-$color-yellow-mid: #FBDD83;
-$color-yellow-dark: #FBBD02;
-$color-orange-light: #FFDDBC;
-$color-orange-mid: #FCBE80;
-$color-orange-dark: #F67D2C;
-$color-red-light: #FDB5B4;
-$color-red-mid: #E96B69;
-$color-red-dark: #EB4542;
-$color-gray-light: #D3D9E6;
-$color-gray-mid: #959DAD;
-$color-gray-dark: #3B4352;
+// Colors: 
+// Ranges from 100 - 500
+// 200, 300, 400 are the most frequently used
+$color-blue-100: #F0F6FF;
+$color-blue-200: #D7E3FA;
+$color-blue-300: #6397C2;
+$color-blue-400: #0166A5;
+$color-blue-500: #00385B;
+$color-indigo-100: #E7EFFF;
+$color-indigo-200: #C7D9F8;
+$color-indigo-300: #5B88D6;
+$color-indigo-400: #2357B1;
+$color-indigo-500: #103677;
+$color-purple-100: #E8E6FF;
+$color-purple-200: #D0CAFF;
+$color-purple-300: #9085E4;
+$color-purple-400: #52489B;
+$color-purple-500: #2E2769;
+$color-pink-100: #FEEDFF;
+$color-pink-200: #FEE6FF;
+$color-pink-300: #E8A2EA;
+$color-pink-400: #914594;
+$color-pink-500: #59275A;
+$color-teal-100: #DDFEFF;
+$color-teal-200: #BCF8FA;
+$color-teal-300: #56BABD;
+$color-teal-400: #00959A;
+$color-teal-500: #005255;
+$color-green-100: #DFFFFC;
+$color-green-200: #BCFAF4;
+$color-green-300: #3CAEA3;
+$color-green-400: #007C70;
+$color-green-500: #004942;
+$color-cyan-100: #E0F4FF;
+$color-cyan-200: #CEEEFF;
+$color-cyan-300: #68B9E5;
+$color-cyan-400: #0080C5;
+$color-cyan-500: #004367;
+$color-yellow-100: #FFF8E1;
+$color-yellow-200: #FFF1C5;
+$color-yellow-300: #FBDD83;
+$color-yellow-400: #FBBD02;
+$color-yellow-500: #493B10;
+$color-orange-100: #FFEDDB;
+$color-orange-200: #FFDDBC;
+$color-orange-300: #FCBE80;
+$color-orange-400: #F08741;
+$color-orange-500: #6B310A;
+$color-red-100: #FFE6E6;
+$color-red-200: #FDB5B4;
+$color-red-300: #E96B69;
+$color-red-400: #D64B49;
+$color-red-500: #8D2120;
+$color-gray-100: #F3F4F5;
+$color-gray-200: #D3D9E6;
+$color-gray-300: #959DAD;
+$color-gray-400: #3B4352;
+$color-gray-500: #212529;
 
 $top-level-padding: 1.5rem;
+$shadow-focus-width: 3px;
 
+$border-radius: 4px;
+
+// Device Breakpoints:
+$breakpoint-xxl: 1400px;
+$breakpoint-xl: 1200px;
+$breakpoint-lg: 992px;
+$breakpoint-md: 768px;
+$breakpoint-sm: 576px;
+
+// Scroolbar:
 $scrollbar-track-color: #F0F0F0;
 $scrollbar-thumb-color: #CDCDCD;
 $scrollbar-thumb-hover-color: #838383;
 
+// OSM-Map:
 $background-map-osm: #AAD3DF;
 
-$background-theme-light-disabled: rgba($color-gray-light, .5);
-$background-theme-dark-disabled: rgba($color-gray-mid, .3);
+// Themed Colors:
+$color-light: #FFFFFF;
+$color-dark: $color-gray-400;
 
 $background-theme-light: #FFFFFF;
-$background-theme-dark: $color-gray-dark;
+$background-theme-dark: $color-gray-400;
 
-$color-light: #FFFFFF;
-$color-dark: $color-gray-dark;
+$background-theme-light-disabled: rgba($color-gray-200, .5);
+$background-theme-dark-disabled: rgba($color-gray-300, .3);
 
 $form-input-border-color-light: #CED4DA;
 $form-input-border-color-dark: #2F3642;
 
+// Shadows:
 $box-shadow-light: 1px 1px 0 rgba(0, 0, 0, .1);
 $box-shadow-mid: 1px 1px 0 rgba(0, 0, 0, .2);
 $box-shadow-dark: 1px 1px 0 rgba(0, 0, 0, .3);
@@ -63,13 +102,3 @@ $drop-shadow-filter-dark: drop-shadow(1px 1px 0 rgba(0, 0, 0, .3));
 $text-shadow-light: 1px 1px 0 rgba(0, 0, 0, .1);
 $text-shadow-mid: 1px 1px 0 rgba(0, 0, 0, .2);
 $text-shadow-dark: 1px 1px 0 rgba(0, 0, 0, .3);
-
-$shadow-focus-width: 3px;
-
-$border-radius: 4px;
-
-$breakpoint-xxl: 1400px;
-$breakpoint-xl: 1200px;
-$breakpoint-lg: 992px;
-$breakpoint-md: 768px;
-$breakpoint-sm: 576px;

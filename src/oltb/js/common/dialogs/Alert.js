@@ -1,15 +1,19 @@
+import _ from 'lodash';
 import { DOM } from '../../helpers/browser/DOM';
 import { DialogBase } from './DialogBase';
-import { LogManager } from '../../core/managers/LogManager';
-import { ElementManager } from '../../core/managers/ElementManager';
+import { LogManager } from '../../managers/LogManager';
+import { ElementManager } from '../../managers/ElementManager';
 
 const FILENAME = 'dialogs/Alert.js';
+const CLASS_DIALOG = 'oltb-dialog';
+const CLASS_ANIMATION = 'oltb-animation';
+const CLASS_ANIMATION_BOUNCE = `${CLASS_ANIMATION}--bounce`;
 
 const DefaultOptions = Object.freeze({
     title: 'Alert',
-    message: 'Oops missing alert message',
-    onConfirm: undefined,
-    confirmText: 'Ok'
+    message: 'Oops missing message',
+    confirmText: 'Ok',
+    onConfirm: undefined
 });
 
 class Alert extends DialogBase {
@@ -18,39 +22,39 @@ class Alert extends DialogBase {
 
         super();
         
-        this.options = { ...DefaultOptions, ...options };
+        this.options = _.merge(_.cloneDeep(DefaultOptions), options);
         this.#createDialog();
     }
 
     #createDialog() {
         const dialog = DOM.createElement({
             element: 'div',
-            class: 'oltb-dialog oltb-dialog--alert oltb-animation oltb-animation--bounce'
+            class: `${CLASS_DIALOG} ${CLASS_DIALOG}--alert ${CLASS_ANIMATION} ${CLASS_ANIMATION_BOUNCE}`
         });
 
         const title = DOM.createElement({
             element: 'h2',
-            class: 'oltb-dialog__title',
+            class: `${CLASS_DIALOG}__title`,
             text: this.options.title
         });
 
         const message = DOM.createElement({
             element: 'p',
-            class: 'oltb-dialog__message',
+            class: `${CLASS_DIALOG}__message`,
             html: this.options.message
         });
 
         const buttonWrapper = DOM.createElement({
             element: 'div', 
-            class: 'oltb-dialog__buttons-wrapper'
+            class: `${CLASS_DIALOG}__buttons-wrapper`
         });
 
         const okButton = DOM.createElement({
             element: 'button',
             text: this.options.confirmText,
-            class: 'oltb-dialog__btn oltb-btn oltb-btn--blue-mid',
+            class: `${CLASS_DIALOG}__btn oltb-btn oltb-btn--blue-mid`,
             attributes: {
-                type: 'button'
+                'type': 'button'
             },
             listeners: {
                 'click': () => {
@@ -74,8 +78,8 @@ class Alert extends DialogBase {
             dialog
         ]);
 
-        const mapElement = ElementManager.getMapElement();
-        DOM.appendChildren(mapElement, [
+        const uiRefMapElement = ElementManager.getMapElement();
+        DOM.appendChildren(uiRefMapElement, [
             this.backdrop
         ])
 

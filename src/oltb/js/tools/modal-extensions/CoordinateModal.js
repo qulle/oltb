@@ -1,11 +1,14 @@
+import _ from 'lodash';
 import { DOM } from '../../helpers/browser/DOM';
 import { ModalBase } from '../../common/modals/ModalBase';
-import { LogManager } from '../../core/managers/LogManager';
+import { LogManager } from '../../managers/LogManager';
 import { isDarkTheme } from '../../helpers/IsDarkTheme';
-import { generateInput } from '../../generators/GenerateInput';
+import { createUIInput } from '../../creators/CreateUIInput';
+import { TranslationManager } from '../../managers/TranslationManager';
 
 const FILENAME = 'modal-extensions/CoordinateModal.js';
 const ID_PREFIX = 'oltb-coordinates-modal';
+const I18N_BASE = 'modalExtensions.coordinateModal';
 
 const DefaultOptions = Object.freeze({
     maximized: false,
@@ -14,32 +17,45 @@ const DefaultOptions = Object.freeze({
     onCancel: undefined
 });
 
+/**
+ * About:
+ * Manager that handles navigation to entered coordinates
+ */
 class CoordinateModal extends ModalBase {
     constructor(options = {}) {
         LogManager.logDebug(FILENAME, 'constructor', 'init');
 
         super(
-            'Coordinates', 
+            TranslationManager.get(`${I18N_BASE}.title`), 
             options.maximized, 
             options.onClose
         );
         
-        this.options = { ...DefaultOptions, ...options };
+        this.options = _.merge(_.cloneDeep(DefaultOptions), options);
         this.#createModal();
     }
 
+    getName() {
+        return FILENAME;
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: User Interface
+    // -------------------------------------------------------------------
+
     #createModal() {
-        const [ latWrapper, latInput ] = generateInput({
+        const i18n = TranslationManager.get(`${I18N_BASE}.form`);
+        const [ latWrapper, latInput ] = createUIInput({
             idPrefix: ID_PREFIX,
             idPostfix: '-lat',
-            text: 'Latitud',
+            text: i18n.latitude,
             placeholder: '51.5072'
         });
 
-        const [ lonWrapper, lonInput ] = generateInput({
+        const [ lonWrapper, lonInput ] = createUIInput({
             idPrefix: ID_PREFIX,
             idPostfix: '-lon',
-            text: 'Longitud',
+            text: i18n.longitude,
             placeholder: '0.1276'
         });
         
@@ -50,38 +66,32 @@ class CoordinateModal extends ModalBase {
 
         const navigateButton = DOM.createElement({
             element: 'button', 
-            text: 'Navigate to',
+            text: i18n.navigateTo,
             class: 'oltb-dialog__btn oltb-btn oltb-btn--green-mid', 
             attributes: {
-                type: 'button'
+                'type': 'button'
             },
             listeners: {
                 'click': () => {
-                    const result = [
+                    this.#onClick([
                         lonInput.value.trim(), 
                         latInput.value.trim()
-                    ];
-
-                    this.close();
-                    this.options.onNavigate instanceof Function && this.options.onNavigate(result);
+                    ]);
                 }
             }
         });
 
         const cancelButton = DOM.createElement({
             element: 'button', 
-            text: 'Cancel', 
+            text: i18n.cancel, 
             class: `oltb-dialog__btn oltb-btn ${
                 isDarkTheme() ? 'oltb-btn--gray-mid' : 'oltb-btn--gray-dark'
             }`,
             attributes: {
-                type: 'button'
+                'type': 'button'
             },
             listeners: {
-                'click': () => {
-                    this.close();
-                    this.options.onCancel instanceof Function && this.options.onCancel();
-                }
+                'click': this.#onCancel.bind(this)
             }
         });
 
@@ -97,7 +107,7 @@ class CoordinateModal extends ModalBase {
 
         const coordinatesLabel = DOM.createElement({
             element: 'label', 
-            text: 'Coordinates are given in WGS84/EPSG:4326',
+            text: i18n.description,
             class: 'oltb-label oltb-mt-1'
         });
 
@@ -109,6 +119,20 @@ class CoordinateModal extends ModalBase {
         ]);
 
         this.show(modalContent);
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Events
+    // -------------------------------------------------------------------
+
+    #onClick(result) {
+        this.close();
+        this.options.onNavigate instanceof Function && this.options.onNavigate(result);
+    }
+
+    #onCancel() {
+        this.close();
+        this.options.onCancel instanceof Function && this.options.onCancel();
     }
 }
 

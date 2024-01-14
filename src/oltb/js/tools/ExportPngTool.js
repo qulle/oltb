@@ -1,28 +1,40 @@
+import _ from 'lodash';
 import html2canvas from 'html2canvas';
 import { DOM } from '../helpers/browser/DOM';
 import { Toast } from '../common/Toast';
-import { Config } from '../core/Config';
 import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { download } from '../helpers/browser/Download';
-import { LogManager } from '../core/managers/LogManager';
-import { UrlManager } from '../core/managers/UrlManager';
+import { LogManager } from '../managers/LogManager';
+import { UrlManager } from '../managers/UrlManager';
 import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
-import { ElementManager } from '../core/managers/ElementManager';
-import { SvgPaths, getIcon } from '../core/icons/GetIcon';
+import { ConfigManager } from '../managers/ConfigManager';
+import { ElementManager } from '../managers/ElementManager';
+import { SvgPaths, getIcon } from '../icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
+import { TranslationManager } from '../managers/TranslationManager';
 
 const FILENAME = 'tools/ExportPngTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
+const I18N_BASE = 'tools.exportPngTool';
 
 const DefaultOptions = Object.freeze({
     filename: 'map-image-export',
     appendTime: false,
-    click: undefined,
-    exported: undefined,
-    error: undefined
+    onInitiated: undefined,
+    onClicked: undefined,
+    onExported: undefined,
+    onError: undefined
 });
 
+/**
+ * About:
+ * Take a picture of the Map
+ * 
+ * Description:
+ * Instead of taking a screenshot, a complete PNG-image can be exported. 
+ * The export combines the actual canvas that makes up the Map with various overlays such as information boxes that are actual HTML elements.
+ */
 class ExportPngTool extends Control {
     constructor(options = {}) {
         LogManager.logDebug(FILENAME, 'constructor', 'init');
@@ -36,16 +48,19 @@ class ExportPngTool extends Control {
             class: `${CLASS_TOOL_BUTTON}__icon`
         });
 
+        const i18n = TranslationManager.get(I18N_BASE);
         const button = DOM.createElement({
             element: 'button',
             html: icon,
             class: CLASS_TOOL_BUTTON,
             attributes: {
-                type: 'button',
-                'data-tippy-content': `Export PNG (${ShortcutKeys.exportPngTool})`
+                'type': 'button',
+                'data-tippy-content': `${i18n.title} (${ShortcutKeys.exportPngTool})`,
+                'data-tippy-content-post': `(${ShortcutKeys.exportPngTool})`,
+                'data-oltb-i18n': `${I18N_BASE}.title`
             },
             listeners: {
-                'click': this.handleClick.bind(this)
+                'click': this.onClickTool.bind(this)
             }
         });
 
@@ -54,48 +69,75 @@ class ExportPngTool extends Control {
         ]);
 
         this.button = button;
-        this.options = { ...DefaultOptions, ...options };
-        this.isDebug = UrlManager.getParameter(Config.urlParameters.debug) === 'true';
+        this.options = _.merge(_.cloneDeep(DefaultOptions), options);
         
-        window.addEventListener(Events.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
+        this.initDebugState();
+
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(Events.custom.ready, this.onOLTBReady.bind(this));
+
+        // Note: 
+        // @Consumer callback
+        if(this.options.onInitiated instanceof Function) {
+            this.options.onInitiated();
+        }
+    }
+
+    getName() {
+        return FILENAME;
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Init Helpers
+    // -------------------------------------------------------------------
+
+    initDebugState() {
+        const debugKey = ConfigManager.getConfig().urlParameter.debug;
+        this.isDebug = UrlManager.getParameter(debugKey) === 'true';
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Tool Control
+    // -------------------------------------------------------------------
+
+    onClickTool(event) {
+        LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
+
+        this.momentaryActivation();
+
+        // Note: 
+        // @Consumer callback
+        if(this.options.onClicked instanceof Function) {
+            this.options.onClicked();
+        }
+    }
+
+    momentaryActivation() {
+        this.doRenderOnce();
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Browser Events
+    // -------------------------------------------------------------------
+
+    onOLTBReady(event) {
+        const uiRefMapElement = ElementManager.getMapElement();
+        const uiRefAttribution = uiRefMapElement.querySelector('.ol-attribution');
+
+        if(uiRefAttribution) {
+            uiRefAttribution.setAttribute('data-html2canvas-ignore', 'true');
+        }
     }
 
     onWindowKeyUp(event) {
         if(isShortcutKeyOnly(event, ShortcutKeys.exportPngTool)) {
-            this.handleClick(event);
+            this.onClickTool(event);
         }
     }
 
-    onDOMContentLoaded() {
-        const mapElement = ElementManager.getMapElement();
-        const attributions = mapElement.querySelector('.ol-attribution');
-        if(attributions) {
-            attributions.setAttribute('data-html2canvas-ignore', 'true');
-        }
-    }
-
-    handleClick() {
-        LogManager.logDebug(FILENAME, 'handleClick', 'User clicked tool');
-        
-        // User defined callback from constructor
-        if(this.options.click instanceof Function) {
-            this.options.click();
-        }
-
-        this.momentaryActivation();
-    }
-
-    momentaryActivation() {
-        const map = this.getMap();
-        if(!map) {
-            return;
-        }
-
-        // RenderSync will trigger the export the png
-        map.once(Events.openLayers.renderComplete, this.onRenderCompleteAsync.bind(this));
-        map.renderSync();
-    }
+    // -------------------------------------------------------------------
+    // # Section: Map/UI Callbacks
+    // -------------------------------------------------------------------
 
     async onRenderCompleteAsync() {
         const map = this.getMap();
@@ -103,36 +145,65 @@ class ExportPngTool extends Control {
             return;
         }
 
+        await this.doRenderCompleteAsync(map);
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: User Interface
+    // -------------------------------------------------------------------
+
+    createUICanvas(width, height) {
+        return DOM.createElement({
+            element: 'canvas',
+            attributes: {
+                'width': width,
+                'height': height
+            }
+        }); 
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Getters and Setters
+    // -------------------------------------------------------------------
+
+    getCanvasMatrix(uiRefCanvas) {
+        return uiRefCanvas.style.transform
+            .match(/^matrix\(([^(]*)\)$/)[1]
+            .split(',')
+            .map(Number);
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Tool DoActions
+    // -------------------------------------------------------------------
+
+    async doRenderCompleteAsync(map) {
         try {
-            const mapElement = ElementManager.getMapElement();
+            const uiRefMapElement = ElementManager.getMapElement();
             const size = map.getSize();
-            const pngCanvas = DOM.createElement({
-                element: 'canvas',
-                attributes: {
-                    width: size[0],
-                    height: size[1]
-                }
-            });
-            
+            const pngCanvas = this.createUICanvas(size[0], size[1]);
             const pngContext = pngCanvas.getContext('2d');
 
+            // Note:
+            // When the overview tool is active a second map-canvas is present in the DOM
+            // Appending the :not selector in the querySelector makes it possible to target the correct canvas 
             // Draw map layers (Canvases)
             const fullOpacity = 1;
-            const mapCanvas = mapElement.querySelector('.ol-layer canvas');
-            const opacity = mapCanvas.parentNode.style.opacity;
+            const uiRefMapCanvas = uiRefMapElement.querySelector('.ol-layer canvas:not(.ol-overviewmap-map canvas)');
+            console.log(uiRefMapCanvas);
+            const opacity = uiRefMapCanvas.parentNode.style.opacity;
             pngContext.globalAlpha = opacity === '' ? fullOpacity : Number(opacity);
     
-            const matrix = mapCanvas.style.transform
-                .match(/^matrix\(([^(]*)\)$/)[1]
-                .split(',')
-                .map(Number);
-
+            const matrix = this.getCanvasMatrix(uiRefMapCanvas);
             CanvasRenderingContext2D.prototype.setTransform.apply(pngContext, matrix);
-            pngContext.drawImage(mapCanvas, 0, 0);
+            pngContext.drawImage(uiRefMapCanvas, 0, 0);
 
+            // Note:
+            // When the overview tool is active a second map-canvas is present in the DOM
+            // Appending the :not selector in the querySelector makes it possible to target the correct canvas 
             // Draw overlays souch as Tooltips and InfoWindows
-            const overlay = mapElement.querySelector('.ol-overlaycontainer-stopevent');
-            const overlayCanvas = await html2canvas(overlay, {
+            const uiRefOverlay = uiRefMapElement.querySelector('.ol-overlaycontainer-stopevent:not(.ol-overviewmap-map .ol-overlaycontainer-stopevent)');
+            const overlayCanvas = await html2canvas(uiRefOverlay, {
                 scrollX: 0,
                 scrollY: 0,
                 backgroundColor: null,
@@ -140,46 +211,58 @@ class ExportPngTool extends Control {
             });
 
             pngContext.drawImage(overlayCanvas, 0, 0);
-
-            this.downloadCanvas(pngCanvas);
+            this.doDownloadCanvas(pngCanvas);
         }catch(error) {
-            // User defined callback from constructor
-            if(this.options.error instanceof Function) {
-                this.options.error(error);
+            // Note: 
+            // @Consumer callback
+            if(this.options.onError instanceof Function) {
+                this.options.onError(error);
             }
 
-            const errorMessage = 'Failed to export canvas image';
-            LogManager.logError(FILENAME, 'onRenderCompleteAsync', {
-                message: errorMessage,
+            LogManager.logError(FILENAME, 'doRenderCompleteAsync', {
+                message: 'Failed to export canvas image',
                 error: error
             });
             
             Toast.error({
-                title: 'Error',
-                message: errorMessage
+                i18nKey: `${I18N_BASE}.toasts.errors.renderCanvas`
             });
         }
     }
 
-    downloadCanvas(pngCanvas) {
+    doRenderOnce() {
+        const map = this.getMap();
+        if(!map) {
+            return;
+        }
+
+        // Note: 
+        // RenderSync will trigger the export the png
+        map.once(Events.openLayers.renderComplete, this.onRenderCompleteAsync.bind(this));
+        map.renderSync();
+    }
+
+    doDownloadCanvas(pngCanvas) {
+        const locale = ConfigManager.getConfig().localization.active;
         const timestamp = this.options.appendTime 
-            ? `-${new Date().toLocaleString(Config.locale)}`
+            ? `-${new Date().toLocaleString(locale)}`
             : '';
 
         const filename = `${this.options.filename}${timestamp}.png`;
-        const content = navigator.msSaveBlob
+        const content = window.navigator.msSaveBlob
             ? pngCanvas.msToBlob()
             : pngCanvas.toDataURL();
 
-        if(navigator.msSaveBlob) {
-            navigator.msSaveBlob(content, filename);
+        if(window.navigator.msSaveBlob) {
+            window.navigator.msSaveBlob(content, filename);
         }else {
             download(filename, content);
         }
 
-        // User defined callback from constructor
-        if(this.options.exported instanceof Function) {
-            this.options.exported(filename, content);
+        // Note: 
+        // @Consumer callback
+        if(this.options.onExported instanceof Function) {
+            this.options.onExported(filename, content);
         }
     }
 }

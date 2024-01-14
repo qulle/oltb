@@ -3,7 +3,18 @@
     padding: 0 1rem 0 0;
     overflow-y: scroll;
     max-height: 600px;
+
+    &:empty,
+    &--empty {
+        display: none;
+    }
     
+    &__filter {
+        display: flex;
+        gap: 0.5rem;
+        overflow: scroll;
+    }
+
     &__item {
         padding: .5rem;
         border-radius: $border-radius;
@@ -15,6 +26,10 @@
 
         &:last-child {
             margin-bottom: 0;
+        }
+
+        &--hidden {
+            display: none;
         }
     }
 

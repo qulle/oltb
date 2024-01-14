@@ -5,10 +5,10 @@
 <h1 align="center">Toolbar for OpenLayers</h1>
 
 ## OLTB v1.1.0
-OLTB is a portable mobile friendly GIS toolbar developed for OpenLayers 7.4.0. The toolbar can be filled with any number of tools and can be used in both horizontal and vertical mode and is available in both light and dark theme.
+OLTB is a Vanilla JS, portable mobile friendly GIS Toolbar, developed using OpenLayers 8.2.0. The Toolbar can be filled with any number of tools and can be used in both horizontal and vertical mode and is available in both light and dark theme.
 
 ## Latest Build - [Demo](https://qulle.github.io/oltb/)
-The latest demo is built using the last official release but may contain more features that have been added since then.
+The latest demo is built using the last official release.
 
 ## Screenshots
 ![Screenshot Light Theme](https://raw.githubusercontent.com/qulle/oltb/main/images/demo-light.png?raw=true "Screenshot Light Theme")
@@ -31,27 +31,69 @@ https://cdn.jsdelivr.net/npm/oltb@v1.1.0/dist/oltb.min.css
 ## Examples
 Examples for both the NPM and CDN version can be viewed in the [examples directory](https://github.com/qulle/oltb/tree/main/examples/). Use Git history and the tagged releases to look at older examples.
 
-## Want More Info?
-Have a look at the [Internal Development Documentation](https://github.com/qulle/oltb/blob/main/README_INTERNAL.md).
+## Documentation
+Have a look at the [Internal Development Documentation](https://github.com/qulle/oltb/blob/main/README_INTERNAL.md). Here you find detailed descriptions and code examples of how individual parts can be used.
 
-## External GitHub Projects
-1. [OpenLayers 7.4.0](https://openlayers.org/en/v7.4.0/apidoc/)
-2. [Proj4 2.9.0](http://proj4js.org/)   
-3. [Tippy.js 6.3.7](https://atomiks.github.io/tippyjs/)
-4. [Bootstrap Icons](https://icons.getbootstrap.com/)
-5. [Moment 2.29.4](https://momentjs.com/)
-6. [A Color Picker 1.2.1](https://github.com/narsenico/a-color-picker)
-7. [Plain JS Slidetoggle 2.0.0](https://github.com/ericbutler555/plain-js-slidetoggle)
-8. [JSTS 2.9.3](https://github.com/bjornharrtell/jsts)
-9. [Parcel 2.9.2](https://parceljs.org/)
-10. [Rollup 3.25.1](https://github.com/rollup/rollup)
-11. [Cycle.js](https://github.com/douglascrockford/JSON-js)
-12. [Browser Dtector 3.3.0](https://github.com/sibiraj-s/browser-dtector)
+## Key Features
+- Draggable layers
+- Create Map- and Feature layers on the fly
+- Stores state in local storage
+- Draw objects including intersections
+- Measure both length and areas
+- Snap interactions
+- Merge drawings and measurements with different shape operations
+- Generate Markers
+- Generate Wind Barbs
+- Save locations as Bookmarks
+- Export PNG of canvas and additional HTML objects
+- Compare maps side by side
+- Light and Dark mode
+- Vertical and Horizontal mode
+- Built in debugging help
+- Parameters for customizability
+- Callback functions for integrations
+- Internationalization are shipped with project, included are:
+    - English
+    - Swedish
 
-## Maps
-1. [OpenStreetMap](https://www.openstreetmap.org/)
-2. [Maps.Stamen.Com](http://maps.stamen.com/)
-3. [ArcGIS World Topo](https://www.arcgis.com/index.html)
+## Tools
+The following tools are implemented in the project. The tools are devided in two different categories, Hidden and Non-Hidden tools. The differenc is that Hidden tools are not displayed in the Toolbar, but only add functionality in the contextmenu.
+
+### Hidden Tools
+- HiddenAboutTool
+- HiddenMapNavigationTool
+- HiddenMarkerTool
+
+### Tools
+- BookmarkTool
+- CoordinatesTool
+- DebugInfoToo
+- DirectionTool
+- DrawTool
+- EditTool
+- ScissorsTool
+- ExportPngTool
+- FullscreenTool
+- GraticuleTool
+- HelpTool
+- HomeTool
+- ImportVectorLayerTool
+- InfoTool
+- LayerTool
+- MagnifyTool
+- MeasureTool
+- MyLocationTool
+- OverviewTool
+- RefreshTool
+- ResetNorthTool
+- ScaleLineTool
+- SettingsTool
+- SplitViewTool
+- ThemeTool
+- ToolboxTool
+- ZoomboxTool
+- ZoomInTool
+- ZoomOutTool
 
 ## License
 [BSD-2-Clause License](https://github.com/qulle/oltb/blob/main/LICENSE)

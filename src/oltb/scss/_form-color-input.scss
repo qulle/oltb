@@ -2,7 +2,7 @@
     display: block;
     width: 100%;
     padding: .438rem;
-    color: #212529;
+    color: $color-gray-500;
     background-color: $background-theme-light;
     background-clip: padding-box;
     border: 1px solid $form-input-border-color-light;
@@ -14,8 +14,8 @@
     outline: none;
 
     &:focus {
-        border: 1px solid rgba($color-blue-mid, .5);
-        box-shadow: 0 0 0 $shadow-focus-width rgba($color-blue-mid, .3);
+        border: 1px solid rgba($color-blue-300, .5);
+        box-shadow: 0 0 0 $shadow-focus-width rgba($color-blue-300, .3);
     }
 
     &__inner {
@@ -26,10 +26,10 @@
 }
 
 body.oltb-dark .oltb-color-input {
-    background-color: $color-gray-mid;
+    background-color: $color-gray-300;
     border: 1px solid $form-input-border-color-dark;
 
     &:focus {
-        box-shadow: 0 0 0 $shadow-focus-width rgba($color-gray-mid, .5);
+        box-shadow: 0 0 0 $shadow-focus-width rgba($color-gray-300, .5);
     }
 }

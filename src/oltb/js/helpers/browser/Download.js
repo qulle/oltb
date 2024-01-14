@@ -1,5 +1,5 @@
 import { DOM } from '../../helpers/browser/DOM';
-import { LogManager } from '../../core/managers/LogManager';
+import { LogManager } from '../../managers/LogManager';
 
 const FILENAME = 'browser/Download.js';
 
@@ -9,7 +9,7 @@ const download = function(name, content) {
     const downloadTrigger = DOM.createElement({
         element: 'a', 
         attributes: {
-            download: name
+            'download': name
         }
     });
 

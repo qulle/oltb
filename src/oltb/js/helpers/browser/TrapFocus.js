@@ -1,4 +1,4 @@
-import { Keys } from "../constants/Keys";
+import { Keys } from '../constants/Keys';
 
 const trapFocus = function(event) {
     const isTabKey = event.key === Keys.valueTab;
@@ -7,18 +7,18 @@ const trapFocus = function(event) {
     }
 
     const elements = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
-    const firstElement = this.querySelectorAll(elements)[0];
-    const content = this.querySelectorAll(elements);
-    const lastElement = content[content.length - 1];
+    const uiRefFirstElement = this.querySelectorAll(elements)[0];
+    const uiRefContent = this.querySelectorAll(elements);
+    const uiRefLastElement = uiRefContent[uiRefContent.length - 1];
 
     if(event.shiftKey) {
-        if(document.activeElement === firstElement) {
-            lastElement.focus();
+        if(document.activeElement === uiRefFirstElement) {
+            uiRefLastElement.focus();
             event.preventDefault();
         }
     }else {
-        if(document.activeElement === lastElement) {
-            firstElement.focus();
+        if(document.activeElement === uiRefLastElement) {
+            uiRefFirstElement.focus();
             event.preventDefault();
         }
     }

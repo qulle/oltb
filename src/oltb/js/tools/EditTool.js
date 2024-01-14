@@ -1,28 +1,31 @@
+import _ from 'lodash';
 import jsts from 'jsts/dist/jsts.min';
 import { DOM } from '../helpers/browser/DOM';
 import { Keys } from '../helpers/constants/Keys';
 import { Toast } from '../common/Toast';
-import { Config } from '../core/Config';
 import { Dialog } from '../common/Dialog';
 import { Events } from '../helpers/constants/Events';
 import { Feature } from 'ol';
 import { Control } from 'ol/control';
 import { unByKey } from 'ol/Observable';
 import { Settings } from '../helpers/constants/Settings';
-import { LogManager } from '../core/managers/LogManager';
-import { ToolManager } from '../core/managers/ToolManager';
+import { LogManager } from '../managers/LogManager';
+import { SnapManager } from '../managers/SnapManager';
+import { ToolManager } from '../managers/ToolManager';
 import { shiftKeyOnly } from 'ol/events/condition';
-import { LayerManager } from '../core/managers/LayerManager';
-import { StateManager } from '../core/managers/StateManager';
+import { LayerManager } from '../managers/LayerManager';
+import { StateManager } from '../managers/StateManager';
 import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
-import { ElementManager } from '../core/managers/ElementManager';
-import { TooltipManager } from '../core/managers/TooltipManager';
-import { generateTooltip } from '../generators/GenerateTooltip';
-import { SettingsManager } from '../core/managers/SettingsManager';
+import { ConfigManager } from '../managers/ConfigManager';
+import { ElementManager } from '../managers/ElementManager';
+import { TooltipManager } from '../managers/TooltipManager';
+import { createUITooltip } from '../creators/CreateUITooltip';
+import { SettingsManager } from '../managers/SettingsManager';
 import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
-import { SvgPaths, getIcon } from '../core/icons/GetIcon';
+import { SvgPaths, getIcon } from '../icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
 import { FeatureProperties } from '../helpers/constants/FeatureProperties';
+import { TranslationManager } from '../managers/TranslationManager';
 import { Fill, Stroke, Style } from 'ol/style';
 import { hasCustomFeatureProperty } from '../helpers/browser/HasNestedProperty';
 import { getCustomFeatureProperty } from '../helpers/browser/GetNestedProperty';
@@ -42,29 +45,35 @@ import { GeometryCollection, LinearRing, LineString, MultiLineString, MultiPoint
 const FILENAME = 'tools/EditTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
 const CLASS_TOOLBOX_SECTION = 'oltb-toolbox-section';
+const CLASS_TOGGLEABLE = 'oltb-toggleable';
 const ID_PREFIX = 'oltb-edit';
-const KEY_TOOLTIP = 'edit';
+const KEY_TOOLTIP = 'tools.editTool';
+const I18N_BASE = 'tools.editTool';
+const I18N_BASE_COMMON = 'commons';
 
 const DefaultOptions = Object.freeze({
     hitTolerance: 5,
-    click: undefined,
-    styleChange: undefined,
-    shapeOperation: undefined,
-    selectadd: undefined,
-    selectremove: undefined,
-    modifystart: undefined,
-    modifyend: undefined,
-    translatestart: undefined,
-    translateend: undefined,
-    removedfeature: undefined,
-    error: undefined
+    onInitiated: undefined,
+    onClicked: undefined,
+    onBrowserStateCleared: undefined,
+    onStyleChange: undefined,
+    onShapeOperation: undefined,
+    onSelectAdd: undefined,
+    onSelectRemove: undefined,
+    onModifyStart: undefined,
+    onModifyEnd: undefined,
+    onTranslateStart: undefined,
+    onTranslatEnd: undefined,
+    onRemovedFeature: undefined,
+    onError: undefined,
+    onSnapped: undefined
 });
 
 const LocalStorageNodeName = LocalStorageKeys.editTool;
 const LocalStorageDefaults = Object.freeze({
-    active: false,
-    collapsed: false,
-    strokeColor: '#4A86B8FF',
+    isActive: false,
+    isCollapsed: false,
+    strokeColor: '#0166A5FF',
     fillColor: '#D7E3FA80'
 });
 
@@ -81,7 +90,7 @@ const DefaultDrawingStyle = new Style({
         color: '#D7E3FA80'
     }),
     stroke: new Stroke({
-        color: '#4A86B8FF',
+        color: '#0166A5FF',
         width: 2.5
     })
 });
@@ -97,6 +106,14 @@ const DefaultMeasureStyle = new Style({
     })
 });
 
+/**
+ * About:
+ * Edit objects on the Map
+ * 
+ * Description:
+ * Edit previously drawn objects (including measurements) in the map. Change there size, color, shape and location. 
+ * Apply various shape functions such as Union, Intersect, Exclude and Difference.
+ */
 class EditTool extends Control {
     constructor(options = {}) {
         LogManager.logDebug(FILENAME, 'constructor', 'init');
@@ -110,16 +127,19 @@ class EditTool extends Control {
             class: `${CLASS_TOOL_BUTTON}__icon`
         });
 
+        const i18n = TranslationManager.get(I18N_BASE);
         const button = DOM.createElement({
             element: 'button',
             html: icon,
             class: CLASS_TOOL_BUTTON,
             attributes: {
-                type: 'button',
-                'data-tippy-content': `Edit (${ShortcutKeys.editTool})`
+                'type': 'button',
+                'data-tippy-content': `${i18n.title} (${ShortcutKeys.editTool})`,
+                'data-tippy-content-post': `(${ShortcutKeys.editTool})`,
+                'data-oltb-i18n': `${I18N_BASE}.title`
             },
             listeners: {
-                'click': this.handleClick.bind(this)
+                'click': this.onClickTool.bind(this)
             }
         });
 
@@ -128,37 +148,97 @@ class EditTool extends Control {
         ]);
         
         this.button = button;
-        this.active = false;
+        this.isActive = false;
         this.lastStyle = undefined;
-        this.options = { ...DefaultOptions, ...options };
-
-        // JSTS
-        this.parser = new jsts.io.OL3Parser();
-        this.parser.inject(Point, LineString, LinearRing, Polygon, MultiPoint, MultiLineString, MultiPolygon, GeometryCollection);
+        this.options = _.merge(_.cloneDeep(DefaultOptions), options);
 
         this.localStorage = StateManager.getAndMergeStateObject(
             LocalStorageNodeName, 
             LocalStorageDefaults
         );
+
+        // JSTS
+        this.parser = new jsts.io.OL3Parser();
+        this.parser.inject(Point, LineString, LinearRing, Polygon, MultiPoint, MultiLineString, MultiPolygon, GeometryCollection);
         
-        const toolboxElement = ElementManager.getToolboxElement();
-        toolboxElement.insertAdjacentHTML('beforeend', `
+        this.initToolboxHTML();
+        this.uiRefToolboxSection = document.querySelector(`#${ID_PREFIX}-toolbox`);
+        this.initToggleables();
+        this.initSettings();
+
+        this.uiRefDeleteSelectedButton = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-delete-selected-button`);
+        this.uiRefDeleteSelectedButton.addEventListener(Events.browser.click, this.onDeleteSelectedFeatures.bind(this));
+
+        this.uiRefUnionSelectedButton = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-union-selected-button`);
+        this.uiRefUnionSelectedButton.addEventListener(Events.browser.click, this.onShapeOperator.bind(this, this.unionFeatures, 'union'));
+
+        this.uiRefIntersectSelectedButton = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-intersect-selected-button`);
+        this.uiRefIntersectSelectedButton.addEventListener(Events.browser.click, this.onShapeOperator.bind(this, this.intersectFeatures, 'intersect'));
+
+        this.uiRefExcludeSelectedButton = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-exclude-selected-button`);
+        this.uiRefExcludeSelectedButton.addEventListener(Events.browser.click, this.onShapeOperator.bind(this, this.excludeFeatures, 'exclude'));
+
+        this.uiRefDifferenceSelectedButton = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-difference-selected-button`);
+        this.uiRefDifferenceSelectedButton.addEventListener(Events.browser.click, this.onShapeOperator.bind(this, this.differenceFeatures, 'difference'));
+
+        this.uiRefFillColor = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-fill-color`);
+        this.uiRefFillColor.addEventListener(Events.custom.colorChange, this.onFeatureColorChange.bind(this));
+
+        this.uiRefStrokeColor = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-stroke-color`);
+        this.uiRefStrokeColor.addEventListener(Events.custom.colorChange, this.onFeatureColorChange.bind(this));
+
+        this.interactionSelect = this.generateOLInteractionSelect();
+        this.interactionModify = this.generateOLInteractionModify();
+        this.interactionTranslate = this.generateOLInteractionTranslate();
+
+        this.interactionSelect.getFeatures().on(Events.openLayers.add, this.onSelectFeatureAdd.bind(this));
+        this.interactionSelect.getFeatures().on(Events.openLayers.remove, this.onSelectFeatureRemove.bind(this));
+
+        this.interactionModify.addEventListener(Events.openLayers.modifyStart, this.onModifyStart.bind(this));
+        this.interactionModify.addEventListener(Events.openLayers.modifyEnd, this.onModifyEnd.bind(this));
+
+        this.interactionTranslate.addEventListener(Events.openLayers.translateStart, this.onTranslateStart.bind(this));
+        this.interactionTranslate.addEventListener(Events.openLayers.translateEnd, this.onTranslateEnd.bind(this));
+
+        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(Events.custom.ready, this.onOLTBReady.bind(this));
+        window.addEventListener(Events.custom.browserStateCleared, this.onWindowBrowserStateCleared.bind(this));
+        window.addEventListener(Events.custom.featureLayerRemoved, this.onWindowFeatureLayerRemoved.bind(this));
+
+        // Note: 
+        // @Consumer callback
+        if(this.options.onInitiated instanceof Function) {
+            this.options.onInitiated();
+        }
+    }
+
+    getName() {
+        return FILENAME;
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Init Helpers
+    // -------------------------------------------------------------------
+
+    initToolboxHTML() {
+        const i18n = TranslationManager.get(`${I18N_BASE}.toolbox`);
+        const i18nCommon = TranslationManager.get(`${I18N_BASE_COMMON}.titles`);
+
+        ElementManager.getToolboxElement().insertAdjacentHTML('beforeend', `
             <div id="${ID_PREFIX}-toolbox" class="${CLASS_TOOLBOX_SECTION}">
-                <div class="${CLASS_TOOLBOX_SECTION}__header">
-                    <h4 class="${CLASS_TOOLBOX_SECTION}__title oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">
-                        Edit tool
-                        <span class="${CLASS_TOOLBOX_SECTION}__icon oltb-tippy" title="Toggle section"></span>
-                    </h4>
+                <div class="${CLASS_TOOLBOX_SECTION}__header oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">
+                    <h4 class="${CLASS_TOOLBOX_SECTION}__title" data-oltb-i18n="${I18N_BASE}.toolbox.titles.edit">${i18n.titles.edit}</h4>
+                    <span class="${CLASS_TOOLBOX_SECTION}__icon oltb-tippy" data-oltb-i18n="${I18N_BASE_COMMON}.titles.toggleSection" title="${i18nCommon.toggleSection}"></span>
                 </div>
-                <div class="${CLASS_TOOLBOX_SECTION}__groups" id="${ID_PREFIX}-toolbox-collapsed" style="display: ${this.localStorage.collapsed ? 'none' : 'block'}">
+                <div class="${CLASS_TOOLBOX_SECTION}__groups" id="${ID_PREFIX}-toolbox-collapsed" style="display: ${this.localStorage.isCollapsed ? 'none' : 'block'}">
                     <div class="${CLASS_TOOLBOX_SECTION}__group">
-                        <label class="oltb-label">Misc</label>
+                        <label class="oltb-label" data-oldb-i18n="${I18N_BASE}.toolbox.groups.misc">${i18n.groups.misc}</label>
                         <button type="button" id="${ID_PREFIX}-delete-selected-button" class="oltb-btn oltb-btn--blue-mid oltb-tippy" title="Delete">
                             ${getIcon({ ...DefaultButtonProps, path: SvgPaths.trash.stroked })}
                         </button>
                     </div>
                     <div class="${CLASS_TOOLBOX_SECTION}__group ${CLASS_TOOLBOX_SECTION}__group--sub-toolbar">
-                        <label class="oltb-label">Shapes</label>
+                        <label class="oltb-label" data-oldb-i18n="${I18N_BASE}.toolbox.groups.shapes">${i18n.groups.shapes}</label>
                         <button type="button" id="${ID_PREFIX}-union-selected-button" class="oltb-btn oltb-btn--blue-mid oltb-tippy" title="Union">
                             ${getIcon({ ...DefaultButtonProps, path: SvgPaths.union.mixed })}
                         </button>
@@ -173,13 +253,13 @@ class EditTool extends Control {
                         </button>
                     </div>
                     <div class="${CLASS_TOOLBOX_SECTION}__group">
-                        <label class="oltb-label" for="${ID_PREFIX}-stroke-color">Stroke color</label>
+                        <label class="oltb-label" for="${ID_PREFIX}-stroke-color" data-oldb-i18n="${I18N_BASE}.toolbox.groups.strokeColor">${i18n.groups.strokeColor}</label>
                         <div id="${ID_PREFIX}-stroke-color" class="oltb-color-input oltb-color-tippy" data-oltb-color-target="#${ID_PREFIX}-stroke-color" data-oltb-color="${this.localStorage.strokeColor}" tabindex="0">
                             <div class="oltb-color-input__inner" style="background-color: ${this.localStorage.strokeColor};"></div>
                         </div>
                     </div>
                     <div class="${CLASS_TOOLBOX_SECTION}__group">
-                        <label class="oltb-label" for="${ID_PREFIX}-fill-color">Fill color</label>
+                        <label class="oltb-label" for="${ID_PREFIX}-fill-color" data-oldb-i18n="${I18N_BASE}.toolbox.groups.fillColor">${i18n.groups.fillColor}</label>
                         <div id="${ID_PREFIX}-fill-color" class="oltb-color-input oltb-color-tippy" data-oltb-color-target="#${ID_PREFIX}-fill-color" data-oltb-color="${this.localStorage.fillColor}" tabindex="0">
                             <div class="oltb-color-input__inner" style="background-color: ${this.localStorage.fillColor};"></div>
                         </div>
@@ -187,290 +267,492 @@ class EditTool extends Control {
                 </div>
             </div>
         `);
+    }
 
-        this.editToolbox = document.querySelector(`#${ID_PREFIX}-toolbox`);
-
-        this.deleteSelectedButton = this.editToolbox.querySelector(`#${ID_PREFIX}-delete-selected-button`);
-        this.deleteSelectedButton.addEventListener(Events.browser.click, this.onDeleteSelectedFeatures.bind(this));
-
-        this.unionSelectedButton = this.editToolbox.querySelector(`#${ID_PREFIX}-union-selected-button`);
-        this.unionSelectedButton.addEventListener(Events.browser.click, this.onShapeOperator.bind(this, this.unionFeatures, 'union'));
-
-        this.intersectSelectedButton = this.editToolbox.querySelector(`#${ID_PREFIX}-intersect-selected-button`);
-        this.intersectSelectedButton.addEventListener(Events.browser.click, this.onShapeOperator.bind(this, this.intersectFeatures, 'intersect'));
-
-        this.excludeSelectedButton = this.editToolbox.querySelector(`#${ID_PREFIX}-exclude-selected-button`);
-        this.excludeSelectedButton.addEventListener(Events.browser.click, this.onShapeOperator.bind(this, this.excludeFeatures, 'exclude'));
-
-        this.differenceSelectedButton = this.editToolbox.querySelector(`#${ID_PREFIX}-difference-selected-button`);
-        this.differenceSelectedButton.addEventListener(Events.browser.click, this.onShapeOperator.bind(this, this.differenceFeatures, 'difference'));
-
-        this.fillColor = this.editToolbox.querySelector(`#${ID_PREFIX}-fill-color`);
-        this.fillColor.addEventListener(Events.custom.colorChange, this.onFeatureColorChange.bind(this));
-
-        this.strokeColor = this.editToolbox.querySelector(`#${ID_PREFIX}-stroke-color`);
-        this.strokeColor.addEventListener(Events.custom.colorChange, this.onFeatureColorChange.bind(this));
-
-        const toggleableTriggers = this.editToolbox.querySelectorAll('.oltb-toggleable');
-        toggleableTriggers.forEach((toggle) => {
+    initToggleables() {
+        this.uiRefToolboxSection.querySelectorAll(`.${CLASS_TOGGLEABLE}`).forEach((toggle) => {
             toggle.addEventListener(Events.browser.click, this.onToggleToolbox.bind(this, toggle));
         });
+    }
 
-        this.select = new Select({
+    initSettings() {
+        SettingsManager.addSetting(Settings.mouseOnlyToEditVectorShapes, {
+            state: true, 
+            i18nBase: `${I18N_BASE}.settings`,
+            i18nKey: 'mouseOnlyToEditVectorShapes'
+        });
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Generate Helpers
+    // -------------------------------------------------------------------
+
+    generateOLInteractionSelect() {
+        return new Select({
             hitTolerance: this.options.hitTolerance,
-            filter: function(feature, layer) {
-                const selectable = !hasCustomFeatureProperty(feature.getProperties(), FeatureProperties.notSelectable);
+            filter: (feature, layer) => {
+                const isSelectable = !this.isSelectable(feature);
                 const isFeatureLayer = LayerManager.getFeatureLayers().find((layerWrapper) => {
                     return layerWrapper.getLayer().getSource().hasFeature(feature);
                 });
                 
-                return (selectable && (isFeatureLayer || 
+                return (isSelectable && (isFeatureLayer || 
                     SettingsManager.getSetting(Settings.selectVectorMapShapes)
                 ));
             },
             style: this.lastStyle
         });
-        
-        this.modify = new Modify({
-            features: this.select.getFeatures(),
-            condition: function(event) {
-                return shiftKeyOnly(event);
+    }
+
+    generateOLInteractionModify() {
+        return new Modify({
+            features: this.interactionSelect.getFeatures(),
+            condition: (event) => {
+                return shiftKeyOnly(event) || this.useMouseOnlyToEditVectorShapes()
             }
         });
+    }
 
-        this.translate = new Translate({
-            features: this.select.getFeatures(),
+    generateOLInteractionTranslate() {
+        return new Translate({
+            features: this.interactionSelect.getFeatures(),
+        });
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Tool Control
+    // -------------------------------------------------------------------
+
+    onClickTool(event) {
+        LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
+        
+        if(this.isActive) {
+            this.deactivateTool();
+        }else {
+            this.activateTool();
+        }
+
+        // Note: 
+        // @Consumer callback
+        if(this.options.onClicked instanceof Function) {
+            this.options.onClicked();
+        }
+    }
+
+    activateTool() {
+        const map = this.getMap();
+        if(!map) {
+            return;
+        }
+
+        [
+            this.interactionSelect,
+            this.interactionTranslate,
+            this.interactionModify
+        ].forEach((item) => {
+            map.addInteraction(item);
         });
 
-        this.select.getFeatures().on(Events.openLayers.add, this.onSelectFeatureAdd.bind(this));
-        this.select.getFeatures().on(Events.openLayers.remove, this.onSelectFeatureRemove.bind(this));
+        ToolManager.setActiveTool(this);
+        SnapManager.addSnap(this);
 
-        this.modify.addEventListener(Events.openLayers.modifyStart, this.onModifyStart.bind(this));
-        this.modify.addEventListener(Events.openLayers.modifyEnd, this.onModifyEnd.bind(this));
+        this.isActive = true;
+        this.uiRefToolboxSection.classList.add(`${CLASS_TOOLBOX_SECTION}--show`);
+        this.button.classList.add(`${CLASS_TOOL_BUTTON}--active`);
 
-        this.translate.addEventListener(Events.openLayers.translateStart, this.onTranslateStart.bind(this));
-        this.translate.addEventListener(Events.openLayers.translateEnd, this.onTranslateEnd.bind(this));
+        this.localStorage.isActive = true;
+        StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
+    }
 
-        window.addEventListener(Events.custom.featureLayerRemoved, this.onWindowFeatureLayerRemoved.bind(this));
-        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
-        window.addEventListener(Events.custom.settingsCleared, this.onWindowSettingsCleared.bind(this));
-        window.addEventListener(Events.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
+    deactivateTool() {
+        [
+            this.interactionSelect,
+            this.interactionTranslate,
+            this.interactionModify
+        ].forEach((item) => {
+            this.getMap().removeInteraction(item);
+        });
+
+        ToolManager.removeActiveTool();
+        SnapManager.removeSnap();
+
+        this.isActive = false;
+        this.uiRefToolboxSection.classList.remove(`${CLASS_TOOLBOX_SECTION}--show`);
+        this.button.classList.remove(`${CLASS_TOOL_BUTTON}--active`);
+
+        this.localStorage.isActive = false;
+        StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
+    }
+
+    deselectTool() {
+        this.deactivateTool();
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Browser Events
+    // -------------------------------------------------------------------
+
+    onOLTBReady(event) {
+        if(this.localStorage.isActive) {
+            this.activateTool();
+        }
+    }
+
+    onWindowKeyUp(event) {
+        if(isShortcutKeyOnly(event, ShortcutKeys.editTool)) {
+            this.onClickTool(event);
+        }else if(this.isActive && event.key === Keys.valueDelete) {
+            this.onDeleteSelectedFeatures();
+        }
+    }
+    
+    onWindowBrowserStateCleared() {
+        this.doClearState();
+        this.doClearColors();
+
+        if(this.isActive) {
+            this.deactivateTool();
+        }
+
+        // Note:
+        // @Consumer callback
+        if(this.options.onBrowserStateCleared instanceof Function) {
+            this.options.onBrowserStateCleared();
+        }
+    }
+
+    onWindowFeatureLayerRemoved(event) {
+        this.interactionSelect.getFeatures().clear();
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Map/UI Callbacks
+    // -------------------------------------------------------------------
+
+    onToggleToolbox(toggle) {
+        const targetName = toggle.dataset.oltbToggleableTarget;
+        
+        this.doToggleToolboxSection(targetName);
     }
 
     onSelectFeatureAdd(event) {
-        // User defined callback from constructor
-        if(this.options.selectadd instanceof Function) {
-            this.options.selectadd(event);
-        }
+        this.doSelectFeatureAdd(event);
     }
 
-    onDOMContentLoaded() {
-        if(this.localStorage.active) {
-            this.activateTool();
+    onSelectFeatureRemove(event) {
+        this.doSelectFeatureRemove(event);
+    }
+
+    onModifyStart(event) {
+        this.doModifyStart(event);
+    }
+
+    onModifyEnd(event) {
+        this.doModifyEnd(event);
+    }
+
+    onTranslateStart(event) {
+        this.doTranslateStart(event);
+    }
+
+    onTranslateEnd(event) {
+        this.doTranslateEnd(event);
+    }
+
+    onSnap(event) {
+        this.doSnap(event);
+    }
+
+    onDeleteSelectedFeatures() {
+        const featureLength = this.interactionSelect.getFeatures().getArray().length;
+
+        if(featureLength === 0) {
+            Toast.info({
+                i18nKey: `${I18N_BASE}.toasts.infos.missingFeatures`,
+                autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
+            });
+
+            return;
         }
+
+        this.askToDeleteFeatures();
+    }
+
+    onFeatureColorChange(event) {
+        this.doFeatureColorChange(event);
+    }
+
+    onFeatureChange(feature) {
+        this.doFeatureChange(feature);
+    }
+
+    onShapeOperator(operation, type) {
+        this.doShapeOperation(operation, type);
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Listeners Subscriptions
+    // -------------------------------------------------------------------
+
+    attachOnChange(feature) {
+        const selectedFeatures = this.interactionSelect.getFeatures().getArray();
+        const hasOtherTooltip = !TooltipManager.isEmpty();
+
+        if(hasOtherTooltip && selectedFeatures.length === 1) {
+            this.tooltipItem = TooltipManager.push(KEY_TOOLTIP);
+        }
+
+        const properties = feature.getProperties();
+        const hiddenTooltip = hasOtherTooltip && selectedFeatures.length === 1;
+
+        properties.oltb.onChangeListener = feature.getGeometry().on(Events.openLayers.change, this.onFeatureChange.bind(this, feature));
+        properties.oltb.tooltip.getElement().className = (`oltb-overlay-tooltip ${
+            hiddenTooltip ? 'oltb-overlay-tooltip--hidden' : ''
+        }`);
+    }
+
+    detachOnChange(feature) {
+        const selectedFeatures = this.interactionSelect.getFeatures().getArray();
+        const hasOtherTooltip = !TooltipManager.isEmpty();
+        
+        if(hasOtherTooltip && selectedFeatures.length === 1) {
+            TooltipManager.pop(KEY_TOOLTIP);
+        }
+
+        const properties = feature.getProperties();
+        const geometry = feature.getGeometry();
+
+        unByKey(properties.oltb.onChangeListener);
+
+        const overlay = properties.oltb.tooltip;
+        overlay.setPosition(getMeasureCoordinates(geometry));
+
+        const tooltip = overlay.getElement();
+        tooltip.className = 'oltb-overlay-tooltip';
+
+        const measureValue = getMeasureValue(geometry);
+        tooltip.firstElementChild.innerHTML = `${measureValue.value} ${measureValue.unit}`;
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: JSTS Functions
+    // -------------------------------------------------------------------
+
+    unionFeatures(a, b) {
+        return jsts.operation.overlay.OverlayOp.union(a, b);
+    }
+
+    intersectFeatures(a, b) {
+        return jsts.operation.overlay.OverlayOp.intersection(a, b);
+    }
+
+    excludeFeatures(a, b) {
+        return jsts.operation.overlay.OverlayOp.symDifference(a, b);
+    }
+
+    differenceFeatures(a, b) {
+        return jsts.operation.overlay.OverlayOp.difference(a, b);
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Conversions/Validation
+    // -------------------------------------------------------------------
+
+    useMouseOnlyToEditVectorShapes() {
+        return SettingsManager.getSetting(Settings.mouseOnlyToEditVectorShapes);
     }
 
     isMeasurementType(feature) {
         return getCustomFeatureProperty(feature.getProperties(), 'type') === FeatureProperties.type.measurement;
     }
 
-    onSelectFeatureRemove(event) {
-        const feature = event.element;
-
-        // The setTimeout must be used
-        // If not, the style will be reset to the style used before the feature was selected
-        window.setTimeout(() => {
-            if(this.colorHasChanged) {
-                // Set the lastStyle as the default style
-                feature.setStyle(this.lastStyle);
-
-                if(this.isMeasurementType(feature)) {
-                    // To add lineDash, a new Style object must be used
-                    // If the lastStyle is used all object that is referenced with that object will get a dashed line
-                    const style = new Style({
-                        fill: new Fill({
-                            color: this.lastStyle.getFill().getColor()
-                        }),
-                        stroke: new Stroke({
-                            color: this.lastStyle.getStroke().getColor(),
-                            width: this.lastStyle.getStroke().getWidth(),
-                            lineDash: [2, 5]
-                        })
-                    });
-                    
-                    feature.setStyle(style);
-                }
-
-                // User defined callback from constructor
-                if(this.options.styleChange instanceof Function) {
-                    this.options.styleChange(event, this.lastStyle);
-                }
-
-                // Reset for the last deselected item
-                if(event.index === 0) {
-                    this.colorHasChanged = false;
-                }
-            }
-        });
-
-        // User defined callback from constructor
-        if(this.options.selectremove instanceof Function) {
-            this.options.selectremove(event);
-        }
+    isTwoAndOnlyTwoShapes(features) {
+        return features.length === 2;
     }
 
-    onModifyStart(event) {
-        const features = event.features;
-
-        features.forEach((feature) => {
-            if(hasCustomFeatureProperty(feature.getProperties(), FeatureProperties.tooltip)) {
-                this.attachOnChange(feature);
-            }
-        });
-
-        // User defined callback from constructor
-        if(this.options.modifystart instanceof Function) {
-            this.options.modifystart(event);
-        }
+    isSelectable(feature) {
+        return hasCustomFeatureProperty(feature.getProperties(), FeatureProperties.notSelectable);
     }
 
-    onModifyEnd(event) {
-        const features = event.features;
-        features.forEach((feature) => {
-            if(hasCustomFeatureProperty(feature.getProperties(), FeatureProperties.tooltip)) {
-                this.detachOnChange(feature);
-            }
-        });
-
-        // User defined callback from constructor
-        if(this.options.modifyend instanceof Function) {
-            this.options.modifyend(event);
-        }
+    hasTooltip(feature) {
+        return hasCustomFeatureProperty(feature.getProperties(), FeatureProperties.tooltip);
     }
 
-    onTranslateStart(event) {
-        const features = event.features;
+    // -------------------------------------------------------------------
+    // # Section: Ask User
+    // -------------------------------------------------------------------
 
-        features.forEach((feature) => {
-            if(hasCustomFeatureProperty(feature.getProperties(), FeatureProperties.tooltip)) {
-                this.attachOnChange(feature);
+    askToDeleteFeatures() {
+        const featureLength = this.interactionSelect.getFeatures().getArray().length;
+        const i18n = TranslationManager.get(`${I18N_BASE}.dialogs.confirms.deleteFeatures`);
+
+        Dialog.confirm({
+            title: i18n.title,
+            message: `${i18n.message} ${featureLength}st?`,
+            confirmText: i18n.confirmText,
+            cancelText: i18n.cancelText,
+            onConfirm: () => {
+                const features = [ ...this.interactionSelect.getFeatures().getArray() ];
+                this.doDeleteFeatures(features);
             }
         });
-
-        // User defined callback from constructor
-        if(this.options.translatestart instanceof Function) {
-            this.options.translatestart(event);
-        }
     }
 
-    onTranslateEnd(event) {
-        const features = event.features;
+    // -------------------------------------------------------------------
+    // # Section: Tool DoActions
+    // -------------------------------------------------------------------
 
-        features.forEach((feature) => {
-            if(hasCustomFeatureProperty(feature.getProperties(), FeatureProperties.tooltip)) {
-                this.detachOnChange(feature);
-            }
-        });
-
-        // User defined callback from constructor
-        if(this.options.translateend instanceof Function) {
-            this.options.translateend(event);
-        }
+    doClearState() {
+        this.localStorage = _.cloneDeep(LocalStorageDefaults);
+        StateManager.setStateObject(LocalStorageNodeName, LocalStorageDefaults);
     }
 
-    onToggleToolbox(toggle) {
-        const targetName = toggle.dataset.oltbToggleableTarget;
-        document.getElementById(targetName)?.slideToggle(Config.animationDuration.fast, (collapsed) => {
-            this.localStorage.collapsed = collapsed;
+    doToggleToolboxSection(targetName) {
+        const targetNode = document.getElementById(targetName);
+        const duration = ConfigManager.getConfig().animationDuration.fast;
+
+        targetNode?.slideToggle(duration, (collapsed) => {
+            this.localStorage.isCollapsed = collapsed;
             StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
         });
     }
 
-    onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, ShortcutKeys.editTool)) {
-            this.handleClick(event);
-        }else if(Boolean(this.active) && event.key === Keys.valueDelete) {
-            this.onDeleteSelectedFeatures();
+    doSelectFeatureAdd(event) {
+        // Note: 
+        // @Consumer callback
+        if(this.options.onSelectAdd instanceof Function) {
+            this.options.onSelectAdd(event);
         }
     }
-    
-    onWindowSettingsCleared() {
-        this.localStorage = { ...LocalStorageDefaults };
 
-        this.fillColor.setAttribute('data-oltb-color', this.localStorage.fillColor);
-        this.fillColor.firstElementChild.style.backgroundColor = this.localStorage.fillColor;
+    doSelectFeatureRemove(event) {
+        const feature = event.element;
 
-        this.strokeColor.setAttribute('data-oltb-color', this.localStorage.strokeColor);
-        this.strokeColor.firstElementChild.style.backgroundColor = this.localStorage.strokeColor;
-    }
+        // Note: 
+        // The setTimeout must be used
+        // If not, the style will be reset to the style used before the feature was selected
+        window.setTimeout(() => {
+            if(!this.colorHasChanged) {
+                return;
+            }
 
-    onDeleteSelectedFeatures() {
-        const featureLength = this.select.getFeatures().getArray().length;
+            // Set the lastStyle as the default style
+            feature.setStyle(this.lastStyle);
 
-        if(featureLength === 0) {
-            Toast.info({
-                title: 'Oops',
-                message: 'No features selected to delete', 
-                autoremove: Config.autoRemovalDuation.normal
-            });
+            if(this.isMeasurementType(feature)) {
+                // To add lineDash, a new Style object must be used
+                // If the lastStyle is used all object that is referenced with that object will get a dashed line
+                const style = new Style({
+                    fill: new Fill({
+                        color: this.lastStyle.getFill().getColor()
+                    }),
+                    stroke: new Stroke({
+                        color: this.lastStyle.getStroke().getColor(),
+                        width: this.lastStyle.getStroke().getWidth(),
+                        lineDash: [2, 5]
+                    })
+                });
+                    
+                feature.setStyle(style);
+            }
 
-            return;
-        }
+            // Note: 
+            // @Consumer callback
+            if(this.options.onStyleChange instanceof Function) {
+                this.options.onStyleChange(event, this.lastStyle);
+            }
 
-        const genetiveLimit = 1;
-        const genetiveChar = featureLength > genetiveLimit ? 's': '';
-        Dialog.confirm({
-            title: 'Delete feature',
-            message: `Delete ${featureLength} selected feature${genetiveChar}?`,
-            confirmText: 'Delete',
-            onConfirm: () => {
-                const features = [ ...this.select.getFeatures().getArray() ];
-                this.deleteFeatures(features);
+            // Reset for the last deselected item
+            if(event.index === 0) {
+                this.colorHasChanged = false;
             }
         });
-    }
 
-    deleteFeatures(features) {
-        const map = this.getMap();
-        if(!map) {
-            return;
+        // Note: 
+        // @Consumer callback
+        if(this.options.onSelectRemove instanceof Function) {
+            this.options.onSelectRemove(event);
         }
-
-        const layerWrappers = LayerManager.getFeatureLayers();
-
-        // The user can select features from any layer
-        // Each feature needs to be removed from its associated layer
-        features.forEach((feature) => {
-            layerWrappers.forEach((layerWrapper) => {
-                const source = layerWrapper.getLayer().getSource();
-                if(source.hasFeature(feature)) {
-                    // Remove feature from layer
-                    source.removeFeature(feature);
-
-                    // Remove feature from selected collection
-                    this.select.getFeatures().remove(feature);
-
-                    // Remove overlays associated with the feature
-                    if(hasCustomFeatureProperty(feature.getProperties(), FeatureProperties.tooltip)) {
-                        map.removeOverlay(feature.getProperties().oltb.tooltip);
-                    }
-
-                    // User defined callback from constructor
-                    if(this.options.removedfeature instanceof Function) {
-                        this.options.removedfeature(feature);
-                    }
-                }
-            });
-        });
     }
 
-    onFeatureColorChange(event) {
+    doModifyStart(event) {
+        const features = event.features;
+
+        features.forEach((feature) => {
+            if(this.hasTooltip(feature)) {
+                this.attachOnChange(feature);
+            }
+        });
+
+        // Note: 
+        // @Consumer callback
+        if(this.options.onModifyStart instanceof Function) {
+            this.options.onModifyStart(event);
+        }
+    }
+
+    doModifyEnd(event) {
+        const features = event.features;
+        features.forEach((feature) => {
+            if(this.hasTooltip(feature)) {
+                this.detachOnChange(feature);
+            }
+        });
+
+        // Note: 
+        // @Consumer callback
+        if(this.options.onModifyEnd instanceof Function) {
+            this.options.onModifyEnd(event);
+        }
+    }
+
+    doTranslateStart(event) {
+        const features = event.features;
+
+        features.forEach((feature) => {
+            if(this.hasTooltip(feature)) {
+                this.attachOnChange(feature);
+            }
+        });
+
+        // Note: 
+        // @Consumer callback
+        if(this.options.onTranslateStart instanceof Function) {
+            this.options.onTranslateStart(event);
+        }
+    }
+
+    doTranslateEnd(event) {
+        const features = event.features;
+
+        features.forEach((feature) => {
+            if(this.hasTooltip(feature)) {
+                this.detachOnChange(feature);
+            }
+        });
+
+        // Note: 
+        // @Consumer callback
+        if(this.options.onTranslatEnd instanceof Function) {
+            this.options.onTranslatEnd(event);
+        }
+    }
+
+    doSnap(event) {
+        // Note: 
+        // @Consumer callback
+        if(this.options.onSnapped instanceof Function) {
+            this.options.onSnapped(event);
+        }
+    }
+
+    doFeatureColorChange(event) {
         this.colorHasChanged = true;
 
-        const fillColor = this.fillColor.getAttribute('data-oltb-color');
-        const strokeColor = this.strokeColor.getAttribute('data-oltb-color');
+        const fillColor = this.uiRefFillColor.getAttribute('data-oltb-color');
+        const strokeColor = this.uiRefStrokeColor.getAttribute('data-oltb-color');
 
-        const features = [ ...this.select.getFeatures().getArray() ];
+        const features = [ ...this.interactionSelect.getFeatures().getArray() ];
 
         this.lastStyle = new Style({
             fill: new Fill({
@@ -492,23 +774,36 @@ class EditTool extends Control {
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 
-    isTwoAndOnlyTwoShapes(features) {
-        return features.length === 2;
+    doFeatureChange(feature) {
+        const selectedFeatures = this.interactionSelect.getFeatures().getArray();
+        const hasOtherTooltip = !TooltipManager.isEmpty();
+
+        const geometry = feature.getGeometry();
+        const measureValue = getMeasureValue(geometry);
+
+        if(hasOtherTooltip && selectedFeatures.length === 1) {
+            this.tooltipItem.innerHTML = `${measureValue.value} ${measureValue.unit}`;
+        }else {
+            const overlay = feature.getProperties().oltb.tooltip;
+            overlay.setPosition(getMeasureCoordinates(geometry));
+
+            const tooltip = overlay.getElement();
+            tooltip.firstElementChild.innerHTML = `${measureValue.value} ${measureValue.unit}`;
+        }
     }
 
-    onShapeOperator(operation, type) {
+    doShapeOperation(operation, type) {
         const map = this.getMap();
         if(!map) {
             return;
         }
 
-        const features = [ ...this.select.getFeatures().getArray() ];
+        const features = [ ...this.interactionSelect.getFeatures().getArray() ];
 
         if(!this.isTwoAndOnlyTwoShapes(features)) {
             Toast.info({
-                title: 'Oops',
-                message: 'Strict two overlapping features must be selected', 
-                autoremove: Config.autoRemovalDuation.normal
+                i18nKey: `${I18N_BASE}.toasts.infos.strictTwoFeatures`,
+                autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
             });
 
             return;
@@ -531,7 +826,7 @@ class EditTool extends Control {
 
             // Check if a or b was a measurement, if so, create a new tooltip
             if(this.isMeasurementType(a) || this.isMeasurementType(b)) {
-                const tooltip = generateTooltip();
+                const tooltip = createUITooltip();
 
                 feature.setProperties({
                     oltb: {
@@ -554,172 +849,75 @@ class EditTool extends Control {
 
             // Add the unioned shape
             const layerWrapper = LayerManager.getActiveFeatureLayer();
-            const source = layerWrapper.getLayer().getSource();
-
-            source.addFeature(feature);
+            LayerManager.addFeatureToLayer(feature, layerWrapper);
 
             // Remove two original shapes
-            this.deleteFeatures(features);
+            this.doDeleteFeatures(features);
 
-            // User defined callback from constructor
-            if(this.options.shapeOperation instanceof Function) {
-                this.options.shapeOperation(type, a, b, feature);
+            // Note: 
+            // @Consumer callback
+            if(this.options.onShapeOperation instanceof Function) {
+                this.options.onShapeOperation(type, a, b, feature);
             }
         }catch(error) {
-            const errorMessage = 'Failed to perform shape operation';
             LogManager.logError(FILENAME, 'onShapeOperator', {
-                message: errorMessage,
+                message: 'Failed to perform shape operation',
                 error: error
             });
             
             Toast.error({
-                title: 'Error',
-                message: errorMessage
+                i18nKey: `${I18N_BASE}.toasts.operationFailed`
             }); 
 
-            // User defined callback from constructor
-            if(this.options.error instanceof Function) {
-                this.options.error(error);
+            // Note: 
+            // @Consumer callback
+            if(this.options.onError instanceof Function) {
+                this.options.onError(error);
             }
         }
     }
 
-    unionFeatures(a, b) {
-        return jsts.operation.overlay.OverlayOp.union(a, b);
+    doClearColors() {
+        this.uiRefFillColor.setAttribute('data-oltb-color', this.localStorage.fillColor);
+        this.uiRefFillColor.firstElementChild.style.backgroundColor = this.localStorage.fillColor;
+
+        this.uiRefStrokeColor.setAttribute('data-oltb-color', this.localStorage.strokeColor);
+        this.uiRefStrokeColor.firstElementChild.style.backgroundColor = this.localStorage.strokeColor;
     }
 
-    intersectFeatures(a, b) {
-        return jsts.operation.overlay.OverlayOp.intersection(a, b);
-    }
-
-    excludeFeatures(a, b) {
-        return jsts.operation.overlay.OverlayOp.symDifference(a, b);
-    }
-
-    differenceFeatures(a, b) {
-        return jsts.operation.overlay.OverlayOp.difference(a, b);
-    }
-
-    onWindowFeatureLayerRemoved(event) {
-        this.select.getFeatures().clear();
-    }
-
-    attachOnChange(feature) {
-        const selectedFeatures = this.select.getFeatures().getArray();
-        const hasOtherTooltip = !TooltipManager.isEmpty();
-
-        if(Boolean(hasOtherTooltip) && selectedFeatures.length === 1) {
-            this.tooltipItem = TooltipManager.push(KEY_TOOLTIP);
-        }
-
-        const properties = feature.getProperties();
-        const hiddenTooltip = hasOtherTooltip && selectedFeatures.length === 1;
-
-        properties.oltb.tooltip.getElement().className = `oltb-overlay-tooltip ${hiddenTooltip ? 'oltb-overlay-tooltip--hidden' : ''}`;
-        properties.oltb.onChangeListener = feature.getGeometry().on(Events.openLayers.change, this.onFeatureChange.bind(this, feature));
-    }
-
-    detachOnChange(feature) {
-        const selectedFeatures = this.select.getFeatures().getArray();
-        const hasOtherTooltip = !TooltipManager.isEmpty();
-        
-        if(Boolean(hasOtherTooltip) && selectedFeatures.length === 1) {
-            TooltipManager.pop(KEY_TOOLTIP);
-        }
-
-        const properties = feature.getProperties();
-        const geometry = feature.getGeometry();
-
-        unByKey(properties.oltb.onChangeListener);
-
-        const overlay = properties.oltb.tooltip;
-        overlay.setPosition(getMeasureCoordinates(geometry));
-
-        const tooltip = overlay.getElement();
-        tooltip.className = 'oltb-overlay-tooltip';
-
-        const measureValue = getMeasureValue(geometry);
-        tooltip.firstElementChild.innerHTML = `${measureValue.value} ${measureValue.unit}`;
-    }
-
-    onFeatureChange(feature) {
-        const selectedFeatures = this.select.getFeatures().getArray();
-        const hasOtherTooltip = !TooltipManager.isEmpty();
-
-        const geometry = feature.getGeometry();
-        const measureValue = getMeasureValue(geometry);
-
-        if(Boolean(hasOtherTooltip) && selectedFeatures.length === 1) {
-            this.tooltipItem.innerHTML = `${measureValue.value} ${measureValue.unit}`;
-        }else {
-            const overlay = feature.getProperties().oltb.tooltip;
-            overlay.setPosition(getMeasureCoordinates(geometry));
-
-            const tooltip = overlay.getElement();
-            tooltip.firstElementChild.innerHTML = `${measureValue.value} ${measureValue.unit}`;
-        }
-    }
-
-    deSelect() {
-        this.deActivateTool();
-    }
-
-    handleClick() {
-        LogManager.logDebug(FILENAME, 'handleClick', 'User clicked tool');
-        
-        // User defined callback from constructor
-        if(this.options.click instanceof Function) {
-            this.options.click();
-        }
-        
-        if(this.active) {
-            this.deActivateTool();
-        }else {
-            this.activateTool();
-        }
-    }
-
-    activateTool() {
+    doDeleteFeatures(features) {
         const map = this.getMap();
         if(!map) {
             return;
         }
 
-        [
-            this.select,
-            this.translate,
-            this.modify
-        ].forEach((item) => {
-            map.addInteraction(item);
+        const layerWrappers = LayerManager.getFeatureLayers();
+
+        // Note: 
+        // The user can select features from any layer
+        // Each feature needs to be removed from its associated layer
+        features.forEach((feature) => {
+            layerWrappers.forEach((layerWrapper) => {
+                const source = layerWrapper.getLayer().getSource();
+                if(!source.hasFeature(feature)) {
+                    return;
+                }
+
+                LayerManager.removeFeatureFromLayer(feature, layerWrapper);
+                this.interactionSelect.getFeatures().remove(feature);
+
+                // Remove overlays associated with the feature
+                if(this.hasTooltip(feature)) {
+                    map.removeOverlay(feature.getProperties().oltb.tooltip);
+                }
+
+                // Note: 
+                // @Consumer callback
+                if(this.options.onRemovedFeature instanceof Function) {
+                    this.options.onRemovedFeature(feature);
+                }
+            });
         });
-
-        ToolManager.setActiveTool(this);
-
-        this.active = true;
-        this.editToolbox.classList.add(`${CLASS_TOOLBOX_SECTION}--show`);
-        this.button.classList.add(`${CLASS_TOOL_BUTTON}--active`);
-
-        this.localStorage.active = true;
-        StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
-    }
-
-    deActivateTool() {
-        [
-            this.select,
-            this.translate,
-            this.modify
-        ].forEach((item) => {
-            this.getMap().removeInteraction(item);
-        });
-
-        ToolManager.removeActiveTool();
-
-        this.active = false;
-        this.editToolbox.classList.remove(`${CLASS_TOOLBOX_SECTION}--show`);
-        this.button.classList.remove(`${CLASS_TOOL_BUTTON}--active`);
-
-        this.localStorage.active = false;
-        StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 }
 

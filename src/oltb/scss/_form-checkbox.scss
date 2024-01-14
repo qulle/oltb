@@ -1,14 +1,17 @@
 .oltb-checkbox-wrapper {
     display: flex;
     align-items: center;
-    margin-bottom: 1rem;
+    
+    &--margin {
+        margin-bottom: 1rem;
+    }
 
     &:last-child {
         margin-bottom: 0;
     }
 
     &__checkbox {
-        margin: .25rem .625rem .25rem .25rem;
+        margin: .25rem .625rem .25rem 0;
         width: 1.25rem;
         height: 1.25rem;
         flex-shrink: 0;
@@ -26,17 +29,18 @@
         transition: border-color 150ms ease-in-out, box-shadow 150ms ease-in-out;
     
         &:checked {
-            background-color: $color-blue-mid;
-            border-color: $color-blue-mid;
+            background-color: $color-blue-300;
+            border-color: $color-blue-300;
         }
     
         &:checked[type="checkbox"] {
+            background-repeat: no-repeat;
             background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10l3 3l6-6'/%3e%3c/svg%3e");
         }
     
         &:focus {
-            border: 1px solid $color-blue-mid;
-            box-shadow: 0 0 0 $shadow-focus-width rgba($color-blue-mid, .3);
+            border: 1px solid $color-blue-300;
+            box-shadow: 0 0 0 $shadow-focus-width rgba($color-blue-300, .3);
         }
     }
 }
@@ -47,16 +51,16 @@ body.oltb-dark .oltb-checkbox-wrapper {
     }
 
     &__checkbox {
-        background-color: $color-gray-mid;
+        background-color: $color-gray-300;
         border: none;
 
         &:checked {
-            background-color: $color-blue-mid;
+            background-color: $color-blue-300;
         }
 
         &:focus {
             border: none;
-            box-shadow: 0 0 0 $shadow-focus-width rgba($color-blue-light, .7);
+            box-shadow: 0 0 0 $shadow-focus-width rgba($color-blue-200, .7);
         }
     }
 }

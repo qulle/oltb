@@ -1,42 +1,44 @@
+import _ from 'lodash';
 import { DOM } from '../helpers/browser/DOM';
-import { Config } from '../core/Config';
 import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
-import { LogManager } from '../core/managers/LogManager';
+import { LogManager } from '../managers/LogManager';
 import { isHorizontal } from '../helpers/IsRowDirection';
-import { StateManager } from '../core/managers/StateManager';
+import { StateManager } from '../managers/StateManager';
 import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
-import { ElementManager } from '../core/managers/ElementManager';
+import { ConfigManager } from '../managers/ConfigManager';
+import { ElementManager } from '../managers/ElementManager';
 import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
-import { SvgPaths, getIcon } from '../core/icons/GetIcon';
+import { SvgPaths, getIcon } from '../icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
+import { TranslationManager } from '../managers/TranslationManager';
 
 const FILENAME = 'tools/DirectionTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
+const I18N_BASE = 'tools.directionTool';
 
 const DefaultOptions = Object.freeze({
-    click: undefined,
-    changed: undefined
+    onInitiated: undefined,
+    onClicked: undefined,
+    onBrowserStateCleared: undefined,
+    onChanged: undefined
 });
 
-// Note: The values are flipped
 const DirectionData = Object.freeze({
-    col: Object.freeze({
+    col: {
         class: 'col',
-        tippyContent: 'Horizontal toolbar',
         icon: getIcon({
             path: SvgPaths.symmetryHorizontal.mixed,
             class: `${CLASS_TOOL_BUTTON}__icon`
         })
-    }),
-    row: Object.freeze({
+    },
+    row: {
         class: 'row',
-        tippyContent: 'Vertical toolbar',
         icon: getIcon({
             path: SvgPaths.symmetryVertical.mixed,
             class: `${CLASS_TOOL_BUTTON}__icon`
         })
-    })
+    }
 });
 
 const LocalStorageNodeName = LocalStorageKeys.directionTool;
@@ -44,6 +46,13 @@ const LocalStorageDefaults = Object.freeze({
     direction: DirectionData.col.class
 });
 
+/**
+ * About:
+ * Change direction of the Toolbar
+ * 
+ * Description:
+ * The Toolbar is vertical by default, via this tool the Toolbar can be made horizontal.
+ */
 class DirectionTool extends Control {
     constructor(options = {}) {
         LogManager.logDebug(FILENAME, 'constructor', 'init');
@@ -52,22 +61,24 @@ class DirectionTool extends Control {
             element: ElementManager.getToolbarElement()
         });
 
+        const i18n = TranslationManager.get(I18N_BASE);
         const button = DOM.createElement({
             element: 'button',
-            html: isHorizontal() 
-                ? DirectionData.row.icon
-                : DirectionData.col.icon,
+            html: this.getToolIcon(),
             class: CLASS_TOOL_BUTTON,
             attributes: {
-                type: 'button',
-                'data-tippy-content': `${(
-                    isHorizontal() 
-                        ? DirectionData.row.tippyContent
-                        : DirectionData.col.tippyContent
-                )} (${ShortcutKeys.directionTool})`
+                'type': 'button',
+                'data-tippy-content': `${i18n.title} (${ShortcutKeys.directionTool})`,
+                'data-tippy-content-post': `(${ShortcutKeys.directionTool})`,
+                'data-oltb-i18n': `${I18N_BASE}.title`
             },
             listeners: {
-                'click': this.handleClick.bind(this)
+                'click': this.onClickTool.bind(this)
+            },
+            prototypes: {
+                getTippy: function() {
+                    return this._tippy;
+                }
             }
         });
 
@@ -76,53 +87,49 @@ class DirectionTool extends Control {
         ]);
         
         this.button = button;
-        this.active = false;
-        this.options = { ...DefaultOptions, ...options };
+        this.isActive = false;
+        this.options = _.merge(_.cloneDeep(DefaultOptions), options);
         
         this.localStorage = StateManager.getAndMergeStateObject(
             LocalStorageNodeName, 
             LocalStorageDefaults
         );
 
-        this.onWindowSizeCheck();
+        this.shouldToolButtonBeHidden();
 
-        window.addEventListener(Events.browser.resize, this.onWindowSizeCheck.bind(this));
-        window.addEventListener(Events.custom.settingsCleared, this.onWindowSettingsCleared.bind(this));
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
-    }
+        window.addEventListener(Events.browser.resize, this.onWindowSizeCheck.bind(this));
+        window.addEventListener(Events.custom.browserStateCleared, this.onWindowBrowserStateCleared.bind(this));
 
-    onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, ShortcutKeys.directionTool)) {
-            this.handleClick(event);
+        // Note: 
+        // @Consumer callback
+        if(this.options.onInitiated instanceof Function) {
+            this.options.onInitiated();
         }
     }
 
-    onWindowSizeCheck(event) {
-        if(window.innerWidth <= Config.deviceWidth.sm) {
-            this.button.classList.add(`${CLASS_TOOL_BUTTON}--hidden`);
-        }else {
-            this.button.classList.remove(`${CLASS_TOOL_BUTTON}--hidden`);
-        }
+    getName() {
+        return FILENAME;
     }
 
-    onWindowSettingsCleared() {
-        const active = this.getActiveDirection();
-        this.swithDirectionFromTo(active, DirectionData.col);
-    }
+    // -------------------------------------------------------------------
+    // # Section: Tool Control
+    // -------------------------------------------------------------------
 
-    handleClick() {
-        LogManager.logDebug(FILENAME, 'handleClick', 'User clicked tool');
-
-        // User defined callback from constructor
-        if(this.options.click instanceof Function) {
-            this.options.click();
-        }
+    onClickTool(event) {
+        LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
 
         this.momentaryActivation();
+
+        // Note: 
+        // @Consumer callback
+        if(this.options.onClicked instanceof Function) {
+            this.options.onClicked();
+        }
     }
 
     momentaryActivation() {
-        this.toggleDirection();
+        this.doToggleDirection();
 
         const active = this.getActiveDirection();
         window.dispatchEvent(new CustomEvent(Events.custom.toolbarDirectionChange, {
@@ -130,36 +137,53 @@ class DirectionTool extends Control {
                 direction: active.class
             }
         }));
+    }
 
-        // User defined callback from constructor
-        if(this.options.changed instanceof Function) {
-            this.options.changed(active.class);
+    // -------------------------------------------------------------------
+    // # Section: Browser Events
+    // -------------------------------------------------------------------
+
+    onWindowKeyUp(event) {
+        if(isShortcutKeyOnly(event, ShortcutKeys.directionTool)) {
+            this.onClickTool(event);
         }
     }
 
-    toggleDirection() {
-        const active = this.getActiveDirection();
-        const inActive = this.getInActiveDirection();
-
-        this.swithDirectionFromTo(active, inActive);
+    onWindowSizeCheck(event) {
+        this.shouldToolButtonBeHidden();
     }
 
-    swithDirectionFromTo(from, to) {
-        this.localStorage.direction = to.class;
-        StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
+    onWindowBrowserStateCleared() {
+        const active = this.getActiveDirection();
+        this.doSwitchDirectionFromTo(active, DirectionData.col);
 
-        const toolbarElement = ElementManager.getToolbarElement();
-        
-        toolbarElement.classList.remove(from.class);
-        document.body.classList.remove(`oltb-${from.class}`);
+        // Note: 
+        // @Consumer callback
+        if(this.options.onBrowserStateCleared instanceof Function) {
+            this.options.onBrowserStateCleared();
+        }
+    }
 
-        toolbarElement.classList.add(to.class);
-        document.body.classList.add(`oltb-${to.class}`);
+    // -------------------------------------------------------------------
+    // # Section: Conversions/Validation
+    // -------------------------------------------------------------------
 
-        // Update toolbar button
-        this.button.removeChild(this.button.firstElementChild);
-        this.button.insertAdjacentHTML('afterbegin', to.icon);
-        this.button._tippy.setContent(`${to.tippyContent} (${ShortcutKeys.directionTool})`);
+    shouldToolButtonBeHidden() {
+        if(window.innerWidth <= ConfigManager.getConfig().deviceWidth.sm) {
+            this.button.classList.add(`${CLASS_TOOL_BUTTON}--hidden`);
+        }else {
+            this.button.classList.remove(`${CLASS_TOOL_BUTTON}--hidden`);
+        }
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Getters and Setters
+    // -------------------------------------------------------------------
+
+    getToolIcon() {
+        return isHorizontal() 
+            ? DirectionData.row.icon
+            : DirectionData.col.icon;
     }
 
     getInActiveDirection() {
@@ -172,6 +196,39 @@ class DirectionTool extends Control {
         return isHorizontal()
             ? DirectionData.row
             : DirectionData.col;
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Tool DoActions
+    // -------------------------------------------------------------------
+
+    doToggleDirection() {
+        const active = this.getActiveDirection();
+        const inActive = this.getInActiveDirection();
+
+        this.doSwitchDirectionFromTo(active, inActive);
+
+        // Note: 
+        // @Consumer callback
+        if(this.options.onChanged instanceof Function) {
+            this.options.onChanged(inActive.class);
+        }
+    }
+
+    doSwitchDirectionFromTo(from, to) {
+        this.localStorage.direction = to.class;
+        StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
+
+        const uiRefToolbarElement = ElementManager.getToolbarElement();
+        
+        uiRefToolbarElement.classList.remove(from.class);
+        document.body.classList.remove(`oltb-${from.class}`);
+
+        uiRefToolbarElement.classList.add(to.class);
+        document.body.classList.add(`oltb-${to.class}`);
+
+        this.button.removeChild(this.button.firstElementChild);
+        this.button.insertAdjacentHTML('afterbegin', to.icon);
     }
 }
 

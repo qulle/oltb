@@ -1,5 +1,6 @@
-// Note: These properties are placed inside the oltb object in the feature
-// So the don't need to be prefixed
+// Note: 
+// These properties are placed inside the oltb object in the feature
+// So they don't need to be prefixed
 const FeatureProperties = Object.freeze({
     type: Object.freeze({
         layer: 'layer',

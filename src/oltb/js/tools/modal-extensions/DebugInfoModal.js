@@ -1,17 +1,25 @@
+import _ from 'lodash';
 import BrowserDetector from 'browser-dtector';
 import { DOM } from '../../helpers/browser/DOM';
 import { Toast } from '../../common/Toast';
-import { Config } from '../../core/Config';
 import { Events } from '../../helpers/constants/Events';
 import { toLonLat } from 'ol/proj';
 import { ModalBase } from '../../common/modals/ModalBase';
-import { LogManager } from '../../core/managers/LogManager';
+import { LogManager } from '../../managers/LogManager';
+import { v4 as uuidv4 } from 'uuid';
 import { jsonReplacer } from '../../helpers/browser/JsonReplacer';
-import { SvgPaths, getIcon } from '../../core/icons/GetIcon';
-import { ProjectionManager } from '../../core/managers/ProjectionManager';
+import { ConfigManager } from '../../managers/ConfigManager';
+import { copyToClipboard } from '../../helpers/browser/CopyToClipboard';
+import { SvgPaths, getIcon } from '../../icons/GetIcon';
+import { ProjectionManager } from '../../managers/ProjectionManager';
+import { TranslationManager } from '../../managers/TranslationManager';
 
 const FILENAME = 'modal-extensions/DebugInfoModal.js';
 const ID_PREFIX = 'oltb-debug';
+const ID_EVENT_LOG = 'oltb-event-log';
+const CLASS_TOGGLEABLE = 'oltb-toggleable';
+const I18N_BASE = 'modalExtensions.debugInfoModal';
+const I18N_BASE_COMMON = 'commons';
 
 const DefaultOptions = Object.freeze({
     map: undefined,
@@ -19,66 +27,122 @@ const DefaultOptions = Object.freeze({
     onClose: undefined
 });
 
+/**
+ * About:
+ * Manager providing debugging information
+ */
 class DebugInfoModal extends ModalBase {
     constructor(options = {}) {
         LogManager.logDebug(FILENAME, 'constructor', 'init');
 
         super(
-            'Debug information', 
+            TranslationManager.get(`${I18N_BASE}.title`), 
             DefaultOptions.maximized, 
             options.onClose
         );
-        
-        this.options = { ...DefaultOptions, ...options };
+            
+        this.options = _.merge(_.cloneDeep(DefaultOptions), options);
         this.#createModal();
     }
+
+    getName() {
+        return FILENAME;
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: User Interface
+    // -------------------------------------------------------------------
 
     #createModal() {
         const modalContent = this.#generateModalContent();
         this.show(modalContent);
 
-        const toggleableTriggers = modalContent.querySelectorAll('.oltb-toggleable');
-        toggleableTriggers.forEach((toggle) => {
+        modalContent.querySelectorAll(`.${CLASS_TOGGLEABLE}`).forEach((toggle) => {
             toggle.addEventListener(Events.browser.click, this.onToggleSection.bind(this, toggle));
         });
     }
 
     #generateCommandSection() {
+        const i18n = TranslationManager.get(`${I18N_BASE}.form`);
         const commandsCollection = DOM.createElement({
             element: 'select',
             class: 'oltb-select'
         });
 
+        // Default item, the top element that tells user to pick an item
+        const option = DOM.createElement({
+            element: 'option', 
+            text: i18n.defaultItem.title,
+            attributes: {
+                disabled: 'disabled',
+                selected: 'selected'
+            }
+        });
+
+        DOM.appendChildren(commandsCollection, [
+            option
+        ]);
+
+        // All groups that will contain selectable elements as children
         [
             {
-                name: 'Log map to browser console',
-                action: 'log.map.to.console'
-            },
-            {
-                name: 'Clear event log',
-                action: 'clear.event.log'
+                name: i18n.miscGroup.title,
+                items: [
+                    {
+                        name: i18n.miscGroup.items.logToBrowser,
+                        action: 'log.map.to.console'
+                    }, {
+                        name: i18n.miscGroup.items.generateUUID,
+                        action: 'generate.uuid'
+                    }
+                ]
+            }, {
+                name: i18n.eventLogGroup.title,
+                items: [
+                    {
+                        name: i18n.eventLogGroup.items.copyEventLog,
+                        action: 'copy.event.log'
+                    }, {
+                        name: i18n.eventLogGroup.items.clearEventLog,
+                        action: 'clear.event.log'
+                    }
+                ]
             }
-        ].forEach((item) => {
-            const option = DOM.createElement({
-                element: 'option', 
-                text: item.name, 
-                value: item.action
+        ].forEach((group) => {
+            const optgroup = DOM.createElement({
+                element: 'optgroup', 
+                attributes: {
+                    label: group.name
+                }
             });
 
             DOM.appendChildren(commandsCollection, [
-                option
+                optgroup
             ]);
+
+            // Children to each group (the selectable items)
+            group.items.forEach((item) => {
+                const option = DOM.createElement({
+                    element: 'option', 
+                    text: item.name, 
+                    value: item.action
+                });
+    
+                DOM.appendChildren(optgroup, [
+                    option
+                ]);
+            });
         });
 
         const actionButton = DOM.createElement({
             element: 'button',
-            text: 'Do action',
+            text: i18n.doAction,
             class: 'oltb-btn oltb-btn--blue-mid oltb-ml-05',
             attributes: {
-                type: 'button'
+                'type': 'button'
             },
             listeners: {
-                'click': this.onDoAction.bind(this)
+                'click': this.onAction.bind(this)
             }
         });
         
@@ -98,6 +162,7 @@ class DebugInfoModal extends ModalBase {
     }
 
     #generateSection(section, index) {
+        const i18n = TranslationManager.get(`${I18N_BASE_COMMON}.titles`);
         const sectionWrapper = DOM.createElement({
             element: 'div',
             class: 'oltb-debug'
@@ -126,10 +191,10 @@ class DebugInfoModal extends ModalBase {
                 width: 16,
                 height: 16,
             }),
-            title: 'Toggle section',
+            title: i18n.toggleSection,
             class: 'oltb-debug__toggle oltb-btn oltb-btn--blank oltb-tippy',
             attributes: {
-                type: 'button'
+                'type': 'button'
             }
         });
 
@@ -189,13 +254,40 @@ class DebugInfoModal extends ModalBase {
     }
 
     #generateLogSection(section) {
+        // Note:
+        // Defining the default Map to contain all levels regardless of the log contains that level or not
+        const chips = new Map();
+        const defaultLevels = LogManager.getLogLevels();
+        for(const [key, value] of Object.entries(defaultLevels)) {
+            chips.set(value.name, {
+                count: 0,
+                name: value.name,
+                icon: value.icon,
+                color: value.color,
+                backgroundColor: value.backgroundColor
+            });
+        }
+
         const eventLog = DOM.createElement({
             element: 'div',
-            id: 'oltb-event-log',
+            id: ID_EVENT_LOG,
             class: 'oltb-log oltb-thin-scrollbars'
         });
 
         section.content.forEach((entry, index) => {
+            // Note:
+            // To create a filter using chips above the eventlog
+            const current = chips.get(entry.level.name);
+            chips.set(entry.level.name, {
+                count: current.count + 1,
+                name: entry.level.name,
+                icon: entry.level.icon,
+                color: entry.level.color,
+                backgroundColor: entry.level.backgroundColor
+            });
+
+            // Note:
+            // Both normal strings and complex JSON structures can be logged
             if(typeof entry.value === 'string') {
                 const logItem = this.#generateTextLogItem(entry);
                 DOM.appendChildren(eventLog, [
@@ -209,20 +301,56 @@ class DebugInfoModal extends ModalBase {
             }
         });
 
-        return eventLog;
+        const eventLogWrapper = DOM.createElement({
+            element: 'div',
+            class: 'oltb-log__wrapper'
+        });
+
+        const chipWrapper = DOM.createElement({
+            element: 'div',
+            class: 'oltb-log__filter oltb-hide-scrollbars'
+        });
+
+        DOM.appendChildren(eventLogWrapper, [
+            chipWrapper,
+            eventLog
+        ]);
+
+        chips.forEach((value, key, map) => {
+            const chip = DOM.createElement({
+                element: 'span',
+                class: 'oltb-chip',
+                style: `background-color: ${value.backgroundColor}; color: ${value.color};`,
+                text: `${value.icon} ${key} (${value.count})`,
+                attributes: {
+                    'data-oltb-reset-value': `${value.icon} ${key} (0)`
+                },
+                listeners: {
+                    click: () => {
+                        this.doFilterEventLog(chip, value.name, eventLog)
+                    }
+                }
+            });
+    
+            DOM.appendChildren(chipWrapper, [
+                chip
+            ]);
+        });
+
+        return eventLogWrapper;
     }
 
     #generateTextLogItem(entry) {
         const logHeader = DOM.createElement({
             element: 'div',
-            class: 'oltb-log__header',
+            class: 'oltb-log__header'
         });
 
         const logTitle = DOM.createElement({
             element: 'div',
-            class: 'oltb-log__title', 
+            class: 'oltb-log__title',
             html: `
-                <span class="oltb-tippy oltb-log__level-icon" title="${entry.level.info}">${
+                <span class="oltb-tippy oltb-log__level-icon" title="${entry.level.name}">${
                     entry.level.icon
                 }</span><span class="oltb-log__timestamp">${
                     entry.timestamp
@@ -232,8 +360,7 @@ class DebugInfoModal extends ModalBase {
                     entry.method
                 } &rarr; ${
                     entry.value
-                }
-            `
+                }` // <- Note: Enter/space will cause space in output, not good when copying GUID/UUID
         }); 
 
         DOM.appendChildren(logHeader, [
@@ -243,7 +370,10 @@ class DebugInfoModal extends ModalBase {
         const logItem = DOM.createElement({
             element: 'div',
             style: `background-color: ${entry.level.backgroundColor}; color: ${entry.level.color};`,
-            class: 'oltb-log__item'
+            class: 'oltb-log__item',
+            attributes: {
+                'data-oltb-log-name': entry.level.name
+            }
         });
 
         DOM.appendChildren(logItem, [
@@ -254,6 +384,7 @@ class DebugInfoModal extends ModalBase {
     }
 
     #generateObjectLogItem(entry, index) {
+        const i18n = TranslationManager.get(`${I18N_BASE_COMMON}.titles`);
         const logHeader = DOM.createElement({
             element: 'div',
             class: 'oltb-log__header oltb-log__header--toggleable oltb-toggleable',
@@ -264,9 +395,9 @@ class DebugInfoModal extends ModalBase {
 
         const logTitle = DOM.createElement({
             element: 'div',
-            class: 'oltb-log__title', 
+            class: 'oltb-log__title',
             html: `
-                <span class="oltb-tippy oltb-log__level-icon" title="${entry.level.info}">${
+                <span class="oltb-tippy oltb-log__level-icon" title="${entry.level.name}">${
                     entry.level.icon
                 }</span><span class="oltb-log__timestamp">${
                     entry.timestamp
@@ -274,8 +405,7 @@ class DebugInfoModal extends ModalBase {
                     entry.origin
                 } &rarr; ${
                     entry.method
-                }
-            `
+                }` // <- Note: Enter/space will cause space in output, not good when copying GUID/UUID
         }); 
 
         const logToggle = DOM.createElement({
@@ -287,10 +417,10 @@ class DebugInfoModal extends ModalBase {
                 width: 16,
                 height: 16,
             }),
-            title: 'Toggle section',
+            title: i18n.toggleSection,
             class: 'oltb-log__toggle oltb-btn oltb-btn--blank oltb-tippy',
             attributes: {
-                type: 'button'
+                'type': 'button'
             }
         });
 
@@ -317,7 +447,10 @@ class DebugInfoModal extends ModalBase {
         const logItem = DOM.createElement({
             element: 'div',
             style: `background-color: ${entry.level.backgroundColor}; color: ${entry.level.color};`,
-            class: 'oltb-log__item'
+            class: 'oltb-log__item',
+            attributes: {
+                'data-oltb-log-name': entry.level.name
+            }
         });
 
         DOM.appendChildren(logItem, [
@@ -330,24 +463,73 @@ class DebugInfoModal extends ModalBase {
 
     #generateModalContent() {
         const commandsWrapper = this.#generateCommandSection();
+        const config = ConfigManager.getConfig();
 
-        // OpenLayer Information
+        // App Information
+        const appDataContent = {
+            oltb: {
+                version: config.toolbar.version,
+                url: 'https://github.com/qulle/oltb'
+            },
+            ol: {
+                version: config.openLayers.version,
+                url: `https://openlayers.org/en/v${config.openLayers.version}/apidoc/`
+            },
+            defaultConfig: config
+        };
+
+        // Loaded Translations
+        const languages = TranslationManager.getLanguages();
+        const languageSections = [];
+        languages.forEach((language) => {
+            const section = {
+                title: `${language.value}.json | ${language.text}`,
+                content: language.translation,
+                class: 'oltb-debug__json',
+                display: 'none',
+                json: true
+            };
+
+            languageSections.push(section);
+        });
+
+        // Map Information
         const view = this.options.map?.getView();
-        const appDataContent = view ? {
+        const mapDataContent = view ? {
             zoom: view.getZoom(),
             location: toLonLat(view.getCenter()),
             rotation: view.getRotation(),
             projection: view.getProjection(),
-            proj4Defs: ProjectionManager.getProjections(),
-            defaultConfig: Config
+            proj4Defs: ProjectionManager.getProjections()
         } : {
-            info: 'No map reference found'
+            info: TranslationManager.get(`${I18N_BASE}.noMapFound`)
         };
 
         const browser = new BrowserDetector(window.navigator.userAgent);
         const userAgent = browser.parseUserAgent();
         const browserDataContent = {
-            userAgent: userAgent
+            userAgent: userAgent,
+            device: {
+                isSecureContext: window.isSecureContext,
+                location: {
+                    protocol: window.location.protocol,
+                    domain: window.location.hostname,
+                    path: window.location.pathname,
+                    port: window.location.port
+                }, 
+                screen: {
+                    width: window.screen.width,
+                    height: window.screen.height
+                },
+                window: {
+                    width: window.innerWidth,
+                    height: window.innerHeight,
+                    pixelRatio: {
+                        scalar: window.devicePixelRatio,
+                        percentage: `${window.devicePixelRatio * 100}%`
+                    }
+                }
+            }
         };
 
         // Browser LocalStorage
@@ -382,44 +564,51 @@ class DebugInfoModal extends ModalBase {
         }));
 
         // Eventlog
-        const eventlog = LogManager.getLog().slice().reverse();
+        const eventLog = LogManager.getLog().slice().reverse();
 
         // Generate sections
+        const i18n = TranslationManager.get(`${I18N_BASE}.sections`);
         const sectionFragment = document.createDocumentFragment(); 
         [
             {
-                title: 'App data',
+                title: i18n.appData,
                 content: appDataContent,
                 class: 'oltb-debug__json',
                 display: 'none',
                 json: true
-            },{
-                title: 'Browser data',
+            }, {
+                title: i18n.mapData,
+                content: mapDataContent,
+                class: 'oltb-debug__json',
+                display: 'none',
+                json: true
+            }, {
+                title: i18n.browserData,
                 content: browserDataContent,
                 class: 'oltb-debug__json',
                 display: 'none',
                 json: true
             }, {
-                title: 'Local Storage',
+                title: i18n.localStorage,
                 content: localStorageContent,
                 class: 'oltb-debug__json',
                 display: 'none',
                 json: true
             }, {
-                title: 'Session Storage',
+                title: i18n.sessionStorage,
                 content: sessionStorageContent,
                 class: 'oltb-debug__json',
                 display: 'none',
                 json: true
             }, {
-                title: 'Cookies',
+                title: i18n.cookies,
                 content: cookiesContent,
                 class: 'oltb-debug__json',
                 display: 'none',
                 json: true
-            }, {
-                title: 'Eventlog',
-                content: eventlog,
+            }, ...languageSections, {
+                title: i18n.eventLog,
+                content: eventLog,
                 class: 'oltb-debug__json',
                 display: 'block',
                 json: false
@@ -444,16 +633,24 @@ class DebugInfoModal extends ModalBase {
         return modalContent;
     }
 
+    // -------------------------------------------------------------------
+    // # Section: Events
+    // -------------------------------------------------------------------
+
     onToggleSection(toggle) {
         const targetName = toggle.dataset.oltbToggleableTarget;
-        document.getElementById(targetName)?.slideToggle(Config.animationDuration.fast);
+        const duration = ConfigManager.getConfig().animationDuration.fast;
+        
+        document.getElementById(targetName)?.slideToggle(duration);
     }
 
-    onDoAction() {
+    onAction() {
         const action = this.commandsCollection.value;
         const actions = {
-            'log.map.to.console': this.actionLoggingMap.bind(this),
-            'clear.event.log': this.actionClearEventLog.bind(this)
+            'log.map.to.console': this.doActionLoggingMap.bind(this),
+            'generate.uuid': this.doActionGenerateUUID.bind(this),
+            'copy.event.log': this.doActionCopyEventLog.bind(this),
+            'clear.event.log': this.doActionClearEventLog.bind(this)
         };
 
         const actionMethod = actions[action];
@@ -462,27 +659,99 @@ class DebugInfoModal extends ModalBase {
         }
     }
 
-    actionLoggingMap() {
+    // -------------------------------------------------------------------
+    // # Section: DoActions
+    // -------------------------------------------------------------------
+
+    doFilterEventLog(chip, value, eventLog) {
+        chip.classList.toggle('oltb-chip--deactivated');
+
+        // Apply filter to the targeted log-items
+        const logItems = eventLog.querySelectorAll(`[data-oltb-log-name="${value}"]`);
+        logItems.forEach((item) => {
+            item.classList.toggle('oltb-log__item--hidden');
+        });
+
+        // Note:
+        // :empty is difficult to use beacuase of white spaces
+        // Check if all items in the log are hidden
+        // Then apply helper class to the eventLog itself
+        const logItemsNotHidden = eventLog.querySelectorAll('.oltb-log__item:not(.oltb-log__item--hidden)');
+        if(logItemsNotHidden.length === 0) {
+            eventLog.classList.add('oltb-log--empty');
+        }else {
+            eventLog.classList.remove('oltb-log--empty');
+        }
+    }
+
+    doActionLoggingMap() {
         console.dir(this.options.map);
-        Toast.success({
-            title: 'Logged',
-            message: 'Map object logged to console <strong>(F12)</strong>', 
-            autoremove: Config.autoRemovalDuation.normal
+
+        Toast.info({
+            i18nKey: `${I18N_BASE}.toasts.infos.logMapObject`,
+            autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
         });
     }
 
-    actionClearEventLog() {
+    doActionGenerateUUID() {
+        const uuid = uuidv4();
+        const entry = LogManager.logInformation(FILENAME, 'actionGenerateUUID', uuid);
+
+        const eventLog = document.getElementById(ID_EVENT_LOG);
+        const logItem = this.#generateTextLogItem(entry);
+        DOM.prependChildren(eventLog, [
+            logItem
+        ]);
+    }
+
+    async doActionCopyEventLog() {
+        const eventLog = LogManager.getLog().slice().reverse();
+        
+        try {
+            const indentation = 4;
+            const serialized = JSON.stringify(
+                JSON.retrocycle(eventLog),
+                jsonReplacer, 
+                indentation
+            );
+
+            await copyToClipboard(serialized);
+
+            Toast.info({
+                i18nKey: `${I18N_BASE}.toasts.infos.copyEventLog`,
+                autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
+            });
+        }catch(error) {
+            LogManager.logError(FILENAME, 'doActionCopyEventLog', {
+                message: 'Failed to copy Event Log',
+                error: error
+            });
+                
+            Toast.error({
+                i18nKey: `${I18N_BASE}.toasts.errors.copyEventLog`,
+            });
+        }
+    }
+
+    doActionClearEventLog() {
         LogManager.clearLog();
 
-        const eventLogElement = document.getElementById('oltb-event-log');
-        if(eventLogElement) {
-            eventLogElement.innerHTML = '';
+        // Clear eventlog
+        const uiRefEventLog = document.getElementById(ID_EVENT_LOG);
+        if(uiRefEventLog) {
+            DOM.clearElement(uiRefEventLog);
         }
+        
+        // Reset chips to zero value
+        const chipResetKey = 'data-oltb-reset-value';
+        const uiRefChips = document.querySelectorAll(`[${chipResetKey}]`);
+        uiRefChips.forEach((chip) => {
+            chip.innerHTML = chip.getAttribute(chipResetKey);
+        });
 
-        Toast.success({
-            title: 'Cleared',
-            message: 'Event log was cleared of all entries', 
-            autoremove: Config.autoRemovalDuation.normal
+        Toast.info({
+            i18nKey: `${I18N_BASE}.toasts.infos.clearEventLog`,
+            autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
         });
     }
 }

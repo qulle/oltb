@@ -3,7 +3,7 @@
     list-style: none;
     margin: 0;
     max-width: 250px;
-    min-width: 200px;
+    min-width: 230px;
     padding: 0;
     position: fixed;
     user-select: none;
@@ -29,8 +29,8 @@
   
         &:hover,
         &:focus {
-            background-color: $color-blue-light;
-            color: $color-blue-dark;
+            background-color: $color-blue-200;
+            color: $color-blue-400;
         }
     }
 
@@ -45,6 +45,10 @@
             width: 20px;
             height: 20px;
         }
+    }
+
+    &__text {
+        margin: 0;
     }
   
     &__divider {
@@ -66,7 +70,7 @@ body.oltb-dark .oltb-context-menu {
 
         &:hover,
         &:focus {
-            background-color: $color-blue-mid;
+            background-color: $color-blue-300;
             color: $color-light;
         }
     }

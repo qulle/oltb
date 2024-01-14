@@ -1,24 +1,35 @@
+import _ from 'lodash';
 import { Events } from '../../helpers/constants/Events';
 import { Control } from 'ol/control';
-import { LogManager } from '../../core/managers/LogManager';
+import { LogManager } from '../../managers/LogManager';
 import { ContextMenu } from '../../common/ContextMenu';
-import { MarkerModal } from '../modal-extensions/MarkerModal';
 import { toStringHDMS } from 'ol/coordinate';
-import { LayerManager } from '../../core/managers/LayerManager';
-import { generateMarker } from '../../generators/GenerateMarker';
-import { ElementManager } from '../../core/managers/ElementManager';
-import { SvgPaths, getIcon } from '../../core/icons/GetIcon';
+import { LayerManager } from '../../managers/LayerManager';
+import { ElementManager } from '../../managers/ElementManager';
+import { IconMarkerModal } from '../modal-extensions/IconMarkerModal';
+import { SvgPaths, getIcon } from '../../icons/GetIcon';
+import { generateIconMarker } from '../../generators/GenerateIconMarker';
+import { TranslationManager } from '../../managers/TranslationManager';
 
 const FILENAME = 'hidden-tools/HiddenMarkerTool.js';
 const CLASS_FUNC_BUTTON = 'oltb-func-btn';
 const ID_PREFIX_INFO_WINDOW = 'oltb-info-window-marker';
+const I18N_BASE = 'tools.hiddenMarkerTool';
+const I18N_BASE_COMMON = 'commons';
 
 const DefaultOptions = Object.freeze({
-    added: undefined,
-    removed: undefined,
-    edited: undefined
+    onAdded: undefined,
+    onRemoved: undefined,
+    onEdited: undefined
 });
 
+/**
+ * About:
+ * Create Markers in the Map
+ * 
+ * Description:
+ * Create Markers with icons in the Map to visualize places, Bookmarks, etc.
+ */
 class HiddenMarkerTool extends Control {
     constructor(options = {}) {
         LogManager.logDebug(FILENAME, 'constructor', 'init');
@@ -27,39 +38,108 @@ class HiddenMarkerTool extends Control {
             element: ElementManager.getToolbarElement()
         });
 
-        this.options = { ...DefaultOptions, ...options };
+        this.coordinatesModal = undefined;
+        this.options = _.merge(_.cloneDeep(DefaultOptions), options);
 
-        const createIcon = getIcon({
+        this.createIcon = getIcon({
             path: SvgPaths.plusLarge.stroked
         });
 
-        ContextMenu.addItem({
-            icon: createIcon, 
-            name: 'Create marker', 
-            fn: this.onContextMenuCreateMarker.bind(this)
-        });
-        
-        ContextMenu.addItem({});
+        this.initContextMenuItems();
 
         window.addEventListener(Events.custom.featureEdited, this.onWindowFeatureEdited.bind(this));
         window.addEventListener(Events.custom.featureRemoved, this.onWindowFeatureRemoved.bind(this));
     }
 
+    getName() {
+        return FILENAME;
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Init Helpers
+    // -------------------------------------------------------------------
+
+    initContextMenuItems() {
+        ContextMenu.addItem({
+            icon: this.createIcon, 
+            i18nKey: `${I18N_BASE}.contextItems.createMarker`, 
+            fn: this.onContextMenuCreateMarker.bind(this)
+        });
+        
+        ContextMenu.addItem({});
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: ContextMenu Callbacks
+    // -------------------------------------------------------------------
+
     onContextMenuCreateMarker(map, coordinates, target) {
-        new MarkerModal({
+        this.doShowCoordinatesModal(coordinates);
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Browser Events
+    // -------------------------------------------------------------------
+
+    onWindowFeatureEdited(event) {
+        // Note: 
+        // @Consumer callback
+        if(this.options.onEdited instanceof Function) {
+            this.options.onEdited(event.detail.before, event.detail.after);
+        }
+    }
+
+    onWindowFeatureRemoved(event) {
+        // Note: 
+        // @Consumer callback
+        if(this.options.onRemoved instanceof Function) {
+            this.options.onRemoved(event.detail.feature);
+        }
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Map/UI Callbacks
+    // -------------------------------------------------------------------
+
+    onCreateMarker(result) {
+        this.doAddIconMarker(result);
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Tool DoActions
+    // -------------------------------------------------------------------
+
+    doShowCoordinatesModal(coordinates) {
+        if(this.coordinatesModal) {
+            return;
+        }
+
+        this.coordinatesModal = new IconMarkerModal({
             coordinates: coordinates,
             onCreate: (result) => {
                 this.onCreateMarker(result);
+            },
+            onClose: () => {
+                this.coordinatesModal = undefined;
             }
         });
     }
 
-    onCreateMarker(result) {
+    doAddMarkerToMap(marker) {
+        const layerWrapper = LayerManager.getActiveFeatureLayer({
+            fallback: 'Markers'
+        });
+        
+        layerWrapper.getLayer().getSource().addFeature(marker);
+    }
+
+    doAddIconMarker(result) {
         const coordinates = [
             Number(result.longitude),
             Number(result.latitude)
         ];
 
+        const i18n = TranslationManager.get(`${I18N_BASE_COMMON}.titles`);
         const prettyCoordinates = toStringHDMS(coordinates);
         const infoWindow = {
             title: result.title,
@@ -69,53 +149,40 @@ class HiddenMarkerTool extends Control {
             footer: `
                 <span class="oltb-info-window__coordinates">${prettyCoordinates}</span>
                 <div class="oltb-info-window__buttons-wrapper">
-                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--delete oltb-tippy" title="Delete marker" id="${ID_PREFIX_INFO_WINDOW}-remove"></button>
-                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--crosshair oltb-tippy" title="Copy marker coordinates" id="${ID_PREFIX_INFO_WINDOW}-copy-coordinates" data-coordinates="${prettyCoordinates}"></button>
-                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--copy oltb-tippy" title="Copy marker text" id="${ID_PREFIX_INFO_WINDOW}-copy-text" data-copy="${result.title}, ${result.description}"></button>
-                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--edit oltb-tippy" title="Edit marker" id="${ID_PREFIX_INFO_WINDOW}-edit"></button>
+                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--delete oltb-tippy" data-oltb-i18n="${I18N_BASE_COMMON}.titles.delete" title="${i18n.delete}" id="${ID_PREFIX_INFO_WINDOW}-remove"></button>
+                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--crosshair oltb-tippy" data-oltb-i18n="${I18N_BASE_COMMON}.titles.copyCoordinates" title="${i18n.copyCoordinates}" id="${ID_PREFIX_INFO_WINDOW}-copy-coordinates" data-oltb-coordinates="${prettyCoordinates}"></button>
+                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--copy oltb-tippy" data-oltb-i18n="${I18N_BASE_COMMON}.titles.copyText" title="${i18n.copyText}" id="${ID_PREFIX_INFO_WINDOW}-copy-text" data-oltb-copy="${result.title}, ${result.description}"></button>
+                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--edit oltb-tippy" data-oltb-i18n="${I18N_BASE_COMMON}.titles.edit" title="${i18n.edit}" id="${ID_PREFIX_INFO_WINDOW}-edit"></button>
+                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--layer oltb-tippy" data-oltb-i18n="${I18N_BASE_COMMON}.titles.showLayer" title="${i18n.showLayer}" id="${ID_PREFIX_INFO_WINDOW}-show-layer"></button>
                 </div>
             `
         };
         
-        const marker = new generateMarker({
-            lon: result.longitude,
-            lat: result.latitude,
+        const marker = new generateIconMarker({
+            lon: coordinates[0],
+            lat: coordinates[1],
             title: result.title,
             description: result.description,
             icon: result.icon,
-            fill: result.fill,
-            stroke: result.stroke,
+            markerFill: result.fill,
+            markerStroke: result.stroke,
+            label: result.label,
+            labelFill: result.labelFill,
+            labelStrokeWidth: result.labelStrokeWidth,
+            labelStroke: result.labelStroke,
             infoWindow: infoWindow
         });
     
-        const layerWrapper = LayerManager.getActiveFeatureLayer({
-            fallback: 'Markers'
-        });
-                
-        layerWrapper.getLayer().getSource().addFeature(marker);
-    
-        // User defined callback from constructor
-        if(this.options.added instanceof Function) {
-            this.options.added(marker);
-        }
-    }
+        this.doAddMarkerToMap(marker);
 
-    onWindowFeatureEdited(event) {
-        // User defined callback from constructor
-        if(this.options.edited instanceof Function) {
-            this.options.edited(
-                event.detail.before, 
-                event.detail.after
-            );
+        // Note: 
+        // @Consumer callback
+        if(this.options.onAdded instanceof Function) {
+            this.options.onAdded(marker);
         }
-    }
 
-    onWindowFeatureRemoved(event) {
-        // User defined callback from constructor
-        if(this.options.removed instanceof Function) {
-            this.options.removed(event.detail.feature);
-        }
-    }
+        return marker;
+    } 
 }
 
 export { HiddenMarkerTool };

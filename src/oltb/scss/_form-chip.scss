@@ -1,0 +1,124 @@
+.oltb-chip {
+    display: inline-flex;
+    flex-shrink: 0;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+    font-weight: 400;
+    text-align: center;
+    box-shadow: $box-shadow-mid;
+    text-shadow: $text-shadow-light;
+    border: none;
+    border-radius: 1rem;
+    font-size: 1rem;
+    padding: .5rem;
+    color: $color-light;
+    background-color: transparent;
+    margin: 0.5rem 0;
+
+    &:last-child {
+        margin-right: 0.5rem;
+    }
+
+    &--deactivated {
+        text-decoration: line-through;
+        font-style: italic;
+    }
+
+    &--blue-light {
+        background-color: $color-blue-200;
+
+        &:focus {
+            box-shadow: 0 0 0 $shadow-focus-width rgba($color-blue-200, .5);
+        }
+    }
+
+    &--blue-mid {
+        background-color: $color-blue-300;
+
+        &:focus {
+            box-shadow: 0 0 0 $shadow-focus-width rgba($color-blue-300, .5);
+        }
+    }
+
+    &--blue-dark {
+        background-color: $color-blue-400;
+
+        &:focus {
+            box-shadow: 0 0 0 $shadow-focus-width rgba($color-blue-400, .5);
+        }
+    }
+
+    &--green-light {
+        background-color: $color-green-200;
+
+        &:focus {
+            box-shadow: 0 0 0 $shadow-focus-width rgba($color-green-200, .5);
+        }
+    }
+
+    &--green-mid {
+        background-color: $color-green-300;
+
+        &:focus {
+            box-shadow: 0 0 0 $shadow-focus-width rgba($color-green-300, .5);
+        }
+    }
+
+    &--green-dark {
+        background-color: $color-green-400;
+
+        &:focus {
+            box-shadow: 0 0 0 $shadow-focus-width rgba($color-green-400, .5);
+        }
+    }
+
+    &--red-light {
+        background-color: $color-red-200;
+
+        &:focus {
+            box-shadow: 0 0 0 $shadow-focus-width rgba($color-red-200, .5);
+        }
+    }
+
+    &--red-mid {
+        background-color: $color-red-300;
+
+        &:focus {
+            box-shadow: 0 0 0 $shadow-focus-width rgba($color-red-300, .5);
+        }
+    }
+
+    &--red-dark {
+        background-color: $color-red-400;
+
+        &:focus {
+            box-shadow: 0 0 0 $shadow-focus-width rgba($color-red-400, .5);
+        }
+    }
+
+    &--gray-light {
+        background-color: $color-gray-200;
+
+        &:focus {
+            box-shadow: 0 0 0 $shadow-focus-width rgba($color-gray-200, .5);
+        }
+    }
+
+    &--gray-mid {
+        background-color: $color-gray-300;
+
+        &:focus {
+            box-shadow: 0 0 0 $shadow-focus-width rgba($color-gray-300, .5);
+        }
+    }
+
+    &--gray-dark {
+        background-color: $color-dark;
+
+        &:focus {
+            box-shadow: 0 0 0 $shadow-focus-width rgba($color-gray-400, .5);
+        }
+    }
+}

@@ -1,12 +1,12 @@
 const eventDispatcher = function(
     elements, 
     type, 
-    bubbles = false, 
-    cancelable = true
+    allowBubble = false, 
+    isCancelable = true
 ) {
     const event = new Event(type, {
-        bubbles: bubbles,
-        cancelable: cancelable,
+        bubbles: allowBubble,
+        cancelable: isCancelable,
         composed: false
     });
 

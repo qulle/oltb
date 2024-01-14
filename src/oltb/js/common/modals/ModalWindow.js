@@ -1,12 +1,14 @@
+import _ from 'lodash';
 import { DOM } from '../../helpers/browser/DOM';
 import { ModalBase } from './ModalBase';
-import { LogManager } from '../../core/managers/LogManager';
+import { LogManager } from '../../managers/LogManager';
 
 const FILENAME = 'modals/ModalWindow.js';
+const CLASS_MODAL = 'oltb-modal';
 
 const DefaultOptions = Object.freeze({
     title: 'Modal',
-    content: 'Oops missing modal content'
+    content: 'Oops missing content'
 });
 
 class ModalWindow extends ModalBase {
@@ -19,19 +21,23 @@ class ModalWindow extends ModalBase {
             options.onClose
         );
 
-        this.options = { ...DefaultOptions, ...options };
+        this.options = _.merge(_.cloneDeep(DefaultOptions), options);
         this.#createModal();
     }
 
     #createModal() {
         this.modalContent = DOM.createElement({
             element: 'div', 
-            class: 'oltb-modal__content'
+            class: `${CLASS_MODAL}__content`
         });
 
         this.setContent(this.options.content);
         this.show(this.modalContent);
     }
+
+    // -------------------------------------------------------------------
+    // # Section: Public API
+    // -------------------------------------------------------------------
 
     setContent(content) {
         if(typeof content === 'string') {

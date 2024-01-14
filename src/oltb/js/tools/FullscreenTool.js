@@ -1,32 +1,35 @@
+import _ from 'lodash';
 import { DOM } from '../helpers/browser/DOM';
 import { Toast } from '../common/Toast';
 import { listen } from 'ol/events';
 import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
-import { LogManager } from '../core/managers/LogManager';
+import { LogManager } from '../managers/LogManager';
 import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
-import { ElementManager } from '../core/managers/ElementManager';
-import { SvgPaths, getIcon } from '../core/icons/GetIcon';
+import { ElementManager } from '../managers/ElementManager';
+import { SvgPaths, getIcon } from '../icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
-import {
-    FullscreenEvents,
-    FullscreenEventTypes,
-    isFullScreenSupported,
-    isFullScreen,
-    requestFullScreen,
-    requestFullScreenWithKeys,
-    exitFullScreen
-} from '../helpers/browser/Fullscreen';
+import { TranslationManager } from '../managers/TranslationManager';
+import { FullscreenEvents, FullscreenEventTypes, isFullScreenSupported, isFullScreen, requestFullScreen, exitFullScreen } from '../helpers/browser/Fullscreen';
 
 const FILENAME = 'tools/FullscreenTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
+const I18N_BASE = 'tools.fullscreenTool';
 
 const DefaultOptions = Object.freeze({
-    click: undefined,
-    enter: undefined,
-    leave: undefined
+    onInitiated: undefined,
+    onClicked: undefined,
+    onEnter: undefined,
+    onLeave: undefined
 });
 
+/**
+ * About:
+ * Use your entire screen and view the Map in full screen
+ * 
+ * Description:
+ * The Map element is rendered in full screen and any other panels in an external application are not included in what is shown on the screen.
+ */
 class FullscreenTool extends Control {
     constructor(options = {}) {
         LogManager.logDebug(FILENAME, 'constructor', 'init');
@@ -45,20 +48,24 @@ class FullscreenTool extends Control {
             class: `${CLASS_TOOL_BUTTON}__icon`
         });
 
+        const i18n = TranslationManager.get(I18N_BASE);
         const button = DOM.createElement({
             element: 'button',
-            html: isFullScreen() ? this.exitFullscreenIcon : this.enterFullscreenIcon,
+            html: this.getToolIcon(),
             class: CLASS_TOOL_BUTTON,
             attributes: {
-                type: 'button',
-                'data-tippy-content': `${(
-                    isFullScreen() 
-                        ? 'Exit fullscreen' 
-                        : 'Enter fullscreen'
-                )} (${ShortcutKeys.fullscreenTool})`
+                'type': 'button',
+                'data-tippy-content': `${i18n.title} (${ShortcutKeys.fullscreenTool})`,
+                'data-tippy-content-post': `(${ShortcutKeys.fullscreenTool})`,
+                'data-oltb-i18n': `${I18N_BASE}.title`
             },
             listeners: {
-                'click': this.handleClick.bind(this)
+                'click': this.onClickTool.bind(this)
+            },
+            prototypes: {
+                getTippy: function() {
+                    return this._tippy;
+                }
             }
         });
 
@@ -67,112 +74,157 @@ class FullscreenTool extends Control {
         ]);
         
         this.button = button;
-        this.active = false;
-        this.options = { ...DefaultOptions, ...options };
+        this.isActive = false;
+        this.listenerKeys = [];
+        this.options = _.merge(_.cloneDeep(DefaultOptions), options);
 
-        document.addEventListener(Events.browser.fullScreenChange, this.onFullScreenChange.bind(this));
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
-    }
+        document.addEventListener(Events.browser.fullScreenChange, this.onFullScreenChange.bind(this));
 
-    onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, ShortcutKeys.fullscreenTool)) {
-            this.handleClick(event);
+        // Note: 
+        // @Consumer callback
+        if(this.options.onInitiated instanceof Function) {
+            this.options.onInitiated();
         }
     }
 
-    handleClick() {
-        LogManager.logDebug(FILENAME, 'handleClick', 'User clicked tool');
+    getName() {
+        return FILENAME;
+    }
 
-        // User defined callback from constructor
-        if(this.options.click instanceof Function) {
-            this.options.click();
-        }
+    // -------------------------------------------------------------------
+    // # Section: Tool Control
+    // -------------------------------------------------------------------
+
+    onClickTool(event) {
+        LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
 
         this.momentaryActivation();
+
+        // Note: 
+        // @Consumer callback
+        if(this.options.onClicked instanceof Function) {
+            this.options.onClicked();
+        }
     }
 
     momentaryActivation() {
-        if(!isFullScreenSupported()) {
-            const errorMessage = 'Fullscreen is not supported by this browser';
-            LogManager.logError(FILENAME, 'momentaryActivation', errorMessage);
-
-            Toast.error({
-                title: 'Error',
-                message: errorMessage
-            });
-            
+        if(!this.isFullScreenSupportedByBrowser()) {
             return;
         }
         
         if(isFullScreen()) {
             exitFullScreen();
         }else {
-            const map = this.getMap();
-            if(!map) {
-                return;
-            }
+            this.doRequestFullScreen();
+        }
+    }
 
-            const element = map.getTargetElement();
+    // -------------------------------------------------------------------
+    // # Section: Browser Events
+    // -------------------------------------------------------------------
 
-            if(this.keys) {
-                requestFullScreenWithKeys(element);
-            }else {
-                requestFullScreen(element);
-            }
+    onWindowKeyUp(event) {
+        if(isShortcutKeyOnly(event, ShortcutKeys.fullscreenTool)) {
+            this.onClickTool(event);
         }
     }
 
     onFullScreenChange(event) {
-        if(document.fullscreenElement) {
-            this.button._tippy.setContent(`Exit fullscreen (${ShortcutKeys.fullscreenTool})`);
-
-            // User defined callback from constructor
-            if(this.options.enter instanceof Function) {
-                this.options.enter(event);
-            }
-        }else {
-            this.button._tippy.setContent(`Enter fullscreen (${ShortcutKeys.fullscreenTool})`);
-
-            // User defined callback from constructor
-            if(this.options.leave instanceof Function) {
-                this.options.leave(event);
-            }
-        }
+        this.doFullScreenChange(event);
     }
 
-    handleFullScreenChange() {
-        const map = this.getMap();
-        if(!map) {
-            return;
+    // -------------------------------------------------------------------
+    // # Section: Conversions/Validation
+    // -------------------------------------------------------------------
+
+    isFullScreenSupportedByBrowser() {
+        const isSupported = isFullScreenSupported();
+
+        if(!isSupported) {
+            LogManager.logError(FILENAME, 'isFullScreenSupportedByBrowser', {
+                title: 'Error',
+                error: 'Fullscreen is not supported by this browser'
+            });
+
+            Toast.error({
+                i18nKey: `${I18N_BASE}.toasts.errors.missingFullScreenSupport`
+            });
         }
 
-        if(isFullScreen()) {
-            this.button.removeChild(this.button.firstElementChild);
-            this.button.insertAdjacentHTML('afterbegin', this.exitFullscreenIcon);
-            this.dispatchEvent(FullscreenEventTypes.enterFullScreen);
-        }else {
-            this.button.removeChild(this.button.firstElementChild);
-            this.button.insertAdjacentHTML('afterbegin', this.enterFullscreenIcon);
-            this.dispatchEvent(FullscreenEventTypes.leaveFullScreen);
-        }
+        return isSupported;
+    }
 
-        map.updateSize();
+    // -------------------------------------------------------------------
+    // # Section: Getters and Setters
+    // -------------------------------------------------------------------
 
-        this.active = !this.active;
-        this.button.classList.toggle(`${CLASS_TOOL_BUTTON}--active`);
+    getToolIcon() {
+        return isFullScreen() 
+            ? this.exitFullscreenIcon 
+            : this.enterFullscreenIcon;
     }
 
     setMap(map) {
         super.setMap(map);
         
         for(let i = 0, ii = FullscreenEvents.length; i < ii; ++i) {
-            this.listenerKeys.push(listen(
-                document, 
-                FullscreenEvents[i], 
-                this.handleFullScreenChange, 
-                this
-            ));
+            this.listenerKeys.push(listen(document, FullscreenEvents[i], this.doHandleFullScreenChange, this));
         }
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Tool DoActions
+    // -------------------------------------------------------------------
+
+    doRequestFullScreen() {
+        const map = this.getMap();
+        if(!map) {
+            return;
+        }
+
+        const element = map.getTargetElement();
+        requestFullScreen(element);
+    }
+
+    doHandleFullScreenChange() {
+        const map = this.getMap();
+        if(!map) {
+            return;
+        }
+
+        if(isFullScreen()) {
+            this.dispatchEvent(FullscreenEventTypes.enterFullScreen);
+        }else {
+            this.dispatchEvent(FullscreenEventTypes.leaveFullScreen);
+        }
+
+        map.updateSize();
+    }
+
+    doFullScreenChange(event) {
+        if(document.fullscreenElement) {
+            this.button.removeChild(this.button.firstElementChild);
+            this.button.insertAdjacentHTML('afterbegin', this.exitFullscreenIcon);
+
+            // Note: 
+            // @Consumer callback
+            if(this.options.onEnter instanceof Function) {
+                this.options.onEnter(event);
+            }
+        }else {
+            this.button.removeChild(this.button.firstElementChild);
+            this.button.insertAdjacentHTML('afterbegin', this.enterFullscreenIcon);
+
+            // Note: 
+            // @Consumer callback
+            if(this.options.onLeave instanceof Function) {
+                this.options.onLeave(event);
+            }
+        }
+
+        this.isActive = !this.isActive;
+        this.button.classList.toggle(`${CLASS_TOOL_BUTTON}--active`);
     }
 }
 

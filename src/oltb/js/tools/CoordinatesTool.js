@@ -1,42 +1,58 @@
+import _ from 'lodash';
 import { DOM } from '../helpers/browser/DOM';
 import { Toast } from '../common/Toast';
-import { Config } from '../core/Config';
 import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { unByKey } from 'ol/Observable';
 import { Settings } from '../helpers/constants/Settings';
 import { transform } from 'ol/proj';
-import { LogManager } from '../core/managers/LogManager';
-import { ToolManager } from '../core/managers/ToolManager';
+import { LogManager } from '../managers/LogManager';
+import { ToolManager } from '../managers/ToolManager';
 import { toStringHDMS } from 'ol/coordinate';
-import { StateManager } from '../core/managers/StateManager';
+import { StateManager } from '../managers/StateManager';
 import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
-import { ElementManager } from '../core/managers/ElementManager';
-import { TooltipManager } from '../core/managers/TooltipManager';
-import { SettingsManager } from '../core/managers/SettingsManager';
+import { ConfigManager } from '../managers/ConfigManager';
+import { ElementManager } from '../managers/ElementManager';
+import { TooltipManager } from '../managers/TooltipManager';
+import { SettingsManager } from '../managers/SettingsManager';
 import { copyToClipboard } from '../helpers/browser/CopyToClipboard';
 import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
-import { SvgPaths, getIcon } from '../core/icons/GetIcon';
-import { ProjectionManager } from '../core/managers/ProjectionManager';
+import { SvgPaths, getIcon } from '../icons/GetIcon';
+import { ProjectionManager } from '../managers/ProjectionManager';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
+import { TranslationManager } from '../managers/TranslationManager';
 
 const FILENAME = 'tools/CoordiantesTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
 const CLASS_TOOLBOX_SECTION = 'oltb-toolbox-section';
+const CLASS_TOGGLEABLE = 'oltb-toggleable';
 const ID_PREFIX = 'oltb-coordinates';
-const KEY_TOOLTIP = 'coordinates';
+const KEY_TOOLTIP = 'tools.coordinatesTool';
+const FORMAT_DECIMAL_DEGREES = 'DD';
+const FORMAT_DEGREE_MINUTES_SECONDS = 'DMS';
+const I18N_BASE = 'tools.coordinatesTool';
+const I18N_BASE_COMMON = 'commons';
 
 const DefaultOptions = Object.freeze({
-    click: undefined,
-    mapClicked: undefined
+    onInitiated: undefined,
+    onClicked: undefined,
+    onMapClicked: undefined,
+    onBrowserStateCleared: undefined
 });
 
 const LocalStorageNodeName = LocalStorageKeys.coordinatesTool;
 const LocalStorageDefaults = Object.freeze({
-    active: false,
-    coordinatesFormat: 'DD'
+    isActive: false,
+    coordinatesFormat: FORMAT_DECIMAL_DEGREES
 });
 
+/**
+ * About:
+ * Display and copy Coordinates
+ * 
+ * Description:
+ * The coordinates are shown in a Tooltip and in the Toolbox in all projections that have been registered.
+ */
 class CoordinatesTool extends Control {
     constructor(options = {}) {
         LogManager.logDebug(FILENAME, 'constructor', 'init');
@@ -50,16 +66,19 @@ class CoordinatesTool extends Control {
             class: `${CLASS_TOOL_BUTTON}__icon`
         });
 
+        const i18n = TranslationManager.get(I18N_BASE);
         const button = DOM.createElement({
             element: 'button',
             html: icon,
             class: CLASS_TOOL_BUTTON,
             attributes: {
-                type: 'button',
-                'data-tippy-content': `Show coordinates (${ShortcutKeys.coordinatesTool})`
+                'type': 'button',
+                'data-tippy-content': `${i18n.title} (${ShortcutKeys.coordinatesTool})`,
+                'data-tippy-content-post': `(${ShortcutKeys.coordinatesTool})`,
+                'data-oltb-i18n': `${I18N_BASE}.title`
             },
             listeners: {
-                'click': this.handleClick.bind(this)
+                'click': this.onClickTool.bind(this)
             }
         });
 
@@ -68,109 +87,233 @@ class CoordinatesTool extends Control {
         ]);
         
         this.button = button;
-        this.active = false;
+        this.isActive = false;
         this.tooltipItem = undefined;
-        this.options = { ...DefaultOptions, ...options };
+        this.projections = new Map();
+        this.options = _.merge(_.cloneDeep(DefaultOptions), options);
 
         this.localStorage = StateManager.getAndMergeStateObject(
             LocalStorageNodeName, 
             LocalStorageDefaults
         );
 
-        const toolboxElement = ElementManager.getToolboxElement();
-        toolboxElement.insertAdjacentHTML('beforeend', `
+        this.initToolboxHTML();
+        this.uiRefToolboxSection = document.querySelector(`#${ID_PREFIX}-toolbox`);
+        this.initToggleables();
+        this.initSettings();
+
+        this.uiRefCoordinatesTable = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-table`);
+        
+        this.uiRefCoordinatesFormat = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-format`);
+        this.uiRefCoordinatesFormat.value = this.localStorage.coordinatesFormat;
+        this.uiRefCoordinatesFormat.addEventListener(Events.browser.change, this.onCoordinatesFormatChange.bind(this));
+
+        window.addEventListener(Events.browser.keyDown, this.onWindowKeyDown.bind(this));
+        window.addEventListener(Events.custom.ready, this.onOLTBReady.bind(this));
+        window.addEventListener(Events.custom.browserStateCleared, this.onWindowBrowserStateCleared.bind(this));
+
+        // Note: 
+        // @Consumer callback
+        if(this.options.onInitiated instanceof Function) {
+            this.options.onInitiated();
+        }
+    }
+
+    getName() {
+        return FILENAME;
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Init Helpers
+    // -------------------------------------------------------------------
+
+    initToolboxHTML() {
+        const i18n = TranslationManager.get(`${I18N_BASE}.toolbox`);
+        const i18nCommon = TranslationManager.get(`${I18N_BASE_COMMON}.titles`);
+        
+        ElementManager.getToolboxElement().insertAdjacentHTML('beforeend', `
             <div id="${ID_PREFIX}-toolbox" class="${CLASS_TOOLBOX_SECTION}">
-                <div class="${CLASS_TOOLBOX_SECTION}__header">
-                    <h4 class="${CLASS_TOOLBOX_SECTION}__title oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">
-                        Coordinates
-                        <span class="${CLASS_TOOLBOX_SECTION}__icon oltb-tippy" title="Toggle section"></span>
-                    </h4>
+                <div class="${CLASS_TOOLBOX_SECTION}__header oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">
+                    <h4 class="${CLASS_TOOLBOX_SECTION}__title" data-oltb-i18n="${I18N_BASE}.toolbox.titles.coordinates">${i18n.titles.coordinates}</h4>
+                    <span class="${CLASS_TOOLBOX_SECTION}__icon oltb-tippy" data-oltb-i18n="${I18N_BASE_COMMON}.titles.toggleSection" title="${i18nCommon.toggleSection}"></span>
                 </div>
-                <div class="${CLASS_TOOLBOX_SECTION}__groups" id="${ID_PREFIX}-toolbox-collapsed" style="display: ${this.localStorage.collapsed ? 'none' : 'block'}">
+                <div class="${CLASS_TOOLBOX_SECTION}__groups" id="${ID_PREFIX}-toolbox-collapsed" style="display: ${this.localStorage.isCollapsed ? 'none' : 'block'}">
                     <div class="${CLASS_TOOLBOX_SECTION}__group">
-                        <label class="oltb-label" for="${ID_PREFIX}-format">Format</label>
+                        <label class="oltb-label" for="${ID_PREFIX}-format" data-oltb-i18n="${I18N_BASE}.toolbox.groups.formats.title">${i18n.groups.formats.title}</label>
                         <select id="${ID_PREFIX}-format" class="oltb-select">
-                            <option value="DD">Decimal degrees</option>
-                            <option value="DMS">Degrees, minutes, seconds</option>
+                            <option value="DD" data-oltb-i18n="${I18N_BASE}.toolbox.groups.formats.dd">${i18n.groups.formats.dd}</option>
+                            <option value="DMS" data-oltb-i18n="${I18N_BASE}.toolbox.groups.formats.dms">${i18n.groups.formats.dms}</option>
                         </select>
                     </div>
                     <div class="${CLASS_TOOLBOX_SECTION}__group">
-                        <label class="oltb-label">Coordinates <em>(Lat, Lon)</em></label>
+                        <label class="oltb-label" data-oltb-i18n="${I18N_BASE}.toolbox.groups.coordinates.title">${i18n.groups.coordinates.title} <em>(Lat, Lon)</em></label>
                         <table class="oltb-table oltb-mt-05" id="${ID_PREFIX}-table"></table>
                     </div>
                 </div>
             </div>
         `);
+    }
 
-        this.coordinatesToolbox = document.querySelector(`#${ID_PREFIX}-toolbox`);
-        this.coordinatesTable = this.coordinatesToolbox.querySelector(`#${ID_PREFIX}-table`);
-        
-        this.coordinatesFormat = this.coordinatesToolbox.querySelector(`#${ID_PREFIX}-format`);
-        this.coordinatesFormat.value = this.localStorage.coordinatesFormat;
-        this.coordinatesFormat.addEventListener(Events.browser.change, this.onCoordinatesFormatChange.bind(this));
-
-        this.projections = new Map();
-
-        const toggleableTriggers = this.coordinatesToolbox.querySelectorAll('.oltb-toggleable');
-        toggleableTriggers.forEach((toggle) => {
+    initToggleables() {
+        this.uiRefToolboxSection.querySelectorAll(`.${CLASS_TOGGLEABLE}`).forEach((toggle) => {
             toggle.addEventListener(Events.browser.click, this.onToggleToolbox.bind(this, toggle));
         });
+    }
 
+    initSettings() {
         SettingsManager.addSetting(Settings.copyCoordinatesOnClick, {
             state: true, 
-            text: 'Copy coordinates on click'
+            i18nBase: `${I18N_BASE}.settings`,
+            i18nKey: 'copyOnClick'
         });
 
         SettingsManager.addSetting(Settings.updateToolboxCoordinatesOnHover, {
             state: true, 
-            text: 'Update toolbox coordinates when hover'
-        });
-
-        window.addEventListener(Events.browser.keyDown, this.onWindowKeyDown.bind(this));
-        window.addEventListener(Events.browser.contentLoaded, this.onDOMContentLoaded.bind(this));
-    }
-    
-    onToggleToolbox(toggle) {
-        const targetName = toggle.dataset.oltbToggleableTarget;
-        document.getElementById(targetName)?.slideToggle(Config.animationDuration.fast, (collapsed) => {
-            this.localStorage.collapsed = collapsed;
-            StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
+            i18nBase: `${I18N_BASE}.settings`,
+            i18nKey: 'updateToolboxOnHover'
         });
     }
 
-    onDOMContentLoaded() {
-        if(this.localStorage.active) {
+    // -------------------------------------------------------------------
+    // # Section: Tool Control
+    // -------------------------------------------------------------------
+
+    onClickTool(event) {
+        LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
+        
+        if(this.isActive) {
+            this.deactivateTool();
+        }else {
+            this.activateTool();
+        }
+
+        // Note: 
+        // @Consumer callback
+        if(this.options.onClicked instanceof Function) {
+            this.options.onClicked();
+        }
+    }
+
+    activateTool() {
+        this.createUIProjections();
+
+        this.isActive = true;
+        this.uiRefToolboxSection.classList.add(`${CLASS_TOOLBOX_SECTION}--show`);
+        this.button.classList.add(`${CLASS_TOOL_BUTTON}--active`);
+
+        this.localStorage.isActive = true;
+        StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
+    }
+
+    deactivateTool() {
+        this.removeUIProjections();
+
+        this.isActive = false;
+        this.uiRefToolboxSection.classList.remove(`${CLASS_TOOLBOX_SECTION}--show`);
+        this.button.classList.remove(`${CLASS_TOOL_BUTTON}--active`);
+
+        this.localStorage.isActive = false;
+        StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Browser Events
+    // -------------------------------------------------------------------
+
+    onOLTBReady(event) {
+        if(this.localStorage.isActive) {
             this.activateTool();
         }
     }
 
     onWindowKeyDown(event) {
         if(isShortcutKeyOnly(event, ShortcutKeys.coordinatesTool)) {
-            this.handleClick(event);
+            this.onClickTool(event);
         }
+    }
+
+    onWindowBrowserStateCleared() {
+        this.doClearState();
+    
+        if(this.isActive) {
+            this.deactivateTool();
+        }
+    
+        // Note: 
+        // @Consumer callback
+        if(this.options.onBrowserStateCleared instanceof Function) {
+            this.options.onBrowserStateCleared();
+        }
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Map/UI Callbacks
+    // -------------------------------------------------------------------
+
+    onToggleToolbox(toggle) {
+        const targetName = toggle.dataset.oltbToggleableTarget;
+        
+        this.doToggleToolboxSection(targetName);
     }
 
     onCoordinatesFormatChange() {
-        this.localStorage.coordinatesFormat = this.coordinatesFormat.value;
+        this.localStorage.coordinatesFormat = this.uiRefCoordinatesFormat.value;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 
-    handleClick() {
-        LogManager.logDebug(FILENAME, 'handleClick', 'User clicked tool');
+    onPointerMove(event) {
+        this.doCreateTooltipCoordinates(event);
 
-        // User defined callback from constructor
-        if(this.options.click instanceof Function) {
-            this.options.click();
-        }
-        
-        if(this.active) {
-            this.deActivateTool();
-        }else {
-            this.activateTool();
+        if(this.shouldUpdateToolboxCoordinatesOnHover()) {
+            this.doCreateToolboxCoordinates(event);
         }
     }
 
-    activateTool() {
+    onMapClick(event) {        
+        this.doCopyCoordinates(event);
+
+        if(!this.shouldCopyCoordinatesOnClick()) {
+            this.toolboxCoordinates(event);
+        }
+
+        const allCoordinates = this.doCreateToolCoordinatesList(event.coordinate);
+
+        // Note: 
+        // @Consumer callback
+        if(this.options.onMapClicked instanceof Function) {
+            this.options.onMapClicked(allCoordinates);
+        }
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Conversions/Validation
+    // -------------------------------------------------------------------
+
+    shouldCopyCoordinatesOnClick() {
+        return SettingsManager.getSetting(Settings.copyCoordinatesOnClick);
+    }
+
+    shouldUpdateToolboxCoordinatesOnHover() {
+        return SettingsManager.getSetting(Settings.updateToolboxCoordinatesOnHover);
+    }
+
+    toDecimalDegrees(cell, coordinates) {
+        cell.innerHTML = (`
+            ${parseFloat(coordinates[1]).toFixed(4)}, 
+            ${parseFloat(coordinates[0]).toFixed(4)}
+        `);
+    }
+
+    toDegreeMinutesSeconds(cell, coordinates) {
+        const prettyCoordinates = toStringHDMS(coordinates);
+        cell.innerHTML = prettyCoordinates;
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: User Interface
+    // -------------------------------------------------------------------
+
+    createUIProjections() {
         const map = this.getMap();
         if(!map) {
             return;
@@ -206,7 +349,7 @@ class CoordinatesTool extends Control {
                 coordinatesCell
             ]);
 
-            DOM.appendChildren(this.coordinatesTable, [
+            DOM.appendChildren(this.uiRefCoordinatesTable, [
                 projectionRow,
                 coordinatesRow
             ]);
@@ -217,54 +360,84 @@ class CoordinatesTool extends Control {
         this.tooltipItem = TooltipManager.push(KEY_TOOLTIP);
         this.onPointerMoveListener = map.on(Events.openLayers.pointerMove, this.onPointerMove.bind(this));
         this.onMapClickListener = map.on(Events.browser.click, this.onMapClick.bind(this));
-
-        this.active = true;
-        this.coordinatesToolbox.classList.add(`${CLASS_TOOLBOX_SECTION}--show`);
-        this.button.classList.add(`${CLASS_TOOL_BUTTON}--active`);
-
-        this.localStorage.active = true;
-        StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 
-    deActivateTool() {
-        this.coordinatesTable.innerHTML = '';
+    removeUIProjections() {
+        DOM.clearElement(this.uiRefCoordinatesTable);
         TooltipManager.pop(KEY_TOOLTIP);
         
         unByKey(this.onPointerMoveListener);
         unByKey(this.onMapClickListener);
-
-        this.active = false;
-        this.coordinatesToolbox.classList.remove(`${CLASS_TOOLBOX_SECTION}--show`);
-        this.button.classList.remove(`${CLASS_TOOL_BUTTON}--active`);
-
-        this.localStorage.active = false;
-        StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 
-    tooltipCoordinates(event) {
+    // -------------------------------------------------------------------
+    // # Section: Tool DoActions
+    // -------------------------------------------------------------------
+
+    doClearState() {
+        this.localStorage = _.cloneDeep(LocalStorageDefaults);
+        StateManager.setStateObject(LocalStorageNodeName, LocalStorageDefaults);
+    }
+
+    doToggleToolboxSection(targetName) {
+        const targetNode = document.getElementById(targetName);
+        const duration = ConfigManager.getConfig().animationDuration.fast;
+
+        targetNode?.slideToggle(duration, (collapsed) => {
+            this.localStorage.isCollapsed = collapsed;
+            StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
+        });
+    }
+
+    doCreateToolCoordinatesList(coordinates) {
+        const projections = ProjectionManager.getProjections();
+        const result = [];
+
+        projections.forEach((projection) => {
+            const transformedCoordinates = transform(
+                coordinates, 
+                ConfigManager.getConfig().projection.default, 
+                projection.code
+            );
+
+            const prettyCoordinates = toStringHDMS(transformedCoordinates);
+            result.push({
+                code: projection.code,
+                name: projection.name,
+                coordinates: transformedCoordinates,
+                prettyCoordinates: prettyCoordinates
+            });
+        });
+
+        return result;
+    }
+
+    doCreateTooltipCoordinates(event) {
+        const projection = ConfigManager.getConfig().projection;
         const coordinates = transform(
             event.coordinate, 
-            Config.projection.default, 
-            Config.projection.wgs84
+            projection.default, 
+            projection.wgs84
         );
         
         const prettyCoordinates = toStringHDMS(coordinates);
         this.tooltipItem.innerHTML = prettyCoordinates;
     }
 
-    toolboxCoordinates(event) {
+    doCreateToolboxCoordinates(event) {
         const projections = ProjectionManager.getProjections();
+
         projections.forEach((projection) => {
             const coordinates = transform(
                 event.coordinate, 
-                Config.projection.default, 
+                ConfigManager.getConfig().projection.default, 
                 projection.code
             );
 
-            const format = this.coordinatesFormat.value;
+            const format = this.uiRefCoordinatesFormat.value;
             const cell = this.projections.get(projection.code);
 
-            if(format === 'DMS') {
+            if(format === FORMAT_DEGREE_MINUTES_SECONDS) {
                 this.toDegreeMinutesSeconds(cell, coordinates);
             }else {
                 this.toDecimalDegrees(cell, coordinates);
@@ -272,90 +445,37 @@ class CoordinatesTool extends Control {
         });
     }
 
-    toDecimalDegrees(cell, coordinates) {
-        cell.innerHTML = `
-            ${parseFloat(coordinates[1]).toFixed(4)}, 
-            ${parseFloat(coordinates[0]).toFixed(4)}
-        `;
-    }
-
-    toDegreeMinutesSeconds(cell, coordinates) {
-        const prettyCoordinates = toStringHDMS(coordinates);
-        cell.innerHTML = prettyCoordinates;
-    }
-
-    onPointerMove(event) {
-        this.tooltipCoordinates(event);
-
-        if(SettingsManager.getSetting(Settings.updateToolboxCoordinatesOnHover)) {
-            this.toolboxCoordinates(event);
-        }
-    }
-
-    onMapClick(event) {        
-        this.copyCoordinates(event);
-
-        if(!SettingsManager.getSetting(Settings.updateToolboxCoordinatesOnHover)) {
-            this.toolboxCoordinates(event);
-        }
-
-        const allCoordinates = [];
-        const projections = ProjectionManager.getProjections();
-        projections.forEach((projection) => {
-            const coordinates = transform(
-                event.coordinate, 
-                Config.projection.default, 
-                projection.code
-            );
-
-            const prettyCoordinates = toStringHDMS(coordinates);
-            allCoordinates.push({
-                code: projection.code,
-                name: projection.name,
-                coordinates: coordinates,
-                prettyCoordinates: prettyCoordinates
-            });
-        });
-
-        // User defined callback from constructor
-        if(this.options.mapClicked instanceof Function) {
-            this.options.mapClicked(allCoordinates);
-        }
-    }
-
-    copyCoordinates(event) {
-        if(!SettingsManager.getSetting(Settings.copyCoordinatesOnClick) || ToolManager.hasActiveTool()) {
+    async doCopyCoordinates(event) {
+        if(!this.shouldCopyCoordinatesOnClick() || ToolManager.hasActiveTool()) {
             return;
         }
 
+        const projection = ConfigManager.getConfig().projection;
         const coordinates = transform(
             event.coordinate, 
-            Config.projection.default, 
-            Config.projection.wgs84
+            projection.default, 
+            projection.wgs84
         );
 
         const prettyCoordinates = toStringHDMS(coordinates);
+        
+        try {
+            await copyToClipboard(prettyCoordinates);
 
-        copyToClipboard(prettyCoordinates)
-            .then(() => {
-                Toast.success({
-                    title: 'Copied',
-                    message: 'Coordinates copied to clipboard', 
-                    autoremove: Config.autoRemovalDuation.normal
-                });
-            })
-            .catch((error) => {
-                const errorMessage = 'Failed to copy coordinates';
-                LogManager.logError(FILENAME, 'copyCoordinates', {
-                    message: errorMessage,
-                    error: error
-                });
-
-                Toast.error({
-                    title: 'Error',
-                    message: errorMessage
-                });
+            Toast.info({
+                i18nKey: `${I18N_BASE}.toasts.infos.copyCoordinates`,
+                autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
             });
+        }catch(error) {
+            LogManager.logError(FILENAME, 'doCopyCoordinates', {
+                message: 'Failed to copy coordinates',
+                error: error
+            });
+
+            Toast.error({
+                i18nKey: `${I18N_BASE}.toasts.errors.copyCoordinates`
+            });
+        }
     }
 }
 

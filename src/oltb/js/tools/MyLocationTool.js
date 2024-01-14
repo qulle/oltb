@@ -1,37 +1,53 @@
+import _ from 'lodash';
 import { DOM } from '../helpers/browser/DOM';
 import { Toast } from '../common/Toast';
-import { Config } from '../core/Config';
 import { Dialog } from '../common/Dialog';
 import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { goToView } from '../helpers/GoToView';
 import { fromLonLat } from 'ol/proj';
-import { LogManager } from '../core/managers/LogManager';
+import { LogManager } from '../managers/LogManager';
 import { toStringHDMS } from 'ol/coordinate';
-import { LayerManager } from '../core/managers/LayerManager';
+import { LayerManager } from '../managers/LayerManager';
 import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
-import { generateMarker } from '../generators/GenerateMarker';
-import { ElementManager } from '../core/managers/ElementManager';
-import { SvgPaths, getIcon } from '../core/icons/GetIcon';
+import { ConfigManager } from '../managers/ConfigManager';
+import { ElementManager } from '../managers/ElementManager';
+import { SvgPaths, getIcon } from '../icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
-import { InfoWindowManager } from '../core/managers/InfoWindowManager';
+import { InfoWindowManager } from '../managers/InfoWindowManager';
+import { generateIconMarker } from '../generators/GenerateIconMarker';
+import { TranslationManager } from '../managers/TranslationManager';
 import { isFullScreen, exitFullScreen } from '../helpers/browser/Fullscreen';
 
 const FILENAME = 'tools/MyLocationTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
 const CLASS_FUNC_BUTTON = 'oltb-func-btn';
 const ID_PREFIX_INFO_WINDOW = 'oltb-info-window-marker';
+const ID_MARKER_PATH = 'person.filled';
+const I18N_BASE = 'tools.myLocationTool';
+const I18N_BASE_COMMON = 'commons';
 
 const DefaultOptions = Object.freeze({
     title: 'My Location',
     enableHighAccuracy: true,
     timeout: 10000,
     description: 'This is the location that the browser was able to find. It might not be your actual location.',
-    click: undefined,
-    location: undefined,
-    error: undefined
+    markerLabelUseEllipsisAfter: 20,
+    markerLabelUseUpperCase: false,
+    onInitiated: undefined,
+    onClicked: undefined,
+    onLocationFound: undefined,
+    onError: undefined
 });
 
+/**
+ * About:
+ * Mark your geographic location
+ * 
+ * Description:
+ * Ask the browser's built-in API for your current location. 
+ * A separate layer is created for this which contains a Marker with your position.
+ */
 class MyLocationTool extends Control {
     constructor(options = {}) {
         LogManager.logDebug(FILENAME, 'constructor', 'init');
@@ -45,16 +61,19 @@ class MyLocationTool extends Control {
             class: `${CLASS_TOOL_BUTTON}__icon`
         });
 
+        const i18n = TranslationManager.get(I18N_BASE);
         const button = DOM.createElement({
             element: 'button',
             html: icon,
             class: CLASS_TOOL_BUTTON,
             attributes: {
-                type: 'button',
-                'data-tippy-content': `My Location (${ShortcutKeys.myLocationTool})`
+                'type': 'button',
+                'data-tippy-content': `${i18n.title} (${ShortcutKeys.myLocationTool})`,
+                'data-tippy-content-post': `(${ShortcutKeys.myLocationTool})`,
+                'data-oltb-i18n': `${I18N_BASE}.title`
             },
             listeners: {
-                'click': this.handleClick.bind(this)
+                'click': this.onClickTool.bind(this)
             }
         });
 
@@ -63,93 +82,167 @@ class MyLocationTool extends Control {
         ]);
 
         this.button = button;
-        this.options = { ...DefaultOptions, ...options };
+        this.options = _.merge(_.cloneDeep(DefaultOptions), options);
 
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
-    }
 
-    onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, ShortcutKeys.myLocationTool)) {
-            this.handleClick(event);
+        // Note: 
+        // @Consumer callback
+        if(this.options.onInitiated instanceof Function) {
+            this.options.onInitiated();
         }
     }
 
-    handleClick() {
-        LogManager.logDebug(FILENAME, 'handleClick', 'User clicked tool');
-        
-        // User defined callback from constructor
-        if(this.options.click instanceof Function) {
-            this.options.click();
-        }
+    getName() {
+        return FILENAME;
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Tool Control
+    // -------------------------------------------------------------------
+
+    onClickTool(event) {
+        LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
         
         this.momentaryActivation();
+
+        // Note: 
+        // @Consumer callback
+        if(this.options.onClicked instanceof Function) {
+            this.options.onClicked();
+        }
     }
 
     momentaryActivation() {
         if(isFullScreen()) {
-            Dialog.confirm({
-                title: 'Exit fullscreen',
-                message: 'To use geolocation you must exit fullscreen',
-                confirmClass: Dialog.Success,
-                confirmText: 'Exit fullscreen',
-                onConfirm: () => {
-                    exitFullScreen()
-                        .then(() => {
-                            this.getGeoLocation();
-                        })
-                        .catch((error) => {
-                            LogManager.logError(FILENAME, 'momentaryActivation', {
-                                message: 'Error exiting fullscreen',
-                                error: error
-                            });
-                        });
-                }
-            });
+            this.askToExitFullScreen();
         }else {
-            this.getGeoLocation();
+            this.doGeoLocationSearch();
         }
     }
 
-    getGeoLocation() {
-        if(this.loadingToast) {
-            return;
-        }
+    // -------------------------------------------------------------------
+    // # Section: Browser Events
+    // -------------------------------------------------------------------
 
-        if(navigator.geolocation) {
-            this.loadingToast = Toast.info({
-                title: 'Searching',
-                message: 'Trying to find your location...', 
-                clickToRemove: false,
-                spinner: true,
-                onRemove: () => {
-                    this.loadingToast = undefined;
-                }
-            });
-
-            navigator.geolocation.getCurrentPosition(
-                this.onSuccess.bind(this), 
-                this.onError.bind(this), 
-                {
-                    enableHighAccuracy: this.options.enableHighAccuracy,
-                    timeout: this.options.timeout
-                }
-            );
-        }else { 
-            this.onError({
-                message: 'Geolocation is not supported'
-            }, Toast.error);
+    onWindowKeyUp(event) {
+        if(isShortcutKeyOnly(event, ShortcutKeys.myLocationTool)) {
+            this.onClickTool(event);
         }
     }
+
+    // -------------------------------------------------------------------
+    // # Section: Map/UI Callbacks
+    // -------------------------------------------------------------------
 
     onSuccess(location) {
+        this.doLocationFound(location);
+    }
+
+    onError(error) {
+        this.doLocationError(error);
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Ask User
+    // -------------------------------------------------------------------
+
+    askToExitFullScreen() {
+        const i18n = TranslationManager.get(`${I18N_BASE}.dialogs.confirms.exitFullscreen`);
+
+        Dialog.confirm({
+            title: i18n.title,
+            message: i18n.message,
+            confirmClass: Dialog.Success,
+            confirmText: i18n.confirmText,
+            cancelText: i18n.cancelText,
+            onConfirm: () => {
+                exitFullScreen()
+                    .then(() => {
+                        this.doGeoLocationSearch();
+                    })
+                    .catch((error) => {
+                        LogManager.logError(FILENAME, 'askToExitFullScreen', {
+                            message: 'Failed to exit fullscreen',
+                            error: error
+                        });
+
+                        Toast.error({
+                            i18nKey: `${I18N_BASE}.toasts.errors.exitFullscreen`
+                        });
+                    });
+            }
+        });
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Tool DoActions
+    // -------------------------------------------------------------------
+
+    doLocationFound(location) {
         const map = this.getMap();
         if(!map) {
             return;
         }
 
-        const lat = location.coords.latitude;
-        const lon = location.coords.longitude;
-        const prettyCoordinates = toStringHDMS([lon, lat]);
+        DOM.removeElement(this.loadingToast);
+        
+        const coordinates = [location.coords.longitude, location.coords.latitude];
+        const marker = this.doAddIconMarker(coordinates);
+        
+        this.doFocusMarker(map, marker, coordinates, ConfigManager.getConfig().marker.focusZoom);
+        
+        // Note: 
+        // @Consumer callback
+        if(this.options.onLocationFound instanceof Function) {
+            this.options.onLocationFound(location);
+        }
+    }
+
+    doLocationError(error) {
+        LogManager.logError(FILENAME, 'doLocationError', {
+            message: error.message,
+            error: error
+        });
+
+        Toast.error({
+            i18nKey: `${I18N_BASE}.toasts.errors.locationNotFound`
+        });
+        
+        // Note: 
+        // @Consumer callback
+        if(this.options.onError instanceof Function) {
+            this.options.onError(error);
+        }
+
+        if(this.loadingToast) {
+            DOM.removeElement(this.loadingToast);
+        }
+    }
+
+    doFocusMarker(map, marker, coordinates, zoom) {
+        goToView({
+            map: map, 
+            coordinates: coordinates,
+            zoom: zoom,
+            onDone: (result) => {
+                InfoWindowManager.pulseAnimation(marker);
+                InfoWindowManager.showOverlay(marker, fromLonLat(coordinates));
+            }
+        });
+    }
+
+    doAddMarkerToMap(marker) {
+        const layerWrapper = LayerManager.addFeatureLayer({
+            name: this.options.title
+        });
+        
+        layerWrapper.getLayer().getSource().addFeature(marker);
+    }
+
+    doAddIconMarker(coordinates) {
+        const i18n = TranslationManager.get(`${I18N_BASE_COMMON}.titles`);
+        const prettyCoordinates = toStringHDMS(coordinates);
 
         const infoWindow = {
             title: this.options.title,
@@ -159,58 +252,57 @@ class MyLocationTool extends Control {
             footer: `
                 <span class="oltb-info-window__coordinates">${prettyCoordinates}</span>
                 <div class="oltb-info-window__buttons-wrapper">
-                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--delete oltb-tippy" title="Delete marker" id="${ID_PREFIX_INFO_WINDOW}-remove"></button>
-                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--crosshair oltb-tippy" title="Copy marker coordinates" id="${ID_PREFIX_INFO_WINDOW}-copy-coordinates" data-coordinates="${prettyCoordinates}"></button>
-                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--copy oltb-tippy" title="Copy marker text" id="${ID_PREFIX_INFO_WINDOW}-copy-text" data-copy="${this.options.description}"></button>
+                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--delete oltb-tippy" data-oltb-i18n="${I18N_BASE_COMMON}.titles.delete" title="${i18n.delete}" id="${ID_PREFIX_INFO_WINDOW}-remove"></button>
+                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--crosshair oltb-tippy" data-oltb-i18n="${I18N_BASE_COMMON}.titles.copyCoordinates" title="${i18n.copyCoordinates}" id="${ID_PREFIX_INFO_WINDOW}-copy-coordinates" data-oltb-coordinates="${prettyCoordinates}"></button>
+                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--copy oltb-tippy" data-oltb-i18n="${I18N_BASE_COMMON}.titles.copyText" title="${i18n.copyText}" id="${ID_PREFIX_INFO_WINDOW}-copy-text" data-oltb-copy="${this.options.description}"></button>
+                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--layer oltb-tippy" data-oltb-i18n="${I18N_BASE_COMMON}.titles.showLayer" title="${i18n.showLayer}" id="${ID_PREFIX_INFO_WINDOW}-show-layer"></button>
                 </div>
             `
         };
         
-        const marker = new generateMarker({
-            lon: lon,
-            lat: lat,
+        const marker = new generateIconMarker({
+            lon: coordinates[0],
+            lat: coordinates[1],
             title: this.options.title,
             description: this.options.description,
-            icon: 'person.filled',
+            icon: ID_MARKER_PATH,
+            label: this.options.title,
+            labelUseEllipsisAfter: this.options.markerLabelUseEllipsisAfter,
+            labelUseUpperCase: this.options.markerLabelUseUpperCase,
             infoWindow: infoWindow
         });
 
-        const layerWrapper = LayerManager.addFeatureLayer({
-            name: this.options.title
-        });
-        layerWrapper.getLayer().getSource().addFeature(marker);
+        this.doAddMarkerToMap(marker);
 
-        // Focus Location in view
-        const zoom = 6;
-        goToView(map, [lon, lat], zoom);
-
-        // Trigger InfoWindow to show
-        window.setTimeout(() => {
-            InfoWindowManager.showOverly(marker, fromLonLat([lon, lat]));
-        }, Config.animationDuration.normal);
-
-        // User defined callback from constructor
-        if(this.options.location instanceof Function) {
-            this.options.location(location);
-        }
-
-        this.loadingToast.remove();
+        return marker;
     }
 
-    onError(error, toastPtr = Toast.error) {
-        LogManager.logError(FILENAME, 'onError', error.message);
-
-        toastPtr({
-            title: 'Error',
-            message: error.message
-        });
-        
-        // User defined callback from constructor
-        if(this.options.error instanceof Function) {
-            this.options.error(error);
+    doGeoLocationSearch() {
+        if(this.loadingToast) {
+            return;
         }
 
-        this.loadingToast.remove();
+        if(!window.navigator.geolocation) {
+            this.onError({
+                message: 'Geolocation is not supported'
+            });
+
+            return;
+        }
+        
+        this.loadingToast = Toast.info({
+            i18nKey: `${I18N_BASE}.toasts.infos.fetchLocation`,
+            clickToRemove: false,
+            spinner: true,
+            onRemove: () => {
+                this.loadingToast = undefined;
+            }
+        });
+
+        window.navigator.geolocation.getCurrentPosition(this.onSuccess.bind(this), this.onError.bind(this), {
+            enableHighAccuracy: this.options.enableHighAccuracy,
+            timeout: this.options.timeout
+        });
     }
 }
 

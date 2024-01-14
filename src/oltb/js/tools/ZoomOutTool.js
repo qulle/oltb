@@ -1,24 +1,34 @@
+import _ from 'lodash';
 import { DOM } from '../helpers/browser/DOM';
-import { Config } from '../core/Config';
 import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
-import { toLonLat } from "ol/proj";
+import { toLonLat } from 'ol/proj';
 import { goToView } from '../helpers/GoToView';
-import { LogManager } from '../core/managers/LogManager';
+import { LogManager } from '../managers/LogManager';
 import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
-import { ElementManager } from '../core/managers/ElementManager';
-import { SvgPaths, getIcon } from '../core/icons/GetIcon';
+import { ElementManager } from '../managers/ElementManager';
+import { SvgPaths, getIcon } from '../icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
+import { TranslationManager } from '../managers/TranslationManager';
 
 const FILENAME = 'tools/ZoomOutTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
+const I18N_BASE = 'tools.zoomOutTool';
 
 const DefaultOptions = Object.freeze({
     delta: -1,
-    click: undefined,
-    zoomed: undefined
+    onInitiated: undefined,
+    onClicked: undefined,
+    onZoomed: undefined
 });
 
+/**
+ * About:
+ * Zoom out of the Map
+ * 
+ * Description:
+ * Reduce zooming and get a more comprehensive view of the surroundings in the Map.
+ */
 class ZoomOutTool extends Control {
     constructor(options = {}) {
         LogManager.logDebug(FILENAME, 'constructor', 'init');
@@ -32,16 +42,19 @@ class ZoomOutTool extends Control {
             class: `${CLASS_TOOL_BUTTON}__icon`
         });
 
+        const i18n = TranslationManager.get(I18N_BASE);
         const button = DOM.createElement({
             element: 'button',
             html: icon,
             class: CLASS_TOOL_BUTTON,
             attributes: {
-                type: 'button',
-                'data-tippy-content': `Zoom out (${ShortcutKeys.zoomOutTool})`
+                'type': 'button',
+                'data-tippy-content': `${i18n.title} (${ShortcutKeys.zoomOutTool})`,
+                'data-tippy-content-post': `(${ShortcutKeys.zoomOutTool})`,
+                'data-oltb-i18n': `${I18N_BASE}.title`
             },
             listeners: {
-                'click': this.handleClick.bind(this)
+                'click': this.onClickTool.bind(this)
             }
         });
 
@@ -50,26 +63,35 @@ class ZoomOutTool extends Control {
         ]);
 
         this.button = button;
-        this.options = { ...DefaultOptions, ...options };
+        this.options = _.merge(_.cloneDeep(DefaultOptions), options);
 
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
-    }
 
-    onWindowKeyUp(event) {
-        if(isShortcutKeyOnly(event, ShortcutKeys.zoomOutTool)) {
-            this.handleClick(event);
+        // Note: 
+        // @Consumer callback
+        if(this.options.onInitiated instanceof Function) {
+            this.options.onInitiated();
         }
     }
 
-    handleClick() {
-        LogManager.logDebug(FILENAME, 'handleClick', 'User clicked tool');
+    getName() {
+        return FILENAME;
+    }
 
-        // User defined callback from constructor
-        if(this.options.click instanceof Function) {
-            this.options.click();
-        }
+    // -------------------------------------------------------------------
+    // # Section: Tool Control
+    // -------------------------------------------------------------------
+
+    onClickTool(event) {
+        LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
         
         this.momentaryActivation();
+
+        // Note: 
+        // @Consumer callback
+        if(this.options.onClicked instanceof Function) {
+            this.options.onClicked();
+        }
     }
 
     momentaryActivation() {
@@ -78,19 +100,41 @@ class ZoomOutTool extends Control {
             return;
         }
         
+        this.doZoomOut(map);
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Browser Events
+    // -------------------------------------------------------------------
+
+    onWindowKeyUp(event) {
+        if(isShortcutKeyOnly(event, ShortcutKeys.zoomOutTool)) {
+            this.onClickTool(event);
+        }
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Tool DoActions
+    // -------------------------------------------------------------------
+
+    doZoomOut(map) {
         const view = map.getView();
-        const coordiantes = toLonLat(view.getCenter());
+        const coordinates = toLonLat(view.getCenter());
         const currentZoom = view.getZoom();
-        const newZoom = view.getConstrainedZoom(currentZoom + this.options.delta);
+        const calculatedZoom = view.getConstrainedZoom(currentZoom + this.options.delta);
 
-        goToView(map, coordiantes, newZoom);
-
-        window.setTimeout(() => {
-            // User defined callback from constructor
-            if(this.options.zoomed instanceof Function) {
-                this.options.zoomed();
+        goToView({
+            map: map,
+            coordinates: coordinates,
+            zoom: calculatedZoom,
+            onDone: (result) => {
+                // Note: 
+                // @Consumer callback
+                if(this.options.onZoomed instanceof Function) {
+                    this.options.onZoomed(result);
+                }
             }
-        }, Config.animationDuration.normal);
+        });
     }
 }
 

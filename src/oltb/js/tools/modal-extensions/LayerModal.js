@@ -1,16 +1,19 @@
+import _ from 'lodash';
 import { DOM } from '../../helpers/browser/DOM';
-import { Config } from '../../core/Config';
 import { ModalBase } from '../../common/modals/ModalBase';
-import { LogManager } from '../../core/managers/LogManager';
+import { LogManager } from '../../managers/LogManager';
 import { isDarkTheme } from '../../helpers/IsDarkTheme';
-import { LayerOptions } from '../../core/ol-types/LayerType';
-import { SourceOptions } from '../../core/ol-types/SourceType';
-import { generateInput } from '../../generators/GenerateInput';
-import { generateSelect } from '../../generators/GenerateSelect';
-import { ProjectionManager } from '../../core/managers/ProjectionManager';
+import { LayerOptions } from '../../ol-types/LayerType';
+import { SourceOptions } from '../../ol-types/SourceType';
+import { ConfigManager } from '../../managers/ConfigManager';
+import { createUIInput } from '../../creators/CreateUIInput';
+import { createUISelect } from '../../creators/CreateUISelect';
+import { ProjectionManager } from '../../managers/ProjectionManager';
+import { TranslationManager } from '../../managers/TranslationManager';
 
 const FILENAME = 'modal-extensions/LayerModal.js';
 const ID_PREFIX = 'oltb-layer-modal';
+const I18N_BASE = 'modalExtensions.layerModal';
 
 const DefaultOptions = Object.freeze({
     maximized: false,
@@ -19,40 +22,53 @@ const DefaultOptions = Object.freeze({
     onCancel: undefined
 });
 
+/**
+ * About:
+ * Manager that handles creation of Map-Layers
+ */
 class LayerModal extends ModalBase {
     constructor(options = {}) {
         LogManager.logDebug(FILENAME, 'constructor', 'init');
 
         super(
-            'Create map layer', 
+            TranslationManager.get(`${I18N_BASE}.title`), 
             options.maximized, 
             options.onClose
         );
         
-        this.options = { ...DefaultOptions, ...options };
+        this.options = _.merge(_.cloneDeep(DefaultOptions), options);
         this.#createModal();
     }
 
+    getName() {
+        return FILENAME;
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: User Interface
+    // -------------------------------------------------------------------
+
     #createModal() {
-        const [ nameWrapper, nameInput ] = generateInput({
+        const i18n = TranslationManager.get(`${I18N_BASE}.form`);
+        const [ nameWrapper, nameInput ] = createUIInput({
             idPrefix: ID_PREFIX,
             idPostfix: '-name',
-            text: 'Name',
+            text: i18n.name,
             value: 'New map layer'
         });
 
-        const [ typeWrapper, typeSelect ] = generateSelect({
+        const [ typeWrapper, typeSelect ] = createUISelect({
             idPrefix: ID_PREFIX,
             idPostfix: '-type',
-            text: 'Layer',
-            options: structuredClone(LayerOptions)
+            text: i18n.layer,
+            options: _.cloneDeep(LayerOptions)
         });
 
-        const [ sourceWrapper, sourceSelect ] = generateSelect({
+        const [ sourceWrapper, sourceSelect ] = createUISelect({
             idPrefix: ID_PREFIX,
             idPostfix: '-source',
-            text: 'Layer',
-            options: structuredClone(SourceOptions)
+            text: i18n.source,
+            options: _.cloneDeep(SourceOptions)
         });
 
         const projectionOptions = [];
@@ -64,67 +80,64 @@ class LayerModal extends ModalBase {
             });
         });
 
-        const [ projectionWrapper, projectionSelect ] = generateSelect({
+        const [ projectionWrapper, projectionSelect ] = createUISelect({
             idPrefix: ID_PREFIX,
             idPostfix: '-projection',
-            text: 'Projection',
+            text: i18n.projection,
             options: projectionOptions,
-            value: Config.projection.default
+            value: ConfigManager.getConfig().projection.default
         });
 
-        const [ urlWrapper, urlInput ] = generateInput({
+        const [ urlWrapper, urlInput ] = createUIInput({
             idPrefix: ID_PREFIX,
             idPostfix: '-url',
-            text: 'URL'
+            text: i18n.url
         });
 
-        const [ parametersWrapper, parametersInput ] = generateInput({
+        const [ parametersWrapper, parametersInput ] = createUIInput({
             idPrefix: ID_PREFIX,
             idPostfix: '-parameters',
-            text: 'Parameters (JSON)',
+            text: i18n.parameters,
             placeholder: '{"Layers": "HPD_TRP"}'
         });
 
-        const [ wrapXWrapper, wrapXSelect ] = generateSelect({
+        const [ wrapXWrapper, wrapXSelect ] = createUISelect({
             idPrefix: ID_PREFIX,
             idPostfix: '-wrapx',
-            text: 'WrapX',
+            text: i18n.wrapX,
             options: [
                 {
                     text: 'False',
                     value: 'False'
-                },
-                {
+                }, {
                     text: 'True',
                     value: 'True'
                 }
             ]
         });
 
-        const [ corsWrapper, corsSelect ] = generateSelect({
+        const [ corsWrapper, corsSelect ] = createUISelect({
             idPrefix: ID_PREFIX,
             idPostfix: '-cors',
-            text: 'CORS',
+            text: i18n.cors,
             options: [
                 {
                     text: 'Anonymous',
                     value: 'anonymous'
-                }, 
-                {
+                }, {
                     text: 'Credentials',
                     value: 'use-credentials'
-                },
-                {
+                }, {
                     text: 'None',
                     value: 'undefined'
                 }
             ]
         });
 
-        const [ attributionsWrapper, attributionsInput ] = generateInput({
+        const [ attributionsWrapper, attributionsInput ] = createUIInput({
             idPrefix: ID_PREFIX,
             idPostfix: '-attributions',
-            text: 'Attributions'
+            text: i18n.attributions
         });
 
         const buttonsWrapper = DOM.createElement({
@@ -132,47 +145,43 @@ class LayerModal extends ModalBase {
             class: 'oltb-d-flex oltb-justify-content-between oltb-mt-15'
         });
 
+        const defaultProjection = ConfigManager.getConfig().projection.default;
         const createButton = DOM.createElement({
             element: 'button', 
-            text: 'Create layer',
+            text: i18n.createLayer,
             class: 'oltb-dialog__btn oltb-btn oltb-btn--green-mid', 
             attributes: {
-                type: 'button'
+                'type': 'button'
             },
             listeners: {
                 'click': () => {
-                    const result = {
+                    this.#onClick({
                         name: nameInput.value.trim(),
                         layer: typeSelect.value.trim(),
                         source: sourceSelect.value.trim(),
-                        projection: projectionSelect.value.trim() || Config.projection.default,
+                        projection: projectionSelect.value.trim() || defaultProjection,
                         url: urlInput.value.trim(),
                         parameters: parametersInput.value.trim() || '{}',
                         wrapX: wrapXSelect.value.trim(),
                         crossOrigin: corsSelect.value.trim(),
-                        attributions: attributionsInput.value.trim()
-                    };
-
-                    this.close();
-                    this.options.onCreate instanceof Function && this.options.onCreate(result);
+                        attributions: attributionsInput.value.trim(),
+                        isDynamicallyAdded: true
+                    });
                 }
             }
         });
 
         const cancelButton = DOM.createElement({
             element: 'button', 
-            text: 'Cancel', 
+            text: i18n.cancel, 
             class: `oltb-dialog__btn oltb-btn ${
                 isDarkTheme() ? 'oltb-btn--gray-mid' : 'oltb-btn--gray-dark'
             }`,
             attributes: {
-                type: 'button'
+                'type': 'button'
             },
             listeners: {
-                'click': () => {
-                    this.close();
-                    this.options.onCancel instanceof Function && this.options.onCancel();
-                }
+                'click': this.#onCancel.bind(this)
             }
         });
 
@@ -200,6 +209,20 @@ class LayerModal extends ModalBase {
         ]);
 
         this.show(modalContent);
+    }
+
+    // -------------------------------------------------------------------
+    // # Section: Events
+    // -------------------------------------------------------------------
+
+    #onClick(result) {
+        this.close();
+        this.options.onCreate instanceof Function && this.options.onCreate(result);
+    }
+
+    #onCancel() {
+        this.close();
+        this.options.onCancel instanceof Function && this.options.onCancel();
     }
 }
 

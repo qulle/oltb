@@ -35,7 +35,7 @@ if (typeof JSON.decycle !== 'function') {
 
             // The derez function recurses through the object, producing the deep copy.
 
-            var old_path;   // The path of an earlier occurance of value
+            var oldPath;    // The path of an earlier occurance of value
             var nu;         // The new object or array
 
             // If a replacer function was provided, then call it to get a replacement value.
@@ -61,9 +61,9 @@ if (typeof JSON.decycle !== 'function') {
                 // encountered it. If so, return a {'$ref':PATH} object. This uses an
                 // ES6 WeakMap.
 
-                old_path = objects.get(value);
-                if (old_path !== undefined) {
-                    return { $ref: old_path };
+                oldPath = objects.get(value);
+                if (oldPath !== undefined) {
+                    return { $ref: oldPath };
                 }
 
                 // Otherwise, accumulate the unique value and its path.
@@ -158,6 +158,7 @@ if (typeof JSON.retrocycle !== 'function') {
                 }
             }
         }($));
+        
         return $;
     };
 }
