@@ -106,15 +106,15 @@
 
     // Misc
     &-w-100 {
-        width: 100%;
+        width: 100% !important;
     }
 
     &-d-none {
-        display: none;
+        display: none !important;
     }
 
     &-d-flex {
-        display: flex;
+        display: flex !important;
     }
 
     &-flex-content-center {

@@ -927,6 +927,9 @@ class LayerTool extends Control {
                 getTippy: function() {
                     return this._tippy;
                 }
+            },
+            listeners: {
+                'click': this.doSetFeatureLayerAsActive.bind(this, layerWrapper, layerElement)
             }
         });
 
@@ -934,15 +937,6 @@ class LayerTool extends Control {
         // This tooltip can not be triggered by the delegated .oltb-tippy class
         // Because the tooltip instance can not be reached in the renaming function unless it is known during "compile time"
         this.createUILayerNameTippy(layerName);
-
-        // Attach eventlistener for setting the active layer
-        layerName.addEventListener(Events.browser.click, (event) => {
-            this.doRemoveActiveFeatureLayerClass();
-                    
-            // Set the target layer as the active layer
-            LayerManager.setActiveFeatureLayer(layerWrapper);
-            layerElement.classList.add(`${CLASS_TOOLBOX_LIST}__item--active`);
-        });
 
         const leftWrapper = DOM.createElement({
             element: 'div',
@@ -965,7 +959,10 @@ class LayerTool extends Control {
 
         const layerDot = DOM.createElement({
             element: 'div',
-            class: `${CLASS_TOOLBOX_LIST}__dot`
+            class: `${CLASS_TOOLBOX_LIST}__dot`,
+            listeners: {
+                'click': this.doSetFeatureLayerAsActive.bind(this, layerWrapper, layerElement)
+            }
         });
 
         DOM.appendChildren(leftWrapper, [
@@ -1307,6 +1304,22 @@ class LayerTool extends Control {
         }
     }
 
+    doSetFeatureLayerAsActive(layerWrapper, layerElement) {
+        this.doRemoveActiveFeatureLayerClass();
+
+        LayerManager.setActiveFeatureLayer(layerWrapper);
+        layerElement.classList.add(`${CLASS_TOOLBOX_LIST}__item--active`);
+    }
+
+    doRemoveActiveFeatureLayerClass() {
+        // Note: 
+        // Should just be one li-item that has the active class
+        // Just in case, clean all items
+        this.uiRefFeatureLayerStack.querySelectorAll('li').forEach((item) => {
+            item.classList.remove(`${CLASS_TOOLBOX_LIST}__item--active`);
+        });
+    }
+
     doChangeLayerVisibility(layerWrapper, callback) {
         const map = this.getMap();
         if(!map) {
@@ -1394,15 +1407,6 @@ class LayerTool extends Control {
             onClose: () => {
                 this.layerModal = undefined;
             }
-        });
-    }
-
-    doRemoveActiveFeatureLayerClass() {
-        // Note: 
-        // Should just be one li-item that has the active class
-        // Just in case, clean all items
-        this.uiRefFeatureLayerStack.querySelectorAll('li').forEach((item) => {
-            item.classList.remove(`${CLASS_TOOLBOX_LIST}__item--active`);
         });
     }
 }

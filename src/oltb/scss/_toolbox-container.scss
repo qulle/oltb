@@ -1,5 +1,6 @@
 .oltb-toolbox-container {
-    min-width: 285px; // Help for collision detection
+    // Help for collision detection
+    min-width: 320px;
     position: absolute;
     pointer-events: auto;
     z-index: 800;

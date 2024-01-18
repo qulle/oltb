@@ -5,7 +5,7 @@ import { DefaultConfig } from './config-manager/DefaultConfig';
 const FILENAME = 'managers/ConfigManager.js';
 
 const DefaultOptions = Object.freeze({
-    url: '/assets/config/config.json'
+    url: './assets/config/config.json'
 });
 
 /**
@@ -69,6 +69,9 @@ class ConfigManager {
                 return undefined;
             });
 
+            // Note:
+            // First log the loaded config (the part that the user is overriding)
+            // Second log the total runtime config result (default + user-overrided)
             LogManager.logInformation(FILENAME, 'loadConfigFileAsync', _.cloneDeep(config));
             LogManager.logInformation(FILENAME, 'loadConfigFileAsync', _.cloneDeep(this.#config));
 

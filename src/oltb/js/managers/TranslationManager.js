@@ -10,7 +10,7 @@ import { DefaultTranslation } from './translation-manager/DefaultTranslation';
 const FILENAME = 'managers/TranslationManager.js';
 
 const DefaultOptions = Object.freeze({
-    url: '/assets/i18n'
+    url: './assets/i18n'
 });
 
 const DefaultLanguage = Object.freeze({

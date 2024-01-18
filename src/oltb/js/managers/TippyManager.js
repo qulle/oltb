@@ -166,7 +166,7 @@ class TippyManager {
         return delegate(uiRefMapElement, {
             target: '.oltb-color-tippy',
             placement: 'left',
-            offset: [0, 25],
+            offset: [8, 8],
             trigger: 'click',
             appendTo: uiRefMapElement,
             theme: 'oltb oltb-inverted-themed',

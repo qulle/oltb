@@ -172,41 +172,45 @@ class DrawTool extends Control {
                             <option value="Polygon" data-oltb-i18n="${I18N_BASE}.toolbox.groups.shapes.polygon">${i18n.groups.shapes.polygon}</option>
                         </select>
                     </div>
-                    <div class="${CLASS_TOOLBOX_SECTION}__group">
-                        <label class="oltb-label" for="${ID_PREFIX}-intersection-enable" data-oltb-i18n="${I18N_BASE}.toolbox.groups.intersectable.title">${i18n.groups.intersectable.title}</label>
-                        <select id="${ID_PREFIX}-intersection-enable" class="oltb-select">
-                            <option value="false" data-oltb-i18n="${I18N_BASE}.toolbox.groups.intersectable.false">${i18n.groups.intersectable.false}</option>
-                            <option value="true" data-oltb-i18n="${I18N_BASE}.toolbox.groups.intersectable.true">${i18n.groups.intersectable.true}</option>
-                        </select>
-                    </div>
-                    <div class="${CLASS_TOOLBOX_SECTION}__group">
-                        <label class="oltb-label" for="${ID_PREFIX}-stroke-width" data-oltb-i18n="${I18N_BASE}.toolbox.groups.strokeWidth.title">${i18n.groups.strokeWidth.title}</label>
-                        <select id="${ID_PREFIX}-stroke-width" class="oltb-select">
-                            <option value="1">1</option>
-                            <option value="1.25">1.25</option>
-                            <option value="1.5">1.5</option>
-                            <option value="2">2</option>
-                            <option value="2.5">2.5</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                            <option value="6">6</option>
-                            <option value="7">7</option>
-                            <option value="8">8</option>
-                            <option value="9">9</option>
-                            <option value="10">10</option>
-                        </select>
-                    </div>
-                    <div class="${CLASS_TOOLBOX_SECTION}__group">
-                        <label class="oltb-label" for="${ID_PREFIX}-stroke-color" data-oltb-i18n="${I18N_BASE}.toolbox.groups.strokeColor.title">${i18n.groups.strokeColor.title}</label>
-                        <div id="${ID_PREFIX}-stroke-color" class="oltb-color-input oltb-color-tippy" data-oltb-color-target="#${ID_PREFIX}-stroke-color" data-oltb-color="${this.localStorage.strokeColor}" tabindex="0">
-                            <div class="oltb-color-input__inner" style="background-color: ${this.localStorage.strokeColor};"></div>
+                    <div class="${CLASS_TOOLBOX_SECTION}__group ${CLASS_TOOLBOX_SECTION}__group--split-group">
+                        <div class="${CLASS_TOOLBOX_SECTION}__group-part">
+                            <label class="oltb-label" for="${ID_PREFIX}-intersection-enable" data-oltb-i18n="${I18N_BASE}.toolbox.groups.intersectable.title">${i18n.groups.intersectable.title}</label>
+                            <select id="${ID_PREFIX}-intersection-enable" class="oltb-select">
+                                <option value="false" data-oltb-i18n="${I18N_BASE}.toolbox.groups.intersectable.false">${i18n.groups.intersectable.false}</option>
+                                <option value="true" data-oltb-i18n="${I18N_BASE}.toolbox.groups.intersectable.true">${i18n.groups.intersectable.true}</option>
+                            </select>
+                        </div>
+                        <div class="${CLASS_TOOLBOX_SECTION}__group-part">
+                            <label class="oltb-label" for="${ID_PREFIX}-stroke-width" data-oltb-i18n="${I18N_BASE}.toolbox.groups.strokeWidth.title">${i18n.groups.strokeWidth.title}</label>
+                            <select id="${ID_PREFIX}-stroke-width" class="oltb-select">
+                                <option value="1">1</option>
+                                <option value="1.25">1.25</option>
+                                <option value="1.5">1.5</option>
+                                <option value="2">2</option>
+                                <option value="2.5">2.5</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                            </select>
                         </div>
                     </div>
-                    <div class="${CLASS_TOOLBOX_SECTION}__group">
-                        <label class="oltb-label" for="${ID_PREFIX}-fill-color" data-oltb-i18n="${I18N_BASE}.toolbox.groups.fillColor.title">${i18n.groups.fillColor.title}</label>
-                        <div id="${ID_PREFIX}-fill-color" class="oltb-color-input oltb-color-tippy" data-oltb-color-target="#${ID_PREFIX}-fill-color" data-oltb-color="${this.localStorage.fillColor}" tabindex="0">
-                            <div class="oltb-color-input__inner" style="background-color: ${this.localStorage.fillColor};"></div>
+                    <div class="${CLASS_TOOLBOX_SECTION}__group ${CLASS_TOOLBOX_SECTION}__group--split-group">
+                        <div class="${CLASS_TOOLBOX_SECTION}__group-part">
+                            <label class="oltb-label" for="${ID_PREFIX}-stroke-color" data-oltb-i18n="${I18N_BASE}.toolbox.groups.strokeColor.title">${i18n.groups.strokeColor.title}</label>
+                            <div id="${ID_PREFIX}-stroke-color" class="oltb-color-input oltb-color-tippy" data-oltb-color-target="#${ID_PREFIX}-stroke-color" data-oltb-color="${this.localStorage.strokeColor}" tabindex="0">
+                                <div class="oltb-color-input__inner" style="background-color: ${this.localStorage.strokeColor};"></div>
+                            </div>
+                        </div>
+                        <div class="${CLASS_TOOLBOX_SECTION}__group-part">
+                            <label class="oltb-label" for="${ID_PREFIX}-fill-color" data-oltb-i18n="${I18N_BASE}.toolbox.groups.fillColor.title">${i18n.groups.fillColor.title}</label>
+                            <div id="${ID_PREFIX}-fill-color" class="oltb-color-input oltb-color-tippy" data-oltb-color-target="#${ID_PREFIX}-fill-color" data-oltb-color="${this.localStorage.fillColor}" tabindex="0">
+                                <div class="oltb-color-input__inner" style="background-color: ${this.localStorage.fillColor};"></div>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -33,48 +33,68 @@
     }
 }
 
-body.oltb-dark .tippy-box[data-theme~='oltb-themed'] {
-    background-color: $background-theme-light;
-    color: $background-theme-dark;
+body.oltb-dark {
+    // Note:
+    // This class is added to the popper element in the onShow callback
+    // To give the tooltip a bit more constrast
+    .tippy-color-picker {
+        border-radius: $border-radius;
+        border: 1px solid $form-input-border-color-dark;
+    }
+    
+    .tippy-box[data-theme~='oltb-themed'] {
+        background-color: $background-theme-light;
+        color: $background-theme-dark;
 
-    &.tippy-box[data-theme~='oltb'] {
-        &[data-placement^='top'] > .tippy-arrow::before {
-            border-top-color: $background-theme-light;
-        }
+        &.tippy-box[data-theme~='oltb'] {
+            &[data-placement^='top'] > .tippy-arrow::before {
+                border-top-color: $background-theme-light;
+            }
 
-        &[data-placement^='bottom'] > .tippy-arrow::before {
-            border-bottom-color: $background-theme-light;
-        }
+            &[data-placement^='bottom'] > .tippy-arrow::before {
+                border-bottom-color: $background-theme-light;
+            }
 
-        &[data-placement^='left'] > .tippy-arrow::before {
-            border-left-color: $background-theme-light;
-        }
+            &[data-placement^='left'] > .tippy-arrow::before {
+                border-left-color: $background-theme-light;
+            }
 
-        &[data-placement^='right'] > .tippy-arrow::before {
-            border-right-color: $background-theme-light;
+            &[data-placement^='right'] > .tippy-arrow::before {
+                border-right-color: $background-theme-light;
+            }
         }
     }
 }
 
-body:not(.oltb-dark) .tippy-box[data-theme~='oltb-inverted-themed'] {
-    background-color: $background-theme-light;
-    color: $background-theme-dark;
+body:not(.oltb-dark) {
+    // Note:
+    // This class is added to the popper element in the onShow callback
+    // To give the tooltip a bit more constrast
+    .tippy-color-picker {
+        border-radius: $border-radius;
+        border: 1px solid $form-input-border-color-light;
+    }
 
-    &.tippy-box[data-theme~='oltb'] {
-        &[data-placement^='top'] > .tippy-arrow::before {
-            border-top-color: $background-theme-light;
-        }
+    .tippy-box[data-theme~='oltb-inverted-themed'] {
+        background-color: $background-theme-light;
+        color: $background-theme-dark;
 
-        &[data-placement^='bottom'] > .tippy-arrow::before {
-            border-bottom-color: $background-theme-light;
-        }
+        &.tippy-box[data-theme~='oltb'] {
+            &[data-placement^='top'] > .tippy-arrow::before {
+                border-top-color: $background-theme-light;
+            }
 
-        &[data-placement^='left'] > .tippy-arrow::before {
-            border-left-color: $background-theme-light;
-        }
+            &[data-placement^='bottom'] > .tippy-arrow::before {
+                border-bottom-color: $background-theme-light;
+            }
 
-        &[data-placement^='right'] > .tippy-arrow::before {
-            border-right-color: $background-theme-light;
+            &[data-placement^='left'] > .tippy-arrow::before {
+                border-left-color: $background-theme-light;
+            }
+
+            &[data-placement^='right'] > .tippy-arrow::before {
+                border-right-color: $background-theme-light;
+            }
         }
     }
 }

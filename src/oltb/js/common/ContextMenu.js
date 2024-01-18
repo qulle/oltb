@@ -62,6 +62,48 @@ class ContextMenu extends Control {
     }
 
     // -------------------------------------------------------------------
+    // # Section: Internal
+    // -------------------------------------------------------------------
+
+    #getMenuCoordinatesInBounds(x, y) {
+        const rem = 1 * 16;
+        const pivotValue = 0;
+        
+        const mapElement = ElementManager.getMapElement();
+        const mapHeight = mapElement.offsetHeight;
+        
+        const menuElement = this.menu;
+        const menuHeight = menuElement.offsetHeight;
+
+        const distanceAvailable = mapHeight - y;
+        const distanceOutBounds = menuHeight - distanceAvailable;
+        
+        const dY = y - distanceOutBounds - rem;
+        const isMenuInBounds = distanceOutBounds < pivotValue;
+
+        const menuX = x;
+        const menuY = isMenuInBounds ? y : dY;
+
+        LogManager.logDebug(FILENAME, 'getMenuCoordinatesInView', {
+            mapHeight: mapHeight,
+            menuHeight: menuHeight,
+            distanceAvailable: distanceAvailable,
+            distanceOutBounds: distanceOutBounds,
+            isMenuInBounds: isMenuInBounds,
+            originalX: x,
+            originalY: y,
+            menuX: menuX,
+            menuY: menuY,
+            dY: dY
+        });
+
+        return {
+            x: menuX,
+            y: menuY
+        };
+    }
+
+    // -------------------------------------------------------------------
     // # Section: Events
     // -------------------------------------------------------------------
 
@@ -155,10 +197,20 @@ class ContextMenu extends Control {
             projection.default, 
             projection.wgs84
         );
-        
-        this.menu.style.left = `${event.clientX}px`;
-        this.menu.style.top = `${event.clientY}px`;
+
+        // Note:
+        // The class must added first 
+        // otherwise the offsetHeight or the getComputedStyle can't be extracted
         this.menu.classList.add(`${CLASS_CONTEXT_MENU}--show`);
+
+        // Note:
+        // If the user clicks at a location in the map where the height of the menu
+        // will exceed the of the height of the parent (the map) 
+        // Calculate the overflow value to move the menu negative dY pixels towards the top
+        const menuCoordinates = this.#getMenuCoordinatesInBounds(event.clientX, event.clientY);
+
+        this.menu.style.left = `${menuCoordinates.x}px`;
+        this.menu.style.top = `${menuCoordinates.y}px`;
         this.menu.focus();
     }
 

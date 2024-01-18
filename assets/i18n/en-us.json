@@ -19,6 +19,10 @@
         }
     },
     "managers": {
+        "colorPickerManager": {
+            "title": "Color Picker",
+            "toggleSection": "Toggle Section"
+        },
         "settingsManager": {
             "settings": {
                 "mouseWheelZoom": "Zoom Map Using Mousewheel Only",

@@ -252,16 +252,18 @@ class EditTool extends Control {
                             ${getIcon({ ...DefaultButtonProps, path: SvgPaths.subtract.mixed })}
                         </button>
                     </div>
-                    <div class="${CLASS_TOOLBOX_SECTION}__group">
-                        <label class="oltb-label" for="${ID_PREFIX}-stroke-color" data-oldb-i18n="${I18N_BASE}.toolbox.groups.strokeColor">${i18n.groups.strokeColor}</label>
-                        <div id="${ID_PREFIX}-stroke-color" class="oltb-color-input oltb-color-tippy" data-oltb-color-target="#${ID_PREFIX}-stroke-color" data-oltb-color="${this.localStorage.strokeColor}" tabindex="0">
-                            <div class="oltb-color-input__inner" style="background-color: ${this.localStorage.strokeColor};"></div>
+                    <div class="${CLASS_TOOLBOX_SECTION}__group ${CLASS_TOOLBOX_SECTION}__group--split-group">
+                        <div class="${CLASS_TOOLBOX_SECTION}__group-part">
+                            <label class="oltb-label" for="${ID_PREFIX}-stroke-color" data-oldb-i18n="${I18N_BASE}.toolbox.groups.strokeColor">${i18n.groups.strokeColor}</label>
+                            <div id="${ID_PREFIX}-stroke-color" class="oltb-color-input oltb-color-tippy" data-oltb-color-target="#${ID_PREFIX}-stroke-color" data-oltb-color="${this.localStorage.strokeColor}" tabindex="0">
+                                <div class="oltb-color-input__inner" style="background-color: ${this.localStorage.strokeColor};"></div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="${CLASS_TOOLBOX_SECTION}__group">
-                        <label class="oltb-label" for="${ID_PREFIX}-fill-color" data-oldb-i18n="${I18N_BASE}.toolbox.groups.fillColor">${i18n.groups.fillColor}</label>
-                        <div id="${ID_PREFIX}-fill-color" class="oltb-color-input oltb-color-tippy" data-oltb-color-target="#${ID_PREFIX}-fill-color" data-oltb-color="${this.localStorage.fillColor}" tabindex="0">
-                            <div class="oltb-color-input__inner" style="background-color: ${this.localStorage.fillColor};"></div>
+                        <div class="${CLASS_TOOLBOX_SECTION}__group-part">
+                            <label class="oltb-label" for="${ID_PREFIX}-fill-color" data-oldb-i18n="${I18N_BASE}.toolbox.groups.fillColor">${i18n.groups.fillColor}</label>
+                            <div id="${ID_PREFIX}-fill-color" class="oltb-color-input oltb-color-tippy" data-oltb-color-target="#${ID_PREFIX}-fill-color" data-oltb-color="${this.localStorage.fillColor}" tabindex="0">
+                                <div class="oltb-color-input__inner" style="background-color: ${this.localStorage.fillColor};"></div>
+                            </div>
                         </div>
                     </div>
                 </div>

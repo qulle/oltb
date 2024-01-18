@@ -20,15 +20,9 @@ export const DefaultTranslation = Object.freeze({
         }
     },
     managers: {
-        stateManager: {
-            toasts: {
-                errors: {
-                    parseBrowserData: {
-                        title: 'Error',
-                        message: 'Failed to load application state'
-                    }
-                }
-            }
+        colorPickerManager: {
+            title: 'Color Picker',
+            toggleSection: 'Toggle Section'
         },
         settingsManager: {
             settings: {

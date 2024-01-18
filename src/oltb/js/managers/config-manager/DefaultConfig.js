@@ -46,7 +46,9 @@ const DefaultConfig = Object.freeze({
             isEnabled: true,
             duration: 2000,
             shouldLoop: true,
-            strokeWidth: 1 
+            strokeWidth: 1,
+            defaultStartSize: 0,
+            defaultEndSize: 12
         }
     }),
     scroll: Object.freeze({
@@ -95,6 +97,7 @@ const DefaultConfig = Object.freeze({
         warp: 150
     }),
     aColorPicker: Object.freeze({
+        showPaletteAsDefault: true,
         palette: Object.freeze([
             '#F0F6FF', // Blue 100
             '#D7E3FA', // Blue 200

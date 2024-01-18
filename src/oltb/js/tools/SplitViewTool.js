@@ -25,6 +25,7 @@ const CLASS_TOGGLEABLE = 'oltb-toggleable';
 const ID_PREFIX = 'oltb-split-view';
 const INDEX_DEFAULT_RIGHT = 0;
 const INDEX_DEFAULT_LEFT = 1;
+const MIN_NUM_LAYERS = 2;
 const I18N_BASE = 'tools.splitViewTool';
 const I18N_BASE_COMMON = 'commons';
 
@@ -140,13 +141,15 @@ class SplitViewTool extends Control {
                     <span class="${CLASS_TOOLBOX_SECTION}__icon oltb-tippy" data-oltb-i18n="${I18N_BASE_COMMON}.titles.toggleSection" title="${i18nCommon.toggleSection}"></span>
                 </div>
                 <div class="${CLASS_TOOLBOX_SECTION}__groups" id="${ID_PREFIX}-toolbox-collapsed" style="display: ${this.localStorage.isCollapsed ? 'none' : 'block'}">
-                    <div class="${CLASS_TOOLBOX_SECTION}__group">
-                        <label class="oltb-label" for="${ID_PREFIX}-left-source" data-oltb-i18n="${I18N_BASE}.toolbox.groups.leftSide.title">${i18n.groups.leftSide.title}</label>
-                        <select id="${ID_PREFIX}-left-source" class="oltb-select"></select>
-                    </div>
-                    <div class="${CLASS_TOOLBOX_SECTION}__group">
-                        <label class="oltb-label" for="${ID_PREFIX}-source" data-oltb-i18n="${I18N_BASE}.toolbox.groups.rightSide.title">${i18n.groups.rightSide.title}</label>
-                        <select id="${ID_PREFIX}-right-source" class="oltb-select"></select>
+                    <div class="${CLASS_TOOLBOX_SECTION}__group ${CLASS_TOOLBOX_SECTION}__group--split-group">
+                        <div class="${CLASS_TOOLBOX_SECTION}__group-part">
+                            <label class="oltb-label" for="${ID_PREFIX}-left-source" data-oltb-i18n="${I18N_BASE}.toolbox.groups.leftSide.title">${i18n.groups.leftSide.title}</label>
+                            <select id="${ID_PREFIX}-left-source" class="oltb-select"></select>
+                        </div>
+                        <div class="${CLASS_TOOLBOX_SECTION}__group-part">
+                            <label class="oltb-label" for="${ID_PREFIX}-source" data-oltb-i18n="${I18N_BASE}.toolbox.groups.rightSide.title">${i18n.groups.rightSide.title}</label>
+                            <select id="${ID_PREFIX}-right-source" class="oltb-select"></select>
+                        </div>
                     </div>
                     <div class="${CLASS_TOOLBOX_SECTION}__group">
                         <button type="button" id="${ID_PREFIX}-swap-button" class="oltb-btn oltb-btn--green-mid oltb-w-100" data-oltb-i18n="${I18N_BASE}.toolbox.groups.swapSides.swap">${i18n.groups.swapSides.swap}</button>
@@ -175,7 +178,7 @@ class SplitViewTool extends Control {
     onClickTool(event) {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
 
-        if(LayerManager.getMapLayerSize() <= 1) {
+        if(LayerManager.getMapLayerSize() < MIN_NUM_LAYERS) {
             Toast.info({
                 i18nKey: `${I18N_BASE}.toasts.infos.strictOneLayer`
             });
@@ -204,8 +207,9 @@ class SplitViewTool extends Control {
 
         this.setDefaultSelectedIndexes().doDispatchChangeEvent();
 
+        // Note:
         // Some layer related error, missing or rendering
-        // Triggered by eventDispatcher change-event
+        // Is triggered by eventDispatcher change-event
         if(this.layerLoadingError) {
             this.isActive = false;
             return;
@@ -225,6 +229,7 @@ class SplitViewTool extends Control {
             return;
         }
 
+        // Note:
         // Remove previosly added listeners
         unByKey(this.onPreRenderListener);
         unByKey(this.onPostRenderListener);
@@ -239,6 +244,9 @@ class SplitViewTool extends Control {
             map.addLayer(layerWrapper.getLayer());
         });
 
+        // Note:
+        // This method picks the top-most layer meaning the [0] index
+        // In the future make it pix the one with highest Z-index or pick the one active before the tool was activated
         LayerManager.setTopMapLayerAsOnlyVisible();
 
         this.isActive = false;

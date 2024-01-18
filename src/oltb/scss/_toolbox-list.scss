@@ -26,6 +26,7 @@
     }
 
     &__dot {
+        flex-shrink: 0;
         width: .5rem;
         height: .5rem;
         margin-right: .75rem;
@@ -127,6 +128,10 @@
 // Note:
 // List that can have a selected item, example feature-layers
 .oltb-toolbox-list--selectable .oltb-toolbox-list {
+    &__dot {
+        cursor: pointer;
+    }
+
     &__item--active {
         font-weight: bold;
 

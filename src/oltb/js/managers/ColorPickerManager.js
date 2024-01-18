@@ -5,8 +5,10 @@ import { LogManager } from './LogManager';
 import { isHorizontal } from '../helpers/IsRowDirection';
 import { ConfigManager } from './ConfigManager';
 import { eventDispatcher } from '../helpers/browser/EventDispatcher';
+import { TranslationManager } from './TranslationManager';
 
 const FILENAME = 'managers/ColorPickerManager.js';
+const I18N_BASE = 'managers.colorPickerManager';
 
 /**
  * About:
@@ -14,6 +16,9 @@ const FILENAME = 'managers/ColorPickerManager.js';
  * 
  * Description:
  * Manages and simplifies the usage of the ACP instance (A Color Picker).
+ * 
+ * Note:
+ * The ACP must be included in the above format or else the Parcel and/or Rollup fails
  */
 class ColorPickerManager {
     static #colorPickerElement;
@@ -54,7 +59,7 @@ class ColorPickerManager {
         return DOM.createElement({
             element: 'div', 
             id: 'otlb-color-picker',
-            class: 'oltb-mt-0313 oltb-mb-0313',
+            class: 'oltb-mt-05 oltb-mb-0313',
             attributes: {
                 'acp-color': '#D7E3FA',
                 'acp-show-alpha': 'yes',
@@ -64,6 +69,68 @@ class ColorPickerManager {
                 'acp-palette': palette.join('|')
             }
         });
+    }
+
+    static #createColorPickerWrapper() {
+        // Note:
+        // [0] -> Gradiant-Adobe-Like-Picker
+        // [1] -> Color and Opacity Sliders
+        // [2] -> HEX In-/Output
+        // [3] -> Color Palette
+        const displayClass = 'oltb-d-none';
+        const maxIncludedIndex = 2;
+        const acpRows = this.#colorPickerElement.querySelectorAll('.a-color-picker-row');
+        
+        // Note:
+        // The user can opt-out from hiding the full controls using the showPaletteAsDefault parameter
+        const showPaletteAsDefault = ConfigManager.getConfig().aColorPicker.showPaletteAsDefault;
+        if(showPaletteAsDefault) {
+            for(let i = 0; i <= maxIncludedIndex; ++i) {
+                acpRows[i].classList.add(displayClass);
+            }
+        }
+
+        const acpHeader = DOM.createElement({
+            element: 'div', 
+            class: 'oltb-acp__header',
+            listeners: {
+                'click': () => {
+                    for(let i = 0; i <= maxIncludedIndex; ++i) {
+                        acpRows[i].classList.toggle(displayClass);
+                    }
+                }
+            }
+        });
+
+        const i18n = TranslationManager.get(`${I18N_BASE}`);
+        const acpTitle = DOM.createElement({
+            element: 'label', 
+            class: 'oltb-acp__title',
+            text: i18n.title
+        });
+
+        const acpIcon = DOM.createElement({
+            element: 'label', 
+            class: 'oltb-acp__icon oltb-tippy',
+            title: i18n.toggleSection
+        });
+
+        DOM.appendChildren(acpHeader, [
+            acpTitle,
+            acpIcon
+        ]);
+
+        const acpWrapper = DOM.createElement({
+            element: 'div', 
+            class: 'oltb-acp'
+        });
+
+        DOM.appendChildren(acpWrapper, [
+            acpHeader,
+            this.#colorPickerElement
+        ]);
+
+        return acpWrapper;
     }
 
     // -------------------------------------------------------------------
@@ -83,14 +150,27 @@ class ColorPickerManager {
     }
 
     static show(instance) {
+        const colorPickerWrapper = this.#createColorPickerWrapper();
+        instance.setContent(colorPickerWrapper);
         instance.setProps({
-            placement: this.#isToPlaceBottom() ? 'bottom' : 'left'
+            placement: this.#isToPlaceBottom() ? 'bottom' : 'left',
         });
-    
+
+        // Note:
+        // Apply a bit more distinct border in the Tooltip
+        // because the colorpicker overlaps other elements
+        const popper = instance.popper;
+        popper.classList.add('tippy-color-picker');
+
+        // Note:
+        // Find all palette-colors and add the tippy-class to improve look and feel
+        const paletteColors = this.#colorPickerElement.querySelectorAll('.a-color-picker-palette-color');
+        paletteColors.forEach((color) => {
+            color.classList.add('oltb-tippy');
+        });
+
         const selector = instance.reference.getAttribute('data-oltb-color-target');
         const uiRefTarget = document.querySelector(selector);
-    
-        instance.setContent(this.#colorPickerElement);
     
         this.#colorPicker.setColor(instance.reference.getAttribute('data-oltb-color'));
         this.#colorPicker.on(Events.browser.change, (picker, color) => {

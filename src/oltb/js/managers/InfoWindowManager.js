@@ -15,6 +15,7 @@ import { copyMarkerInfo } from './info-window-manager/CopyMarkerInfo';
 import { showMarkerLayer } from './info-window-manager/ShowMarkerLayer';
 import { getVectorContext } from 'ol/render';
 import { SvgPaths, getIcon } from '../icons/GetIcon';
+import { hasNestedProperty } from '../helpers/browser/HasNestedProperty';
 import { HexTransparencies } from '../helpers/constants/HexTransparencies';
 import { FeatureProperties } from '../helpers/constants/FeatureProperties';
 import { copyMarkerCoordinates } from './info-window-manager/CopyMarkerCoordinates';
@@ -245,13 +246,16 @@ class InfoWindowManager {
     // -------------------------------------------------------------------
 
     static pulseAnimation(feature, layer = undefined) {
-        const type = FeatureProperties.type.marker;
         const oltb = feature.getProperties()?.oltb;
         const animationConfig = ConfigManager.getConfig().marker.pulseAnimation;
+        const types = [
+            FeatureProperties.type.marker, 
+            FeatureProperties.type.windBarb
+        ];
 
         // Note:
-        // Only animate the pure markers, not windbarbs and other features
-        if(!oltb || oltb.type !== type || !animationConfig.isEnabled) {
+        // Only animate oltb markers and wind-barbs
+        if(!oltb || !types.includes(oltb.type) || !animationConfig.isEnabled) {
             return;
         }
 
@@ -275,8 +279,12 @@ class InfoWindowManager {
 
         const start = Date.now();
         const color = oltb.style.markerFill;
-        const startSize = oltb.style.radius;
-        const endSize = oltb.style.radius + (oltb.style.radius / 2);
+
+        const hasRadius = hasNestedProperty(oltb, 'style', 'radius');
+        const defaultStartSize = animationConfig.defaultStartSize;
+        const defaultEndSize = animationConfig.defaultEndSize;
+        const startSize = hasRadius ? oltb.style.radius : defaultStartSize;
+        const endSize = hasRadius ? oltb.style.radius + (oltb.style.radius / 2) : defaultEndSize;
         
         const duration = animationConfig.duration;
         const shouldLoop = animationConfig.shouldLoop;

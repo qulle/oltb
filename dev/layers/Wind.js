@@ -82,7 +82,7 @@ const parseGeoJson = function(data) {
             markerFill: '#3B4352FF',
             markerStroke: '#3B4352FF',
             scale: .8,
-            label: `${countryName} ${windSpeed}m/s`,
+            label: `${windSpeed}m/s`,
             labelFill: '#FFFFFF',
             labelStroke: '#3B4352CC',
             labelStrokeWidth: 12,
