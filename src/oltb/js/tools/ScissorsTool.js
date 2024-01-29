@@ -16,6 +16,7 @@ import { GeometryType } from '../ol-types/GeometryType';
 import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
 import { ConfigManager } from '../managers/ConfigManager';
 import { ElementManager } from '../managers/ElementManager';
+import { FeatureManager } from '../managers/FeatureManager';
 import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
 import { SvgPaths, getIcon } from '../icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
@@ -313,14 +314,13 @@ class ScissorsTool extends Control {
         const layerWrappers = LayerManager.getFeatureLayers();
         layerWrappers.forEach((layerWrapper) => {
             const layer = layerWrapper.getLayer();
-
             if(!layer.getVisible()) {
                 return;
             }
 
             const source = layer.getSource();
             source.forEachFeatureIntersectingExtent(featureGeometry.getExtent(), (intersectedFeature) => {
-                const type = intersectedFeature.getProperties()?.oltb?.type;
+                const type = FeatureManager.getType(intersectedFeature);
                 const geometry = intersectedFeature.getGeometry();
     
                 if(isFeatureIntersectable(type, geometry)) {

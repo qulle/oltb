@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { DOM } from '../helpers/browser/DOM';
 import { Events } from '../helpers/constants/Events';
 import { getUid } from 'ol/util';
@@ -11,11 +12,12 @@ import { editMarker } from './info-window-manager/EditMarker';
 import { LayerManager } from './LayerManager';
 import { removeMarker } from './info-window-manager/RemoveMarker';
 import { ConfigManager } from './ConfigManager';
+import { DefaultConfig } from './config-manager/DefaultConfig';
+import { FeatureManager } from './FeatureManager';
 import { copyMarkerInfo } from './info-window-manager/CopyMarkerInfo';
 import { showMarkerLayer } from './info-window-manager/ShowMarkerLayer';
 import { getVectorContext } from 'ol/render';
 import { SvgPaths, getIcon } from '../icons/GetIcon';
-import { hasNestedProperty } from '../helpers/browser/HasNestedProperty';
 import { HexTransparencies } from '../helpers/constants/HexTransparencies';
 import { FeatureProperties } from '../helpers/constants/FeatureProperties';
 import { copyMarkerCoordinates } from './info-window-manager/CopyMarkerCoordinates';
@@ -27,12 +29,30 @@ const CLASS_ANIMATION_CENTERED_BOUNCE = `${CLASS_ANIMATION}--centered-bounce`;
 const CLASS_INFO_WINDOW = 'oltb-info-window';
 const ID_PREFIX_INFO_WINDOW = 'oltb-info-window-marker';
 
+const DefaultHighlightStyle = new Style({
+    fill: new Fill({
+        color: '#254372AA'
+    }),
+    stroke: new Stroke({
+        color: '#369ACDFF',
+        width: 1.5
+    })
+});
+
 /**
  * About:
  * InfoWindowManager
  * 
  * Description:
  * Manages the Information Window that can be attached on Markers in the Map.
+ * 
+ * TODO:
+ * This class should be refactored in the future, break down into smaller parts
+ * Especially:
+ * - Animation
+ * - Attaching of function-buttons
+ * - onSingleClick
+ * - onMouseMove
  */
 class InfoWindowManager {
     static #map;
@@ -41,8 +61,9 @@ class InfoWindowManager {
     static #title;
     static #content;
     static #footer;
-    static #selectedVectorSection;
     static #selectedFeature;
+    static #selectedVectorSection;
+    static #hoveredVectorSection;
 
     static async initAsync(options = {}) {
         LogManager.logDebug(FILENAME, 'initAsync', 'Initialization started');
@@ -100,7 +121,8 @@ class InfoWindowManager {
             html: getIcon({
                 path: SvgPaths.close.stroked,
                 fill: 'none',
-                stroke: 'currentColor'
+                stroke: 'currentColor',
+                strokeWidth: 1
             }),
             class: `${CLASS_INFO_WINDOW}__close oltb-btn oltb-btn--blank`,
             listeners: {
@@ -115,7 +137,7 @@ class InfoWindowManager {
 
         this.#footer = DOM.createElement({
             element: 'div',
-            class: `${CLASS_INFO_WINDOW}__footer`
+            class: `${CLASS_INFO_WINDOW}__footer oltb-hide-scrollbars`
         });
 
         DOM.appendChildren(header, [
@@ -157,6 +179,8 @@ class InfoWindowManager {
         if(!results) {
             this.hideOverlay();
             this.#deselectFeature();
+            this.#deselectHoveredVectorSection();
+            this.#deselectVectorSection();
 
             return;
         }
@@ -164,37 +188,62 @@ class InfoWindowManager {
         const feature = results[0];
         const layer = results[1];
 
-        this.pulseAnimation(feature, layer);
-
-        const infoWindow = feature?.getProperties()?.oltb?.infoWindow;
-        if(infoWindow) {
+        this.tryPulseAnimation(feature, layer);
+       
+        const hasInfoWindow = FeatureManager.hasInfoWindow(feature);
+        if(hasInfoWindow) {
             this.showOverlay(feature);
+            this.#deselectVectorSection();
         }else {
             this.hideOverlay();
+            this.#deselectVectorSection();
+        }
+
+        const shouldHighlight = FeatureManager.shouldHighlightOnHover(feature);
+        if(hasInfoWindow && shouldHighlight) {
+            this.#selectVectorSection(feature);
         }
     }
 
     static #onPointerMove(event) {
+        const viewPort = this.#map.getViewport();
         const feature = this.#map.forEachFeatureAtPixel(event.pixel, function(feature) {
             return feature;
         });
 
-        if(this.#selectedVectorSection && (!feature || this.#selectedVectorSection !== feature)) {
+        if(
+            !feature && 
+            !this.#selectedVectorSection
+        ) {
+            this.#deselectHoveredVectorSection();
             this.#deselectVectorSection();
         }
 
-        const hightlight = feature?.getProperties()?.oltb?.highlightOnHover;
-        if(hightlight) {
-            this.#selectVectorSection(feature);
+        if(
+            this.#hoveredVectorSection && 
+            this.#hoveredVectorSection !== feature &&
+            this.#hoveredVectorSection !== this.#selectedVectorSection
+        ) {
+            this.#deselectHoveredVectorSection();
+        }
+
+        if(!feature) {
+            viewPort.style.cursor = 'default';
+
+            return;
+        }
+
+        const shouldHighlight = FeatureManager.shouldHighlightOnHover(feature);
+        if(shouldHighlight) {
+            this.#selectHoveredVectorSection(feature);
         }
 
         const nodeName = event.originalEvent.target.nodeName;
-        const infoWindow = feature?.getProperties()?.oltb?.infoWindow;
-        
-        if(infoWindow && nodeName === 'CANVAS') {
-            this.#map.getViewport().style.cursor = 'pointer';
+        const hasInfoWindow = FeatureManager.hasInfoWindow(feature);
+        if(hasInfoWindow && nodeName === 'CANVAS') {
+            viewPort.style.cursor = 'pointer';
         }else {
-            this.#map.getViewport().style.cursor = 'default';
+            viewPort.style.cursor = 'default';
         }
     }
 
@@ -204,87 +253,77 @@ class InfoWindowManager {
 
     static #selectFeature(feature) {
         this.#selectedFeature = feature;
+        this.#deselectVectorSection();
     }
 
     static #deselectFeature() {
-        if(!this.#selectedFeature) {
-            return;
-        }
-
         this.#selectedFeature = undefined;
     }
 
     static #selectVectorSection(section) {
-        if(!section) {
-            return;
-        }
-
-        const style = new Style({
-            fill: new Fill({
-                color: '#254372AA'
-            }),
-            stroke: new Stroke({
-                color: '#369ACDFF',
-                width: 1.5
-            })
-        });
-
-        section.setStyle(style);
+        section?.setStyle(DefaultHighlightStyle);
         this.#selectedVectorSection = section;
+        this.#deselectFeature();
     }
 
     static #deselectVectorSection() {
-        if(!this.#selectedVectorSection) {
-            return;
-        }
-
-        this.#selectedVectorSection.setStyle(null);
+        this.#selectedVectorSection?.setStyle(null);
+        this.#selectedVectorSection = undefined;
     }
 
-    // -------------------------------------------------------------------
-    // # Section: Public API
-    // -------------------------------------------------------------------
+    static #selectHoveredVectorSection(section) {
+        section?.setStyle(DefaultHighlightStyle);
+        this.#hoveredVectorSection = section;
+    }
 
-    static pulseAnimation(feature, layer = undefined) {
-        const oltb = feature.getProperties()?.oltb;
-        const animationConfig = ConfigManager.getConfig().marker.pulseAnimation;
-        const types = [
-            FeatureProperties.type.marker, 
-            FeatureProperties.type.windBarb
-        ];
+    static #deselectHoveredVectorSection() {
+        this.#hoveredVectorSection?.setStyle(null);
+        this.#hoveredVectorSection = undefined;
+    }
 
-        // Note:
-        // Only animate oltb markers and wind-barbs
-        if(!oltb || !types.includes(oltb.type) || !animationConfig.isEnabled) {
-            return;
+    static #getAnimationMin(properties) {
+        if(_.has(properties, ['marker'])) {
+            return properties.marker.radius;
         }
 
-        // Note:
-        // This mehtod might be invoked when the layer is "unknown", example navigating to a bookmark
-        // Try and find the layer from the LayerManager
-        if(!layer) {
-            layer = LayerManager.getLayerFromFeature(feature);
+        return DefaultConfig.marker.pulseAnimation.defaultStartSize;
+    }
+
+    static #getAnimationMax(properties) {
+        if(_.has(properties, ['marker'])) {
+            return properties.marker.radius + (properties.marker.radius / 2);
         }
 
-        if(!layer) {
-            LogManager.logWarning(FILENAME, 'pulseAnimation', {
-                info: 'No layer found for feature',
-                featureId: getUid(feature)
-            });
+        return DefaultConfig.marker.pulseAnimation.defaultEndSize;
+    }
 
-            return;
+    static #getAnimationColor(properties) {
+        if(_.has(properties, ['marker'])) {
+            return properties.marker.fill;
         }
 
+        if(_.has(properties, ['icon'])) {
+            return properties.icon.stroke;
+        }
+
+        return DefaultConfig.marker.pulseAnimation.defaultColor;
+    }
+
+    static #isSameFeature(a, b) {
+        if(!a || !b) {
+            return false;
+        }
+
+        return a.ol_uid === b.ol_uid;
+    }
+
+    static #pulseAnimation(feature, layer, properties, animationConfig) {
         this.#selectFeature(feature);
 
         const start = Date.now();
-        const color = oltb.style.markerFill;
-
-        const hasRadius = hasNestedProperty(oltb, 'style', 'radius');
-        const defaultStartSize = animationConfig.defaultStartSize;
-        const defaultEndSize = animationConfig.defaultEndSize;
-        const startSize = hasRadius ? oltb.style.radius : defaultStartSize;
-        const endSize = hasRadius ? oltb.style.radius + (oltb.style.radius / 2) : defaultEndSize;
+        const color = this.#getAnimationColor(properties);
+        const minSize = this.#getAnimationMin(properties);
+        const maxSize = this.#getAnimationMax(properties);
         
         const duration = animationConfig.duration;
         const shouldLoop = animationConfig.shouldLoop;
@@ -308,8 +347,8 @@ class InfoWindowManager {
 
                 // Note:
                 // If the feature is still selected, rerun the animation
-                if(this.#selectedFeature === feature && shouldLoop) {
-                    this.pulseAnimation(feature, layer);
+                if(this.#isSameFeature(this.#selectedFeature, feature) && shouldLoop) {
+                    this.#pulseAnimation(feature, layer, properties, animationConfig);
                 }
 
                 return;
@@ -318,7 +357,7 @@ class InfoWindowManager {
             const vectorContext = getVectorContext(event);
             const elapsedRatio = elapsed / duration;
 
-            const radius = easeOut(elapsedRatio) * endSize + startSize;
+            const radius = easeOut(elapsedRatio) * maxSize + minSize;
             const opacity = easeOut(1 - elapsedRatio);
             
             const hexPercentage = Math.round(opacity * 100);
@@ -343,13 +382,58 @@ class InfoWindowManager {
         }
     }
 
+    // -------------------------------------------------------------------
+    // # Section: Public API
+    // -------------------------------------------------------------------
+
+    static tryPulseAnimation(feature, layer = undefined) {
+        const oltb = DefaultConfig.toolbar.id;
+        const properties = feature.get(oltb);
+        const animationConfig = ConfigManager.getConfig().marker.pulseAnimation;
+        const types = [
+            FeatureProperties.type.iconMarker, 
+            FeatureProperties.type.windBarb
+        ];
+
+        // Note:
+        // Only animate oltb markers and wind-barbs
+        if(!properties || !types.includes(properties.type) || !animationConfig.isEnabled) {
+            return;
+        }
+
+        // Note:
+        // This method might be invoked when the layer is "unknown", example navigating to a Bookmark
+        // Try and find the layer from the LayerManager
+        if(!layer) {
+            layer = LayerManager.getLayerFromFeature(feature);
+        }
+
+        if(!layer) {
+            LogManager.logWarning(FILENAME, 'pulseAnimation', {
+                info: 'No layer found for feature',
+                featureId: getUid(feature)
+            });
+
+            return;
+        }
+
+        // Note:
+        // Already animating this feature
+        // Example if the user repeatedly navigates to the same Bookmark
+        if(this.#selectedFeature && this.#isSameFeature(this.#selectedFeature, feature)) {
+            return;
+        }
+
+        this.#pulseAnimation(feature, layer, properties, animationConfig);
+    }
+
     static showOverlay(feature, position) {
         this.showOverlayDelayed(feature, position, 0);
     }
 
     static showOverlayDelayed(feature, position, delay = ConfigManager.getConfig().animationDuration.normal) {
         window.setTimeout(() => {
-            const infoWindow = feature.getProperties().oltb.infoWindow;
+            const infoWindow = FeatureManager.getInfoWindow(feature);
             if(!infoWindow) {
                 return;
             }
@@ -417,6 +501,8 @@ class InfoWindowManager {
 
     static hideOverlay() {
         this.#deselectFeature();
+        this.#deselectHoveredVectorSection();
+        this.#deselectVectorSection();
 
         DOM.clearElements([
             this.#title,

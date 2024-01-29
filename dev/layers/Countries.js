@@ -36,30 +36,34 @@ const parseGeoJson = function(context, data, projection) {
         const prettyCoordinates = toStringHDMS(coordinates);
         const measureValue = getMeasureValue(feature.getGeometry());
 
-        const title = feature.getProperties().name;
+        const title = feature.get('name');
         const description = `
             Based on the geometric data, we estimate the area to be ${measureValue.value} ${measureValue.unit}.
         `;
 
+        const infoWindow = {
+            title: title,
+            content: `
+                <p>${description}</p>
+            `,
+            footer: `
+                <span class="oltb-info-window__coordinates">${prettyCoordinates}</span>
+                <div class="oltb-info-window__buttons-wrapper">
+                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--copy oltb-tippy" title="Copy Marker Text" id="${ID_PREFIX_INFO_WINDOW}-copy-text" data-oltb-copy="${description}"></button>
+                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--layer oltb-tippy" title="Show Layer" id="${ID_PREFIX_INFO_WINDOW}-show-layer"></button>
+                </div>
+            `
+        };
+
         feature.setProperties({
             oltb: {
                 type: FeatureProperties.type.layer,
-                highlightOnHover: true,
                 title: title,
                 description: description,
-                infoWindow: {
-                    title: title,
-                    content: `
-                        <p>${description}</p>
-                    `,
-                    footer: `
-                        <span class="oltb-info-window__coordinates">${prettyCoordinates}</span>
-                        <div class="oltb-info-window__buttons-wrapper">
-                            <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--copy oltb-tippy" title="Copy Marker Text" id="${ID_PREFIX_INFO_WINDOW}-copy-text" data-oltb-copy="${description}"></button>
-                            <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--layer oltb-tippy" title="Show Layer" id="${ID_PREFIX_INFO_WINDOW}-show-layer"></button>
-                        </div>
-                    `
-                }
+                settings: {
+                    shouldHighlightOnHover: true,
+                },
+                infoWindow: infoWindow
             }
         });
     });

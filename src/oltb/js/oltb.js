@@ -22,6 +22,7 @@ import { LogManager } from './managers/LogManager';
 import { UrlManager } from './managers/UrlManager';
 import { ToolManager } from './managers/ToolManager';
 import { SnapManager } from './managers/SnapManager';
+import { StyleManager } from './managers/StyleManager';
 import { LayerManager } from './managers/LayerManager';
 import { StateManager } from './managers/StateManager';
 import { TippyManager } from './managers/TippyManager';
@@ -29,6 +30,7 @@ import { ErrorManager } from './managers/ErrorManager';
 import { ConfigManager } from './managers/ConfigManager';
 import { ElementManager } from './managers/ElementManager';
 import { TooltipManager } from './managers/TooltipManager';
+import { FeatureManager } from './managers/FeatureManager';
 import { SettingsManager } from './managers/SettingsManager';
 import { BootstrapManager } from './managers/BootstrapManager';
 import { InfoWindowManager } from './managers/InfoWindowManager';
@@ -36,10 +38,6 @@ import { ProjectionManager } from './managers/ProjectionManager';
 import { TranslationManager } from './managers/TranslationManager';
 import { ColorPickerManager } from './managers/ColorPickerManager';
 import { AccessibilityManager } from './managers/AccessibilityManager';
-
-// Generator functions
-import { generateWindBarb } from './generators/GenerateWindBarb';
-import { generateIconMarker } from './generators/GenerateIconMarker';
 
 // Create UI functions
 import { createUITooltip } from './creators/CreateUITooltip';
@@ -49,6 +47,9 @@ import { AllTools } from './tools/index';
 
 class OLTB {
     static LogManager = LogManager;
+    static StyleManager = StyleManager;
+    static ErrorManager = ErrorManager;
+    static FeatureManager = FeatureManager;
     static StateManager = StateManager;
     static ElementManager = ElementManager;
     static ConfigManager = ConfigManager;
@@ -69,8 +70,6 @@ class OLTB {
     static Modal = Modal;
     static Dialog = Dialog;
 
-    generateIconMarker = generateIconMarker;
-    generateWindBarb = generateWindBarb;
     createUITooltip = createUITooltip;
 
     #tools = {};
@@ -138,7 +137,9 @@ class OLTB {
         // The init order is important
         BootstrapManager.initAsync([
             { manager: LogManager },
+            { manager: StyleManager },
             { manager: ErrorManager },
+            { manager: FeatureManager },
             { manager: StateManager, options: {
                 ignoredKeys: []
             }},

@@ -105,6 +105,16 @@
     }
 
     // Misc
+    &-group {
+        display: flex; 
+        flex-direction: row; 
+        gap: 0.5rem;
+
+        > * {
+            flex: 1;
+        }
+    }
+
     &-w-100 {
         width: 100% !important;
     }
@@ -168,8 +178,7 @@
     }
     
     &-link {
-        color: $color-blue-300;
-        text-decoration: none;
+        color: $color-link;
     
         &:focus {
             text-decoration: underline;

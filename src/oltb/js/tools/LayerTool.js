@@ -15,6 +15,7 @@ import { StateManager } from '../managers/StateManager';
 import { LayerManager } from '../managers/LayerManager';
 import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
 import { ConfigManager } from '../managers/ConfigManager';
+import { FeatureManager } from '../managers/FeatureManager';
 import { ElementManager } from '../managers/ElementManager';
 import { instantiateLayer } from '../ol-types/LayerType';
 import { createUICheckbox } from '../creators/CreateUICheckbox';
@@ -25,10 +26,8 @@ import { instantiateFormat } from '../ol-types/FormatType';
 import { InfoWindowManager } from '../managers/InfoWindowManager';
 import { ProjectionManager } from '../managers/ProjectionManager';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
-import { FeatureProperties } from '../helpers/constants/FeatureProperties';
 import { TranslationManager } from '../managers/TranslationManager';
 import { DownloadLayerModal } from './modal-extensions/DownloadLayerModal';
-import { hasCustomFeatureProperty } from '../helpers/browser/HasNestedProperty';
 
 const FILENAME = 'tools/LayerTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
@@ -239,6 +238,7 @@ class LayerTool extends Control {
                                             height: 20,
                                             fill: 'none',
                                             stroke: '#FFFFFFFF',
+                                            strokeWidth: 1,
                                             class: 'oltb-btn__icon'
                                         })}
                                     </button>
@@ -309,6 +309,12 @@ class LayerTool extends Control {
 
         this.localStorage.isActive = true;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
+
+        this.uiRefToolboxSection.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'end', 
+            inline: 'nearest' 
+        });
     }
 
     deactivateTool() {
@@ -424,13 +430,7 @@ class LayerTool extends Control {
     }
 
     hasLocalStorageFeatureLayerById(id) {
-        const layer = this.getLocalStorageFeatureLayerById(id);
-
-        if(layer) {
-            return true;
-        }
-
-        return false;
+        return !!this.getLocalStorageFeatureLayerById(id);
     }
 
     getLocalStorageMapLayerById(id) {
@@ -442,13 +442,7 @@ class LayerTool extends Control {
     }
 
     hasLocalStorageMapLayerById(id) {
-        const layer = this.getLocalStorageMapLayerById(id);
-
-        if(layer) {
-            return true;
-        }
-
-        return false;
+        return !!this.getLocalStorageMapLayerById(id);
     }
 
     // -------------------------------------------------------------------
@@ -588,10 +582,6 @@ class LayerTool extends Control {
             layer.getSource().getFeatures instanceof Function &&
             layer.getSource().getFeatures().length > 0
         );
-    }
-
-    hasTooltip(feature) {
-        return hasCustomFeatureProperty(feature.getProperties(), FeatureProperties.tooltip);
     }
 
     hasProjection(projection) {
@@ -1086,7 +1076,7 @@ class LayerTool extends Control {
     // -------------------------------------------------------------------
     
     askToDownloadLayer(layerWrapper, callback) {
-        new DownloadLayerModal({
+        return new DownloadLayerModal({
             onDownload: (result) => {   
                 const format = instantiateFormat(result.format);
             
@@ -1335,8 +1325,8 @@ class LayerTool extends Control {
         // Hide overlays associated with the layer
         if(this.hasLayerFeatures(layer)) {
             layer.getSource().getFeatures().forEach((feature) => {
-                if(this.hasTooltip(feature)) {
-                    feature.getProperties().oltb.tooltip.setMap(flippedVisibility ? map : null)
+                if(FeatureManager.hasTooltip(feature)) {
+                    FeatureManager.getTooltip(feature).setMap(flippedVisibility ? map : null)
                 }
             });
         }

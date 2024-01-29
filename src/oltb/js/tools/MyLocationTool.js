@@ -12,10 +12,10 @@ import { LayerManager } from '../managers/LayerManager';
 import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
 import { ConfigManager } from '../managers/ConfigManager';
 import { ElementManager } from '../managers/ElementManager';
+import { FeatureManager } from '../managers/FeatureManager';
 import { SvgPaths, getIcon } from '../icons/GetIcon';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
 import { InfoWindowManager } from '../managers/InfoWindowManager';
-import { generateIconMarker } from '../generators/GenerateIconMarker';
 import { TranslationManager } from '../managers/TranslationManager';
 import { isFullScreen, exitFullScreen } from '../helpers/browser/Fullscreen';
 
@@ -226,7 +226,7 @@ class MyLocationTool extends Control {
             coordinates: coordinates,
             zoom: zoom,
             onDone: (result) => {
-                InfoWindowManager.pulseAnimation(marker);
+                InfoWindowManager.tryPulseAnimation(marker);
                 InfoWindowManager.showOverlay(marker, fromLonLat(coordinates));
             }
         });
@@ -259,17 +259,21 @@ class MyLocationTool extends Control {
                 </div>
             `
         };
-        
-        const marker = new generateIconMarker({
+
+        const marker = FeatureManager.generateIconMarker({
             lon: coordinates[0],
             lat: coordinates[1],
             title: this.options.title,
             description: this.options.description,
-            icon: ID_MARKER_PATH,
-            label: this.options.title,
-            labelUseEllipsisAfter: this.options.markerLabelUseEllipsisAfter,
-            labelUseUpperCase: this.options.markerLabelUseUpperCase,
-            infoWindow: infoWindow
+            infoWindow: infoWindow,
+            icon: {
+                key: ID_MARKER_PATH
+            },
+            label: {
+                text: this.options.title,
+                useEllipsisAfter: this.options.markerLabelUseEllipsisAfter,
+                useUpperCase: this.options.markerLabelUseUpperCase,
+            }
         });
 
         this.doAddMarkerToMap(marker);

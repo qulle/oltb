@@ -908,7 +908,9 @@ The managers are initiated in two steps. The first one is the base initiation th
 ```javascript
 BootstrapManager.initAsync([
     { manager: LogManager },
+    { manager: StyleManager },
     { manager: ErrorManager },
+    { manager: FeatureManager },
     { manager: StateManager, options: {
         ignoredKeys: []
     }},
@@ -983,57 +985,80 @@ There are two types of layers, `map`- and `feature`-layers. Exampels of adding d
 **Note:** Both the DrawTool and MeasureTool add features through the LayerManager and not directly to the source of the layer. This is because the LayerManager also keeps tracks of all features so that the Snap interaction can work.
 
 ### Markers
-Markers can be created in the map using the following module.
+Markers can be created in the map using the following Manager.
 ```javascript
-import { generateIconMarker } from 'oltb/js/generators/GenerateIconMarker';
+import { FeatureManager } from 'oltb/js/managers/FeatureManager';
 ```
 
 To create a marker use the following object properties.
 ```javascript
-const marker = generateIconMarker({
+const marker = FeatureManager.generateIconMarker({
     lon: 18.0685,
     lat: 59.3293,
-    label: 'Label Title',
-    markerFill: '#0166A5FF',
-    markerStroke: '#FFFFFFFF',
-    icon: 'geoPin.filled'
+    title: 'Marker',
+    marker: {
+        fill: '#0166A5FF',
+        stroke: '#0166A566'
+    },
+    icon: {
+        key: 'geoMarker.filled'
+    },
+    label: {
+        text: 'Marker Label'
+    }
 });
 ```
 
 All available properties:
 ```javascript
 ({
-    lon: 18.0685,               // Lon coordinate
-    lat: 59.3293,               // Lat coordinate
-    title: 'Title',             // Marker infowindow title
-    description: 'Description', // Marker infowindow description
-    width: 14,                  // Marker width
-    radius: 14,                 // Marker radius
-    markerFill: '#0166A5FF',    // Marker fill color
-    markerStroke: '#FFFFFFFF',  // Marker stroke color
-    icon: 'geoPin.filled',      // Icon key
-    iconWidth: 14,              // Icon width
-    iconHeight: 14,             // Icon height
-    label: 'Label Title',       // Label over marker
-    labelFill: '#FFFFFF',       // Label fill color
-    labelStroke: '#3B4352CC',   // Label stroke color
-    labelStrokeWidth: 12,       // Label stroke width
-    labelFont: '14px Calibri',  // Label font
-    labelUseEllipsisAfter: 20,  // Use ellipsis (...) dots if text is to long
-    labelUseUpperCase: false,   // If label should be in uppercase
-    notSelectable: true,        // If edit tool can select the marker
-    infoWindow: undefined,      // Info window to show on click
-    replaceHashtag: true        // Replace color hex (UrlMarkers)
-});
+    lon: undefined,
+    lat: undefined,
+    infoWindow: undefined,
+    title: '',
+    description: '',
+    settings: {
+        isClickable: true,
+        isSelectable: false,
+        isEditable: false,
+        isDeletable: true,
+        shouldReplaceHashtag: true
+    },
+    marker: {
+        width: 14,
+        radius: 14,
+        fill: '#0166A5FF',
+        stroke: '#0166A566',
+        strokeWidth: 2
+    },
+    icon: {
+        key: 'geoPin.filled',
+        width: 14,
+        height: 14,
+        rotation: 0,
+        fill: '#FFFFFFFF',
+        stroke: '#FFFFFFFF',
+        strokeWidth: 0
+    },
+    label: {
+        text: '',
+        font: '14px Calibri',
+        fill: '#FFFFFFFF',
+        stroke: '#3B4352CC',
+        strokeWidth: 8,
+        useEllipsisAfter: 20,
+        useUpperCase: false
+    }
+})
 ```
 
 #### URL Markers
 A marker can be created by providing the `oltb-marker` object as the GET parameter with the following syntax.
 ```
-/?oltb-marker={"title":"Marker Title", "label": "Marker Title","description":"Information about the maker","icon":"exclamationTriangle.filled","markerFill":"EB4542FF","markerStroke":"FFFFFFFF","layerName":"URL Marker","projection":"EPSG:4326","lon":18.0685,"lat":59.3293,"zoom":8}
+/?oltb-marker={"title":"Marker Title","label":"Marker Label","description":"Information about the maker","icon":"exclamationTriangle.filled","iconFill":"%23FFFFFFFF","iconStroke":"%23FFFFFFFF","markerFill":"%23EB4542FF","markerStroke":"%23EB454266","layerName":"URL Marker","projection":"EPSG:4326","lon":18.0685,"lat":59.3293,"zoom":8}
 ```
 
-Test the marker above using the <a href='https://qulle.github.io/oltb/?oltb-marker={"title":"Marker Title", "label": "Marker Title","description":"Information about the maker","icon":"exclamationTriangle.filled","markerFill":"EB4542FF","markerStroke":"FFFFFFFF","layerName":"URL Marker","projection":"EPSG:4326","lon":18.0685,"lat":59.3293,"zoom":8}' target="_blank">demo page</a>.
+Test the marker above using the <a href='https://qulle.github.io/oltb/?oltb-marker={"title":"Marker Title","label":"Marker Label","description":"Information about the maker","icon":"exclamationTriangle.filled","iconFill":"%23FFFFFFFF","iconStroke":"%23FFFFFFFF","markerFill":"%23EB4542FF","markerStroke":"%23EB454266","layerName":"URL Marker","projection":"EPSG:4326","lon":18.0685,"lat":59.3293,"zoom":8}' target="_blank">demo page</a>.
 
 The JSON object has the following structure.
 ```json
@@ -1041,9 +1066,11 @@ The JSON object has the following structure.
     "title": "Marker Title",
     "description": "Information about the maker",
     "icon": "exclamationTriangle.filled",
-    "label": "Marker Title",
-    "markerFill": "EB4542FF",
-    "markerStroke": "FFFFFFFF",
+    "iconFill": "%23FFFFFFFF",
+    "iconStroke": "%23FFFFFFFF",
+    "label": "Marker Label",
+    "markerFill": "%23EB4542FF",
+    "markerStroke": "%23EB454266",
     "layerName": "URL Marker",
     "projection": "EPSG:4326",
     "lon": 18.0685,
@@ -1053,51 +1080,62 @@ The JSON object has the following structure.
 ```
 
 ### Wind Barbs
-Wind barbs can be created in the map using the following module.
+Wind Barbs can be created in the map using the following manager.
 ```javascript
-import { generateWindBarb } from 'oltb/js/generators/GenerateWindBarb';
+import { FeatureManager } from 'oltb/js/managers/FeatureManager';
 ```
 
 To create a wind barb use the following object properties.
 ```javascript
 const windSpeed = 12.5;
-const windBarb = generateWindBarb({
+const windBarb = FeatureManager.generateWindBarb({
     lon: 18.0685,
     lat: 59.3293,
-    markerFill: '#0166A5FF',
-    markerStroke: '#FFFFFFFF',
-    label: `${windSpeed}m/s`,
-    windSpeed: windSpeed,
-    rotation: 210
+    title: 'Wind Barb',
+    icon: {
+        key: windSpeed,
+        rotation: 210
+    },
+    label: {
+        text: `${windSpeed}m/s`
+    }
 });
 ```
 
 All available properties:
 ```javascript
 ({
-    lon: 18.0685,               // Lon coordinate
-    lat: 59.3293,               // Lat coordinate
-    title: 'Title',             // Wind barb infowindow title
-    description: 'Description', // Wind barb infowindow description
-    width: 250,                 // Wind barb width
-    height: 250,                // Wind barb height
-    markerFill: '#0166A5FF',    // Wind barb fill color
-    markerStroke: '#FFFFFFFF',  // Wind barb stroke color
-    markerStrokeWidth: 3,       // Wind barb stroke width
-    windSpeed: 0,               // Converted to correct wind barb level
-    rotation: 0,                // Wind barb rotation (degrees)
-    scale: 1,                   // Wind barb scale
-    label: 'Label Title',       // Label over wind barb
-    labelFill: '#FFFFFF',       // Label fill color
-    labelStroke: '#3B4352CC',   // Label stroke color
-    labelStrokeWidth: 12,       // Label stroke width
-    labelFont: '14px Calibri',  // Label font
-    labelUseEllipsisAfter: 20,  // Use ellipsis (...) dots if text is to long
-    labelUseUpperCase: false,   // If label should be in uppercase
-    notSelectable: true,        // If edit tool can select the wind barb
-    infoWindow: undefined,      // Info window to show on click
-    replaceHashtag: true        // Replace color hex
-});
+    lon: undefined,
+    lat: undefined,
+    infoWindow: undefined,
+    title: '',
+    description: '',
+    settings: {
+        isClickable: true,
+        isSelectable: false,
+        isEditable: false,
+        isDeletable: true,
+        shouldReplaceHashtag: true
+    },
+    icon: {
+        key: 0,
+        width: 200,
+        height: 200,
+        rotation: 0,
+        fill: '#3B4352FF',
+        stroke: '#3B4352FF',
+        strokeWidth: 3
+    },
+    label: {
+        text: '',
+        font: '14px Calibri',
+        fill: '#FFFFFFFF',
+        stroke: '#3B4352CC',
+        strokeWidth: 8,
+        useEllipsisAfter: 20,
+        useUpperCase: false
+    }
+})
 ```
 
 ### Dialogs
@@ -1508,6 +1546,7 @@ All classes and id:s in the project are prefixed with the namespace `oltb`.
 11. [Sortable JS 1.15.1](https://github.com/SortableJS/Sortable)
 12. [UUID JS 9.0.1](https://github.com/uuidjs/uuid)
 13. [Lodash 4.17.21](https://github.com/lodash/lodash)
+14. [Many Keys Map 2.0.1](https://github.com/fregante/many-keys-map)
 
 ## Dev Dependencies
 1. [Parcel 2.10.3](https://parceljs.org/)

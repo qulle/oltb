@@ -184,6 +184,12 @@ class OverviewTool extends Control {
 
         this.localStorage.isActive = true;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
+
+        this.uiRefToolboxSection.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'end', 
+            inline: 'nearest' 
+        });
     }
 
     deactivateTool() {

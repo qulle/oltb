@@ -85,13 +85,6 @@
             }
         }
 
-        &--hidden {
-            .oltb-toolbox-list__title {
-                font-style: italic;
-                text-decoration: line-through;
-            }
-        }
-
         &--indicate {
             font-weight: bold;
             color: $color-blue-400 !important;

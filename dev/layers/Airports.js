@@ -3,7 +3,7 @@ import { Toast } from '../../src/oltb/js/common/Toast';
 import { LogManager } from '../../src/oltb/js/managers/LogManager';
 import { toStringHDMS } from 'ol/coordinate';
 import { LayerManager } from '../../src/oltb/js/managers/LayerManager';
-import { generateIconMarker } from '../../src/oltb/js/generators/GenerateIconMarker';
+import { FeatureManager } from '../../src/oltb/js/managers/FeatureManager';
 
 const FILENAME = 'layers/Airports.js';
 const CLASS_FUNC_BUTTON = 'oltb-func-btn';
@@ -19,7 +19,7 @@ const LayerWrapper = LayerManager.addFeatureLayer({
 const getMarkerColor = function() {
     return {
         fill: '#FCBE80FF', 
-        stroke: '#8A4111FF'
+        stroke: '#FCBE8066'
     };
 }
 
@@ -62,23 +62,26 @@ const parseGeoJson = function(data) {
         };
 
         const markerColor = getMarkerColor();
-        LayerWrapper.getLayer().getSource().addFeature(
-            new generateIconMarker({
-                lon: coordinates[0],
-                lat: coordinates[1],
-                title: name,
-                description: description,
-                icon: 'airplane.filled',
-                markerFill: markerColor.fill,
-                markerStroke: markerColor.stroke,
-                label: name,
-                labelFill: '#FFFFFF',
-                labelStroke: '#3B4352CC',
-                labelStrokeWidth: 12,
-                notSelectable: true,
-                infoWindow: infoWindow
-            })
-        );
+        const marker = FeatureManager.generateIconMarker({
+            lon: coordinates[0],
+            lat: coordinates[1],
+            title: name,
+            description: description,
+            infoWindow: infoWindow,
+            marker: {
+                fill: markerColor.fill,
+                stroke: markerColor.stroke
+            },
+            icon: {
+                key: 'airplane.filled',
+                fill: '#6B310AFF',
+            },
+            label: {
+                text: name
+            }
+        });
+
+        LayerWrapper.getLayer().getSource().addFeature(marker);
     });
 }
 

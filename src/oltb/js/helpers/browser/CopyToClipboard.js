@@ -3,7 +3,7 @@ const copyToClipboard = async function(text = '') {
 
     // Note:
     // Navigator clipboard API needs a secure context (https)
-    // Fallback to old (deprecated document.execCommand)
+    // Fallback to old (deprecated document.execCommand) if https is not available
     if(window.navigator.clipboard && window.isSecureContext) {
         await window.navigator.clipboard.writeText(value);
     }else {
@@ -18,8 +18,6 @@ const copyToClipboard = async function(text = '') {
 
         try {
             document.execCommand('copy');
-        }catch(error) {
-            throw error;
         }finally {
             textArea.remove();
         }

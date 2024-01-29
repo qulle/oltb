@@ -14,6 +14,7 @@ import { StateManager } from '../managers/StateManager';
 import { LayerManager } from '../managers/LayerManager';
 import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
 import { ConfigManager } from '../managers/ConfigManager';
+import { DefaultConfig } from '../managers/config-manager/DefaultConfig';
 import { ElementManager } from '../managers/ElementManager';
 import { SettingsManager } from '../managers/SettingsManager';
 import { eventDispatcher } from '../helpers/browser/EventDispatcher';
@@ -262,6 +263,12 @@ class DrawTool extends Control {
 
         this.localStorage.isActive = true;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
+
+        this.uiRefToolboxSection.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'end', 
+            inline: 'nearest' 
+        });
     }
 
     deactivateTool() {
@@ -506,6 +513,7 @@ class DrawTool extends Control {
 
         // Note: 
         // Must search all layers thus features from different layers can be targeted
+        const oltb = DefaultConfig.toolbar.id;
         const layerWrappers = LayerManager.getFeatureLayers();
         layerWrappers.forEach((layerWrapper) => {
             const layer = layerWrapper.getLayer();
@@ -516,7 +524,7 @@ class DrawTool extends Control {
 
             const source = layer.getSource();
             source.forEachFeatureIntersectingExtent(featureGeometry.getExtent(), (intersectedFeature) => {
-                const type = intersectedFeature.getProperties()?.oltb?.type;
+                const type = intersectedFeature.getProperties(oltb)?.type;
                 const geometry = intersectedFeature.getGeometry();
     
                 if(isFeatureIntersectable(type, geometry)) {

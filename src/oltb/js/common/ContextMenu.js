@@ -9,7 +9,6 @@ import { UrlManager } from '../managers/UrlManager';
 import { LogManager } from '../managers/LogManager';
 import { ConfigManager } from '../managers/ConfigManager';
 import { ElementManager } from '../managers/ElementManager';
-import { hasNestedProperty } from '../helpers/browser/HasNestedProperty';
 import { TranslationManager } from '../managers/TranslationManager';
 
 const FILENAME = 'common/ContextMenu.js';
@@ -120,7 +119,7 @@ class ContextMenu extends Control {
     // -------------------------------------------------------------------
 
     addMenuItem(item) {
-        if(!hasNestedProperty(item, 'i18nKey')) {
+        if(!_.has(item, ['i18nKey'])) {
             const li = DOM.createElement({
                 element: 'li',
                 class: `${CLASS_CONTEXT_MENU}__divider`

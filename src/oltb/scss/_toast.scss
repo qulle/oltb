@@ -1,11 +1,11 @@
 .oltb-toast {
+    color: $color-dark;
+    background-color: $background-theme-light;
     cursor: default;
     padding: .75rem .875rem;
     border-radius: $border-radius;
     box-shadow: $box-shadow-mid;
     margin: 0 1rem 1rem 1rem;
-    background-color: $background-theme-light;
-    color: $color-dark;
     border-left: 4px solid;
     display: flex;
     align-items: center;
@@ -48,23 +48,23 @@
     }
 
     &--info {
-        border-left-color: $color-blue-400;
+        border-left-color: $color-blue-300;
     }
 
     &--warning {
-        border-left-color: $color-orange-400;
+        border-left-color: $color-orange-300;
     }
 
     &--error {
-        border-left-color: $color-red-400;
+        border-left-color: $color-red-300;
     }
 
     &--success {
-        border-left-color: $color-green-400;
+        border-left-color: $color-green-300;
     }
 }
 
 body.oltb-dark .oltb-toast {
-    background-color: $background-theme-dark;
     color: $color-light;
+    background-color: $background-theme-dark;
 }

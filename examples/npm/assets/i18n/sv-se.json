@@ -104,7 +104,8 @@
                     "title": "Övrigt",
                     "items": {
                         "logToBrowser": "Logga Kartan Till Webbläsarkonsolen",
-                        "generateUUID": "Generera UUID"
+                        "generateUUID": "Generera UUID",
+                        "clearStyleManager": "Rensa Stilhanteraren"
                     }
                 },
                 "eventLogGroup": {
@@ -137,6 +138,10 @@
                     "clearEventLog": {
                         "title": "Rensat",
                         "message": "Händelseloggen rensades från alla poster"
+                    },
+                    "clearStyleManager": {
+                        "title": "Rensat",
+                        "message": "Stilhanteraren rensades från alla poster"
                     }
                 },
                 "errors": {
@@ -160,15 +165,17 @@
             "form": {
                 "title": "Titel",
                 "description": "Beskrivning",
-                "icon": "Ikon",
                 "latitude": "Latitud",
                 "longitude": "Longitud",
                 "markerFill": "Markörfyllning",
                 "markerStroke": "Markörlinje",
+                "icon": "Ikon",
+                "iconFill": "Ikonfyllning",
+                "iconStroke": "Ikonlinje",
                 "label": "Etikett",
                 "labelFill": "Ettikettfyllning",
-                "labelStrokeWidth": "Ettikettbredd",
                 "labelStroke": "Etikettfyllning",
+                "labelStrokeWidth": "Ettikettbredd",
                 "saveChanges": "Spara Ändringar",
                 "createMarker": "Skapa Markör",
                 "cancel": "Avbryt"

@@ -17,6 +17,8 @@ import { LayerManager } from '../managers/LayerManager';
 import { StateManager } from '../managers/StateManager';
 import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
 import { ConfigManager } from '../managers/ConfigManager';
+import { DefaultConfig } from '../managers/config-manager/DefaultConfig';
+import { FeatureManager } from '../managers/FeatureManager';
 import { ElementManager } from '../managers/ElementManager';
 import { TooltipManager } from '../managers/TooltipManager';
 import { createUITooltip } from '../creators/CreateUITooltip';
@@ -27,8 +29,6 @@ import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
 import { FeatureProperties } from '../helpers/constants/FeatureProperties';
 import { TranslationManager } from '../managers/TranslationManager';
 import { Fill, Stroke, Style } from 'ol/style';
-import { hasCustomFeatureProperty } from '../helpers/browser/HasNestedProperty';
-import { getCustomFeatureProperty } from '../helpers/browser/GetNestedProperty';
 import { Select, Modify, Translate } from 'ol/interaction';
 import { getMeasureCoordinates, getMeasureValue } from '../helpers/Measurements';
 import { GeometryCollection, LinearRing, LineString, MultiLineString, MultiPoint, MultiPolygon, Point, Polygon } from 'ol/geom';
@@ -234,22 +234,22 @@ class EditTool extends Control {
                     <div class="${CLASS_TOOLBOX_SECTION}__group">
                         <label class="oltb-label" data-oldb-i18n="${I18N_BASE}.toolbox.groups.misc">${i18n.groups.misc}</label>
                         <button type="button" id="${ID_PREFIX}-delete-selected-button" class="oltb-btn oltb-btn--blue-mid oltb-tippy" title="Delete">
-                            ${getIcon({ ...DefaultButtonProps, path: SvgPaths.trash.stroked })}
+                            ${getIcon({...DefaultButtonProps, path: SvgPaths.trash.stroked})}
                         </button>
                     </div>
                     <div class="${CLASS_TOOLBOX_SECTION}__group ${CLASS_TOOLBOX_SECTION}__group--sub-toolbar">
                         <label class="oltb-label" data-oldb-i18n="${I18N_BASE}.toolbox.groups.shapes">${i18n.groups.shapes}</label>
                         <button type="button" id="${ID_PREFIX}-union-selected-button" class="oltb-btn oltb-btn--blue-mid oltb-tippy" title="Union">
-                            ${getIcon({ ...DefaultButtonProps, path: SvgPaths.union.mixed })}
+                            ${getIcon({...DefaultButtonProps, path: SvgPaths.union.mixed})}
                         </button>
                         <button type="button" id="${ID_PREFIX}-intersect-selected-button" class="oltb-btn oltb-btn--blue-mid oltb-tippy" title="Intersect">
-                            ${getIcon({ ...DefaultButtonProps, path: SvgPaths.intersect.mixed })}
+                            ${getIcon({...DefaultButtonProps, path: SvgPaths.intersect.mixed})}
                         </button>
                         <button type="button" id="${ID_PREFIX}-exclude-selected-button" class="oltb-btn oltb-btn--blue-mid oltb-tippy" title="Exclude">
-                            ${getIcon({ ...DefaultButtonProps, path: SvgPaths.exclude.mixed })}
+                            ${getIcon({...DefaultButtonProps, path: SvgPaths.exclude.mixed})}
                         </button>
                         <button type="button" id="${ID_PREFIX}-difference-selected-button" class="oltb-btn oltb-btn--blue-mid oltb-tippy" title="Difference">
-                            ${getIcon({ ...DefaultButtonProps, path: SvgPaths.subtract.mixed })}
+                            ${getIcon({...DefaultButtonProps, path: SvgPaths.subtract.mixed})}
                         </button>
                     </div>
                     <div class="${CLASS_TOOLBOX_SECTION}__group ${CLASS_TOOLBOX_SECTION}__group--split-group">
@@ -293,14 +293,28 @@ class EditTool extends Control {
         return new Select({
             hitTolerance: this.options.hitTolerance,
             filter: (feature, layer) => {
-                const isSelectable = !this.isSelectable(feature);
-                const isFeatureLayer = LayerManager.getFeatureLayers().find((layerWrapper) => {
-                    return layerWrapper.getLayer().getSource().hasFeature(feature);
-                });
-                
-                return (isSelectable && (isFeatureLayer || 
-                    SettingsManager.getSetting(Settings.selectVectorMapShapes)
-                ));
+                const isIconMarker = FeatureManager.isIconMarkerType(feature);
+                if(isIconMarker) {
+                    return false;
+                }
+
+                const isWindBarb = FeatureManager.isWindBarbType(feature)
+                if(isWindBarb) {
+                    return false;
+                }
+
+                const belongsToFeatureLayer = LayerManager.belongsToFeatureLayer(feature);
+                if(belongsToFeatureLayer) {
+                    return true;
+                }
+
+                const selectVectorShapesInMapLayers = SettingsManager.getSetting(Settings.selectVectorMapShapes);
+                const belongsToMapLayer = LayerManager.belongsToMapLayer(feature);
+                if(belongsToMapLayer && selectVectorShapesInMapLayers) {
+                    return true;
+                }
+
+                return false;
             },
             style: this.lastStyle
         });
@@ -364,6 +378,12 @@ class EditTool extends Control {
 
         this.localStorage.isActive = true;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
+
+        this.uiRefToolboxSection.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'end', 
+            inline: 'nearest' 
+        });
     }
 
     deactivateTool() {
@@ -504,11 +524,12 @@ class EditTool extends Control {
             this.tooltipItem = TooltipManager.push(KEY_TOOLTIP);
         }
 
-        const properties = feature.getProperties();
+        const oltb = DefaultConfig.toolbar.id;
+        const properties = feature.get(oltb);
         const hiddenTooltip = hasOtherTooltip && selectedFeatures.length === 1;
 
-        properties.oltb.onChangeListener = feature.getGeometry().on(Events.openLayers.change, this.onFeatureChange.bind(this, feature));
-        properties.oltb.tooltip.getElement().className = (`oltb-overlay-tooltip ${
+        properties.onChangeListener = feature.getGeometry().on(Events.openLayers.change, this.onFeatureChange.bind(this, feature));
+        properties.tooltip.getElement().className = (`oltb-overlay-tooltip ${
             hiddenTooltip ? 'oltb-overlay-tooltip--hidden' : ''
         }`);
     }
@@ -521,12 +542,13 @@ class EditTool extends Control {
             TooltipManager.pop(KEY_TOOLTIP);
         }
 
-        const properties = feature.getProperties();
+        const oltb = DefaultConfig.toolbar.id;
+        const properties = feature.get(oltb);
         const geometry = feature.getGeometry();
 
-        unByKey(properties.oltb.onChangeListener);
+        unByKey(properties.onChangeListener);
 
-        const overlay = properties.oltb.tooltip;
+        const overlay = properties.tooltip;
         overlay.setPosition(getMeasureCoordinates(geometry));
 
         const tooltip = overlay.getElement();
@@ -564,20 +586,8 @@ class EditTool extends Control {
         return SettingsManager.getSetting(Settings.mouseOnlyToEditVectorShapes);
     }
 
-    isMeasurementType(feature) {
-        return getCustomFeatureProperty(feature.getProperties(), 'type') === FeatureProperties.type.measurement;
-    }
-
     isTwoAndOnlyTwoShapes(features) {
         return features.length === 2;
-    }
-
-    isSelectable(feature) {
-        return hasCustomFeatureProperty(feature.getProperties(), FeatureProperties.notSelectable);
-    }
-
-    hasTooltip(feature) {
-        return hasCustomFeatureProperty(feature.getProperties(), FeatureProperties.tooltip);
     }
 
     // -------------------------------------------------------------------
@@ -594,7 +604,7 @@ class EditTool extends Control {
             confirmText: i18n.confirmText,
             cancelText: i18n.cancelText,
             onConfirm: () => {
-                const features = [ ...this.interactionSelect.getFeatures().getArray() ];
+                const features = [...this.interactionSelect.getFeatures().getArray()];
                 this.doDeleteFeatures(features);
             }
         });
@@ -641,7 +651,7 @@ class EditTool extends Control {
             // Set the lastStyle as the default style
             feature.setStyle(this.lastStyle);
 
-            if(this.isMeasurementType(feature)) {
+            if(FeatureManager.isMeasurementType(feature)) {
                 // To add lineDash, a new Style object must be used
                 // If the lastStyle is used all object that is referenced with that object will get a dashed line
                 const style = new Style({
@@ -679,9 +689,8 @@ class EditTool extends Control {
 
     doModifyStart(event) {
         const features = event.features;
-
         features.forEach((feature) => {
-            if(this.hasTooltip(feature)) {
+            if(FeatureManager.hasTooltip(feature)) {
                 this.attachOnChange(feature);
             }
         });
@@ -696,7 +705,7 @@ class EditTool extends Control {
     doModifyEnd(event) {
         const features = event.features;
         features.forEach((feature) => {
-            if(this.hasTooltip(feature)) {
+            if(FeatureManager.hasTooltip(feature)) {
                 this.detachOnChange(feature);
             }
         });
@@ -710,9 +719,8 @@ class EditTool extends Control {
 
     doTranslateStart(event) {
         const features = event.features;
-
         features.forEach((feature) => {
-            if(this.hasTooltip(feature)) {
+            if(FeatureManager.hasTooltip(feature)) {
                 this.attachOnChange(feature);
             }
         });
@@ -726,9 +734,8 @@ class EditTool extends Control {
 
     doTranslateEnd(event) {
         const features = event.features;
-
         features.forEach((feature) => {
-            if(this.hasTooltip(feature)) {
+            if(FeatureManager.hasTooltip(feature)) {
                 this.detachOnChange(feature);
             }
         });
@@ -754,7 +761,7 @@ class EditTool extends Control {
         const fillColor = this.uiRefFillColor.getAttribute('data-oltb-color');
         const strokeColor = this.uiRefStrokeColor.getAttribute('data-oltb-color');
 
-        const features = [ ...this.interactionSelect.getFeatures().getArray() ];
+        const features = [...this.interactionSelect.getFeatures().getArray()];
 
         this.lastStyle = new Style({
             fill: new Fill({
@@ -786,7 +793,7 @@ class EditTool extends Control {
         if(hasOtherTooltip && selectedFeatures.length === 1) {
             this.tooltipItem.innerHTML = `${measureValue.value} ${measureValue.unit}`;
         }else {
-            const overlay = feature.getProperties().oltb.tooltip;
+            const overlay = FeatureManager.getTooltip(feature);
             overlay.setPosition(getMeasureCoordinates(geometry));
 
             const tooltip = overlay.getElement();
@@ -800,7 +807,7 @@ class EditTool extends Control {
             return;
         }
 
-        const features = [ ...this.interactionSelect.getFeatures().getArray() ];
+        const features = [...this.interactionSelect.getFeatures().getArray()];
 
         if(!this.isTwoAndOnlyTwoShapes(features)) {
             Toast.info({
@@ -827,9 +834,8 @@ class EditTool extends Control {
             });
 
             // Check if a or b was a measurement, if so, create a new tooltip
-            if(this.isMeasurementType(a) || this.isMeasurementType(b)) {
+            if(FeatureManager.isMeasurementType(a) || FeatureManager.isMeasurementType(b)) {
                 const tooltip = createUITooltip();
-
                 feature.setProperties({
                     oltb: {
                         type: FeatureProperties.type.measurement,
@@ -892,12 +898,11 @@ class EditTool extends Control {
         if(!map) {
             return;
         }
-
-        const layerWrappers = LayerManager.getFeatureLayers();
-
+        
         // Note: 
         // The user can select features from any layer
         // Each feature needs to be removed from its associated layer
+        const layerWrappers = LayerManager.getFeatureLayers();
         features.forEach((feature) => {
             layerWrappers.forEach((layerWrapper) => {
                 const source = layerWrapper.getLayer().getSource();
@@ -909,8 +914,8 @@ class EditTool extends Control {
                 this.interactionSelect.getFeatures().remove(feature);
 
                 // Remove overlays associated with the feature
-                if(this.hasTooltip(feature)) {
-                    map.removeOverlay(feature.getProperties().oltb.tooltip);
+                if(FeatureManager.hasTooltip(feature)) {
+                    map.removeOverlay(FeatureManager.getTooltip(feature));
                 }
 
                 // Note: 

@@ -3,34 +3,44 @@ import { transform } from 'ol/proj';
 import { toStringHDMS } from 'ol/coordinate';
 import { LayerManager } from '../LayerManager';
 import { ConfigManager } from '../ConfigManager';
+import { DefaultConfig } from '../config-manager/DefaultConfig';
+import { FeatureManager } from '../FeatureManager';
 import { IconMarkerModal } from '../../tools/modal-extensions/IconMarkerModal';
 import { TranslationManager } from '../TranslationManager';
-import { generateIconMarker } from '../../generators/GenerateIconMarker';
 
 const ID_PREFIX_INFO_WINDOW = 'oltb-info-window-marker';
 const CLASS_FUNC_BUTTON = 'oltb-func-btn';
 const I18N_BASE_COMMON = 'commons';
 
 const editMarker = function(InfoWindowManager, beforeMarker) {
-    const properties = beforeMarker.getProperties().oltb;
+    const oltb = DefaultConfig.toolbar.id;
+    const properties = beforeMarker.get(oltb);
     const projection = ConfigManager.getConfig().projection;
 
-    new IconMarkerModal({
+    return new IconMarkerModal({
         edit: true,
         coordinates: transform(
             beforeMarker.getGeometry().getCoordinates(), 
             projection.default, 
             projection.wgs84
         ),
-        title: properties.marker.title,
-        description: properties.marker.description,
-        icon: properties.marker.icon,
-        markerFill: properties.style.markerFill,
-        markerStroke: properties.style.markerStroke,
-        label: properties.marker.label,
-        labelFill: properties.style.labelFill,
-        labelStrokeWidth: properties.style.labelStrokeWidth,
-        labelStroke: properties.style.labelStroke,
+        title: properties.title,
+        description: properties.description,
+        marker: {
+            fill: properties.marker.fill,
+            stroke: properties.marker.stroke,
+        },
+        icon: {
+            key: properties.icon.key,
+            fill: properties.icon.fill,
+            stroke: properties.icon.stroke,
+        },
+        label: {
+            text: properties.label.text,
+            fill: properties.label.fill,
+            stroke: properties.label.stroke,
+            strokeWidth: properties.label.strokeWidth
+        },
         onCreate: (result) => {
             onEditMarker(InfoWindowManager, beforeMarker, result);
         }
@@ -73,20 +83,28 @@ const onEditMarker = function(InfoWindowManager, beforeMarker, result) {
             </div>
         `
     };
-    
-    const afterMarker = new generateIconMarker({
+
+    const afterMarker = FeatureManager.generateIconMarker({
         lon: coordinates[0],
         lat: coordinates[1],
         title: result.title,
         description: result.description,
-        icon: result.icon,
-        markerFill: result.markerFill,
-        markerStroke: result.markerStroke,
-        label: result.label,
-        labelFill: result.labelFill,
-        labelStrokeWidth: result.labelStrokeWidth,
-        labelStroke: result.labelStroke,
-        infoWindow: infoWindow
+        infoWindow: infoWindow,
+        marker: {
+            fill: result.markerFill,
+            stroke: result.markerStroke
+        },
+        icon: {
+            key: result.icon,
+            fill: result.iconFill,
+            stroke: result.iconStroke
+        },
+        label: {
+            text: result.label,
+            fill: result.labelFill,
+            stroke: result.labelStroke,
+            strokeWidth: result.labelStrokeWidth
+        }
     });
 
     addMarkerToMap(afterMarker);

@@ -106,6 +106,7 @@ export const DefaultTranslation = Object.freeze({
                     items: {
                         logToBrowser: 'Log Map To Browser Console',
                         generateUUID: 'Generate UUID',
+                        clearStyleManager: 'Clear Style Manager'
                     }
                 },
                 eventLogGroup: {
@@ -138,6 +139,10 @@ export const DefaultTranslation = Object.freeze({
                     clearEventLog: {
                         title: 'Cleared',
                         message: 'Event log was cleared of all entries'
+                    },
+                    clearStyleManager: {
+                        title: 'Cleared',
+                        message: 'Style Manager was cleared of all entries'
                     }
                 },
                 errors: {
@@ -161,15 +166,17 @@ export const DefaultTranslation = Object.freeze({
             form: {
                 title: 'Title',
                 description: 'Description',
-                icon: 'Icon',
                 latitude: 'Latitude',
                 longitude: 'Longitude',
                 markerFill: 'Marker Fill',
                 markerStroke: 'Marker Stroke',
+                icon: 'Icon',
+                iconFill: 'Icon Fill',
+                iconStroke: 'Icon Stroke',
                 label: 'Label',
                 labelFill: 'Label Fill',
-                labelStrokeWidth: 'Label Stroke Width',
                 labelStroke: 'Label Stroke',
+                labelStrokeWidth: 'Label Stroke Width',
                 saveChanges: 'Save Changes',
                 createMarker: 'Create Marker',
                 cancel: 'Cancel'

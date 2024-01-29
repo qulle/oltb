@@ -7,7 +7,7 @@ import { LogManager } from '../../src/oltb/js/managers/LogManager';
 import { toStringHDMS } from 'ol/coordinate';
 import { randomNumber } from '../../src/oltb/js/helpers/browser/Random';
 import { LayerManager } from '../../src/oltb/js/managers/LayerManager';
-import { generateWindBarb } from '../../src/oltb/js/generators/GenerateWindBarb';
+import { FeatureManager } from '../../src/oltb/js/managers/FeatureManager';
 
 const FILENAME = 'layers/Wind.js';
 const CLASS_FUNC_BUTTON = 'oltb-func-btn';
@@ -74,22 +74,19 @@ const parseGeoJson = function(data) {
             `
         };
 
-        const windBarb = new generateWindBarb({
+        const windBarb = FeatureManager.generateWindBarb({
             lon: coordinates[0],
             lat: coordinates[1],
+            infoWindow: infoWindow,
             title: countryName,
             description: description,
-            markerFill: '#3B4352FF',
-            markerStroke: '#3B4352FF',
-            scale: .8,
-            label: `${windSpeed}m/s`,
-            labelFill: '#FFFFFF',
-            labelStroke: '#3B4352CC',
-            labelStrokeWidth: 12,
-            labelFont: '14px Calibri',
-            windSpeed: windSpeed,
-            rotation: windDirection,
-            infoWindow: infoWindow
+            icon: {
+                key: windSpeed,
+                rotation: windDirection
+            },
+            label: {
+                text: `${windSpeed}m/s`
+            }
         });
 
         LayerWrapper.getLayer().getSource().addFeature(windBarb);

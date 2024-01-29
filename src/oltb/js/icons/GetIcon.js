@@ -399,13 +399,14 @@ const SvgPaths = Object.freeze({
 });
 
 const DefaultOptions = Object.freeze({
+    path: SvgPaths.arrowClockwise.stroked,
     width: 24,
     height: 24,
-    replaceHashtag: false,
     fill: 'currentColor',
-    stroke: 'none',
-    class: '',
-    path: SvgPaths.arrowClockwise.stroked
+    stroke: '#FFFFFFFF',
+    strokeWidth: 0,
+    shouldReplaceHashtag: false,
+    class: ''
 });
 
 const getIcon = function(options = {}) {
@@ -416,7 +417,7 @@ const getIcon = function(options = {}) {
     // Unless they are replaced with URL alternative char
     const ENCODED_HASHTAG = '%23';
     
-    if(options.replaceHashtag) {   
+    if(options.shouldReplaceHashtag) {   
         options.fill = options.fill.replace('#', ENCODED_HASHTAG);
         options.stroke = options.stroke.replace('#', ENCODED_HASHTAG);
     }
@@ -427,6 +428,7 @@ const getIcon = function(options = {}) {
             height="${options.height}" 
             fill="${options.fill}"
             stroke="${options.stroke}" 
+            stroke-width="${options.strokeWidth}"
             class="${options.class}" 
             viewBox="0 0 16 16">
             ${options.path}

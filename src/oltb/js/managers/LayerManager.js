@@ -3,14 +3,13 @@ import { Events } from '../helpers/constants/Events';
 import { Collection } from 'ol';
 import { LogManager } from '../managers/LogManager';
 import { v4 as uuidv4 } from 'uuid';
-import { FeatureProperties } from '../helpers/constants/FeatureProperties';
+import { StyleManager } from './StyleManager';
+import { FeatureManager } from '../managers/FeatureManager';
 import { Vector as VectorLayer } from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';
-import { hasCustomFeatureProperty } from '../helpers/browser/HasNestedProperty';
 
 const FILENAME = 'managers/LayerManager.js';
 const DEFAULT_LAYER_NAME = 'New layer';
-
 const ZINDEX_BASE_MAP_LAYER = 1;
 const ZINDEX_BASE_FEATURE_LAYER = 1e6;
 
@@ -149,15 +148,13 @@ class LayerManager {
         return name;
     }
 
-    static #hasTooltip(feature) {
-        return hasCustomFeatureProperty(feature.getProperties(), FeatureProperties.tooltip);
-    }
-
     static #getLayerWrapperFromFeature(target, layers) {
         for(let i = 0; i < layers.length; i++) {
             const layerWrapper = layers[i];
             const layer = layerWrapper.getLayer();
 
+            // Note:
+            // Only vector layers can have features
             if(!this.isVectorLayer(layer)) {
                 continue;
             }
@@ -297,9 +294,8 @@ class LayerManager {
             return layer.getId() !== layerWrapper.getId();
         }); 
 
-        const layer = layerWrapper.getLayer();
-        
         // Remove all features from the Snap collection
+        const layer = layerWrapper.getLayer();
         layer.getSource().getFeatures().forEach((feature) => {
             this.#snapFeatures.remove(feature);
         });
@@ -316,13 +312,7 @@ class LayerManager {
     }
 
     static hasMapLayerWithId(id) {
-        const layer = this.getMapLayerById(id);
-        
-        if(layer) {
-            return true;
-        }
-
-        return false;
+        return !!this.getMapLayerById(id);
     }
 
     static getMapLayers() {
@@ -373,6 +363,12 @@ class LayerManager {
         layerWrapper.getLayer().setZIndex(ZINDEX_BASE_MAP_LAYER + index);
     }
 
+    static belongsToMapLayer(feature) {
+        return this.#layers.mapLayers.find((layerWrapper) => {
+            return layerWrapper.getLayer().getSource().hasFeature(feature);
+        });
+    }
+
     // -------------------------------------------
     // Section: Feature Layers Specific
     // -------------------------------------------
@@ -383,6 +379,10 @@ class LayerManager {
 
         LogManager.logDebug(FILENAME, 'addFeatureLayer', mergedOptions.name);
 
+        // Note:
+        // Previously the styles for both IconMarkers and WindBarbs was generated
+        // in each of the Generator-function. By using the vector-style-function
+        // the render process can be better controlled and more effective
         const layerWrapper = {
             id: mergedOptions.id,
             name: mergedOptions.name,
@@ -390,7 +390,10 @@ class LayerManager {
             isDynamicallyAdded: mergedOptions.isDynamicallyAdded,
             layer: new VectorLayer({
                 source: new VectorSource(),
-                visible: mergedOptions.isVisible
+                visible: mergedOptions.isVisible,
+                style: function(feature, resolution) {
+                    return StyleManager.getStyle(feature, resolution);
+                }
             })
         };
 
@@ -435,10 +438,11 @@ class LayerManager {
     }
 
     static #getNextActiveFeatureLayer() {
-        return (!this.isFeatureLayersEmpty() 
-            ? this.#layers.featureLayers[this.#layers.featureLayers.length - 1] 
-            : null
-        );
+        if(this.isFeatureLayersEmpty()) {
+            return null;
+        }
+
+        return this.#layers.featureLayers[this.#layers.featureLayers.length - 1];
     }
 
     static removeFeatureLayer(layerWrapper, isSilent = false) {
@@ -447,23 +451,21 @@ class LayerManager {
         // Remove the layer from the internal collection
         this.#layers.featureLayers = this.#layers.featureLayers.filter((layer) => {
             return layer.getId() !== layerWrapper.getId();
-        }); 
-
-        const layer = layerWrapper.getLayer();
+        });
 
         // Remove overlays associated with each feature
         // Remove all features from the Snap collection
+        const layer = layerWrapper.getLayer();
         layer.getSource().getFeatures().forEach((feature) => {
             this.#snapFeatures.remove(feature);
 
-            if(this.#hasTooltip(feature)) {
-                this.#map.removeOverlay(feature.getProperties().oltb.tooltip);
+            if(FeatureManager.hasTooltip(feature)) {
+                this.#map.removeOverlay(FeatureManager.getTooltip(feature));
             }
         });
 
         // Remove the actual ol layer
         this.#map.removeLayer(layer);
-
         this.setNextActiveFeatureLayer();
 
         window.dispatchEvent(new CustomEvent(Events.custom.featureLayerRemoved, {
@@ -501,13 +503,7 @@ class LayerManager {
     }
 
     static hasFeatureLayerWithId(id) {
-        const layer = this.getFeatureLayerById(id);
-        
-        if(layer) {
-            return true;
-        }
-
-        return false;
+        return !!this.getFeatureLayerById(id);
     }
 
     static getFeatureLayers() {
@@ -541,6 +537,12 @@ class LayerManager {
     static setFeatureLayerZIndex(layerId, index) {
         const layerWrapper = this.getFeatureLayerById(layerId);
         layerWrapper.getLayer().setZIndex(ZINDEX_BASE_FEATURE_LAYER + index);
+    }
+
+    static belongsToFeatureLayer(feature) {
+        return this.#layers.featureLayers.find((layerWrapper) => {
+            return layerWrapper.getLayer().getSource().hasFeature(feature);
+        });
     }
 }
 

@@ -17,12 +17,12 @@ import { StateManager } from '../managers/StateManager';
 import { ShortcutKeys } from '../helpers/constants/ShortcutKeys';
 import { ConfigManager } from '../managers/ConfigManager';
 import { ElementManager } from '../managers/ElementManager';
+import { FeatureManager } from '../managers/FeatureManager';
 import { copyToClipboard } from '../helpers/browser/CopyToClipboard';
 import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
 import { SvgPaths, getIcon } from '../icons/GetIcon';
 import { InfoWindowManager } from '../managers/InfoWindowManager';
 import { isShortcutKeyOnly } from '../helpers/browser/IsShortcutKeyOnly';
-import { generateIconMarker } from '../generators/GenerateIconMarker';
 import { TranslationManager } from '../managers/TranslationManager';
 import { generateAnimalName } from '../helpers/name-generator/NameGenerator';
 import { fromLonLat, toLonLat } from 'ol/proj';
@@ -180,6 +180,7 @@ class BookmarkTool extends Control {
                                     height: 20,
                                     fill: 'none',
                                     stroke: '#FFFFFFFF',
+                                    strokeWidth: 1,
                                     class: 'oltb-btn__icon'
                                 })}
                             </button>
@@ -200,6 +201,7 @@ class BookmarkTool extends Control {
     }
 
     initState() {
+        // Note:
         // Process all Bookmarks from constructor
         // Check if the id of the Bookmark is already in local storage, if not, add it
         this.options.bookmarks.forEach((bookmark) => {
@@ -275,6 +277,12 @@ class BookmarkTool extends Control {
 
         this.localStorage.isActive = true;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
+
+        this.uiRefToolboxSection.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'end', 
+            inline: 'nearest' 
+        });
     }
 
     deactivateTool() {
@@ -387,13 +395,7 @@ class BookmarkTool extends Control {
     }
 
     hasLocalStorageBookmarkById(id) {
-        const bookmark = this.getLocalStorageBookmarkById(id);
-
-        if(bookmark) {
-            return true;
-        }
-
-        return false;
+        return !!this.getLocalStorageBookmarkById(id);
     }
 
     // -------------------------------------------------------------------
@@ -779,18 +781,24 @@ class BookmarkTool extends Control {
                 </div>
             `
         };
-        
-        const marker = new generateIconMarker({
+
+        const marker = FeatureManager.generateIconMarker({
             lon: coordinates[0],
             lat: coordinates[1],
             title: bookmark.name,
-            icon: ID_MARKER_PATH,
-            markerFill: '#3B4352FF',
-            markerStroke: '#FFFFFFFF',
-            label: bookmark.name,
-            labelUseEllipsisAfter: this.options.markerLabelUseEllipsisAfter,
-            labelUseUpperCase: this.options.markerLabelUseUpperCase,
-            infoWindow: infoWindow
+            infoWindow: infoWindow,
+            marker: {
+                fill: '#3B4352FF',
+                stroke: '#3B435266'
+            },
+            icon: {
+                key: ID_MARKER_PATH
+            },
+            label: {
+                text: bookmark.name,
+                useEllipsisAfter: this.options.markerLabelUseEllipsisAfter,
+                useUpperCase: this.options.markerLabelUseUpperCase
+            }
         });
 
         bookmark.marker = marker;
@@ -922,7 +930,7 @@ class BookmarkTool extends Control {
             zoom: bookmark.zoom,
             onDone: (result) => {
                 if(this.isLayerVisible()) {
-                    InfoWindowManager.pulseAnimation(bookmark.marker);
+                    InfoWindowManager.tryPulseAnimation(bookmark.marker);
                     InfoWindowManager.showOverlay(bookmark.marker, fromLonLat(bookmark.coordinates));
                 }
             }

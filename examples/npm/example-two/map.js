@@ -26,6 +26,7 @@ import { LogManager } from 'oltb/src/oltb/js/managers/LogManager';
 import { UrlManager } from 'oltb/src/oltb/js/managers/UrlManager';
 import { ToolManager } from 'oltb/src/oltb/js/managers/ToolManager';
 import { SnapManager } from 'oltb/src/oltb/js/managers/SnapManager';
+import { StyleManager } from 'oltb/src/oltb/js/managers/StyleManager';
 import { LayerManager } from 'oltb/src/oltb/js/managers/LayerManager';
 import { StateManager } from 'oltb/src/oltb/js/managers/StateManager';
 import { TippyManager } from 'oltb/src/oltb/js/managers/TippyManager';
@@ -33,6 +34,7 @@ import { ErrorManager } from 'oltb/src/oltb/js/managers/ErrorManager';
 import { ConfigManager } from 'oltb/src/oltb/js/managers/ConfigManager';
 import { ElementManager } from 'oltb/src/oltb/js/managers/ElementManager';
 import { TooltipManager } from 'oltb/src/oltb/js/managers/TooltipManager';
+import { FeatureManager } from 'oltb/src/oltb/js/managers/FeatureManager';
 import { SettingsManager } from 'oltb/src/oltb/js/managers/SettingsManager';
 import { BootstrapManager } from 'oltb/src/oltb/js/managers/BootstrapManager';
 import { InfoWindowManager } from 'oltb/src/oltb/js/managers/InfoWindowManager';
@@ -80,7 +82,9 @@ import { HiddenMapNavigationTool } from 'oltb/src/oltb/js/tools/hidden-tools/Hid
 // The init order is important
 BootstrapManager.initAsync([
     { manager: LogManager },
+    { manager: StyleManager },
     { manager: ErrorManager },
+    { manager: FeatureManager },
     { manager: StateManager, options: {
         ignoredKeys: []
     }},

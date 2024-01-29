@@ -4,7 +4,6 @@ import { StateManager } from './StateManager';
 import { TippyManager } from './TippyManager';
 import { ConfigManager } from './ConfigManager';
 import { LocalStorageKeys } from '../helpers/constants/LocalStorageKeys';
-import { hasNestedProperty } from '../helpers/browser/HasNestedProperty';
 import { DefaultTranslation } from './translation-manager/DefaultTranslation';
 
 const FILENAME = 'managers/TranslationManager.js';
@@ -275,7 +274,7 @@ class TranslationManager {
             return language.value === toLanguage.value;
         });
 
-        if(!language || !hasNestedProperty(language, 'translation')) {
+        if(!language || !_.has(language, ['translation'])) {
             LogManager.logWarning(FILENAME, 'setActiveLanguage', {
                 info: 'Selected language not found',
                 language: toLanguage

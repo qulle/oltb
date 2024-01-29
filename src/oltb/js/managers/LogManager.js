@@ -121,6 +121,10 @@ class LogManager {
     // # Section: Public API
     // -------------------------------------------------------------------
 
+    static getSize() {
+        return this.#log.length || 0;
+    }
+
     static getLog() {
         return this.#log;
     }

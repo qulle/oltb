@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import { hasNestedProperty } from '../helpers/browser/HasNestedProperty';
 import { metersPerSecondToKnots, roundDownToNearest, roundToNearest } from '../helpers/Conversions';
 
 const WindBarb = Object.freeze({
@@ -61,7 +60,7 @@ const getSvgPath = function(windSpeed) {
     const lowerKnotPerSecond = roundToNearest(knots, knotPerSecondStep);
     
     const windBarbName = `knot${lowerKnotPerSecond}`;
-    if(hasNestedProperty(WindBarb, windBarbName)) {
+    if(_.has(WindBarb, [windBarbName])) {
         return WindBarb[windBarbName];
     }
 
@@ -72,10 +71,10 @@ const DefaultOptions = Object.freeze({
     windSpeed: 0,
     width: 250,
     height: 250,
-    replaceHashtag: false,
     fill: '#3B4352FF',
     stroke: '#3B4352FF',
-    strokeWidth: 3
+    strokeWidth: 3,
+    shouldReplaceHashtag: false
 });
 
 const getWindBarb = function(options = {}) {
@@ -86,7 +85,7 @@ const getWindBarb = function(options = {}) {
     // Unless they are replaced with URL alternative char
     const ENCODED_HASHTAG = '%23';
 
-    if(options.replaceHashtag) {   
+    if(options.shouldReplaceHashtag) {   
         options.fill = options.fill.replace('#', ENCODED_HASHTAG);
         options.stroke = options.stroke.replace('#', ENCODED_HASHTAG);
     }

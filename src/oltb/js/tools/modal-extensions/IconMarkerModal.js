@@ -18,13 +18,21 @@ const DefaultOptions = Object.freeze({
     coordinates: [0, 0],
     title: 'Marker',
     description: '',
-    markerFill: '#0166A5FF',
-    markerStroke: '#FFFFFFFF',
-    label: 'Marker',
-    labelFill: '#FFFFFF',
-    labelStroke: '#3B4352CC',
-    labelStrokeWidth: 12,
-    icon: 'geoPin.filled',
+    marker: Object.freeze({
+        fill: '#0166A5FF',
+        stroke: '#0166A566',
+    }),
+    icon: Object.freeze({
+        key: 'geoPin.filled',
+        fill: '#FFFFFFFF',
+        stroke: '#FFFFFFFF'
+    }),
+    label: Object.freeze({
+        text: 'Marker',
+        fill: '#FFFFFF',
+        stroke: '#3B4352CC',
+        strokeWidth: 8,
+    }),
     maximized: false,
     maxLabelStrokeWidth: 24,
     onClose: undefined,
@@ -74,24 +82,6 @@ class IconMarkerModal extends ModalBase {
             value: this.options.description
         });
 
-        const iconOptions = [];
-        for(const path in SvgPaths) {
-            for(const version in SvgPaths[path]) {
-                iconOptions.push({
-                    text: `${path.capitalize()} (${version})`, 
-                    value: `${path}.${version}`
-                });
-            }
-        }
-
-        const [ iconWrapper, iconSelect ] = createUISelect({
-            idPrefix: ID_PREFIX,
-            idPostfix: '-icon',
-            text: i18n.icon,
-            options: iconOptions,
-            value: this.options.icon
-        });
-
         const [ latWrapper, latInput ] = createUIInput({
             idPrefix: ID_PREFIX,
             idPostfix: '-lat',
@@ -106,33 +96,102 @@ class IconMarkerModal extends ModalBase {
             value: this.options.coordinates[0],
         });
 
+        const markerColorGroup = DOM.createElement({
+            element: 'div',
+            class: 'oltb-group'
+        });
+
         const [ markerFillWrapper, markerFillInput ] = createUIColorInput({
             idPrefix: ID_PREFIX,
             idPostfix: '-marker-fill',
             text: i18n.markerFill,
-            color: this.options.markerFill,
+            color: this.options.marker.fill,
         });
 
         const [ markerStrokeWrapper, markerStrokeInput ] = createUIColorInput({
             idPrefix: ID_PREFIX,
             idPostfix: '-marker-stroke',
             text: i18n.markerStroke,
-            color: this.options.markerStroke,
+            color: this.options.marker.stroke,
         });
+
+        DOM.appendChildren(markerColorGroup, [
+            markerFillWrapper,
+            markerStrokeWrapper
+        ]);
+
+        const iconOptions = [];
+        for(const path in SvgPaths) {
+            for(const version in SvgPaths[path]) {
+                iconOptions.push({
+                    text: `${path.capitalize()} | ${version}`, 
+                    value: `${path}.${version}`
+                });
+            }
+        }
+
+        const [ iconWrapper, iconSelect ] = createUISelect({
+            idPrefix: ID_PREFIX,
+            idPostfix: '-icon',
+            text: i18n.icon,
+            options: iconOptions,
+            value: this.options.icon.key
+        });
+
+        const iconColorGroup = DOM.createElement({
+            element: 'div',
+            class: 'oltb-group'
+        });
+
+        const [ iconFillWrapper, iconFillInput ] = createUIColorInput({
+            idPrefix: ID_PREFIX,
+            idPostfix: '-icon-fill',
+            text: i18n.iconFill,
+            color: this.options.icon.fill,
+        });
+
+        const [ iconStrokeWrapper, iconStrokeInput ] = createUIColorInput({
+            idPrefix: ID_PREFIX,
+            idPostfix: '-icon-stroke',
+            text: i18n.iconStroke,
+            color: this.options.icon.stroke,
+        });
+
+        DOM.appendChildren(iconColorGroup, [
+            iconFillWrapper,
+            iconStrokeWrapper
+        ]);
 
         const [ labelWrapper, labelInput ] = createUIInput({
             idPrefix: ID_PREFIX,
             idPostfix: '-label',
             text: i18n.label,
-            value: this.options.label,
+            value: this.options.label.text,
+        });
+
+        const labelColorGroup = DOM.createElement({
+            element: 'div',
+            class: 'oltb-group'
         });
 
         const [ labelFillWrapper, labelFillInput ] = createUIColorInput({
             idPrefix: ID_PREFIX,
             idPostfix: '-label-fill',
             text: i18n.labelFill,
-            color: this.options.labelFill,
+            color: this.options.label.fill,
         });
+
+        const [ labelStrokeWrapper, labelStrokeInput ] = createUIColorInput({
+            idPrefix: ID_PREFIX,
+            idPostfix: '-label-stroke',
+            text: i18n.labelStroke,
+            color: this.options.label.stroke,
+        });
+
+        DOM.appendChildren(labelColorGroup, [
+            labelFillWrapper,
+            labelStrokeWrapper
+        ]);
 
         const widthOptions = [];
         for(let i = 1; i <= this.options.maxLabelStrokeWidth; i++) {
@@ -147,14 +206,7 @@ class IconMarkerModal extends ModalBase {
             idPostfix: '-label-stroke-width',
             text: i18n.labelStrokeWidth,
             options: widthOptions,
-            value: this.options.labelStrokeWidth
-        });
-
-        const [ labelStrokeWrapper, labelStrokeInput ] = createUIColorInput({
-            idPrefix: ID_PREFIX,
-            idPostfix: '-label-stroke',
-            text: i18n.labelStroke,
-            color: this.options.labelStroke,
+            value: this.options.label.strokeWidth
         });
 
         const buttonsWrapper = DOM.createElement({
@@ -177,12 +229,14 @@ class IconMarkerModal extends ModalBase {
                         title: titleInput.value.trim(),
                         description: descriptionInput.value.trim(),
                         icon: iconSelect.value.trim(),
+                        iconFill: iconFillInput.getAttribute('data-oltb-color'),
+                        iconStroke: iconStrokeInput.getAttribute('data-oltb-color'),
                         markerFill: markerFillInput.getAttribute('data-oltb-color'),
                         markerStroke: markerStrokeInput.getAttribute('data-oltb-color'),
                         label: labelInput.value.trim(),
                         labelFill: labelFillInput.getAttribute('data-oltb-color'),
-                        labelStrokeWidth: labelStrokeWidthSelect.value.trim(),
-                        labelStroke: labelStrokeInput.getAttribute('data-oltb-color')
+                        labelStroke: labelStrokeInput.getAttribute('data-oltb-color'),
+                        labelStrokeWidth: labelStrokeWidthSelect.value.trim()
                     });
                 }
             }
@@ -215,15 +269,14 @@ class IconMarkerModal extends ModalBase {
         DOM.appendChildren(modalContent, [
             titleWrapper,
             descriptionWrapper,
-            iconWrapper,
             latWrapper,
             lonWrapper,
-            markerFillWrapper,
-            markerStrokeWrapper,
+            markerColorGroup,
+            iconWrapper,
+            iconColorGroup,
             labelWrapper,
-            labelFillWrapper,
+            labelColorGroup,
             labelStrokeWidthWrapper,
-            labelStrokeWrapper,
             buttonsWrapper
         ]);
 

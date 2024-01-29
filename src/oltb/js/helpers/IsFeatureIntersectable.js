@@ -3,9 +3,9 @@ import { FeatureProperties } from './constants/FeatureProperties';
 
 const isFeatureIntersectable = function(type, geometry) {
     return (
-        type !== FeatureProperties.type.marker         && 
-        type !== FeatureProperties.type.measurement    &&
+        type !== FeatureProperties.type.iconMarker     && 
         type !== FeatureProperties.type.windBarb       && 
+        type !== FeatureProperties.type.measurement    &&
         type !== FeatureProperties.type.layer          &&
         geometry.getType() !== GeometryType.LineString &&
         geometry.getType() !== GeometryType.Point

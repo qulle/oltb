@@ -12,13 +12,13 @@ import { LayerManager } from '../../managers/LayerManager';
 import { StateManager } from '../../managers/StateManager';
 import { ConfigManager } from '../../managers/ConfigManager';
 import { ElementManager } from '../../managers/ElementManager';
+import { FeatureManager } from '../../managers/FeatureManager';
 import { CoordinateModal } from '../modal-extensions/CoordinateModal';
 import { copyToClipboard } from '../../helpers/browser/CopyToClipboard';
 import { LocalStorageKeys } from '../../helpers/constants/LocalStorageKeys';
 import { SvgPaths, getIcon } from '../../icons/GetIcon';
 import { InfoWindowManager } from '../../managers/InfoWindowManager';
 import { ProjectionManager } from '../../managers/ProjectionManager';
-import { generateIconMarker } from '../../generators/GenerateIconMarker';
 import { TranslationManager } from '../../managers/TranslationManager';
 import { fromLonLat, toLonLat } from 'ol/proj';
 
@@ -41,22 +41,27 @@ const LocalStorageDefaults = Object.freeze({
     rotation: DefaultLocation.rotation,
 });
 
+// Note:
+// This model does not follow the model of a Marker. 
+// This is to make it easier for the user and not have a deep object in the url
 const DefaultProjection = ConfigManager.getConfig().projection;
 const DefaultUrlMarker = Object.freeze({
     lon: 18.0685,
     lat: 59.3293,
     title: 'Marker',
     description: '',
-    icon: 'GeoMarker.Filled',
+    icon: 'geoMarker.filled',
+    iconFill: '#FFFFFFFF',
+    iconStroke: '#FFFFFFFF',
+    markerFill: '#0166A5FF',
+    markerStroke: '#0166A566',
     layerName: 'URL Marker',
     label: 'Marker',
-    labelFill: '#FFFFFF',
+    labelFill: '#FFFFFFFF',
     labelStroke: '#3B4352CC',
-    labelStrokeWidth: 12,
+    labelStrokeWidth: 8,
     labelFont: '14px Calibri',
     labelUseEllipsisAfter: 20,
-    markerFill: '#0166A5FF',
-    markerStroke: '#FFFFFFFF',
     projection: DefaultProjection.wgs84,
     zoom: 8
 });
@@ -332,7 +337,7 @@ class HiddenMapNavigationTool extends Control {
             coordinates: coordinates,
             zoom: zoom,
             onDone: (result) => {
-                InfoWindowManager.pulseAnimation(marker);
+                InfoWindowManager.tryPulseAnimation(marker);
                 InfoWindowManager.showOverlay(marker, fromLonLat(coordinates));
             }
         });
@@ -381,21 +386,28 @@ class HiddenMapNavigationTool extends Control {
             `
         };
 
-        const marker = new generateIconMarker({
+        const marker = FeatureManager.generateIconMarker({
             lon: transformedCoordinates[0],
             lat: transformedCoordinates[1],
             title: markerData.title,
             description: markerData.description,
-            markerFill: markerData.markerFill,
-            markerStroke: markerData.markerStroke,
-            icon: markerData.icon,
-            label: markerData.label,
-            labelFill: markerData.labelFill,
-            labelStroke: markerData.labelStroke,
-            labelStrokeWidth: markerData.labelStrokeWidth,
-            labelFont: markerData.labelFont,
-            labelUseEllipsisAfter: markerData.labelUseEllipsisAfter,
-            infoWindow: infoWindow
+            infoWindow: infoWindow,
+            marker: {
+                fill: markerData.markerFill,
+                stroke: markerData.markerStroke
+            },
+            icon: {
+                key: markerData.icon,
+                fill: markerData.iconFill,
+                stroke: markerData.iconStroke
+            },
+            label: {
+                text: markerData.label,
+                font: markerData.labelFont,
+                fill: markerData.labelFill,
+                stroke: markerData.labelStroke,
+                strokeWidth: markerData.labelStrokeWidth
+            }
         });
 
         this.doAddMarkerToMap(marker, markerData.layerName);

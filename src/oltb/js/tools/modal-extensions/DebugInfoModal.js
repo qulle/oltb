@@ -7,6 +7,7 @@ import { toLonLat } from 'ol/proj';
 import { ModalBase } from '../../common/modals/ModalBase';
 import { LogManager } from '../../managers/LogManager';
 import { v4 as uuidv4 } from 'uuid';
+import { StyleManager } from '../../managers/StyleManager';
 import { jsonReplacer } from '../../helpers/browser/JsonReplacer';
 import { ConfigManager } from '../../managers/ConfigManager';
 import { copyToClipboard } from '../../helpers/browser/CopyToClipboard';
@@ -54,6 +55,19 @@ class DebugInfoModal extends ModalBase {
     // -------------------------------------------------------------------
 
     #createModal() {
+        // Note:
+        // Create a summary log-entry as the top item with some usefull information
+        const logManagerSize = LogManager.getSize();
+        const styleManagerSize = StyleManager.getSize();
+        LogManager.logInformation(FILENAME, 'summary', {
+            logManager: {
+                size: logManagerSize
+            },
+            styleManager: {
+                size: styleManagerSize
+            }
+        });
+
         const modalContent = this.#generateModalContent();
         this.show(modalContent);
 
@@ -94,6 +108,9 @@ class DebugInfoModal extends ModalBase {
                     }, {
                         name: i18n.miscGroup.items.generateUUID,
                         action: 'generate.uuid'
+                    }, {
+                        name: i18n.miscGroup.items.clearStyleManager,
+                        action: 'clear.style.manager'
                     }
                 ]
             }, {
@@ -188,6 +205,7 @@ class DebugInfoModal extends ModalBase {
                 path: SvgPaths.chevronExpand.stroked, 
                 fill: 'none', 
                 stroke: 'currentColor',
+                strokeWidth: 1,
                 width: 16,
                 height: 16,
             }),
@@ -258,7 +276,7 @@ class DebugInfoModal extends ModalBase {
         // Defining the default Map to contain all levels regardless of the log contains that level or not
         const chips = new Map();
         const defaultLevels = LogManager.getLogLevels();
-        for(const [key, value] of Object.entries(defaultLevels)) {
+        for(const [value] of Object.entries(defaultLevels)) {
             chips.set(value.name, {
                 count: 0,
                 name: value.name,
@@ -414,6 +432,7 @@ class DebugInfoModal extends ModalBase {
                 path: SvgPaths.chevronExpand.stroked, 
                 fill: 'none', 
                 stroke: 'currentColor',
+                strokeWidth: 1,
                 width: 16,
                 height: 16,
             }),
@@ -650,7 +669,8 @@ class DebugInfoModal extends ModalBase {
             'log.map.to.console': this.doActionLoggingMap.bind(this),
             'generate.uuid': this.doActionGenerateUUID.bind(this),
             'copy.event.log': this.doActionCopyEventLog.bind(this),
-            'clear.event.log': this.doActionClearEventLog.bind(this)
+            'clear.event.log': this.doActionClearEventLog.bind(this),
+            'clear.style.manager': this.doActionClearStyleManager.bind(this)
         };
 
         const actionMethod = actions[action];
@@ -751,6 +771,21 @@ class DebugInfoModal extends ModalBase {
 
         Toast.info({
             i18nKey: `${I18N_BASE}.toasts.infos.clearEventLog`,
+            autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
+        });
+    }
+
+    doActionClearStyleManager() {
+        const size = StyleManager.getSize();
+        StyleManager.clearStyles();
+
+        LogManager.logInformation(FILENAME, 'doActionClearStyleManager', {
+            info: 'StyleManager cleared',
+            size: size
+        });
+
+        Toast.info({
+            i18nKey: `${I18N_BASE}.toasts.infos.clearStyleManager`,
             autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
         });
     }

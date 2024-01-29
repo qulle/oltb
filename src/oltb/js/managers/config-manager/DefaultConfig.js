@@ -42,13 +42,18 @@ const DefaultConfig = Object.freeze({
     }),
     marker: Object.freeze({
         focusZoom: 6,
+        label: {
+            shouldRender: true,
+            visibleUnderResolution: 5000
+        },
         pulseAnimation: {
             isEnabled: true,
             duration: 2000,
             shouldLoop: true,
             strokeWidth: 1,
             defaultStartSize: 0,
-            defaultEndSize: 12
+            defaultEndSize: 14,
+            defaultColor: '#3B4352FF'
         }
     }),
     scroll: Object.freeze({

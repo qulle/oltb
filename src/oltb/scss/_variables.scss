@@ -57,6 +57,11 @@ $color-gray-300: #959DAD;
 $color-gray-400: #3B4352;
 $color-gray-500: #212529;
 
+// Note:
+// To make the contrast higher in both light and dark mode a more 
+// vibrant color is needed than is available in the colors above
+$color-link: #0099FF;
+
 $top-level-padding: 1.5rem;
 $shadow-focus-width: 3px;
 

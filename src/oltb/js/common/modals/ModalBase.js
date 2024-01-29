@@ -57,7 +57,8 @@ class ModalBase {
             html: getIcon({
                 path: SvgPaths.close.stroked, 
                 fill: 'none', 
-                stroke: 'currentColor'
+                stroke: 'currentColor',
+                strokeWidth: 1
             }),
             class: `${CLASS_MODAL}__close oltb-btn oltb-btn--blank`,
             attributes: {

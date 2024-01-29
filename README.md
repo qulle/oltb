@@ -52,9 +52,10 @@ Have a look at the [Internal Development Documentation](https://github.com/qulle
 - Built in debugging help
 - Parameters for customizability
 - Callback functions for integrations
-- Internationalization are shipped with project, included are:
+- Internationalization, included are:
     - English
     - Swedish
+    - Easily extend with your own JSON language file
 
 ## Tools
 The following tools are implemented in the project. The tools are devided in two different categories, Hidden and Non-Hidden tools. The differenc is that Hidden tools are not displayed in the Toolbar, but only add functionality in the contextmenu.

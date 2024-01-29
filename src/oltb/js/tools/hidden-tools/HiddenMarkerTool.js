@@ -5,10 +5,10 @@ import { LogManager } from '../../managers/LogManager';
 import { ContextMenu } from '../../common/ContextMenu';
 import { toStringHDMS } from 'ol/coordinate';
 import { LayerManager } from '../../managers/LayerManager';
+import { FeatureManager } from '../../managers/FeatureManager';
 import { ElementManager } from '../../managers/ElementManager';
 import { IconMarkerModal } from '../modal-extensions/IconMarkerModal';
 import { SvgPaths, getIcon } from '../../icons/GetIcon';
-import { generateIconMarker } from '../../generators/GenerateIconMarker';
 import { TranslationManager } from '../../managers/TranslationManager';
 
 const FILENAME = 'hidden-tools/HiddenMarkerTool.js';
@@ -157,20 +157,28 @@ class HiddenMarkerTool extends Control {
                 </div>
             `
         };
-        
-        const marker = new generateIconMarker({
+
+        const marker = FeatureManager.generateIconMarker({
             lon: coordinates[0],
             lat: coordinates[1],
             title: result.title,
             description: result.description,
-            icon: result.icon,
-            markerFill: result.fill,
-            markerStroke: result.stroke,
-            label: result.label,
-            labelFill: result.labelFill,
-            labelStrokeWidth: result.labelStrokeWidth,
-            labelStroke: result.labelStroke,
-            infoWindow: infoWindow
+            infoWindow: infoWindow,
+            marker: {
+                fill: result.markerFill,
+                stroke: result.markerStroke
+            },
+            icon: {
+                key: result.icon,
+                fill: result.iconFill,
+                stroke: result.iconStroke
+            },
+            label: {
+                text: result.label,
+                fill: result.labelFill,
+                stroke: result.labelStroke,
+                strokeWidth: result.labelStrokeWidth
+            }
         });
     
         this.doAddMarkerToMap(marker);

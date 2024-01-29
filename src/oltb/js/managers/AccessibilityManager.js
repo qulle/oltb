@@ -18,7 +18,7 @@ class AccessibilityManager {
         LogManager.logDebug(FILENAME, 'initAsync', 'Initialization started');
 
         document.body.addEventListener(Events.browser.mouseDown, this.#onMouseDown.bind(this));
-        document.body.addEventListener(Events.browser.keyDown, this.#onKeyBoardDown.bind(this));
+        document.body.addEventListener(Events.browser.keyDown, this.#onKeyboardDown.bind(this));
 
         return new Promise((resolve) => {
             resolve({
@@ -38,7 +38,7 @@ class AccessibilityManager {
     // # Section: Events
     // -------------------------------------------------------------------
 
-    static #onKeyBoardDown(event) {
+    static #onKeyboardDown(event) {
         if(event.key === Keys.valueTab) {
             document.body.classList.add(CLASS_ACCESSIBILITY);
         }
