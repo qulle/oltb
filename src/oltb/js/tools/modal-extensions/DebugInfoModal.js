@@ -276,12 +276,13 @@ class DebugInfoModal extends ModalBase {
         // Defining the default Map to contain all levels regardless of the log contains that level or not
         const chips = new Map();
         const defaultLevels = LogManager.getLogLevels();
-        for(const [value] of Object.entries(defaultLevels)) {
+        for(const [key, value] of Object.entries(defaultLevels)) {
             chips.set(value.name, {
                 count: 0,
                 name: value.name,
                 icon: value.icon,
                 color: value.color,
+                key: key,
                 backgroundColor: value.backgroundColor
             });
         }

@@ -19,10 +19,6 @@
         }
     },
     "managers": {
-        "colorPickerManager": {
-            "title": "Färgväljare",
-            "toggleSection": "Toggla Sektion"
-        },
         "settingsManager": {
             "settings": {
                 "mouseWheelZoom": "Zooma Karta Endast Med Mushjul",

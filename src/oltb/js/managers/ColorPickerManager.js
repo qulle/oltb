@@ -5,10 +5,8 @@ import { LogManager } from './LogManager';
 import { isHorizontal } from '../helpers/IsRowDirection';
 import { ConfigManager } from './ConfigManager';
 import { eventDispatcher } from '../helpers/browser/EventDispatcher';
-import { TranslationManager } from './TranslationManager';
 
 const FILENAME = 'managers/ColorPickerManager.js';
-const I18N_BASE = 'managers.colorPickerManager';
 
 /**
  * About:
@@ -102,17 +100,23 @@ class ColorPickerManager {
             }
         });
 
-        const i18n = TranslationManager.get(`${I18N_BASE}`);
+        // Note:
+        // The Label and Toggle-icon can't be localized due to circular dependencies
+        // This is not a critical translation so will use the en-us as the only language
+        // src/oltb/js/managers/TranslationManager.js -> 
+        // src/oltb/js/managers/TippyManager.js       -> 
+        // src/oltb/js/managers/ColorPickerManager.js -> 
+        // src/oltb/js/managers/TranslationManager.js
         const acpTitle = DOM.createElement({
             element: 'label', 
             class: 'oltb-acp__title',
-            text: i18n.title
+            text: 'Color Picker'
         });
 
         const acpIcon = DOM.createElement({
             element: 'label', 
             class: 'oltb-acp__icon oltb-tippy',
-            title: i18n.toggleSection
+            title: 'Toggle Section'
         });
 
         DOM.appendChildren(acpHeader, [
