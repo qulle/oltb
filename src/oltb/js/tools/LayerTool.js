@@ -607,7 +607,6 @@ class LayerTool extends Control {
 
     onToggleToolbox(toggle) {
         const targetName = toggle.dataset.oltbToggleableTarget;
-        
         this.doToggleToolboxSection(targetName);
     }
 
