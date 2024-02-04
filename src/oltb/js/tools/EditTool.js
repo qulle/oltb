@@ -169,6 +169,9 @@ class EditTool extends Control {
         this.uiRefDeleteSelectedButton = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-delete-selected-button`);
         this.uiRefDeleteSelectedButton.addEventListener(Events.browser.click, this.onDeleteSelectedFeatures.bind(this));
 
+        this.uiRefRotateSelectedButton = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-rotate-selected-button`);
+        this.uiRefRotateSelectedButton.addEventListener(Events.browser.click, this.onRotateSelectedFeatures.bind(this));
+
         this.uiRefUnionSelectedButton = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-union-selected-button`);
         this.uiRefUnionSelectedButton.addEventListener(Events.browser.click, this.onShapeOperator.bind(this, this.unionFeatures, 'union'));
 
@@ -235,6 +238,9 @@ class EditTool extends Control {
                         <label class="oltb-label" data-oldb-i18n="${I18N_BASE}.toolbox.groups.misc">${i18n.groups.misc}</label>
                         <button type="button" id="${ID_PREFIX}-delete-selected-button" class="oltb-btn oltb-btn--blue-mid oltb-tippy" title="Delete">
                             ${getIcon({...DefaultButtonProps, path: SvgPaths.trash.stroked})}
+                        </button>
+                        <button type="button" id="${ID_PREFIX}-rotate-selected-button" class="oltb-btn oltb-btn--blue-mid oltb-tippy" title="Rotate">
+                            ${getIcon({...DefaultButtonProps, path: SvgPaths.arrowRepeat})}
                         </button>
                     </div>
                     <div class="${CLASS_TOOLBOX_SECTION}__group ${CLASS_TOOLBOX_SECTION}__group--sub-toolbar">
@@ -499,6 +505,10 @@ class EditTool extends Control {
         this.askToDeleteFeatures();
     }
 
+    onRotateSelectedFeatures() {
+        this.askToRotateSelectedFeatures();
+    }
+
     onFeatureColorChange(event) {
         this.doFeatureColorChange(event);
     }
@@ -605,6 +615,19 @@ class EditTool extends Control {
             onConfirm: () => {
                 const features = [...this.interactionSelect.getFeatures().getArray()];
                 this.doDeleteFeatures(features);
+            }
+        });
+    }
+
+    askToRotateSelectedFeatures() {
+        Dialog.prompt({
+            title: 'Rotate Features',
+            message: 'Rotate features',
+            confirmText: 'Rotate',
+            cancelText: 'Cancel',
+            onConfirm: (result) => {
+                const features = [...this.interactionSelect.getFeatures().getArray()];
+                this.doRotateFeatures(features, result);
             }
         });
     }
@@ -924,6 +947,10 @@ class EditTool extends Control {
                 }
             });
         });
+    }
+
+    doRotateFeatures(features, rotation) {
+        console.log('Rotate features', features, rotation);
     }
 }
 
