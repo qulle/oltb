@@ -106,6 +106,7 @@ class IconMarkerModal extends ModalBase {
             idPostfix: '-marker-fill',
             text: i18n.markerFill,
             color: this.options.marker.fill,
+            default: DefaultOptions.marker.fill
         });
 
         const [ markerStrokeWrapper, markerStrokeInput ] = createUIColorInput({
@@ -113,6 +114,7 @@ class IconMarkerModal extends ModalBase {
             idPostfix: '-marker-stroke',
             text: i18n.markerStroke,
             color: this.options.marker.stroke,
+            default: DefaultOptions.marker.stroke
         });
 
         DOM.appendChildren(markerColorGroup, [
@@ -135,7 +137,8 @@ class IconMarkerModal extends ModalBase {
             idPostfix: '-icon',
             text: i18n.icon,
             options: iconOptions,
-            value: this.options.icon.key
+            value: this.options.icon.key,
+            default: DefaultOptions.icon.key
         });
 
         const iconColorGroup = DOM.createElement({
@@ -148,6 +151,7 @@ class IconMarkerModal extends ModalBase {
             idPostfix: '-icon-fill',
             text: i18n.iconFill,
             color: this.options.icon.fill,
+            default: DefaultOptions.icon.fill
         });
 
         const [ iconStrokeWrapper, iconStrokeInput ] = createUIColorInput({
@@ -155,6 +159,7 @@ class IconMarkerModal extends ModalBase {
             idPostfix: '-icon-stroke',
             text: i18n.iconStroke,
             color: this.options.icon.stroke,
+            default: DefaultOptions.icon.stroke
         });
 
         DOM.appendChildren(iconColorGroup, [
@@ -179,6 +184,7 @@ class IconMarkerModal extends ModalBase {
             idPostfix: '-label-fill',
             text: i18n.labelFill,
             color: this.options.label.fill,
+            default: DefaultOptions.label.fill
         });
 
         const [ labelStrokeWrapper, labelStrokeInput ] = createUIColorInput({
@@ -186,6 +192,7 @@ class IconMarkerModal extends ModalBase {
             idPostfix: '-label-stroke',
             text: i18n.labelStroke,
             color: this.options.label.stroke,
+            default: DefaultOptions.label.stroke
         });
 
         DOM.appendChildren(labelColorGroup, [
@@ -206,7 +213,8 @@ class IconMarkerModal extends ModalBase {
             idPostfix: '-label-stroke-width',
             text: i18n.labelStrokeWidth,
             options: widthOptions,
-            value: this.options.label.strokeWidth
+            value: this.options.label.strokeWidth,
+            default: DefaultOptions.label.strokeWidth
         });
 
         const buttonsWrapper = DOM.createElement({

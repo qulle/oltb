@@ -157,7 +157,7 @@ export const DefaultTranslation = Object.freeze({
             title: 'Download Layer',
             form: {
                 layerFormat: 'Layer format',
-                download: 'Download layer',
+                download: 'Download Layer',
                 cancel: 'Cancel'
             }
         },
@@ -428,10 +428,24 @@ export const DefaultTranslation = Object.freeze({
                     edit: 'Edit'
                 },
                 groups: {
-                    misc: 'Misc',
-                    shapes: 'Shapes',
-                    strokeColor: 'Stroke Color',
-                    fillColor: 'Fill Color'
+                    misc: {
+                        title: 'Misc',
+                        delete: 'Delete',
+                        rotate: 'Rotate'
+                    },
+                    shapes: {
+                        title: 'Shapes',
+                        union: 'Union',
+                        intersect: 'Intersect',
+                        exclude: 'Exclude',
+                        difference: 'Difference'
+                    },
+                    strokeColor: {
+                        title: 'Stroke Color'
+                    },
+                    fillColor: {
+                        title: 'Fill Color'
+                    }
                 }
             },
             settings: {
@@ -441,7 +455,7 @@ export const DefaultTranslation = Object.freeze({
                 infos: {
                     missingFeatures: {
                         title: 'Oops',
-                        message: 'No objects selected to delete'
+                        message: 'No objects are selected'
                     },
                     strictTwoFeatures: {
                         title: 'Oops',
@@ -452,6 +466,10 @@ export const DefaultTranslation = Object.freeze({
                     operationFailed: {
                         title: 'Error',
                         message: 'Failed to perform shape operation'
+                    },
+                    invalidValue: {
+                        title: 'Error',
+                        message: 'Only digits are allowed as input'
                     }
                 }
             },
@@ -461,6 +479,14 @@ export const DefaultTranslation = Object.freeze({
                         title: 'Delete Features',
                         message: 'Delete selected feature',
                         confirmText: 'Delete',
+                        cancelText: 'Cancel'
+                    }
+                },
+                prompts: {
+                    rotateFeatures: {
+                        title: 'Rotate Features',
+                        message: 'Rotate Features by N-degrees',
+                        confirmText: 'Rotate Features',
                         cancelText: 'Cancel'
                     }
                 }

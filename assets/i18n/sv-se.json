@@ -152,7 +152,7 @@
             "title": "Ladda Ner Lager",
             "form": {
                 "layerFormat": "Lagerformat",
-                "download": "Ladda ner lager",
+                "download": "Ladda Ner Lager",
                 "cancel": "Avbryt"
             }
         },
@@ -423,10 +423,24 @@
                     "edit": "Redigera"
                 },
                 "groups": {
-                    "misc": "Övrigt",
-                    "shapes": "Former",
-                    "strokeColor": "Linjefärg",
-                    "fillColor": "Fyllnadsfärg"
+                    "misc": {
+                        "title": "Övrigt",
+                        "delete": "Radera",
+                        "rotate": "Rotera"
+                    },
+                    "shapes": {
+                        "title": "Former",
+                        "union": "Union",
+                        "intersect": "Överlappande",
+                        "exclude": "Exkluderande",
+                        "difference": "Differens"
+                    },
+                    "strokeColor": {
+                        "title": "Linjefärg"
+                    },
+                    "fillColor": {
+                        "title": "Fyllnadsfärg"
+                    }
                 }
             },
             "settings": {
@@ -436,7 +450,7 @@
                 "infos": {
                     "missingFeatures": {
                         "title": "Hoppsan",
-                        "message": "Inga objekt har markerats för borttagning"
+                        "message": "Inga objekt har markerats"
                     },
                     "strictTwoFeatures": {
                         "title": "Hoppsan",
@@ -447,6 +461,10 @@
                     "operationFailed": {
                         "title": "Error",
                         "message": "Misslyckades att utföra transformationen"
+                    },
+                    "invalidValue": {
+                        "title": "Error",
+                        "message": "Endast siffror är tillåtna som inmatning"
                     }
                 }
             },
@@ -456,6 +474,14 @@
                         "title": "Radera Objekt",
                         "message": "Radera markerade objekt",
                         "confirmText": "Radera",
+                        "cancelText": "Avbryt"
+                    }
+                },
+                "prompts": {
+                    "rotateFeatures": {
+                        "title": "Rotera Objekt",
+                        "message": "Rotera Objekten med N-grader",
+                        "confirmText": "Rotera Objekt",
                         "cancelText": "Avbryt"
                     }
                 }

@@ -45,6 +45,11 @@ class ResetNorthTool extends Control {
             class: `${CLASS_TOOL_BUTTON}__icon`
         });
 
+        this.resetRotationIcon = getIcon({
+            path: SvgPaths.arrowRepeat.stroked,
+            class: `${CLASS_TOOL_BUTTON}__icon`
+        });
+
         const i18n = TranslationManager.get(I18N_BASE);
         const button = DOM.createElement({
             element: 'button',
@@ -89,7 +94,7 @@ class ResetNorthTool extends Control {
 
     initContextMenuItems() {
         ContextMenu.addItem({
-            icon: this.icon, 
+            icon: this.resetRotationIcon, 
             i18nKey: `${I18N_BASE}.contextItems.rotate`, 
             fn: this.onContextMenuSetRotation.bind(this)
         });
@@ -202,11 +207,18 @@ class ResetNorthTool extends Control {
     // -------------------------------------------------------------------
 
     doRotation(map, coordinates, zoom, degrees) {
+        const radians = degreesToRadians(degrees);
+
+        LogManager.logDebug(FILENAME, 'doRotation', {
+            degrees: degrees,
+            radians: radians
+        });
+
         goToView({
             map: map,
             coordinates: coordinates,
             zoome: zoom,
-            rotation: degreesToRadians(degrees)
+            rotation: radians
         });
     }
 }

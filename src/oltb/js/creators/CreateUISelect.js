@@ -1,12 +1,14 @@
 import _ from 'lodash';
 import { DOM } from '../helpers/browser/DOM';
+import { Events } from '../helpers/constants/Events';
 
 const DefaultOptions = Object.freeze({
     idPrefix: '',
     idPostfix: '',
     text: '',
     options: [],
-    value: undefined
+    value: undefined,
+    default: undefined
 });
 
 const createUISelect = function(options = {}) {
@@ -20,11 +22,15 @@ const createUISelect = function(options = {}) {
     const label = DOM.createElement({
         element: 'label', 
         text: options.text,
-        class: 'oltb-label', 
+        class: 'oltb-label oltb-label--inline-block',  
         attributes: {
             'for': `${options.idPrefix}${options.idPostfix}`
         }
     });
+
+    if(options.default) {
+        label.classList.add('oltb-label--clickable');
+    }
 
     const select = DOM.createElement({
         element: 'select', 
@@ -45,6 +51,14 @@ const createUISelect = function(options = {}) {
     });
 
     select.value = options.value ?? select.firstElementChild.value;
+
+    // Note:
+    // To reset to the default selected item the user can press the label
+    if(options.default) {
+        label.addEventListener(Events.browser.click, (event) => {
+            select.value = options.default
+        });
+    }
 
     DOM.appendChildren(wrapper, [
         label,

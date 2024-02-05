@@ -19,9 +19,17 @@ body {
     display: block;
     color: $color-dark;
     margin-bottom: .25rem;
+    
+    &--clickable {
+        cursor: pointer;
+    }
 
     &--inline {
         display: inline;
+    }
+
+    &--inline-block {
+        display: inline-block;
     }
 }
 

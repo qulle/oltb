@@ -87,3 +87,9 @@ body.oltb-dark .oltb-info-window {
         color: $background-theme-light;
     }
 }
+
+@media only screen and (max-width: $breakpoint-sm) {
+    .oltb-info-window {
+        min-width: 330px;
+    }
+}
