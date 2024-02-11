@@ -296,9 +296,11 @@ class LayerManager {
 
         // Remove all features from the Snap collection
         const layer = layerWrapper.getLayer();
-        layer.getSource().getFeatures().forEach((feature) => {
-            this.#snapFeatures.remove(feature);
-        });
+        if(this.isVectorLayer(layer)) {
+            layer.getSource().getFeatures().forEach((feature) => {
+                this.#snapFeatures.remove(feature);
+            });
+        }
 
         // Remove the actual ol layer
         this.#map.removeLayer(layer);

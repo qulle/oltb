@@ -131,7 +131,7 @@ class CoordinatesTool extends Control {
         const i18n = TranslationManager.get(`${I18N_BASE}.toolbox`);
         const i18nCommon = TranslationManager.get(`${I18N_BASE_COMMON}.titles`);
         
-        ElementManager.getToolboxElement().insertAdjacentHTML('beforeend', `
+        const html = (`
             <div id="${ID_PREFIX}-toolbox" class="${CLASS_TOOLBOX_SECTION}">
                 <div class="${CLASS_TOOLBOX_SECTION}__header oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">
                     <h4 class="${CLASS_TOOLBOX_SECTION}__title" data-oltb-i18n="${I18N_BASE}.toolbox.titles.coordinates">${i18n.titles.coordinates}</h4>
@@ -147,11 +147,13 @@ class CoordinatesTool extends Control {
                     </div>
                     <div class="${CLASS_TOOLBOX_SECTION}__group">
                         <label class="oltb-label" data-oltb-i18n="${I18N_BASE}.toolbox.groups.coordinates.title">${i18n.groups.coordinates.title} <em>(Lat, Lon)</em></label>
-                        <table class="oltb-table oltb-mt-05" id="${ID_PREFIX}-table"></table>
+                        <table class="oltb-table oltb-table--horizontal oltb-table--no-background oltb-table--tight-bottom-and-top oltb-mt-05" id="${ID_PREFIX}-table"></table>
                     </div>
                 </div>
             </div>
         `);
+
+        ElementManager.getToolboxElement().insertAdjacentHTML('beforeend', html);
     }
 
     initToggleables() {

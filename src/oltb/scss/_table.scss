@@ -1,35 +1,67 @@
+// TODO:
+// Refactor to make it configurable, borders, backgrounds, padding etc.
 .oltb-table {
     border-collapse: collapse;
     width: 100%;
-    color: #3b4352;
+    color: $color-gray-400;
     cursor: default;
 
     th {
         text-align: left;
-        padding-top: 8px;
+        background-color: $color-gray-100;
     }
 
-    td {
-        padding: 4px 0 8px 0;
-    }
-
-    tr:first-child {
-        th {
-            padding-top: 0;
-        }
-    }
-
-    tr:last-child {
+    &--vertical {
+        th,
         td {
-            padding-bottom: 0;
+            padding: 0.5rem;
+            border: 1px dashed $color-gray-300;
+        }
+
+        td {
+            width: 100%;
         }
     }
 
-    tr:not(:last-child):nth-child(2n) > td {
-        border-bottom: 1px dashed #ced4da;
+    &--horizontal {
+        th {
+            padding-top: 0.5rem;
+        }
+
+        td {
+            padding: 0.25rem 0 0.5rem 0;
+        }
+
+        tr:not(:last-child):nth-child(2n) > td {
+            border-bottom: 1px dashed $color-gray-300;
+        }
+    }
+
+    &--no-background {
+        th {
+            background-color: transparent;
+        }
+    }
+
+    &--tight-bottom-and-top {
+        tr:first-child {
+            th {
+                padding-top: 0;
+            }
+        }
+
+        tr:last-child {
+            td {
+                padding-bottom: 0;
+            }
+        }
     }
 }
 
 body.oltb-dark .oltb-table {
-    color: #FFFFFF;
+    color: $color-light;
+
+    th {
+        background-color: rgba(0, 0, 0, .2);
+    }
 }

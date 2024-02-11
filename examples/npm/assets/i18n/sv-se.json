@@ -156,6 +156,9 @@
                 "cancel": "Avbryt"
             }
         },
+        "geometryDataModal": {
+            "title": "Geometridata"
+        },
         "iconMarkerModal": {
             "title": "Markörkonfiguration",
             "form": {
@@ -426,7 +429,8 @@
                     "misc": {
                         "title": "Övrigt",
                         "delete": "Radera",
-                        "rotate": "Rotera"
+                        "rotate": "Rotera",
+                        "geometryData": "Geometridata"
                     },
                     "shapes": {
                         "title": "Former",

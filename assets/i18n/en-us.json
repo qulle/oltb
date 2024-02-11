@@ -156,6 +156,9 @@
                 "cancel": "Cancel"
             }
         },
+        "geometryDataModal": {
+            "title": "Geometry Data"
+        },
         "iconMarkerModal": {
             "title": "Marker Configuration",
             "form": {
@@ -426,7 +429,8 @@
                     "misc": {
                         "title": "Misc",
                         "delete": "Delete",
-                        "rotate": "Rotate"
+                        "rotate": "Rotate",
+                        "geometryData": "Geometry Data"
                     },
                     "shapes": {
                         "title": "Shapes",

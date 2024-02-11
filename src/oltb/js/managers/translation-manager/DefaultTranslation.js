@@ -20,10 +20,6 @@ export const DefaultTranslation = Object.freeze({
         }
     },
     managers: {
-        colorPickerManager: {
-            title: 'Color Picker',
-            toggleSection: 'Toggle Section'
-        },
         settingsManager: {
             settings: {
                 mouseWheelZoom: 'Zoom Map Using Mousewheel Only',
@@ -160,6 +156,9 @@ export const DefaultTranslation = Object.freeze({
                 download: 'Download Layer',
                 cancel: 'Cancel'
             }
+        },
+        geometryDataModal: {
+            title: 'Geometry Data',
         },
         iconMarkerModal: {
             title: 'Marker Configuration',
@@ -431,7 +430,8 @@ export const DefaultTranslation = Object.freeze({
                     misc: {
                         title: 'Misc',
                         delete: 'Delete',
-                        rotate: 'Rotate'
+                        rotate: 'Rotate',
+                        geometryData: 'Geometry Data'
                     },
                     shapes: {
                         title: 'Shapes',

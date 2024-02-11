@@ -1,6 +1,5 @@
 import _ from 'lodash';
 import { DOM } from '../helpers/browser/DOM';
-import { Events } from '../helpers/constants/Events';
 
 const CLASS_COLOR_INPUT = 'oltb-color-input';
 
@@ -8,8 +7,7 @@ const DefaultOptions = Object.freeze({
     idPrefix: '',
     idPostfix: '',
     text: '',
-    color: '',
-    default: undefined
+    color: ''
 });
 
 const createUIColorInput = function(options = {}) {
@@ -23,15 +21,11 @@ const createUIColorInput = function(options = {}) {
     const label = DOM.createElement({
         element: 'label', 
         text: options.text,
-        class: 'oltb-label oltb-label--inline-block', 
+        class: 'oltb-label', 
         attributes: {
             'for': `${options.idPrefix}${options.idPostfix}`
         }
     });
-
-    if(options.default) {
-        label.classList.add('oltb-label--clickable');
-    }
 
     const input = DOM.createElement({
         element: 'div',
@@ -49,15 +43,6 @@ const createUIColorInput = function(options = {}) {
         style: `background-color: ${options.color}`,
         class: `${CLASS_COLOR_INPUT}__inner`
     });
-
-    // Note:
-    // To reset to the default color the user can press the label
-    if(options.default) {
-        label.addEventListener(Events.browser.click, (event) => {
-            input.setAttribute('data-oltb-color', options.default);
-            inputInner.style.backgroundColor = options.default;
-        });
-    }
 
     DOM.appendChildren(input, [
         inputInner
