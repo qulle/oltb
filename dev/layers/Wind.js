@@ -2,10 +2,10 @@
 import urlCapitalsGeoJson from 'url:../geojson/capitals.geojson';
 
 // Module imports
+import _ from 'lodash';
 import { Toast } from '../../src/oltb/js/common/Toast';
 import { LogManager } from '../../src/oltb/js/managers/LogManager';
 import { toStringHDMS } from 'ol/coordinate';
-import { randomNumber } from '../../src/oltb/js/helpers/browser/Random';
 import { LayerManager } from '../../src/oltb/js/managers/LayerManager';
 import { FeatureManager } from '../../src/oltb/js/managers/FeatureManager';
 
@@ -51,7 +51,7 @@ const parseGeoJson = function(data) {
 
         // Get windspeed between 0 and 40m/s (75knots)
         // Get example direction to not have all wind barbs facing the same way
-        const windSpeed = randomNumber(0, 40);
+        const windSpeed = _.random(0, 40);
         const windDirection = getWindDirection(continentName);
 
         const description = `

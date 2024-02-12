@@ -113,7 +113,7 @@ class OverviewTool extends Control {
         const i18n = TranslationManager.get(`${I18N_BASE}.toolbox`);
         const i18nCommon = TranslationManager.get(`${I18N_BASE_COMMON}.titles`);
 
-        ElementManager.getToolboxElement().insertAdjacentHTML('beforeend', `
+        const html = (`
             <div id="${ID_PREFIX}-toolbox" class="${CLASS_TOOLBOX_SECTION}">
                 <div class="${CLASS_TOOLBOX_SECTION}__header oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">
                 <h4 class="${CLASS_TOOLBOX_SECTION}__title" data-oltb-i18n="${I18N_BASE}.toolbox.titles.overview">${i18n.titles.overview}</h4>
@@ -124,6 +124,8 @@ class OverviewTool extends Control {
                 </div>
             </div>
         `);
+
+        ElementManager.getToolboxElement().insertAdjacentHTML('beforeend', html);
     }
 
     initToggleables() {

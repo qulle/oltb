@@ -105,14 +105,14 @@ class IconMarkerModal extends ModalBase {
             idPrefix: ID_PREFIX,
             idPostfix: '-marker-fill',
             text: i18n.markerFill,
-            color: this.options.marker.fill,
+            color: this.options.marker.fill
         });
 
         const [ markerStrokeWrapper, markerStrokeInput ] = createUIColorInput({
             idPrefix: ID_PREFIX,
             idPostfix: '-marker-stroke',
             text: i18n.markerStroke,
-            color: this.options.marker.stroke,
+            color: this.options.marker.stroke
         });
 
         DOM.appendChildren(markerColorGroup, [
@@ -147,14 +147,14 @@ class IconMarkerModal extends ModalBase {
             idPrefix: ID_PREFIX,
             idPostfix: '-icon-fill',
             text: i18n.iconFill,
-            color: this.options.icon.fill,
+            color: this.options.icon.fill
         });
 
         const [ iconStrokeWrapper, iconStrokeInput ] = createUIColorInput({
             idPrefix: ID_PREFIX,
             idPostfix: '-icon-stroke',
             text: i18n.iconStroke,
-            color: this.options.icon.stroke,
+            color: this.options.icon.stroke
         });
 
         DOM.appendChildren(iconColorGroup, [
@@ -178,14 +178,14 @@ class IconMarkerModal extends ModalBase {
             idPrefix: ID_PREFIX,
             idPostfix: '-label-fill',
             text: i18n.labelFill,
-            color: this.options.label.fill,
+            color: this.options.label.fill
         });
 
         const [ labelStrokeWrapper, labelStrokeInput ] = createUIColorInput({
             idPrefix: ID_PREFIX,
             idPostfix: '-label-stroke',
             text: i18n.labelStroke,
-            color: this.options.label.stroke,
+            color: this.options.label.stroke
         });
 
         DOM.appendChildren(labelColorGroup, [

@@ -8,15 +8,14 @@
 Detailed documentation how the Toolbar is structured, internal dependencies and how all parts are connected together.
 
 ## Table of contents
-1. [Branches](#branches)
-2. [Get Started](#get-started)
-3. [Browser Support](#browser-support)
-4. [Migrating](#migrating)
-5. [Localizations](#localizations)
-6. [Colors](#colors) 
+1. [Get Started](#get-started)
+2. [Browser Support](#browser-support)
+3. [Migrating](#migrating)
+4. [Localizations](#localizations)
+5. [Colors](#colors) 
     1. [Theme Colors](#theme-colors)
     2. [Color Palette](#color-palette)
-7. [About The Code](#about-the-code)
+6. [About The Code](#about-the-code)
     1. [HTML](#html)
     2. [SCSS](#scss)
     3. [Import And Export](#import-and-export)
@@ -42,13 +41,10 @@ Detailed documentation how the Toolbar is structured, internal dependencies and 
     18. [Debug Tool](#debug-tool)
     19. [Logging](#logging)
     20. [OLTB Namespace](#oltb-namespace)
-8. [License](#license)
-9. [Making A Release](#making-a-release)
-10. [Update Dependencies](#update-dependencies)
-11. [Author](#author)
-
-## Branches
-The `main` branch holds the latest features that are considered done and safe to use. The latest commit from the main branch is available on the [demo-page](https://qulle.github.io/oltb/) hosted in the `gh-pages` branch. Each released major, minor or patch version is tagged and can be checked out or downloaded from CDN and NPM.
+7. [License](#license)
+8. [Making A Release](#making-a-release)
+9. [Update Dependencies](#update-dependencies)
+10. [Author](#author)
 
 ## Get Started
 The dev-environment uses NPM so you need to have [Node.js](https://nodejs.org/en/) installed. I use Node version *18.12.0* and NPM version *9.8.1*.

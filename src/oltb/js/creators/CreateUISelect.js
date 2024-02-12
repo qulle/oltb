@@ -20,7 +20,7 @@ const createUISelect = function(options = {}) {
     const label = DOM.createElement({
         element: 'label', 
         text: options.text,
-        class: 'oltb-label', 
+        class: 'oltb-label',  
         attributes: {
             'for': `${options.idPrefix}${options.idPostfix}`
         }
