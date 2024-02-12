@@ -1,0 +1,863 @@
+{
+    "meta": {
+        "text": "Swedish",
+        "value": "sv-se"
+    },
+    "commons": {
+        "titles": {
+            "edit": "Redigera",
+            "delete": "Radera",
+            "dragToSort": "Dra För Att Sortera",
+            "download": "Ladda Ner",
+            "copyText": "Kopiera Text",
+            "copyCoordinates": "Kopiera Koordinater",
+            "showLayer": "Visa Lager",
+            "rename": "Ändra Namn",
+            "toggleSection": "Toggla Sektion",
+            "toggleVisibility": "Toggla Synlighet",
+            "zoomToCoordinates": "Zooma Till Koordinater"
+        }
+    },
+    "managers": {
+        "settingsManager": {
+            "settings": {
+                "mouseWheelZoom": "Zooma Karta Endast Med Mushjul",
+                "altShiftDragRotate": "Rotera Kartan Med Shift + Alt + Drag",
+                "dragPan": "Dra Kartan Endast Med Mus",
+                "keyboardZoom": "Zooma Kartan Med Tangentbordet",
+                "keyboardPan": "Panorera Kartan Med Tangentbordet",
+                "selectVectorMapShapes": "Markera Objekt i Vektorkartlager",
+                "snapInteraction": "Använd Snap Funktion",
+                "snapHelpLines": "Använd Hjälplinjer",
+                "alwaysNewLayers": "Skapa Lager När Verktyg Väljs"
+            }
+        },
+        "errorManager": {
+            "toasts": {
+                "errors": {
+                    "uncaughtException": {
+                        "title": "Error",
+                        "message": "Ett oväntat fel uppstod"
+                    }
+                }
+            }
+        },
+        "infoWindowManager": {
+            "toasts": {
+                "infos": {
+                    "copyMarkerCoordinates": {
+                        "title": "Kopierat",
+                        "message": "Markörkoordinater har kopierats till urklipp"
+                    },
+                    "copyMarkerInfo": {
+                        "title": "Kopierat",
+                        "message": "Markörinformation har kopierats till urklipp"
+                    }
+                },
+                "errors": {
+                    "copyMarkerInfo": {
+                        "title": "Error",
+                        "message": "Misslyckades att kopiera Markörinformation"
+                    },
+                    "copyMarkerCoordinates": {
+                        "title": "Error",
+                        "message": "Misslyckades att kopiera Markörkoordinater"
+                    }
+                }
+            },
+            "dialogs": {
+                "confirms": {
+                    "deleteMarker": {
+                        "title": "Radera Markör",
+                        "message": "Vill du radera vald Markör?",
+                        "confirmText": "Radera",
+                        "cancelText": "Avbryt"
+                    }
+                }
+            }
+        }
+    },
+    "modalExtensions": {
+        "coordinateModal": {
+            "title": "Koordinater",
+            "form": {
+                "latitude": "Latitud",
+                "longitude": "Longitud",
+                "navigateTo": "Navigera Till",
+                "cancel": "Avbryt",
+                "description": "Koordinater anges i WGS84/EPSG:4326"
+            }
+        },
+        "debugInfoModal": {
+            "title": "Debuginformation",
+            "noMapFound": "Ingen Kartreferens hittades",
+            "form": {
+                "doAction": "Utför",
+                "defaultItem": {
+                    "title": "Välj Alternativ"
+                },
+                "miscGroup": {
+                    "title": "Övrigt",
+                    "items": {
+                        "logToBrowser": "Logga Kartan Till Webbläsarkonsolen",
+                        "generateUUID": "Generera UUID",
+                        "clearStyleManager": "Rensa Stilhanteraren"
+                    }
+                },
+                "eventLogGroup": {
+                    "title": "Händelselogg",
+                    "items": {
+                        "copyEventLog": "Kopiera Händelselogg",
+                        "clearEventLog": "Rensa Händelselogg"
+                    }
+                }
+            },
+            "sections": {
+                "appData": "Applikationsdata",
+                "mapData": "Kartdata",
+                "browserData": "Webbläsardata",
+                "localStorage": "Local Storage",
+                "sessionStorage": "Session Storage",
+                "cookies": "Kakor",
+                "eventLog": "Händelselogg"
+            },
+            "toasts": {
+                "infos": {
+                    "logMapObject": {
+                        "title": "Loggad",
+                        "message": "Kartobjekt loggat till konsolen"
+                    },
+                    "copyEventLog": {
+                        "title": "Kopierad",
+                        "message": "Händelseloggen kopierad till urklipp"
+                    },
+                    "clearEventLog": {
+                        "title": "Rensat",
+                        "message": "Händelseloggen rensades från alla poster"
+                    },
+                    "clearStyleManager": {
+                        "title": "Rensat",
+                        "message": "Stilhanteraren rensades från alla poster"
+                    }
+                },
+                "errors": {
+                    "copyEventLog": {
+                        "title": "Error",
+                        "message": "Misslyckades att kopiera Händelseloggen"
+                    }
+                }
+            }
+        },
+        "downloadLayerModal": {
+            "title": "Ladda Ner Lager",
+            "form": {
+                "layerFormat": "Lagerformat",
+                "download": "Ladda Ner Lager",
+                "cancel": "Avbryt"
+            }
+        },
+        "geometryDataModal": {
+            "title": "Geometridata",
+            "data": {
+                "id": "Id",
+                "measurement": "Mätning",
+                "oltbProperties": "OLTB Egenskaper",
+                "vertices": "Hörnpunkter",
+                "coordinates": "Koordinater"
+            }
+        },
+        "iconMarkerModal": {
+            "title": "Markörkonfiguration",
+            "form": {
+                "title": "Titel",
+                "description": "Beskrivning",
+                "latitude": "Latitud",
+                "longitude": "Longitud",
+                "markerFill": "Markörfyllning",
+                "markerStroke": "Markörlinje",
+                "icon": "Ikon",
+                "iconFill": "Ikonfyllning",
+                "iconStroke": "Ikonlinje",
+                "label": "Etikett",
+                "labelFill": "Ettikettfyllning",
+                "labelStroke": "Etikettfyllning",
+                "labelStrokeWidth": "Ettikettbredd",
+                "saveChanges": "Spara Ändringar",
+                "createMarker": "Skapa Markör",
+                "cancel": "Avbryt"
+            }
+        },
+        "importLayerModal": {
+            "title": "Importera Lager",
+            "form": {
+                "featureProjection": "Funktionsprojektion",
+                "dataProjection": "Dataprojektion",
+                "import": "Importera Lager",
+                "cancel": "Avbryt"
+            }
+        },
+        "layerModal": {
+            "title": "Skapa Kartlager",
+            "form": {
+                "name": "Namn",
+                "layer": "Lager",
+                "source": "Källa",
+                "projection": "Projektion",
+                "url": "URL",
+                "parameters": "Parametrar (JSON)",
+                "wrapX": "WrapX",
+                "cors": "CORS",
+                "attributions": "Tillskrivs",
+                "createLayer": "Skapa Lager",
+                "cancel": "Avbryt"
+            }
+        },
+        "settingsModal": {
+            "title": "Inställningar",
+            "form": {
+                "save": "Spara Inställningar",
+                "cancel": "Avbryt"
+            }
+        }
+    },
+    "tools": {
+        "hiddenAboutTool": {
+            "contextItems": {
+                "about": "Om OLTB"
+            },
+            "modals": {
+                "about": {
+                    "title": "Om OLTB",
+                    "version": "Version",
+                    "developedBy": "Utvecklat av Qulle",
+                    "usingOpenLayers": "Använder OpenLayers"
+                }
+            }
+        },
+        "hiddenMapNavigationTool": {
+            "contextItems": {
+                "copyCoordinates": "Kopiera Koordinater",
+                "navigateToCoordinates": "Navigera Till",
+                "centerMap": "Centrera",
+                "focusMap": "Fokusera"
+            },
+            "toasts": {
+               "infos": {
+                    "coordinatesCopied": {
+                        "title": "Kopierad",
+                        "message": "Koordinaterna har kopierats till urklipp"
+                    }
+                },
+                "errors": {
+                    "coordinatesCopy": {
+                        "title": "Error",
+                        "message": "Misslyckades att kopiera koordinater"
+                    },
+                    "parseUrlMarker": {
+                        "title": "Error",
+                        "message": "Misslyckades att konverta URL Markör"
+                    },
+                    "missingProjection": {
+                        "title": "Error",
+                        "message": "Saknar projektionsdefinition"
+                    }
+                }
+            }
+        },
+        "hiddenMarkerTool": {
+            "contextItems": {
+                "createMarker": "Skapa Markör"
+            }
+        },
+        "bookmarkTool": {
+            "title": "Bokmärken",
+            "toolbox": {
+                "titles": {
+                    "bookmarks": "Bokmärken"
+                },
+                "groups": {
+                    "addBookmark": {
+                        "placeholder": "Namn",
+                        "add": "Skapa Bokmärke"
+                    }
+                }
+            },
+            "contextItems": {
+                "addBookmark": "Skapa Bokmärke",
+                "clearBookmarks": "Rensa Bokmärken"
+            },
+            "layers": {
+                "bookmarks": "Bokmärken"
+            },
+            "toasts": {
+                "infos": {
+                    "clearBookmarks": {
+                        "title": "Rensat",
+                        "message": "Alla lagrade Bokmärken raderades"
+                    },
+                    "createBookmark": {
+                        "title": "Nytt Bokmärke",
+                        "message": "Ett nytt Bokmärke skapat"
+                    },
+                    "copyCoordinates": {
+                        "title": "Kopierad",
+                        "message": "Koordinaterna har kopierats till urklipp"
+                    }
+                },
+                "errors": {
+                    "copyCoordinates": {
+                        "title": "Error",
+                        "message": "Misslyckades att kopiera koordinater"
+                    }
+                }
+            },
+            "dialogs": {
+                "confirms": {
+                    "clearBookmarks": {
+                        "title": "Radera Bokmärken",
+                        "message": "Vill du radera alla Bokmärken",
+                        "confirmText": "Radera",
+                        "cancelText": "Avbryt"
+                    },
+                    "deleteBookmark": {
+                        "title": "Radera Bokmärke",
+                        "message": "Vill du radera bokmärke",
+                        "confirmText": "Radera",
+                        "cancelText": "Avbryt"
+                    }
+                },
+                "prompts": {
+                    "editBookmark": {
+                        "title": "Redigera Namn",
+                        "message": "Du redigerar bokmärke",
+                        "confirmText": "Ändra Namn",
+                        "cancelText": "Avbryt"
+                    }
+                }
+            }
+        },
+        "coordinatesTool": {
+            "title": "Visa Koordinater",
+            "toolbox": {
+                "titles": {
+                    "coordinates": "Koordinater"
+                },
+                "groups": {
+                    "formats": {
+                        "title": "Format",
+                        "dd": "Decimalgrader",
+                        "dms": "Grader, Minuter, Sekunder"
+                    },
+                    "coordinates": {
+                        "title": "Koordinater"
+                    }
+                }
+            },
+            "settings": {
+                "copyOnClick": "Kopiera Koordinater Vid Klick",
+                "updateToolboxOnHover": "Uppdatera Verktygslådan Vid Förflyttning"
+            },
+            "toasts": {
+                "infos": {
+                    "copyCoordinates": {
+                        "title": "Kopierad",
+                        "message": "Koordinaterna har kopierats till urklipp"
+                    }
+                },
+                "errors": {
+                    "copyCoordinates": {
+                        "title": "Error",
+                        "message": "Misslyckades att kopiera koordinater"
+                    }
+                }
+            }
+        },
+        "debugInfoTool": {
+            "title": "Debuginformation"
+        },
+        "directionTool": {
+            "title": "Toggla Riktning"
+        },
+        "drawTool": {
+            "title": "Rita",
+            "toolbox": {
+                "titles": {
+                    "draw": "Rita"
+                },
+                "groups": {
+                    "shapes": {
+                        "title": "Form",
+                        "circle": "Cirkel",
+                        "square": "Kvadrat",
+                        "rectangle": "Rektangel",
+                        "lineString": "Linje",
+                        "point": "Punkt",
+                        "polygon": "Polygon"
+                    },
+                    "intersectable": {
+                        "title": "Genomskärning",
+                        "true": "Ja",
+                        "false": "Nej"
+                    },
+                    "strokeWidth": {
+                        "title": "Linjebredd"
+                    },
+                    "strokeColor": {
+                        "title": "Linjefärg"
+                    },
+                    "fillColor": {
+                        "title": "Fyllnadsfärg"
+                    }
+                }
+            },
+            "layers": {
+                "defaultName": "Ritlager"
+            },
+            "toasts": {
+                "infos": {
+                    "drawInHiddenLayer": {
+                        "title": "Tips",
+                        "message": "Du ritar i ett dolt lager"
+                    },
+                    "missingIntersections": {
+                        "title": "Hoppsan",
+                        "message": "Inga korsande objekt hittades"
+                    }
+                }
+            }
+        },
+        "editTool": {
+            "title": "Redigera",
+            "toolbox": {
+                "titles": {
+                    "edit": "Redigera"
+                },
+                "groups": {
+                    "misc": {
+                        "title": "Övrigt",
+                        "delete": "Radera",
+                        "rotate": "Rotera",
+                        "geometryData": "Geometridata"
+                    },
+                    "shapes": {
+                        "title": "Former",
+                        "union": "Union",
+                        "intersect": "Överlappande",
+                        "exclude": "Exkluderande",
+                        "difference": "Differens"
+                    },
+                    "strokeColor": {
+                        "title": "Linjefärg"
+                    },
+                    "fillColor": {
+                        "title": "Fyllnadsfärg"
+                    }
+                }
+            },
+            "settings": {
+                "mouseOnlyToEditVectorShapes": "Endast Mus För Att Redigera Vektorformer"
+            },
+            "toasts": {
+                "infos": {
+                    "missingFeatures": {
+                        "title": "Hoppsan",
+                        "message": "Inga objekt har markerats"
+                    },
+                    "strictOneFeature": {
+                        "title": "Hoppsan",
+                        "message": "Endast ett objekt kan hanteras"
+                    },
+                    "strictTwoFeatures": {
+                        "title": "Hoppsan",
+                        "message": "Endast två överlappande objekt kan hanteras"
+                    }
+                },
+                "errors": {
+                    "operationFailed": {
+                        "title": "Error",
+                        "message": "Misslyckades att utföra transformationen"
+                    },
+                    "invalidValue": {
+                        "title": "Error",
+                        "message": "Endast siffror är tillåtna som inmatning"
+                    }
+                }
+            },
+            "dialogs": {
+                "confirms": {
+                    "deleteFeatures": {
+                        "title": "Radera Objekt",
+                        "message": "Radera markerade objekt",
+                        "confirmText": "Radera",
+                        "cancelText": "Avbryt"
+                    }
+                },
+                "prompts": {
+                    "rotateFeatures": {
+                        "title": "Rotera Objekt",
+                        "message": "Rotera Objekten med N-grader",
+                        "confirmText": "Rotera Objekt",
+                        "cancelText": "Avbryt"
+                    }
+                }
+            }
+        },
+        "exportPngTool": {
+            "title": "Exportera PNG",
+            "toasts": {
+                "errors": {
+                    "renderCanvas": {
+                        "title": "Error",
+                        "message": "Misslyckades att exportera Canvas"
+                    }
+                }
+            }
+        },
+        "fullscreenTool": {
+            "title": "Toggla Fullskärm",
+            "toasts": {
+                "errors": {
+                    "missingFullScreenSupport": {
+                        "title": "Error",
+                        "message": "Fullskärm stöds inte av webbläsaren"
+                    }
+                }
+            }
+        },
+        "graticuleTool": {
+            "title": "Visa Graticule"
+        },
+        "helpTool": {
+            "title": "Hjälp",
+            "dialogs": {
+                "confirms": {
+                    "openHelp": {
+                        "title": "Hjälpsidor",
+                        "message": "Webbläsare blockerar automatisk öppning av nya fönster, här är en knapp som du kan trycka på",
+                        "confirmText": "Öppna Hjälpsidor",
+                        "cancelText": "Avbryt"
+                    }
+                }
+            },
+            "toasts": {
+                "errors": {
+                    "blockedByBrowser": {
+                        "title": "Error",
+                        "message": "Åtgärden begränsades av webbläsarinställningar"
+                    }
+                }
+            }
+        },
+        "homeTool": {
+            "title": "Zooma Hem",
+            "contextItems": {
+                "setHome": "Sätt Hem"
+            },
+            "toasts": {
+                "infos": {
+                    "setHomeLocation": {
+                        "title": "Nytt Hem",
+                        "message": "Ny plats sattes som Hem"
+                    }
+                }
+            }
+        },
+        "importVectorLayerTool": {
+            "title": "Importera Vektorlager",
+            "toasts": {
+                "errors": {
+                    "unsupportedFormat": {
+                        "title": "Error",
+                        "message": "Lagerformatet stöds inte"
+                    },
+                    "importFailed": {
+                        "title": "Error",
+                        "message": "Misslyckades att importera lager"
+                    }
+                }
+            }
+        },
+        "infoTool": {
+            "title": "Information"
+        },
+        "layerTool": {
+            "title": "Lager",
+            "toolbox": {
+                "titles": {
+                    "mapLayers": "Kartlager",
+                    "featureLayers": "Objektlager"
+                },
+                "groups": {
+                    "createMapLayer": {
+                        "create": "Skapa Kartlager"
+                    },
+                    "createFeatureLayer": {
+                        "placeholder": "Namn", 
+                        "create": "Skapa Objektlager"
+                    }
+                }
+            },
+            "contextItems": {
+                "addMapLayer": "Skapa Kartlager",
+                "addFeatureLayer": "Skapa Objektlager"
+            },
+            "toasts": {
+                "infos": {
+                    "addFeatureLayer": {
+                        "title": "Nytt Lager",
+                        "message": "Ett nytt Objektlager skapades"
+                    }
+                },
+                "errors": {
+                    "addFeatureLayer": {
+                        "title": "Error",
+                        "message": "Misslyckades skapa nytt lager"
+                    },
+                    "missingProjection": {
+                        "title": "Error",
+                        "message": "Saknar projektionsdefinition"
+                    },
+                    "unsupportedFormat": {
+                        "title": "Error",
+                        "message": "Lagerformatet stöds inte"
+                    }
+                }
+            },
+            "dialogs": {
+                "prompts": {
+                    "renameLayer": {
+                        "title": "Redigera Namn",
+                        "message": "Redigera lagernamn",
+                        "confirmText": "Ändra Namn",
+                        "cancelText": "Avbryt"
+                    }
+                },
+                "confirms": {
+                    "deleteLayer": {
+                        "title": "Radera Lager",
+                        "message": "Vill du radera lager",
+                        "confirmText": "Radera",
+                        "cancelText": "Avbryt"
+                    }
+                }
+            }
+        },
+        "magnifyTool": {
+            "title": "Förstoringsglas",
+            "toasts": {
+                "errors": {
+                    "renderCanvas": {
+                        "title": "Error",
+                        "message": "Oväntat fel med förstoringsglaset"
+                    }
+                }
+            }
+        },
+        "measureTool": {
+            "title": "Mäta",
+            "toolbox": {
+                "titles": {
+                    "measure": "Mäta"
+                },
+                "groups": {
+                    "type": {
+                        "title": "Typ",
+                        "lineString": "Längd",
+                        "polygon": "Area"
+                    },
+                    "strokeColor": {
+                        "title": "Linjefärg"
+                    },
+                    "fillColor": {
+                        "title": "Fyllnadsfärg"
+                    }
+                }
+            },
+            "layers": {
+                "defaultName": "Mätlager"
+            },
+            "toasts": {
+                "infos": {
+                    "drawInHiddenLayer": {
+                        "title": "Tips",
+                        "message": "Du mäter i ett dolt lager"
+                    }
+                }
+            }
+        },
+        "myLocationTool": {
+            "title": "Min Position",
+            "dialogs": {
+                "confirms": {
+                    "exitFullscreen": {
+                        "title": "Avsluta Fullskärm",
+                        "message": "För att använda geolokalisering måste du avsluta fullskärm",
+                        "confirmText": "Avsluta Fullskärm",
+                        "cancelText": "Avbryt"
+                    }
+                }
+            },
+            "toasts": {
+                "infos": {
+                    "fetchLocation": {
+                        "title": "Söker",
+                        "message": "Försöker hitta din position..."
+                    }
+                },
+                "errors": {
+                    "exitFullscreen": {
+                        "title": "Error",
+                        "message": "Misslyckades att avsluta fullskärm"
+                    },
+                    "locationNotFound": {
+                        "title": "Error",
+                        "message": "Misslyckades att hitta din position"
+                    }
+                }
+            }
+        },
+        "overviewTool": {
+            "title": "Kartöversikt",
+            "toolbox": {
+                "titles": {
+                    "overview": "Kartöversikt"
+                }
+            }
+        },
+        "refreshTool": {
+            "title": "Uppdatera Sidan"
+        },
+        "resetNorthTool": {
+           "title": "Återställ Norr",
+           "contextItems": {
+            "rotate": "Rotera Karta"
+            },
+            "dialogs": {
+                "prompts": {
+                    "rotateMap": {
+                        "title": "Rotera Karta",
+                        "message": "Ange kartas rotation i grader",
+                        "confirmText": "Rotera Kartan",
+                        "cancelText": "Avbryt"
+                    }
+                }
+            },
+            "toasts": {
+                "errors": {
+                    "invalidValue": {
+                        "title": "Error",
+                        "message": "Endast siffror är tillåtna som inmatning"
+                    }
+                }
+            }
+        },
+        "scaleLineTool": {
+            "title": "Skallinje"
+        },
+        "scissorsTool": {
+            "title": "Polygonsax",
+            "toasts": {
+                "infos": {
+                    "missingIntersections": {
+                        "title": "Hoppsan",
+                        "message": "Inga korsande objekt hittades"
+                    }
+                }
+            }
+        },
+        "settingsTool": {
+            "title": "Inställningar",
+            "contextItems": {
+                "clearBrowserState": "Rensa Webbläsaredata"
+            },
+            "toasts": {
+                "infos": {
+                    "clearBrowserState": {
+                        "title": "Rensat",
+                        "message": "Alla lagrade objekt har återställts till standard"
+                    }
+                },
+                "successes": {
+                    "savedSettings": {
+                        "title": "Sparad",
+                        "message": "Alla inställningar sparades i webbläsaren"
+                    }
+                }
+            },
+            "dialogs": {
+                "confirms": {
+                    "clearBrowserState": {
+                        "title": "Rensa Webbläsaredata",
+                        "message": "Vill du rensa alla objekt till standardläget för Verktygsfältet?",
+                        "confirmText": "Rensa",
+                        "cancelText": "Avbryt"
+                    }
+                }
+            }
+        },
+        "splitViewTool": {
+            "title": "Delad Vy",
+            "toolbox": {
+                "titles": {
+                    "splitView": "Delad Vy"
+                },
+                "groups": {
+                    "leftSide": {
+                        "title": "Vänster Sida"
+                    },
+                    "rightSide": {
+                        "title": "Höger Sida"
+                    },
+                    "swapSides": {
+                        "swap": "Byt Sidor"
+                    }
+                },
+                "toasts": {
+                    "infos": {
+                        "strictOneLayer": {
+                            "title": "Tips",
+                            "message": "Du måste ha mer än ett lager"
+                        }
+                    },
+                    "errors": {
+                        "layerFailedToLoad": {
+                            "title": "Error",
+                            "message": "Lager kunde inte laddas"
+                        }
+                    }
+                }
+            }
+        },
+        "themeTool": {
+            "title": "Toggla Tema"
+        },
+        "toolboxTool": {
+            "title": "Toggla Verktygsfält"
+        },
+        "translationTool": {
+            "title": "Översätt",
+            "dialogs": {
+                "selects": {
+                    "changeLanguage": {
+                        "title": "Språkval",
+                        "message": "Nuvarande språk är",
+                        "confirmText": "Byt Språk",
+                        "cancelText": "Avbryt"
+                    }
+                }
+            }
+        },
+        "zoomboxTool": {
+            "title": "Zoomlåda",
+            "tooltips": {
+                "dragToZoom": "Dra För Att Zooma"
+            }
+        },
+        "zoomInTool": {
+            "title": "Zooma In"
+        },
+        "zoomOutTool": {
+            "title": "Zooma Ut"
+        }
+    }
+}

@@ -1,0 +1,4136 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Afghanistan",
+                "capitalName": "Kabul",
+                "countryCode": "AF",
+                "continentName": "Asia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "69.183333",
+                    "34.516666666666666"
+                ],
+                "type": "Point"
+            },
+            "id": "AF"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Aland Islands",
+                "capitalName": "Mariehamn",
+                "countryCode": "AX",
+                "continentName": "Europe"
+            },
+            "geometry": {
+                "coordinates": [
+                    "19.900000",
+                    "60.116667"
+                ],
+                "type": "Point"
+            },
+            "id": "AX"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Albania",
+                "capitalName": "Tirana",
+                "countryCode": "AL",
+                "continentName": "Europe"
+            },
+            "geometry": {
+                "coordinates": [
+                    "19.816667",
+                    "41.31666666666667"
+                ],
+                "type": "Point"
+            },
+            "id": "AL"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Algeria",
+                "capitalName": "Algiers",
+                "countryCode": "DZ",
+                "continentName": "Africa"
+            },
+            "geometry": {
+                "coordinates": [
+                    "3.050000",
+                    "36.75"
+                ],
+                "type": "Point"
+            },
+            "id": "DZ"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "American Samoa",
+                "capitalName": "Pago Pago",
+                "countryCode": "AS",
+                "continentName": "Australia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-170.700000",
+                    "-14.266666666666667"
+                ],
+                "type": "Point"
+            },
+            "id": "AS"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Andorra",
+                "capitalName": "Andorra la Vella",
+                "countryCode": "AD",
+                "continentName": "Europe"
+            },
+            "geometry": {
+                "coordinates": [
+                    "1.516667",
+                    "42.5"
+                ],
+                "type": "Point"
+            },
+            "id": "AD"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Angola",
+                "capitalName": "Luanda",
+                "countryCode": "AO",
+                "continentName": "Africa"
+            },
+            "geometry": {
+                "coordinates": [
+                    "13.216667",
+                    "-8.833333333333334"
+                ],
+                "type": "Point"
+            },
+            "id": "AO"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Anguilla",
+                "capitalName": "The Valley",
+                "countryCode": "AI",
+                "continentName": "North America"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-63.050000",
+                    "18.216666666666665"
+                ],
+                "type": "Point"
+            },
+            "id": "AI"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Antigua and Barbuda",
+                "capitalName": "Saint John's",
+                "countryCode": "AG",
+                "continentName": "North America"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-61.850000",
+                    "17.116666666666667"
+                ],
+                "type": "Point"
+            },
+            "id": "AG"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Argentina",
+                "capitalName": "Buenos Aires",
+                "countryCode": "AR",
+                "continentName": "South America"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-58.666667",
+                    "-34.583333333333336"
+                ],
+                "type": "Point"
+            },
+            "id": "AR"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Armenia",
+                "capitalName": "Yerevan",
+                "countryCode": "AM",
+                "continentName": "Europe"
+            },
+            "geometry": {
+                "coordinates": [
+                    "44.500000",
+                    "40.166666666666664"
+                ],
+                "type": "Point"
+            },
+            "id": "AM"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Aruba",
+                "capitalName": "Oranjestad",
+                "countryCode": "AW",
+                "continentName": "North America"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-70.033333",
+                    "12.516666666666667"
+                ],
+                "type": "Point"
+            },
+            "id": "AW"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Australia",
+                "capitalName": "Canberra",
+                "countryCode": "AU",
+                "continentName": "Australia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "149.133333",
+                    "-35.266666666666666"
+                ],
+                "type": "Point"
+            },
+            "id": "AU"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Austria",
+                "capitalName": "Vienna",
+                "countryCode": "AT",
+                "continentName": "Europe"
+            },
+            "geometry": {
+                "coordinates": [
+                    "16.366667",
+                    "48.2"
+                ],
+                "type": "Point"
+            },
+            "id": "AT"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Azerbaijan",
+                "capitalName": "Baku",
+                "countryCode": "AZ",
+                "continentName": "Europe"
+            },
+            "geometry": {
+                "coordinates": [
+                    "49.866667",
+                    "40.38333333333333"
+                ],
+                "type": "Point"
+            },
+            "id": "AZ"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Bahamas",
+                "capitalName": "Nassau",
+                "countryCode": "BS",
+                "continentName": "North America"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-77.350000",
+                    "25.083333333333332"
+                ],
+                "type": "Point"
+            },
+            "id": "BS"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Bahrain",
+                "capitalName": "Manama",
+                "countryCode": "BH",
+                "continentName": "Asia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "50.566667",
+                    "26.233333333333334"
+                ],
+                "type": "Point"
+            },
+            "id": "BH"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Bangladesh",
+                "capitalName": "Dhaka",
+                "countryCode": "BD",
+                "continentName": "Asia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "90.400000",
+                    "23.716666666666665"
+                ],
+                "type": "Point"
+            },
+            "id": "BD"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Barbados",
+                "capitalName": "Bridgetown",
+                "countryCode": "BB",
+                "continentName": "North America"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-59.616667",
+                    "13.1"
+                ],
+                "type": "Point"
+            },
+            "id": "BB"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Belarus",
+                "capitalName": "Minsk",
+                "countryCode": "BY",
+                "continentName": "Europe"
+            },
+            "geometry": {
+                "coordinates": [
+                    "27.566667",
+                    "53.9"
+                ],
+                "type": "Point"
+            },
+            "id": "BY"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Belgium",
+                "capitalName": "Brussels",
+                "countryCode": "BE",
+                "continentName": "Europe"
+            },
+            "geometry": {
+                "coordinates": [
+                    "4.333333",
+                    "50.833333333333336"
+                ],
+                "type": "Point"
+            },
+            "id": "BE"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Belize",
+                "capitalName": "Belmopan",
+                "countryCode": "BZ",
+                "continentName": "Central America"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-88.766667",
+                    "17.25"
+                ],
+                "type": "Point"
+            },
+            "id": "BZ"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Benin",
+                "capitalName": "Porto-Novo",
+                "countryCode": "BJ",
+                "continentName": "Africa"
+            },
+            "geometry": {
+                "coordinates": [
+                    "2.616667",
+                    "6.483333333333333"
+                ],
+                "type": "Point"
+            },
+            "id": "BJ"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Bermuda",
+                "capitalName": "Hamilton",
+                "countryCode": "BM",
+                "continentName": "North America"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-64.783333",
+                    "32.28333333333333"
+                ],
+                "type": "Point"
+            },
+            "id": "BM"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Bhutan",
+                "capitalName": "Thimphu",
+                "countryCode": "BT",
+                "continentName": "Asia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "89.633333",
+                    "27.466666666666665"
+                ],
+                "type": "Point"
+            },
+            "id": "BT"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Bolivia",
+                "capitalName": "La Paz",
+                "countryCode": "BO",
+                "continentName": "South America"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-68.150000",
+                    "-16.5"
+                ],
+                "type": "Point"
+            },
+            "id": "BO"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Bosnia and Herzegovina",
+                "capitalName": "Sarajevo",
+                "countryCode": "BA",
+                "continentName": "Europe"
+            },
+            "geometry": {
+                "coordinates": [
+                    "18.416667",
+                    "43.86666666666667"
+                ],
+                "type": "Point"
+            },
+            "id": "BA"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Botswana",
+                "capitalName": "Gaborone",
+                "countryCode": "BW",
+                "continentName": "Africa"
+            },
+            "geometry": {
+                "coordinates": [
+                    "25.900000",
+                    "-24.633333333333333"
+                ],
+                "type": "Point"
+            },
+            "id": "BW"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Brazil",
+                "capitalName": "Brasilia",
+                "countryCode": "BR",
+                "continentName": "South America"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-47.916667",
+                    "-15.783333333333333"
+                ],
+                "type": "Point"
+            },
+            "id": "BR"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "British Indian Ocean Territory",
+                "capitalName": "Diego Garcia",
+                "countryCode": "IO",
+                "continentName": "Africa"
+            },
+            "geometry": {
+                "coordinates": [
+                    "72.400000",
+                    "-7.3"
+                ],
+                "type": "Point"
+            },
+            "id": "IO"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "British Virgin Islands",
+                "capitalName": "Road Town",
+                "countryCode": "VG",
+                "continentName": "North America"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-64.616667",
+                    "18.416666666666668"
+                ],
+                "type": "Point"
+            },
+            "id": "VG"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Brunei Darussalam",
+                "capitalName": "Bandar Seri Begawan",
+                "countryCode": "BN",
+                "continentName": "Asia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "114.933333",
+                    "4.883333333333333"
+                ],
+                "type": "Point"
+            },
+            "id": "BN"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Bulgaria",
+                "capitalName": "Sofia",
+                "countryCode": "BG",
+                "continentName": "Europe"
+            },
+            "geometry": {
+                "coordinates": [
+                    "23.316667",
+                    "42.68333333333333"
+                ],
+                "type": "Point"
+            },
+            "id": "BG"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Burkina Faso",
+                "capitalName": "Ouagadougou",
+                "countryCode": "BF",
+                "continentName": "Africa"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-1.516667",
+                    "12.366666666666667"
+                ],
+                "type": "Point"
+            },
+            "id": "BF"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Burundi",
+                "capitalName": "Bujumbura",
+                "countryCode": "BI",
+                "continentName": "Africa"
+            },
+            "geometry": {
+                "coordinates": [
+                    "29.350000",
+                    "-3.3666666666666667"
+                ],
+                "type": "Point"
+            },
+            "id": "BI"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Cambodia",
+                "capitalName": "Phnom Penh",
+                "countryCode": "KH",
+                "continentName": "Asia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "104.916667",
+                    "11.55"
+                ],
+                "type": "Point"
+            },
+            "id": "KH"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Cameroon",
+                "capitalName": "Yaounde",
+                "countryCode": "CM",
+                "continentName": "Africa"
+            },
+            "geometry": {
+                "coordinates": [
+                    "11.516667",
+                    "3.8666666666666667"
+                ],
+                "type": "Point"
+            },
+            "id": "CM"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Canada",
+                "capitalName": "Ottawa",
+                "countryCode": "CA",
+                "continentName": "Central America"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-75.700000",
+                    "45.416666666666664"
+                ],
+                "type": "Point"
+            },
+            "id": "CA"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Cape Verde",
+                "capitalName": "Praia",
+                "countryCode": "CV",
+                "continentName": "Africa"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-23.516667",
+                    "14.916666666666666"
+                ],
+                "type": "Point"
+            },
+            "id": "CV"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Cayman Islands",
+                "capitalName": "George Town",
+                "countryCode": "KY",
+                "continentName": "North America"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-81.383333",
+                    "19.3"
+                ],
+                "type": "Point"
+            },
+            "id": "KY"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Central African Republic",
+                "capitalName": "Bangui",
+                "countryCode": "CF",
+                "continentName": "Africa"
+            },
+            "geometry": {
+                "coordinates": [
+                    "18.583333",
+                    "4.366666666666666"
+                ],
+                "type": "Point"
+            },
+            "id": "CF"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Chad",
+                "capitalName": "N'Djamena",
+                "countryCode": "TD",
+                "continentName": "Africa"
+            },
+            "geometry": {
+                "coordinates": [
+                    "15.033333",
+                    "12.1"
+                ],
+                "type": "Point"
+            },
+            "id": "TD"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Chile",
+                "capitalName": "Santiago",
+                "countryCode": "CL",
+                "continentName": "South America"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-70.666667",
+                    "-33.45"
+                ],
+                "type": "Point"
+            },
+            "id": "CL"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "China",
+                "capitalName": "Beijing",
+                "countryCode": "CN",
+                "continentName": "Asia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "116.383333",
+                    "39.916666666666664"
+                ],
+                "type": "Point"
+            },
+            "id": "CN"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Christmas Island",
+                "capitalName": "The Settlement",
+                "countryCode": "CX",
+                "continentName": "Australia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "105.716667",
+                    "-10.416666666666666"
+                ],
+                "type": "Point"
+            },
+            "id": "CX"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Cocos Islands",
+                "capitalName": "West Island",
+                "countryCode": "CC",
+                "continentName": "Australia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "96.833333",
+                    "-12.166666666666666"
+                ],
+                "type": "Point"
+            },
+            "id": "CC"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Colombia",
+                "capitalName": "Bogota",
+                "countryCode": "CO",
+                "continentName": "South America"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-74.083333",
+                    "4.6"
+                ],
+                "type": "Point"
+            },
+            "id": "CO"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Comoros",
+                "capitalName": "Moroni",
+                "countryCode": "KM",
+                "continentName": "Africa"
+            },
+            "geometry": {
+                "coordinates": [
+                    "43.233333",
+                    "-11.7"
+                ],
+                "type": "Point"
+            },
+            "id": "KM"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Cook Islands",
+                "capitalName": "Avarua",
+                "countryCode": "CK",
+                "continentName": "Australia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-159.766667",
+                    "-21.2"
+                ],
+                "type": "Point"
+            },
+            "id": "CK"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Costa Rica",
+                "capitalName": "San Jose",
+                "countryCode": "CR",
+                "continentName": "Central America"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-84.083333",
+                    "9.933333333333334"
+                ],
+                "type": "Point"
+            },
+            "id": "CR"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Cote d'Ivoire",
+                "capitalName": "Yamoussoukro",
+                "countryCode": "CI",
+                "continentName": "Africa"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-5.266667",
+                    "6.816666666666666"
+                ],
+                "type": "Point"
+            },
+            "id": "CI"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Croatia",
+                "capitalName": "Zagreb",
+                "countryCode": "HR",
+                "continentName": "Europe"
+            },
+            "geometry": {
+                "coordinates": [
+                    "16.000000",
+                    "45.8"
+                ],
+                "type": "Point"
+            },
+            "id": "HR"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Cuba",
+                "capitalName": "Havana",
+                "countryCode": "CU",
+                "continentName": "North America"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-82.350000",
+                    "23.116666666666667"
+                ],
+                "type": "Point"
+            },
+            "id": "CU"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "CuraÃ§ao",
+                "capitalName": "Willemstad",
+                "countryCode": "CW",
+                "continentName": "North America"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-68.916667",
+                    "12.1"
+                ],
+                "type": "Point"
+            },
+            "id": "CW"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Cyprus",
+                "capitalName": "Nicosia",
+                "countryCode": "CY",
+                "continentName": "Europe"
+            },
+            "geometry": {
+                "coordinates": [
+                    "33.366667",
+                    "35.166666666666664"
+                ],
+                "type": "Point"
+            },
+            "id": "CY"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Czech Republic",
+                "capitalName": "Prague",
+                "countryCode": "CZ",
+                "continentName": "Europe"
+            },
+            "geometry": {
+                "coordinates": [
+                    "14.466667",
+                    "50.083333333333336"
+                ],
+                "type": "Point"
+            },
+            "id": "CZ"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Democratic Republic of the Congo",
+                "capitalName": "Kinshasa",
+                "countryCode": "CD",
+                "continentName": "Africa"
+            },
+            "geometry": {
+                "coordinates": [
+                    "15.300000",
+                    "-4.316666666666666"
+                ],
+                "type": "Point"
+            },
+            "id": "CD"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Denmark",
+                "capitalName": "Copenhagen",
+                "countryCode": "DK",
+                "continentName": "Europe"
+            },
+            "geometry": {
+                "coordinates": [
+                    "12.583333",
+                    "55.666666666666664"
+                ],
+                "type": "Point"
+            },
+            "id": "DK"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Djibouti",
+                "capitalName": "Djibouti",
+                "countryCode": "DJ",
+                "continentName": "Africa"
+            },
+            "geometry": {
+                "coordinates": [
+                    "43.150000",
+                    "11.583333333333334"
+                ],
+                "type": "Point"
+            },
+            "id": "DJ"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Dominica",
+                "capitalName": "Roseau",
+                "countryCode": "DM",
+                "continentName": "North America"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-61.400000",
+                    "15.3"
+                ],
+                "type": "Point"
+            },
+            "id": "DM"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Dominican Republic",
+                "capitalName": "Santo Domingo",
+                "countryCode": "DO",
+                "continentName": "North America"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-69.900000",
+                    "18.466666666666665"
+                ],
+                "type": "Point"
+            },
+            "id": "DO"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Ecuador",
+                "capitalName": "Quito",
+                "countryCode": "EC",
+                "continentName": "South America"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-78.500000",
+                    "-0.21666666666666667"
+                ],
+                "type": "Point"
+            },
+            "id": "EC"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Egypt",
+                "capitalName": "Cairo",
+                "countryCode": "EG",
+                "continentName": "Africa"
+            },
+            "geometry": {
+                "coordinates": [
+                    "31.250000",
+                    "30.05"
+                ],
+                "type": "Point"
+            },
+            "id": "EG"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "El Salvador",
+                "capitalName": "San Salvador",
+                "countryCode": "SV",
+                "continentName": "Central America"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-89.200000",
+                    "13.7"
+                ],
+                "type": "Point"
+            },
+            "id": "SV"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Equatorial Guinea",
+                "capitalName": "Malabo",
+                "countryCode": "GQ",
+                "continentName": "Africa"
+            },
+            "geometry": {
+                "coordinates": [
+                    "8.783333",
+                    "3.75"
+                ],
+                "type": "Point"
+            },
+            "id": "GQ"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Eritrea",
+                "capitalName": "Asmara",
+                "countryCode": "ER",
+                "continentName": "Africa"
+            },
+            "geometry": {
+                "coordinates": [
+                    "38.933333",
+                    "15.333333333333334"
+                ],
+                "type": "Point"
+            },
+            "id": "ER"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Estonia",
+                "capitalName": "Tallinn",
+                "countryCode": "EE",
+                "continentName": "Europe"
+            },
+            "geometry": {
+                "coordinates": [
+                    "24.716667",
+                    "59.43333333333333"
+                ],
+                "type": "Point"
+            },
+            "id": "EE"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Ethiopia",
+                "capitalName": "Addis Ababa",
+                "countryCode": "ET",
+                "continentName": "Africa"
+            },
+            "geometry": {
+                "coordinates": [
+                    "38.700000",
+                    "9.033333333333333"
+                ],
+                "type": "Point"
+            },
+            "id": "ET"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Falkland Islands",
+                "capitalName": "Stanley",
+                "countryCode": "FK",
+                "continentName": "South America"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-57.850000",
+                    "-51.7"
+                ],
+                "type": "Point"
+            },
+            "id": "FK"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Faroe Islands",
+                "capitalName": "Torshavn",
+                "countryCode": "FO",
+                "continentName": "Europe"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-6.766667",
+                    "62"
+                ],
+                "type": "Point"
+            },
+            "id": "FO"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Federated States of Micronesia",
+                "capitalName": "Palikir",
+                "countryCode": "FM",
+                "continentName": "Australia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "158.150000",
+                    "6.916666666666667"
+                ],
+                "type": "Point"
+            },
+            "id": "FM"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Fiji",
+                "capitalName": "Suva",
+                "countryCode": "FJ",
+                "continentName": "Australia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "178.416667",
+                    "-18.133333333333333"
+                ],
+                "type": "Point"
+            },
+            "id": "FJ"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Finland",
+                "capitalName": "Helsinki",
+                "countryCode": "FI",
+                "continentName": "Europe"
+            },
+            "geometry": {
+                "coordinates": [
+                    "24.933333",
+                    "60.166666666666664"
+                ],
+                "type": "Point"
+            },
+            "id": "FI"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "France",
+                "capitalName": "Paris",
+                "countryCode": "FR",
+                "continentName": "Europe"
+            },
+            "geometry": {
+                "coordinates": [
+                    "2.333333",
+                    "48.86666666666667"
+                ],
+                "type": "Point"
+            },
+            "id": "FR"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "French Polynesia",
+                "capitalName": "Papeete",
+                "countryCode": "PF",
+                "continentName": "Australia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-149.566667",
+                    "-17.533333333333335"
+                ],
+                "type": "Point"
+            },
+            "id": "PF"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "French Southern and Antarctic Lands",
+                "capitalName": "Port-aux-FranÃ§ais",
+                "countryCode": "TF",
+                "continentName": "Antarctica"
+            },
+            "geometry": {
+                "coordinates": [
+                    "70.216667",
+                    "-49.35"
+                ],
+                "type": "Point"
+            },
+            "id": "TF"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Gabon",
+                "capitalName": "Libreville",
+                "countryCode": "GA",
+                "continentName": "Africa"
+            },
+            "geometry": {
+                "coordinates": [
+                    "9.450000",
+                    "0.38333333333333336"
+                ],
+                "type": "Point"
+            },
+            "id": "GA"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Georgia",
+                "capitalName": "Tbilisi",
+                "countryCode": "GE",
+                "continentName": "Europe"
+            },
+            "geometry": {
+                "coordinates": [
+                    "44.833333",
+                    "41.68333333333333"
+                ],
+                "type": "Point"
+            },
+            "id": "GE"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Germany",
+                "capitalName": "Berlin",
+                "countryCode": "DE",
+                "continentName": "Europe"
+            },
+            "geometry": {
+                "coordinates": [
+                    "13.400000",
+                    "52.516666666666666"
+                ],
+                "type": "Point"
+            },
+            "id": "DE"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Ghana",
+                "capitalName": "Accra",
+                "countryCode": "GH",
+                "continentName": "Africa"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-0.216667",
+                    "5.55"
+                ],
+                "type": "Point"
+            },
+            "id": "GH"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Gibraltar",
+                "capitalName": "Gibraltar",
+                "countryCode": "GI",
+                "continentName": "Europe"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-5.350000",
+                    "36.13333333333333"
+                ],
+                "type": "Point"
+            },
+            "id": "GI"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Greece",
+                "capitalName": "Athens",
+                "countryCode": "GR",
+                "continentName": "Europe"
+            },
+            "geometry": {
+                "coordinates": [
+                    "23.733333",
+                    "37.983333333333334"
+                ],
+                "type": "Point"
+            },
+            "id": "GR"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Greenland",
+                "capitalName": "Nuuk",
+                "countryCode": "GL",
+                "continentName": "Central America"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-51.750000",
+                    "64.18333333333334"
+                ],
+                "type": "Point"
+            },
+            "id": "GL"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Grenada",
+                "capitalName": "Saint George's",
+                "countryCode": "GD",
+                "continentName": "North America"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-61.750000",
+                    "12.05"
+                ],
+                "type": "Point"
+            },
+            "id": "GD"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Guam",
+                "capitalName": "Hagatna",
+                "countryCode": "GU",
+                "continentName": "Australia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "144.733333",
+                    "13.466666666666667"
+                ],
+                "type": "Point"
+            },
+            "id": "GU"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Guatemala",
+                "capitalName": "Guatemala City",
+                "countryCode": "GT",
+                "continentName": "Central America"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-90.516667",
+                    "14.616666666666667"
+                ],
+                "type": "Point"
+            },
+            "id": "GT"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Guernsey",
+                "capitalName": "Saint Peter Port",
+                "countryCode": "GG",
+                "continentName": "Europe"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-2.533333",
+                    "49.45"
+                ],
+                "type": "Point"
+            },
+            "id": "GG"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Guinea",
+                "capitalName": "Conakry",
+                "countryCode": "GN",
+                "continentName": "Africa"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-13.700000",
+                    "9.5"
+                ],
+                "type": "Point"
+            },
+            "id": "GN"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Guinea-Bissau",
+                "capitalName": "Bissau",
+                "countryCode": "GW",
+                "continentName": "Africa"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-15.583333",
+                    "11.85"
+                ],
+                "type": "Point"
+            },
+            "id": "GW"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Guyana",
+                "capitalName": "Georgetown",
+                "countryCode": "GY",
+                "continentName": "South America"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-58.150000",
+                    "6.8"
+                ],
+                "type": "Point"
+            },
+            "id": "GY"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Haiti",
+                "capitalName": "Port-au-Prince",
+                "countryCode": "HT",
+                "continentName": "North America"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-72.333333",
+                    "18.533333333333335"
+                ],
+                "type": "Point"
+            },
+            "id": "HT"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Honduras",
+                "capitalName": "Tegucigalpa",
+                "countryCode": "HN",
+                "continentName": "Central America"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-87.216667",
+                    "14.1"
+                ],
+                "type": "Point"
+            },
+            "id": "HN"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Hong Kong",
+                "capitalName": "N/A",
+                "countryCode": "HK",
+                "continentName": "Asia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "114.1694",
+                    "22.3193"
+                ],
+                "type": "Point"
+            },
+            "id": "HK"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Hungary",
+                "capitalName": "Budapest",
+                "countryCode": "HU",
+                "continentName": "Europe"
+            },
+            "geometry": {
+                "coordinates": [
+                    "19.083333",
+                    "47.5"
+                ],
+                "type": "Point"
+            },
+            "id": "HU"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Iceland",
+                "capitalName": "Reykjavik",
+                "countryCode": "IS",
+                "continentName": "Europe"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-21.950000",
+                    "64.15"
+                ],
+                "type": "Point"
+            },
+            "id": "IS"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "India",
+                "capitalName": "New Delhi",
+                "countryCode": "IN",
+                "continentName": "Asia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "77.200000",
+                    "28.6"
+                ],
+                "type": "Point"
+            },
+            "id": "IN"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Indonesia",
+                "capitalName": "Jakarta",
+                "countryCode": "ID",
+                "continentName": "Asia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "106.816667",
+                    "-6.166666666666667"
+                ],
+                "type": "Point"
+            },
+            "id": "ID"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Iran",
+                "capitalName": "Tehran",
+                "countryCode": "IR",
+                "continentName": "Asia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "51.416667",
+                    "35.7"
+                ],
+                "type": "Point"
+            },
+            "id": "IR"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Iraq",
+                "capitalName": "Baghdad",
+                "countryCode": "IQ",
+                "continentName": "Asia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "44.400000",
+                    "33.333333333333336"
+                ],
+                "type": "Point"
+            },
+            "id": "IQ"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Ireland",
+                "capitalName": "Dublin",
+                "countryCode": "IE",
+                "continentName": "Europe"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-6.233333",
+                    "53.31666666666667"
+                ],
+                "type": "Point"
+            },
+            "id": "IE"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Isle of Man",
+                "capitalName": "Douglas",
+                "countryCode": "IM",
+                "continentName": "Europe"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-4.483333",
+                    "54.15"
+                ],
+                "type": "Point"
+            },
+            "id": "IM"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Israel",
+                "capitalName": "Jerusalem",
+                "countryCode": "IL",
+                "continentName": "Asia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "35.233333",
+                    "31.766666666666666"
+                ],
+                "type": "Point"
+            },
+            "id": "IL"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Italy",
+                "capitalName": "Rome",
+                "countryCode": "IT",
+                "continentName": "Europe"
+            },
+            "geometry": {
+                "coordinates": [
+                    "12.483333",
+                    "41.9"
+                ],
+                "type": "Point"
+            },
+            "id": "IT"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Jamaica",
+                "capitalName": "Kingston",
+                "countryCode": "JM",
+                "continentName": "North America"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-76.800000",
+                    "18"
+                ],
+                "type": "Point"
+            },
+            "id": "JM"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Japan",
+                "capitalName": "Tokyo",
+                "countryCode": "JP",
+                "continentName": "Asia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "139.750000",
+                    "35.68333333333333"
+                ],
+                "type": "Point"
+            },
+            "id": "JP"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Jersey",
+                "capitalName": "Saint Helier",
+                "countryCode": "JE",
+                "continentName": "Europe"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-2.100000",
+                    "49.18333333333333"
+                ],
+                "type": "Point"
+            },
+            "id": "JE"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Jordan",
+                "capitalName": "Amman",
+                "countryCode": "JO",
+                "continentName": "Asia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "35.933333",
+                    "31.95"
+                ],
+                "type": "Point"
+            },
+            "id": "JO"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Kazakhstan",
+                "capitalName": "Astana",
+                "countryCode": "KZ",
+                "continentName": "Asia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "71.416667",
+                    "51.166666666666664"
+                ],
+                "type": "Point"
+            },
+            "id": "KZ"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Kenya",
+                "capitalName": "Nairobi",
+                "countryCode": "KE",
+                "continentName": "Africa"
+            },
+            "geometry": {
+                "coordinates": [
+                    "36.816667",
+                    "-1.2833333333333332"
+                ],
+                "type": "Point"
+            },
+            "id": "KE"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Kiribati",
+                "capitalName": "Tarawa",
+                "countryCode": "KI",
+                "continentName": "Australia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "169.533333",
+                    "-0.8833333333333333"
+                ],
+                "type": "Point"
+            },
+            "id": "KI"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Kosovo",
+                "capitalName": "Pristina",
+                "countryCode": "KO",
+                "continentName": "Europe"
+            },
+            "geometry": {
+                "coordinates": [
+                    "21.166667",
+                    "42.666666666666664"
+                ],
+                "type": "Point"
+            },
+            "id": "KO"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Kuwait",
+                "capitalName": "Kuwait City",
+                "countryCode": "KW",
+                "continentName": "Asia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "47.966667",
+                    "29.366666666666667"
+                ],
+                "type": "Point"
+            },
+            "id": "KW"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Kyrgyzstan",
+                "capitalName": "Bishkek",
+                "countryCode": "KG",
+                "continentName": "Asia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "74.600000",
+                    "42.86666666666667"
+                ],
+                "type": "Point"
+            },
+            "id": "KG"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Laos",
+                "capitalName": "Vientiane",
+                "countryCode": "LA",
+                "continentName": "Asia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "102.600000",
+                    "17.966666666666665"
+                ],
+                "type": "Point"
+            },
+            "id": "LA"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Latvia",
+                "capitalName": "Riga",
+                "countryCode": "LV",
+                "continentName": "Europe"
+            },
+            "geometry": {
+                "coordinates": [
+                    "24.100000",
+                    "56.95"
+                ],
+                "type": "Point"
+            },
+            "id": "LV"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Lebanon",
+                "capitalName": "Beirut",
+                "countryCode": "LB",
+                "continentName": "Asia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "35.500000",
+                    "33.86666666666667"
+                ],
+                "type": "Point"
+            },
+            "id": "LB"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Lesotho",
+                "capitalName": "Maseru",
+                "countryCode": "LS",
+                "continentName": "Africa"
+            },
+            "geometry": {
+                "coordinates": [
+                    "27.483333",
+                    "-29.316666666666666"
+                ],
+                "type": "Point"
+            },
+            "id": "LS"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Liberia",
+                "capitalName": "Monrovia",
+                "countryCode": "LR",
+                "continentName": "Africa"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-10.800000",
+                    "6.3"
+                ],
+                "type": "Point"
+            },
+            "id": "LR"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Libya",
+                "capitalName": "Tripoli",
+                "countryCode": "LY",
+                "continentName": "Africa"
+            },
+            "geometry": {
+                "coordinates": [
+                    "13.166667",
+                    "32.88333333333333"
+                ],
+                "type": "Point"
+            },
+            "id": "LY"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Liechtenstein",
+                "capitalName": "Vaduz",
+                "countryCode": "LI",
+                "continentName": "Europe"
+            },
+            "geometry": {
+                "coordinates": [
+                    "9.516667",
+                    "47.13333333333333"
+                ],
+                "type": "Point"
+            },
+            "id": "LI"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Lithuania",
+                "capitalName": "Vilnius",
+                "countryCode": "LT",
+                "continentName": "Europe"
+            },
+            "geometry": {
+                "coordinates": [
+                    "25.316667",
+                    "54.68333333333333"
+                ],
+                "type": "Point"
+            },
+            "id": "LT"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Luxembourg",
+                "capitalName": "Luxembourg",
+                "countryCode": "LU",
+                "continentName": "Europe"
+            },
+            "geometry": {
+                "coordinates": [
+                    "6.116667",
+                    "49.6"
+                ],
+                "type": "Point"
+            },
+            "id": "LU"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Macau",
+                "capitalName": "Macau",
+                "countryCode": "MO",
+                "continentName": "Asia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "113.5439",
+                    "22.1987"
+                ],
+                "type": "Point"
+            },
+            "id": "MO"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Macedonia",
+                "capitalName": "Skopje",
+                "countryCode": "MK",
+                "continentName": "Europe"
+            },
+            "geometry": {
+                "coordinates": [
+                    "21.433333",
+                    "42"
+                ],
+                "type": "Point"
+            },
+            "id": "MK"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Madagascar",
+                "capitalName": "Antananarivo",
+                "countryCode": "MG",
+                "continentName": "Africa"
+            },
+            "geometry": {
+                "coordinates": [
+                    "47.516667",
+                    "-18.916666666666668"
+                ],
+                "type": "Point"
+            },
+            "id": "MG"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Malawi",
+                "capitalName": "Lilongwe",
+                "countryCode": "MW",
+                "continentName": "Africa"
+            },
+            "geometry": {
+                "coordinates": [
+                    "33.783333",
+                    "-13.966666666666667"
+                ],
+                "type": "Point"
+            },
+            "id": "MW"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Malaysia",
+                "capitalName": "Kuala Lumpur",
+                "countryCode": "MY",
+                "continentName": "Asia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "101.700000",
+                    "3.1666666666666665"
+                ],
+                "type": "Point"
+            },
+            "id": "MY"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Maldives",
+                "capitalName": "Male",
+                "countryCode": "MV",
+                "continentName": "Asia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "73.500000",
+                    "4.166666666666667"
+                ],
+                "type": "Point"
+            },
+            "id": "MV"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Mali",
+                "capitalName": "Bamako",
+                "countryCode": "ML",
+                "continentName": "Africa"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-8.000000",
+                    "12.65"
+                ],
+                "type": "Point"
+            },
+            "id": "ML"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Malta",
+                "capitalName": "Valletta",
+                "countryCode": "MT",
+                "continentName": "Europe"
+            },
+            "geometry": {
+                "coordinates": [
+                    "14.500000",
+                    "35.88333333333333"
+                ],
+                "type": "Point"
+            },
+            "id": "MT"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Marshall Islands",
+                "capitalName": "Majuro",
+                "countryCode": "MH",
+                "continentName": "Australia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "171.383333",
+                    "7.1"
+                ],
+                "type": "Point"
+            },
+            "id": "MH"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Mauritania",
+                "capitalName": "Nouakchott",
+                "countryCode": "MR",
+                "continentName": "Africa"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-15.966667",
+                    "18.066666666666666"
+                ],
+                "type": "Point"
+            },
+            "id": "MR"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Mauritius",
+                "capitalName": "Port Louis",
+                "countryCode": "MU",
+                "continentName": "Africa"
+            },
+            "geometry": {
+                "coordinates": [
+                    "57.483333",
+                    "-20.15"
+                ],
+                "type": "Point"
+            },
+            "id": "MU"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Mexico",
+                "capitalName": "Mexico City",
+                "countryCode": "MX",
+                "continentName": "Central America"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-99.133333",
+                    "19.433333333333334"
+                ],
+                "type": "Point"
+            },
+            "id": "MX"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Moldova",
+                "capitalName": "Chisinau",
+                "countryCode": "MD",
+                "continentName": "Europe"
+            },
+            "geometry": {
+                "coordinates": [
+                    "28.850000",
+                    "47"
+                ],
+                "type": "Point"
+            },
+            "id": "MD"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Monaco",
+                "capitalName": "Monaco",
+                "countryCode": "MC",
+                "continentName": "Europe"
+            },
+            "geometry": {
+                "coordinates": [
+                    "7.416667",
+                    "43.733333333333334"
+                ],
+                "type": "Point"
+            },
+            "id": "MC"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Mongolia",
+                "capitalName": "Ulaanbaatar",
+                "countryCode": "MN",
+                "continentName": "Asia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "106.916667",
+                    "47.916666666666664"
+                ],
+                "type": "Point"
+            },
+            "id": "MN"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Montenegro",
+                "capitalName": "Podgorica",
+                "countryCode": "ME",
+                "continentName": "Europe"
+            },
+            "geometry": {
+                "coordinates": [
+                    "19.266667",
+                    "42.43333333333333"
+                ],
+                "type": "Point"
+            },
+            "id": "ME"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Montserrat",
+                "capitalName": "Plymouth",
+                "countryCode": "MS",
+                "continentName": "North America"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-62.216667",
+                    "16.7"
+                ],
+                "type": "Point"
+            },
+            "id": "MS"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Morocco",
+                "capitalName": "Rabat",
+                "countryCode": "MA",
+                "continentName": "Africa"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-6.816667",
+                    "34.016666666666666"
+                ],
+                "type": "Point"
+            },
+            "id": "MA"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Mozambique",
+                "capitalName": "Maputo",
+                "countryCode": "MZ",
+                "continentName": "Africa"
+            },
+            "geometry": {
+                "coordinates": [
+                    "32.583333",
+                    "-25.95"
+                ],
+                "type": "Point"
+            },
+            "id": "MZ"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Myanmar",
+                "capitalName": "Rangoon",
+                "countryCode": "MM",
+                "continentName": "Asia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "96.150000",
+                    "16.8"
+                ],
+                "type": "Point"
+            },
+            "id": "MM"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Namibia",
+                "capitalName": "Windhoek",
+                "countryCode": "NA",
+                "continentName": "Africa"
+            },
+            "geometry": {
+                "coordinates": [
+                    "17.083333",
+                    "-22.566666666666666"
+                ],
+                "type": "Point"
+            },
+            "id": "NA"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Nauru",
+                "capitalName": "Yaren",
+                "countryCode": "NR",
+                "continentName": "Australia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "166.920867",
+                    "-0.5477"
+                ],
+                "type": "Point"
+            },
+            "id": "NR"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Nepal",
+                "capitalName": "Kathmandu",
+                "countryCode": "NP",
+                "continentName": "Asia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "85.316667",
+                    "27.716666666666665"
+                ],
+                "type": "Point"
+            },
+            "id": "NP"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Netherlands",
+                "capitalName": "Amsterdam",
+                "countryCode": "NL",
+                "continentName": "Europe"
+            },
+            "geometry": {
+                "coordinates": [
+                    "4.916667",
+                    "52.35"
+                ],
+                "type": "Point"
+            },
+            "id": "NL"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "New Caledonia",
+                "capitalName": "Noumea",
+                "countryCode": "NC",
+                "continentName": "Australia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "166.450000",
+                    "-22.266666666666666"
+                ],
+                "type": "Point"
+            },
+            "id": "NC"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "New Zealand",
+                "capitalName": "Wellington",
+                "countryCode": "NZ",
+                "continentName": "Australia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "174.783333",
+                    "-41.3"
+                ],
+                "type": "Point"
+            },
+            "id": "NZ"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Nicaragua",
+                "capitalName": "Managua",
+                "countryCode": "NI",
+                "continentName": "Central America"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-86.250000",
+                    "12.133333333333333"
+                ],
+                "type": "Point"
+            },
+            "id": "NI"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Niger",
+                "capitalName": "Niamey",
+                "countryCode": "NE",
+                "continentName": "Africa"
+            },
+            "geometry": {
+                "coordinates": [
+                    "2.116667",
+                    "13.516666666666667"
+                ],
+                "type": "Point"
+            },
+            "id": "NE"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Nigeria",
+                "capitalName": "Abuja",
+                "countryCode": "NG",
+                "continentName": "Africa"
+            },
+            "geometry": {
+                "coordinates": [
+                    "7.533333",
+                    "9.083333333333334"
+                ],
+                "type": "Point"
+            },
+            "id": "NG"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Niue",
+                "capitalName": "Alofi",
+                "countryCode": "NU",
+                "continentName": "Australia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-169.916667",
+                    "-19.016666666666666"
+                ],
+                "type": "Point"
+            },
+            "id": "NU"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Norfolk Island",
+                "capitalName": "Kingston",
+                "countryCode": "NF",
+                "continentName": "Australia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "167.966667",
+                    "-29.05"
+                ],
+                "type": "Point"
+            },
+            "id": "NF"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "North Korea",
+                "capitalName": "Pyongyang",
+                "countryCode": "KP",
+                "continentName": "Asia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "125.750000",
+                    "39.016666666666666"
+                ],
+                "type": "Point"
+            },
+            "id": "KP"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Northern Cyprus",
+                "capitalName": "North Nicosia",
+                "countryCode": "NULL",
+                "continentName": "Europe"
+            },
+            "geometry": {
+                "coordinates": [
+                    "33.366667",
+                    "35.183333"
+                ],
+                "type": "Point"
+            },
+            "id": "NULL"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Northern Mariana Islands",
+                "capitalName": "Saipan",
+                "countryCode": "MP",
+                "continentName": "Australia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "145.750000",
+                    "15.2"
+                ],
+                "type": "Point"
+            },
+            "id": "MP"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Norway",
+                "capitalName": "Oslo",
+                "countryCode": "NO",
+                "continentName": "Europe"
+            },
+            "geometry": {
+                "coordinates": [
+                    "10.750000",
+                    "59.916666666666664"
+                ],
+                "type": "Point"
+            },
+            "id": "NO"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Oman",
+                "capitalName": "Muscat",
+                "countryCode": "OM",
+                "continentName": "Asia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "58.583333",
+                    "23.616666666666667"
+                ],
+                "type": "Point"
+            },
+            "id": "OM"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Pakistan",
+                "capitalName": "Islamabad",
+                "countryCode": "PK",
+                "continentName": "Asia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "73.050000",
+                    "33.68333333333333"
+                ],
+                "type": "Point"
+            },
+            "id": "PK"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Palau",
+                "capitalName": "Melekeok",
+                "countryCode": "PW",
+                "continentName": "Australia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "134.633333",
+                    "7.483333333333333"
+                ],
+                "type": "Point"
+            },
+            "id": "PW"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Palestine",
+                "capitalName": "Jerusalem",
+                "countryCode": "PS",
+                "continentName": "Asia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "35.233333",
+                    "31.766666666666666"
+                ],
+                "type": "Point"
+            },
+            "id": "PS"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Panama",
+                "capitalName": "Panama City",
+                "countryCode": "PA",
+                "continentName": "Central America"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-79.533333",
+                    "8.966666666666667"
+                ],
+                "type": "Point"
+            },
+            "id": "PA"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Papua New Guinea",
+                "capitalName": "Port Moresby",
+                "countryCode": "PG",
+                "continentName": "Australia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "147.183333",
+                    "-9.45"
+                ],
+                "type": "Point"
+            },
+            "id": "PG"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Paraguay",
+                "capitalName": "Asuncion",
+                "countryCode": "PY",
+                "continentName": "South America"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-57.666667",
+                    "-25.266666666666666"
+                ],
+                "type": "Point"
+            },
+            "id": "PY"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Peru",
+                "capitalName": "Lima",
+                "countryCode": "PE",
+                "continentName": "South America"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-77.050000",
+                    "-12.05"
+                ],
+                "type": "Point"
+            },
+            "id": "PE"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Philippines",
+                "capitalName": "Manila",
+                "countryCode": "PH",
+                "continentName": "Asia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "120.966667",
+                    "14.6"
+                ],
+                "type": "Point"
+            },
+            "id": "PH"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Pitcairn Islands",
+                "capitalName": "Adamstown",
+                "countryCode": "PN",
+                "continentName": "Australia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-130.083333",
+                    "-25.066666666666666"
+                ],
+                "type": "Point"
+            },
+            "id": "PN"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Poland",
+                "capitalName": "Warsaw",
+                "countryCode": "PL",
+                "continentName": "Europe"
+            },
+            "geometry": {
+                "coordinates": [
+                    "21.000000",
+                    "52.25"
+                ],
+                "type": "Point"
+            },
+            "id": "PL"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Portugal",
+                "capitalName": "Lisbon",
+                "countryCode": "PT",
+                "continentName": "Europe"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-9.133333",
+                    "38.71666666666667"
+                ],
+                "type": "Point"
+            },
+            "id": "PT"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Puerto Rico",
+                "capitalName": "San Juan",
+                "countryCode": "PR",
+                "continentName": "North America"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-66.116667",
+                    "18.466666666666665"
+                ],
+                "type": "Point"
+            },
+            "id": "PR"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Qatar",
+                "capitalName": "Doha",
+                "countryCode": "QA",
+                "continentName": "Asia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "51.533333",
+                    "25.283333333333335"
+                ],
+                "type": "Point"
+            },
+            "id": "QA"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Republic of Congo",
+                "capitalName": "Brazzaville",
+                "countryCode": "CG",
+                "continentName": "Africa"
+            },
+            "geometry": {
+                "coordinates": [
+                    "15.283333",
+                    "-4.25"
+                ],
+                "type": "Point"
+            },
+            "id": "CG"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Romania",
+                "capitalName": "Bucharest",
+                "countryCode": "RO",
+                "continentName": "Europe"
+            },
+            "geometry": {
+                "coordinates": [
+                    "26.100000",
+                    "44.43333333333333"
+                ],
+                "type": "Point"
+            },
+            "id": "RO"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Russia",
+                "capitalName": "Moscow",
+                "countryCode": "RU",
+                "continentName": "Europe"
+            },
+            "geometry": {
+                "coordinates": [
+                    "37.600000",
+                    "55.75"
+                ],
+                "type": "Point"
+            },
+            "id": "RU"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Rwanda",
+                "capitalName": "Kigali",
+                "countryCode": "RW",
+                "continentName": "Africa"
+            },
+            "geometry": {
+                "coordinates": [
+                    "30.050000",
+                    "-1.95"
+                ],
+                "type": "Point"
+            },
+            "id": "RW"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Saint Barthelemy",
+                "capitalName": "Gustavia",
+                "countryCode": "BL",
+                "continentName": "North America"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-62.850000",
+                    "17.883333333333333"
+                ],
+                "type": "Point"
+            },
+            "id": "BL"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Saint Helena",
+                "capitalName": "Jamestown",
+                "countryCode": "SH",
+                "continentName": "Africa"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-5.716667",
+                    "-15.933333333333334"
+                ],
+                "type": "Point"
+            },
+            "id": "SH"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Saint Kitts and Nevis",
+                "capitalName": "Basseterre",
+                "countryCode": "KN",
+                "continentName": "North America"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-62.716667",
+                    "17.3"
+                ],
+                "type": "Point"
+            },
+            "id": "KN"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Saint Lucia",
+                "capitalName": "Castries",
+                "countryCode": "LC",
+                "continentName": "North America"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-61.000000",
+                    "14"
+                ],
+                "type": "Point"
+            },
+            "id": "LC"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Saint Martin",
+                "capitalName": "Marigot",
+                "countryCode": "MF",
+                "continentName": "North America"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-63.082200",
+                    "18.0731"
+                ],
+                "type": "Point"
+            },
+            "id": "MF"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Saint Pierre and Miquelon",
+                "capitalName": "Saint-Pierre",
+                "countryCode": "PM",
+                "continentName": "Central America"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-56.183333",
+                    "46.766666666666666"
+                ],
+                "type": "Point"
+            },
+            "id": "PM"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Saint Vincent and the Grenadines",
+                "capitalName": "Kingstown",
+                "countryCode": "VC",
+                "continentName": "Central America"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-61.216667",
+                    "13.133333333333333"
+                ],
+                "type": "Point"
+            },
+            "id": "VC"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Samoa",
+                "capitalName": "Apia",
+                "countryCode": "WS",
+                "continentName": "Australia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-171.766667",
+                    "-13.816666666666666"
+                ],
+                "type": "Point"
+            },
+            "id": "WS"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "San Marino",
+                "capitalName": "San Marino",
+                "countryCode": "SM",
+                "continentName": "Europe"
+            },
+            "geometry": {
+                "coordinates": [
+                    "12.416667",
+                    "43.93333333333333"
+                ],
+                "type": "Point"
+            },
+            "id": "SM"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Sao Tome and Principe",
+                "capitalName": "Sao Tome",
+                "countryCode": "ST",
+                "continentName": "Africa"
+            },
+            "geometry": {
+                "coordinates": [
+                    "6.733333",
+                    "0.3333333333333333"
+                ],
+                "type": "Point"
+            },
+            "id": "ST"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Saudi Arabia",
+                "capitalName": "Riyadh",
+                "countryCode": "SA",
+                "continentName": "Asia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "46.700000",
+                    "24.65"
+                ],
+                "type": "Point"
+            },
+            "id": "SA"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Senegal",
+                "capitalName": "Dakar",
+                "countryCode": "SN",
+                "continentName": "Africa"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-17.633333",
+                    "14.733333333333333"
+                ],
+                "type": "Point"
+            },
+            "id": "SN"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Serbia",
+                "capitalName": "Belgrade",
+                "countryCode": "RS",
+                "continentName": "Europe"
+            },
+            "geometry": {
+                "coordinates": [
+                    "20.500000",
+                    "44.833333333333336"
+                ],
+                "type": "Point"
+            },
+            "id": "RS"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Seychelles",
+                "capitalName": "Victoria",
+                "countryCode": "SC",
+                "continentName": "Africa"
+            },
+            "geometry": {
+                "coordinates": [
+                    "55.450000",
+                    "-4.616666666666667"
+                ],
+                "type": "Point"
+            },
+            "id": "SC"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Sierra Leone",
+                "capitalName": "Freetown",
+                "countryCode": "SL",
+                "continentName": "Africa"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-13.233333",
+                    "8.483333333333333"
+                ],
+                "type": "Point"
+            },
+            "id": "SL"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Singapore",
+                "capitalName": "Singapore",
+                "countryCode": "SG",
+                "continentName": "Asia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "103.850000",
+                    "1.2833333333333332"
+                ],
+                "type": "Point"
+            },
+            "id": "SG"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Sint Maarten",
+                "capitalName": "Philipsburg",
+                "countryCode": "SX",
+                "continentName": "North America"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-63.033333",
+                    "18.016666666666666"
+                ],
+                "type": "Point"
+            },
+            "id": "SX"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Slovakia",
+                "capitalName": "Bratislava",
+                "countryCode": "SK",
+                "continentName": "Europe"
+            },
+            "geometry": {
+                "coordinates": [
+                    "17.116667",
+                    "48.15"
+                ],
+                "type": "Point"
+            },
+            "id": "SK"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Slovenia",
+                "capitalName": "Ljubljana",
+                "countryCode": "SI",
+                "continentName": "Europe"
+            },
+            "geometry": {
+                "coordinates": [
+                    "14.516667",
+                    "46.05"
+                ],
+                "type": "Point"
+            },
+            "id": "SI"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Solomon Islands",
+                "capitalName": "Honiara",
+                "countryCode": "SB",
+                "continentName": "Australia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "159.950000",
+                    "-9.433333333333334"
+                ],
+                "type": "Point"
+            },
+            "id": "SB"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Somalia",
+                "capitalName": "Mogadishu",
+                "countryCode": "SO",
+                "continentName": "Africa"
+            },
+            "geometry": {
+                "coordinates": [
+                    "45.333333",
+                    "2.066666666666667"
+                ],
+                "type": "Point"
+            },
+            "id": "SO"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Somaliland",
+                "capitalName": "Hargeisa",
+                "countryCode": "NULL",
+                "continentName": "Africa"
+            },
+            "geometry": {
+                "coordinates": [
+                    "44.050000",
+                    "9.55"
+                ],
+                "type": "Point"
+            },
+            "id": "NULL"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "South Africa",
+                "capitalName": "Pretoria",
+                "countryCode": "ZA",
+                "continentName": "Africa"
+            },
+            "geometry": {
+                "coordinates": [
+                    "28.216667",
+                    "-25.7"
+                ],
+                "type": "Point"
+            },
+            "id": "ZA"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "South Georgia and South Sandwich Islands",
+                "capitalName": "King Edward Point",
+                "countryCode": "GS",
+                "continentName": "Antarctica"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-36.500000",
+                    "-54.283333"
+                ],
+                "type": "Point"
+            },
+            "id": "GS"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "South Korea",
+                "capitalName": "Seoul",
+                "countryCode": "KR",
+                "continentName": "Asia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "126.983333",
+                    "37.55"
+                ],
+                "type": "Point"
+            },
+            "id": "KR"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "South Sudan",
+                "capitalName": "Juba",
+                "countryCode": "SS",
+                "continentName": "Africa"
+            },
+            "geometry": {
+                "coordinates": [
+                    "31.616667",
+                    "4.85"
+                ],
+                "type": "Point"
+            },
+            "id": "SS"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Spain",
+                "capitalName": "Madrid",
+                "countryCode": "ES",
+                "continentName": "Europe"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-3.683333",
+                    "40.4"
+                ],
+                "type": "Point"
+            },
+            "id": "ES"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Sri Lanka",
+                "capitalName": "Colombo",
+                "countryCode": "LK",
+                "continentName": "Asia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "79.833333",
+                    "6.916666666666667"
+                ],
+                "type": "Point"
+            },
+            "id": "LK"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Sudan",
+                "capitalName": "Khartoum",
+                "countryCode": "SD",
+                "continentName": "Africa"
+            },
+            "geometry": {
+                "coordinates": [
+                    "32.533333",
+                    "15.6"
+                ],
+                "type": "Point"
+            },
+            "id": "SD"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Suriname",
+                "capitalName": "Paramaribo",
+                "countryCode": "SR",
+                "continentName": "South America"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-55.166667",
+                    "5.833333333333333"
+                ],
+                "type": "Point"
+            },
+            "id": "SR"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Svalbard",
+                "capitalName": "Longyearbyen",
+                "countryCode": "SJ",
+                "continentName": "Europe"
+            },
+            "geometry": {
+                "coordinates": [
+                    "15.633333",
+                    "78.21666666666667"
+                ],
+                "type": "Point"
+            },
+            "id": "SJ"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Swaziland",
+                "capitalName": "Mbabane",
+                "countryCode": "SZ",
+                "continentName": "Africa"
+            },
+            "geometry": {
+                "coordinates": [
+                    "31.133333",
+                    "-26.316666666666666"
+                ],
+                "type": "Point"
+            },
+            "id": "SZ"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Sweden",
+                "capitalName": "Stockholm",
+                "countryCode": "SE",
+                "continentName": "Europe"
+            },
+            "geometry": {
+                "coordinates": [
+                    "18.050000",
+                    "59.333333333333336"
+                ],
+                "type": "Point"
+            },
+            "id": "SE"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Switzerland",
+                "capitalName": "Bern",
+                "countryCode": "CH",
+                "continentName": "Europe"
+            },
+            "geometry": {
+                "coordinates": [
+                    "7.466667",
+                    "46.916666666666664"
+                ],
+                "type": "Point"
+            },
+            "id": "CH"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Syria",
+                "capitalName": "Damascus",
+                "countryCode": "SY",
+                "continentName": "Asia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "36.300000",
+                    "33.5"
+                ],
+                "type": "Point"
+            },
+            "id": "SY"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Taiwan",
+                "capitalName": "Taipei",
+                "countryCode": "TW",
+                "continentName": "Asia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "121.516667",
+                    "25.033333333333335"
+                ],
+                "type": "Point"
+            },
+            "id": "TW"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Tajikistan",
+                "capitalName": "Dushanbe",
+                "countryCode": "TJ",
+                "continentName": "Asia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "68.766667",
+                    "38.55"
+                ],
+                "type": "Point"
+            },
+            "id": "TJ"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Tanzania",
+                "capitalName": "Dar es Salaam",
+                "countryCode": "TZ",
+                "continentName": "Africa"
+            },
+            "geometry": {
+                "coordinates": [
+                    "39.283333",
+                    "-6.8"
+                ],
+                "type": "Point"
+            },
+            "id": "TZ"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Thailand",
+                "capitalName": "Bangkok",
+                "countryCode": "TH",
+                "continentName": "Asia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "100.516667",
+                    "13.75"
+                ],
+                "type": "Point"
+            },
+            "id": "TH"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "The Gambia",
+                "capitalName": "Banjul",
+                "countryCode": "GM",
+                "continentName": "Africa"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-16.566667",
+                    "13.45"
+                ],
+                "type": "Point"
+            },
+            "id": "GM"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Timor-Leste",
+                "capitalName": "Dili",
+                "countryCode": "TL",
+                "continentName": "Asia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "125.600000",
+                    "-8.583333333333334"
+                ],
+                "type": "Point"
+            },
+            "id": "TL"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Togo",
+                "capitalName": "Lome",
+                "countryCode": "TG",
+                "continentName": "Africa"
+            },
+            "geometry": {
+                "coordinates": [
+                    "1.216667",
+                    "6.116666666666666"
+                ],
+                "type": "Point"
+            },
+            "id": "TG"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Tokelau",
+                "capitalName": "Atafu",
+                "countryCode": "TK",
+                "continentName": "Australia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-171.833333",
+                    "-9.166667"
+                ],
+                "type": "Point"
+            },
+            "id": "TK"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Tonga",
+                "capitalName": "Nuku'alofa",
+                "countryCode": "TO",
+                "continentName": "Australia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-175.200000",
+                    "-21.133333333333333"
+                ],
+                "type": "Point"
+            },
+            "id": "TO"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Trinidad and Tobago",
+                "capitalName": "Port of Spain",
+                "countryCode": "TT",
+                "continentName": "North America"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-61.516667",
+                    "10.65"
+                ],
+                "type": "Point"
+            },
+            "id": "TT"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Tunisia",
+                "capitalName": "Tunis",
+                "countryCode": "TN",
+                "continentName": "Africa"
+            },
+            "geometry": {
+                "coordinates": [
+                    "10.183333",
+                    "36.8"
+                ],
+                "type": "Point"
+            },
+            "id": "TN"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Turkey",
+                "capitalName": "Ankara",
+                "countryCode": "TR",
+                "continentName": "Europe"
+            },
+            "geometry": {
+                "coordinates": [
+                    "32.866667",
+                    "39.93333333333333"
+                ],
+                "type": "Point"
+            },
+            "id": "TR"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Turkmenistan",
+                "capitalName": "Ashgabat",
+                "countryCode": "TM",
+                "continentName": "Asia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "58.383333",
+                    "37.95"
+                ],
+                "type": "Point"
+            },
+            "id": "TM"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Turks and Caicos Islands",
+                "capitalName": "Grand Turk",
+                "countryCode": "TC",
+                "continentName": "North America"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-71.133333",
+                    "21.466666666666665"
+                ],
+                "type": "Point"
+            },
+            "id": "TC"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Tuvalu",
+                "capitalName": "Funafuti",
+                "countryCode": "TV",
+                "continentName": "Australia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "179.216667",
+                    "-8.516666666666667"
+                ],
+                "type": "Point"
+            },
+            "id": "TV"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Uganda",
+                "capitalName": "Kampala",
+                "countryCode": "UG",
+                "continentName": "Africa"
+            },
+            "geometry": {
+                "coordinates": [
+                    "32.550000",
+                    "0.31666666666666665"
+                ],
+                "type": "Point"
+            },
+            "id": "UG"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Ukraine",
+                "capitalName": "Kyiv",
+                "countryCode": "UA",
+                "continentName": "Europe"
+            },
+            "geometry": {
+                "coordinates": [
+                    "30.516667",
+                    "50.43333333333333"
+                ],
+                "type": "Point"
+            },
+            "id": "UA"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "United Arab Emirates",
+                "capitalName": "Abu Dhabi",
+                "countryCode": "AE",
+                "continentName": "Asia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "54.366667",
+                    "24.466666666666665"
+                ],
+                "type": "Point"
+            },
+            "id": "AE"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "United Kingdom",
+                "capitalName": "London",
+                "countryCode": "GB",
+                "continentName": "Europe"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-0.083333",
+                    "51.5"
+                ],
+                "type": "Point"
+            },
+            "id": "GB"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "United States",
+                "capitalName": "Washington",
+                "countryCode": "-77.000000",
+                "continentName": "US"
+            },
+            "geometry": {
+                "coordinates": [
+                    "38.883333",
+                    " D.C."
+                ],
+                "type": "Point"
+            },
+            "id": "-77.000000"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Uruguay",
+                "capitalName": "Montevideo",
+                "countryCode": "UY",
+                "continentName": "South America"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-56.166667",
+                    "-34.85"
+                ],
+                "type": "Point"
+            },
+            "id": "UY"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "US Minor Outlying Islands",
+                "capitalName": "Washington",
+                "countryCode": "-77.000000",
+                "continentName": "UM"
+            },
+            "geometry": {
+                "coordinates": [
+                    "38.883333",
+                    " D.C."
+                ],
+                "type": "Point"
+            },
+            "id": "-77.000000"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "US Virgin Islands",
+                "capitalName": "Charlotte Amalie",
+                "countryCode": "VI",
+                "continentName": "North America"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-64.933333",
+                    "18.35"
+                ],
+                "type": "Point"
+            },
+            "id": "VI"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Uzbekistan",
+                "capitalName": "Tashkent",
+                "countryCode": "UZ",
+                "continentName": "Asia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "69.250000",
+                    "41.31666666666667"
+                ],
+                "type": "Point"
+            },
+            "id": "UZ"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Vanuatu",
+                "capitalName": "Port-Vila",
+                "countryCode": "VU",
+                "continentName": "Australia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "168.316667",
+                    "-17.733333333333334"
+                ],
+                "type": "Point"
+            },
+            "id": "VU"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Vatican City",
+                "capitalName": "Vatican City",
+                "countryCode": "VA",
+                "continentName": "Europe"
+            },
+            "geometry": {
+                "coordinates": [
+                    "12.450000",
+                    "41.9"
+                ],
+                "type": "Point"
+            },
+            "id": "VA"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Venezuela",
+                "capitalName": "Caracas",
+                "countryCode": "VE",
+                "continentName": "South America"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-66.866667",
+                    "10.483333333333333"
+                ],
+                "type": "Point"
+            },
+            "id": "VE"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Vietnam",
+                "capitalName": "Hanoi",
+                "countryCode": "VN",
+                "continentName": "Asia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "105.850000",
+                    "21.033333333333335"
+                ],
+                "type": "Point"
+            },
+            "id": "VN"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Wallis and Futuna",
+                "capitalName": "Mata-Utu",
+                "countryCode": "WF",
+                "continentName": "Australia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-171.933333",
+                    "-13.95"
+                ],
+                "type": "Point"
+            },
+            "id": "WF"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Western Sahara",
+                "capitalName": "El-AaiÃºn",
+                "countryCode": "EH",
+                "continentName": "Africa"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-13.203333",
+                    "27.153611"
+                ],
+                "type": "Point"
+            },
+            "id": "EH"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Yemen",
+                "capitalName": "Sanaa",
+                "countryCode": "YE",
+                "continentName": "Asia"
+            },
+            "geometry": {
+                "coordinates": [
+                    "44.200000",
+                    "15.35"
+                ],
+                "type": "Point"
+            },
+            "id": "YE"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Zambia",
+                "capitalName": "Lusaka",
+                "countryCode": "ZM",
+                "continentName": "Africa"
+            },
+            "geometry": {
+                "coordinates": [
+                    "28.283333",
+                    "-15.416666666666666"
+                ],
+                "type": "Point"
+            },
+            "id": "ZM"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "countryName": "Zimbabwe",
+                "capitalName": "Harare",
+                "countryCode": "ZW",
+                "continentName": "Africa"
+            },
+            "geometry": {
+                "coordinates": [
+                    "31.033333",
+                    "-17.816666666666666"
+                ],
+                "type": "Point"
+            },
+            "id": "ZW"
+        }
+    ]
+}

@@ -1,0 +1,855 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "id": "1",
+            "type": "Feature",
+            "properties": {
+                "name": "Hartsfield-Jackson Atlanta International Airport",
+                "location": "Atlanta, Georgia",
+                "country": "United States",
+                "totalPassengers": "93,699,630"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-84.428056",
+                    "33.636667"
+                ],
+                "type": "Point"
+            }
+        },
+        {
+            "id": "2",
+            "type": "Feature",
+            "properties": {
+                "name": "Dallas Fort Worth International Airport",
+                "location": "Dallas-Fort Worth, Texas",
+                "country": "United States",
+                "totalPassengers": "73,362,946"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-97.038056",
+                    "32.896944"
+                ],
+                "type": "Point"
+            }
+        },
+        {
+            "id": "3",
+            "type": "Feature",
+            "properties": {
+                "name": "Denver International Airport",
+                "location": "Denver, Colorado",
+                "country": "United States",
+                "totalPassengers": "69,286,461"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-104.673056",
+                    "39.861667"
+                ],
+                "type": "Point"
+            }
+        },
+        {
+            "id": "4",
+            "type": "Feature",
+            "properties": {
+                "name": "O'Hare International Airport",
+                "location": "Chicago, Illinois",
+                "country": "United States",
+                "totalPassengers": "68,340,619"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-87.904722",
+                    "41.978611"
+                ],
+                "type": "Point"
+            }
+        },
+        {
+            "id": "5",
+            "type": "Feature",
+            "properties": {
+                "name": "Dubai International Airport",
+                "location": "Garhoud, Dubai",
+                "country": "United Arab Emirates",
+                "totalPassengers": "66,069,981"
+            },
+            "geometry": {
+                "coordinates": [
+                    "55.364444",
+                    "25.252778"
+                ],
+                "type": "Point"
+            }
+        },
+        {
+            "id": "6",
+            "type": "Feature",
+            "properties": {
+                "name": "Los Angeles International Airport",
+                "location": "Los Angeles, California",
+                "country": "United States",
+                "totalPassengers": "65,924,298"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-118.408056",
+                    "33.9425"
+                ],
+                "type": "Point"
+            }
+        },
+        {
+            "id": "7",
+            "type": "Feature",
+            "properties": {
+                "name": "Istanbul Airport",
+                "location": "Arnavutköy, Istanbul",
+                "country": "Turkey",
+                "totalPassengers": "64,289,107"
+            },
+            "geometry": {
+                "coordinates": [
+                    "28.727778",
+                    "41.262222"
+                ],
+                "type": "Point"
+            }
+        },
+        {
+            "id": "8",
+            "type": "Feature",
+            "properties": {
+                "name": "Heathrow Airport",
+                "location": "Hillingdon, London",
+                "country": "United Kingdom",
+                "totalPassengers": "61,614,508"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-0.461389",
+                    "51.4775"
+                ],
+                "type": "Point"
+            }
+        },
+        {
+            "id": "9",
+            "type": "Feature",
+            "properties": {
+                "name": "Indira Gandhi International Airport",
+                "location": "Delhi",
+                "country": "India",
+                "totalPassengers": "59,490,074"
+            },
+            "geometry": {
+                "coordinates": [
+                    "77.112222",
+                    "28.568611"
+                ],
+                "type": "Point"
+            }
+        },
+        {
+            "id": "10",
+            "type": "Feature",
+            "properties": {
+                "name": "Charles de Gaulle Airport",
+                "location": "Roissy-en-France, Île-de-France",
+                "country": "France",
+                "totalPassengers": "57,474,033"
+            },
+            "geometry": {
+                "coordinates": [
+                    "2.547778",
+                    "49.009722"
+                ],
+                "type": "Point"
+            }
+        },
+        {
+            "id": "11",
+            "type": "Feature",
+            "properties": {
+                "name": "John F. Kennedy International Airport",
+                "location": "Queens, New York, New York",
+                "country": "United States",
+                "totalPassengers": "55,287,693"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-73.778889",
+                    "40.639722"
+                ],
+                "type": "Point"
+            }
+        },
+        {
+            "id": "12",
+            "type": "Feature",
+            "properties": {
+                "name": "Harry Reid International Airport",
+                "location": "Las Vegas, Nevada",
+                "country": "United States",
+                "totalPassengers": "52,694,312"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-115.152222",
+                    "36.08"
+                ],
+                "type": "Point"
+            }
+        },
+        {
+            "id": "13",
+            "type": "Feature",
+            "properties": {
+                "name": "Amsterdam Airport Schiphol",
+                "location": "Haarlemmermeer, North Holland",
+                "country": "Netherlands",
+                "totalPassengers": "52,472,188"
+            },
+            "geometry": {
+                "coordinates": [
+                    "4.765",
+                    "52.3"
+                ],
+                "type": "Point"
+            }
+        },
+        {
+            "id": "14",
+            "type": "Feature",
+            "properties": {
+                "name": "Miami International Airport",
+                "location": "Miami-Dade County, Florida",
+                "country": "United States",
+                "totalPassengers": "50,684,396"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-80.290556",
+                    "25.793333"
+                ],
+                "type": "Point"
+            }
+        },
+        {
+            "id": "15",
+            "type": "Feature",
+            "properties": {
+                "name": "Adolfo Suárez Madrid-Barajas Airport",
+                "location": "Madrid",
+                "country": "Spain",
+                "totalPassengers": "50,602,864"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-3.560833",
+                    "40.472222"
+                ],
+                "type": "Point"
+            }
+        },
+        {
+            "id": "16",
+            "type": "Feature",
+            "properties": {
+                "name": "Tokyo Haneda Airport",
+                "location": "Ōta, Tokyo",
+                "country": "Japan",
+                "totalPassengers": "50,290,705"
+            },
+            "geometry": {
+                "coordinates": [
+                    "139.781111",
+                    "35.553333"
+                ],
+                "type": "Point"
+            }
+        },
+        {
+            "id": "17",
+            "type": "Feature",
+            "properties": {
+                "name": "Orlando International Airport",
+                "location": "Orlando, Florida",
+                "country": "United States",
+                "totalPassengers": "50,176,103"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-81.308889",
+                    "28.429444"
+                ],
+                "type": "Point"
+            }
+        },
+        {
+            "id": "18",
+            "type": "Feature",
+            "properties": {
+                "name": "Frankfurt Airport",
+                "location": "Frankfurt, Hesse",
+                "country": "Germany",
+                "totalPassengers": "48,918,482"
+            },
+            "geometry": {
+                "coordinates": [
+                    "8.570556",
+                    "50.033333"
+                ],
+                "type": "Point"
+            }
+        },
+        {
+            "id": "19",
+            "type": "Feature",
+            "properties": {
+                "name": "Charlotte Douglas International Airport",
+                "location": "Charlotte, North Carolina",
+                "country": "United States",
+                "totalPassengers": "47,758,605"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-80.943056",
+                    "35.213889"
+                ],
+                "type": "Point"
+            }
+        },
+        {
+            "id": "20",
+            "type": "Feature",
+            "properties": {
+                "name": "Mexico City International Airport",
+                "location": "Venustiano Carranza, Mexico City",
+                "country": "Mexico",
+                "totalPassengers": "46,261,729"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-99.071944",
+                    "19.436111"
+                ],
+                "type": "Point"
+            }
+        },
+        {
+            "id": "21",
+            "type": "Feature",
+            "properties": {
+                "name": "Seattle-Tacoma International Airport",
+                "location": "SeaTac, Washington",
+                "country": "United States",
+                "totalPassengers": "45,964,321"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-122.309444",
+                    "47.448889"
+                ],
+                "type": "Point"
+            }
+        },
+        {
+            "id": "22",
+            "type": "Feature",
+            "properties": {
+                "name": "Phoenix Sky Harbor International Airportt",
+                "location": "Phoenix, Arizona",
+                "country": "United States",
+                "totalPassengers": "44,397,854"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-112.011667",
+                    "33.434167"
+                ],
+                "type": "Point"
+            }
+        },
+        {
+            "id": "23",
+            "type": "Feature",
+            "properties": {
+                "name": "Newark Liberty International Airport",
+                "location": "Newark, New Jersey",
+                "country": "United States",
+                "totalPassengers": "43,565,254"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-74.168611",
+                    "40.6925"
+                ],
+                "type": "Point"
+            }
+        },
+        {
+            "id": "24",
+            "type": "Feature",
+            "properties": {
+                "name": "San Francisco International Airport",
+                "location": "San Mateo County, California",
+                "country": "United States",
+                "totalPassengers": "42,210,201"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-122.375",
+                    "37.618889"
+                ],
+                "type": "Point"
+            }
+        },
+        {
+            "id": "25",
+            "type": "Feature",
+            "properties": {
+                "name": "Josep Tarradellas Barcelona-El Prat Airport",
+                "location": "Barcelona",
+                "country": "Spain",
+                "totalPassengers": "41,616,302"
+            },
+            "geometry": {
+                "coordinates": [
+                    "2.078333",
+                    "41.296944"
+                ],
+                "type": "Point"
+            }
+        },
+        {
+            "id": "26",
+            "type": "Feature",
+            "properties": {
+                "name": "George Bush Intercontinental Airport",
+                "location": "Houston, Texas",
+                "country": "United States",
+                "totalPassengers": "40,974,831"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-95.341389",
+                    "29.984444"
+                ],
+                "type": "Point"
+            }
+        },
+        {
+            "id": "27",
+            "type": "Feature",
+            "properties": {
+                "name": "Soekarno-Hatta International Airport",
+                "location": "Tangerang, Banten",
+                "country": "Indonesia",
+                "totalPassengers": "38,791,168"
+            },
+            "geometry": {
+                "coordinates": [
+                    "106.655833",
+                    "-6.125556"
+                ],
+                "type": "Point"
+            }
+        },
+        {
+            "id": "28",
+            "type": "Feature",
+            "properties": {
+                "name": "Chhatrapati Shivaji Maharaj International Airport",
+                "location": "Mumbai, Maharashtra",
+                "country": "India",
+                "totalPassengers": "38,332,106"
+            },
+            "geometry": {
+                "coordinates": [
+                    "72.868056",
+                    "19.088611"
+                ],
+                "type": "Point"
+            }
+        },
+        {
+            "id": "29",
+            "type": "Feature",
+            "properties": {
+                "name": "Toronto Pearson International Airport",
+                "location": "Mississauga, Ontario",
+                "country": "Canada",
+                "totalPassengers": "36,356,109"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-79.630556",
+                    "43.676667"
+                ],
+                "type": "Point"
+            }
+        },
+        {
+            "id": "30",
+            "type": "Feature",
+            "properties": {
+                "name": "Logan International Airport",
+                "location": "East Boston, Massachusetts",
+                "country": "United States",
+                "totalPassengers": "36,112,473"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-71.006389",
+                    "42.363056"
+                ],
+                "type": "Point"
+            }
+        },
+        {
+            "id": "31",
+            "type": "Feature",
+            "properties": {
+                "name": "Hamad International Airport",
+                "location": "Doha",
+                "country": "Qatar",
+                "totalPassengers": "35,730,482"
+            },
+            "geometry": {
+                "coordinates": [
+                    "51.608056",
+                    "25.273056"
+                ],
+                "type": "Point"
+            }
+        },
+        {
+            "id": "32",
+            "type": "Feature",
+            "properties": {
+                "name": "El Dorado International Airport",
+                "location": "Bogotá",
+                "country": "Colombia",
+                "totalPassengers": "35,362,529"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-74.146944",
+                    "4.701389"
+                ],
+                "type": "Point"
+            }
+        },
+        {
+            "id": "33",
+            "type": "Feature",
+            "properties": {
+                "name": "São Paulo/Guarulhos International Airport",
+                "location": "Guarulhos",
+                "country": "Brazil",
+                "totalPassengers": "34,466,946"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-46.473056",
+                    "-23.435556"
+                ],
+                "type": "Point"
+            }
+        },
+        {
+            "id": "34",
+            "type": "Feature",
+            "properties": {
+                "name": "Tan Son Nhat International Airport",
+                "location": "Ho Chi Minh City",
+                "country": "Vietnam",
+                "totalPassengers": "34,278,320"
+            },
+            "geometry": {
+                "coordinates": [
+                    "106.651944",
+                    "10.818889"
+                ],
+                "type": "Point"
+            }
+        },
+        {
+            "id": "35",
+            "type": "Feature",
+            "properties": {
+                "name": "London Gatwick Airport",
+                "location": "Crawley, West Sussex",
+                "country": "United Kingdom",
+                "totalPassengers": "32,848,088"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-0.190278",
+                    "51.148056"
+                ],
+                "type": "Point"
+            }
+        },
+        {
+            "id": "36",
+            "type": "Feature",
+            "properties": {
+                "name": "Singapore Changi Airport",
+                "location": "Changi, East Region",
+                "country": "Singapore",
+                "totalPassengers": "32,202,000"
+            },
+            "geometry": {
+                "coordinates": [
+                    "103.989444",
+                    "1.359167"
+                ],
+                "type": "Point"
+            }
+        },
+        {
+            "id": "37",
+            "type": "Feature",
+            "properties": {
+                "name": "Fort Lauderdale-Hollywood International Airport",
+                "location": "Broward County, Florida",
+                "country": "United States",
+                "totalPassengers": "31,686,404"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-80.152778",
+                    "26.0725"
+                ],
+                "type": "Point"
+            }
+        },
+        {
+            "id": "38",
+            "type": "Feature",
+            "properties": {
+                "name": "King Abdulaziz International Airport",
+                "location": "Jeddah",
+                "country": "Saudi Arabia",
+                "totalPassengers": "31,648,324"
+            },
+            "geometry": {
+                "coordinates": [
+                    "39.156667",
+                    "21.679444"
+                ],
+                "type": "Point"
+            }
+        },
+        {
+            "id": "39",
+            "type": "Feature",
+            "properties": {
+                "name": "Munich Airport",
+                "location": "Freising, Bavaria",
+                "country": "Germany",
+                "totalPassengers": "31,642,738"
+            },
+            "geometry": {
+                "coordinates": [
+                    "11.786111",
+                    "48.353889"
+                ],
+                "type": "Point"
+            }
+        },
+        {
+            "id": "40",
+            "type": "Feature",
+            "properties": {
+                "name": "Antalya Airport",
+                "location": "Antalya",
+                "country": "Turkey",
+                "totalPassengers": "31,228,377"
+            },
+            "geometry": {
+                "coordinates": [
+                    "30.792778",
+                    "36.900278"
+                ],
+                "type": "Point"
+            }
+        },
+        {
+            "id": "41",
+            "type": "Feature",
+            "properties": {
+                "name": "Istanbul Sabiha Gökçen International Airport",
+                "location": "Pendik, Istanbul",
+                "country": "Turkey",
+                "totalPassengers": "30,780,357"
+            },
+            "geometry": {
+                "coordinates": [
+                    "29.309167",
+                    "40.898333"
+                ],
+                "type": "Point"
+            }
+        },
+        {
+            "id": "42",
+            "type": "Feature",
+            "properties": {
+                "name": "Minneapolis/St Paul International Airport",
+                "location": "St. Paul, Minnesota",
+                "country": "United States",
+                "totalPassengers": "30,622,784"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-93.221667",
+                    "44.881944"
+                ],
+                "type": "Point"
+            }
+        },
+        {
+            "id": "43",
+            "type": "Feature",
+            "properties": {
+                "name": "Cancún International Airport",
+                "location": "Cancún",
+                "country": "Mexico",
+                "totalPassengers": "30,484,094"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-86.876944",
+                    "21.036667"
+                ],
+                "type": "Point"
+            }
+        },
+        {
+            "id": "44",
+            "type": "Feature",
+            "properties": {
+                "name": "Ninoy Aquino International Airport",
+                "location": "Pasay/Parañaque, Metro Manila",
+                "country": "Philippines",
+                "totalPassengers": "30,329,426"
+            },
+            "geometry": {
+                "coordinates": [
+                    "121.019722",
+                    "14.508333"
+                ],
+                "type": "Point"
+            }
+        },
+        {
+            "id": "45",
+            "type": "Feature",
+            "properties": {
+                "name": "Jeju International Airport",
+                "location": "Jeju City",
+                "country": "South Korea",
+                "totalPassengers": "29,703,669"
+            },
+            "geometry": {
+                "coordinates": [
+                    "126.493056",
+                    "33.511389"
+                ],
+                "type": "Point"
+            }
+        },
+        {
+            "id": "46",
+            "type": "Feature",
+            "properties": {
+                "name": "Leonardo da Vinci-Fiumicino Airport",
+                "location": "Fiumicino, Rome metro",
+                "country": "Italy",
+                "totalPassengers": "29,346,365"
+            },
+            "geometry": {
+                "coordinates": [
+                    "12.238889",
+                    "41.800278"
+                ],
+                "type": "Point"
+            }
+        },
+        {
+            "id": "47",
+            "type": "Feature",
+            "properties": {
+                "name": "Orly Airport",
+                "location": "Orly, Paris metro",
+                "country": "France",
+                "totalPassengers": "29,187,269"
+            },
+            "geometry": {
+                "coordinates": [
+                    "2.379444",
+                    "48.723333"
+                ],
+                "type": "Point"
+            }
+        },
+        {
+            "id": "48",
+            "type": "Feature",
+            "properties": {
+                "name": "Sydney Airport",
+                "location": "Sydney",
+                "country": "Australia",
+                "totalPassengers": "29,094,483"
+            },
+            "geometry": {
+                "coordinates": [
+                    "151.177222",
+                    "-33.946111"
+                ],
+                "type": "Point"
+            }
+        },
+        {
+            "id": "49",
+            "type": "Feature",
+            "properties": {
+                "name": "LaGuardia Airport",
+                "location": "Queens, New York City",
+                "country": "United States",
+                "totalPassengers": "28,997,592"
+            },
+            "geometry": {
+                "coordinates": [
+                    "-73.875",
+                    "40.775"
+                ],
+                "type": "Point"
+            }
+        },
+        {
+            "id": "50",
+            "type": "Feature",
+            "properties": {
+                "name": "Suvarnabhumi Airport",
+                "location": "Racha Thewa, Bangkok metro",
+                "country": "Thailand",
+                "totalPassengers": "28,754,314"
+            },
+            "geometry": {
+                "coordinates": [
+                    "100.75",
+                    "13.6925"
+                ],
+                "type": "Point"
+            }
+        }
+    ]
+}
