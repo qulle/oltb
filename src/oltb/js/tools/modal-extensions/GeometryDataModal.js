@@ -62,19 +62,17 @@ class GeometryDataModal extends ModalBase {
         // For now the key for each property is used as the descriptor
         for(const [key, value] of Object.entries(this.options.data)) {
             const tr = DOM.createElement({
-                element: 'tr',
-                class: ''
+                element: 'tr'
             });
 
+            const i18n = TranslationManager.get(`${I18N_BASE}.data`);
             const th = DOM.createElement({
                 element: 'th',
-                class: '',
-                text: key.capitalize()
+                text: i18n[key]
             });
 
             const td = DOM.createElement({
                 element: 'td',
-                class: '',
                 html: value
             });
 

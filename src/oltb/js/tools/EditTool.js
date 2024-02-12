@@ -552,7 +552,7 @@ class EditTool extends Control {
 
         if(features.length >= 2) {
             Toast.info({
-                i18nKey: `${I18N_BASE}.toasts.infos.missingFeatures`,
+                i18nKey: `${I18N_BASE}.toasts.infos.strictOneFeature`,
                 autoremove: autoremove
             });
 
@@ -1048,6 +1048,8 @@ class EditTool extends Control {
             indentation
         );
 
+        // Note:
+        // The data properties are used as keys in the translation-files
         const options = {
             data: {
                 id: id,

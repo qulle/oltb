@@ -159,6 +159,13 @@ export const DefaultTranslation = Object.freeze({
         },
         geometryDataModal: {
             title: 'Geometry Data',
+            data: {
+                id: 'Id',
+                measurement: 'Measurement',
+                oltbProperties: 'OLTB Properties',
+                vertices: 'Vertices',
+                coordinates: 'Coordinates'
+            }
         },
         iconMarkerModal: {
             title: 'Marker Configuration',
@@ -456,6 +463,10 @@ export const DefaultTranslation = Object.freeze({
                     missingFeatures: {
                         title: 'Oops',
                         message: 'No objects are selected'
+                    },
+                    strictOneFeature: {
+                        title: 'Oops',
+                        message: 'Strict one object can be selected'
                     },
                     strictTwoFeatures: {
                         title: 'Oops',

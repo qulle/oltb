@@ -157,7 +157,14 @@
             }
         },
         "geometryDataModal": {
-            "title": "Geometridata"
+            "title": "Geometridata",
+            "data": {
+                "id": "Id",
+                "measurement": "Mätning",
+                "oltbProperties": "OLTB Egenskaper",
+                "vertices": "Hörnpunkter",
+                "coordinates": "Koordinater"
+            }
         },
         "iconMarkerModal": {
             "title": "Markörkonfiguration",
@@ -455,6 +462,10 @@
                     "missingFeatures": {
                         "title": "Hoppsan",
                         "message": "Inga objekt har markerats"
+                    },
+                    "strictOneFeature": {
+                        "title": "Hoppsan",
+                        "message": "Endast ett objekt kan hanteras"
                     },
                     "strictTwoFeatures": {
                         "title": "Hoppsan",
