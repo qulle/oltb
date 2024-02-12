@@ -1574,6 +1574,7 @@ $ npm run clean
 
 # (3). Update version in: 
 #      - package.json
+#      - package-lock.json
 #      - README.md
 
 # (4). Update version, date and dependencies in:
