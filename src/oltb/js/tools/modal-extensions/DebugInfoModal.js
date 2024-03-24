@@ -283,7 +283,8 @@ class DebugInfoModal extends ModalBase {
                 icon: value.icon,
                 color: value.color,
                 key: key,
-                backgroundColor: value.backgroundColor
+                backgroundColor: value.backgroundColor,
+                borderColor: value.borderColor
             });
         }
 
@@ -302,7 +303,8 @@ class DebugInfoModal extends ModalBase {
                 name: entry.level.name,
                 icon: entry.level.icon,
                 color: entry.level.color,
-                backgroundColor: entry.level.backgroundColor
+                backgroundColor: entry.level.backgroundColor,
+                borderColor: entry.level.borderColor
             });
 
             // Note:
@@ -339,7 +341,7 @@ class DebugInfoModal extends ModalBase {
             const chip = DOM.createElement({
                 element: 'span',
                 class: 'oltb-chip',
-                style: `background-color: ${value.backgroundColor}; color: ${value.color};`,
+                style: `background-color: ${value.backgroundColor}; color: ${value.color}; border: 1px solid ${value.borderColor};`,
                 text: `${value.icon} ${key} (${value.count})`,
                 attributes: {
                     'data-oltb-reset-value': `${value.icon} ${key} (0)`
@@ -388,7 +390,7 @@ class DebugInfoModal extends ModalBase {
 
         const logItem = DOM.createElement({
             element: 'div',
-            style: `background-color: ${entry.level.backgroundColor}; color: ${entry.level.color};`,
+            style: `background-color: ${entry.level.backgroundColor}; color: ${entry.level.color}; border: 1px solid ${entry.level.borderColor}`,
             class: 'oltb-log__item',
             attributes: {
                 'data-oltb-log-name': entry.level.name
@@ -466,7 +468,7 @@ class DebugInfoModal extends ModalBase {
 
         const logItem = DOM.createElement({
             element: 'div',
-            style: `background-color: ${entry.level.backgroundColor}; color: ${entry.level.color};`,
+            style: `background-color: ${entry.level.backgroundColor}; color: ${entry.level.color}; border: 1px solid ${entry.level.borderColor};`,
             class: 'oltb-log__item',
             attributes: {
                 'data-oltb-log-name': entry.level.name
