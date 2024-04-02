@@ -1529,8 +1529,8 @@ LogManager.logDebug(FILENAME, 'handleClick', {
 All classes and id:s in the project are prefixed with the namespace `oltb`.
 
 ## Dependencies
-1. [OpenLayers 8.2.0](https://openlayers.org/en/v8.2.0/apidoc/)
-2. [Proj4 2.9.2](http://proj4js.org/)   
+1. [OpenLayers 9.1.0](https://openlayers.org/en/v9.1.0/apidoc/)
+2. [Proj4 2.11.0](http://proj4js.org/)   
 3. [Tippy.js 6.3.7](https://atomiks.github.io/tippyjs/)
 4. [Bootstrap Icons](https://icons.getbootstrap.com/)
 5. [Moment 2.30.1](https://momentjs.com/)
@@ -1539,22 +1539,25 @@ All classes and id:s in the project are prefixed with the namespace `oltb`.
 8. [JSTS 2.11.0](https://github.com/bjornharrtell/jsts)
 9. [Cycle.js](https://github.com/douglascrockford/JSON-js)
 10. [Browser Dtector 4.1.0](https://github.com/sibiraj-s/browser-dtector)
-11. [Sortable JS 1.15.1](https://github.com/SortableJS/Sortable)
+11. [Sortable JS 1.15.2](https://github.com/SortableJS/Sortable)
 12. [UUID JS 9.0.1](https://github.com/uuidjs/uuid)
 13. [Lodash 4.17.21](https://github.com/lodash/lodash)
 14. [Many Keys Map 2.0.1](https://github.com/fregante/many-keys-map)
 
 ## Dev Dependencies
-1. [Parcel 2.10.3](https://parceljs.org/)
-2. [@parcel/transformer-sass 2.10.3](https://github.com/parcel-bundler/parcel)
-3. [Rollup 4.9.2](https://github.com/rollup/rollup)
+1. [Parcel 2.12.0](https://parceljs.org/)
+2. [@parcel/transformer-sass 2.12.0](https://github.com/parcel-bundler/parcel)
+3. [Rollup 4.13.2](https://github.com/rollup/rollup)
 4. [@rollup/plugin-commonjs 25.0.7](https://github.com/rollup/plugins/tree/master/packages/commonjs)
 5. [@rollup/plugin-json 6.1.0](https://github.com/rollup/plugins/tree/master/packages/json)
 6. [@rollup/plugin-node-resolve 15.2.3](https://github.com/rollup/plugins/tree/master/packages/node-resolve)
 7. [@rollup-plugin-replace 5.0.5](https://github.com/rollup/plugins/tree/master/packages/replace)
 8. [@rollup/plugin-terser 0.4.4](https://github.com/rollup/plugins/tree/master/packages/terser)
-9. [rollup-plugin-license 3.2.0](https://github.com/mjeanroy/rollup-plugin-license)
+9. [rollup-plugin-license 3.3.1](https://github.com/mjeanroy/rollup-plugin-license)
 10. [rollup-plugin-scss 4.0.0](https://github.com/thgh/rollup-plugin-scss)
+11. [ESLint 8.57.0](https://github.com/eslint/eslint)
+12. [Husky 9.0.11](https://github.com/typicode/husky)
+13. [Lint Staged 15.2.2](https://github.com/lint-staged/lint-staged)
 
 ## Maps
 1. [Open Street Map](https://www.openstreetmap.org/)
