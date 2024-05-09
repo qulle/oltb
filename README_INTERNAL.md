@@ -132,18 +132,18 @@ The full color palette is displayed below.
     </tr>
     <tr>
         <th>Indigo</th>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/indigo-100.svg"> #CFE1FF - $color-indigo-100</td>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/indigo-200.svg"> #B1CAF6 - $color-indigo-200</td>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/indigo-100.svg"> #E7EFFF - $color-indigo-100</td>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/indigo-200.svg"> #C7D9F8 - $color-indigo-200</td>
         <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/indigo-300.svg"> #5B88D6 - $color-indigo-300</td>
         <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/indigo-400.svg"> #2357B1 - $color-indigo-400</td>
         <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/indigo-500.svg"> #103677 - $color-indigo-500</td>
     </tr>
     <tr>
         <th>Purple</th>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/purple-100.svg"> #DFDBFF - $color-purple-100</td>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/purple-100.svg"> #E8E6FF - $color-purple-100</td>
         <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/purple-200.svg"> #D0CAFF - $color-purple-200</td>
         <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/purple-300.svg"> #9085E4 - $color-purple-300</td>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/purple-400.svg"> #493E9C - $color-purple-400</td>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/purple-400.svg"> #52489B - $color-purple-400</td>
         <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/purple-500.svg"> #2E2769 - $color-purple-500</td>
     </tr>
     <tr>
@@ -181,8 +181,8 @@ The full color palette is displayed below.
     <tr>
         <th>Yellow</th>
         <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/yellow-100.svg"> #FFF8E1 - $color-yellow-100</td>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/yellow-200.svg"> #FFF1C5 - $color-yellow-200</td>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/yellow-300.svg"> #FBDD83 - $color-yellow-300</td>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/yellow-200.svg"> #FAE59D - $color-yellow-200</td>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/yellow-300.svg"> #F6D574 - $color-yellow-300</td>
         <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/yellow-400.svg"> #FBBD02 - $color-yellow-400</td>
         <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/yellow-500.svg"> #493B10 - $color-yellow-500</td>
     </tr>
@@ -191,15 +191,15 @@ The full color palette is displayed below.
         <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/orange-100.svg"> #FFEDDB - $color-orange-100</td>
         <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/orange-200.svg"> #FFDDBC - $color-orange-200</td>
         <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/orange-300.svg"> #FCBE80 - $color-orange-300</td>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/orange-400.svg"> #F67D2C - $color-orange-400</td>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/orange-500.svg"> #8A4111 - $color-orange-500</td>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/orange-400.svg"> #F08741 - $color-orange-400</td>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/orange-500.svg"> #6B310A - $color-orange-500</td>
     </tr>
     <tr>
         <th>Red</th>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/red-100.svg"> #FFD5D4 - $color-red-100</td>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/red-100.svg"> #FFE6E6 - $color-red-100</td>
         <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/red-200.svg"> #FDB5B4 - $color-red-200</td>
         <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/red-300.svg"> #E96B69 - $color-red-300</td>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/red-400.svg"> #EB4542 - $color-red-400</td>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/red-400.svg"> #D64B49 - $color-red-400</td>
         <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/red-500.svg"> #8D2120 - $color-red-500</td>
     </tr>
     <tr>

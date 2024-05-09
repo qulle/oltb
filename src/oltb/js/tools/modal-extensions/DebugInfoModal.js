@@ -280,7 +280,6 @@ class DebugInfoModal extends ModalBase {
             chips.set(value.name, {
                 count: 0,
                 name: value.name,
-                icon: value.icon,
                 color: value.color,
                 key: key,
                 backgroundColor: value.backgroundColor,
@@ -301,7 +300,6 @@ class DebugInfoModal extends ModalBase {
             chips.set(entry.level.name, {
                 count: current.count + 1,
                 name: entry.level.name,
-                icon: entry.level.icon,
                 color: entry.level.color,
                 backgroundColor: entry.level.backgroundColor,
                 borderColor: entry.level.borderColor
@@ -342,9 +340,9 @@ class DebugInfoModal extends ModalBase {
                 element: 'span',
                 class: 'oltb-chip',
                 style: `background-color: ${value.backgroundColor}; color: ${value.color}; border: 1px solid ${value.borderColor};`,
-                text: `${value.icon} ${key} (${value.count})`,
+                text: `${key} (${value.count})`,
                 attributes: {
-                    'data-oltb-reset-value': `${value.icon} ${key} (0)`
+                    'data-oltb-reset-value': `${key} (0)`
                 },
                 listeners: {
                     click: () => {
@@ -371,9 +369,7 @@ class DebugInfoModal extends ModalBase {
             element: 'div',
             class: 'oltb-log__title',
             html: `
-                <span class="oltb-tippy oltb-log__level-icon" title="${entry.level.name}">${
-                    entry.level.icon
-                }</span><span class="oltb-log__timestamp">${
+                </span><span class="oltb-log__timestamp">${
                     entry.timestamp
                 }</span> &rarr; ${
                     entry.origin
@@ -418,9 +414,7 @@ class DebugInfoModal extends ModalBase {
             element: 'div',
             class: 'oltb-log__title',
             html: `
-                <span class="oltb-tippy oltb-log__level-icon" title="${entry.level.name}">${
-                    entry.level.icon
-                }</span><span class="oltb-log__timestamp">${
+                </span><span class="oltb-log__timestamp">${
                     entry.timestamp
                 }</span> &rarr; ${
                     entry.origin
