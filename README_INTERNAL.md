@@ -1633,7 +1633,7 @@ $ git subtree push --prefix demo origin gh-pages
 $ git reset --hard HEAD~1
 
 # (17). Tag the release
-$ git tag -a vx.y.x -m "vx.y.x"
+$ git tag -a vx.y.z -m "vx.y.z"
 $ git push origin --tags
 ```
 
