@@ -140,7 +140,7 @@ const DefaultConfig = Object.freeze({
             '#0080C5', // Cyan 400
             '#004367', // Cyan 500
             '#FFF8E1', // Yellow 100
-            '#FFF1C5', // Yellow 200
+            '#FBEAB2', // Yellow 200
             '#FBDD83', // Yellow 300
             '#FBBD02', // Yellow 400
             '#493B10', // Yellow 500

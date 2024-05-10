@@ -280,10 +280,10 @@ class DebugInfoModal extends ModalBase {
             chips.set(value.name, {
                 count: 0,
                 name: value.name,
-                icon: value.icon,
                 color: value.color,
                 key: key,
-                backgroundColor: value.backgroundColor
+                backgroundColor: value.backgroundColor,
+                borderColor: value.borderColor
             });
         }
 
@@ -300,9 +300,9 @@ class DebugInfoModal extends ModalBase {
             chips.set(entry.level.name, {
                 count: current.count + 1,
                 name: entry.level.name,
-                icon: entry.level.icon,
                 color: entry.level.color,
-                backgroundColor: entry.level.backgroundColor
+                backgroundColor: entry.level.backgroundColor,
+                borderColor: entry.level.borderColor
             });
 
             // Note:
@@ -339,10 +339,10 @@ class DebugInfoModal extends ModalBase {
             const chip = DOM.createElement({
                 element: 'span',
                 class: 'oltb-chip',
-                style: `background-color: ${value.backgroundColor}; color: ${value.color};`,
-                text: `${value.icon} ${key} (${value.count})`,
+                style: `background-color: ${value.backgroundColor}; color: ${value.color}; border: 1px solid ${value.borderColor};`,
+                text: `${key} (${value.count})`,
                 attributes: {
-                    'data-oltb-reset-value': `${value.icon} ${key} (0)`
+                    'data-oltb-reset-value': `${key} (0)`
                 },
                 listeners: {
                     click: () => {
@@ -369,9 +369,7 @@ class DebugInfoModal extends ModalBase {
             element: 'div',
             class: 'oltb-log__title',
             html: `
-                <span class="oltb-tippy oltb-log__level-icon" title="${entry.level.name}">${
-                    entry.level.icon
-                }</span><span class="oltb-log__timestamp">${
+                </span><span class="oltb-log__timestamp">${
                     entry.timestamp
                 }</span> &rarr; ${
                     entry.origin
@@ -388,7 +386,7 @@ class DebugInfoModal extends ModalBase {
 
         const logItem = DOM.createElement({
             element: 'div',
-            style: `background-color: ${entry.level.backgroundColor}; color: ${entry.level.color};`,
+            style: `background-color: ${entry.level.backgroundColor}; color: ${entry.level.color}; border: 1px solid ${entry.level.borderColor}`,
             class: 'oltb-log__item',
             attributes: {
                 'data-oltb-log-name': entry.level.name
@@ -416,9 +414,7 @@ class DebugInfoModal extends ModalBase {
             element: 'div',
             class: 'oltb-log__title',
             html: `
-                <span class="oltb-tippy oltb-log__level-icon" title="${entry.level.name}">${
-                    entry.level.icon
-                }</span><span class="oltb-log__timestamp">${
+                </span><span class="oltb-log__timestamp">${
                     entry.timestamp
                 }</span> &rarr; ${
                     entry.origin
@@ -466,7 +462,7 @@ class DebugInfoModal extends ModalBase {
 
         const logItem = DOM.createElement({
             element: 'div',
-            style: `background-color: ${entry.level.backgroundColor}; color: ${entry.level.color};`,
+            style: `background-color: ${entry.level.backgroundColor}; color: ${entry.level.color}; border: 1px solid ${entry.level.borderColor};`,
             class: 'oltb-log__item',
             attributes: {
                 'data-oltb-log-name': entry.level.name

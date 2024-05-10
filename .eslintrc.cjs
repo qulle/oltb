@@ -1,22 +1,20 @@
-module.exports = {
-    "env": {
-        "browser": true,
-        "es2021": true
+module.exports = [
+    {
+        files: ["**/*.js"],
+        languageOptions: {
+            ecmaVersion: "latest",
+            sourceType: "module",
+        },
+        settings: {
+            "eslint:recommended": true,
+            browser: true,
+        },
+        rules: {
+            "no-unused-vars": [
+                "error",
+                { vars: "all", args: "none", ignoreRestSiblings: false },
+            ],
+            "no-control-regex": "off",
+        },
     },
-    "extends": "eslint:recommended",
-    "overrides": [],
-    "parserOptions": {
-        "ecmaVersion": "latest",
-        "sourceType": "module"
-    },
-    "rules": {
-        "no-unused-vars": [
-            "error", {
-                "vars": "all", 
-                "args": "none", 
-                "ignoreRestSiblings": false 
-            }
-        ],
-        "no-control-regex": 0
-    }
-}
+];
