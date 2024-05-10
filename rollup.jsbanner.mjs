@@ -14,10 +14,10 @@ export const banner = `/*!
  * | (+) Moment 2.30.1                      - https://momentjs.com                                                |
  * | (+) A Color Picker 1.2.1               - https://github.com/narsenico/a-color-picker                         |
  * | (+) Plain JS Slidetoggle 2.0.0         - https://github.com/ericbutler555/plain-js-slidetoggle               |
- * | (+) JSTS 2.11.0                        - https://github.com/bjornharrtell/jsts                               |
+ * | (+) JSTS 2.11.2                        - https://github.com/bjornharrtell/jsts                               |
  * | (+) Parcel 2.12.0                      - https://parceljs.org                                                |
  * | (+) @parcel/transformer-sass 2.12.0    - https://github.com/parcel-bundler/parcel                            |
- * | (+) Rollup 4.13.2                      - https://github.com/rollup/rollup                                    |
+ * | (+) Rollup 4.17.2                      - https://github.com/rollup/rollup                                    |
  * | (+) @rollup/plugin-commonjs 25.0.7     - https://github.com/rollup/plugins/tree/master/packages/commonjs     |
  * | (+) @rollup/plugin-json 6.1.0          - https://github.com/rollup/plugins/tree/master/packages/json         |
  * | (+) @rollup/plugin-node-resolve 15.2.3 - https://github.com/rollup/plugins/tree/master/packages/node-resolve |
@@ -31,7 +31,8 @@ export const banner = `/*!
  * | (+) UUID JS 9.0.1                      - https://github.com/uuidjs/uuid                                      |
  * | (+) Lodash 4.17.21                     - https://github.com/lodash/lodash                                    |
  * | (+) Many Keys Map 2.0.1                - https://github.com/fregante/many-keys-map                           |
- * | (+) ESLint 8.57.0                      - https://github.com/eslint/eslint                                    |
+ * | (+) ESLint 9.2.0                       - https://github.com/eslint/eslint                                    |
+ * | (+) @eslint/js 9.2.0                   - https://github.com/eslint/eslint                                    |
  * | (+) Husky 9.0.11                       - https://github.com/typicode/husky                                   |
  * | (+) Lint Staged 15.2.2                 - https://github.com/lint-staged/lint-staged                          |
  * +--------------------------------------------------------------------------------------------------------------+
