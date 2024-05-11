@@ -42,7 +42,7 @@ class ErrorManager {
         // Note: 
         // If the error is thrown before the application has launched
         // The console is always available
-        console.error(error);
+        window.console.error(error);
         
         LogManager.logFatal(FILENAME, 'onError', {
             info: 'Global uncaught error',

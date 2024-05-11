@@ -702,7 +702,7 @@ class DebugInfoModal extends ModalBase {
     }
 
     doActionLoggingMap() {
-        console.dir(this.options.map);
+        window.console.dir(this.options.map);
 
         Toast.info({
             i18nKey: `${I18N_BASE}.toasts.infos.logMapObject`,

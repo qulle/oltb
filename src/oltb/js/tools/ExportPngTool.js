@@ -190,7 +190,6 @@ class ExportPngTool extends Control {
             // Draw map layers (Canvases)
             const fullOpacity = 1;
             const uiRefMapCanvas = uiRefMapElement.querySelector('.ol-layer canvas:not(.ol-overviewmap-map canvas)');
-            console.log(uiRefMapCanvas);
             const opacity = uiRefMapCanvas.parentNode.style.opacity;
             pngContext.globalAlpha = opacity === '' ? fullOpacity : Number(opacity);
     
