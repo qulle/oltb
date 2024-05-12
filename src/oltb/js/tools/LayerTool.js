@@ -131,7 +131,7 @@ class LayerTool extends Control {
         );
 
         this.initToolboxHTML();
-        this.uiRefToolboxSection = document.querySelector(`#${ID_PREFIX}-toolbox`);
+        this.uiRefToolboxSection = window.document.querySelector(`#${ID_PREFIX}-toolbox`);
         this.initToggleables();
 
         this.uiRefMapLayerStack = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-map-stack`);
@@ -195,9 +195,9 @@ class LayerTool extends Control {
         return FILENAME;
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: Init Helpers
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     initToolboxHTML() {
         const i18n = TranslationManager.get(`${I18N_BASE}.toolbox`);
@@ -284,9 +284,9 @@ class LayerTool extends Control {
         }
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: Tool Control
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     onClickTool(event) {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
@@ -328,9 +328,9 @@ class LayerTool extends Control {
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: Browser Events
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     onOLTBReady(event) {
         if(this.localStorage.isActive) {
@@ -379,9 +379,9 @@ class LayerTool extends Control {
         this.doFeatureLayerRemoved(event);
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: LocalStorage Helpers
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     removeUnusedLayers() {
         // Note:
@@ -447,9 +447,9 @@ class LayerTool extends Control {
         return !!this.getLocalStorageMapLayerById(id);
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: ContextMenu Callbacks
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     onContextMenuAddMapLayerModal() {
         this.doShowAddMapLayerModal();
@@ -471,9 +471,9 @@ class LayerTool extends Control {
         }
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: Sortable
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     generateSortable(element, options) {
         const duration = ConfigManager.getConfig().animationDuration.warp;
@@ -571,9 +571,9 @@ class LayerTool extends Control {
         return secondary.length;
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: Conversions/Validation
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     isValidEnter(event) {
         return event.type === Events.browser.keyUp && event.key === Keys.valueEnter;
@@ -603,9 +603,9 @@ class LayerTool extends Control {
         return hasProjection;
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: Map/UI Callbacks
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     onToggleToolbox(toggle) {
         const targetName = toggle.dataset.oltbToggleableTarget;
@@ -695,9 +695,9 @@ class LayerTool extends Control {
         }
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: Listeners Subscriptions
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     attachUIButtonCallbacks(options, layerWrapper, rightWrapper, layerName) {
         for(const name in options) {
@@ -710,9 +710,9 @@ class LayerTool extends Control {
         }
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: User Interface
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     createUILayerNameTippy(layerName) {
         return tippy(layerName, {
@@ -1052,9 +1052,9 @@ class LayerTool extends Control {
         return editButton;
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: Map/UI Callbacks
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     onLayerDelete(layerWrapper, callback) {
         this.askToDeleteLayer(layerWrapper, callback);
@@ -1072,9 +1072,9 @@ class LayerTool extends Control {
         this.askToDownloadLayer(layerWrapper, callback);
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: Ask User
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     
     askToDownloadLayer(layerWrapper, callback) {
         return new DownloadLayerModal({
@@ -1147,9 +1147,9 @@ class LayerTool extends Control {
         });
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: Tool DoActions
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     doClearState() {
         this.localStorage = _.cloneDeep(LocalStorageDefaults);
@@ -1157,7 +1157,7 @@ class LayerTool extends Control {
     }
 
     doToggleToolboxSection(targetName) {
-        const targetNode = document.getElementById(targetName);
+        const targetNode = window.document.getElementById(targetName);
         const duration = ConfigManager.getConfig().animationDuration.fast;
 
         targetNode?.slideToggle(duration, (collapsed) => {

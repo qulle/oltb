@@ -50,9 +50,9 @@ class DebugInfoModal extends ModalBase {
         return FILENAME;
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: User Interface
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     #createModal() {
         // Note:
@@ -575,7 +575,7 @@ class DebugInfoModal extends ModalBase {
         });
 
         // Browser Cookies
-        const cookiesContent = Object.fromEntries(document.cookie.split('; ').map((c) => {
+        const cookiesContent = Object.fromEntries(window.document.cookie.split('; ').map((c) => {
             return c.split('=');
         }));
 
@@ -584,7 +584,7 @@ class DebugInfoModal extends ModalBase {
 
         // Generate sections
         const i18n = TranslationManager.get(`${I18N_BASE}.sections`);
-        const sectionFragment = document.createDocumentFragment(); 
+        const sectionFragment = window.document.createDocumentFragment(); 
         [
             {
                 title: i18n.appData,
@@ -649,15 +649,15 @@ class DebugInfoModal extends ModalBase {
         return modalContent;
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: Events
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     onToggleSection(toggle) {
         const targetName = toggle.dataset.oltbToggleableTarget;
         const duration = ConfigManager.getConfig().animationDuration.fast;
         
-        document.getElementById(targetName)?.slideToggle(duration);
+        window.document.getElementById(targetName)?.slideToggle(duration);
     }
 
     onAction() {
@@ -676,9 +676,9 @@ class DebugInfoModal extends ModalBase {
         }
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: DoActions
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     doFilterEventLog(chip, value, eventLog) {
         chip.classList.toggle('oltb-chip--deactivated');
@@ -714,7 +714,7 @@ class DebugInfoModal extends ModalBase {
         const uuid = uuidv4();
         const entry = LogManager.logInformation(FILENAME, 'actionGenerateUUID', uuid);
 
-        const eventLog = document.getElementById(ID_EVENT_LOG);
+        const eventLog = window.document.getElementById(ID_EVENT_LOG);
         const logItem = this.#generateTextLogItem(entry);
         DOM.prependChildren(eventLog, [
             logItem
@@ -754,14 +754,14 @@ class DebugInfoModal extends ModalBase {
         LogManager.clearLog();
 
         // Clear eventlog
-        const uiRefEventLog = document.getElementById(ID_EVENT_LOG);
+        const uiRefEventLog = window.document.getElementById(ID_EVENT_LOG);
         if(uiRefEventLog) {
             DOM.clearElement(uiRefEventLog);
         }
         
         // Reset chips to zero value
         const chipResetKey = 'data-oltb-reset-value';
-        const uiRefChips = document.querySelectorAll(`[${chipResetKey}]`);
+        const uiRefChips = window.document.querySelectorAll(`[${chipResetKey}]`);
         uiRefChips.forEach((chip) => {
             chip.innerHTML = chip.getAttribute(chipResetKey);
         });

@@ -12,12 +12,12 @@ const trapFocus = function(event) {
     const uiRefLastElement = uiRefContent[uiRefContent.length - 1];
 
     if(event.shiftKey) {
-        if(document.activeElement === uiRefFirstElement) {
+        if(window.document.activeElement === uiRefFirstElement) {
             uiRefLastElement.focus();
             event.preventDefault();
         }
     }else {
-        if(document.activeElement === uiRefLastElement) {
+        if(window.document.activeElement === uiRefLastElement) {
             uiRefFirstElement.focus();
             event.preventDefault();
         }

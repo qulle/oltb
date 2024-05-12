@@ -109,7 +109,7 @@ class DrawTool extends Control {
         );
 
         this.initToolboxHTML();
-        this.uiRefToolboxSection = document.querySelector(`#${ID_PREFIX}-toolbox`);
+        this.uiRefToolboxSection = window.document.querySelector(`#${ID_PREFIX}-toolbox`);
         this.initToggleables();
 
         this.uiRefToolType = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-type`);
@@ -147,9 +147,9 @@ class DrawTool extends Control {
         return FILENAME;
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: Init Helpers
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     initToolboxHTML() {
         const i18n = TranslationManager.get(`${I18N_BASE}.toolbox`);
@@ -227,9 +227,9 @@ class DrawTool extends Control {
         });
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: Tool Control
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     onClickTool(event) {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
@@ -322,9 +322,9 @@ class DrawTool extends Control {
         );
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: Browser Events
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     onOLTBReady(event) {
         if(this.localStorage.isActive) {
@@ -363,9 +363,9 @@ class DrawTool extends Control {
         }
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: Map/UI Callbacks
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     onToggleToolbox(toggle) {
         const targetName = toggle.dataset.oltbToggleableTarget;
@@ -392,9 +392,9 @@ class DrawTool extends Control {
         this.doSnap(event);
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: Conversions/Validation
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     shouldAlwaysCreateNewLayer() {
         return SettingsManager.getSetting(Settings.alwaysNewLayers);
@@ -408,9 +408,9 @@ class DrawTool extends Control {
         return this.uiRefIntersectionEnable.value.toLowerCase() === 'true';
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: Generator Helpers
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     generateOLInteractionDraw(type, geometryFunction) {
         return new Draw({
@@ -443,9 +443,9 @@ class DrawTool extends Control {
         });
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: Tool DoActions
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     doClearState() {
         this.localStorage = _.cloneDeep(LocalStorageDefaults);
@@ -453,7 +453,7 @@ class DrawTool extends Control {
     }
 
     doToggleToolboxSection(targetName) {
-        const targetNode = document.getElementById(targetName);
+        const targetNode = window.document.getElementById(targetName);
         const duration = ConfigManager.getConfig().animationDuration.fast;
 
         targetNode?.slideToggle(duration, (collapsed) => {

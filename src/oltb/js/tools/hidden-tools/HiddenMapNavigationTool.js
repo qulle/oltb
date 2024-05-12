@@ -114,9 +114,9 @@ class HiddenMapNavigationTool extends Control {
         return FILENAME;
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: Init Helpers
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     initContextMenuItems() {
         ContextMenu.addItem({
@@ -148,9 +148,9 @@ class HiddenMapNavigationTool extends Control {
         ContextMenu.addItem({});
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: ContextMenu Callbacks
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     onContextMenuCopyCoordinates(map, coordinates, target) {
         this.doCopyCoordinates(coordinates);
@@ -176,9 +176,9 @@ class HiddenMapNavigationTool extends Control {
         });
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: Browser Events
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     onOLTBReady(event) {
         const map = this.getMap();
@@ -192,9 +192,9 @@ class HiddenMapNavigationTool extends Control {
         this.doDetectUrlMarker();
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: Conversions/Validation
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     validateProjection(projection) {
         projection = projection.toUpperCase();
@@ -231,9 +231,9 @@ class HiddenMapNavigationTool extends Control {
         return hasProjection;
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: Map/UI Callbacks
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     onCreateUrlMarker(markerString) {
         const map = this.getMap();
@@ -253,9 +253,9 @@ class HiddenMapNavigationTool extends Control {
         this.setLastPosition(map);
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: Getters and Setters
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     setLastPosition(map) {
         const view = map.getView();
@@ -269,9 +269,9 @@ class HiddenMapNavigationTool extends Control {
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: Tool DoActions
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     async doCopyCoordinates(coordinates) {
         const prettyCoordinates = toStringHDMS(coordinates);

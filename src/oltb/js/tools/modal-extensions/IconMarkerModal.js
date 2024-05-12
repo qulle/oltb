@@ -7,7 +7,7 @@ import { isDarkTheme } from '../../helpers/IsDarkTheme';
 import { createUIInput } from '../../creators/CreateUIInput';
 import { createUISelect } from '../../creators/CreateUISelect';
 import { createUIColorInput } from '../../creators/CreateUIColorInput';
-import { TranslationManager } from '../../managers/TranslationManager';
+import { TranslationManager } from '../../managers/translation-manager/TranslationManager';
 
 const FILENAME = 'modal-extensions/IconMarkerModal.js';
 const ID_PREFIX = 'oltb-marker-modal-marker';
@@ -62,9 +62,9 @@ class IconMarkerModal extends ModalBase {
         return FILENAME;
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: User Interface
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     #createModal() {
         const i18n = TranslationManager.get(`${I18N_BASE}.form`);
@@ -283,9 +283,9 @@ class IconMarkerModal extends ModalBase {
         this.show(modalContent);
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: Events
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     #onClick(result) {
         this.close();

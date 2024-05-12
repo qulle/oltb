@@ -2,7 +2,7 @@ import { ConfigManager } from '../../managers/ConfigManager';
 
 class DOM {
     static createElement(options = {}) {
-        const element = document.createElement(options.element);
+        const element = window.document.createElement(options.element);
 
         // Note:
         // Common element attributes

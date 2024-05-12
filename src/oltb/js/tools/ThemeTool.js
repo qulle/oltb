@@ -108,9 +108,9 @@ class ThemeTool extends Control {
         return FILENAME;
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: Tool Control
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     onClickTool(event) {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
@@ -128,9 +128,9 @@ class ThemeTool extends Control {
         this.doToggleTheme();
     }
     
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: Browser Events
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     onWindowKeyUp(event) {
         if(isShortcutKeyOnly(event, ShortcutKeys.themeTool)) {
@@ -149,9 +149,9 @@ class ThemeTool extends Control {
         }
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: Getters and Setters
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     getToolIcon() {
         return isDarkTheme() 
@@ -171,9 +171,9 @@ class ThemeTool extends Control {
             : ThemesData.light;
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: Tool DoActions
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     doToggleTheme() {
         const active = this.getActiveTheme();
@@ -195,10 +195,10 @@ class ThemeTool extends Control {
         const uiRefToolbarElement = ElementManager.getToolbarElement();
 
         uiRefToolbarElement.classList.remove(from.class);
-        document.body.classList.remove(`oltb-${from.class}`);
+        window.document.body.classList.remove(`oltb-${from.class}`);
 
         uiRefToolbarElement.classList.add(to.class);
-        document.body.classList.add(`oltb-${to.class}`);
+        window.document.body.classList.add(`oltb-${to.class}`);
 
         this.button.removeChild(this.button.firstElementChild);
         this.button.insertAdjacentHTML('afterbegin', to.icon);

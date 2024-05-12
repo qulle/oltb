@@ -92,7 +92,7 @@ class SplitViewTool extends Control {
         
         this.initToolboxHTML();
         this.initMapHTML();
-        this.uiRefToolboxSection = document.querySelector(`#${ID_PREFIX}-toolbox`);
+        this.uiRefToolboxSection = window.document.querySelector(`#${ID_PREFIX}-toolbox`);
         this.initToggleables();
 
         this.uiRefLeftSource = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-left-source`);
@@ -126,9 +126,9 @@ class SplitViewTool extends Control {
         return FILENAME;
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: Init Helpers
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     initToolboxHTML() {
         const i18n = TranslationManager.get(`${I18N_BASE}.toolbox`);
@@ -173,9 +173,9 @@ class SplitViewTool extends Control {
         });
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: Tool Control
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     onClickTool(event) {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
@@ -273,9 +273,9 @@ class SplitViewTool extends Control {
         );
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: Browser Events
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     onOLTBReady(event) {
         if(this.localStorage.isActive) {
@@ -312,9 +312,9 @@ class SplitViewTool extends Control {
         this.doDispatchChangeEvent();
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: Map/UI Callbacks
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     
     onToggleToolbox(toggle) {
         const targetName = toggle.dataset.oltbToggleableTarget;
@@ -348,9 +348,9 @@ class SplitViewTool extends Control {
         event.context.restore();
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Getters and Setters
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     setDefaultSelectedIndexes() {
         this.uiRefLeftSource.selectedIndex = String(INDEX_DEFAULT_LEFT);
@@ -371,9 +371,9 @@ class SplitViewTool extends Control {
         });
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: Tool DoActions
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     doClearState() {
         this.localStorage = _.cloneDeep(LocalStorageDefaults);
@@ -381,7 +381,7 @@ class SplitViewTool extends Control {
     }
 
     doToggleToolboxSection(targetName) {
-        const targetNode = document.getElementById(targetName);
+        const targetNode = window.document.getElementById(targetName);
         const duration = ConfigManager.getConfig().animationDuration.fast;
 
         targetNode?.slideToggle(duration, (collapsed) => {

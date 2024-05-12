@@ -97,9 +97,9 @@ class MagnifyTool extends Control {
         return FILENAME;
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: Tool Control
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     onClickTool(event) {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
@@ -137,9 +137,9 @@ class MagnifyTool extends Control {
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: Browser Events
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     onOLTBReady(event) {
         if(this.localStorage.isActive) {
@@ -187,9 +187,9 @@ class MagnifyTool extends Control {
         }
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: Map/UI Callbacks
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     onMousemove(event) {
         const map = this.getMap();
@@ -219,9 +219,9 @@ class MagnifyTool extends Control {
         this.doPostRender(event);
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: Listeners Subscriptions
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     attachMapListeners() {
         const map = this.getMap();
@@ -238,7 +238,7 @@ class MagnifyTool extends Control {
         mapContainer.addEventListener(Events.browser.mouseOut, this.onMouseoutListenert);
 
         this.onKeydownListener = this.onKeydown.bind(this);
-        document.addEventListener(Events.browser.keyDown, this.onKeydownListener);
+        window.document.addEventListener(Events.browser.keyDown, this.onKeydownListener);
 
         this.onPostrenderListeners = [];
         map.getLayers().getArray().forEach((layer) => {
@@ -257,7 +257,7 @@ class MagnifyTool extends Control {
         // Remove the eventlisteners
         mapContainer.removeEventListener(Events.browser.mouseMove, this.onMousemoveListenert);
         mapContainer.removeEventListener(Events.browser.mouseOut, this.onMouseoutListenert);
-        document.removeEventListener(Events.browser.keyDown, this.onKeydownListener);
+        window.document.removeEventListener(Events.browser.keyDown, this.onKeydownListener);
 
         this.onPostrenderListeners.forEach((listener) => {
             unByKey(listener);
@@ -268,9 +268,9 @@ class MagnifyTool extends Control {
         map.render();
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: Tool DoActions
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     doClearState() {
         this.localStorage = _.cloneDeep(LocalStorageDefaults);

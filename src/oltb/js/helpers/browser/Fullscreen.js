@@ -14,12 +14,12 @@ const FullscreenEventTypes = Object.freeze({
 });
 
 const isFullScreenSupported = function() {
-    const body = document.body;
+    const body = window.document.body;
     
     const supported = !!(
         (body['webkitRequestFullscreen']) ||
         (body['msRequestFullscreen'] && document['msFullscreenEnabled']) ||
-        (body.requestFullscreen && document.fullscreenEnabled)
+        (body.requestFullscreen && window.document.fullscreenEnabled)
     );
 
     if(!supported) {
@@ -33,7 +33,7 @@ const isFullScreen = function() {
     return !!(
         document['webkitIsFullScreen'] ||
         document['msFullscreenElement'] ||
-        document.fullscreenElement
+        window.document.fullscreenElement
     );
 }
 
@@ -56,8 +56,8 @@ const requestFullScreenWithKeys = function(element) {
 }
   
 const exitFullScreen = function() {
-    if(document.exitFullscreen) {
-        return document.exitFullscreen();
+    if(window.document.exitFullscreen) {
+        return window.document.exitFullscreen();
     }else if(document['msExitFullscreen']) {
         return document['msExitFullscreen']();
     }else if(document['webkitExitFullscreen']) {

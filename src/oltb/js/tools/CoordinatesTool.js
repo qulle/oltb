@@ -98,7 +98,7 @@ class CoordinatesTool extends Control {
         );
 
         this.initToolboxHTML();
-        this.uiRefToolboxSection = document.querySelector(`#${ID_PREFIX}-toolbox`);
+        this.uiRefToolboxSection = window.document.querySelector(`#${ID_PREFIX}-toolbox`);
         this.initToggleables();
         this.initSettings();
 
@@ -123,9 +123,9 @@ class CoordinatesTool extends Control {
         return FILENAME;
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: Init Helpers
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     initToolboxHTML() {
         const i18n = TranslationManager.get(`${I18N_BASE}.toolbox`);
@@ -176,9 +176,9 @@ class CoordinatesTool extends Control {
         });
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: Tool Control
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     onClickTool(event) {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
@@ -224,9 +224,9 @@ class CoordinatesTool extends Control {
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: Browser Events
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     onOLTBReady(event) {
         if(this.localStorage.isActive) {
@@ -254,9 +254,9 @@ class CoordinatesTool extends Control {
         }
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: Map/UI Callbacks
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     onToggleToolbox(toggle) {
         const targetName = toggle.dataset.oltbToggleableTarget;
@@ -292,9 +292,9 @@ class CoordinatesTool extends Control {
         }
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: Conversions/Validation
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     shouldCopyCoordinatesOnClick() {
         return SettingsManager.getSetting(Settings.copyCoordinatesOnClick);
@@ -316,9 +316,9 @@ class CoordinatesTool extends Control {
         cell.innerHTML = prettyCoordinates;
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: User Interface
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     createUIProjections() {
         const map = this.getMap();
@@ -377,9 +377,9 @@ class CoordinatesTool extends Control {
         unByKey(this.onMapClickListener);
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: Tool DoActions
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     doClearState() {
         this.localStorage = _.cloneDeep(LocalStorageDefaults);
@@ -387,7 +387,7 @@ class CoordinatesTool extends Control {
     }
 
     doToggleToolboxSection(targetName) {
-        const targetNode = document.getElementById(targetName);
+        const targetNode = window.document.getElementById(targetName);
         const duration = ConfigManager.getConfig().animationDuration.fast;
 
         targetNode?.slideToggle(duration, (collapsed) => {

@@ -4,7 +4,7 @@ import { Events } from '../../helpers/constants/Events';
 import { LogManager } from '../../managers/LogManager';
 import { ConfigManager } from '../../managers/ConfigManager';
 import { ElementManager } from '../../managers/ElementManager';
-import { TranslationManager } from '../../managers/TranslationManager';
+import { TranslationManager } from '../../managers/translation-manager/TranslationManager';
 
 const FILENAME = 'toasts/ToastBase.js';
 const CLASS_TOAST = 'oltb-toast';
@@ -107,9 +107,9 @@ class ToastBase {
         }
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: Public API
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     remove() {
         this.toast.classList.add(`${CLASS_TOAST}--remove`, CLASS_ANIMATION_SLIDE_OUT);

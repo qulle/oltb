@@ -79,7 +79,7 @@ class FullscreenTool extends Control {
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
 
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
-        document.addEventListener(Events.browser.fullScreenChange, this.onFullScreenChange.bind(this));
+        window.document.addEventListener(Events.browser.fullScreenChange, this.onFullScreenChange.bind(this));
 
         // Note: 
         // @Consumer callback
@@ -92,9 +92,9 @@ class FullscreenTool extends Control {
         return FILENAME;
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: Tool Control
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     onClickTool(event) {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
@@ -120,9 +120,9 @@ class FullscreenTool extends Control {
         }
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: Browser Events
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     onWindowKeyUp(event) {
         if(isShortcutKeyOnly(event, ShortcutKeys.fullscreenTool)) {
@@ -134,9 +134,9 @@ class FullscreenTool extends Control {
         this.doFullScreenChange(event);
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: Conversions/Validation
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     isFullScreenSupportedByBrowser() {
         const isSupported = isFullScreenSupported();
@@ -155,9 +155,9 @@ class FullscreenTool extends Control {
         return isSupported;
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: Getters and Setters
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     getToolIcon() {
         return isFullScreen() 
@@ -173,9 +173,9 @@ class FullscreenTool extends Control {
         }
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: Tool DoActions
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     doRequestFullScreen() {
         const map = this.getMap();
@@ -203,7 +203,7 @@ class FullscreenTool extends Control {
     }
 
     doFullScreenChange(event) {
-        if(document.fullscreenElement) {
+        if(window.document.fullscreenElement) {
             this.button.removeChild(this.button.firstElementChild);
             this.button.insertAdjacentHTML('afterbegin', this.exitFullscreenIcon);
 

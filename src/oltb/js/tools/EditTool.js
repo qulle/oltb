@@ -166,7 +166,7 @@ class EditTool extends Control {
         this.parser.inject(Point, LineString, LinearRing, Polygon, MultiPoint, MultiLineString, MultiPolygon, GeometryCollection);
         
         this.initToolboxHTML();
-        this.uiRefToolboxSection = document.querySelector(`#${ID_PREFIX}-toolbox`);
+        this.uiRefToolboxSection = window.document.querySelector(`#${ID_PREFIX}-toolbox`);
         this.initToggleables();
         this.initSettings();
 
@@ -226,9 +226,9 @@ class EditTool extends Control {
         return FILENAME;
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: Init Helpers
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     initToolboxHTML() {
         const i18n = TranslationManager.get(`${I18N_BASE}.toolbox`);
@@ -304,9 +304,9 @@ class EditTool extends Control {
         });
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: Generate Helpers
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     generateOLInteractionSelect() {
         return new Select({
@@ -354,9 +354,9 @@ class EditTool extends Control {
         });
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: Tool Control
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     onClickTool(event) {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
@@ -431,9 +431,9 @@ class EditTool extends Control {
         this.deactivateTool();
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: Browser Events
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     onOLTBReady(event) {
         if(this.localStorage.isActive) {
@@ -468,9 +468,9 @@ class EditTool extends Control {
         this.interactionSelect.getFeatures().clear();
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: Map/UI Callbacks
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     onToggleToolbox(toggle) {
         const targetName = toggle.dataset.oltbToggleableTarget;
@@ -586,9 +586,9 @@ class EditTool extends Control {
         this.doShapeOperation(features, operation, type);
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: Listeners Subscriptions
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     attachOnChange(feature) {
         const selectedFeatures = this.interactionSelect.getFeatures().getArray();
@@ -632,9 +632,9 @@ class EditTool extends Control {
         tooltip.firstElementChild.innerHTML = `${measureValue.value} ${measureValue.unit}`;
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: JSTS Functions
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     unionFeatures(a, b) {
         return jsts.operation.overlay.OverlayOp.union(a, b);
@@ -652,9 +652,9 @@ class EditTool extends Control {
         return jsts.operation.overlay.OverlayOp.difference(a, b);
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: Conversions/Validation
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     useMouseOnlyToEditVectorShapes() {
         return SettingsManager.getSetting(Settings.mouseOnlyToEditVectorShapes);
@@ -664,9 +664,9 @@ class EditTool extends Control {
         return features.length === 2;
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: Ask User
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     askToDeleteFeatures(features) {
         const i18n = TranslationManager.get(`${I18N_BASE}.dialogs.confirms.deleteFeatures`);
@@ -708,9 +708,9 @@ class EditTool extends Control {
         });
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: Tool DoActions
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     doClearState() {
         this.localStorage = _.cloneDeep(LocalStorageDefaults);
@@ -718,7 +718,7 @@ class EditTool extends Control {
     }
 
     doToggleToolboxSection(targetName) {
-        const targetNode = document.getElementById(targetName);
+        const targetNode = window.document.getElementById(targetName);
         const duration = ConfigManager.getConfig().animationDuration.fast;
 
         targetNode?.slideToggle(duration, (collapsed) => {

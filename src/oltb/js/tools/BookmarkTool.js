@@ -121,7 +121,7 @@ class BookmarkTool extends Control {
         this.layerWrapper = this.generateBookmarkLayer();
 
         this.initToolboxHTML();
-        this.uiRefToolboxSection = document.querySelector(`#${ID_PREFIX}-toolbox`);
+        this.uiRefToolboxSection = window.document.querySelector(`#${ID_PREFIX}-toolbox`);
         this.initToggleables();
                                 
         this.uiRefAddBookmarkText = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-add-text`);
@@ -155,9 +155,9 @@ class BookmarkTool extends Control {
         return FILENAME;
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: Init Helpers
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     initToolboxHTML() {
         const i18n = TranslationManager.get(`${I18N_BASE}.toolbox`);
@@ -236,9 +236,9 @@ class BookmarkTool extends Control {
         });
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: Generate Helpers
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     generateBookmarkLayer() {
         return LayerManager.addFeatureLayer({
@@ -252,9 +252,9 @@ class BookmarkTool extends Control {
         });
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: Tool Control
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     onClickTool(event) {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
@@ -296,9 +296,9 @@ class BookmarkTool extends Control {
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: Browser Events
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     onOLTBReady(event) {
         if(this.localStorage.isActive) {
@@ -327,9 +327,9 @@ class BookmarkTool extends Control {
         }
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: Tool Callbacks
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     onZoomToBookmark(bookmark) {
         this.doZoomToBookmark(bookmark);
@@ -347,9 +347,9 @@ class BookmarkTool extends Control {
         this.askEditBookmark(bookmark, bookmarkName);
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: ContextMenu Callbacks
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     onContextMenuBookmarkAdd(map, coordinates, target) {
         this.doAddBookmark('', coordinates);
@@ -359,9 +359,9 @@ class BookmarkTool extends Control {
         this.askClearBookmarks();
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: Map/UI Callbacks
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     onToggleToolbox(toggle) {
         const targetName = toggle.dataset.oltbToggleableTarget;
@@ -383,9 +383,9 @@ class BookmarkTool extends Control {
         this.doAddBookmark(name);
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: LocalStorage Helpers
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     getLocalStorageBookmarkById(id) {
         const bookmark = this.localStorage.bookmarks.find((item) => {
@@ -399,9 +399,9 @@ class BookmarkTool extends Control {
         return !!this.getLocalStorageBookmarkById(id);
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: OpenLayers Shortcut
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     addMarkerToMap(marker) {
         this.layerWrapper.getLayer().getSource().addFeature(marker);
@@ -419,9 +419,9 @@ class BookmarkTool extends Control {
         return this.layerWrapper.getLayer().getVisible()
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: Sortable
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     generateSortable(element, options) {
         const duration = ConfigManager.getConfig().animationDuration.warp;
@@ -499,9 +499,9 @@ class BookmarkTool extends Control {
         return secondary.length;
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: Conversions/Validation
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     validateName(name) {
         name = name.trim();
@@ -521,9 +521,9 @@ class BookmarkTool extends Control {
         return event.type === Events.browser.keyUp && event.key === Keys.valueEnter;
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: User Interface
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     createUIBookmarkNameTippy(bookmarkName) {
         return tippy(bookmarkName, {
@@ -689,9 +689,9 @@ class BookmarkTool extends Control {
         this.sortSortableDesc(this.sortableBookmarkStack);
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: Ask User
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     askClearBookmarks() {
         const i18n = TranslationManager.get(`${I18N_BASE}.dialogs.confirms.clearBookmarks`);
@@ -746,9 +746,9 @@ class BookmarkTool extends Control {
         });
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: Tool DoActions
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     doClearState() {
         this.localStorage = _.cloneDeep(LocalStorageDefaults);
@@ -756,7 +756,7 @@ class BookmarkTool extends Control {
     }
 
     doToggleToolboxSection(targetName) {
-        const targetNode = document.getElementById(targetName);
+        const targetNode = window.document.getElementById(targetName);
         const duration = ConfigManager.getConfig().animationDuration.fast;
 
         targetNode?.slideToggle(duration, (collapsed) => {

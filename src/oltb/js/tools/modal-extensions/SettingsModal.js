@@ -41,13 +41,13 @@ class SettingsModal extends ModalBase {
         return FILENAME;
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: User Interface
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     #createModal() {
         const i18n = TranslationManager.get(`${I18N_BASE}.form`);
-        const settingsFragment = document.createDocumentFragment();
+        const settingsFragment = window.document.createDocumentFragment();
         const settings = SettingsManager.getSettings();
         
         settings.forEach((settingObj, key) => {
@@ -123,9 +123,9 @@ class SettingsModal extends ModalBase {
         this.show(modalContent);
     }
 
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // # Section: Events
-    // -------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     #onClick() {
         this.#state.forEach((value, key) => {
