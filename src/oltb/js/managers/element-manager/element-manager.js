@@ -24,7 +24,6 @@ class ElementManager {
     //--------------------------------------------------------------------
     // # Section: Base Overrides
     //--------------------------------------------------------------------
-    
     static async initAsync(options = {}) {
         LogManager.logDebug(FILENAME, 'initAsync', 'Initialization started');
 
@@ -55,7 +54,6 @@ class ElementManager {
     //--------------------------------------------------------------------
     // # Section: User Interface
     //--------------------------------------------------------------------
-
     static #createMapElement() {
         return window.document.getElementById(ConfigManager.getConfig().openLayers.id);
     }
@@ -141,7 +139,6 @@ class ElementManager {
     //--------------------------------------------------------------------
     // # Section: Events
     //--------------------------------------------------------------------
-
     static #onWindowBrowserStateCleared(event) {
         if(window.innerWidth <= ConfigManager.getConfig().deviceWidth.sm) {
             this.#uiRefToolboxElement.classList.add(`${CLASS_TOOLBOX_CONTAINER}--collision`);
@@ -175,7 +172,6 @@ class ElementManager {
     //--------------------------------------------------------------------
     // # Section: Public API
     //--------------------------------------------------------------------
-
     static getMapElement() {
         return this.#uiRefMapElement;
     }

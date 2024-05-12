@@ -100,7 +100,6 @@ class MyLocationTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Tool Control
     //--------------------------------------------------------------------
-
     onClickTool(event) {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
         
@@ -124,7 +123,6 @@ class MyLocationTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Browser Events
     //--------------------------------------------------------------------
-
     onWindowKeyUp(event) {
         if(isShortcutKeyOnly(event, ShortcutKeys.myLocationTool)) {
             this.onClickTool(event);
@@ -134,7 +132,6 @@ class MyLocationTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Map/UI Callbacks
     //--------------------------------------------------------------------
-
     onSuccess(location) {
         this.doLocationFound(location);
     }
@@ -146,7 +143,6 @@ class MyLocationTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Ask User
     //--------------------------------------------------------------------
-
     askToExitFullScreen() {
         const i18n = TranslationManager.get(`${I18N_BASE}.dialogs.confirms.exitFullscreen`);
 
@@ -178,7 +174,6 @@ class MyLocationTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Tool DoActions
     //--------------------------------------------------------------------
-
     doLocationFound(location) {
         const map = this.getMap();
         if(!map) {

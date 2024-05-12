@@ -88,7 +88,6 @@ class ImportVectorLayerTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Tool Control
     //--------------------------------------------------------------------
-
     onClickTool(event) {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
         
@@ -112,7 +111,6 @@ class ImportVectorLayerTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Browser Events
     //--------------------------------------------------------------------
-
     onWindowKeyUp(event) {
         if(isShortcutKeyOnly(event, ShortcutKeys.importVectorLayerTool)) {
             this.onClickTool(event);
@@ -122,7 +120,6 @@ class ImportVectorLayerTool extends Control {
     //--------------------------------------------------------------------
     // # Section: User Interface
     //--------------------------------------------------------------------
-
     createUIInputDialog() {
         return DOM.createElement({
             element: 'input',
@@ -139,7 +136,6 @@ class ImportVectorLayerTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Map/UI Callbacks
     //--------------------------------------------------------------------
-
     onInputChange(event) {
         const fileDialog = event.target;
 
@@ -164,7 +160,6 @@ class ImportVectorLayerTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Tool DoActions
     //--------------------------------------------------------------------
-
     doShowImportLayerModal(file) {
         if(this.importLayerModal) {
             return;

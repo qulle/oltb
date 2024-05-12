@@ -61,7 +61,6 @@ class LayerManager {
     //--------------------------------------------------------------------
     // # Section: Base Overrides
     //--------------------------------------------------------------------
-    
     static async initAsync(options = {}) {
         LogManager.logDebug(FILENAME, 'initAsync', 'Initialization started');
 

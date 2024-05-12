@@ -71,7 +71,6 @@ class LogManager {
     //--------------------------------------------------------------------
     // # Section: Base Overrides
     //--------------------------------------------------------------------
-    
     static async initAsync(options = {}) {
         LogManager.logDebug(FILENAME, 'initAsync', 'Initialization started');
 
@@ -92,7 +91,6 @@ class LogManager {
     //--------------------------------------------------------------------
     // # Section: Internal
     //--------------------------------------------------------------------
-
     static #logToConsole(level, origin, method, value, formattedTimestamp) {
         level.method(origin, method, value, formattedTimestamp);
     }
@@ -124,7 +122,6 @@ class LogManager {
     //--------------------------------------------------------------------
     // # Section: Public API
     //--------------------------------------------------------------------
-
     static getSize() {
         return this.#log.length || 0;
     }

@@ -20,7 +20,6 @@ class FeatureManager {
     //--------------------------------------------------------------------
     // # Section: Base Overrides
     //--------------------------------------------------------------------
-    
     static async initAsync(options = {}) {
         LogManager.logDebug(FILENAME, 'initAsync', 'Initialization started');
 
@@ -41,7 +40,6 @@ class FeatureManager {
     //--------------------------------------------------------------------
     // # Section: Public API
     //--------------------------------------------------------------------
-
     static getType(feature) {
         return _.get(feature.getProperties(), ['oltb', 'type'], undefined);
     }

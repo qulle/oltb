@@ -26,7 +26,6 @@ class StateManager {
     //--------------------------------------------------------------------
     // # Section: Base Overrides
     //--------------------------------------------------------------------
-    
     static async initAsync(options = {}) {
         LogManager.logDebug(FILENAME, 'initAsync', 'Initialization started');
 
@@ -50,7 +49,6 @@ class StateManager {
     //--------------------------------------------------------------------
     // # Section: Internal
     //--------------------------------------------------------------------
-
     static #getIgnoredKeys(options) {
         const ignoredKeys = Object.freeze([
             ...IgnoredKeys,
@@ -85,7 +83,6 @@ class StateManager {
     //--------------------------------------------------------------------
     // # Section: Public API
     //--------------------------------------------------------------------
-
     static setStateObject(name, value) {
         this.#runtimeState[name] = value;
         this.saveState();

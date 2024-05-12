@@ -22,7 +22,6 @@ class ConfigManager {
     //--------------------------------------------------------------------
     // # Section: Base Overrides
     //--------------------------------------------------------------------
-    
     static async initAsync(options = {}) {
         this.#options = _.merge(_.cloneDeep(DefaultOptions), options);
 

@@ -25,7 +25,6 @@ class SettingsManager {
     //--------------------------------------------------------------------
     // # Section: Base Overrides
     //--------------------------------------------------------------------
-    
     static async initAsync(options = {}) {
         LogManager.logDebug(FILENAME, 'initAsync', 'Initialization started');
         
@@ -63,7 +62,6 @@ class SettingsManager {
     //--------------------------------------------------------------------
     // # Section: Internal
     //--------------------------------------------------------------------
-
     static #getBrowserData() {
         LogManager.logDebug(FILENAME, 'getBrowserData', 'Loading settings from browser');
         
@@ -78,7 +76,6 @@ class SettingsManager {
     //--------------------------------------------------------------------
     // # Section: Public API
     //--------------------------------------------------------------------
-
     static clear() {
         this.#settings = _.cloneDeep(DefaultSettings);
     }

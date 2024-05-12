@@ -129,7 +129,6 @@ class SplitViewTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Init Helpers
     //--------------------------------------------------------------------
-
     initToolboxHTML() {
         const i18n = TranslationManager.get(`${I18N_BASE}.toolbox`);
         const i18nCommon = TranslationManager.get(`${I18N_BASE_COMMON}.titles`);
@@ -176,7 +175,6 @@ class SplitViewTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Tool Control
     //--------------------------------------------------------------------
-
     onClickTool(event) {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
 
@@ -276,7 +274,6 @@ class SplitViewTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Browser Events
     //--------------------------------------------------------------------
-
     onOLTBReady(event) {
         if(this.localStorage.isActive) {
             this.activateTool();
@@ -315,7 +312,6 @@ class SplitViewTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Map/UI Callbacks
     //--------------------------------------------------------------------
-    
     onToggleToolbox(toggle) {
         const targetName = toggle.dataset.oltbToggleableTarget;
         this.doToggleToolboxSection(targetName);
@@ -351,7 +347,6 @@ class SplitViewTool extends Control {
     //--------------------------------------------------------------------
     // # Getters and Setters
     //--------------------------------------------------------------------
-
     setDefaultSelectedIndexes() {
         this.uiRefLeftSource.selectedIndex = String(INDEX_DEFAULT_LEFT);
         this.uiRefRightSource.selectedIndex = String(INDEX_DEFAULT_RIGHT);
@@ -374,7 +369,6 @@ class SplitViewTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Tool DoActions
     //--------------------------------------------------------------------
-
     doClearState() {
         this.localStorage = _.cloneDeep(LocalStorageDefaults);
         StateManager.setStateObject(LocalStorageNodeName, LocalStorageDefaults);

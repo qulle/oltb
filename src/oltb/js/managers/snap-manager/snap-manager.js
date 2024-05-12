@@ -37,7 +37,6 @@ class SnapManager {
     //--------------------------------------------------------------------
     // # Section: Base Overrides
     //--------------------------------------------------------------------
-    
     static async initAsync(options = {}) {
         LogManager.logDebug(FILENAME, 'initAsync', 'Initialization started');
 
@@ -68,7 +67,6 @@ class SnapManager {
     //--------------------------------------------------------------------
     // # Section: User Interface
     //--------------------------------------------------------------------
-
     static #createSnapOverlay() {
         // Note: 
         // Not a perfect solution but will work for now.
@@ -120,7 +118,6 @@ class SnapManager {
     //--------------------------------------------------------------------
     // # Section: Events
     //--------------------------------------------------------------------
-
     static #onSnap(event) {
         this.#snapCounter += 1;
 
@@ -162,7 +159,6 @@ class SnapManager {
     //--------------------------------------------------------------------
     // # Section: Internal
     //--------------------------------------------------------------------
-    
     static #setCountersTo(value) {
         this.#snapCounter = value;
         this.#moveCounter = value;
@@ -184,7 +180,6 @@ class SnapManager {
     //--------------------------------------------------------------------
     // # Section: Public API
     //--------------------------------------------------------------------
-
     static addSnap(tool) {
         const isEnabled = this.#isSnapEnabled();
         const useSnapHelpLines = this.#useSnapHelpLines();

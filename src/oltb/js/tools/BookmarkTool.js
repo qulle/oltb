@@ -158,7 +158,6 @@ class BookmarkTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Init Helpers
     //--------------------------------------------------------------------
-
     initToolboxHTML() {
         const i18n = TranslationManager.get(`${I18N_BASE}.toolbox`);
         const i18nCommon = TranslationManager.get(`${I18N_BASE_COMMON}.titles`);
@@ -239,7 +238,6 @@ class BookmarkTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Generate Helpers
     //--------------------------------------------------------------------
-
     generateBookmarkLayer() {
         return LayerManager.addFeatureLayer({
             id: '1fde0d79-46f9-4c92-8f9c-eb0e98f46772',
@@ -255,7 +253,6 @@ class BookmarkTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Tool Control
     //--------------------------------------------------------------------
-
     onClickTool(event) {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
 
@@ -299,7 +296,6 @@ class BookmarkTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Browser Events
     //--------------------------------------------------------------------
-
     onOLTBReady(event) {
         if(this.localStorage.isActive) {
             this.activateTool();
@@ -330,7 +326,6 @@ class BookmarkTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Tool Callbacks
     //--------------------------------------------------------------------
-
     onZoomToBookmark(bookmark) {
         this.doZoomToBookmark(bookmark);
     }
@@ -350,7 +345,6 @@ class BookmarkTool extends Control {
     //--------------------------------------------------------------------
     // # Section: ContextMenu Callbacks
     //--------------------------------------------------------------------
-
     onContextMenuBookmarkAdd(map, coordinates, target) {
         this.doAddBookmark('', coordinates);
     }
@@ -362,7 +356,6 @@ class BookmarkTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Map/UI Callbacks
     //--------------------------------------------------------------------
-
     onToggleToolbox(toggle) {
         const targetName = toggle.dataset.oltbToggleableTarget;
         this.doToggleToolboxSection(targetName);
@@ -386,7 +379,6 @@ class BookmarkTool extends Control {
     //--------------------------------------------------------------------
     // # Section: LocalStorage Helpers
     //--------------------------------------------------------------------
-
     getLocalStorageBookmarkById(id) {
         const bookmark = this.localStorage.bookmarks.find((item) => {
             return item.id === id;
@@ -402,7 +394,6 @@ class BookmarkTool extends Control {
     //--------------------------------------------------------------------
     // # Section: OpenLayers Shortcut
     //--------------------------------------------------------------------
-
     addMarkerToMap(marker) {
         this.layerWrapper.getLayer().getSource().addFeature(marker);
     }
@@ -422,7 +413,6 @@ class BookmarkTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Sortable
     //--------------------------------------------------------------------
-
     generateSortable(element, options) {
         const duration = ConfigManager.getConfig().animationDuration.warp;
 
@@ -502,7 +492,6 @@ class BookmarkTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Conversions/Validation
     //--------------------------------------------------------------------
-
     validateName(name) {
         name = name.trim();
 
@@ -524,7 +513,6 @@ class BookmarkTool extends Control {
     //--------------------------------------------------------------------
     // # Section: User Interface
     //--------------------------------------------------------------------
-
     createUIBookmarkNameTippy(bookmarkName) {
         return tippy(bookmarkName, {
             content(reference) {
@@ -692,7 +680,6 @@ class BookmarkTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Ask User
     //--------------------------------------------------------------------
-
     askClearBookmarks() {
         const i18n = TranslationManager.get(`${I18N_BASE}.dialogs.confirms.clearBookmarks`);
 
@@ -749,7 +736,6 @@ class BookmarkTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Tool DoActions
     //--------------------------------------------------------------------
-
     doClearState() {
         this.localStorage = _.cloneDeep(LocalStorageDefaults);
         StateManager.setStateObject(LocalStorageNodeName, LocalStorageDefaults);

@@ -229,7 +229,6 @@ class EditTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Init Helpers
     //--------------------------------------------------------------------
-
     initToolboxHTML() {
         const i18n = TranslationManager.get(`${I18N_BASE}.toolbox`);
         const i18nCommon = TranslationManager.get(`${I18N_BASE_COMMON}.titles`);
@@ -307,7 +306,6 @@ class EditTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Generate Helpers
     //--------------------------------------------------------------------
-
     generateOLInteractionSelect() {
         return new Select({
             hitTolerance: this.options.hitTolerance,
@@ -357,7 +355,6 @@ class EditTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Tool Control
     //--------------------------------------------------------------------
-
     onClickTool(event) {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
         
@@ -434,7 +431,6 @@ class EditTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Browser Events
     //--------------------------------------------------------------------
-
     onOLTBReady(event) {
         if(this.localStorage.isActive) {
             this.activateTool();
@@ -471,7 +467,6 @@ class EditTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Map/UI Callbacks
     //--------------------------------------------------------------------
-
     onToggleToolbox(toggle) {
         const targetName = toggle.dataset.oltbToggleableTarget;
         this.doToggleToolboxSection(targetName);
@@ -589,7 +584,6 @@ class EditTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Listeners Subscriptions
     //--------------------------------------------------------------------
-
     attachOnChange(feature) {
         const selectedFeatures = this.interactionSelect.getFeatures().getArray();
         const hasOtherTooltip = !TooltipManager.isEmpty();
@@ -635,7 +629,6 @@ class EditTool extends Control {
     //--------------------------------------------------------------------
     // # Section: JSTS Functions
     //--------------------------------------------------------------------
-
     unionFeatures(a, b) {
         return jsts.operation.overlay.OverlayOp.union(a, b);
     }
@@ -655,7 +648,6 @@ class EditTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Conversions/Validation
     //--------------------------------------------------------------------
-
     useMouseOnlyToEditVectorShapes() {
         return SettingsManager.getSetting(Settings.mouseOnlyToEditVectorShapes);
     }
@@ -667,7 +659,6 @@ class EditTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Ask User
     //--------------------------------------------------------------------
-
     askToDeleteFeatures(features) {
         const i18n = TranslationManager.get(`${I18N_BASE}.dialogs.confirms.deleteFeatures`);
 
@@ -711,7 +702,6 @@ class EditTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Tool DoActions
     //--------------------------------------------------------------------
-
     doClearState() {
         this.localStorage = _.cloneDeep(LocalStorageDefaults);
         StateManager.setStateObject(LocalStorageNodeName, LocalStorageDefaults);

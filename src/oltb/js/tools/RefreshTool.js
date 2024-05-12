@@ -77,7 +77,6 @@ class RefreshTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Tool Control
     //--------------------------------------------------------------------
-
     onClickTool(event) {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
 
@@ -97,7 +96,6 @@ class RefreshTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Browser Events
     //--------------------------------------------------------------------
-
     onWindowKeyUp(event) {
         if(isShortcutKeyOnly(event, ShortcutKeys.refreshPageTool)) {
             this.onClickTool(event);
@@ -107,7 +105,6 @@ class RefreshTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Tool DoActions
     //--------------------------------------------------------------------
-
     doWindowReload() {
         window.location.reload();
     }

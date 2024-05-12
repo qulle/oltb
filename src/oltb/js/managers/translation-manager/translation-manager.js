@@ -49,7 +49,6 @@ class TranslationManager {
     //--------------------------------------------------------------------
     // # Section: Base Overrides
     //--------------------------------------------------------------------
-    
     static async initAsync(options = {}) {
         this.#options = _.merge(_.cloneDeep(DefaultOptions), options);
 
@@ -80,7 +79,6 @@ class TranslationManager {
     //--------------------------------------------------------------------
     // # Section: Fetching JSON-Languages
     //--------------------------------------------------------------------
-
     static async #fetchLanguagesAsync(values) {
         const timestamp = Date.now().toString();
         const requests = values.map(async (value) => {
@@ -194,7 +192,6 @@ class TranslationManager {
     //--------------------------------------------------------------------
     // # Section: Changing Languages
     //--------------------------------------------------------------------
-
     static #applyLanguage() {
         const i18nKey = 'data-oltb-i18n';
         const elements = window.document.querySelectorAll(`[${i18nKey}]`);
@@ -250,7 +247,6 @@ class TranslationManager {
     //--------------------------------------------------------------------
     // # Section: Public API
     //--------------------------------------------------------------------
-
     static getDefaultLanguage() {
         return _.cloneDeep(DefaultLanguage);
     }

@@ -111,7 +111,6 @@ class ThemeTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Tool Control
     //--------------------------------------------------------------------
-
     onClickTool(event) {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
         
@@ -131,7 +130,6 @@ class ThemeTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Browser Events
     //--------------------------------------------------------------------
-
     onWindowKeyUp(event) {
         if(isShortcutKeyOnly(event, ShortcutKeys.themeTool)) {
             this.onClickTool(event);
@@ -152,7 +150,6 @@ class ThemeTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Getters and Setters
     //--------------------------------------------------------------------
-
     getToolIcon() {
         return isDarkTheme() 
             ? ThemesData.dark.icon
@@ -174,7 +171,6 @@ class ThemeTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Tool DoActions
     //--------------------------------------------------------------------
-
     doToggleTheme() {
         const active = this.getActiveTheme();
         const inActive = this.getInActiveThem();

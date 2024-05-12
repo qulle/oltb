@@ -88,7 +88,6 @@ class SettingsTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Init Helpers
     //--------------------------------------------------------------------
-
     initContextMenuItems() {
         ContextMenu.addItem({});
         ContextMenu.addItem({
@@ -101,7 +100,6 @@ class SettingsTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Tool Control
     //--------------------------------------------------------------------
-
     onClickTool(event) {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
 
@@ -121,7 +119,6 @@ class SettingsTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Browser Events
     //--------------------------------------------------------------------
-
     onWindowKeyUp(event) {
         if(isShortcutKeyOnly(event, ShortcutKeys.settingsTool)) {
             this.onClickTool(event);
@@ -131,7 +128,6 @@ class SettingsTool extends Control {
     //--------------------------------------------------------------------
     // # Section: ContextMenu Callbacks
     //--------------------------------------------------------------------
-
     onContextMenuBrowserStateClear(map, coordinates, target) {
         this.askToClearBrowserState();
     }
@@ -139,7 +135,6 @@ class SettingsTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Tool DoActions
     //--------------------------------------------------------------------
-
     askToClearBrowserState() {
         const i18n = TranslationManager.get(`${I18N_BASE}.dialogs.confirms.clearBrowserState`);
 
@@ -157,7 +152,6 @@ class SettingsTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Tool DoActions
     //--------------------------------------------------------------------
-
     doClearBrowserState() {
         this.doDispatchBrowserStateCleared();
 

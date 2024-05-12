@@ -107,7 +107,6 @@ class HomeTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Init Helpers
     //--------------------------------------------------------------------
-
     initContextMenuItems() {
         ContextMenu.addItem({
             icon: this.icon, 
@@ -119,7 +118,6 @@ class HomeTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Tool Control
     //--------------------------------------------------------------------
-
     onClickTool(event) {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
         
@@ -139,7 +137,6 @@ class HomeTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Browser Events
     //--------------------------------------------------------------------
-
     onWindowKeyUp(event) {
         if(isShortcutKeyOnly(event, ShortcutKeys.homeTool)) {
             this.onClickTool(event);
@@ -160,7 +157,6 @@ class HomeTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Map/UI Callbacks
     //--------------------------------------------------------------------
-
     onContextMenuSetHomeLocation(map, coordinates, target) {
         this.doCreateNewHome(coordinates);
     }
@@ -168,7 +164,6 @@ class HomeTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Getters and Setters
     //--------------------------------------------------------------------
-
     getZoom() {
         if(this.localStorage.zoom !== this.options.zoom) {
             return this.localStorage.zoom;
@@ -205,7 +200,6 @@ class HomeTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Tool DoActions
     //--------------------------------------------------------------------
-
     doClearState() {
         this.localStorage = _.cloneDeep(LocalStorageDefaults);
         StateManager.setStateObject(LocalStorageNodeName, LocalStorageDefaults);

@@ -81,7 +81,6 @@ class InfoTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Tool Control
     //--------------------------------------------------------------------
-
     onClickTool(event) {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
 
@@ -101,7 +100,6 @@ class InfoTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Browser Events
     //--------------------------------------------------------------------
-
     onWindowKeyUp(event) {
         if(isShortcutKeyOnly(event, ShortcutKeys.infoTool)) {
             this.onClickTool(event);
@@ -111,7 +109,6 @@ class InfoTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Tool DoActions
     //--------------------------------------------------------------------
-
     doShowInfoModal() {
         if(this.infoModal) {
             return;

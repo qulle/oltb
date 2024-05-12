@@ -118,7 +118,6 @@ class ZoomboxTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Tool Control
     //--------------------------------------------------------------------
-
     onClickTool(event) {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
 
@@ -176,7 +175,6 @@ class ZoomboxTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Browser Events
     //--------------------------------------------------------------------
-
     onOLTBReady(event) {
         if(this.localStorage.isActive) {
             this.activateTool();
@@ -230,7 +228,6 @@ class ZoomboxTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Map/UI Callbacks
     //--------------------------------------------------------------------
-
     onBoxDragStart(event) {
         this.doBoxDragStart(event);
     }
@@ -254,7 +251,6 @@ class ZoomboxTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Generator Helpers
     //--------------------------------------------------------------------
-
     generateOLInteractionDragZoom() {
         const duration = ConfigManager.getConfig().animationDuration.normal;
         
@@ -270,7 +266,6 @@ class ZoomboxTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Tool DoActions
     //--------------------------------------------------------------------
-    
     doClearState() {
         this.localStorage = _.cloneDeep(LocalStorageDefaults);
         StateManager.setStateObject(LocalStorageNodeName, LocalStorageDefaults);

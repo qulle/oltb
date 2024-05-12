@@ -44,7 +44,6 @@ class ProjectionManager {
     //--------------------------------------------------------------------
     // # Section: Base Overrides
     //--------------------------------------------------------------------
-    
     static async initAsync(options = {}) {
         LogManager.logDebug(FILENAME, 'initAsync', 'Adding default projections');
 
@@ -81,7 +80,6 @@ class ProjectionManager {
     //--------------------------------------------------------------------
     // # Section: Internal
     //--------------------------------------------------------------------
-
     static #registerProjections(projections) {
         proj4.defs(projections);
         register(proj4);
@@ -95,7 +93,6 @@ class ProjectionManager {
     //--------------------------------------------------------------------
     // # Section: Public API
     //--------------------------------------------------------------------
-
     static addProjection(code, name, proj4def, active) {
         this.#projections.push({
             active: active,

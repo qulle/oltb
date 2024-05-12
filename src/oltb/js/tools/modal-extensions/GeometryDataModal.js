@@ -37,7 +37,6 @@ class GeometryDataModal extends ModalBase {
     //--------------------------------------------------------------------
     // # Section: User Interface
     //--------------------------------------------------------------------
-
     #createModal() {
         const modalContent = DOM.createElement({
             element: 'div',

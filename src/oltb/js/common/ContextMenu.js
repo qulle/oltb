@@ -63,7 +63,6 @@ class ContextMenu extends Control {
     //--------------------------------------------------------------------
     // # Section: Internal
     //--------------------------------------------------------------------
-
     #getMenuCoordinatesInBounds(x, y) {
         const rem = 1 * 16;
         const pivotValue = 0;
@@ -105,7 +104,6 @@ class ContextMenu extends Control {
     //--------------------------------------------------------------------
     // # Section: Events
     //--------------------------------------------------------------------
-
     onContextMenu(event) {
         this.show(event);
     }
@@ -117,7 +115,6 @@ class ContextMenu extends Control {
     //--------------------------------------------------------------------
     // # Section: Public API
     //--------------------------------------------------------------------
-
     addMenuItem(item) {
         if(!_.has(item, ['i18nKey'])) {
             const li = DOM.createElement({

@@ -58,7 +58,6 @@ class HiddenMarkerTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Init Helpers
     //--------------------------------------------------------------------
-
     initContextMenuItems() {
         ContextMenu.addItem({
             icon: this.createIcon, 
@@ -72,7 +71,6 @@ class HiddenMarkerTool extends Control {
     //--------------------------------------------------------------------
     // # Section: ContextMenu Callbacks
     //--------------------------------------------------------------------
-
     onContextMenuCreateMarker(map, coordinates, target) {
         this.doShowCoordinatesModal(coordinates);
     }
@@ -80,7 +78,6 @@ class HiddenMarkerTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Browser Events
     //--------------------------------------------------------------------
-
     onWindowFeatureEdited(event) {
         // Note: 
         // @Consumer callback
@@ -100,7 +97,6 @@ class HiddenMarkerTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Map/UI Callbacks
     //--------------------------------------------------------------------
-
     onCreateMarker(result) {
         this.doAddIconMarker(result);
     }
@@ -108,7 +104,6 @@ class HiddenMarkerTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Tool DoActions
     //--------------------------------------------------------------------
-
     doShowCoordinatesModal(coordinates) {
         if(this.coordinatesModal) {
             return;

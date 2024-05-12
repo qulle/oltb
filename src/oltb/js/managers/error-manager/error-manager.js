@@ -16,7 +16,6 @@ class ErrorManager {
     //--------------------------------------------------------------------
     // # Section: Base Overrides
     //--------------------------------------------------------------------
-    
     static async initAsync(options = {}) {
         LogManager.logDebug(FILENAME, 'initAsync', 'Initialization started');
         
@@ -39,7 +38,6 @@ class ErrorManager {
     //--------------------------------------------------------------------
     // # Section: Events
     //--------------------------------------------------------------------
-
     static #onError(error) {
         error.preventDefault();
 

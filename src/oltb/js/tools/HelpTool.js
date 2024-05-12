@@ -81,7 +81,6 @@ class HelpTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Tool Control
     //--------------------------------------------------------------------
-
     onClickTool(event) {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
 
@@ -101,7 +100,6 @@ class HelpTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Browser Events
     //--------------------------------------------------------------------
-
     onWindowKeyUp(event) {
         if(isShortcutKeyOnly(event, ShortcutKeys.helpTool)) {
             this.onClickTool();
@@ -111,7 +109,6 @@ class HelpTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Ask User
     //--------------------------------------------------------------------
-
     askToOpenTabOrWindow() {
         const i18n = TranslationManager.get(`${I18N_BASE}.dialogs.confirms.openHelp`);
 
@@ -130,7 +127,6 @@ class HelpTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Tool DoActions
     //--------------------------------------------------------------------
-
     doOpenTabOrWindow() {
         try {
             window.open(this.options.url, this.options.target).focus();

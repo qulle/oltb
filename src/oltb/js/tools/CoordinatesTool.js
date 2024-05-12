@@ -126,7 +126,6 @@ class CoordinatesTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Init Helpers
     //--------------------------------------------------------------------
-
     initToolboxHTML() {
         const i18n = TranslationManager.get(`${I18N_BASE}.toolbox`);
         const i18nCommon = TranslationManager.get(`${I18N_BASE_COMMON}.titles`);
@@ -179,7 +178,6 @@ class CoordinatesTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Tool Control
     //--------------------------------------------------------------------
-
     onClickTool(event) {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
         
@@ -227,7 +225,6 @@ class CoordinatesTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Browser Events
     //--------------------------------------------------------------------
-
     onOLTBReady(event) {
         if(this.localStorage.isActive) {
             this.activateTool();
@@ -257,7 +254,6 @@ class CoordinatesTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Map/UI Callbacks
     //--------------------------------------------------------------------
-
     onToggleToolbox(toggle) {
         const targetName = toggle.dataset.oltbToggleableTarget;
         this.doToggleToolboxSection(targetName);
@@ -295,7 +291,6 @@ class CoordinatesTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Conversions/Validation
     //--------------------------------------------------------------------
-
     shouldCopyCoordinatesOnClick() {
         return SettingsManager.getSetting(Settings.copyCoordinatesOnClick);
     }
@@ -319,7 +314,6 @@ class CoordinatesTool extends Control {
     //--------------------------------------------------------------------
     // # Section: User Interface
     //--------------------------------------------------------------------
-
     createUIProjections() {
         const map = this.getMap();
         if(!map) {
@@ -380,7 +374,6 @@ class CoordinatesTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Tool DoActions
     //--------------------------------------------------------------------
-
     doClearState() {
         this.localStorage = _.cloneDeep(LocalStorageDefaults);
         StateManager.setStateObject(LocalStorageNodeName, LocalStorageDefaults);

@@ -43,7 +43,6 @@ class DownloadLayerModal extends ModalBase {
     //--------------------------------------------------------------------
     // # Section: User Interface
     //--------------------------------------------------------------------
-
     #createModal() {
         const i18n = TranslationManager.get(`${I18N_BASE}.form`);
         const [ formatWrapper, formatSelect ] = createUISelect({
@@ -109,7 +108,6 @@ class DownloadLayerModal extends ModalBase {
     //--------------------------------------------------------------------
     // # Section: Events
     //--------------------------------------------------------------------
-
     #onClick(result) {
         this.close();
         this.options.onDownload instanceof Function && this.options.onDownload(result);

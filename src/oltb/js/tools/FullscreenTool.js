@@ -95,7 +95,6 @@ class FullscreenTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Tool Control
     //--------------------------------------------------------------------
-
     onClickTool(event) {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
 
@@ -123,7 +122,6 @@ class FullscreenTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Browser Events
     //--------------------------------------------------------------------
-
     onWindowKeyUp(event) {
         if(isShortcutKeyOnly(event, ShortcutKeys.fullscreenTool)) {
             this.onClickTool(event);
@@ -137,7 +135,6 @@ class FullscreenTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Conversions/Validation
     //--------------------------------------------------------------------
-
     isFullScreenSupportedByBrowser() {
         const isSupported = isFullScreenSupported();
 
@@ -158,7 +155,6 @@ class FullscreenTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Getters and Setters
     //--------------------------------------------------------------------
-
     getToolIcon() {
         return isFullScreen() 
             ? this.exitFullscreenIcon 
@@ -176,7 +172,6 @@ class FullscreenTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Tool DoActions
     //--------------------------------------------------------------------
-
     doRequestFullScreen() {
         const map = this.getMap();
         if(!map) {

@@ -44,7 +44,6 @@ class SettingsModal extends ModalBase {
     //--------------------------------------------------------------------
     // # Section: User Interface
     //--------------------------------------------------------------------
-
     #createModal() {
         const i18n = TranslationManager.get(`${I18N_BASE}.form`);
         const settingsFragment = window.document.createDocumentFragment();
@@ -126,7 +125,6 @@ class SettingsModal extends ModalBase {
     //--------------------------------------------------------------------
     // # Section: Events
     //--------------------------------------------------------------------
-
     #onClick() {
         this.#state.forEach((value, key) => {
             SettingsManager.setSetting(key, value);

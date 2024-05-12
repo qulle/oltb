@@ -26,7 +26,6 @@ class TooltipManager {
     //--------------------------------------------------------------------
     // # Section: Base Overrides
     //--------------------------------------------------------------------
-    
     static async initAsync(options = {}) {
         LogManager.logDebug(FILENAME, 'initAsync', 'Initialization started');
 
@@ -51,7 +50,6 @@ class TooltipManager {
     //--------------------------------------------------------------------
     // # Section: User Interface
     //--------------------------------------------------------------------
-
     static #createTooltipOverlay() {
         const overlayOffset = ConfigManager.getConfig().overlayOffset;
         const tooltipElement = DOM.createElement({
@@ -73,7 +71,6 @@ class TooltipManager {
     //--------------------------------------------------------------------
     // # Section: Events
     //--------------------------------------------------------------------
-
     static #onPointerMove(event) {
         this.#tooltipOverlay.setPosition(event.coordinate);
     }
@@ -88,7 +85,6 @@ class TooltipManager {
     //--------------------------------------------------------------------
     // # Section: Public API
     //--------------------------------------------------------------------
-
     static isEmpty() {
         return Object.keys(this.#tooltips).length === 0;
     }

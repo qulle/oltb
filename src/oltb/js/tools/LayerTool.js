@@ -198,7 +198,6 @@ class LayerTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Init Helpers
     //--------------------------------------------------------------------
-
     initToolboxHTML() {
         const i18n = TranslationManager.get(`${I18N_BASE}.toolbox`);
         const i18nCommon = TranslationManager.get(`${I18N_BASE_COMMON}.titles`);
@@ -287,7 +286,6 @@ class LayerTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Tool Control
     //--------------------------------------------------------------------
-
     onClickTool(event) {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
         
@@ -331,7 +329,6 @@ class LayerTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Browser Events
     //--------------------------------------------------------------------
-
     onOLTBReady(event) {
         if(this.localStorage.isActive) {
             this.activateTool();
@@ -382,7 +379,6 @@ class LayerTool extends Control {
     //--------------------------------------------------------------------
     // # Section: LocalStorage Helpers
     //--------------------------------------------------------------------
-
     removeUnusedLayers() {
         // Note:
         // MapLayers
@@ -450,7 +446,6 @@ class LayerTool extends Control {
     //--------------------------------------------------------------------
     // # Section: ContextMenu Callbacks
     //--------------------------------------------------------------------
-
     onContextMenuAddMapLayerModal() {
         this.doShowAddMapLayerModal();
     }
@@ -474,7 +469,6 @@ class LayerTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Sortable
     //--------------------------------------------------------------------
-
     generateSortable(element, options) {
         const duration = ConfigManager.getConfig().animationDuration.warp;
 
@@ -574,7 +568,6 @@ class LayerTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Conversions/Validation
     //--------------------------------------------------------------------
-
     isValidEnter(event) {
         return event.type === Events.browser.keyUp && event.key === Keys.valueEnter;
     }
@@ -606,7 +599,6 @@ class LayerTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Map/UI Callbacks
     //--------------------------------------------------------------------
-
     onToggleToolbox(toggle) {
         const targetName = toggle.dataset.oltbToggleableTarget;
         this.doToggleToolboxSection(targetName);
@@ -698,7 +690,6 @@ class LayerTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Listeners Subscriptions
     //--------------------------------------------------------------------
-
     attachUIButtonCallbacks(options, layerWrapper, rightWrapper, layerName) {
         for(const name in options) {
             const functionObject = options[name];
@@ -713,7 +704,6 @@ class LayerTool extends Control {
     //--------------------------------------------------------------------
     // # Section: User Interface
     //--------------------------------------------------------------------
-
     createUILayerNameTippy(layerName) {
         return tippy(layerName, {
             content(reference) {
@@ -1055,7 +1045,6 @@ class LayerTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Map/UI Callbacks
     //--------------------------------------------------------------------
-
     onLayerDelete(layerWrapper, callback) {
         this.askToDeleteLayer(layerWrapper, callback);
     }
@@ -1075,7 +1064,6 @@ class LayerTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Ask User
     //--------------------------------------------------------------------
-    
     askToDownloadLayer(layerWrapper, callback) {
         return new DownloadLayerModal({
             onDownload: (result) => {   
@@ -1150,7 +1138,6 @@ class LayerTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Tool DoActions
     //--------------------------------------------------------------------
-
     doClearState() {
         this.localStorage = _.cloneDeep(LocalStorageDefaults);
         StateManager.setStateObject(LocalStorageNodeName, LocalStorageDefaults);

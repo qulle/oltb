@@ -91,7 +91,6 @@ class ResetNorthTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Init Helpers
     //--------------------------------------------------------------------
-
     initContextMenuItems() {
         ContextMenu.addItem({
             icon: this.resetRotationIcon, 
@@ -103,7 +102,6 @@ class ResetNorthTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Tool Control
     //--------------------------------------------------------------------
-
     onClickTool(event) {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
         
@@ -144,7 +142,6 @@ class ResetNorthTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Browser Events
     //--------------------------------------------------------------------
-
     onWindowKeyUp(event) {
         if(isShortcutKeyOnly(event, ShortcutKeys.resetNorthTool)) {
             this.onClickTool(event);
@@ -154,7 +151,6 @@ class ResetNorthTool extends Control {
     //--------------------------------------------------------------------
     // # Section: ContextMenu Callbacks
     //--------------------------------------------------------------------
-
     onContextMenuSetRotation(map, coordinates, target) {
         this.askToSetRotation(map);
     }
@@ -162,7 +158,6 @@ class ResetNorthTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Ask User
     //--------------------------------------------------------------------
-
     askToSetRotation(map) {
         const view = map.getView();
 
@@ -205,7 +200,6 @@ class ResetNorthTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Tool DoActions
     //--------------------------------------------------------------------
-
     doRotation(map, coordinates, zoom, degrees) {
         const radians = degreesToRadians(degrees);
 

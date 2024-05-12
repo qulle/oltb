@@ -81,7 +81,6 @@ class ZoomOutTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Tool Control
     //--------------------------------------------------------------------
-
     onClickTool(event) {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
         
@@ -106,7 +105,6 @@ class ZoomOutTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Browser Events
     //--------------------------------------------------------------------
-
     onWindowKeyUp(event) {
         if(isShortcutKeyOnly(event, ShortcutKeys.zoomOutTool)) {
             this.onClickTool(event);
@@ -116,7 +114,6 @@ class ZoomOutTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Tool DoActions
     //--------------------------------------------------------------------
-
     doZoomOut(map) {
         const view = map.getView();
         const coordinates = toLonLat(view.getCenter());

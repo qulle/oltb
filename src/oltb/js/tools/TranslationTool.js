@@ -79,7 +79,6 @@ class TranslationTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Tool Control
     //--------------------------------------------------------------------
-
     onClickTool(event) {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
 
@@ -99,7 +98,6 @@ class TranslationTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Browser Events
     //--------------------------------------------------------------------
-
     onWindowKeyUp(event) {
         if(isShortcutKeyOnly(event, ShortcutKeys.translationTool)) {
             this.onClickTool(event);
@@ -109,7 +107,6 @@ class TranslationTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Ask User
     //--------------------------------------------------------------------
-
     askToChangeLanguage() {
         if(this.languageDialog) {
             return;
@@ -139,7 +136,6 @@ class TranslationTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Tool DoActions
     //--------------------------------------------------------------------
-
     doChangeLanguage(result) {
         LogManager.logInformation(FILENAME, 'doChangeLanguage', {
             from: result.from,

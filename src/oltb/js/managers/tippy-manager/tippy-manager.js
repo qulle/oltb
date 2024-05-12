@@ -27,7 +27,6 @@ class TippyManager {
     //--------------------------------------------------------------------
     // # Section: Base Overrides
     //--------------------------------------------------------------------
-    
     static async initAsync(options = {}) {
         LogManager.logDebug(FILENAME, 'initAsync', 'Initialization started');
         
@@ -58,7 +57,6 @@ class TippyManager {
     //--------------------------------------------------------------------
     // # Section: Internal
     //--------------------------------------------------------------------
-
     static #isPlacementBottom() {
         return window.innerWidth <= ConfigManager.getConfig().deviceWidth.sm;
     }
@@ -83,7 +81,6 @@ class TippyManager {
     //--------------------------------------------------------------------
     // # Section: Events
     //--------------------------------------------------------------------
-
     static #onOLTBReady(event) {
         this.#setToolButtonInstances();
     }
@@ -107,7 +104,6 @@ class TippyManager {
     //--------------------------------------------------------------------
     // # Section: User Interface
     //--------------------------------------------------------------------
-
     static #createToolButtonTippy() {
         const uiRefMapElement = ElementManager.getMapElement();
 
@@ -191,7 +187,6 @@ class TippyManager {
     //--------------------------------------------------------------------
     // # Section: Public API
     //--------------------------------------------------------------------
-
     static applyLanguage() {
         this.#setToolButtonInstances();
     }

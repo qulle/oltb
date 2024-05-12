@@ -108,7 +108,6 @@ class OverviewTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Init Helpers
     //--------------------------------------------------------------------
-
     initToolboxHTML() {
         const i18n = TranslationManager.get(`${I18N_BASE}.toolbox`);
         const i18nCommon = TranslationManager.get(`${I18N_BASE_COMMON}.titles`);
@@ -137,7 +136,6 @@ class OverviewTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Generate Helpers
     //--------------------------------------------------------------------
-
     generateOLOverviewMap() {
         return new OverviewMap({
             target: ID_CLASS_OVERVIEW_TARGET,
@@ -154,7 +152,6 @@ class OverviewTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Tool Control
     //--------------------------------------------------------------------
-
     onClickTool(event) {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
 
@@ -208,7 +205,6 @@ class OverviewTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Map/UI Callbacks
     //--------------------------------------------------------------------
-
     onToggleToolbox(toggle) {
         const map = this.getMap();
         if(!map) {
@@ -222,7 +218,6 @@ class OverviewTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Browser Events
     //--------------------------------------------------------------------
-
     onOLTBReady(event) {
         if(this.localStorage.isActive) {
             this.activateTool();
@@ -252,7 +247,6 @@ class OverviewTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Tool DoActions
     //--------------------------------------------------------------------
-
     doClearState() {
         this.localStorage = _.cloneDeep(LocalStorageDefaults);
         StateManager.setStateObject(LocalStorageNodeName, LocalStorageDefaults);

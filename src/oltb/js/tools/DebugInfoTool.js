@@ -85,7 +85,6 @@ class DebugInfoTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Init Helpers
     //--------------------------------------------------------------------
-
     initDebugState() {
         const debugKey = ConfigManager.getConfig().urlParameter.debug;
         const isDebug = UrlManager.getParameter(debugKey) === 'true';
@@ -98,7 +97,6 @@ class DebugInfoTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Tool Control
     //--------------------------------------------------------------------
-
     onClickTool(event) {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
 
@@ -118,7 +116,6 @@ class DebugInfoTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Browser Events
     //--------------------------------------------------------------------
-
     onWindowKeyUp(event) {
         if(isShortcutKeyOnly(event, ShortcutKeys.debugInfoTool)) {
             this.onClickTool(event);
@@ -128,7 +125,6 @@ class DebugInfoTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Tool DoActions
     //--------------------------------------------------------------------
-
     doShowDebugInfoModal() {
         if(this.debugInfoModal) {
             return;

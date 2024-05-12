@@ -34,7 +34,6 @@ class StyleManager {
     //--------------------------------------------------------------------
     // # Section: Base Overrides
     //--------------------------------------------------------------------
-    
     static async initAsync(options = {}) {
         LogManager.logDebug(FILENAME, 'initAsync', 'Initialization started');
 
@@ -57,7 +56,6 @@ class StyleManager {
     //--------------------------------------------------------------------
     // # Section: Internal Logic
     //--------------------------------------------------------------------
-
     static #getIconStyle(
         keyIcon, 
         keyRotation, 
@@ -286,7 +284,6 @@ class StyleManager {
     //--------------------------------------------------------------------
     // # Section: Public API
     //--------------------------------------------------------------------
-
     static getStyle(feature, resolution) {
         const oltb = DefaultConfig.toolbar.id;
         const properties = feature.get(oltb);

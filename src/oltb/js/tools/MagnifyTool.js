@@ -100,7 +100,6 @@ class MagnifyTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Tool Control
     //--------------------------------------------------------------------
-
     onClickTool(event) {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
 
@@ -140,7 +139,6 @@ class MagnifyTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Browser Events
     //--------------------------------------------------------------------
-
     onOLTBReady(event) {
         if(this.localStorage.isActive) {
             this.activateTool();
@@ -190,7 +188,6 @@ class MagnifyTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Map/UI Callbacks
     //--------------------------------------------------------------------
-
     onMousemove(event) {
         const map = this.getMap();
         if(!map) {
@@ -222,7 +219,6 @@ class MagnifyTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Listeners Subscriptions
     //--------------------------------------------------------------------
-
     attachMapListeners() {
         const map = this.getMap();
         if(!map) {
@@ -271,7 +267,6 @@ class MagnifyTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Tool DoActions
     //--------------------------------------------------------------------
-
     doClearState() {
         this.localStorage = _.cloneDeep(LocalStorageDefaults);
         StateManager.setStateObject(LocalStorageNodeName, LocalStorageDefaults);

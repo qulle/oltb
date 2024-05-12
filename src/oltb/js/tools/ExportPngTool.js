@@ -90,7 +90,6 @@ class ExportPngTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Init Helpers
     //--------------------------------------------------------------------
-
     initDebugState() {
         const debugKey = ConfigManager.getConfig().urlParameter.debug;
         this.isDebug = UrlManager.getParameter(debugKey) === 'true';
@@ -99,7 +98,6 @@ class ExportPngTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Tool Control
     //--------------------------------------------------------------------
-
     onClickTool(event) {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
 
@@ -119,7 +117,6 @@ class ExportPngTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Browser Events
     //--------------------------------------------------------------------
-
     onOLTBReady(event) {
         const uiRefMapElement = ElementManager.getMapElement();
         const uiRefAttribution = uiRefMapElement.querySelector('.ol-attribution');
@@ -138,7 +135,6 @@ class ExportPngTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Map/UI Callbacks
     //--------------------------------------------------------------------
-
     async onRenderCompleteAsync() {
         const map = this.getMap();
         if(!map) {
@@ -151,7 +147,6 @@ class ExportPngTool extends Control {
     //--------------------------------------------------------------------
     // # Section: User Interface
     //--------------------------------------------------------------------
-
     createUICanvas(width, height) {
         return DOM.createElement({
             element: 'canvas',
@@ -165,7 +160,6 @@ class ExportPngTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Getters and Setters
     //--------------------------------------------------------------------
-
     getCanvasMatrix(uiRefCanvas) {
         return uiRefCanvas.style.transform
             .match(/^matrix\(([^(]*)\)$/)[1]
@@ -176,7 +170,6 @@ class ExportPngTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Tool DoActions
     //--------------------------------------------------------------------
-
     async doRenderCompleteAsync(map) {
         try {
             const uiRefMapElement = ElementManager.getMapElement();

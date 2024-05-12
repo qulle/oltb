@@ -65,7 +65,6 @@ class IconMarkerModal extends ModalBase {
     //--------------------------------------------------------------------
     // # Section: User Interface
     //--------------------------------------------------------------------
-
     #createModal() {
         const i18n = TranslationManager.get(`${I18N_BASE}.form`);
         const [ titleWrapper, titleInput ] = createUIInput({
@@ -286,7 +285,6 @@ class IconMarkerModal extends ModalBase {
     //--------------------------------------------------------------------
     // # Section: Events
     //--------------------------------------------------------------------
-
     #onClick(result) {
         this.close();
         this.options.onCreate instanceof Function && this.options.onCreate(result);

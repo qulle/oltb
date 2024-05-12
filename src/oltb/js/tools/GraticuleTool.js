@@ -104,7 +104,6 @@ class GraticuleTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Generate Helpers
     //--------------------------------------------------------------------
-
     generateOLGraticule() {
         return new Graticule({
             strokeStyle: new Stroke({
@@ -121,7 +120,6 @@ class GraticuleTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Tool Control
     //--------------------------------------------------------------------
-
     onClickTool(event) {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
 
@@ -166,7 +164,6 @@ class GraticuleTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Browser Events
     //--------------------------------------------------------------------
-
     onOLTBReady(event) {
         if(this.localStorage.isActive) {
             this.activateTool();
@@ -196,7 +193,6 @@ class GraticuleTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Tool DoActions
     //--------------------------------------------------------------------
-
     doClearState() {
         this.localStorage = _.cloneDeep(LocalStorageDefaults);
         StateManager.setStateObject(LocalStorageNodeName, LocalStorageDefaults);

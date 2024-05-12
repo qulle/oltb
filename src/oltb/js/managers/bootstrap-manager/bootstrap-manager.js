@@ -17,7 +17,6 @@ class BootstrapManager {
     //--------------------------------------------------------------------
     // # Section: Base Overrides
     //--------------------------------------------------------------------
-    
     static async initAsync(items = []) {
         LogManager.logInformation(FILENAME, 'initAsync', 'Manager initialization started');
 

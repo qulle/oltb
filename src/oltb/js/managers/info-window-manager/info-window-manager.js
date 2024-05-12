@@ -68,7 +68,6 @@ class InfoWindowManager {
     //--------------------------------------------------------------------
     // # Section: Base Overrides
     //--------------------------------------------------------------------
-    
     static async initAsync(options = {}) {
         LogManager.logDebug(FILENAME, 'initAsync', 'Initialization started');
         
@@ -97,7 +96,6 @@ class InfoWindowManager {
     //--------------------------------------------------------------------
     // # Section: User Interface
     //--------------------------------------------------------------------
-
     static #createInfoWindow() {
         this.#infoWindow = DOM.createElement({
             element: 'div',
@@ -174,7 +172,6 @@ class InfoWindowManager {
     //--------------------------------------------------------------------
     // # Section: Events
     //--------------------------------------------------------------------
-
     static #onSingleClick(event) {
         const results = this.#map.forEachFeatureAtPixel(event.pixel, function(feature, layer) {
             return [feature, layer];
@@ -254,7 +251,6 @@ class InfoWindowManager {
     //--------------------------------------------------------------------
     // # Section: Internal
     //--------------------------------------------------------------------
-
     static #selectFeature(feature) {
         this.#selectedFeature = feature;
         this.#deselectVectorSection();
@@ -389,7 +385,6 @@ class InfoWindowManager {
     //--------------------------------------------------------------------
     // # Section: Public API
     //--------------------------------------------------------------------
-
     static tryPulseAnimation(feature, layer = undefined) {
         const oltb = DefaultConfig.toolbar.id;
         const properties = feature.get(oltb);

@@ -17,7 +17,6 @@ class AccessibilityManager {
     //--------------------------------------------------------------------
     // # Section: Base Overrides
     //--------------------------------------------------------------------
-    
     static async initAsync(options = {}) {
         LogManager.logDebug(FILENAME, 'initAsync', 'Initialization started');
 
@@ -41,7 +40,6 @@ class AccessibilityManager {
     //--------------------------------------------------------------------
     // # Section: Events
     //--------------------------------------------------------------------
-
     static #onKeyboardDown(event) {
         if(event.key === Keys.valueTab) {
             window.document.body.classList.add(CLASS_ACCESSIBILITY);

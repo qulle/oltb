@@ -25,7 +25,6 @@ class ColorPickerManager {
     //--------------------------------------------------------------------
     // # Section: Base Overrides
     //--------------------------------------------------------------------
-    
     static async initAsync(options = {}) {
         LogManager.logDebug(FILENAME, 'initAsync', 'Initialization started');
 
@@ -49,7 +48,6 @@ class ColorPickerManager {
     //--------------------------------------------------------------------
     // # Section: User Interface
     //--------------------------------------------------------------------
-
     static #createColorPickerElement() {
         const palette = ConfigManager.getConfig().aColorPicker.palette;
 
@@ -144,7 +142,6 @@ class ColorPickerManager {
     //--------------------------------------------------------------------
     // # Section: Internal
     //--------------------------------------------------------------------
-
     static #isToPlaceBottom() {
         return window.innerWidth <= ConfigManager.getConfig().deviceWidth.sm || isHorizontal();
     }
@@ -152,7 +149,6 @@ class ColorPickerManager {
     //--------------------------------------------------------------------
     // # Section: Public API
     //--------------------------------------------------------------------
-
     static getColorPicker() {
         return this.#colorPicker;
     }

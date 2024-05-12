@@ -115,7 +115,6 @@ class DirectionTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Tool Control
     //--------------------------------------------------------------------
-
     onClickTool(event) {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
 
@@ -142,7 +141,6 @@ class DirectionTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Browser Events
     //--------------------------------------------------------------------
-
     onWindowKeyUp(event) {
         if(isShortcutKeyOnly(event, ShortcutKeys.directionTool)) {
             this.onClickTool(event);
@@ -167,7 +165,6 @@ class DirectionTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Conversions/Validation
     //--------------------------------------------------------------------
-
     shouldToolButtonBeHidden() {
         if(window.innerWidth <= ConfigManager.getConfig().deviceWidth.sm) {
             this.button.classList.add(`${CLASS_TOOL_BUTTON}--hidden`);
@@ -179,7 +176,6 @@ class DirectionTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Getters and Setters
     //--------------------------------------------------------------------
-
     getToolIcon() {
         return isHorizontal() 
             ? DirectionData.row.icon
@@ -201,7 +197,6 @@ class DirectionTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Tool DoActions
     //--------------------------------------------------------------------
-
     doToggleDirection() {
         const active = this.getActiveDirection();
         const inActive = this.getInActiveDirection();

@@ -117,7 +117,6 @@ class HiddenMapNavigationTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Init Helpers
     //--------------------------------------------------------------------
-
     initContextMenuItems() {
         ContextMenu.addItem({
             icon: this.clipboardIcon,
@@ -151,7 +150,6 @@ class HiddenMapNavigationTool extends Control {
     //--------------------------------------------------------------------
     // # Section: ContextMenu Callbacks
     //--------------------------------------------------------------------
-
     onContextMenuCopyCoordinates(map, coordinates, target) {
         this.doCopyCoordinates(coordinates);
     }
@@ -179,7 +177,6 @@ class HiddenMapNavigationTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Browser Events
     //--------------------------------------------------------------------
-
     onOLTBReady(event) {
         const map = this.getMap();
         if(!map) {
@@ -195,7 +192,6 @@ class HiddenMapNavigationTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Conversions/Validation
     //--------------------------------------------------------------------
-
     validateProjection(projection) {
         projection = projection.toUpperCase();
 
@@ -234,7 +230,6 @@ class HiddenMapNavigationTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Map/UI Callbacks
     //--------------------------------------------------------------------
-
     onCreateUrlMarker(markerString) {
         const map = this.getMap();
         if(!map) {
@@ -256,7 +251,6 @@ class HiddenMapNavigationTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Getters and Setters
     //--------------------------------------------------------------------
-
     setLastPosition(map) {
         const view = map.getView();
         const center = toLonLat(view.getCenter());
@@ -272,7 +266,6 @@ class HiddenMapNavigationTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Tool DoActions
     //--------------------------------------------------------------------
-
     async doCopyCoordinates(coordinates) {
         const prettyCoordinates = toStringHDMS(coordinates);
 

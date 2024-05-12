@@ -97,7 +97,6 @@ class ScaleLineTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Tool Control
     //--------------------------------------------------------------------
-
     onClickTool(event) {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
 
@@ -142,7 +141,6 @@ class ScaleLineTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Generate Helpers
     //--------------------------------------------------------------------
-
     generateOLScaleLine() {
         return new ScaleLine({
             units: this.options.units
@@ -152,7 +150,6 @@ class ScaleLineTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Browser Events
     //--------------------------------------------------------------------
-
     onOLTBReady(event) {
         if(this.localStorage.isActive) {
             this.activateTool();
@@ -182,7 +179,6 @@ class ScaleLineTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Tool DoActions
     //--------------------------------------------------------------------
-
     doClearState() {
         this.localStorage = _.cloneDeep(LocalStorageDefaults);
         StateManager.setStateObject(LocalStorageNodeName, LocalStorageDefaults);

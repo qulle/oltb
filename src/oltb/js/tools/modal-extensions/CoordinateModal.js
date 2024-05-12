@@ -42,7 +42,6 @@ class CoordinateModal extends ModalBase {
     //--------------------------------------------------------------------
     // # Section: User Interface
     //--------------------------------------------------------------------
-
     #createModal() {
         const i18n = TranslationManager.get(`${I18N_BASE}.form`);
         const [ latWrapper, latInput ] = createUIInput({
@@ -124,7 +123,6 @@ class CoordinateModal extends ModalBase {
     //--------------------------------------------------------------------
     // # Section: Events
     //--------------------------------------------------------------------
-
     #onClick(result) {
         this.close();
         this.options.onNavigate instanceof Function && this.options.onNavigate(result);

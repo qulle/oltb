@@ -16,7 +16,6 @@ class ToolManager {
     //--------------------------------------------------------------------
     // # Section: Base Overrides
     //--------------------------------------------------------------------
-    
     static async initAsync(options = {}) {
         LogManager.logDebug(FILENAME, 'initAsync', 'Initialization started');
 
@@ -37,7 +36,6 @@ class ToolManager {
     //--------------------------------------------------------------------
     // # Section: Public API
     //--------------------------------------------------------------------
-
     static setActiveTool(tool) {
         if(this.#tool && this.#tool !== tool) {
             this.#tool.deselectTool();

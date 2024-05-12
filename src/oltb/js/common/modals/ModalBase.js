@@ -88,7 +88,6 @@ class ModalBase {
     //--------------------------------------------------------------------
     // # Section: Events
     //--------------------------------------------------------------------
-
     onWindowKeyUp(event) {
         if(event.key === Keys.valueEscape) {
             this.close();
@@ -98,7 +97,6 @@ class ModalBase {
     //--------------------------------------------------------------------
     // # Section: Public API
     //--------------------------------------------------------------------
-
     isBackdropClicked(event) {
         return event.target === this.backdrop;
     }

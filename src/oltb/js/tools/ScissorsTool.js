@@ -127,7 +127,6 @@ class ScissorsTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Tool Control
     //--------------------------------------------------------------------
-
     onClickTool(event) {
         LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
 
@@ -187,7 +186,6 @@ class ScissorsTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Browser Events
     //--------------------------------------------------------------------
-
     onOLTBReady(event) {
         if(this.localStorage.isActive) {
             this.activateTool();
@@ -227,7 +225,6 @@ class ScissorsTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Map/UI Callbacks
     //--------------------------------------------------------------------
-
     onDrawStart(event) {
         this.doDrawStart(event);
     }
@@ -251,7 +248,6 @@ class ScissorsTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Generator Helpers
     //--------------------------------------------------------------------
-
     generateOLInteractionDraw() {
         const style = this.generateOLStyleObject();
 
@@ -291,7 +287,6 @@ class ScissorsTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Tool DoActions
     //--------------------------------------------------------------------
-
     doClearState() {
         this.localStorage = _.cloneDeep(LocalStorageDefaults);
         StateManager.setStateObject(LocalStorageNodeName, LocalStorageDefaults);

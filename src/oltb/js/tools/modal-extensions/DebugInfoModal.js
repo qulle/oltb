@@ -53,7 +53,6 @@ class DebugInfoModal extends ModalBase {
     //--------------------------------------------------------------------
     // # Section: User Interface
     //--------------------------------------------------------------------
-
     #createModal() {
         // Note:
         // Create a summary log-entry as the top item with some usefull information
@@ -652,7 +651,6 @@ class DebugInfoModal extends ModalBase {
     //--------------------------------------------------------------------
     // # Section: Events
     //--------------------------------------------------------------------
-
     onToggleSection(toggle) {
         const targetName = toggle.dataset.oltbToggleableTarget;
         const duration = ConfigManager.getConfig().animationDuration.fast;
@@ -679,7 +677,6 @@ class DebugInfoModal extends ModalBase {
     //--------------------------------------------------------------------
     // # Section: DoActions
     //--------------------------------------------------------------------
-
     doFilterEventLog(chip, value, eventLog) {
         chip.classList.toggle('oltb-chip--deactivated');
 

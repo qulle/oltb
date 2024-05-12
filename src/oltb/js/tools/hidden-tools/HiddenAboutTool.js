@@ -41,7 +41,6 @@ class HiddenAboutTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Init Helpers
     //--------------------------------------------------------------------
-
     initContextMenuItems() {
         ContextMenu.addItem({});
         ContextMenu.addItem({
@@ -54,7 +53,6 @@ class HiddenAboutTool extends Control {
     //--------------------------------------------------------------------
     // # Section: ContextMenu Callbacks
     //--------------------------------------------------------------------
-
     onContextMenuAbout(map, coordinates, target) {        
         this.doShowAboutModal();
     }
@@ -62,7 +60,6 @@ class HiddenAboutTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Tool DoActions
     //--------------------------------------------------------------------
-
     doShowAboutModal() {
         if(this.aboutInfoModal) {
             return;
