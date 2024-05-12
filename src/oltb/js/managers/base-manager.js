@@ -3,7 +3,7 @@
  * BaseManager
  * 
  * Description:
- * Abstract base class that all other Manager extends.
+ * Abstract base class that all other Managers extends.
  */
 class BaseManager {
     static async initAsync(options = {}) {
