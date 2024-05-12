@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { DOM } from '../../helpers/browser/DOM';
+import { DOM } from '../../helpers/browser/document-object-model';
 import { SvgPaths } from '../../icons/GetIcon';
 import { ModalBase } from '../../common/modals/ModalBase';
 import { LogManager } from '../../managers/LogManager';

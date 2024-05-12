@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { DOM } from '../helpers/browser/DOM';
+import { DOM } from '../helpers/browser/document-object-model';
 import { Keys } from '../helpers/constants/Keys';
 import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
