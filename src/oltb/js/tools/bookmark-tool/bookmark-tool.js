@@ -7,7 +7,7 @@ import { Toast } from '../../common/Toast';
 import { Dialog } from '../../common/Dialog';
 import { Events } from '../../helpers/constants/Events';
 import { Control } from 'ol/control';
-import { goToView } from '../../helpers/GoToView';
+import { goToView } from '../../helpers/go-to-view';
 import { LogManager } from '../managers/LogManager';
 import { ContextMenu } from '../../common/ContextMenu';
 import { v4 as uuidv4 } from 'uuid';

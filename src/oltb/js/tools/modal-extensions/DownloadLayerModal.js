@@ -3,7 +3,7 @@ import { DOM } from '../../helpers/browser/DOM';
 import { ModalBase } from '../../common/modals/ModalBase';
 import { LogManager } from '../../managers/LogManager';
 import { isDarkTheme } from '../../helpers/IsDarkTheme';
-import { FormatOptions } from '../../ol-types/FormatType';
+import { FormatOptions } from '../../ol-mappers/FormatType';
 import { createUISelect } from '../../creators/CreateUISelect';
 import { TranslationManager } from '../../managers/TranslationManager';
 

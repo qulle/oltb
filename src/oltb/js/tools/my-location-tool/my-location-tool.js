@@ -4,7 +4,7 @@ import { Toast } from '../../common/Toast';
 import { Dialog } from '../../common/Dialog';
 import { Events } from '../../helpers/constants/Events';
 import { Control } from 'ol/control';
-import { goToView } from '../../helpers/GoToView';
+import { goToView } from '../../helpers/go-to-view';
 import { fromLonLat } from 'ol/proj';
 import { LogManager } from '../managers/LogManager';
 import { toStringHDMS } from 'ol/coordinate';

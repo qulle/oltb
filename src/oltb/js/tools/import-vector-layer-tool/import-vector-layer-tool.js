@@ -4,13 +4,13 @@ import { Toast } from '../../common/Toast';
 import { Events } from '../../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { LogManager } from '../managers/LogManager';
-import { FormatType } from '../../ol-types/FormatType';
+import { FormatType } from '../../ol-mappers/FormatType';
 import { LayerManager } from '../managers/LayerManager';
 import { ShortcutKeys } from '../../helpers/constants/ShortcutKeys';
 import { ElementManager } from '../managers/ElementManager';
 import { ImportLayerModal } from '../modal-extensions/ImportLayerModal';
 import { SvgPaths, getIcon } from '../icons/GetIcon';
-import { instantiateFormat } from '../../ol-types/FormatType';
+import { instantiateFormat } from '../../ol-mappers/FormatType';
 import { isShortcutKeyOnly } from '../../helpers/browser/IsShortcutKeyOnly';
 import { TranslationManager } from '../managers/TranslationManager';
 

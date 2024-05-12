@@ -2,7 +2,7 @@ import _ from 'lodash';
 import { DOM } from '../../helpers/browser/DOM';
 import { DialogBase } from './DialogBase';
 import { LogManager } from '../../managers/LogManager';
-import { isDarkTheme } from '../../helpers/IsDarkTheme';
+import { isDarkTheme } from '../../helpers/is-dark-theme';
 import { ElementManager } from '../../managers/ElementManager';
 
 const FILENAME = 'dialogs/Prompt.js';

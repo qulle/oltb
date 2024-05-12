@@ -3,7 +3,7 @@ import { DOM } from '../../helpers/browser/DOM';
 import { SvgPaths } from '../../icons/GetIcon';
 import { ModalBase } from '../../common/modals/ModalBase';
 import { LogManager } from '../../managers/LogManager';
-import { isDarkTheme } from '../../helpers/IsDarkTheme';
+import { isDarkTheme } from '../../helpers/is-dark-theme';
 import { createUIInput } from '../../creators/CreateUIInput';
 import { createUISelect } from '../../creators/CreateUISelect';
 import { createUIColorInput } from '../../creators/CreateUIColorInput';

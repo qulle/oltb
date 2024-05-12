@@ -3,7 +3,7 @@ import { DOM } from '../../helpers/browser/DOM';
 import { Events } from '../../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { toLonLat } from 'ol/proj';
-import { goToView } from '../../helpers/GoToView';
+import { goToView } from '../../helpers/go-to-view';
 import { LogManager } from '../managers/LogManager';
 import { ShortcutKeys } from '../../helpers/constants/ShortcutKeys';
 import { ElementManager } from '../managers/ElementManager';

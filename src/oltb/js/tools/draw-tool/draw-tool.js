@@ -9,7 +9,7 @@ import { Settings } from '../../helpers/constants/Settings';
 import { LogManager } from '../managers/LogManager';
 import { ToolManager } from '../managers/ToolManager';
 import { SnapManager } from '../managers/SnapManager';
-import { GeometryType } from '../../ol-types/GeometryType';
+import { GeometryType } from '../../ol-mappers/GeometryType';
 import { StateManager } from '../managers/StateManager';
 import { LayerManager } from '../managers/LayerManager';
 import { ShortcutKeys } from '../../helpers/constants/ShortcutKeys';

@@ -3,7 +3,7 @@ import { DOM } from '../../helpers/browser/DOM';
 import { Events } from '../../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { LogManager } from '../managers/LogManager';
-import { isHorizontal } from '../../helpers/IsRowDirection';
+import { isHorizontal } from '../../helpers/is-row-direction';
 import { StateManager } from '../managers/StateManager';
 import { ShortcutKeys } from '../../helpers/constants/ShortcutKeys';
 import { ConfigManager } from '../managers/ConfigManager';

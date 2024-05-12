@@ -13,7 +13,7 @@ import { ElementManager } from '../managers/ElementManager';
 import { SvgPaths, getIcon } from '../icons/GetIcon';
 import { isShortcutKeyOnly } from '../../helpers/browser/IsShortcutKeyOnly';
 import { TranslationManager } from '../managers/TranslationManager';
-import { degreesToRadians, radiansToDegrees } from '../../helpers/Conversions';
+import { degreesToRadians, radiansToDegrees } from '../../helpers/conversions';
 
 const FILENAME = 'tools/ResetNorthTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';

@@ -12,7 +12,7 @@ import { ToolManager } from '../managers/ToolManager';
 import { SnapManager } from '../managers/SnapManager';
 import { LayerManager } from '../managers/LayerManager';
 import { StateManager } from '../managers/StateManager';
-import { GeometryType } from '../../ol-types/GeometryType';
+import { GeometryType } from '../../ol-mappers/GeometryType';
 import { ShortcutKeys } from '../../helpers/constants/ShortcutKeys';
 import { ConfigManager } from '../managers/ConfigManager';
 import { ElementManager } from '../managers/ElementManager';

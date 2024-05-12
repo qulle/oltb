@@ -2,7 +2,7 @@ import _ from 'lodash';
 import { DOM } from '../../helpers/browser/DOM';
 import { ModalBase } from '../../common/modals/ModalBase';
 import { LogManager } from '../../managers/LogManager';
-import { isDarkTheme } from '../../helpers/IsDarkTheme';
+import { isDarkTheme } from '../../helpers/is-dark-theme';
 import { SettingsManager } from '../../managers/SettingsManager';
 import { createUICheckbox } from '../../creators/CreateUICheckbox';
 import { TranslationManager } from '../../managers/TranslationManager';

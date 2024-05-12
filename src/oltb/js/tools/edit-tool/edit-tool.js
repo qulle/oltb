@@ -25,7 +25,7 @@ import { ElementManager } from '../managers/ElementManager';
 import { TooltipManager } from '../managers/TooltipManager';
 import { createUITooltip } from '../creators/CreateUITooltip';
 import { SettingsManager } from '../managers/SettingsManager';
-import { degreesToRadians } from '../../helpers/Conversions';
+import { degreesToRadians } from '../../helpers/conversions';
 import { LocalStorageKeys } from '../../helpers/constants/LocalStorageKeys';
 import { SvgPaths, getIcon } from '../icons/GetIcon';
 import { GeometryDataModal } from '../modal-extensions/GeometryDataModal';
