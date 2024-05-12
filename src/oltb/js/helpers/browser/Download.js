@@ -1,4 +1,4 @@
-import { DOM } from '../../helpers/browser/DOM';
+import { DOM } from './DOM';
 import { LogManager } from '../../managers/LogManager';
 
 const FILENAME = 'browser/Download.js';

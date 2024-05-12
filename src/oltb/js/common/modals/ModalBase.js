@@ -1,7 +1,7 @@
 import { DOM } from '../../helpers/browser/DOM';
 import { Keys } from '../../helpers/constants/Keys';
 import { Events } from '../../helpers/constants/Events';
-import { trapFocus } from '../../helpers/browser/TrapFocus';
+import { trapFocus } from '../../helpers/browser/trap-focus';
 import { LogManager } from '../../managers/LogManager';
 import { ElementManager } from '../../managers/ElementManager';
 import { SvgPaths, getIcon } from '../../icons/GetIcon';

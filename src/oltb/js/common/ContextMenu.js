@@ -4,7 +4,7 @@ import { Keys } from '../helpers/constants/Keys';
 import { Events } from '../helpers/constants/Events';
 import { Control } from 'ol/control';
 import { transform } from 'ol/proj';
-import { trapFocus } from '../helpers/browser/TrapFocus';
+import { trapFocus } from '../helpers/browser/trap-focus';
 import { UrlManager } from '../managers/UrlManager';
 import { LogManager } from '../managers/LogManager';
 import { ConfigManager } from '../managers/ConfigManager';

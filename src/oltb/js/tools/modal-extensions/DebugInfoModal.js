@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import BrowserDetector from 'browser-dtector';
-import { DOM } from '../../helpers/browser/DOM';
+import { DOM } from '../../helpers/browser/dom';
 import { Toast } from '../../common/Toast';
 import { Events } from '../../helpers/constants/Events';
 import { toLonLat } from 'ol/proj';
@@ -10,7 +10,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { StyleManager } from '../../managers/StyleManager';
 import { jsonReplacer } from '../../helpers/browser/JsonReplacer';
 import { ConfigManager } from '../../managers/ConfigManager';
-import { copyToClipboard } from '../../helpers/browser/CopyToClipboard';
+import { copyToClipboard } from '../../helpers/browser/copy-to-clipboard';
 import { SvgPaths, getIcon } from '../../icons/GetIcon';
 import { ProjectionManager } from '../../managers/ProjectionManager';
 import { TranslationManager } from '../../managers/TranslationManager';

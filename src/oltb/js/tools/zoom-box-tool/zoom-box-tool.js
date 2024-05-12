@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { DOM } from '../../helpers/browser/DOM';
+import { DOM } from '../../helpers/browser/dom';
 import { Keys } from '../../helpers/constants/Keys';
 import { click } from 'ol/events/condition';
 import { Events } from '../../helpers/constants/Events';

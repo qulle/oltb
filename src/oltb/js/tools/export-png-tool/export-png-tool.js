@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import html2canvas from 'html2canvas';
-import { DOM } from '../../helpers/browser/DOM';
+import { DOM } from '../../helpers/browser/dom';
 import { Toast } from '../../common/Toast';
 import { Events } from '../../helpers/constants/Events';
 import { Control } from 'ol/control';

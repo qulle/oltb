@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { DOM } from '../../helpers/browser/DOM';
+import { DOM } from '../../helpers/browser/dom';
 import { Modal } from '../../common/Modal';
 import { Events } from '../../helpers/constants/Events';
 import { Control } from 'ol/control';

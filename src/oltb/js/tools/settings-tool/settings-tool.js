@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { DOM } from '../../helpers/browser/DOM';
+import { DOM } from '../../helpers/browser/dom';
 import { Toast } from '../../common/Toast';
 import { Dialog } from '../../common/Dialog';
 import { Events } from '../../helpers/constants/Events';

@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { DOM } from '../../helpers/browser/DOM';
+import { DOM } from '../../helpers/browser/dom';
 import { ModalBase } from '../../common/modals/ModalBase';
 import { LogManager } from '../../managers/LogManager';
 import { isDarkTheme } from '../../helpers/is-dark-theme';

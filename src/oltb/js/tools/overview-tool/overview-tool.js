@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { OSM } from 'ol/source';
-import { DOM } from '../../helpers/browser/DOM';
+import { DOM } from '../../helpers/browser/dom';
 import { Tile } from 'ol/layer';
 import { Events } from '../../helpers/constants/Events';
 import { LogManager } from '../managers/LogManager';

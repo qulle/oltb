@@ -11,6 +11,7 @@ const jsonReplacer = function(key, value) {
     }
 
     if(value instanceof Error) {
+        // Note:
         // Known properties from Error object
         // Native JS errors that inherits from Error
         return {
@@ -25,6 +26,7 @@ const jsonReplacer = function(key, value) {
     }
     
     if(value instanceof Response) {
+        // Note:
         // Known properties from Response object
         // Might bee a bad Fetch call that was thrown as an Error, contained inside cause property
         return {
@@ -37,6 +39,7 @@ const jsonReplacer = function(key, value) {
         };
     }
     
+    // Note:
     // Normal anonymous object or number/literal
     return value;
 }
