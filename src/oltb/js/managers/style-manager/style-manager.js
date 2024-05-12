@@ -7,6 +7,7 @@ import { degreesToRadians } from '../helpers/Conversions';
 import { SvgPaths, getIcon } from '../icons/GetIcon';
 import { FeatureProperties } from '../helpers/constants/FeatureProperties';
 import { Circle, Fill, Icon, Text, Stroke, Style } from 'ol/style';
+import { BaseManager } from '../base-manager';
 
 const FILENAME = 'managers/StyleManager.js';
 
@@ -28,7 +29,7 @@ const FILENAME = 'managers/StyleManager.js';
  * Especially when there are many markers or wind-barbs. 
  * Therefore, label style is not applied if the map is too zoomed out, so as not to affect movements and mouse events too much.
  */
-class StyleManager {
+class StyleManager extends BaseManager {
     static #styles;
 
     //--------------------------------------------------------------------

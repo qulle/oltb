@@ -1,6 +1,7 @@
 import { Events } from '../../helpers/constants/Events';
 import { LogManager } from '../LogManager';
 import { ConfigManager } from '../ConfigManager';
+import { BaseManager } from '../base-manager';
 
 const FILENAME = 'managers/BootstrapManager.js';
 
@@ -11,7 +12,7 @@ const FILENAME = 'managers/BootstrapManager.js';
  * Description:
  * Manages the init process and ensures that all code is executed in the correct order.
  */
-class BootstrapManager {
+class BootstrapManager extends BaseManager {
     static #managers = [];
 
     //--------------------------------------------------------------------

@@ -1,6 +1,7 @@
 import proj4 from 'proj4';
 import { register } from 'ol/proj/proj4';
 import { LogManager } from './LogManager';
+import { BaseManager } from '../base-manager';
 
 const FILENAME = 'managers/ProjectionManager.js';
 
@@ -11,7 +12,7 @@ const FILENAME = 'managers/ProjectionManager.js';
  * Description:
  * Manages all EPSG projections.
  */
-class ProjectionManager {
+class ProjectionManager extends BaseManager {
     // Note: 
     // More projections can be fetched from here: https://epsg.io/
     static #projections = [{

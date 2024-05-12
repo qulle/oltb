@@ -7,6 +7,7 @@ import { ElementManager } from './ElementManager';
 import { ColorPickerManager } from './ColorPickerManager';
 import { createSingleton, delegate } from 'tippy.js';
 import { ConfigManager } from './ConfigManager';
+import { BaseManager } from '../base-manager';
 
 const FILENAME = 'managers/TippyManager.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
@@ -18,7 +19,7 @@ const CLASS_TOOL_BUTTON = 'oltb-tool-button';
  * Description:
  * Manages and simplifies the usage of the Tippy instance.
  */
-class TippyManager {
+class TippyManager extends BaseManager {
     static #toolButtonInstances;
     static #toolButtonTippy;
     static #dynamicTippy;

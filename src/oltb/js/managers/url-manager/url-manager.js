@@ -1,3 +1,4 @@
+import { BaseManager } from '../base-manager';
 import { LogManager } from './LogManager';
 
 const FILENAME = 'managers/UrlManager.js';
@@ -9,7 +10,7 @@ const FILENAME = 'managers/UrlManager.js';
  * Description:
  * Manages and simplifies the usage of any GET-query parameter and the overall Location object.
  */
-class UrlManager {
+class UrlManager extends BaseManager {
     //--------------------------------------------------------------------
     // # Section: Base Overrides
     //--------------------------------------------------------------------

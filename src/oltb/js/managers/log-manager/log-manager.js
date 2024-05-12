@@ -1,4 +1,5 @@
 import moment from 'moment/moment';
+import { BaseManager } from '../base-manager';
 
 const FILENAME = 'managers/LogManager.js';
 const Config = Object.freeze({
@@ -23,7 +24,7 @@ const Config = Object.freeze({
  * To avoid circular dependencies, the LogManager cannot fetch settings from the ConfigManager.
  * Unfortunately this also means that this local Config-object cannot be changed by the user.
  */
-class LogManager {
+class LogManager extends BaseManager {
     static #log = [];
     static #levels = Object.freeze({
         debug: {

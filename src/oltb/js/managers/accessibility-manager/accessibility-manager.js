@@ -1,6 +1,7 @@
 import { Keys } from '../../helpers/constants/Keys';
 import { Events } from '../../helpers/constants/Events';
 import { LogManager } from '../LogManager';
+import { BaseManager } from '../base-manager';
 
 const FILENAME = 'managers/AccessibilityManager.js';
 const CLASS_ACCESSIBILITY = 'oltb-using-keyboard';
@@ -13,7 +14,7 @@ const CLASS_ACCESSIBILITY = 'oltb-using-keyboard';
  * Manages toggle of class 'oltb-using-keyboard' on the body element that is used to enable specific
  * styling on elements. Example button focus style.
  */
-class AccessibilityManager {
+class AccessibilityManager extends BaseManager {
     //--------------------------------------------------------------------
     // # Section: Base Overrides
     //--------------------------------------------------------------------

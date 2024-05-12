@@ -7,6 +7,7 @@ import { StyleManager } from './StyleManager';
 import { FeatureManager } from '../managers/FeatureManager';
 import { Vector as VectorLayer } from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';
+import { BaseManager } from '../base-manager';
 
 const FILENAME = 'managers/LayerManager.js';
 const DEFAULT_LAYER_NAME = 'New layer';
@@ -36,7 +37,7 @@ const DefaultMapLayerOptions = Object.freeze({
  * Description:
  * Manages all Map- and Feature layers as well as all added features that are tracked by the SnapManager.
  */
-class LayerManager {
+class LayerManager extends BaseManager {
     static #map;
     static #activeFeatureLayer;
 

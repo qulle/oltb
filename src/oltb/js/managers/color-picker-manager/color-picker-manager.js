@@ -5,6 +5,7 @@ import { LogManager } from '../LogManager';
 import { isHorizontal } from '../../helpers/IsRowDirection';
 import { ConfigManager } from '../ConfigManager';
 import { eventDispatcher } from '../../helpers/browser/EventDispatcher';
+import { BaseManager } from '../base-manager';
 
 const FILENAME = 'managers/ColorPickerManager.js';
 
@@ -18,7 +19,7 @@ const FILENAME = 'managers/ColorPickerManager.js';
  * Note:
  * The ACP must be included in the above format or else the Parcel and/or Rollup fails
  */
-class ColorPickerManager {
+class ColorPickerManager extends BaseManager {
     static #colorPickerElement;
     static #colorPicker;
 

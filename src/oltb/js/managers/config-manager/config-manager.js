@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import { LogManager } from './LogManager';
 import { DefaultConfig } from './config-manager/DefaultConfig';
+import { BaseManager } from '../base-manager';
 
 const FILENAME = 'managers/ConfigManager.js';
 
@@ -15,7 +16,7 @@ const DefaultOptions = Object.freeze({
  * Description:
  * Manages loading of dynamic runtime JSON config that is merged with the DefaultConfig above.
  */
-class ConfigManager {
+class ConfigManager extends BaseManager {
     static #config;
     static #options;
 

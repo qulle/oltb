@@ -4,6 +4,7 @@ import { Overlay } from 'ol';
 import { unByKey } from 'ol/Observable';
 import { LogManager } from './LogManager';
 import { ConfigManager } from './ConfigManager';
+import { BaseManager } from '../base-manager';
 
 const FILENAME = 'managers/TooltipManager.js';
 const CLASS_OVERLAY_TOOLTIP = 'oltb-overlay-tooltip';
@@ -16,7 +17,7 @@ const CLASS_OVERLAY_TOOLTIP = 'oltb-overlay-tooltip';
  * Manages and the creation of Tooltips that follows the mouse. 
  * Examples are coordinates tooltip, measurements etc.
  */
-class TooltipManager {
+class TooltipManager extends BaseManager {
     static #map;
     static #tooltipOverlay;
     static #onPointerMoveListener;

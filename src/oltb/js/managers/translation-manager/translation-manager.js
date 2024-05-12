@@ -5,6 +5,7 @@ import { TippyManager } from '../tippy-manager/TippyManager';
 import { ConfigManager } from './ConfigManager';
 import { LocalStorageKeys } from '../../helpers/constants/LocalStorageKeys';
 import { DefaultTranslation } from './DefaultTranslation';
+import { BaseManager } from '../base-manager';
 
 const FILENAME = 'managers/TranslationManager.js';
 
@@ -40,7 +41,7 @@ const LocalStorageDefaults = Object.freeze({
  *     translation: translation
  * }
  */
-class TranslationManager {
+class TranslationManager extends BaseManager {
     static #activeLanguage;
     static #languages;
     static #localStorage;

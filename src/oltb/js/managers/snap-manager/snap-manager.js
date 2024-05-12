@@ -7,6 +7,7 @@ import { Settings } from '../../helpers/constants/Settings';
 import { LogManager } from './LogManager';
 import { LayerManager } from './LayerManager';
 import { SettingsManager } from './SettingsManager';
+import { BaseManager } from '../base-manager';
 
 const FILENAME = 'managers/SnapManager.js';
 const CLASS_OVERLAY_SNAP = 'oltb-overlay-snap';
@@ -21,7 +22,7 @@ const STYLE_NOT_SNAPPED = 'border: 1px dashed #EB4542;';
  * Manages the Snap interaction. 
  * The Snap interaction can be requested by any tool that uses a Draw function such as the Draw-, Measure- and Scissors tool.
  */
-class SnapManager {
+class SnapManager extends BaseManager {
     static #map;
     static #tool;
     static #interaction;

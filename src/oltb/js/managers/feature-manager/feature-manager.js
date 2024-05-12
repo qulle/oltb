@@ -6,6 +6,7 @@ import { LogManager } from '../LogManager';
 import { FeatureProperties } from '../../helpers/constants/FeatureProperties';
 import { DefaultWindBarbOptions } from './DefaultWindBarbOptions';
 import { DefaultIconMarkerOptions } from './DefaultIconMarkerOptions';
+import { BaseManager } from '../base-manager';
 
 const FILENAME = 'managers/FeatureManager.js';
 
@@ -16,7 +17,7 @@ const FILENAME = 'managers/FeatureManager.js';
  * Description:
  * Used to create IconMarkers and WindBarbs and to check for internal properties on those generated Features.
  */
-class FeatureManager {
+class FeatureManager extends BaseManager {
     //--------------------------------------------------------------------
     // # Section: Base Overrides
     //--------------------------------------------------------------------

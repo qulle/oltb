@@ -22,6 +22,7 @@ import { HexTransparencies } from '../../helpers/constants/HexTransparencies';
 import { FeatureProperties } from '../../helpers/constants/FeatureProperties';
 import { copyMarkerCoordinates } from './CopyMarkerCoordinates';
 import { Fill, Stroke, Style, Circle as CircleStyle } from 'ol/style';
+import { BaseManager } from '../base-manager';
 
 const FILENAME = 'managers/InfoWindowManager.js';
 const CLASS_ANIMATION = 'oltb-animation';
@@ -54,7 +55,7 @@ const DefaultHighlightStyle = new Style({
  * - onSingleClick
  * - onMouseMove
  */
-class InfoWindowManager {
+class InfoWindowManager extends BaseManager {
     static #map;
     static #infoWindow;
     static #overlay;

@@ -4,6 +4,7 @@ import { LogManager } from '../LogManager';
 import { StateManager } from '../state-manager/StateManager';
 import { ConfigManager } from './ConfigManager';
 import { LocalStorageKeys } from '../../helpers/constants/LocalStorageKeys';
+import { BaseManager } from '../base-manager';
 
 const FILENAME = 'managers/ElementManager.js';
 const CLASS_TOOLBOX_CONTAINER = 'oltb-toolbox-container';
@@ -15,7 +16,7 @@ const CLASS_TOOLBOX_CONTAINER = 'oltb-toolbox-container';
  * Description:
  * Manages the global UI references to the Map-, Toast-, Toolbar- and Toolbox elements.
  */
-class ElementManager {
+class ElementManager extends BaseManager {
     static #uiRefMapElement;
     static #uiRefToastElement;
     static #uiRefToolbarElement;

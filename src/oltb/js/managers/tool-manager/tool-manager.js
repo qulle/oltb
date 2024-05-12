@@ -1,4 +1,5 @@
 import { LogManager } from './LogManager';
+import { BaseManager } from '../base-manager';
 
 const FILENAME = 'managers/ToolManager.js';
 
@@ -10,7 +11,7 @@ const FILENAME = 'managers/ToolManager.js';
  * Manages the current active tool that cannot be used with all other tools.
  * Examples are Edit-, Draw- and Measure tool.
  */
-class ToolManager {
+class ToolManager extends BaseManager {
     static #tool;
 
     //--------------------------------------------------------------------

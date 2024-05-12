@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import { LogManager } from './LogManager';
 import { ConfigManager } from './ConfigManager';
+import { BaseManager } from '../base-manager';
 
 const FILENAME = 'managers/StateManager.js';
 
@@ -19,7 +20,7 @@ const IgnoredKeys = Object.freeze([
  * Manages the state that is stored in LocalStorage.
  * The state contains information about active tools, user selections, Map position and zoom etc.
  */
-class StateManager {
+class StateManager extends BaseManager {
     static #ignoredKeys;
     static #runtimeState;
 

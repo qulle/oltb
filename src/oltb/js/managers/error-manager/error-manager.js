@@ -1,6 +1,7 @@
 import { Toast } from '../../common/Toast';
 import { Events } from '../../helpers/constants/Events';
 import { LogManager } from '../LogManager';
+import { BaseManager } from '../base-manager';
 
 const FILENAME = 'managers/ErrorManger.js';
 const I18N_BASE = 'managers.errorManager';
@@ -12,7 +13,7 @@ const I18N_BASE = 'managers.errorManager';
  * Description:
  * Manages all uncaught errors.
  */
-class ErrorManager {
+class ErrorManager extends BaseManager {
     //--------------------------------------------------------------------
     // # Section: Base Overrides
     //--------------------------------------------------------------------

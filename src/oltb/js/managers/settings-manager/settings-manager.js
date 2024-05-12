@@ -3,6 +3,7 @@ import { LogManager } from './LogManager';
 import { StateManager } from '../state-manager/state-manager';
 import { DefaultSettings } from './DefaultSettings';
 import { LocalStorageKeys } from '../../helpers/constants/LocalStorageKeys';
+import { BaseManager } from '../base-manager';
 
 const FILENAME = 'managers/SettingsManager.js';
 const I18N_BASE = 'managers.settingsManager.settings';
@@ -18,7 +19,7 @@ const LocalStorageDefaults = Object.freeze({});
  * Manages all user settings. 
  * The settings can be viewed and updated using the SettingsTool.
  */
-class SettingsManager {
+class SettingsManager extends BaseManager {
     static #localStorage;
     static #settings;
 
