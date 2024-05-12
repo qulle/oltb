@@ -11,8 +11,8 @@ const createUITooltip = function(data = '') {
     });
 
     const item = DOM.createElement({
-        html: data,
         element: 'span',
+        html: data,
         class: `${CLASS_OVERLAY_TOOLTIP}__item`
     });
 

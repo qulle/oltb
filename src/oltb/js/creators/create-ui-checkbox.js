@@ -29,8 +29,7 @@ const createUICheckbox = function(options = {}) {
     // The key is also appended to the title and message element
     // so that a active toast can do a hot-swap of the displayed language
     if(options.i18nKey) {
-        const i18n = TranslationManager.get(options.i18nKey);
-        options.text = i18n;
+        options.text = TranslationManager.get(options.i18nKey);
     }
 
     const label = DOM.createElement({
