@@ -1,7 +1,7 @@
-import { Alert } from './dialogs/Alert';
-import { Prompt } from './dialogs/Prompt';
-import { Select } from './dialogs/Select';
-import { Confirm } from './dialogs/Confirm';
+import { Alert } from './Alert';
+import { Prompt } from './Prompt';
+import { Select } from './Select';
+import { Confirm } from './Confirm';
 
 class Dialog {
     static alert(options) {

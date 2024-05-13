@@ -1,4 +1,4 @@
-import { ModalWindow } from './modals/ModalWindow';
+import { ModalWindow } from './ModalWindow';
 
 class Modal {
     static create(options) {

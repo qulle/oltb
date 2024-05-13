@@ -41,8 +41,8 @@ class DOM {
         }
 
         // Custom element prototypes
-        for(const proto in options.prototypes) {
-            element[proto] = options.prototypes[proto];
+        for(const prototype in options.prototypes) {
+            element[prototype] = options.prototypes[prototype];
         }
     
         // Attach given listeners and callbacks

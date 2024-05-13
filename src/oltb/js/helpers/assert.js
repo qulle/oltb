@@ -1,14 +1,5 @@
-import { LogManager } from '../managers/LogManager';
-
-const FILENAME = 'helpers/Assert.js';
-
 class Assert {
     static check(condition, message) {
-        LogManager.logDebug(FILENAME, 'check', {
-            condition: condition,
-            message: message
-        });
-
         if(!condition) {
             throw new Error(`Assertion failed - ${message}`);
         }

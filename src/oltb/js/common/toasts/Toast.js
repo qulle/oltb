@@ -1,4 +1,4 @@
-import { ToastBase } from './toasts/ToastBase';
+import { ToastBase } from './ToastBase';
 
 class Toast {
     static info(options) {
