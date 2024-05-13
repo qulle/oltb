@@ -1,6 +1,6 @@
 import _ from 'lodash';
-import { LogManager } from './LogManager';
-import { ConfigManager } from './ConfigManager';
+import { LogManager } from '../log-manager/log-manager';
+import { ConfigManager } from '../config-manager/config-manager';
 import { BaseManager } from '../base-manager';
 
 const FILENAME = 'managers/StateManager.js';

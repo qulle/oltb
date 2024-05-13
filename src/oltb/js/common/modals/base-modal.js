@@ -1,10 +1,10 @@
 import { DOM } from '../../helpers/browser/document-object-model';
-import { Keys } from '../../helpers/constants/Keys';
-import { Events } from '../../helpers/constants/Events';
+import { Keys } from '../../helpers/constants/keys';
+import { Events } from '../../helpers/constants/events';
 import { trapFocus } from '../../helpers/browser/trap-focus';
-import { LogManager } from '../../managers/LogManager';
-import { ElementManager } from '../../managers/ElementManager';
-import { SvgPaths, getIcon } from '../../icons/GetIcon';
+import { LogManager } from '../../managers/log-manager/log-manager';
+import { ElementManager } from '../../managers/element-manager/element-manager';
+import { SvgPaths, getIcon } from '../../icons/get-icon';
 
 const FILENAME = 'modals/ModalBase.js';
 const CLASS_ANIMATION = 'oltb-animation';
@@ -12,7 +12,7 @@ const CLASS_ANIMATION_BOUNCE = `${CLASS_ANIMATION}--bounce`;
 const CLASS_MODAL = 'oltb-modal';
 const CLASS_MODAL_BACKDROP = `${CLASS_MODAL}-backdrop`;
 
-class ModalBase {
+class BaseModal {
     constructor(title, maximized, onClosed) {
         LogManager.logDebug(FILENAME, 'constructor', 'init');
         
@@ -135,4 +135,4 @@ class ModalBase {
     }
 }
 
-export { ModalBase };
+export { BaseModal };

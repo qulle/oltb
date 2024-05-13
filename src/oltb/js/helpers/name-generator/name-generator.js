@@ -1,6 +1,6 @@
 import _ from 'lodash';
-import { Animals } from './Animals';
-import { Adjectives } from './Adjectives';
+import { Animals } from './animals';
+import { Adjectives } from './adjectives';
 
 const INDEX_OFFSET = 1;
 

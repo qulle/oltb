@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { DOM } from '../../helpers/browser/document-object-model';
-import { ModalBase } from './ModalBase';
-import { LogManager } from '../../managers/LogManager';
+import { BaseModal } from './base-modal';
+import { LogManager } from '../../managers/log-manager/log-manager';
 
 const FILENAME = 'modals/ModalWindow.js';
 const CLASS_MODAL = 'oltb-modal';
@@ -11,7 +11,7 @@ const DefaultOptions = Object.freeze({
     content: 'Oops missing content'
 });
 
-class ModalWindow extends ModalBase {
+class ModalWindow extends BaseModal {
     constructor(options = {}) {
         LogManager.logDebug(FILENAME, 'constructor', 'init');
         

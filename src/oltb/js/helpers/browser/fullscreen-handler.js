@@ -1,7 +1,3 @@
-import { LogManager } from '../../managers/LogManager';
-
-const FILENAME = 'browser/Fullscreen.js';
-
 const FullscreenEvents = Object.freeze([
     'fullscreenchange',
     'webkitfullscreenchange',
@@ -14,19 +10,11 @@ const FullscreenEventTypes = Object.freeze({
 });
 
 const isFullScreenSupported = function() {
-    const body = window.document.body;
-    
-    const supported = !!(
-        (body['webkitRequestFullscreen']) ||
-        (body['msRequestFullscreen'] && document['msFullscreenEnabled']) ||
-        (body.requestFullscreen && window.document.fullscreenEnabled)
+    return !!(
+        (window.document.body['webkitRequestFullscreen']) ||
+        (window.document.body['msRequestFullscreen'] && document['msFullscreenEnabled']) ||
+        (window.document.body.requestFullscreen && window.document.fullscreenEnabled)
     );
-
-    if(!supported) {
-        LogManager.logWarning(FILENAME, 'isFullScreenSupported', 'FullScreen is not supported by browser');
-    }
-        
-    return supported;
 }
 
 const isFullScreen = function() {

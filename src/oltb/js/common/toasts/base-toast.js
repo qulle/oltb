@@ -1,10 +1,10 @@
 import _ from 'lodash';
 import { DOM } from '../../helpers/browser/dom';
-import { Events } from '../../helpers/constants/Events';
-import { LogManager } from '../../managers/LogManager';
-import { ConfigManager } from '../../managers/ConfigManager';
-import { ElementManager } from '../../managers/ElementManager';
-import { TranslationManager } from '../../managers/translation-manager/TranslationManager';
+import { Events } from '../../helpers/constants/events';
+import { LogManager } from '../../managers/log-manager/log-manager';
+import { ConfigManager } from '../../managers/config-manager/config-manager';
+import { ElementManager } from '../../managers/element-manager/element-manager';
+import { TranslationManager } from '../../managers/translation-manager/translation-manager';
 
 const FILENAME = 'toasts/ToastBase.js';
 const CLASS_TOAST = 'oltb-toast';
@@ -23,7 +23,7 @@ const DefaultOptions = Object.freeze({
     spinner: false
 });
 
-class ToastBase {
+class BaseToast {
     constructor(options = {}) {
         LogManager.logDebug(FILENAME, 'constructor', 'init');
         
@@ -142,4 +142,4 @@ class ToastBase {
     }
 }
 
-export { ToastBase };
+export { BaseToast };

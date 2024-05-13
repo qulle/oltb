@@ -1,6 +1,6 @@
-import { Toast } from '../../common/Toast';
-import { Events } from '../../helpers/constants/Events';
-import { LogManager } from '../LogManager';
+import { Toast } from '../../common/toasts/toast';
+import { Events } from '../../helpers/constants/events';
+import { LogManager } from '../log-manager/log-manager';
 import { BaseManager } from '../base-manager';
 
 const FILENAME = 'managers/ErrorManger.js';

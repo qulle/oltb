@@ -1,13 +1,13 @@
 import _ from 'lodash';
 import ManyKeysMap from 'many-keys-map';
-import { LogManager } from './LogManager';
-import { getWindBarb } from '../icons/GetWindBarb';
-import { DefaultConfig } from './config-manager/DefaultConfig';
-import { degreesToRadians } from '../helpers/Conversions';
-import { SvgPaths, getIcon } from '../icons/GetIcon';
-import { FeatureProperties } from '../helpers/constants/FeatureProperties';
-import { Circle, Fill, Icon, Text, Stroke, Style } from 'ol/style';
+import { LogManager } from '../log-manager/log-manager';
 import { BaseManager } from '../base-manager';
+import { getWindBarb } from '../../icons/get-wind-barb';
+import { DefaultConfig } from '../config-manager/default-config';
+import { degreesToRadians } from '../../helpers/conversions';
+import { SvgPaths, getIcon } from '../../icons/get-icon';
+import { FeatureProperties } from '../../helpers/constants/feature-properties';
+import { Circle, Fill, Icon, Text, Stroke, Style } from 'ol/style';
 
 const FILENAME = 'managers/StyleManager.js';
 

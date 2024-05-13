@@ -1,7 +1,7 @@
-import { Events } from '../../helpers/constants/Events';
-import { LogManager } from '../LogManager';
-import { ConfigManager } from '../ConfigManager';
+import { Events } from '../../helpers/constants/events';
+import { LogManager } from '../log-manager/log-manager';
 import { BaseManager } from '../base-manager';
+import { ConfigManager } from '../config-manager/config-manager';
 
 const FILENAME = 'managers/BootstrapManager.js';
 

@@ -1,10 +1,10 @@
 import _ from 'lodash';
-import { LogManager } from './LogManager';
-import { StateManager } from '../state-manager/StateManager';
-import { TippyManager } from '../tippy-manager/TippyManager';
-import { ConfigManager } from './ConfigManager';
-import { LocalStorageKeys } from '../../helpers/constants/LocalStorageKeys';
-import { DefaultTranslation } from './DefaultTranslation';
+import { LogManager } from '../log-manager/log-manager';
+import { StateManager } from '../state-manager/state-manager';
+import { TippyManager } from '../tippy-manager/tippy-manager';
+import { ConfigManager } from '../config-manager/config-manager';
+import { LocalStorageKeys } from '../../helpers/constants/local-storage-keys';
+import { DefaultTranslation } from './default-translation';
 import { BaseManager } from '../base-manager';
 
 const FILENAME = 'managers/TranslationManager.js';

@@ -2,11 +2,11 @@ import _ from 'lodash';
 import { Point } from 'ol/geom';
 import { Feature } from 'ol';
 import { fromLonLat } from 'ol/proj';
-import { LogManager } from '../LogManager';
-import { FeatureProperties } from '../../helpers/constants/FeatureProperties';
-import { DefaultWindBarbOptions } from './DefaultWindBarbOptions';
-import { DefaultIconMarkerOptions } from './DefaultIconMarkerOptions';
+import { LogManager } from '../log-manager/log-manager';
 import { BaseManager } from '../base-manager';
+import { FeatureProperties } from '../../helpers/constants/feature-properties';
+import { DefaultWindBarbOptions } from './default-wind-barb-options';
+import { DefaultIconMarkerOptions } from './default-icon-marker-options';
 
 const FILENAME = 'managers/FeatureManager.js';
 

@@ -1,9 +1,9 @@
-import { DOM } from '../../helpers/browser/DOM';
-import { Events } from '../../helpers/constants/Events';
-import { LogManager } from '../LogManager';
-import { StateManager } from '../state-manager/StateManager';
-import { ConfigManager } from './ConfigManager';
-import { LocalStorageKeys } from '../../helpers/constants/LocalStorageKeys';
+import { DOM } from '../../helpers/browser/dom-factory';
+import { Events } from '../../helpers/constants/events';
+import { LogManager } from '../log-manager/log-manager';
+import { StateManager } from '../state-manager/state-manager';
+import { ConfigManager } from '../config-manager/config-manager';
+import { LocalStorageKeys } from '../../helpers/constants/local-storage-keys';
 import { BaseManager } from '../base-manager';
 
 const FILENAME = 'managers/ElementManager.js';

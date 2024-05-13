@@ -1,13 +1,13 @@
 import _ from 'lodash';
-import { Events } from '../helpers/constants/Events';
+import { Events } from '../helpers/constants/event';
 import { Collection } from 'ol';
-import { LogManager } from '../managers/LogManager';
+import { LogManager } from '../log-manager/log-manager';
+import { BaseManager } from '../base-manager';
 import { v4 as uuidv4 } from 'uuid';
-import { StyleManager } from './StyleManager';
-import { FeatureManager } from '../managers/FeatureManager';
+import { StyleManager } from '../state-manager/state-manager';
+import { FeatureManager } from '../feature-manager/feature-manager';
 import { Vector as VectorLayer } from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';
-import { BaseManager } from '../base-manager';
 
 const FILENAME = 'managers/LayerManager.js';
 const DEFAULT_LAYER_NAME = 'New layer';

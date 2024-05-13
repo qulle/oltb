@@ -1,6 +1,6 @@
-import { Keys } from '../../helpers/constants/Keys';
-import { Events } from '../../helpers/constants/Events';
-import { LogManager } from '../LogManager';
+import { Keys } from '../../helpers/constants/keys';
+import { Events } from '../../helpers/constants/events';
+import { LogManager } from '../log-manager/log-manager';
 import { BaseManager } from '../base-manager';
 
 const FILENAME = 'managers/AccessibilityManager.js';

@@ -1,7 +1,7 @@
 import _ from 'lodash';
-import { LogManager } from './LogManager';
-import { DefaultConfig } from './config-manager/DefaultConfig';
+import { LogManager } from '../log-manager/log-manager';
 import { BaseManager } from '../base-manager';
+import { DefaultConfig } from './default-config';
 
 const FILENAME = 'managers/ConfigManager.js';
 

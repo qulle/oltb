@@ -1,7 +1,7 @@
-import { Toast } from '../../common/Toast';
-import { LogManager } from '../LogManager';
-import { ConfigManager } from '../ConfigManager';
-import { copyToClipboard } from '../../helpers/browser/CopyToClipboard';
+import { Toast } from '../../common/toasts/toast';
+import { LogManager } from '../log-manager/log-manager';
+import { ConfigManager } from '../config-manager/config-manager';
+import { copyToClipboard } from '../../helpers/browser/copy-to-clipboard';
 
 const FILENAME = 'info-window-manager/CopyMarkerInfo.js';
 const I18N_BASE = 'managers.infoWindowManager';

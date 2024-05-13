@@ -1,5 +1,5 @@
-import { DOM } from './DOM';
-import { LogManager } from '../../managers/LogManager';
+import { DOM } from './dom-factory';
+import { LogManager } from '../../managers/log-manager/log-manager';
 
 const FILENAME = 'browser/Download.js';
 

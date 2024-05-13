@@ -1,13 +1,13 @@
-import { DOM } from '../../helpers/browser/DOM';
+import { DOM } from '../../helpers/browser/dom-factory';
 import { Snap } from 'ol/interaction';
-import { Events } from '../../helpers/constants/Events';
+import { Events } from '../../helpers/constants/events';
 import { Overlay } from 'ol';
 import { unByKey } from 'ol/Observable';
-import { Settings } from '../../helpers/constants/Settings';
-import { LogManager } from './LogManager';
-import { LayerManager } from './LayerManager';
-import { SettingsManager } from './SettingsManager';
+import { Settings } from '../../helpers/constants/settings';
+import { LogManager } from '../log-manager/log-manager';
 import { BaseManager } from '../base-manager';
+import { LayerManager } from '../layer-manager/layer-manager';
+import { SettingsManager } from '../settings-manager/settings-manager';
 
 const FILENAME = 'managers/SnapManager.js';
 const CLASS_OVERLAY_SNAP = 'oltb-overlay-snap';

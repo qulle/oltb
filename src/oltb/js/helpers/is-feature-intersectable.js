@@ -1,5 +1,5 @@
-import { GeometryType } from '../ol-mappers/GeometryType';
-import { FeatureProperties } from './constants/FeatureProperties';
+import { GeometryType } from '../ol-mappers/ol-geometry';
+import { FeatureProperties } from './constants/feature-properties';
 
 const isFeatureIntersectable = function(type, geometry) {
     return (

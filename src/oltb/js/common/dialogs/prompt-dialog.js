@@ -2,7 +2,7 @@ import _ from 'lodash';
 import { DOM } from '../../helpers/browser/dom';
 import { BaseDialog } from './base-dialog';
 import { isDarkTheme } from '../../helpers/is-dark-theme';
-import { ElementManager } from '../../managers/ElementManager';
+import { ElementManager } from '../../managers/element-manager/element-manager';
 
 const CLASS_DIALOG = 'oltb-dialog';
 const CLASS_ANIMATION = 'oltb-animation';

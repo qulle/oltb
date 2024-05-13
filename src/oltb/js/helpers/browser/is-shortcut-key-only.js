@@ -1,4 +1,4 @@
-import { Keys } from '../constants/Keys';
+import { Keys } from '../constants/keys';
 
 const isShortcutKeyOnly = function(event, key) {
     return (

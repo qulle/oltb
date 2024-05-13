@@ -1,7 +1,7 @@
-import { Dialog } from '../../common/Dialog';
-import { Events } from '../../helpers/constants/Events';
-import { LayerManager } from '../LayerManager';
-import { TranslationManager } from '../translation-manager/TranslationManager';
+import { Dialog } from '../../common/dialogs/dialog';
+import { Events } from '../../helpers/constants/events';
+import { LayerManager } from '../layer-manager/layer-manager';
+import { TranslationManager } from '../translation-manager/translation-manager';
 
 const I18N_BASE = 'managers.infoWindowManager';
 

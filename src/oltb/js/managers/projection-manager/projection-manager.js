@@ -1,6 +1,6 @@
 import proj4 from 'proj4';
 import { register } from 'ol/proj/proj4';
-import { LogManager } from './LogManager';
+import { LogManager } from '../log-manager/log-manager';
 import { BaseManager } from '../base-manager';
 
 const FILENAME = 'managers/ProjectionManager.js';
