@@ -11,14 +11,14 @@ import { ConfigManager } from '../managers/ConfigManager';
 import { ElementManager } from '../managers/ElementManager';
 import { TranslationManager } from '../managers/TranslationManager';
 
-const FILENAME = 'common/ContextMenu.js';
+const FILENAME = 'tools/ContextMenuTool.js';
 const CLASS_CONTEXT_MENU = 'oltb-context-menu';
 
 const DefaultOptions = Object.freeze({
     name: 'MainContextMenu'
 });
 
-class ContextMenu extends Control {
+class ContextMenuTool extends Control {
     static #isDebug;
     static #items = [];
 
@@ -220,4 +220,4 @@ class ContextMenu extends Control {
     }
 }
 
-export { ContextMenu }; 
+export { ContextMenuTool }; 
