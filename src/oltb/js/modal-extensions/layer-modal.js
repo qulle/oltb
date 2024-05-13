@@ -1,14 +1,14 @@
 import _ from 'lodash';
-import { DOM } from '../../helpers/browser/DOM';
-import { ModalBase } from '../../common/modals/ModalBase';
-import { isDarkTheme } from '../../helpers/IsDarkTheme';
-import { LayerOptions } from '../../ol-mappers/LayerType';
-import { SourceOptions } from '../../ol-mappers/SourceType';
-import { ConfigManager } from '../../managers/ConfigManager';
-import { createUIInput } from '../../creators/CreateUIInput';
-import { createUISelect } from '../../creators/CreateUISelect';
-import { ProjectionManager } from '../../managers/ProjectionManager';
-import { TranslationManager } from '../../managers/TranslationManager';
+import { DOM } from '../helpers/browser/dom-factory';
+import { BaseModal } from '../common/modals/base-modal';
+import { isDarkTheme } from '../helpers/is-dark-theme';
+import { LayerOptions } from '../ol-mappers/ol-layer';
+import { SourceOptions } from '../ol-mappers/ol-source';
+import { ConfigManager } from '../managers/config-manager/config-manager';
+import { createUIInput } from '../creators/create-ui-input';
+import { createUISelect } from '../creators/create-ui-select';
+import { ProjectionManager } from '../managers/projection-manager/projection-manager';
+import { TranslationManager } from '../managers/translation-manager/translation-manager';
 
 const FILENAME = 'modal-extensions/LayerModal.js';
 const ID_PREFIX = 'oltb-layer-modal';
@@ -25,7 +25,7 @@ const DefaultOptions = Object.freeze({
  * About:
  * Manager that handles creation of Map-Layers
  */
-class LayerModal extends ModalBase {
+class LayerModal extends BaseModal {
     constructor(options = {}) {
         super(
             TranslationManager.get(`${I18N_BASE}.title`), 

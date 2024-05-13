@@ -1,10 +1,10 @@
 import _ from 'lodash';
-import { DOM } from '../../helpers/browser/dom';
-import { ModalBase } from '../../common/modals/ModalBase';
-import { isDarkTheme } from '../../helpers/is-dark-theme';
-import { SettingsManager } from '../../managers/SettingsManager';
-import { createUICheckbox } from '../../creators/CreateUICheckbox';
-import { TranslationManager } from '../../managers/TranslationManager';
+import { DOM } from '../helpers/browser/dom-factory';
+import { BaseModal } from '../common/modals/base-modal';
+import { isDarkTheme } from '../helpers/is-dark-theme';
+import { SettingsManager } from '../managers/settings-manager/settings-manager';
+import { createUICheckbox } from '../creators/create-ui-checkbox';
+import { TranslationManager } from '../managers/translation-manager/translation-manager';
 
 const FILENAME = 'modal-extensions/SettingsModal.js';
 const I18N_BASE = 'modalExtensions.settingsModal';
@@ -20,7 +20,7 @@ const DefaultOptions = Object.freeze({
  * About:
  * Manager that handles settings
  */
-class SettingsModal extends ModalBase {
+class SettingsModal extends BaseModal {
     #state = new Map();
 
     constructor(options = {}) {

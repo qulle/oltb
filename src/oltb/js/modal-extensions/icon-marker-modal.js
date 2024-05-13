@@ -1,12 +1,12 @@
 import _ from 'lodash';
-import { DOM } from '../../helpers/browser/document-object-model';
-import { SvgPaths } from '../../icons/GetIcon';
-import { ModalBase } from '../../common/modals/ModalBase';
-import { isDarkTheme } from '../../helpers/is-dark-theme';
-import { createUIInput } from '../../creators/CreateUIInput';
-import { createUISelect } from '../../creators/CreateUISelect';
-import { createUIColorInput } from '../../creators/CreateUIColorInput';
-import { TranslationManager } from '../../managers/translation-manager/TranslationManager';
+import { DOM } from '../helpers/browser/dom-factory';
+import { SvgPaths } from '../icons/get-icon';
+import { BaseModal } from '../common/modals/base-modal';
+import { isDarkTheme } from '../helpers/is-dark-theme';
+import { createUIInput } from '../creators/create-ui-input';
+import { createUISelect } from '../creators/create-ui-select';
+import { createUIColorInput } from '../creators/create-ui-color-input';
+import { TranslationManager } from '../managers/translation-manager/translation-manager';
 
 const FILENAME = 'modal-extensions/IconMarkerModal.js';
 const ID_PREFIX = 'oltb-marker-modal-marker';
@@ -43,7 +43,7 @@ const DefaultOptions = Object.freeze({
  * About:
  * Manager that handles creation of Icon-Markers
  */
-class IconMarkerModal extends ModalBase {
+class IconMarkerModal extends BaseModal {
     constructor(options = {}) {
         super(
             TranslationManager.get(`${I18N_BASE}.title`),

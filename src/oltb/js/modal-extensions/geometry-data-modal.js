@@ -1,7 +1,7 @@
 import _ from 'lodash';
-import { DOM } from '../../helpers/browser/DOM';
-import { ModalBase } from '../../common/modals/ModalBase';
-import { TranslationManager } from '../../managers/TranslationManager';
+import { DOM } from '../helpers/browser/dom-factory';
+import { BaseModal } from '../common/modals/base-modal';
+import { TranslationManager } from '../managers/translation-manager/translation-manager';
 
 const FILENAME = 'modal-extensions/GeometryDataModal.js';
 const I18N_BASE = 'modalExtensions.geometryDataModal';
@@ -15,7 +15,7 @@ const DefaultOptions = Object.freeze({
  * About:
  * Manager that handles downloading of vector layers
  */
-class GeometryDataModal extends ModalBase {
+class GeometryDataModal extends BaseModal {
     constructor(options = {}) {
         super(
             TranslationManager.get(`${I18N_BASE}.title`),

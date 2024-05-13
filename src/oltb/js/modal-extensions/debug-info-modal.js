@@ -1,19 +1,19 @@
 import _ from 'lodash';
 import BrowserDetector from 'browser-dtector';
-import { DOM } from '../../helpers/browser/dom';
-import { Toast } from '../../common/Toast';
-import { Events } from '../helpers/constants/Events';
+import { DOM } from '../helpers/browser/dom-factory';
+import { Toast } from '../common/toasts/toast';
+import { Events } from '../helpers/constants/events';
 import { toLonLat } from 'ol/proj';
-import { ModalBase } from '../../common/modals/ModalBase';
-import { LogManager } from '../../managers/LogManager';
+import { BaseModal } from '../common/modals/base-modal';
+import { LogManager } from '../managers/log-manager/log-manager';
 import { v4 as uuidv4 } from 'uuid';
-import { StyleManager } from '../../managers/StyleManager';
-import { jsonReplacer } from '../../helpers/browser/JsonReplacer';
-import { ConfigManager } from '../../managers/ConfigManager';
+import { StyleManager } from '../managers/style-manager/style-manager';
+import { jsonReplacer } from '../helpers/browser/json-replacer';
+import { ConfigManager } from '../managers/config-manager/config-manager';
 import { copyToClipboard } from '../helpers/browser/copy-to-clipboard';
-import { SvgPaths, getIcon } from '../../icons/GetIcon';
-import { ProjectionManager } from '../../managers/ProjectionManager';
-import { TranslationManager } from '../../managers/TranslationManager';
+import { SvgPaths, getIcon } from '../icons/get-icon';
+import { ProjectionManager } from '../managers/projection-manager/projection-manager';
+import { TranslationManager } from '../managers/translation-manager/translation-manager';
 
 const FILENAME = 'modal-extensions/DebugInfoModal.js';
 const ID_PREFIX = 'oltb-debug';
@@ -32,7 +32,7 @@ const DefaultOptions = Object.freeze({
  * About:
  * Manager providing debugging information
  */
-class DebugInfoModal extends ModalBase {
+class DebugInfoModal extends BaseModal {
     constructor(options = {}) {
         super(
             TranslationManager.get(`${I18N_BASE}.title`), 

@@ -1,10 +1,10 @@
 import _ from 'lodash';
-import { DOM } from '../../helpers/browser/DOM';
-import { ModalBase } from '../../common/modals/ModalBase';
-import { isDarkTheme } from '../../helpers/IsDarkTheme';
-import { FormatOptions } from '../../ol-mappers/FormatType';
-import { createUISelect } from '../../creators/CreateUISelect';
-import { TranslationManager } from '../../managers/TranslationManager';
+import { DOM } from '../helpers/browser/dom-factory';
+import { BaseModal } from '../common/modals/base-modal';
+import { isDarkTheme } from '../helpers/is-dark-theme';
+import { FormatOptions } from '../ol-mappers/ol-format';
+import { createUISelect } from '../creators/create-ui-select';
+import { TranslationManager } from '../managers/translation-manager/translation-manager';
 
 const FILENAME = 'modal-extensions/DownloadLayerModal.js';
 const ID_PREFIX = 'oltb-download-layer-modal';
@@ -21,7 +21,7 @@ const DefaultOptions = Object.freeze({
  * About:
  * Manager that handles downloading of vector layers
  */
-class DownloadLayerModal extends ModalBase {
+class DownloadLayerModal extends BaseModal {
     constructor(options = {}) {
         super(
             TranslationManager.get(`${I18N_BASE}.title`),
