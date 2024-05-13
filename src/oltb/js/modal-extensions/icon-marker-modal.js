@@ -2,7 +2,6 @@ import _ from 'lodash';
 import { DOM } from '../../helpers/browser/document-object-model';
 import { SvgPaths } from '../../icons/GetIcon';
 import { ModalBase } from '../../common/modals/ModalBase';
-import { LogManager } from '../../managers/LogManager';
 import { isDarkTheme } from '../../helpers/is-dark-theme';
 import { createUIInput } from '../../creators/CreateUIInput';
 import { createUISelect } from '../../creators/CreateUISelect';
@@ -46,8 +45,6 @@ const DefaultOptions = Object.freeze({
  */
 class IconMarkerModal extends ModalBase {
     constructor(options = {}) {
-        LogManager.logDebug(FILENAME, 'constructor', 'init');
-
         super(
             TranslationManager.get(`${I18N_BASE}.title`),
             options.maximized, 

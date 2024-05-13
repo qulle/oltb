@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import { DOM } from '../../helpers/browser/DOM';
 import { ModalBase } from '../../common/modals/ModalBase';
-import { LogManager } from '../../managers/LogManager';
 import { isDarkTheme } from '../../helpers/IsDarkTheme';
 import { LayerOptions } from '../../ol-mappers/LayerType';
 import { SourceOptions } from '../../ol-mappers/SourceType';
@@ -28,8 +27,6 @@ const DefaultOptions = Object.freeze({
  */
 class LayerModal extends ModalBase {
     constructor(options = {}) {
-        LogManager.logDebug(FILENAME, 'constructor', 'init');
-
         super(
             TranslationManager.get(`${I18N_BASE}.title`), 
             options.maximized, 

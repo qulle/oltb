@@ -1,46 +1,35 @@
 import _ from 'lodash';
 import { DOM } from '../../helpers/browser/dom';
-import { DialogBase } from './DialogBase';
-import { LogManager } from '../../managers/LogManager';
+import { BaseDialog } from './base-dialog';
 import { isDarkTheme } from '../../helpers/is-dark-theme';
 import { ElementManager } from '../../managers/ElementManager';
 
-const FILENAME = 'dialogs/Prompt.js';
 const CLASS_DIALOG = 'oltb-dialog';
 const CLASS_ANIMATION = 'oltb-animation';
 const CLASS_ANIMATION_BOUNCE = `${CLASS_ANIMATION}--bounce`;
 
 const DefaultOptions = Object.freeze({
-    title: 'Prompt',
+    title: 'Confirm',
     message: 'Oops missing message',
-    placeholder: undefined,
-    value: undefined,
-    confirmClass: 'oltb-btn--green-mid',
-    confirmText: 'Confirm',
+    confirmClass: 'oltb-btn--red-mid',
+    confirmText: 'Yes',
     cancelText: 'Cancel',
     onConfirm: undefined,
-    onCancel: undefined,
-    onInput: undefined
+    onCancel: undefined
 });
 
-class Prompt extends DialogBase {
+class ConfirmDialog extends BaseDialog {
     constructor(options = {}) {
-        LogManager.logDebug(FILENAME, 'constructor', 'init');
-        
         super();
-        
+
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
         this.#createDialog();
-    }
-
-    #isValid(value) {
-        return value !== undefined && value !== null;
     }
 
     #createDialog() {
         const dialog = DOM.createElement({
             element: 'div', 
-            class: `${CLASS_DIALOG} ${CLASS_DIALOG}--prompt ${CLASS_ANIMATION} ${CLASS_ANIMATION_BOUNCE}`
+            class: `${CLASS_DIALOG} ${CLASS_DIALOG}--confirm ${CLASS_ANIMATION} ${CLASS_ANIMATION_BOUNCE}`
         });
 
         const title = DOM.createElement({
@@ -55,49 +44,28 @@ class Prompt extends DialogBase {
             html: this.options.message
         });
 
-        const input = DOM.createElement({
-            element: 'input',
-            class: `${CLASS_DIALOG}__input oltb-input`, 
-            attributes: {
-                'type': 'text'
-            },
-            listeners: {
-                'input': () => {
-                    this.options.onInput instanceof Function && this.options.onInput(input.value.trim());
-                }
-            }
-        });
-
-        if(this.#isValid(this.options.placeholder)) {
-            input.setAttribute('placeholder', this.options.placeholder);
-        }
-
-        if(this.#isValid(this.options.value)) {
-            input.value = this.options.value;
-        }
-
         const buttonWrapper = DOM.createElement({
-            element: 'div',
+            element: 'div', 
             class: `${CLASS_DIALOG}__buttons-wrapper`
         });
 
         const confirmButton = DOM.createElement({
-            element: 'button', 
-            text: this.options.confirmText,
+            element: 'button',
+            text: this.options.confirmText, 
             class: `${CLASS_DIALOG}__btn oltb-btn ${this.options.confirmClass}`,
             attributes: {
-                'type': 'button'
+                'type': 'button' 
             },
             listeners: {
                 'click': () => {
                     this.close();
-                    this.options.onConfirm instanceof Function && this.options.onConfirm(input.value.trim());
+                    this.options.onConfirm instanceof Function && this.options.onConfirm();
                 }
             }
         });
-
+        
         const cancelButton = DOM.createElement({
-            element: 'button', 
+            element: 'button',
             text: this.options.cancelText,
             class: `${CLASS_DIALOG}__btn oltb-btn ${ isDarkTheme() 
                 ? 'oltb-btn--gray-mid' 
@@ -109,7 +77,7 @@ class Prompt extends DialogBase {
             listeners: {
                 'click': () => {
                     this.close();
-                    this.options.onCancel instanceof Function && this.options.onCancel(); 
+                    this.options.onCancel instanceof Function && this.options.onCancel();
                 }
             }
         });
@@ -122,7 +90,6 @@ class Prompt extends DialogBase {
         DOM.appendChildren(dialog, [
             title,
             message,
-            input,
             buttonWrapper
         ]);
 
@@ -139,4 +106,4 @@ class Prompt extends DialogBase {
     }
 }
 
-export { Prompt };
+export { ConfirmDialog };

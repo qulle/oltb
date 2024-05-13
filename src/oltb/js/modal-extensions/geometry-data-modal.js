@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import { DOM } from '../../helpers/browser/DOM';
 import { ModalBase } from '../../common/modals/ModalBase';
-import { LogManager } from '../../managers/LogManager';
 import { TranslationManager } from '../../managers/TranslationManager';
 
 const FILENAME = 'modal-extensions/GeometryDataModal.js';
@@ -18,8 +17,6 @@ const DefaultOptions = Object.freeze({
  */
 class GeometryDataModal extends ModalBase {
     constructor(options = {}) {
-        LogManager.logDebug(FILENAME, 'constructor', 'init');
-
         super(
             TranslationManager.get(`${I18N_BASE}.title`),
             options.maximized, 

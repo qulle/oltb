@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import { DOM } from '../../helpers/browser/dom';
 import { ModalBase } from '../../common/modals/ModalBase';
-import { LogManager } from '../../managers/LogManager';
 import { isDarkTheme } from '../../helpers/is-dark-theme';
 import { SettingsManager } from '../../managers/SettingsManager';
 import { createUICheckbox } from '../../creators/CreateUICheckbox';
@@ -25,8 +24,6 @@ class SettingsModal extends ModalBase {
     #state = new Map();
 
     constructor(options = {}) {
-        LogManager.logDebug(FILENAME, 'constructor', 'init');
-
         super(
             TranslationManager.get(`${I18N_BASE}.title`), 
             options.maximized, 

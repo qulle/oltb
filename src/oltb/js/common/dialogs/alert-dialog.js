@@ -1,10 +1,8 @@
 import _ from 'lodash';
 import { DOM } from '../../helpers/browser/dom';
-import { DialogBase } from './DialogBase';
-import { LogManager } from '../../managers/LogManager';
-import { ElementManager } from '../../managers/ElementManager';
+import { BaseDialog } from './base-dialog';
+import { ElementManager } from '../../managers/element-manager/element-manager';
 
-const FILENAME = 'dialogs/Alert.js';
 const CLASS_DIALOG = 'oltb-dialog';
 const CLASS_ANIMATION = 'oltb-animation';
 const CLASS_ANIMATION_BOUNCE = `${CLASS_ANIMATION}--bounce`;
@@ -16,10 +14,8 @@ const DefaultOptions = Object.freeze({
     onConfirm: undefined
 });
 
-class Alert extends DialogBase {
+class AlertDialog extends BaseDialog {
     constructor(options = {}) {
-        LogManager.logDebug(FILENAME, 'constructor', 'init');
-
         super();
         
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
@@ -87,4 +83,4 @@ class Alert extends DialogBase {
     }
 }
 
-export { Alert };
+export { AlertDialog };

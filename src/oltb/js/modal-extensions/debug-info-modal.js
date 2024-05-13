@@ -2,7 +2,7 @@ import _ from 'lodash';
 import BrowserDetector from 'browser-dtector';
 import { DOM } from '../../helpers/browser/dom';
 import { Toast } from '../../common/Toast';
-import { Events } from '../../helpers/constants/Events';
+import { Events } from '../helpers/constants/Events';
 import { toLonLat } from 'ol/proj';
 import { ModalBase } from '../../common/modals/ModalBase';
 import { LogManager } from '../../managers/LogManager';
@@ -10,7 +10,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { StyleManager } from '../../managers/StyleManager';
 import { jsonReplacer } from '../../helpers/browser/JsonReplacer';
 import { ConfigManager } from '../../managers/ConfigManager';
-import { copyToClipboard } from '../../helpers/browser/copy-to-clipboard';
+import { copyToClipboard } from '../helpers/browser/copy-to-clipboard';
 import { SvgPaths, getIcon } from '../../icons/GetIcon';
 import { ProjectionManager } from '../../managers/ProjectionManager';
 import { TranslationManager } from '../../managers/TranslationManager';
@@ -34,8 +34,6 @@ const DefaultOptions = Object.freeze({
  */
 class DebugInfoModal extends ModalBase {
     constructor(options = {}) {
-        LogManager.logDebug(FILENAME, 'constructor', 'init');
-
         super(
             TranslationManager.get(`${I18N_BASE}.title`), 
             DefaultOptions.maximized, 

@@ -2,17 +2,13 @@ import { DOM } from '../../helpers/browser/dom';
 import { Keys } from '../../helpers/constants/Keys';
 import { Events } from '../../helpers/constants/Events';
 import { trapFocus } from '../../helpers/browser/TrapFocus';
-import { LogManager } from '../../managers/LogManager';
 
-const FILENAME = 'dialogs/DialogBase.js';
 const CLASS_ANIMATION = 'oltb-animation';
 const CLASS_ANIMATION_BOUNCE = `${CLASS_ANIMATION}--bounce`;
 const CLASS_DIALOG_BACKDROP = 'oltb-dialog-backdrop';
 
-class DialogBase {
+class BaseDialog {
     constructor() {
-        LogManager.logDebug(FILENAME, 'constructor', 'init');
-        
         this.backdrop = DOM.createElement({
             element: 'div', 
             class: `${CLASS_DIALOG_BACKDROP} ${CLASS_DIALOG_BACKDROP}--fixed`,
@@ -59,4 +55,4 @@ class DialogBase {
     }
 }
 
-export { DialogBase };
+export { BaseDialog };

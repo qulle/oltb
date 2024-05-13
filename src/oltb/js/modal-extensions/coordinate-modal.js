@@ -1,37 +1,33 @@
 import _ from 'lodash';
 import { DOM } from '../../helpers/browser/DOM';
 import { ModalBase } from '../../common/modals/ModalBase';
-import { LogManager } from '../../managers/LogManager';
 import { isDarkTheme } from '../../helpers/IsDarkTheme';
-import { FormatOptions } from '../../ol-mappers/FormatType';
-import { createUISelect } from '../../creators/CreateUISelect';
+import { createUIInput } from '../../creators/CreateUIInput';
 import { TranslationManager } from '../../managers/TranslationManager';
 
-const FILENAME = 'modal-extensions/DownloadLayerModal.js';
-const ID_PREFIX = 'oltb-download-layer-modal';
-const I18N_BASE = 'modalExtensions.downloadLayerModal';
+const FILENAME = 'modal-extensions/CoordinateModal.js';
+const ID_PREFIX = 'oltb-coordinates-modal';
+const I18N_BASE = 'modalExtensions.coordinateModal';
 
 const DefaultOptions = Object.freeze({
     maximized: false,
     onClose: undefined,
-    onDownload: undefined,
+    onNavigate: undefined,
     onCancel: undefined
 });
 
 /**
  * About:
- * Manager that handles downloading of vector layers
+ * Manager that handles navigation to entered coordinates
  */
-class DownloadLayerModal extends ModalBase {
+class CoordinateModal extends ModalBase {
     constructor(options = {}) {
-        LogManager.logDebug(FILENAME, 'constructor', 'init');
-
         super(
-            TranslationManager.get(`${I18N_BASE}.title`),
+            TranslationManager.get(`${I18N_BASE}.title`), 
             options.maximized, 
             options.onClose
         );
-
+        
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
         this.#createModal();
     }
@@ -45,30 +41,38 @@ class DownloadLayerModal extends ModalBase {
     //--------------------------------------------------------------------
     #createModal() {
         const i18n = TranslationManager.get(`${I18N_BASE}.form`);
-        const [ formatWrapper, formatSelect ] = createUISelect({
+        const [ latWrapper, latInput ] = createUIInput({
             idPrefix: ID_PREFIX,
-            idPostfix: '-format',
-            text: i18n.layerFormat,
-            options: _.cloneDeep(FormatOptions)
+            idPostfix: '-lat',
+            text: i18n.latitude,
+            placeholder: '51.5072'
         });
 
+        const [ lonWrapper, lonInput ] = createUIInput({
+            idPrefix: ID_PREFIX,
+            idPostfix: '-lon',
+            text: i18n.longitude,
+            placeholder: '0.1276'
+        });
+        
         const buttonsWrapper = DOM.createElement({
             element: 'div',
-            class: 'oltb-d-flex oltb-justify-content-between oltb-mt-15' 
+            class: 'oltb-d-flex oltb-justify-content-between oltb-mt-15'
         });
 
-        const downloadButton = DOM.createElement({
+        const navigateButton = DOM.createElement({
             element: 'button', 
-            text: i18n.download,
+            text: i18n.navigateTo,
             class: 'oltb-dialog__btn oltb-btn oltb-btn--green-mid', 
             attributes: {
                 'type': 'button'
             },
             listeners: {
                 'click': () => {
-                    this.#onClick({
-                        format: formatSelect.value.trim()
-                    });
+                    this.#onClick([
+                        lonInput.value.trim(), 
+                        latInput.value.trim()
+                    ]);
                 }
             }
         });
@@ -88,18 +92,26 @@ class DownloadLayerModal extends ModalBase {
         });
 
         DOM.appendChildren(buttonsWrapper, [
-            cancelButton, 
-            downloadButton
+            cancelButton,
+            navigateButton
         ]);
 
         const modalContent = DOM.createElement({
             element: 'div',
             class: 'oltb-modal__content'
         });
-        
+
+        const coordinatesLabel = DOM.createElement({
+            element: 'label', 
+            text: i18n.description,
+            class: 'oltb-label oltb-mt-1'
+        });
+
         DOM.appendChildren(modalContent, [
-            formatWrapper,
-            buttonsWrapper
+            latWrapper,
+            lonWrapper,
+            coordinatesLabel,
+            buttonsWrapper,
         ]);
 
         this.show(modalContent);
@@ -110,7 +122,7 @@ class DownloadLayerModal extends ModalBase {
     //--------------------------------------------------------------------
     #onClick(result) {
         this.close();
-        this.options.onDownload instanceof Function && this.options.onDownload(result);
+        this.options.onNavigate instanceof Function && this.options.onNavigate(result);
     }
 
     #onCancel() {
@@ -119,4 +131,4 @@ class DownloadLayerModal extends ModalBase {
     }
 }
 
-export { DownloadLayerModal };
+export { CoordinateModal };
