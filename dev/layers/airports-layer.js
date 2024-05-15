@@ -1,67 +1,54 @@
-// Url imports
-import urlCapitalsGeoJson from 'url:../geojson/capitals.geojson';
-
-// Module imports
-import _ from 'lodash';
-import { Toast } from '../../src/oltb/js/common/Toast';
-import { LogManager } from '../../src/oltb/js/managers/LogManager';
+import urlAirportsGeoJson from 'url:../geojson/airports.geojson';
+import { Toast } from '../../src/oltb/js/common/toasts/toast';
+import { LogManager } from '../../src/oltb/js/managers/log-manager/log-manager';
 import { toStringHDMS } from 'ol/coordinate';
-import { LayerManager } from '../../src/oltb/js/managers/LayerManager';
-import { FeatureManager } from '../../src/oltb/js/managers/FeatureManager';
+import { LayerManager } from '../../src/oltb/js/managers/layer-manager/layer-manager';
+import { FeatureManager } from '../../src/oltb/js/managers/feature-manager/feature-manager';
 
-const FILENAME = 'layers/Wind.js';
+const FILENAME = 'layers/Airports.js';
 const CLASS_FUNC_BUTTON = 'oltb-func-btn';
 const ID_PREFIX_INFO_WINDOW = 'oltb-info-window-marker';
 
 const LayerWrapper = LayerManager.addFeatureLayer({
-    id: 'fd319a29-d2ac-4b2b-b018-dc86cff22600',
-    name: 'Wind Barbs',
+    id: '91a9a06f-7e49-4f85-a204-58dc7ab6a95e',
+    name: '50 Airports',
     isVisible: false,
     isSilent: true
 });
 
-const getWindDirection = function(continentName) {
-    const windDirections = Object.freeze({
-        'Europe': 5,
-        'Africa': 110,
-        'Antarctica': 65,
-        'Asia': 65,
-        'Australia': 65,
-        'Central America': 210,
-        'North America': 210,
-        'South America': 210,
-        'UM': 210,
-        'US': 210
-    });
-
-    return windDirections[continentName] || 0;
+const getMarkerColor = function() {
+    return {
+        fill: '#FCBE80FF', 
+        stroke: '#FCBE8066'
+    };
 }
 
 const parseGeoJson = function(data) {
-    data.features.forEach((capital) => {
+    data.features.forEach((airport) => {
         const coordinates = [
-            Number(capital.geometry.coordinates[0]),
-            Number(capital.geometry.coordinates[1])
+            Number(airport.geometry.coordinates[0]),
+            Number(airport.geometry.coordinates[1])
         ];
 
         const prettyCoordinates = toStringHDMS(coordinates);
 
-        const countryName = capital.properties.countryName;
-        const continentName = capital.properties.continentName;
-
-        // Get windspeed between 0 and 40m/s (75knots)
-        // Get example direction to not have all wind barbs facing the same way
-        const windSpeed = _.random(0, 40);
-        const windDirection = getWindDirection(continentName);
+        const name = airport.properties.name;
+        const location = airport.properties.location;
+        const country = airport.properties.country;
+        const totalPassengers = airport.properties.totalPassengers;
 
         const description = `
-            Current wind speed is ${windSpeed}m/s. The direction is ${windDirection}deg.
+            ${name} is a airport located in ${location} in ${country}.
+            Its total number of passenger is estimated to ${totalPassengers}.
         `;
-        
+
         const infoWindow = {
-            title: countryName,
+            title: name,
             content: `
                 <p>${description}</p>
+                <p>
+                    Google has more information about <a href="//www.google.com/search?q=${name}" target="_blank" class="oltb-link">${name}</a> 
+                </p>
             `,
             footer: `
                 <span class="oltb-info-window__coordinates">${prettyCoordinates}</span>
@@ -74,26 +61,31 @@ const parseGeoJson = function(data) {
             `
         };
 
-        const windBarb = FeatureManager.generateWindBarb({
+        const markerColor = getMarkerColor();
+        const marker = FeatureManager.generateIconMarker({
             lon: coordinates[0],
             lat: coordinates[1],
-            infoWindow: infoWindow,
-            title: countryName,
+            title: name,
             description: description,
+            infoWindow: infoWindow,
+            marker: {
+                fill: markerColor.fill,
+                stroke: markerColor.stroke
+            },
             icon: {
-                key: windSpeed,
-                rotation: windDirection
+                key: 'airplane.filled',
+                fill: '#6B310AFF',
             },
             label: {
-                text: `${windSpeed}m/s`
+                text: name
             }
         });
 
-        LayerWrapper.getLayer().getSource().addFeature(windBarb);
+        LayerWrapper.getLayer().getSource().addFeature(marker);
     });
 }
 
-fetch(urlCapitalsGeoJson)
+fetch(urlAirportsGeoJson)
     .then((response) => {
         if(!response.ok) {
             throw new Error('Failed to fetch local geojson', {
@@ -107,7 +99,7 @@ fetch(urlCapitalsGeoJson)
         parseGeoJson(data);
     })
     .catch((error) => {
-        const errorMessage = 'Failed to load Wind Barbs layer';
+        const errorMessage = 'Failed to load Airports layer';
         LogManager.logError(FILENAME, 'geoJsonPromise', {
             message: errorMessage,
             error: error
@@ -116,5 +108,5 @@ fetch(urlCapitalsGeoJson)
         Toast.error({
             title: 'Error',
             message: errorMessage
-        }); 
+        });
     });

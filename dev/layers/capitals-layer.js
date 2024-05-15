@@ -1,9 +1,9 @@
 import urlCapitalsGeoJson from 'url:../geojson/capitals.geojson';
-import { Toast } from '../../src/oltb/js/common/Toast';
-import { LogManager } from '../../src/oltb/js/managers/LogManager';
+import { Toast } from '../../src/oltb/js/common/toasts/toast';
+import { LogManager } from '../../src/oltb/js/managers/log-manager/log-manager';
 import { toStringHDMS } from 'ol/coordinate';
-import { LayerManager } from '../../src/oltb/js/managers/LayerManager';
-import { FeatureManager } from '../../src/oltb/js/managers/FeatureManager';
+import { LayerManager } from '../../src/oltb/js/managers/layer-manager/layer-manager';
+import { FeatureManager } from '../../src/oltb/js/managers/feature-manager/feature-manager';
 
 const FILENAME = 'layers/Capitals.js';
 const CLASS_FUNC_BUTTON = 'oltb-func-btn';

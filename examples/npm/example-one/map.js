@@ -6,7 +6,7 @@ import { defaults as defaultControls } from 'ol/control';
 import { defaults as defaultInterctions } from 'ol/interaction';
 
 // Layers
-import '../shared/Maps';
+import '../shared/map-layers';
 
 // Toolbar
 import OLTB from 'oltb/src/oltb/js/oltb';
