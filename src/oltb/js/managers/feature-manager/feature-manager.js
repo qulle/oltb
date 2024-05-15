@@ -8,7 +8,7 @@ import { FeatureProperties } from '../../helpers/constants/feature-properties';
 import { DefaultWindBarbOptions } from './default-wind-barb-options';
 import { DefaultIconMarkerOptions } from './default-icon-marker-options';
 
-const FILENAME = 'managers/FeatureManager.js';
+const FILENAME = 'FeatureManager.js';
 
 /**
  * About:
@@ -87,6 +87,9 @@ class FeatureManager extends BaseManager {
             ]))
         });
     
+        // TODO:
+        // Make new function to generator the properties, duplicated code
+
         // Note:
         // The LayerManager is responsible to render the Wind Barb
         // This way the style can be optimized and controlled depending on the resolution/zoom-level

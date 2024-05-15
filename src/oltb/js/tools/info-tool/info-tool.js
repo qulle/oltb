@@ -1,16 +1,16 @@
 import _ from 'lodash';
 import { DOM } from '../../helpers/browser/dom';
-import { Modal } from '../../common/Modal';
-import { Events } from '../../helpers/constants/Events';
+import { Modal } from '../../common/modals/modal';
+import { Events } from '../../helpers/constants/events';
 import { Control } from 'ol/control';
-import { LogManager } from '../managers/LogManager';
-import { ShortcutKeys } from '../../helpers/constants/ShortcutKeys';
-import { ElementManager } from '../managers/ElementManager';
-import { SvgPaths, getIcon } from '../icons/GetIcon';
-import { isShortcutKeyOnly } from '../../helpers/browser/IsShortcutKeyOnly';
-import { TranslationManager } from '../managers/TranslationManager';
+import { LogManager } from '../../managers/log-manager/log-manager';
+import { ShortcutKeys } from '../../helpers/constants/shortcut-keys';
+import { ElementManager } from '../../managers/element-manager/element-manager';
+import { SvgPaths, getIcon } from '../../icons/get-icon';
+import { isShortcutKeyOnly } from '../../helpers/browser/is-shortcut-key-only';
+import { TranslationManager } from '../../managers/translation-manager/translation-manager';
 
-const FILENAME = 'tools/InfoTool.js';
+const FILENAME = 'InfoTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
 const I18N_BASE = 'tools.infoTool';
 

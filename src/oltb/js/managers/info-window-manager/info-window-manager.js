@@ -24,7 +24,7 @@ import { copyMarkerCoordinates } from './copy-marker-coordinates';
 import { Fill, Stroke, Style, Circle as CircleStyle } from 'ol/style';
 import { BaseManager } from '../base-manager';
 
-const FILENAME = 'managers/InfoWindowManager.js';
+const FILENAME = 'InfoWindowManager.js';
 const CLASS_ANIMATION = 'oltb-animation';
 const CLASS_ANIMATION_CENTERED_BOUNCE = `${CLASS_ANIMATION}--centered-bounce`;
 const CLASS_INFO_WINDOW = 'oltb-info-window';

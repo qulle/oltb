@@ -6,7 +6,7 @@ import { ConfigManager } from '../config-manager/config-manager';
 import { LocalStorageKeys } from '../../helpers/constants/local-storage-keys';
 import { BaseManager } from '../base-manager';
 
-const FILENAME = 'managers/ElementManager.js';
+const FILENAME = 'ElementManager.js';
 const CLASS_TOOLBOX_CONTAINER = 'oltb-toolbox-container';
 
 /**

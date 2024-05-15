@@ -10,7 +10,7 @@ import { createUISelect } from '../creators/create-ui-select';
 import { ProjectionManager } from '../managers/projection-manager/projection-manager';
 import { TranslationManager } from '../managers/translation-manager/translation-manager';
 
-const FILENAME = 'modal-extensions/LayerModal.js';
+const FILENAME = 'LayerModal.js';
 const ID_PREFIX = 'oltb-layer-modal';
 const I18N_BASE = 'modalExtensions.layerModal';
 

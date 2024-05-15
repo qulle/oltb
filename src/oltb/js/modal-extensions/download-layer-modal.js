@@ -6,7 +6,7 @@ import { FormatOptions } from '../ol-mappers/ol-format';
 import { createUISelect } from '../creators/create-ui-select';
 import { TranslationManager } from '../managers/translation-manager/translation-manager';
 
-const FILENAME = 'modal-extensions/DownloadLayerModal.js';
+const FILENAME = 'DownloadLayerModal.js';
 const ID_PREFIX = 'oltb-download-layer-modal';
 const I18N_BASE = 'modalExtensions.downloadLayerModal';
 

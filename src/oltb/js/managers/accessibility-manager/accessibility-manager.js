@@ -3,7 +3,7 @@ import { Events } from '../../helpers/constants/events';
 import { LogManager } from '../log-manager/log-manager';
 import { BaseManager } from '../base-manager';
 
-const FILENAME = 'managers/AccessibilityManager.js';
+const FILENAME = 'AccessibilityManager.js';
 const CLASS_ACCESSIBILITY = 'oltb-using-keyboard';
 
 /**

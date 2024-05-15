@@ -5,7 +5,7 @@ import { DefaultSettings } from './default-settings';
 import { LocalStorageKeys } from '../../helpers/constants/local-storage-keys';
 import { BaseManager } from '../base-manager';
 
-const FILENAME = 'managers/SettingsManager.js';
+const FILENAME = 'SettingsManager.js';
 const I18N_BASE = 'managers.settingsManager.settings';
 
 const LocalStorageNodeName = LocalStorageKeys.settingsManager;

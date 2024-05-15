@@ -7,7 +7,7 @@ import { ConfigManager } from '../config-manager/config-manager';
 import { eventDispatcher } from '../../helpers/browser/event-dispatcher';
 import { BaseManager } from '../base-manager';
 
-const FILENAME = 'managers/ColorPickerManager.js';
+const FILENAME = 'ColorPickerManager.js';
 
 /**
  * About:

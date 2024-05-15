@@ -1,7 +1,7 @@
 import moment from 'moment/moment';
 import { BaseManager } from '../base-manager';
 
-const FILENAME = 'managers/LogManager.js';
+const FILENAME = 'LogManager.js';
 const Config = Object.freeze({
     logging: Object.freeze({
         logToConsole: false

@@ -1,21 +1,21 @@
 import _ from 'lodash';
-import { DOM } from '../../helpers/browser/DOM';
-import { Keys } from '../../helpers/constants/Keys';
-import { Toast } from '../../common/Toast';
-import { Events } from '../../helpers/constants/Events';
+import { DOM } from '../../helpers/browser/dom-factory';
+import { Keys } from '../../helpers/constants/keys';
+import { Toast } from '../../common/toasts/toast';
+import { Events } from '../../helpers/constants/events';
 import { Control } from 'ol/control';
 import { unByKey } from 'ol/Observable';
-import { LogManager } from '../managers/LogManager';
-import { StateManager } from '../managers/StateManager';
-import { ShortcutKeys } from '../../helpers/constants/ShortcutKeys';
+import { LogManager } from '../../managers/log-manager/log-manager';
+import { StateManager } from '../../managers/state-manager/state-manager';
+import { ShortcutKeys } from '../../helpers/constants/shortcut-keys';
 import { getRenderPixel } from 'ol/render';
-import { ElementManager } from '../managers/ElementManager';
-import { LocalStorageKeys } from '../../helpers/constants/LocalStorageKeys';
-import { SvgPaths, getIcon } from '../icons/GetIcon';
-import { isShortcutKeyOnly } from '../../helpers/browser/IsShortcutKeyOnly';
-import { TranslationManager } from '../managers/TranslationManager';
+import { ElementManager } from '../../managers/element-manager/element-manager';
+import { LocalStorageKeys } from '../../helpers/constants/local-storage-keys';
+import { SvgPaths, getIcon } from '../../icons/get-icon';
+import { isShortcutKeyOnly } from '../../helpers/browser/is-shortcut-key-only';
+import { TranslationManager } from '../../managers/translation-manager/translation-manager';
 
-const FILENAME = 'tools/MagnifyTool.js';
+const FILENAME = 'MagnifyTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
 const I18N_BASE = 'tools.magnifyTool';
 

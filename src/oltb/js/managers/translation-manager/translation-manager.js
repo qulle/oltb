@@ -7,7 +7,7 @@ import { LocalStorageKeys } from '../../helpers/constants/local-storage-keys';
 import { DefaultTranslation } from './default-translation';
 import { BaseManager } from '../base-manager';
 
-const FILENAME = 'managers/TranslationManager.js';
+const FILENAME = 'TranslationManager.js';
 
 const DefaultOptions = Object.freeze({
     url: './assets/i18n'

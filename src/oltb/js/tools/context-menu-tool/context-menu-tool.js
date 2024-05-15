@@ -1,17 +1,17 @@
 import _ from 'lodash';
-import { DOM } from '../helpers/browser/document-object-model';
-import { Keys } from '../../helpers/constants/Keys';
-import { Events } from '../../helpers/constants/Events';
+import { DOM } from '../../helpers/browser/dom-factory';
+import { Keys } from '../../helpers/constants/keys';
+import { Events } from '../../helpers/constants/events';
 import { Control } from 'ol/control';
 import { transform } from 'ol/proj';
 import { trapFocus } from '../../helpers/browser/trap-focus';
-import { UrlManager } from '../managers/UrlManager';
-import { LogManager } from '../managers/LogManager';
-import { ConfigManager } from '../managers/ConfigManager';
-import { ElementManager } from '../managers/ElementManager';
-import { TranslationManager } from '../managers/TranslationManager';
+import { UrlManager } from '../../managers/url-manager/url-manager';
+import { LogManager } from '../../managers/log-manager/log-manager';
+import { ConfigManager } from '../../managers/config-manager/config-manager';
+import { ElementManager } from '../../managers/element-manager/element-manager';
+import { TranslationManager } from '../../managers/translation-manager/translation-manager';
 
-const FILENAME = 'tools/ContextMenuTool.js';
+const FILENAME = 'ContextMenuTool.js';
 const CLASS_CONTEXT_MENU = 'oltb-context-menu';
 
 const DefaultOptions = Object.freeze({
@@ -19,7 +19,7 @@ const DefaultOptions = Object.freeze({
 });
 
 class ContextMenuTool extends Control {
-    static #isDebug;
+    static #isDebug
     static #items = [];
 
     static addItem(item) {

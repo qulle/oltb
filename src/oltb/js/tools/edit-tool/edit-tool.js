@@ -1,40 +1,40 @@
 import _ from 'lodash';
 import jsts from 'jsts/dist/jsts.min';
-import { DOM } from '../../helpers/browser/DOM';
-import { Keys } from '../../helpers/constants/Keys';
-import { Toast } from '../../common/Toast';
-import { Dialog } from '../../common/Dialog';
-import { Events } from '../../helpers/constants/Events';
+import { DOM } from '../../helpers/browser/dom-factory';
+import { Keys } from '../../helpers/constants/keys';
+import { Toast } from '../../common/toasts/toast';
+import { Dialog } from '../../common/dialogs/dialog';
+import { Events } from '../../helpers/constants/events';
 import { Feature } from 'ol';
 import { Control } from 'ol/control';
 import { unByKey } from 'ol/Observable';
-import { Settings } from '../../helpers/constants/Settings';
+import { Settings } from '../../helpers/constants/settings';
 import { getCenter } from 'ol/extent';
-import { LogManager } from '../managers/LogManager';
-import { SnapManager } from '../managers/SnapManager';
-import { ToolManager } from '../managers/ToolManager';
+import { LogManager } from '../../managers/log-manager/log-manager';
+import { SnapManager } from '../../managers/snap-manager/snap-manager';
+import { ToolManager } from '../../managers/tool-manager/tool-manager';
 import { shiftKeyOnly } from 'ol/events/condition';
-import { LayerManager } from '../managers/LayerManager';
-import { StateManager } from '../managers/StateManager';
-import { ShortcutKeys } from '../../helpers/constants/ShortcutKeys';
-import { jsonReplacer } from '../../helpers/browser/JsonReplacer';
-import { ConfigManager } from '../managers/ConfigManager';
-import { DefaultConfig } from '../managers/config-manager/DefaultConfig';
-import { FeatureManager } from '../managers/FeatureManager';
-import { ElementManager } from '../managers/ElementManager';
-import { TooltipManager } from '../managers/TooltipManager';
-import { createUITooltip } from '../creators/CreateUITooltip';
-import { SettingsManager } from '../managers/SettingsManager';
+import { LayerManager } from '../../managers/layer-manager/layer-manager';
+import { StateManager } from '../../managers/state-manager/state-manager';
+import { ShortcutKeys } from '../../helpers/constants/shortcut-keys';
+import { jsonReplacer } from '../../helpers/browser/json-replacer';
+import { ConfigManager } from '../../managers/config-manager/config-manager';
+import { DefaultConfig } from '../../managers/config-manager/default-config';
+import { FeatureManager } from '../../managers/feature-manager/feature-manager';
+import { ElementManager } from '../../managers/element-manager/element-manager';
+import { TooltipManager } from '../../managers/tooltip-manager/tooltip-manager';
+import { createUITooltip } from '../../creators/create-ui-tooltip';
+import { SettingsManager } from '../../managers/settings-manager/settings-manager';
 import { degreesToRadians } from '../../helpers/conversions';
-import { LocalStorageKeys } from '../../helpers/constants/LocalStorageKeys';
-import { SvgPaths, getIcon } from '../icons/GetIcon';
-import { GeometryDataModal } from '../modal-extensions/GeometryDataModal';
-import { isShortcutKeyOnly } from '../../helpers/browser/IsShortcutKeyOnly';
-import { FeatureProperties } from '../../helpers/constants/FeatureProperties';
-import { TranslationManager } from '../managers/TranslationManager';
+import { LocalStorageKeys } from '../../helpers/constants/local-storage-keys';
+import { SvgPaths, getIcon } from '../../icons/get-icon';
+import { GeometryDataModal } from '../../modal-extensions/geometry-data-modal';
+import { isShortcutKeyOnly } from '../../helpers/browser/is-shortcut-key-only';
+import { FeatureProperties } from '../../helpers/constants/feature-properties';
+import { TranslationManager } from '../../managers/translation-manager/translation-manager';
 import { Fill, Stroke, Style } from 'ol/style';
 import { Select, Modify, Translate } from 'ol/interaction';
-import { getMeasureCoordinates, getMeasureValue } from '../../helpers/Measurements';
+import { getMeasureCoordinates, getMeasureValue } from '../../helpers/measurements';
 import { GeometryCollection, LinearRing, LineString, MultiLineString, MultiPoint, MultiPolygon, Point, Polygon } from 'ol/geom';
 
 /*!
@@ -46,7 +46,7 @@ import { GeometryCollection, LinearRing, LineString, MultiLineString, MultiPoint
  *  https://github.com/bjornharrtell/jsts#caveats
  */
 
-const FILENAME = 'tools/EditTool.js';
+const FILENAME = 'EditTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
 const CLASS_TOOLBOX_SECTION = 'oltb-toolbox-section';
 const CLASS_TOGGLEABLE = 'oltb-toggleable';

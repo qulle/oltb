@@ -8,7 +8,7 @@ import { createUISelect } from '../creators/create-ui-select';
 import { createUIColorInput } from '../creators/create-ui-color-input';
 import { TranslationManager } from '../managers/translation-manager/translation-manager';
 
-const FILENAME = 'modal-extensions/IconMarkerModal.js';
+const FILENAME = 'IconMarkerModal.js';
 const ID_PREFIX = 'oltb-marker-modal-marker';
 const I18N_BASE = 'modalExtensions.iconMarkerModal';
 

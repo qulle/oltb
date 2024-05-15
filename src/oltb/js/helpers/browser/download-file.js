@@ -1,7 +1,7 @@
 import { DOM } from './dom-factory';
 import { LogManager } from '../../managers/log-manager/log-manager';
 
-const FILENAME = 'browser/Download.js';
+const FILENAME = 'Download.js';
 
 const download = function(name, content) {
     LogManager.logDebug(FILENAME, 'download', name);

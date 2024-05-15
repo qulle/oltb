@@ -3,7 +3,7 @@ import { Events } from '../../helpers/constants/events';
 import { LogManager } from '../log-manager/log-manager';
 import { BaseManager } from '../base-manager';
 
-const FILENAME = 'managers/ErrorManger.js';
+const FILENAME = 'ErrorManger.js';
 const I18N_BASE = 'managers.errorManager';
 
 /**

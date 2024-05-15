@@ -9,7 +9,7 @@ import { createSingleton, delegate } from 'tippy.js';
 import { ConfigManager } from '../config-manager/config-manager';
 import { BaseManager } from '../base-manager';
 
-const FILENAME = 'managers/TippyManager.js';
+const FILENAME = 'TippyManager.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
 
 /**

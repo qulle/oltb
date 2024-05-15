@@ -3,7 +3,7 @@ import { DOM } from '../../helpers/browser/document-object-model';
 import { BaseModal } from './base-modal';
 import { LogManager } from '../../managers/log-manager/log-manager';
 
-const FILENAME = 'modals/ModalWindow.js';
+const FILENAME = 'ModalWindow.js';
 const CLASS_MODAL = 'oltb-modal';
 
 const DefaultOptions = Object.freeze({

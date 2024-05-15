@@ -6,7 +6,7 @@ import { SettingsManager } from '../managers/settings-manager/settings-manager';
 import { createUICheckbox } from '../creators/create-ui-checkbox';
 import { TranslationManager } from '../managers/translation-manager/translation-manager';
 
-const FILENAME = 'modal-extensions/SettingsModal.js';
+const FILENAME = 'SettingsModal.js';
 const I18N_BASE = 'modalExtensions.settingsModal';
 
 const DefaultOptions = Object.freeze({

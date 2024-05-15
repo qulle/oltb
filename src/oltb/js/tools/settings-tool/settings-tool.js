@@ -1,22 +1,22 @@
 import _ from 'lodash';
-import { DOM } from '../../helpers/browser/dom';
-import { Toast } from '../../common/Toast';
-import { Dialog } from '../../common/Dialog';
-import { Events } from '../../helpers/constants/Events';
+import { DOM } from '../../helpers/browser/dom-factory';
+import { Toast } from '../../common/toasts/toast';
+import { Dialog } from '../../common/dialogs/dialog';
+import { Events } from '../../helpers/constants/events';
 import { Control } from 'ol/control';
-import { LogManager } from '../managers/LogManager';
-import { ContextMenu } from '../../common/ContextMenu';
-import { StateManager } from '../managers/StateManager';
-import { ShortcutKeys } from '../../helpers/constants/ShortcutKeys';
-import { ConfigManager } from '../managers/ConfigManager';
-import { SettingsModal } from '../modal-extensions/SettingsModal';
-import { ElementManager } from '../managers/ElementManager';
-import { SettingsManager } from '../managers/SettingsManager';
-import { SvgPaths, getIcon } from '../icons/GetIcon';
-import { isShortcutKeyOnly } from '../../helpers/browser/IsShortcutKeyOnly';
-import { TranslationManager } from '../managers/TranslationManager';
+import { LogManager } from '../../managers/log-manager/log-manager';
+import { ContextMenu } from '../context-menu-tool/context-menu-tool';
+import { StateManager } from '../../managers/state-manager/state-manager';
+import { ShortcutKeys } from '../../helpers/constants/shortcut-keys';
+import { ConfigManager } from '../../managers/config-manager/config-manager';
+import { SettingsModal } from '../../modal-extensions/settings-modal';
+import { ElementManager } from '../../managers/element-manager/element-manager';
+import { SettingsManager } from '../../managers/settings-manager/settings-manager';
+import { SvgPaths, getIcon } from '../../icons/get-icon';
+import { isShortcutKeyOnly } from '../../helpers/browser/is-shortcut-key-only';
+import { TranslationManager } from '../../managers/translation-manager/translation-manager';
 
-const FILENAME = 'tools/SettingsTool.js';
+const FILENAME = 'SettingsTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
 const I18N_BASE = 'tools.settingsTool';
 

@@ -9,7 +9,7 @@ import { SvgPaths, getIcon } from '../../icons/get-icon';
 import { FeatureProperties } from '../../helpers/constants/feature-properties';
 import { Circle, Fill, Icon, Text, Stroke, Style } from 'ol/style';
 
-const FILENAME = 'managers/StyleManager.js';
+const FILENAME = 'StyleManager.js';
 
 /**
  * About:

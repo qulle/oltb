@@ -3,7 +3,7 @@ import { LogManager } from '../log-manager/log-manager';
 import { BaseManager } from '../base-manager';
 import { DefaultConfig } from './default-config';
 
-const FILENAME = 'managers/ConfigManager.js';
+const FILENAME = 'ConfigManager.js';
 
 const DefaultOptions = Object.freeze({
     url: './assets/config/config.json'

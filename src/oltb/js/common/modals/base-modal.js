@@ -6,7 +6,7 @@ import { LogManager } from '../../managers/log-manager/log-manager';
 import { ElementManager } from '../../managers/element-manager/element-manager';
 import { SvgPaths, getIcon } from '../../icons/get-icon';
 
-const FILENAME = 'modals/ModalBase.js';
+const FILENAME = 'BaseModal.js';
 const CLASS_ANIMATION = 'oltb-animation';
 const CLASS_ANIMATION_BOUNCE = `${CLASS_ANIMATION}--bounce`;
 const CLASS_MODAL = 'oltb-modal';

@@ -1,17 +1,17 @@
 import _ from 'lodash';
-import { Events } from '../../helpers/constants/Events';
+import { Events } from '../../helpers/constants/events';
 import { Control } from 'ol/control';
-import { LogManager } from '../../managers/LogManager';
-import { ContextMenu } from '../../common/ContextMenu';
+import { LogManager } from '../../managers/log-manager/log-manager';
+import { ContextMenu } from '../context-menu-tool/context-menu-tool';
 import { toStringHDMS } from 'ol/coordinate';
-import { LayerManager } from '../../managers/LayerManager';
-import { FeatureManager } from '../../managers/FeatureManager';
-import { ElementManager } from '../../managers/ElementManager';
-import { IconMarkerModal } from '../modal-extensions/IconMarkerModal';
-import { SvgPaths, getIcon } from '../../icons/GetIcon';
-import { TranslationManager } from '../../managers/TranslationManager';
+import { LayerManager } from '../../managers/layer-manager/layer-manager';
+import { FeatureManager } from '../../managers/feature-manager/feature-manager';
+import { ElementManager } from '../../managers/element-manager/element-manager';
+import { IconMarkerModal } from '../../modal-extensions/icon-marker-modal';
+import { SvgPaths, getIcon } from '../../icons/get-icon';
+import { TranslationManager } from '../../managers/translation-manager/translation-manager';
 
-const FILENAME = 'hidden-tools/HiddenMarkerTool.js';
+const FILENAME = 'HiddenMarkerTool.js';
 const CLASS_FUNC_BUTTON = 'oltb-func-btn';
 const ID_PREFIX_INFO_WINDOW = 'oltb-info-window-marker';
 const I18N_BASE = 'tools.hiddenMarkerTool';

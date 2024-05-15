@@ -9,7 +9,7 @@ import { BaseManager } from '../base-manager';
 import { LayerManager } from '../layer-manager/layer-manager';
 import { SettingsManager } from '../settings-manager/settings-manager';
 
-const FILENAME = 'managers/SnapManager.js';
+const FILENAME = 'SnapManager.js';
 const CLASS_OVERLAY_SNAP = 'oltb-overlay-snap';
 const STYLE_SNAPPED = 'border: 1px dashed #007C70;';
 const STYLE_NOT_SNAPPED = 'border: 1px dashed #EB4542;';

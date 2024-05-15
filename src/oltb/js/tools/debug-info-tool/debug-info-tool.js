@@ -1,18 +1,18 @@
 import _ from 'lodash';
-import { DOM } from '../../helpers/browser/dom';
-import { Events } from '../../helpers/constants/Events';
+import { DOM } from '../../helpers/browser/dom-factory';
+import { Events } from '../../helpers/constants/events';
 import { Control } from 'ol/control';
-import { LogManager } from '../managers/LogManager';
-import { UrlManager } from '../managers/UrlManager';
-import { ShortcutKeys } from '../../helpers/constants/ShortcutKeys';
-import { ConfigManager } from '../managers/ConfigManager';
-import { ElementManager } from '../managers/ElementManager';
-import { DebugInfoModal } from '../modal-extensions/DebugInfoModal';
-import { SvgPaths, getIcon } from '../icons/GetIcon';
-import { isShortcutKeyOnly } from '../../helpers/browser/IsShortcutKeyOnly';
-import { TranslationManager } from '../managers/TranslationManager';
+import { LogManager } from '../../managers/log-manager/log-manager';
+import { UrlManager } from '../../managers/url-manager/url-manager';
+import { ShortcutKeys } from '../../helpers/constants/shortcut-keys';
+import { ConfigManager } from '../../managers/config-manager/config-manager';
+import { ElementManager } from '../../managers/element-manager/element-manager';
+import { DebugInfoModal } from '../../modal-extensions/debug-info-modal';
+import { SvgPaths, getIcon } from '../../icons/get-icon';
+import { isShortcutKeyOnly } from '../../helpers/browser/is-shortcut-key-only';
+import { TranslationManager } from '../../managers/translation-manager/translation-manager';
 
-const FILENAME = 'tools/DebugInfoTool.js';
+const FILENAME = 'DebugInfoTool.js';
 const CLASS_TOOL_BUTTON = 'oltb-tool-button';
 const I18N_BASE = 'tools.debugInfoTool';
 
