@@ -9,7 +9,6 @@ import { Events } from '../../helpers/constants/events';
 import { Control } from 'ol/control';
 import { goToView } from '../../helpers/go-to-view';
 import { LogManager } from '../../managers/log-manager/log-manager';
-import { ContextMenu } from '../context-menu-tool/context-menu-tool';
 import { v4 as uuidv4 } from 'uuid';
 import { toStringHDMS } from 'ol/coordinate';
 import { LayerManager } from '../../managers/layer-manager/layer-manager';
@@ -18,6 +17,7 @@ import { ShortcutKeys } from '../../helpers/constants/shortcut-keys';
 import { ConfigManager } from '../../managers/config-manager/config-manager';
 import { ElementManager } from '../../managers/element-manager/element-manager';
 import { FeatureManager } from '../../managers/feature-manager/feature-manager';
+import { ContextMenuTool } from '../context-menu-tool/context-menu-tool';
 import { copyToClipboard } from '../../helpers/browser/copy-to-clipboard';
 import { LocalStorageKeys } from '../../helpers/constants/local-storage-keys';
 import { SvgPaths, getIcon } from '../../icons/get-icon';
@@ -222,13 +222,13 @@ class BookmarkTool extends Control {
     }
 
     initContextMenuItems() {
-        ContextMenu.addItem({
+        ContextMenuTool.addItem({
             icon: this.icon, 
             i18nKey: `${I18N_BASE}.contextItems.addBookmark`,
             fn: this.onContextMenuBookmarkAdd.bind(this)
         });
 
-        ContextMenu.addItem({
+        ContextMenuTool.addItem({
             icon: this.clearBookmarksIcon, 
             i18nKey: `${I18N_BASE}.contextItems.clearBookmarks`, 
             fn: this.onContextMenuBookmarksClear.bind(this)

@@ -1,7 +1,7 @@
-import { DOM } from '../../helpers/browser/dom';
+import { DOM } from '../../helpers/browser/dom-factory';
 import { Keys } from '../../helpers/constants/keys';
 import { Events } from '../../helpers/constants/events';
-import { trapFocus } from '../../helpers/browser/TrapFocus';
+import { trapFocus } from '../../helpers/browser/trap-focus';
 
 const CLASS_ANIMATION = 'oltb-animation';
 const CLASS_ANIMATION_BOUNCE = `${CLASS_ANIMATION}--bounce`;

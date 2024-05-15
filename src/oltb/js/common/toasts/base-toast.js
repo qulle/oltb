@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { DOM } from '../../helpers/browser/dom';
+import { DOM } from '../../helpers/browser/dom-factory';
 import { Events } from '../../helpers/constants/events';
 import { LogManager } from '../../managers/log-manager/log-manager';
 import { ConfigManager } from '../../managers/config-manager/config-manager';

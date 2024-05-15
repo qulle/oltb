@@ -23,7 +23,7 @@ import '../src/oltb/js/helpers/prototypes/slide-toggle';
 // Core Toolbar
 import '../src/oltb/scss/oltb.scss';
 import { Settings } from '../src/oltb/js/helpers/constants/settings';
-import { LocalStorageKeys } from '../src/oltb/js/helpers/constants/LocalStorageKeys';
+import { LocalStorageKeys } from '../src/oltb/js/helpers/constants/local-storage-keys';
 
 // Core Managers
 import { LogManager } from '../src/oltb/js/managers/log-manager/log-manager';

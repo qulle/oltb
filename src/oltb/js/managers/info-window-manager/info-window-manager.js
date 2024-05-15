@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { DOM } from '../../helpers/browser/DOM';
+import { DOM } from '../../helpers/browser/dom-factory';
 import { Events } from '../../helpers/constants/events';
 import { getUid } from 'ol/util';
 import { Overlay } from 'ol';

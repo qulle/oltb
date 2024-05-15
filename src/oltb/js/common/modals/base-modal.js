@@ -1,4 +1,4 @@
-import { DOM } from '../../helpers/browser/document-object-model';
+import { DOM } from '../../helpers/browser/dom-factory';
 import { Keys } from '../../helpers/constants/keys';
 import { Events } from '../../helpers/constants/events';
 import { trapFocus } from '../../helpers/browser/trap-focus';

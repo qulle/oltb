@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { DOM } from '../../helpers/browser/dom';
+import { DOM } from '../../helpers/browser/dom-factory';
 import { BaseDialog } from './base-dialog';
 import { ElementManager } from '../../managers/element-manager/element-manager';
 

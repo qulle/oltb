@@ -2,11 +2,11 @@ import _ from 'lodash';
 import { Events } from '../../helpers/constants/events';
 import { Control } from 'ol/control';
 import { LogManager } from '../../managers/log-manager/log-manager';
-import { ContextMenu } from '../context-menu-tool/context-menu-tool';
 import { toStringHDMS } from 'ol/coordinate';
 import { LayerManager } from '../../managers/layer-manager/layer-manager';
 import { FeatureManager } from '../../managers/feature-manager/feature-manager';
 import { ElementManager } from '../../managers/element-manager/element-manager';
+import { ContextMenuTool } from '../context-menu-tool/context-menu-tool';
 import { IconMarkerModal } from '../../modal-extensions/icon-marker-modal';
 import { SvgPaths, getIcon } from '../../icons/get-icon';
 import { TranslationManager } from '../../managers/translation-manager/translation-manager';
@@ -59,13 +59,13 @@ class HiddenMarkerTool extends Control {
     // # Section: Init Helpers
     //--------------------------------------------------------------------
     initContextMenuItems() {
-        ContextMenu.addItem({
+        ContextMenuTool.addItem({
             icon: this.createIcon, 
             i18nKey: `${I18N_BASE}.contextItems.createMarker`, 
             fn: this.onContextMenuCreateMarker.bind(this)
         });
         
-        ContextMenu.addItem({});
+        ContextMenuTool.addItem({});
     }
 
     //--------------------------------------------------------------------

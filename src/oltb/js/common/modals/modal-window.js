@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { DOM } from '../../helpers/browser/document-object-model';
+import { DOM } from '../../helpers/browser/dom-factory';
 import { BaseModal } from './base-modal';
 import { LogManager } from '../../managers/log-manager/log-manager';
 

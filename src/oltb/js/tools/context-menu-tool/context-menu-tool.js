@@ -46,8 +46,8 @@ class ContextMenuTool extends Control {
         this.menu = this.element;
 
         const debugKey = ConfigManager.getConfig().urlParameter.debug;
-        ContextMenu.#isDebug = UrlManager.getParameter(debugKey) === 'true';
-        ContextMenu.#items.forEach((item) => {
+        ContextMenuTool.#isDebug = UrlManager.getParameter(debugKey) === 'true';
+        ContextMenuTool.#items.forEach((item) => {
             this.addMenuItem(item);
         });
 
@@ -178,7 +178,7 @@ class ContextMenuTool extends Control {
     show(event) {
         // Note: 
         // Disable native context menu
-        if(!ContextMenu.#isDebug) {
+        if(!ContextMenuTool.#isDebug) {
             event.preventDefault();
         }
 

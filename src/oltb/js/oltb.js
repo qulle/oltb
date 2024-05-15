@@ -4,43 +4,42 @@ import { MouseWheelZoom, DragPan, DragRotate, KeyboardZoom, KeyboardPan } from '
 import { platformModifierKeyOnly, altShiftKeysOnly, shiftKeyOnly, targetNotEditable } from 'ol/events/condition';
 
 // Browser prototype extensions
-import './helpers/extensions/Cycle';
-import './helpers/prototypes/String';
-import './helpers/prototypes/SlideToggle';
+import './helpers/prototypes/json-cycle';
+import './helpers/prototypes/string';
+import './helpers/prototypes/slide-toggle';
 
 // Core Toolbar
 import '../scss/oltb.scss';
-import { Toast } from './common/Toast';
-import { Modal } from './common/Modal';
-import { Dialog } from './common/Dialog';
-import { Settings } from './helpers/constants/Settings';
-import { ContextMenu } from './common/ContextMenu';
-import { LocalStorageKeys } from './helpers/constants/LocalStorageKeys';
+import { Toast } from './common/toasts/toast';
+import { Modal } from './common/modals/modal';
+import { Dialog } from './common/dialogs/dialog';
+import { Settings } from './helpers/constants/settings';
+import { LocalStorageKeys } from './helpers/constants/local-storage-keys';
 
 // Core Managers
-import { LogManager } from './managers/LogManager';
-import { UrlManager } from './managers/UrlManager';
-import { ToolManager } from './managers/ToolManager';
-import { SnapManager } from './managers/SnapManager';
-import { StyleManager } from './managers/StyleManager';
-import { LayerManager } from './managers/LayerManager';
-import { StateManager } from './managers/StateManager';
-import { TippyManager } from './managers/TippyManager';
-import { ErrorManager } from './managers/ErrorManager';
-import { ConfigManager } from './managers/ConfigManager';
-import { ElementManager } from './managers/ElementManager';
-import { TooltipManager } from './managers/TooltipManager';
-import { FeatureManager } from './managers/FeatureManager';
-import { SettingsManager } from './managers/SettingsManager';
-import { BootstrapManager } from './managers/BootstrapManager';
-import { InfoWindowManager } from './managers/InfoWindowManager';
-import { ProjectionManager } from './managers/ProjectionManager';
-import { TranslationManager } from './managers/TranslationManager';
-import { ColorPickerManager } from './managers/ColorPickerManager';
-import { AccessibilityManager } from './managers/AccessibilityManager';
+import { LogManager } from './managers/log-manager/log-manager';
+import { UrlManager } from './managers/url-manager/url-manager';
+import { ToolManager } from './managers/tool-manager/tool-manager';
+import { SnapManager } from './managers/snap-manager/snap-manager';
+import { StyleManager } from './managers/style-manager/style-manager';
+import { LayerManager } from './managers/layer-manager/layer-manager';
+import { StateManager } from './managers/state-manager/state-manager';
+import { TippyManager } from './managers/tippy-manager/tippy-manager';
+import { ErrorManager } from './managers/error-manager/error-manager';
+import { ConfigManager } from './managers/config-manager/config-manager';
+import { ElementManager } from './managers/element-manager/element-manager';
+import { TooltipManager } from './managers/tooltip-manager/tooltip-manager';
+import { FeatureManager } from './managers/feature-manager/feature-manager';
+import { SettingsManager } from './managers/settings-manager/settings-manager';
+import { BootstrapManager } from './managers/bootstrap-manager/bootstrap-manager';
+import { InfoWindowManager } from './managers/info-window-manager/info-window-manager';
+import { ProjectionManager } from './managers/projection-manager/projection-manager';
+import { TranslationManager } from './managers/translation-manager/translation-manager';
+import { ColorPickerManager } from './managers/color-picker-manager/color-picker-manager';
+import { AccessibilityManager } from './managers/accessibility-manager/accessibility-manager';
 
 // Create UI functions
-import { createUITooltip } from './creators/CreateUITooltip';
+import { createUITooltip } from './creators/create-ui-tooltip';
 
 // Toolbar tools
 import { AllTools } from './tools/index';

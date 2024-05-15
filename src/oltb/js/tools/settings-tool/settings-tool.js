@@ -5,12 +5,12 @@ import { Dialog } from '../../common/dialogs/dialog';
 import { Events } from '../../helpers/constants/events';
 import { Control } from 'ol/control';
 import { LogManager } from '../../managers/log-manager/log-manager';
-import { ContextMenu } from '../context-menu-tool/context-menu-tool';
 import { StateManager } from '../../managers/state-manager/state-manager';
 import { ShortcutKeys } from '../../helpers/constants/shortcut-keys';
 import { ConfigManager } from '../../managers/config-manager/config-manager';
 import { SettingsModal } from '../../modal-extensions/settings-modal';
 import { ElementManager } from '../../managers/element-manager/element-manager';
+import { ContextMenuTool } from '../context-menu-tool/context-menu-tool';
 import { SettingsManager } from '../../managers/settings-manager/settings-manager';
 import { SvgPaths, getIcon } from '../../icons/get-icon';
 import { isShortcutKeyOnly } from '../../helpers/browser/is-shortcut-key-only';
@@ -89,8 +89,8 @@ class SettingsTool extends Control {
     // # Section: Init Helpers
     //--------------------------------------------------------------------
     initContextMenuItems() {
-        ContextMenu.addItem({});
-        ContextMenu.addItem({
+        ContextMenuTool.addItem({});
+        ContextMenuTool.addItem({
             icon: this.icon, 
             i18nKey: `${I18N_BASE}.contextItems.clearBrowserState`, 
             fn: this.onContextMenuBrowserStateClear.bind(this)

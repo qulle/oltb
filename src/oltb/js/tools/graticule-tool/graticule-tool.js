@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { DOM } from '../../helpers/browser/dom';
+import { DOM } from '../../helpers/browser/dom-factory';
 import { Stroke } from 'ol/style';
 import { Events } from '../../helpers/constants/events';
 import { Control } from 'ol/control';

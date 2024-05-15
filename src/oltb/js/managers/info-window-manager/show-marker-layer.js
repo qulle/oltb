@@ -1,6 +1,6 @@
-import { LogManager } from '../LogManager';
-import { LayerManager } from '../LayerManager';
-import { ConfigManager } from '../ConfigManager';
+import { LogManager } from '../log-manager/log-manager';
+import { LayerManager } from '../layer-manager/layer-manager';
+import { ConfigManager } from '../config-manager/config-manager';
 
 const FILENAME = 'ShowMarkerLayer.js';
 const CLASS_TOOLBOX_INDICATE_ITEM = 'oltb-toolbox-list__item--indicate';

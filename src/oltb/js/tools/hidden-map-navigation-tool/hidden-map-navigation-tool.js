@@ -6,7 +6,6 @@ import { goToView } from '../../helpers/go-to-view';
 import { transform } from 'ol/proj';
 import { LogManager } from '../../managers/log-manager/log-manager';
 import { UrlManager } from '../../managers/url-manager/url-manager';
-import { ContextMenu } from '../context-menu-tool/context-menu-tool';
 import { toStringHDMS } from 'ol/coordinate';
 import { LayerManager } from '../../managers/layer-manager/layer-manager';
 import { StateManager } from '../../managers/state-manager/state-manager';
@@ -15,6 +14,7 @@ import { ElementManager } from '../../managers/element-manager/element-manager';
 import { FeatureManager } from '../../managers/feature-manager/feature-manager';
 import { CoordinateModal } from '../../modal-extensions/coordinate-modal';
 import { copyToClipboard } from '../../helpers/browser/copy-to-clipboard';
+import { ContextMenuTool } from '../context-menu-tool/context-menu-tool';
 import { LocalStorageKeys } from '../../helpers/constants/local-storage-keys';
 import { SvgPaths, getIcon } from '../../icons/get-icon';
 import { InfoWindowManager } from '../../managers/info-window-manager/info-window-manager';
@@ -118,33 +118,33 @@ class HiddenMapNavigationTool extends Control {
     // # Section: Init Helpers
     //--------------------------------------------------------------------
     initContextMenuItems() {
-        ContextMenu.addItem({
+        ContextMenuTool.addItem({
             icon: this.clipboardIcon,
             i18nKey: `${I18N_BASE}.contextItems.copyCoordinates`,
             fn: this.onContextMenuCopyCoordinates.bind(this)
         });
 
-        ContextMenu.addItem({});
+        ContextMenuTool.addItem({});
 
-        ContextMenu.addItem({
+        ContextMenuTool.addItem({
             icon: this.coordinatesIcon,
             i18nKey: `${I18N_BASE}.contextItems.navigateToCoordinates`,
             fn: this.onContextMenuCenterAtCoordinates.bind(this)
         });
 
-        ContextMenu.addItem({
+        ContextMenuTool.addItem({
             icon: this.moveCenterIcon, 
             i18nKey: `${I18N_BASE}.contextItems.centerMap`,
             fn: this.onContextMenuCenterMap.bind(this)
         });
 
-        ContextMenu.addItem({
+        ContextMenuTool.addItem({
             icon: this.focusHereIcon, 
             i18nKey: `${I18N_BASE}.contextItems.focusMap`,
             fn: this.onContextMenuFocusHere.bind(this)
         });
         
-        ContextMenu.addItem({});
+        ContextMenuTool.addItem({});
     }
 
     //--------------------------------------------------------------------

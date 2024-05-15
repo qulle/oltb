@@ -28,6 +28,7 @@ import { FullscreenTool } from './fullscreen-tool/fullscreen-tool';
 import { CoordinatesTool } from './coordinates-tool/coordinates-tool';
 import { TranslationTool } from './translation-tool/translation-tool';
 import { HiddenAboutTool } from './hidden-about-tool/hidden-about-tool';
+import { ContextMenuTool } from './context-menu-tool/context-menu-tool';
 import { HiddenMarkerTool } from './hidden-marker-tool/hidden-marker-tool';
 import { ImportVectorLayerTool } from './import-vector-layer-tool/import-vector-layer-tool';
 import { HiddenMapNavigationTool } from './hidden-map-navigation-tool/hidden-map-navigation-tool';
@@ -67,7 +68,8 @@ const AllTools = Object.freeze({
     HelpTool,
     SettingsTool,
     DebugInfoTool,
-    HiddenAboutTool
+    HiddenAboutTool,
+    ContextMenuTool
 });
 
 export { AllTools };
