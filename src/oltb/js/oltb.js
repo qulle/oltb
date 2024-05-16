@@ -112,7 +112,7 @@ class OLTB {
 
         // Note: 
         // Always add the ContextMenu last
-        this.#tools['ContextMenu'] = new ContextMenu({});
+        this.#tools['ContextMenuTool'] = new AllTools.ContextMenuTool({});
     }
 
     #initLocalStorage() {

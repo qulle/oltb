@@ -9,7 +9,7 @@ import { ZoomInTool } from './zoom-in-tool/zoom-in-tool';
 import { MeasureTool } from './measure-tool/measure-tool';
 import { MagnifyTool } from './magnify-tool/magnify-tool';
 import { ZoomOutTool } from './zoom-out-tool/zoom-out-tool';
-import { ZoomboxTool } from './zoom-box-tool/zoom-box-tool';
+import { ZoomboxTool } from './zoombox-tool/zoombox-tool';
 import { ToolboxTool } from './toolbox-tool/toolbox-tool';
 import { RefreshTool } from './refresh-tool/refresh-tool';
 import { SettingsTool } from './settings-tool/settings-tool';

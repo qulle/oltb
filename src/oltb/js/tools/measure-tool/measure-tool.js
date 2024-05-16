@@ -16,7 +16,7 @@ import { StateManager } from '../../managers/state-manager/state-manager';
 import { ShortcutKeys } from '../../helpers/constants/shortcut-keys';
 import { ConfigManager } from '../../managers/config-manager/config-manager';
 import { ElementManager } from '../../managers/element-manager/element-manager';
-import { TooltipManager } from '../../managers/tool-manager/tool-manager';
+import { TooltipManager } from '../../managers/tooltip-manager/tooltip-manager';
 import { createUITooltip } from '../../creators/create-ui-tooltip';
 import { SettingsManager } from '../../managers/settings-manager/settings-manager';
 import { eventDispatcher } from '../../helpers/browser/event-dispatcher';

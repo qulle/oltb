@@ -1,5 +1,5 @@
 class Assert {
-    static check(condition, message) {
+    static check(condition, message = '') {
         if(!condition) {
             throw new Error(`Assertion failed - ${message}`);
         }

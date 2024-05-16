@@ -2,7 +2,7 @@ import _ from 'lodash';
 import { DOM } from '../../helpers/browser/dom-factory';
 import { Draw } from 'ol/interaction';
 import { Keys } from '../../helpers/constants/keys';
-import { Toast } from '../../common/toasts/base-toast';
+import { Toast } from '../../common/toasts/toast';
 import { Events } from '../../helpers/constants/events';
 import { Control } from 'ol/control';
 import { Settings } from '../../helpers/constants/settings';

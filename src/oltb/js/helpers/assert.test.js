@@ -1,5 +1,8 @@
+import { Assert } from './assert';
+
 describe('Assert', () => {
-    it('should be an empty test', () => {
-        expect(1).toEqual(1);
+    it('should test isTrue', () => {
+        expect(Assert.isTrue(true).not.toThrow());
+        expect(Assert.isTrue(false).not.toThrow());
     });
 });
