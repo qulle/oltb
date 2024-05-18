@@ -35,5 +35,6 @@ export const banner = `/*!
  * | (+) @eslint/js 9.2.0                   - https://github.com/eslint/eslint                                    |
  * | (+) Husky 9.0.11                       - https://github.com/typicode/husky                                   |
  * | (+) Lint Staged 15.2.2                 - https://github.com/lint-staged/lint-staged                          |
+ * | (+) Jest 29.7.0                        - https://github.com/jestjs/jest                                      |
  * +--------------------------------------------------------------------------------------------------------------+
  */`;

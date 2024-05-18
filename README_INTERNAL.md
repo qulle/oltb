@@ -1558,6 +1558,7 @@ All classes and id:s in the project are prefixed with the namespace `oltb`.
 11. [ESLint 8.57.0](https://github.com/eslint/eslint)
 12. [Husky 9.0.11](https://github.com/typicode/husky)
 13. [Lint Staged 15.2.2](https://github.com/lint-staged/lint-staged)
+14. [Jest 29.7.0](https://github.com/jestjs/jest)
 
 ## Maps
 1. [Open Street Map](https://www.openstreetmap.org/)
