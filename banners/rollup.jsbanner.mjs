@@ -36,5 +36,7 @@ export const banner = `/*!
  * | (+) Husky 9.0.11                       - https://github.com/typicode/husky                                   |
  * | (+) Lint Staged 15.2.2                 - https://github.com/lint-staged/lint-staged                          |
  * | (+) Jest 29.7.0                        - https://github.com/jestjs/jest                                      |
+ * | (+) Jest Environment JSDOM 29.7.0      - https://github.com/jestjs/jest                                      |
+ * | (+) JIdentity Obj Proxy 3.0.0          - https://github.com/keyz/identity-obj-proxy                          |
  * +--------------------------------------------------------------------------------------------------------------+
  */`;

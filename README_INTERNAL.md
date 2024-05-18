@@ -1559,6 +1559,8 @@ All classes and id:s in the project are prefixed with the namespace `oltb`.
 12. [Husky 9.0.11](https://github.com/typicode/husky)
 13. [Lint Staged 15.2.2](https://github.com/lint-staged/lint-staged)
 14. [Jest 29.7.0](https://github.com/jestjs/jest)
+15. [Jest Environment JSDOM 29.7.0](https://github.com/jestjs/jest)
+16. [Identity Obj Proxy 3.0.0](https://github.com/keyz/identity-obj-proxy)
 
 ## Maps
 1. [Open Street Map](https://www.openstreetmap.org/)

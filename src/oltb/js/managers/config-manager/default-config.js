@@ -1,5 +1,5 @@
 import { VERSION as olVersion } from 'ol';
-import { version as oltbVersion} from '../../../../../package.json';
+import * as packageJson from '../../../../../package.json';
 
 // Note: 
 // All config can be overridden by defining a custom config.json file. 
@@ -33,7 +33,7 @@ const DefaultConfig = Object.freeze({
         id: 'map'
     }),
     toolbar: Object.freeze({
-        version: oltbVersion,
+        version: packageJson.version,
         id: 'oltb'
     }),
     urlParameter: Object.freeze({
