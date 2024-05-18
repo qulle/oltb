@@ -15,13 +15,13 @@ import { TranslationManager } from '../../managers/translation-manager/translati
 import { Control, OverviewMap } from 'ol/control';
 
 const FILENAME = 'OverviewTool.js';
-const CLASS_TOOL_BUTTON = 'oltb-tool-button';
-const CLASS_TOOLBOX_SECTION = 'oltb-toolbox-section';
-const CLASS_TOGGLEABLE = 'oltb-toggleable';
-const ID_PREFIX = 'oltb-overview';
-const ID_CLASS_OVERVIEW_TARGET = 'oltb-overview-target';
-const I18N_BASE = 'tools.overviewTool';
-const I18N_BASE_COMMON = 'commons';
+const CLASS__TOOL_BUTTON = 'oltb-tool-button';
+const CLASS__TOOLBOX_SECTION = 'oltb-toolbox-section';
+const CLASS__TOGGLEABLE = 'oltb-toggleable';
+const ID__PREFIX = 'oltb-overview';
+const ID__CLASS__OVERVIEW_TARGET = 'oltb-overview-target';
+const I18N__BASE = 'tools.overviewTool';
+const I18N__BASE_COMMON = 'commons';
 
 const DefaultOptions = Object.freeze({
     onInitiated: undefined,
@@ -52,19 +52,19 @@ class OverviewTool extends Control {
         
         const icon = getIcon({
             path: SvgPaths.aspectRatio.stroked,
-            class: `${CLASS_TOOL_BUTTON}__icon`
+            class: `${CLASS__TOOL_BUTTON}__icon`
         });
 
-        const i18n = TranslationManager.get(I18N_BASE);
+        const i18n = TranslationManager.get(I18N__BASE);
         const button = DOM.createElement({
             element: 'button',
             html: icon,
-            class: CLASS_TOOL_BUTTON,
+            class: CLASS__TOOL_BUTTON,
             attributes: {
                 'type': 'button',
                 'data-tippy-content': `${i18n.title} (${ShortcutKeys.overviewTool})`,
                 'data-tippy-content-post': `(${ShortcutKeys.overviewTool})`,
-                'data-oltb-i18n': `${I18N_BASE}.title`
+                'data-oltb-i18n': `${I18N__BASE}.title`
             },
             listeners: {
                 'click': this.onClickTool.bind(this)
@@ -85,7 +85,7 @@ class OverviewTool extends Control {
         );
 
         this.initToolboxHTML();
-        this.uiRefToolboxSection = window.document.querySelector(`#${ID_PREFIX}-toolbox`);
+        this.uiRefToolboxSection = window.document.querySelector(`#${ID__PREFIX}-toolbox`);
         this.initToggleables();
 
         this.overviewMap = this.generateOLOverviewMap();
@@ -109,17 +109,17 @@ class OverviewTool extends Control {
     // # Section: Init Helpers
     //--------------------------------------------------------------------
     initToolboxHTML() {
-        const i18n = TranslationManager.get(`${I18N_BASE}.toolbox`);
-        const i18nCommon = TranslationManager.get(`${I18N_BASE_COMMON}.titles`);
+        const i18n = TranslationManager.get(`${I18N__BASE}.toolbox`);
+        const i18nCommon = TranslationManager.get(`${I18N__BASE_COMMON}.titles`);
 
         const html = (`
-            <div id="${ID_PREFIX}-toolbox" class="${CLASS_TOOLBOX_SECTION}">
-                <div class="${CLASS_TOOLBOX_SECTION}__header oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">
-                <h4 class="${CLASS_TOOLBOX_SECTION}__title" data-oltb-i18n="${I18N_BASE}.toolbox.titles.overview">${i18n.titles.overview}</h4>
-                    <span class="${CLASS_TOOLBOX_SECTION}__icon oltb-tippy" data-oltb-i18n="${I18N_BASE_COMMON}.titles.toggleSection" title="${i18nCommon.toggleSection}"></span>
+            <div id="${ID__PREFIX}-toolbox" class="${CLASS__TOOLBOX_SECTION}">
+                <div class="${CLASS__TOOLBOX_SECTION}__header oltb-toggleable" data-oltb-toggleable-target="${ID__PREFIX}-toolbox-collapsed">
+                <h4 class="${CLASS__TOOLBOX_SECTION}__title" data-oltb-i18n="${I18N__BASE}.toolbox.titles.overview">${i18n.titles.overview}</h4>
+                    <span class="${CLASS__TOOLBOX_SECTION}__icon oltb-tippy" data-oltb-i18n="${I18N__BASE_COMMON}.titles.toggleSection" title="${i18nCommon.toggleSection}"></span>
                 </div>
-                <div class="${CLASS_TOOLBOX_SECTION}__groups" id="${ID_PREFIX}-toolbox-collapsed" style="display: ${this.localStorage.isCollapsed ? 'none' : 'block'}">
-                    <div class="${CLASS_TOOLBOX_SECTION}__group" id="${ID_PREFIX}-target"></div>
+                <div class="${CLASS__TOOLBOX_SECTION}__groups" id="${ID__PREFIX}-toolbox-collapsed" style="display: ${this.localStorage.isCollapsed ? 'none' : 'block'}">
+                    <div class="${CLASS__TOOLBOX_SECTION}__group" id="${ID__PREFIX}-target"></div>
                 </div>
             </div>
         `);
@@ -128,7 +128,7 @@ class OverviewTool extends Control {
     }
 
     initToggleables() {
-        this.uiRefToolboxSection.querySelectorAll(`.${CLASS_TOGGLEABLE}`).forEach((toggle) => {
+        this.uiRefToolboxSection.querySelectorAll(`.${CLASS__TOGGLEABLE}`).forEach((toggle) => {
             toggle.addEventListener(Events.browser.click, this.onToggleToolbox.bind(this, toggle));
         });
     }
@@ -138,7 +138,7 @@ class OverviewTool extends Control {
     //--------------------------------------------------------------------
     generateOLOverviewMap() {
         return new OverviewMap({
-            target: ID_CLASS_OVERVIEW_TARGET,
+            target: ID__CLASS__OVERVIEW_TARGET,
             isCollapsed: false,
             collapsible: false,
             layers: [
@@ -175,11 +175,11 @@ class OverviewTool extends Control {
         }
 
         // The class must be added before setMap or the overview will not render correctly
-        this.uiRefToolboxSection.classList.add(`${CLASS_TOOLBOX_SECTION}--show`);
+        this.uiRefToolboxSection.classList.add(`${CLASS__TOOLBOX_SECTION}--show`);
         this.overviewMap.setMap(map);
 
         this.isActive = true;
-        this.button.classList.add(`${CLASS_TOOL_BUTTON}--active`);
+        this.button.classList.add(`${CLASS__TOOL_BUTTON}--active`);
 
         this.localStorage.isActive = true;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
@@ -195,8 +195,8 @@ class OverviewTool extends Control {
         this.overviewMap.setMap(null);
 
         this.isActive = false;
-        this.button.classList.remove(`${CLASS_TOOL_BUTTON}--active`);
-        this.uiRefToolboxSection.classList.remove(`${CLASS_TOOLBOX_SECTION}--show`);
+        this.button.classList.remove(`${CLASS__TOOL_BUTTON}--active`);
+        this.uiRefToolboxSection.classList.remove(`${CLASS__TOOLBOX_SECTION}--show`);
 
         this.localStorage.isActive = false;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);

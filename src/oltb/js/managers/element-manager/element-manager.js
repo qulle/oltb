@@ -7,7 +7,7 @@ import { LocalStorageKeys } from '../../helpers/constants/local-storage-keys';
 import { BaseManager } from '../base-manager';
 
 const FILENAME = 'ElementManager.js';
-const CLASS_TOOLBOX_CONTAINER = 'oltb-toolbox-container';
+const CLASS__TOOLBOX_CONTAINER = 'oltb-toolbox-container';
 
 /**
  * About:
@@ -124,7 +124,7 @@ class ElementManager extends BaseManager {
     static #createToolboxElement() {
         const element = DOM.createElement({
             element: 'div', 
-            class: CLASS_TOOLBOX_CONTAINER,
+            class: CLASS__TOOLBOX_CONTAINER,
             attributes: {
                 'data-html2canvas-ignore': 'true'
             }
@@ -142,9 +142,9 @@ class ElementManager extends BaseManager {
     //--------------------------------------------------------------------
     static #onWindowBrowserStateCleared(event) {
         if(window.innerWidth <= ConfigManager.getConfig().deviceWidth.sm) {
-            this.#uiRefToolboxElement.classList.add(`${CLASS_TOOLBOX_CONTAINER}--collision`);
+            this.#uiRefToolboxElement.classList.add(`${CLASS__TOOLBOX_CONTAINER}--collision`);
         }else {
-            this.#uiRefToolboxElement.classList.remove(`${CLASS_TOOLBOX_CONTAINER}--collision`);
+            this.#uiRefToolboxElement.classList.remove(`${CLASS__TOOLBOX_CONTAINER}--collision`);
         }
     }
 
@@ -164,9 +164,9 @@ class ElementManager extends BaseManager {
         const rem = ConfigManager.getConfig().browser.rem;
         
         if(windowWidth - ((3.5 * rem) + toolbarWidth + toolboxWidth) <= collisionLimit) {
-            this.#uiRefToolboxElement.classList.add(`${CLASS_TOOLBOX_CONTAINER}--collision`);
+            this.#uiRefToolboxElement.classList.add(`${CLASS__TOOLBOX_CONTAINER}--collision`);
         }else {
-            this.#uiRefToolboxElement.classList.remove(`${CLASS_TOOLBOX_CONTAINER}--collision`);
+            this.#uiRefToolboxElement.classList.remove(`${CLASS__TOOLBOX_CONTAINER}--collision`);
         }
     }
 

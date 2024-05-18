@@ -4,14 +4,14 @@ import { ConfigManager } from '../config-manager/config-manager';
 import { copyToClipboard } from '../../helpers/browser/copy-to-clipboard';
 
 const FILENAME = 'CopyMarkerInfo.js';
-const I18N_BASE = 'managers.infoWindowManager';
+const I18N__BASE = 'managers.infoWindowManager';
 
 const copyMarkerInfo = async function(InfoWindowManager, data) {
     try {
         await copyToClipboard(data);
 
         Toast.info({
-            i18nKey: `${I18N_BASE}.toasts.infos.copyMarkerInfo`,
+            i18nKey: `${I18N__BASE}.toasts.infos.copyMarkerInfo`,
             autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
         });
     }catch(error) {
@@ -21,7 +21,7 @@ const copyMarkerInfo = async function(InfoWindowManager, data) {
         });
         
         Toast.error({
-            i18nKey: `${I18N_BASE}.toasts.errors.copyMarkerInfo`
+            i18nKey: `${I18N__BASE}.toasts.errors.copyMarkerInfo`
         });
     }
 }

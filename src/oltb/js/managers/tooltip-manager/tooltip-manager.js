@@ -7,7 +7,7 @@ import { BaseManager } from '../base-manager';
 import { ConfigManager } from '../config-manager/config-manager';
 
 const FILENAME = 'TooltipManager.js';
-const CLASS_OVERLAY_TOOLTIP = 'oltb-overlay-tooltip';
+const CLASS__OVERLAY_TOOLTIP = 'oltb-overlay-tooltip';
 
 /**
  * About:
@@ -55,7 +55,7 @@ class TooltipManager extends BaseManager {
         const overlayOffset = ConfigManager.getConfig().overlayOffset;
         const tooltipElement = DOM.createElement({
             element: 'div',
-            class: CLASS_OVERLAY_TOOLTIP
+            class: CLASS__OVERLAY_TOOLTIP
         });
 
         return new Overlay({
@@ -93,7 +93,7 @@ class TooltipManager extends BaseManager {
     static push(key) {
         const tooltipItemElement = DOM.createElement({
             element: 'span',
-            class: `${CLASS_OVERLAY_TOOLTIP}__item`
+            class: `${CLASS__OVERLAY_TOOLTIP}__item`
         });
 
         if(this.isEmpty()) {

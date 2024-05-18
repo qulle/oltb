@@ -47,13 +47,13 @@ import { GeometryCollection, LinearRing, LineString, MultiLineString, MultiPoint
  */
 
 const FILENAME = 'EditTool.js';
-const CLASS_TOOL_BUTTON = 'oltb-tool-button';
-const CLASS_TOOLBOX_SECTION = 'oltb-toolbox-section';
-const CLASS_TOGGLEABLE = 'oltb-toggleable';
-const ID_PREFIX = 'oltb-edit';
-const KEY_TOOLTIP = 'tools.editTool';
-const I18N_BASE = 'tools.editTool';
-const I18N_BASE_COMMON = 'commons';
+const CLASS__TOOL_BUTTON = 'oltb-tool-button';
+const CLASS__TOOLBOX_SECTION = 'oltb-toolbox-section';
+const CLASS__TOGGLEABLE = 'oltb-toggleable';
+const ID__PREFIX = 'oltb-edit';
+const KEY__TOOLTIP = 'tools.editTool';
+const I18N__BASE = 'tools.editTool';
+const I18N__BASE_COMMON = 'commons';
 
 const DefaultOptions = Object.freeze({
     hitTolerance: 5,
@@ -128,19 +128,19 @@ class EditTool extends Control {
         
         const icon = getIcon({
             path: SvgPaths.cursor.stroked,
-            class: `${CLASS_TOOL_BUTTON}__icon`
+            class: `${CLASS__TOOL_BUTTON}__icon`
         });
 
-        const i18n = TranslationManager.get(I18N_BASE);
+        const i18n = TranslationManager.get(I18N__BASE);
         const button = DOM.createElement({
             element: 'button',
             html: icon,
-            class: CLASS_TOOL_BUTTON,
+            class: CLASS__TOOL_BUTTON,
             attributes: {
                 'type': 'button',
                 'data-tippy-content': `${i18n.title} (${ShortcutKeys.editTool})`,
                 'data-tippy-content-post': `(${ShortcutKeys.editTool})`,
-                'data-oltb-i18n': `${I18N_BASE}.title`
+                'data-oltb-i18n': `${I18N__BASE}.title`
             },
             listeners: {
                 'click': this.onClickTool.bind(this)
@@ -166,35 +166,35 @@ class EditTool extends Control {
         this.parser.inject(Point, LineString, LinearRing, Polygon, MultiPoint, MultiLineString, MultiPolygon, GeometryCollection);
         
         this.initToolboxHTML();
-        this.uiRefToolboxSection = window.document.querySelector(`#${ID_PREFIX}-toolbox`);
+        this.uiRefToolboxSection = window.document.querySelector(`#${ID__PREFIX}-toolbox`);
         this.initToggleables();
         this.initSettings();
 
-        this.uiRefDeleteSelectedButton = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-delete-selected-button`);
+        this.uiRefDeleteSelectedButton = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-delete-selected-button`);
         this.uiRefDeleteSelectedButton.addEventListener(Events.browser.click, this.onDeleteSelectedFeatures.bind(this));
 
-        this.uiRefRotateSelectedButton = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-rotate-selected-button`);
+        this.uiRefRotateSelectedButton = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-rotate-selected-button`);
         this.uiRefRotateSelectedButton.addEventListener(Events.browser.click, this.onRotateSelectedFeatures.bind(this));
 
-        this.uiRefInfoSelectedButton = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-info-button`);
+        this.uiRefInfoSelectedButton = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-info-button`);
         this.uiRefInfoSelectedButton.addEventListener(Events.browser.click, this.onInfoSelectedFeatures.bind(this));
 
-        this.uiRefUnionSelectedButton = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-union-selected-button`);
+        this.uiRefUnionSelectedButton = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-union-selected-button`);
         this.uiRefUnionSelectedButton.addEventListener(Events.browser.click, this.onShapeOperator.bind(this, this.unionFeatures, 'union'));
 
-        this.uiRefIntersectSelectedButton = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-intersect-selected-button`);
+        this.uiRefIntersectSelectedButton = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-intersect-selected-button`);
         this.uiRefIntersectSelectedButton.addEventListener(Events.browser.click, this.onShapeOperator.bind(this, this.intersectFeatures, 'intersect'));
 
-        this.uiRefExcludeSelectedButton = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-exclude-selected-button`);
+        this.uiRefExcludeSelectedButton = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-exclude-selected-button`);
         this.uiRefExcludeSelectedButton.addEventListener(Events.browser.click, this.onShapeOperator.bind(this, this.excludeFeatures, 'exclude'));
 
-        this.uiRefDifferenceSelectedButton = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-difference-selected-button`);
+        this.uiRefDifferenceSelectedButton = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-difference-selected-button`);
         this.uiRefDifferenceSelectedButton.addEventListener(Events.browser.click, this.onShapeOperator.bind(this, this.differenceFeatures, 'difference'));
 
-        this.uiRefFillColor = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-fill-color`);
+        this.uiRefFillColor = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-fill-color`);
         this.uiRefFillColor.addEventListener(Events.custom.colorChange, this.onFeatureColorChange.bind(this));
 
-        this.uiRefStrokeColor = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-stroke-color`);
+        this.uiRefStrokeColor = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-stroke-color`);
         this.uiRefStrokeColor.addEventListener(Events.custom.colorChange, this.onFeatureColorChange.bind(this));
 
         this.interactionSelect = this.generateOLInteractionSelect();
@@ -230,54 +230,54 @@ class EditTool extends Control {
     // # Section: Init Helpers
     //--------------------------------------------------------------------
     initToolboxHTML() {
-        const i18n = TranslationManager.get(`${I18N_BASE}.toolbox`);
-        const i18nCommon = TranslationManager.get(`${I18N_BASE_COMMON}.titles`);
+        const i18n = TranslationManager.get(`${I18N__BASE}.toolbox`);
+        const i18nCommon = TranslationManager.get(`${I18N__BASE_COMMON}.titles`);
 
         const buttonClasses = 'class="oltb-btn oltb-btn--blue-mid oltb-tippy"';
         const html = (`
-            <div id="${ID_PREFIX}-toolbox" class="${CLASS_TOOLBOX_SECTION}">
-                <div class="${CLASS_TOOLBOX_SECTION}__header oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">
-                    <h4 class="${CLASS_TOOLBOX_SECTION}__title" data-oltb-i18n="${I18N_BASE}.toolbox.titles.edit">${i18n.titles.edit}</h4>
-                    <span class="${CLASS_TOOLBOX_SECTION}__icon oltb-tippy" data-oltb-i18n="${I18N_BASE_COMMON}.titles.toggleSection" title="${i18nCommon.toggleSection}"></span>
+            <div id="${ID__PREFIX}-toolbox" class="${CLASS__TOOLBOX_SECTION}">
+                <div class="${CLASS__TOOLBOX_SECTION}__header oltb-toggleable" data-oltb-toggleable-target="${ID__PREFIX}-toolbox-collapsed">
+                    <h4 class="${CLASS__TOOLBOX_SECTION}__title" data-oltb-i18n="${I18N__BASE}.toolbox.titles.edit">${i18n.titles.edit}</h4>
+                    <span class="${CLASS__TOOLBOX_SECTION}__icon oltb-tippy" data-oltb-i18n="${I18N__BASE_COMMON}.titles.toggleSection" title="${i18nCommon.toggleSection}"></span>
                 </div>
-                <div class="${CLASS_TOOLBOX_SECTION}__groups" id="${ID_PREFIX}-toolbox-collapsed" style="display: ${this.localStorage.isCollapsed ? 'none' : 'block'}">
-                    <div class="${CLASS_TOOLBOX_SECTION}__group ${CLASS_TOOLBOX_SECTION}__group--sub-toolbar">
-                        <label class="oltb-label" data-oltb-i18n="${I18N_BASE}.toolbox.groups.misc.title">${i18n.groups.misc.title}</label>
-                        <button type="button" id="${ID_PREFIX}-delete-selected-button" ${buttonClasses} data-oltb-i18n="${I18N_BASE}.toolbox.groups.misc.delete" title="${i18n.groups.misc.delete}">
+                <div class="${CLASS__TOOLBOX_SECTION}__groups" id="${ID__PREFIX}-toolbox-collapsed" style="display: ${this.localStorage.isCollapsed ? 'none' : 'block'}">
+                    <div class="${CLASS__TOOLBOX_SECTION}__group ${CLASS__TOOLBOX_SECTION}__group--sub-toolbar">
+                        <label class="oltb-label" data-oltb-i18n="${I18N__BASE}.toolbox.groups.misc.title">${i18n.groups.misc.title}</label>
+                        <button type="button" id="${ID__PREFIX}-delete-selected-button" ${buttonClasses} data-oltb-i18n="${I18N__BASE}.toolbox.groups.misc.delete" title="${i18n.groups.misc.delete}">
                             ${getIcon({...DefaultButtonProps, path: SvgPaths.trash.stroked})}
                         </button>
-                        <button type="button" id="${ID_PREFIX}-rotate-selected-button" ${buttonClasses} data-oltb-i18n="${I18N_BASE}.toolbox.groups.misc.rotate" title="${i18n.groups.misc.rotate}">
+                        <button type="button" id="${ID__PREFIX}-rotate-selected-button" ${buttonClasses} data-oltb-i18n="${I18N__BASE}.toolbox.groups.misc.rotate" title="${i18n.groups.misc.rotate}">
                             ${getIcon({...DefaultButtonProps, path: SvgPaths.arrowRepeat.stroked})}
                         </button>
-                        <button type="button" id="${ID_PREFIX}-info-button" ${buttonClasses} data-oltb-i18n="${I18N_BASE}.toolbox.groups.misc.geometryData" title="${i18n.groups.misc.geometryData}">
+                        <button type="button" id="${ID__PREFIX}-info-button" ${buttonClasses} data-oltb-i18n="${I18N__BASE}.toolbox.groups.misc.geometryData" title="${i18n.groups.misc.geometryData}">
                             ${getIcon({...DefaultButtonProps, path: SvgPaths.infoCircle.stroked})}
                         </button>
                     </div>
-                    <div class="${CLASS_TOOLBOX_SECTION}__group ${CLASS_TOOLBOX_SECTION}__group--sub-toolbar">
-                        <label class="oltb-label" data-oltb-i18n="${I18N_BASE}.toolbox.groups.shapes.title">${i18n.groups.shapes.title}</label>
-                        <button type="button" id="${ID_PREFIX}-union-selected-button" ${buttonClasses} data-oltb-i18n="${I18N_BASE}.toolbox.groups.shapes.union" title="${i18n.groups.shapes.union}">
+                    <div class="${CLASS__TOOLBOX_SECTION}__group ${CLASS__TOOLBOX_SECTION}__group--sub-toolbar">
+                        <label class="oltb-label" data-oltb-i18n="${I18N__BASE}.toolbox.groups.shapes.title">${i18n.groups.shapes.title}</label>
+                        <button type="button" id="${ID__PREFIX}-union-selected-button" ${buttonClasses} data-oltb-i18n="${I18N__BASE}.toolbox.groups.shapes.union" title="${i18n.groups.shapes.union}">
                             ${getIcon({...DefaultButtonProps, path: SvgPaths.union.mixed})}
                         </button>
-                        <button type="button" id="${ID_PREFIX}-intersect-selected-button" ${buttonClasses} data-oltb-i18n="${I18N_BASE}.toolbox.groups.shapes.intersect" title="${i18n.groups.shapes.intersect}">
+                        <button type="button" id="${ID__PREFIX}-intersect-selected-button" ${buttonClasses} data-oltb-i18n="${I18N__BASE}.toolbox.groups.shapes.intersect" title="${i18n.groups.shapes.intersect}">
                             ${getIcon({...DefaultButtonProps, path: SvgPaths.intersect.mixed})}
                         </button>
-                        <button type="button" id="${ID_PREFIX}-exclude-selected-button" ${buttonClasses} data-oltb-i18n="${I18N_BASE}.toolbox.groups.shapes.exclude" title="${i18n.groups.shapes.exclude}">
+                        <button type="button" id="${ID__PREFIX}-exclude-selected-button" ${buttonClasses} data-oltb-i18n="${I18N__BASE}.toolbox.groups.shapes.exclude" title="${i18n.groups.shapes.exclude}">
                             ${getIcon({...DefaultButtonProps, path: SvgPaths.exclude.mixed})}
                         </button>
-                        <button type="button" id="${ID_PREFIX}-difference-selected-button" ${buttonClasses} data-oltb-i18n="${I18N_BASE}.toolbox.groups.shapes.difference" title="${i18n.groups.shapes.difference}">
+                        <button type="button" id="${ID__PREFIX}-difference-selected-button" ${buttonClasses} data-oltb-i18n="${I18N__BASE}.toolbox.groups.shapes.difference" title="${i18n.groups.shapes.difference}">
                             ${getIcon({...DefaultButtonProps, path: SvgPaths.subtract.mixed})}
                         </button>
                     </div>
-                    <div class="${CLASS_TOOLBOX_SECTION}__group ${CLASS_TOOLBOX_SECTION}__group--split-group">
-                        <div class="${CLASS_TOOLBOX_SECTION}__group-part">
-                            <label class="oltb-label" for="${ID_PREFIX}-stroke-color" data-oltb-i18n="${I18N_BASE}.toolbox.groups.strokeColor.title">${i18n.groups.strokeColor.title}</label>
-                            <div id="${ID_PREFIX}-stroke-color" class="oltb-color-input oltb-color-tippy" data-oltb-color-target="#${ID_PREFIX}-stroke-color" data-oltb-color="${this.localStorage.strokeColor}" tabindex="0">
+                    <div class="${CLASS__TOOLBOX_SECTION}__group ${CLASS__TOOLBOX_SECTION}__group--split-group">
+                        <div class="${CLASS__TOOLBOX_SECTION}__group-part">
+                            <label class="oltb-label" for="${ID__PREFIX}-stroke-color" data-oltb-i18n="${I18N__BASE}.toolbox.groups.strokeColor.title">${i18n.groups.strokeColor.title}</label>
+                            <div id="${ID__PREFIX}-stroke-color" class="oltb-color-input oltb-color-tippy" data-oltb-color-target="#${ID__PREFIX}-stroke-color" data-oltb-color="${this.localStorage.strokeColor}" tabindex="0">
                                 <div class="oltb-color-input__inner" style="background-color: ${this.localStorage.strokeColor};"></div>
                             </div>
                         </div>
-                        <div class="${CLASS_TOOLBOX_SECTION}__group-part">
-                            <label class="oltb-label" for="${ID_PREFIX}-fill-color" data-oltb-i18n="${I18N_BASE}.toolbox.groups.fillColor.title">${i18n.groups.fillColor.title}</label>
-                            <div id="${ID_PREFIX}-fill-color" class="oltb-color-input oltb-color-tippy" data-oltb-color-target="#${ID_PREFIX}-fill-color" data-oltb-color="${this.localStorage.fillColor}" tabindex="0">
+                        <div class="${CLASS__TOOLBOX_SECTION}__group-part">
+                            <label class="oltb-label" for="${ID__PREFIX}-fill-color" data-oltb-i18n="${I18N__BASE}.toolbox.groups.fillColor.title">${i18n.groups.fillColor.title}</label>
+                            <div id="${ID__PREFIX}-fill-color" class="oltb-color-input oltb-color-tippy" data-oltb-color-target="#${ID__PREFIX}-fill-color" data-oltb-color="${this.localStorage.fillColor}" tabindex="0">
                                 <div class="oltb-color-input__inner" style="background-color: ${this.localStorage.fillColor};"></div>
                             </div>
                         </div>
@@ -290,7 +290,7 @@ class EditTool extends Control {
     }
 
     initToggleables() {
-        this.uiRefToolboxSection.querySelectorAll(`.${CLASS_TOGGLEABLE}`).forEach((toggle) => {
+        this.uiRefToolboxSection.querySelectorAll(`.${CLASS__TOGGLEABLE}`).forEach((toggle) => {
             toggle.addEventListener(Events.browser.click, this.onToggleToolbox.bind(this, toggle));
         });
     }
@@ -298,7 +298,7 @@ class EditTool extends Control {
     initSettings() {
         SettingsManager.addSetting(Settings.mouseOnlyToEditVectorShapes, {
             state: true, 
-            i18nBase: `${I18N_BASE}.settings`,
+            i18nBase: `${I18N__BASE}.settings`,
             i18nKey: 'mouseOnlyToEditVectorShapes'
         });
     }
@@ -389,8 +389,8 @@ class EditTool extends Control {
         SnapManager.addSnap(this);
 
         this.isActive = true;
-        this.uiRefToolboxSection.classList.add(`${CLASS_TOOLBOX_SECTION}--show`);
-        this.button.classList.add(`${CLASS_TOOL_BUTTON}--active`);
+        this.uiRefToolboxSection.classList.add(`${CLASS__TOOLBOX_SECTION}--show`);
+        this.button.classList.add(`${CLASS__TOOL_BUTTON}--active`);
 
         this.localStorage.isActive = true;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
@@ -417,8 +417,8 @@ class EditTool extends Control {
         SnapManager.removeSnap();
 
         this.isActive = false;
-        this.uiRefToolboxSection.classList.remove(`${CLASS_TOOLBOX_SECTION}--show`);
-        this.button.classList.remove(`${CLASS_TOOL_BUTTON}--active`);
+        this.uiRefToolboxSection.classList.remove(`${CLASS__TOOLBOX_SECTION}--show`);
+        this.button.classList.remove(`${CLASS__TOOL_BUTTON}--active`);
 
         this.localStorage.isActive = false;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
@@ -506,7 +506,7 @@ class EditTool extends Control {
 
         if(features.length === 0) {
             Toast.info({
-                i18nKey: `${I18N_BASE}.toasts.infos.missingFeatures`,
+                i18nKey: `${I18N__BASE}.toasts.infos.missingFeatures`,
                 autoremove: autoremove
             });
 
@@ -522,7 +522,7 @@ class EditTool extends Control {
 
         if(features.length === 0) {
             Toast.info({
-                i18nKey: `${I18N_BASE}.toasts.infos.missingFeatures`,
+                i18nKey: `${I18N__BASE}.toasts.infos.missingFeatures`,
                 autoremove: autoremove
             });
 
@@ -538,7 +538,7 @@ class EditTool extends Control {
 
         if(features.length === 0) {
             Toast.info({
-                i18nKey: `${I18N_BASE}.toasts.infos.missingFeatures`,
+                i18nKey: `${I18N__BASE}.toasts.infos.missingFeatures`,
                 autoremove: autoremove
             });
 
@@ -547,7 +547,7 @@ class EditTool extends Control {
 
         if(features.length >= 2) {
             Toast.info({
-                i18nKey: `${I18N_BASE}.toasts.infos.strictOneFeature`,
+                i18nKey: `${I18N__BASE}.toasts.infos.strictOneFeature`,
                 autoremove: autoremove
             });
 
@@ -571,7 +571,7 @@ class EditTool extends Control {
 
         if(!this.isTwoAndOnlyTwoShapes(features)) {
             Toast.info({
-                i18nKey: `${I18N_BASE}.toasts.infos.strictTwoFeatures`,
+                i18nKey: `${I18N__BASE}.toasts.infos.strictTwoFeatures`,
                 autoremove: autoremove
             });
 
@@ -589,7 +589,7 @@ class EditTool extends Control {
         const hasOtherTooltip = !TooltipManager.isEmpty();
 
         if(hasOtherTooltip && selectedFeatures.length === 1) {
-            this.tooltipItem = TooltipManager.push(KEY_TOOLTIP);
+            this.tooltipItem = TooltipManager.push(KEY__TOOLTIP);
         }
 
         const oltb = DefaultConfig.toolbar.id;
@@ -607,7 +607,7 @@ class EditTool extends Control {
         const hasOtherTooltip = !TooltipManager.isEmpty();
         
         if(hasOtherTooltip && selectedFeatures.length === 1) {
-            TooltipManager.pop(KEY_TOOLTIP);
+            TooltipManager.pop(KEY__TOOLTIP);
         }
 
         const oltb = DefaultConfig.toolbar.id;
@@ -660,7 +660,7 @@ class EditTool extends Control {
     // # Section: Ask User
     //--------------------------------------------------------------------
     askToDeleteFeatures(features) {
-        const i18n = TranslationManager.get(`${I18N_BASE}.dialogs.confirms.deleteFeatures`);
+        const i18n = TranslationManager.get(`${I18N__BASE}.dialogs.confirms.deleteFeatures`);
 
         Dialog.confirm({
             title: i18n.title,
@@ -674,7 +674,7 @@ class EditTool extends Control {
     }
 
     askToRotateSelectedFeatures(features) {
-        const i18n = TranslationManager.get(`${I18N_BASE}.dialogs.prompts.rotateFeatures`);
+        const i18n = TranslationManager.get(`${I18N__BASE}.dialogs.prompts.rotateFeatures`);
 
         Dialog.prompt({
             title: i18n.title,
@@ -692,7 +692,7 @@ class EditTool extends Control {
                     });
                     
                     Toast.error({
-                        i18nKey: `${I18N_BASE}.toasts.errors.invalidValue`
+                        i18nKey: `${I18N__BASE}.toasts.errors.invalidValue`
                     });
                 }
             }
@@ -951,7 +951,7 @@ class EditTool extends Control {
             });
             
             Toast.error({
-                i18nKey: `${I18N_BASE}.toasts.operationFailed`
+                i18nKey: `${I18N__BASE}.toasts.operationFailed`
             }); 
 
             // Note: 

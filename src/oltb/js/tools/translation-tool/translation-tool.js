@@ -11,8 +11,8 @@ import { isShortcutKeyOnly } from '../../helpers/browser/is-shortcut-key-only';
 import { TranslationManager } from '../../managers/translation-manager/translation-manager';
 
 const FILENAME = 'TranslationTool.js';
-const CLASS_TOOL_BUTTON = 'oltb-tool-button';
-const I18N_BASE = 'tools.translationTool';
+const CLASS__TOOL_BUTTON = 'oltb-tool-button';
+const I18N__BASE = 'tools.translationTool';
 
 const DefaultOptions = Object.freeze({
     onInitiated: undefined,
@@ -36,19 +36,19 @@ class TranslationTool extends Control {
         
         const icon = getIcon({
             path: SvgPaths.translate.mixed,
-            class: `${CLASS_TOOL_BUTTON}__icon`
+            class: `${CLASS__TOOL_BUTTON}__icon`
         });
 
-        const i18n = TranslationManager.get(I18N_BASE);
+        const i18n = TranslationManager.get(I18N__BASE);
         const button = DOM.createElement({
             element: 'button',
             html: icon,
-            class: CLASS_TOOL_BUTTON,
+            class: CLASS__TOOL_BUTTON,
             attributes: {
                 'type': 'button',
                 'data-tippy-content': `${i18n.title} (${ShortcutKeys.translationTool})`,
                 'data-tippy-content-post': `(${ShortcutKeys.translationTool})`,
-                'data-oltb-i18n': `${I18N_BASE}.title`
+                'data-oltb-i18n': `${I18N__BASE}.title`
             },
             listeners: {
                 'click': this.onClickTool.bind(this)
@@ -114,7 +114,7 @@ class TranslationTool extends Control {
 
         const languages = TranslationManager.getLanguages();
         const currentLanguage = TranslationManager.getActiveLanguage();
-        const i18n = TranslationManager.get(`${I18N_BASE}.dialogs.selects.changeLanguage`);
+        const i18n = TranslationManager.get(`${I18N__BASE}.dialogs.selects.changeLanguage`);
 
         this.languageDialog = Dialog.select({
             title: i18n.title,

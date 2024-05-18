@@ -23,15 +23,15 @@ import { isShortcutKeyOnly } from '../../helpers/browser/is-shortcut-key-only';
 import { TranslationManager } from '../../managers/translation-manager/translation-manager';
 
 const FILENAME = 'CoordiantesTool.js';
-const CLASS_TOOL_BUTTON = 'oltb-tool-button';
-const CLASS_TOOLBOX_SECTION = 'oltb-toolbox-section';
-const CLASS_TOGGLEABLE = 'oltb-toggleable';
-const ID_PREFIX = 'oltb-coordinates';
-const KEY_TOOLTIP = 'tools.coordinatesTool';
+const CLASS__TOOL_BUTTON = 'oltb-tool-button';
+const CLASS__TOOLBOX_SECTION = 'oltb-toolbox-section';
+const CLASS__TOGGLEABLE = 'oltb-toggleable';
+const ID__PREFIX = 'oltb-coordinates';
+const KEY__TOOLTIP = 'tools.coordinatesTool';
 const FORMAT_DECIMAL_DEGREES = 'DD';
 const FORMAT_DEGREE_MINUTES_SECONDS = 'DMS';
-const I18N_BASE = 'tools.coordinatesTool';
-const I18N_BASE_COMMON = 'commons';
+const I18N__BASE = 'tools.coordinatesTool';
+const I18N__BASE_COMMON = 'commons';
 
 const DefaultOptions = Object.freeze({
     onInitiated: undefined,
@@ -63,19 +63,19 @@ class CoordinatesTool extends Control {
 
         const icon = getIcon({
             path: SvgPaths.crosshair.stroked,
-            class: `${CLASS_TOOL_BUTTON}__icon`
+            class: `${CLASS__TOOL_BUTTON}__icon`
         });
 
-        const i18n = TranslationManager.get(I18N_BASE);
+        const i18n = TranslationManager.get(I18N__BASE);
         const button = DOM.createElement({
             element: 'button',
             html: icon,
-            class: CLASS_TOOL_BUTTON,
+            class: CLASS__TOOL_BUTTON,
             attributes: {
                 'type': 'button',
                 'data-tippy-content': `${i18n.title} (${ShortcutKeys.coordinatesTool})`,
                 'data-tippy-content-post': `(${ShortcutKeys.coordinatesTool})`,
-                'data-oltb-i18n': `${I18N_BASE}.title`
+                'data-oltb-i18n': `${I18N__BASE}.title`
             },
             listeners: {
                 'click': this.onClickTool.bind(this)
@@ -98,13 +98,13 @@ class CoordinatesTool extends Control {
         );
 
         this.initToolboxHTML();
-        this.uiRefToolboxSection = window.document.querySelector(`#${ID_PREFIX}-toolbox`);
+        this.uiRefToolboxSection = window.document.querySelector(`#${ID__PREFIX}-toolbox`);
         this.initToggleables();
         this.initSettings();
 
-        this.uiRefCoordinatesTable = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-table`);
+        this.uiRefCoordinatesTable = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-table`);
         
-        this.uiRefCoordinatesFormat = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-format`);
+        this.uiRefCoordinatesFormat = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-format`);
         this.uiRefCoordinatesFormat.value = this.localStorage.coordinatesFormat;
         this.uiRefCoordinatesFormat.addEventListener(Events.browser.change, this.onCoordinatesFormatChange.bind(this));
 
@@ -127,26 +127,26 @@ class CoordinatesTool extends Control {
     // # Section: Init Helpers
     //--------------------------------------------------------------------
     initToolboxHTML() {
-        const i18n = TranslationManager.get(`${I18N_BASE}.toolbox`);
-        const i18nCommon = TranslationManager.get(`${I18N_BASE_COMMON}.titles`);
+        const i18n = TranslationManager.get(`${I18N__BASE}.toolbox`);
+        const i18nCommon = TranslationManager.get(`${I18N__BASE_COMMON}.titles`);
         
         const html = (`
-            <div id="${ID_PREFIX}-toolbox" class="${CLASS_TOOLBOX_SECTION}">
-                <div class="${CLASS_TOOLBOX_SECTION}__header oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">
-                    <h4 class="${CLASS_TOOLBOX_SECTION}__title" data-oltb-i18n="${I18N_BASE}.toolbox.titles.coordinates">${i18n.titles.coordinates}</h4>
-                    <span class="${CLASS_TOOLBOX_SECTION}__icon oltb-tippy" data-oltb-i18n="${I18N_BASE_COMMON}.titles.toggleSection" title="${i18nCommon.toggleSection}"></span>
+            <div id="${ID__PREFIX}-toolbox" class="${CLASS__TOOLBOX_SECTION}">
+                <div class="${CLASS__TOOLBOX_SECTION}__header oltb-toggleable" data-oltb-toggleable-target="${ID__PREFIX}-toolbox-collapsed">
+                    <h4 class="${CLASS__TOOLBOX_SECTION}__title" data-oltb-i18n="${I18N__BASE}.toolbox.titles.coordinates">${i18n.titles.coordinates}</h4>
+                    <span class="${CLASS__TOOLBOX_SECTION}__icon oltb-tippy" data-oltb-i18n="${I18N__BASE_COMMON}.titles.toggleSection" title="${i18nCommon.toggleSection}"></span>
                 </div>
-                <div class="${CLASS_TOOLBOX_SECTION}__groups" id="${ID_PREFIX}-toolbox-collapsed" style="display: ${this.localStorage.isCollapsed ? 'none' : 'block'}">
-                    <div class="${CLASS_TOOLBOX_SECTION}__group">
-                        <label class="oltb-label" for="${ID_PREFIX}-format" data-oltb-i18n="${I18N_BASE}.toolbox.groups.formats.title">${i18n.groups.formats.title}</label>
-                        <select id="${ID_PREFIX}-format" class="oltb-select">
-                            <option value="DD" data-oltb-i18n="${I18N_BASE}.toolbox.groups.formats.dd">${i18n.groups.formats.dd}</option>
-                            <option value="DMS" data-oltb-i18n="${I18N_BASE}.toolbox.groups.formats.dms">${i18n.groups.formats.dms}</option>
+                <div class="${CLASS__TOOLBOX_SECTION}__groups" id="${ID__PREFIX}-toolbox-collapsed" style="display: ${this.localStorage.isCollapsed ? 'none' : 'block'}">
+                    <div class="${CLASS__TOOLBOX_SECTION}__group">
+                        <label class="oltb-label" for="${ID__PREFIX}-format" data-oltb-i18n="${I18N__BASE}.toolbox.groups.formats.title">${i18n.groups.formats.title}</label>
+                        <select id="${ID__PREFIX}-format" class="oltb-select">
+                            <option value="DD" data-oltb-i18n="${I18N__BASE}.toolbox.groups.formats.dd">${i18n.groups.formats.dd}</option>
+                            <option value="DMS" data-oltb-i18n="${I18N__BASE}.toolbox.groups.formats.dms">${i18n.groups.formats.dms}</option>
                         </select>
                     </div>
-                    <div class="${CLASS_TOOLBOX_SECTION}__group">
-                        <label class="oltb-label" data-oltb-i18n="${I18N_BASE}.toolbox.groups.coordinates.title">${i18n.groups.coordinates.title} <em>(Lat, Lon)</em></label>
-                        <table class="oltb-table oltb-table--horizontal oltb-table--no-background oltb-table--tight-bottom-and-top oltb-mt-05" id="${ID_PREFIX}-table"></table>
+                    <div class="${CLASS__TOOLBOX_SECTION}__group">
+                        <label class="oltb-label" data-oltb-i18n="${I18N__BASE}.toolbox.groups.coordinates.title">${i18n.groups.coordinates.title} <em>(Lat, Lon)</em></label>
+                        <table class="oltb-table oltb-table--horizontal oltb-table--no-background oltb-table--tight-bottom-and-top oltb-mt-05" id="${ID__PREFIX}-table"></table>
                     </div>
                 </div>
             </div>
@@ -156,7 +156,7 @@ class CoordinatesTool extends Control {
     }
 
     initToggleables() {
-        this.uiRefToolboxSection.querySelectorAll(`.${CLASS_TOGGLEABLE}`).forEach((toggle) => {
+        this.uiRefToolboxSection.querySelectorAll(`.${CLASS__TOGGLEABLE}`).forEach((toggle) => {
             toggle.addEventListener(Events.browser.click, this.onToggleToolbox.bind(this, toggle));
         });
     }
@@ -164,13 +164,13 @@ class CoordinatesTool extends Control {
     initSettings() {
         SettingsManager.addSetting(Settings.copyCoordinatesOnClick, {
             state: true, 
-            i18nBase: `${I18N_BASE}.settings`,
+            i18nBase: `${I18N__BASE}.settings`,
             i18nKey: 'copyOnClick'
         });
 
         SettingsManager.addSetting(Settings.updateToolboxCoordinatesOnHover, {
             state: true, 
-            i18nBase: `${I18N_BASE}.settings`,
+            i18nBase: `${I18N__BASE}.settings`,
             i18nKey: 'updateToolboxOnHover'
         });
     }
@@ -198,8 +198,8 @@ class CoordinatesTool extends Control {
         this.createUIProjections();
 
         this.isActive = true;
-        this.uiRefToolboxSection.classList.add(`${CLASS_TOOLBOX_SECTION}--show`);
-        this.button.classList.add(`${CLASS_TOOL_BUTTON}--active`);
+        this.uiRefToolboxSection.classList.add(`${CLASS__TOOLBOX_SECTION}--show`);
+        this.button.classList.add(`${CLASS__TOOL_BUTTON}--active`);
 
         this.localStorage.isActive = true;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
@@ -215,8 +215,8 @@ class CoordinatesTool extends Control {
         this.removeUIProjections();
 
         this.isActive = false;
-        this.uiRefToolboxSection.classList.remove(`${CLASS_TOOLBOX_SECTION}--show`);
-        this.button.classList.remove(`${CLASS_TOOL_BUTTON}--active`);
+        this.uiRefToolboxSection.classList.remove(`${CLASS__TOOLBOX_SECTION}--show`);
+        this.button.classList.remove(`${CLASS__TOOL_BUTTON}--active`);
 
         this.localStorage.isActive = false;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
@@ -358,14 +358,14 @@ class CoordinatesTool extends Control {
             this.projections.set(projection.code, coordinatesCell);
         });
 
-        this.tooltipItem = TooltipManager.push(KEY_TOOLTIP);
+        this.tooltipItem = TooltipManager.push(KEY__TOOLTIP);
         this.onPointerMoveListener = map.on(Events.openLayers.pointerMove, this.onPointerMove.bind(this));
         this.onMapClickListener = map.on(Events.browser.click, this.onMapClick.bind(this));
     }
 
     removeUIProjections() {
         DOM.clearElement(this.uiRefCoordinatesTable);
-        TooltipManager.pop(KEY_TOOLTIP);
+        TooltipManager.pop(KEY__TOOLTIP);
         
         unByKey(this.onPointerMoveListener);
         unByKey(this.onMapClickListener);
@@ -463,7 +463,7 @@ class CoordinatesTool extends Control {
             await copyToClipboard(prettyCoordinates);
 
             Toast.info({
-                i18nKey: `${I18N_BASE}.toasts.infos.copyCoordinates`,
+                i18nKey: `${I18N__BASE}.toasts.infos.copyCoordinates`,
                 autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
             });
         }catch(error) {
@@ -473,7 +473,7 @@ class CoordinatesTool extends Control {
             });
 
             Toast.error({
-                i18nKey: `${I18N_BASE}.toasts.errors.copyCoordinates`
+                i18nKey: `${I18N__BASE}.toasts.errors.copyCoordinates`
             });
         }
     }

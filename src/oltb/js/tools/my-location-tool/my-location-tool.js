@@ -20,12 +20,12 @@ import { TranslationManager } from '../../managers/translation-manager/translati
 import { isFullScreen, exitFullScreen } from '../../helpers/browser/fullscreen-handler';
 
 const FILENAME = 'MyLocationTool.js';
-const CLASS_TOOL_BUTTON = 'oltb-tool-button';
-const CLASS_FUNC_BUTTON = 'oltb-func-btn';
-const ID_PREFIX_INFO_WINDOW = 'oltb-info-window-marker';
-const ID_MARKER_PATH = 'person.filled';
-const I18N_BASE = 'tools.myLocationTool';
-const I18N_BASE_COMMON = 'commons';
+const CLASS__TOOL_BUTTON = 'oltb-tool-button';
+const CLASS__FUNC_BUTTON = 'oltb-func-btn';
+const ID__PREFIX_INFO_WINDOW = 'oltb-info-window-marker';
+const ID__MARKER_PATH = 'person.filled';
+const I18N__BASE = 'tools.myLocationTool';
+const I18N__BASE_COMMON = 'commons';
 
 const DefaultOptions = Object.freeze({
     title: 'My Location',
@@ -58,19 +58,19 @@ class MyLocationTool extends Control {
         
         const icon = getIcon({
             path: SvgPaths.geoMarker.stroked,
-            class: `${CLASS_TOOL_BUTTON}__icon`
+            class: `${CLASS__TOOL_BUTTON}__icon`
         });
 
-        const i18n = TranslationManager.get(I18N_BASE);
+        const i18n = TranslationManager.get(I18N__BASE);
         const button = DOM.createElement({
             element: 'button',
             html: icon,
-            class: CLASS_TOOL_BUTTON,
+            class: CLASS__TOOL_BUTTON,
             attributes: {
                 'type': 'button',
                 'data-tippy-content': `${i18n.title} (${ShortcutKeys.myLocationTool})`,
                 'data-tippy-content-post': `(${ShortcutKeys.myLocationTool})`,
-                'data-oltb-i18n': `${I18N_BASE}.title`
+                'data-oltb-i18n': `${I18N__BASE}.title`
             },
             listeners: {
                 'click': this.onClickTool.bind(this)
@@ -144,7 +144,7 @@ class MyLocationTool extends Control {
     // # Section: Ask User
     //--------------------------------------------------------------------
     askToExitFullScreen() {
-        const i18n = TranslationManager.get(`${I18N_BASE}.dialogs.confirms.exitFullscreen`);
+        const i18n = TranslationManager.get(`${I18N__BASE}.dialogs.confirms.exitFullscreen`);
 
         Dialog.confirm({
             title: i18n.title,
@@ -164,7 +164,7 @@ class MyLocationTool extends Control {
                         });
 
                         Toast.error({
-                            i18nKey: `${I18N_BASE}.toasts.errors.exitFullscreen`
+                            i18nKey: `${I18N__BASE}.toasts.errors.exitFullscreen`
                         });
                     });
             }
@@ -201,7 +201,7 @@ class MyLocationTool extends Control {
         });
 
         Toast.error({
-            i18nKey: `${I18N_BASE}.toasts.errors.locationNotFound`
+            i18nKey: `${I18N__BASE}.toasts.errors.locationNotFound`
         });
         
         // Note: 
@@ -236,7 +236,7 @@ class MyLocationTool extends Control {
     }
 
     doAddIconMarker(coordinates) {
-        const i18n = TranslationManager.get(`${I18N_BASE_COMMON}.titles`);
+        const i18n = TranslationManager.get(`${I18N__BASE_COMMON}.titles`);
         const prettyCoordinates = toStringHDMS(coordinates);
 
         const infoWindow = {
@@ -247,10 +247,10 @@ class MyLocationTool extends Control {
             footer: `
                 <span class="oltb-info-window__coordinates">${prettyCoordinates}</span>
                 <div class="oltb-info-window__buttons-wrapper">
-                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--delete oltb-tippy" data-oltb-i18n="${I18N_BASE_COMMON}.titles.delete" title="${i18n.delete}" id="${ID_PREFIX_INFO_WINDOW}-remove"></button>
-                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--crosshair oltb-tippy" data-oltb-i18n="${I18N_BASE_COMMON}.titles.copyCoordinates" title="${i18n.copyCoordinates}" id="${ID_PREFIX_INFO_WINDOW}-copy-coordinates" data-oltb-coordinates="${prettyCoordinates}"></button>
-                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--copy oltb-tippy" data-oltb-i18n="${I18N_BASE_COMMON}.titles.copyText" title="${i18n.copyText}" id="${ID_PREFIX_INFO_WINDOW}-copy-text" data-oltb-copy="${this.options.description}"></button>
-                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--layer oltb-tippy" data-oltb-i18n="${I18N_BASE_COMMON}.titles.showLayer" title="${i18n.showLayer}" id="${ID_PREFIX_INFO_WINDOW}-show-layer"></button>
+                    <button class="${CLASS__FUNC_BUTTON} ${CLASS__FUNC_BUTTON}--delete oltb-tippy" data-oltb-i18n="${I18N__BASE_COMMON}.titles.delete" title="${i18n.delete}" id="${ID__PREFIX_INFO_WINDOW}-remove"></button>
+                    <button class="${CLASS__FUNC_BUTTON} ${CLASS__FUNC_BUTTON}--crosshair oltb-tippy" data-oltb-i18n="${I18N__BASE_COMMON}.titles.copyCoordinates" title="${i18n.copyCoordinates}" id="${ID__PREFIX_INFO_WINDOW}-copy-coordinates" data-oltb-coordinates="${prettyCoordinates}"></button>
+                    <button class="${CLASS__FUNC_BUTTON} ${CLASS__FUNC_BUTTON}--copy oltb-tippy" data-oltb-i18n="${I18N__BASE_COMMON}.titles.copyText" title="${i18n.copyText}" id="${ID__PREFIX_INFO_WINDOW}-copy-text" data-oltb-copy="${this.options.description}"></button>
+                    <button class="${CLASS__FUNC_BUTTON} ${CLASS__FUNC_BUTTON}--layer oltb-tippy" data-oltb-i18n="${I18N__BASE_COMMON}.titles.showLayer" title="${i18n.showLayer}" id="${ID__PREFIX_INFO_WINDOW}-show-layer"></button>
                 </div>
             `
         };
@@ -262,7 +262,7 @@ class MyLocationTool extends Control {
             description: this.options.description,
             infoWindow: infoWindow,
             icon: {
-                key: ID_MARKER_PATH
+                key: ID__MARKER_PATH
             },
             label: {
                 text: this.options.title,
@@ -290,7 +290,7 @@ class MyLocationTool extends Control {
         }
         
         this.loadingToast = Toast.info({
-            i18nKey: `${I18N_BASE}.toasts.infos.fetchLocation`,
+            i18nKey: `${I18N__BASE}.toasts.infos.fetchLocation`,
             clickToRemove: false,
             spinner: true,
             onRemove: () => {

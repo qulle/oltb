@@ -7,10 +7,10 @@ import { ElementManager } from '../../managers/element-manager/element-manager';
 import { SvgPaths, getIcon } from '../../icons/get-icon';
 
 const FILENAME = 'BaseModal.js';
-const CLASS_ANIMATION = 'oltb-animation';
-const CLASS_ANIMATION_BOUNCE = `${CLASS_ANIMATION}--bounce`;
-const CLASS_MODAL = 'oltb-modal';
-const CLASS_MODAL_BACKDROP = `${CLASS_MODAL}-backdrop`;
+const CLASS__ANIMATION = 'oltb-animation';
+const CLASS__ANIMATION_BOUNCE = `${CLASS__ANIMATION}--bounce`;
+const CLASS__MODAL = 'oltb-modal';
+const CLASS__MODAL_BACKDROP = `${CLASS__MODAL}-backdrop`;
 
 class BaseModal {
     constructor(title, maximized, onClosed) {
@@ -23,7 +23,7 @@ class BaseModal {
         this.onClosed = onClosed;
         this.backdrop = DOM.createElement({
             element: 'div', 
-            class: `${CLASS_MODAL_BACKDROP} ${CLASS_MODAL_BACKDROP}--fixed`,
+            class: `${CLASS__MODAL_BACKDROP} ${CLASS__MODAL_BACKDROP}--fixed`,
             attributes: {
                 'tabindex': '-1'
             },
@@ -35,21 +35,21 @@ class BaseModal {
 
         this.modal = DOM.createElement({
             element: 'div', 
-            class: `${CLASS_MODAL} ${ maximized 
-                ? `${CLASS_MODAL}--maximized` 
+            class: `${CLASS__MODAL} ${ maximized 
+                ? `${CLASS__MODAL}--maximized` 
                 : ''
-            } ${CLASS_ANIMATION} ${CLASS_ANIMATION_BOUNCE}`
+            } ${CLASS__ANIMATION} ${CLASS__ANIMATION_BOUNCE}`
         });
 
         const modalHeader = DOM.createElement({
             element: 'div', 
-            class: `${CLASS_MODAL}__header`
+            class: `${CLASS__MODAL}__header`
         });
 
         const modalTitle = DOM.createElement({
             element: 'h2', 
             html: title,
-            class: `${CLASS_MODAL}__title`
+            class: `${CLASS__MODAL}__title`
         });
 
         const modalClose = DOM.createElement({
@@ -60,7 +60,7 @@ class BaseModal {
                 stroke: 'currentColor',
                 strokeWidth: 1
             }),
-            class: `${CLASS_MODAL}__close oltb-btn oltb-btn--blank`,
+            class: `${CLASS__MODAL}__close oltb-btn oltb-btn--blank`,
             attributes: {
                 'type': 'button'
             },
@@ -107,7 +107,7 @@ class BaseModal {
         }
 
         const modal = this.backdrop.firstElementChild;
-        DOM.runAnimation(modal, CLASS_ANIMATION_BOUNCE);
+        DOM.runAnimation(modal, CLASS__ANIMATION_BOUNCE);
     }
 
     show(modalContent) {

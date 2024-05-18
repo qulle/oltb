@@ -7,11 +7,11 @@ import { ElementManager } from '../../managers/element-manager/element-manager';
 import { TranslationManager } from '../../managers/translation-manager/translation-manager';
 
 const FILENAME = 'BaseToast.js';
-const CLASS_TOAST = 'oltb-toast';
-const CLASS_ANIMATION = 'oltb-animation';
-const CLASS_ANIMATION_SLIDE_IN = `${CLASS_ANIMATION}--slide-in`;
-const CLASS_ANIMATION_SLIDE_OUT = `${CLASS_ANIMATION}--slide-out`;
-const CLASS_ANIMATION_LINEAR_SPINNER = `${CLASS_ANIMATION}--linear-spinner`;
+const CLASS__TOAST = 'oltb-toast';
+const CLASS__ANIMATION = 'oltb-animation';
+const CLASS__ANIMATION_SLIDE_IN = `${CLASS__ANIMATION}--slide-in`;
+const CLASS__ANIMATION_SLIDE_OUT = `${CLASS__ANIMATION}--slide-out`;
+const CLASS__ANIMATION_LINEAR_SPINNER = `${CLASS__ANIMATION}--linear-spinner`;
 
 const DefaultOptions = Object.freeze({
     title: 'Toast',
@@ -34,20 +34,20 @@ class BaseToast {
     #createToast() {
         this.toast = DOM.createElement({
             element: 'div',
-            class: `${CLASS_TOAST} ${CLASS_TOAST}--${
+            class: `${CLASS__TOAST} ${CLASS__TOAST}--${
                 this.options.type
-            } ${CLASS_ANIMATION} ${CLASS_ANIMATION_SLIDE_IN} oltb-d-flex` 
+            } ${CLASS__ANIMATION} ${CLASS__ANIMATION_SLIDE_IN} oltb-d-flex` 
         });
         
         if(this.options.clickToRemove) {
-            this.toast.classList.add(`${CLASS_TOAST}--clickable`);
+            this.toast.classList.add(`${CLASS__TOAST}--clickable`);
             this.toast.addEventListener(Events.browser.click, this.remove.bind(this));
         }
 
         if(this.options.spinner) {
             const spinnerElement = DOM.createElement({
                 element: 'div',
-                class: `oltb-spinner oltb-spinner--small ${CLASS_ANIMATION} ${CLASS_ANIMATION_LINEAR_SPINNER}`
+                class: `oltb-spinner oltb-spinner--small ${CLASS__ANIMATION} ${CLASS__ANIMATION_LINEAR_SPINNER}`
             });
             
             DOM.appendChildren(this.toast, [
@@ -57,7 +57,7 @@ class BaseToast {
 
         const container = DOM.createElement({
             element: 'div',
-            class: `${CLASS_TOAST}__container ${this.options.spinner ? 'oltb-ml-0625' : ''}`
+            class: `${CLASS__TOAST}__container ${this.options.spinner ? 'oltb-ml-0625' : ''}`
         });
 
         // Note:
@@ -73,7 +73,7 @@ class BaseToast {
         const title = DOM.createElement({
             element: 'h4',
             text: this.options.title,
-            class: `${CLASS_TOAST}__title`,
+            class: `${CLASS__TOAST}__title`,
             ...(this.options.i18nKey && { attributes: {
                 'data-oltb-i18n': `${this.options.i18nKey}.title`
             }}),
@@ -82,7 +82,7 @@ class BaseToast {
         const message = DOM.createElement({
             element: 'p', 
             html: this.options.message,
-            class: `${CLASS_TOAST}__message`,
+            class: `${CLASS__TOAST}__message`,
             ...(this.options.i18nKey && { attributes: {
                 'data-oltb-i18n': `${this.options.i18nKey}.message`
             }}),
@@ -111,7 +111,7 @@ class BaseToast {
     // # Section: Public API
     //--------------------------------------------------------------------
     remove() {
-        this.toast.classList.add(`${CLASS_TOAST}--remove`, CLASS_ANIMATION_SLIDE_OUT);
+        this.toast.classList.add(`${CLASS__TOAST}--remove`, CLASS__ANIMATION_SLIDE_OUT);
     
         // Note: 
         // Remove the toast from DOM after animation finishes

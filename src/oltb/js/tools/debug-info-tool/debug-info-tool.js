@@ -13,8 +13,8 @@ import { isShortcutKeyOnly } from '../../helpers/browser/is-shortcut-key-only';
 import { TranslationManager } from '../../managers/translation-manager/translation-manager';
 
 const FILENAME = 'DebugInfoTool.js';
-const CLASS_TOOL_BUTTON = 'oltb-tool-button';
-const I18N_BASE = 'tools.debugInfoTool';
+const CLASS__TOOL_BUTTON = 'oltb-tool-button';
+const I18N__BASE = 'tools.debugInfoTool';
 
 const DefaultOptions = Object.freeze({
     onlyWhenGetParameter: false,
@@ -40,19 +40,19 @@ class DebugInfoTool extends Control {
         
         const icon = getIcon({
             path: SvgPaths.bug.stroked,
-            class: `${CLASS_TOOL_BUTTON}__icon`
+            class: `${CLASS__TOOL_BUTTON}__icon`
         });
 
-        const i18n = TranslationManager.get(I18N_BASE);
+        const i18n = TranslationManager.get(I18N__BASE);
         const button = DOM.createElement({
             element: 'button',
             html: icon,
-            class: CLASS_TOOL_BUTTON,
+            class: CLASS__TOOL_BUTTON,
             attributes: {
                 'type': 'button',
                 'data-tippy-content': `${i18n.title} (${ShortcutKeys.debugInfoTool})`,
                 'data-tippy-content-post': `(${ShortcutKeys.debugInfoTool})`,
-                'data-oltb-i18n': `${I18N_BASE}.title`
+                'data-oltb-i18n': `${I18N__BASE}.title`
             },
             listeners: {
                 'click': this.onClickTool.bind(this)
@@ -90,7 +90,7 @@ class DebugInfoTool extends Control {
         const isDebug = UrlManager.getParameter(debugKey) === 'true';
 
         if(!isDebug && this.options.onlyWhenGetParameter) {
-            this.button.classList.add(`${CLASS_TOOL_BUTTON}--hidden`);
+            this.button.classList.add(`${CLASS__TOOL_BUTTON}--hidden`);
         }
     }
 

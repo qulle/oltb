@@ -17,8 +17,8 @@ import { isShortcutKeyOnly } from '../../helpers/browser/is-shortcut-key-only';
 import { TranslationManager } from '../../managers/translation-manager/translation-manager';
 
 const FILENAME = 'SettingsTool.js';
-const CLASS_TOOL_BUTTON = 'oltb-tool-button';
-const I18N_BASE = 'tools.settingsTool';
+const CLASS__TOOL_BUTTON = 'oltb-tool-button';
+const I18N__BASE = 'tools.settingsTool';
 
 const DefaultOptions = Object.freeze({
     onInitiated: undefined,
@@ -43,19 +43,19 @@ class SettingsTool extends Control {
         
         this.icon = getIcon({
             path: SvgPaths.gear.stroked,
-            class: `${CLASS_TOOL_BUTTON}__icon`
+            class: `${CLASS__TOOL_BUTTON}__icon`
         });
 
-        const i18n = TranslationManager.get(I18N_BASE);
+        const i18n = TranslationManager.get(I18N__BASE);
         const button = DOM.createElement({
             element: 'button',
             html: this.icon,
-            class: CLASS_TOOL_BUTTON,
+            class: CLASS__TOOL_BUTTON,
             attributes: {
                 'type': 'button',
                 'data-tippy-content': `${i18n.title} (${ShortcutKeys.settingsTool})`,
                 'data-tippy-content-post': `(${ShortcutKeys.settingsTool})`,
-                'data-oltb-i18n': `${I18N_BASE}.title`
+                'data-oltb-i18n': `${I18N__BASE}.title`
             },
             listeners: {
                 'click': this.onClickTool.bind(this)
@@ -92,7 +92,7 @@ class SettingsTool extends Control {
         ContextMenuTool.addItem({});
         ContextMenuTool.addItem({
             icon: this.icon, 
-            i18nKey: `${I18N_BASE}.contextItems.clearBrowserState`, 
+            i18nKey: `${I18N__BASE}.contextItems.clearBrowserState`, 
             fn: this.onContextMenuBrowserStateClear.bind(this)
         });
     }
@@ -136,7 +136,7 @@ class SettingsTool extends Control {
     // # Section: Tool DoActions
     //--------------------------------------------------------------------
     askToClearBrowserState() {
-        const i18n = TranslationManager.get(`${I18N_BASE}.dialogs.confirms.clearBrowserState`);
+        const i18n = TranslationManager.get(`${I18N__BASE}.dialogs.confirms.clearBrowserState`);
 
         Dialog.confirm({
             title: i18n.title,
@@ -156,7 +156,7 @@ class SettingsTool extends Control {
         this.doDispatchBrowserStateCleared();
 
         Toast.info({
-            i18nKey: `${I18N_BASE}.toasts.infos.clearBrowserState`,
+            i18nKey: `${I18N__BASE}.toasts.infos.clearBrowserState`,
             autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
         });
     }
@@ -169,7 +169,7 @@ class SettingsTool extends Control {
         this.settingsModal = new SettingsModal({
             onSave: () => {
                 Toast.success({
-                    i18nKey: `${I18N_BASE}.toasts.successes.savedSettings`,
+                    i18nKey: `${I18N__BASE}.toasts.successes.savedSettings`,
                     autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
                 });
             },

@@ -8,7 +8,7 @@ import { SvgPaths, getIcon } from '../../icons/get-icon';
 import { TranslationManager } from '../../managers/translation-manager/translation-manager';
 
 const FILENAME = 'HiddenAboutTool.js';
-const I18N_BASE = 'tools.hiddenAboutTool';
+const I18N__BASE = 'tools.hiddenAboutTool';
 
 /**
  * About:
@@ -45,7 +45,7 @@ class HiddenAboutTool extends Control {
         ContextMenuTool.addItem({});
         ContextMenuTool.addItem({
             icon: this.icon, 
-            i18nKey: `${I18N_BASE}.contextItems.about`, 
+            i18nKey: `${I18N__BASE}.contextItems.about`, 
             fn: this.onContextMenuAbout.bind(this)
         });
     }
@@ -66,7 +66,7 @@ class HiddenAboutTool extends Control {
         }
         
         const config = ConfigManager.getConfig();
-        const i18n = TranslationManager.get(`${I18N_BASE}.modals.about`);
+        const i18n = TranslationManager.get(`${I18N__BASE}.modals.about`);
         const content = (`
             <p>${i18n.version} ${config.toolbar.version}</p>
             <p>${i18n.developedBy} <a href="//github.com/qulle/oltb" target="_blank" class="oltb-link">github.com/qulle/oltb</a></p>

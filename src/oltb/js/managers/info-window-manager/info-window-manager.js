@@ -25,10 +25,10 @@ import { Fill, Stroke, Style, Circle as CircleStyle } from 'ol/style';
 import { BaseManager } from '../base-manager';
 
 const FILENAME = 'InfoWindowManager.js';
-const CLASS_ANIMATION = 'oltb-animation';
-const CLASS_ANIMATION_CENTERED_BOUNCE = `${CLASS_ANIMATION}--centered-bounce`;
-const CLASS_INFO_WINDOW = 'oltb-info-window';
-const ID_PREFIX_INFO_WINDOW = 'oltb-info-window-marker';
+const CLASS__ANIMATION = 'oltb-animation';
+const CLASS__ANIMATION_CENTERED_BOUNCE = `${CLASS__ANIMATION}--centered-bounce`;
+const CLASS__INFO_WINDOW = 'oltb-info-window';
+const ID__PREFIX_INFO_WINDOW = 'oltb-info-window-marker';
 
 const DefaultHighlightStyle = new Style({
     fill: new Fill({
@@ -100,7 +100,7 @@ class InfoWindowManager extends BaseManager {
     static #createInfoWindow() {
         this.#infoWindow = DOM.createElement({
             element: 'div',
-            class: `${CLASS_INFO_WINDOW} ${CLASS_ANIMATION}`,
+            class: `${CLASS__INFO_WINDOW} ${CLASS__ANIMATION}`,
             attributes: {
                 'tabindex': '-1'
             },
@@ -111,12 +111,12 @@ class InfoWindowManager extends BaseManager {
 
         const header = DOM.createElement({
             element: 'div',
-            class: `${CLASS_INFO_WINDOW}__header`
+            class: `${CLASS__INFO_WINDOW}__header`
         });
 
         this.#title = DOM.createElement({
             element: 'h3',
-            class: `${CLASS_INFO_WINDOW}__title`
+            class: `${CLASS__INFO_WINDOW}__title`
         });
 
         const closeButton = DOM.createElement({
@@ -127,7 +127,7 @@ class InfoWindowManager extends BaseManager {
                 stroke: 'currentColor',
                 strokeWidth: 1
             }),
-            class: `${CLASS_INFO_WINDOW}__close oltb-btn oltb-btn--blank`,
+            class: `${CLASS__INFO_WINDOW}__close oltb-btn oltb-btn--blank`,
             listeners: {
                 'click': this.hideOverlay.bind(this)
             }
@@ -135,12 +135,12 @@ class InfoWindowManager extends BaseManager {
 
         this.#content = DOM.createElement({
             element: 'div',
-            class: `${CLASS_INFO_WINDOW}__content`
+            class: `${CLASS__INFO_WINDOW}__content`
         });
 
         this.#footer = DOM.createElement({
             element: 'div',
-            class: `${CLASS_INFO_WINDOW}__footer oltb-hide-scrollbars`
+            class: `${CLASS__INFO_WINDOW}__footer oltb-hide-scrollbars`
         });
 
         DOM.appendChildren(header, [
@@ -452,10 +452,10 @@ class InfoWindowManager extends BaseManager {
 
             this.#infoWindow.focus();
             
-            DOM.runAnimation(this.#infoWindow, CLASS_ANIMATION_CENTERED_BOUNCE);
+            DOM.runAnimation(this.#infoWindow, CLASS__ANIMATION_CENTERED_BOUNCE);
 
             // Attach listeners to the function-buttons inside the infoWindow
-            const uiRefRemoveButton = this.#footer.querySelector(`#${ID_PREFIX_INFO_WINDOW}-remove`);
+            const uiRefRemoveButton = this.#footer.querySelector(`#${ID__PREFIX_INFO_WINDOW}-remove`);
             if(uiRefRemoveButton) {
                 uiRefRemoveButton.addEventListener(
                     Events.browser.click, 
@@ -463,7 +463,7 @@ class InfoWindowManager extends BaseManager {
                 );
             }
 
-            const uiRefCopyCoordinatesButton = this.#footer.querySelector(`#${ID_PREFIX_INFO_WINDOW}-copy-coordinates`);
+            const uiRefCopyCoordinatesButton = this.#footer.querySelector(`#${ID__PREFIX_INFO_WINDOW}-copy-coordinates`);
             if(uiRefCopyCoordinatesButton) {
                 const value = uiRefCopyCoordinatesButton.getAttribute('data-oltb-coordinates');
                 uiRefCopyCoordinatesButton.addEventListener(
@@ -472,7 +472,7 @@ class InfoWindowManager extends BaseManager {
                 );
             }
 
-            const uiRefCopyInfoButton = this.#footer.querySelector(`#${ID_PREFIX_INFO_WINDOW}-copy-text`);
+            const uiRefCopyInfoButton = this.#footer.querySelector(`#${ID__PREFIX_INFO_WINDOW}-copy-text`);
             if(uiRefCopyInfoButton) {
                 const value = uiRefCopyInfoButton.getAttribute('data-oltb-copy');
                 uiRefCopyInfoButton.addEventListener(
@@ -481,7 +481,7 @@ class InfoWindowManager extends BaseManager {
                 );
             }
 
-            const uiRefEditButton = this.#footer.querySelector(`#${ID_PREFIX_INFO_WINDOW}-edit`);
+            const uiRefEditButton = this.#footer.querySelector(`#${ID__PREFIX_INFO_WINDOW}-edit`);
             if(uiRefEditButton) {
                 uiRefEditButton.addEventListener(
                     Events.browser.click, 
@@ -489,7 +489,7 @@ class InfoWindowManager extends BaseManager {
                 );
             }
 
-            const uiRefShowLayer = this.#footer.querySelector(`#${ID_PREFIX_INFO_WINDOW}-show-layer`);
+            const uiRefShowLayer = this.#footer.querySelector(`#${ID__PREFIX_INFO_WINDOW}-show-layer`);
             if(uiRefShowLayer) {
                 uiRefShowLayer.addEventListener(
                     Events.browser.click, 

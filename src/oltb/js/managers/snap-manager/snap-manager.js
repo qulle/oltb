@@ -10,7 +10,7 @@ import { LayerManager } from '../layer-manager/layer-manager';
 import { SettingsManager } from '../settings-manager/settings-manager';
 
 const FILENAME = 'SnapManager.js';
-const CLASS_OVERLAY_SNAP = 'oltb-overlay-snap';
+const CLASS__OVERLAY_SNAP = 'oltb-overlay-snap';
 const STYLE_SNAPPED = 'border: 1px dashed #007C70;';
 const STYLE_NOT_SNAPPED = 'border: 1px dashed #EB4542;';
 
@@ -79,18 +79,18 @@ class SnapManager extends BaseManager {
 
         const snapOverlayElement = DOM.createElement({
             element: 'div',
-            class: CLASS_OVERLAY_SNAP,
+            class: CLASS__OVERLAY_SNAP,
             style: `width: ${screenWidth}px; height: ${screenHeight}px;`
         });
 
         this.#xLine = DOM.createElement({
             element: 'div',
-            class: `${CLASS_OVERLAY_SNAP}__x-line`
+            class: `${CLASS__OVERLAY_SNAP}__x-line`
         });
 
         this.#yLine = DOM.createElement({
             element: 'div',
-            class: `${CLASS_OVERLAY_SNAP}__y-line`,
+            class: `${CLASS__OVERLAY_SNAP}__y-line`,
         });
 
         DOM.appendChildren(snapOverlayElement, [

@@ -29,13 +29,13 @@ import { Fill, Stroke, Circle, Style } from 'ol/style';
 import { getMeasureCoordinates, getMeasureValue } from '../../helpers/measurements';
 
 const FILENAME = 'MeasureTool.js';
-const CLASS_TOOL_BUTTON = 'oltb-tool-button';
-const CLASS_TOOLBOX_SECTION = 'oltb-toolbox-section';
-const CLASS_TOGGLEABLE = 'oltb-toggleable';
-const ID_PREFIX = 'oltb-measure';
-const KEY_TOOLTIP = 'tools.measureTool';
-const I18N_BASE = 'tools.measureTool';
-const I18N_BASE_COMMON = 'commons';
+const CLASS__TOOL_BUTTON = 'oltb-tool-button';
+const CLASS__TOOLBOX_SECTION = 'oltb-toolbox-section';
+const CLASS__TOGGLEABLE = 'oltb-toggleable';
+const ID__PREFIX = 'oltb-measure';
+const KEY__TOOLTIP = 'tools.measureTool';
+const I18N__BASE = 'tools.measureTool';
+const I18N__BASE_COMMON = 'commons';
 
 const DefaultOptions = Object.freeze({
     onInitiated: undefined,
@@ -75,19 +75,19 @@ class MeasureTool extends Control {
         
         const icon = getIcon({
             path: SvgPaths.rulers.mixed,
-            class: `${CLASS_TOOL_BUTTON}__icon`
+            class: `${CLASS__TOOL_BUTTON}__icon`
         });
 
-        const i18n = TranslationManager.get(I18N_BASE);
+        const i18n = TranslationManager.get(I18N__BASE);
         const button = DOM.createElement({
             element: 'button',
             html: icon,
-            class: CLASS_TOOL_BUTTON,
+            class: CLASS__TOOL_BUTTON,
             attributes: {
                 'type': 'button',
                 'data-tippy-content': `${i18n.title} (${ShortcutKeys.measureTool})`,
                 'data-tippy-content-post': `(${ShortcutKeys.measureTool})`,
-                'data-oltb-i18n': `${I18N_BASE}.title`
+                'data-oltb-i18n': `${I18N__BASE}.title`
             },
             listeners: {
                 'click': this.onClickTool.bind(this)
@@ -108,16 +108,16 @@ class MeasureTool extends Control {
         );
 
         this.initToolboxHTML();
-        this.uiRefToolboxSection = window.document.querySelector(`#${ID_PREFIX}-toolbox`);
+        this.uiRefToolboxSection = window.document.querySelector(`#${ID__PREFIX}-toolbox`);
         this.initToggleables();
 
-        this.uiRefToolType = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-type`);
+        this.uiRefToolType = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-type`);
         this.uiRefToolType.addEventListener(Events.browser.change, this.updateTool.bind(this));
 
-        this.uiRefFillColor = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-fill-color`);
+        this.uiRefFillColor = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-fill-color`);
         this.uiRefFillColor.addEventListener(Events.custom.colorChange, this.updateTool.bind(this));
 
-        this.uiRefStrokeColor = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-stroke-color`);
+        this.uiRefStrokeColor = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-stroke-color`);
         this.uiRefStrokeColor.addEventListener(Events.custom.colorChange, this.updateTool.bind(this));
 
         // Set default selected values
@@ -142,33 +142,33 @@ class MeasureTool extends Control {
     // # Section: Init Helpers
     //--------------------------------------------------------------------
     initToolboxHTML() {
-        const i18n = TranslationManager.get(`${I18N_BASE}.toolbox`);
-        const i18nCommon = TranslationManager.get(`${I18N_BASE_COMMON}.titles`);
+        const i18n = TranslationManager.get(`${I18N__BASE}.toolbox`);
+        const i18nCommon = TranslationManager.get(`${I18N__BASE_COMMON}.titles`);
 
         const html = (`
-            <div id="${ID_PREFIX}-toolbox" class="${CLASS_TOOLBOX_SECTION}">
-                <div class="${CLASS_TOOLBOX_SECTION}__header oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">
-                    <h4 class="${CLASS_TOOLBOX_SECTION}__title" data-oltb-i18n="${I18N_BASE}.toolbox.titles.measure">${i18n.titles.measure}</h4>
-                    <span class="${CLASS_TOOLBOX_SECTION}__icon oltb-tippy" data-oltb-i18n="${I18N_BASE_COMMON}.titles.toggleSection" title="${i18nCommon.toggleSection}"></span>
+            <div id="${ID__PREFIX}-toolbox" class="${CLASS__TOOLBOX_SECTION}">
+                <div class="${CLASS__TOOLBOX_SECTION}__header oltb-toggleable" data-oltb-toggleable-target="${ID__PREFIX}-toolbox-collapsed">
+                    <h4 class="${CLASS__TOOLBOX_SECTION}__title" data-oltb-i18n="${I18N__BASE}.toolbox.titles.measure">${i18n.titles.measure}</h4>
+                    <span class="${CLASS__TOOLBOX_SECTION}__icon oltb-tippy" data-oltb-i18n="${I18N__BASE_COMMON}.titles.toggleSection" title="${i18nCommon.toggleSection}"></span>
                 </div>
-                <div class="${CLASS_TOOLBOX_SECTION}__groups" id="${ID_PREFIX}-toolbox-collapsed" style="display: ${this.localStorage.isCollapsed ? 'none' : 'block'}">
-                    <div class="${CLASS_TOOLBOX_SECTION}__group">
-                        <label class="oltb-label" for="${ID_PREFIX}-type" data-oltb-i18n="${I18N_BASE}.toolbox.groups.type.title">${i18n.groups.type.title}</label>
-                        <select id="${ID_PREFIX}-type" class="oltb-select">
-                            <option value="LineString" data-oltb-i18n="${I18N_BASE}.toolbox.groups.type.lineString">${i18n.groups.type.lineString}</option>
-                            <option value="Polygon" data-oltb-i18n="${I18N_BASE}.toolbox.groups.type.polygon">${i18n.groups.type.polygon}</option>
+                <div class="${CLASS__TOOLBOX_SECTION}__groups" id="${ID__PREFIX}-toolbox-collapsed" style="display: ${this.localStorage.isCollapsed ? 'none' : 'block'}">
+                    <div class="${CLASS__TOOLBOX_SECTION}__group">
+                        <label class="oltb-label" for="${ID__PREFIX}-type" data-oltb-i18n="${I18N__BASE}.toolbox.groups.type.title">${i18n.groups.type.title}</label>
+                        <select id="${ID__PREFIX}-type" class="oltb-select">
+                            <option value="LineString" data-oltb-i18n="${I18N__BASE}.toolbox.groups.type.lineString">${i18n.groups.type.lineString}</option>
+                            <option value="Polygon" data-oltb-i18n="${I18N__BASE}.toolbox.groups.type.polygon">${i18n.groups.type.polygon}</option>
                         </select>
                     </div>
-                    <div class="${CLASS_TOOLBOX_SECTION}__group ${CLASS_TOOLBOX_SECTION}__group--split-group">
-                        <div class="${CLASS_TOOLBOX_SECTION}__group-part">
-                            <label class="oltb-label" for="${ID_PREFIX}-stroke-color" data-oltb-i18n="${I18N_BASE}.toolbox.groups.strokeColor.title">${i18n.groups.strokeColor.title}</label>
-                            <div id="${ID_PREFIX}-stroke-color" class="oltb-color-input oltb-color-tippy" data-oltb-color-target="#${ID_PREFIX}-stroke-color" data-oltb-color="${this.localStorage.strokeColor}" tabindex="0">
+                    <div class="${CLASS__TOOLBOX_SECTION}__group ${CLASS__TOOLBOX_SECTION}__group--split-group">
+                        <div class="${CLASS__TOOLBOX_SECTION}__group-part">
+                            <label class="oltb-label" for="${ID__PREFIX}-stroke-color" data-oltb-i18n="${I18N__BASE}.toolbox.groups.strokeColor.title">${i18n.groups.strokeColor.title}</label>
+                            <div id="${ID__PREFIX}-stroke-color" class="oltb-color-input oltb-color-tippy" data-oltb-color-target="#${ID__PREFIX}-stroke-color" data-oltb-color="${this.localStorage.strokeColor}" tabindex="0">
                                 <div class="oltb-color-input__inner" style="background-color: ${this.localStorage.strokeColor};"></div>
                             </div>
                         </div>
-                        <div class="${CLASS_TOOLBOX_SECTION}__group-part">
-                            <label class="oltb-label" for="${ID_PREFIX}-fill-color" data-oltb-i18n="${I18N_BASE}.toolbox.groups.fillColor.title">${i18n.groups.fillColor.title}</label>
-                            <div id="${ID_PREFIX}-fill-color" class="oltb-color-input oltb-color-tippy" data-oltb-color-target="#${ID_PREFIX}-fill-color" data-oltb-color="${this.localStorage.fillColor}" tabindex="0">
+                        <div class="${CLASS__TOOLBOX_SECTION}__group-part">
+                            <label class="oltb-label" for="${ID__PREFIX}-fill-color" data-oltb-i18n="${I18N__BASE}.toolbox.groups.fillColor.title">${i18n.groups.fillColor.title}</label>
+                            <div id="${ID__PREFIX}-fill-color" class="oltb-color-input oltb-color-tippy" data-oltb-color-target="#${ID__PREFIX}-fill-color" data-oltb-color="${this.localStorage.fillColor}" tabindex="0">
                                 <div class="oltb-color-input__inner" style="background-color: ${this.localStorage.fillColor};"></div>
                             </div>
                         </div>
@@ -181,7 +181,7 @@ class MeasureTool extends Control {
     }
 
     initToggleables() {
-        this.uiRefToolboxSection.querySelectorAll(`.${CLASS_TOGGLEABLE}`).forEach((toggle) => {
+        this.uiRefToolboxSection.querySelectorAll(`.${CLASS__TOGGLEABLE}`).forEach((toggle) => {
             toggle.addEventListener(Events.browser.click, this.onToggleToolbox.bind(this, toggle));
         });
     }
@@ -207,14 +207,14 @@ class MeasureTool extends Control {
 
     activateTool() {
         this.isActive = true;
-        this.uiRefToolboxSection.classList.add(`${CLASS_TOOLBOX_SECTION}--show`);
-        this.button.classList.add(`${CLASS_TOOL_BUTTON}--active`); 
+        this.uiRefToolboxSection.classList.add(`${CLASS__TOOLBOX_SECTION}--show`);
+        this.button.classList.add(`${CLASS__TOOL_BUTTON}--active`); 
 
         ToolManager.setActiveTool(this);
 
         if(this.shouldAlwaysCreateNewLayer()) {
             LayerManager.addFeatureLayer({
-                name: TranslationManager.get(`${I18N_BASE}.layers.defaultName`)
+                name: TranslationManager.get(`${I18N__BASE}.layers.defaultName`)
             });
         }
 
@@ -238,8 +238,8 @@ class MeasureTool extends Control {
         }
 
         this.isActive = false;
-        this.uiRefToolboxSection.classList.remove(`${CLASS_TOOLBOX_SECTION}--show`);
-        this.button.classList.remove(`${CLASS_TOOL_BUTTON}--active`); 
+        this.uiRefToolboxSection.classList.remove(`${CLASS__TOOLBOX_SECTION}--show`);
+        this.button.classList.remove(`${CLASS__TOOL_BUTTON}--active`); 
 
         this.doRemoveDrawInteraction();
         ToolManager.removeActiveTool();
@@ -398,7 +398,7 @@ class MeasureTool extends Control {
 
     doDrawStart(event) {
         const feature = event.feature;
-        const tooltipItem = TooltipManager.push(KEY_TOOLTIP);
+        const tooltipItem = TooltipManager.push(KEY__TOOLTIP);
         
         this.onChangeListener = feature.getGeometry().on(Events.openLayers.change, (event) => {
             const measureValue = getMeasureValue(event.target);
@@ -423,7 +423,7 @@ class MeasureTool extends Control {
         const feature = event.feature;
         feature.setStyle(this.styles);
         
-        TooltipManager.pop(KEY_TOOLTIP);
+        TooltipManager.pop(KEY__TOOLTIP);
         const tooltip = createUITooltip();
 
         feature.setProperties({
@@ -440,7 +440,7 @@ class MeasureTool extends Control {
         tooltip.setData(`${measureValue.value} ${measureValue.unit}`);
 
         const layerWrapper = LayerManager.getActiveFeatureLayer({
-            fallback: TranslationManager.get(`${I18N_BASE}.layers.defaultName`)
+            fallback: TranslationManager.get(`${I18N__BASE}.layers.defaultName`)
         });
         
         LayerManager.addFeatureToLayer(feature, layerWrapper);
@@ -448,7 +448,7 @@ class MeasureTool extends Control {
         
         if(!layer.getVisible()) {
             Toast.info({
-                i18nKey: `${I18N_BASE}.toasts.infos.drawInHiddenLayer`, 
+                i18nKey: `${I18N__BASE}.toasts.infos.drawInHiddenLayer`, 
                 autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
             });
         }
@@ -472,7 +472,7 @@ class MeasureTool extends Control {
     doDrawAbort(event) {
         unByKey(this.onChangeListener);
         
-        TooltipManager.pop(KEY_TOOLTIP);
+        TooltipManager.pop(KEY__TOOLTIP);
 
         // Note: 
         // @Consumer callback

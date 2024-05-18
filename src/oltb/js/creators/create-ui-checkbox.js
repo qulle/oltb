@@ -2,7 +2,7 @@ import _ from 'lodash';
 import { DOM } from '../helpers/browser/dom-factory';
 import { TranslationManager } from '../managers/translation-manager/translation-manager';
 
-const CLASS_CHECKBOX_WRAPPER = 'oltb-checkbox-wrapper';
+const CLASS__CHECKBOX_WRAPPER = 'oltb-checkbox-wrapper';
 
 const DefaultOptions = Object.freeze({
     idPrefix: '',
@@ -18,8 +18,8 @@ const createUICheckbox = function(options = {}) {
 
     const wrapper = DOM.createElement({
         element: 'div',
-        class: `${CLASS_CHECKBOX_WRAPPER} ${ options.bottomMargin 
-            ? `${CLASS_CHECKBOX_WRAPPER}--margin` 
+        class: `${CLASS__CHECKBOX_WRAPPER} ${ options.bottomMargin 
+            ? `${CLASS__CHECKBOX_WRAPPER}--margin` 
             : ''
         }`
     });
@@ -35,7 +35,7 @@ const createUICheckbox = function(options = {}) {
     const label = DOM.createElement({
         element: 'label',
         text: options.text,
-        class: `${CLASS_CHECKBOX_WRAPPER}__title oltb-label--inline oltb-m-0`,
+        class: `${CLASS__CHECKBOX_WRAPPER}__title oltb-label--inline oltb-m-0`,
         attributes: {
             'for': `${options.idPrefix}${options.idPostfix}`,
             ...(options.i18nKey && {
@@ -47,7 +47,7 @@ const createUICheckbox = function(options = {}) {
     const checkbox = DOM.createElement({
         element: 'input',
         id: `${options.idPrefix}${options.idPostfix}`,
-        class: `${CLASS_CHECKBOX_WRAPPER}__checkbox`,
+        class: `${CLASS__CHECKBOX_WRAPPER}__checkbox`,
         attributes: {
             'type': 'checkbox'
         }

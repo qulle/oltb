@@ -29,12 +29,12 @@ import { Fill, Stroke, Circle, Style } from 'ol/style';
 import { createBox, createRegularPolygon } from 'ol/interaction/Draw';
 
 const FILENAME = 'DrawTool.js';
-const CLASS_TOOL_BUTTON = 'oltb-tool-button';
-const CLASS_TOOLBOX_SECTION = 'oltb-toolbox-section';
-const CLASS_TOGGLEABLE = 'oltb-toggleable';
-const ID_PREFIX = 'oltb-draw';
-const I18N_BASE = 'tools.drawTool';
-const I18N_BASE_COMMON = 'commons';
+const CLASS__TOOL_BUTTON = 'oltb-tool-button';
+const CLASS__TOOLBOX_SECTION = 'oltb-toolbox-section';
+const CLASS__TOGGLEABLE = 'oltb-toggleable';
+const ID__PREFIX = 'oltb-draw';
+const I18N__BASE = 'tools.drawTool';
+const I18N__BASE_COMMON = 'commons';
 
 const DefaultOptions = Object.freeze({
     onInitiated: undefined,
@@ -75,19 +75,19 @@ class DrawTool extends Control {
         
         const icon = getIcon({
             path: SvgPaths.vectorPen.mixed,
-            class: `${CLASS_TOOL_BUTTON}__icon`
+            class: `${CLASS__TOOL_BUTTON}__icon`
         });
 
-        const i18n = TranslationManager.get(I18N_BASE);
+        const i18n = TranslationManager.get(I18N__BASE);
         const button = DOM.createElement({
             element: 'button',
             html: icon,
-            class: CLASS_TOOL_BUTTON,
+            class: CLASS__TOOL_BUTTON,
             attributes: {
                 'type': 'button',
                 'data-tippy-content': `${i18n.title} (${ShortcutKeys.drawTool})`,
                 'data-tippy-content-post': `(${ShortcutKeys.drawTool})`,
-                'data-oltb-i18n': `${I18N_BASE}.title`
+                'data-oltb-i18n': `${I18N__BASE}.title`
             },
             listeners: {
                 'click': this.onClickTool.bind(this)
@@ -109,22 +109,22 @@ class DrawTool extends Control {
         );
 
         this.initToolboxHTML();
-        this.uiRefToolboxSection = window.document.querySelector(`#${ID_PREFIX}-toolbox`);
+        this.uiRefToolboxSection = window.document.querySelector(`#${ID__PREFIX}-toolbox`);
         this.initToggleables();
 
-        this.uiRefToolType = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-type`);
+        this.uiRefToolType = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-type`);
         this.uiRefToolType.addEventListener(Events.browser.change, this.updateTool.bind(this));
 
-        this.uiRefIntersectionEnable = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-intersection-enable`);
+        this.uiRefIntersectionEnable = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-intersection-enable`);
         this.uiRefIntersectionEnable.addEventListener(Events.browser.change, this.updateTool.bind(this));
 
-        this.uiRefFillColor = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-fill-color`);
+        this.uiRefFillColor = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-fill-color`);
         this.uiRefFillColor.addEventListener(Events.custom.colorChange, this.updateTool.bind(this));
 
-        this.uiRefStrokeWidth = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-stroke-width`);
+        this.uiRefStrokeWidth = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-stroke-width`);
         this.uiRefStrokeWidth.addEventListener(Events.browser.change, this.updateTool.bind(this));
 
-        this.uiRefStrokeColor = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-stroke-color`);
+        this.uiRefStrokeColor = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-stroke-color`);
         this.uiRefStrokeColor.addEventListener(Events.custom.colorChange, this.updateTool.bind(this));
 
         // Set default selected values
@@ -151,38 +151,38 @@ class DrawTool extends Control {
     // # Section: Init Helpers
     //--------------------------------------------------------------------
     initToolboxHTML() {
-        const i18n = TranslationManager.get(`${I18N_BASE}.toolbox`);
-        const i18nCommon = TranslationManager.get(`${I18N_BASE_COMMON}.titles`);
+        const i18n = TranslationManager.get(`${I18N__BASE}.toolbox`);
+        const i18nCommon = TranslationManager.get(`${I18N__BASE_COMMON}.titles`);
 
         const html = (`
-            <div id="${ID_PREFIX}-toolbox" class="${CLASS_TOOLBOX_SECTION}">
-                <div class="${CLASS_TOOLBOX_SECTION}__header oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">
-                    <h4 class="${CLASS_TOOLBOX_SECTION}__title" data-oltb-i18n="${I18N_BASE}.toolbox.titles.draw">${i18n.titles.draw}</h4>
-                    <span class="${CLASS_TOOLBOX_SECTION}__icon oltb-tippy" data-oltb-i18n="${I18N_BASE_COMMON}.titles.toggleSection" title="${i18nCommon.toggleSection}"></span>
+            <div id="${ID__PREFIX}-toolbox" class="${CLASS__TOOLBOX_SECTION}">
+                <div class="${CLASS__TOOLBOX_SECTION}__header oltb-toggleable" data-oltb-toggleable-target="${ID__PREFIX}-toolbox-collapsed">
+                    <h4 class="${CLASS__TOOLBOX_SECTION}__title" data-oltb-i18n="${I18N__BASE}.toolbox.titles.draw">${i18n.titles.draw}</h4>
+                    <span class="${CLASS__TOOLBOX_SECTION}__icon oltb-tippy" data-oltb-i18n="${I18N__BASE_COMMON}.titles.toggleSection" title="${i18nCommon.toggleSection}"></span>
                 </div>
-                <div class="${CLASS_TOOLBOX_SECTION}__groups" id="${ID_PREFIX}-toolbox-collapsed" style="display: ${this.localStorage.isCollapsed ? 'none' : 'block'}">
-                    <div class="${CLASS_TOOLBOX_SECTION}__group">
-                        <label class="oltb-label" for="${ID_PREFIX}-type" data-oltb-i18n="${I18N_BASE}.toolbox.groups.shapes.title">${i18n.groups.shapes.title}</label>
-                        <select id="${ID_PREFIX}-type" class="oltb-select">
-                            <option value="Circle" data-oltb-i18n="${I18N_BASE}.toolbox.groups.shapes.circle">${i18n.groups.shapes.circle}</option>
-                            <option value="Square" data-oltb-i18n="${I18N_BASE}.toolbox.groups.shapes.square">${i18n.groups.shapes.square}</option>
-                            <option value="Rectangle" data-oltb-i18n="${I18N_BASE}.toolbox.groups.shapes.rectangle">${i18n.groups.shapes.rectangle}</option>
-                            <option value="LineString" data-oltb-i18n="${I18N_BASE}.toolbox.groups.shapes.lineString">${i18n.groups.shapes.lineString}</option>
-                            <option value="Point" data-oltb-i18n="${I18N_BASE}.toolbox.groups.shapes.point">${i18n.groups.shapes.point}</option>
-                            <option value="Polygon" data-oltb-i18n="${I18N_BASE}.toolbox.groups.shapes.polygon">${i18n.groups.shapes.polygon}</option>
+                <div class="${CLASS__TOOLBOX_SECTION}__groups" id="${ID__PREFIX}-toolbox-collapsed" style="display: ${this.localStorage.isCollapsed ? 'none' : 'block'}">
+                    <div class="${CLASS__TOOLBOX_SECTION}__group">
+                        <label class="oltb-label" for="${ID__PREFIX}-type" data-oltb-i18n="${I18N__BASE}.toolbox.groups.shapes.title">${i18n.groups.shapes.title}</label>
+                        <select id="${ID__PREFIX}-type" class="oltb-select">
+                            <option value="Circle" data-oltb-i18n="${I18N__BASE}.toolbox.groups.shapes.circle">${i18n.groups.shapes.circle}</option>
+                            <option value="Square" data-oltb-i18n="${I18N__BASE}.toolbox.groups.shapes.square">${i18n.groups.shapes.square}</option>
+                            <option value="Rectangle" data-oltb-i18n="${I18N__BASE}.toolbox.groups.shapes.rectangle">${i18n.groups.shapes.rectangle}</option>
+                            <option value="LineString" data-oltb-i18n="${I18N__BASE}.toolbox.groups.shapes.lineString">${i18n.groups.shapes.lineString}</option>
+                            <option value="Point" data-oltb-i18n="${I18N__BASE}.toolbox.groups.shapes.point">${i18n.groups.shapes.point}</option>
+                            <option value="Polygon" data-oltb-i18n="${I18N__BASE}.toolbox.groups.shapes.polygon">${i18n.groups.shapes.polygon}</option>
                         </select>
                     </div>
-                    <div class="${CLASS_TOOLBOX_SECTION}__group ${CLASS_TOOLBOX_SECTION}__group--split-group">
-                        <div class="${CLASS_TOOLBOX_SECTION}__group-part">
-                            <label class="oltb-label" for="${ID_PREFIX}-intersection-enable" data-oltb-i18n="${I18N_BASE}.toolbox.groups.intersectable.title">${i18n.groups.intersectable.title}</label>
-                            <select id="${ID_PREFIX}-intersection-enable" class="oltb-select">
-                                <option value="false" data-oltb-i18n="${I18N_BASE}.toolbox.groups.intersectable.false">${i18n.groups.intersectable.false}</option>
-                                <option value="true" data-oltb-i18n="${I18N_BASE}.toolbox.groups.intersectable.true">${i18n.groups.intersectable.true}</option>
+                    <div class="${CLASS__TOOLBOX_SECTION}__group ${CLASS__TOOLBOX_SECTION}__group--split-group">
+                        <div class="${CLASS__TOOLBOX_SECTION}__group-part">
+                            <label class="oltb-label" for="${ID__PREFIX}-intersection-enable" data-oltb-i18n="${I18N__BASE}.toolbox.groups.intersectable.title">${i18n.groups.intersectable.title}</label>
+                            <select id="${ID__PREFIX}-intersection-enable" class="oltb-select">
+                                <option value="false" data-oltb-i18n="${I18N__BASE}.toolbox.groups.intersectable.false">${i18n.groups.intersectable.false}</option>
+                                <option value="true" data-oltb-i18n="${I18N__BASE}.toolbox.groups.intersectable.true">${i18n.groups.intersectable.true}</option>
                             </select>
                         </div>
-                        <div class="${CLASS_TOOLBOX_SECTION}__group-part">
-                            <label class="oltb-label" for="${ID_PREFIX}-stroke-width" data-oltb-i18n="${I18N_BASE}.toolbox.groups.strokeWidth.title">${i18n.groups.strokeWidth.title}</label>
-                            <select id="${ID_PREFIX}-stroke-width" class="oltb-select">
+                        <div class="${CLASS__TOOLBOX_SECTION}__group-part">
+                            <label class="oltb-label" for="${ID__PREFIX}-stroke-width" data-oltb-i18n="${I18N__BASE}.toolbox.groups.strokeWidth.title">${i18n.groups.strokeWidth.title}</label>
+                            <select id="${ID__PREFIX}-stroke-width" class="oltb-select">
                                 <option value="1">1</option>
                                 <option value="1.25">1.25</option>
                                 <option value="1.5">1.5</option>
@@ -199,16 +199,16 @@ class DrawTool extends Control {
                             </select>
                         </div>
                     </div>
-                    <div class="${CLASS_TOOLBOX_SECTION}__group ${CLASS_TOOLBOX_SECTION}__group--split-group">
-                        <div class="${CLASS_TOOLBOX_SECTION}__group-part">
-                            <label class="oltb-label" for="${ID_PREFIX}-stroke-color" data-oltb-i18n="${I18N_BASE}.toolbox.groups.strokeColor.title">${i18n.groups.strokeColor.title}</label>
-                            <div id="${ID_PREFIX}-stroke-color" class="oltb-color-input oltb-color-tippy" data-oltb-color-target="#${ID_PREFIX}-stroke-color" data-oltb-color="${this.localStorage.strokeColor}" tabindex="0">
+                    <div class="${CLASS__TOOLBOX_SECTION}__group ${CLASS__TOOLBOX_SECTION}__group--split-group">
+                        <div class="${CLASS__TOOLBOX_SECTION}__group-part">
+                            <label class="oltb-label" for="${ID__PREFIX}-stroke-color" data-oltb-i18n="${I18N__BASE}.toolbox.groups.strokeColor.title">${i18n.groups.strokeColor.title}</label>
+                            <div id="${ID__PREFIX}-stroke-color" class="oltb-color-input oltb-color-tippy" data-oltb-color-target="#${ID__PREFIX}-stroke-color" data-oltb-color="${this.localStorage.strokeColor}" tabindex="0">
                                 <div class="oltb-color-input__inner" style="background-color: ${this.localStorage.strokeColor};"></div>
                             </div>
                         </div>
-                        <div class="${CLASS_TOOLBOX_SECTION}__group-part">
-                            <label class="oltb-label" for="${ID_PREFIX}-fill-color" data-oltb-i18n="${I18N_BASE}.toolbox.groups.fillColor.title">${i18n.groups.fillColor.title}</label>
-                            <div id="${ID_PREFIX}-fill-color" class="oltb-color-input oltb-color-tippy" data-oltb-color-target="#${ID_PREFIX}-fill-color" data-oltb-color="${this.localStorage.fillColor}" tabindex="0">
+                        <div class="${CLASS__TOOLBOX_SECTION}__group-part">
+                            <label class="oltb-label" for="${ID__PREFIX}-fill-color" data-oltb-i18n="${I18N__BASE}.toolbox.groups.fillColor.title">${i18n.groups.fillColor.title}</label>
+                            <div id="${ID__PREFIX}-fill-color" class="oltb-color-input oltb-color-tippy" data-oltb-color-target="#${ID__PREFIX}-fill-color" data-oltb-color="${this.localStorage.fillColor}" tabindex="0">
                                 <div class="oltb-color-input__inner" style="background-color: ${this.localStorage.fillColor};"></div>
                             </div>
                         </div>
@@ -221,7 +221,7 @@ class DrawTool extends Control {
     }
 
     initToggleables() {
-        this.uiRefToolboxSection.querySelectorAll(`.${CLASS_TOGGLEABLE}`).forEach((toggle) => {
+        this.uiRefToolboxSection.querySelectorAll(`.${CLASS__TOGGLEABLE}`).forEach((toggle) => {
             toggle.addEventListener(Events.browser.click, this.onToggleToolbox.bind(this, toggle));
         });
     }
@@ -247,14 +247,14 @@ class DrawTool extends Control {
 
     activateTool() {
         this.isActive = true;
-        this.uiRefToolboxSection.classList.add(`${CLASS_TOOLBOX_SECTION}--show`);
-        this.button.classList.add(`${CLASS_TOOL_BUTTON}--active`);
+        this.uiRefToolboxSection.classList.add(`${CLASS__TOOLBOX_SECTION}--show`);
+        this.button.classList.add(`${CLASS__TOOL_BUTTON}--active`);
 
         ToolManager.setActiveTool(this);
 
         if(this.shouldAlwaysCreateNewLayer()) {
             LayerManager.addFeatureLayer({
-                name: TranslationManager.get(`${I18N_BASE}.layers.defaultName`)
+                name: TranslationManager.get(`${I18N__BASE}.layers.defaultName`)
             });
         }
 
@@ -278,8 +278,8 @@ class DrawTool extends Control {
         }
 
         this.isActive = false;
-        this.uiRefToolboxSection.classList.remove(`${CLASS_TOOLBOX_SECTION}--show`);
-        this.button.classList.remove(`${CLASS_TOOL_BUTTON}--active`);
+        this.uiRefToolboxSection.classList.remove(`${CLASS__TOOLBOX_SECTION}--show`);
+        this.button.classList.remove(`${CLASS__TOOL_BUTTON}--active`);
 
         this.doRemoveDrawInteraction();
         ToolManager.removeActiveTool();
@@ -465,7 +465,7 @@ class DrawTool extends Control {
 
     doDrawEnd(event) {
         const layerWrapper = LayerManager.getActiveFeatureLayer({
-            fallback: TranslationManager.get(`${I18N_BASE}.layers.defaultName`)
+            fallback: TranslationManager.get(`${I18N__BASE}.layers.defaultName`)
         });
 
         if(this.isIntersectionEnabled()) {
@@ -476,7 +476,7 @@ class DrawTool extends Control {
         
         if(!layerWrapper.getLayer().getVisible()) {
             Toast.info({
-                i18nKey: `${I18N_BASE}.toasts.infos.drawInHiddenLayer`,
+                i18nKey: `${I18N__BASE}.toasts.infos.drawInHiddenLayer`,
                 autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
             });
         }
@@ -538,7 +538,7 @@ class DrawTool extends Control {
 
         if(this.intersectedFeatures.length === 0) {
             Toast.info({
-                i18nKey: `${I18N_BASE}.toasts.infos.missingIntersections`,
+                i18nKey: `${I18N__BASE}.toasts.infos.missingIntersections`,
                 autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
             });
         }

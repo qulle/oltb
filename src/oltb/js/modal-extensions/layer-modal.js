@@ -11,8 +11,8 @@ import { ProjectionManager } from '../managers/projection-manager/projection-man
 import { TranslationManager } from '../managers/translation-manager/translation-manager';
 
 const FILENAME = 'LayerModal.js';
-const ID_PREFIX = 'oltb-layer-modal';
-const I18N_BASE = 'modalExtensions.layerModal';
+const ID__PREFIX = 'oltb-layer-modal';
+const I18N__BASE = 'modalExtensions.layerModal';
 
 const DefaultOptions = Object.freeze({
     maximized: false,
@@ -28,7 +28,7 @@ const DefaultOptions = Object.freeze({
 class LayerModal extends BaseModal {
     constructor(options = {}) {
         super(
-            TranslationManager.get(`${I18N_BASE}.title`), 
+            TranslationManager.get(`${I18N__BASE}.title`), 
             options.maximized, 
             options.onClose
         );
@@ -45,23 +45,23 @@ class LayerModal extends BaseModal {
     // # Section: User Interface
     //--------------------------------------------------------------------
     #createModal() {
-        const i18n = TranslationManager.get(`${I18N_BASE}.form`);
+        const i18n = TranslationManager.get(`${I18N__BASE}.form`);
         const [ nameWrapper, nameInput ] = createUIInput({
-            idPrefix: ID_PREFIX,
+            idPrefix: ID__PREFIX,
             idPostfix: '-name',
             text: i18n.name,
             value: 'New map layer'
         });
 
         const [ typeWrapper, typeSelect ] = createUISelect({
-            idPrefix: ID_PREFIX,
+            idPrefix: ID__PREFIX,
             idPostfix: '-type',
             text: i18n.layer,
             options: _.cloneDeep(LayerOptions)
         });
 
         const [ sourceWrapper, sourceSelect ] = createUISelect({
-            idPrefix: ID_PREFIX,
+            idPrefix: ID__PREFIX,
             idPostfix: '-source',
             text: i18n.source,
             options: _.cloneDeep(SourceOptions)
@@ -77,7 +77,7 @@ class LayerModal extends BaseModal {
         });
 
         const [ projectionWrapper, projectionSelect ] = createUISelect({
-            idPrefix: ID_PREFIX,
+            idPrefix: ID__PREFIX,
             idPostfix: '-projection',
             text: i18n.projection,
             options: projectionOptions,
@@ -85,20 +85,20 @@ class LayerModal extends BaseModal {
         });
 
         const [ urlWrapper, urlInput ] = createUIInput({
-            idPrefix: ID_PREFIX,
+            idPrefix: ID__PREFIX,
             idPostfix: '-url',
             text: i18n.url
         });
 
         const [ parametersWrapper, parametersInput ] = createUIInput({
-            idPrefix: ID_PREFIX,
+            idPrefix: ID__PREFIX,
             idPostfix: '-parameters',
             text: i18n.parameters,
             placeholder: '{"Layers": "HPD_TRP"}'
         });
 
         const [ wrapXWrapper, wrapXSelect ] = createUISelect({
-            idPrefix: ID_PREFIX,
+            idPrefix: ID__PREFIX,
             idPostfix: '-wrapx',
             text: i18n.wrapX,
             options: [
@@ -113,7 +113,7 @@ class LayerModal extends BaseModal {
         });
 
         const [ corsWrapper, corsSelect ] = createUISelect({
-            idPrefix: ID_PREFIX,
+            idPrefix: ID__PREFIX,
             idPostfix: '-cors',
             text: i18n.cors,
             options: [
@@ -131,7 +131,7 @@ class LayerModal extends BaseModal {
         });
 
         const [ attributionsWrapper, attributionsInput ] = createUIInput({
-            idPrefix: ID_PREFIX,
+            idPrefix: ID__PREFIX,
             idPostfix: '-attributions',
             text: i18n.attributions
         });

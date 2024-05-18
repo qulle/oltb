@@ -18,10 +18,10 @@ import { isShortcutKeyOnly } from '../../helpers/browser/is-shortcut-key-only';
 import { TranslationManager } from '../../managers/translation-manager/translation-manager';
 
 const FILENAME = 'ZoomboxTool.js';
-const CLASS_TOOL_BUTTON = 'oltb-tool-button';
-const KEY_TOOLTIP = 'tools.zoomboxTool';
-const I18N_BASE = 'tools.zoomboxTool';
-const OL_INTERNAL_OUT = 'out_';
+const CLASS__TOOL_BUTTON = 'oltb-tool-button';
+const KEY__TOOLTIP = 'tools.zoomboxTool';
+const I18N__BASE = 'tools.zoomboxTool';
+const OL__INTERNAL_OUT = 'out_';
 
 const DefaultOptions = Object.freeze({
     onInitiated: undefined,
@@ -57,19 +57,19 @@ class ZoomboxTool extends Control {
         
         const icon = getIcon({
             path: SvgPaths.boundingBoxCircles.stroked,
-            class: `${CLASS_TOOL_BUTTON}__icon`
+            class: `${CLASS__TOOL_BUTTON}__icon`
         });
 
-        const i18n = TranslationManager.get(I18N_BASE);
+        const i18n = TranslationManager.get(I18N__BASE);
         const button = DOM.createElement({
             element: 'button',
             html: icon,
-            class: CLASS_TOOL_BUTTON,
+            class: CLASS__TOOL_BUTTON,
             attributes: {
                 'type': 'button',
                 'data-tippy-content': `${i18n.title} (${ShortcutKeys.zoomboxTool})`,
                 'data-tippy-content-post': `(${ShortcutKeys.zoomboxTool})`,
-                'data-oltb-i18n': `${I18N_BASE}.title`
+                'data-oltb-i18n': `${I18N__BASE}.title`
             },
             listeners: {
                 'click': this.onClickTool.bind(this)
@@ -145,7 +145,7 @@ class ZoomboxTool extends Control {
         this.doAddTooltip();
 
         this.isActive = true;
-        this.button.classList.add(`${CLASS_TOOL_BUTTON}--active`);
+        this.button.classList.add(`${CLASS__TOOL_BUTTON}--active`);
 
         this.localStorage.isActive = true;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
@@ -162,7 +162,7 @@ class ZoomboxTool extends Control {
         this.doRemoveTooltip();
 
         this.isActive = false;
-        this.button.classList.remove(`${CLASS_TOOL_BUTTON}--active`);
+        this.button.classList.remove(`${CLASS__TOOL_BUTTON}--active`);
 
         this.localStorage.isActive = false;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
@@ -188,7 +188,7 @@ class ZoomboxTool extends Control {
         // Setting the internal OL variable
         // Option 1: Re-create the interaction to set the inverted out value
         // Option 2: Have two interactions that are swapped with one beeing active at the time
-        this.interactionDragZoom[OL_INTERNAL_OUT] = false;
+        this.interactionDragZoom[OL__INTERNAL_OUT] = false;
 
         if(isShortcutKeyOnly(event, ShortcutKeys.zoomboxTool)) {
             this.onClickTool(event);
@@ -207,7 +207,7 @@ class ZoomboxTool extends Control {
         // Option 1: Re-create the interaction to set the inverted out value
         // Option 2: Have two interactions that are swapped with one beeing active at the time
         if(event.ctrlKey) {
-            this.interactionDragZoom[OL_INTERNAL_OUT] = true;
+            this.interactionDragZoom[OL__INTERNAL_OUT] = true;
         }
     }
 
@@ -320,14 +320,14 @@ class ZoomboxTool extends Control {
     }
 
     doAddTooltip() {
-        const i18n = TranslationManager.get(`${I18N_BASE}.tooltips`);
+        const i18n = TranslationManager.get(`${I18N__BASE}.tooltips`);
 
-        this.tooltip = TooltipManager.push(KEY_TOOLTIP);
+        this.tooltip = TooltipManager.push(KEY__TOOLTIP);
         this.tooltip.innerHTML = i18n.dragToZoom;
     }
 
     doRemoveTooltip() {
-        TooltipManager.pop(KEY_TOOLTIP);
+        TooltipManager.pop(KEY__TOOLTIP);
         this.tooltip = undefined;
     }
 }

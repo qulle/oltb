@@ -3,9 +3,9 @@ import { DOM } from '../../helpers/browser/dom-factory';
 import { BaseDialog } from './base-dialog';
 import { ElementManager } from '../../managers/element-manager/element-manager';
 
-const CLASS_DIALOG = 'oltb-dialog';
-const CLASS_ANIMATION = 'oltb-animation';
-const CLASS_ANIMATION_BOUNCE = `${CLASS_ANIMATION}--bounce`;
+const CLASS__DIALOG = 'oltb-dialog';
+const CLASS__ANIMATION = 'oltb-animation';
+const CLASS__ANIMATION_BOUNCE = `${CLASS__ANIMATION}--bounce`;
 
 const DefaultOptions = Object.freeze({
     title: 'Alert',
@@ -25,30 +25,30 @@ class AlertDialog extends BaseDialog {
     #createDialog() {
         const dialog = DOM.createElement({
             element: 'div',
-            class: `${CLASS_DIALOG} ${CLASS_DIALOG}--alert ${CLASS_ANIMATION} ${CLASS_ANIMATION_BOUNCE}`
+            class: `${CLASS__DIALOG} ${CLASS__DIALOG}--alert ${CLASS__ANIMATION} ${CLASS__ANIMATION_BOUNCE}`
         });
 
         const title = DOM.createElement({
             element: 'h2',
-            class: `${CLASS_DIALOG}__title`,
+            class: `${CLASS__DIALOG}__title`,
             text: this.options.title
         });
 
         const message = DOM.createElement({
             element: 'p',
-            class: `${CLASS_DIALOG}__message`,
+            class: `${CLASS__DIALOG}__message`,
             html: this.options.message
         });
 
         const buttonWrapper = DOM.createElement({
             element: 'div', 
-            class: `${CLASS_DIALOG}__buttons-wrapper`
+            class: `${CLASS__DIALOG}__buttons-wrapper`
         });
 
         const okButton = DOM.createElement({
             element: 'button',
             text: this.options.confirmText,
-            class: `${CLASS_DIALOG}__btn oltb-btn oltb-btn--blue-mid`,
+            class: `${CLASS__DIALOG}__btn oltb-btn oltb-btn--blue-mid`,
             attributes: {
                 'type': 'button'
             },

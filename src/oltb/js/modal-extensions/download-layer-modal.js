@@ -7,8 +7,8 @@ import { createUISelect } from '../creators/create-ui-select';
 import { TranslationManager } from '../managers/translation-manager/translation-manager';
 
 const FILENAME = 'DownloadLayerModal.js';
-const ID_PREFIX = 'oltb-download-layer-modal';
-const I18N_BASE = 'modalExtensions.downloadLayerModal';
+const ID__PREFIX = 'oltb-download-layer-modal';
+const I18N__BASE = 'modalExtensions.downloadLayerModal';
 
 const DefaultOptions = Object.freeze({
     maximized: false,
@@ -24,7 +24,7 @@ const DefaultOptions = Object.freeze({
 class DownloadLayerModal extends BaseModal {
     constructor(options = {}) {
         super(
-            TranslationManager.get(`${I18N_BASE}.title`),
+            TranslationManager.get(`${I18N__BASE}.title`),
             options.maximized, 
             options.onClose
         );
@@ -41,9 +41,9 @@ class DownloadLayerModal extends BaseModal {
     // # Section: User Interface
     //--------------------------------------------------------------------
     #createModal() {
-        const i18n = TranslationManager.get(`${I18N_BASE}.form`);
+        const i18n = TranslationManager.get(`${I18N__BASE}.form`);
         const [ formatWrapper, formatSelect ] = createUISelect({
-            idPrefix: ID_PREFIX,
+            idPrefix: ID__PREFIX,
             idPostfix: '-format',
             text: i18n.layerFormat,
             options: _.cloneDeep(FormatOptions)

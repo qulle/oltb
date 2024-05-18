@@ -16,11 +16,11 @@ import { ProjectionManager } from '../managers/projection-manager/projection-man
 import { TranslationManager } from '../managers/translation-manager/translation-manager';
 
 const FILENAME = 'DebugInfoModal.js';
-const ID_PREFIX = 'oltb-debug';
-const ID_EVENT_LOG = 'oltb-event-log';
-const CLASS_TOGGLEABLE = 'oltb-toggleable';
-const I18N_BASE = 'modalExtensions.debugInfoModal';
-const I18N_BASE_COMMON = 'commons';
+const ID__PREFIX = 'oltb-debug';
+const ID__EVENT_LOG = 'oltb-event-log';
+const CLASS__TOGGLEABLE = 'oltb-toggleable';
+const I18N__BASE = 'modalExtensions.debugInfoModal';
+const I18N__BASE_COMMON = 'commons';
 
 const DefaultOptions = Object.freeze({
     map: undefined,
@@ -35,7 +35,7 @@ const DefaultOptions = Object.freeze({
 class DebugInfoModal extends BaseModal {
     constructor(options = {}) {
         super(
-            TranslationManager.get(`${I18N_BASE}.title`), 
+            TranslationManager.get(`${I18N__BASE}.title`), 
             DefaultOptions.maximized, 
             options.onClose
         );
@@ -68,13 +68,13 @@ class DebugInfoModal extends BaseModal {
         const modalContent = this.#generateModalContent();
         this.show(modalContent);
 
-        modalContent.querySelectorAll(`.${CLASS_TOGGLEABLE}`).forEach((toggle) => {
+        modalContent.querySelectorAll(`.${CLASS__TOGGLEABLE}`).forEach((toggle) => {
             toggle.addEventListener(Events.browser.click, this.onToggleSection.bind(this, toggle));
         });
     }
 
     #generateCommandSection() {
-        const i18n = TranslationManager.get(`${I18N_BASE}.form`);
+        const i18n = TranslationManager.get(`${I18N__BASE}.form`);
         const commandsCollection = DOM.createElement({
             element: 'select',
             class: 'oltb-select'
@@ -176,7 +176,7 @@ class DebugInfoModal extends BaseModal {
     }
 
     #generateSection(section, index) {
-        const i18n = TranslationManager.get(`${I18N_BASE_COMMON}.titles`);
+        const i18n = TranslationManager.get(`${I18N__BASE_COMMON}.titles`);
         const sectionWrapper = DOM.createElement({
             element: 'div',
             class: 'oltb-debug'
@@ -186,7 +186,7 @@ class DebugInfoModal extends BaseModal {
             element: 'div',
             class: 'oltb-debug__header oltb-toggleable',
             attributes: {
-                'data-oltb-toggleable-target': `${ID_PREFIX}-section-${index}`
+                'data-oltb-toggleable-target': `${ID__PREFIX}-section-${index}`
             }
         });
 
@@ -222,7 +222,7 @@ class DebugInfoModal extends BaseModal {
             element: 'div',
             class: 'oltb-debug__content',
             style: `display: ${section.display};`,
-            id: `${ID_PREFIX}-section-${index}`
+            id: `${ID__PREFIX}-section-${index}`
         });
 
         if(section.json) {
@@ -286,7 +286,7 @@ class DebugInfoModal extends BaseModal {
 
         const eventLog = DOM.createElement({
             element: 'div',
-            id: ID_EVENT_LOG,
+            id: ID__EVENT_LOG,
             class: 'oltb-log oltb-thin-scrollbars'
         });
 
@@ -398,12 +398,12 @@ class DebugInfoModal extends BaseModal {
     }
 
     #generateObjectLogItem(entry, index) {
-        const i18n = TranslationManager.get(`${I18N_BASE_COMMON}.titles`);
+        const i18n = TranslationManager.get(`${I18N__BASE_COMMON}.titles`);
         const logHeader = DOM.createElement({
             element: 'div',
             class: 'oltb-log__header oltb-log__header--toggleable oltb-toggleable',
             attributes: {
-                'data-oltb-toggleable-target': `${ID_PREFIX}-log-item-${index}`
+                'data-oltb-toggleable-target': `${ID__PREFIX}-log-item-${index}`
             }
         });
 
@@ -445,7 +445,7 @@ class DebugInfoModal extends BaseModal {
         const logContent = DOM.createElement({
             element: 'div',
             style: 'display: none;',
-            id: `${ID_PREFIX}-log-item-${index}`
+            id: `${ID__PREFIX}-log-item-${index}`
         });
 
         const jsonSection = this.#generateJsonSection({
@@ -515,7 +515,7 @@ class DebugInfoModal extends BaseModal {
             projection: view.getProjection(),
             proj4Defs: ProjectionManager.getProjections()
         } : {
-            info: TranslationManager.get(`${I18N_BASE}.noMapFound`)
+            info: TranslationManager.get(`${I18N__BASE}.noMapFound`)
         };
 
         const browser = new BrowserDetector(window.navigator.userAgent);
@@ -580,7 +580,7 @@ class DebugInfoModal extends BaseModal {
         const eventLog = LogManager.getLog().slice().reverse();
 
         // Generate sections
-        const i18n = TranslationManager.get(`${I18N_BASE}.sections`);
+        const i18n = TranslationManager.get(`${I18N__BASE}.sections`);
         const sectionFragment = window.document.createDocumentFragment(); 
         [
             {
@@ -700,7 +700,7 @@ class DebugInfoModal extends BaseModal {
         window.console.dir(this.options.map);
 
         Toast.info({
-            i18nKey: `${I18N_BASE}.toasts.infos.logMapObject`,
+            i18nKey: `${I18N__BASE}.toasts.infos.logMapObject`,
             autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
         });
     }
@@ -709,7 +709,7 @@ class DebugInfoModal extends BaseModal {
         const uuid = uuidv4();
         const entry = LogManager.logInformation(FILENAME, 'actionGenerateUUID', uuid);
 
-        const eventLog = window.document.getElementById(ID_EVENT_LOG);
+        const eventLog = window.document.getElementById(ID__EVENT_LOG);
         const logItem = this.#generateTextLogItem(entry);
         DOM.prependChildren(eventLog, [
             logItem
@@ -730,7 +730,7 @@ class DebugInfoModal extends BaseModal {
             await copyToClipboard(serialized);
 
             Toast.info({
-                i18nKey: `${I18N_BASE}.toasts.infos.copyEventLog`,
+                i18nKey: `${I18N__BASE}.toasts.infos.copyEventLog`,
                 autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
             });
         }catch(error) {
@@ -740,7 +740,7 @@ class DebugInfoModal extends BaseModal {
             });
                 
             Toast.error({
-                i18nKey: `${I18N_BASE}.toasts.errors.copyEventLog`,
+                i18nKey: `${I18N__BASE}.toasts.errors.copyEventLog`,
             });
         }
     }
@@ -749,7 +749,7 @@ class DebugInfoModal extends BaseModal {
         LogManager.clearLog();
 
         // Clear eventlog
-        const uiRefEventLog = window.document.getElementById(ID_EVENT_LOG);
+        const uiRefEventLog = window.document.getElementById(ID__EVENT_LOG);
         if(uiRefEventLog) {
             DOM.clearElement(uiRefEventLog);
         }
@@ -762,7 +762,7 @@ class DebugInfoModal extends BaseModal {
         });
 
         Toast.info({
-            i18nKey: `${I18N_BASE}.toasts.infos.clearEventLog`,
+            i18nKey: `${I18N__BASE}.toasts.infos.clearEventLog`,
             autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
         });
     }
@@ -777,7 +777,7 @@ class DebugInfoModal extends BaseModal {
         });
 
         Toast.info({
-            i18nKey: `${I18N_BASE}.toasts.infos.clearStyleManager`,
+            i18nKey: `${I18N__BASE}.toasts.infos.clearStyleManager`,
             autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
         });
     }

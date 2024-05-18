@@ -4,14 +4,14 @@ import { ConfigManager } from '../config-manager/config-manager';
 import { copyToClipboard } from '../../helpers/browser/copy-to-clipboard';
 
 const FILENAME = 'CopyMarkerCoordinates.js';
-const I18N_BASE = 'managers.infoWindowManager';
+const I18N__BASE = 'managers.infoWindowManager';
 
 const copyMarkerCoordinates = async function(InfoWindowManager, data) {
     try {
         await copyToClipboard(data);
 
         Toast.info({
-            i18nKey: `${I18N_BASE}.toasts.infos.copyMarkerCoordinates`,
+            i18nKey: `${I18N__BASE}.toasts.infos.copyMarkerCoordinates`,
             autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
         });
     }catch(error) {
@@ -21,7 +21,7 @@ const copyMarkerCoordinates = async function(InfoWindowManager, data) {
         });
             
         Toast.error({
-            i18nKey: `${I18N_BASE}.toasts.errors.copyMarkerCoordinates`,
+            i18nKey: `${I18N__BASE}.toasts.errors.copyMarkerCoordinates`,
         });
     }
 }

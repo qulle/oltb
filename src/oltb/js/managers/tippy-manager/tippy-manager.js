@@ -10,7 +10,7 @@ import { ConfigManager } from '../config-manager/config-manager';
 import { BaseManager } from '../base-manager';
 
 const FILENAME = 'TippyManager.js';
-const CLASS_TOOL_BUTTON = 'oltb-tool-button';
+const CLASS__TOOL_BUTTON = 'oltb-tool-button';
 
 /**
  * About:
@@ -74,7 +74,7 @@ class TippyManager extends BaseManager {
             instance.destroy();
         });
 
-        this.#toolButtonInstances = tippy(`.${CLASS_TOOL_BUTTON}`);
+        this.#toolButtonInstances = tippy(`.${CLASS__TOOL_BUTTON}`);
         this.#toolButtonTippy.setInstances(this.#toolButtonInstances);
         this.#onPlacementChange();
     }

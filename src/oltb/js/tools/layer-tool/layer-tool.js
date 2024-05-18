@@ -30,17 +30,17 @@ import { TranslationManager } from '../../managers/translation-manager/translati
 import { DownloadLayerModal } from '../../modal-extensions/download-layer-modal';
 
 const FILENAME = 'LayerTool.js';
-const CLASS_TOOL_BUTTON = 'oltb-tool-button';
-const CLASS_TOOLBOX_SECTION = 'oltb-toolbox-section';
-const CLASS_TOOLBOX_LIST = 'oltb-toolbox-list';
-const CLASS_FUNC_BUTTON = 'oltb-func-btn';
-const CLASS_TOGGLEABLE = 'oltb-toggleable';
-const ID_PREFIX = 'oltb-layer';
+const CLASS__TOOL_BUTTON = 'oltb-tool-button';
+const CLASS__TOOLBOX_SECTION = 'oltb-toolbox-section';
+const CLASS__TOOLBOX_LIST = 'oltb-toolbox-list';
+const CLASS__FUNC_BUTTON = 'oltb-func-btn';
+const CLASS__TOGGLEABLE = 'oltb-toggleable';
+const ID__PREFIX = 'oltb-layer';
 const SORTABLE_MAP_LAYERS = 'sortableMapLayers';
 const SORTABLE_FEATURE_LAYERS = 'sortableFeatureLayers';
 const INDEX_OFFSET = 1;
-const I18N_BASE = 'tools.layerTool';
-const I18N_BASE_COMMON = 'commons';
+const I18N__BASE = 'tools.layerTool';
+const I18N__BASE_COMMON = 'commons';
 
 const DefaultOptions = Object.freeze({
     disableMapCreateLayerButton: false,
@@ -97,19 +97,19 @@ class LayerTool extends Control {
         
         this.icon = getIcon({
             path: SvgPaths.layers.stroked,
-            class: `${CLASS_TOOL_BUTTON}__icon`
+            class: `${CLASS__TOOL_BUTTON}__icon`
         });
 
-        const i18n = TranslationManager.get(I18N_BASE);
+        const i18n = TranslationManager.get(I18N__BASE);
         const button = DOM.createElement({
             element: 'button',
             html: this.icon,
-            class: CLASS_TOOL_BUTTON,
+            class: CLASS__TOOL_BUTTON,
             attributes: {
                 'type': 'button',
                 'data-tippy-content': `${i18n.title} (${ShortcutKeys.layerTool})`,
                 'data-tippy-content-post': `(${ShortcutKeys.layerTool})`,
-                'data-oltb-i18n': `${I18N_BASE}.title`
+                'data-oltb-i18n': `${I18N__BASE}.title`
             },
             listeners: {
                 'click': this.onClickTool.bind(this)
@@ -131,11 +131,11 @@ class LayerTool extends Control {
         );
 
         this.initToolboxHTML();
-        this.uiRefToolboxSection = window.document.querySelector(`#${ID_PREFIX}-toolbox`);
+        this.uiRefToolboxSection = window.document.querySelector(`#${ID__PREFIX}-toolbox`);
         this.initToggleables();
 
-        this.uiRefMapLayerStack = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-map-stack`);
-        this.uiRefAddMapLayerButton = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-map-stack-add-button`);
+        this.uiRefMapLayerStack = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-map-stack`);
+        this.uiRefAddMapLayerButton = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-map-stack-add-button`);
 
         this.sortableMapLayerStack = this.generateSortable(this.uiRefMapLayerStack, {
             group: SORTABLE_MAP_LAYERS,
@@ -146,9 +146,9 @@ class LayerTool extends Control {
             stack: this.localStorage.mapLayers
         });
 
-        this.uiRefFeatureLayerStack = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-feature-stack`);
-        this.uiRefAddFeatureLayerButton = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-feature-stack-add-button`);
-        this.uiRefAddFeatureLayerText = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-feature-stack-add-text`);
+        this.uiRefFeatureLayerStack = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-feature-stack`);
+        this.uiRefAddFeatureLayerButton = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-feature-stack-add-button`);
+        this.uiRefAddFeatureLayerText = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-feature-stack-add-text`);
 
         this.sortableFeatureLayerStack = this.generateSortable(this.uiRefFeatureLayerStack, {
             group: SORTABLE_FEATURE_LAYERS,
@@ -199,38 +199,38 @@ class LayerTool extends Control {
     // # Section: Init Helpers
     //--------------------------------------------------------------------
     initToolboxHTML() {
-        const i18n = TranslationManager.get(`${I18N_BASE}.toolbox`);
-        const i18nCommon = TranslationManager.get(`${I18N_BASE_COMMON}.titles`);
+        const i18n = TranslationManager.get(`${I18N__BASE}.toolbox`);
+        const i18nCommon = TranslationManager.get(`${I18N__BASE_COMMON}.titles`);
 
         const html = (`
-            <div id="${ID_PREFIX}-toolbox" class="${CLASS_TOOLBOX_SECTION}">
-                <div class="${CLASS_TOOLBOX_SECTION}__header oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-map-toolbox-collapsed">
-                    <h4 class="${CLASS_TOOLBOX_SECTION}__title" data-oltb-i18n="${I18N_BASE}.toolbox.titles.mapLayers">${i18n.titles.mapLayers}</h4>
-                    <span class="${CLASS_TOOLBOX_SECTION}__icon oltb-tippy" data-oltb-i18n="${I18N_BASE_COMMON}.titles.toggleSection" title="${i18nCommon.toggleSection}"></span>
+            <div id="${ID__PREFIX}-toolbox" class="${CLASS__TOOLBOX_SECTION}">
+                <div class="${CLASS__TOOLBOX_SECTION}__header oltb-toggleable" data-oltb-toggleable-target="${ID__PREFIX}-map-toolbox-collapsed">
+                    <h4 class="${CLASS__TOOLBOX_SECTION}__title" data-oltb-i18n="${I18N__BASE}.toolbox.titles.mapLayers">${i18n.titles.mapLayers}</h4>
+                    <span class="${CLASS__TOOLBOX_SECTION}__icon oltb-tippy" data-oltb-i18n="${I18N__BASE_COMMON}.titles.toggleSection" title="${i18nCommon.toggleSection}"></span>
                 </div>
-                <div class="${CLASS_TOOLBOX_SECTION}__groups" id="${ID_PREFIX}-map-toolbox-collapsed" style="display: ${this.localStorage[`${ID_PREFIX}-map-toolbox-collapsed`] ? 'none' : 'block'}">
+                <div class="${CLASS__TOOLBOX_SECTION}__groups" id="${ID__PREFIX}-map-toolbox-collapsed" style="display: ${this.localStorage[`${ID__PREFIX}-map-toolbox-collapsed`] ? 'none' : 'block'}">
                     ${!this.options.disableMapCreateLayerButton ? 
                         `
-                            <div class="${CLASS_TOOLBOX_SECTION}__group">
-                                <button type="button" id="${ID_PREFIX}-map-stack-add-button" class="oltb-btn oltb-btn--green-mid oltb-w-100" data-oltb-i18n="${I18N_BASE}.toolbox.groups.createMapLayer.create">${i18n.groups.createMapLayer.create}</button>
+                            <div class="${CLASS__TOOLBOX_SECTION}__group">
+                                <button type="button" id="${ID__PREFIX}-map-stack-add-button" class="oltb-btn oltb-btn--green-mid oltb-w-100" data-oltb-i18n="${I18N__BASE}.toolbox.groups.createMapLayer.create">${i18n.groups.createMapLayer.create}</button>
                             </div>
                         ` : ''
                     }
-                    <div class="${CLASS_TOOLBOX_SECTION}__group ${this.options.disableMapCreateLayerButton ? `${CLASS_TOOLBOX_SECTION}__group--topmost` : ''}">
-                        <ul id="${ID_PREFIX}-map-stack" class="${CLASS_TOOLBOX_LIST}"></ul>
+                    <div class="${CLASS__TOOLBOX_SECTION}__group ${this.options.disableMapCreateLayerButton ? `${CLASS__TOOLBOX_SECTION}__group--topmost` : ''}">
+                        <ul id="${ID__PREFIX}-map-stack" class="${CLASS__TOOLBOX_LIST}"></ul>
                     </div>
                 </div>
-                <div class="${CLASS_TOOLBOX_SECTION}__header oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-feature-toolbox-collapsed">
-                    <h4 class="${CLASS_TOOLBOX_SECTION}__title" data-oltb-i18n="${I18N_BASE}.toolbox.titles.featureLayers">${i18n.titles.featureLayers}</h4>
-                    <span class="${CLASS_TOOLBOX_SECTION}__icon oltb-tippy" data-oltb-i18n="${I18N_BASE_COMMON}.titles.toggleSection" title="${i18nCommon.toggleSection}"></span>
+                <div class="${CLASS__TOOLBOX_SECTION}__header oltb-toggleable" data-oltb-toggleable-target="${ID__PREFIX}-feature-toolbox-collapsed">
+                    <h4 class="${CLASS__TOOLBOX_SECTION}__title" data-oltb-i18n="${I18N__BASE}.toolbox.titles.featureLayers">${i18n.titles.featureLayers}</h4>
+                    <span class="${CLASS__TOOLBOX_SECTION}__icon oltb-tippy" data-oltb-i18n="${I18N__BASE_COMMON}.titles.toggleSection" title="${i18nCommon.toggleSection}"></span>
                 </div>
-                <div class="${CLASS_TOOLBOX_SECTION}__groups" id="${ID_PREFIX}-feature-toolbox-collapsed" style="display: ${this.localStorage[`${ID_PREFIX}-feature-toolbox-collapsed`] ? 'none' : 'block'}">
-                    <div class="${CLASS_TOOLBOX_SECTION}__group">
+                <div class="${CLASS__TOOLBOX_SECTION}__groups" id="${ID__PREFIX}-feature-toolbox-collapsed" style="display: ${this.localStorage[`${ID__PREFIX}-feature-toolbox-collapsed`] ? 'none' : 'block'}">
+                    <div class="${CLASS__TOOLBOX_SECTION}__group">
                         ${!this.options.disableFeatureCreateLayerButton ? 
                             `
                                 <div class="oltb-input-button-group">
-                                    <input type="text" id="${ID_PREFIX}-feature-stack-add-text" class="oltb-input" data-oltb-i18n="${I18N_BASE}.toolbox.groups.createFeatureLayer.placeholder" placeholder="${i18n.groups.createFeatureLayer.placeholder}">
-                                    <button type="button" id="${ID_PREFIX}-feature-stack-add-button" class="oltb-btn oltb-btn--green-mid oltb-tippy" data-oltb-i18n="${I18N_BASE}.toolbox.groups.createFeatureLayer.create" title="${i18n.groups.createFeatureLayer.create}">
+                                    <input type="text" id="${ID__PREFIX}-feature-stack-add-text" class="oltb-input" data-oltb-i18n="${I18N__BASE}.toolbox.groups.createFeatureLayer.placeholder" placeholder="${i18n.groups.createFeatureLayer.placeholder}">
+                                    <button type="button" id="${ID__PREFIX}-feature-stack-add-button" class="oltb-btn oltb-btn--green-mid oltb-tippy" data-oltb-i18n="${I18N__BASE}.toolbox.groups.createFeatureLayer.create" title="${i18n.groups.createFeatureLayer.create}">
                                         ${getIcon({
                                             path: SvgPaths.plus.stroked,
                                             width: 20,
@@ -245,8 +245,8 @@ class LayerTool extends Control {
                             ` : ''
                         }
                     </div>
-                    <div class="${CLASS_TOOLBOX_SECTION}__group ${this.options.disableFeatureCreateLayerButton ? `${CLASS_TOOLBOX_SECTION}__group--topmost` : ''}">
-                        <ul id="${ID_PREFIX}-feature-stack" class="${CLASS_TOOLBOX_LIST} ${CLASS_TOOLBOX_LIST}--selectable"></ul>
+                    <div class="${CLASS__TOOLBOX_SECTION}__group ${this.options.disableFeatureCreateLayerButton ? `${CLASS__TOOLBOX_SECTION}__group--topmost` : ''}">
+                        <ul id="${ID__PREFIX}-feature-stack" class="${CLASS__TOOLBOX_LIST} ${CLASS__TOOLBOX_LIST}--selectable"></ul>
                     </div>
                 </div>
             </div>
@@ -256,7 +256,7 @@ class LayerTool extends Control {
     }
 
     initToggleables() {
-        this.uiRefToolboxSection.querySelectorAll(`.${CLASS_TOGGLEABLE}`).forEach((toggle) => {
+        this.uiRefToolboxSection.querySelectorAll(`.${CLASS__TOGGLEABLE}`).forEach((toggle) => {
             toggle.addEventListener(Events.browser.click, this.onToggleToolbox.bind(this, toggle));
         });
     }
@@ -269,7 +269,7 @@ class LayerTool extends Control {
         if(!this.options.disableMapCreateLayerButton) {
             ContextMenuTool.addItem({
                 icon: this.icon, 
-                i18nKey: `${I18N_BASE}.contextItems.addMapLayer`, 
+                i18nKey: `${I18N__BASE}.contextItems.addMapLayer`, 
                 fn: this.onContextMenuAddMapLayerModal.bind(this)
             });
         }
@@ -277,7 +277,7 @@ class LayerTool extends Control {
         if(!this.options.disableFeatureCreateLayerButton) {
             ContextMenuTool.addItem({
                 icon: this.icon, 
-                i18nKey: `${I18N_BASE}.contextItems.addFeatureLayer`, 
+                i18nKey: `${I18N__BASE}.contextItems.addFeatureLayer`, 
                 fn: this.onContextMenuAddFeatureLayer.bind(this)
             });
         }
@@ -304,8 +304,8 @@ class LayerTool extends Control {
 
     activateTool() {
         this.isActive = true;
-        this.uiRefToolboxSection.classList.add(`${CLASS_TOOLBOX_SECTION}--show`);
-        this.button.classList.add(`${CLASS_TOOL_BUTTON}--active`);
+        this.uiRefToolboxSection.classList.add(`${CLASS__TOOLBOX_SECTION}--show`);
+        this.button.classList.add(`${CLASS__TOOL_BUTTON}--active`);
 
         this.localStorage.isActive = true;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
@@ -319,8 +319,8 @@ class LayerTool extends Control {
 
     deactivateTool() {
         this.isActive = false;
-        this.uiRefToolboxSection.classList.remove(`${CLASS_TOOLBOX_SECTION}--show`);
-        this.button.classList.remove(`${CLASS_TOOL_BUTTON}--active`);
+        this.uiRefToolboxSection.classList.remove(`${CLASS__TOOLBOX_SECTION}--show`);
+        this.button.classList.remove(`${CLASS__TOOL_BUTTON}--active`);
 
         this.localStorage.isActive = false;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
@@ -460,7 +460,7 @@ class LayerTool extends Control {
         // Alert the user, the Layer was created when the tool was not active
         if(!this.isActive) {
             Toast.success({
-                i18nKey: `${I18N_BASE}.toasts.infos.addFeatureLayer`,
+                i18nKey: `${I18N__BASE}.toasts.infos.addFeatureLayer`,
                 autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
             });
         }
@@ -477,10 +477,10 @@ class LayerTool extends Control {
             dataIdAttr: 'data-oltb-sort-index',
             animation: duration,
             forceFallback: true,
-            handle: `.${CLASS_TOOLBOX_LIST}__handle`,
-            chosenClass: `${CLASS_TOOLBOX_LIST}__item--chosen`,
-            dragClass: `${CLASS_TOOLBOX_LIST}__item--drag`,
-            ghostClass: `${CLASS_TOOLBOX_LIST}__item--ghost`,
+            handle: `.${CLASS__TOOLBOX_LIST}__handle`,
+            chosenClass: `${CLASS__TOOLBOX_LIST}__item--chosen`,
+            dragClass: `${CLASS__TOOLBOX_LIST}__item--drag`,
+            ghostClass: `${CLASS__TOOLBOX_LIST}__item--ghost`,
             onEnd: (event) => this.onEndSortable(event, options)
         });
     }
@@ -589,7 +589,7 @@ class LayerTool extends Control {
             });
 
             Toast.error({
-                i18nKey: `${I18N_BASE}.toasts.errors.missingProjection`
+                i18nKey: `${I18N__BASE}.toasts.errors.missingProjection`
             });
         }
 
@@ -636,7 +636,7 @@ class LayerTool extends Control {
             });
 
             Toast.error({
-                i18nKey: `${I18N_BASE}.toasts.errors.addFeatureLayer`
+                i18nKey: `${I18N__BASE}.toasts.errors.addFeatureLayer`
             });
         }
     }
@@ -649,9 +649,9 @@ class LayerTool extends Control {
             return;
         }
 
-        layerElement.classList.toggle(`${CLASS_TOOLBOX_LIST}__item--hidden`);
+        layerElement.classList.toggle(`${CLASS__TOOLBOX_LIST}__item--hidden`);
 
-        const isVisible = !layerElement.classList.contains(`${CLASS_TOOLBOX_LIST}__item--hidden`);
+        const isVisible = !layerElement.classList.contains(`${CLASS__TOOLBOX_LIST}__item--hidden`);
         const storedLayerState = this.getLocalStorageMapLayerById(id);
 
         checkbox.checked = isVisible;
@@ -672,9 +672,9 @@ class LayerTool extends Control {
             return;
         }
 
-        layerElement.classList.toggle(`${CLASS_TOOLBOX_LIST}__item--hidden`);
+        layerElement.classList.toggle(`${CLASS__TOOLBOX_LIST}__item--hidden`);
 
-        const isVisible = !layerElement.classList.contains(`${CLASS_TOOLBOX_LIST}__item--hidden`);
+        const isVisible = !layerElement.classList.contains(`${CLASS__TOOLBOX_LIST}__item--hidden`);
         const storedLayerState = this.getLocalStorageFeatureLayerById(id);
 
         checkbox.checked = isVisible;
@@ -754,11 +754,11 @@ class LayerTool extends Control {
 
         const layerElement = DOM.createElement({
             element: 'li', 
-            id: `${ID_PREFIX}-map-${layerId}`,
+            id: `${ID__PREFIX}-map-${layerId}`,
             class: (`
-                ${CLASS_TOOLBOX_LIST}__item
+                ${CLASS__TOOLBOX_LIST}__item
                 ${!layerState.isVisible 
-                    ? `${CLASS_TOOLBOX_LIST}__item--hidden` 
+                    ? `${CLASS__TOOLBOX_LIST}__item--hidden` 
                     : ''
                 }
             `),
@@ -771,7 +771,7 @@ class LayerTool extends Control {
         const layerName = DOM.createElement({
             element: 'span', 
             text: layerWrapper.getName().ellipsis(20),
-            class: `${CLASS_TOOLBOX_LIST}__title`,
+            class: `${CLASS__TOOLBOX_LIST}__title`,
             title: layerWrapper.getName(),
             prototypes: {
                 getTippy: function() {
@@ -787,7 +787,7 @@ class LayerTool extends Control {
 
         const leftWrapper = DOM.createElement({
             element: 'div',
-            class: `${CLASS_TOOLBOX_LIST}__wrapper`
+            class: `${CLASS__TOOLBOX_LIST}__wrapper`
         });
 
         const [ checkboxWrapper, checkbox ] = createUICheckbox({
@@ -806,7 +806,7 @@ class LayerTool extends Control {
 
         const layerDot = DOM.createElement({
             element: 'div',
-            class: `${CLASS_TOOLBOX_LIST}__dot`
+            class: `${CLASS__TOOLBOX_LIST}__dot`
         });
 
         DOM.appendChildren(leftWrapper, [
@@ -824,15 +824,15 @@ class LayerTool extends Control {
 
         const rightWrapper = DOM.createElement({
             element: 'div',
-            class: `${CLASS_TOOLBOX_LIST}__wrapper`
+            class: `${CLASS__TOOLBOX_LIST}__wrapper`
         });
 
         this.attachUIButtonCallbacks(options, layerWrapper, rightWrapper, layerName);
         
-        const i18n = TranslationManager.get(`${I18N_BASE_COMMON}.titles`);
+        const i18n = TranslationManager.get(`${I18N__BASE_COMMON}.titles`);
         const layerHandle = DOM.createElement({
             element: 'div',
-            class: `${CLASS_TOOLBOX_LIST}__handle oltb-tippy`,
+            class: `${CLASS__TOOLBOX_LIST}__handle oltb-tippy`,
             title: i18n.dragToSort
         });
 
@@ -884,12 +884,12 @@ class LayerTool extends Control {
 
         const layerElement = DOM.createElement({
             element: 'li', 
-            id: `${ID_PREFIX}-feature-${layerId}`,
+            id: `${ID__PREFIX}-feature-${layerId}`,
             class: (`
-                ${CLASS_TOOLBOX_LIST}__item 
-                ${CLASS_TOOLBOX_LIST}__item--active
+                ${CLASS__TOOLBOX_LIST}__item 
+                ${CLASS__TOOLBOX_LIST}__item--active
                 ${!layerState.isVisible 
-                    ? `${CLASS_TOOLBOX_LIST}__item--hidden` 
+                    ? `${CLASS__TOOLBOX_LIST}__item--hidden` 
                     : ''
                 }
             `),
@@ -902,7 +902,7 @@ class LayerTool extends Control {
         const layerName = DOM.createElement({
             element: 'span', 
             text: layerWrapper.getName().ellipsis(20),
-            class: `${CLASS_TOOLBOX_LIST}__title`,
+            class: `${CLASS__TOOLBOX_LIST}__title`,
             title: layerWrapper.getName(),
             prototypes: {
                 getTippy: function() {
@@ -921,7 +921,7 @@ class LayerTool extends Control {
 
         const leftWrapper = DOM.createElement({
             element: 'div',
-            class: `${CLASS_TOOLBOX_LIST}__wrapper`
+            class: `${CLASS__TOOLBOX_LIST}__wrapper`
         });
 
         const [ checkboxWrapper, checkbox ] = createUICheckbox({
@@ -940,7 +940,7 @@ class LayerTool extends Control {
 
         const layerDot = DOM.createElement({
             element: 'div',
-            class: `${CLASS_TOOLBOX_LIST}__dot`,
+            class: `${CLASS__TOOLBOX_LIST}__dot`,
             listeners: {
                 'click': this.doSetFeatureLayerAsActive.bind(this, layerWrapper, layerElement)
             }
@@ -961,18 +961,18 @@ class LayerTool extends Control {
 
         const rightWrapper = DOM.createElement({
             element: 'div',
-            class: `${CLASS_TOOLBOX_LIST}__wrapper`
+            class: `${CLASS__TOOLBOX_LIST}__wrapper`
         });
 
         this.attachUIButtonCallbacks(options, layerWrapper, rightWrapper, layerName);
         
-        const i18n = TranslationManager.get(`${I18N_BASE_COMMON}.titles`);
+        const i18n = TranslationManager.get(`${I18N__BASE_COMMON}.titles`);
         const layerHandle = DOM.createElement({
             element: 'div',
-            class: `${CLASS_TOOLBOX_LIST}__handle oltb-tippy`,
+            class: `${CLASS__TOOLBOX_LIST}__handle oltb-tippy`,
             title: i18n.dragToSort,
             attributes: {
-                'data-oltb-i18n': `${I18N_BASE_COMMON}.titles.dragToSort`
+                'data-oltb-i18n': `${I18N__BASE_COMMON}.titles.dragToSort`
             }
         });
 
@@ -989,10 +989,10 @@ class LayerTool extends Control {
     }
 
     createUIDeleteButton(layerWrapper, callback) {
-        const i18nKey = `${I18N_BASE_COMMON}.titles.delete`;
+        const i18nKey = `${I18N__BASE_COMMON}.titles.delete`;
         const deleteButton = DOM.createElement({
             element: 'button',
-            class: `${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--delete oltb-tippy`,
+            class: `${CLASS__FUNC_BUTTON} ${CLASS__FUNC_BUTTON}--delete oltb-tippy`,
             title: TranslationManager.get(i18nKey),
             attributes: {
                 'type': 'button',
@@ -1007,10 +1007,10 @@ class LayerTool extends Control {
     }
 
     createUIDownloadButton(layerWrapper, callback) {
-        const i18nKey = `${I18N_BASE_COMMON}.titles.download`;
+        const i18nKey = `${I18N__BASE_COMMON}.titles.download`;
         const downloadButton = DOM.createElement({
             element: 'button', 
-            class: `${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--download oltb-tippy`,
+            class: `${CLASS__FUNC_BUTTON} ${CLASS__FUNC_BUTTON}--download oltb-tippy`,
             title: TranslationManager.get(i18nKey),
             attributes: {
                 'type': 'button',
@@ -1025,10 +1025,10 @@ class LayerTool extends Control {
     }
 
     createUIEditButton(layerWrapper, callback, layerName) {
-        const i18nKey = `${I18N_BASE_COMMON}.titles.rename`;
+        const i18nKey = `${I18N__BASE_COMMON}.titles.rename`;
         const editButton = DOM.createElement({
             element: 'button',
-            class: `${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--edit oltb-tippy`,
+            class: `${CLASS__FUNC_BUTTON} ${CLASS__FUNC_BUTTON}--edit oltb-tippy`,
             title: TranslationManager.get(i18nKey),
             attributes: {
                 'type': 'button',
@@ -1076,7 +1076,7 @@ class LayerTool extends Control {
                     });
                     
                     Toast.error({
-                        i18nKey: `${I18N_BASE}.toasts.errors.unsupportedFormat`
+                        i18nKey: `${I18N__BASE}.toasts.errors.unsupportedFormat`
                     });
 
                     return;
@@ -1094,7 +1094,7 @@ class LayerTool extends Control {
     }
 
     askToRenameLayer(layerWrapper, callback, layerName) {
-        const i18n = TranslationManager.get(`${I18N_BASE}.dialogs.prompts.renameLayer`);
+        const i18n = TranslationManager.get(`${I18N__BASE}.dialogs.prompts.renameLayer`);
 
         Dialog.prompt({
             title: i18n.title,
@@ -1122,7 +1122,7 @@ class LayerTool extends Control {
     }
 
     askToDeleteLayer(layerWrapper, callback) {
-        const i18n = TranslationManager.get(`${I18N_BASE}.dialogs.confirms.deleteLayer`);
+        const i18n = TranslationManager.get(`${I18N__BASE}.dialogs.confirms.deleteLayer`);
 
         Dialog.confirm({
             title: i18n.title,
@@ -1195,7 +1195,7 @@ class LayerTool extends Control {
         const layerId = layerWrapper.getId();
 
         // Remove layer from UI
-        const uiRefLayer = this.uiRefMapLayerStack.querySelector(`#${ID_PREFIX}-map-${layerId}`);
+        const uiRefLayer = this.uiRefMapLayerStack.querySelector(`#${ID__PREFIX}-map-${layerId}`);
         if(uiRefLayer) {
             DOM.removeElement(uiRefLayer);
         }
@@ -1259,7 +1259,7 @@ class LayerTool extends Control {
         const layerWrapper = event.detail.layerWrapper;
 
         // Remove layer from UI
-        const uiRefLayer = this.uiRefFeatureLayerStack.querySelector(`#${ID_PREFIX}-feature-${layerWrapper.getId()}`);
+        const uiRefLayer = this.uiRefFeatureLayerStack.querySelector(`#${ID__PREFIX}-feature-${layerWrapper.getId()}`);
         if(uiRefLayer) {
             DOM.removeElement(uiRefLayer);
         }
@@ -1270,7 +1270,7 @@ class LayerTool extends Control {
         if(activeFeatureLayer) {
             this.uiRefFeatureLayerStack.querySelectorAll('li').forEach((item) => {
                 if(activeFeatureLayer.getId() === item.getAttribute('data-oltb-id')) {
-                    item.classList.add(`${CLASS_TOOLBOX_LIST}__item--active`);
+                    item.classList.add(`${CLASS__TOOLBOX_LIST}__item--active`);
                 }
             });
         }
@@ -1286,7 +1286,7 @@ class LayerTool extends Control {
         this.doRemoveActiveFeatureLayerClass();
 
         LayerManager.setActiveFeatureLayer(layerWrapper);
-        layerElement.classList.add(`${CLASS_TOOLBOX_LIST}__item--active`);
+        layerElement.classList.add(`${CLASS__TOOLBOX_LIST}__item--active`);
     }
 
     doRemoveActiveFeatureLayerClass() {
@@ -1294,7 +1294,7 @@ class LayerTool extends Control {
         // Should just be one li-item that has the active class
         // Just in case, clean all items
         this.uiRefFeatureLayerStack.querySelectorAll('li').forEach((item) => {
-            item.classList.remove(`${CLASS_TOOLBOX_LIST}__item--active`);
+            item.classList.remove(`${CLASS__TOOLBOX_LIST}__item--active`);
         });
     }
 

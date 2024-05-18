@@ -12,9 +12,9 @@ import { isShortcutKeyOnly } from '../../helpers/browser/is-shortcut-key-only';
 import { TranslationManager } from '../../managers/translation-manager/translation-manager';
 
 const FILENAME = 'ToolboxTool.js';
-const CLASS_TOOL_BUTTON = 'oltb-tool-button';
-const CLASS_TOOLBOX_HIDDEN = 'oltb-toolbox-container--hidden';
-const I18N_BASE = 'tools.toolboxTool';
+const CLASS__TOOL_BUTTON = 'oltb-tool-button';
+const CLASS__TOOLBOX_HIDDEN = 'oltb-toolbox-container--hidden';
+const I18N__BASE = 'tools.toolboxTool';
 
 const DefaultOptions = Object.freeze({
     onInitiated: undefined,
@@ -45,19 +45,19 @@ class ToolboxTool extends Control {
 
         const icon = getIcon({
             path: SvgPaths.layoutSsidebarInsetReverse.mixed,
-            class: `${CLASS_TOOL_BUTTON}__icon`
+            class: `${CLASS__TOOL_BUTTON}__icon`
         });
 
-        const i18n = TranslationManager.get(I18N_BASE);
+        const i18n = TranslationManager.get(I18N__BASE);
         const button = DOM.createElement({
             element: 'button',
             html: icon,
-            class: CLASS_TOOL_BUTTON,
+            class: CLASS__TOOL_BUTTON,
             attributes: {
                 'type': 'button',
                 'data-tippy-content': `${i18n.title} (${ShortcutKeys.toolboxTool})`,
                 'data-tippy-content-post': `(${ShortcutKeys.toolboxTool})`,
-                'data-oltb-i18n': `${I18N_BASE}.title`
+                'data-oltb-i18n': `${I18N__BASE}.title`
             },
             listeners: {
                 'click': this.onClickTool.bind(this)
@@ -120,7 +120,7 @@ class ToolboxTool extends Control {
         this.doHideToolbox();
 
         this.isActive = true;
-        this.button.classList.add(`${CLASS_TOOL_BUTTON}--active`);
+        this.button.classList.add(`${CLASS__TOOL_BUTTON}--active`);
 
         this.localStorage.isActive = true;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
@@ -130,7 +130,7 @@ class ToolboxTool extends Control {
         this.doShowToolbox();
 
         this.isActive = false;
-        this.button.classList.remove(`${CLASS_TOOL_BUTTON}--active`);
+        this.button.classList.remove(`${CLASS__TOOL_BUTTON}--active`);
 
         this.localStorage.isActive = false;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
@@ -176,7 +176,7 @@ class ToolboxTool extends Control {
 
     doShowToolbox() {
         const uiRefToolboxElement = ElementManager.getToolboxElement();
-        uiRefToolboxElement.classList.remove(CLASS_TOOLBOX_HIDDEN);
+        uiRefToolboxElement.classList.remove(CLASS__TOOLBOX_HIDDEN);
 
         // Note: 
         // @Consumer callback
@@ -187,7 +187,7 @@ class ToolboxTool extends Control {
 
     doHideToolbox() {
         const uiRefToolboxElement = ElementManager.getToolboxElement();
-        uiRefToolboxElement.classList.add(CLASS_TOOLBOX_HIDDEN);
+        uiRefToolboxElement.classList.add(CLASS__TOOLBOX_HIDDEN);
 
         // Note: 
         // @Consumer callback

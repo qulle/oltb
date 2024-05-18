@@ -4,7 +4,7 @@ import { BaseModal } from './base-modal';
 import { LogManager } from '../../managers/log-manager/log-manager';
 
 const FILENAME = 'ModalWindow.js';
-const CLASS_MODAL = 'oltb-modal';
+const CLASS__MODAL = 'oltb-modal';
 
 const DefaultOptions = Object.freeze({
     title: 'Modal',
@@ -28,7 +28,7 @@ class ModalWindow extends BaseModal {
     #createModal() {
         this.modalContent = DOM.createElement({
             element: 'div', 
-            class: `${CLASS_MODAL}__content`
+            class: `${CLASS__MODAL}__content`
         });
 
         this.setContent(this.options.content);

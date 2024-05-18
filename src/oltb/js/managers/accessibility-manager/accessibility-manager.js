@@ -4,7 +4,7 @@ import { LogManager } from '../log-manager/log-manager';
 import { BaseManager } from '../base-manager';
 
 const FILENAME = 'AccessibilityManager.js';
-const CLASS_ACCESSIBILITY = 'oltb-using-keyboard';
+const CLASS__ACCESSIBILITY = 'oltb-using-keyboard';
 
 /**
  * About:
@@ -43,12 +43,12 @@ class AccessibilityManager extends BaseManager {
     //--------------------------------------------------------------------
     static #onKeyboardDown(event) {
         if(event.key === Keys.valueTab) {
-            window.document.body.classList.add(CLASS_ACCESSIBILITY);
+            window.document.body.classList.add(CLASS__ACCESSIBILITY);
         }
     }
 
     static #onMouseDown(event) {
-        window.document.body.classList.remove(CLASS_ACCESSIBILITY);
+        window.document.body.classList.remove(CLASS__ACCESSIBILITY);
     }
 }
 

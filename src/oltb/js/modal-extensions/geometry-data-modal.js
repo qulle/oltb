@@ -4,7 +4,7 @@ import { BaseModal } from '../common/modals/base-modal';
 import { TranslationManager } from '../managers/translation-manager/translation-manager';
 
 const FILENAME = 'GeometryDataModal.js';
-const I18N_BASE = 'modalExtensions.geometryDataModal';
+const I18N__BASE = 'modalExtensions.geometryDataModal';
 
 const DefaultOptions = Object.freeze({
     maximized: false,
@@ -18,7 +18,7 @@ const DefaultOptions = Object.freeze({
 class GeometryDataModal extends BaseModal {
     constructor(options = {}) {
         super(
-            TranslationManager.get(`${I18N_BASE}.title`),
+            TranslationManager.get(`${I18N__BASE}.title`),
             options.maximized, 
             options.onClose
         );
@@ -61,7 +61,7 @@ class GeometryDataModal extends BaseModal {
                 element: 'tr'
             });
 
-            const i18n = TranslationManager.get(`${I18N_BASE}.data`);
+            const i18n = TranslationManager.get(`${I18N__BASE}.data`);
             const th = DOM.createElement({
                 element: 'th',
                 text: i18n[key]

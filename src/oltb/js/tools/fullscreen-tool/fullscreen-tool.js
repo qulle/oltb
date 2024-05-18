@@ -13,8 +13,8 @@ import { TranslationManager } from '../../managers/translation-manager/translati
 import { FullscreenEvents, FullscreenEventTypes, isFullScreenSupported, isFullScreen, requestFullScreen, exitFullScreen } from '../../helpers/browser/fullscreen-handler';
 
 const FILENAME = 'FullscreenTool.js';
-const CLASS_TOOL_BUTTON = 'oltb-tool-button';
-const I18N_BASE = 'tools.fullscreenTool';
+const CLASS__TOOL_BUTTON = 'oltb-tool-button';
+const I18N__BASE = 'tools.fullscreenTool';
 
 const DefaultOptions = Object.freeze({
     onInitiated: undefined,
@@ -40,24 +40,24 @@ class FullscreenTool extends Control {
 
         this.enterFullscreenIcon = getIcon({
             path: SvgPaths.fullscreen.stroked,
-            class: `${CLASS_TOOL_BUTTON}__icon`
+            class: `${CLASS__TOOL_BUTTON}__icon`
         });
 
         this.exitFullscreenIcon = getIcon({
             path: SvgPaths.fullscreenExit.stroked,
-            class: `${CLASS_TOOL_BUTTON}__icon`
+            class: `${CLASS__TOOL_BUTTON}__icon`
         });
 
-        const i18n = TranslationManager.get(I18N_BASE);
+        const i18n = TranslationManager.get(I18N__BASE);
         const button = DOM.createElement({
             element: 'button',
             html: this.getToolIcon(),
-            class: CLASS_TOOL_BUTTON,
+            class: CLASS__TOOL_BUTTON,
             attributes: {
                 'type': 'button',
                 'data-tippy-content': `${i18n.title} (${ShortcutKeys.fullscreenTool})`,
                 'data-tippy-content-post': `(${ShortcutKeys.fullscreenTool})`,
-                'data-oltb-i18n': `${I18N_BASE}.title`
+                'data-oltb-i18n': `${I18N__BASE}.title`
             },
             listeners: {
                 'click': this.onClickTool.bind(this)
@@ -145,7 +145,7 @@ class FullscreenTool extends Control {
             });
 
             Toast.error({
-                i18nKey: `${I18N_BASE}.toasts.errors.missingFullScreenSupport`
+                i18nKey: `${I18N__BASE}.toasts.errors.missingFullScreenSupport`
             });
         }
 
@@ -219,7 +219,7 @@ class FullscreenTool extends Control {
         }
 
         this.isActive = !this.isActive;
-        this.button.classList.toggle(`${CLASS_TOOL_BUTTON}--active`);
+        this.button.classList.toggle(`${CLASS__TOOL_BUTTON}--active`);
     }
 }
 

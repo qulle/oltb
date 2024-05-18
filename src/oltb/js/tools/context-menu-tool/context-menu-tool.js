@@ -12,7 +12,7 @@ import { ElementManager } from '../../managers/element-manager/element-manager';
 import { TranslationManager } from '../../managers/translation-manager/translation-manager';
 
 const FILENAME = 'ContextMenuTool.js';
-const CLASS_CONTEXT_MENU = 'oltb-context-menu';
+const CLASS__CONTEXT_MENU = 'oltb-context-menu';
 
 const DefaultOptions = Object.freeze({
     name: 'MainContextMenu'
@@ -32,7 +32,7 @@ class ContextMenuTool extends Control {
         super({
             element: DOM.createElement({
                 element: 'ul',
-                class: CLASS_CONTEXT_MENU,
+                class: CLASS__CONTEXT_MENU,
                 attributes: {
                     'tabindex': '-1'
                 },
@@ -119,7 +119,7 @@ class ContextMenuTool extends Control {
         if(!_.has(item, ['i18nKey'])) {
             const li = DOM.createElement({
                 element: 'li',
-                class: `${CLASS_CONTEXT_MENU}__divider`
+                class: `${CLASS__CONTEXT_MENU}__divider`
             });
 
             DOM.appendChildren(this.menu, [
@@ -132,7 +132,7 @@ class ContextMenuTool extends Control {
         const i18n = TranslationManager.get(item.i18nKey);
         const li = DOM.createElement({
             element: 'li',
-            class: `${CLASS_CONTEXT_MENU}__item`,
+            class: `${CLASS__CONTEXT_MENU}__item`,
             attributes: {
                 'tabindex': '0'
             },
@@ -153,13 +153,13 @@ class ContextMenuTool extends Control {
         const icon = DOM.createElement({
             element: 'span',
             html: item.icon,
-            class: `${CLASS_CONTEXT_MENU}__icon`
+            class: `${CLASS__CONTEXT_MENU}__icon`
         });
 
         const text = DOM.createElement({
             element: 'span',
             text: i18n,
-            class: `${CLASS_CONTEXT_MENU}__text`,
+            class: `${CLASS__CONTEXT_MENU}__text`,
             attributes: {
                 'data-oltb-i18n': item.i18nKey
             },
@@ -197,7 +197,7 @@ class ContextMenuTool extends Control {
         // Note:
         // The class must added first 
         // otherwise the offsetHeight or the getComputedStyle can't be extracted
-        this.menu.classList.add(`${CLASS_CONTEXT_MENU}--show`);
+        this.menu.classList.add(`${CLASS__CONTEXT_MENU}--show`);
 
         // Note:
         // If the user clicks at a location in the map where the height of the menu
@@ -211,7 +211,7 @@ class ContextMenuTool extends Control {
     }
 
     hide() {
-        this.menu.classList.remove(`${CLASS_CONTEXT_MENU}--show`);
+        this.menu.classList.remove(`${CLASS__CONTEXT_MENU}--show`);
     }
 
     click(item) {

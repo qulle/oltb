@@ -12,10 +12,10 @@ import { SvgPaths, getIcon } from '../../icons/get-icon';
 import { TranslationManager } from '../../managers/translation-manager/translation-manager';
 
 const FILENAME = 'HiddenMarkerTool.js';
-const CLASS_FUNC_BUTTON = 'oltb-func-btn';
-const ID_PREFIX_INFO_WINDOW = 'oltb-info-window-marker';
-const I18N_BASE = 'tools.hiddenMarkerTool';
-const I18N_BASE_COMMON = 'commons';
+const CLASS__FUNC_BUTTON = 'oltb-func-btn';
+const ID__PREFIX_INFO_WINDOW = 'oltb-info-window-marker';
+const I18N__BASE = 'tools.hiddenMarkerTool';
+const I18N__BASE_COMMON = 'commons';
 
 const DefaultOptions = Object.freeze({
     onAdded: undefined,
@@ -61,7 +61,7 @@ class HiddenMarkerTool extends Control {
     initContextMenuItems() {
         ContextMenuTool.addItem({
             icon: this.createIcon, 
-            i18nKey: `${I18N_BASE}.contextItems.createMarker`, 
+            i18nKey: `${I18N__BASE}.contextItems.createMarker`, 
             fn: this.onContextMenuCreateMarker.bind(this)
         });
         
@@ -134,7 +134,7 @@ class HiddenMarkerTool extends Control {
             Number(result.latitude)
         ];
 
-        const i18n = TranslationManager.get(`${I18N_BASE_COMMON}.titles`);
+        const i18n = TranslationManager.get(`${I18N__BASE_COMMON}.titles`);
         const prettyCoordinates = toStringHDMS(coordinates);
         const infoWindow = {
             title: result.title,
@@ -144,11 +144,11 @@ class HiddenMarkerTool extends Control {
             footer: `
                 <span class="oltb-info-window__coordinates">${prettyCoordinates}</span>
                 <div class="oltb-info-window__buttons-wrapper">
-                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--delete oltb-tippy" data-oltb-i18n="${I18N_BASE_COMMON}.titles.delete" title="${i18n.delete}" id="${ID_PREFIX_INFO_WINDOW}-remove"></button>
-                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--crosshair oltb-tippy" data-oltb-i18n="${I18N_BASE_COMMON}.titles.copyCoordinates" title="${i18n.copyCoordinates}" id="${ID_PREFIX_INFO_WINDOW}-copy-coordinates" data-oltb-coordinates="${prettyCoordinates}"></button>
-                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--copy oltb-tippy" data-oltb-i18n="${I18N_BASE_COMMON}.titles.copyText" title="${i18n.copyText}" id="${ID_PREFIX_INFO_WINDOW}-copy-text" data-oltb-copy="${result.title}, ${result.description}"></button>
-                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--edit oltb-tippy" data-oltb-i18n="${I18N_BASE_COMMON}.titles.edit" title="${i18n.edit}" id="${ID_PREFIX_INFO_WINDOW}-edit"></button>
-                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--layer oltb-tippy" data-oltb-i18n="${I18N_BASE_COMMON}.titles.showLayer" title="${i18n.showLayer}" id="${ID_PREFIX_INFO_WINDOW}-show-layer"></button>
+                    <button class="${CLASS__FUNC_BUTTON} ${CLASS__FUNC_BUTTON}--delete oltb-tippy" data-oltb-i18n="${I18N__BASE_COMMON}.titles.delete" title="${i18n.delete}" id="${ID__PREFIX_INFO_WINDOW}-remove"></button>
+                    <button class="${CLASS__FUNC_BUTTON} ${CLASS__FUNC_BUTTON}--crosshair oltb-tippy" data-oltb-i18n="${I18N__BASE_COMMON}.titles.copyCoordinates" title="${i18n.copyCoordinates}" id="${ID__PREFIX_INFO_WINDOW}-copy-coordinates" data-oltb-coordinates="${prettyCoordinates}"></button>
+                    <button class="${CLASS__FUNC_BUTTON} ${CLASS__FUNC_BUTTON}--copy oltb-tippy" data-oltb-i18n="${I18N__BASE_COMMON}.titles.copyText" title="${i18n.copyText}" id="${ID__PREFIX_INFO_WINDOW}-copy-text" data-oltb-copy="${result.title}, ${result.description}"></button>
+                    <button class="${CLASS__FUNC_BUTTON} ${CLASS__FUNC_BUTTON}--edit oltb-tippy" data-oltb-i18n="${I18N__BASE_COMMON}.titles.edit" title="${i18n.edit}" id="${ID__PREFIX_INFO_WINDOW}-edit"></button>
+                    <button class="${CLASS__FUNC_BUTTON} ${CLASS__FUNC_BUTTON}--layer oltb-tippy" data-oltb-i18n="${I18N__BASE_COMMON}.titles.showLayer" title="${i18n.showLayer}" id="${ID__PREFIX_INFO_WINDOW}-show-layer"></button>
                 </div>
             `
         };

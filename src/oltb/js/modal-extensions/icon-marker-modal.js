@@ -9,8 +9,8 @@ import { createUIColorInput } from '../creators/create-ui-color-input';
 import { TranslationManager } from '../managers/translation-manager/translation-manager';
 
 const FILENAME = 'IconMarkerModal.js';
-const ID_PREFIX = 'oltb-marker-modal-marker';
-const I18N_BASE = 'modalExtensions.iconMarkerModal';
+const ID__PREFIX = 'oltb-marker-modal-marker';
+const I18N__BASE = 'modalExtensions.iconMarkerModal';
 
 const DefaultOptions = Object.freeze({
     edit: false,
@@ -46,7 +46,7 @@ const DefaultOptions = Object.freeze({
 class IconMarkerModal extends BaseModal {
     constructor(options = {}) {
         super(
-            TranslationManager.get(`${I18N_BASE}.title`),
+            TranslationManager.get(`${I18N__BASE}.title`),
             options.maximized, 
             options.onClose
         );
@@ -63,30 +63,30 @@ class IconMarkerModal extends BaseModal {
     // # Section: User Interface
     //--------------------------------------------------------------------
     #createModal() {
-        const i18n = TranslationManager.get(`${I18N_BASE}.form`);
+        const i18n = TranslationManager.get(`${I18N__BASE}.form`);
         const [ titleWrapper, titleInput ] = createUIInput({
-            idPrefix: ID_PREFIX,
+            idPrefix: ID__PREFIX,
             idPostfix: '-title',
             text: i18n.title,
             value: this.options.title
         });
 
         const [ descriptionWrapper, descriptionInput ] = createUIInput({
-            idPrefix: ID_PREFIX,
+            idPrefix: ID__PREFIX,
             idPostfix: '-description',
             text: i18n.description,
             value: this.options.description
         });
 
         const [ latWrapper, latInput ] = createUIInput({
-            idPrefix: ID_PREFIX,
+            idPrefix: ID__PREFIX,
             idPostfix: '-lat',
             text: i18n.latitude,
             value: this.options.coordinates[1],
         });
 
         const [ lonWrapper, lonInput ] = createUIInput({
-            idPrefix: ID_PREFIX,
+            idPrefix: ID__PREFIX,
             idPostfix: '-lon',
             text: i18n.longitude,
             value: this.options.coordinates[0],
@@ -98,14 +98,14 @@ class IconMarkerModal extends BaseModal {
         });
 
         const [ markerFillWrapper, markerFillInput ] = createUIColorInput({
-            idPrefix: ID_PREFIX,
+            idPrefix: ID__PREFIX,
             idPostfix: '-marker-fill',
             text: i18n.markerFill,
             color: this.options.marker.fill
         });
 
         const [ markerStrokeWrapper, markerStrokeInput ] = createUIColorInput({
-            idPrefix: ID_PREFIX,
+            idPrefix: ID__PREFIX,
             idPostfix: '-marker-stroke',
             text: i18n.markerStroke,
             color: this.options.marker.stroke
@@ -127,7 +127,7 @@ class IconMarkerModal extends BaseModal {
         }
 
         const [ iconWrapper, iconSelect ] = createUISelect({
-            idPrefix: ID_PREFIX,
+            idPrefix: ID__PREFIX,
             idPostfix: '-icon',
             text: i18n.icon,
             options: iconOptions,
@@ -140,14 +140,14 @@ class IconMarkerModal extends BaseModal {
         });
 
         const [ iconFillWrapper, iconFillInput ] = createUIColorInput({
-            idPrefix: ID_PREFIX,
+            idPrefix: ID__PREFIX,
             idPostfix: '-icon-fill',
             text: i18n.iconFill,
             color: this.options.icon.fill
         });
 
         const [ iconStrokeWrapper, iconStrokeInput ] = createUIColorInput({
-            idPrefix: ID_PREFIX,
+            idPrefix: ID__PREFIX,
             idPostfix: '-icon-stroke',
             text: i18n.iconStroke,
             color: this.options.icon.stroke
@@ -159,7 +159,7 @@ class IconMarkerModal extends BaseModal {
         ]);
 
         const [ labelWrapper, labelInput ] = createUIInput({
-            idPrefix: ID_PREFIX,
+            idPrefix: ID__PREFIX,
             idPostfix: '-label',
             text: i18n.label,
             value: this.options.label.text,
@@ -171,14 +171,14 @@ class IconMarkerModal extends BaseModal {
         });
 
         const [ labelFillWrapper, labelFillInput ] = createUIColorInput({
-            idPrefix: ID_PREFIX,
+            idPrefix: ID__PREFIX,
             idPostfix: '-label-fill',
             text: i18n.labelFill,
             color: this.options.label.fill
         });
 
         const [ labelStrokeWrapper, labelStrokeInput ] = createUIColorInput({
-            idPrefix: ID_PREFIX,
+            idPrefix: ID__PREFIX,
             idPostfix: '-label-stroke',
             text: i18n.labelStroke,
             color: this.options.label.stroke
@@ -198,7 +198,7 @@ class IconMarkerModal extends BaseModal {
         }
 
         const [ labelStrokeWidthWrapper, labelStrokeWidthSelect ] = createUISelect({
-            idPrefix: ID_PREFIX,
+            idPrefix: ID__PREFIX,
             idPostfix: '-label-stroke-width',
             text: i18n.labelStrokeWidth,
             options: widthOptions,

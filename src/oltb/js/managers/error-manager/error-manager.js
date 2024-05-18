@@ -4,7 +4,7 @@ import { LogManager } from '../log-manager/log-manager';
 import { BaseManager } from '../base-manager';
 
 const FILENAME = 'ErrorManger.js';
-const I18N_BASE = 'managers.errorManager';
+const I18N__BASE = 'managers.errorManager';
 
 /**
  * About:
@@ -53,7 +53,7 @@ class ErrorManager extends BaseManager {
         });
 
         Toast.error({
-            i18nKey: `${I18N_BASE}.toasts.errors.uncaughtException`
+            i18nKey: `${I18N__BASE}.toasts.errors.uncaughtException`
         });
     }
 }

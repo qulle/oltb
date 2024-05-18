@@ -26,8 +26,8 @@ import { Fill, Stroke, Circle, Style } from 'ol/style';
 import { GeometryCollection, LinearRing, LineString, MultiLineString, MultiPoint, MultiPolygon, Point, Polygon } from 'ol/geom';
 
 const FILENAME = 'ScissorsTool.js';
-const CLASS_TOOL_BUTTON = 'oltb-tool-button';
-const I18N_BASE = 'tools.scissorsTool';
+const CLASS__TOOL_BUTTON = 'oltb-tool-button';
+const I18N__BASE = 'tools.scissorsTool';
 
 const DefaultOptions = Object.freeze({
     strokeWidth: '2.5',
@@ -65,19 +65,19 @@ class ScissorsTool extends Control {
         
         const icon = getIcon({
             path: SvgPaths.scissors.filled,
-            class: `${CLASS_TOOL_BUTTON}__icon`
+            class: `${CLASS__TOOL_BUTTON}__icon`
         });
 
-        const i18n = TranslationManager.get(I18N_BASE);
+        const i18n = TranslationManager.get(I18N__BASE);
         const button = DOM.createElement({
             element: 'button',
             html: icon,
-            class: CLASS_TOOL_BUTTON,
+            class: CLASS__TOOL_BUTTON,
             attributes: {
                 'type': 'button',
                 'data-tippy-content': `${i18n.title} (${ShortcutKeys.scissorsTool})`,
                 'data-tippy-content-post': `(${ShortcutKeys.scissorsTool})`,
-                'data-oltb-i18n': `${I18N_BASE}.title`
+                'data-oltb-i18n': `${I18N__BASE}.title`
             },
             listeners: {
                 'click': this.onClickTool.bind(this)
@@ -156,7 +156,7 @@ class ScissorsTool extends Control {
         SnapManager.addSnap(this);
 
         this.isActive = true;
-        this.button.classList.add(`${CLASS_TOOL_BUTTON}--active`);
+        this.button.classList.add(`${CLASS__TOOL_BUTTON}--active`);
 
         this.localStorage.isActive = true;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
@@ -173,7 +173,7 @@ class ScissorsTool extends Control {
         SnapManager.removeSnap();
 
         this.isActive = false;
-        this.button.classList.remove(`${CLASS_TOOL_BUTTON}--active`);
+        this.button.classList.remove(`${CLASS__TOOL_BUTTON}--active`);
 
         this.localStorage.isActive = false;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
@@ -333,7 +333,7 @@ class ScissorsTool extends Control {
 
         if(this.intersectedFeatures.length === 0) {
             Toast.info({
-                i18nKey: `${I18N_BASE}.toasts.infos.missingIntersections`,
+                i18nKey: `${I18N__BASE}.toasts.infos.missingIntersections`,
                 autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
             });
         }

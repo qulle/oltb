@@ -8,8 +8,8 @@ import { ProjectionManager } from '../managers/projection-manager/projection-man
 import { TranslationManager } from '../managers/translation-manager/translation-manager';
 
 const FILENAME = 'ImportLayerModal.js';
-const ID_PREFIX = 'oltb-import-layer-modal';
-const I18N_BASE = 'modalExtensions.importLayerModal';
+const ID__PREFIX = 'oltb-import-layer-modal';
+const I18N__BASE = 'modalExtensions.importLayerModal';
 
 const DefaultOptions = Object.freeze({
     maximized: false,
@@ -25,7 +25,7 @@ const DefaultOptions = Object.freeze({
 class ImportLayerModal extends BaseModal {
     constructor(options = {}) {
         super(
-            TranslationManager.get(`${I18N_BASE}.title`), 
+            TranslationManager.get(`${I18N__BASE}.title`), 
             options.maximized, 
             options.onClose
         );
@@ -42,7 +42,7 @@ class ImportLayerModal extends BaseModal {
     // # Section: User Interface
     //--------------------------------------------------------------------
     #createModal() {
-        const i18n = TranslationManager.get(`${I18N_BASE}.form`);
+        const i18n = TranslationManager.get(`${I18N__BASE}.form`);
         const featureProjectionOptions = [];
         const dataProjectionOptions = [];
 
@@ -61,7 +61,7 @@ class ImportLayerModal extends BaseModal {
 
         const projection = ConfigManager.getConfig().projection;
         const [ featureProjectionWrapper, featureProjectionSelect ] = createUISelect({
-            idPrefix: ID_PREFIX,
+            idPrefix: ID__PREFIX,
             idPostfix: '-feature-projection',
             text: i18n.featureProjection,
             options: featureProjectionOptions,
@@ -69,7 +69,7 @@ class ImportLayerModal extends BaseModal {
         });
 
         const [ dataProjectionWrapper, dataProjectionSelect ] = createUISelect({
-            idPrefix: ID_PREFIX,
+            idPrefix: ID__PREFIX,
             idPostfix: '-data-projection',
             text: i18n.dataProjection,
             options: dataProjectionOptions,

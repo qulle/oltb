@@ -7,7 +7,7 @@ import { createUICheckbox } from '../creators/create-ui-checkbox';
 import { TranslationManager } from '../managers/translation-manager/translation-manager';
 
 const FILENAME = 'SettingsModal.js';
-const I18N_BASE = 'modalExtensions.settingsModal';
+const I18N__BASE = 'modalExtensions.settingsModal';
 
 const DefaultOptions = Object.freeze({
     maximized: false,
@@ -25,7 +25,7 @@ class SettingsModal extends BaseModal {
 
     constructor(options = {}) {
         super(
-            TranslationManager.get(`${I18N_BASE}.title`), 
+            TranslationManager.get(`${I18N__BASE}.title`), 
             options.maximized, 
             options.onClose
         );
@@ -42,7 +42,7 @@ class SettingsModal extends BaseModal {
     // # Section: User Interface
     //--------------------------------------------------------------------
     #createModal() {
-        const i18n = TranslationManager.get(`${I18N_BASE}.form`);
+        const i18n = TranslationManager.get(`${I18N__BASE}.form`);
         const settingsFragment = window.document.createDocumentFragment();
         const settings = SettingsManager.getSettings();
         

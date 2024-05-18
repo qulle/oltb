@@ -12,8 +12,8 @@ import { Control, ScaleLine } from 'ol/control';
 import { TranslationManager } from '../../managers/translation-manager/translation-manager';
 
 const FILENAME = 'ScaleLineTool.js';
-const CLASS_TOOL_BUTTON = 'oltb-tool-button';
-const I18N_BASE = 'tools.scaleLineTool';
+const CLASS__TOOL_BUTTON = 'oltb-tool-button';
+const I18N__BASE = 'tools.scaleLineTool';
 
 const DefaultOptions = Object.freeze({
     units: 'metric',
@@ -45,19 +45,19 @@ class ScaleLineTool extends Control {
         
         const icon = getIcon({
             path: SvgPaths.scaleLine.stroked,
-            class: `${CLASS_TOOL_BUTTON}__icon`
+            class: `${CLASS__TOOL_BUTTON}__icon`
         });
 
-        const i18n = TranslationManager.get(I18N_BASE);
+        const i18n = TranslationManager.get(I18N__BASE);
         const button = DOM.createElement({
             element: 'button',
             html: icon,
-            class: CLASS_TOOL_BUTTON,
+            class: CLASS__TOOL_BUTTON,
             attributes: {
                 'type': 'button',
                 'data-tippy-content': `${i18n.title} (${ShortcutKeys.scaleLineTool})`,
                 'data-tippy-content-post': `(${ShortcutKeys.scaleLineTool})`,
-                'data-oltb-i18n': `${I18N_BASE}.title`
+                'data-oltb-i18n': `${I18N__BASE}.title`
             },
             listeners: {
                 'click': this.onClickTool.bind(this)
@@ -122,7 +122,7 @@ class ScaleLineTool extends Control {
         this.doAddScaleLine(map);
 
         this.isActive = true;
-        this.button.classList.add(`${CLASS_TOOL_BUTTON}--active`);
+        this.button.classList.add(`${CLASS__TOOL_BUTTON}--active`);
 
         this.localStorage.isActive = true;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
@@ -132,7 +132,7 @@ class ScaleLineTool extends Control {
         this.doRemoveScaleLine();
 
         this.isActive = false;
-        this.button.classList.remove(`${CLASS_TOOL_BUTTON}--active`);
+        this.button.classList.remove(`${CLASS__TOOL_BUTTON}--active`);
 
         this.localStorage.isActive = false;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);

@@ -16,8 +16,8 @@ import { isShortcutKeyOnly } from '../../helpers/browser/is-shortcut-key-only';
 import { TranslationManager } from '../../managers/translation-manager/translation-manager';
 
 const FILENAME = 'MagnifyTool.js';
-const CLASS_TOOL_BUTTON = 'oltb-tool-button';
-const I18N_BASE = 'tools.magnifyTool';
+const CLASS__TOOL_BUTTON = 'oltb-tool-button';
+const I18N__BASE = 'tools.magnifyTool';
 
 const DefaultOptions = Object.freeze({
     radius: 75,
@@ -51,19 +51,19 @@ class MagnifyTool extends Control {
         
         const icon = getIcon({
             path: SvgPaths.search.stroked,
-            class: `${CLASS_TOOL_BUTTON}__icon`
+            class: `${CLASS__TOOL_BUTTON}__icon`
         });
 
-        const i18n = TranslationManager.get(I18N_BASE);
+        const i18n = TranslationManager.get(I18N__BASE);
         const button = DOM.createElement({
             element: 'button',
             html: icon,
-            class: CLASS_TOOL_BUTTON,
+            class: CLASS__TOOL_BUTTON,
             attributes: {
                 'type': 'button',
                 'data-tippy-content': `${i18n.title} (${ShortcutKeys.magnifyTool})`,
                 'data-tippy-content-post': `(${ShortcutKeys.magnifyTool})`,
-                'data-oltb-i18n': `${I18N_BASE}.title`
+                'data-oltb-i18n': `${I18N__BASE}.title`
             },
             listeners: {
                 'click': this.onClickTool.bind(this)
@@ -120,7 +120,7 @@ class MagnifyTool extends Control {
         this.attachMapListeners();
 
         this.isActive = true;
-        this.button.classList.add(`${CLASS_TOOL_BUTTON}--active`);
+        this.button.classList.add(`${CLASS__TOOL_BUTTON}--active`);
 
         this.localStorage.isActive = true;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
@@ -130,7 +130,7 @@ class MagnifyTool extends Control {
         this.detachMapListeners();
 
         this.isActive = false;
-        this.button.classList.remove(`${CLASS_TOOL_BUTTON}--active`);
+        this.button.classList.remove(`${CLASS__TOOL_BUTTON}--active`);
 
         this.localStorage.isActive = false;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
@@ -338,7 +338,7 @@ class MagnifyTool extends Control {
             });
             
             Toast.error({
-                i18nKey: `${I18N_BASE}.toasts.errors.renderCanvas`
+                i18nKey: `${I18N__BASE}.toasts.errors.renderCanvas`
             });
         }
     }

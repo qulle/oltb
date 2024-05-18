@@ -12,8 +12,8 @@ import { isShortcutKeyOnly } from '../../helpers/browser/is-shortcut-key-only';
 import { TranslationManager } from '../../managers/translation-manager/translation-manager';
 
 const FILENAME = 'HelpTool.js';
-const CLASS_TOOL_BUTTON = 'oltb-tool-button';
-const I18N_BASE = 'tools.helpTool';
+const CLASS__TOOL_BUTTON = 'oltb-tool-button';
+const I18N__BASE = 'tools.helpTool';
 
 const DefaultOptions = Object.freeze({
     url: 'https://github.com/qulle/oltb',
@@ -39,19 +39,19 @@ class HelpTool extends Control {
         
         const icon = getIcon({
             path: SvgPaths.questionCircle.stroked,
-            class: `${CLASS_TOOL_BUTTON}__icon`
+            class: `${CLASS__TOOL_BUTTON}__icon`
         });
 
-        const i18n = TranslationManager.get(I18N_BASE);
+        const i18n = TranslationManager.get(I18N__BASE);
         const button = DOM.createElement({
             element: 'button',
             html: icon,
-            class: CLASS_TOOL_BUTTON,
+            class: CLASS__TOOL_BUTTON,
             attributes: {
                 'type': 'button',
                 'data-tippy-content': `${i18n.title} (${ShortcutKeys.helpTool})`,
                 'data-tippy-content-post': `(${ShortcutKeys.helpTool})`,
-                'data-oltb-i18n': `${I18N_BASE}.title`
+                'data-oltb-i18n': `${I18N__BASE}.title`
             },
             listeners: {
                 'click': this.onClickTool.bind(this)
@@ -110,7 +110,7 @@ class HelpTool extends Control {
     // # Section: Ask User
     //--------------------------------------------------------------------
     askToOpenTabOrWindow() {
-        const i18n = TranslationManager.get(`${I18N_BASE}.dialogs.confirms.openHelp`);
+        const i18n = TranslationManager.get(`${I18N__BASE}.dialogs.confirms.openHelp`);
 
         Dialog.confirm({
             title: i18n.title,
@@ -137,7 +137,7 @@ class HelpTool extends Control {
             });
             
             Toast.error({
-                i18nKey: `${I18N_BASE}.toasts.errors.blockedByBrowser`
+                i18nKey: `${I18N__BASE}.toasts.errors.blockedByBrowser`
             });
         }
     }

@@ -18,16 +18,16 @@ import { isShortcutKeyOnly } from '../../helpers/browser/is-shortcut-key-only';
 import { TranslationManager } from '../../managers/translation-manager/translation-manager';
 
 const FILENAME = 'SplitViewTool.js';
-const CLASS_TOOL_BUTTON = 'oltb-tool-button';
-const CLASS_TOOLBOX_SECTION = 'oltb-toolbox-section';
-const CLASS_SLIDER = 'oltb-slider';
-const CLASS_TOGGLEABLE = 'oltb-toggleable';
-const ID_PREFIX = 'oltb-split-view';
+const CLASS__TOOL_BUTTON = 'oltb-tool-button';
+const CLASS__TOOLBOX_SECTION = 'oltb-toolbox-section';
+const CLASS__SLIDER = 'oltb-slider';
+const CLASS__TOGGLEABLE = 'oltb-toggleable';
+const ID__PREFIX = 'oltb-split-view';
 const INDEX_DEFAULT_RIGHT = 0;
 const INDEX_DEFAULT_LEFT = 1;
 const MIN_NUM_LAYERS = 2;
-const I18N_BASE = 'tools.splitViewTool';
-const I18N_BASE_COMMON = 'commons';
+const I18N__BASE = 'tools.splitViewTool';
+const I18N__BASE_COMMON = 'commons';
 
 const DefaultOptions = Object.freeze({
     onInitiated: undefined,
@@ -58,19 +58,19 @@ class SplitViewTool extends Control {
         
         const icon = getIcon({
             path: SvgPaths.arrowsExpandVertical.stroked,
-            class: `${CLASS_TOOL_BUTTON}__icon`
+            class: `${CLASS__TOOL_BUTTON}__icon`
         });
 
-        const i18n = TranslationManager.get(I18N_BASE);
+        const i18n = TranslationManager.get(I18N__BASE);
         const button = DOM.createElement({
             element: 'button',
             html: icon,
-            class: CLASS_TOOL_BUTTON,
+            class: CLASS__TOOL_BUTTON,
             attributes: {
                 'type': 'button',
                 'data-tippy-content': `${i18n.title} (${ShortcutKeys.splitViewTool})`,
                 'data-tippy-content-post': `(${ShortcutKeys.splitViewTool})`,
-                'data-oltb-i18n': `${I18N_BASE}.title`
+                'data-oltb-i18n': `${I18N__BASE}.title`
             },
             listeners: {
                 'click': this.onClickTool.bind(this)
@@ -92,21 +92,21 @@ class SplitViewTool extends Control {
         
         this.initToolboxHTML();
         this.initMapHTML();
-        this.uiRefToolboxSection = window.document.querySelector(`#${ID_PREFIX}-toolbox`);
+        this.uiRefToolboxSection = window.document.querySelector(`#${ID__PREFIX}-toolbox`);
         this.initToggleables();
 
-        this.uiRefLeftSource = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-left-source`);
+        this.uiRefLeftSource = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-left-source`);
         this.uiRefLeftSource.addEventListener(Events.browser.change, this.updateTool.bind(this));
 
-        this.uiRefRightSource = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-right-source`);
+        this.uiRefRightSource = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-right-source`);
         this.uiRefRightSource.addEventListener(Events.browser.change, this.updateTool.bind(this));
 
-        const uiRefSwapSidesButton = this.uiRefToolboxSection.querySelector(`#${ID_PREFIX}-swap-button`);
+        const uiRefSwapSidesButton = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-swap-button`);
         uiRefSwapSidesButton.addEventListener(Events.browser.click, (event) => {
             this.onSwapLayerSides();
         });
         
-        this.uiRefSplitViewSlider = ElementManager.getMapElement().querySelector(`#${ID_PREFIX}-slider`);
+        this.uiRefSplitViewSlider = ElementManager.getMapElement().querySelector(`#${ID__PREFIX}-slider`);
         this.uiRefSplitViewSlider.addEventListener(Events.browser.input, this.onSliderInput.bind(this));
 
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
@@ -130,28 +130,28 @@ class SplitViewTool extends Control {
     // # Section: Init Helpers
     //--------------------------------------------------------------------
     initToolboxHTML() {
-        const i18n = TranslationManager.get(`${I18N_BASE}.toolbox`);
-        const i18nCommon = TranslationManager.get(`${I18N_BASE_COMMON}.titles`);
+        const i18n = TranslationManager.get(`${I18N__BASE}.toolbox`);
+        const i18nCommon = TranslationManager.get(`${I18N__BASE_COMMON}.titles`);
 
         const html = (`
-            <div id="${ID_PREFIX}-toolbox" class="${CLASS_TOOLBOX_SECTION}">
-                <div class="${CLASS_TOOLBOX_SECTION}__header oltb-toggleable" data-oltb-toggleable-target="${ID_PREFIX}-toolbox-collapsed">
-                    <h4 class="${CLASS_TOOLBOX_SECTION}__title" data-oltb-i18n="${I18N_BASE}.toolbox.titles.splitView">${i18n.titles.splitView}</h4>
-                    <span class="${CLASS_TOOLBOX_SECTION}__icon oltb-tippy" data-oltb-i18n="${I18N_BASE_COMMON}.titles.toggleSection" title="${i18nCommon.toggleSection}"></span>
+            <div id="${ID__PREFIX}-toolbox" class="${CLASS__TOOLBOX_SECTION}">
+                <div class="${CLASS__TOOLBOX_SECTION}__header oltb-toggleable" data-oltb-toggleable-target="${ID__PREFIX}-toolbox-collapsed">
+                    <h4 class="${CLASS__TOOLBOX_SECTION}__title" data-oltb-i18n="${I18N__BASE}.toolbox.titles.splitView">${i18n.titles.splitView}</h4>
+                    <span class="${CLASS__TOOLBOX_SECTION}__icon oltb-tippy" data-oltb-i18n="${I18N__BASE_COMMON}.titles.toggleSection" title="${i18nCommon.toggleSection}"></span>
                 </div>
-                <div class="${CLASS_TOOLBOX_SECTION}__groups" id="${ID_PREFIX}-toolbox-collapsed" style="display: ${this.localStorage.isCollapsed ? 'none' : 'block'}">
-                    <div class="${CLASS_TOOLBOX_SECTION}__group ${CLASS_TOOLBOX_SECTION}__group--split-group">
-                        <div class="${CLASS_TOOLBOX_SECTION}__group-part">
-                            <label class="oltb-label" for="${ID_PREFIX}-left-source" data-oltb-i18n="${I18N_BASE}.toolbox.groups.leftSide.title">${i18n.groups.leftSide.title}</label>
-                            <select id="${ID_PREFIX}-left-source" class="oltb-select"></select>
+                <div class="${CLASS__TOOLBOX_SECTION}__groups" id="${ID__PREFIX}-toolbox-collapsed" style="display: ${this.localStorage.isCollapsed ? 'none' : 'block'}">
+                    <div class="${CLASS__TOOLBOX_SECTION}__group ${CLASS__TOOLBOX_SECTION}__group--split-group">
+                        <div class="${CLASS__TOOLBOX_SECTION}__group-part">
+                            <label class="oltb-label" for="${ID__PREFIX}-left-source" data-oltb-i18n="${I18N__BASE}.toolbox.groups.leftSide.title">${i18n.groups.leftSide.title}</label>
+                            <select id="${ID__PREFIX}-left-source" class="oltb-select"></select>
                         </div>
-                        <div class="${CLASS_TOOLBOX_SECTION}__group-part">
-                            <label class="oltb-label" for="${ID_PREFIX}-source" data-oltb-i18n="${I18N_BASE}.toolbox.groups.rightSide.title">${i18n.groups.rightSide.title}</label>
-                            <select id="${ID_PREFIX}-right-source" class="oltb-select"></select>
+                        <div class="${CLASS__TOOLBOX_SECTION}__group-part">
+                            <label class="oltb-label" for="${ID__PREFIX}-source" data-oltb-i18n="${I18N__BASE}.toolbox.groups.rightSide.title">${i18n.groups.rightSide.title}</label>
+                            <select id="${ID__PREFIX}-right-source" class="oltb-select"></select>
                         </div>
                     </div>
-                    <div class="${CLASS_TOOLBOX_SECTION}__group">
-                        <button type="button" id="${ID_PREFIX}-swap-button" class="oltb-btn oltb-btn--green-mid oltb-w-100" data-oltb-i18n="${I18N_BASE}.toolbox.groups.swapSides.swap">${i18n.groups.swapSides.swap}</button>
+                    <div class="${CLASS__TOOLBOX_SECTION}__group">
+                        <button type="button" id="${ID__PREFIX}-swap-button" class="oltb-btn oltb-btn--green-mid oltb-w-100" data-oltb-i18n="${I18N__BASE}.toolbox.groups.swapSides.swap">${i18n.groups.swapSides.swap}</button>
                     </div>
                 </div>
             </div>
@@ -162,12 +162,12 @@ class SplitViewTool extends Control {
 
     initMapHTML() {
         ElementManager.getMapElement().insertAdjacentHTML('beforeend', `
-            <input type="range" min="0" max="100" value="50" class="oltb-slider" id="${ID_PREFIX}-slider">
+            <input type="range" min="0" max="100" value="50" class="oltb-slider" id="${ID__PREFIX}-slider">
         `);
     }
 
     initToggleables() {
-        this.uiRefToolboxSection.querySelectorAll(`.${CLASS_TOGGLEABLE}`).forEach((toggle) => {
+        this.uiRefToolboxSection.querySelectorAll(`.${CLASS__TOGGLEABLE}`).forEach((toggle) => {
             toggle.addEventListener(Events.browser.click, this.onToggleToolbox.bind(this, toggle));
         });
     }
@@ -180,7 +180,7 @@ class SplitViewTool extends Control {
 
         if(LayerManager.getMapLayerSize() < MIN_NUM_LAYERS) {
             Toast.info({
-                i18nKey: `${I18N_BASE}.toasts.infos.strictOneLayer`
+                i18nKey: `${I18N__BASE}.toasts.infos.strictOneLayer`
             });
             
             return;
@@ -215,9 +215,9 @@ class SplitViewTool extends Control {
             return;
         }
         
-        this.uiRefToolboxSection.classList.add(`${CLASS_TOOLBOX_SECTION}--show`);
-        this.uiRefSplitViewSlider.classList.add(`${CLASS_SLIDER}--show`);
-        this.button.classList.add(`${CLASS_TOOL_BUTTON}--active`);
+        this.uiRefToolboxSection.classList.add(`${CLASS__TOOLBOX_SECTION}--show`);
+        this.uiRefSplitViewSlider.classList.add(`${CLASS__SLIDER}--show`);
+        this.button.classList.add(`${CLASS__TOOL_BUTTON}--active`);
 
         this.localStorage.isActive = true;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
@@ -256,9 +256,9 @@ class SplitViewTool extends Control {
         LayerManager.setTopMapLayerAsOnlyVisible();
 
         this.isActive = false;
-        this.uiRefToolboxSection.classList.remove(`${CLASS_TOOLBOX_SECTION}--show`);
-        this.uiRefSplitViewSlider.classList.remove(`${CLASS_SLIDER}--show`);
-        this.button.classList.remove(`${CLASS_TOOL_BUTTON}--active`);
+        this.uiRefToolboxSection.classList.remove(`${CLASS__TOOLBOX_SECTION}--show`);
+        this.uiRefSplitViewSlider.classList.remove(`${CLASS__SLIDER}--show`);
+        this.button.classList.remove(`${CLASS__TOOL_BUTTON}--active`);
 
         this.localStorage.isActive = false;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
@@ -362,7 +362,7 @@ class SplitViewTool extends Control {
         });
         
         Toast.error({
-            i18nKey: `${I18N_BASE}.toasts.errors.layerFailedToLoad`
+            i18nKey: `${I18N__BASE}.toasts.errors.layerFailedToLoad`
         });
     }
 

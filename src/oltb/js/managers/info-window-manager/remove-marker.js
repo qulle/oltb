@@ -3,10 +3,10 @@ import { Events } from '../../helpers/constants/events';
 import { LayerManager } from '../layer-manager/layer-manager';
 import { TranslationManager } from '../translation-manager/translation-manager';
 
-const I18N_BASE = 'managers.infoWindowManager';
+const I18N__BASE = 'managers.infoWindowManager';
 
 const removeMarker = function(InfoWindowManager, marker) {
-    const i18n = TranslationManager.get(`${I18N_BASE}.dialogs.confirms.deleteMarker`);
+    const i18n = TranslationManager.get(`${I18N__BASE}.dialogs.confirms.deleteMarker`);
 
     Dialog.confirm({
         title: i18n.title,

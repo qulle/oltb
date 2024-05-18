@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { DOM } from '../helpers/browser/dom-factory';
 
-const CLASS_COLOR_INPUT = 'oltb-color-input';
+const CLASS__COLOR_INPUT = 'oltb-color-input';
 
 const DefaultOptions = Object.freeze({
     idPrefix: '',
@@ -30,7 +30,7 @@ const createUIColorInput = function(options = {}) {
     const input = DOM.createElement({
         element: 'div',
         id: `${options.idPrefix}${options.idPostfix}`,
-        class: `${CLASS_COLOR_INPUT} oltb-color-tippy`,
+        class: `${CLASS__COLOR_INPUT} oltb-color-tippy`,
         attributes: {
             'tabindex': 0,
             'data-oltb-color-target': `#${options.idPrefix}${options.idPostfix}`,
@@ -41,7 +41,7 @@ const createUIColorInput = function(options = {}) {
     const inputInner = DOM.createElement({
         element: 'div',
         style: `background-color: ${options.color}`,
-        class: `${CLASS_COLOR_INPUT}__inner`
+        class: `${CLASS__COLOR_INPUT}__inner`
     });
 
     DOM.appendChildren(input, [

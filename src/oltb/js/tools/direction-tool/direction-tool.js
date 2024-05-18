@@ -14,8 +14,8 @@ import { isShortcutKeyOnly } from '../../helpers/browser/is-shortcut-key-only';
 import { TranslationManager } from '../../managers/translation-manager/translation-manager';
 
 const FILENAME = 'DirectionTool.js';
-const CLASS_TOOL_BUTTON = 'oltb-tool-button';
-const I18N_BASE = 'tools.directionTool';
+const CLASS__TOOL_BUTTON = 'oltb-tool-button';
+const I18N__BASE = 'tools.directionTool';
 
 const DefaultOptions = Object.freeze({
     onInitiated: undefined,
@@ -29,14 +29,14 @@ const DirectionData = Object.freeze({
         class: 'col',
         icon: getIcon({
             path: SvgPaths.symmetryHorizontal.mixed,
-            class: `${CLASS_TOOL_BUTTON}__icon`
+            class: `${CLASS__TOOL_BUTTON}__icon`
         })
     },
     row: {
         class: 'row',
         icon: getIcon({
             path: SvgPaths.symmetryVertical.mixed,
-            class: `${CLASS_TOOL_BUTTON}__icon`
+            class: `${CLASS__TOOL_BUTTON}__icon`
         })
     }
 });
@@ -61,16 +61,16 @@ class DirectionTool extends Control {
             element: ElementManager.getToolbarElement()
         });
 
-        const i18n = TranslationManager.get(I18N_BASE);
+        const i18n = TranslationManager.get(I18N__BASE);
         const button = DOM.createElement({
             element: 'button',
             html: this.getToolIcon(),
-            class: CLASS_TOOL_BUTTON,
+            class: CLASS__TOOL_BUTTON,
             attributes: {
                 'type': 'button',
                 'data-tippy-content': `${i18n.title} (${ShortcutKeys.directionTool})`,
                 'data-tippy-content-post': `(${ShortcutKeys.directionTool})`,
-                'data-oltb-i18n': `${I18N_BASE}.title`
+                'data-oltb-i18n': `${I18N__BASE}.title`
             },
             listeners: {
                 'click': this.onClickTool.bind(this)
@@ -167,9 +167,9 @@ class DirectionTool extends Control {
     //--------------------------------------------------------------------
     shouldToolButtonBeHidden() {
         if(window.innerWidth <= ConfigManager.getConfig().deviceWidth.sm) {
-            this.button.classList.add(`${CLASS_TOOL_BUTTON}--hidden`);
+            this.button.classList.add(`${CLASS__TOOL_BUTTON}--hidden`);
         }else {
-            this.button.classList.remove(`${CLASS_TOOL_BUTTON}--hidden`);
+            this.button.classList.remove(`${CLASS__TOOL_BUTTON}--hidden`);
         }
     }
 

@@ -3,15 +3,15 @@ import { Keys } from '../../helpers/constants/keys';
 import { Events } from '../../helpers/constants/events';
 import { trapFocus } from '../../helpers/browser/trap-focus';
 
-const CLASS_ANIMATION = 'oltb-animation';
-const CLASS_ANIMATION_BOUNCE = `${CLASS_ANIMATION}--bounce`;
-const CLASS_DIALOG_BACKDROP = 'oltb-dialog-backdrop';
+const CLASS__ANIMATION = 'oltb-animation';
+const CLASS__ANIMATION_BOUNCE = `${CLASS__ANIMATION}--bounce`;
+const CLASS__DIALOG_BACKDROP = 'oltb-dialog-backdrop';
 
 class BaseDialog {
     constructor() {
         this.backdrop = DOM.createElement({
             element: 'div', 
-            class: `${CLASS_DIALOG_BACKDROP} ${CLASS_DIALOG_BACKDROP}--fixed`,
+            class: `${CLASS__DIALOG_BACKDROP} ${CLASS__DIALOG_BACKDROP}--fixed`,
             attributes: {
                 'tabindex': '-1'
             },
@@ -46,7 +46,7 @@ class BaseDialog {
         }
 
         const dialog = this.backdrop.firstElementChild;
-        DOM.runAnimation(dialog, CLASS_ANIMATION_BOUNCE);
+        DOM.runAnimation(dialog, CLASS__ANIMATION_BOUNCE);
     }
 
     close() {

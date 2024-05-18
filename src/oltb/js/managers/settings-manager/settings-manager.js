@@ -6,7 +6,7 @@ import { LocalStorageKeys } from '../../helpers/constants/local-storage-keys';
 import { BaseManager } from '../base-manager';
 
 const FILENAME = 'SettingsManager.js';
-const I18N_BASE = 'managers.settingsManager.settings';
+const I18N__BASE = 'managers.settingsManager.settings';
 
 const LocalStorageNodeName = LocalStorageKeys.settingsManager;
 const LocalStorageDefaults = Object.freeze({});
@@ -39,7 +39,7 @@ class SettingsManager extends BaseManager {
             // Append the i18n data, the actual text for the current language
             // will be fetched when the SettingsModal is created each time
             value.i18nKey = key;
-            value.i18nBase = I18N_BASE;
+            value.i18nBase = I18N__BASE;
 
             if(key in this.#localStorage) {
                 value.state = this.#localStorage[key];
