@@ -1585,7 +1585,7 @@ $ npm run clean
 #      - rollup.jsbanner.mjs
 
 # (5). Create new dist
-$ bash tasks/npm-dist.sh
+$ bash build-scripts/npm-dist.sh
 
 # (6). Clean package.json in dist:
 #      - repository
@@ -1595,22 +1595,22 @@ $ bash tasks/npm-dist.sh
 #      - devDependencies
 
 # (7). Setup examples
-$ bash tasks/dist-examples-setup.sh
+$ bash build-scripts/dist-examples-setup.sh
 
 # (8). Manually update examples:
 #      - NPM x 2
 #      - CDN (also bump ol CDN-links in index.html)
 
 # (9). Verify examples
-$ npm run example:one
-$ npm run example:two
-$ npm run example:three
+$ npm run example:cdn:one
+$ npm run example:npm:one
+$ npm run example:npm:two
 
 # (10). Cleanup examples
-$ bash tasks/dist-examples-cleanup.sh
+$ bash build-scripts/dist-examples-cleanup.sh
 
 # (11). Publish package to NPM
-$ bash tasks/npm-publish.sh
+$ bash build-scripts/npm-publish.sh
 
 # (12). Commit and push updated examples to GitHub
 $ git add .
@@ -1618,7 +1618,7 @@ $ git commit -m "New release vx.y.z"
 $ git push
 
 # (13). Create new demo, this will build the GitHub demo using the NPM version
-$ bash tasks/github-demo.sh
+$ bash build-scripts/github-demo.sh
 
 # (14). Commit and push demo to GitHub
 $ git push origin --delete gh-pages

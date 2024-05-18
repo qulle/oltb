@@ -21,34 +21,33 @@
     },
     "scripts": {
         "start": "parcel serve ./dev/index.html --open --dist-dir ./serve",
-        "eslint:src": "eslint --config ./.eslintrc.cjs ./src/oltb/js/**/*.js",
-        "eslint:src-fix": "eslint --fix --config ./.eslintrc.cjs ./src/oltb/js/**/*.js",
-        "eslint:dev": "eslint --config ./.eslintrc.cjs ./dev/**/*.js",
-        "eslint:dev-fix": "eslint --fix --config ./.eslintrc.cjs ./dev/**/*.js",
-        "test:src": "jest ./src",
-        "test:dev": "jest ./dev",
-        "test:examples": "jest ./examples",
+        "eslint:src": "eslint --config ./config/.eslintrc.mjs ./src/oltb/js/**/*.js",
+        "eslint:src-fix": "eslint --fix --config ./config/.eslintrc.mjs ./src/oltb/js/**/*.js",
+        "eslint:dev": "eslint --config ./config/.eslintrc.mjs ./dev/**/*.js",
+        "eslint:dev-fix": "eslint --fix --config ./config/.eslintrc.mjs ./dev/**/*.js",
+        "test": "NODE_OPTIONS=--experimental-vm-modules NODE_NO_WARNINGS=1 jest ./src --config ./config/jest.config.mjs",
         "build": "npm run build:demo && npm run build:lib",
-        "build:lib": "rollup --config",
+        "build:lib": "rollup --config ./config/rollup.config.mjs",
         "build:demo": "parcel build --public-url . ./dev/index.html --dist-dir ./demo",
-        "example:one": "sh -c 'start firefox -url \"file://C:$(cut -c3- <<< $(readlink -m ./examples/cdn/index.html))\"'",
-        "example:two": "parcel serve ./examples/npm/example-one/index.html --open --dist-dir ./serve",
-        "example:three": "parcel serve ./examples/npm/example-two/index.html --open --dist-dir ./serve",
+        "example:cdn:one": "sh -c 'start firefox -url \"file://C:$(cut -c3- <<< $(readlink -m ./examples/cdn/index.html))\"'",
+        "example:npm:one": "parcel serve ./examples/npm/example-one/index.html --open --dist-dir ./serve",
+        "example:npm:two": "parcel serve ./examples/npm/example-two/index.html --open --dist-dir ./serve",
         "clean": "rm -rf ./serve ./dist ./demo ./.parcel-cache",
         "install-husky": "npx husky install",
         "configure-husky": "npx husky install && npx husky add .husky/pre-commit \"npx lint-staged\""
     },
     "lint-staged": {
         "./src/oltb/js/**/*.js": [
-            "eslint --config ./.eslintrc.cjs"
+            "eslint --config ./config/.eslintrc.mjs"
         ],
         "./dev/**/*.js": [
-            "eslint --config ./.eslintrc.cjs"
+            "eslint --config ./config/.eslintrc.mjs"
         ]
     },
     "files": [
         "dist"
     ],
+    "type": "module",
     "dependencies": {
         "a-color-picker": "^1.2.1",
         "browser-dtector": "^4.1.0",

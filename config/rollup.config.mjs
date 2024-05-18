@@ -1,13 +1,13 @@
+import resolve from '@rollup/plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs';
+import replace from '@rollup/plugin-replace';
 import scss from 'rollup-plugin-scss';
 import json from '@rollup/plugin-json';
 import terser from '@rollup/plugin-terser';
 import license from 'rollup-plugin-license';
-import replace from '@rollup/plugin-replace';
-import resolve from '@rollup/plugin-node-resolve';
-import commonjs from '@rollup/plugin-commonjs';
 
-const jsBanner = await import('./rollup.jsbanner.mjs');
-const cssBanner = await import('./rollup.cssbanner.mjs');
+const jsBanner = await import('../banners/rollup.jsbanner.mjs');
+const cssBanner = await import('../banners/rollup.cssbanner.mjs');
 
 export default {
     input: './src/oltb/js/oltb.js',

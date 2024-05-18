@@ -8,7 +8,7 @@ import { platformModifierKeyOnly, altShiftKeysOnly, shiftKeyOnly, targetNotEdita
 import { defaults as defaultInterctions, MouseWheelZoom, DragPan, DragRotate, KeyboardZoom, KeyboardPan } from 'ol/interaction';
 
 // Layers
-import '../shared/map-layers';
+import '../layers/map-layers';
 
 // Browser prototype extensions
 import 'oltb/src/oltb/js/helpers/prototypes/json-cycle';
@@ -17,8 +17,8 @@ import 'oltb/src/oltb/js/helpers/prototypes/slide-toggle';
 
 // Core Toolbar
 import 'oltb/src/oltb/scss/oltb.scss';
-import { Settings } from 'oltb/src/oltb/js/helpers/constants/Settings';
-import { LocalStorageKeys } from 'oltb/src/oltb/js/helpers/constants/LocalStorageKeys';
+import { Settings } from 'oltb/src/oltb/js/helpers/constants/settings';
+import { LocalStorageKeys } from 'oltb/src/oltb/js/helpers/constants/local-storage-keys';
 
 // Core Managers
 import { LogManager } from 'oltb/src/oltb/js/managers/log-manager/log-manager';
