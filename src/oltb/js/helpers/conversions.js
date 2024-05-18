@@ -19,11 +19,11 @@ const radiansToDegrees = function(radians) {
 }
 
 const metersPerSecondToKnots = function(mps) {
-    return mps * 1.943844;
+    return mps * 1.94384;
 }
 
 const knotsToMetersPerSecond = function(knots) {
-    return knots * 0.514444;
+    return knots * 0.51444;
 }
 
 export {
