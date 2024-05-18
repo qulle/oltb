@@ -6,7 +6,7 @@ import { LogManager } from '../log-manager/log-manager';
 import { BaseManager } from '../base-manager';
 import { ConfigManager } from '../config-manager/config-manager';
 
-const FILENAME = 'TooltipManager.js';
+const FILENAME = 'tooltip-manager.js';
 const CLASS__OVERLAY_TOOLTIP = 'oltb-overlay-tooltip';
 
 /**

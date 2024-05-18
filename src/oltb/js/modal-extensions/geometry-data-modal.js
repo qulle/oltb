@@ -3,7 +3,7 @@ import { DOM } from '../helpers/browser/dom-factory';
 import { BaseModal } from '../common/modals/base-modal';
 import { TranslationManager } from '../managers/translation-manager/translation-manager';
 
-const FILENAME = 'GeometryDataModal.js';
+const FILENAME = 'geometry-data-modal.js';
 const I18N__BASE = 'modalExtensions.geometryDataModal';
 
 const DefaultOptions = Object.freeze({

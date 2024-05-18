@@ -14,7 +14,7 @@ import { isShortcutKeyOnly } from '../../helpers/browser/is-shortcut-key-only';
 import { TranslationManager } from '../../managers/translation-manager/translation-manager';
 import { Control, OverviewMap } from 'ol/control';
 
-const FILENAME = 'OverviewTool.js';
+const FILENAME = 'overview-tool.js';
 const CLASS__TOOL_BUTTON = 'oltb-tool-button';
 const CLASS__TOOLBOX_SECTION = 'oltb-toolbox-section';
 const CLASS__TOGGLEABLE = 'oltb-toggleable';

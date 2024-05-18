@@ -11,7 +11,7 @@ import { SvgPaths, getIcon } from '../../icons/get-icon';
 import { isShortcutKeyOnly } from '../../helpers/browser/is-shortcut-key-only';
 import { TranslationManager } from '../../managers/translation-manager/translation-manager';
 
-const FILENAME = 'ToolboxTool.js';
+const FILENAME = 'toolbox-tool.js';
 const CLASS__TOOL_BUTTON = 'oltb-tool-button';
 const CLASS__TOOLBOX_HIDDEN = 'oltb-toolbox-container--hidden';
 const I18N__BASE = 'tools.toolboxTool';

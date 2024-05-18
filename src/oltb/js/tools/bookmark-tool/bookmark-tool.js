@@ -27,7 +27,7 @@ import { TranslationManager } from '../../managers/translation-manager/translati
 import { generateAnimalName } from '../../helpers/name-generator/name-generator';
 import { fromLonLat, toLonLat } from 'ol/proj';
 
-const FILENAME = 'BookmarkTool.js';
+const FILENAME = 'bookmark-tool.js';
 const CLASS__TOOL_BUTTON = 'oltb-tool-button';
 const CLASS__TOOLBOX_SECTION = 'oltb-toolbox-section';
 const CLASS__TOOLBOX_LIST = 'oltb-toolbox-list';

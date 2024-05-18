@@ -1,7 +1,7 @@
 import { LogManager } from '../log-manager/log-manager';
 import { BaseManager } from '../base-manager';
 
-const FILENAME = 'ToolManager.js';
+const FILENAME = 'tool-manager.js';
 
 /**
  * About:

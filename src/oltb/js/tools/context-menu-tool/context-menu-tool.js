@@ -11,7 +11,7 @@ import { ConfigManager } from '../../managers/config-manager/config-manager';
 import { ElementManager } from '../../managers/element-manager/element-manager';
 import { TranslationManager } from '../../managers/translation-manager/translation-manager';
 
-const FILENAME = 'ContextMenuTool.js';
+const FILENAME = 'context-menu-tool.js';
 const CLASS__CONTEXT_MENU = 'oltb-context-menu';
 
 const DefaultOptions = Object.freeze({

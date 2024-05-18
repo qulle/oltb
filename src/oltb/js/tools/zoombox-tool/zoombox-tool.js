@@ -17,7 +17,7 @@ import { SvgPaths, getIcon } from '../../icons/get-icon';
 import { isShortcutKeyOnly } from '../../helpers/browser/is-shortcut-key-only';
 import { TranslationManager } from '../../managers/translation-manager/translation-manager';
 
-const FILENAME = 'ZoomboxTool.js';
+const FILENAME = 'zoombox-tool.js';
 const CLASS__TOOL_BUTTON = 'oltb-tool-button';
 const KEY__TOOLTIP = 'tools.zoomboxTool';
 const I18N__BASE = 'tools.zoomboxTool';

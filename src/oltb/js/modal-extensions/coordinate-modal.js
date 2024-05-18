@@ -5,7 +5,7 @@ import { isDarkTheme } from '../helpers/is-dark-theme';
 import { createUIInput } from '../creators/create-ui-input';
 import { TranslationManager } from '../managers/translation-manager/translation-manager';
 
-const FILENAME = 'CoordinateModal.js';
+const FILENAME = 'coordinate-model.js';
 const ID__PREFIX = 'oltb-coordinates-modal';
 const I18N__BASE = 'modalExtensions.coordinateModal';
 

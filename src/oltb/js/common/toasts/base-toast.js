@@ -6,7 +6,7 @@ import { ConfigManager } from '../../managers/config-manager/config-manager';
 import { ElementManager } from '../../managers/element-manager/element-manager';
 import { TranslationManager } from '../../managers/translation-manager/translation-manager';
 
-const FILENAME = 'BaseToast.js';
+const FILENAME = 'base-toast.js';
 const CLASS__TOAST = 'oltb-toast';
 const CLASS__ANIMATION = 'oltb-animation';
 const CLASS__ANIMATION_SLIDE_IN = `${CLASS__ANIMATION}--slide-in`;

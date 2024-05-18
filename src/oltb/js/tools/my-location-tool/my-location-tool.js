@@ -19,7 +19,7 @@ import { InfoWindowManager } from '../../managers/info-window-manager/info-windo
 import { TranslationManager } from '../../managers/translation-manager/translation-manager';
 import { isFullScreen, exitFullScreen } from '../../helpers/browser/fullscreen-handler';
 
-const FILENAME = 'MyLocationTool.js';
+const FILENAME = 'my-location-tool.js';
 const CLASS__TOOL_BUTTON = 'oltb-tool-button';
 const CLASS__FUNC_BUTTON = 'oltb-func-btn';
 const ID__PREFIX_INFO_WINDOW = 'oltb-info-window-marker';

@@ -7,7 +7,7 @@ import { isHorizontal } from '../../helpers/is-row-direction';
 import { ConfigManager } from '../config-manager/config-manager';
 import { eventDispatcher } from '../../helpers/browser/event-dispatcher';
 
-const FILENAME = 'ColorPickerManager.js';
+const FILENAME = 'color-picker-manager.js';
 
 /**
  * About:

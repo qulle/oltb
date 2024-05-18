@@ -8,7 +8,7 @@ import { FeatureProperties } from '../../helpers/constants/feature-properties';
 import { DefaultWindBarbOptions } from './default-wind-barb-options';
 import { DefaultIconMarkerOptions } from './default-icon-marker-options';
 
-const FILENAME = 'FeatureManager.js';
+const FILENAME = 'feature-manager.js';
 
 /**
  * About:

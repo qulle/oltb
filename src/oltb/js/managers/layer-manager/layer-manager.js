@@ -9,7 +9,7 @@ import { FeatureManager } from '../feature-manager/feature-manager';
 import { Vector as VectorLayer } from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';
 
-const FILENAME = 'LayerManager.js';
+const FILENAME = 'layer-manager.js';
 const DEFAULT_LAYER_NAME = 'New layer';
 const ZINDEX_BASE_MAP_LAYER = 1;
 const ZINDEX_BASE_FEATURE_LAYER = 1e6;

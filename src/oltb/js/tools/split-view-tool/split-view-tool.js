@@ -17,7 +17,7 @@ import { SvgPaths, getIcon } from '../../icons/get-icon';
 import { isShortcutKeyOnly } from '../../helpers/browser/is-shortcut-key-only';
 import { TranslationManager } from '../../managers/translation-manager/translation-manager';
 
-const FILENAME = 'SplitViewTool.js';
+const FILENAME = 'split-view-tool.js';
 const CLASS__TOOL_BUTTON = 'oltb-tool-button';
 const CLASS__TOOLBOX_SECTION = 'oltb-toolbox-section';
 const CLASS__SLIDER = 'oltb-slider';

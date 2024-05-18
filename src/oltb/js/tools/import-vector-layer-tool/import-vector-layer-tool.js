@@ -14,7 +14,7 @@ import { instantiateFormat } from '../../ol-mappers/ol-format';
 import { isShortcutKeyOnly } from '../../helpers/browser/is-shortcut-key-only';
 import { TranslationManager } from '../../managers/translation-manager/translation-manager';
 
-const FILENAME = 'ImportVectorLayerTool.js';
+const FILENAME = 'import-vector-layer-tool.js';
 const CLASS__TOOL_BUTTON = 'oltb-tool-button';
 const I18N__BASE = 'tools.importVectorLayerTool';
 

@@ -28,7 +28,7 @@ import { TranslationManager } from '../../managers/translation-manager/translati
 import { Fill, Stroke, Circle, Style } from 'ol/style';
 import { getMeasureCoordinates, getMeasureValue } from '../../helpers/measurements';
 
-const FILENAME = 'MeasureTool.js';
+const FILENAME = 'measure-tool.js';
 const CLASS__TOOL_BUTTON = 'oltb-tool-button';
 const CLASS__TOOLBOX_SECTION = 'oltb-toolbox-section';
 const CLASS__TOGGLEABLE = 'oltb-toggleable';

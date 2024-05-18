@@ -15,7 +15,7 @@ import { isShortcutKeyOnly } from '../../helpers/browser/is-shortcut-key-only';
 import { TranslationManager } from '../../managers/translation-manager/translation-manager';
 import { degreesToRadians, radiansToDegrees } from '../../helpers/conversions';
 
-const FILENAME = 'ResetNorthTool.js';
+const FILENAME = 'reset-north-tool.js';
 const CLASS__TOOL_BUTTON = 'oltb-tool-button';
 const I18N__BASE = 'tools.resetNorthTool';
 

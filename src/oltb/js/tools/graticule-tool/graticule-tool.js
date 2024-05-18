@@ -13,7 +13,7 @@ import { SvgPaths, getIcon } from '../../icons/get-icon';
 import { isShortcutKeyOnly } from '../../helpers/browser/is-shortcut-key-only';
 import { TranslationManager } from '../../managers/translation-manager/translation-manager';
 
-const FILENAME = 'GraticuleTool.js';
+const FILENAME = 'graticule-tool.js';
 const CLASS__TOOL_BUTTON = 'oltb-tool-button';
 const I18N__BASE = 'tools.graticuleTool';
 const DASHED_ON = [1, 4];

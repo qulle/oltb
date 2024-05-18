@@ -29,7 +29,7 @@ import { isShortcutKeyOnly } from '../../helpers/browser/is-shortcut-key-only';
 import { TranslationManager } from '../../managers/translation-manager/translation-manager';
 import { DownloadLayerModal } from '../../modal-extensions/download-layer-modal';
 
-const FILENAME = 'LayerTool.js';
+const FILENAME = 'layer-tool.js';
 const CLASS__TOOL_BUTTON = 'oltb-tool-button';
 const CLASS__TOOLBOX_SECTION = 'oltb-toolbox-section';
 const CLASS__TOOLBOX_LIST = 'oltb-toolbox-list';

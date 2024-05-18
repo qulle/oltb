@@ -2,7 +2,7 @@ import { LogManager } from '../log-manager/log-manager';
 import { LayerManager } from '../layer-manager/layer-manager';
 import { ConfigManager } from '../config-manager/config-manager';
 
-const FILENAME = 'ShowMarkerLayer.js';
+const FILENAME = 'show-marker-layer.js';
 const CLASS__TOOLBOX_INDICATE_ITEM = 'oltb-toolbox-list__item--indicate';
 
 const showMarkerLayer = function(InfoWindowManager, marker) {

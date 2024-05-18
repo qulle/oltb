@@ -2,11 +2,9 @@ import { DOM } from '../../helpers/browser/dom-factory';
 import { Keys } from '../../helpers/constants/keys';
 import { Events } from '../../helpers/constants/events';
 import { trapFocus } from '../../helpers/browser/trap-focus';
-import { LogManager } from '../../managers/log-manager/log-manager';
 import { ElementManager } from '../../managers/element-manager/element-manager';
 import { SvgPaths, getIcon } from '../../icons/get-icon';
 
-const FILENAME = 'BaseModal.js';
 const CLASS__ANIMATION = 'oltb-animation';
 const CLASS__ANIMATION_BOUNCE = `${CLASS__ANIMATION}--bounce`;
 const CLASS__MODAL = 'oltb-modal';
@@ -14,8 +12,6 @@ const CLASS__MODAL_BACKDROP = `${CLASS__MODAL}-backdrop`;
 
 class BaseModal {
     constructor(title, maximized, onClosed) {
-        LogManager.logDebug(FILENAME, 'constructor', 'init');
-        
         this.#createModal(title, maximized, onClosed);
     }
 

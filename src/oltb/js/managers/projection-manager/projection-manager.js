@@ -3,7 +3,7 @@ import { register } from 'ol/proj/proj4';
 import { LogManager } from '../log-manager/log-manager';
 import { BaseManager } from '../base-manager';
 
-const FILENAME = 'ProjectionManager.js';
+const FILENAME = 'projection-manager.js';
 
 /**
  * About:

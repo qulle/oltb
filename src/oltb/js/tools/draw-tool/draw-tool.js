@@ -28,7 +28,7 @@ import { isFeatureIntersectable } from '../../helpers/is-feature-intersectable';
 import { Fill, Stroke, Circle, Style } from 'ol/style';
 import { createBox, createRegularPolygon } from 'ol/interaction/Draw';
 
-const FILENAME = 'DrawTool.js';
+const FILENAME = 'draw-tool.js';
 const CLASS__TOOL_BUTTON = 'oltb-tool-button';
 const CLASS__TOOLBOX_SECTION = 'oltb-toolbox-section';
 const CLASS__TOGGLEABLE = 'oltb-toggleable';

@@ -25,7 +25,7 @@ import { isFeatureIntersectable } from '../../helpers/is-feature-intersectable';
 import { Fill, Stroke, Circle, Style } from 'ol/style';
 import { GeometryCollection, LinearRing, LineString, MultiLineString, MultiPoint, MultiPolygon, Point, Polygon } from 'ol/geom';
 
-const FILENAME = 'ScissorsTool.js';
+const FILENAME = 'scissors-tool.js';
 const CLASS__TOOL_BUTTON = 'oltb-tool-button';
 const I18N__BASE = 'tools.scissorsTool';
 

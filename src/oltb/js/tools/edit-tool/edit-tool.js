@@ -46,7 +46,7 @@ import { GeometryCollection, LinearRing, LineString, MultiLineString, MultiPoint
  *  https://github.com/bjornharrtell/jsts#caveats
  */
 
-const FILENAME = 'EditTool.js';
+const FILENAME = 'edit-tool.js';
 const CLASS__TOOL_BUTTON = 'oltb-tool-button';
 const CLASS__TOOLBOX_SECTION = 'oltb-toolbox-section';
 const CLASS__TOGGLEABLE = 'oltb-toggleable';

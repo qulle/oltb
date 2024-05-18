@@ -1,7 +1,7 @@
 import { DOM } from './dom-factory';
 import { LogManager } from '../../managers/log-manager/log-manager';
 
-const FILENAME = 'Download.js';
+const FILENAME = 'download-file.js';
 
 const isImage = function(name) {
     return name.split('.').pop().match(/jpg|jpeg|png|gif|svg/i) !== null;

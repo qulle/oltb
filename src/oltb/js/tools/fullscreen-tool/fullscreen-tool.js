@@ -12,7 +12,7 @@ import { isShortcutKeyOnly } from '../../helpers/browser/is-shortcut-key-only';
 import { TranslationManager } from '../../managers/translation-manager/translation-manager';
 import { FullscreenEvents, FullscreenEventTypes, isFullScreenSupported, isFullScreen, requestFullScreen, exitFullScreen } from '../../helpers/browser/fullscreen-handler';
 
-const FILENAME = 'FullscreenTool.js';
+const FILENAME = 'fullscreen-tool.js';
 const CLASS__TOOL_BUTTON = 'oltb-tool-button';
 const I18N__BASE = 'tools.fullscreenTool';
 

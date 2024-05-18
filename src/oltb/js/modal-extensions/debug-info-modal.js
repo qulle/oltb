@@ -15,7 +15,7 @@ import { SvgPaths, getIcon } from '../icons/get-icon';
 import { ProjectionManager } from '../managers/projection-manager/projection-manager';
 import { TranslationManager } from '../managers/translation-manager/translation-manager';
 
-const FILENAME = 'DebugInfoModal.js';
+const FILENAME = 'debug-info-modal.js';
 const ID__PREFIX = 'oltb-debug';
 const ID__EVENT_LOG = 'oltb-event-log';
 const CLASS__TOGGLEABLE = 'oltb-toggleable';

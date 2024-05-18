@@ -11,7 +11,7 @@ import { isShortcutKeyOnly } from '../../helpers/browser/is-shortcut-key-only';
 import { Control, ScaleLine } from 'ol/control';
 import { TranslationManager } from '../../managers/translation-manager/translation-manager';
 
-const FILENAME = 'ScaleLineTool.js';
+const FILENAME = 'scale-line-tool.js';
 const CLASS__TOOL_BUTTON = 'oltb-tool-button';
 const I18N__BASE = 'tools.scaleLineTool';
 

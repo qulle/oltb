@@ -11,7 +11,7 @@ import { IconMarkerModal } from '../../modal-extensions/icon-marker-modal';
 import { SvgPaths, getIcon } from '../../icons/get-icon';
 import { TranslationManager } from '../../managers/translation-manager/translation-manager';
 
-const FILENAME = 'HiddenMarkerTool.js';
+const FILENAME = 'hidden-marker-tool.js';
 const CLASS__FUNC_BUTTON = 'oltb-func-btn';
 const ID__PREFIX_INFO_WINDOW = 'oltb-info-window-marker';
 const I18N__BASE = 'tools.hiddenMarkerTool';

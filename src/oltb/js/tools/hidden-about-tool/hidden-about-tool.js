@@ -7,7 +7,7 @@ import { ContextMenuTool } from '../context-menu-tool/context-menu-tool';
 import { SvgPaths, getIcon } from '../../icons/get-icon';
 import { TranslationManager } from '../../managers/translation-manager/translation-manager';
 
-const FILENAME = 'HiddenAboutTool.js';
+const FILENAME = 'hidden-about-tool.js';
 const I18N__BASE = 'tools.hiddenAboutTool';
 
 /**

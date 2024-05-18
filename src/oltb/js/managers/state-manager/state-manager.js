@@ -3,7 +3,7 @@ import { LogManager } from '../log-manager/log-manager';
 import { BaseManager } from '../base-manager';
 import { ConfigManager } from '../config-manager/config-manager';
 
-const FILENAME = 'StateManager.js';
+const FILENAME = 'state-manager.js';
 
 // Note: 
 // Some objects have properties that we don't want to store in localStorage

@@ -9,7 +9,7 @@ import { ColorPickerManager } from '../color-picker-manager/color-picker-manager
 import { createSingleton, delegate } from 'tippy.js';
 import { ConfigManager } from '../config-manager/config-manager';
 
-const FILENAME = 'TippyManager.js';
+const FILENAME = 'tippy-manager.js';
 const CLASS__TOOL_BUTTON = 'oltb-tool-button';
 
 /**

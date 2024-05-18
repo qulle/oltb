@@ -1,9 +1,7 @@
 import _ from 'lodash';
 import { DOM } from '../../helpers/browser/dom-factory';
 import { BaseModal } from './base-modal';
-import { LogManager } from '../../managers/log-manager/log-manager';
 
-const FILENAME = 'ModalWindow.js';
 const CLASS__MODAL = 'oltb-modal';
 
 const DefaultOptions = Object.freeze({
@@ -13,8 +11,6 @@ const DefaultOptions = Object.freeze({
 
 class ModalWindow extends BaseModal {
     constructor(options = {}) {
-        LogManager.logDebug(FILENAME, 'constructor', 'init');
-        
         super(
             options.title || DefaultOptions.title,
             options.maximized,

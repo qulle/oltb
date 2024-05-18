@@ -3,7 +3,7 @@ import { LogManager } from '../log-manager/log-manager';
 import { ConfigManager } from '../config-manager/config-manager';
 import { copyToClipboard } from '../../helpers/browser/copy-to-clipboard';
 
-const FILENAME = 'CopyMarkerInfo.js';
+const FILENAME = 'copy-marker-info.js';
 const I18N__BASE = 'managers.infoWindowManager';
 
 const copyMarkerInfo = async function(InfoWindowManager, data) {
