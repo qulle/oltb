@@ -1,48 +1,48 @@
 class Assert {
-    static check(condition, message = '') {
+    static check(condition, message) {
         if(!condition) {
             throw new Error(`Assertion failed - ${message}`);
         }
     }
 
-    static isTrue(value, message) {
-        this.check((value === true), message);
+    static isTrue(value) {
+        this.check((value === true), `${value} === true`);
     }
 
-    static isFalse(value, message) {
-        this.check((value === false), message);
+    static isFalse(value) {
+        this.check((value === false), `${value} === false`);
     }
     
-    static equalTo(left, right, message) {
-        this.check((left === right), message);
+    static equalTo(left, right) {
+        this.check((left === right), `${left} === ${right}`);
     }
 
-    static notEqualTo(left, right, message) {
-        this.check((left !== right), message);
+    static notEqualTo(left, right) {
+        this.check((left !== right), `${left} !== ${right}`);
     }
 
-    static objectIs(left, right, message) {
-        this.check((Object.is(left, right)), message);
+    static objectIs(left, right) {
+        this.check((Object.is(left, right)), `Object.is(${left}, ${right})`);
     }
 
-    static objectIsNot(left, right, message) {
-        this.check((!Object.is(left, right)), message);
+    static objectIsNot(left, right) {
+        this.check((!Object.is(left, right)), `!Object.is(${left}, ${right})`);
     }
 
-    static greaterThan(left, right, message) {
-        this.check((left > right), message);
+    static greaterThan(left, right) {
+        this.check((left > right), `${left} > ${right}`);
     }
 	
-    static greaterThanOrEqualTo(left, right, message) {
-        this.check((left >= right), message);
+    static greaterThanOrEqualTo(left, right) {
+        this.check((left >= right), `${left} >= ${right}`);
     }
     
-    static lessThan(left, right, message) {
-        this.check((left < right), message);
+    static lessThan(left, right) {
+        this.check((left < right), `${left} < ${right}`);
     }
 
-    static lessThanOrEqualTo(left, right, message) {
-        this.check((left <= right), message);
+    static lessThanOrEqualTo(left, right) {
+        this.check((left <= right), `${left} <= ${right}`);
     }
 }
 
