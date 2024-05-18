@@ -2,12 +2,12 @@ import 'tippy.js/dist/tippy.css';
 import tippy from 'tippy.js';
 import { Events } from '../../helpers/constants/events';
 import { LogManager } from '../log-manager/log-manager';
+import { BaseManager } from '../base-manager';
 import { isHorizontal } from '../../helpers/is-row-direction';
 import { ElementManager } from '../element-manager/element-manager';
 import { ColorPickerManager } from '../color-picker-manager/color-picker-manager';
 import { createSingleton, delegate } from 'tippy.js';
 import { ConfigManager } from '../config-manager/config-manager';
-import { BaseManager } from '../base-manager';
 
 const FILENAME = 'TippyManager.js';
 const CLASS__TOOL_BUTTON = 'oltb-tool-button';

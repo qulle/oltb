@@ -9,6 +9,7 @@ import { getCenter } from 'ol/extent';
 import { trapFocus } from '../../helpers/browser/trap-focus';
 import { LogManager } from '../log-manager/log-manager';
 import { editMarker } from './edit-marker';
+import { BaseManager } from '../base-manager';
 import { LayerManager } from '../layer-manager/layer-manager';
 import { removeMarker } from './remove-marker';
 import { ConfigManager } from '../config-manager/config-manager';
@@ -22,7 +23,6 @@ import { HexTransparencies } from '../../helpers/constants/hex-transparencies';
 import { FeatureProperties } from '../../helpers/constants/feature-properties';
 import { copyMarkerCoordinates } from './copy-marker-coordinates';
 import { Fill, Stroke, Style, Circle as CircleStyle } from 'ol/style';
-import { BaseManager } from '../base-manager';
 
 const FILENAME = 'InfoWindowManager.js';
 const CLASS__ANIMATION = 'oltb-animation';

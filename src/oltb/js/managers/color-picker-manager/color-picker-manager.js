@@ -2,10 +2,10 @@ import * as AColorPicker from 'a-color-picker';
 import { DOM } from '../../helpers/browser/dom-factory';
 import { Events } from '../../helpers/constants/events';
 import { LogManager } from '../log-manager/log-manager';
+import { BaseManager } from '../base-manager';
 import { isHorizontal } from '../../helpers/is-row-direction';
 import { ConfigManager } from '../config-manager/config-manager';
 import { eventDispatcher } from '../../helpers/browser/event-dispatcher';
-import { BaseManager } from '../base-manager';
 
 const FILENAME = 'ColorPickerManager.js';
 

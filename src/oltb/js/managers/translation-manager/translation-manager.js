@@ -1,11 +1,11 @@
 import _ from 'lodash';
 import { LogManager } from '../log-manager/log-manager';
+import { BaseManager } from '../base-manager';
 import { StateManager } from '../state-manager/state-manager';
 import { TippyManager } from '../tippy-manager/tippy-manager';
 import { ConfigManager } from '../config-manager/config-manager';
 import { LocalStorageKeys } from '../../helpers/constants/local-storage-keys';
 import { DefaultTranslation } from './default-translation';
-import { BaseManager } from '../base-manager';
 
 const FILENAME = 'TranslationManager.js';
 
