@@ -4,9 +4,9 @@ import { DOM } from '../../helpers/browser/dom-factory';
 import { Toast } from '../../common/toasts/toast';
 import { Events } from '../../helpers/constants/events';
 import { Control } from 'ol/control';
-import { download } from '../../helpers/browser/download-file';
 import { LogManager } from '../../managers/log-manager/log-manager';
 import { UrlManager } from '../../managers/url-manager/url-manager';
+import { downloadFile } from '../../helpers/browser/download-file';
 import { ShortcutKeys } from '../../helpers/constants/shortcut-keys';
 import { ConfigManager } from '../../managers/config-manager/config-manager';
 import { ElementManager } from '../../managers/element-manager/element-manager';
@@ -248,7 +248,7 @@ class ExportPngTool extends Control {
         if(window.navigator.msSaveBlob) {
             window.navigator.msSaveBlob(content, filename);
         }else {
-            download(filename, content);
+            downloadFile(filename, content);
         }
 
         // Note: 

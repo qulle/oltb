@@ -3,7 +3,11 @@ import { LogManager } from '../../managers/log-manager/log-manager';
 
 const FILENAME = 'Download.js';
 
-const download = function(name, content) {
+const isImage = function(name) {
+    return name.split('.').pop().match(/jpg|jpeg|png|gif|svg/i) !== null;
+}
+
+const downloadFile = function(name, content) {
     LogManager.logDebug(FILENAME, 'download', name);
 
     const downloadTrigger = DOM.createElement({
@@ -21,8 +25,4 @@ const download = function(name, content) {
     downloadTrigger.click();
 }
 
-const isImage = function(name) {
-    return name.split('.').pop().match(/jpg|jpeg|png|gif|svg/i) !== null;
-}
-
-export { download, isImage };
+export { downloadFile };
