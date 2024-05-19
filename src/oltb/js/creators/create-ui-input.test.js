@@ -1,5 +1,38 @@
-describe('CreateUiInput', () => {
-    it('should be an empty test', () => {
-        expect(1).toEqual(1);
+import { beforeAll, describe, it, expect } from '@jest/globals';
+import { createUIInput } from "./create-ui-input";
+
+describe('CreateUIInput', () => {
+    let uiInput = undefined;
+
+    beforeAll(() => {
+        uiInput = createUIInput({
+            idPrefix: 'pre',
+            idPostfix: 'post',
+            text: 'User input expected'
+        });
+    });
+      
+    it('should create a ui-input', () => {
+        expect(uiInput).toBeTruthy();
+        expect(uiInput.length).toBe(2);
+    });
+
+    it('should contain one DIV and one INPUT', () => {
+        const [ wrapper, checkbox ] = uiInput;
+        expect(wrapper.nodeName).toBe('DIV');
+        expect(checkbox.nodeName).toBe('INPUT');
+    });
+
+    it('should be two childs in the wrapper of type LABEL and INPUT', () => {
+        const wrapper = uiInput[0];
+        expect(wrapper.childNodes.length).toBe(2);
+        expect(wrapper.childNodes[0].nodeName).toBe('LABEL');
+        expect(wrapper.childNodes[1].nodeName).toBe('INPUT');
+    });
+
+    it('should be a label with text "User input expected"', () => {
+        const wrapper = uiInput[0];
+        const label = wrapper.childNodes[0];
+        expect(label.innerText).toBe('User input expected');
     });
 });

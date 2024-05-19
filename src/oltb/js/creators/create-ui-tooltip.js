@@ -37,8 +37,14 @@ const createUITooltip = function(data = '') {
         setPosition: (position) => {
             overlay.setPosition(position);
         },
+        getPositioin: () => {
+            return overlay.getPosition();
+        },
         setData: (data) => {
             item.innerHTML = data;
+        },
+        getData: () => {
+            return item.innerHTML;
         }
     };
 }

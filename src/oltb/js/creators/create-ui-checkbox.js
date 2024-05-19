@@ -10,7 +10,8 @@ const DefaultOptions = Object.freeze({
     i18nKey: undefined,
     text: '',
     checked: false,
-    bottomMargin: false
+    bottomMargin: false,
+    listeners: []
 });
 
 const createUICheckbox = function(options = {}) {
