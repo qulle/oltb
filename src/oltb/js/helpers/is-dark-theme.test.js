@@ -1,5 +1,14 @@
+import { describe, it, expect } from '@jest/globals';
+import { isDarkTheme } from "./is-dark-theme";
+import { ConfigManager } from '../managers/config-manager/config-manager';
+
 describe('IsDarkTheme', () => {
-    it('should be an empty test', () => {
-        expect(1).toEqual(1);
+    it('should not be dark theme', () => {
+        expect(isDarkTheme()).toEqual(false);
+    });
+
+    it('should be dark theme', () => {
+        window.document.body.classList.add(ConfigManager.getConfig().className.dark)
+        expect(isDarkTheme()).toEqual(true);
     });
 });

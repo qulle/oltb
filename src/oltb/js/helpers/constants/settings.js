@@ -1,15 +1,15 @@
 const Settings = Object.freeze({
     dragPan: 'dragPan',
-    keyboardPan: 'keyboardPan',
-    keyboardZoom: 'keyboardZoom',
-    snapHelpLines: 'snapHelpLines',
     mouseWheelZoom: 'mouseWheelZoom',
+    mouseOnlyToEditVectorShapes: 'mouseOnlyToEditVectorShapes',
     snapInteraction: 'snapInteraction',
+    snapHelpLines: 'snapHelpLines',
+    selectVectorMapShapes: 'selectVectorMapShapes',
     alwaysNewLayers: 'alwaysNewLayers',
     altShiftDragRotate: 'altShiftDragRotate',
-    selectVectorMapShapes: 'selectVectorMapShapes',
     copyCoordinatesOnClick: 'copyCoordinatesOnClick',
-    mouseOnlyToEditVectorShapes: 'mouseOnlyToEditVectorShapes',
+    keyboardPan: 'keyboardPan',
+    keyboardZoom: 'keyboardZoom',
     updateToolboxCoordinatesOnHover: 'updateToolboxCoordinatesOnHover'
 });
 
