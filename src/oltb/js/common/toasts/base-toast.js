@@ -1,12 +1,10 @@
 import _ from 'lodash';
 import { DOM } from '../../helpers/browser/dom-factory';
 import { Events } from '../../helpers/constants/events';
-import { LogManager } from '../../managers/log-manager/log-manager';
 import { ConfigManager } from '../../managers/config-manager/config-manager';
 import { ElementManager } from '../../managers/element-manager/element-manager';
 import { TranslationManager } from '../../managers/translation-manager/translation-manager';
 
-const FILENAME = 'base-toast.js';
 const CLASS__TOAST = 'oltb-toast';
 const CLASS__ANIMATION = 'oltb-animation';
 const CLASS__ANIMATION_SLIDE_IN = `${CLASS__ANIMATION}--slide-in`;
@@ -25,8 +23,6 @@ const DefaultOptions = Object.freeze({
 
 class BaseToast {
     constructor(options = {}) {
-        LogManager.logDebug(FILENAME, 'constructor', 'init');
-        
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
         this.#createToast();
     }
