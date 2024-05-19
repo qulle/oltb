@@ -7,9 +7,7 @@
  */
 class BaseManager {
     static async initAsync(options = {}) {
-        if(this.constructor == BaseManager) {
-            throw new Error('Abstract base class');
-        }
+        throw new Error('Abstract base class');
     }
 
     static setMap(map) {

@@ -1,5 +1,10 @@
+import { describe, it, expect } from '@jest/globals';
+import { BaseManager } from "./base-manager";
+
 describe('BaseManager', () => {
-    it('should be an empty test', () => {
-        expect(1).toEqual(1);
+    it('should throw error for all methods since abstract class', async () => {
+        await expect(BaseManager.initAsync({})).rejects.toThrow();
+        expect(() => BaseManager.setMap()).toThrow();
+        expect(() => BaseManager.getName()).toThrow();
     });
 });
