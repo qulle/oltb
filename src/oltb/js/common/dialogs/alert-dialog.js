@@ -80,6 +80,7 @@ class AlertDialog extends BaseDialog {
             this.backdrop
         ])
 
+        this.buttons = [okButton];
         this.backdrop.focus();
     }
 

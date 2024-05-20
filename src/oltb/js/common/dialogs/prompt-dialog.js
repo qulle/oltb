@@ -132,6 +132,7 @@ class PromptDialog extends BaseDialog {
             this.backdrop
         ]);
 
+        this.buttons = [cancelButton, confirmButton];
         this.backdrop.focus();
     }
 
