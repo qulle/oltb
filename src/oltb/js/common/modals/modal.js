@@ -1,12 +1,13 @@
-import { ModalWindow } from './modal-window';
+import { BaseModal } from './base-modal';
 
 class Modal {
-    static create(options) {
-        return new ModalWindow({ 
-            maximized: false, 
-            onClose: undefined, 
-            ...options 
-        });
+    static create(options = {}) {
+        return new BaseModal(
+            options.title,
+            options.maximized, 
+            options.onClose,
+            options.content
+        );
     }
 }
 

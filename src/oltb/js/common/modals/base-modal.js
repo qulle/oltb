@@ -11,8 +11,12 @@ const CLASS__MODAL = 'oltb-modal';
 const CLASS__MODAL_BACKDROP = `${CLASS__MODAL}-backdrop`;
 
 class BaseModal {
-    constructor(title, maximized, onClosed) {
+    constructor(title, maximized, onClosed, content = undefined) {
         this.#createModal(title, maximized, onClosed);
+
+        if(content) {
+            this.show(content);
+        }
     }
 
     #createModal(title, maximized, onClosed) {
@@ -35,6 +39,11 @@ class BaseModal {
                 ? `${CLASS__MODAL}--maximized` 
                 : ''
             } ${CLASS__ANIMATION} ${CLASS__ANIMATION_BOUNCE}`
+        });
+
+        this.modalContent = DOM.createElement({
+            element: 'div', 
+            class: `${CLASS__MODAL}__content`
         });
 
         const modalHeader = DOM.createElement({
@@ -71,7 +80,8 @@ class BaseModal {
         ]);
 
         DOM.appendChildren(this.modal, [
-            modalHeader
+            modalHeader,
+            this.modalContent,
         ]);
 
         DOM.appendChildren(this.backdrop, [
@@ -106,10 +116,14 @@ class BaseModal {
         DOM.runAnimation(modal, CLASS__ANIMATION_BOUNCE);
     }
 
-    show(modalContent) {
-        DOM.appendChildren(this.modal, [
-            modalContent
-        ]);
+    show(content) {
+        if(typeof content === 'string') {
+            this.modalContent.innerHTML = content;
+        }else {
+            DOM.appendChildren(this.modalContent, [
+                content
+            ]);
+        }
 
         const uiRefMapElement = ElementManager.getMapElement();
         DOM.appendChildren(uiRefMapElement, [
