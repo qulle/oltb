@@ -4,12 +4,13 @@ import { BaseDialog } from './base-dialog';
 import { ElementManager } from '../../managers/element-manager/element-manager';
 
 const CLASS__DIALOG = 'oltb-dialog';
+const CLASS__DIALOG_TYPE = `${CLASS__DIALOG}--alert`;
 const CLASS__ANIMATION = 'oltb-animation';
 const CLASS__ANIMATION_BOUNCE = `${CLASS__ANIMATION}--bounce`;
 
 const DefaultOptions = Object.freeze({
     title: 'Alert',
-    message: 'Oops missing message',
+    message: '',
     confirmText: 'Ok',
     onConfirm: undefined
 });
@@ -25,7 +26,7 @@ class AlertDialog extends BaseDialog {
     #createDialog() {
         const dialog = DOM.createElement({
             element: 'div',
-            class: `${CLASS__DIALOG} ${CLASS__DIALOG}--alert ${CLASS__ANIMATION} ${CLASS__ANIMATION_BOUNCE}`
+            class: `${CLASS__DIALOG} ${CLASS__DIALOG_TYPE} ${CLASS__ANIMATION} ${CLASS__ANIMATION_BOUNCE}`
         });
 
         const title = DOM.createElement({
@@ -80,6 +81,10 @@ class AlertDialog extends BaseDialog {
         ])
 
         this.backdrop.focus();
+    }
+
+    getClassType() {
+        return CLASS__DIALOG_TYPE;
     }
 }
 

@@ -5,12 +5,13 @@ import { isDarkTheme } from '../../helpers/is-dark-theme';
 import { ElementManager } from '../../managers/element-manager/element-manager';
 
 const CLASS__DIALOG = 'oltb-dialog';
+const CLASS__DIALOG_TYPE = `${CLASS__DIALOG}--select`;
 const CLASS__ANIMATION = 'oltb-animation';
 const CLASS__ANIMATION_BOUNCE = `${CLASS__ANIMATION}--bounce`;
 
 const DefaultOptions = Object.freeze({
     title: 'Select',
-    message: 'Oops missing message',
+    message: '',
     value: undefined,
     options: [],
     confirmClass: 'oltb-btn--green-mid',
@@ -32,7 +33,7 @@ class SelectDialog extends BaseDialog {
     #createDialog() {
         const dialog = DOM.createElement({
             element: 'div', 
-            class: `${CLASS__DIALOG} ${CLASS__DIALOG}--prompt ${CLASS__ANIMATION} ${CLASS__ANIMATION_BOUNCE}`
+            class: `${CLASS__DIALOG} ${CLASS__DIALOG_TYPE} ${CLASS__ANIMATION} ${CLASS__ANIMATION_BOUNCE}`
         });
 
         const title = DOM.createElement({
@@ -72,7 +73,13 @@ class SelectDialog extends BaseDialog {
             ]);
         });
 
-        select.value = this.options.value || this.options.options[0].value;
+        if(this.options.value) {
+            select.value = this.options.value;
+        }else if(this.options.options.length > 0) {
+            select.value = this.options.options[0].value;
+        }else {
+            select.value = '';
+        }
 
         const buttonWrapper = DOM.createElement({
             element: 'div',
@@ -152,6 +159,10 @@ class SelectDialog extends BaseDialog {
         ]);
 
         this.backdrop.focus();
+    }
+
+    getClassType() {
+        return CLASS__DIALOG_TYPE;
     }
 }
 
