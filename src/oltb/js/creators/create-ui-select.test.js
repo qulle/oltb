@@ -43,7 +43,7 @@ describe('CreateUISelect', () => {
         expect(label.innerText).toBe('User selection expected');
     });
 
-    it('should contain three (3) options with "hp" selected', () => {
+    it('should contain three options with "hp" selected', () => {
         const select = uiSelect[1];
         expect(select.childNodes.length).toBe(3);
         expect(select.value).toBe('hp');

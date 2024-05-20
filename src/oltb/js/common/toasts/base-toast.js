@@ -121,6 +121,34 @@ class BaseToast {
         }, duration);
     }
 
+    getType() {
+        return this.options.type;
+    }
+
+    getTitle() {
+        return this.options.title;
+    }
+
+    getMessage() {
+        return this.options.message;
+    }
+
+    isSpinner() {
+        return this.options.spinner;
+    }
+
+    isClickableToRemove() {
+        return this.options.clickToRemove;
+    }
+
+    getAutoremoveNumber() {
+        return this.options.autoremove;
+    }
+
+    getElement() {
+        return this.toast;
+    }
+
     static get Info() { 
         return 'info'; 
     }

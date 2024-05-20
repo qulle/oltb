@@ -1,5 +1,5 @@
 describe('BaseToast', () => {
-    it('should be an empty test', () => {
+    it('This module is teste through the Toast-class', () => {
         expect(1).toEqual(1);
     });
 });
