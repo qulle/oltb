@@ -16,12 +16,25 @@ class BaseDialog {
                 'tabindex': '-1'
             },
             listeners: {
-                'click': this.bounceAnimation.bind(this),
+                'click': this.#bounceAnimation.bind(this),
                 'keydown': trapFocus
             }
         });
 
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
+    }
+
+    #isBackdropClicked(event) {
+        return event.target === this.backdrop;
+    }
+
+    #bounceAnimation(event) {
+        if(!this.#isBackdropClicked(event)) {
+            return;
+        }
+
+        const dialog = this.backdrop.firstElementChild;
+        DOM.runAnimation(dialog, CLASS__ANIMATION_BOUNCE);
     }
 
     //--------------------------------------------------------------------
@@ -36,19 +49,6 @@ class BaseDialog {
     //--------------------------------------------------------------------
     // # Section: Public API
     //--------------------------------------------------------------------
-    isBackdropClicked(event) {
-        return event.target === this.backdrop;
-    }
-
-    bounceAnimation(event) {
-        if(!this.isBackdropClicked(event)) {
-            return;
-        }
-
-        const dialog = this.backdrop.firstElementChild;
-        DOM.runAnimation(dialog, CLASS__ANIMATION_BOUNCE);
-    }
-
     close() {
         this.backdrop.removeEventListener(Events.browser.keyDown, trapFocus);
         DOM.removeElement(this.backdrop);

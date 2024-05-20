@@ -28,7 +28,7 @@ class BaseModal {
                 'tabindex': '-1'
             },
             listeners: {
-                'click': this.bounceAnimation.bind(this),
+                'click': this.#bounceAnimation.bind(this),
                 'keydown': trapFocus
             }
         });
@@ -91,6 +91,19 @@ class BaseModal {
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
     }
 
+    #isBackdropClicked(event) {
+        return event.target === this.backdrop;
+    }
+
+    #bounceAnimation(event) {
+        if(!this.#isBackdropClicked(event)) {
+            return;
+        }
+
+        const modal = this.backdrop.firstElementChild;
+        DOM.runAnimation(modal, CLASS__ANIMATION_BOUNCE);
+    }
+
     //--------------------------------------------------------------------
     // # Section: Events
     //--------------------------------------------------------------------
@@ -103,19 +116,6 @@ class BaseModal {
     //--------------------------------------------------------------------
     // # Section: Public API
     //--------------------------------------------------------------------
-    isBackdropClicked(event) {
-        return event.target === this.backdrop;
-    }
-
-    bounceAnimation(event) {
-        if(!this.isBackdropClicked(event)) {
-            return;
-        }
-
-        const modal = this.backdrop.firstElementChild;
-        DOM.runAnimation(modal, CLASS__ANIMATION_BOUNCE);
-    }
-
     show(content) {
         if(typeof content === 'string') {
             this.modalContent.innerHTML = content;
