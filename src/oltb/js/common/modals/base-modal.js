@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { DOM } from '../../helpers/browser/dom-factory';
 import { Keys } from '../../helpers/constants/keys';
 import { Events } from '../../helpers/constants/events';
@@ -10,17 +11,20 @@ const CLASS__ANIMATION_BOUNCE = `${CLASS__ANIMATION}--bounce`;
 const CLASS__MODAL = 'oltb-modal';
 const CLASS__MODAL_BACKDROP = `${CLASS__MODAL}-backdrop`;
 
-class BaseModal {
-    constructor(title, maximized, onClosed, content = undefined) {
-        this.#createModal(title, maximized, onClosed);
+const DefaultOptions = Object.freeze({
+    title: 'Modal',
+    maximized: false,
+    onClose: undefined,
+    content: undefined
+});
 
-        if(content) {
-            this.show(content);
-        }
+class BaseModal {
+    constructor(options = {}) {
+        this.options = _.merge(_.cloneDeep(DefaultOptions), options);
+        this.#createModal();
     }
 
-    #createModal(title, maximized, onClosed) {
-        this.onClosed = onClosed;
+    #createModal() {
         this.backdrop = DOM.createElement({
             element: 'div', 
             class: `${CLASS__MODAL_BACKDROP} ${CLASS__MODAL_BACKDROP}--fixed`,
@@ -35,7 +39,7 @@ class BaseModal {
 
         this.modal = DOM.createElement({
             element: 'div', 
-            class: `${CLASS__MODAL} ${ maximized 
+            class: `${CLASS__MODAL} ${ this.options.maximized 
                 ? `${CLASS__MODAL}--maximized` 
                 : ''
             } ${CLASS__ANIMATION} ${CLASS__ANIMATION_BOUNCE}`
@@ -53,7 +57,7 @@ class BaseModal {
 
         const modalTitle = DOM.createElement({
             element: 'h2', 
-            html: title,
+            html: this.options.title,
             class: `${CLASS__MODAL}__title`
         });
 
@@ -89,6 +93,10 @@ class BaseModal {
         ]);
 
         window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
+
+        if(this.options.content) {
+            this.show(this.options.content);
+        }
     }
 
     #isBackdropClicked(event) {
@@ -116,7 +124,25 @@ class BaseModal {
     //--------------------------------------------------------------------
     // # Section: Public API
     //--------------------------------------------------------------------
+    getTitle() {
+        return this.options.title;
+    }
+
+    getContent() {
+        return this.options.content;
+    }
+
+    getOnClose() {
+        return this.options.onClose;
+    }
+
+    isMaximized() {
+        return this.options.maximized;
+    }
+    
     show(content) {
+        this.options.content = content;
+
         if(typeof content === 'string') {
             this.modalContent.innerHTML = content;
         }else {
@@ -139,8 +165,8 @@ class BaseModal {
 
         // Note: 
         // @Consumer callback
-        if(this.onClosed instanceof Function) {
-            this.onClosed();
+        if(this.options.onClose instanceof Function) {
+            this.options.onClose();
         }
     }
 }

@@ -5,13 +5,21 @@ import { ElementManager } from '../../managers/element-manager/element-manager';
 
 describe('Toast', () => {
     beforeAll(() => {
-        // Note:
-        // The ElementManager creates and returns a reference to the HTML element where all 
-        // Toasts are injected in the DOM. Creating a new Toast will call the getToastElement and thus
-        // it needs to be mocked and return a temp element for that can be used during the tests.
         jest.spyOn(ElementManager, 'getToastElement').mockImplementation(() => {
             return window.document.createElement('div');
         });
+    });
+
+    it('should create a default toast', () => {
+        const toast = Toast.info();
+        
+        expect(toast).toBeTruthy();
+        expect(toast.getTitle()).toBe('Toast');
+        expect(toast.getMessage()).toBe('');
+        expect(toast.getI18NKey()).toBeUndefined();
+        expect(toast.getAutoremoveNumber()).toBeUndefined();
+        expect(toast.isClickableToRemove()).toBe(true);
+        expect(toast.isSpinner()).toBe(false);
     });
 
     it('should create a information-toast', () => {

@@ -1,5 +1,5 @@
 describe('BaseModal', () => {
-    it('should be an empty test', () => {
+    it('This module is tested through the Modal-class', () => {
         expect(1).toEqual(1);
     });
 });

@@ -149,6 +149,10 @@ class BaseToast {
         return this.toast;
     }
 
+    getI18NKey() {
+        return this.options.i18nKey;
+    }
+
     static get Info() { 
         return 'info'; 
     }
