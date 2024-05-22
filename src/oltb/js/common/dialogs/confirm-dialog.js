@@ -58,10 +58,7 @@ class ConfirmDialog extends BaseDialog {
                 'type': 'button' 
             },
             listeners: {
-                'click': () => {
-                    this.close();
-                    this.options.onConfirm instanceof Function && this.options.onConfirm();
-                }
+                'click': this.#onConfirm.bind(this)
             }
         });
         
@@ -76,10 +73,7 @@ class ConfirmDialog extends BaseDialog {
                 'type': 'button'
             },
             listeners: {
-                'click': () => {
-                    this.close();
-                    this.options.onCancel instanceof Function && this.options.onCancel();
-                }
+                'click': this.#onCancel.bind(this)
             }
         });
 
@@ -107,6 +101,22 @@ class ConfirmDialog extends BaseDialog {
         this.backdrop.focus();
     }
 
+    //--------------------------------------------------------------------
+    // # Section: Events
+    //--------------------------------------------------------------------
+    #onConfirm() {
+        this.close();
+        this.options.onConfirm instanceof Function && this.options.onConfirm();
+    }
+
+    #onCancel() {
+        this.close();
+        this.options.onCancel instanceof Function && this.options.onCancel();
+    }
+
+    //--------------------------------------------------------------------
+    // # Section: Public API
+    //--------------------------------------------------------------------
     getClassType() {
         return CLASS__DIALOG_TYPE;
     }

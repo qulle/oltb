@@ -60,7 +60,7 @@ class PromptDialog extends BaseDialog {
             },
             listeners: {
                 'input': () => {
-                    this.options.onInput instanceof Function && this.options.onInput(input.value.trim());
+                    this.#onInput(input);
                 }
             }
         });
@@ -86,10 +86,7 @@ class PromptDialog extends BaseDialog {
                 'type': 'button'
             },
             listeners: {
-                'click': () => {
-                    this.close();
-                    this.options.onConfirm instanceof Function && this.options.onConfirm(input.value.trim());
-                }
+                'click': this.#onConfirm.bind(this, input)
             }
         });
 
@@ -104,10 +101,7 @@ class PromptDialog extends BaseDialog {
                 'type': 'button'
             },
             listeners: {
-                'click': () => {
-                    this.close();
-                    this.options.onCancel instanceof Function && this.options.onCancel(); 
-                }
+                'click': this.#onCancel.bind(this)
             }
         });
 
@@ -136,6 +130,26 @@ class PromptDialog extends BaseDialog {
         this.backdrop.focus();
     }
 
+    //--------------------------------------------------------------------
+    // # Section: Events
+    //--------------------------------------------------------------------
+    #onInput(input) {
+        this.options.onInput instanceof Function && this.options.onInput(input.value.trim());
+    }
+
+    #onConfirm(input) {
+        this.close();
+        this.options.onConfirm instanceof Function && this.options.onConfirm(input.value.trim());
+    }
+
+    #onCancel() {
+        this.close();
+        this.options.onCancel instanceof Function && this.options.onCancel(); 
+    }
+
+    //--------------------------------------------------------------------
+    // # Section: Public API
+    //--------------------------------------------------------------------
     getClassType() {
         return CLASS__DIALOG_TYPE;
     }

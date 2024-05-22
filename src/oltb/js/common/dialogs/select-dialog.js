@@ -25,14 +25,14 @@ const DefaultOptions = Object.freeze({
 class SelectDialog extends BaseDialog {
     constructor(options = {}) {
         super();
-        
+
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
         this.#createDialog();
     }
 
     #createDialog() {
         const dialog = DOM.createElement({
-            element: 'div', 
+            element: 'div',
             class: `${CLASS__DIALOG} ${CLASS__DIALOG_TYPE} ${CLASS__ANIMATION} ${CLASS__ANIMATION_BOUNCE}`
         });
 
@@ -50,34 +50,31 @@ class SelectDialog extends BaseDialog {
 
         const select = DOM.createElement({
             element: 'select',
-            class: `${CLASS__DIALOG}__select oltb-select`, 
+            class: `${CLASS__DIALOG}__select oltb-select`,
             listeners: {
                 'change': () => {
-                    this.options.onChange instanceof Function && this.options.onChange({
-                        text: select.options[select.selectedIndex].text.trim(),
-                        value: select.value.trim()
-                    });
+                    this.#onChange(select);
                 }
             }
         });
 
         this.options.options.forEach((item) => {
             const option = DOM.createElement({
-                element: 'option', 
-                text: item.text, 
+                element: 'option',
+                text: item.text,
                 value: item.value
             });
-    
+
             DOM.appendChildren(select, [
                 option
             ]);
         });
 
-        if(this.options.value) {
+        if (this.options.value) {
             select.value = this.options.value;
-        }else if(this.options.options.length > 0) {
+        } else if (this.options.options.length > 0) {
             select.value = this.options.options[0].value;
-        }else {
+        } else {
             select.value = '';
         }
 
@@ -87,53 +84,29 @@ class SelectDialog extends BaseDialog {
         });
 
         const confirmButton = DOM.createElement({
-            element: 'button', 
+            element: 'button',
             text: this.options.confirmText,
             class: `${CLASS__DIALOG}__btn oltb-btn ${this.options.confirmClass}`,
             attributes: {
                 'type': 'button'
             },
             listeners: {
-                'click': () => {
-                    this.close();
-
-                    const fromValue = this.options.value;
-                    const fromOption = this.options.options.find((option) => {
-                        return option.value === fromValue;
-                    });
-                    
-                    const toValue = select.value;
-                    const toOption = select.options[select.selectedIndex];
-
-                    this.options.onConfirm instanceof Function && this.options.onConfirm({
-                        from: {
-                            text: fromOption.text.trim(),
-                            value: fromValue.trim()
-                        },
-                        to: {
-                            text: toOption.text.trim(),
-                            value: toValue.trim()
-                        }
-                    });
-                }
+                'click': this.#onConfirm.bind(this, select)
             }
         });
 
         const cancelButton = DOM.createElement({
-            element: 'button', 
+            element: 'button',
             text: this.options.cancelText,
-            class: `${CLASS__DIALOG}__btn oltb-btn ${ isDarkTheme() 
-                ? 'oltb-btn--gray-mid' 
+            class: `${CLASS__DIALOG}__btn oltb-btn ${isDarkTheme()
+                ? 'oltb-btn--gray-mid'
                 : 'oltb-btn--gray-dark'
-            }`,
+                }`,
             attributes: {
                 'type': 'button'
             },
             listeners: {
-                'click': () => {
-                    this.close();
-                    this.options.onCancel instanceof Function && this.options.onCancel(); 
-                }
+                'click': this.#onCancel.bind(this)
             }
         });
 
@@ -162,6 +135,47 @@ class SelectDialog extends BaseDialog {
         this.backdrop.focus();
     }
 
+    //--------------------------------------------------------------------
+    // # Section: Events
+    //--------------------------------------------------------------------
+    #onChange(select) {
+        this.options.onChange instanceof Function && this.options.onChange({
+            text: select.options[select.selectedIndex].text.trim(),
+            value: select.value.trim()
+        });
+    }
+
+    #onConfirm(select) {
+        this.close();
+
+        const fromValue = this.options.value;
+        const fromOption = this.options.options.find((option) => {
+            return option.value === fromValue;
+        });
+
+        const toValue = select.value;
+        const toOption = select.options[select.selectedIndex];
+
+        this.options.onConfirm instanceof Function && this.options.onConfirm({
+            from: {
+                text: fromOption.text.trim(),
+                value: fromValue.trim()
+            },
+            to: {
+                text: toOption.text.trim(),
+                value: toValue.trim()
+            }
+        });
+    }
+
+    #onCancel() {
+        this.close();
+        this.options.onCancel instanceof Function && this.options.onCancel();
+    }
+
+    //--------------------------------------------------------------------
+    // # Section: Public API
+    //--------------------------------------------------------------------
     getClassType() {
         return CLASS__DIALOG_TYPE;
     }

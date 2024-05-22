@@ -21,7 +21,7 @@ class BaseDialog {
             }
         });
 
-        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(Events.browser.keyUp, this.#onWindowKeyUp.bind(this));
     }
 
     #isBackdropClicked(event) {
@@ -40,7 +40,7 @@ class BaseDialog {
     //--------------------------------------------------------------------
     // # Section: Events
     //--------------------------------------------------------------------
-    onWindowKeyUp(event) {
+    #onWindowKeyUp(event) {
         if(event.key === Keys.valueEscape) {
             this.close();
         }
