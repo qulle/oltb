@@ -10,17 +10,17 @@ const LayerOptions = Object.freeze([
     }
 ]);
 
-const LayerTypes = Object.freeze({
+const LayerType = Object.freeze({
     'Tile': Tile,
     'Vector': Vector
 });
 
 const instantiateLayer = function(name, options) {
-    if(!(name in LayerTypes)) {
+    if(!(name in LayerType)) {
         return null;
     }
 
-    return new LayerTypes[name](options);
+    return new LayerType[name](options);
 }
 
-export { LayerOptions, LayerTypes, instantiateLayer };
+export { LayerOptions, LayerType, instantiateLayer };
