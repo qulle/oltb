@@ -49,4 +49,15 @@ describe('GetWindBarb', () => {
         expect(windBarb).toBeTruthy();
         expect(windBarb).toContain(WindBarb.knot0);
     });
+
+    it('should have encoded all "#" as "%23"', () => {
+        const windBarb = getWindBarb({
+            shouldReplaceHashtag: true,
+            fill: '#0099FF'
+        });
+
+        expect(windBarb).toBeTruthy();
+        expect(windBarb).toContain('%23');
+        expect(windBarb).not.toContain('#');
+    });
 });

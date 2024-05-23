@@ -2,7 +2,7 @@ import _ from 'lodash';
 import { metersPerSecondToKnots, roundDownToNearest, roundToNearest } from '../helpers/conversions';
 
 const WindBarb = Object.freeze({
-    knot0: '<path fill="#1A232D" d="M125,120c2.762,0,5,2.239,5,5c0,2.762-2.238,5-5,5c-2.761,0-5-2.238-5-5C120,122.239,122.239,120,125,120z"/><path fill="none" stroke="#1A232D" stroke-width="2" d="M125,115c5.523,0,10,4.477,10,10c0,5.523-4.477,10-10,10 c-5.523,0-10-4.477-10-10C115,119.477,119.477,115,125,115z "/>',
+    knot0: '<path fill="rgba(59, 67, 82, 1)" d="M125,120c2.762,0,5,2.239,5,5c0,2.762-2.238,5-5,5c-2.761,0-5-2.238-5-5C120,122.239,122.239,120,125,120z"/><path fill="none" stroke="rgba(59, 67, 82, 1)" stroke-width="2" d="M125,115c5.523,0,10,4.477,10,10c0,5.523-4.477,10-10,10 c-5.523,0-10-4.477-10-10C115,119.477,119.477,115,125,115z "/>',
     knot2: '<path d="M125,112V76 M125,125l7-12.1h-14L125,125z"/>',
     knot5: '<path d="M125,112V76 M125,89l7-7 M125,125l7-12.1h-14L125,125z"/>',
     knot10: '<path d="M125,112V89 M125,89l14-14 M125,125l7-12.1h-14L125,125z"/>',

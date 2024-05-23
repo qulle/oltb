@@ -29,4 +29,15 @@ describe('GetIcon', () => {
         expect(icon).toContain('width="36"');
         expect(icon).toContain('height="36"');
     });
+
+    it('should have encoded all "#" as "%23"', () => {
+        const icon = getIcon({
+            shouldReplaceHashtag: true,
+            fill: '#0099FF'
+        });
+
+        expect(icon).toBeTruthy();
+        expect(icon).toContain('%23');
+        expect(icon).not.toContain('#');
+    });
 });
