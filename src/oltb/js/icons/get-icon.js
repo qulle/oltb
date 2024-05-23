@@ -399,7 +399,7 @@ const SvgPaths = Object.freeze({
 });
 
 const DefaultOptions = Object.freeze({
-    path: SvgPaths.arrowClockwise.stroked,
+    path: SvgPaths.airplane.stroked,
     width: 24,
     height: 24,
     fill: 'currentColor',

@@ -1,5 +1,32 @@
+import { describe, it, expect } from '@jest/globals';
+import { SvgPaths, getIcon } from './get-icon';
+
 describe('GetIcon', () => {
-    it('should be an empty test', () => {
-        expect(1).toEqual(1);
+    it('should create default svg-icon', () => {
+        const icon = getIcon({});
+
+        expect(icon).toBeTruthy();
+        expect(icon).toContain('<svg xmlns="http://www.w3.org/2000/svg"');
+        expect(icon).toContain('</svg>');
+        expect(icon).toContain(SvgPaths.airplane.stroked);
+        expect(icon).toContain('width="24"');
+        expect(icon).toContain('height="24"');
+        expect(icon).toContain('fill="currentColor"');
+        expect(icon).toContain('stroke="#FFFFFFFF"');
+        expect(icon).toContain('stroke-width="0"');
+        expect(icon).toContain('class=""');
+    });
+
+    it('should create svg-icon by given path "SvgPaths.geoPin.stroked"', () => {
+        const icon = getIcon({
+            path: SvgPaths.geoPin.stroked,
+            width: 36,
+            height: 36
+        });
+
+        expect(icon).toBeTruthy();
+        expect(icon).toContain(SvgPaths.geoPin.stroked);
+        expect(icon).toContain('width="36"');
+        expect(icon).toContain('height="36"');
     });
 });
