@@ -1,5 +1,5 @@
 import { beforeAll, describe, it, expect } from '@jest/globals';
-import { createUIInput } from "./create-ui-input";
+import { createUIInput } from './create-ui-input';
 
 describe('CreateUIInput', () => {
     let uiInput = undefined;

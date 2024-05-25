@@ -1,5 +1,5 @@
 import { describe, it, expect } from '@jest/globals';
-import { isHorizontal } from "./is-row-direction";
+import { isHorizontal } from './is-row-direction';
 import { ConfigManager } from '../managers/config-manager/config-manager';
 
 describe('IsRowDirection', () => {

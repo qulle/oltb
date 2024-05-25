@@ -1,5 +1,5 @@
 import { describe, it, expect } from '@jest/globals';
-import { LayerOptions, LayerType, instantiateLayer } from "./ol-layer";
+import { LayerOptions, LayerType, instantiateLayer } from './ol-layer';
 
 describe('OpenLayers Layer', () => {
     it('should have two layer-options', () => {

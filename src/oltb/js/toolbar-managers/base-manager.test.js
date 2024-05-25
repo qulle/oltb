@@ -1,5 +1,5 @@
 import { describe, it, expect } from '@jest/globals';
-import { BaseManager } from "./base-manager";
+import { BaseManager } from './base-manager';
 
 describe('BaseManager', () => {
     it('should throw error for all methods since abstract class', async () => {

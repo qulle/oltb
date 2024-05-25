@@ -1,5 +1,5 @@
 import { beforeAll, describe, it, expect } from '@jest/globals';
-import { createUITooltip } from "./create-ui-tooltip";
+import { createUITooltip } from './create-ui-tooltip';
 
 describe('CreateUITooltip', () => {
     let uiTooltip = undefined;

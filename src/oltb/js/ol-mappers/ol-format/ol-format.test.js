@@ -1,5 +1,5 @@
 import { describe, it, expect } from '@jest/globals';
-import { FormatOptions, FormatType, instantiateFormat } from "./ol-format";
+import { FormatOptions, FormatType, instantiateFormat } from './ol-format';
 
 describe('OpenLayers Format', () => {
     it('should have two format-options', () => {

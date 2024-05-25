@@ -7,7 +7,7 @@ import {
     radiansToDegrees,
     metersPerSecondToKnots,
     knotsToMetersPerSecond
-} from "./conversions";
+} from './conversions';
 
 describe('Conversions', () => {
     describe('roundUpToNearest', () => {

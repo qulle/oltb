@@ -1,5 +1,5 @@
 import { describe, it, expect } from '@jest/globals';
-import { SourceOptions, SourceType, instantiateSource } from "./ol-source";
+import { SourceOptions, SourceType, instantiateSource } from './ol-source';
 
 describe('OpenLayers Source', () => {
     it('should have four sources', () => {

@@ -1,5 +1,5 @@
 import { beforeAll, describe, it, expect } from '@jest/globals';
-import { createUIColorInput } from "./create-ui-color-input";
+import { createUIColorInput } from './create-ui-color-input';
 
 describe('CreateUIColorInput', () => {
     let uiColorInput = undefined;

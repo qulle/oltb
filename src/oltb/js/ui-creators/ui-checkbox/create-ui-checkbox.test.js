@@ -1,5 +1,5 @@
 import { beforeAll, describe, it, expect } from '@jest/globals';
-import { createUICheckbox } from "./create-ui-checkbox";
+import { createUICheckbox } from './create-ui-checkbox';
 
 describe('CreateUICheckbox', () => {
     let uiCheckbox = undefined;

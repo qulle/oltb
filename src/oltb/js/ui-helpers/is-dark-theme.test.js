@@ -1,5 +1,5 @@
 import { describe, it, expect } from '@jest/globals';
-import { isDarkTheme } from "./is-dark-theme";
+import { isDarkTheme } from './is-dark-theme';
 import { ConfigManager } from '../managers/config-manager/config-manager';
 
 describe('IsDarkTheme', () => {

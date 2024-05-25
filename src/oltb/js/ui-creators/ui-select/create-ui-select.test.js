@@ -1,5 +1,5 @@
 import { beforeAll, describe, it, expect } from '@jest/globals';
-import { createUISelect } from "./create-ui-select";
+import { createUISelect } from './create-ui-select';
 
 describe('CreateUISelect', () => {
     let uiSelect = undefined;
