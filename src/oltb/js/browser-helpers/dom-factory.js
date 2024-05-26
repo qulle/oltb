@@ -3,37 +3,24 @@ import { ConfigManager } from '../../managers/config-manager/config-manager';
 class DOM {
     static createElement(options = {}) {
         const element = window.document.createElement(options.element);
+        const commonAttributes = [
+            {'id': 'id'},
+            {'class': 'className'},
+            {'value': 'value'},
+            {'text': 'innerText'},
+            {'html': 'innerHTML'},
+            {'style': 'style'},
+            {'title': 'title'},
+        ];
 
         // Note:
         // Common element attributes
-        if(options.id) {
-            element.id = options.id;
+        for(const attribute in commonAttributes) {
+            if(options[attribute]) {
+                element[attribute] = options[attribute];
+            }
         }
-
-        if(options.class) {
-            element.className = options.class;
-        }
-
-        if(options.value) {
-            element.value = options.value;
-        }
-
-        if(options.text) {
-            element.innerText = options.text;
-        }
-    
-        if(options.html) {
-            element.innerHTML = options.html;
-        }
-
-        if(options.style) {
-            element.style = options.style;
-        }
-
-        if(options.title) {
-            element.title = options.title;
-        }
-
+        
         // Note:
         // Attributes that needs to be set using setAttribute
         for(const attribute in options.attributes) {
