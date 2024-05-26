@@ -87,6 +87,7 @@ class DOM {
             return;
         }
 
+        // Note:
         // Trigger re-render of DOM between class toggle
         element.classList.remove(className);
         void element.offsetWidth;
