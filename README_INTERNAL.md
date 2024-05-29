@@ -1392,9 +1392,9 @@ There are two modules for using SVG icons. One is for basic icons and the other 
 #### Basic Icons
 Most of the icons are from [icons.getbootstrap.com](https://icons.getbootstrap.com/). Icons have been added on a as needed basis and far from all icons have been added.
 ```javascript
-import { SvgPaths, getIcon } from 'oltb/js/GetIcon';
+import { SvgPaths, getSvgIcon } from 'oltb/js/ui-icons/get-svg-icon';
 
-const icon = getIcon({
+const icon = getSvgIcon({
     path: SvgPaths.geoMarker.filled,
     class: 'some-class',
     width: 20,
@@ -1408,15 +1408,15 @@ In general, two version of each icon exists (stroked and filled). Some icons don
 ```javascript
 const name = 'geoPin';                // https://icons.getbootstrap.com/
 const version = 'filled';             // stroked | filled | mixed
-const path = SvgPaths[name][version]; // The 'getIcon' function wrapps the path with an svg element
+const path = SvgPaths[name][version]; // The 'getSvgIcon' function wrapps the path with an svg element
 ```
 
 #### WindBarb Icons
 The Wind Barbs are available from 0 to 190 knots (0 to 97.5m/s). To get more information about the Wind Barbs visit my other project [github.com/qulle/svg-wind-barbs](https://github.com/qulle/svg-wind-barbs).
 ```javascript
-import { getWindBarb } from 'oltb/js/GetWindBarb';
+import { getSvgWindBarb } from 'oltb/js/ui-icons/get-svg-wind-barb';
 
-const icon = getWindBarb({
+const icon = getSvgWindBarb({
     windSpeed: 25,
     width: 250,
     height: 250,

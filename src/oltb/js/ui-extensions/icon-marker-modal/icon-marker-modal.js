@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { DOM } from '../helpers/browser/dom-factory';
-import { SvgPaths } from '../icons/get-icon';
+import { SvgPaths } from '../../ui-icons/get-svg-icon/get-svg-icon';
 import { BaseModal } from '../common/modals/base-modal';
 import { isDarkTheme } from '../helpers/is-dark-theme';
 import { createUIInput } from '../creators/create-ui-input';

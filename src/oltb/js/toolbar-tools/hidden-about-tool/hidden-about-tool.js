@@ -4,8 +4,8 @@ import { LogManager } from '../../managers/log-manager/log-manager';
 import { ConfigManager } from '../../managers/config-manager/config-manager';
 import { ElementManager } from '../../managers/element-manager/element-manager';
 import { ContextMenuTool } from '../context-menu-tool/context-menu-tool';
-import { SvgPaths, getIcon } from '../../icons/get-icon';
 import { TranslationManager } from '../../managers/translation-manager/translation-manager';
+import { SvgPaths, getSvgIcon } from '../../ui-icons/get-svg-icon/get-svg-icon';
 
 const FILENAME = 'hidden-about-tool.js';
 const I18N__BASE = 'tools.hiddenAboutTool';
@@ -25,7 +25,7 @@ class HiddenAboutTool extends Control {
             element: ElementManager.getToolbarElement()
         });
 
-        this.icon = getIcon({
+        this.icon = getSvgIcon({
             path: SvgPaths.gitHub.mixed
         });
 

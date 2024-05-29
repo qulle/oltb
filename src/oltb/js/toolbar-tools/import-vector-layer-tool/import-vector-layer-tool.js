@@ -9,10 +9,10 @@ import { LayerManager } from '../../managers/layer-manager/layer-manager';
 import { ShortcutKeys } from '../../helpers/constants/shortcut-keys';
 import { ElementManager } from '../../managers/element-manager/element-manager';
 import { ImportLayerModal } from '../../modal-extensions/import-layer-modal';
-import { SvgPaths, getIcon } from '../../icons/get-icon';
 import { instantiateFormat } from '../../ol-mappers/ol-format';
 import { isShortcutKeyOnly } from '../../helpers/browser/is-shortcut-key-only';
 import { TranslationManager } from '../../managers/translation-manager/translation-manager';
+import { SvgPaths, getSvgIcon } from '../../ui-icons/get-svg-icon/get-svg-icon';
 
 const FILENAME = 'import-vector-layer-tool.js';
 const CLASS__TOOL_BUTTON = 'oltb-tool-button';
@@ -40,7 +40,7 @@ class ImportVectorLayerTool extends Control {
             element: ElementManager.getToolbarElement()
         });
         
-        const icon = getIcon({
+        const icon = getSvgIcon({
             path: SvgPaths.folderOpen.stroked,
             class: `${CLASS__TOOL_BUTTON}__icon`
         });

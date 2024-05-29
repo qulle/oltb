@@ -11,9 +11,9 @@ import { ShortcutKeys } from '../../helpers/constants/shortcut-keys';
 import { getRenderPixel } from 'ol/render';
 import { ElementManager } from '../../managers/element-manager/element-manager';
 import { LocalStorageKeys } from '../../helpers/constants/local-storage-keys';
-import { SvgPaths, getIcon } from '../../icons/get-icon';
 import { isShortcutKeyOnly } from '../../helpers/browser/is-shortcut-key-only';
 import { TranslationManager } from '../../managers/translation-manager/translation-manager';
+import { SvgPaths, getSvgIcon } from '../../ui-icons/get-svg-icon/get-svg-icon';
 
 const FILENAME = 'magnify-tool.js';
 const CLASS__TOOL_BUTTON = 'oltb-tool-button';
@@ -49,7 +49,7 @@ class MagnifyTool extends Control {
             element: ElementManager.getToolbarElement()
         });
         
-        const icon = getIcon({
+        const icon = getSvgIcon({
             path: SvgPaths.search.stroked,
             class: `${CLASS__TOOL_BUTTON}__icon`
         });

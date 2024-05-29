@@ -7,9 +7,9 @@ import { goToView } from '../../helpers/go-to-view';
 import { LogManager } from '../../managers/log-manager/log-manager';
 import { ShortcutKeys } from '../../helpers/constants/shortcut-keys';
 import { ElementManager } from '../../managers/element-manager/element-manager';
-import { SvgPaths, getIcon } from '../../icons/get-icon';
 import { isShortcutKeyOnly } from '../../helpers/browser/is-shortcut-key-only';
 import { TranslationManager } from '../../managers/translation-manager/translation-manager';
+import { SvgPaths, getSvgIcon } from '../../ui-icons/get-svg-icon/get-svg-icon';
 
 const FILENAME = 'zoom-in-tool.js';
 const CLASS__TOOL_BUTTON = 'oltb-tool-button';
@@ -37,7 +37,7 @@ class ZoomInTool extends Control {
             element: ElementManager.getToolbarElement()
         });
         
-        const icon = getIcon({
+        const icon = getSvgIcon({
             path: SvgPaths.zoomIn.stroked,
             class: `${CLASS__TOOL_BUTTON}__icon`
         });

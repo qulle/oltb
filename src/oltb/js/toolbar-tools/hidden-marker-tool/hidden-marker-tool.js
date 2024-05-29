@@ -8,8 +8,8 @@ import { FeatureManager } from '../../managers/feature-manager/feature-manager';
 import { ElementManager } from '../../managers/element-manager/element-manager';
 import { ContextMenuTool } from '../context-menu-tool/context-menu-tool';
 import { IconMarkerModal } from '../../modal-extensions/icon-marker-modal';
-import { SvgPaths, getIcon } from '../../icons/get-icon';
 import { TranslationManager } from '../../managers/translation-manager/translation-manager';
+import { SvgPaths, getSvgIcon } from '../../ui-icons/get-svg-icon/get-svg-icon';
 
 const FILENAME = 'hidden-marker-tool.js';
 const CLASS__FUNC_BUTTON = 'oltb-func-btn';
@@ -41,7 +41,7 @@ class HiddenMarkerTool extends Control {
         this.coordinatesModal = undefined;
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
 
-        this.createIcon = getIcon({
+        this.createIcon = getSvgIcon({
             path: SvgPaths.plusLarge.stroked
         });
 

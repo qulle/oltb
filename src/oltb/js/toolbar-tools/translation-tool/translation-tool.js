@@ -6,9 +6,9 @@ import { Control } from 'ol/control';
 import { LogManager } from '../../managers/log-manager/log-manager';
 import { ShortcutKeys } from '../../helpers/constants/shortcut-keys';
 import { ElementManager } from '../../managers/element-manager/element-manager';
-import { SvgPaths, getIcon } from '../../icons/get-icon';
 import { isShortcutKeyOnly } from '../../helpers/browser/is-shortcut-key-only';
 import { TranslationManager } from '../../managers/translation-manager/translation-manager';
+import { SvgPaths, getSvgIcon } from '../../ui-icons/get-svg-icon/get-svg-icon';
 
 const FILENAME = 'translation-tool.js';
 const CLASS__TOOL_BUTTON = 'oltb-tool-button';
@@ -34,7 +34,7 @@ class TranslationTool extends Control {
             element: ElementManager.getToolbarElement()
         });
         
-        const icon = getIcon({
+        const icon = getSvgIcon({
             path: SvgPaths.translate.mixed,
             class: `${CLASS__TOOL_BUTTON}__icon`
         });

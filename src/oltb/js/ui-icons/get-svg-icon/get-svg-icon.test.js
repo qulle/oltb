@@ -1,9 +1,10 @@
 import { describe, it, expect } from '@jest/globals';
-import { SvgPaths, getIcon } from './get-icon';
+import { SvgPaths } from './svg-paths';
+import { getSvgIcon } from './get-svg-icon';
 
-describe('GetIcon', () => {
+describe('getSvgIcon', () => {
     it('should create default svg-icon', () => {
-        const icon = getIcon({});
+        const icon = getSvgIcon({});
 
         expect(icon).toBeTruthy();
         expect(icon).toContain('<svg xmlns="http://www.w3.org/2000/svg"');
@@ -18,7 +19,7 @@ describe('GetIcon', () => {
     });
 
     it('should create svg-icon by given path "SvgPaths.geoPin.stroked"', () => {
-        const icon = getIcon({
+        const icon = getSvgIcon({
             path: SvgPaths.geoPin.stroked,
             width: 36,
             height: 36
@@ -31,7 +32,7 @@ describe('GetIcon', () => {
     });
 
     it('should have encoded all "#" as "%23"', () => {
-        const icon = getIcon({
+        const icon = getSvgIcon({
             shouldReplaceHashtag: true,
             fill: '#0099FF'
         });

@@ -27,12 +27,12 @@ import { createUITooltip } from '../../creators/create-ui-tooltip';
 import { SettingsManager } from '../../managers/settings-manager/settings-manager';
 import { degreesToRadians } from '../../helpers/conversions';
 import { LocalStorageKeys } from '../../helpers/constants/local-storage-keys';
-import { SvgPaths, getIcon } from '../../icons/get-icon';
 import { GeometryDataModal } from '../../modal-extensions/geometry-data-modal';
 import { isShortcutKeyOnly } from '../../helpers/browser/is-shortcut-key-only';
 import { FeatureProperties } from '../../helpers/constants/feature-properties';
 import { TranslationManager } from '../../managers/translation-manager/translation-manager';
 import { Fill, Stroke, Style } from 'ol/style';
+import { SvgPaths, getSvgIcon } from '../../ui-icons/get-svg-icon/get-svg-icon';
 import { Select, Modify, Translate } from 'ol/interaction';
 import { getMeasureCoordinates, getMeasureValue } from '../../helpers/measurements';
 import { GeometryCollection, LinearRing, LineString, MultiLineString, MultiPoint, MultiPolygon, Point, Polygon } from 'ol/geom';
@@ -126,7 +126,7 @@ class EditTool extends Control {
             element: ElementManager.getToolbarElement()
         });
         
-        const icon = getIcon({
+        const icon = getSvgIcon({
             path: SvgPaths.cursor.stroked,
             class: `${CLASS__TOOL_BUTTON}__icon`
         });
@@ -244,28 +244,28 @@ class EditTool extends Control {
                     <div class="${CLASS__TOOLBOX_SECTION}__group ${CLASS__TOOLBOX_SECTION}__group--sub-toolbar">
                         <label class="oltb-label" data-oltb-i18n="${I18N__BASE}.toolbox.groups.misc.title">${i18n.groups.misc.title}</label>
                         <button type="button" id="${ID__PREFIX}-delete-selected-button" ${buttonClasses} data-oltb-i18n="${I18N__BASE}.toolbox.groups.misc.delete" title="${i18n.groups.misc.delete}">
-                            ${getIcon({...DefaultButtonProps, path: SvgPaths.trash.stroked})}
+                            ${getSvgIcon({...DefaultButtonProps, path: SvgPaths.trash.stroked})}
                         </button>
                         <button type="button" id="${ID__PREFIX}-rotate-selected-button" ${buttonClasses} data-oltb-i18n="${I18N__BASE}.toolbox.groups.misc.rotate" title="${i18n.groups.misc.rotate}">
-                            ${getIcon({...DefaultButtonProps, path: SvgPaths.arrowRepeat.stroked})}
+                            ${getSvgIcon({...DefaultButtonProps, path: SvgPaths.arrowRepeat.stroked})}
                         </button>
                         <button type="button" id="${ID__PREFIX}-info-button" ${buttonClasses} data-oltb-i18n="${I18N__BASE}.toolbox.groups.misc.geometryData" title="${i18n.groups.misc.geometryData}">
-                            ${getIcon({...DefaultButtonProps, path: SvgPaths.infoCircle.stroked})}
+                            ${getSvgIcon({...DefaultButtonProps, path: SvgPaths.infoCircle.stroked})}
                         </button>
                     </div>
                     <div class="${CLASS__TOOLBOX_SECTION}__group ${CLASS__TOOLBOX_SECTION}__group--sub-toolbar">
                         <label class="oltb-label" data-oltb-i18n="${I18N__BASE}.toolbox.groups.shapes.title">${i18n.groups.shapes.title}</label>
                         <button type="button" id="${ID__PREFIX}-union-selected-button" ${buttonClasses} data-oltb-i18n="${I18N__BASE}.toolbox.groups.shapes.union" title="${i18n.groups.shapes.union}">
-                            ${getIcon({...DefaultButtonProps, path: SvgPaths.union.mixed})}
+                            ${getSvgIcon({...DefaultButtonProps, path: SvgPaths.union.mixed})}
                         </button>
                         <button type="button" id="${ID__PREFIX}-intersect-selected-button" ${buttonClasses} data-oltb-i18n="${I18N__BASE}.toolbox.groups.shapes.intersect" title="${i18n.groups.shapes.intersect}">
-                            ${getIcon({...DefaultButtonProps, path: SvgPaths.intersect.mixed})}
+                            ${getSvgIcon({...DefaultButtonProps, path: SvgPaths.intersect.mixed})}
                         </button>
                         <button type="button" id="${ID__PREFIX}-exclude-selected-button" ${buttonClasses} data-oltb-i18n="${I18N__BASE}.toolbox.groups.shapes.exclude" title="${i18n.groups.shapes.exclude}">
-                            ${getIcon({...DefaultButtonProps, path: SvgPaths.exclude.mixed})}
+                            ${getSvgIcon({...DefaultButtonProps, path: SvgPaths.exclude.mixed})}
                         </button>
                         <button type="button" id="${ID__PREFIX}-difference-selected-button" ${buttonClasses} data-oltb-i18n="${I18N__BASE}.toolbox.groups.shapes.difference" title="${i18n.groups.shapes.difference}">
-                            ${getIcon({...DefaultButtonProps, path: SvgPaths.subtract.mixed})}
+                            ${getSvgIcon({...DefaultButtonProps, path: SvgPaths.subtract.mixed})}
                         </button>
                     </div>
                     <div class="${CLASS__TOOLBOX_SECTION}__group ${CLASS__TOOLBOX_SECTION}__group--split-group">

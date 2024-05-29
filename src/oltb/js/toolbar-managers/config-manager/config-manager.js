@@ -44,6 +44,9 @@ class ConfigManager extends BaseManager {
         return this.#config || DefaultConfig;
     }
 
+    //--------------------------------------------------------------------
+    // # Section: Internal
+    //--------------------------------------------------------------------
     static async #loadConfigFileAsync(url) {
         const timestamp = Date.now().toString();
         

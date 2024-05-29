@@ -17,10 +17,10 @@ import { TooltipManager } from '../../managers/tooltip-manager/tooltip-manager';
 import { SettingsManager } from '../../managers/settings-manager/settings-manager';
 import { copyToClipboard } from '../../helpers/browser/copy-to-clipboard';
 import { LocalStorageKeys } from '../../helpers/constants/local-storage-keys';
-import { SvgPaths, getIcon } from '../../icons/get-icon';
 import { ProjectionManager } from '../../managers/projection-manager/projection-manager';
 import { isShortcutKeyOnly } from '../../helpers/browser/is-shortcut-key-only';
 import { TranslationManager } from '../../managers/translation-manager/translation-manager';
+import { SvgPaths, getSvgIcon } from '../../ui-icons/get-svg-icon/get-svg-icon';
 
 const FILENAME = 'coordinates-tool.js';
 const CLASS__TOOL_BUTTON = 'oltb-tool-button';
@@ -61,7 +61,7 @@ class CoordinatesTool extends Control {
             element: ElementManager.getToolbarElement()
         });
 
-        const icon = getIcon({
+        const icon = getSvgIcon({
             path: SvgPaths.crosshair.stroked,
             class: `${CLASS__TOOL_BUTTON}__icon`
         });

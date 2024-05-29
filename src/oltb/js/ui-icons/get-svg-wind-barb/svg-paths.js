@@ -1,7 +1,4 @@
-import _ from 'lodash';
-import { metersPerSecondToKnots, roundDownToNearest, roundToNearest } from '../helpers/conversions';
-
-const WindBarb = Object.freeze({
+const SvgPaths = Object.freeze({
     knot0: '<path fill="rgba(59, 67, 82, 1)" d="M125,120c2.762,0,5,2.239,5,5c0,2.762-2.238,5-5,5c-2.761,0-5-2.238-5-5C120,122.239,122.239,120,125,120z"/><path fill="none" stroke="rgba(59, 67, 82, 1)" stroke-width="2" d="M125,115c5.523,0,10,4.477,10,10c0,5.523-4.477,10-10,10 c-5.523,0-10-4.477-10-10C115,119.477,119.477,115,125,115z "/>',
     knot2: '<path d="M125,112V76 M125,125l7-12.1h-14L125,125z"/>',
     knot5: '<path d="M125,112V76 M125,89l7-7 M125,125l7-12.1h-14L125,125z"/>',
@@ -44,66 +41,4 @@ const WindBarb = Object.freeze({
     knot190: '<path d="M125,112V18 M125,18h14l-14,14V18z M125,32h14l-14,14V32z M125,46h14l-14,14V46z M125,70l14-14 M125,80l14-14 M125,90l14-14 M125,100l14-14 M125,125l7-12.1h-14L125,125z"/>'
 });
 
-const getSvgPath = function(windSpeed) {
-    // Note: 
-    // Base case that breaks the pattern of 2.5 m/s steps
-    if(windSpeed >= 1.0  && windSpeed < 2.5) {
-        return WindBarb.knot2;
-    }
-
-    const meterPerSecondStep = 2.5;
-    const lowerMeterPerSecond = roundDownToNearest(windSpeed, meterPerSecondStep);
-
-    const knots = metersPerSecondToKnots(lowerMeterPerSecond);
-
-    const knotPerSecondStep = 5;
-    const lowerKnotPerSecond = roundToNearest(knots, knotPerSecondStep);
-    
-    const windBarbName = `knot${lowerKnotPerSecond}`;
-    if(_.has(WindBarb, [windBarbName])) {
-        return WindBarb[windBarbName];
-    }
-
-    return WindBarb.knot0;
-}
-
-const DefaultOptions = Object.freeze({
-    windSpeed: 0,
-    width: 250,
-    height: 250,
-    fill: '#3B4352FF',
-    stroke: '#3B4352FF',
-    strokeWidth: 3,
-    shouldReplaceHashtag: false
-});
-
-const getWindBarb = function(options = {}) {
-    options = _.merge(_.cloneDeep(DefaultOptions), options);
-
-    // Note: 
-    // HEX Colors are not valid in SVG 
-    // Unless they are replaced with URL alternative char
-    const ENCODED_HASHTAG = '%23';
-
-    if(options.shouldReplaceHashtag) {   
-        options.fill = options.fill.replace('#', ENCODED_HASHTAG);
-        options.stroke = options.stroke.replace('#', ENCODED_HASHTAG);
-    }
-
-    return (`
-        <svg xmlns="http://www.w3.org/2000/svg" 
-            width="${options.width}" 
-            height="${options.height}" 
-            fill="${options.fill}"
-            stroke="${options.stroke}"
-            stroke-width="${options.strokeWidth}"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-miterlimit="10"
-            viewBox="0 0 250 250">
-            ${getSvgPath(options.windSpeed)}
-        </svg>
-    `);
-}
-
-export { WindBarb, getWindBarb };
+export { SvgPaths };

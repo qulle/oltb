@@ -18,9 +18,9 @@ import { ConfigManager } from '../../managers/config-manager/config-manager';
 import { ElementManager } from '../../managers/element-manager/element-manager';
 import { FeatureManager } from '../../managers/feature-manager/feature-manager';
 import { LocalStorageKeys } from '../../helpers/constants/local-storage-keys';
-import { SvgPaths, getIcon } from '../../icons/get-icon';
 import { isShortcutKeyOnly } from '../../helpers/browser/is-shortcut-key-only';
 import { TranslationManager } from '../../managers/translation-manager/translation-manager';
+import { SvgPaths, getSvgIcon } from '../../ui-icons/get-svg-icon/get-svg-icon';
 import { isFeatureIntersectable } from '../../helpers/is-feature-intersectable';
 import { Fill, Stroke, Circle, Style } from 'ol/style';
 import { GeometryCollection, LinearRing, LineString, MultiLineString, MultiPoint, MultiPolygon, Point, Polygon } from 'ol/geom';
@@ -63,7 +63,7 @@ class ScissorsTool extends Control {
             element: ElementManager.getToolbarElement()
         });
         
-        const icon = getIcon({
+        const icon = getSvgIcon({
             path: SvgPaths.scissors.filled,
             class: `${CLASS__TOOL_BUTTON}__icon`
         });

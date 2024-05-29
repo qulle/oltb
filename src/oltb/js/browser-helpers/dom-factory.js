@@ -66,6 +66,10 @@ class DOM {
         });
     }
 
+    static clearText(element) {
+        element.innerText = '';
+    }
+
     static clearElement(element) {
         element.innerHTML = '';
     }

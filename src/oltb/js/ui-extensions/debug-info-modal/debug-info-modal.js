@@ -11,9 +11,9 @@ import { StyleManager } from '../managers/style-manager/style-manager';
 import { jsonReplacer } from '../helpers/browser/json-replacer';
 import { ConfigManager } from '../managers/config-manager/config-manager';
 import { copyToClipboard } from '../helpers/browser/copy-to-clipboard';
-import { SvgPaths, getIcon } from '../icons/get-icon';
 import { ProjectionManager } from '../managers/projection-manager/projection-manager';
 import { TranslationManager } from '../managers/translation-manager/translation-manager';
+import { SvgPaths, getSvgIcon } from '../../ui-icons/get-svg-icon/get-svg-icon';
 
 const FILENAME = 'debug-info-modal.js';
 const ID__PREFIX = 'oltb-debug';
@@ -198,7 +198,7 @@ class DebugInfoModal extends BaseModal {
 
         const sectionToggle = DOM.createElement({
             element: 'button', 
-            html: getIcon({
+            html: getSvgIcon({
                 path: SvgPaths.chevronExpand.stroked, 
                 fill: 'none', 
                 stroke: 'currentColor',
@@ -422,7 +422,7 @@ class DebugInfoModal extends BaseModal {
 
         const logToggle = DOM.createElement({
             element: 'button', 
-            html: getIcon({
+            html: getSvgIcon({
                 path: SvgPaths.chevronExpand.stroked, 
                 fill: 'none', 
                 stroke: 'currentColor',

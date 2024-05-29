@@ -10,9 +10,9 @@ import { LogManager } from '../../managers/log-manager/log-manager';
 import { ShortcutKeys } from '../../helpers/constants/shortcut-keys';
 import { ElementManager } from '../../managers/element-manager/element-manager';
 import { ContextMenuTool } from '../context-menu-tool/context-menu-tool';
-import { SvgPaths, getIcon } from '../../icons/get-icon';
 import { isShortcutKeyOnly } from '../../helpers/browser/is-shortcut-key-only';
 import { TranslationManager } from '../../managers/translation-manager/translation-manager';
+import { SvgPaths, getSvgIcon } from '../../ui-icons/get-svg-icon/get-svg-icon';
 import { degreesToRadians, radiansToDegrees } from '../../helpers/conversions';
 
 const FILENAME = 'reset-north-tool.js';
@@ -40,12 +40,12 @@ class ResetNorthTool extends Control {
             element: ElementManager.getToolbarElement()
         });
         
-        this.icon = getIcon({
+        this.icon = getSvgIcon({
             path: SvgPaths.compass.stroked,
             class: `${CLASS__TOOL_BUTTON}__icon`
         });
 
-        this.resetRotationIcon = getIcon({
+        this.resetRotationIcon = getSvgIcon({
             path: SvgPaths.arrowRepeat.stroked,
             class: `${CLASS__TOOL_BUTTON}__icon`
         });

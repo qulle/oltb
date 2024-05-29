@@ -12,9 +12,9 @@ import { SettingsModal } from '../../modal-extensions/settings-modal';
 import { ElementManager } from '../../managers/element-manager/element-manager';
 import { ContextMenuTool } from '../context-menu-tool/context-menu-tool';
 import { SettingsManager } from '../../managers/settings-manager/settings-manager';
-import { SvgPaths, getIcon } from '../../icons/get-icon';
 import { isShortcutKeyOnly } from '../../helpers/browser/is-shortcut-key-only';
 import { TranslationManager } from '../../managers/translation-manager/translation-manager';
+import { SvgPaths, getSvgIcon } from '../../ui-icons/get-svg-icon/get-svg-icon';
 
 const FILENAME = 'settings-tool.js';
 const CLASS__TOOL_BUTTON = 'oltb-tool-button';
@@ -41,7 +41,7 @@ class SettingsTool extends Control {
             element: ElementManager.getToolbarElement()
         });
         
-        this.icon = getIcon({
+        this.icon = getSvgIcon({
             path: SvgPaths.gear.stroked,
             class: `${CLASS__TOOL_BUTTON}__icon`
         });

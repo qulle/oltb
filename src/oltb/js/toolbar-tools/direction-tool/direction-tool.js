@@ -9,9 +9,9 @@ import { ShortcutKeys } from '../../helpers/constants/shortcut-keys';
 import { ConfigManager } from '../../managers/config-manager/config-manager';
 import { ElementManager } from '../../managers/element-manager/element-manager';
 import { LocalStorageKeys } from '../../helpers/constants/local-storage-keys';
-import { SvgPaths, getIcon } from '../../icons/get-icon';
 import { isShortcutKeyOnly } from '../../helpers/browser/is-shortcut-key-only';
 import { TranslationManager } from '../../managers/translation-manager/translation-manager';
+import { SvgPaths, getSvgIcon } from '../../ui-icons/get-svg-icon/get-svg-icon';
 
 const FILENAME = 'direction-tool.js';
 const CLASS__TOOL_BUTTON = 'oltb-tool-button';
@@ -27,14 +27,14 @@ const DefaultOptions = Object.freeze({
 const DirectionData = Object.freeze({
     col: {
         class: 'col',
-        icon: getIcon({
+        icon: getSvgIcon({
             path: SvgPaths.symmetryHorizontal.mixed,
             class: `${CLASS__TOOL_BUTTON}__icon`
         })
     },
     row: {
         class: 'row',
-        icon: getIcon({
+        icon: getSvgIcon({
             path: SvgPaths.symmetryVertical.mixed,
             class: `${CLASS__TOOL_BUTTON}__icon`
         })

@@ -7,9 +7,9 @@ import { Control } from 'ol/control';
 import { LogManager } from '../../managers/log-manager/log-manager';
 import { ShortcutKeys } from '../../helpers/constants/shortcut-keys';
 import { ElementManager } from '../../managers/element-manager/element-manager';
-import { SvgPaths, getIcon } from '../../icons/get-icon';
 import { isShortcutKeyOnly } from '../../helpers/browser/is-shortcut-key-only';
 import { TranslationManager } from '../../managers/translation-manager/translation-manager';
+import { SvgPaths, getSvgIcon } from '../../ui-icons/get-svg-icon/get-svg-icon';
 import { FullscreenEvents, FullscreenEventTypes, isFullScreenSupported, isFullScreen, requestFullScreen, exitFullScreen } from '../../helpers/browser/fullscreen-handler';
 
 const FILENAME = 'fullscreen-tool.js';
@@ -38,12 +38,12 @@ class FullscreenTool extends Control {
             element: ElementManager.getToolbarElement()
         });
 
-        this.enterFullscreenIcon = getIcon({
+        this.enterFullscreenIcon = getSvgIcon({
             path: SvgPaths.fullscreen.stroked,
             class: `${CLASS__TOOL_BUTTON}__icon`
         });
 
-        this.exitFullscreenIcon = getIcon({
+        this.exitFullscreenIcon = getSvgIcon({
             path: SvgPaths.fullscreenExit.stroked,
             class: `${CLASS__TOOL_BUTTON}__icon`
         });

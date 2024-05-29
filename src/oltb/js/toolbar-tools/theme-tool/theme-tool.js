@@ -8,9 +8,9 @@ import { StateManager } from '../../managers/state-manager/state-manager';
 import { ShortcutKeys } from '../../helpers/constants/shortcut-keys';
 import { ElementManager } from '../../managers/element-manager/element-manager';
 import { LocalStorageKeys } from '../../helpers/constants/local-storage-keys';
-import { SvgPaths, getIcon } from '../../icons/get-icon';
 import { isShortcutKeyOnly } from '../../helpers/browser/is-shortcut-key-only';
 import { TranslationManager } from '../../managers/translation-manager/translation-manager';
+import { SvgPaths, getSvgIcon } from '../../ui-icons/get-svg-icon/get-svg-icon';
 
 const FILENAME = 'theme-tool.js';
 const CLASS__TOOL_BUTTON = 'oltb-tool-button';
@@ -26,14 +26,14 @@ const DefaultOptions = Object.freeze({
 const ThemesData = Object.freeze({
     light: {
         class: 'light',
-        icon: getIcon({
+        icon: getSvgIcon({
             path: SvgPaths.moonStars.stroked,
             class: `${CLASS__TOOL_BUTTON}__icon`
         })
     },
     dark: {
         class: 'dark',
-        icon: getIcon({
+        icon: getSvgIcon({
             path: SvgPaths.sun.stroked,
             class: `${CLASS__TOOL_BUTTON}__icon`
         })

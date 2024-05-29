@@ -20,11 +20,11 @@ import { FeatureManager } from '../../managers/feature-manager/feature-manager';
 import { ContextMenuTool } from '../context-menu-tool/context-menu-tool';
 import { copyToClipboard } from '../../helpers/browser/copy-to-clipboard';
 import { LocalStorageKeys } from '../../helpers/constants/local-storage-keys';
-import { SvgPaths, getIcon } from '../../icons/get-icon';
 import { InfoWindowManager } from '../../managers/info-window-manager/info-window-manager';
 import { isShortcutKeyOnly } from '../../helpers/browser/is-shortcut-key-only';
 import { TranslationManager } from '../../managers/translation-manager/translation-manager';
 import { generateAnimalName } from '../../helpers/name-generator/name-generator';
+import { SvgPaths, getSvgIcon } from '../../ui-icons/get-svg-icon/get-svg-icon';
 import { fromLonLat, toLonLat } from 'ol/proj';
 
 const FILENAME = 'bookmark-tool.js';
@@ -80,12 +80,12 @@ class BookmarkTool extends Control {
             element: ElementManager.getToolbarElement()
         });
         
-        this.icon = getIcon({
+        this.icon = getSvgIcon({
             path: SvgPaths.bookmarkStar.stroked,
             class: `${CLASS__TOOL_BUTTON}__icon`
         });
 
-        this.clearBookmarksIcon = getIcon({
+        this.clearBookmarksIcon = getSvgIcon({
             path: SvgPaths.bookmarkX.stroked
         });
 
@@ -173,7 +173,7 @@ class BookmarkTool extends Control {
                         <div class="oltb-input-button-group">
                             <input type="text" id="${ID__PREFIX}-add-text" class="oltb-input" data-oltb-i18n="${I18N__BASE}.toolbox.groups.addBookmark.placeholder" placeholder="${i18n.groups.addBookmark.placeholder}">
                             <button type="button" id="${ID__PREFIX}-add-button" class="oltb-btn oltb-btn--green-mid oltb-tippy" data-oltb-i18n="${I18N__BASE}.toolbox.groups.addBookmark.add" title="${i18n.groups.addBookmark.add}">
-                                ${getIcon({
+                                ${getSvgIcon({
                                     path: SvgPaths.plus.stroked,
                                     width: 20,
                                     height: 20,

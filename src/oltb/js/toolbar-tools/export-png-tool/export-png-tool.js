@@ -10,9 +10,9 @@ import { downloadFile } from '../../helpers/browser/download-file';
 import { ShortcutKeys } from '../../helpers/constants/shortcut-keys';
 import { ConfigManager } from '../../managers/config-manager/config-manager';
 import { ElementManager } from '../../managers/element-manager/element-manager';
-import { SvgPaths, getIcon } from '../../icons/get-icon';
 import { isShortcutKeyOnly } from '../../helpers/browser/is-shortcut-key-only';
 import { TranslationManager } from '../../managers/translation-manager/translation-manager';
+import { SvgPaths, getSvgIcon } from '../../ui-icons/get-svg-icon/get-svg-icon';
 
 const FILENAME = 'export-png-tool.js';
 const CLASS__TOOL_BUTTON = 'oltb-tool-button';
@@ -43,7 +43,7 @@ class ExportPngTool extends Control {
             element: ElementManager.getToolbarElement()
         });
         
-        const icon = getIcon({
+        const icon = getSvgIcon({
             path: SvgPaths.image.mixed,
             class: `${CLASS__TOOL_BUTTON}__icon`
         });

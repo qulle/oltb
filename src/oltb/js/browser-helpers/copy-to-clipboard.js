@@ -1,3 +1,5 @@
+import { DOM } from './dom-factory';
+
 const copyToClipboard = async function(text = '') {
     const value = text.trim();
 
@@ -7,13 +9,16 @@ const copyToClipboard = async function(text = '') {
     if(window.navigator.clipboard && window.isSecureContext) {
         await window.navigator.clipboard.writeText(value);
     }else {
-        const textArea = window.document.createElement('textarea');
-        textArea.value = value;
-        textArea.style.position = 'absolute';
-        textArea.style.left = '-999999px';
-        textArea.style.opacity = '0';
+        const textArea = DOM.createElement({
+            element: 'textarea',
+            value: value,
+            style: 'position: absolute; left: -999999px; opcaity: 0;'
+        });
         
+        // Append element to body
         window.document.body.prepend(textArea);
+
+        // Select all text so that copy-command can fetch the text
         textArea.select();
 
         try {

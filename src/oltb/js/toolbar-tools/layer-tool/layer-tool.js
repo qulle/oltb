@@ -20,7 +20,6 @@ import { ContextMenuTool } from '../context-menu-tool/context-menu-tool';
 import { instantiateLayer } from '../../ol-mappers/ol-layer';
 import { createUICheckbox } from '../../creators/create-ui-checkbox';
 import { LocalStorageKeys } from '../../helpers/constants/local-storage-keys';
-import { SvgPaths, getIcon } from '../../icons/get-icon';
 import { instantiateSource } from '../../ol-mappers/ol-source';
 import { instantiateFormat } from '../../ol-mappers/ol-format';
 import { InfoWindowManager } from '../../managers/info-window-manager/info-window-manager';
@@ -28,6 +27,7 @@ import { ProjectionManager } from '../../managers/projection-manager/projection-
 import { isShortcutKeyOnly } from '../../helpers/browser/is-shortcut-key-only';
 import { TranslationManager } from '../../managers/translation-manager/translation-manager';
 import { DownloadLayerModal } from '../../modal-extensions/download-layer-modal';
+import { SvgPaths, getSvgIcon } from '../../ui-icons/get-svg-icon/get-svg-icon';
 
 const FILENAME = 'layer-tool.js';
 const CLASS__TOOL_BUTTON = 'oltb-tool-button';
@@ -95,7 +95,7 @@ class LayerTool extends Control {
             element: ElementManager.getToolbarElement()
         });
         
-        this.icon = getIcon({
+        this.icon = getSvgIcon({
             path: SvgPaths.layers.stroked,
             class: `${CLASS__TOOL_BUTTON}__icon`
         });
@@ -231,7 +231,7 @@ class LayerTool extends Control {
                                 <div class="oltb-input-button-group">
                                     <input type="text" id="${ID__PREFIX}-feature-stack-add-text" class="oltb-input" data-oltb-i18n="${I18N__BASE}.toolbox.groups.createFeatureLayer.placeholder" placeholder="${i18n.groups.createFeatureLayer.placeholder}">
                                     <button type="button" id="${ID__PREFIX}-feature-stack-add-button" class="oltb-btn oltb-btn--green-mid oltb-tippy" data-oltb-i18n="${I18N__BASE}.toolbox.groups.createFeatureLayer.create" title="${i18n.groups.createFeatureLayer.create}">
-                                        ${getIcon({
+                                        ${getSvgIcon({
                                             path: SvgPaths.plus.stroked,
                                             width: 20,
                                             height: 20,

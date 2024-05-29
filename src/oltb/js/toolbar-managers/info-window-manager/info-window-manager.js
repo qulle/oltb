@@ -18,9 +18,9 @@ import { FeatureManager } from '../feature-manager/feature-manager';
 import { copyMarkerInfo } from './copy-marker-info';
 import { showMarkerLayer } from './show-marker-layer';
 import { getVectorContext } from 'ol/render';
-import { SvgPaths, getIcon } from '../../icons/get-icon';
 import { HexTransparencies } from '../../helpers/constants/hex-transparencies';
 import { FeatureProperties } from '../../helpers/constants/feature-properties';
+import { SvgPaths, getSvgIcon } from '../../ui-icons/get-svg-icon/get-svg-icon';
 import { copyMarkerCoordinates } from './copy-marker-coordinates';
 import { Fill, Stroke, Style, Circle as CircleStyle } from 'ol/style';
 
@@ -121,7 +121,7 @@ class InfoWindowManager extends BaseManager {
 
         const closeButton = DOM.createElement({
             element: 'button', 
-            html: getIcon({
+            html: getSvgIcon({
                 path: SvgPaths.close.stroked,
                 fill: 'none',
                 stroke: 'currentColor',

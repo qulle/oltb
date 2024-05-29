@@ -22,6 +22,10 @@ const goToView = function(options) {
 
     const view = options.map.getView();
     
+    if(!view) {
+        return;
+    }
+
     if(view.getAnimating()) {
         view.cancelAnimations();
     }

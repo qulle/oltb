@@ -2,11 +2,11 @@ import _ from 'lodash';
 import ManyKeysMap from 'many-keys-map';
 import { LogManager } from '../log-manager/log-manager';
 import { BaseManager } from '../base-manager';
-import { getWindBarb } from '../../icons/get-wind-barb';
 import { DefaultConfig } from '../config-manager/default-config';
+import { getSvgWindBarb } from '../../ui-icons/get-svg-wind-barb/get-svg-wind-barb';
 import { degreesToRadians } from '../../helpers/conversions';
-import { SvgPaths, getIcon } from '../../icons/get-icon';
 import { FeatureProperties } from '../../helpers/constants/feature-properties';
+import { SvgPaths, getSvgIcon } from '../../ui-icons/get-svg-icon/get-svg-icon';
 import { Circle, Fill, Icon, Text, Stroke, Style } from 'ol/style';
 
 const FILENAME = 'style-manager.js';
@@ -171,7 +171,7 @@ class StyleManager extends BaseManager {
             ? SvgPaths[iconName][iconVersion]
             : SvgPaths[defaultIconName][defaultIconVersion];
 
-        const iconSvg = getIcon({
+        const iconSvg = getSvgIcon({
             path: path,
             width: properties.icon.width,
             height: properties.icon.width,
@@ -226,7 +226,7 @@ class StyleManager extends BaseManager {
     }
 
     static #getWindBarbStyle(properties, resolution) {
-        const iconSvg = getWindBarb({
+        const iconSvg = getSvgWindBarb({
             windSpeed: properties.icon.key,
             width: properties.icon.width,
             height: properties.icon.height,

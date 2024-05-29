@@ -11,9 +11,9 @@ import { ConfigManager } from '../../managers/config-manager/config-manager';
 import { ElementManager } from '../../managers/element-manager/element-manager';
 import { ContextMenuTool } from '../context-menu-tool/context-menu-tool';
 import { LocalStorageKeys } from '../../helpers/constants/local-storage-keys';
-import { SvgPaths, getIcon } from '../../icons/get-icon';
 import { isShortcutKeyOnly } from '../../helpers/browser/is-shortcut-key-only';
 import { TranslationManager } from '../../managers/translation-manager/translation-manager';
+import { SvgPaths, getSvgIcon } from '../../ui-icons/get-svg-icon/get-svg-icon';
 
 const FILENAME = 'home-tool.js';
 const CLASS__TOOL_BUTTON = 'oltb-tool-button';
@@ -55,7 +55,7 @@ class HomeTool extends Control {
             element: ElementManager.getToolbarElement()
         });
         
-        this.icon = getIcon({
+        this.icon = getSvgIcon({
             path: SvgPaths.house.stroked,
             class: `${CLASS__TOOL_BUTTON}__icon`
         });

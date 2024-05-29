@@ -1,14 +1,15 @@
 import { describe, it, expect } from '@jest/globals';
-import { WindBarb, getWindBarb } from './get-wind-barb';
+import { SvgPaths } from './svg-paths';
+import { getSvgWindBarb } from './get-svg-wind-barb';
 
-describe('GetWindBarb', () => {
+describe('getSvgWindBarb', () => {
     it('should create default svg-windBarb', () => {
-        const windBarb = getWindBarb({});
+        const windBarb = getSvgWindBarb({});
 
         expect(windBarb).toBeTruthy();
         expect(windBarb).toContain('<svg xmlns="http://www.w3.org/2000/svg"');
         expect(windBarb).toContain('</svg>');
-        expect(windBarb).toContain(WindBarb.knot0);
+        expect(windBarb).toContain(SvgPaths.knot0);
         expect(windBarb).toContain('width="250"');
         expect(windBarb).toContain('height="250"');
         expect(windBarb).toContain('fill="#3B4352FF"');
@@ -20,38 +21,38 @@ describe('GetWindBarb', () => {
     });
 
     it('should create windBarb for 1 m/s = 2 knots', () => {
-        const windBarb = getWindBarb({
+        const windBarb = getSvgWindBarb({
             windSpeed: 1
         });
 
         expect(windBarb).toBeTruthy();
-        expect(windBarb).toContain(WindBarb.knot2);
+        expect(windBarb).toContain(SvgPaths.knot2);
     });
 
     it('should create windBarb for 25 m/s = 50 knots', () => {
-        const windBarb = getWindBarb({
+        const windBarb = getSvgWindBarb({
             windSpeed: 25,
             width: 200,
             height: 200
         });
 
         expect(windBarb).toBeTruthy();
-        expect(windBarb).toContain(WindBarb.knot50);
+        expect(windBarb).toContain(SvgPaths.knot50);
         expect(windBarb).toContain('width="200"');
         expect(windBarb).toContain('height="200"');
     });
 
     it('should fallback to 0 knots icon for to high m/s value', () => {
-        const windBarb = getWindBarb({
+        const windBarb = getSvgWindBarb({
             windSpeed: 1000
         });
 
         expect(windBarb).toBeTruthy();
-        expect(windBarb).toContain(WindBarb.knot0);
+        expect(windBarb).toContain(SvgPaths.knot0);
     });
 
     it('should have encoded all "#" as "%23"', () => {
-        const windBarb = getWindBarb({
+        const windBarb = getSvgWindBarb({
             shouldReplaceHashtag: true,
             fill: '#0099FF'
         });

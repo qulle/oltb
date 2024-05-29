@@ -16,11 +16,11 @@ import { CoordinateModal } from '../../modal-extensions/coordinate-modal';
 import { copyToClipboard } from '../../helpers/browser/copy-to-clipboard';
 import { ContextMenuTool } from '../context-menu-tool/context-menu-tool';
 import { LocalStorageKeys } from '../../helpers/constants/local-storage-keys';
-import { SvgPaths, getIcon } from '../../icons/get-icon';
 import { InfoWindowManager } from '../../managers/info-window-manager/info-window-manager';
 import { ProjectionManager } from '../../managers/projection-manager/projection-manager';
 import { TranslationManager } from '../../managers/translation-manager/translation-manager';
 import { fromLonLat, toLonLat } from 'ol/proj';
+import { SvgPaths, getSvgIcon } from '../../ui-icons/get-svg-icon/get-svg-icon';
 
 const FILENAME = 'hidden-map-navigation-tool.js';
 const CLASS__FUNC_BUTTON = 'oltb-func-btn';
@@ -89,19 +89,19 @@ class HiddenMapNavigationTool extends Control {
             LocalStorageDefaults
         );
 
-        this.clipboardIcon = getIcon({
+        this.clipboardIcon = getSvgIcon({
             path: SvgPaths.clipboard.stroked
         });
 
-        this.coordinatesIcon = getIcon({
+        this.coordinatesIcon = getSvgIcon({
             path: SvgPaths.crosshair.stroked
         });
 
-        this.moveCenterIcon = getIcon({
+        this.moveCenterIcon = getSvgIcon({
             path: SvgPaths.arrowsMove.stroked
         });
         
-        this.focusHereIcon = getIcon({
+        this.focusHereIcon = getSvgIcon({
             path: SvgPaths.aspectRatio.stroked
         });
 

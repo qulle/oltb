@@ -4,7 +4,7 @@ import { Keys } from '../../helpers/constants/keys';
 import { Events } from '../../helpers/constants/events';
 import { trapFocus } from '../../helpers/browser/trap-focus';
 import { ElementManager } from '../../managers/element-manager/element-manager';
-import { SvgPaths, getIcon } from '../../icons/get-icon';
+import { SvgPaths, getSvgIcon } from '../../ui-icons/get-svg-icon/get-svg-icon';
 
 const CLASS__ANIMATION = 'oltb-animation';
 const CLASS__ANIMATION_BOUNCE = `${CLASS__ANIMATION}--bounce`;
@@ -63,7 +63,7 @@ class BaseModal {
 
         const modalClose = DOM.createElement({
             element: 'button', 
-            html: getIcon({
+            html: getSvgIcon({
                 path: SvgPaths.close.stroked, 
                 fill: 'none', 
                 stroke: 'currentColor',
