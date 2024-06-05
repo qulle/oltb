@@ -1,11 +1,11 @@
 import _ from 'lodash';
-import { DOM } from '../helpers/browser/dom-factory';
-import { BaseModal } from '../common/modals/base-modal';
-import { isDarkTheme } from '../helpers/is-dark-theme';
-import { ConfigManager } from '../managers/config-manager/config-manager';
-import { createUISelect } from '../creators/create-ui-select';
-import { ProjectionManager } from '../managers/projection-manager/projection-manager';
-import { TranslationManager } from '../managers/translation-manager/translation-manager';
+import { DOM } from '../../browser-helpers/dom-factory';
+import { BaseModal } from '../../ui-common/ui-modals/base-modal';
+import { isDarkTheme } from '../../';
+import { ConfigManager } from '../../toolbar-managers/config-manager/config-manager';
+import { createUISelect } from '../../ui-creators/ui-select/create-ui-select';
+import { ProjectionManager } from '../../toolbar-managers/projection-manager/projection-manager';
+import { TranslationManager } from '../../toolbar-managers/translation-manager/translation-manager';
 
 const FILENAME = 'import-layer-modal.js';
 const ID__PREFIX = 'oltb-import-layer-modal';

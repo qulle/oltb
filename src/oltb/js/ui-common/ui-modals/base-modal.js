@@ -1,9 +1,9 @@
 import _ from 'lodash';
-import { DOM } from '../../helpers/browser/dom-factory';
-import { Keys } from '../../helpers/constants/keys';
-import { Events } from '../../helpers/constants/events';
-import { trapFocus } from '../../helpers/browser/trap-focus';
-import { ElementManager } from '../../managers/element-manager/element-manager';
+import { DOM } from '../../browser-helpers/dom-factory';
+import { Keys } from '../../browser-constants/keys';
+import { Events } from '../../browser-constants/events';
+import { trapFocus } from '../../browser-helpers/trap-focus';
+import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 import { SvgPaths, getSvgIcon } from '../../ui-icons/get-svg-icon/get-svg-icon';
 
 const CLASS__ANIMATION = 'oltb-animation';

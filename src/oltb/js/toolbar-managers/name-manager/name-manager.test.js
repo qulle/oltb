@@ -1,11 +1,11 @@
 import { describe, it, expect } from '@jest/globals';
-import { generateAnimalName } from './name-generator';
+import { NameManager } from './name-manager';
 import '../../helpers/prototypes/string';
 
-describe('NameGenerator', () => {
-    it('should create a concatenated animal and adjective', () => {
-        const animal = generateAnimalName();
-        expect(animal.length).toBeGreaterThan(0);
-        expect(animal).toContain(' ');
+describe('NameManager', () => {
+    it('should create a concatenated name', () => {
+        const name = NameManager.generate();
+        expect(name.length).toBeGreaterThan(0);
+        expect(name).toContain(' ');
     });
 });

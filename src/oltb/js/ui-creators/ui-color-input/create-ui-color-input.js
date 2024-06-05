@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { DOM } from '../../helpers/browser/dom-factory';
+import { DOM } from '../../browser-helpers/dom-factory';
 
 const CLASS__COLOR_INPUT = 'oltb-color-input';
 

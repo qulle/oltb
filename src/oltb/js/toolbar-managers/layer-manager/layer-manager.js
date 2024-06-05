@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { Events } from '../../helpers/constants/events';
+import { Events } from '../../browser-constants/events';
 import { Collection } from 'ol';
 import { LogManager } from '../log-manager/log-manager';
 import { BaseManager } from '../base-manager';

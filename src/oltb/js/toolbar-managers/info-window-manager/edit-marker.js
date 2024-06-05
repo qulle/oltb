@@ -1,11 +1,11 @@
-import { Events } from '../../helpers/constants/events';
+import { Events } from '../../browser-constants/events';
 import { transform } from 'ol/proj';
 import { toStringHDMS } from 'ol/coordinate';
 import { LayerManager } from '../layer-manager/layer-manager';
 import { ConfigManager } from '../config-manager/config-manager';
 import { DefaultConfig } from '../config-manager/default-config';
 import { FeatureManager } from '../feature-manager/feature-manager';
-import { IconMarkerModal } from '../../modal-extensions/icon-marker-modal';
+import { IconMarkerModal } from '../../ui-extensions/icon-marker-modal/icon-marker-modal';
 import { TranslationManager } from '../translation-manager/translation-manager';
 
 const ID__PREFIX_INFO_WINDOW = 'oltb-info-window-marker';

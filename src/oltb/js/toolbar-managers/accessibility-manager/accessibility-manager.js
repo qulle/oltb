@@ -1,5 +1,5 @@
-import { Keys } from '../../helpers/constants/keys';
-import { Events } from '../../helpers/constants/events';
+import { Keys } from '../../browser-constants/keys';
+import { Events } from '../../browser-constants/events';
 import { LogManager } from '../log-manager/log-manager';
 import { BaseManager } from '../base-manager';
 

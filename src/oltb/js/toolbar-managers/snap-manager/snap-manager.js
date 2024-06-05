@@ -1,9 +1,9 @@
 import { DOM } from '../../helpers/browser/dom-factory';
 import { Snap } from 'ol/interaction';
-import { Events } from '../../helpers/constants/events';
+import { Events } from '../../browser-constants/events';
 import { Overlay } from 'ol';
 import { unByKey } from 'ol/Observable';
-import { Settings } from '../../helpers/constants/settings';
+import { Settings } from '../../browser-constants/settings';
 import { LogManager } from '../log-manager/log-manager';
 import { BaseManager } from '../base-manager';
 import { LayerManager } from '../layer-manager/layer-manager';

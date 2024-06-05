@@ -1,6 +1,6 @@
 import _ from 'lodash';
-import { DOM } from '../../helpers/browser/dom-factory';
-import { TranslationManager } from '../../managers/translation-manager/translation-manager';
+import { DOM } from '../../browser-helpers/dom-factory';
+import { TranslationManager } from '../../toolbar-managers/translation-manager/translation-manager';
 
 const CLASS__CHECKBOX_WRAPPER = 'oltb-checkbox-wrapper';
 

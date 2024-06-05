@@ -1,5 +1,5 @@
 import { DOM } from './dom-factory';
-import { LogManager } from '../../managers/log-manager/log-manager';
+import { LogManager } from '../toolbar-managers/log-manager/log-manager';
 
 const FILENAME = 'download-file.js';
 
@@ -8,7 +8,7 @@ const isImage = function(name) {
 }
 
 const downloadFile = function(name, content) {
-    LogManager.logDebug(FILENAME, 'download', name);
+    LogManager.logDebug(FILENAME, 'downloadFile', name);
 
     const downloadTrigger = DOM.createElement({
         element: 'a', 

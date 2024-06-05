@@ -1,7 +1,7 @@
 import _ from 'lodash';
-import { DOM } from '../helpers/browser/dom-factory';
-import { BaseModal } from '../common/modals/base-modal';
-import { TranslationManager } from '../managers/translation-manager/translation-manager';
+import { DOM } from '../../browser-helpers/dom-factory';
+import { BaseModal } from '../../ui-common/ui-modals/base-modal';
+import { TranslationManager } from '../../toolbar-managers/translation-manager/translation-manager';
 
 const FILENAME = 'geometry-data-modal.js';
 const I18N__BASE = 'modalExtensions.geometryDataModal';

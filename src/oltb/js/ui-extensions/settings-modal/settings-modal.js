@@ -1,10 +1,10 @@
 import _ from 'lodash';
-import { DOM } from '../helpers/browser/dom-factory';
-import { BaseModal } from '../common/modals/base-modal';
-import { isDarkTheme } from '../helpers/is-dark-theme';
-import { SettingsManager } from '../managers/settings-manager/settings-manager';
-import { createUICheckbox } from '../creators/create-ui-checkbox';
-import { TranslationManager } from '../managers/translation-manager/translation-manager';
+import { DOM } from '../../browser-helpers/dom-factory';
+import { BaseModal } from '../../ui-common/ui-modals/base-modal';
+import { isDarkTheme } from '../../ui-helpers/is-dark-theme/is-dark-theme';
+import { SettingsManager } from '../../toolbar-managers/settings-manager/settings-manager';
+import { createUICheckbox } from '../../ui-creators/ui-checkbox/create-ui-checkbox';
+import { TranslationManager } from '../../toolbar-managers/translation-manager/translation-manager';
 
 const FILENAME = 'settings-modal.js';
 const I18N__BASE = 'modalExtensions.settingsModal';

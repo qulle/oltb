@@ -4,7 +4,7 @@ import { AlertDialog } from './alert-dialog';
 import { PromptDialog } from './prompt-dialog';
 import { SelectDialog } from './select-dialog';
 import { ConfirmDialog } from './confirm-dialog';
-import { ElementManager } from '../../managers/element-manager/element-manager';
+import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 
 const CLASS__DIALOG = 'oltb-dialog';
 

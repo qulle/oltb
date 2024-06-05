@@ -1,7 +1,7 @@
 import { jest, beforeAll, beforeEach, describe, it, expect } from '@jest/globals';
-import { DOM } from '../../helpers/browser/dom-factory';
+import { DOM } from '../../browser-helpers/dom-factory';
 import { BaseDialog } from './base-dialog';
-import { ElementManager } from '../../managers/element-manager/element-manager';
+import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 
 describe('BaseDialog', () => {
     let dialog = undefined;

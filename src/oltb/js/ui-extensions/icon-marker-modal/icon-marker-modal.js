@@ -1,12 +1,12 @@
 import _ from 'lodash';
-import { DOM } from '../helpers/browser/dom-factory';
+import { DOM } from '../../browser-helpers/dom-factory';
 import { SvgPaths } from '../../ui-icons/get-svg-icon/get-svg-icon';
-import { BaseModal } from '../common/modals/base-modal';
-import { isDarkTheme } from '../helpers/is-dark-theme';
-import { createUIInput } from '../creators/create-ui-input';
-import { createUISelect } from '../creators/create-ui-select';
-import { createUIColorInput } from '../creators/create-ui-color-input';
-import { TranslationManager } from '../managers/translation-manager/translation-manager';
+import { BaseModal } from '../../ui-common/ui-modals/base-modal';
+import { isDarkTheme } from '../../ui-helpers/is-dark-theme/is-dark-theme';
+import { createUIInput } from '../../ui-creators/ui-input/create-ui-input';
+import { createUISelect } from '../../ui-creators/ui-select/create-ui-select';
+import { createUIColorInput } from '../../ui-creators/ui-color-input/create-ui-color-input';
+import { TranslationManager } from '../../toolbar-managers/translation-manager/translation-manager';
 
 const FILENAME = 'icon-marker-modal.js';
 const ID__PREFIX = 'oltb-marker-modal-marker';

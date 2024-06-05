@@ -1,6 +1,6 @@
 import { describe, it, expect } from '@jest/globals';
 import { isDarkTheme } from './is-dark-theme';
-import { ConfigManager } from '../managers/config-manager/config-manager';
+import { ConfigManager } from '../../toolbar-managers/config-manager/config-manager';
 
 describe('IsDarkTheme', () => {
     it('should not be dark theme', () => {

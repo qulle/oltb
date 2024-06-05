@@ -1,8 +1,8 @@
 import _ from 'lodash';
-import { DOM } from '../../helpers/browser/dom-factory';
+import { DOM } from '../../browser-helpers/dom-factory';
 import { BaseDialog } from './base-dialog';
-import { isDarkTheme } from '../../helpers/is-dark-theme';
-import { ElementManager } from '../../managers/element-manager/element-manager';
+import { isDarkTheme } from '../../ui-helpers/is-dark-theme/is-dark-theme';
+import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 
 const CLASS__DIALOG = 'oltb-dialog';
 const CLASS__DIALOG_TYPE = `${CLASS__DIALOG}--select`;

@@ -1,9 +1,9 @@
 import _ from 'lodash';
-import { DOM } from '../helpers/browser/dom-factory';
-import { BaseModal } from '../common/modals/base-modal';
-import { isDarkTheme } from '../helpers/is-dark-theme';
-import { createUIInput } from '../creators/create-ui-input';
-import { TranslationManager } from '../managers/translation-manager/translation-manager';
+import { DOM } from '../../browser-helpers/dom-factory';
+import { BaseModal } from '../../ui-common/ui-modals/base-modal';
+import { isDarkTheme } from '../../ui-helpers/is-dark-theme/is-dark-theme';
+import { createUIInput } from '../../ui-creators/ui-input/create-ui-input';
+import { TranslationManager } from '../../toolbar-managers/translation-manager/translation-manager';
 
 const FILENAME = 'coordinate-model.js';
 const ID__PREFIX = 'oltb-coordinates-modal';

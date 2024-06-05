@@ -1,5 +1,5 @@
-import { Toast } from '../../common/toasts/toast';
-import { Events } from '../../helpers/constants/events';
+import { Toast } from '../../ui-common/ui-toasts/toast';
+import { Events } from '../../browser-constants/events';
 import { LogManager } from '../log-manager/log-manager';
 import { BaseManager } from '../base-manager';
 

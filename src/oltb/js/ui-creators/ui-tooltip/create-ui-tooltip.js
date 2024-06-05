@@ -1,6 +1,6 @@
-import { DOM } from '../../helpers/browser/dom-factory';
+import { DOM } from '../../browser-helpers/dom-factory';
 import { Overlay } from 'ol';
-import { ConfigManager } from '../../managers/config-manager/config-manager';
+import { ConfigManager } from '../../toolbar-managers/config-manager/config-manager';
 
 const CLASS__OVERLAY_TOOLTIP = 'oltb-overlay-tooltip';
 

@@ -1,6 +1,6 @@
 import { jest, beforeAll, describe, it, expect } from '@jest/globals';
 import { Toast } from './toast';
-import { ElementManager } from '../../managers/element-manager/element-manager';
+import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 
 describe('Toast', () => {
     beforeAll(() => {

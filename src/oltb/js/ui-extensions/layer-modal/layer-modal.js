@@ -1,14 +1,14 @@
 import _ from 'lodash';
-import { DOM } from '../helpers/browser/dom-factory';
-import { BaseModal } from '../common/modals/base-modal';
-import { isDarkTheme } from '../helpers/is-dark-theme';
-import { LayerOptions } from '../ol-mappers/ol-layer';
-import { SourceOptions } from '../ol-mappers/ol-source';
-import { ConfigManager } from '../managers/config-manager/config-manager';
-import { createUIInput } from '../creators/create-ui-input';
-import { createUISelect } from '../creators/create-ui-select';
-import { ProjectionManager } from '../managers/projection-manager/projection-manager';
-import { TranslationManager } from '../managers/translation-manager/translation-manager';
+import { DOM } from '../../browser-helpers/dom-factory';
+import { BaseModal } from '../../ui-common/ui-modals/base-modal';
+import { isDarkTheme } from '../../ui-helpers/is-dark-theme/is-dark-theme';
+import { LayerOptions } from '../../ol-mappers/ol-layer/ol-layer';
+import { SourceOptions } from '../../ol-mappers/ol-source/ol-source';
+import { ConfigManager } from '../../toolbar-managers/config-manager/config-manager';
+import { createUIInput } from '../../ui-creators/ui-input/create-ui-input';
+import { createUISelect } from '../../ui-creators/ui-select/create-ui-select';
+import { ProjectionManager } from '../../toolbar-managers/projection-manager/projection-manager';
+import { TranslationManager } from '../../toolbar-managers/translation-manager/translation-manager';
 
 const FILENAME = 'layer-modal.js';
 const ID__PREFIX = 'oltb-layer-modal';

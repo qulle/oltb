@@ -1,9 +1,9 @@
 import _ from 'lodash';
-import { DOM } from '../../helpers/browser/dom-factory';
-import { Events } from '../../helpers/constants/events';
-import { ConfigManager } from '../../managers/config-manager/config-manager';
-import { ElementManager } from '../../managers/element-manager/element-manager';
-import { TranslationManager } from '../../managers/translation-manager/translation-manager';
+import { DOM } from '../../browser-helpers/dom-factory';
+import { Events } from '../../browser-constants/events';
+import { ConfigManager } from '../../toolbar-managers/config-manager/config-manager';
+import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
+import { TranslationManager } from '../../toolbar-managers/translation-manager/translation-manager';
 
 const CLASS__TOAST = 'oltb-toast';
 const CLASS__ANIMATION = 'oltb-animation';

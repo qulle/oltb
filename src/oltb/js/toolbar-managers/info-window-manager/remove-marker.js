@@ -1,5 +1,5 @@
-import { Dialog } from '../../common/dialogs/dialog';
-import { Events } from '../../helpers/constants/events';
+import { Dialog } from '../../ui-common/ui-dialogs/dialog';
+import { Events } from '../../browser-constants/events';
 import { LayerManager } from '../layer-manager/layer-manager';
 import { TranslationManager } from '../translation-manager/translation-manager';
 

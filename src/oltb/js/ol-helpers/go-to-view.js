@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { easeOut } from 'ol/easing';
 import { fromLonLat } from 'ol/proj';
-import { ConfigManager } from '../managers/config-manager/config-manager';
+import { ConfigManager } from '../toolbar-managers/config-manager/config-manager';
 
 const DurationNormal = ConfigManager.getConfig().animationDuration.normal;
 const DefaultOptions = Object.freeze({

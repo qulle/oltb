@@ -1,6 +1,6 @@
 import { describe, it, expect } from '@jest/globals';
 import { isHorizontal } from './is-row-direction';
-import { ConfigManager } from '../managers/config-manager/config-manager';
+import { ConfigManager } from '../../toolbar-managers/config-manager/config-manager';
 
 describe('IsRowDirection', () => {
     it('should not be horizontal mode', () => {

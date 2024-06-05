@@ -1,13 +1,13 @@
 import 'tippy.js/dist/tippy.css';
 import tippy from 'tippy.js';
-import { Events } from '../../helpers/constants/events';
+import { Events } from '../../browser-constants/events';
 import { LogManager } from '../log-manager/log-manager';
 import { BaseManager } from '../base-manager';
-import { isHorizontal } from '../../helpers/is-row-direction';
+import { isHorizontal } from '../../ui-helpers/is-row-direction/is-row-direction';
+import { ConfigManager } from '../config-manager/config-manager';
 import { ElementManager } from '../element-manager/element-manager';
 import { ColorPickerManager } from '../color-picker-manager/color-picker-manager';
 import { createSingleton, delegate } from 'tippy.js';
-import { ConfigManager } from '../config-manager/config-manager';
 
 const FILENAME = 'tippy-manager.js';
 const CLASS__TOOL_BUTTON = 'oltb-tool-button';
