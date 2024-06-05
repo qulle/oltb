@@ -1,9 +1,9 @@
 import urlAirportsGeoJson from 'url:../geojson/airports.geojson';
-import { Toast } from '../../src/oltb/js/common/toasts/toast';
-import { LogManager } from '../../src/oltb/js/managers/log-manager/log-manager';
+import { Toast } from '../../src/oltb/js/ui-common/ui-toasts/toast';
+import { LogManager } from '../../src/oltb/js/toolbar-managers/log-manager/log-manager';
 import { toStringHDMS } from 'ol/coordinate';
-import { LayerManager } from '../../src/oltb/js/managers/layer-manager/layer-manager';
-import { FeatureManager } from '../../src/oltb/js/managers/feature-manager/feature-manager';
+import { LayerManager } from '../../src/oltb/js/toolbar-managers/layer-manager/layer-manager';
+import { FeatureManager } from '../../src/oltb/js/toolbar-managers/feature-manager/feature-manager';
 
 const FILENAME = 'layers/Airports.js';
 const CLASS_FUNC_BUTTON = 'oltb-func-btn';

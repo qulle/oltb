@@ -1,5 +1,5 @@
 /** @type {import('jest').Config} */
-const config = {
+export default {
     verbose: true,
     transform: {},
     rootDir: '../src',
@@ -8,5 +8,3 @@ const config = {
         "\\.(css|less|scss|sass)$": "identity-obj-proxy"
     }
 };
-
-export default config;

@@ -1,18 +1,15 @@
-// Url imports
 import urlCountriesGeoJson from 'url:../geojson/countries.geojson';
-
-// Module imports
 import { bbox } from 'ol/loadingstrategy';
-import { Toast } from '../../src/oltb/js/common/toasts/toast';
+import { Toast } from '../../src/oltb/js/ui-common/ui-toasts/toast';
 import { GeoJSON } from 'ol/format';
 import { transform } from 'ol/proj';
 import { getCenter } from 'ol/extent';
-import { LogManager } from '../../src/oltb/js/managers/log-manager/log-manager';
+import { LogManager } from '../../src/oltb/js/toolbar-managers/log-manager/log-manager';
 import { toStringHDMS } from 'ol/coordinate';
-import { LayerManager } from '../../src/oltb/js/managers/layer-manager/layer-manager';
-import { ConfigManager } from '../../src/oltb/js/managers/config-manager/config-manager';
-import { getMeasureValue } from '../../src/oltb/js/helpers/measurements';
-import { FeatureProperties } from '../../src/oltb/js/helpers/constants/feature-properties';
+import { LayerManager } from '../../src/oltb/js/toolbar-managers/layer-manager/layer-manager';
+import { ConfigManager } from '../../src/oltb/js/toolbar-managers/config-manager/config-manager';
+import { getMeasureValue } from '../../src/oltb/js/ol-helpers/measurements';
+import { FeatureProperties } from '../../src/oltb/js/ol-helpers/feature-properties';
 import { Vector as VectorLayer } from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';
 
