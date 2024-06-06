@@ -46,14 +46,14 @@ class HiddenAboutTool extends Control {
         ContextMenuTool.addItem({
             icon: this.icon, 
             i18nKey: `${I18N__BASE}.contextItems.about`, 
-            fn: this.onContextMenuAbout.bind(this)
+            fn: this.#onContextMenuAbout.bind(this)
         });
     }
 
     //--------------------------------------------------------------------
     // # Section: ContextMenu Callbacks
     //--------------------------------------------------------------------
-    onContextMenuAbout(map, coordinates, target) {        
+    #onContextMenuAbout(map, coordinates, target) {        
         this.doShowAboutModal();
     }
     

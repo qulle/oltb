@@ -56,8 +56,8 @@ class ContextMenuTool extends Control {
             this.menu
         ]);
 
-        uiRefMapElement.addEventListener(Events.browser.contextMenu, this.onContextMenu.bind(this));
-        uiRefMapElement.addEventListener(Events.browser.click, this.onMapClick.bind(this));
+        uiRefMapElement.addEventListener(Events.browser.contextMenu, this.#onContextMenu.bind(this));
+        uiRefMapElement.addEventListener(Events.browser.click, this.#onMapClick.bind(this));
     }
 
     //--------------------------------------------------------------------
@@ -104,11 +104,11 @@ class ContextMenuTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Events
     //--------------------------------------------------------------------
-    onContextMenu(event) {
+    #onContextMenu(event) {
         this.show(event);
     }
 
-    onMapClick(event) {
+    #onMapClick(event) {
         this.hide(event);
     }
 

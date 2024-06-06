@@ -78,8 +78,8 @@ class FullscreenTool extends Control {
         this.listenerKeys = [];
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
 
-        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
-        window.document.addEventListener(Events.browser.fullScreenChange, this.onFullScreenChange.bind(this));
+        window.addEventListener(Events.browser.keyUp, this.#onWindowKeyUp.bind(this));
+        window.document.addEventListener(Events.browser.fullScreenChange, this.#onFullScreenChange.bind(this));
 
         // Note: 
         // @Consumer callback
@@ -122,13 +122,13 @@ class FullscreenTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Browser Events
     //--------------------------------------------------------------------
-    onWindowKeyUp(event) {
+    #onWindowKeyUp(event) {
         if(isShortcutKeyOnly(event, ShortcutKeys.fullscreenTool)) {
             this.onClickTool(event);
         }
     }
 
-    onFullScreenChange(event) {
+    #onFullScreenChange(event) {
         this.doFullScreenChange(event);
     }
 

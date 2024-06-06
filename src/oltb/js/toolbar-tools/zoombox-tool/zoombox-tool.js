@@ -93,16 +93,16 @@ class ZoomboxTool extends Control {
 
         this.interactionDragZoom = this.generateOLInteractionDragZoom();
 
-        this.interactionDragZoom.on(Events.openLayers.boxStart, this.onBoxDragStart.bind(this));
-        this.interactionDragZoom.on(Events.openLayers.boxEnd, this.onBoxDragEnd.bind(this));
-        this.interactionDragZoom.on(Events.openLayers.boxDrag, this.onBoxDragDrag.bind(this));
-        this.interactionDragZoom.on(Events.openLayers.boxCancel, this.onBoxDragCancel.bind(this));
-        this.interactionDragZoom.on(Events.openLayers.error, this.onBoxDragError.bind(this));
+        this.interactionDragZoom.on(Events.openLayers.boxStart, this.#onBoxDragStart.bind(this));
+        this.interactionDragZoom.on(Events.openLayers.boxEnd, this.#onBoxDragEnd.bind(this));
+        this.interactionDragZoom.on(Events.openLayers.boxDrag, this.#onBoxDragDrag.bind(this));
+        this.interactionDragZoom.on(Events.openLayers.boxCancel, this.#onBoxDragCancel.bind(this));
+        this.interactionDragZoom.on(Events.openLayers.error, this.#onBoxDragError.bind(this));
 
-        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
-        window.addEventListener(Events.browser.keyDown, this.onWindowKeyDown.bind(this));
-        window.addEventListener(Events.custom.ready, this.onOLTBReady.bind(this));
-        window.addEventListener(Events.custom.browserStateCleared, this.onWindowBrowserStateCleared.bind(this));
+        window.addEventListener(Events.browser.keyUp, this.#onWindowKeyUp.bind(this));
+        window.addEventListener(Events.browser.keyDown, this.#onWindowKeyDown.bind(this));
+        window.addEventListener(Events.custom.ready, this.#onOLTBReady.bind(this));
+        window.addEventListener(Events.custom.browserStateCleared, this.#onWindowBrowserStateCleared.bind(this));
 
         // Note: 
         // @Consumer callback
@@ -175,13 +175,13 @@ class ZoomboxTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Browser Events
     //--------------------------------------------------------------------
-    onOLTBReady(event) {
+    #onOLTBReady(event) {
         if(this.localStorage.isActive) {
             this.activateTool();
         }
     }
 
-    onWindowKeyUp(event) {
+    #onWindowKeyUp(event) {
         this.isSpaceKeyPressed = false;
 
         // Note: 
@@ -195,7 +195,7 @@ class ZoomboxTool extends Control {
         }
     }
 
-    onWindowKeyDown(event) {
+    #onWindowKeyDown(event) {
         const key = event.key;
         if(key === KeyboardKeys.valueSpace) {
             this.isSpaceKeyPressed = true;
@@ -210,7 +210,7 @@ class ZoomboxTool extends Control {
         }
     }
 
-    onWindowBrowserStateCleared() {
+    #onWindowBrowserStateCleared() {
         this.doClearState();
 
         if(this.isActive) {
@@ -227,23 +227,23 @@ class ZoomboxTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Map/UI Callbacks
     //--------------------------------------------------------------------
-    onBoxDragStart(event) {
+    #onBoxDragStart(event) {
         this.doBoxDragStart(event);
     }
 
-    onBoxDragEnd(event) {
+    #onBoxDragEnd(event) {
         this.doBoxDragEnd(event);
     }
 
-    onBoxDragDrag(event) {
+    #onBoxDragDrag(event) {
         this.doBoxDragDrag(event);
     }
 
-    onBoxDragCancel(event) {
+    #onBoxDragCancel(event) {
         this.doBoxDragCancel(event);
     }
 
-    onBoxDragError(event) {
+    #onBoxDragError(event) {
         this.doBoxDragError(event);
     }
 

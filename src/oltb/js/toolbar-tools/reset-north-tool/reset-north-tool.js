@@ -75,7 +75,7 @@ class ResetNorthTool extends Control {
 
         this.initContextMenuItems();
 
-        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(Events.browser.keyUp, this.#onWindowKeyUp.bind(this));
 
         // Note: 
         // @Consumer callback
@@ -95,7 +95,7 @@ class ResetNorthTool extends Control {
         ContextMenuTool.addItem({
             icon: this.resetRotationIcon, 
             i18nKey: `${I18N__BASE}.contextItems.rotate`, 
-            fn: this.onContextMenuSetRotation.bind(this)
+            fn: this.#onContextMenuSetRotation.bind(this)
         });
     }
 
@@ -142,7 +142,7 @@ class ResetNorthTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Browser Events
     //--------------------------------------------------------------------
-    onWindowKeyUp(event) {
+    #onWindowKeyUp(event) {
         if(isShortcutKeyOnly(event, ShortcutKeys.resetNorthTool)) {
             this.onClickTool(event);
         }
@@ -151,7 +151,7 @@ class ResetNorthTool extends Control {
     //--------------------------------------------------------------------
     // # Section: ContextMenu Callbacks
     //--------------------------------------------------------------------
-    onContextMenuSetRotation(map, coordinates, target) {
+    #onContextMenuSetRotation(map, coordinates, target) {
         this.askToSetRotation(map);
     }
 

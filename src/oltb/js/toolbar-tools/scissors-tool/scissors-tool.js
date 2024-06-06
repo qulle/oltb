@@ -104,14 +104,14 @@ class ScissorsTool extends Control {
 
         this.interactionDraw = this.generateOLInteractionDraw();
 
-        this.interactionDraw.on(Events.openLayers.drawStart, this.onDrawStart.bind(this));
-        this.interactionDraw.on(Events.openLayers.drawEnd, this.onDrawEnd.bind(this));
-        this.interactionDraw.on(Events.openLayers.drawAbort, this.onDrawAbort.bind(this));
-        this.interactionDraw.on(Events.openLayers.error, this.onDrawError.bind(this));
+        this.interactionDraw.on(Events.openLayers.drawStart, this.#onDrawStart.bind(this));
+        this.interactionDraw.on(Events.openLayers.drawEnd, this.#onDrawEnd.bind(this));
+        this.interactionDraw.on(Events.openLayers.drawAbort, this.#onDrawAbort.bind(this));
+        this.interactionDraw.on(Events.openLayers.error, this.#onDrawError.bind(this));
 
-        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
-        window.addEventListener(Events.custom.read, this.onOLTBReady.bind(this));
-        window.addEventListener(Events.custom.browserStateCleared, this.onWindowBrowserStateCleared.bind(this));
+        window.addEventListener(Events.browser.keyUp, this.#onWindowKeyUp.bind(this));
+        window.addEventListener(Events.custom.read, this.#onOLTBReady.bind(this));
+        window.addEventListener(Events.custom.browserStateCleared, this.#onWindowBrowserStateCleared.bind(this));
 
         // Note: 
         // @Consumer callback
@@ -186,13 +186,13 @@ class ScissorsTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Browser Events
     //--------------------------------------------------------------------
-    onOLTBReady(event) {
+    #onOLTBReady(event) {
         if(this.localStorage.isActive) {
             this.activateTool();
         }
     }
 
-    onWindowKeyUp(event) {
+    #onWindowKeyUp(event) {
         const key = event.key;
         if(key === KeyboardKeys.valueEscape) {
             if(this.interactionDraw) {
@@ -207,7 +207,7 @@ class ScissorsTool extends Control {
         }
     }
 
-    onWindowBrowserStateCleared() {
+    #onWindowBrowserStateCleared() {
         this.doClearState();
 
         if(this.isActive) {
@@ -224,22 +224,24 @@ class ScissorsTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Map/UI Callbacks
     //--------------------------------------------------------------------
-    onDrawStart(event) {
+    #onDrawStart(event) {
         this.doDrawStart(event);
     }
 
-    onDrawEnd(event) {
+    #onDrawEnd(event) {
         this.doDrawEnd(event);
     }
 
-    onDrawAbort(event) {
+    #onDrawAbort(event) {
         this.doDrawAbort(event);
     }
 
-    onDrawError(event) {
+    #onDrawError(event) {
         this.doDrawError(event);
     }
 
+    // Note:
+    // This is a global event that is invoked from the SnapManager
     onSnap(event) {
         this.doSnap(event);
     }

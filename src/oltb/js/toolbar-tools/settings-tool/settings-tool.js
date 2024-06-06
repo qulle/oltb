@@ -72,7 +72,7 @@ class SettingsTool extends Control {
 
         this.initContextMenuItems();
 
-        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(Events.browser.keyUp, this.#onWindowKeyUp.bind(this));
 
         // Note: 
         // @Consumer callback
@@ -93,7 +93,7 @@ class SettingsTool extends Control {
         ContextMenuTool.addItem({
             icon: this.icon, 
             i18nKey: `${I18N__BASE}.contextItems.clearBrowserState`, 
-            fn: this.onContextMenuBrowserStateClear.bind(this)
+            fn: this.#onContextMenuBrowserStateClear.bind(this)
         });
     }
 
@@ -119,7 +119,7 @@ class SettingsTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Browser Events
     //--------------------------------------------------------------------
-    onWindowKeyUp(event) {
+    #onWindowKeyUp(event) {
         if(isShortcutKeyOnly(event, ShortcutKeys.settingsTool)) {
             this.onClickTool(event);
         }
@@ -128,7 +128,7 @@ class SettingsTool extends Control {
     //--------------------------------------------------------------------
     // # Section: ContextMenu Callbacks
     //--------------------------------------------------------------------
-    onContextMenuBrowserStateClear(map, coordinates, target) {
+    #onContextMenuBrowserStateClear(map, coordinates, target) {
         this.askToClearBrowserState();
     }
 

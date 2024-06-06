@@ -65,7 +65,7 @@ class ZoomInTool extends Control {
         this.button = button;
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
 
-        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(Events.browser.keyUp, this.#onWindowKeyUp.bind(this));
 
         // Note: 
         // @Consumer callback
@@ -105,7 +105,7 @@ class ZoomInTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Browser Events
     //--------------------------------------------------------------------
-    onWindowKeyUp(event) {
+    #onWindowKeyUp(event) {
         if(isShortcutKeyOnly(event, ShortcutKeys.zoomInTool)) {
             this.onClickTool(event);
         }

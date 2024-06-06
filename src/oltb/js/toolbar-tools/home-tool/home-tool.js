@@ -90,8 +90,8 @@ class HomeTool extends Control {
 
         this.initContextMenuItems();
 
-        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
-        window.addEventListener(Events.custom.browserStateCleared, this.onWindowBrowserStateCleared.bind(this));
+        window.addEventListener(Events.browser.keyUp, this.#onWindowKeyUp.bind(this));
+        window.addEventListener(Events.custom.browserStateCleared, this.#onWindowBrowserStateCleared.bind(this));
 
         // Note: 
         // @Consumer callback
@@ -111,7 +111,7 @@ class HomeTool extends Control {
         ContextMenuTool.addItem({
             icon: this.icon, 
             i18nKey: `${I18N__BASE}.contextItems.setHome`, 
-            fn: this.onContextMenuSetHomeLocation.bind(this)
+            fn: this.#onContextMenuSetHomeLocation.bind(this)
         });
     }
 
@@ -137,13 +137,13 @@ class HomeTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Browser Events
     //--------------------------------------------------------------------
-    onWindowKeyUp(event) {
+    #onWindowKeyUp(event) {
         if(isShortcutKeyOnly(event, ShortcutKeys.homeTool)) {
             this.onClickTool(event);
         }
     }
 
-    onWindowBrowserStateCleared() {
+    #onWindowBrowserStateCleared() {
         this.doClearState();
         this.doNavigateHome();
 
@@ -157,7 +157,7 @@ class HomeTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Map/UI Callbacks
     //--------------------------------------------------------------------
-    onContextMenuSetHomeLocation(map, coordinates, target) {
+    #onContextMenuSetHomeLocation(map, coordinates, target) {
         this.doCreateNewHome(coordinates);
     }
 

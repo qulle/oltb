@@ -41,6 +41,8 @@ import { ProjectionManager } from 'oltb/src/oltb/js/toolbar-managers/projection-
 import { TranslationManager } from 'oltb/src/oltb/js/toolbar-managers/translation-manager/translation-manager';
 import { ColorPickerManager } from 'oltb/src/oltb/js/toolbar-managers/color-picker-manager/color-picker-manager';
 import { AccessibilityManager } from 'oltb/src/oltb/js/toolbar-managers/accessibility-manager/accessibility-manager';
+import { ConversionManager } from 'oltb/src/oltb/js/toolbar-managers/conversion-manager/conversion-manager';
+import { NameManager } from 'oltb/src/oltb/js/toolbar-managers/name-manager/name-manager';
 
 // Toolbar tools
 import { HomeTool } from 'oltb/src/oltb/js/toolbar-tools/home-tool/home-tool';
@@ -101,7 +103,9 @@ BootstrapManager.initAsync([
     { manager: SettingsManager },
     { manager: SnapManager },
     { manager: InfoWindowManager },
-    { manager: AccessibilityManager }
+    { manager: AccessibilityManager },
+    { manager: ConversionManager },
+    { manager: NameManager }
 ]).then(() => {
     initMapAndToolbar();
 });

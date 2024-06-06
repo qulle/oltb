@@ -107,7 +107,7 @@ class HiddenMapNavigationTool extends Control {
 
         this.initContextMenuItems();
 
-        window.addEventListener(Events.custom.ready, this.onOLTBReady.bind(this));
+        window.addEventListener(Events.custom.ready, this.#onOLTBReady.bind(this));
     }
 
     getName() {
@@ -121,7 +121,7 @@ class HiddenMapNavigationTool extends Control {
         ContextMenuTool.addItem({
             icon: this.clipboardIcon,
             i18nKey: `${I18N__BASE}.contextItems.copyCoordinates`,
-            fn: this.onContextMenuCopyCoordinates.bind(this)
+            fn: this.#onContextMenuCopyCoordinates.bind(this)
         });
 
         ContextMenuTool.addItem({});
@@ -129,19 +129,19 @@ class HiddenMapNavigationTool extends Control {
         ContextMenuTool.addItem({
             icon: this.coordinatesIcon,
             i18nKey: `${I18N__BASE}.contextItems.navigateToCoordinates`,
-            fn: this.onContextMenuCenterAtCoordinates.bind(this)
+            fn: this.#onContextMenuCenterAtCoordinates.bind(this)
         });
 
         ContextMenuTool.addItem({
             icon: this.moveCenterIcon, 
             i18nKey: `${I18N__BASE}.contextItems.centerMap`,
-            fn: this.onContextMenuCenterMap.bind(this)
+            fn: this.#onContextMenuCenterMap.bind(this)
         });
 
         ContextMenuTool.addItem({
             icon: this.focusHereIcon, 
             i18nKey: `${I18N__BASE}.contextItems.focusMap`,
-            fn: this.onContextMenuFocusHere.bind(this)
+            fn: this.#onContextMenuFocusHere.bind(this)
         });
         
         ContextMenuTool.addItem({});
@@ -150,15 +150,15 @@ class HiddenMapNavigationTool extends Control {
     //--------------------------------------------------------------------
     // # Section: ContextMenu Callbacks
     //--------------------------------------------------------------------
-    onContextMenuCopyCoordinates(map, coordinates, target) {
+    #onContextMenuCopyCoordinates(map, coordinates, target) {
         this.doCopyCoordinates(coordinates);
     }
 
-    onContextMenuCenterAtCoordinates(map, coordinates, target) {
+    #onContextMenuCenterAtCoordinates(map, coordinates, target) {
         this.doShowCoordinatesModal(map);
     }
 
-    onContextMenuCenterMap(map, coordinates, target) {
+    #onContextMenuCenterMap(map, coordinates, target) {
         goToView({
             map: map,
             coordinates: coordinates,
@@ -166,7 +166,7 @@ class HiddenMapNavigationTool extends Control {
         });
     }
 
-    onContextMenuFocusHere(map, coordinates, target) {
+    #onContextMenuFocusHere(map, coordinates, target) {
         goToView({
             map: map,
             coordinates: coordinates,
@@ -177,14 +177,14 @@ class HiddenMapNavigationTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Browser Events
     //--------------------------------------------------------------------
-    onOLTBReady(event) {
+    #onOLTBReady(event) {
         const map = this.getMap();
         if(!map) {
             return;
         }
 
         // Bind to global map events
-        map.on(Events.openLayers.moveEnd, this.onMoveEnd.bind(this));
+        map.on(Events.openLayers.moveEnd, this.#onMoveEnd.bind(this));
 
         this.doDetectUrlMarker();
     }
@@ -230,7 +230,7 @@ class HiddenMapNavigationTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Map/UI Callbacks
     //--------------------------------------------------------------------
-    onCreateUrlMarker(markerString) {
+    #onCreateUrlMarker(markerString) {
         const map = this.getMap();
         if(!map) {
             return;
@@ -239,7 +239,7 @@ class HiddenMapNavigationTool extends Control {
         this.doParseUrlMarker(markerString);
     }
 
-    onMoveEnd(event) {
+    #onMoveEnd(event) {
         const map = this.getMap();
         if(!map) {
             return;
@@ -293,7 +293,7 @@ class HiddenMapNavigationTool extends Control {
         const marker = UrlManager.getParameter(markerKey, false);
         
         if(marker) {
-            this.onCreateUrlMarker(marker);
+            this.#onCreateUrlMarker(marker);
         }
     }
 

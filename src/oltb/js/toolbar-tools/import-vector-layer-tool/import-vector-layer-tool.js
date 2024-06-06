@@ -69,10 +69,9 @@ class ImportVectorLayerTool extends Control {
         this.fileReader = undefined;
         this.importLayerModal = undefined;
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
-        
         this.inputDialog = this.createUIInputDialog();
         
-        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(Events.browser.keyUp, this.#onWindowKeyUp.bind(this));
 
         // Note: 
         // @Consumer callback
@@ -111,7 +110,7 @@ class ImportVectorLayerTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Browser Events
     //--------------------------------------------------------------------
-    onWindowKeyUp(event) {
+    #onWindowKeyUp(event) {
         if(isShortcutKeyOnly(event, ShortcutKeys.importVectorLayerTool)) {
             this.onClickTool(event);
         }
@@ -128,7 +127,7 @@ class ImportVectorLayerTool extends Control {
                 'accept': '.geojson, .kml'
             },
             listeners: {
-                'change': this.onInputChange.bind(this)
+                'change': this.#onInputChange.bind(this)
             }
         });
     }
@@ -136,15 +135,15 @@ class ImportVectorLayerTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Map/UI Callbacks
     //--------------------------------------------------------------------
-    onInputChange(event) {
+    #onInputChange(event) {
         const fileDialog = event.target;
 
         this.fileReader = new FileReader();
-        this.fileReader.addEventListener(Events.browser.load, this.onParseLayer.bind(this, fileDialog));
+        this.fileReader.addEventListener(Events.browser.load, this.#onParseLayer.bind(this, fileDialog));
         this.fileReader.readAsText(fileDialog.files[0]);
     }
 
-    onParseLayer(fileDialog) {
+    #onParseLayer(fileDialog) {
         if(this.importLayerModal) {
             return;
         }
@@ -153,7 +152,7 @@ class ImportVectorLayerTool extends Control {
         this.doShowImportLayerModal(file);
     }
 
-    onImportLayer(file, result) {
+    #onImportLayer(file, result) {
         this.doImportLayer(file, result);
     }
 
@@ -167,7 +166,7 @@ class ImportVectorLayerTool extends Control {
         
         this.importLayerModal = new ImportLayerModal({
             onImport: (result) => {   
-                this.onImportLayer(file, result);
+                this.#onImportLayer(file, result);
             },
             onClose: () => {
                 this.importLayerModal = undefined;

@@ -171,49 +171,49 @@ class EditTool extends Control {
         this.initSettings();
 
         this.uiRefDeleteSelectedButton = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-delete-selected-button`);
-        this.uiRefDeleteSelectedButton.addEventListener(Events.browser.click, this.onDeleteSelectedFeatures.bind(this));
+        this.uiRefDeleteSelectedButton.addEventListener(Events.browser.click, this.#onDeleteSelectedFeatures.bind(this));
 
         this.uiRefRotateSelectedButton = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-rotate-selected-button`);
-        this.uiRefRotateSelectedButton.addEventListener(Events.browser.click, this.onRotateSelectedFeatures.bind(this));
+        this.uiRefRotateSelectedButton.addEventListener(Events.browser.click, this.#onRotateSelectedFeatures.bind(this));
 
         this.uiRefInfoSelectedButton = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-info-button`);
-        this.uiRefInfoSelectedButton.addEventListener(Events.browser.click, this.onInfoSelectedFeatures.bind(this));
+        this.uiRefInfoSelectedButton.addEventListener(Events.browser.click, this.#onInfoSelectedFeatures.bind(this));
 
         this.uiRefUnionSelectedButton = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-union-selected-button`);
-        this.uiRefUnionSelectedButton.addEventListener(Events.browser.click, this.onShapeOperator.bind(this, this.unionFeatures, 'union'));
+        this.uiRefUnionSelectedButton.addEventListener(Events.browser.click, this.#onShapeOperator.bind(this, this.unionFeatures, 'union'));
 
         this.uiRefIntersectSelectedButton = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-intersect-selected-button`);
-        this.uiRefIntersectSelectedButton.addEventListener(Events.browser.click, this.onShapeOperator.bind(this, this.intersectFeatures, 'intersect'));
+        this.uiRefIntersectSelectedButton.addEventListener(Events.browser.click, this.#onShapeOperator.bind(this, this.intersectFeatures, 'intersect'));
 
         this.uiRefExcludeSelectedButton = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-exclude-selected-button`);
-        this.uiRefExcludeSelectedButton.addEventListener(Events.browser.click, this.onShapeOperator.bind(this, this.excludeFeatures, 'exclude'));
+        this.uiRefExcludeSelectedButton.addEventListener(Events.browser.click, this.#onShapeOperator.bind(this, this.excludeFeatures, 'exclude'));
 
         this.uiRefDifferenceSelectedButton = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-difference-selected-button`);
-        this.uiRefDifferenceSelectedButton.addEventListener(Events.browser.click, this.onShapeOperator.bind(this, this.differenceFeatures, 'difference'));
+        this.uiRefDifferenceSelectedButton.addEventListener(Events.browser.click, this.#onShapeOperator.bind(this, this.differenceFeatures, 'difference'));
 
         this.uiRefFillColor = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-fill-color`);
-        this.uiRefFillColor.addEventListener(Events.custom.colorChange, this.onFeatureColorChange.bind(this));
+        this.uiRefFillColor.addEventListener(Events.custom.colorChange, this.#onFeatureColorChange.bind(this));
 
         this.uiRefStrokeColor = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-stroke-color`);
-        this.uiRefStrokeColor.addEventListener(Events.custom.colorChange, this.onFeatureColorChange.bind(this));
+        this.uiRefStrokeColor.addEventListener(Events.custom.colorChange, this.#onFeatureColorChange.bind(this));
 
         this.interactionSelect = this.generateOLInteractionSelect();
         this.interactionModify = this.generateOLInteractionModify();
         this.interactionTranslate = this.generateOLInteractionTranslate();
 
-        this.interactionSelect.getFeatures().on(Events.openLayers.add, this.onSelectFeatureAdd.bind(this));
-        this.interactionSelect.getFeatures().on(Events.openLayers.remove, this.onSelectFeatureRemove.bind(this));
+        this.interactionSelect.getFeatures().on(Events.openLayers.add, this.#onSelectFeatureAdd.bind(this));
+        this.interactionSelect.getFeatures().on(Events.openLayers.remove, this.#onSelectFeatureRemove.bind(this));
 
-        this.interactionModify.addEventListener(Events.openLayers.modifyStart, this.onModifyStart.bind(this));
-        this.interactionModify.addEventListener(Events.openLayers.modifyEnd, this.onModifyEnd.bind(this));
+        this.interactionModify.addEventListener(Events.openLayers.modifyStart, this.#onModifyStart.bind(this));
+        this.interactionModify.addEventListener(Events.openLayers.modifyEnd, this.#onModifyEnd.bind(this));
 
-        this.interactionTranslate.addEventListener(Events.openLayers.translateStart, this.onTranslateStart.bind(this));
-        this.interactionTranslate.addEventListener(Events.openLayers.translateEnd, this.onTranslateEnd.bind(this));
+        this.interactionTranslate.addEventListener(Events.openLayers.translateStart, this.#onTranslateStart.bind(this));
+        this.interactionTranslate.addEventListener(Events.openLayers.translateEnd, this.#onTranslateEnd.bind(this));
 
-        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
-        window.addEventListener(Events.custom.ready, this.onOLTBReady.bind(this));
-        window.addEventListener(Events.custom.browserStateCleared, this.onWindowBrowserStateCleared.bind(this));
-        window.addEventListener(Events.custom.featureLayerRemoved, this.onWindowFeatureLayerRemoved.bind(this));
+        window.addEventListener(Events.browser.keyUp, this.#onWindowKeyUp.bind(this));
+        window.addEventListener(Events.custom.ready, this.#onOLTBReady.bind(this));
+        window.addEventListener(Events.custom.browserStateCleared, this.#onWindowBrowserStateCleared.bind(this));
+        window.addEventListener(Events.custom.featureLayerRemoved, this.#onWindowFeatureLayerRemoved.bind(this));
 
         // Note: 
         // @Consumer callback
@@ -291,7 +291,7 @@ class EditTool extends Control {
 
     initToggleables() {
         this.uiRefToolboxSection.querySelectorAll(`.${CLASS__TOGGLEABLE}`).forEach((toggle) => {
-            toggle.addEventListener(Events.browser.click, this.onToggleToolbox.bind(this, toggle));
+            toggle.addEventListener(Events.browser.click, this.#onToggleToolbox.bind(this, toggle));
         });
     }
 
@@ -431,13 +431,13 @@ class EditTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Browser Events
     //--------------------------------------------------------------------
-    onOLTBReady(event) {
+    #onOLTBReady(event) {
         if(this.localStorage.isActive) {
             this.activateTool();
         }
     }
 
-    onWindowKeyUp(event) {
+    #onWindowKeyUp(event) {
         if(isShortcutKeyOnly(event, ShortcutKeys.editTool)) {
             this.onClickTool(event);
         }else if(this.isActive && event.key === KeyboardKeys.valueDelete) {
@@ -445,7 +445,7 @@ class EditTool extends Control {
         }
     }
     
-    onWindowBrowserStateCleared() {
+    #onWindowBrowserStateCleared() {
         this.doClearState();
         this.doClearColors();
 
@@ -460,47 +460,43 @@ class EditTool extends Control {
         }
     }
 
-    onWindowFeatureLayerRemoved(event) {
+    #onWindowFeatureLayerRemoved(event) {
         this.interactionSelect.getFeatures().clear();
     }
 
     //--------------------------------------------------------------------
     // # Section: Map/UI Callbacks
     //--------------------------------------------------------------------
-    onToggleToolbox(toggle) {
+    #onToggleToolbox(toggle) {
         const targetName = toggle.dataset.oltbToggleableTarget;
         this.doToggleToolboxSection(targetName);
     }
 
-    onSelectFeatureAdd(event) {
+    #onSelectFeatureAdd(event) {
         this.doSelectFeatureAdd(event);
     }
 
-    onSelectFeatureRemove(event) {
+    #onSelectFeatureRemove(event) {
         this.doSelectFeatureRemove(event);
     }
 
-    onModifyStart(event) {
+    #onModifyStart(event) {
         this.doModifyStart(event);
     }
 
-    onModifyEnd(event) {
+    #onModifyEnd(event) {
         this.doModifyEnd(event);
     }
 
-    onTranslateStart(event) {
+    #onTranslateStart(event) {
         this.doTranslateStart(event);
     }
 
-    onTranslateEnd(event) {
+    #onTranslateEnd(event) {
         this.doTranslateEnd(event);
     }
 
-    onSnap(event) {
-        this.doSnap(event);
-    }
-
-    onDeleteSelectedFeatures() {
+    #onDeleteSelectedFeatures() {
         const features = [...this.interactionSelect.getFeatures().getArray()];
         const autoremove = ConfigManager.getConfig().autoRemovalDuation.normal;
 
@@ -516,7 +512,7 @@ class EditTool extends Control {
         this.askToDeleteFeatures(features);
     }
 
-    onRotateSelectedFeatures() {
+    #onRotateSelectedFeatures() {
         const features = [...this.interactionSelect.getFeatures().getArray()];
         const autoremove = ConfigManager.getConfig().autoRemovalDuation.normal;
 
@@ -532,7 +528,7 @@ class EditTool extends Control {
         this.askToRotateSelectedFeatures(features);
     }
 
-    onInfoSelectedFeatures() {
+    #onInfoSelectedFeatures() {
         const features = [...this.interactionSelect.getFeatures().getArray()];
         const autoremove = ConfigManager.getConfig().autoRemovalDuation.normal;
 
@@ -557,15 +553,15 @@ class EditTool extends Control {
         this.doShowFeatureInfo(features[0]);
     }
 
-    onFeatureColorChange(event) {
+    #onFeatureColorChange(event) {
         this.doFeatureColorChange(event);
     }
 
-    onFeatureChange(feature) {
+    #onFeatureChange(feature) {
         this.doFeatureChange(feature);
     }
 
-    onShapeOperator(operation, type) {
+    #onShapeOperator(operation, type) {
         const features = [...this.interactionSelect.getFeatures().getArray()];
         const autoremove = ConfigManager.getConfig().autoRemovalDuation.normal;
 
@@ -579,6 +575,12 @@ class EditTool extends Control {
         }
 
         this.doShapeOperation(features, operation, type);
+    }
+
+    // Note:
+    // This is a global event that is invoked from the SnapManager
+    onSnap(event) {
+        this.doSnap(event);
     }
 
     //--------------------------------------------------------------------
@@ -596,7 +598,7 @@ class EditTool extends Control {
         const properties = feature.get(oltb);
         const hiddenTooltip = hasOtherTooltip && selectedFeatures.length === 1;
 
-        properties.onChangeListener = feature.getGeometry().on(Events.openLayers.change, this.onFeatureChange.bind(this, feature));
+        properties.onChangeListener = feature.getGeometry().on(Events.openLayers.change, this.#onFeatureChange.bind(this, feature));
         properties.tooltip.getElement().className = (`oltb-overlay-tooltip ${
             hiddenTooltip ? 'oltb-overlay-tooltip--hidden' : ''
         }`);

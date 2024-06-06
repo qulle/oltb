@@ -82,9 +82,9 @@ class MagnifyTool extends Control {
             LocalStorageDefaults
         );
 
-        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
-        window.addEventListener(Events.custom.ready, this.onOLTBReady.bind(this));
-        window.addEventListener(Events.custom.browserStateCleared, this.onWindowBrowserStateCleared.bind(this));
+        window.addEventListener(Events.browser.keyUp, this.#onWindowKeyUp.bind(this));
+        window.addEventListener(Events.custom.ready, this.#onOLTBReady.bind(this));
+        window.addEventListener(Events.custom.browserStateCleared, this.#onWindowBrowserStateCleared.bind(this));
 
         // Note: 
         // @Consumer callback
@@ -139,19 +139,19 @@ class MagnifyTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Browser Events
     //--------------------------------------------------------------------
-    onOLTBReady(event) {
+    #onOLTBReady(event) {
         if(this.localStorage.isActive) {
             this.activateTool();
         }
     }
 
-    onWindowKeyUp(event) {
+    #onWindowKeyUp(event) {
         if(isShortcutKeyOnly(event, ShortcutKeys.magnifyTool)) {
             this.onClickTool(event);
         }
     }
 
-    onKeydown(event) {
+    #onKeydown(event) {
         // Disable map-zoom when changing size of magnifier
         event.preventDefault();
 
@@ -171,7 +171,7 @@ class MagnifyTool extends Control {
         map.render();
     }
 
-    onWindowBrowserStateCleared() {
+    #onWindowBrowserStateCleared() {
         this.doClearState();
     
         if(this.isActive) {
@@ -188,7 +188,7 @@ class MagnifyTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Map/UI Callbacks
     //--------------------------------------------------------------------
-    onMousemove(event) {
+    #onMousemove(event) {
         const map = this.getMap();
         if(!map) {
             return;
@@ -198,7 +198,7 @@ class MagnifyTool extends Control {
         map.render();
     }
 
-    onMouseout(event) {
+    #onMouseout(event) {
         const map = this.getMap();
         if(!map) {
             return;
@@ -208,7 +208,7 @@ class MagnifyTool extends Control {
         map.render();
     }
 
-    onPostrender(event) {
+    #onPostrender(event) {
         if(!this.mousePosition) {
             return;
         }
@@ -227,18 +227,18 @@ class MagnifyTool extends Control {
 
         const mapContainer = map.getTarget();
     
-        this.onMousemoveListenert = this.onMousemove.bind(this);
+        this.onMousemoveListenert = this.#onMousemove.bind(this);
         mapContainer.addEventListener(Events.browser.mouseMove, this.onMousemoveListenert);
 
-        this.onMouseoutListenert = this.onMouseout.bind(this);
+        this.onMouseoutListenert = this.#onMouseout.bind(this);
         mapContainer.addEventListener(Events.browser.mouseOut, this.onMouseoutListenert);
 
-        this.onKeydownListener = this.onKeydown.bind(this);
+        this.onKeydownListener = this.#onKeydown.bind(this);
         window.document.addEventListener(Events.browser.keyDown, this.onKeydownListener);
 
         this.onPostrenderListeners = [];
         map.getLayers().getArray().forEach((layer) => {
-            this.onPostrenderListeners.push(layer.on(Events.openLayers.postRender, this.onPostrender.bind(this)));
+            this.onPostrenderListeners.push(layer.on(Events.openLayers.postRender, this.#onPostrender.bind(this)));
         });
     }
 

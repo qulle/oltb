@@ -163,26 +163,26 @@ class LayerTool extends Control {
         // The three refs below might be null due to the user
         // disabled them in the constructor options
         if(this.uiRefAddMapLayerButton) {
-            this.uiRefAddMapLayerButton.addEventListener(Events.browser.click, this.doShowAddMapLayerModal.bind(this));
+            this.uiRefAddMapLayerButton.addEventListener(Events.browser.click, this.#onShowAddMapLayerModal.bind(this));
         }
 
         if(this.uiRefAddFeatureLayerButton) {
-            this.uiRefAddFeatureLayerButton.addEventListener(Events.browser.click, this.onAddFeatureLayerByClick.bind(this));
+            this.uiRefAddFeatureLayerButton.addEventListener(Events.browser.click, this.#onAddFeatureLayerByClick.bind(this));
         }
 
         if(this.uiRefAddFeatureLayerText) {
-            this.uiRefAddFeatureLayerText.addEventListener(Events.browser.keyUp, this.onAddFeatureLayerByKey.bind(this));
+            this.uiRefAddFeatureLayerText.addEventListener(Events.browser.keyUp, this.#onAddFeatureLayerByKey.bind(this));
         }
 
         this.initContextMenuItems();
 
-        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
-        window.addEventListener(Events.custom.ready, this.onOLTBReady.bind(this));
-        window.addEventListener(Events.custom.mapLayerAdded, this.onWindowMapLayerAdded.bind(this));
-        window.addEventListener(Events.custom.mapLayerRemoved, this.onWindowMapLayerRemoved.bind(this));
-        window.addEventListener(Events.custom.featureLayerAdded, this.onWindowFeatureLayerAdded.bind(this));
-        window.addEventListener(Events.custom.featureLayerRemoved, this.onWindowFeatureLayerRemoved.bind(this));
-        window.addEventListener(Events.custom.browserStateCleared, this.onWindowBrowserStateCleared.bind(this));
+        window.addEventListener(Events.browser.keyUp, this.#onWindowKeyUp.bind(this));
+        window.addEventListener(Events.custom.ready, this.#onOLTBReady.bind(this));
+        window.addEventListener(Events.custom.mapLayerAdded, this.#onWindowMapLayerAdded.bind(this));
+        window.addEventListener(Events.custom.mapLayerRemoved, this.#onWindowMapLayerRemoved.bind(this));
+        window.addEventListener(Events.custom.featureLayerAdded, this.#onWindowFeatureLayerAdded.bind(this));
+        window.addEventListener(Events.custom.featureLayerRemoved, this.#onWindowFeatureLayerRemoved.bind(this));
+        window.addEventListener(Events.custom.browserStateCleared, this.#onWindowBrowserStateCleared.bind(this));
 
         // Note: 
         // @Consumer callback
@@ -257,7 +257,7 @@ class LayerTool extends Control {
 
     initToggleables() {
         this.uiRefToolboxSection.querySelectorAll(`.${CLASS__TOGGLEABLE}`).forEach((toggle) => {
-            toggle.addEventListener(Events.browser.click, this.onToggleToolbox.bind(this, toggle));
+            toggle.addEventListener(Events.browser.click, this.#onToggleToolbox.bind(this, toggle));
         });
     }
 
@@ -270,7 +270,7 @@ class LayerTool extends Control {
             ContextMenuTool.addItem({
                 icon: this.icon, 
                 i18nKey: `${I18N__BASE}.contextItems.addMapLayer`, 
-                fn: this.onContextMenuAddMapLayerModal.bind(this)
+                fn: this.#onContextMenuAddMapLayerModal.bind(this)
             });
         }
 
@@ -278,7 +278,7 @@ class LayerTool extends Control {
             ContextMenuTool.addItem({
                 icon: this.icon, 
                 i18nKey: `${I18N__BASE}.contextItems.addFeatureLayer`, 
-                fn: this.onContextMenuAddFeatureLayer.bind(this)
+                fn: this.#onContextMenuAddFeatureLayer.bind(this)
             });
         }
     }
@@ -329,7 +329,7 @@ class LayerTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Browser Events
     //--------------------------------------------------------------------
-    onOLTBReady(event) {
+    #onOLTBReady(event) {
         if(this.localStorage.isActive) {
             this.activateTool();
         }
@@ -340,7 +340,7 @@ class LayerTool extends Control {
         this.removeUnusedLayers();
     }
 
-    onWindowBrowserStateCleared() {
+    #onWindowBrowserStateCleared() {
         this.doClearState();
 
         if(this.isActive) {
@@ -354,25 +354,25 @@ class LayerTool extends Control {
         }
     }
 
-    onWindowKeyUp(event) {
+    #onWindowKeyUp(event) {
         if(isShortcutKeyOnly(event, ShortcutKeys.layerTool)) {
             this.onClickTool(event);
         }
     }
 
-    onWindowMapLayerAdded(event) {
+    #onWindowMapLayerAdded(event) {
         this.doMapLayerAdded(event);
     }
 
-    onWindowMapLayerRemoved(event) {
+    #onWindowMapLayerRemoved(event) {
         this.doMapLayerRemoved(event);
     }
 
-    onWindowFeatureLayerAdded(event) {
+    #onWindowFeatureLayerAdded(event) {
         this.doFeatureLayerAdded(event);
     }
 
-    onWindowFeatureLayerRemoved(event) {
+    #onWindowFeatureLayerRemoved(event) {
         this.doFeatureLayerRemoved(event);
     }
 
@@ -446,11 +446,11 @@ class LayerTool extends Control {
     //--------------------------------------------------------------------
     // # Section: ContextMenu Callbacks
     //--------------------------------------------------------------------
-    onContextMenuAddMapLayerModal() {
+    #onContextMenuAddMapLayerModal() {
         this.doShowAddMapLayerModal();
     }
 
-    onContextMenuAddFeatureLayer() {
+    #onContextMenuAddFeatureLayer() {
         this.doAddFeatureLayer({
             name: '',
             isDynamicallyAdded: true
@@ -599,12 +599,12 @@ class LayerTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Map/UI Callbacks
     //--------------------------------------------------------------------
-    onToggleToolbox(toggle) {
+    #onToggleToolbox(toggle) {
         const targetName = toggle.dataset.oltbToggleableTarget;
         this.doToggleToolboxSection(targetName);
     }
 
-    onAddFeatureLayerByKey(event) {
+    #onAddFeatureLayerByKey(event) {
         if(!this.isValidEnter(event)) {
             return;
         }
@@ -612,7 +612,7 @@ class LayerTool extends Control {
         this.onAddFeatureLayerByClick(event);
     }
 
-    onAddFeatureLayerByClick(event) {
+    #onAddFeatureLayerByClick(event) {
         const name = this.uiRefAddFeatureLayerText.value;
         this.uiRefAddFeatureLayerText.value = '';
 
@@ -622,7 +622,7 @@ class LayerTool extends Control {
         });
     }
 
-    onCreateMapLayer(result) {
+    #onCreateMapLayer(result) {
         if(!this.hasProjection(result.projection)) {
             return;
         }
@@ -641,7 +641,7 @@ class LayerTool extends Control {
         }
     }
 
-    onMapLayerPropertyChange(id, layerElement, checkbox, event) {
+    #onMapLayerPropertyChange(id, layerElement, checkbox, event) {
         // Note:
         // Only run for visibility changes
         const property = event.key;
@@ -664,7 +664,7 @@ class LayerTool extends Control {
         }
     }
 
-    onFeatureLayerPropertyChange(id, layerElement, checkbox, event) {
+    #onFeatureLayerPropertyChange(id, layerElement, checkbox, event) {
         // Note:
         // Only run for visibility changes
         const property = event.key;
@@ -685,6 +685,26 @@ class LayerTool extends Control {
             storedLayerState.isVisible = isVisible;
             StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
         }
+    }
+
+    #onLayerDelete(layerWrapper, callback) {
+        this.askToDeleteLayer(layerWrapper, callback);
+    }
+
+    #onLayerVisibilityChange(layerWrapper, callback, layerName) {
+        this.doChangeLayerVisibility(layerWrapper, callback);
+    }
+
+    #onLayerEdit(layerWrapper, callback, layerName) {
+        this.askToRenameLayer(layerWrapper, callback, layerName);
+    }
+
+    #onLayerDownload(layerWrapper, callback) {
+        this.askToDownloadLayer(layerWrapper, callback);
+    }
+
+    #onShowAddMapLayerModal() {
+        this.doShowAddMapLayerModal();
     }
 
     //--------------------------------------------------------------------
@@ -793,7 +813,7 @@ class LayerTool extends Control {
         const [ checkboxWrapper, checkbox ] = createUICheckbox({
             checked: layerState.isVisible,
             listeners: {
-                'click': this.onLayerVisibilityChange.bind(
+                'click': this.#onLayerVisibilityChange.bind(
                     this, 
                     layerWrapper, 
                     this.options.onMapLayerVisibilityChanged, 
@@ -802,7 +822,7 @@ class LayerTool extends Control {
             }
         });
 
-        layer.on(Events.openLayers.propertyChange, this.onMapLayerPropertyChange.bind(this, layerId, layerElement, checkbox));
+        layer.on(Events.openLayers.propertyChange, this.#onMapLayerPropertyChange.bind(this, layerId, layerElement, checkbox));
 
         const layerDot = DOM.createElement({
             element: 'div',
@@ -927,7 +947,7 @@ class LayerTool extends Control {
         const [ checkboxWrapper, checkbox ] = createUICheckbox({
             checked: layerState.isVisible,
             listeners: {
-                'click': this.onLayerVisibilityChange.bind(
+                'click': this.#onLayerVisibilityChange.bind(
                     this, 
                     layerWrapper, 
                     this.options.onFeatureLayerVisibilityChanged, 
@@ -936,7 +956,7 @@ class LayerTool extends Control {
             }
         });
 
-        layer.on(Events.openLayers.propertyChange, this.onFeatureLayerPropertyChange.bind(this, layerId, layerElement, checkbox));
+        layer.on(Events.openLayers.propertyChange, this.#onFeatureLayerPropertyChange.bind(this, layerId, layerElement, checkbox));
 
         const layerDot = DOM.createElement({
             element: 'div',
@@ -999,7 +1019,7 @@ class LayerTool extends Control {
                 'data-oltb-i18n': i18nKey
             },
             listeners: {
-                'click': this.onLayerDelete.bind(this, layerWrapper, callback)
+                'click': this.#onLayerDelete.bind(this, layerWrapper, callback)
             }
         });
 
@@ -1017,7 +1037,7 @@ class LayerTool extends Control {
                 'data-oltb-i18n': i18nKey
             },
             listeners: {
-                'click': this.onLayerDownload.bind(this, layerWrapper, callback)
+                'click': this.#onLayerDownload.bind(this, layerWrapper, callback)
             }
         });
 
@@ -1035,30 +1055,11 @@ class LayerTool extends Control {
                 'data-oltb-i18n': i18nKey
             },
             listeners: {
-                'click': this.onLayerEdit.bind(this, layerWrapper, callback, layerName)
+                'click': this.#onLayerEdit.bind(this, layerWrapper, callback, layerName)
             }
         });
 
         return editButton;
-    }
-
-    //--------------------------------------------------------------------
-    // # Section: Map/UI Callbacks
-    //--------------------------------------------------------------------
-    onLayerDelete(layerWrapper, callback) {
-        this.askToDeleteLayer(layerWrapper, callback);
-    }
-
-    onLayerVisibilityChange(layerWrapper, callback, layerName) {
-        this.doChangeLayerVisibility(layerWrapper, callback);
-    }
-
-    onLayerEdit(layerWrapper, callback, layerName) {
-        this.askToRenameLayer(layerWrapper, callback, layerName);
-    }
-
-    onLayerDownload(layerWrapper, callback) {
-        this.askToDownloadLayer(layerWrapper, callback);
     }
 
     //--------------------------------------------------------------------
@@ -1380,7 +1381,7 @@ class LayerTool extends Control {
 
         this.layerModal = new LayerModal({
             onCreate: (result) => {
-                this.onCreateMapLayer(result);
+                this.#onCreateMapLayer(result);
             },
             onClose: () => {
                 this.layerModal = undefined;

@@ -69,7 +69,7 @@ class DebugInfoTool extends Control {
         
         this.initDebugState();
 
-        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(Events.browser.keyUp, this.#onWindowKeyUp.bind(this));
 
         // Note: 
         // @Consumer callback
@@ -116,7 +116,7 @@ class DebugInfoTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Browser Events
     //--------------------------------------------------------------------
-    onWindowKeyUp(event) {
+    #onWindowKeyUp(event) {
         if(isShortcutKeyOnly(event, ShortcutKeys.debugInfoTool)) {
             this.onClickTool(event);
         }

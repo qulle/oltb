@@ -97,9 +97,9 @@ class DirectionTool extends Control {
 
         this.shouldToolButtonBeHidden();
 
-        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
-        window.addEventListener(Events.browser.resize, this.onWindowSizeCheck.bind(this));
-        window.addEventListener(Events.custom.browserStateCleared, this.onWindowBrowserStateCleared.bind(this));
+        window.addEventListener(Events.browser.keyUp, this.#onWindowKeyUp.bind(this));
+        window.addEventListener(Events.browser.resize, this.#onWindowSizeCheck.bind(this));
+        window.addEventListener(Events.custom.browserStateCleared, this.#onWindowBrowserStateCleared.bind(this));
 
         // Note: 
         // @Consumer callback
@@ -141,17 +141,17 @@ class DirectionTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Browser Events
     //--------------------------------------------------------------------
-    onWindowKeyUp(event) {
+    #onWindowKeyUp(event) {
         if(isShortcutKeyOnly(event, ShortcutKeys.directionTool)) {
             this.onClickTool(event);
         }
     }
 
-    onWindowSizeCheck(event) {
+    #onWindowSizeCheck(event) {
         this.shouldToolButtonBeHidden();
     }
 
-    onWindowBrowserStateCleared() {
+    #onWindowBrowserStateCleared() {
         const active = this.getActiveDirection();
         this.doSwitchDirectionFromTo(active, DirectionData.col);
 

@@ -106,11 +106,11 @@ class CoordinatesTool extends Control {
         
         this.uiRefCoordinatesFormat = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-format`);
         this.uiRefCoordinatesFormat.value = this.localStorage.coordinatesFormat;
-        this.uiRefCoordinatesFormat.addEventListener(Events.browser.change, this.onCoordinatesFormatChange.bind(this));
+        this.uiRefCoordinatesFormat.addEventListener(Events.browser.change, this.#onCoordinatesFormatChange.bind(this));
 
-        window.addEventListener(Events.browser.keyDown, this.onWindowKeyDown.bind(this));
-        window.addEventListener(Events.custom.ready, this.onOLTBReady.bind(this));
-        window.addEventListener(Events.custom.browserStateCleared, this.onWindowBrowserStateCleared.bind(this));
+        window.addEventListener(Events.browser.keyDown, this.#onWindowKeyDown.bind(this));
+        window.addEventListener(Events.custom.ready, this.#onOLTBReady.bind(this));
+        window.addEventListener(Events.custom.browserStateCleared, this.#onWindowBrowserStateCleared.bind(this));
 
         // Note: 
         // @Consumer callback
@@ -157,7 +157,7 @@ class CoordinatesTool extends Control {
 
     initToggleables() {
         this.uiRefToolboxSection.querySelectorAll(`.${CLASS__TOGGLEABLE}`).forEach((toggle) => {
-            toggle.addEventListener(Events.browser.click, this.onToggleToolbox.bind(this, toggle));
+            toggle.addEventListener(Events.browser.click, this.#onToggleToolbox.bind(this, toggle));
         });
     }
 
@@ -225,19 +225,19 @@ class CoordinatesTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Browser Events
     //--------------------------------------------------------------------
-    onOLTBReady(event) {
+    #onOLTBReady(event) {
         if(this.localStorage.isActive) {
             this.activateTool();
         }
     }
 
-    onWindowKeyDown(event) {
+    #onWindowKeyDown(event) {
         if(isShortcutKeyOnly(event, ShortcutKeys.coordinatesTool)) {
             this.onClickTool(event);
         }
     }
 
-    onWindowBrowserStateCleared() {
+    #onWindowBrowserStateCleared() {
         this.doClearState();
     
         if(this.isActive) {
@@ -254,17 +254,17 @@ class CoordinatesTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Map/UI Callbacks
     //--------------------------------------------------------------------
-    onToggleToolbox(toggle) {
+    #onToggleToolbox(toggle) {
         const targetName = toggle.dataset.oltbToggleableTarget;
         this.doToggleToolboxSection(targetName);
     }
 
-    onCoordinatesFormatChange() {
+    #onCoordinatesFormatChange() {
         this.localStorage.coordinatesFormat = this.uiRefCoordinatesFormat.value;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 
-    onPointerMove(event) {
+    #onPointerMove(event) {
         this.doCreateTooltipCoordinates(event);
 
         if(this.shouldUpdateToolboxCoordinatesOnHover()) {
@@ -272,7 +272,7 @@ class CoordinatesTool extends Control {
         }
     }
 
-    onMapClick(event) {        
+    #onMapClick(event) {        
         this.doCopyCoordinates(event);
 
         if(!this.shouldCopyCoordinatesOnClick()) {
@@ -359,8 +359,8 @@ class CoordinatesTool extends Control {
         });
 
         this.tooltipItem = TooltipManager.push(KEY__TOOLTIP);
-        this.onPointerMoveListener = map.on(Events.openLayers.pointerMove, this.onPointerMove.bind(this));
-        this.onMapClickListener = map.on(Events.browser.click, this.onMapClick.bind(this));
+        this.onPointerMoveListener = map.on(Events.openLayers.pointerMove, this.#onPointerMove.bind(this));
+        this.onMapClickListener = map.on(Events.browser.click, this.#onMapClick.bind(this));
     }
 
     removeUIProjections() {

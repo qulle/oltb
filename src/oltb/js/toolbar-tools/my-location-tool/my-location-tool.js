@@ -84,7 +84,7 @@ class MyLocationTool extends Control {
         this.button = button;
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
 
-        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(Events.browser.keyUp, this.#onWindowKeyUp.bind(this));
 
         // Note: 
         // @Consumer callback
@@ -123,7 +123,7 @@ class MyLocationTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Browser Events
     //--------------------------------------------------------------------
-    onWindowKeyUp(event) {
+    #onWindowKeyUp(event) {
         if(isShortcutKeyOnly(event, ShortcutKeys.myLocationTool)) {
             this.onClickTool(event);
         }
@@ -132,11 +132,11 @@ class MyLocationTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Map/UI Callbacks
     //--------------------------------------------------------------------
-    onSuccess(location) {
+    #onSuccess(location) {
         this.doLocationFound(location);
     }
 
-    onError(error) {
+    #onError(error) {
         this.doLocationError(error);
     }
 
@@ -298,7 +298,7 @@ class MyLocationTool extends Control {
             }
         });
 
-        window.navigator.geolocation.getCurrentPosition(this.onSuccess.bind(this), this.onError.bind(this), {
+        window.navigator.geolocation.getCurrentPosition(this.#onSuccess.bind(this), this.#onError.bind(this), {
             enableHighAccuracy: this.options.enableHighAccuracy,
             timeout: this.options.timeout
         });

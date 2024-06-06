@@ -103,17 +103,17 @@ class SplitViewTool extends Control {
 
         const uiRefSwapSidesButton = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-swap-button`);
         uiRefSwapSidesButton.addEventListener(Events.browser.click, (event) => {
-            this.onSwapLayerSides();
+            this.#onSwapLayerSides();
         });
         
         this.uiRefSplitViewSlider = ElementManager.getMapElement().querySelector(`#${ID__PREFIX}-slider`);
-        this.uiRefSplitViewSlider.addEventListener(Events.browser.input, this.onSliderInput.bind(this));
+        this.uiRefSplitViewSlider.addEventListener(Events.browser.input, this.#onSliderInput.bind(this));
 
-        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
-        window.addEventListener(Events.custom.ready, this.onOLTBReady.bind(this));
-        window.addEventListener(Events.custom.mapLayerAdded, this.onWindowMapLayerAdded.bind(this));
-        window.addEventListener(Events.custom.mapLayerRemoved, this.onWindowMapLayerRemoved.bind(this));
-        window.addEventListener(Events.custom.browserStateCleared, this.onWindowBrowserStateCleared.bind(this));
+        window.addEventListener(Events.browser.keyUp, this.#onWindowKeyUp.bind(this));
+        window.addEventListener(Events.custom.ready, this.#onOLTBReady.bind(this));
+        window.addEventListener(Events.custom.mapLayerAdded, this.#onWindowMapLayerAdded.bind(this));
+        window.addEventListener(Events.custom.mapLayerRemoved, this.#onWindowMapLayerRemoved.bind(this));
+        window.addEventListener(Events.custom.browserStateCleared, this.#onWindowBrowserStateCleared.bind(this));
 
         // Note: 
         // @Consumer callback
@@ -168,7 +168,7 @@ class SplitViewTool extends Control {
 
     initToggleables() {
         this.uiRefToolboxSection.querySelectorAll(`.${CLASS__TOGGLEABLE}`).forEach((toggle) => {
-            toggle.addEventListener(Events.browser.click, this.onToggleToolbox.bind(this, toggle));
+            toggle.addEventListener(Events.browser.click, this.#onToggleToolbox.bind(this, toggle));
         });
     }
 
@@ -274,19 +274,19 @@ class SplitViewTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Browser Events
     //--------------------------------------------------------------------
-    onOLTBReady(event) {
+    #onOLTBReady(event) {
         if(this.localStorage.isActive) {
             this.activateTool();
         }
     }
 
-    onWindowKeyUp(event) {
+    #onWindowKeyUp(event) {
         if(isShortcutKeyOnly(event, ShortcutKeys.splitViewTool)) {
             this.onClickTool(event);
         }
     }
     
-    onWindowBrowserStateCleared() {
+    #onWindowBrowserStateCleared() {
         this.doClearState();
 
         if(this.isActive) {
@@ -300,11 +300,11 @@ class SplitViewTool extends Control {
         }
     }
 
-    onWindowMapLayerAdded(event) {
+    #onWindowMapLayerAdded(event) {
         this.doMapLayerAdded(event);
     }
 
-    onWindowMapLayerRemoved(event) {
+    #onWindowMapLayerRemoved(event) {
         this.doMapLayerRemoved(event);
         this.doDispatchChangeEvent();
     }
@@ -312,17 +312,17 @@ class SplitViewTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Map/UI Callbacks
     //--------------------------------------------------------------------
-    onToggleToolbox(toggle) {
+    #onToggleToolbox(toggle) {
         const targetName = toggle.dataset.oltbToggleableTarget;
         this.doToggleToolboxSection(targetName);
     }
 
-    onSwapLayerSides() {
+    #onSwapLayerSides() {
         this.doSwapLayerSides();
         this.doDispatchChangeEvent();
     }
 
-    onSliderInput(event) {
+    #onSliderInput(event) {
         const map = this.getMap();
         if(!map) {
             return;
@@ -331,7 +331,7 @@ class SplitViewTool extends Control {
         map.render();
     }
 
-    onPreRender(event) {
+    #onPreRender(event) {
         const map = this.getMap();
         if(!map) {
             return;
@@ -340,7 +340,7 @@ class SplitViewTool extends Control {
         this.doPreRender(event, map);
     }
 
-    onPostRender(event) {
+    #onPostRender(event) {
         event.context.restore();
     }
 
@@ -529,8 +529,8 @@ class SplitViewTool extends Control {
 
             // Attach listeners to the right layer. 
             // Pre/Post render will only show part of the right map
-            this.onPreRenderListener = rightLayer.on(Events.openLayers.preRender, this.onPreRender.bind(this));
-            this.onPostRenderListener = rightLayer.on(Events.openLayers.postRender, this.onPostRender.bind(this));
+            this.onPreRenderListener = rightLayer.on(Events.openLayers.preRender, this.#onPreRender.bind(this));
+            this.onPostRenderListener = rightLayer.on(Events.openLayers.postRender, this.#onPostRender.bind(this));
         }
 
         map.render();

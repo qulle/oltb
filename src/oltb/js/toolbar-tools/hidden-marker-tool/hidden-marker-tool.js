@@ -47,8 +47,8 @@ class HiddenMarkerTool extends Control {
 
         this.initContextMenuItems();
 
-        window.addEventListener(Events.custom.featureEdited, this.onWindowFeatureEdited.bind(this));
-        window.addEventListener(Events.custom.featureRemoved, this.onWindowFeatureRemoved.bind(this));
+        window.addEventListener(Events.custom.featureEdited, this.#onWindowFeatureEdited.bind(this));
+        window.addEventListener(Events.custom.featureRemoved, this.#onWindowFeatureRemoved.bind(this));
     }
 
     getName() {
@@ -62,7 +62,7 @@ class HiddenMarkerTool extends Control {
         ContextMenuTool.addItem({
             icon: this.createIcon, 
             i18nKey: `${I18N__BASE}.contextItems.createMarker`, 
-            fn: this.onContextMenuCreateMarker.bind(this)
+            fn: this.#onContextMenuCreateMarker.bind(this)
         });
         
         ContextMenuTool.addItem({});
@@ -71,14 +71,14 @@ class HiddenMarkerTool extends Control {
     //--------------------------------------------------------------------
     // # Section: ContextMenu Callbacks
     //--------------------------------------------------------------------
-    onContextMenuCreateMarker(map, coordinates, target) {
+    #onContextMenuCreateMarker(map, coordinates, target) {
         this.doShowCoordinatesModal(coordinates);
     }
 
     //--------------------------------------------------------------------
     // # Section: Browser Events
     //--------------------------------------------------------------------
-    onWindowFeatureEdited(event) {
+    #onWindowFeatureEdited(event) {
         // Note: 
         // @Consumer callback
         if(this.options.onEdited instanceof Function) {
@@ -86,7 +86,7 @@ class HiddenMarkerTool extends Control {
         }
     }
 
-    onWindowFeatureRemoved(event) {
+    #onWindowFeatureRemoved(event) {
         // Note: 
         // @Consumer callback
         if(this.options.onRemoved instanceof Function) {
@@ -97,7 +97,7 @@ class HiddenMarkerTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Map/UI Callbacks
     //--------------------------------------------------------------------
-    onCreateMarker(result) {
+    #onCreateMarker(result) {
         this.doAddIconMarker(result);
     }
 
@@ -112,7 +112,7 @@ class HiddenMarkerTool extends Control {
         this.coordinatesModal = new IconMarkerModal({
             coordinates: coordinates,
             onCreate: (result) => {
-                this.onCreateMarker(result);
+                this.#onCreateMarker(result);
             },
             onClose: () => {
                 this.coordinatesModal = undefined;

@@ -127,8 +127,8 @@ class BookmarkTool extends Control {
         this.uiRefAddBookmarkText = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-add-text`);
         this.uiRefAddBookmarkButton = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-add-button`);
 
-        this.uiRefAddBookmarkText.addEventListener(Events.browser.keyUp, this.onAddBookmarkByKey.bind(this));
-        this.uiRefAddBookmarkButton.addEventListener(Events.browser.click, this.onAddBookmarkByClick.bind(this));
+        this.uiRefAddBookmarkText.addEventListener(Events.browser.keyUp, this.#onAddBookmarkByKey.bind(this));
+        this.uiRefAddBookmarkButton.addEventListener(Events.browser.click, this.#onAddBookmarkByClick.bind(this));
 
         this.uiRefBookmarkStack = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-stack`);
         this.sortableBookmarkStack = this.generateSortable(this.uiRefBookmarkStack, {
@@ -140,9 +140,9 @@ class BookmarkTool extends Control {
         this.initState();
         this.initContextMenuItems();
 
-        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
-        window.addEventListener(Events.custom.ready, this.onOLTBReady.bind(this));
-        window.addEventListener(Events.custom.browserStateCleared, this.onWindowBrowserStateCleared.bind(this));
+        window.addEventListener(Events.browser.keyUp, this.#onWindowKeyUp.bind(this));
+        window.addEventListener(Events.custom.ready, this.#onOLTBReady.bind(this));
+        window.addEventListener(Events.custom.browserStateCleared, this.#onWindowBrowserStateCleared.bind(this));
 
         // Note: 
         // @Consumer callback
@@ -197,7 +197,7 @@ class BookmarkTool extends Control {
 
     initToggleables() {
         this.uiRefToolboxSection.querySelectorAll(`.${CLASS__TOGGLEABLE}`).forEach((toggle) => {
-            toggle.addEventListener(Events.browser.click, this.onToggleToolbox.bind(this, toggle));
+            toggle.addEventListener(Events.browser.click, this.#onToggleToolbox.bind(this, toggle));
         });
     }
 
@@ -225,13 +225,13 @@ class BookmarkTool extends Control {
         ContextMenuTool.addItem({
             icon: this.icon, 
             i18nKey: `${I18N__BASE}.contextItems.addBookmark`,
-            fn: this.onContextMenuBookmarkAdd.bind(this)
+            fn: this.#onContextMenuBookmarkAdd.bind(this)
         });
 
         ContextMenuTool.addItem({
             icon: this.clearBookmarksIcon, 
             i18nKey: `${I18N__BASE}.contextItems.clearBookmarks`, 
-            fn: this.onContextMenuBookmarksClear.bind(this)
+            fn: this.#onContextMenuBookmarksClear.bind(this)
         });
     }
 
@@ -296,19 +296,19 @@ class BookmarkTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Browser Events
     //--------------------------------------------------------------------
-    onOLTBReady(event) {
+    #onOLTBReady(event) {
         if(this.localStorage.isActive) {
             this.activateTool();
         }
     }
 
-    onWindowKeyUp(event) {
+    #onWindowKeyUp(event) {
         if(isShortcutKeyOnly(event, ShortcutKeys.bookmarkTool)) {
             this.onClickTool(event);
         }
     }
 
-    onWindowBrowserStateCleared() {
+    #onWindowBrowserStateCleared() {
         this.doClearBookmarks();
         this.doClearState();
 
@@ -345,23 +345,23 @@ class BookmarkTool extends Control {
     //--------------------------------------------------------------------
     // # Section: ContextMenu Callbacks
     //--------------------------------------------------------------------
-    onContextMenuBookmarkAdd(map, coordinates, target) {
+    #onContextMenuBookmarkAdd(map, coordinates, target) {
         this.doAddBookmark('', coordinates);
     }
 
-    onContextMenuBookmarksClear(map, coordinates, target) {
+    #onContextMenuBookmarksClear(map, coordinates, target) {
         this.askClearBookmarks();
     }
 
     //--------------------------------------------------------------------
     // # Section: Map/UI Callbacks
     //--------------------------------------------------------------------
-    onToggleToolbox(toggle) {
+    #onToggleToolbox(toggle) {
         const targetName = toggle.dataset.oltbToggleableTarget;
         this.doToggleToolboxSection(targetName);
     }
 
-    onAddBookmarkByKey(event) {
+    #onAddBookmarkByKey(event) {
         if(!this.isValidEnterKey(event)) {
             return;
         }
@@ -369,7 +369,7 @@ class BookmarkTool extends Control {
         this.onAddBookmarkByClick(event);
     }
 
-    onAddBookmarkByClick(event) {
+    #onAddBookmarkByClick(event) {
         const name = this.uiRefAddBookmarkText.value;
         this.uiRefAddBookmarkText.value = '';
 

@@ -37,11 +37,13 @@ import { ProjectionManager } from './toolbar-managers/projection-manager/project
 import { TranslationManager } from './toolbar-managers/translation-manager/translation-manager';
 import { ColorPickerManager } from './toolbar-managers/color-picker-manager/color-picker-manager';
 import { AccessibilityManager } from './toolbar-managers/accessibility-manager/accessibility-manager';
+import { ConversionManager } from './toolbar-managers/conversion-manager/conversion-manager';
+import { NameManager } from './toolbar-managers/name-manager/name-manager';
 
 // Create UI functions
 import { createUITooltip } from './ui-creators/ui-tooltip/create-ui-tooltip';
 
-// Toolbar tools
+// Toolbar Tools
 import { AllTools } from './toolbar-tools/index';
 
 class OLTB {
@@ -64,6 +66,8 @@ class OLTB {
     static InfoWindowManager = InfoWindowManager;
     static ColorPickerManager = ColorPickerManager;
     static AccessibilityManager = AccessibilityManager;
+    static ConversionManager = ConversionManager;
+    static NameManager = NameManager;
     
     static Toast = Toast;
     static Modal = Modal;
@@ -111,7 +115,7 @@ class OLTB {
         });
 
         // Note: 
-        // Always add the ContextMenu last
+        // Always add the ContextMenuTool last
         this.#tools['ContextMenuTool'] = new AllTools.ContextMenuTool({});
     }
 
@@ -133,7 +137,7 @@ class OLTB {
 
     constructor(options = {}) {
         // Note: 
-        // The init order is important
+        // The init order is important due to dependencies between the managers
         BootstrapManager.initAsync([
             { manager: LogManager },
             { manager: StyleManager },

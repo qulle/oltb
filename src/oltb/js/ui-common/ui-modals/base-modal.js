@@ -92,7 +92,7 @@ class BaseModal {
             this.modal
         ]);
 
-        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(Events.browser.keyUp, this.#onWindowKeyUp.bind(this));
 
         if(this.options.content) {
             this.show(this.options.content);
@@ -115,7 +115,7 @@ class BaseModal {
     //--------------------------------------------------------------------
     // # Section: Events
     //--------------------------------------------------------------------
-    onWindowKeyUp(event) {
+    #onWindowKeyUp(event) {
         if(event.key === KeyboardKeys.valueEscape) {
             this.close();
         }

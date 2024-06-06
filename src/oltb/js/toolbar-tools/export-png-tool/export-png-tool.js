@@ -73,8 +73,8 @@ class ExportPngTool extends Control {
         
         this.initDebugState();
 
-        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
-        window.addEventListener(Events.custom.ready, this.onOLTBReady.bind(this));
+        window.addEventListener(Events.browser.keyUp, this.#onWindowKeyUp.bind(this));
+        window.addEventListener(Events.custom.ready, this.#onOLTBReady.bind(this));
 
         // Note: 
         // @Consumer callback
@@ -117,7 +117,7 @@ class ExportPngTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Browser Events
     //--------------------------------------------------------------------
-    onOLTBReady(event) {
+    #onOLTBReady(event) {
         const uiRefMapElement = ElementManager.getMapElement();
         const uiRefAttribution = uiRefMapElement.querySelector('.ol-attribution');
 
@@ -126,7 +126,7 @@ class ExportPngTool extends Control {
         }
     }
 
-    onWindowKeyUp(event) {
+    #onWindowKeyUp(event) {
         if(isShortcutKeyOnly(event, ShortcutKeys.exportPngTool)) {
             this.onClickTool(event);
         }
@@ -135,7 +135,7 @@ class ExportPngTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Map/UI Callbacks
     //--------------------------------------------------------------------
-    async onRenderCompleteAsync() {
+    async #onRenderCompleteAsync() {
         const map = this.getMap();
         if(!map) {
             return;
@@ -230,7 +230,7 @@ class ExportPngTool extends Control {
 
         // Note: 
         // RenderSync will trigger the export the png
-        map.once(Events.openLayers.renderComplete, this.onRenderCompleteAsync.bind(this));
+        map.once(Events.openLayers.renderComplete, this.#onRenderCompleteAsync.bind(this));
         map.renderSync();
     }
 

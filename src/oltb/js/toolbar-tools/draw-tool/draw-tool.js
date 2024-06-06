@@ -132,9 +132,9 @@ class DrawTool extends Control {
         this.uiRefStrokeWidth.value = this.localStorage.strokeWidth;
         this.uiRefIntersectionEnable.value = 'false';
 
-        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
-        window.addEventListener(Events.custom.ready, this.onOLTBReady.bind(this));
-        window.addEventListener(Events.custom.browserStateCleared, this.onWindowBrowserStateCleared.bind(this));
+        window.addEventListener(Events.browser.keyUp, this.#onWindowKeyUp.bind(this));
+        window.addEventListener(Events.custom.ready, this.#onOLTBReady.bind(this));
+        window.addEventListener(Events.custom.browserStateCleared, this.#onWindowBrowserStateCleared.bind(this));
 
         // Note: 
         // @Consumer callback
@@ -222,7 +222,7 @@ class DrawTool extends Control {
 
     initToggleables() {
         this.uiRefToolboxSection.querySelectorAll(`.${CLASS__TOGGLEABLE}`).forEach((toggle) => {
-            toggle.addEventListener(Events.browser.click, this.onToggleToolbox.bind(this, toggle));
+            toggle.addEventListener(Events.browser.click, this.#onToggleToolbox.bind(this, toggle));
         });
     }
 
@@ -323,13 +323,13 @@ class DrawTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Browser Events
     //--------------------------------------------------------------------
-    onOLTBReady(event) {
+    #onOLTBReady(event) {
         if(this.localStorage.isActive) {
             this.activateTool();
         }
     }
 
-    onWindowKeyUp(event) {
+    #onWindowKeyUp(event) {
         const key = event.key;
 
         if(key === KeyboardKeys.valueEscape) {
@@ -345,7 +345,7 @@ class DrawTool extends Control {
         }
     }
 
-    onWindowBrowserStateCleared() {
+    #onWindowBrowserStateCleared() {
         this.doClearState();
         this.doClearColors();
 
@@ -363,27 +363,29 @@ class DrawTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Map/UI Callbacks
     //--------------------------------------------------------------------
-    onToggleToolbox(toggle) {
+    #onToggleToolbox(toggle) {
         const targetName = toggle.dataset.oltbToggleableTarget;
         this.doToggleToolboxSection(targetName);
     }
 
-    onDrawStart(event) {
+    #onDrawStart(event) {
         this.doDrawStart(event);
     }
 
-    onDrawEnd(event) {
+    #onDrawEnd(event) {
         this.doDrawEnd(event);
     }
 
-    onDrawAbort(event) {
+    #onDrawAbort(event) {
         this.doDrawAbort(event);
     }
 
-    onDrawError(event) {
+    #onDrawError(event) {
         this.doDrawError(event);
     }
 
+    // Note:
+    // This is a global event that is invoked from the SnapManager
     onSnap(event) {
         this.doSnap(event);
     }
@@ -616,10 +618,10 @@ class DrawTool extends Control {
 
         this.interactionDraw = this.generateOLInteractionDraw(toolType, geometryFunction);
 
-        this.interactionDraw.on(Events.openLayers.drawStart, this.onDrawStart.bind(this));
-        this.interactionDraw.on(Events.openLayers.drawEnd, this.onDrawEnd.bind(this));
-        this.interactionDraw.on(Events.openLayers.drawAbort, this.onDrawAbort.bind(this));
-        this.interactionDraw.on(Events.openLayers.error, this.onDrawError.bind(this));
+        this.interactionDraw.on(Events.openLayers.drawStart, this.#onDrawStart.bind(this));
+        this.interactionDraw.on(Events.openLayers.drawEnd, this.#onDrawEnd.bind(this));
+        this.interactionDraw.on(Events.openLayers.drawAbort, this.#onDrawAbort.bind(this));
+        this.interactionDraw.on(Events.openLayers.error, this.#onDrawError.bind(this));
 
         // Note: 
         // The Snap interaction must be added last

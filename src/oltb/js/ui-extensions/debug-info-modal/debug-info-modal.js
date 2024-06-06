@@ -69,7 +69,7 @@ class DebugInfoModal extends BaseModal {
         this.show(modalContent);
 
         modalContent.querySelectorAll(`.${CLASS__TOGGLEABLE}`).forEach((toggle) => {
-            toggle.addEventListener(Events.browser.click, this.onToggleSection.bind(this, toggle));
+            toggle.addEventListener(Events.browser.click, this.#onToggleSection.bind(this, toggle));
         });
     }
 
@@ -156,7 +156,7 @@ class DebugInfoModal extends BaseModal {
                 'type': 'button'
             },
             listeners: {
-                'click': this.onAction.bind(this)
+                'click': this.#onAction.bind(this)
             }
         });
         
@@ -649,14 +649,14 @@ class DebugInfoModal extends BaseModal {
     //--------------------------------------------------------------------
     // # Section: Events
     //--------------------------------------------------------------------
-    onToggleSection(toggle) {
+    #onToggleSection(toggle) {
         const targetName = toggle.dataset.oltbToggleableTarget;
         const duration = ConfigManager.getConfig().animationDuration.fast;
         
         window.document.getElementById(targetName)?.slideToggle(duration);
     }
 
-    onAction() {
+    #onAction() {
         const action = this.commandsCollection.value;
         const actions = {
             'log.map.to.console': this.doActionLoggingMap.bind(this),

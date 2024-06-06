@@ -63,7 +63,7 @@ class TranslationTool extends Control {
         this.languageDialog = undefined;
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
 
-        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUp.bind(this));
+        window.addEventListener(Events.browser.keyUp, this.#onWindowKeyUp.bind(this));
 
         // Note: 
         // @Consumer callback
@@ -98,7 +98,7 @@ class TranslationTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Browser Events
     //--------------------------------------------------------------------
-    onWindowKeyUp(event) {
+    #onWindowKeyUp(event) {
         if(isShortcutKeyOnly(event, ShortcutKeys.translationTool)) {
             this.onClickTool(event);
         }
