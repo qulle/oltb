@@ -2,12 +2,10 @@ import _ from 'lodash';
 import { DOM } from '../../browser-helpers/dom-factory';
 import { Stroke } from 'ol/style';
 import { Events } from '../../browser-constants/events';
-import { Control } from 'ol/control';
+import { BaseTool } from '../base-tool';
 import { Graticule } from 'ol/layer';
-import { LogManager } from '../../toolbar-managers/log-manager/log-manager';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
 import { ShortcutKeys } from '../../browser-constants/shortcut-keys';
-import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 import { LocalStorageKeys } from '../../browser-constants/local-storage-keys';
 import { isShortcutKeyOnly } from '../../browser-helpers/is-shortcut-key-only';
 import { TranslationManager } from '../../toolbar-managers/translation-manager/translation-manager';
@@ -42,12 +40,10 @@ const LocalStorageDefaults = Object.freeze({
  * Description:
  * Show a graphical depiction of a coordinate system as a grid of lines both in vertical and horizontal directions.
  */
-class GraticuleTool extends Control {
+class GraticuleTool extends BaseTool {
     constructor(options = {}) {
-        LogManager.logDebug(FILENAME, 'constructor', 'init');
-
         super({
-            element: ElementManager.getToolbarElement()
+            filename: FILENAME
         });
         
         const icon = getSvgIcon({
@@ -86,6 +82,8 @@ class GraticuleTool extends Control {
         
         this.graticule = this.generateOLGraticule();
 
+        // TODO:
+        // Replaced by EventManager in the future?
         window.addEventListener(Events.browser.keyUp, this.#onWindowKeyUp.bind(this));
         window.addEventListener(Events.custom.ready, this.#onOLTBReady.bind(this));
         window.addEventListener(Events.custom.browserStateCleared, this.#onWindowBrowserStateCleared.bind(this));
@@ -98,7 +96,7 @@ class GraticuleTool extends Control {
     }
     
     getName() {
-        return FILENAME;
+        return super.getFilename();
     }
 
     //--------------------------------------------------------------------
@@ -121,7 +119,7 @@ class GraticuleTool extends Control {
     // # Section: Tool Control
     //--------------------------------------------------------------------
     onClickTool(event) {
-        LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
+        super.onClickTool(event);
 
         if(this.isActive) {
             this.deactivateTool();

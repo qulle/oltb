@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { DOM } from '../../browser-helpers/dom-factory';
 import { Events } from '../../browser-constants/events';
-import { Control } from 'ol/control';
+import { BaseTool } from '../base-tool';
 import { transform } from 'ol/proj';
 import { trapFocus } from '../../browser-helpers/trap-focus';
 import { UrlManager } from '../../toolbar-managers/url-manager/url-manager';
@@ -18,7 +18,7 @@ const DefaultOptions = Object.freeze({
     name: 'MainContextMenu'
 });
 
-class ContextMenuTool extends Control {
+class ContextMenuTool extends BaseTool {
     static #isDebug
     static #items = [];
 
@@ -27,9 +27,8 @@ class ContextMenuTool extends Control {
     }
 
     constructor(options = {}) {
-        LogManager.logDebug(FILENAME, 'constructor', 'init');
-        
         super({
+            filename: FILENAME,
             element: DOM.createElement({
                 element: 'ul',
                 class: CLASS__CONTEXT_MENU,
@@ -58,6 +57,10 @@ class ContextMenuTool extends Control {
 
         uiRefMapElement.addEventListener(Events.browser.contextMenu, this.#onContextMenu.bind(this));
         uiRefMapElement.addEventListener(Events.browser.click, this.#onMapClick.bind(this));
+    }
+
+    getName() {
+        return super.getFilename();
     }
 
     //--------------------------------------------------------------------

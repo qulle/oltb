@@ -1,8 +1,7 @@
 import _ from 'lodash';
 import { DOM } from '../../browser-helpers/dom-factory';
 import { Events } from '../../browser-constants/events';
-import { Control } from 'ol/control';
-import { LogManager } from '../../toolbar-managers/log-manager/log-manager';
+import { BaseTool } from '../base-tool';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
 import { ShortcutKeys } from '../../browser-constants/shortcut-keys';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
@@ -35,12 +34,10 @@ const LocalStorageDefaults = Object.freeze({
  * Description:
  * Via this tool the Toolbox can be swiped of-canvas with a small animation.
  */
-class ToolboxTool extends Control {
-    constructor(options = {}) {
-        LogManager.logDebug(FILENAME, 'constructor', 'init');
-        
+class ToolboxTool extends BaseTool {
+    constructor(options = {}) { 
         super({
-            element: ElementManager.getToolbarElement()
+            filename: FILENAME
         });
 
         const icon = getSvgIcon({
@@ -82,6 +79,8 @@ class ToolboxTool extends Control {
             LocalStorageDefaults
         );
 
+        // TODO:
+        // Replaced by EventManager in the future?
         window.addEventListener(Events.browser.keyUp, this.#onWindowKeyUp.bind(this));
         window.addEventListener(Events.custom.ready, this.#onOLTBReady.bind(this));
         window.addEventListener(Events.custom.browserStateCleared, this.#onWindowBrowserStateCleared.bind(this));
@@ -94,14 +93,14 @@ class ToolboxTool extends Control {
     }
 
     getName() {
-        return FILENAME;
+        return super.getFilename();
     }
 
     //--------------------------------------------------------------------
     // # Section: Tool Control
     //--------------------------------------------------------------------
     onClickTool(event) {
-        LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
+        super.onClickTool(event);
         
         if(this.isActive) {
             this.deactivateTool();

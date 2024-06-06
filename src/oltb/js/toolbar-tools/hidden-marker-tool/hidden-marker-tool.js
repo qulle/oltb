@@ -1,11 +1,9 @@
 import _ from 'lodash';
 import { Events } from '../../browser-constants/events';
-import { Control } from 'ol/control';
-import { LogManager } from '../../toolbar-managers/log-manager/log-manager';
+import { BaseTool } from '../base-tool';
 import { toStringHDMS } from 'ol/coordinate';
 import { LayerManager } from '../../toolbar-managers/layer-manager/layer-manager';
 import { FeatureManager } from '../../toolbar-managers/feature-manager/feature-manager';
-import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 import { ContextMenuTool } from '../context-menu-tool/context-menu-tool';
 import { IconMarkerModal } from '../../ui-extensions/icon-marker-modal/icon-marker-modal';
 import { TranslationManager } from '../../toolbar-managers/translation-manager/translation-manager';
@@ -30,12 +28,10 @@ const DefaultOptions = Object.freeze({
  * Description:
  * Create Markers with icons in the Map to visualize places, Bookmarks, etc.
  */
-class HiddenMarkerTool extends Control {
+class HiddenMarkerTool extends BaseTool {
     constructor(options = {}) {
-        LogManager.logDebug(FILENAME, 'constructor', 'init');
-
         super({
-            element: ElementManager.getToolbarElement()
+            filename: FILENAME
         });
 
         this.coordinatesModal = undefined;
@@ -45,20 +41,22 @@ class HiddenMarkerTool extends Control {
             path: SvgPaths.plusLarge.stroked
         });
 
-        this.initContextMenuItems();
+        this.#initContextMenuItems();
 
+        // TODO:
+        // Replaced by EventManager in the future?
         window.addEventListener(Events.custom.featureEdited, this.#onWindowFeatureEdited.bind(this));
         window.addEventListener(Events.custom.featureRemoved, this.#onWindowFeatureRemoved.bind(this));
     }
 
     getName() {
-        return FILENAME;
+        return super.getFilename();
     }
 
     //--------------------------------------------------------------------
     // # Section: Init Helpers
     //--------------------------------------------------------------------
-    initContextMenuItems() {
+    #initContextMenuItems() {
         ContextMenuTool.addItem({
             icon: this.createIcon, 
             i18nKey: `${I18N__BASE}.contextItems.createMarker`, 

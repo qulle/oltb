@@ -1,13 +1,12 @@
 import _ from 'lodash';
 import { DOM } from '../../browser-helpers/dom-factory';
 import { Events } from '../../browser-constants/events';
-import { LogManager } from '../../toolbar-managers/log-manager/log-manager';
+import { BaseTool } from '../base-tool';
+import { ScaleLine } from 'ol/control';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
 import { ShortcutKeys } from '../../browser-constants/shortcut-keys';
-import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 import { LocalStorageKeys } from '../../browser-constants/local-storage-keys';
 import { isShortcutKeyOnly } from '../../browser-helpers/is-shortcut-key-only';
-import { Control, ScaleLine } from 'ol/control';
 import { TranslationManager } from '../../toolbar-managers/translation-manager/translation-manager';
 import { SvgPaths, getSvgIcon } from '../../ui-icons/get-svg-icon/get-svg-icon';
 
@@ -35,12 +34,10 @@ const LocalStorageDefaults = Object.freeze({
  * Depending on zoom level and position on the Map, a fixed distance will vary in value. 
  * This is reflected in the scaling component.
  */
-class ScaleLineTool extends Control {
+class ScaleLineTool extends BaseTool {
     constructor(options = {}) {
-        LogManager.logDebug(FILENAME, 'constructor', 'init');
-        
         super({
-            element: ElementManager.getToolbarElement()
+            filename: FILENAME
         });
         
         const icon = getSvgIcon({
@@ -79,6 +76,8 @@ class ScaleLineTool extends Control {
 
         this.scaleLine = this.generateOLScaleLine();
         
+        // TODO:
+        // Replaced by EventManager in the future?
         window.addEventListener(Events.browser.keyUp, this.#onWindowKeyUp.bind(this));
         window.addEventListener(Events.custom.ready, this.#onOLTBReady.bind(this));
         window.addEventListener(Events.custom.browserStateCleared, this.#onWindowBrowserStateCleared.bind(this));
@@ -91,14 +90,14 @@ class ScaleLineTool extends Control {
     }
 
     getName() {
-        return FILENAME;
+        return super.getFilename();
     }
 
     //--------------------------------------------------------------------
     // # Section: Tool Control
     //--------------------------------------------------------------------
     onClickTool(event) {
-        LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
+        super.onClickTool(event);
 
         if(this.isActive) {
             this.deactivateTool();

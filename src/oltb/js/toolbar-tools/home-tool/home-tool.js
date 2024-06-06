@@ -2,13 +2,11 @@ import _ from 'lodash';
 import { DOM } from '../../browser-helpers/dom-factory';
 import { Toast } from '../../ui-common/ui-toasts/toast';
 import { Events } from '../../browser-constants/events';
-import { Control } from 'ol/control';
+import { BaseTool } from '../base-tool';
 import { goToView } from '../../ol-helpers/go-to-view';
-import { LogManager } from '../../toolbar-managers/log-manager/log-manager';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
 import { ShortcutKeys } from '../../browser-constants/shortcut-keys';
 import { ConfigManager } from '../../toolbar-managers/config-manager/config-manager';
-import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 import { ContextMenuTool } from '../context-menu-tool/context-menu-tool';
 import { LocalStorageKeys } from '../../browser-constants/local-storage-keys';
 import { isShortcutKeyOnly } from '../../browser-helpers/is-shortcut-key-only';
@@ -47,12 +45,10 @@ const LocalStorageDefaults = Object.freeze({
  * Your home position is a fixed point that you can have as a base to start from. 
  * It can be set through the constructor and changed by the user.
  */
-class HomeTool extends Control {
+class HomeTool extends BaseTool {
     constructor(options = {}) {
-        LogManager.logDebug(FILENAME, 'constructor', 'init');
-
         super({
-            element: ElementManager.getToolbarElement()
+            filename: FILENAME
         });
         
         this.icon = getSvgIcon({
@@ -88,8 +84,10 @@ class HomeTool extends Control {
             LocalStorageDefaults
         );
 
-        this.initContextMenuItems();
+        this.#initContextMenuItems();
 
+        // TODO:
+        // Replaced by EventManager in the future?
         window.addEventListener(Events.browser.keyUp, this.#onWindowKeyUp.bind(this));
         window.addEventListener(Events.custom.browserStateCleared, this.#onWindowBrowserStateCleared.bind(this));
 
@@ -101,13 +99,13 @@ class HomeTool extends Control {
     }
 
     getName() {
-        return FILENAME;
+        return super.getFilename();
     }
 
     //--------------------------------------------------------------------
     // # Section: Init Helpers
     //--------------------------------------------------------------------
-    initContextMenuItems() {
+    #initContextMenuItems() {
         ContextMenuTool.addItem({
             icon: this.icon, 
             i18nKey: `${I18N__BASE}.contextItems.setHome`, 
@@ -119,8 +117,7 @@ class HomeTool extends Control {
     // # Section: Tool Control
     //--------------------------------------------------------------------
     onClickTool(event) {
-        LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
-        
+        super.onClickTool(event);
         this.momentaryActivation();
 
         // Note: 

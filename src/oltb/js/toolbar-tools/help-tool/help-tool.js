@@ -3,10 +3,9 @@ import { DOM } from '../../browser-helpers/dom-factory';
 import { Toast } from '../../ui-common/ui-toasts/toast';
 import { Dialog } from '../../ui-common/ui-dialogs/dialog';
 import { Events } from '../../browser-constants/events';
-import { Control } from 'ol/control';
+import { BaseTool } from '../base-tool';
 import { LogManager } from '../../toolbar-managers/log-manager/log-manager';
 import { ShortcutKeys } from '../../browser-constants/shortcut-keys';
-import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 import { isShortcutKeyOnly } from '../../browser-helpers/is-shortcut-key-only';
 import { TranslationManager } from '../../toolbar-managers/translation-manager/translation-manager';
 import { SvgPaths, getSvgIcon } from '../../ui-icons/get-svg-icon/get-svg-icon';
@@ -29,12 +28,10 @@ const DefaultOptions = Object.freeze({
  * Description:
  * Open documentation for the functions of the Map or your application as a whole, corresponds to F1 in many computer applications.
  */
-class HelpTool extends Control {
+class HelpTool extends BaseTool {
     constructor(options = {}) {
-        LogManager.logDebug(FILENAME, 'constructor', 'init');
-
         super({
-            element: ElementManager.getToolbarElement()
+            filename: FILENAME
         });
         
         const icon = getSvgIcon({
@@ -65,6 +62,8 @@ class HelpTool extends Control {
         this.button = button;
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
 
+        // TODO:
+        // Replaced by EventManager in the future?
         window.addEventListener(Events.browser.keyUp, this.#onWindowKeyUp.bind(this));
 
         // Note: 
@@ -75,15 +74,14 @@ class HelpTool extends Control {
     }
 
     getName() {
-        return FILENAME;
+        return super.getFilename();
     }
 
     //--------------------------------------------------------------------
     // # Section: Tool Control
     //--------------------------------------------------------------------
     onClickTool(event) {
-        LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
-
+        super.onClickTool(event);
         this.momentaryActivation();
 
         // Note: 

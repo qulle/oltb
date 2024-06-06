@@ -1,8 +1,7 @@
 import _ from 'lodash';
 import { DOM } from '../../browser-helpers/dom-factory';
 import { Events } from '../../browser-constants/events';
-import { Control } from 'ol/control';
-import { LogManager } from '../../toolbar-managers/log-manager/log-manager';
+import { BaseTool } from '../base-tool';
 import { isDarkTheme } from '../../ui-helpers/is-dark-theme/is-dark-theme';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
 import { ShortcutKeys } from '../../browser-constants/shortcut-keys';
@@ -52,12 +51,10 @@ const LocalStorageDefaults = Object.freeze({
  * Description:
  * The Toolbar is light by default, via this tool the Toolbar can be made dark to be better seen against a bright Map image.
  */
-class ThemeTool extends Control {
+class ThemeTool extends BaseTool {
     constructor(options = {}) {
-        LogManager.logDebug(FILENAME, 'constructor', 'init');
-        
         super({
-            element: ElementManager.getToolbarElement()
+            filename: FILENAME
         });
 
         const i18n = TranslationManager.get(I18N__BASE);
@@ -94,6 +91,8 @@ class ThemeTool extends Control {
             LocalStorageDefaults
         );
 
+        // TODO:
+        // Replaced by EventManager in the future?
         window.addEventListener(Events.browser.keyUp, this.#onWindowKeyUp.bind(this));
         window.addEventListener(Events.custom.browserStateCleared, this.#onWindowBrowserStateCleared.bind(this));
 
@@ -105,15 +104,14 @@ class ThemeTool extends Control {
     }
 
     getName() {
-        return FILENAME;
+        return super.getFilename();
     }
 
     //--------------------------------------------------------------------
     // # Section: Tool Control
     //--------------------------------------------------------------------
     onClickTool(event) {
-        LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
-        
+        super.onClickTool(event);
         this.momentaryActivation();
 
         // Note: 

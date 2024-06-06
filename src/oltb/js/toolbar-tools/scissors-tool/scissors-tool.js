@@ -5,8 +5,7 @@ import { Draw } from 'ol/interaction';
 import { Toast } from '../../ui-common/ui-toasts/toast';
 import { Events } from '../../browser-constants/events';
 import { Feature } from 'ol';
-import { Control } from 'ol/control';
-import { LogManager } from '../../toolbar-managers/log-manager/log-manager';
+import { BaseTool } from '../base-tool';
 import { ToolManager } from '../../toolbar-managers/tool-manager/tool-manager';
 import { SnapManager } from '../../toolbar-managers/snap-manager/snap-manager';
 import { KeyboardKeys } from '../../browser-constants/keyboard-keys';
@@ -15,7 +14,6 @@ import { StateManager } from '../../toolbar-managers/state-manager/state-manager
 import { GeometryType } from '../../ol-mappers/ol-geometry/ol-geometry';
 import { ShortcutKeys } from '../../browser-constants/shortcut-keys';
 import { ConfigManager } from '../../toolbar-managers/config-manager/config-manager';
-import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 import { FeatureManager } from '../../toolbar-managers/feature-manager/feature-manager';
 import { LocalStorageKeys } from '../../browser-constants/local-storage-keys';
 import { isShortcutKeyOnly } from '../../browser-helpers/is-shortcut-key-only';
@@ -55,12 +53,10 @@ const LocalStorageDefaults = Object.freeze({
  * Description:
  * Draw a line to cut polygon shapes in half.
  */
-class ScissorsTool extends Control {
+class ScissorsTool extends BaseTool {
     constructor(options = {}) {
-        LogManager.logDebug(FILENAME, 'constructor', 'init');
-
         super({
-            element: ElementManager.getToolbarElement()
+            filename: FILENAME
         });
         
         const icon = getSvgIcon({
@@ -109,6 +105,8 @@ class ScissorsTool extends Control {
         this.interactionDraw.on(Events.openLayers.drawAbort, this.#onDrawAbort.bind(this));
         this.interactionDraw.on(Events.openLayers.error, this.#onDrawError.bind(this));
 
+        // TODO:
+        // Replaced by EventManager in the future?
         window.addEventListener(Events.browser.keyUp, this.#onWindowKeyUp.bind(this));
         window.addEventListener(Events.custom.read, this.#onOLTBReady.bind(this));
         window.addEventListener(Events.custom.browserStateCleared, this.#onWindowBrowserStateCleared.bind(this));
@@ -121,14 +119,14 @@ class ScissorsTool extends Control {
     }
 
     getName() {
-        return FILENAME;
+        return super.getFilename();
     }
 
     //--------------------------------------------------------------------
     // # Section: Tool Control
     //--------------------------------------------------------------------
     onClickTool(event) {
-        LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
+        super.onClickTool(event);
 
         if(this.isActive) {
             this.deactivateTool();

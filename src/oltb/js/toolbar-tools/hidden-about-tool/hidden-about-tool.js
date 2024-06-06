@@ -1,8 +1,6 @@
 import { Modal } from '../../ui-common/ui-modals/modal';
-import { Control } from 'ol/control';
-import { LogManager } from '../../toolbar-managers/log-manager/log-manager';
+import { BaseTool } from '../base-tool';
 import { ConfigManager } from '../../toolbar-managers/config-manager/config-manager';
-import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 import { ContextMenuTool } from '../context-menu-tool/context-menu-tool';
 import { TranslationManager } from '../../toolbar-managers/translation-manager/translation-manager';
 import { SvgPaths, getSvgIcon } from '../../ui-icons/get-svg-icon/get-svg-icon';
@@ -17,12 +15,10 @@ const I18N__BASE = 'tools.hiddenAboutTool';
  * Description:
  * Show information about the project, version and links to the source code etc.
  */
-class HiddenAboutTool extends Control {
+class HiddenAboutTool extends BaseTool {
     constructor() {
-        LogManager.logDebug(FILENAME, 'constructor', 'init');
-
         super({
-            element: ElementManager.getToolbarElement()
+            filename: FILENAME
         });
 
         this.icon = getSvgIcon({
@@ -31,17 +27,17 @@ class HiddenAboutTool extends Control {
 
         this.aboutInfoModal = undefined;
 
-        this.initContextMenuItems();
+        this.#initContextMenuItems();
     }
 
     getName() {
-        return FILENAME;
+        return super.getFilename();
     }
 
     //--------------------------------------------------------------------
     // # Section: Init Helpers
     //--------------------------------------------------------------------
-    initContextMenuItems() {
+    #initContextMenuItems() {
         ContextMenuTool.addItem({});
         ContextMenuTool.addItem({
             icon: this.icon, 

@@ -3,7 +3,8 @@ import { OSM } from 'ol/source';
 import { DOM } from '../../browser-helpers/dom-factory';
 import { Tile } from 'ol/layer';
 import { Events } from '../../browser-constants/events';
-import { LogManager } from '../../toolbar-managers/log-manager/log-manager';
+import { BaseTool } from '../base-tool';
+import { OverviewMap } from 'ol/control';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
 import { ShortcutKeys } from '../../browser-constants/shortcut-keys';
 import { ConfigManager } from '../../toolbar-managers/config-manager/config-manager';
@@ -11,7 +12,6 @@ import { ElementManager } from '../../toolbar-managers/element-manager/element-m
 import { LocalStorageKeys } from '../../browser-constants/local-storage-keys';
 import { isShortcutKeyOnly } from '../../browser-helpers/is-shortcut-key-only';
 import { TranslationManager } from '../../toolbar-managers/translation-manager/translation-manager';
-import { Control, OverviewMap } from 'ol/control';
 import { SvgPaths, getSvgIcon } from '../../ui-icons/get-svg-icon/get-svg-icon';
 
 const FILENAME = 'overview-tool.js';
@@ -42,12 +42,10 @@ const LocalStorageDefaults = Object.freeze({
  * Description:
  * See the Map and its current view in a thumbnail version of the Map.
  */
-class OverviewTool extends Control {
+class OverviewTool extends BaseTool {
     constructor(options = {}) {
-        LogManager.logDebug(FILENAME, 'constructor', 'init');
-        
         super({
-            element: ElementManager.getToolbarElement()
+            filename: FILENAME
         });
         
         const icon = getSvgIcon({
@@ -84,12 +82,14 @@ class OverviewTool extends Control {
             LocalStorageDefaults
         );
 
-        this.initToolboxHTML();
+        this.#initToolboxHTML();
         this.uiRefToolboxSection = window.document.querySelector(`#${ID__PREFIX}-toolbox`);
-        this.initToggleables();
+        this.#initToggleables();
 
         this.overviewMap = this.generateOLOverviewMap();
 
+        // TODO:
+        // Replaced by EventManager in the future?
         window.addEventListener(Events.browser.keyUp, this.#onWindowKeyUp.bind(this));
         window.addEventListener(Events.custom.ready, this.#onOLTBReady.bind(this));
         window.addEventListener(Events.custom.browserStateCleared, this.#onWindowBrowserStateCleared.bind(this));
@@ -102,13 +102,13 @@ class OverviewTool extends Control {
     }
 
     getName() {
-        return FILENAME;
+        return super.getFilename();
     }
 
     //--------------------------------------------------------------------
     // # Section: Init Helpers
     //--------------------------------------------------------------------
-    initToolboxHTML() {
+    #initToolboxHTML() {
         const i18n = TranslationManager.get(`${I18N__BASE}.toolbox`);
         const i18nCommon = TranslationManager.get(`${I18N__BASE_COMMON}.titles`);
 
@@ -127,7 +127,7 @@ class OverviewTool extends Control {
         ElementManager.getToolboxElement().insertAdjacentHTML('beforeend', html);
     }
 
-    initToggleables() {
+    #initToggleables() {
         this.uiRefToolboxSection.querySelectorAll(`.${CLASS__TOGGLEABLE}`).forEach((toggle) => {
             toggle.addEventListener(Events.browser.click, this.#onToggleToolbox.bind(this, toggle));
         });
@@ -153,7 +153,7 @@ class OverviewTool extends Control {
     // # Section: Tool Control
     //--------------------------------------------------------------------
     onClickTool(event) {
-        LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
+        super.onClickTool(event);
 
         if(this.isActive) {
             this.deactivateTool();

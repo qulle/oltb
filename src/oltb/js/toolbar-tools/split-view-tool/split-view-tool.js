@@ -2,8 +2,8 @@ import _ from 'lodash';
 import { DOM } from '../../browser-helpers/dom-factory';
 import { Toast } from '../../ui-common/ui-toasts/toast';
 import { Events } from '../../browser-constants/events';
-import { Control } from 'ol/control';
 import { unByKey } from 'ol/Observable';
+import { BaseTool } from '../base-tool';
 import { LogManager } from '../../toolbar-managers/log-manager/log-manager';
 import { LayerManager } from '../../toolbar-managers/layer-manager/layer-manager';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
@@ -48,12 +48,10 @@ const LocalStorageDefaults = Object.freeze({
  * Description:
  * Compares two different Map images and enables staggered overlap.
  */
-class SplitViewTool extends Control {
+class SplitViewTool extends BaseTool {
     constructor(options = {}) {
-        LogManager.logDebug(FILENAME, 'constructor', 'init');
-        
         super({
-            element: ElementManager.getToolbarElement()
+            filename: FILENAME
         });
         
         const icon = getSvgIcon({
@@ -90,10 +88,10 @@ class SplitViewTool extends Control {
             LocalStorageDefaults
         );
         
-        this.initToolboxHTML();
-        this.initMapHTML();
+        this.#initToolboxHTML();
+        this.#initMapHTML();
         this.uiRefToolboxSection = window.document.querySelector(`#${ID__PREFIX}-toolbox`);
-        this.initToggleables();
+        this.#initToggleables();
 
         this.uiRefLeftSource = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-left-source`);
         this.uiRefLeftSource.addEventListener(Events.browser.change, this.updateTool.bind(this));
@@ -109,6 +107,8 @@ class SplitViewTool extends Control {
         this.uiRefSplitViewSlider = ElementManager.getMapElement().querySelector(`#${ID__PREFIX}-slider`);
         this.uiRefSplitViewSlider.addEventListener(Events.browser.input, this.#onSliderInput.bind(this));
 
+        // TODO:
+        // Replaced by EventManager in the future?
         window.addEventListener(Events.browser.keyUp, this.#onWindowKeyUp.bind(this));
         window.addEventListener(Events.custom.ready, this.#onOLTBReady.bind(this));
         window.addEventListener(Events.custom.mapLayerAdded, this.#onWindowMapLayerAdded.bind(this));
@@ -123,13 +123,13 @@ class SplitViewTool extends Control {
     }
 
     getName() {
-        return FILENAME;
+        return super.getFilename();
     }
 
     //--------------------------------------------------------------------
     // # Section: Init Helpers
     //--------------------------------------------------------------------
-    initToolboxHTML() {
+    #initToolboxHTML() {
         const i18n = TranslationManager.get(`${I18N__BASE}.toolbox`);
         const i18nCommon = TranslationManager.get(`${I18N__BASE_COMMON}.titles`);
 
@@ -160,13 +160,13 @@ class SplitViewTool extends Control {
         ElementManager.getToolboxElement().insertAdjacentHTML('beforeend', html);
     }
 
-    initMapHTML() {
+    #initMapHTML() {
         ElementManager.getMapElement().insertAdjacentHTML('beforeend', `
             <input type="range" min="0" max="100" value="50" class="oltb-slider" id="${ID__PREFIX}-slider">
         `);
     }
 
-    initToggleables() {
+    #initToggleables() {
         this.uiRefToolboxSection.querySelectorAll(`.${CLASS__TOGGLEABLE}`).forEach((toggle) => {
             toggle.addEventListener(Events.browser.click, this.#onToggleToolbox.bind(this, toggle));
         });
@@ -176,7 +176,7 @@ class SplitViewTool extends Control {
     // # Section: Tool Control
     //--------------------------------------------------------------------
     onClickTool(event) {
-        LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
+        super.onClickTool(event);
 
         if(LayerManager.getMapLayerSize() < MIN_NUM_LAYERS) {
             Toast.info({

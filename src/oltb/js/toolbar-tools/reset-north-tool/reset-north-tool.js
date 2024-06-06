@@ -3,12 +3,11 @@ import { DOM } from '../../browser-helpers/dom-factory';
 import { Toast } from '../../ui-common/ui-toasts/toast';
 import { Dialog } from '../../ui-common/ui-dialogs/dialog';
 import { Events } from '../../browser-constants/events';
-import { Control } from 'ol/control';
+import { BaseTool } from '../base-tool';
 import { toLonLat } from 'ol/proj';
 import { goToView } from '../../ol-helpers/go-to-view';
 import { LogManager } from '../../toolbar-managers/log-manager/log-manager';
 import { ShortcutKeys } from '../../browser-constants/shortcut-keys';
-import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 import { ContextMenuTool } from '../context-menu-tool/context-menu-tool';
 import { isShortcutKeyOnly } from '../../browser-helpers/is-shortcut-key-only';
 import { ConversionManager } from '../../toolbar-managers/conversion-manager/conversion-manager';
@@ -32,12 +31,10 @@ const DefaultOptions = Object.freeze({
  * Description:
  * The Map can be rotated using keyboard shortcuts and the mouse or using a specific number of degrees.
  */
-class ResetNorthTool extends Control {
+class ResetNorthTool extends BaseTool {
     constructor(options = {}) {
-        LogManager.logDebug(FILENAME, 'constructor', 'init');
-        
         super({
-            element: ElementManager.getToolbarElement()
+            filename: FILENAME
         });
         
         this.icon = getSvgIcon({
@@ -73,8 +70,10 @@ class ResetNorthTool extends Control {
         this.button = button;
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
 
-        this.initContextMenuItems();
+        this.#initContextMenuItems();
 
+        // TODO:
+        // Replaced by EventManager in the future?
         window.addEventListener(Events.browser.keyUp, this.#onWindowKeyUp.bind(this));
 
         // Note: 
@@ -85,13 +84,13 @@ class ResetNorthTool extends Control {
     }
 
     getName() {
-        return FILENAME;
+        return super.getFilename();
     }
 
     //--------------------------------------------------------------------
     // # Section: Init Helpers
     //--------------------------------------------------------------------
-    initContextMenuItems() {
+    #initContextMenuItems() {
         ContextMenuTool.addItem({
             icon: this.resetRotationIcon, 
             i18nKey: `${I18N__BASE}.contextItems.rotate`, 
@@ -103,7 +102,7 @@ class ResetNorthTool extends Control {
     // # Section: Tool Control
     //--------------------------------------------------------------------
     onClickTool(event) {
-        LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
+        super.onClickTool(event);
         
         this.momentaryActivation();
 

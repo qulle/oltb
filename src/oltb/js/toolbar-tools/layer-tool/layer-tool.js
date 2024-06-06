@@ -5,7 +5,7 @@ import { DOM } from '../../browser-helpers/dom-factory';
 import { Toast } from '../../ui-common/ui-toasts/toast';
 import { Dialog } from '../../ui-common/ui-dialogs/dialog';
 import { Events } from '../../browser-constants/events';
-import { Control } from 'ol/control';
+import { BaseTool } from '../base-tool';
 import { LogManager } from '../../toolbar-managers/log-manager/log-manager';
 import { LayerModal } from '../../ui-extensions/layer-modal/layer-modal';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
@@ -87,12 +87,10 @@ const LocalStorageDefaults = Object.freeze({
  * Create and manage layers for both Map and Markers. 
  * Sorting can be done by simple drag and drop.
  */
-class LayerTool extends Control {
+class LayerTool extends BaseTool {
     constructor(options = {}) {
-        LogManager.logDebug(FILENAME, 'constructor', 'init');
-
         super({
-            element: ElementManager.getToolbarElement()
+            filename: FILENAME
         });
         
         this.icon = getSvgIcon({
@@ -130,9 +128,9 @@ class LayerTool extends Control {
             LocalStorageDefaults
         );
 
-        this.initToolboxHTML();
+        this.#initToolboxHTML();
         this.uiRefToolboxSection = window.document.querySelector(`#${ID__PREFIX}-toolbox`);
-        this.initToggleables();
+        this.#initToggleables();
 
         this.uiRefMapLayerStack = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-map-stack`);
         this.uiRefAddMapLayerButton = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-map-stack-add-button`);
@@ -174,8 +172,10 @@ class LayerTool extends Control {
             this.uiRefAddFeatureLayerText.addEventListener(Events.browser.keyUp, this.#onAddFeatureLayerByKey.bind(this));
         }
 
-        this.initContextMenuItems();
+        this.#initContextMenuItems();
 
+        // TODO:
+        // Replaced by EventManager in the future?
         window.addEventListener(Events.browser.keyUp, this.#onWindowKeyUp.bind(this));
         window.addEventListener(Events.custom.ready, this.#onOLTBReady.bind(this));
         window.addEventListener(Events.custom.mapLayerAdded, this.#onWindowMapLayerAdded.bind(this));
@@ -192,13 +192,13 @@ class LayerTool extends Control {
     }
 
     getName() {
-        return FILENAME;
+        return super.getFilename();
     }
 
     //--------------------------------------------------------------------
     // # Section: Init Helpers
     //--------------------------------------------------------------------
-    initToolboxHTML() {
+    #initToolboxHTML() {
         const i18n = TranslationManager.get(`${I18N__BASE}.toolbox`);
         const i18nCommon = TranslationManager.get(`${I18N__BASE_COMMON}.titles`);
 
@@ -255,13 +255,13 @@ class LayerTool extends Control {
         ElementManager.getToolboxElement().insertAdjacentHTML('beforeend', html);
     }
 
-    initToggleables() {
+    #initToggleables() {
         this.uiRefToolboxSection.querySelectorAll(`.${CLASS__TOGGLEABLE}`).forEach((toggle) => {
             toggle.addEventListener(Events.browser.click, this.#onToggleToolbox.bind(this, toggle));
         });
     }
 
-    initContextMenuItems() {
+    #initContextMenuItems() {
         if(!this.options.disableMapCreateLayerButton || !this.options.disableFeatureCreateLayerButton) {
             ContextMenuTool.addItem({});
         }
@@ -287,7 +287,7 @@ class LayerTool extends Control {
     // # Section: Tool Control
     //--------------------------------------------------------------------
     onClickTool(event) {
-        LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
+        super.onClickTool(event);
         
         if(this.isActive) {
             this.deactivateTool();

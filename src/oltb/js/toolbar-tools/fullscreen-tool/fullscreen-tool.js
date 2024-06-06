@@ -3,10 +3,9 @@ import { DOM } from '../../browser-helpers/dom-factory';
 import { Toast } from '../../ui-common/ui-toasts/toast';
 import { listen } from 'ol/events';
 import { Events } from '../../browser-constants/events';
-import { Control } from 'ol/control';
+import { BaseTool } from '../base-tool';
 import { LogManager } from '../../toolbar-managers/log-manager/log-manager';
 import { ShortcutKeys } from '../../browser-constants/shortcut-keys';
-import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 import { isShortcutKeyOnly } from '../../browser-helpers/is-shortcut-key-only';
 import { TranslationManager } from '../../toolbar-managers/translation-manager/translation-manager';
 import { SvgPaths, getSvgIcon } from '../../ui-icons/get-svg-icon/get-svg-icon';
@@ -30,12 +29,10 @@ const DefaultOptions = Object.freeze({
  * Description:
  * The Map element is rendered in full screen and any other panels in an external application are not included in what is shown on the screen.
  */
-class FullscreenTool extends Control {
+class FullscreenTool extends BaseTool {
     constructor(options = {}) {
-        LogManager.logDebug(FILENAME, 'constructor', 'init');
-
         super({
-            element: ElementManager.getToolbarElement()
+            filename: FILENAME
         });
 
         this.enterFullscreenIcon = getSvgIcon({
@@ -78,6 +75,8 @@ class FullscreenTool extends Control {
         this.listenerKeys = [];
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
 
+        // TODO:
+        // Replaced by EventManager in the future?
         window.addEventListener(Events.browser.keyUp, this.#onWindowKeyUp.bind(this));
         window.document.addEventListener(Events.browser.fullScreenChange, this.#onFullScreenChange.bind(this));
 
@@ -89,15 +88,14 @@ class FullscreenTool extends Control {
     }
 
     getName() {
-        return FILENAME;
+        return super.getFilename();
     }
 
     //--------------------------------------------------------------------
     // # Section: Tool Control
     //--------------------------------------------------------------------
     onClickTool(event) {
-        LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
-
+        super.onClickTool(event);
         this.momentaryActivation();
 
         // Note: 

@@ -5,7 +5,7 @@ import { DOM } from '../../browser-helpers/dom-factory';
 import { Toast } from '../../ui-common/ui-toasts/toast';
 import { Dialog } from '../../ui-common/ui-dialogs/dialog';
 import { Events } from '../../browser-constants/events';
-import { Control } from 'ol/control';
+import { BaseTool } from '../base-tool';
 import { goToView } from '../../ol-helpers/go-to-view';
 import { LogManager } from '../../toolbar-managers/log-manager/log-manager';
 import { NameManager } from '../../toolbar-managers/name-manager/name-manager';
@@ -72,12 +72,10 @@ const LocalStorageDefaults = Object.freeze({
  * A marker on the map shows the location and is also found in the Toolbox.
  * Sorting can be done by simple drag and drop.
  */
-class BookmarkTool extends Control {
+class BookmarkTool extends BaseTool {
     constructor(options = {}) {
-        LogManager.logDebug(FILENAME, 'constructor', 'init');
-
         super({
-            element: ElementManager.getToolbarElement()
+            filename: FILENAME
         });
         
         this.icon = getSvgIcon({
@@ -120,9 +118,9 @@ class BookmarkTool extends Control {
 
         this.layerWrapper = this.generateBookmarkLayer();
 
-        this.initToolboxHTML();
+        this.#initToolboxHTML();
         this.uiRefToolboxSection = window.document.querySelector(`#${ID__PREFIX}-toolbox`);
-        this.initToggleables();
+        this.#initToggleables();
                                 
         this.uiRefAddBookmarkText = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-add-text`);
         this.uiRefAddBookmarkButton = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-add-button`);
@@ -137,9 +135,11 @@ class BookmarkTool extends Control {
             stack: this.localStorage.bookmarks
         });
 
-        this.initState();
-        this.initContextMenuItems();
+        this.#initState();
+        this.#initContextMenuItems();
 
+        // TODO:
+        // Replaced by EventManager in the future?
         window.addEventListener(Events.browser.keyUp, this.#onWindowKeyUp.bind(this));
         window.addEventListener(Events.custom.ready, this.#onOLTBReady.bind(this));
         window.addEventListener(Events.custom.browserStateCleared, this.#onWindowBrowserStateCleared.bind(this));
@@ -152,13 +152,13 @@ class BookmarkTool extends Control {
     }
 
     getName() {
-        return FILENAME;
+        return super.getFilename();
     }
 
     //--------------------------------------------------------------------
     // # Section: Init Helpers
     //--------------------------------------------------------------------
-    initToolboxHTML() {
+    #initToolboxHTML() {
         const i18n = TranslationManager.get(`${I18N__BASE}.toolbox`);
         const i18nCommon = TranslationManager.get(`${I18N__BASE_COMMON}.titles`);
 
@@ -195,13 +195,13 @@ class BookmarkTool extends Control {
         ElementManager.getToolboxElement().insertAdjacentHTML('beforeend', html);
     }
 
-    initToggleables() {
+    #initToggleables() {
         this.uiRefToolboxSection.querySelectorAll(`.${CLASS__TOGGLEABLE}`).forEach((toggle) => {
             toggle.addEventListener(Events.browser.click, this.#onToggleToolbox.bind(this, toggle));
         });
     }
 
-    initState() {
+    #initState() {
         // Note:
         // Process all Bookmarks from constructor
         // Check if the id of the Bookmark is already in local storage, if not, add it
@@ -221,7 +221,7 @@ class BookmarkTool extends Control {
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
     }
 
-    initContextMenuItems() {
+    #initContextMenuItems() {
         ContextMenuTool.addItem({
             icon: this.icon, 
             i18nKey: `${I18N__BASE}.contextItems.addBookmark`,
@@ -254,7 +254,7 @@ class BookmarkTool extends Control {
     // # Section: Tool Control
     //--------------------------------------------------------------------
     onClickTool(event) {
-        LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
+        super.onClickTool(event);
 
         if(this.isActive) {
             this.deactivateTool();

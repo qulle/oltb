@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { Toast } from '../../ui-common/ui-toasts/toast';
 import { Events } from '../../browser-constants/events';
-import { Control } from 'ol/control';
+import { BaseTool } from '../base-tool';
 import { goToView } from '../../ol-helpers/go-to-view';
 import { transform } from 'ol/proj';
 import { LogManager } from '../../toolbar-managers/log-manager/log-manager';
@@ -10,7 +10,6 @@ import { toStringHDMS } from 'ol/coordinate';
 import { LayerManager } from '../../toolbar-managers/layer-manager/layer-manager';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
 import { ConfigManager } from '../../toolbar-managers/config-manager/config-manager';
-import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 import { FeatureManager } from '../../toolbar-managers/feature-manager/feature-manager';
 import { CoordinateModal } from '../../ui-extensions/coordinate-modal/coordinate-modal';
 import { copyToClipboard } from '../../browser-helpers/copy-to-clipboard';
@@ -73,12 +72,10 @@ const DefaultUrlMarker = Object.freeze({
  * Description:
  * Features to simplify navigation, centering and focusing the Map.
  */
-class HiddenMapNavigationTool extends Control {
+class HiddenMapNavigationTool extends BaseTool {
     constructor(options = {}) {
-        LogManager.logDebug(FILENAME, 'constructor', 'init');
-
         super({
-            element: ElementManager.getToolbarElement()
+            filename: FILENAME
         });
 
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
@@ -105,19 +102,21 @@ class HiddenMapNavigationTool extends Control {
             path: SvgPaths.aspectRatio.stroked
         });
 
-        this.initContextMenuItems();
+        this.#initContextMenuItems();
 
+        // TODO:
+        // Replaced by EventManager in the future?
         window.addEventListener(Events.custom.ready, this.#onOLTBReady.bind(this));
     }
 
     getName() {
-        return FILENAME;
+        return super.getFilename();
     }
 
     //--------------------------------------------------------------------
     // # Section: Init Helpers
     //--------------------------------------------------------------------
-    initContextMenuItems() {
+    #initContextMenuItems() {
         ContextMenuTool.addItem({
             icon: this.clipboardIcon,
             i18nKey: `${I18N__BASE}.contextItems.copyCoordinates`,
@@ -125,7 +124,6 @@ class HiddenMapNavigationTool extends Control {
         });
 
         ContextMenuTool.addItem({});
-
         ContextMenuTool.addItem({
             icon: this.coordinatesIcon,
             i18nKey: `${I18N__BASE}.contextItems.navigateToCoordinates`,

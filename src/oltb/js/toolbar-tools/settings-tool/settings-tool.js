@@ -3,13 +3,11 @@ import { DOM } from '../../browser-helpers/dom-factory';
 import { Toast } from '../../ui-common/ui-toasts/toast';
 import { Dialog } from '../../ui-common/ui-dialogs/dialog';
 import { Events } from '../../browser-constants/events';
-import { Control } from 'ol/control';
-import { LogManager } from '../../toolbar-managers/log-manager/log-manager';
+import { BaseTool } from '../base-tool';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
 import { ShortcutKeys } from '../../browser-constants/shortcut-keys';
 import { ConfigManager } from '../../toolbar-managers/config-manager/config-manager';
 import { SettingsModal } from '../../ui-extensions/settings-modal/settings-modal';
-import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 import { ContextMenuTool } from '../context-menu-tool/context-menu-tool';
 import { SettingsManager } from '../../toolbar-managers/settings-manager/settings-manager';
 import { isShortcutKeyOnly } from '../../browser-helpers/is-shortcut-key-only';
@@ -33,12 +31,10 @@ const DefaultOptions = Object.freeze({
  * Description:
  * Check settings for Map zooming, panning, rotating, copying coordinates, etc.
  */
-class SettingsTool extends Control {
+class SettingsTool extends BaseTool {
     constructor(options = {}) {
-        LogManager.logDebug(FILENAME, 'constructor', 'init');
-        
         super({
-            element: ElementManager.getToolbarElement()
+            filename: FILENAME
         });
         
         this.icon = getSvgIcon({
@@ -70,8 +66,10 @@ class SettingsTool extends Control {
         this.settingsModal = undefined;
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
 
-        this.initContextMenuItems();
+        this.#initContextMenuItems();
 
+        // TODO:
+        // Replaced by EventManager in the future?
         window.addEventListener(Events.browser.keyUp, this.#onWindowKeyUp.bind(this));
 
         // Note: 
@@ -82,13 +80,13 @@ class SettingsTool extends Control {
     }
 
     getName() {
-        return FILENAME;
+        return super.getFilename();
     }
 
     //--------------------------------------------------------------------
     // # Section: Init Helpers
     //--------------------------------------------------------------------
-    initContextMenuItems() {
+    #initContextMenuItems() {
         ContextMenuTool.addItem({});
         ContextMenuTool.addItem({
             icon: this.icon, 
@@ -101,8 +99,7 @@ class SettingsTool extends Control {
     // # Section: Tool Control
     //--------------------------------------------------------------------
     onClickTool(event) {
-        LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
-
+        super.onClickTool(event);
         this.momentaryActivation();
 
         // Note: 

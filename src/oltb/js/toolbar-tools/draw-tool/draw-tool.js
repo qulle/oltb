@@ -3,9 +3,8 @@ import { DOM } from '../../browser-helpers/dom-factory';
 import { Draw } from 'ol/interaction';
 import { Toast } from '../../ui-common/ui-toasts/toast';
 import { Events } from '../../browser-constants/events';
-import { Control } from 'ol/control';
+import { BaseTool } from '../base-tool';
 import { Settings } from '../../browser-constants/settings';
-import { LogManager } from '../../toolbar-managers/log-manager/log-manager';
 import { ToolManager } from '../../toolbar-managers/tool-manager/tool-manager';
 import { SnapManager } from '../../toolbar-managers/snap-manager/snap-manager';
 import { GeometryType } from '../../ol-mappers/ol-geometry/ol-geometry';
@@ -37,6 +36,7 @@ const I18N__BASE = 'tools.drawTool';
 const I18N__BASE_COMMON = 'commons';
 
 const DefaultOptions = Object.freeze({
+    circleSize: 5,
     onInitiated: undefined,
     onClicked: undefined,
     onBrowserStateCleared: undefined,
@@ -65,12 +65,10 @@ const LocalStorageDefaults = Object.freeze({
  * Description:
  * Draw Circles, Squares, Rectangles, Lines, Points and Polygons. Ability to draw with different styles and colors.
  */
-class DrawTool extends Control {
+class DrawTool extends BaseTool {
     constructor(options = {}) {
-        LogManager.logDebug(FILENAME, 'constructor', 'init');
-
         super({
-            element: ElementManager.getToolbarElement()
+            filename: FILENAME
         });
         
         const icon = getSvgIcon({
@@ -108,9 +106,9 @@ class DrawTool extends Control {
             LocalStorageDefaults
         );
 
-        this.initToolboxHTML();
+        this.#initToolboxHTML();
         this.uiRefToolboxSection = window.document.querySelector(`#${ID__PREFIX}-toolbox`);
-        this.initToggleables();
+        this.#initToggleables();
 
         this.uiRefToolType = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-type`);
         this.uiRefToolType.addEventListener(Events.browser.change, this.updateTool.bind(this));
@@ -127,11 +125,10 @@ class DrawTool extends Control {
         this.uiRefStrokeColor = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-stroke-color`);
         this.uiRefStrokeColor.addEventListener(Events.custom.colorChange, this.updateTool.bind(this));
 
-        // Set default selected values
-        this.uiRefToolType.value = this.localStorage.toolType;
-        this.uiRefStrokeWidth.value = this.localStorage.strokeWidth;
-        this.uiRefIntersectionEnable.value = 'false';
+        this.#initDefaultValues();
 
+        // TODO:
+        // Replaced by EventManager in the future?
         window.addEventListener(Events.browser.keyUp, this.#onWindowKeyUp.bind(this));
         window.addEventListener(Events.custom.ready, this.#onOLTBReady.bind(this));
         window.addEventListener(Events.custom.browserStateCleared, this.#onWindowBrowserStateCleared.bind(this));
@@ -144,13 +141,13 @@ class DrawTool extends Control {
     }
 
     getName() {
-        return FILENAME;
+        return super.getFilename();
     }
 
     //--------------------------------------------------------------------
     // # Section: Init Helpers
     //--------------------------------------------------------------------
-    initToolboxHTML() {
+    #initToolboxHTML() {
         const i18n = TranslationManager.get(`${I18N__BASE}.toolbox`);
         const i18nCommon = TranslationManager.get(`${I18N__BASE_COMMON}.titles`);
 
@@ -220,17 +217,23 @@ class DrawTool extends Control {
         ElementManager.getToolboxElement().insertAdjacentHTML('beforeend', html);
     }
 
-    initToggleables() {
+    #initToggleables() {
         this.uiRefToolboxSection.querySelectorAll(`.${CLASS__TOGGLEABLE}`).forEach((toggle) => {
             toggle.addEventListener(Events.browser.click, this.#onToggleToolbox.bind(this, toggle));
         });
+    }
+
+    #initDefaultValues() {
+        this.uiRefToolType.value = this.localStorage.toolType;
+        this.uiRefStrokeWidth.value = this.localStorage.strokeWidth;
+        this.uiRefIntersectionEnable.value = 'false';
     }
 
     //--------------------------------------------------------------------
     // # Section: Tool Control
     //--------------------------------------------------------------------
     onClickTool(event) {
-        LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
+        super.onClickTool(event);
 
         if(this.isActive) {
             this.deactivateTool();
@@ -427,7 +430,7 @@ class DrawTool extends Control {
                     color: strokeColor,
                     width: strokeWidth
                 }),
-                radius: 5
+                radius: this.options.circleSize
             }),
             fill: new Fill({
                 color: fillColor
@@ -606,6 +609,8 @@ class DrawTool extends Control {
         // Also use circle to create square and rectangle
         let geometryFunction = undefined;
 
+        // TODO:
+        // Create mapper and creator in the geometry-type file, just like source, layer and format
         if(toolType === GeometryType.Square) {
             geometryFunction = createRegularPolygon(4);
             toolType = GeometryType.Circle;

@@ -2,8 +2,8 @@ import _ from 'lodash';
 import { DOM } from '../../browser-helpers/dom-factory';
 import { Toast } from '../../ui-common/ui-toasts/toast';
 import { Events } from '../../browser-constants/events';
-import { Control } from 'ol/control';
 import { unByKey } from 'ol/Observable';
+import { BaseTool } from '../base-tool';
 import { Settings } from '../../browser-constants/settings';
 import { transform } from 'ol/proj';
 import { LogManager } from '../../toolbar-managers/log-manager/log-manager';
@@ -53,12 +53,10 @@ const LocalStorageDefaults = Object.freeze({
  * Description:
  * The coordinates are shown in a Tooltip and in the Toolbox in all projections that have been registered.
  */
-class CoordinatesTool extends Control {
+class CoordinatesTool extends BaseTool {
     constructor(options = {}) {
-        LogManager.logDebug(FILENAME, 'constructor', 'init');
-
         super({
-            element: ElementManager.getToolbarElement()
+            filename: FILENAME
         });
 
         const icon = getSvgIcon({
@@ -97,17 +95,18 @@ class CoordinatesTool extends Control {
             LocalStorageDefaults
         );
 
-        this.initToolboxHTML();
+        this.#initToolboxHTML();
         this.uiRefToolboxSection = window.document.querySelector(`#${ID__PREFIX}-toolbox`);
-        this.initToggleables();
-        this.initSettings();
+        this.#initToggleables();
+        this.#initSettings();
 
         this.uiRefCoordinatesTable = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-table`);
-        
         this.uiRefCoordinatesFormat = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-format`);
         this.uiRefCoordinatesFormat.value = this.localStorage.coordinatesFormat;
         this.uiRefCoordinatesFormat.addEventListener(Events.browser.change, this.#onCoordinatesFormatChange.bind(this));
 
+        // TODO:
+        // Replaced by EventManager in the future?
         window.addEventListener(Events.browser.keyDown, this.#onWindowKeyDown.bind(this));
         window.addEventListener(Events.custom.ready, this.#onOLTBReady.bind(this));
         window.addEventListener(Events.custom.browserStateCleared, this.#onWindowBrowserStateCleared.bind(this));
@@ -120,13 +119,13 @@ class CoordinatesTool extends Control {
     }
 
     getName() {
-        return FILENAME;
+        return super.getFilename();
     }
 
     //--------------------------------------------------------------------
     // # Section: Init Helpers
     //--------------------------------------------------------------------
-    initToolboxHTML() {
+    #initToolboxHTML() {
         const i18n = TranslationManager.get(`${I18N__BASE}.toolbox`);
         const i18nCommon = TranslationManager.get(`${I18N__BASE_COMMON}.titles`);
         
@@ -155,13 +154,13 @@ class CoordinatesTool extends Control {
         ElementManager.getToolboxElement().insertAdjacentHTML('beforeend', html);
     }
 
-    initToggleables() {
+    #initToggleables() {
         this.uiRefToolboxSection.querySelectorAll(`.${CLASS__TOGGLEABLE}`).forEach((toggle) => {
             toggle.addEventListener(Events.browser.click, this.#onToggleToolbox.bind(this, toggle));
         });
     }
 
-    initSettings() {
+    #initSettings() {
         SettingsManager.addSetting(Settings.copyCoordinatesOnClick, {
             state: true, 
             i18nBase: `${I18N__BASE}.settings`,
@@ -179,7 +178,7 @@ class CoordinatesTool extends Control {
     // # Section: Tool Control
     //--------------------------------------------------------------------
     onClickTool(event) {
-        LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
+        super.onClickTool(event);
         
         if(this.isActive) {
             this.deactivateTool();

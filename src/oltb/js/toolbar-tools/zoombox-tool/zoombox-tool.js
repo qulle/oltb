@@ -2,16 +2,14 @@ import _ from 'lodash';
 import { DOM } from '../../browser-helpers/dom-factory';
 import { click } from 'ol/events/condition';
 import { Events } from '../../browser-constants/events';
-import { Control } from 'ol/control';
+import { BaseTool } from '../base-tool';
 import { DragZoom } from 'ol/interaction';
-import { LogManager } from '../../toolbar-managers/log-manager/log-manager';
 import { ToolManager } from '../../toolbar-managers/tool-manager/tool-manager';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
 import { ShortcutKeys } from '../../browser-constants/shortcut-keys';
 import { KeyboardKeys } from '../../browser-constants/keyboard-keys';
 import { ConfigManager } from '../../toolbar-managers/config-manager/config-manager';
 import { TooltipManager } from '../../toolbar-managers/tooltip-manager/tooltip-manager';
-import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 import { LocalStorageKeys } from '../../browser-constants/local-storage-keys';
 import { isShortcutKeyOnly } from '../../browser-helpers/is-shortcut-key-only';
 import { TranslationManager } from '../../toolbar-managers/translation-manager/translation-manager';
@@ -47,12 +45,10 @@ const LocalStorageDefaults = Object.freeze({
  * Increase or reduce zoom by dragging a bounding box selection. Hold down Ctrl to zoom out.
  * Note that this tools functionality is also available by pressing Shift + Drag without having the tool active.
  */
-class ZoomboxTool extends Control {
+class ZoomboxTool extends BaseTool {
     constructor(options = {}) {
-        LogManager.logDebug(FILENAME, 'constructor', 'init');
-
         super({
-            element: ElementManager.getToolbarElement()
+            filename: FILENAME
         });
         
         const icon = getSvgIcon({
@@ -99,6 +95,8 @@ class ZoomboxTool extends Control {
         this.interactionDragZoom.on(Events.openLayers.boxCancel, this.#onBoxDragCancel.bind(this));
         this.interactionDragZoom.on(Events.openLayers.error, this.#onBoxDragError.bind(this));
 
+        // TODO:
+        // Replaced by EventManager in the future?
         window.addEventListener(Events.browser.keyUp, this.#onWindowKeyUp.bind(this));
         window.addEventListener(Events.browser.keyDown, this.#onWindowKeyDown.bind(this));
         window.addEventListener(Events.custom.ready, this.#onOLTBReady.bind(this));
@@ -112,14 +110,14 @@ class ZoomboxTool extends Control {
     }
 
     getName() {
-        return FILENAME;
+        return super.getFilename();
     }
 
     //--------------------------------------------------------------------
     // # Section: Tool Control
     //--------------------------------------------------------------------
     onClickTool(event) {
-        LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
+        super.onClickTool(event);
 
         if(this.isActive) {
             this.deactivateTool();

@@ -3,10 +3,9 @@ import { DOM } from '../../browser-helpers/dom-factory';
 import { Draw } from 'ol/interaction';
 import { Toast } from '../../ui-common/ui-toasts/toast';
 import { Events } from '../../browser-constants/events';
-import { Control } from 'ol/control';
 import { unByKey } from 'ol/Observable';
+import { BaseTool } from '../base-tool';
 import { Settings } from '../../browser-constants/settings';
-import { LogManager } from '../../toolbar-managers/log-manager/log-manager';
 import { ToolManager } from '../../toolbar-managers/tool-manager/tool-manager';
 import { SnapManager } from '../../toolbar-managers/snap-manager/snap-manager';
 import { GeometryType } from '../../ol-mappers/ol-geometry/ol-geometry';
@@ -65,12 +64,10 @@ const LocalStorageDefaults = Object.freeze({
  * Measure distances and areas in metric scale. 
  * These objects can be edited and merged using the Edit tool.
  */
-class MeasureTool extends Control {
+class MeasureTool extends BaseTool {
     constructor(options = {}) {
-        LogManager.logDebug(FILENAME, 'constructor', 'init');
-        
         super({
-            element: ElementManager.getToolbarElement()
+            filename: FILENAME
         });
         
         const icon = getSvgIcon({
@@ -107,9 +104,9 @@ class MeasureTool extends Control {
             LocalStorageDefaults
         );
 
-        this.initToolboxHTML();
+        this.#initToolboxHTML();
         this.uiRefToolboxSection = window.document.querySelector(`#${ID__PREFIX}-toolbox`);
-        this.initToggleables();
+        this.#initToggleables();
 
         this.uiRefToolType = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-type`);
         this.uiRefToolType.addEventListener(Events.browser.change, this.updateTool.bind(this));
@@ -120,9 +117,10 @@ class MeasureTool extends Control {
         this.uiRefStrokeColor = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-stroke-color`);
         this.uiRefStrokeColor.addEventListener(Events.custom.colorChange, this.updateTool.bind(this));
 
-        // Set default selected values
-        this.uiRefToolType.value = this.localStorage.toolType; 
+        this.#initDefaultValues();
 
+        // TODO:
+        // Replaced by EventManager in the future?
         window.addEventListener(Events.browser.keyUp, this.#onWindowKeyUp.bind(this));
         window.addEventListener(Events.custom.ready, this.#onOLTBReady.bind(this));
         window.addEventListener(Events.custom.browserStateCleared, this.#onWindowBrowserStateCleared.bind(this));
@@ -135,13 +133,13 @@ class MeasureTool extends Control {
     }
 
     getName() {
-        return FILENAME;
+        return super.getFilename();
     }
 
     //--------------------------------------------------------------------
     // # Section: Init Helpers
     //--------------------------------------------------------------------
-    initToolboxHTML() {
+    #initToolboxHTML() {
         const i18n = TranslationManager.get(`${I18N__BASE}.toolbox`);
         const i18nCommon = TranslationManager.get(`${I18N__BASE_COMMON}.titles`);
 
@@ -180,17 +178,21 @@ class MeasureTool extends Control {
         ElementManager.getToolboxElement().insertAdjacentHTML('beforeend', html);
     }
 
-    initToggleables() {
+    #initToggleables() {
         this.uiRefToolboxSection.querySelectorAll(`.${CLASS__TOGGLEABLE}`).forEach((toggle) => {
             toggle.addEventListener(Events.browser.click, this.#onToggleToolbox.bind(this, toggle));
         });
+    }
+
+    #initDefaultValues() {
+        this.uiRefToolType.value = this.localStorage.toolType; 
     }
 
     //--------------------------------------------------------------------
     // # Section: Tool Control
     //--------------------------------------------------------------------
     onClickTool(event) {
-        LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
+        super.onClickTool(event);
         
         if(this.isActive) {
             this.deactivateTool();

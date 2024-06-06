@@ -1,12 +1,10 @@
 import _ from 'lodash';
 import { DOM } from '../../browser-helpers/dom-factory';
 import { Events } from '../../browser-constants/events';
-import { Control } from 'ol/control';
-import { LogManager } from '../../toolbar-managers/log-manager/log-manager';
+import { BaseTool } from '../base-tool';
 import { UrlManager } from '../../toolbar-managers/url-manager/url-manager';
 import { ShortcutKeys } from '../../browser-constants/shortcut-keys';
 import { ConfigManager } from '../../toolbar-managers/config-manager/config-manager';
-import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 import { DebugInfoModal } from '../../ui-extensions/debug-info-modal/debug-info-modal';
 import { isShortcutKeyOnly } from '../../browser-helpers/is-shortcut-key-only';
 import { TranslationManager } from '../../toolbar-managers/translation-manager/translation-manager';
@@ -30,12 +28,10 @@ const DefaultOptions = Object.freeze({
  * Errors happen and when they do this tool is a good place to start. 
  * Check browser version, status in localStorage and a complete log of what happened in different parts of the Map.
  */
-class DebugInfoTool extends Control {
+class DebugInfoTool extends BaseTool {
     constructor(options = {}) {
-        LogManager.logDebug(FILENAME, 'constructor', 'init');
-
         super({
-            element: ElementManager.getToolbarElement()
+            filename: FILENAME
         });
         
         const icon = getSvgIcon({
@@ -67,8 +63,10 @@ class DebugInfoTool extends Control {
         this.debugInfoModal = undefined;
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
         
-        this.initDebugState();
+        this.#initDebugState();
 
+        // TODO:
+        // Replaced by EventManager in the future?
         window.addEventListener(Events.browser.keyUp, this.#onWindowKeyUp.bind(this));
 
         // Note: 
@@ -79,13 +77,13 @@ class DebugInfoTool extends Control {
     }
 
     getName() {
-        return FILENAME;
+        return super.getFilename();
     }
 
     //--------------------------------------------------------------------
     // # Section: Init Helpers
     //--------------------------------------------------------------------
-    initDebugState() {
+    #initDebugState() {
         const debugKey = ConfigManager.getConfig().urlParameter.debug;
         const isDebug = UrlManager.getParameter(debugKey) === 'true';
 
@@ -98,8 +96,7 @@ class DebugInfoTool extends Control {
     // # Section: Tool Control
     //--------------------------------------------------------------------
     onClickTool(event) {
-        LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
-
+        super.onClickTool(event);
         this.momentaryActivation();
 
         // Note: 

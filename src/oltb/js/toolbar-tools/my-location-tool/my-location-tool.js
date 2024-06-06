@@ -3,7 +3,7 @@ import { DOM } from '../../browser-helpers/dom-factory';
 import { Toast } from '../../ui-common/ui-toasts/toast';
 import { Dialog } from '../../ui-common/ui-dialogs/dialog';
 import { Events } from '../../browser-constants/events';
-import { Control } from 'ol/control';
+import { BaseTool } from '../base-tool';
 import { goToView } from '../../ol-helpers/go-to-view';
 import { fromLonLat } from 'ol/proj';
 import { LogManager } from '../../toolbar-managers/log-manager/log-manager';
@@ -11,7 +11,6 @@ import { toStringHDMS } from 'ol/coordinate';
 import { LayerManager } from '../../toolbar-managers/layer-manager/layer-manager';
 import { ShortcutKeys } from '../../browser-constants/shortcut-keys';
 import { ConfigManager } from '../../toolbar-managers/config-manager/config-manager';
-import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 import { FeatureManager } from '../../toolbar-managers/feature-manager/feature-manager';
 import { isShortcutKeyOnly } from '../../browser-helpers/is-shortcut-key-only';
 import { InfoWindowManager } from '../../toolbar-managers/info-window-manager/info-window-manager';
@@ -48,12 +47,10 @@ const DefaultOptions = Object.freeze({
  * Ask the browser's built-in API for your current location. 
  * A separate layer is created for this which contains a Marker with your position.
  */
-class MyLocationTool extends Control {
+class MyLocationTool extends BaseTool {
     constructor(options = {}) {
-        LogManager.logDebug(FILENAME, 'constructor', 'init');
-        
         super({
-            element: ElementManager.getToolbarElement()
+            filename: FILENAME
         });
         
         const icon = getSvgIcon({
@@ -84,6 +81,8 @@ class MyLocationTool extends Control {
         this.button = button;
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
 
+        // TODO:
+        // Replaced by EventManager in the future?
         window.addEventListener(Events.browser.keyUp, this.#onWindowKeyUp.bind(this));
 
         // Note: 
@@ -94,15 +93,14 @@ class MyLocationTool extends Control {
     }
 
     getName() {
-        return FILENAME;
+        return super.getFilename();
     }
 
     //--------------------------------------------------------------------
     // # Section: Tool Control
     //--------------------------------------------------------------------
     onClickTool(event) {
-        LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
-        
+        super.onClickTool(event);
         this.momentaryActivation();
 
         // Note: 

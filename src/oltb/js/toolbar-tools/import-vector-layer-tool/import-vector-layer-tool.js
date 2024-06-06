@@ -2,12 +2,11 @@ import _ from 'lodash';
 import { DOM } from '../../browser-helpers/dom-factory';
 import { Toast } from '../../ui-common/ui-toasts/toast';
 import { Events } from '../../browser-constants/events';
-import { Control } from 'ol/control';
+import { BaseTool } from '../base-tool';
 import { LogManager } from '../../toolbar-managers/log-manager/log-manager';
 import { FormatType } from '../../ol-mappers/ol-format/ol-format';
 import { LayerManager } from '../../toolbar-managers/layer-manager/layer-manager';
 import { ShortcutKeys } from '../../browser-constants/shortcut-keys';
-import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 import { ImportLayerModal } from '../../ui-extensions/import-layer-modal/import-layer-modal';
 import { instantiateFormat } from '../../ol-mappers/ol-format/ol-format';
 import { isShortcutKeyOnly } from '../../browser-helpers/is-shortcut-key-only';
@@ -32,12 +31,10 @@ const DefaultOptions = Object.freeze({
  * Description:
  * Vector layers such as geojson can be imported and then create a Feature layer with its specified projections.
  */
-class ImportVectorLayerTool extends Control {
+class ImportVectorLayerTool extends BaseTool {
     constructor(options = {}) {
-        LogManager.logDebug(FILENAME, 'constructor', 'init');
-        
         super({
-            element: ElementManager.getToolbarElement()
+            filename: FILENAME
         });
         
         const icon = getSvgIcon({
@@ -71,6 +68,8 @@ class ImportVectorLayerTool extends Control {
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
         this.inputDialog = this.createUIInputDialog();
         
+        // TODO:
+        // Replaced by EventManager in the future?
         window.addEventListener(Events.browser.keyUp, this.#onWindowKeyUp.bind(this));
 
         // Note: 
@@ -81,15 +80,14 @@ class ImportVectorLayerTool extends Control {
     }
 
     getName() {
-        return FILENAME;
+        return super.getFilename();
     }
 
     //--------------------------------------------------------------------
     // # Section: Tool Control
     //--------------------------------------------------------------------
     onClickTool(event) {
-        LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
-        
+        super.onClickTool(event);
         this.momentaryActivation();
 
         // Note: 

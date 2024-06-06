@@ -3,7 +3,7 @@ import html2canvas from 'html2canvas';
 import { DOM } from '../../browser-helpers/dom-factory';
 import { Toast } from '../../ui-common/ui-toasts/toast';
 import { Events } from '../../browser-constants/events';
-import { Control } from 'ol/control';
+import { BaseTool } from '../base-tool';
 import { LogManager } from '../../toolbar-managers/log-manager/log-manager';
 import { UrlManager } from '../../toolbar-managers/url-manager/url-manager';
 import { downloadFile } from '../../browser-helpers/download-file';
@@ -35,12 +35,10 @@ const DefaultOptions = Object.freeze({
  * Instead of taking a screenshot, a complete PNG-image can be exported. 
  * The export combines the actual canvas that makes up the Map with various overlays such as information boxes that are actual HTML elements.
  */
-class ExportPngTool extends Control {
+class ExportPngTool extends BaseTool {
     constructor(options = {}) {
-        LogManager.logDebug(FILENAME, 'constructor', 'init');
-
         super({
-            element: ElementManager.getToolbarElement()
+            filename: FILENAME
         });
         
         const icon = getSvgIcon({
@@ -71,8 +69,10 @@ class ExportPngTool extends Control {
         this.button = button;
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
         
-        this.initDebugState();
+        this.#initDebugState();
 
+        // TODO:
+        // Replaced by EventManager in the future?
         window.addEventListener(Events.browser.keyUp, this.#onWindowKeyUp.bind(this));
         window.addEventListener(Events.custom.ready, this.#onOLTBReady.bind(this));
 
@@ -84,13 +84,13 @@ class ExportPngTool extends Control {
     }
 
     getName() {
-        return FILENAME;
+        return super.getFilename();
     }
 
     //--------------------------------------------------------------------
     // # Section: Init Helpers
     //--------------------------------------------------------------------
-    initDebugState() {
+    #initDebugState() {
         const debugKey = ConfigManager.getConfig().urlParameter.debug;
         this.isDebug = UrlManager.getParameter(debugKey) === 'true';
     }
@@ -99,8 +99,7 @@ class ExportPngTool extends Control {
     // # Section: Tool Control
     //--------------------------------------------------------------------
     onClickTool(event) {
-        LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
-
+        super.onClickTool(event);
         this.momentaryActivation();
 
         // Note: 

@@ -5,8 +5,8 @@ import { Toast } from '../../ui-common/ui-toasts/toast';
 import { Dialog } from '../../ui-common/ui-dialogs/dialog';
 import { Events } from '../../browser-constants/events';
 import { Feature } from 'ol';
-import { Control } from 'ol/control';
 import { unByKey } from 'ol/Observable';
+import { BaseTool } from '../base-tool';
 import { Settings } from '../../browser-constants/settings';
 import { getCenter } from 'ol/extent';
 import { LogManager } from '../../toolbar-managers/log-manager/log-manager';
@@ -118,12 +118,10 @@ const DefaultMeasureStyle = new Style({
  * Edit previously drawn objects (including measurements) in the map. Change there size, color, shape and location. 
  * Apply various shape functions such as Union, Intersect, Exclude and Difference.
  */
-class EditTool extends Control {
+class EditTool extends BaseTool {
     constructor(options = {}) {
-        LogManager.logDebug(FILENAME, 'constructor', 'init');
-
         super({
-            element: ElementManager.getToolbarElement()
+            filename: FILENAME
         });
         
         const icon = getSvgIcon({
@@ -165,10 +163,10 @@ class EditTool extends Control {
         this.parser = new jsts.io.OL3Parser();
         this.parser.inject(Point, LineString, LinearRing, Polygon, MultiPoint, MultiLineString, MultiPolygon, GeometryCollection);
         
-        this.initToolboxHTML();
+        this.#initToolboxHTML();
         this.uiRefToolboxSection = window.document.querySelector(`#${ID__PREFIX}-toolbox`);
-        this.initToggleables();
-        this.initSettings();
+        this.#initToggleables();
+        this.#initSettings();
 
         this.uiRefDeleteSelectedButton = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-delete-selected-button`);
         this.uiRefDeleteSelectedButton.addEventListener(Events.browser.click, this.#onDeleteSelectedFeatures.bind(this));
@@ -210,6 +208,8 @@ class EditTool extends Control {
         this.interactionTranslate.addEventListener(Events.openLayers.translateStart, this.#onTranslateStart.bind(this));
         this.interactionTranslate.addEventListener(Events.openLayers.translateEnd, this.#onTranslateEnd.bind(this));
 
+        // TODO:
+        // Replaced by EventManager in the future?
         window.addEventListener(Events.browser.keyUp, this.#onWindowKeyUp.bind(this));
         window.addEventListener(Events.custom.ready, this.#onOLTBReady.bind(this));
         window.addEventListener(Events.custom.browserStateCleared, this.#onWindowBrowserStateCleared.bind(this));
@@ -223,13 +223,13 @@ class EditTool extends Control {
     }
 
     getName() {
-        return FILENAME;
+        return super.getFilename();
     }
 
     //--------------------------------------------------------------------
     // # Section: Init Helpers
     //--------------------------------------------------------------------
-    initToolboxHTML() {
+    #initToolboxHTML() {
         const i18n = TranslationManager.get(`${I18N__BASE}.toolbox`);
         const i18nCommon = TranslationManager.get(`${I18N__BASE_COMMON}.titles`);
 
@@ -289,13 +289,13 @@ class EditTool extends Control {
         ElementManager.getToolboxElement().insertAdjacentHTML('beforeend', html);
     }
 
-    initToggleables() {
+    #initToggleables() {
         this.uiRefToolboxSection.querySelectorAll(`.${CLASS__TOGGLEABLE}`).forEach((toggle) => {
             toggle.addEventListener(Events.browser.click, this.#onToggleToolbox.bind(this, toggle));
         });
     }
 
-    initSettings() {
+    #initSettings() {
         SettingsManager.addSetting(Settings.mouseOnlyToEditVectorShapes, {
             state: true, 
             i18nBase: `${I18N__BASE}.settings`,
@@ -356,7 +356,7 @@ class EditTool extends Control {
     // # Section: Tool Control
     //--------------------------------------------------------------------
     onClickTool(event) {
-        LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
+        super.onClickTool(event);
         
         if(this.isActive) {
             this.deactivateTool();

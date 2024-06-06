@@ -1,12 +1,10 @@
 import _ from 'lodash';
 import { DOM } from '../../browser-helpers/dom-factory';
 import { Events } from '../../browser-constants/events';
-import { Control } from 'ol/control';
 import { toLonLat } from 'ol/proj';
+import { BaseTool } from '../base-tool';
 import { goToView } from '../../ol-helpers/go-to-view';
-import { LogManager } from '../../toolbar-managers/log-manager/log-manager';
 import { ShortcutKeys } from '../../browser-constants/shortcut-keys';
-import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 import { isShortcutKeyOnly } from '../../browser-helpers/is-shortcut-key-only';
 import { TranslationManager } from '../../toolbar-managers/translation-manager/translation-manager';
 import { SvgPaths, getSvgIcon } from '../../ui-icons/get-svg-icon/get-svg-icon';
@@ -29,12 +27,10 @@ const DefaultOptions = Object.freeze({
  * Description:
  * Increase zoom and go deeper into the Map's more detailed images.
  */
-class ZoomInTool extends Control {
+class ZoomInTool extends BaseTool {
     constructor(options = {}) {
-        LogManager.logDebug(FILENAME, 'constructor', 'init');
-        
         super({
-            element: ElementManager.getToolbarElement()
+            filename: FILENAME
         });
         
         const icon = getSvgIcon({
@@ -65,6 +61,8 @@ class ZoomInTool extends Control {
         this.button = button;
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
 
+        // TODO:
+        // Replaced by EventManager in the future?
         window.addEventListener(Events.browser.keyUp, this.#onWindowKeyUp.bind(this));
 
         // Note: 
@@ -75,15 +73,14 @@ class ZoomInTool extends Control {
     }
 
     getName() {
-        return FILENAME;
+        return super.getFilename();
     }
 
     //--------------------------------------------------------------------
     // # Section: Tool Control
     //--------------------------------------------------------------------
     onClickTool(event) {
-        LogManager.logDebug(FILENAME, 'onClickTool', 'User clicked tool');
-        
+        super.onClickTool(event);
         this.momentaryActivation();
 
         // Note: 
