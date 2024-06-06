@@ -1,6 +1,5 @@
 import _ from 'lodash';
 import { DOM } from '../../browser-helpers/dom-factory';
-import { Keys } from '../../browser-constants/keys';
 import { click } from 'ol/events/condition';
 import { Events } from '../../browser-constants/events';
 import { Control } from 'ol/control';
@@ -9,6 +8,7 @@ import { LogManager } from '../../toolbar-managers/log-manager/log-manager';
 import { ToolManager } from '../../toolbar-managers/tool-manager/tool-manager';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
 import { ShortcutKeys } from '../../browser-constants/shortcut-keys';
+import { KeyboardKeys } from '../../browser-constants/keyboard-keys';
 import { ConfigManager } from '../../toolbar-managers/config-manager/config-manager';
 import { TooltipManager } from '../../toolbar-managers/tooltip-manager/tooltip-manager';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
@@ -197,8 +197,7 @@ class ZoomboxTool extends Control {
 
     onWindowKeyDown(event) {
         const key = event.key;
-
-        if(key === Keys.valueSpace) {
+        if(key === KeyboardKeys.valueSpace) {
             this.isSpaceKeyPressed = true;
         }
 

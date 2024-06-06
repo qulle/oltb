@@ -74,7 +74,6 @@ const parseGeoJson = function(data) {
         ];
 
         const prettyCoordinates = toStringHDMS(coordinates);
-
         const countryName = capital.properties.countryName;
         const countryCode = capital.properties.countryCode;
         const capitalName = capital.properties.capitalName;

@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import jsts from 'jsts/dist/jsts.min';
 import { DOM } from '../../browser-helpers/dom-factory';
-import { Keys } from '../../browser-constants/keys';
 import { Toast } from '../../ui-common/ui-toasts/toast';
 import { Dialog } from '../../ui-common/ui-dialogs/dialog';
 import { Events } from '../../browser-constants/events';
@@ -18,6 +17,7 @@ import { LayerManager } from '../../toolbar-managers/layer-manager/layer-manager
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
 import { ShortcutKeys } from '../../browser-constants/shortcut-keys';
 import { jsonReplacer } from '../../browser-helpers/json-replacer';
+import { KeyboardKeys } from '../../browser-constants/keyboard-keys';
 import { ConfigManager } from '../../toolbar-managers/config-manager/config-manager';
 import { DefaultConfig } from '../../toolbar-managers/config-manager/default-config';
 import { FeatureManager } from '../../toolbar-managers/feature-manager/feature-manager';
@@ -440,7 +440,7 @@ class EditTool extends Control {
     onWindowKeyUp(event) {
         if(isShortcutKeyOnly(event, ShortcutKeys.editTool)) {
             this.onClickTool(event);
-        }else if(this.isActive && event.key === Keys.valueDelete) {
+        }else if(this.isActive && event.key === KeyboardKeys.valueDelete) {
             this.onDeleteSelectedFeatures();
         }
     }

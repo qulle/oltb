@@ -1,11 +1,11 @@
 import _ from 'lodash';
 import { DOM } from '../../browser-helpers/dom-factory';
-import { Keys } from '../../browser-constants/keys';
 import { Toast } from '../../ui-common/ui-toasts/toast';
 import { Events } from '../../browser-constants/events';
 import { Control } from 'ol/control';
 import { unByKey } from 'ol/Observable';
 import { LogManager } from '../../toolbar-managers/log-manager/log-manager';
+import { KeyboardKeys } from '../../browser-constants/keyboard-keys';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
 import { ShortcutKeys } from '../../browser-constants/shortcut-keys';
 import { getRenderPixel } from 'ol/render';
@@ -160,12 +160,12 @@ class MagnifyTool extends Control {
             return;
         }
         
+        const distance = 5;
         const key = event.key;
-
-        if(key === Keys.valueAdd) {
-            this.options.radius = Math.min(this.options.radius + 5, this.options.max);
-        }else if(key === Keys.valueSubtract) {
-            this.options.radius = Math.max(this.options.radius - 5, this.options.min);
+        if(key === KeyboardKeys.valueAdd) {
+            this.options.radius = Math.min(this.options.radius + distance, this.options.max);
+        }else if(key === KeyboardKeys.valueSubtract) {
+            this.options.radius = Math.max(this.options.radius - distance, this.options.min);
         }
 
         map.render();

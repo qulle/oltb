@@ -1,12 +1,12 @@
 import _ from 'lodash';
 import { DOM } from '../../browser-helpers/dom-factory';
-import { Keys } from '../../browser-constants/keys';
 import { Events } from '../../browser-constants/events';
 import { Control } from 'ol/control';
 import { transform } from 'ol/proj';
 import { trapFocus } from '../../browser-helpers/trap-focus';
 import { UrlManager } from '../../toolbar-managers/url-manager/url-manager';
 import { LogManager } from '../../toolbar-managers/log-manager/log-manager';
+import { KeyboardKeys } from '../../browser-constants/keyboard-keys';
 import { ConfigManager } from '../../toolbar-managers/config-manager/config-manager';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 import { TranslationManager } from '../../toolbar-managers/translation-manager/translation-manager';
@@ -141,9 +141,9 @@ class ContextMenuTool extends Control {
                 'keyup': (event) => {
                     const key = event.key;
 
-                    if(key === Keys.valueEnter) {
+                    if(key === KeyboardKeys.valueEnter) {
                         this.click(item);
-                    }else if(key === Keys.valueEscape) {
+                    }else if(key === KeyboardKeys.valueEscape) {
                         this.hide();
                     }
                 }

@@ -1,7 +1,7 @@
 import { DOM } from '../../browser-helpers/dom-factory';
-import { Keys } from '../../browser-constants/keys';
 import { Events } from '../../browser-constants/events';
 import { trapFocus } from '../../browser-helpers/trap-focus';
+import { KeyboardKeys } from '../../browser-constants/keyboard-keys';
 
 const CLASS__ANIMATION = 'oltb-animation';
 const CLASS__ANIMATION_BOUNCE = `${CLASS__ANIMATION}--bounce`;
@@ -41,7 +41,7 @@ class BaseDialog {
     // # Section: Events
     //--------------------------------------------------------------------
     #onWindowKeyUp(event) {
-        if(event.key === Keys.valueEscape) {
+        if(event.key === KeyboardKeys.valueEscape) {
             this.close();
         }
     }

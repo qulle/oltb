@@ -31,7 +31,6 @@ const parseGeoJson = function(data) {
         ];
 
         const prettyCoordinates = toStringHDMS(coordinates);
-
         const name = airport.properties.name;
         const location = airport.properties.location;
         const country = airport.properties.country;

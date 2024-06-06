@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import { DOM } from '../../browser-helpers/dom-factory';
 import { Draw } from 'ol/interaction';
-import { Keys } from '../../browser-constants/keys';
 import { Toast } from '../../ui-common/ui-toasts/toast';
 import { Events } from '../../browser-constants/events';
 import { Control } from 'ol/control';
@@ -14,6 +13,7 @@ import { GeometryType } from '../../ol-mappers/ol-geometry/ol-geometry';
 import { LayerManager } from '../../toolbar-managers/layer-manager/layer-manager';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
 import { ShortcutKeys } from '../../browser-constants/shortcut-keys';
+import { KeyboardKeys } from '../../browser-constants/keyboard-keys';
 import { ConfigManager } from '../../toolbar-managers/config-manager/config-manager';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 import { TooltipManager } from '../../toolbar-managers/tooltip-manager/tooltip-manager';
@@ -280,12 +280,11 @@ class MeasureTool extends Control {
 
     onWindowKeyUp(event) {
         const key = event.key;
-
-        if(key === Keys.valueEscape) {
+        if(key === KeyboardKeys.valueEscape) {
             if(this.interactionDraw) {
                 this.interactionDraw.abortDrawing();
             }
-        }else if(event.ctrlKey && key === Keys.valueZ) {
+        }else if(event.ctrlKey && key === KeyboardKeys.valueZ) {
             if(this.interactionDraw) {
                 this.interactionDraw.removeLastPoint();
             }

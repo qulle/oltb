@@ -2,7 +2,6 @@ import _ from 'lodash';
 import jsts from 'jsts/dist/jsts.min';
 import { DOM } from '../../browser-helpers/dom-factory';
 import { Draw } from 'ol/interaction';
-import { Keys } from '../../browser-constants/keys';
 import { Toast } from '../../ui-common/ui-toasts/toast';
 import { Events } from '../../browser-constants/events';
 import { Feature } from 'ol';
@@ -10,6 +9,7 @@ import { Control } from 'ol/control';
 import { LogManager } from '../../toolbar-managers/log-manager/log-manager';
 import { ToolManager } from '../../toolbar-managers/tool-manager/tool-manager';
 import { SnapManager } from '../../toolbar-managers/snap-manager/snap-manager';
+import { KeyboardKeys } from '../../browser-constants/keyboard-keys';
 import { LayerManager } from '../../toolbar-managers/layer-manager/layer-manager';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
 import { GeometryType } from '../../ol-mappers/ol-geometry/ol-geometry';
@@ -194,12 +194,11 @@ class ScissorsTool extends Control {
 
     onWindowKeyUp(event) {
         const key = event.key;
-
-        if(key === Keys.valueEscape) {
+        if(key === KeyboardKeys.valueEscape) {
             if(this.interactionDraw) {
                 this.interactionDraw.abortDrawing();
             }
-        }else if(event.ctrlKey && key === Keys.valueZ) {
+        }else if(event.ctrlKey && key === KeyboardKeys.valueZ) {
             if(this.interactionDraw) {
                 this.interactionDraw.removeLastPoint();
             }

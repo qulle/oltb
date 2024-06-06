@@ -42,10 +42,10 @@ const parseGeoJson = function(data) {
         ];
 
         const prettyCoordinates = toStringHDMS(coordinates);
-
         const countryName = capital.properties.countryName;
         const continentName = capital.properties.continentName;
 
+        // Note:
         // Get windspeed between 0 and 40m/s (75knots)
         // Get example direction to not have all wind barbs facing the same way
         const windSpeed = _.random(0, 40);

@@ -1,4 +1,4 @@
-const Keys = Object.freeze({
+const KeyboardKeys = Object.freeze({
     valueCancel: 'Cancel',
     valueHelp: 'Help',
     valueBackSpace: 'Backspace',
@@ -119,4 +119,4 @@ const Keys = Object.freeze({
     valueQuote: "'"
 });
 
-export { Keys };
+export { KeyboardKeys };

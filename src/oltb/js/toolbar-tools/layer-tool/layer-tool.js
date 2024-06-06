@@ -2,7 +2,6 @@ import _ from 'lodash';
 import tippy from 'tippy.js';
 import Sortable from 'sortablejs';
 import { DOM } from '../../browser-helpers/dom-factory';
-import { Keys } from '../../browser-constants/keys';
 import { Toast } from '../../ui-common/ui-toasts/toast';
 import { Dialog } from '../../ui-common/ui-dialogs/dialog';
 import { Events } from '../../browser-constants/events';
@@ -13,6 +12,7 @@ import { StateManager } from '../../toolbar-managers/state-manager/state-manager
 import { LayerManager } from '../../toolbar-managers/layer-manager/layer-manager';
 import { ShortcutKeys } from '../../browser-constants/shortcut-keys';
 import { downloadFile } from '../../browser-helpers/download-file';
+import { KeyboardKeys } from '../../browser-constants/keyboard-keys';
 import { ConfigManager } from '../../toolbar-managers/config-manager/config-manager';
 import { FeatureManager } from '../../toolbar-managers/feature-manager/feature-manager';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
@@ -569,7 +569,7 @@ class LayerTool extends Control {
     // # Section: Conversions/Validation
     //--------------------------------------------------------------------
     isValidEnter(event) {
-        return event.type === Events.browser.keyUp && event.key === Keys.valueEnter;
+        return event.type === Events.browser.keyUp && event.key === KeyboardKeys.valueEnter;
     }
 
     hasLayerFeatures(layer) {

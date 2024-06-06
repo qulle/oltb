@@ -1,7 +1,7 @@
-import { Keys } from '../browser-constants/keys';
+import { KeyboardKeys } from '../browser-constants/keyboard-keys';
 
 const trapFocus = function(event) {
-    const isTabKey = event.key === Keys.valueTab;
+    const isTabKey = event.key === KeyboardKeys.valueTab;
     if(!isTabKey) {
         return;
     }

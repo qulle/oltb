@@ -1,8 +1,8 @@
 import _ from 'lodash';
 import { DOM } from '../../browser-helpers/dom-factory';
-import { Keys } from '../../browser-constants/keys';
 import { Events } from '../../browser-constants/events';
 import { trapFocus } from '../../browser-helpers/trap-focus';
+import { KeyboardKeys } from '../../browser-constants/keyboard-keys';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 import { SvgPaths, getSvgIcon } from '../../ui-icons/get-svg-icon/get-svg-icon';
 
@@ -116,7 +116,7 @@ class BaseModal {
     // # Section: Events
     //--------------------------------------------------------------------
     onWindowKeyUp(event) {
-        if(event.key === Keys.valueEscape) {
+        if(event.key === KeyboardKeys.valueEscape) {
             this.close();
         }
     }

@@ -1,4 +1,4 @@
-import { Keys } from '../browser-constants/keys';
+import { KeyboardKeys } from '../browser-constants/keyboard-keys';
 
 const isShortcutKeyOnly = function(event, key) {
     return (
@@ -8,7 +8,7 @@ const isShortcutKeyOnly = function(event, key) {
         !event.shiftKey && 
         !event.altKey && 
         !event.metaKey && 
-        event.key.toUpperCase() !== Keys.valueOperatingSystem &&
+        event.key.toUpperCase() !== KeyboardKeys.valueOperatingSystem &&
         event.key.toUpperCase() === key
     );
 }

@@ -3,15 +3,15 @@ import { ConfigManager } from '../toolbar-managers/config-manager/config-manager
 class DOM {
     static createElement(options = {}) {
         const element = window.document.createElement(options.element);
-        const commonAttributes = [
-            {id: 'id'},
-            {class: 'className'},
-            {value: 'value'},
-            {text: 'innerText'},
-            {html: 'innerHTML'},
-            {style: 'style'},
-            {title: 'title'},
-        ];
+        const commonAttributes = {
+            id: 'id',
+            class: 'className',
+            value: 'value',
+            text: 'innerText',
+            html: 'innerHTML',
+            style: 'style',
+            title: 'title',
+        };
 
         // Note:
         // Common element attributes

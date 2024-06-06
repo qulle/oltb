@@ -1,7 +1,7 @@
-import { Keys } from '../../browser-constants/keys';
 import { Events } from '../../browser-constants/events';
 import { LogManager } from '../log-manager/log-manager';
 import { BaseManager } from '../base-manager';
+import { KeyboardKeys } from '../../browser-constants/keyboard-keys';
 
 const FILENAME = 'accessibility-manager.js';
 const CLASS__ACCESSIBILITY = 'oltb-using-keyboard';
@@ -42,7 +42,7 @@ class AccessibilityManager extends BaseManager {
     // # Section: Events
     //--------------------------------------------------------------------
     static #onKeyboardDown(event) {
-        if(event.key === Keys.valueTab) {
+        if(event.key === KeyboardKeys.valueTab) {
             window.document.body.classList.add(CLASS__ACCESSIBILITY);
         }
     }

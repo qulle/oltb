@@ -2,7 +2,6 @@ import _ from 'lodash';
 import tippy from 'tippy.js';
 import Sortable from 'sortablejs';
 import { DOM } from '../../browser-helpers/dom-factory';
-import { Keys } from '../../browser-constants/keys';
 import { Toast } from '../../ui-common/ui-toasts/toast';
 import { Dialog } from '../../ui-common/ui-dialogs/dialog';
 import { Events } from '../../browser-constants/events';
@@ -12,6 +11,7 @@ import { LogManager } from '../../toolbar-managers/log-manager/log-manager';
 import { NameManager } from '../../toolbar-managers/name-manager/name-manager';
 import { v4 as uuidv4 } from 'uuid';
 import { toStringHDMS } from 'ol/coordinate';
+import { KeyboardKeys } from '../../browser-constants/keyboard-keys';
 import { LayerManager } from '../../toolbar-managers/layer-manager/layer-manager';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
 import { ShortcutKeys } from '../../browser-constants/shortcut-keys';
@@ -507,7 +507,7 @@ class BookmarkTool extends Control {
     }
 
     isValidEnterKey(event) {
-        return event.type === Events.browser.keyUp && event.key === Keys.valueEnter;
+        return event.type === Events.browser.keyUp && event.key === KeyboardKeys.valueEnter;
     }
 
     //--------------------------------------------------------------------
