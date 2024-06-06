@@ -1,6 +1,6 @@
 import { describe, it, expect } from '@jest/globals';
 import { NameManager } from './name-manager';
-import '../../helpers/prototypes/string';
+import '../../browser-prototypes/string';
 
 describe('NameManager', () => {
     it('should create a concatenated name', () => {

@@ -1,10 +1,10 @@
-import { Modal } from '../../common/modals/modal';
+import { Modal } from '../../ui-common/ui-modals/modal';
 import { Control } from 'ol/control';
-import { LogManager } from '../../managers/log-manager/log-manager';
-import { ConfigManager } from '../../managers/config-manager/config-manager';
-import { ElementManager } from '../../managers/element-manager/element-manager';
+import { LogManager } from '../../toolbar-managers/log-manager/log-manager';
+import { ConfigManager } from '../../toolbar-managers/config-manager/config-manager';
+import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 import { ContextMenuTool } from '../context-menu-tool/context-menu-tool';
-import { TranslationManager } from '../../managers/translation-manager/translation-manager';
+import { TranslationManager } from '../../toolbar-managers/translation-manager/translation-manager';
 import { SvgPaths, getSvgIcon } from '../../ui-icons/get-svg-icon/get-svg-icon';
 
 const FILENAME = 'hidden-about-tool.js';

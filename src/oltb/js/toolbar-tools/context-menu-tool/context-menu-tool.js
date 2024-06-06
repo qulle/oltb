@@ -1,15 +1,15 @@
 import _ from 'lodash';
-import { DOM } from '../../helpers/browser/dom-factory';
-import { Keys } from '../../helpers/constants/keys';
-import { Events } from '../../helpers/constants/events';
+import { DOM } from '../../browser-helpers/dom-factory';
+import { Keys } from '../../browser-constants/keys';
+import { Events } from '../../browser-constants/events';
 import { Control } from 'ol/control';
 import { transform } from 'ol/proj';
-import { trapFocus } from '../../helpers/browser/trap-focus';
-import { UrlManager } from '../../managers/url-manager/url-manager';
-import { LogManager } from '../../managers/log-manager/log-manager';
-import { ConfigManager } from '../../managers/config-manager/config-manager';
-import { ElementManager } from '../../managers/element-manager/element-manager';
-import { TranslationManager } from '../../managers/translation-manager/translation-manager';
+import { trapFocus } from '../../browser-helpers/trap-focus';
+import { UrlManager } from '../../toolbar-managers/url-manager/url-manager';
+import { LogManager } from '../../toolbar-managers/log-manager/log-manager';
+import { ConfigManager } from '../../toolbar-managers/config-manager/config-manager';
+import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
+import { TranslationManager } from '../../toolbar-managers/translation-manager/translation-manager';
 
 const FILENAME = 'context-menu-tool.js';
 const CLASS__CONTEXT_MENU = 'oltb-context-menu';

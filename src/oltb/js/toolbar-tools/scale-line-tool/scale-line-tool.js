@@ -1,14 +1,14 @@
 import _ from 'lodash';
-import { DOM } from '../../helpers/browser/dom-factory';
-import { Events } from '../../helpers/constants/events';
-import { LogManager } from '../../managers/log-manager/log-manager';
-import { StateManager } from '../../managers/state-manager/state-manager';
-import { ShortcutKeys } from '../../helpers/constants/shortcut-keys';
-import { ElementManager } from '../../managers/element-manager/element-manager';
-import { LocalStorageKeys } from '../../helpers/constants/local-storage-keys';
-import { isShortcutKeyOnly } from '../../helpers/browser/is-shortcut-key-only';
+import { DOM } from '../../browser-helpers/dom-factory';
+import { Events } from '../../browser-constants/events';
+import { LogManager } from '../../toolbar-managers/log-manager/log-manager';
+import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
+import { ShortcutKeys } from '../../browser-constants/shortcut-keys';
+import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
+import { LocalStorageKeys } from '../../browser-constants/local-storage-keys';
+import { isShortcutKeyOnly } from '../../browser-helpers/is-shortcut-key-only';
 import { Control, ScaleLine } from 'ol/control';
-import { TranslationManager } from '../../managers/translation-manager/translation-manager';
+import { TranslationManager } from '../../toolbar-managers/translation-manager/translation-manager';
 import { SvgPaths, getSvgIcon } from '../../ui-icons/get-svg-icon/get-svg-icon';
 
 const FILENAME = 'scale-line-tool.js';

@@ -1,14 +1,14 @@
 import _ from 'lodash';
-import { DOM } from '../../helpers/browser/dom-factory';
-import { Events } from '../../helpers/constants/events';
+import { DOM } from '../../browser-helpers/dom-factory';
+import { Events } from '../../browser-constants/events';
 import { Control } from 'ol/control';
 import { toLonLat } from 'ol/proj';
-import { goToView } from '../../helpers/go-to-view';
-import { LogManager } from '../../managers/log-manager/log-manager';
-import { ShortcutKeys } from '../../helpers/constants/shortcut-keys';
-import { ElementManager } from '../../managers/element-manager/element-manager';
-import { isShortcutKeyOnly } from '../../helpers/browser/is-shortcut-key-only';
-import { TranslationManager } from '../../managers/translation-manager/translation-manager';
+import { goToView } from '../../ol-helpers/go-to-view';
+import { LogManager } from '../../toolbar-managers/log-manager/log-manager';
+import { ShortcutKeys } from '../../browser-constants/shortcut-keys';
+import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
+import { isShortcutKeyOnly } from '../../browser-helpers/is-shortcut-key-only';
+import { TranslationManager } from '../../toolbar-managers/translation-manager/translation-manager';
 import { SvgPaths, getSvgIcon } from '../../ui-icons/get-svg-icon/get-svg-icon';
 
 const FILENAME = 'zoom-in-tool.js';

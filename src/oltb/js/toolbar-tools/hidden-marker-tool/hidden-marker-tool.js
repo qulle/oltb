@@ -1,14 +1,14 @@
 import _ from 'lodash';
-import { Events } from '../../helpers/constants/events';
+import { Events } from '../../browser-constants/events';
 import { Control } from 'ol/control';
-import { LogManager } from '../../managers/log-manager/log-manager';
+import { LogManager } from '../../toolbar-managers/log-manager/log-manager';
 import { toStringHDMS } from 'ol/coordinate';
-import { LayerManager } from '../../managers/layer-manager/layer-manager';
-import { FeatureManager } from '../../managers/feature-manager/feature-manager';
-import { ElementManager } from '../../managers/element-manager/element-manager';
+import { LayerManager } from '../../toolbar-managers/layer-manager/layer-manager';
+import { FeatureManager } from '../../toolbar-managers/feature-manager/feature-manager';
+import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 import { ContextMenuTool } from '../context-menu-tool/context-menu-tool';
-import { IconMarkerModal } from '../../modal-extensions/icon-marker-modal';
-import { TranslationManager } from '../../managers/translation-manager/translation-manager';
+import { IconMarkerModal } from '../../ui-extensions/icon-marker-modal/icon-marker-modal';
+import { TranslationManager } from '../../toolbar-managers/translation-manager/translation-manager';
 import { SvgPaths, getSvgIcon } from '../../ui-icons/get-svg-icon/get-svg-icon';
 
 const FILENAME = 'hidden-marker-tool.js';

@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { SvgPaths } from './svg-paths';
-import { ConverstionManager } from '../../toolbar-managers/conversion-manager/conversion-manager';
+import { ConversionManager } from '../../toolbar-managers/conversion-manager/conversion-manager';
 
 const getSvgPath = function(windSpeed) {
     // Note: 
@@ -10,12 +10,12 @@ const getSvgPath = function(windSpeed) {
     }
 
     const meterPerSecondStep = 2.5;
-    const lowerMeterPerSecond = ConverstionManager.roundDownToNearest(windSpeed, meterPerSecondStep);
+    const lowerMeterPerSecond = ConversionManager.roundDownToNearest(windSpeed, meterPerSecondStep);
 
-    const knots = ConverstionManager.metersPerSecondToKnots(lowerMeterPerSecond);
+    const knots = ConversionManager.metersPerSecondToKnots(lowerMeterPerSecond);
 
     const knotPerSecondStep = 5;
-    const lowerKnotPerSecond = ConverstionManager.roundToNearest(knots, knotPerSecondStep);
+    const lowerKnotPerSecond = ConversionManager.roundToNearest(knots, knotPerSecondStep);
     
     const windBarbName = `knot${lowerKnotPerSecond}`;
     if(_.has(SvgPaths, [windBarbName])) {

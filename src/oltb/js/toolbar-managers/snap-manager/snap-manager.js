@@ -1,4 +1,4 @@
-import { DOM } from '../../helpers/browser/dom-factory';
+import { DOM } from '../../browser-helpers/dom-factory';
 import { Snap } from 'ol/interaction';
 import { Events } from '../../browser-constants/events';
 import { Overlay } from 'ol';

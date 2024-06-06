@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { DOM } from '../../browser-helpers/dom-factory';
 import { BaseModal } from '../../ui-common/ui-modals/base-modal';
-import { isDarkTheme } from '../../';
+import { isDarkTheme } from '../../ui-helpers/is-dark-theme/is-dark-theme';
 import { ConfigManager } from '../../toolbar-managers/config-manager/config-manager';
 import { createUISelect } from '../../ui-creators/ui-select/create-ui-select';
 import { ProjectionManager } from '../../toolbar-managers/projection-manager/projection-manager';

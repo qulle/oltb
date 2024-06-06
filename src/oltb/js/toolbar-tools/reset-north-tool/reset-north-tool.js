@@ -1,19 +1,19 @@
 import _ from 'lodash';
-import { DOM } from '../../helpers/browser/dom-factory';
-import { Toast } from '../../common/toasts/toast';
-import { Dialog } from '../../common/dialogs/dialog';
-import { Events } from '../../helpers/constants/events';
+import { DOM } from '../../browser-helpers/dom-factory';
+import { Toast } from '../../ui-common/ui-toasts/toast';
+import { Dialog } from '../../ui-common/ui-dialogs/dialog';
+import { Events } from '../../browser-constants/events';
 import { Control } from 'ol/control';
 import { toLonLat } from 'ol/proj';
-import { goToView } from '../../helpers/go-to-view';
-import { LogManager } from '../../managers/log-manager/log-manager';
-import { ShortcutKeys } from '../../helpers/constants/shortcut-keys';
-import { ElementManager } from '../../managers/element-manager/element-manager';
+import { goToView } from '../../ol-helpers/go-to-view';
+import { LogManager } from '../../toolbar-managers/log-manager/log-manager';
+import { ShortcutKeys } from '../../browser-constants/shortcut-keys';
+import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 import { ContextMenuTool } from '../context-menu-tool/context-menu-tool';
-import { isShortcutKeyOnly } from '../../helpers/browser/is-shortcut-key-only';
-import { TranslationManager } from '../../managers/translation-manager/translation-manager';
+import { isShortcutKeyOnly } from '../../browser-helpers/is-shortcut-key-only';
+import { ConversionManager } from '../../toolbar-managers/conversion-manager/conversion-manager';
+import { TranslationManager } from '../../toolbar-managers/translation-manager/translation-manager';
 import { SvgPaths, getSvgIcon } from '../../ui-icons/get-svg-icon/get-svg-icon';
-import { degreesToRadians, radiansToDegrees } from '../../helpers/conversions';
 
 const FILENAME = 'reset-north-tool.js';
 const CLASS__TOOL_BUTTON = 'oltb-tool-button';
@@ -162,7 +162,7 @@ class ResetNorthTool extends Control {
         const view = map.getView();
 
         const zoom = view.getZoom();
-        const rotation = radiansToDegrees(view.getRotation());
+        const rotation = ConversionManager.radiansToDegrees(view.getRotation());
         const normalizationMinLimit = 0;
         const normalizationMaxLimit = 360;
         const normalizedRotation = rotation < normalizationMinLimit 
@@ -201,7 +201,7 @@ class ResetNorthTool extends Control {
     // # Section: Tool DoActions
     //--------------------------------------------------------------------
     doRotation(map, coordinates, zoom, degrees) {
-        const radians = degreesToRadians(degrees);
+        const radians = ConversionManager.degreesToRadians(degrees);
 
         LogManager.logDebug(FILENAME, 'doRotation', {
             degrees: degrees,

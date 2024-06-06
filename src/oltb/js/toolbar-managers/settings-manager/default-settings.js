@@ -1,4 +1,4 @@
-import { Settings } from '../../helpers/constants/Settings';
+import { Settings } from '../../browser-constants/settings';
 
 const DefaultSettings = new Map([
     [

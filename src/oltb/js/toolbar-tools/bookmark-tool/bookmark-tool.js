@@ -1,29 +1,29 @@
 import _ from 'lodash';
 import tippy from 'tippy.js';
 import Sortable from 'sortablejs';
-import { DOM } from '../../helpers/browser/dom-factory';
-import { Keys } from '../../helpers/constants/keys';
-import { Toast } from '../../common/toasts/toast';
-import { Dialog } from '../../common/dialogs/dialog';
-import { Events } from '../../helpers/constants/events';
+import { DOM } from '../../browser-helpers/dom-factory';
+import { Keys } from '../../browser-constants/keys';
+import { Toast } from '../../ui-common/ui-toasts/toast';
+import { Dialog } from '../../ui-common/ui-dialogs/dialog';
+import { Events } from '../../browser-constants/events';
 import { Control } from 'ol/control';
-import { goToView } from '../../helpers/go-to-view';
-import { LogManager } from '../../managers/log-manager/log-manager';
+import { goToView } from '../../ol-helpers/go-to-view';
+import { LogManager } from '../../toolbar-managers/log-manager/log-manager';
+import { NameManager } from '../../toolbar-managers/name-manager/name-manager';
 import { v4 as uuidv4 } from 'uuid';
 import { toStringHDMS } from 'ol/coordinate';
-import { LayerManager } from '../../managers/layer-manager/layer-manager';
-import { StateManager } from '../../managers/state-manager/state-manager';
-import { ShortcutKeys } from '../../helpers/constants/shortcut-keys';
-import { ConfigManager } from '../../managers/config-manager/config-manager';
-import { ElementManager } from '../../managers/element-manager/element-manager';
-import { FeatureManager } from '../../managers/feature-manager/feature-manager';
+import { LayerManager } from '../../toolbar-managers/layer-manager/layer-manager';
+import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
+import { ShortcutKeys } from '../../browser-constants/shortcut-keys';
+import { ConfigManager } from '../../toolbar-managers/config-manager/config-manager';
+import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
+import { FeatureManager } from '../../toolbar-managers/feature-manager/feature-manager';
 import { ContextMenuTool } from '../context-menu-tool/context-menu-tool';
-import { copyToClipboard } from '../../helpers/browser/copy-to-clipboard';
-import { LocalStorageKeys } from '../../helpers/constants/local-storage-keys';
-import { InfoWindowManager } from '../../managers/info-window-manager/info-window-manager';
-import { isShortcutKeyOnly } from '../../helpers/browser/is-shortcut-key-only';
-import { TranslationManager } from '../../managers/translation-manager/translation-manager';
-import { generateAnimalName } from '../../helpers/name-generator/name-generator';
+import { copyToClipboard } from '../../browser-helpers/copy-to-clipboard';
+import { LocalStorageKeys } from '../../browser-constants/local-storage-keys';
+import { InfoWindowManager } from '../../toolbar-managers/info-window-manager/info-window-manager';
+import { isShortcutKeyOnly } from '../../browser-helpers/is-shortcut-key-only';
+import { TranslationManager } from '../../toolbar-managers/translation-manager/translation-manager';
 import { SvgPaths, getSvgIcon } from '../../ui-icons/get-svg-icon/get-svg-icon';
 import { fromLonLat, toLonLat } from 'ol/proj';
 
@@ -496,7 +496,7 @@ class BookmarkTool extends Control {
         name = name.trim();
 
         if(!this.isValid(name)) {
-            name = generateAnimalName();
+            name = NameManager.generate();
         }
 
         return name;

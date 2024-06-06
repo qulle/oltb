@@ -1,15 +1,15 @@
 import _ from 'lodash';
-import { DOM } from '../../helpers/browser/dom-factory';
-import { Events } from '../../helpers/constants/events';
+import { DOM } from '../../browser-helpers/dom-factory';
+import { Events } from '../../browser-constants/events';
 import { Control } from 'ol/control';
-import { LogManager } from '../../managers/log-manager/log-manager';
-import { UrlManager } from '../../managers/url-manager/url-manager';
-import { ShortcutKeys } from '../../helpers/constants/shortcut-keys';
-import { ConfigManager } from '../../managers/config-manager/config-manager';
-import { ElementManager } from '../../managers/element-manager/element-manager';
-import { DebugInfoModal } from '../../modal-extensions/debug-info-modal';
-import { isShortcutKeyOnly } from '../../helpers/browser/is-shortcut-key-only';
-import { TranslationManager } from '../../managers/translation-manager/translation-manager';
+import { LogManager } from '../../toolbar-managers/log-manager/log-manager';
+import { UrlManager } from '../../toolbar-managers/url-manager/url-manager';
+import { ShortcutKeys } from '../../browser-constants/shortcut-keys';
+import { ConfigManager } from '../../toolbar-managers/config-manager/config-manager';
+import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
+import { DebugInfoModal } from '../../ui-extensions/debug-info-modal/debug-info-modal';
+import { isShortcutKeyOnly } from '../../browser-helpers/is-shortcut-key-only';
+import { TranslationManager } from '../../toolbar-managers/translation-manager/translation-manager';
 import { SvgPaths, getSvgIcon } from '../../ui-icons/get-svg-icon/get-svg-icon';
 
 const FILENAME = 'debug-info-tool.js';

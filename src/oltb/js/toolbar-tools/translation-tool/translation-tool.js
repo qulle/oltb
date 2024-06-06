@@ -1,13 +1,13 @@
 import _ from 'lodash';
-import { DOM } from '../../helpers/browser/dom-factory';
-import { Dialog } from '../../common/dialogs/dialog';
-import { Events } from '../../helpers/constants/events';
+import { DOM } from '../../browser-helpers/dom-factory';
+import { Dialog } from '../../ui-common/ui-dialogs/dialog';
+import { Events } from '../../browser-constants/events';
 import { Control } from 'ol/control';
-import { LogManager } from '../../managers/log-manager/log-manager';
-import { ShortcutKeys } from '../../helpers/constants/shortcut-keys';
-import { ElementManager } from '../../managers/element-manager/element-manager';
-import { isShortcutKeyOnly } from '../../helpers/browser/is-shortcut-key-only';
-import { TranslationManager } from '../../managers/translation-manager/translation-manager';
+import { LogManager } from '../../toolbar-managers/log-manager/log-manager';
+import { ShortcutKeys } from '../../browser-constants/shortcut-keys';
+import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
+import { isShortcutKeyOnly } from '../../browser-helpers/is-shortcut-key-only';
+import { TranslationManager } from '../../toolbar-managers/translation-manager/translation-manager';
 import { SvgPaths, getSvgIcon } from '../../ui-icons/get-svg-icon/get-svg-icon';
 
 const FILENAME = 'translation-tool.js';

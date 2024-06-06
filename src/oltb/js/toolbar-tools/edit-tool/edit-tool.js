@@ -1,40 +1,40 @@
 import _ from 'lodash';
 import jsts from 'jsts/dist/jsts.min';
-import { DOM } from '../../helpers/browser/dom-factory';
-import { Keys } from '../../helpers/constants/keys';
-import { Toast } from '../../common/toasts/toast';
-import { Dialog } from '../../common/dialogs/dialog';
-import { Events } from '../../helpers/constants/events';
+import { DOM } from '../../browser-helpers/dom-factory';
+import { Keys } from '../../browser-constants/keys';
+import { Toast } from '../../ui-common/ui-toasts/toast';
+import { Dialog } from '../../ui-common/ui-dialogs/dialog';
+import { Events } from '../../browser-constants/events';
 import { Feature } from 'ol';
 import { Control } from 'ol/control';
 import { unByKey } from 'ol/Observable';
-import { Settings } from '../../helpers/constants/settings';
+import { Settings } from '../../browser-constants/settings';
 import { getCenter } from 'ol/extent';
-import { LogManager } from '../../managers/log-manager/log-manager';
-import { SnapManager } from '../../managers/snap-manager/snap-manager';
-import { ToolManager } from '../../managers/tool-manager/tool-manager';
+import { LogManager } from '../../toolbar-managers/log-manager/log-manager';
+import { SnapManager } from '../../toolbar-managers/snap-manager/snap-manager';
+import { ToolManager } from '../../toolbar-managers/tool-manager/tool-manager';
 import { shiftKeyOnly } from 'ol/events/condition';
-import { LayerManager } from '../../managers/layer-manager/layer-manager';
-import { StateManager } from '../../managers/state-manager/state-manager';
-import { ShortcutKeys } from '../../helpers/constants/shortcut-keys';
-import { jsonReplacer } from '../../helpers/browser/json-replacer';
-import { ConfigManager } from '../../managers/config-manager/config-manager';
-import { DefaultConfig } from '../../managers/config-manager/default-config';
-import { FeatureManager } from '../../managers/feature-manager/feature-manager';
-import { ElementManager } from '../../managers/element-manager/element-manager';
-import { TooltipManager } from '../../managers/tooltip-manager/tooltip-manager';
-import { createUITooltip } from '../../creators/create-ui-tooltip';
-import { SettingsManager } from '../../managers/settings-manager/settings-manager';
-import { degreesToRadians } from '../../helpers/conversions';
-import { LocalStorageKeys } from '../../helpers/constants/local-storage-keys';
-import { GeometryDataModal } from '../../modal-extensions/geometry-data-modal';
-import { isShortcutKeyOnly } from '../../helpers/browser/is-shortcut-key-only';
-import { FeatureProperties } from '../../helpers/constants/feature-properties';
-import { TranslationManager } from '../../managers/translation-manager/translation-manager';
+import { LayerManager } from '../../toolbar-managers/layer-manager/layer-manager';
+import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
+import { ShortcutKeys } from '../../browser-constants/shortcut-keys';
+import { jsonReplacer } from '../../browser-helpers/json-replacer';
+import { ConfigManager } from '../../toolbar-managers/config-manager/config-manager';
+import { DefaultConfig } from '../../toolbar-managers/config-manager/default-config';
+import { FeatureManager } from '../../toolbar-managers/feature-manager/feature-manager';
+import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
+import { TooltipManager } from '../../toolbar-managers/tooltip-manager/tooltip-manager';
+import { createUITooltip } from '../../ui-creators/ui-tooltip/create-ui-tooltip';
+import { SettingsManager } from '../../toolbar-managers/settings-manager/settings-manager';
+import { LocalStorageKeys } from '../../browser-constants/local-storage-keys';
+import { GeometryDataModal } from '../../ui-extensions/geometry-data-modal/geometry-data-modal';
+import { isShortcutKeyOnly } from '../../browser-helpers/is-shortcut-key-only';
+import { FeatureProperties } from '../../ol-helpers/feature-properties';
+import { ConversionManager } from '../../toolbar-managers/conversion-manager/conversion-manager';
+import { TranslationManager } from '../../toolbar-managers/translation-manager/translation-manager';
 import { Fill, Stroke, Style } from 'ol/style';
 import { SvgPaths, getSvgIcon } from '../../ui-icons/get-svg-icon/get-svg-icon';
 import { Select, Modify, Translate } from 'ol/interaction';
-import { getMeasureCoordinates, getMeasureValue } from '../../helpers/measurements';
+import { getMeasureCoordinates, getMeasureValue } from '../../ol-helpers/measurements';
 import { GeometryCollection, LinearRing, LineString, MultiLineString, MultiPoint, MultiPolygon, Point, Polygon } from 'ol/geom';
 
 /*!
@@ -1005,7 +1005,7 @@ class EditTool extends Control {
     }
 
     doRotateFeatures(features, rotation) {
-        const radians = degreesToRadians(rotation);
+        const radians = ConversionManager.degreesToRadians(rotation);
         
         features.forEach((feature) => {
             const geometry = feature.getGeometry();

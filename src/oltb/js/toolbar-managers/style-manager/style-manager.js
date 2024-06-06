@@ -4,7 +4,7 @@ import { LogManager } from '../log-manager/log-manager';
 import { BaseManager } from '../base-manager';
 import { DefaultConfig } from '../config-manager/default-config';
 import { getSvgWindBarb } from '../../ui-icons/get-svg-wind-barb/get-svg-wind-barb';
-import { ConvertionManager } from '../conversion-manager/conversion-manager';
+import { ConversionManager } from '../conversion-manager/conversion-manager';
 import { FeatureProperties } from '../../ol-helpers/feature-properties';
 import { SvgPaths, getSvgIcon } from '../../ui-icons/get-svg-icon/get-svg-icon';
 import { Circle, Fill, Icon, Text, Stroke, Style } from 'ol/style';
@@ -236,7 +236,7 @@ class StyleManager extends BaseManager {
             shouldReplaceHashtag: properties.settings.shouldReplaceHashtag
         });
     
-        const rotation = ConvertionManager.degreesToRadians(properties.icon.rotation);
+        const rotation = ConversionManager.degreesToRadians(properties.icon.rotation);
         const iconStyle = this.#getIconStyle(
             properties.icon.key, 
             rotation,
