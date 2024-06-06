@@ -36,6 +36,7 @@ const CLASS__TOGGLEABLE = 'oltb-toggleable';
 const ID__PREFIX = 'oltb-bookmark';
 const ID__PREFIX_INFO_WINDOW = 'oltb-info-window-marker';
 const ID__MARKER_PATH = 'bookmarkStar.filled';
+const ID__BOOKMARK_LAYER_UUID = '1fde0d79-46f9-4c92-8f9c-eb0e98f46772';
 const SORTABLE_BOOKMARKS = 'sortableBookmarks';
 const INDEX_OFFSET = 1;
 const I18N__BASE = 'tools.bookmarkTool';
@@ -240,7 +241,7 @@ class BookmarkTool extends BaseTool {
     //--------------------------------------------------------------------
     generateBookmarkLayer() {
         return LayerManager.addFeatureLayer({
-            id: '1fde0d79-46f9-4c92-8f9c-eb0e98f46772',
+            id: ID__BOOKMARK_LAYER_UUID,
             name: TranslationManager.get(`${I18N__BASE}.layers.bookmarks`), 
             visible: this.options.markerLayerVisibleOnLoad, 
             isSilent: true,
@@ -362,7 +363,7 @@ class BookmarkTool extends BaseTool {
     }
 
     #onAddBookmarkByKey(event) {
-        if(!this.isValidEnterKey(event)) {
+        if(!this.#isValidEnterKey(event)) {
             return;
         }
 
@@ -492,21 +493,21 @@ class BookmarkTool extends BaseTool {
     //--------------------------------------------------------------------
     // # Section: Conversions/Validation
     //--------------------------------------------------------------------
-    validateName(name) {
+    #validateName(name) {
         name = name.trim();
 
-        if(!this.isValid(name)) {
+        if(!this.#isValid(name)) {
             name = NameManager.generate();
         }
 
         return name;
     }
 
-    isValid(result) {
+    #isValid(result) {
         return result !== null && result !== undefined && !!result.length;
     }
 
-    isValidEnterKey(event) {
+    #isValidEnterKey(event) {
         return event.type === Events.browser.keyUp && event.key === KeyboardKeys.valueEnter;
     }
 
@@ -726,7 +727,7 @@ class BookmarkTool extends BaseTool {
             onConfirm: (result) => {
                 InfoWindowManager.hideOverlay();
                 
-                if(this.isValid(result)) {
+                if(this.#isValid(result)) {
                     this.doEditBookmark(bookmark, bookmarkName, result);
                 }
             }
@@ -795,22 +796,14 @@ class BookmarkTool extends BaseTool {
         return marker;
     }
 
-    doAddBookmark(name, coordinates) {
-        const map = this.getMap();
-        if(!map) {
-            return;
-        }
-
-        name = this.validateName(name);
-
+    createBookmarkObject(map, name, coordinates) {
         const view = map.getView();
         const zoom = view.getZoom();
         const transformedCoordinates = coordinates ?? toLonLat(view.getCenter());
-
-        // Create Bookmark object
-        const bookmarkId = uuidv4();
+        const id = uuidv4();
+        
         const bookmark = {
-            id: bookmarkId,
+            id: id,
             name: name,
             zoom: zoom,
             coordinates: transformedCoordinates,
@@ -818,6 +811,18 @@ class BookmarkTool extends BaseTool {
             sortIndex: 0
         };
 
+        return bookmark;
+    }
+
+    doAddBookmark(name, coordinates) {
+        const map = this.getMap();
+        if(!map) {
+            return;
+        }
+
+        name = this.#validateName(name);
+
+        const bookmark = this.createBookmarkObject(map, name, coordinates);
         this.createUIBookmark(bookmark);
 
         // Note: 
