@@ -17,7 +17,7 @@ class DOM {
         // Common element attributes
         for(const [key, value] of Object.entries(commonAttributes)) {
             if(options[key]) {
-                element[value] = options[key];
+                element[value] = typeof options[key] === 'string' ? options[key].trim() : options[key];
             }
         }
         

@@ -278,6 +278,7 @@ class DebugInfoModal extends BaseModal {
             chips.set(value.name, {
                 count: 0,
                 name: value.name,
+                visible: value.visible,
                 color: value.color,
                 key: key,
                 backgroundColor: value.backgroundColor,
@@ -294,6 +295,7 @@ class DebugInfoModal extends BaseModal {
         section.content.forEach((entry, index) => {
             // Note:
             // To create a filter using chips above the eventlog
+            // Updating the count of the chip to the correct value
             const current = chips.get(entry.level.name);
             chips.set(entry.level.name, {
                 count: current.count + 1,
@@ -376,7 +378,8 @@ class DebugInfoModal extends BaseModal {
                     entry.method
                 } &rarr; ${
                     entry.value
-                }` // <- Note: Enter/space will cause space in output, not good when copying GUID/UUID
+                }
+            `
         }); 
 
         DOM.appendChildren(logHeader, [
@@ -419,7 +422,8 @@ class DebugInfoModal extends BaseModal {
                     entry.origin
                 } &rarr; ${
                     entry.method
-                }` // <- Note: Enter/space will cause space in output, not good when copying GUID/UUID
+                }
+            `
         }); 
 
         const logToggle = DOM.createElement({
