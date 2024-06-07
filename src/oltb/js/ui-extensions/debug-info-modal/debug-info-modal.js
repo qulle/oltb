@@ -335,7 +335,6 @@ class DebugInfoModal extends BaseModal {
         ]);
 
         chips.forEach((value, key, map) => {
-            console.log(value, key);
             const chip = DOM.createElement({
                 element: 'span',
                 class: `oltb-chip ${!value.visible ? 'oltb-chip--deactivated' : ''}`,
