@@ -31,6 +31,7 @@ class LogManager extends BaseManager {
         debug: {
             value: 1,
             name: 'Debug',
+            visible: false,
             color: '#00385B',
             backgroundColor: '#F0F6FF',
             borderColor: '#D7E3FA',
@@ -39,6 +40,7 @@ class LogManager extends BaseManager {
         information: {
             value: 2,
             name: 'Information',
+            visible: true,
             color: '#212529',
             backgroundColor: '#F3F4F5',
             borderColor: '#D3D9E6',
@@ -47,6 +49,7 @@ class LogManager extends BaseManager {
         warning: {
             value: 3,
             name: 'Warning',
+            visible: true,
             color: '#493B10',
             backgroundColor: '#FFF8E1',
             borderColor: '#FAE59D',
@@ -55,6 +58,7 @@ class LogManager extends BaseManager {
         error: {
             value: 4,
             name: 'Error',
+            visible: true,
             color: '#8D2120',
             backgroundColor: '#FFE6E6',
             borderColor: '#FDB5B4',
@@ -63,6 +67,7 @@ class LogManager extends BaseManager {
         fatal: {
             value: 5,
             name: 'Fatal',
+            visible: true,
             color: '#212529',
             backgroundColor: '#E8E6FF',
             borderColor: '#D0CAFF',

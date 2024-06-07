@@ -14,6 +14,7 @@ const CLASS__MODAL_BACKDROP = `${CLASS__MODAL}-backdrop`;
 const DefaultOptions = Object.freeze({
     title: 'Modal',
     maximized: false,
+    pushWidth: false,
     onClose: undefined,
     content: undefined
 });
@@ -39,9 +40,10 @@ class BaseModal {
 
         this.modal = DOM.createElement({
             element: 'div', 
-            class: `${CLASS__MODAL} ${ this.options.maximized 
-                ? `${CLASS__MODAL}--maximized` 
-                : ''
+            class: `${CLASS__MODAL} ${
+                this.options.maximized ? `${CLASS__MODAL}--maximized` : ''
+            } ${
+                this.options.pushWidth ? `${CLASS__MODAL}--push-width` : ''
             } ${CLASS__ANIMATION} ${CLASS__ANIMATION_BOUNCE}`
         });
 

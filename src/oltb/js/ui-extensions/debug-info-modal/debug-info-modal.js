@@ -24,7 +24,6 @@ const I18N__BASE_COMMON = 'commons';
 
 const DefaultOptions = Object.freeze({
     map: undefined,
-    maximized: true,
     onClose: undefined
 });
 
@@ -34,11 +33,11 @@ const DefaultOptions = Object.freeze({
  */
 class DebugInfoModal extends BaseModal {
     constructor(options = {}) {
-        super(
-            TranslationManager.get(`${I18N__BASE}.title`), 
-            DefaultOptions.maximized, 
-            options.onClose
-        );
+        super({
+            title: TranslationManager.get(`${I18N__BASE}.title`), 
+            pushWidth: true, 
+            onClose: options.onClose
+        });
             
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
         this.#createModal();
@@ -94,6 +93,7 @@ class DebugInfoModal extends BaseModal {
             option
         ]);
 
+        // Note:
         // All groups that will contain selectable elements as children
         [
             {
@@ -134,6 +134,7 @@ class DebugInfoModal extends BaseModal {
                 optgroup
             ]);
 
+            // Note:
             // Children to each group (the selectable items)
             group.items.forEach((item) => {
                 const option = DOM.createElement({
@@ -297,6 +298,7 @@ class DebugInfoModal extends BaseModal {
             chips.set(entry.level.name, {
                 count: current.count + 1,
                 name: entry.level.name,
+                visible: entry.level.visible,
                 color: entry.level.color,
                 backgroundColor: entry.level.backgroundColor,
                 borderColor: entry.level.borderColor
@@ -333,9 +335,10 @@ class DebugInfoModal extends BaseModal {
         ]);
 
         chips.forEach((value, key, map) => {
+            console.log(value, key);
             const chip = DOM.createElement({
                 element: 'span',
-                class: 'oltb-chip',
+                class: `oltb-chip ${!value.visible ? 'oltb-chip--deactivated' : ''}`,
                 style: `background-color: ${value.backgroundColor}; color: ${value.color}; border: 1px solid ${value.borderColor};`,
                 text: `${key} (${value.count})`,
                 attributes: {
@@ -384,7 +387,7 @@ class DebugInfoModal extends BaseModal {
         const logItem = DOM.createElement({
             element: 'div',
             style: `background-color: ${entry.level.backgroundColor}; color: ${entry.level.color}; border: 1px solid ${entry.level.borderColor}`,
-            class: 'oltb-log__item',
+            class: `oltb-log__item ${!entry.level.visible ? 'oltb-log__item--hidden' : ''}`,
             attributes: {
                 'data-oltb-log-name': entry.level.name
             }
@@ -460,7 +463,7 @@ class DebugInfoModal extends BaseModal {
         const logItem = DOM.createElement({
             element: 'div',
             style: `background-color: ${entry.level.backgroundColor}; color: ${entry.level.color}; border: 1px solid ${entry.level.borderColor};`,
-            class: 'oltb-log__item',
+            class: `oltb-log__item ${!entry.level.visible ? 'oltb-log__item--hidden' : ''}`,
             attributes: {
                 'data-oltb-log-name': entry.level.name
             }

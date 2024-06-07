@@ -5,6 +5,7 @@ class Modal {
         return new BaseModal({
             title: options.title,
             maximized: options.maximized, 
+            pushWidth: options.pushWidth, 
             onClose: options.onClose,
             content: options.content
         });

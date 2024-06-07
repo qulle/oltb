@@ -2,17 +2,19 @@ import { Control } from 'ol/control';
 import { LogManager } from '../toolbar-managers/log-manager/log-manager';
 import { ElementManager } from '../toolbar-managers/element-manager/element-manager';
 
+const FILENAME = 'base-tool.js';
+
 class BaseTool extends Control {
-    #filename = undefined;
+    #filename = FILENAME;
 
     constructor(options = {}) {
         super({
             element: options.element ?? ElementManager.getToolbarElement()
         });
 
-        this.#filename = options.filename || 'Missing filename';
-        
-        LogManager.logDebug(this.#filename, 'constructor', 'init');
+        if(options.filename) {
+            this.#filename = options.filename;
+        }
     }
 
     //--------------------------------------------------------------------
