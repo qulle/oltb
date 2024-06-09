@@ -221,7 +221,7 @@ class HomeTool extends BaseTool {
         
         Toast.success({
             i18nKey: `${I18N__BASE}.toasts.infos.setHomeLocation`,
-            autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
+            autoremove: true
         });
     }
 

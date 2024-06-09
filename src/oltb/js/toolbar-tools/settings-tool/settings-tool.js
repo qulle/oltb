@@ -6,7 +6,6 @@ import { Events } from '../../browser-constants/events';
 import { BaseTool } from '../base-tool';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
 import { ShortcutKeys } from '../../browser-constants/shortcut-keys';
-import { ConfigManager } from '../../toolbar-managers/config-manager/config-manager';
 import { SettingsModal } from '../../ui-extensions/settings-modal/settings-modal';
 import { ContextMenuTool } from '../context-menu-tool/context-menu-tool';
 import { SettingsManager } from '../../toolbar-managers/settings-manager/settings-manager';
@@ -154,7 +153,7 @@ class SettingsTool extends BaseTool {
 
         Toast.info({
             i18nKey: `${I18N__BASE}.toasts.infos.clearBrowserState`,
-            autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
+            autoremove: true
         });
     }
 
@@ -167,7 +166,7 @@ class SettingsTool extends BaseTool {
             onSave: () => {
                 Toast.success({
                     i18nKey: `${I18N__BASE}.toasts.successes.savedSettings`,
-                    autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
+                    autoremove: true
                 });
             },
             onClose: () => {

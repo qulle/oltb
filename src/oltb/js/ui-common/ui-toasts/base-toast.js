@@ -16,7 +16,7 @@ const DefaultOptions = Object.freeze({
     message: '',
     i18nKey: undefined,
     type: 'info',
-    autoremove: undefined,
+    autoremove: false,
     clickToRemove: true,
     spinner: false
 });
@@ -99,7 +99,7 @@ class BaseToast {
         if(this.options.autoremove) {
             window.setTimeout(() => {
                 DOM.removeElement(this);
-            }, this.options.autoremove);
+            }, ConfigManager.getConfig().autoRemovalDuation.normal);
         }
     }
 
@@ -141,7 +141,7 @@ class BaseToast {
         return this.options.clickToRemove;
     }
 
-    getAutoremoveNumber() {
+    isAutoremove() {
         return this.options.autoremove;
     }
 

@@ -709,7 +709,7 @@ class DebugInfoModal extends BaseModal {
 
         Toast.info({
             i18nKey: `${I18N__BASE}.toasts.infos.logMapObject`,
-            autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
+            autoremove: true
         });
     }
 
@@ -739,7 +739,7 @@ class DebugInfoModal extends BaseModal {
 
             Toast.info({
                 i18nKey: `${I18N__BASE}.toasts.infos.copyEventLog`,
-                autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
+                autoremove: true
             });
         }catch(error) {
             LogManager.logError(FILENAME, 'doActionCopyEventLog', {
@@ -771,7 +771,7 @@ class DebugInfoModal extends BaseModal {
 
         Toast.info({
             i18nKey: `${I18N__BASE}.toasts.infos.clearEventLog`,
-            autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
+            autoremove: true
         });
     }
 
@@ -786,7 +786,7 @@ class DebugInfoModal extends BaseModal {
 
         Toast.info({
             i18nKey: `${I18N__BASE}.toasts.infos.clearStyleManager`,
-            autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
+            autoremove: true
         });
     }
 }

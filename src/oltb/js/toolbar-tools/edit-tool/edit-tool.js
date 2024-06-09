@@ -498,7 +498,7 @@ class EditTool extends BaseTool {
 
     #onDeleteSelectedFeatures() {
         const features = [...this.interactionSelect.getFeatures().getArray()];
-        const autoremove = ConfigManager.getConfig().autoRemovalDuation.normal;
+        const autoremove = true
 
         if(features.length === 0) {
             Toast.info({
@@ -514,7 +514,7 @@ class EditTool extends BaseTool {
 
     #onRotateSelectedFeatures() {
         const features = [...this.interactionSelect.getFeatures().getArray()];
-        const autoremove = ConfigManager.getConfig().autoRemovalDuation.normal;
+        const autoremove = true
 
         if(features.length === 0) {
             Toast.info({
@@ -530,12 +530,11 @@ class EditTool extends BaseTool {
 
     #onInfoSelectedFeatures() {
         const features = [...this.interactionSelect.getFeatures().getArray()];
-        const autoremove = ConfigManager.getConfig().autoRemovalDuation.normal;
 
         if(features.length === 0) {
             Toast.info({
                 i18nKey: `${I18N__BASE}.toasts.infos.missingFeatures`,
-                autoremove: autoremove
+                autoremove: true
             });
 
             return;
@@ -544,7 +543,7 @@ class EditTool extends BaseTool {
         if(features.length >= 2) {
             Toast.info({
                 i18nKey: `${I18N__BASE}.toasts.infos.strictOneFeature`,
-                autoremove: autoremove
+                autoremove: true
             });
 
             return;
@@ -563,12 +562,11 @@ class EditTool extends BaseTool {
 
     #onShapeOperator(operation, type) {
         const features = [...this.interactionSelect.getFeatures().getArray()];
-        const autoremove = ConfigManager.getConfig().autoRemovalDuation.normal;
 
         if(!this.isTwoAndOnlyTwoShapes(features)) {
             Toast.info({
                 i18nKey: `${I18N__BASE}.toasts.infos.strictTwoFeatures`,
-                autoremove: autoremove
+                autoremove: true
             });
 
             return;

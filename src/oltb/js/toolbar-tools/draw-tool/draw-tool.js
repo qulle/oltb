@@ -482,7 +482,7 @@ class DrawTool extends BaseTool {
         if(!layerWrapper.getLayer().getVisible()) {
             Toast.info({
                 i18nKey: `${I18N__BASE}.toasts.infos.drawInHiddenLayer`,
-                autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
+                autoremove: true
             });
         }
     }
@@ -544,7 +544,7 @@ class DrawTool extends BaseTool {
         if(this.intersectedFeatures.length === 0) {
             Toast.info({
                 i18nKey: `${I18N__BASE}.toasts.infos.missingIntersections`,
-                autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
+                autoremove: true
             });
         }
 

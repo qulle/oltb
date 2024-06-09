@@ -461,7 +461,7 @@ class LayerTool extends BaseTool {
         if(!this.isActive) {
             Toast.success({
                 i18nKey: `${I18N__BASE}.toasts.infos.addFeatureLayer`,
-                autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
+                autoremove: true
             });
         }
     }

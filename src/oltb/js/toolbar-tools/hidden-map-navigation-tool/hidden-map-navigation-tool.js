@@ -272,7 +272,7 @@ class HiddenMapNavigationTool extends BaseTool {
 
             Toast.info({
                 i18nKey: `${I18N__BASE}.toasts.infos.coordinatesCopied`,
-                autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
+                autoremove: true
             });
         }catch(error) {
             LogManager.logError(FILENAME, 'doCopyCoordinates', {

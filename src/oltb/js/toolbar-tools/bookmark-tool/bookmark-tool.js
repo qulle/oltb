@@ -694,7 +694,7 @@ class BookmarkTool extends BaseTool {
 
                 Toast.info({
                     i18nKey: `${I18N__BASE}.toasts.infos.clearBookmarks`,
-                    autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
+                    autoremove: true
                 });
             }
         });
@@ -830,7 +830,7 @@ class BookmarkTool extends BaseTool {
         if(!this.isActive) {
             Toast.success({
                 i18nKey: `${I18N__BASE}.toasts.infos.createBookmark`,
-                autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
+                autoremove: true
             });
         }
 
@@ -943,7 +943,7 @@ class BookmarkTool extends BaseTool {
 
             Toast.info({
                 i18nKey: `${I18N__BASE}.toasts.infos.copyCoordinates`,
-                autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
+                autoremove: true
             });
         }catch(error) {
             LogManager.logError(FILENAME, 'doCopyBookmarkCoordinates', {

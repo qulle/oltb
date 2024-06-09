@@ -1,6 +1,7 @@
 import { jest, beforeAll, describe, it, expect } from '@jest/globals';
 import { DOM } from '../../browser-helpers/dom-factory';
 import { BaseToast } from './base-toast';
+import { ConfigManager } from '../../toolbar-managers/config-manager/config-manager';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 
 describe('BaseToast', () => {
@@ -17,7 +18,7 @@ describe('BaseToast', () => {
         expect(toast.getTitle()).toBe('Toast');
         expect(toast.getMessage()).toBe('');
         expect(toast.getI18NKey()).toBeUndefined();
-        expect(toast.getAutoremoveNumber()).toBeUndefined();
+        expect(toast.isAutoremove()).toBe(false);
         expect(toast.isClickableToRemove()).toBe(true);
         expect(toast.isSpinner()).toBe(false);
     });
@@ -54,14 +55,14 @@ describe('BaseToast', () => {
 
     it('should create a toast that is removed after 5 seconds', () => {
         const spy = jest.spyOn(DOM, 'removeElement');
+        const timeout = ConfigManager.getConfig().autoRemovalDuation.normal;
         const toast = new BaseToast({
-            autoremove: 5000
+            autoremove: true
         });
 
-        expect(toast.getAutoremoveNumber()).toBe(5000);
-
         window.setTimeout(() => {
+            expect(toast.isAutoremove()).toBe(true);
             expect(spy).toHaveBeenCalled();
-        }, 5000);
+        }, timeout);
     });
 });

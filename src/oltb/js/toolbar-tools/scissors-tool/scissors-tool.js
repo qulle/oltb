@@ -13,7 +13,6 @@ import { LayerManager } from '../../toolbar-managers/layer-manager/layer-manager
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
 import { GeometryType } from '../../ol-mappers/ol-geometry/ol-geometry';
 import { ShortcutKeys } from '../../browser-constants/shortcut-keys';
-import { ConfigManager } from '../../toolbar-managers/config-manager/config-manager';
 import { FeatureManager } from '../../toolbar-managers/feature-manager/feature-manager';
 import { LocalStorageKeys } from '../../browser-constants/local-storage-keys';
 import { isShortcutKeyOnly } from '../../browser-helpers/is-shortcut-key-only';
@@ -333,7 +332,7 @@ class ScissorsTool extends BaseTool {
         if(this.intersectedFeatures.length === 0) {
             Toast.info({
                 i18nKey: `${I18N__BASE}.toasts.infos.missingIntersections`,
-                autoremove: ConfigManager.getConfig().autoRemovalDuation.normal
+                autoremove: true
             });
         }
 
