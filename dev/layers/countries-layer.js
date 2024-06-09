@@ -8,7 +8,7 @@ import { LogManager } from '../../src/oltb/js/toolbar-managers/log-manager/log-m
 import { toStringHDMS } from 'ol/coordinate';
 import { LayerManager } from '../../src/oltb/js/toolbar-managers/layer-manager/layer-manager';
 import { ConfigManager } from '../../src/oltb/js/toolbar-managers/config-manager/config-manager';
-import { getMeasureValue } from '../../src/oltb/js/ol-helpers/measurements';
+import { getMeasureValue } from '../../src/oltb/js/ol-helpers/geometry-measurements';
 import { FeatureProperties } from '../../src/oltb/js/ol-helpers/feature-properties';
 import { Vector as VectorLayer } from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';

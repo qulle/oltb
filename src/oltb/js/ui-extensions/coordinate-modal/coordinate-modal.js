@@ -9,9 +9,10 @@ const FILENAME = 'coordinate-model.js';
 const ID__PREFIX = 'oltb-coordinates-modal';
 const I18N__BASE = 'modalExtensions.coordinateModal';
 
+// Note:
+// Only specify the unique options to this class
+// Things to override on the BaseModal is passed directly
 const DefaultOptions = Object.freeze({
-    maximized: false,
-    onClose: undefined,
     onNavigate: undefined,
     onCancel: undefined
 });
@@ -22,11 +23,10 @@ const DefaultOptions = Object.freeze({
  */
 class CoordinateModal extends BaseModal {
     constructor(options = {}) {
-        super(
-            TranslationManager.get(`${I18N__BASE}.title`), 
-            options.maximized, 
-            options.onClose
-        );
+        super({
+            title: TranslationManager.get(`${I18N__BASE}.title`), 
+            ...options
+        });
         
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
         this.#createModal();

@@ -12,6 +12,9 @@ const FILENAME = 'icon-marker-modal.js';
 const ID__PREFIX = 'oltb-marker-modal-marker';
 const I18N__BASE = 'modalExtensions.iconMarkerModal';
 
+// Note:
+// Only specify the unique options to this class
+// Things to override on the BaseModal is passed directly
 const DefaultOptions = Object.freeze({
     edit: false,
     coordinates: [0, 0],
@@ -32,9 +35,7 @@ const DefaultOptions = Object.freeze({
         stroke: '#3B4352CC',
         strokeWidth: 8,
     }),
-    maximized: false,
     maxLabelStrokeWidth: 24,
-    onClose: undefined,
     onCreate: undefined,
     onCancel: undefined
 });
@@ -45,11 +46,10 @@ const DefaultOptions = Object.freeze({
  */
 class IconMarkerModal extends BaseModal {
     constructor(options = {}) {
-        super(
-            TranslationManager.get(`${I18N__BASE}.title`),
-            options.maximized, 
-            options.onClose
-        );
+        super({
+            title: TranslationManager.get(`${I18N__BASE}.title`), 
+            ...options
+        });
         
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
         this.#createModal();

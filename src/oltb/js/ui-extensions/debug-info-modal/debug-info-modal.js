@@ -22,9 +22,11 @@ const CLASS__TOGGLEABLE = 'oltb-toggleable';
 const I18N__BASE = 'modalExtensions.debugInfoModal';
 const I18N__BASE_COMMON = 'commons';
 
+// Note:
+// Only specify the unique options to this class
+// Things to override on the BaseModal is passed directly
 const DefaultOptions = Object.freeze({
-    map: undefined,
-    onClose: undefined
+    map: undefined
 });
 
 /**
@@ -36,7 +38,7 @@ class DebugInfoModal extends BaseModal {
         super({
             title: TranslationManager.get(`${I18N__BASE}.title`), 
             pushWidth: true, 
-            onClose: options.onClose
+            ...options
         });
             
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);

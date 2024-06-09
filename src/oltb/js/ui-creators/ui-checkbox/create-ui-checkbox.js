@@ -58,12 +58,11 @@ const createUICheckbox = function(options = {}) {
         checkbox.setAttribute('checked', '');
     }
 
-    // Attach given listeners and callbacks
+    // Note:
+    // Attach given callbacks, given as object or list of
     for(const listener in options.listeners) {
         const callbacks = options.listeners[listener];
 
-        // Note:
-        // The callback(s) can be given as a single reference or as a array of many 
         if(Array.isArray(callbacks)) {
             callbacks.forEach((callback) => {
                 checkbox.addEventListener(listener, callback);

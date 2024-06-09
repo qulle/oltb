@@ -15,8 +15,8 @@ const DefaultOptions = Object.freeze({
     title: 'Modal',
     maximized: false,
     pushWidth: false,
-    onClose: undefined,
-    content: undefined
+    content: undefined,
+    onClose: undefined
 });
 
 class BaseModal {

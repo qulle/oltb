@@ -10,9 +10,10 @@ const FILENAME = 'download-layer-modal.js';
 const ID__PREFIX = 'oltb-download-layer-modal';
 const I18N__BASE = 'modalExtensions.downloadLayerModal';
 
+// Note:
+// Only specify the unique options to this class
+// Things to override on the BaseModal is passed directly
 const DefaultOptions = Object.freeze({
-    maximized: false,
-    onClose: undefined,
     onDownload: undefined,
     onCancel: undefined
 });
@@ -23,11 +24,10 @@ const DefaultOptions = Object.freeze({
  */
 class DownloadLayerModal extends BaseModal {
     constructor(options = {}) {
-        super(
-            TranslationManager.get(`${I18N__BASE}.title`),
-            options.maximized, 
-            options.onClose
-        );
+        super({
+            title: TranslationManager.get(`${I18N__BASE}.title`),
+            ...options
+        });
 
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
         this.#createModal();

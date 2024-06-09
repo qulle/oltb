@@ -25,7 +25,7 @@ import { FeatureProperties } from '../../ol-helpers/feature-properties';
 import { TranslationManager } from '../../toolbar-managers/translation-manager/translation-manager';
 import { SvgPaths, getSvgIcon } from '../../ui-icons/get-svg-icon/get-svg-icon';
 import { Fill, Stroke, Circle, Style } from 'ol/style';
-import { getMeasureCoordinates, getMeasureValue } from '../../ol-helpers/measurements';
+import { getMeasureCoordinates, getMeasureValue } from '../../ol-helpers/geometry-measurements';
 
 const FILENAME = 'measure-tool.js';
 const CLASS__TOOL_BUTTON = 'oltb-tool-button';

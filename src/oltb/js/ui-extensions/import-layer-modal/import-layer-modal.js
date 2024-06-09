@@ -11,9 +11,10 @@ const FILENAME = 'import-layer-modal.js';
 const ID__PREFIX = 'oltb-import-layer-modal';
 const I18N__BASE = 'modalExtensions.importLayerModal';
 
+// Note:
+// Only specify the unique options to this class
+// Things to override on the BaseModal is passed directly
 const DefaultOptions = Object.freeze({
-    maximized: false,
-    onClose: undefined,
     onImport: undefined,
     onCancel: undefined
 });
@@ -24,11 +25,10 @@ const DefaultOptions = Object.freeze({
  */
 class ImportLayerModal extends BaseModal {
     constructor(options = {}) {
-        super(
-            TranslationManager.get(`${I18N__BASE}.title`), 
-            options.maximized, 
-            options.onClose
-        );
+        super({
+            title: TranslationManager.get(`${I18N__BASE}.title`), 
+            ...options
+        });
 
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
         this.#createModal();

@@ -4,6 +4,8 @@ import { BaseManager } from '../base-manager';
 import { ConfigManager } from '../config-manager/config-manager';
 
 const FILENAME = 'bootstrap-manager.js';
+const KEY__OL_VERSION = 'ol-version';
+const KEY__OLTB_VERSION = 'oltb-version';
 
 /**
  * About:
@@ -25,8 +27,8 @@ class BootstrapManager extends BaseManager {
         const oltbVersion = config.toolbar.version;
         const openLayersVersion = config.openLayers.version;
 
-        window.document.documentElement.setAttribute('ol-version', openLayersVersion);
-        window.document.documentElement.setAttribute('oltb-version', oltbVersion);
+        window.document.documentElement.setAttribute(KEY__OL_VERSION, openLayersVersion);
+        window.document.documentElement.setAttribute(KEY__OLTB_VERSION, oltbVersion);
         
         LogManager.logInformation(FILENAME, 'initAsync', `Running OL version ${openLayersVersion}`);
         LogManager.logInformation(FILENAME, 'initAsync', `Running OLTB version ${oltbVersion}`);

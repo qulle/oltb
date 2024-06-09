@@ -34,7 +34,7 @@ import { TranslationManager } from '../../toolbar-managers/translation-manager/t
 import { Fill, Stroke, Style } from 'ol/style';
 import { SvgPaths, getSvgIcon } from '../../ui-icons/get-svg-icon/get-svg-icon';
 import { Select, Modify, Translate } from 'ol/interaction';
-import { getMeasureCoordinates, getMeasureValue } from '../../ol-helpers/measurements';
+import { getMeasureCoordinates, getMeasureValue } from '../../ol-helpers/geometry-measurements';
 import { GeometryCollection, LinearRing, LineString, MultiLineString, MultiPoint, MultiPolygon, Point, Polygon } from 'ol/geom';
 
 /*!

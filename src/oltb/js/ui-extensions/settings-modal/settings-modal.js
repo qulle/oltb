@@ -9,9 +9,10 @@ import { TranslationManager } from '../../toolbar-managers/translation-manager/t
 const FILENAME = 'settings-modal.js';
 const I18N__BASE = 'modalExtensions.settingsModal';
 
+// Note:
+// Only specify the unique options to this class
+// Things to override on the BaseModal is passed directly
 const DefaultOptions = Object.freeze({
-    maximized: false,
-    onClose: undefined,
     onSave: undefined,
     onCancel: undefined
 });
@@ -24,11 +25,10 @@ class SettingsModal extends BaseModal {
     #state = new Map();
 
     constructor(options = {}) {
-        super(
-            TranslationManager.get(`${I18N__BASE}.title`), 
-            options.maximized, 
-            options.onClose
-        );
+        super({
+            title: TranslationManager.get(`${I18N__BASE}.title`),
+            ...options
+        });
         
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
         this.#createModal();
