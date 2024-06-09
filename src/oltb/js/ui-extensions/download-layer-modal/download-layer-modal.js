@@ -63,7 +63,7 @@ class DownloadLayerModal extends BaseModal {
             },
             listeners: {
                 'click': () => {
-                    this.#onClick({
+                    this.#onDownload({
                         format: formatSelect.value.trim()
                     });
                 }
@@ -105,7 +105,7 @@ class DownloadLayerModal extends BaseModal {
     //--------------------------------------------------------------------
     // # Section: Events
     //--------------------------------------------------------------------
-    #onClick(result) {
+    #onDownload(result) {
         this.close();
         this.options.onDownload instanceof Function && this.options.onDownload(result);
     }

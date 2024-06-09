@@ -69,7 +69,7 @@ class CoordinateModal extends BaseModal {
             },
             listeners: {
                 'click': () => {
-                    this.#onClick([
+                    this.#onNavigate([
                         lonInput.value.trim(), 
                         latInput.value.trim()
                     ]);
@@ -120,7 +120,7 @@ class CoordinateModal extends BaseModal {
     //--------------------------------------------------------------------
     // # Section: Events
     //--------------------------------------------------------------------
-    #onClick(result) {
+    #onNavigate(result) {
         this.close();
         this.options.onNavigate instanceof Function && this.options.onNavigate(result);
     }

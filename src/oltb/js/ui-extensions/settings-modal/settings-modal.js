@@ -83,7 +83,7 @@ class SettingsModal extends BaseModal {
                 'type': 'button'
             },
             listeners: {
-                'click': this.#onClick.bind(this)
+                'click': this.#onSave.bind(this)
             }
         });
 
@@ -122,7 +122,7 @@ class SettingsModal extends BaseModal {
     //--------------------------------------------------------------------
     // # Section: Events
     //--------------------------------------------------------------------
-    #onClick() {
+    #onSave() {
         this.#state.forEach((value, key) => {
             SettingsManager.setSetting(key, value);
         });

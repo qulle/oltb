@@ -90,7 +90,7 @@ class ImportLayerModal extends BaseModal {
             },
             listeners: {
                 'click': () => {
-                    this.#onClick({
+                    this.#onImport({
                         featureProjection: featureProjectionSelect.value.trim(),
                         dataProjection: dataProjectionSelect.value.trim()
                     });
@@ -134,7 +134,7 @@ class ImportLayerModal extends BaseModal {
     //--------------------------------------------------------------------
     // # Section: Events
     //--------------------------------------------------------------------
-    #onClick(result) {
+    #onImport(result) {
         this.close();
         this.options.onImport instanceof Function && this.options.onImport(result);
     }

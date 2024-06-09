@@ -151,7 +151,7 @@ class LayerModal extends BaseModal {
             },
             listeners: {
                 'click': () => {
-                    this.#onClick({
+                    this.#onCreate({
                         name: nameInput.value.trim(),
                         layer: typeSelect.value.trim(),
                         source: sourceSelect.value.trim(),
@@ -210,7 +210,7 @@ class LayerModal extends BaseModal {
     //--------------------------------------------------------------------
     // # Section: Events
     //--------------------------------------------------------------------
-    #onClick(result) {
+    #onCreate(result) {
         this.close();
         this.options.onCreate instanceof Function && this.options.onCreate(result);
     }

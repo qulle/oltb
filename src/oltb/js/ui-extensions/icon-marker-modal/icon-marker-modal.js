@@ -219,7 +219,7 @@ class IconMarkerModal extends BaseModal {
             },
             listeners: {
                 'click': () => {
-                    this.#onClick({
+                    this.#onCreate({
                         latitude: parseFloat(latInput.value.trim()),
                         longitude: parseFloat(lonInput.value.trim()),
                         title: titleInput.value.trim(),
@@ -282,7 +282,7 @@ class IconMarkerModal extends BaseModal {
     //--------------------------------------------------------------------
     // # Section: Events
     //--------------------------------------------------------------------
-    #onClick(result) {
+    #onCreate(result) {
         this.close();
         this.options.onCreate instanceof Function && this.options.onCreate(result);
     }
