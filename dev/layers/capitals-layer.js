@@ -27,16 +27,16 @@ const getMarkerColor = function(name) {
             stroke: '#00959A66'
         },
         'Antarctica': {
-            fill: '#52489BFF', 
-            stroke: '#52489B66'
+            fill: '#007C70FF', 
+            stroke: '#007C7066'
         },
         'Asia': {
-            fill: '#52489BFF', 
-            stroke: '#52489B66'
+            fill: '#2357B1FF', 
+            stroke: '#2357B166'
         },
         'Australia': {
-            fill: '#0080C5FF', 
-            stroke: '#0080C566'
+            fill: '#007C70FF', 
+            stroke: '#007C7066'
         },
         'Central America': {
             fill: '#0080C5FF', 
