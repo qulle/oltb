@@ -8,6 +8,8 @@ import { LocalStorageKeys } from '../../browser-constants/local-storage-keys';
 
 const FILENAME = 'element-manager.js';
 const CLASS__TOOLBOX_CONTAINER = 'oltb-toolbox-container';
+const CLASS__SMOOTH_INIT = 'init-visible';
+const DELAY__SMOOTH_INIT = 600;
 
 /**
  * About:
@@ -33,6 +35,7 @@ class ElementManager extends BaseManager {
         this.#uiRefToolbarElement = this.#createToolbarElement();
         this.#uiRefToolboxElement = this.#createToolboxElement();
 
+        window.addEventListener(Events.browser.load, this.#onInitSmoothInterface.bind(this));
         window.addEventListener(Events.browser.resize, this.#onCollisionDetection.bind(this));
         window.addEventListener(Events.custom.ready, this.#onCollisionDetection.bind(this));
         window.addEventListener(Events.custom.toolbarDirectionChange, this.#onCollisionDetection.bind(this));
@@ -156,14 +159,23 @@ class ElementManager extends BaseManager {
         }
     }
 
+    static #onInitSmoothInterface(event) {
+        // TODO:
+        // Add smooth init on the toolbox also, keep in mind to handle the "Toggle Toolbox" impact also
+        window.setTimeout(() => {
+            this.#uiRefToolbarElement.classList.add(CLASS__SMOOTH_INIT);
+        }, DELAY__SMOOTH_INIT);
+    }
+
     static #onCollisionDetection(event) {
         const collisionLimit = 0;
         const windowWidth = window.innerWidth;
         const toolbarWidth = this.#uiRefToolbarElement.offsetWidth;
         const toolboxWidth = this.#uiRefToolboxElement.offsetWidth;
         const rem = ConfigManager.getConfig().browser.rem;
+        const delta = 3.5;
         
-        if(windowWidth - ((3.5 * rem) + toolbarWidth + toolboxWidth) <= collisionLimit) {
+        if(windowWidth - ((delta * rem) + toolbarWidth + toolboxWidth) <= collisionLimit) {
             this.#uiRefToolboxElement.classList.add(`${CLASS__TOOLBOX_CONTAINER}--collision`);
         }else {
             this.#uiRefToolboxElement.classList.remove(`${CLASS__TOOLBOX_CONTAINER}--collision`);
