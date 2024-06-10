@@ -14,8 +14,8 @@ import { Vector as VectorLayer } from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';
 
 const FILENAME = 'layers/Countries.js';
-const CLASS_FUNC_BUTTON = 'oltb-func-btn';
-const ID_PREFIX_INFO_WINDOW = 'oltb-info-window-marker';
+const CLASS__FUNC_BUTTON = 'oltb-func-btn';
+const ID__PREFIX_INFO_WINDOW = 'oltb-info-window-marker';
 
 const parseGeoJson = function(context, data, projection) {
     const features = new GeoJSON({
@@ -46,8 +46,8 @@ const parseGeoJson = function(context, data, projection) {
             footer: `
                 <span class="oltb-info-window__coordinates">${prettyCoordinates}</span>
                 <div class="oltb-info-window__buttons-wrapper">
-                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--copy oltb-tippy" title="Copy Marker Text" id="${ID_PREFIX_INFO_WINDOW}-copy-text" data-oltb-copy="${description}"></button>
-                    <button class="${CLASS_FUNC_BUTTON} ${CLASS_FUNC_BUTTON}--layer oltb-tippy" title="Show Layer" id="${ID_PREFIX_INFO_WINDOW}-show-layer"></button>
+                    <button class="${CLASS__FUNC_BUTTON} ${CLASS__FUNC_BUTTON}--copy oltb-tippy" title="Copy Marker Text" id="${ID__PREFIX_INFO_WINDOW}-copy-text" data-oltb-copy="${description}"></button>
+                    <button class="${CLASS__FUNC_BUTTON} ${CLASS__FUNC_BUTTON}--layer oltb-tippy" title="Show Layer" id="${ID__PREFIX_INFO_WINDOW}-show-layer"></button>
                 </div>
             `
         };
