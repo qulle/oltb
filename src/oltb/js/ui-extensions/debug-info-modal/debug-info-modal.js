@@ -223,9 +223,11 @@ class DebugInfoModal extends BaseModal {
 
         const sectionContent = DOM.createElement({
             element: 'div',
+            id: `${ID__PREFIX}-section-${index}`,
             class: 'oltb-debug__content',
-            style: `display: ${section.display};`,
-            id: `${ID__PREFIX}-section-${index}`
+            style: {
+                'display': `${section.display}`
+            }
         });
 
         if(section.json) {
@@ -342,7 +344,6 @@ class DebugInfoModal extends BaseModal {
             const chip = DOM.createElement({
                 element: 'span',
                 class: `oltb-chip ${!value.visible ? 'oltb-chip--deactivated' : ''}`,
-                style: `background-color: ${value.backgroundColor}; color: ${value.color}; border: 1px solid ${value.borderColor};`,
                 text: `${key} (${value.count})`,
                 attributes: {
                     'data-oltb-reset-value': `${key} (0)`
@@ -351,6 +352,11 @@ class DebugInfoModal extends BaseModal {
                     click: () => {
                         this.doFilterEventLog(chip, value.name, eventLog)
                     }
+                },
+                style: {
+                    'background-color': value.backgroundColor,
+                    'color': value.color,
+                    'border': `1px solid ${value.borderColor}`
                 }
             });
     
@@ -390,10 +396,14 @@ class DebugInfoModal extends BaseModal {
 
         const logItem = DOM.createElement({
             element: 'div',
-            style: `background-color: ${entry.level.backgroundColor}; color: ${entry.level.color}; border: 1px solid ${entry.level.borderColor}`,
             class: `oltb-log__item ${!entry.level.visible ? 'oltb-log__item--hidden' : ''}`,
             attributes: {
                 'data-oltb-log-name': entry.level.name
+            },
+            style: {
+                'background-color': entry.level.backgroundColor,
+                'color': entry.level.color, 
+                'border': `1px solid ${entry.level.borderColor}`
             }
         });
 
@@ -452,8 +462,10 @@ class DebugInfoModal extends BaseModal {
 
         const logContent = DOM.createElement({
             element: 'div',
-            style: 'display: none;',
-            id: `${ID__PREFIX}-log-item-${index}`
+            id: `${ID__PREFIX}-log-item-${index}`,
+            style: {
+                'display': 'none'
+            }
         });
 
         const jsonSection = this.#generateJsonSection({
@@ -467,10 +479,14 @@ class DebugInfoModal extends BaseModal {
 
         const logItem = DOM.createElement({
             element: 'div',
-            style: `background-color: ${entry.level.backgroundColor}; color: ${entry.level.color}; border: 1px solid ${entry.level.borderColor};`,
             class: `oltb-log__item ${!entry.level.visible ? 'oltb-log__item--hidden' : ''}`,
             attributes: {
                 'data-oltb-log-name': entry.level.name
+            },
+            style: {
+                'background-color': entry.level.backgroundColor,
+                'color': entry.level.color,
+                'border': `1px solid ${entry.level.borderColor}`,
             }
         });
 

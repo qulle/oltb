@@ -80,7 +80,10 @@ class SnapManager extends BaseManager {
         const snapOverlayElement = DOM.createElement({
             element: 'div',
             class: CLASS__OVERLAY_SNAP,
-            style: `width: ${screenWidth}px; height: ${screenHeight}px;`
+            style: {
+                'width': `${screenWidth}px`,
+                'height': `${screenHeight}px`
+            }
         });
 
         this.#xLine = DOM.createElement({

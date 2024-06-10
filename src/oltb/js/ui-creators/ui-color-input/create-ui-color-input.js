@@ -40,8 +40,10 @@ const createUIColorInput = function(options = {}) {
 
     const inputInner = DOM.createElement({
         element: 'div',
-        style: `background-color: ${options.color}`,
-        class: `${CLASS__COLOR_INPUT}__inner`
+        class: `${CLASS__COLOR_INPUT}__inner`,
+        style: {
+            'background-color': `${options.color}`
+        }
     });
 
     DOM.appendChildren(input, [

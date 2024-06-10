@@ -12,7 +12,11 @@ const copyToClipboard = async function(text = '') {
         const textArea = DOM.createElement({
             element: 'textarea',
             value: value,
-            style: 'position: absolute; left: -999999px; opcaity: 0;'
+            style: {
+                'position': 'absolute',
+                'left': '-999999px',
+                'opcaity': 0
+            }
         });
         
         // Append element to body

@@ -16,8 +16,23 @@ class DOM {
         // Note:
         // Common element attributes
         for(const [key, value] of Object.entries(commonAttributes)) {
-            if(options[key]) {
-                element[value] = typeof options[key] === 'string' ? options[key].trim() : options[key];
+            const attribute = options[key];
+
+            if(attribute) {
+                if(key === 'style') {
+                    // Note:
+                    // Style is given as object, parse and convert to single string
+                    element[value] = Object.entries(attribute).map(([k, v]) => {
+                        return `${k}:${v}`;
+                    }).join(';');
+                }else if(key === 'text' || key === 'html') {
+                    // Note:
+                    // Trimming the attribute will help in removing "white-space-css-bugs"
+                    // The formatting of a template string, trailing enter etc, can cause problems otherwise
+                    element[value] = attribute.trim();
+                }else {
+                    element[value] = attribute;
+                }
             }
         }
         
@@ -27,17 +42,13 @@ class DOM {
             element.setAttribute(attribute, options.attributes[attribute]);
         }
 
-        // Custom element prototypes
         for(const prototype in options.prototypes) {
             element[prototype] = options.prototypes[prototype];
         }
     
-        // Attach given listeners and callbacks
         for(const listener in options.listeners) {
             const callbacks = options.listeners[listener];
-
-            // Note:
-            // The callback(s) can be given as a single reference or as a array of many 
+            
             if(Array.isArray(callbacks)) {
                 callbacks.forEach((callback) => {
                     element.addEventListener(listener, callback);
