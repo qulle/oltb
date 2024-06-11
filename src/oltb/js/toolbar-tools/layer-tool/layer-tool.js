@@ -134,6 +134,7 @@ class LayerTool extends BaseTool {
 
         this.uiRefMapLayerStack = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-map-stack`);
         this.uiRefAddMapLayerButton = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-map-stack-add-button`);
+        this.uiRefAddMapLayerText = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-map-stack-add-text`);
 
         this.sortableMapLayerStack = this.generateSortable(this.uiRefMapLayerStack, {
             group: SORTABLE_MAP_LAYERS,
@@ -209,12 +210,25 @@ class LayerTool extends BaseTool {
                     <span class="${CLASS__TOOLBOX_SECTION}__icon oltb-tippy" data-oltb-i18n="${I18N__BASE_COMMON}.titles.toggleSection" title="${i18nCommon.toggleSection}"></span>
                 </div>
                 <div class="${CLASS__TOOLBOX_SECTION}__groups" id="${ID__PREFIX}-map-toolbox-collapsed" style="display: ${this.localStorage[`${ID__PREFIX}-map-toolbox-collapsed`] ? 'none' : 'block'}">
-                    ${!this.options.disableMapCreateLayerButton ? 
+                    ${this.options.disableMapCreateLayerButton ? '' :
                         `
                             <div class="${CLASS__TOOLBOX_SECTION}__group">
-                                <button type="button" id="${ID__PREFIX}-map-stack-add-button" class="oltb-btn oltb-btn--green-mid oltb-w-100" data-oltb-i18n="${I18N__BASE}.toolbox.groups.createMapLayer.create">${i18n.groups.createMapLayer.create}</button>
+                                <div class="oltb-input-button-group">
+                                    <input type="text" id="${ID__PREFIX}-map-stack-add-text" class="oltb-input" data-oltb-i18n="${I18N__BASE}.toolbox.groups.createMapLayer.placeholder" placeholder="${i18n.groups.createMapLayer.placeholder}">
+                                    <button type="button" id="${ID__PREFIX}-map-stack-add-button" class="oltb-btn oltb-btn--green-mid oltb-tippy" data-oltb-i18n="${I18N__BASE}.toolbox.groups.createMapLayer.create" title="${i18n.groups.createMapLayer.create}">
+                                        ${getSvgIcon({
+                                            path: SvgPaths.plus.stroked,
+                                            width: 20,
+                                            height: 20,
+                                            fill: 'none',
+                                            stroke: '#FFFFFFFF',
+                                            strokeWidth: 1,
+                                            class: 'oltb-btn__icon'
+                                        })}
+                                    </button>
+                                </div>
                             </div>
-                        ` : ''
+                        `
                     }
                     <div class="${CLASS__TOOLBOX_SECTION}__group ${this.options.disableMapCreateLayerButton ? `${CLASS__TOOLBOX_SECTION}__group--topmost` : ''}">
                         <ul id="${ID__PREFIX}-map-stack" class="${CLASS__TOOLBOX_LIST}"></ul>
@@ -226,7 +240,7 @@ class LayerTool extends BaseTool {
                 </div>
                 <div class="${CLASS__TOOLBOX_SECTION}__groups" id="${ID__PREFIX}-feature-toolbox-collapsed" style="display: ${this.localStorage[`${ID__PREFIX}-feature-toolbox-collapsed`] ? 'none' : 'block'}">
                     <div class="${CLASS__TOOLBOX_SECTION}__group">
-                        ${!this.options.disableFeatureCreateLayerButton ? 
+                        ${this.options.disableFeatureCreateLayerButton ? '' :
                             `
                                 <div class="oltb-input-button-group">
                                     <input type="text" id="${ID__PREFIX}-feature-stack-add-text" class="oltb-input" data-oltb-i18n="${I18N__BASE}.toolbox.groups.createFeatureLayer.placeholder" placeholder="${i18n.groups.createFeatureLayer.placeholder}">
@@ -242,7 +256,7 @@ class LayerTool extends BaseTool {
                                         })}
                                     </button>
                                 </div>
-                            ` : ''
+                            `
                         }
                     </div>
                     <div class="${CLASS__TOOLBOX_SECTION}__group ${this.options.disableFeatureCreateLayerButton ? `${CLASS__TOOLBOX_SECTION}__group--topmost` : ''}">
@@ -1379,7 +1393,9 @@ class LayerTool extends BaseTool {
             return;
         }
 
+        const name = this.uiRefAddMapLayerText.value;
         this.layerModal = new LayerModal({
+            name: name,
             onCreate: (result) => {
                 this.#onCreateMapLayer(result);
             },

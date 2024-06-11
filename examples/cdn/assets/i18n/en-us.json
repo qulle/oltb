@@ -589,6 +589,7 @@
                 },
                 "groups": {
                     "createMapLayer": {
+                        "placeholder": "Name", 
                         "create": "Create Map Layer"
                     },
                     "createFeatureLayer": {

@@ -590,6 +590,7 @@ export const DefaultTranslation = Object.freeze({
                 },
                 groups: {
                     createMapLayer: {
+                        placeholder: 'Name', 
                         create: 'Create Map Layer'
                     },
                     createFeatureLayer: {

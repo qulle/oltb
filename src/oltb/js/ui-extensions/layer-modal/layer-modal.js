@@ -18,6 +18,7 @@ const I18N__BASE = 'modalExtensions.layerModal';
 // Only specify the unique options to this class
 // Things to override on the BaseModal is passed directly
 const DefaultOptions = Object.freeze({
+    name: '',
     onCreate: undefined,
     onCancel: undefined
 });
@@ -50,7 +51,7 @@ class LayerModal extends BaseModal {
             idPrefix: ID__PREFIX,
             idPostfix: '-name',
             text: i18n.name,
-            value: 'New map layer'
+            value: this.options.name ?? 'New map layer'
         });
 
         const [ typeWrapper, typeSelect ] = createUISelect({

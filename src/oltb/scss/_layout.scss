@@ -13,6 +13,7 @@ body {
     background-color: $background-map-osm;
     position: relative;
     overflow: hidden;
+    user-select: none;
 }
 
 .oltb-label {
