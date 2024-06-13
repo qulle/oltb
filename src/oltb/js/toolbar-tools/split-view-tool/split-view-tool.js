@@ -145,13 +145,20 @@ class SplitViewTool extends BaseTool {
                             <label class="oltb-label" for="${ID__PREFIX}-left-source" data-oltb-i18n="${I18N__BASE}.toolbox.groups.leftSide.title">${i18n.groups.leftSide.title}</label>
                             <select id="${ID__PREFIX}-left-source" class="oltb-select"></select>
                         </div>
+                        <div class="${CLASS__TOOLBOX_SECTION}__group-part" style="flex: none;">
+                            <button type="button" id="${ID__PREFIX}-swap-button" class="oltb-btn oltb-btn--green-mid oltb-tippy" title="${i18n.groups.swapSides.swap}">
+                                ${getSvgIcon({
+                                    path: SvgPaths.arrowLeftRight.stroked,
+                                    width: 20,
+                                    height: 20,
+                                    class: 'oltb-btn__icon'
+                                })}
+                            </button>
+                        </div>
                         <div class="${CLASS__TOOLBOX_SECTION}__group-part">
                             <label class="oltb-label" for="${ID__PREFIX}-source" data-oltb-i18n="${I18N__BASE}.toolbox.groups.rightSide.title">${i18n.groups.rightSide.title}</label>
                             <select id="${ID__PREFIX}-right-source" class="oltb-select"></select>
                         </div>
-                    </div>
-                    <div class="${CLASS__TOOLBOX_SECTION}__group">
-                        <button type="button" id="${ID__PREFIX}-swap-button" class="oltb-btn oltb-btn--green-mid oltb-w-100" data-oltb-i18n="${I18N__BASE}.toolbox.groups.swapSides.swap">${i18n.groups.swapSides.swap}</button>
                     </div>
                 </div>
             </div>
