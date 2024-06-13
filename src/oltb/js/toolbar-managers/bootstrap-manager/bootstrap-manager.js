@@ -55,14 +55,17 @@ class BootstrapManager extends BaseManager {
         });
     }
 
+    static getName() {
+        return FILENAME;
+    }
+
+    //--------------------------------------------------------------------
+    // # Section: Public API
+    //--------------------------------------------------------------------
     static ready() {
         LogManager.logInformation(FILENAME, 'ready', 'OLTB is ready to use');
 
         window.dispatchEvent(new CustomEvent(Events.custom.ready));
-    }
-
-    static getName() {
-        return FILENAME;
     }
 }
 
