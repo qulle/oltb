@@ -8,7 +8,7 @@ describe('OpenLayers Source', () => {
 
     it('should have all source-options as keys in source-type', () => {
         SourceOptions.forEach((option) => {
-            expect(SourceType[option.value]).toBeTruthy()
+            expect(SourceType[option.value]).toBeTruthy();
         });
     });
 

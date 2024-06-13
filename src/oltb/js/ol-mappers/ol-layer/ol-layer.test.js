@@ -8,7 +8,7 @@ describe('OpenLayers Layer', () => {
 
     it('should have all layer-options as keys in layer-type', () => {
         LayerOptions.forEach((option) => {
-            expect(LayerType[option.value]).toBeTruthy()
+            expect(LayerType[option.value]).toBeTruthy();
         });
     });
 

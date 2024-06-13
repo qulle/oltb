@@ -7,7 +7,6 @@ import { BaseTool } from '../base-tool';
 import { Settings } from '../../browser-constants/settings';
 import { ToolManager } from '../../toolbar-managers/tool-manager/tool-manager';
 import { SnapManager } from '../../toolbar-managers/snap-manager/snap-manager';
-import { GeometryType } from '../../ol-mappers/ol-geometry/ol-geometry';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
 import { LayerManager } from '../../toolbar-managers/layer-manager/layer-manager';
 import { ShortcutKeys } from '../../browser-constants/shortcut-keys';
@@ -25,7 +24,7 @@ import { LinearRing, Polygon } from 'ol/geom';
 import { SvgPaths, getSvgIcon } from '../../ui-icons/get-svg-icon/get-svg-icon';
 import { isFeatureIntersectable } from '../../ol-helpers/is-feature-intersectable';
 import { Fill, Stroke, Circle, Style } from 'ol/style';
-import { createBox, createRegularPolygon } from 'ol/interaction/Draw';
+import { GeometryType, instantiateGeometry } from '../../ol-mappers/ol-geometry/ol-geometry';
 
 const FILENAME = 'draw-tool.js';
 const CLASS__TOOL_BUTTON = 'oltb-tool-button';
@@ -604,24 +603,8 @@ class DrawTool extends BaseTool {
 
         this.style = this.generateOLStyleObject(strokeWidth, fillColor, strokeColor);
 
-        // Note: 
-        // A normal circle can not be serialized to json, approximated circle as polygon instead. 
-        // Also use circle to create square and rectangle
-        let geometryFunction = undefined;
-
-        // TODO:
-        // Create mapper and creator in the geometry-type file, just like source, layer and format
-        if(toolType === GeometryType.Square) {
-            geometryFunction = createRegularPolygon(4);
-            toolType = GeometryType.Circle;
-        }else if(toolType === GeometryType.Rectangle) {
-            geometryFunction = createBox();
-            toolType = GeometryType.Circle;
-        }else if(toolType === GeometryType.Circle) {
-            geometryFunction = createRegularPolygon(32);
-        }
-
-        this.interactionDraw = this.generateOLInteractionDraw(toolType, geometryFunction);
+        const [ geometryType, geometryFunction ] = instantiateGeometry(toolType);
+        this.interactionDraw = this.generateOLInteractionDraw(geometryType, geometryFunction);
 
         this.interactionDraw.on(Events.openLayers.drawStart, this.#onDrawStart.bind(this));
         this.interactionDraw.on(Events.openLayers.drawEnd, this.#onDrawEnd.bind(this));

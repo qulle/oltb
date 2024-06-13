@@ -8,7 +8,7 @@ describe('OpenLayers Format', () => {
 
     it('should have all format-options as keys in format-type', () => {
         FormatOptions.forEach((option) => {
-            expect(FormatType[option.value]).toBeTruthy()
+            expect(FormatType[option.value]).toBeTruthy();
         });
     });
 
