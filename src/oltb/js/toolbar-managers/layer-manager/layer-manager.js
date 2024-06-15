@@ -92,10 +92,9 @@ class LayerManager extends BaseManager {
         return FILENAME;
     }
 
-    // -------------------------------------------
+    //--------------------------------------------------------------------
     // Section: Init
-    // -------------------------------------------
-
+    //--------------------------------------------------------------------
     static #handleMapLayerQueue() {
         this.#queue.mapLayers.forEach((item) => {
             this.#addMapLayerToMap(item.layerWrapper, item.options);
@@ -112,10 +111,9 @@ class LayerManager extends BaseManager {
         this.#queue.featureLayers = [];
     }
 
-    // -------------------------------------------
+    //--------------------------------------------------------------------
     // Section: Internal
-    // -------------------------------------------
-
+    //--------------------------------------------------------------------
     static #addPropertiesInterface(layerWrapper) {
         layerWrapper.getLayer = function() {
             return this.layer;
@@ -176,10 +174,9 @@ class LayerManager extends BaseManager {
         return undefined
     }
 
-    // -------------------------------------------
+    //--------------------------------------------------------------------
     // Section: Common Layers
-    // -------------------------------------------
-
+    //--------------------------------------------------------------------
     static addFeatureToLayer(feature, layerWrapper) {
         const layer = layerWrapper.getLayer();
         const source = layer.getSource();
@@ -239,10 +236,9 @@ class LayerManager extends BaseManager {
         return result;
     }
 
-    // -------------------------------------------
+    //--------------------------------------------------------------------
     // Section: Map Layers Specific
-    // -------------------------------------------
-
+    //--------------------------------------------------------------------
     static addMapLayers(layerWrappers, options = {}) {
         for(let index in layerWrappers) {
             this.addMapLayer(layerWrappers[index], options);
@@ -375,10 +371,9 @@ class LayerManager extends BaseManager {
         });
     }
 
-    // -------------------------------------------
+    //--------------------------------------------------------------------
     // Section: Feature Layers Specific
-    // -------------------------------------------
-
+    //--------------------------------------------------------------------
     static addFeatureLayer(options = {}) {
         const mergedOptions = _.merge(_.cloneDeep(DefaultFeatureLayerOptions), options);
         mergedOptions.name = this.#validateName(mergedOptions.name);

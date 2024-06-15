@@ -36,7 +36,7 @@ describe('ProjectionManager', () => {
         expect(ProjectionManager.hasProjection('EPSG:3857')).toBe(true);
     });
 
-    it('should contain projection [EPSG:ABC123]', () => {
+    it('should not contain projection [EPSG:ABC123]', () => {
         expect(ProjectionManager.hasProjection('EPSG:ABC123')).toBe(false);
     });
 

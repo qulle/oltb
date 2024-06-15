@@ -183,8 +183,7 @@ class ColorPickerManager extends BaseManager {
             // Important to always be HEX with Alpha value
             // Sometimes the two last digits are replaced with fixed alpha value
             color = AColorPicker.parseColor(color, 'hexcss4');
-    
-            // Update color on the ACP instance
+            
             uiRefTarget.setAttribute('data-oltb-color', color);
             uiRefTarget.firstElementChild.style.backgroundColor = color;
     

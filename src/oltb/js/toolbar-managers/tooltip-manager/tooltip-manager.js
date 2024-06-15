@@ -86,8 +86,20 @@ class TooltipManager extends BaseManager {
     //--------------------------------------------------------------------
     // # Section: Public API
     //--------------------------------------------------------------------
+    static getTooltips() {
+        return this.#tooltips;
+    }
+
+    static getSize() {
+        return Object.keys(this.#tooltips).length;
+    }
+
     static isEmpty() {
-        return Object.keys(this.#tooltips).length === 0;
+        return this.getSize() === 0;
+    }
+
+    static getTooltip(key) {
+        return this.#tooltips[key];
     }
 
     static push(key) {
