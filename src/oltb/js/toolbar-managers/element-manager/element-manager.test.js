@@ -1,5 +1,71 @@
+import { jest, beforeAll, describe, it, expect } from '@jest/globals';
+import { StateManager } from '../state-manager/state-manager';
+import { ElementManager } from './element-manager';
+
+const FILENAME = 'element-manager.js';
+
 describe('ElementManager', () => {
-    it('should be an empty test', () => {
-        expect(1).toEqual(1);
+    beforeAll(() => {
+        jest.spyOn(ElementManager, 'getMapElement').mockImplementation(() => {
+            return window.document.createElement('div');
+        });
+
+        jest.spyOn(ElementManager, 'getToastElement').mockImplementation(() => {
+            return window.document.createElement('div');
+        });
+
+        jest.spyOn(ElementManager, 'getToolbarElement').mockImplementation(() => {
+            return window.document.createElement('div');
+        });
+
+        jest.spyOn(ElementManager, 'getToolboxElement').mockImplementation(() => {
+            return window.document.createElement('div');
+        });
+
+        jest.spyOn(StateManager, 'getStateObject').mockImplementation(() => {
+            return {};
+        });
+
+        jest.spyOn(window.document, 'getElementById').mockImplementation(() => {
+            return window.document.createElement('div');
+        });
+    });
+
+    it('should init the manager', async () => {
+        return ElementManager.initAsync({}).then((result) => {
+            expect(result).toStrictEqual({
+                filename: FILENAME,
+                result: true
+            });
+        });
+    });
+
+    it('should have two overridden methods [setMap, getName]', () => {
+        const spy = jest.spyOn(ElementManager, 'setMap');
+        const map = {};
+
+        ElementManager.setMap(map);
+        expect(spy).toHaveBeenCalled();
+        expect(ElementManager.getName()).toBe(FILENAME);
+    });
+
+    it('should have map-element ref', () => {
+        expect(ElementManager.getMapElement()).toBeTruthy();
+        expect(ElementManager.getMapElement().nodeName).toBe('DIV');
+    });
+
+    it('should have toast-element ref', () => {
+        expect(ElementManager.getToastElement()).toBeTruthy();
+        expect(ElementManager.getToastElement().nodeName).toBe('DIV');
+    });
+
+    it('should have toolbar-element ref', () => {
+        expect(ElementManager.getToolbarElement()).toBeTruthy();
+        expect(ElementManager.getToolbarElement().nodeName).toBe('DIV');
+    });
+
+    it('should have toolbox-element ref', () => {
+        expect(ElementManager.getToolboxElement()).toBeTruthy();
+        expect(ElementManager.getToolboxElement().nodeName).toBe('DIV');
     });
 });

@@ -71,7 +71,7 @@ class ElementManager extends BaseManager {
             }
         });
         
-        DOM.appendChildren(this.#uiRefMapElement, [
+        DOM.appendChildren(ElementManager.getMapElement(), [
             element
         ]);
 
@@ -133,7 +133,7 @@ class ElementManager extends BaseManager {
             }
         });
         
-        DOM.appendChildren(this.#uiRefMapElement, [
+        DOM.appendChildren(ElementManager.getMapElement(), [
             element
         ]);
 
