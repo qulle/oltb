@@ -4,8 +4,8 @@ import { AccessibilityManager } from './accessibility-manager';
 const FILENAME = 'accessibility-manager.js';
 
 describe('AccessibilityManager', () => {
-    it('should init the manager', () => {
-        AccessibilityManager.initAsync({}).then((result) => {
+    it('should init the manager', async () => {
+        return AccessibilityManager.initAsync({}).then((result) => {
             expect(result).toStrictEqual({
                 filename: FILENAME,
                 result: true

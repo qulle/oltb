@@ -4,8 +4,8 @@ import { BootstrapManager } from './bootstrap-manager';
 const FILENAME = 'bootstrap-manager.js';
 
 describe('BootstrapManager', () => {
-    it('should init the manager', () => {
-        BootstrapManager.initAsync([]).then((result) => {
+    it('should init the manager', async () => {
+        return BootstrapManager.initAsync([]).then((result) => {
             expect(result).toStrictEqual(void 0);
         });
     });

@@ -1,7 +1,27 @@
-import { describe, it, expect } from '@jest/globals';
+import { jest, describe, it, expect } from '@jest/globals';
 import { ConversionManager } from './conversion-manager';
 
+const FILENAME = 'conversion-manager.js';
+
 describe('Conversions', () => {
+    it('should init the manager', async () => {
+        return ConversionManager.initAsync({}).then((result) => {
+            expect(result).toStrictEqual({
+                filename: FILENAME,
+                result: true
+            });
+        });
+    });
+
+    it('should have two overridden methods [setMap, getName]', () => {
+        const spy = jest.spyOn(ConversionManager, 'setMap');
+        const map = {};
+
+        ConversionManager.setMap(map);
+        expect(spy).toHaveBeenCalled();
+        expect(ConversionManager.getName()).toBe(FILENAME);
+    });
+
     describe('roundUpToNearest', () => {
         it('should roundUp 0 to 0', () => {
             expect(ConversionManager.roundUpToNearest(0, 1)).toEqual(0);

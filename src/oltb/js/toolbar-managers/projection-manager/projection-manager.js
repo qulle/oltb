@@ -105,12 +105,16 @@ class ProjectionManager extends BaseManager {
         this.#registerProjection(code, proj4def);
     }
 
+    static getSize() {
+        return this.#projections.length || 0;
+    }
+
     static getProjections() {
         return this.#projections;
     }
 
     static hasProjection(code) {
-        return this.#projections.find((projection) => {
+        return !!this.#projections.find((projection) => {
             return projection.code === code?.toUpperCase();
         });
     }

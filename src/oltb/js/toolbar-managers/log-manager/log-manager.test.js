@@ -1,5 +1,119 @@
+import { jest, describe, it, expect } from '@jest/globals';
+import { LogManager } from './log-manager';
+
+const FILENAME = 'log-manager.js';
+
 describe('LogManager', () => {
-    it('should be an empty test', () => {
-        expect(1).toEqual(1);
+    it('should init the manager', async () => {
+        return LogManager.initAsync({}).then((result) => {
+            expect(result).toStrictEqual({
+                filename: FILENAME,
+                result: true
+            });
+        });
+    });
+
+    it('should have two overridden methods [setMap, getName]', () => {
+        const spy = jest.spyOn(LogManager, 'setMap');
+        const map = {};
+
+        LogManager.setMap(map);
+        expect(spy).toHaveBeenCalled();
+        expect(LogManager.getName()).toBe(FILENAME);
+    });
+
+    it('should be one item logged from the initAsync', () => {
+        const size = LogManager.getSize();
+        const item = LogManager.getLog()[0];
+
+        expect(size).toBe(1);
+        expect(item).toHaveProperty('timestamp');
+        expect(item).toHaveProperty('level');
+        expect(item).toHaveProperty('origin');
+        expect(item).toHaveProperty('method');
+        expect(item).toHaveProperty('value');
+    });
+
+    it('should empty the log', () => {
+        const beforeSize = LogManager.getSize();
+        expect(beforeSize).toBe(1);
+        
+        LogManager.clearLog();
+
+        const afterSize = LogManager.getSize();
+        expect(afterSize).toBe(0);
+    });
+
+    it('should have five log-levels [debug, information, warning, error, fatal]', () => {
+        const logLevels = LogManager.getLogLevels();
+        expect(logLevels).toHaveProperty('debug');
+        expect(logLevels.debug.value).toBe(1);
+
+        expect(logLevels).toHaveProperty('information');
+        expect(logLevels.information.value).toBe(2);
+        
+        expect(logLevels).toHaveProperty('warning');
+        expect(logLevels.warning.value).toBe(3);
+
+        expect(logLevels).toHaveProperty('error');
+        expect(logLevels.error.value).toBe(4);
+        
+        expect(logLevels).toHaveProperty('fatal');
+        expect(logLevels.fatal.value).toBe(5);
+    });
+
+    it('should log a debug item', () => {
+        LogManager.clearLog();
+        LogManager.logDebug(FILENAME, 'jest', {});
+        
+        const size = LogManager.getSize();
+        const item = LogManager.getLog()[0];
+
+        expect(size).toBe(1);
+        expect(item.level.value).toBe(1);
+    });
+
+    it('should log a information item', () => {
+        LogManager.clearLog();
+        LogManager.logInformation(FILENAME, 'jest', {});
+        
+        const size = LogManager.getSize();
+        const item = LogManager.getLog()[0];
+
+        expect(size).toBe(1);
+        expect(item.level.value).toBe(2);
+    });
+
+    it('should log a warning item', () => {
+        LogManager.clearLog();
+        LogManager.logWarning(FILENAME, 'jest', {});
+        
+        const size = LogManager.getSize();
+        const item = LogManager.getLog()[0];
+
+        expect(size).toBe(1);
+        expect(item.level.value).toBe(3);
+    });
+
+    it('should log a error item', () => {
+        LogManager.clearLog();
+        LogManager.logError(FILENAME, 'jest', {});
+        
+        const size = LogManager.getSize();
+        const item = LogManager.getLog()[0];
+
+        expect(size).toBe(1);
+        expect(item.level.value).toBe(4);
+    });
+
+    it('should log a fatal item', () => {
+        LogManager.clearLog();
+        LogManager.logFatal(FILENAME, 'jest', {});
+        
+        const size = LogManager.getSize();
+        const item = LogManager.getLog()[0];
+
+        expect(size).toBe(1);
+        expect(item.level.value).toBe(5);
     });
 });
