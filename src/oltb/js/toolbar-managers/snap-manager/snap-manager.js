@@ -11,8 +11,8 @@ import { SettingsManager } from '../settings-manager/settings-manager';
 
 const FILENAME = 'snap-manager.js';
 const CLASS__OVERLAY_SNAP = 'oltb-overlay-snap';
-const STYLE_SNAPPED = 'border: 1px dashed #007C70;';
-const STYLE_NOT_SNAPPED = 'border: 1px dashed #EB4542;';
+const STYLE__SNAPPED = 'border: 1px dashed #007C70;';
+const STYLE__NOT_SNAPPED = 'border: 1px dashed #EB4542;';
 
 /**
  * About:
@@ -47,7 +47,7 @@ class SnapManager extends BaseManager {
         this.#snapOverlay = this.#createSnapOverlay();
 
         this.#setCountersTo(0);
-        this.#setLineColorTo(STYLE_NOT_SNAPPED);
+        this.#setLineColorTo(STYLE__NOT_SNAPPED);
 
         return new Promise((resolve) => {
             resolve({
@@ -130,7 +130,7 @@ class SnapManager extends BaseManager {
         // Note: 
         // The help lines should now follow the Snapped vertext and not the mouse
         this.#snapOverlay.setPosition(event.vertex);
-        this.#setLineColorTo(STYLE_SNAPPED);
+        this.#setLineColorTo(STYLE__SNAPPED);
     }
 
     static #onPointerMove(event) {
@@ -156,7 +156,7 @@ class SnapManager extends BaseManager {
         // Note: 
         // Snap is released
         this.#setCountersTo(0);
-        this.#setLineColorTo(STYLE_NOT_SNAPPED);
+        this.#setLineColorTo(STYLE__NOT_SNAPPED);
         this.#snapOverlay.setPosition(event.coordinate);
     }
 
@@ -218,6 +218,10 @@ class SnapManager extends BaseManager {
 
     static getActivatedBy() {
         return this.#tool;
+    }
+
+    static hasActiveTool() {
+        return !!this.getActivatedBy();
     }
 }
 

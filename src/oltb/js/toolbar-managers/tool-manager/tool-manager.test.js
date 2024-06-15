@@ -43,6 +43,8 @@ describe('ToolManager', () => {
         expect(ToolManager.hasActiveTool()).toBe(true);
 
         const spyOne = jest.spyOn(toolOne, 'deselectTool');
+        const spyTwo = jest.spyOn(toolTwo, 'deselectTool');
+
         ToolManager.setActiveTool(toolTwo);
         expect(ToolManager.getActiveTool()).toBe(toolTwo);
         expect(ToolManager.hasActiveTool()).toBe(true);
@@ -51,5 +53,6 @@ describe('ToolManager', () => {
         ToolManager.removeActiveTool();
         expect(ToolManager.getActiveTool()).toBeUndefined();
         expect(ToolManager.hasActiveTool()).toBe(false);
+        expect(spyTwo).not.toHaveBeenCalled();
     });
 });
