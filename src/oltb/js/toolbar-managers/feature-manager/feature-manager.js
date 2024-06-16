@@ -39,6 +39,44 @@ class FeatureManager extends BaseManager {
     }
 
     //--------------------------------------------------------------------
+    // # Section: Internal
+    //--------------------------------------------------------------------
+    static #generateOLTBObject(options, type, unique = {}) {
+        return {
+            oltb: {
+                lon: options.lon,
+                lat: options.lat,
+                type: type,
+                infoWindow: options.infoWindow,
+                title: options.title,
+                description: options.description,
+                settings: {
+                    shouldReplaceHashtag: options.settings.shouldReplaceHashtag
+                },
+                ...unique,
+                icon: {
+                    key: options.icon.key,
+                    width: options.icon.width,
+                    height: options.icon.height,
+                    rotation: options.icon.rotation,
+                    fill: options.icon.fill,
+                    stroke: options.icon.stroke,
+                    strokeWidth: options.icon.strokeWidth
+                },
+                label: {
+                    text: options.label.text,
+                    font: options.label.font,
+                    fill: options.label.fill,
+                    stroke: options.label.stroke,
+                    strokeWidth: options.label.strokeWidth,
+                    useEllipsisAfter: options.label.useEllipsisAfter,
+                    useUpperCase: options.label.useUpperCase
+                }
+            }
+        };
+    }
+
+    //--------------------------------------------------------------------
     // # Section: Public API
     //--------------------------------------------------------------------
     static getType(feature) {
@@ -56,7 +94,7 @@ class FeatureManager extends BaseManager {
     static isMeasurementType(feature) {
         return _.get(feature.getProperties(), ['oltb', 'type'], undefined) === FeatureProperties.type.measurement;
     }
-    
+
     static shouldHighlightOnHover(feature) {
         return _.get(feature.getProperties(), ['oltb', 'settings', 'shouldHighlightOnHover'], undefined) === true;
     }
@@ -64,7 +102,7 @@ class FeatureManager extends BaseManager {
     static hasInfoWindow(feature) {
         return _.has(feature.getProperties(), ['oltb', 'infoWindow']);
     }
-    
+
     static getInfoWindow(feature) {
         return _.get(feature.getProperties(), ['oltb', 'infoWindow'], undefined);
     }
@@ -82,49 +120,16 @@ class FeatureManager extends BaseManager {
 
         const feature = new Feature({
             geometry: new Point(fromLonLat([
-                options.lon, 
+                options.lon,
                 options.lat
             ]))
         });
-    
-        // TODO:
-        // Make new function to generator the properties, duplicated code
 
         // Note:
         // The LayerManager is responsible to render the Wind Barb
         // This way the style can be optimized and controlled depending on the resolution/zoom-level
-        feature.setProperties({
-            oltb: {
-                lon: options.lon,
-                lat: options.lat,
-                type: FeatureProperties.type.windBarb,
-                infoWindow: options.infoWindow,
-                title: options.title,
-                description: options.description,
-                settings: {
-                    shouldReplaceHashtag: options.settings.shouldReplaceHashtag
-                },
-                icon: {
-                    key: options.icon.key,
-                    width: options.icon.width,
-                    height: options.icon.height,
-                    rotation: options.icon.rotation,
-                    fill: options.icon.fill,
-                    stroke: options.icon.stroke,
-                    strokeWidth: options.icon.strokeWidth
-                },
-                label: {
-                    text: options.label.text,
-                    font: options.label.font,
-                    fill: options.label.fill,
-                    stroke: options.label.stroke,
-                    strokeWidth: options.label.strokeWidth,
-                    useEllipsisAfter: options.label.useEllipsisAfter,
-                    useUpperCase: options.label.useUpperCase
-                }
-            }
-        });
-    
+        feature.setProperties(this.#generateOLTBObject(options, FeatureProperties.type.windBarb));
+
         return feature;
     }
 
@@ -133,52 +138,23 @@ class FeatureManager extends BaseManager {
 
         const feature = new Feature({
             geometry: new Point(fromLonLat([
-                options.lon, 
+                options.lon,
                 options.lat
             ]))
         });
-    
+
         // Note:
         // The LayerManager is responsible to render the IconMarker
         // This way the style can be optimized and controlled depending on the resolution/zoom-level
-        feature.setProperties({
-            oltb: {
-                lon: options.lon,
-                lat: options.lat,
-                type: FeatureProperties.type.iconMarker,
-                infoWindow: options.infoWindow,
-                title: options.title,
-                description: options.description,
-                settings: {
-                    shouldReplaceHashtag: options.settings.shouldReplaceHashtag
-                },
-                marker: {
-                    width: options.marker.width,
-                    radius: options.marker.radius,
-                    fill: options.marker.fill,
-                    stroke: options.marker.stroke,
-                    strokeWidth: options.marker.strokeWidth
-                },
-                icon: {
-                    key: options.icon.key,
-                    width: options.icon.width,
-                    height: options.icon.height,
-                    rotation: options.icon.rotation,
-                    fill: options.icon.fill,
-                    stroke: options.icon.stroke,
-                    strokeWidth: options.icon.strokeWidth
-                },
-                label: {
-                    text: options.label.text,
-                    font: options.label.font,
-                    fill: options.label.fill,
-                    stroke: options.label.stroke,
-                    strokeWidth: options.label.strokeWidth,
-                    useEllipsisAfter: options.label.useEllipsisAfter,
-                    useUpperCase: options.label.useUpperCase
-                }
+        feature.setProperties(this.#generateOLTBObject(options, FeatureProperties.type.iconMarker, {
+            marker: {
+                width: options.marker.width,
+                radius: options.marker.radius,
+                fill: options.marker.fill,
+                stroke: options.marker.stroke,
+                strokeWidth: options.marker.strokeWidth
             }
-        });
+        }));
     
         return feature;
     }

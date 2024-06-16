@@ -43,11 +43,22 @@ class AccessibilityManager extends BaseManager {
     //--------------------------------------------------------------------
     static #onKeyboardDown(event) {
         if(event.key === KeyboardKeys.valueTab) {
-            window.document.body.classList.add(CLASS__ACCESSIBILITY);
+            this.addAccessibilityClass();
         }
     }
 
     static #onMouseDown(event) {
+        this.removeAccessibilityClass();
+    }
+
+    //--------------------------------------------------------------------
+    // # Section: Public API
+    //--------------------------------------------------------------------
+    static addAccessibilityClass() {
+        window.document.body.classList.add(CLASS__ACCESSIBILITY);
+    }
+
+    static removeAccessibilityClass() {
         window.document.body.classList.remove(CLASS__ACCESSIBILITY);
     }
 }

@@ -39,7 +39,7 @@ describe('ErrorManager', () => {
         // How to spy on the LogManager that is called by the #onError
         // const spy = jest.spyOn(LogManager, 'logFatal');
         // expect(spy).toHaveBeenCalled();
-
+        
         const wrapper = () => {
             throw new TypeError();
         };

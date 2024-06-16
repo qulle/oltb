@@ -21,4 +21,14 @@ describe('AccessibilityManager', () => {
         expect(spy).toHaveBeenCalled();
         expect(AccessibilityManager.getName()).toBe(FILENAME);
     });
+
+    it('should add class [oltb-using-keyboard] to window.document.body', () => {
+        AccessibilityManager.addAccessibilityClass();
+        expect(window.document.body.classList.contains('oltb-using-keyboard')).toBe(true);
+    });
+
+    it('should add class [oltb-using-keyboard] to window.document.body', () => {
+        AccessibilityManager.removeAccessibilityClass();
+        expect(window.document.body.classList.contains('oltb-using-keyboard')).toBe(false);
+    });
 });
