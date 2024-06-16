@@ -30,7 +30,7 @@ class StateManager extends BaseManager {
     static async initAsync(options = {}) {
         LogManager.logDebug(FILENAME, 'initAsync', 'Initialization started');
 
-        this.#ignoredKeys = this.#getIgnoredKeys(options);
+        this.#ignoredKeys = this.#mergeIgnoredKeys(options);
         this.#runtimeState = this.#getBrowserData();
 
         return new Promise((resolve) => {
@@ -50,7 +50,7 @@ class StateManager extends BaseManager {
     //--------------------------------------------------------------------
     // # Section: Internal
     //--------------------------------------------------------------------
-    static #getIgnoredKeys(options) {
+    static #mergeIgnoredKeys(options) {
         const ignoredKeys = Object.freeze([
             ...IgnoredKeys,
             ...options?.ignoredKeys || []
@@ -81,27 +81,7 @@ class StateManager extends BaseManager {
         return state;
     }
 
-    //--------------------------------------------------------------------
-    // # Section: Public API
-    //--------------------------------------------------------------------
-    static setStateObject(name, value) {
-        this.#runtimeState[name] = value;
-        this.saveState();
-    }
-
-    static getStateObject(name) {
-        if(name in this.#runtimeState) {
-            return this.#runtimeState[name];
-        }
-        
-        return {};
-    }
-
-    static getAndMergeStateObject(name, defaultObject) {
-        return _.merge(_.cloneDeep(defaultObject), this.getStateObject(name));
-    }
-
-    static saveState() {
+    static #saveState() {
         try {
             const serialized = JSON.stringify(this.#runtimeState, (key, value) => {
                 if(this.#ignoredKeys.includes(key)) {
@@ -121,8 +101,35 @@ class StateManager extends BaseManager {
         }
     }
 
+    //--------------------------------------------------------------------
+    // # Section: Public API
+    //--------------------------------------------------------------------
+    static getIngoredKeys() {
+        return this.#ignoredKeys;
+    }
+
+    static setStateObject(name, value) {
+        this.#runtimeState[name] = value;
+        this.#saveState();
+    }
+
+    static getStateObject(name) {
+        if(name in this.#runtimeState) {
+            return this.#runtimeState[name];
+        }
+        
+        return {};
+    }
+
+    static getAndMergeStateObject(name, defaultObject) {
+        return _.merge(_.cloneDeep(defaultObject), this.getStateObject(name));
+    }
+
     static clear() {
-        LogManager.logDebug(FILENAME, 'clear', 'Clearing stored state from browser');
+        LogManager.logDebug(FILENAME, 'clear', {
+            info: 'Clearing stored state from browser',
+            state: _.cloneDeep(this.#runtimeState)
+        });
 
         this.#runtimeState = this.#getBrowserData();
     }

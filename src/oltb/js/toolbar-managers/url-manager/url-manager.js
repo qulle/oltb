@@ -43,7 +43,7 @@ class UrlManager extends BaseManager {
     }
 
     static replaceParameter(parameters) {
-        history.replaceState(null, null, `?${parameters.toString()}`);
+        window.history.replaceState(null, null, `?${parameters.toString()}`);
     }
 
     static getParameters() {
