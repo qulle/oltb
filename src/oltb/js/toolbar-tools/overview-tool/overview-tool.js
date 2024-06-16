@@ -86,7 +86,7 @@ class OverviewTool extends BaseTool {
         this.uiRefToolboxSection = window.document.querySelector(`#${ID__PREFIX}-toolbox`);
         this.#initToggleables();
 
-        this.overviewMap = this.generateOLOverviewMap();
+        this.overviewMap = this.#generateOLOverviewMap();
 
         // TODO:
         // Replaced by EventManager in the future?
@@ -102,7 +102,7 @@ class OverviewTool extends BaseTool {
     }
 
     getName() {
-        return super.getFilename();
+        return super.getName();
     }
 
     //--------------------------------------------------------------------
@@ -136,7 +136,7 @@ class OverviewTool extends BaseTool {
     //--------------------------------------------------------------------
     // # Section: Generate Helpers
     //--------------------------------------------------------------------
-    generateOLOverviewMap() {
+    #generateOLOverviewMap() {
         return new OverviewMap({
             target: ID__CLASS__OVERVIEW_TARGET,
             isCollapsed: false,

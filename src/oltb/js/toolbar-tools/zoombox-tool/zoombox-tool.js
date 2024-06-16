@@ -87,7 +87,7 @@ class ZoomboxTool extends BaseTool {
             LocalStorageDefaults
         );
 
-        this.interactionDragZoom = this.generateOLInteractionDragZoom();
+        this.interactionDragZoom = this.#generateOLInteractionDragZoom();
 
         this.interactionDragZoom.on(Events.openLayers.boxStart, this.#onBoxDragStart.bind(this));
         this.interactionDragZoom.on(Events.openLayers.boxEnd, this.#onBoxDragEnd.bind(this));
@@ -110,7 +110,7 @@ class ZoomboxTool extends BaseTool {
     }
 
     getName() {
-        return super.getFilename();
+        return super.getName();
     }
 
     //--------------------------------------------------------------------
@@ -248,7 +248,7 @@ class ZoomboxTool extends BaseTool {
     //--------------------------------------------------------------------
     // # Section: Generator Helpers
     //--------------------------------------------------------------------
-    generateOLInteractionDragZoom() {
+    #generateOLInteractionDragZoom() {
         const duration = ConfigManager.getConfig().animationDuration.normal;
         
         return new DragZoom({

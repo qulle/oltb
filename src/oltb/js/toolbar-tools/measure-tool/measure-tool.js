@@ -133,7 +133,7 @@ class MeasureTool extends BaseTool {
     }
 
     getName() {
-        return super.getFilename();
+        return super.getName();
     }
 
     //--------------------------------------------------------------------
@@ -350,7 +350,7 @@ class MeasureTool extends BaseTool {
     //--------------------------------------------------------------------
     // # Section: Generator Helpers
     //--------------------------------------------------------------------
-    generateOLInteractionDraw(type) {
+    #generateOLInteractionDraw(type) {
         return new Draw({
             type: type,
             stopClick: true,
@@ -358,7 +358,7 @@ class MeasureTool extends BaseTool {
         });
     }
 
-    generateOLStyleObject(fillColor, strokeColor) {
+    #generateOLStyleObject(fillColor, strokeColor) {
         return new Style({
             image: new Circle({
                 fill: new Fill({
@@ -521,8 +521,8 @@ class MeasureTool extends BaseTool {
             SnapManager.removeSnap();
         }
         
-        this.styles = this.generateOLStyleObject(fillColor, strokeColor);
-        this.interactionDraw = this.generateOLInteractionDraw(toolType);
+        this.styles = this.#generateOLStyleObject(fillColor, strokeColor);
+        this.interactionDraw = this.#generateOLInteractionDraw(toolType);
 
         this.interactionDraw.on(Events.openLayers.drawStart, this.#onDrawStart.bind(this));
         this.interactionDraw.on(Events.openLayers.drawEnd, this.#onDrawEnd.bind(this));

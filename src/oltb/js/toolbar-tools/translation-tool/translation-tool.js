@@ -72,7 +72,7 @@ class TranslationTool extends BaseTool {
     }
 
     getName() {
-        return super.getFilename();
+        return super.getName();
     }
 
     //--------------------------------------------------------------------

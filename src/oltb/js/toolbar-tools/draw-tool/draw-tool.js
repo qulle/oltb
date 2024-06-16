@@ -140,7 +140,7 @@ class DrawTool extends BaseTool {
     }
 
     getName() {
-        return super.getFilename();
+        return super.getName();
     }
 
     //--------------------------------------------------------------------
@@ -410,7 +410,7 @@ class DrawTool extends BaseTool {
     //--------------------------------------------------------------------
     // # Section: Generator Helpers
     //--------------------------------------------------------------------
-    generateOLInteractionDraw(type, geometryFunction) {
+    #generateOLInteractionDraw(type, geometryFunction) {
         return new Draw({
             type: type,
             style: this.style,
@@ -419,7 +419,7 @@ class DrawTool extends BaseTool {
         });
     }
 
-    generateOLStyleObject(strokeWidth, fillColor, strokeColor) {
+    #generateOLStyleObject(strokeWidth, fillColor, strokeColor) {
         return new Style({
             image: new Circle({
                 fill: new Fill({
@@ -601,10 +601,10 @@ class DrawTool extends BaseTool {
             SnapManager.removeSnap();
         }
 
-        this.style = this.generateOLStyleObject(strokeWidth, fillColor, strokeColor);
+        this.style = this.#generateOLStyleObject(strokeWidth, fillColor, strokeColor);
 
         const [ geometryType, geometryFunction ] = instantiateGeometry(toolType);
-        this.interactionDraw = this.generateOLInteractionDraw(geometryType, geometryFunction);
+        this.interactionDraw = this.#generateOLInteractionDraw(geometryType, geometryFunction);
 
         this.interactionDraw.on(Events.openLayers.drawStart, this.#onDrawStart.bind(this));
         this.interactionDraw.on(Events.openLayers.drawEnd, this.#onDrawEnd.bind(this));

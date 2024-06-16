@@ -80,7 +80,7 @@ class GraticuleTool extends BaseTool {
             LocalStorageDefaults
         );
         
-        this.graticule = this.generateOLGraticule();
+        this.graticule = this.#generateOLGraticule();
 
         // TODO:
         // Replaced by EventManager in the future?
@@ -96,13 +96,13 @@ class GraticuleTool extends BaseTool {
     }
     
     getName() {
-        return super.getFilename();
+        return super.getName();
     }
 
     //--------------------------------------------------------------------
     // # Section: Generate Helpers
     //--------------------------------------------------------------------
-    generateOLGraticule() {
+    #generateOLGraticule() {
         return new Graticule({
             strokeStyle: new Stroke({
                 color: this.options.color,

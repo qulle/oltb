@@ -97,7 +97,7 @@ class ScissorsTool extends BaseTool {
         this.parser = new jsts.io.OL3Parser();
         this.parser.inject(Point, LineString, LinearRing, Polygon, MultiPoint, MultiLineString, MultiPolygon, GeometryCollection);
 
-        this.interactionDraw = this.generateOLInteractionDraw();
+        this.interactionDraw = this.#generateOLInteractionDraw();
 
         this.interactionDraw.on(Events.openLayers.drawStart, this.#onDrawStart.bind(this));
         this.interactionDraw.on(Events.openLayers.drawEnd, this.#onDrawEnd.bind(this));
@@ -118,7 +118,7 @@ class ScissorsTool extends BaseTool {
     }
 
     getName() {
-        return super.getFilename();
+        return super.getName();
     }
 
     //--------------------------------------------------------------------
@@ -246,8 +246,8 @@ class ScissorsTool extends BaseTool {
     //--------------------------------------------------------------------
     // # Section: Generator Helpers
     //--------------------------------------------------------------------
-    generateOLInteractionDraw() {
-        const style = this.generateOLStyleObject();
+    #generateOLInteractionDraw() {
+        const style = this.#generateOLStyleObject();
 
         return new Draw({
             type: GeometryType.LineString,
@@ -256,7 +256,7 @@ class ScissorsTool extends BaseTool {
         });
     }
 
-    generateOLStyleObject() {
+    #generateOLStyleObject() {
         return new Style({
             image: new Circle({
                 fill: new Fill({
@@ -278,7 +278,7 @@ class ScissorsTool extends BaseTool {
         });
     }
 
-    generateJSTSPolygonizer() {
+    #generateJSTSPolygonizer() {
         return new jsts.operation.polygonize.Polygonizer();
     }
 
@@ -383,7 +383,7 @@ class ScissorsTool extends BaseTool {
         const parsedLine = this.parser.read(lineFeature.getGeometry());             
 
         // Splitting polygon in two part
-        const polygonizer = this.generateJSTSPolygonizer();
+        const polygonizer = this.#generateJSTSPolygonizer();
         const union = parsedPolygon.getExteriorRing().union(parsedLine);
 
         polygonizer.add(union);
@@ -411,7 +411,7 @@ class ScissorsTool extends BaseTool {
             }
 
             // Apply style and add the polygons to the layer
-            const style = this.generateOLStyleObject();
+            const style = this.#generateOLStyleObject();
             const featureCoordiantes = this.parser.write(geometry).getCoordinates();
 
             const splittedPolygonFeature = new Feature({

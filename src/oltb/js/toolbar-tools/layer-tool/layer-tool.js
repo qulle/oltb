@@ -136,7 +136,7 @@ class LayerTool extends BaseTool {
         this.uiRefAddMapLayerButton = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-map-stack-add-button`);
         this.uiRefAddMapLayerText = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-map-stack-add-text`);
 
-        this.sortableMapLayerStack = this.generateSortable(this.uiRefMapLayerStack, {
+        this.sortableMapLayerStack = this.#generateSortable(this.uiRefMapLayerStack, {
             group: SORTABLE_MAP_LAYERS,
             callback: this.options.onMapLayerDragged,
             setZIndex: LayerManager.setMapLayerZIndex.bind(LayerManager),
@@ -149,7 +149,7 @@ class LayerTool extends BaseTool {
         this.uiRefAddFeatureLayerButton = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-feature-stack-add-button`);
         this.uiRefAddFeatureLayerText = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-feature-stack-add-text`);
 
-        this.sortableFeatureLayerStack = this.generateSortable(this.uiRefFeatureLayerStack, {
+        this.sortableFeatureLayerStack = this.#generateSortable(this.uiRefFeatureLayerStack, {
             group: SORTABLE_FEATURE_LAYERS,
             callback: this.options.onFeatureLayerDragged,
             setZIndex: LayerManager.setFeatureLayerZIndex.bind(LayerManager),
@@ -193,7 +193,7 @@ class LayerTool extends BaseTool {
     }
 
     getName() {
-        return super.getFilename();
+        return super.getName();
     }
 
     //--------------------------------------------------------------------
@@ -483,7 +483,7 @@ class LayerTool extends BaseTool {
     //--------------------------------------------------------------------
     // # Section: Sortable
     //--------------------------------------------------------------------
-    generateSortable(element, options) {
+    #generateSortable(element, options) {
         const duration = ConfigManager.getConfig().animationDuration.warp;
 
         return Sortable.create(element, {
@@ -495,11 +495,11 @@ class LayerTool extends BaseTool {
             chosenClass: `${CLASS__TOOLBOX_LIST}__item--chosen`,
             dragClass: `${CLASS__TOOLBOX_LIST}__item--drag`,
             ghostClass: `${CLASS__TOOLBOX_LIST}__item--ghost`,
-            onEnd: (event) => this.onEndSortable(event, options)
+            onEnd: (event) => this.#onEndSortable(event, options)
         });
     }
 
-    onEndSortable(event, options) {
+    #onEndSortable(event, options) {
         // Note: 
         // User callback data
         // The old/new are swapped due to the list beeing reversed in DESC order
@@ -562,21 +562,9 @@ class LayerTool extends BaseTool {
         }
     }
 
-    sortSortableDesc(sortable, animate = false) {
+    #sortSortableDesc(sortable, animate = false) {
         const order = sortable.toArray().sort().reverse();
         sortable.sort(order, animate);
-    }
-
-    getSortableIndexFromLayerId(primary, secondary, id) {
-        const item = primary.find((item) => {
-            return item.id === id;
-        });
-
-        if(item && item.sortIndex !== undefined) {
-            return item.sortIndex;
-        }
-
-        return secondary.length;
     }
 
     //--------------------------------------------------------------------
@@ -879,7 +867,7 @@ class LayerTool extends BaseTool {
         ]);
 
         this.uiRefMapLayerStack.append(layerElement);
-        this.sortSortableDesc(this.sortableMapLayerStack);
+        this.#sortSortableDesc(this.sortableMapLayerStack);
     }
 
     createUIFeatureLayerItem(layerWrapper, options) {
@@ -1019,7 +1007,7 @@ class LayerTool extends BaseTool {
         ]);
 
         this.uiRefFeatureLayerStack.append(layerElement);
-        this.sortSortableDesc(this.sortableFeatureLayerStack);
+        this.#sortSortableDesc(this.sortableFeatureLayerStack);
     }
 
     createUIDeleteButton(layerWrapper, callback) {

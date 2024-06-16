@@ -195,9 +195,9 @@ class EditTool extends BaseTool {
         this.uiRefStrokeColor = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-stroke-color`);
         this.uiRefStrokeColor.addEventListener(Events.custom.colorChange, this.#onFeatureColorChange.bind(this));
 
-        this.interactionSelect = this.generateOLInteractionSelect();
-        this.interactionModify = this.generateOLInteractionModify();
-        this.interactionTranslate = this.generateOLInteractionTranslate();
+        this.interactionSelect = this.#generateOLInteractionSelect();
+        this.interactionModify = this.#generateOLInteractionModify();
+        this.interactionTranslate = this.#generateOLInteractionTranslate();
 
         this.interactionSelect.getFeatures().on(Events.openLayers.add, this.#onSelectFeatureAdd.bind(this));
         this.interactionSelect.getFeatures().on(Events.openLayers.remove, this.#onSelectFeatureRemove.bind(this));
@@ -223,7 +223,7 @@ class EditTool extends BaseTool {
     }
 
     getName() {
-        return super.getFilename();
+        return super.getName();
     }
 
     //--------------------------------------------------------------------
@@ -306,7 +306,7 @@ class EditTool extends BaseTool {
     //--------------------------------------------------------------------
     // # Section: Generate Helpers
     //--------------------------------------------------------------------
-    generateOLInteractionSelect() {
+    #generateOLInteractionSelect() {
         return new Select({
             hitTolerance: this.options.hitTolerance,
             filter: (feature, layer) => {
@@ -337,7 +337,7 @@ class EditTool extends BaseTool {
         });
     }
 
-    generateOLInteractionModify() {
+    #generateOLInteractionModify() {
         return new Modify({
             features: this.interactionSelect.getFeatures(),
             condition: (event) => {
@@ -346,7 +346,7 @@ class EditTool extends BaseTool {
         });
     }
 
-    generateOLInteractionTranslate() {
+    #generateOLInteractionTranslate() {
         return new Translate({
             features: this.interactionSelect.getFeatures(),
         });

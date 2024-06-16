@@ -20,7 +20,7 @@ class BaseTool extends Control {
     //--------------------------------------------------------------------
     // # Section: Base Methods
     //--------------------------------------------------------------------
-    getFilename() {
+    getName() {
         return this.#filename;
     }
 

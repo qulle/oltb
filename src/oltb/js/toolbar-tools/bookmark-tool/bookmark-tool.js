@@ -117,7 +117,7 @@ class BookmarkTool extends BaseTool {
             LocalStorageDefaults
         );
 
-        this.layerWrapper = this.generateBookmarkLayer();
+        this.layerWrapper = this.#generateBookmarkLayer();
 
         this.#initToolboxHTML();
         this.uiRefToolboxSection = window.document.querySelector(`#${ID__PREFIX}-toolbox`);
@@ -130,7 +130,7 @@ class BookmarkTool extends BaseTool {
         this.uiRefAddBookmarkButton.addEventListener(Events.browser.click, this.#onAddBookmarkByClick.bind(this));
 
         this.uiRefBookmarkStack = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-stack`);
-        this.sortableBookmarkStack = this.generateSortable(this.uiRefBookmarkStack, {
+        this.sortableBookmarkStack = this.#generateSortable(this.uiRefBookmarkStack, {
             group: SORTABLE_BOOKMARKS,
             callback: this.options.onDragged,
             stack: this.localStorage.bookmarks
@@ -153,7 +153,7 @@ class BookmarkTool extends BaseTool {
     }
 
     getName() {
-        return super.getFilename();
+        return super.getName();
     }
 
     //--------------------------------------------------------------------
@@ -239,7 +239,7 @@ class BookmarkTool extends BaseTool {
     //--------------------------------------------------------------------
     // # Section: Generate Helpers
     //--------------------------------------------------------------------
-    generateBookmarkLayer() {
+    #generateBookmarkLayer() {
         return LayerManager.addFeatureLayer({
             id: ID__BOOKMARK_LAYER_UUID,
             name: TranslationManager.get(`${I18N__BASE}.layers.bookmarks`), 
@@ -414,7 +414,7 @@ class BookmarkTool extends BaseTool {
     //--------------------------------------------------------------------
     // # Section: Sortable
     //--------------------------------------------------------------------
-    generateSortable(element, options) {
+    #generateSortable(element, options) {
         const duration = ConfigManager.getConfig().animationDuration.warp;
 
         return Sortable.create(element, {
@@ -426,11 +426,11 @@ class BookmarkTool extends BaseTool {
             chosenClass: `${CLASS__TOOLBOX_LIST}__item--chosen`,
             dragClass: `${CLASS__TOOLBOX_LIST}__item--drag`,
             ghostClass: `${CLASS__TOOLBOX_LIST}__item--ghost`,
-            onEnd: (event) => this.onEndSortable(event, options)
+            onEnd: (event) => this.#onEndSortable(event, options)
         });
     }
 
-    onEndSortable(event, options) {
+    #onEndSortable(event, options) {
         // Note: 
         // User callback data
         // The old/new are swapped due to the list beeing reversed in DESC order
@@ -473,12 +473,12 @@ class BookmarkTool extends BaseTool {
         }
     }
 
-    sortSortableDesc(sortable, isAnimated = false) {
+    #sortSortableDesc(sortable, isAnimated = false) {
         const order = sortable.toArray().sort().reverse();
         sortable.sort(order, isAnimated);
     }
 
-    getSortableIndexFromBookmarkId(primary, secondary, id) {
+    #getSortableIndexFromBookmarkId(primary, secondary, id) {
         const item = primary.find((item) => {
             return item.id === id;
         });
@@ -540,7 +540,7 @@ class BookmarkTool extends BaseTool {
     }
 
     createUIBookmarkItem(bookmark) {
-        const sortIndex = this.getSortableIndexFromBookmarkId(
+        const sortIndex = this.#getSortableIndexFromBookmarkId(
             this.localStorage.bookmarks,
             this.uiRefBookmarkStack.childNodes,
             bookmark.id
@@ -675,7 +675,7 @@ class BookmarkTool extends BaseTool {
         ]);
 
         this.uiRefBookmarkStack.append(bookmarkElement);
-        this.sortSortableDesc(this.sortableBookmarkStack);
+        this.#sortSortableDesc(this.sortableBookmarkStack);
     }
 
     //--------------------------------------------------------------------
@@ -865,7 +865,7 @@ class BookmarkTool extends BaseTool {
             }
         });
 
-        this.sortSortableDesc(this.sortableBookmarkStack);
+        this.#sortSortableDesc(this.sortableBookmarkStack);
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
 
         // Note: 

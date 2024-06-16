@@ -74,7 +74,7 @@ class ScaleLineTool extends BaseTool {
             LocalStorageDefaults
         );
 
-        this.scaleLine = this.generateOLScaleLine();
+        this.scaleLine = this.#generateOLScaleLine();
         
         // TODO:
         // Replaced by EventManager in the future?
@@ -90,7 +90,7 @@ class ScaleLineTool extends BaseTool {
     }
 
     getName() {
-        return super.getFilename();
+        return super.getName();
     }
 
     //--------------------------------------------------------------------
@@ -140,7 +140,7 @@ class ScaleLineTool extends BaseTool {
     //--------------------------------------------------------------------
     // # Section: Generate Helpers
     //--------------------------------------------------------------------
-    generateOLScaleLine() {
+    #generateOLScaleLine() {
         return new ScaleLine({
             units: this.options.units
         });
