@@ -387,6 +387,9 @@ class InfoWindowManager extends BaseManager {
     // # Section: Public API
     //--------------------------------------------------------------------
     static tryPulseAnimation(feature, layer = undefined) {
+        // TODO:
+        // This was a messy method.
+        // Works best on IconMarkers, remove for WindBarbs?
         const oltb = DefaultConfig.toolbar.id;
         const properties = feature.get(oltb);
         const animationConfig = ConfigManager.getConfig().marker.pulseAnimation;

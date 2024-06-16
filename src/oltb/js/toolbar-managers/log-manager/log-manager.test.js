@@ -27,11 +27,9 @@ describe('LogManager', () => {
         const item = LogManager.getLog()[0];
 
         expect(size).toBe(1);
-        expect(item).toHaveProperty('timestamp');
-        expect(item).toHaveProperty('level');
-        expect(item).toHaveProperty('origin');
-        expect(item).toHaveProperty('method');
-        expect(item).toHaveProperty('value');
+        ['timestamp', 'level', 'origin', 'method', 'value'].forEach((prop) => {
+            expect(item).toHaveProperty(prop);
+        });
     });
 
     it('should empty the log', () => {
