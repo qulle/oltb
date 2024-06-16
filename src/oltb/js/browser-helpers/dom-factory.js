@@ -25,7 +25,7 @@ class DOM {
                     element[value] = Object.entries(attribute).map(([k, v]) => {
                         return `${k}:${v}`;
                     }).join(';');
-                }else if(key === 'text' || key === 'html') {
+                }else if(typeof attribute === 'string') {
                     // Note:
                     // Trimming the attribute will help in removing "white-space-css-bugs"
                     // The formatting of a template string, trailing enter etc, can cause problems otherwise
