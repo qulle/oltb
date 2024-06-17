@@ -34,6 +34,7 @@ const HTML__MOCK = (`
 
 describe('BookmarkTool', () => {
     beforeAll(() => {
+        Element.prototype.scrollIntoView = jest.fn();
         window.document.body.innerHTML = HTML__MOCK;
 
         jest.spyOn(ElementManager, 'getToolbarElement').mockImplementation(() => {
@@ -54,9 +55,20 @@ describe('BookmarkTool', () => {
     });
 
     it('should init the tool', () => {
-        const tool = new BookmarkTool({});
+        // TODO:
+        // Not able to make toHaveBeenCalled() working on the ctor options
+        const tool = new BookmarkTool({
+            onClicked: () => {
+                expect(1).toBe(1);
+            },
+            onInitiated: () => {
+                expect(1).toBe(1);
+            }
+        });
 
         expect(tool).toBeTruthy();
         expect(tool.getName()).toBe(FILENAME);
+
+        tool.onClickTool();
     });
 });

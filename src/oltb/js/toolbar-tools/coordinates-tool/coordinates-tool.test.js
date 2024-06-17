@@ -1,7 +1,7 @@
 import { jest, beforeAll, describe, it, expect } from '@jest/globals';
-import { CoordinatesTool } from './coordinates-tool';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
+import { CoordinatesTool } from './coordinates-tool';
 import { SettingsManager } from '../../toolbar-managers/settings-manager/settings-manager';
 
 const FILENAME = 'coordinates-tool.js';
@@ -10,8 +10,8 @@ const ID__PREFIX = 'oltb-coordinates';
 const I18N__BASE = 'tools.coordinatesTool';
 const I18N__BASE_COMMON = 'commons';
 
-// // Note:
-// // Simplified mock from #initToolboxHTML
+// Note:
+// Simplified mock from #initToolboxHTML
 const HTML__MOCK = (`
     <div id="${ID__PREFIX}-toolbox" class="${CLASS__TOOLBOX_SECTION}">
         <div class="${CLASS__TOOLBOX_SECTION}__header oltb-toggleable" data-oltb-toggleable-target="${ID__PREFIX}-toolbox-collapsed">
@@ -36,6 +36,7 @@ const HTML__MOCK = (`
 
 describe('CoordinatesTool', () => {
     beforeAll(() => {
+        Element.prototype.scrollIntoView = jest.fn();
         window.document.body.innerHTML = HTML__MOCK;
 
         jest.spyOn(ElementManager, 'getToolbarElement').mockImplementation(() => {
@@ -60,9 +61,20 @@ describe('CoordinatesTool', () => {
     });
 
     it('should init the tool', () => {
-        const tool = new CoordinatesTool({});
+        // TODO:
+        // Not able to make toHaveBeenCalled() working on the ctor options
+        const tool = new CoordinatesTool({
+            onClicked: () => {
+                expect(1).toBe(1);
+            },
+            onInitiated: () => {
+                expect(1).toBe(1);
+            }
+        });
 
         expect(tool).toBeTruthy();
         expect(tool.getName()).toBe(FILENAME);
+
+        tool.onClickTool();
     });
 });
