@@ -82,7 +82,7 @@ class FullscreenTool extends BaseTool {
 
         // Note: 
         // @Consumer callback
-        if(this.options.onInitiated instanceof Function) {
+        if(this.options.onInitiated) {
             this.options.onInitiated();
         }
     }
@@ -100,7 +100,7 @@ class FullscreenTool extends BaseTool {
 
         // Note: 
         // @Consumer callback
-        if(this.options.onClicked instanceof Function) {
+        if(this.options.onClicked) {
             this.options.onClicked();
         }
     }
@@ -202,7 +202,7 @@ class FullscreenTool extends BaseTool {
 
             // Note: 
             // @Consumer callback
-            if(this.options.onEnter instanceof Function) {
+            if(this.options.onEnter) {
                 this.options.onEnter(event);
             }
         }else {
@@ -211,7 +211,7 @@ class FullscreenTool extends BaseTool {
 
             // Note: 
             // @Consumer callback
-            if(this.options.onLeave instanceof Function) {
+            if(this.options.onLeave) {
                 this.options.onLeave(event);
             }
         }

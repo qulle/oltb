@@ -67,7 +67,7 @@ class ZoomOutTool extends BaseTool {
 
         // Note: 
         // @Consumer callback
-        if(this.options.onInitiated instanceof Function) {
+        if(this.options.onInitiated) {
             this.options.onInitiated();
         }
     }
@@ -85,7 +85,7 @@ class ZoomOutTool extends BaseTool {
 
         // Note: 
         // @Consumer callback
-        if(this.options.onClicked instanceof Function) {
+        if(this.options.onClicked) {
             this.options.onClicked();
         }
     }
@@ -124,7 +124,7 @@ class ZoomOutTool extends BaseTool {
             onDone: (result) => {
                 // Note: 
                 // @Consumer callback
-                if(this.options.onZoomed instanceof Function) {
+                if(this.options.onZoomed) {
                     this.options.onZoomed(result);
                 }
             }

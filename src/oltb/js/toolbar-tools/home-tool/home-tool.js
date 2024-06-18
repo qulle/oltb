@@ -93,7 +93,7 @@ class HomeTool extends BaseTool {
 
         // Note: 
         // @Consumer callback
-        if(this.options.onInitiated instanceof Function) {
+        if(this.options.onInitiated) {
             this.options.onInitiated();
         }
     }
@@ -122,7 +122,7 @@ class HomeTool extends BaseTool {
 
         // Note: 
         // @Consumer callback
-        if(this.options.onClicked instanceof Function) {
+        if(this.options.onClicked) {
             this.options.onClicked();
         }
     }
@@ -146,7 +146,7 @@ class HomeTool extends BaseTool {
 
         // Note: 
         // @Consumer callback
-        if(this.options.onBrowserStateCleared instanceof Function) {
+        if(this.options.onBrowserStateCleared) {
             this.options.onBrowserStateCleared();
         }
     }
@@ -243,7 +243,7 @@ class HomeTool extends BaseTool {
             onDone: (result) => {
                 // Note: 
                 // @Consumer callback
-                if(this.options.onNavigatedHome instanceof Function) {
+                if(this.options.onNavigatedHome) {
                     this.options.onNavigatedHome(result);
                 }
             }

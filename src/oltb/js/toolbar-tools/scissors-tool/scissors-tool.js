@@ -112,7 +112,7 @@ class ScissorsTool extends BaseTool {
 
         // Note: 
         // @Consumer callback
-        if(this.options.onInitiated instanceof Function) {
+        if(this.options.onInitiated) {
             this.options.onInitiated();
         }
     }
@@ -135,7 +135,7 @@ class ScissorsTool extends BaseTool {
 
         // Note: 
         // @Consumer callback
-        if(this.options.onClicked instanceof Function) {
+        if(this.options.onClicked) {
             this.options.onClicked();
         }
     }
@@ -213,7 +213,7 @@ class ScissorsTool extends BaseTool {
 
         // Note: 
         // @Consumer callback
-        if(this.options.onBrowserStateClear instanceof Function) {
+        if(this.options.onBrowserStateClear) {
             this.options.onBrowserStateClear();
         }
     }
@@ -293,7 +293,7 @@ class ScissorsTool extends BaseTool {
     doDrawStart(event) {
         // Note: 
         // @Consumer callback
-        if(this.options.onStart instanceof Function) {
+        if(this.options.onStart) {
             this.options.onStart(event);
         }
     }
@@ -338,7 +338,7 @@ class ScissorsTool extends BaseTool {
 
         // Note: 
         // @Consumer callback
-        if(this.options.onEnd instanceof Function) {
+        if(this.options.onEnd) {
             this.options.onEnd(event);
         }
 
@@ -348,7 +348,7 @@ class ScissorsTool extends BaseTool {
     doDrawAbort(event) {
         // Note: 
         // @Consumer callback
-        if(this.options.onAbort instanceof Function) {
+        if(this.options.onAbort) {
             this.options.onAbort(event);
         }
     }
@@ -356,7 +356,7 @@ class ScissorsTool extends BaseTool {
     doDrawError(event) {
         // Note: 
         // @Consumer callback
-        if(this.options.onError instanceof Function) {
+        if(this.options.onError) {
             this.options.onError(event);
         }
     }
@@ -364,7 +364,7 @@ class ScissorsTool extends BaseTool {
     doSnap(event) {
         // Note: 
         // @Consumer callback
-        if(this.options.onSnapped instanceof Function) {
+        if(this.options.onSnapped) {
             this.options.onSnapped(event);
         }
     }

@@ -67,7 +67,7 @@ class InfoTool extends BaseTool {
 
         // Note: 
         // @Consumer callback
-        if(this.options.onInitiated instanceof Function) {
+        if(this.options.onInitiated) {
             this.options.onInitiated();
         }
     }
@@ -85,7 +85,7 @@ class InfoTool extends BaseTool {
 
         // Note: 
         // @Consumer callback
-        if(this.options.onClicked instanceof Function) {
+        if(this.options.onClicked) {
             this.options.onClicked();
         }
     }

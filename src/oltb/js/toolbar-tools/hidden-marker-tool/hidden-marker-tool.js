@@ -79,7 +79,7 @@ class HiddenMarkerTool extends BaseTool {
     #onWindowFeatureEdited(event) {
         // Note: 
         // @Consumer callback
-        if(this.options.onEdited instanceof Function) {
+        if(this.options.onEdited) {
             this.options.onEdited(event.detail.before, event.detail.after);
         }
     }
@@ -87,7 +87,7 @@ class HiddenMarkerTool extends BaseTool {
     #onWindowFeatureRemoved(event) {
         // Note: 
         // @Consumer callback
-        if(this.options.onRemoved instanceof Function) {
+        if(this.options.onRemoved) {
             this.options.onRemoved(event.detail.feature);
         }
     }
@@ -178,7 +178,7 @@ class HiddenMarkerTool extends BaseTool {
 
         // Note: 
         // @Consumer callback
-        if(this.options.onAdded instanceof Function) {
+        if(this.options.onAdded) {
             this.options.onAdded(marker);
         }
 

@@ -78,7 +78,7 @@ class ResetNorthTool extends BaseTool {
 
         // Note: 
         // @Consumer callback
-        if(this.options.onInitiated instanceof Function) {
+        if(this.options.onInitiated) {
             this.options.onInitiated();
         }
     }
@@ -108,7 +108,7 @@ class ResetNorthTool extends BaseTool {
 
         // Note: 
         // @Consumer callback
-        if(this.options.onClicked instanceof Function) {
+        if(this.options.onClicked) {
             this.options.onClicked();
         }
     }
@@ -131,7 +131,7 @@ class ResetNorthTool extends BaseTool {
             onDone: (result) => {
                 // Note: 
                 // @Consumer callback
-                if(this.options.onReset instanceof Function) {
+                if(this.options.onReset) {
                     this.options.onReset(result);
                 }
             } 

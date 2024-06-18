@@ -1,4 +1,5 @@
 import { jest, beforeAll, describe, it, expect } from '@jest/globals';
+import { BaseTool } from '../base-tool';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 import { HiddenMapNavigationTool } from './hidden-map-navigation-tool';
@@ -17,11 +18,11 @@ describe('HiddenMapNavigationTool', () => {
     });
 
     it('should init the tool', () => {
-        // TODO:
-        // Not able to make toHaveBeenCalled() working on the ctor options
         const tool = new HiddenMapNavigationTool();
 
         expect(tool).toBeTruthy();
+        expect(tool).toBeInstanceOf(BaseTool);
+        expect(tool).toBeInstanceOf(HiddenMapNavigationTool);
         expect(tool.getName()).toBe(FILENAME);
     });
 });

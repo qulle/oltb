@@ -217,7 +217,7 @@ class EditTool extends BaseTool {
 
         // Note: 
         // @Consumer callback
-        if(this.options.onInitiated instanceof Function) {
+        if(this.options.onInitiated) {
             this.options.onInitiated();
         }
     }
@@ -366,7 +366,7 @@ class EditTool extends BaseTool {
 
         // Note: 
         // @Consumer callback
-        if(this.options.onClicked instanceof Function) {
+        if(this.options.onClicked) {
             this.options.onClicked();
         }
     }
@@ -455,7 +455,7 @@ class EditTool extends BaseTool {
 
         // Note:
         // @Consumer callback
-        if(this.options.onBrowserStateCleared instanceof Function) {
+        if(this.options.onBrowserStateCleared) {
             this.options.onBrowserStateCleared();
         }
     }
@@ -720,7 +720,7 @@ class EditTool extends BaseTool {
     doSelectFeatureAdd(event) {
         // Note: 
         // @Consumer callback
-        if(this.options.onSelectAdd instanceof Function) {
+        if(this.options.onSelectAdd) {
             this.options.onSelectAdd(event);
         }
     }
@@ -758,7 +758,7 @@ class EditTool extends BaseTool {
 
             // Note: 
             // @Consumer callback
-            if(this.options.onStyleChange instanceof Function) {
+            if(this.options.onStyleChange) {
                 this.options.onStyleChange(event, this.lastStyle);
             }
 
@@ -770,7 +770,7 @@ class EditTool extends BaseTool {
 
         // Note: 
         // @Consumer callback
-        if(this.options.onSelectRemove instanceof Function) {
+        if(this.options.onSelectRemove) {
             this.options.onSelectRemove(event);
         }
     }
@@ -785,7 +785,7 @@ class EditTool extends BaseTool {
 
         // Note: 
         // @Consumer callback
-        if(this.options.onModifyStart instanceof Function) {
+        if(this.options.onModifyStart) {
             this.options.onModifyStart(event);
         }
     }
@@ -800,7 +800,7 @@ class EditTool extends BaseTool {
 
         // Note: 
         // @Consumer callback
-        if(this.options.onModifyEnd instanceof Function) {
+        if(this.options.onModifyEnd) {
             this.options.onModifyEnd(event);
         }
     }
@@ -815,7 +815,7 @@ class EditTool extends BaseTool {
 
         // Note: 
         // @Consumer callback
-        if(this.options.onTranslateStart instanceof Function) {
+        if(this.options.onTranslateStart) {
             this.options.onTranslateStart(event);
         }
     }
@@ -830,7 +830,7 @@ class EditTool extends BaseTool {
 
         // Note: 
         // @Consumer callback
-        if(this.options.onTranslatEnd instanceof Function) {
+        if(this.options.onTranslatEnd) {
             this.options.onTranslatEnd(event);
         }
     }
@@ -838,7 +838,7 @@ class EditTool extends BaseTool {
     doSnap(event) {
         // Note: 
         // @Consumer callback
-        if(this.options.onSnapped instanceof Function) {
+        if(this.options.onSnapped) {
             this.options.onSnapped(event);
         }
     }
@@ -941,7 +941,7 @@ class EditTool extends BaseTool {
 
             // Note: 
             // @Consumer callback
-            if(this.options.onShapeOperation instanceof Function) {
+            if(this.options.onShapeOperation) {
                 this.options.onShapeOperation(type, a, b, feature);
             }
         }catch(error) {
@@ -956,7 +956,7 @@ class EditTool extends BaseTool {
 
             // Note: 
             // @Consumer callback
-            if(this.options.onError instanceof Function) {
+            if(this.options.onError) {
                 this.options.onError(error);
             }
         }
@@ -997,7 +997,7 @@ class EditTool extends BaseTool {
 
                 // Note: 
                 // @Consumer callback
-                if(this.options.onRemovedFeature instanceof Function) {
+                if(this.options.onRemovedFeature) {
                     this.options.onRemovedFeature(feature);
                 }
             });

@@ -1,4 +1,5 @@
 import { jest, beforeAll, describe, it, expect } from '@jest/globals';
+import { BaseTool } from '../base-tool';
 import { DebugInfoTool } from './debug-info-tool';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 
@@ -12,20 +13,27 @@ describe('DebugInfoTool', () => {
     });
 
     it('should init the tool', () => {
-        // TODO:
-        // Not able to make toHaveBeenCalled() working on the ctor options
-        const tool = new DebugInfoTool({
-            onClicked: () => {
-                expect(1).toBe(1);
-            },
-            onInitiated: () => {
-                expect(1).toBe(1);
-            }
-        });
+        const tool = new DebugInfoTool();
 
         expect(tool).toBeTruthy();
+        expect(tool).toBeInstanceOf(BaseTool);
+        expect(tool).toBeInstanceOf(DebugInfoTool);
         expect(tool.getName()).toBe(FILENAME);
+    });
+
+    it('should test user callbacks [onInitiated, onClicked]', () => {
+        const options = {
+            onInitiated: () => {},
+            onClicked: () => {}
+        };
+
+        const spyOnInitiated = jest.spyOn(options, 'onInitiated');
+        const spyOnClicked = jest.spyOn(options, 'onClicked');
+        const tool = new DebugInfoTool(options);
 
         tool.onClickTool();
+
+        expect(spyOnInitiated).toHaveBeenCalled();
+        expect(spyOnClicked).toHaveBeenCalled();
     });
 });

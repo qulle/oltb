@@ -78,7 +78,7 @@ class ExportPngTool extends BaseTool {
 
         // Note: 
         // @Consumer callback
-        if(this.options.onInitiated instanceof Function) {
+        if(this.options.onInitiated) {
             this.options.onInitiated();
         }
     }
@@ -104,7 +104,7 @@ class ExportPngTool extends BaseTool {
 
         // Note: 
         // @Consumer callback
-        if(this.options.onClicked instanceof Function) {
+        if(this.options.onClicked) {
             this.options.onClicked();
         }
     }
@@ -206,7 +206,7 @@ class ExportPngTool extends BaseTool {
         }catch(error) {
             // Note: 
             // @Consumer callback
-            if(this.options.onError instanceof Function) {
+            if(this.options.onError) {
                 this.options.onError(error);
             }
 
@@ -252,7 +252,7 @@ class ExportPngTool extends BaseTool {
 
         // Note: 
         // @Consumer callback
-        if(this.options.onExported instanceof Function) {
+        if(this.options.onExported) {
             this.options.onExported(filename, content);
         }
     }

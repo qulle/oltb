@@ -147,7 +147,7 @@ class BookmarkTool extends BaseTool {
 
         // Note: 
         // @Consumer callback
-        if(this.options.onInitiated instanceof Function) {
+        if(this.options.onInitiated) {
             this.options.onInitiated();
         }
     }
@@ -265,7 +265,7 @@ class BookmarkTool extends BaseTool {
 
         // Note: 
         // @Consumer callback
-        if(this.options.onClicked instanceof Function) {
+        if(this.options.onClicked) {
             this.options.onClicked();
         }
     }
@@ -319,7 +319,7 @@ class BookmarkTool extends BaseTool {
 
         // Note: 
         // @Consumer callback
-        if(this.options.onBrowserStateCleared instanceof Function) {
+        if(this.options.onBrowserStateCleared) {
             this.options.onBrowserStateCleared();
         }
     }
@@ -327,19 +327,19 @@ class BookmarkTool extends BaseTool {
     //--------------------------------------------------------------------
     // # Section: Tool Callbacks
     //--------------------------------------------------------------------
-    onZoomToBookmark(bookmark) {
+    #onZoomToBookmark(bookmark) {
         this.doZoomToBookmark(bookmark);
     }
     
-    onCopyBookmarkCoordinates(bookmark) {
+    #onCopyBookmarkCoordinates(bookmark) {
         this.doCopyBookmarkCoordinates(bookmark);
     }
 
-    onDeleteBookmark(bookmark, bookmarkElement) {
+    #onDeleteBookmark(bookmark, bookmarkElement) {
         this.askDeleteBookmark(bookmark, bookmarkElement);
     }
 
-    onEditBookmark(bookmark, bookmarkName) {        
+    #onEditBookmark(bookmark, bookmarkName) {        
         this.askEditBookmark(bookmark, bookmarkName);
     }
 
@@ -468,7 +468,7 @@ class BookmarkTool extends BaseTool {
 
         // Note: 
         // @Consumer callback
-        if(options.callback instanceof Function) {
+        if(options.callback) {
             options.callback(currentItem, list);
         }
     }
@@ -613,7 +613,7 @@ class BookmarkTool extends BaseTool {
                 'type': 'button'
             },
             listeners: {
-                'click': this.onZoomToBookmark.bind(this, bookmark)
+                'click': this.#onZoomToBookmark.bind(this, bookmark)
             }
         });
 
@@ -625,7 +625,7 @@ class BookmarkTool extends BaseTool {
                 'type': 'button'
             },
             listeners: {
-                'click': this.onCopyBookmarkCoordinates.bind(this, bookmark)
+                'click': this.#onCopyBookmarkCoordinates.bind(this, bookmark)
             }
         });
         
@@ -637,7 +637,7 @@ class BookmarkTool extends BaseTool {
                 'type': 'button'
             },
             listeners: {
-                'click': this.onEditBookmark.bind(this, bookmark, bookmarkName)
+                'click': this.#onEditBookmark.bind(this, bookmark, bookmarkName)
             }
         });
 
@@ -649,7 +649,7 @@ class BookmarkTool extends BaseTool {
                 'type': 'button'
             },
             listeners: {
-                'click': this.onDeleteBookmark.bind(this, bookmark, bookmarkElement)
+                'click': this.#onDeleteBookmark.bind(this, bookmark, bookmarkElement)
             }
         });
         
@@ -836,7 +836,7 @@ class BookmarkTool extends BaseTool {
 
         // Note: 
         // @Consumer callback
-        if(this.options.onAdded instanceof Function) {
+        if(this.options.onAdded) {
             this.options.onAdded(bookmark);
         }
 
@@ -870,7 +870,7 @@ class BookmarkTool extends BaseTool {
 
         // Note: 
         // @Consumer callback
-        if(this.options.onRemoved instanceof Function) {
+        if(this.options.onRemoved) {
             this.options.onRemoved(bookmark);
         }
     }
@@ -889,7 +889,7 @@ class BookmarkTool extends BaseTool {
 
         // Note: 
         // @Consumer callback
-        if(this.options.onRenamed instanceof Function) {
+        if(this.options.onRenamed) {
             this.options.onRenamed(bookmark);
         }
     }
@@ -905,7 +905,7 @@ class BookmarkTool extends BaseTool {
 
         // Note: 
         // @Consumer callback
-        if(this.options.onCleared instanceof Function) {
+        if(this.options.onCleared) {
             this.options.onCleared();
         }
     }
@@ -930,7 +930,7 @@ class BookmarkTool extends BaseTool {
 
         // Note: 
         // @Consumer callback
-        if(this.options.onZoomedTo instanceof Function) {
+        if(this.options.onZoomedTo) {
             this.options.onZoomedTo(bookmark);
         }
     }

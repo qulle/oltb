@@ -104,7 +104,7 @@ class ZoomboxTool extends BaseTool {
 
         // Note: 
         // @Consumer callback
-        if(this.options.onInitiated instanceof Function) {
+        if(this.options.onInitiated) {
             this.options.onInitiated();
         }
     }
@@ -127,7 +127,7 @@ class ZoomboxTool extends BaseTool {
 
         // Note: 
         // @Consumer callback
-        if(this.options.onClicked instanceof Function) {
+        if(this.options.onClicked) {
             this.options.onClicked();
         }
     }
@@ -217,7 +217,7 @@ class ZoomboxTool extends BaseTool {
 
         // Note: 
         // @Consumer callback
-        if(this.options.onBrowserStateClear instanceof Function) {
+        if(this.options.onBrowserStateClear) {
             this.options.onBrowserStateClear();
         }
     }
@@ -271,7 +271,7 @@ class ZoomboxTool extends BaseTool {
     doBoxDragStart(event) {
         // Note: 
         // @Consumer callback
-        if(this.options.onStart instanceof Function) {
+        if(this.options.onStart) {
             this.options.onStart(event);
         }
     }
@@ -279,7 +279,7 @@ class ZoomboxTool extends BaseTool {
     doBoxDragEnd(event) {
         // Note: 
         // @Consumer callback
-        if(this.options.onEnd instanceof Function) {
+        if(this.options.onEnd) {
             this.options.onEnd(event);
         }
     }
@@ -287,7 +287,7 @@ class ZoomboxTool extends BaseTool {
     doBoxDragDrag(event) {
         // Note: 
         // @Consumer callback
-        if(this.options.onDrag instanceof Function) {
+        if(this.options.onDrag) {
             this.options.onDrag(event);
         }
     }
@@ -295,7 +295,7 @@ class ZoomboxTool extends BaseTool {
     doBoxDragCancel(event) {
         // Note: 
         // @Consumer callback
-        if(this.options.onCancel instanceof Function) {
+        if(this.options.onCancel) {
             this.options.onCancel(event);
         }
     }
@@ -303,7 +303,7 @@ class ZoomboxTool extends BaseTool {
     doBoxDragError(event) {
         // Note: 
         // @Consumer callback
-        if(this.options.onError instanceof Function) {
+        if(this.options.onError) {
             this.options.onError(event);
         }
     }

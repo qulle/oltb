@@ -98,7 +98,7 @@ class ThemeTool extends BaseTool {
 
         // Note: 
         // @Consumer callback
-        if(this.options.onInitiated instanceof Function) {
+        if(this.options.onInitiated) {
             this.options.onInitiated();
         }
     }
@@ -116,7 +116,7 @@ class ThemeTool extends BaseTool {
 
         // Note: 
         // @Consumer callback
-        if(this.options.onClicked instanceof Function) {
+        if(this.options.onClicked) {
             this.options.onClicked();
         }
     }
@@ -140,7 +140,7 @@ class ThemeTool extends BaseTool {
 
         // Note: 
         // @Consumer callback
-        if(this.options.onBrowserStateCleared instanceof Function) {
+        if(this.options.onBrowserStateCleared) {
             this.options.onBrowserStateCleared();
         }
     }
@@ -177,7 +177,7 @@ class ThemeTool extends BaseTool {
 
         // Note: 
         // @Consumer callback
-        if(this.options.onChanged instanceof Function) {
+        if(this.options.onChanged) {
             this.options.onChanged(inActive.class);
         }
     }

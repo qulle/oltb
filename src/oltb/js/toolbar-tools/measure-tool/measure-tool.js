@@ -127,7 +127,7 @@ class MeasureTool extends BaseTool {
 
         // Note: 
         // @Consumer callback
-        if(this.options.onInitiated instanceof Function) {
+        if(this.options.onInitiated) {
             this.options.onInitiated();
         }
     }
@@ -202,7 +202,7 @@ class MeasureTool extends BaseTool {
 
         // Note: 
         // @Consumer callback
-        if(this.options.onClicked instanceof Function) {
+        if(this.options.onClicked) {
             this.options.onClicked();
         }
     }
@@ -305,7 +305,7 @@ class MeasureTool extends BaseTool {
 
         // Note: 
         // @Consumer callback
-        if(this.options.onBrowserStateCleared instanceof Function) {
+        if(this.options.onBrowserStateCleared) {
             this.options.onBrowserStateCleared();
         }
     }
@@ -410,7 +410,7 @@ class MeasureTool extends BaseTool {
 
         // Note: 
         // @Consumer callback
-        if(this.options.onStart instanceof Function) {
+        if(this.options.onStart) {
             this.options.onStart(event);
         }   
     }
@@ -467,7 +467,7 @@ class MeasureTool extends BaseTool {
 
         // Note: 
         // @Consumer callback
-        if(this.options.onEnd instanceof Function) {
+        if(this.options.onEnd) {
             this.options.onEnd(event);
         }
     }
@@ -479,7 +479,7 @@ class MeasureTool extends BaseTool {
 
         // Note: 
         // @Consumer callback
-        if(this.options.onAbort instanceof Function) {
+        if(this.options.onAbort) {
             this.options.onAbort(event);
         }
     }
@@ -487,7 +487,7 @@ class MeasureTool extends BaseTool {
     doDrawError(event) {
         // Note: 
         // @Consumer callback
-        if(this.options.onError instanceof Function) {
+        if(this.options.onError) {
             this.options.onError(event);
         }
     }
@@ -495,7 +495,7 @@ class MeasureTool extends BaseTool {
     doSnap(event) {
         // Note: 
         // @Consumer callback
-        if(this.options.onSnapped instanceof Function) {
+        if(this.options.onSnapped) {
             this.options.onSnapped(event);
         }
     }

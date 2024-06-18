@@ -87,7 +87,7 @@ class MyLocationTool extends BaseTool {
 
         // Note: 
         // @Consumer callback
-        if(this.options.onInitiated instanceof Function) {
+        if(this.options.onInitiated) {
             this.options.onInitiated();
         }
     }
@@ -105,7 +105,7 @@ class MyLocationTool extends BaseTool {
 
         // Note: 
         // @Consumer callback
-        if(this.options.onClicked instanceof Function) {
+        if(this.options.onClicked) {
             this.options.onClicked();
         }
     }
@@ -187,7 +187,7 @@ class MyLocationTool extends BaseTool {
         
         // Note: 
         // @Consumer callback
-        if(this.options.onLocationFound instanceof Function) {
+        if(this.options.onLocationFound) {
             this.options.onLocationFound(location);
         }
     }
@@ -204,7 +204,7 @@ class MyLocationTool extends BaseTool {
         
         // Note: 
         // @Consumer callback
-        if(this.options.onError instanceof Function) {
+        if(this.options.onError) {
             this.options.onError(error);
         }
 

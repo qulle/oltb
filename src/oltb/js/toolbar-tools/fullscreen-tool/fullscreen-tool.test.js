@@ -1,4 +1,5 @@
 import { jest, beforeAll, describe, it, expect } from '@jest/globals';
+import { BaseTool } from '../base-tool';
 import { FullscreenTool } from './fullscreen-tool';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 
@@ -16,20 +17,27 @@ describe('FullscreenTool', () => {
     });
 
     it('should init the tool', () => {
-        // TODO:
-        // Not able to make toHaveBeenCalled() working on the ctor options
-        const tool = new FullscreenTool({
-            onClicked: () => {
-                expect(1).toBe(1);
-            },
-            onInitiated: () => {
-                expect(1).toBe(1);
-            }
-        });
+        const tool = new FullscreenTool();
 
         expect(tool).toBeTruthy();
+        expect(tool).toBeInstanceOf(BaseTool);
+        expect(tool).toBeInstanceOf(FullscreenTool);
         expect(tool.getName()).toBe(FILENAME);
+    });
+
+    it('should test user callbacks [onInitiated, onClicked]', () => {
+        const options = {
+            onInitiated: () => {},
+            onClicked: () => {}
+        };
+
+        const spyOnInitiated = jest.spyOn(options, 'onInitiated');
+        const spyOnClicked = jest.spyOn(options, 'onClicked');
+        const tool = new FullscreenTool(options);
 
         tool.onClickTool();
+
+        expect(spyOnInitiated).toHaveBeenCalled();
+        expect(spyOnClicked).toHaveBeenCalled();
     });
 });

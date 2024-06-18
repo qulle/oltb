@@ -74,7 +74,7 @@ class ImportVectorLayerTool extends BaseTool {
 
         // Note: 
         // @Consumer callback
-        if(this.options.onInitiated instanceof Function) {
+        if(this.options.onInitiated) {
             this.options.onInitiated();
         }
     }
@@ -92,7 +92,7 @@ class ImportVectorLayerTool extends BaseTool {
 
         // Note: 
         // @Consumer callback
-        if(this.options.onClicked instanceof Function) {
+        if(this.options.onClicked) {
             this.options.onClicked();
         }
     }
@@ -219,7 +219,7 @@ class ImportVectorLayerTool extends BaseTool {
     
             // Note: 
             // @Consumer callback
-            if(this.options.onImported instanceof Function) {
+            if(this.options.onImported) {
                 this.options.onImported(features);
             }
         }catch(error) {
@@ -234,7 +234,7 @@ class ImportVectorLayerTool extends BaseTool {
 
             // Note: 
             // @Consumer callback
-            if(this.options.onError instanceof Function) {
+            if(this.options.onError) {
                 this.options.onError(file, error);
             }
         }

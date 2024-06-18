@@ -1,4 +1,5 @@
 import { jest, beforeAll, describe, it, expect } from '@jest/globals';
+import { BaseTool } from '../base-tool';
 import { MagnifyTool } from './magnify-tool';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
@@ -21,20 +22,27 @@ describe('MagnifyTool', () => {
     });
 
     it('should init the tool', () => {
-        // TODO:
-        // Not able to make toHaveBeenCalled() working on the ctor options
-        const tool = new MagnifyTool({
-            onClicked: () => {
-                expect(1).toBe(1);
-            },
-            onInitiated: () => {
-                expect(1).toBe(1);
-            }
-        });
+        const tool = new MagnifyTool();
 
         expect(tool).toBeTruthy();
+        expect(tool).toBeInstanceOf(BaseTool);
+        expect(tool).toBeInstanceOf(MagnifyTool);
         expect(tool.getName()).toBe(FILENAME);
+    });
+
+    it('should test user callbacks [onInitiated, onClicked]', () => {
+        const options = {
+            onInitiated: () => {},
+            onClicked: () => {}
+        };
+
+        const spyOnInitiated = jest.spyOn(options, 'onInitiated');
+        const spyOnClicked = jest.spyOn(options, 'onClicked');
+        const tool = new MagnifyTool(options);
 
         tool.onClickTool();
+
+        expect(spyOnInitiated).toHaveBeenCalled();
+        expect(spyOnClicked).toHaveBeenCalled();
     });
 });

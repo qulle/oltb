@@ -187,7 +187,7 @@ class LayerTool extends BaseTool {
 
         // Note: 
         // @Consumer callback
-        if(this.options.onInitiated instanceof Function) {
+        if(this.options.onInitiated) {
             this.options.onInitiated();
         }
     }
@@ -311,7 +311,7 @@ class LayerTool extends BaseTool {
 
         // Note: 
         // @Consumer callback
-        if(this.options.onClicked instanceof Function) {
+        if(this.options.onClicked) {
             this.options.onClicked();
         }
     }
@@ -363,7 +363,7 @@ class LayerTool extends BaseTool {
 
         // Note: 
         // @Consumer callback
-        if(this.options.onBrowserStateCleared instanceof Function) {
+        if(this.options.onBrowserStateCleared) {
             this.options.onBrowserStateCleared();
         }
     }
@@ -557,7 +557,7 @@ class LayerTool extends BaseTool {
 
         // Note: 
         // @Consumer callback
-        if(options.callback instanceof Function) {
+        if(options.callback) {
             options.callback(currentItem, list);
         }
     }
@@ -1116,7 +1116,7 @@ class LayerTool extends BaseTool {
                     
                     // Note: 
                     // @Consumer callback
-                    if(callback instanceof Function) {
+                    if(callback) {
                         callback(layerWrapper);
                     }
                 }
@@ -1185,7 +1185,7 @@ class LayerTool extends BaseTool {
 
         // Note: 
         // @Consumer callback
-        if(!isSilent && this.options.onMapLayerAdded instanceof Function) {
+        if(!isSilent && this.options.onMapLayerAdded) {
             this.options.onMapLayerAdded(layerWrapper);
         }
     }
@@ -1205,7 +1205,7 @@ class LayerTool extends BaseTool {
 
         // Note: 
         // @Consumer callback
-        if(!isSilent && this.options.onMapLayerRemoved instanceof Function) {
+        if(!isSilent && this.options.onMapLayerRemoved) {
             this.options.onMapLayerRemoved(layerWrapper);
         }
     }
@@ -1250,7 +1250,7 @@ class LayerTool extends BaseTool {
 
         // Note: 
         // @Consumer callback
-        if(!isSilent && this.options.onFeatureLayerAdded instanceof Function) {
+        if(!isSilent && this.options.onFeatureLayerAdded) {
             this.options.onFeatureLayerAdded(layerWrapper);
         }
     }
@@ -1280,7 +1280,7 @@ class LayerTool extends BaseTool {
 
         // Note: 
         // @Consumer callback
-        if(!isSilent && this.options.onFeatureLayerRemoved instanceof Function) {
+        if(!isSilent && this.options.onFeatureLayerRemoved) {
             this.options.onFeatureLayerRemoved(layerWrapper);
         }
     }
@@ -1324,7 +1324,7 @@ class LayerTool extends BaseTool {
 
         // Note: 
         // @Consumer callback
-        if(callback instanceof Function) {
+        if(callback) {
             callback(layerWrapper);
         }
     }
@@ -1340,7 +1340,7 @@ class LayerTool extends BaseTool {
 
         // Note: 
         // @Consumer callback
-        if(callback instanceof Function) {
+        if(callback) {
             callback(layerWrapper, filename, content);
         }
     }
