@@ -104,6 +104,10 @@ class ContextMenuTool extends BaseTool {
         };
     }
 
+    #isMenuItem(item) {
+        return _.has(item, ['i18nKey']);
+    }
+
     //--------------------------------------------------------------------
     // # Section: Events
     //--------------------------------------------------------------------
@@ -118,17 +122,20 @@ class ContextMenuTool extends BaseTool {
     //--------------------------------------------------------------------
     // # Section: Public API
     //--------------------------------------------------------------------
+    addMenuSeparator() {
+        const li = DOM.createElement({
+            element: 'li',
+            class: `${CLASS__CONTEXT_MENU}__divider`
+        });
+
+        DOM.appendChildren(this.menu, [
+            li
+        ]);
+    }
+
     addMenuItem(item) {
-        if(!_.has(item, ['i18nKey'])) {
-            const li = DOM.createElement({
-                element: 'li',
-                class: `${CLASS__CONTEXT_MENU}__divider`
-            });
-
-            DOM.appendChildren(this.menu, [
-                li
-            ]);
-
+        if(!this.#isMenuItem(item)) {
+            this.addMenuSeparator();
             return;
         }
 

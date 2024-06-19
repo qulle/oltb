@@ -38,7 +38,7 @@ const goToView = function(options) {
     }, function(result) {
         // Note: 
         // @Consumer callback
-        if(options.onDone instanceof Function) {
+        if(options.onDone) {
             options.onDone(result);
         }
     });
