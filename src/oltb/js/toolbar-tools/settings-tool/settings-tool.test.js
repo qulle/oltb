@@ -1,8 +1,8 @@
 import { jest, beforeAll, describe, it, expect } from '@jest/globals';
+import { BaseTool } from '../base-tool';
 import { SettingsTool } from './settings-tool';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 import { SettingsManager } from '../../toolbar-managers/settings-manager/settings-manager';
-import { BaseTool } from '../base-tool';
 
 const FILENAME = 'settings-tool.js';
 

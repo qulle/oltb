@@ -11,8 +11,6 @@ const ID__PREFIX = 'oltb-bookmark';
 const I18N__BASE = 'tools.bookmarkTool';
 const I18N__BASE_COMMON = 'commons';
 
-// Note:
-// Simplified mock from #initToolboxHTML
 const HTML__MOCK = (`
     <div id="${ID__PREFIX}-toolbox" class="${CLASS__TOOLBOX_SECTION}">
         <div class="${CLASS__TOOLBOX_SECTION}__header oltb-toggleable" data-oltb-toggleable-target="${ID__PREFIX}-toolbox-collapsed">

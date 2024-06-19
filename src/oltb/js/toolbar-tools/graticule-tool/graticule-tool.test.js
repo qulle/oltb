@@ -1,8 +1,8 @@
 import { jest, beforeAll, describe, it, expect } from '@jest/globals';
+import { BaseTool } from '../base-tool';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
 import { GraticuleTool } from './graticule-tool';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
-import { BaseTool } from '../base-tool';
 
 const FILENAME = 'graticule-tool.js';
 
