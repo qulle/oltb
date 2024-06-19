@@ -66,7 +66,7 @@ class ImportVectorLayerTool extends BaseTool {
         this.fileReader = undefined;
         this.importLayerModal = undefined;
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
-        this.inputDialog = this.createUIInputDialog();
+        this.inputDialog = this.#createUIInputDialog();
         
         // TODO:
         // Replaced by EventManager in the future?
@@ -117,7 +117,7 @@ class ImportVectorLayerTool extends BaseTool {
     //--------------------------------------------------------------------
     // # Section: User Interface
     //--------------------------------------------------------------------
-    createUIInputDialog() {
+    #createUIInputDialog() {
         return DOM.createElement({
             element: 'input',
             attributes: {

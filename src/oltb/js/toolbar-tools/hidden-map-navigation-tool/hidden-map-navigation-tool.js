@@ -190,7 +190,7 @@ class HiddenMapNavigationTool extends BaseTool {
     //--------------------------------------------------------------------
     // # Section: Conversions/Validation
     //--------------------------------------------------------------------
-    validateProjection(projection) {
+    #validateProjection(projection) {
         projection = projection.toUpperCase();
 
         if(!projection.startsWith('EPSG:')) {
@@ -200,7 +200,7 @@ class HiddenMapNavigationTool extends BaseTool {
         return projection;
     }
 
-    validateHexColor(color) {
+    #validateHexColor(color) {
         if(color.startsWith('#')) {
             return color;
         }
@@ -208,7 +208,7 @@ class HiddenMapNavigationTool extends BaseTool {
         return `#${color}`;
     }
 
-    hasProjection(projection) {
+    #hasProjection(projection) {
         const hasProjection = ProjectionManager.hasProjection(projection);
 
         if(!hasProjection) {
@@ -346,9 +346,9 @@ class HiddenMapNavigationTool extends BaseTool {
         // Note:
         // Colors given in URL can't contain hashtag unless encoded as %23
         // Easier to prepend with hashtag after URL data has been fetched and parsed
-        markerData.markerFill = this.validateHexColor(markerData.markerFill);
-        markerData.markerStroke = this.validateHexColor(markerData.markerStroke);
-        markerData.projection = this.validateProjection(markerData.projection);
+        markerData.markerFill = this.#validateHexColor(markerData.markerFill);
+        markerData.markerStroke = this.#validateHexColor(markerData.markerStroke);
+        markerData.projection = this.#validateProjection(markerData.projection);
 
         if(!this.hasProjection(markerData.projection)) {
             return;

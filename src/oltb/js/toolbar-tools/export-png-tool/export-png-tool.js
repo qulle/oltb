@@ -146,7 +146,7 @@ class ExportPngTool extends BaseTool {
     //--------------------------------------------------------------------
     // # Section: User Interface
     //--------------------------------------------------------------------
-    createUICanvas(width, height) {
+    #createUICanvas(width, height) {
         return DOM.createElement({
             element: 'canvas',
             attributes: {
@@ -173,7 +173,7 @@ class ExportPngTool extends BaseTool {
         try {
             const uiRefMapElement = ElementManager.getMapElement();
             const size = map.getSize();
-            const pngCanvas = this.createUICanvas(size[0], size[1]);
+            const pngCanvas = this.#createUICanvas(size[0], size[1]);
             const pngContext = pngCanvas.getContext('2d');
 
             // Note:

@@ -194,7 +194,7 @@ class CoordinatesTool extends BaseTool {
     }
 
     activateTool() {
-        this.createUIProjections();
+        this.#createUIProjections();
 
         this.isActive = true;
         this.uiRefToolboxSection.classList.add(`${CLASS__TOOLBOX_SECTION}--show`);
@@ -211,7 +211,7 @@ class CoordinatesTool extends BaseTool {
     }
 
     deactivateTool() {
-        this.removeUIProjections();
+        this.#removeUIProjections();
 
         this.isActive = false;
         this.uiRefToolboxSection.classList.remove(`${CLASS__TOOLBOX_SECTION}--show`);
@@ -313,7 +313,7 @@ class CoordinatesTool extends BaseTool {
     //--------------------------------------------------------------------
     // # Section: User Interface
     //--------------------------------------------------------------------
-    createUIProjections() {
+    #createUIProjections() {
         const map = this.getMap();
         if(!map) {
             return;
@@ -362,7 +362,7 @@ class CoordinatesTool extends BaseTool {
         this.onMapClickListener = map.on(Events.browser.click, this.#onMapClick.bind(this));
     }
 
-    removeUIProjections() {
+    #removeUIProjections() {
         DOM.clearElement(this.uiRefCoordinatesTable);
         TooltipManager.pop(KEY__TOOLTIP);
         

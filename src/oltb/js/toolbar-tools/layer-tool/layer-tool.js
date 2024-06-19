@@ -726,7 +726,7 @@ class LayerTool extends BaseTool {
     //--------------------------------------------------------------------
     // # Section: User Interface
     //--------------------------------------------------------------------
-    createUILayerNameTippy(layerName) {
+    #createUILayerNameTippy(layerName) {
         return tippy(layerName, {
             content(reference) {
                 const title = reference.getAttribute('title');
@@ -739,7 +739,7 @@ class LayerTool extends BaseTool {
         });
     }
 
-    createUIMapLayerItem(layerWrapper, options) {
+    #createUIMapLayerItem(layerWrapper, options) {
         const layer = layerWrapper.getLayer();
 
         // Note: 
@@ -805,7 +805,7 @@ class LayerTool extends BaseTool {
         // Note: 
         // This tooltip can not be triggered by the delegated .oltb-tippy class
         // Because the tooltip instance can not be reached in the renaming function unless it is known during "compile time"
-        this.createUILayerNameTippy(layerName);
+        this.#createUILayerNameTippy(layerName);
 
         const leftWrapper = DOM.createElement({
             element: 'div',
@@ -870,7 +870,7 @@ class LayerTool extends BaseTool {
         this.#sortSortableDesc(this.sortableMapLayerStack);
     }
 
-    createUIFeatureLayerItem(layerWrapper, options) {
+    #createUIFeatureLayerItem(layerWrapper, options) {
         const layer = layerWrapper.getLayer();
 
         // Note: 
@@ -939,7 +939,7 @@ class LayerTool extends BaseTool {
         // Note: 
         // This tooltip can not be triggered by the delegated .oltb-tippy class
         // Because the tooltip instance can not be reached in the renaming function unless it is known during "compile time"
-        this.createUILayerNameTippy(layerName);
+        this.#createUILayerNameTippy(layerName);
 
         const leftWrapper = DOM.createElement({
             element: 'div',
@@ -1010,7 +1010,7 @@ class LayerTool extends BaseTool {
         this.#sortSortableDesc(this.sortableFeatureLayerStack);
     }
 
-    createUIDeleteButton(layerWrapper, callback) {
+    #createUIDeleteButton(layerWrapper, callback) {
         const i18nKey = `${I18N__BASE_COMMON}.titles.delete`;
         const deleteButton = DOM.createElement({
             element: 'button',
@@ -1028,7 +1028,7 @@ class LayerTool extends BaseTool {
         return deleteButton;
     }
 
-    createUIDownloadButton(layerWrapper, callback) {
+    #createUIDownloadButton(layerWrapper, callback) {
         const i18nKey = `${I18N__BASE_COMMON}.titles.download`;
         const downloadButton = DOM.createElement({
             element: 'button', 
@@ -1046,7 +1046,7 @@ class LayerTool extends BaseTool {
         return downloadButton;
     }
 
-    createUIEditButton(layerWrapper, callback, layerName) {
+    #createUIEditButton(layerWrapper, callback, layerName) {
         const i18nKey = `${I18N__BASE_COMMON}.titles.rename`;
         const editButton = DOM.createElement({
             element: 'button',
@@ -1172,13 +1172,13 @@ class LayerTool extends BaseTool {
             false
         );
 
-        this.createUIMapLayerItem(layerWrapper, {
+        this.#createUIMapLayerItem(layerWrapper, {
             ...(!disableEditButton && { editButton: {
-                function: this.createUIEditButton.bind(this),
+                function: this.#createUIEditButton.bind(this),
                 callback: this.options.onMapLayerRenamed.bind(this)
             }}),
             ...(!disableDeleteButton && { deleteButton: {
-                function: this.createUIDeleteButton.bind(this),
+                function: this.#createUIDeleteButton.bind(this),
                 callback: LayerManager.removeMapLayer.bind(LayerManager)
             }})
         });
@@ -1233,17 +1233,17 @@ class LayerTool extends BaseTool {
         );
 
         this.doRemoveActiveFeatureLayerClass();
-        this.createUIFeatureLayerItem(layerWrapper, {
+        this.#createUIFeatureLayerItem(layerWrapper, {
             ...(!disableEditButton && { editButton: {
-                function: this.createUIEditButton.bind(this),
+                function: this.#createUIEditButton.bind(this),
                 callback: this.options.onFeatureLayerRenamed
             }}),
             ...(!disableDownloadButton && { downloadButton: {
-                function: this.createUIDownloadButton.bind(this),
+                function: this.#createUIDownloadButton.bind(this),
                 callback: this.options.onFeatureLayerDownloaded
             }}),
             ...(!disableDeleteButton && { deleteButton: {
-                function: this.createUIDeleteButton.bind(this),
+                function: this.#createUIDeleteButton.bind(this),
                 callback: LayerManager.removeFeatureLayer.bind(LayerManager)
             }})
         });

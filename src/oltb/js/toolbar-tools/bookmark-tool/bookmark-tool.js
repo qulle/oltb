@@ -216,7 +216,7 @@ class BookmarkTool extends BaseTool {
         });
 
         this.localStorage.bookmarks.forEach((bookmark) => {
-            this.createUIBookmark(bookmark);
+            this.#createUIBookmark(bookmark);
         });
 
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
@@ -514,7 +514,7 @@ class BookmarkTool extends BaseTool {
     //--------------------------------------------------------------------
     // # Section: User Interface
     //--------------------------------------------------------------------
-    createUIBookmarkNameTippy(bookmarkName) {
+    #createUIBookmarkNameTippy(bookmarkName) {
         return tippy(bookmarkName, {
             content(reference) {
                 const title = reference.getAttribute('title');
@@ -527,10 +527,10 @@ class BookmarkTool extends BaseTool {
         });
     }
 
-    createUIBookmark(bookmark) {
+    #createUIBookmark(bookmark) {
         LogManager.logDebug(FILENAME, 'createUIBookmark', bookmark);        
 
-        this.createUIBookmarkItem(bookmark);
+        this.#createUIBookmarkItem(bookmark);
         this.doAddIconMarker(bookmark);
 
         if(!this.hasLocalStorageBookmarkById(bookmark.id)) {
@@ -539,7 +539,7 @@ class BookmarkTool extends BaseTool {
         }
     }
 
-    createUIBookmarkItem(bookmark) {
+    #createUIBookmarkItem(bookmark) {
         const sortIndex = this.#getSortableIndexFromBookmarkId(
             this.localStorage.bookmarks,
             this.uiRefBookmarkStack.childNodes,
@@ -575,7 +575,7 @@ class BookmarkTool extends BaseTool {
         // Note: 
         // This tooltip can not be triggered by the delegated .oltb-tippy class
         // Because the tooltip instance can not be reached in the renaming function unless it is known during "compile time"
-        this.createUIBookmarkNameTippy(bookmarkName);
+        this.#createUIBookmarkNameTippy(bookmarkName);
 
         const leftWrapper = DOM.createElement({
             element: 'div', 
@@ -823,7 +823,7 @@ class BookmarkTool extends BaseTool {
         name = this.#validateName(name);
 
         const bookmark = this.createBookmarkObject(map, name, coordinates);
-        this.createUIBookmark(bookmark);
+        this.#createUIBookmark(bookmark);
 
         // Note: 
         // Alert the user, the Bookmark was created when the tool was not active
