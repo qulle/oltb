@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import jsts from 'jsts/dist/jsts.min';
+import * as jsts from 'jsts/dist/jsts.min';
 import { DOM } from '../../browser-helpers/dom-factory';
 import { Draw } from 'ol/interaction';
 import { Toast } from '../../ui-common/ui-toasts/toast';
