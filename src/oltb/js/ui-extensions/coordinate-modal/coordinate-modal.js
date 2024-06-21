@@ -24,6 +24,7 @@ const DefaultOptions = Object.freeze({
 class CoordinateModal extends BaseModal {
     constructor(options = {}) {
         super({
+            filename: FILENAME,
             title: TranslationManager.get(`${I18N__BASE}.title`), 
             ...options
         });
@@ -32,8 +33,11 @@ class CoordinateModal extends BaseModal {
         this.#createModal();
     }
 
+    //--------------------------------------------------------------------
+    // # Section: Overridden
+    //--------------------------------------------------------------------
     getName() {
-        return FILENAME;
+        return super.getName();
     }
 
     //--------------------------------------------------------------------

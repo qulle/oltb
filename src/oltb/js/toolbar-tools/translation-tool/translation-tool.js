@@ -71,13 +71,13 @@ class TranslationTool extends BaseTool {
         }
     }
 
+    //--------------------------------------------------------------------
+    // # Section: Overridden
+    //--------------------------------------------------------------------
     getName() {
         return super.getName();
     }
 
-    //--------------------------------------------------------------------
-    // # Section: Tool Control
-    //--------------------------------------------------------------------
     onClickTool(event) {
         super.onClickTool(event);
         this.momentaryActivation();
@@ -89,6 +89,9 @@ class TranslationTool extends BaseTool {
         }
     }
 
+    //--------------------------------------------------------------------
+    // # Section: Tool Control
+    //--------------------------------------------------------------------
     momentaryActivation() {
         this.askToChangeLanguage();
     }

@@ -49,6 +49,9 @@ class HiddenMarkerTool extends BaseTool {
         window.addEventListener(Events.custom.featureRemoved, this.#onWindowFeatureRemoved.bind(this));
     }
 
+    //--------------------------------------------------------------------
+    // # Section: Overridden
+    //--------------------------------------------------------------------
     getName() {
         return super.getName();
     }

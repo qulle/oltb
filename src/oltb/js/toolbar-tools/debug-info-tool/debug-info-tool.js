@@ -76,8 +76,22 @@ class DebugInfoTool extends BaseTool {
         }
     }
 
+    //--------------------------------------------------------------------
+    // # Section: Overridden
+    //--------------------------------------------------------------------
     getName() {
         return super.getName();
+    }
+
+    onClickTool(event) {
+        super.onClickTool(event);
+        this.momentaryActivation();
+
+        // Note: 
+        // @Consumer callback
+        if(this.options.onClicked) {
+            this.options.onClicked();
+        }
     }
 
     //--------------------------------------------------------------------
@@ -95,17 +109,6 @@ class DebugInfoTool extends BaseTool {
     //--------------------------------------------------------------------
     // # Section: Tool Control
     //--------------------------------------------------------------------
-    onClickTool(event) {
-        super.onClickTool(event);
-        this.momentaryActivation();
-
-        // Note: 
-        // @Consumer callback
-        if(this.options.onClicked) {
-            this.options.onClicked();
-        }
-    }
-
     momentaryActivation() {
         this.doShowDebugInfoModal();
     }

@@ -6,6 +6,7 @@ import { KeyboardKeys } from '../../browser-constants/keyboard-keys';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 import { SvgPaths, getSvgIcon } from '../../ui-icons/get-svg-icon/get-svg-icon';
 
+const FILENAME = 'base-modal.js';
 const CLASS__ANIMATION = 'oltb-animation';
 const CLASS__ANIMATION_BOUNCE = `${CLASS__ANIMATION}--bounce`;
 const CLASS__MODAL = 'oltb-modal';
@@ -20,8 +21,15 @@ const DefaultOptions = Object.freeze({
 });
 
 class BaseModal {
+    #filename = FILENAME;
+
     constructor(options = {}) {
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
+
+        if(options.filename) {
+            this.#filename = options.filename;
+        }
+
         this.#createModal();
     }
 
@@ -121,6 +129,13 @@ class BaseModal {
         if(event.key === KeyboardKeys.valueEscape) {
             this.close();
         }
+    }
+
+    //--------------------------------------------------------------------
+    // # Section: Base Methods
+    //--------------------------------------------------------------------
+    getName() {
+        return this.#filename;
     }
 
     //--------------------------------------------------------------------

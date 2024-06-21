@@ -87,13 +87,13 @@ class FullscreenTool extends BaseTool {
         }
     }
 
+    //--------------------------------------------------------------------
+    // # Section: Overridden
+    //--------------------------------------------------------------------
     getName() {
         return super.getName();
     }
 
-    //--------------------------------------------------------------------
-    // # Section: Tool Control
-    //--------------------------------------------------------------------
     onClickTool(event) {
         super.onClickTool(event);
         this.momentaryActivation();
@@ -105,6 +105,9 @@ class FullscreenTool extends BaseTool {
         }
     }
 
+    //--------------------------------------------------------------------
+    // # Section: Tool Control
+    //--------------------------------------------------------------------
     momentaryActivation() {
         if(!this.isFullScreenSupportedByBrowser()) {
             return;

@@ -30,6 +30,9 @@ class HiddenAboutTool extends BaseTool {
         this.#initContextMenuItems();
     }
 
+    //--------------------------------------------------------------------
+    // # Section: Overridden
+    //--------------------------------------------------------------------
     getName() {
         return super.getName();
     }

@@ -122,8 +122,35 @@ class SplitViewTool extends BaseTool {
         }
     }
 
+    //--------------------------------------------------------------------
+    // # Section: Overridden
+    //--------------------------------------------------------------------
     getName() {
         return super.getName();
+    }
+
+    onClickTool(event) {
+        super.onClickTool(event);
+
+        if(LayerManager.getMapLayerSize() < MIN_NUM_LAYERS) {
+            Toast.info({
+                i18nKey: `${I18N__BASE}.toasts.infos.strictOneLayer`
+            });
+            
+            return;
+        }
+
+        if(this.isActive) {
+            this.deactivateTool();
+        }else {
+            this.activateTool();
+        }
+
+        // Note: 
+        // @Consumer callback
+        if(this.options.onClicked) {
+            this.options.onClicked();
+        }
     }
 
     //--------------------------------------------------------------------
@@ -182,30 +209,6 @@ class SplitViewTool extends BaseTool {
     //--------------------------------------------------------------------
     // # Section: Tool Control
     //--------------------------------------------------------------------
-    onClickTool(event) {
-        super.onClickTool(event);
-
-        if(LayerManager.getMapLayerSize() < MIN_NUM_LAYERS) {
-            Toast.info({
-                i18nKey: `${I18N__BASE}.toasts.infos.strictOneLayer`
-            });
-            
-            return;
-        }
-
-        if(this.isActive) {
-            this.deactivateTool();
-        }else {
-            this.activateTool();
-        }
-
-        // Note: 
-        // @Consumer callback
-        if(this.options.onClicked) {
-            this.options.onClicked();
-        }
-    }
-
     activateTool() {
         // Note: 
         // The active switch must be enabled first

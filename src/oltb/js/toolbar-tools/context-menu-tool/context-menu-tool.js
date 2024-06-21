@@ -59,6 +59,9 @@ class ContextMenuTool extends BaseTool {
         uiRefMapElement.addEventListener(Events.browser.click, this.#onMapClick.bind(this));
     }
 
+    //--------------------------------------------------------------------
+    // # Section: Overridden
+    //--------------------------------------------------------------------
     getName() {
         return super.getName();
     }

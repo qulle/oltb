@@ -109,6 +109,9 @@ class HiddenMapNavigationTool extends BaseTool {
         window.addEventListener(Events.custom.ready, this.#onOLTBReady.bind(this));
     }
 
+    //--------------------------------------------------------------------
+    // # Section: Overridden
+    //--------------------------------------------------------------------
     getName() {
         return super.getName();
     }

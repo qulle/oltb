@@ -139,8 +139,27 @@ class DrawTool extends BaseTool {
         }
     }
 
+    //--------------------------------------------------------------------
+    // # Section: Overridden
+    //--------------------------------------------------------------------
     getName() {
         return super.getName();
+    }
+
+    onClickTool(event) {
+        super.onClickTool(event);
+
+        if(this.isActive) {
+            this.deactivateTool();
+        }else {
+            this.activateTool();
+        }
+
+        // Note: 
+        // @Consumer callback
+        if(this.options.onClicked) {
+            this.options.onClicked();
+        }
     }
 
     //--------------------------------------------------------------------
@@ -231,22 +250,6 @@ class DrawTool extends BaseTool {
     //--------------------------------------------------------------------
     // # Section: Tool Control
     //--------------------------------------------------------------------
-    onClickTool(event) {
-        super.onClickTool(event);
-
-        if(this.isActive) {
-            this.deactivateTool();
-        }else {
-            this.activateTool();
-        }
-
-        // Note: 
-        // @Consumer callback
-        if(this.options.onClicked) {
-            this.options.onClicked();
-        }
-    }
-
     activateTool() {
         this.isActive = true;
         this.uiRefToolboxSection.classList.add(`${CLASS__TOOLBOX_SECTION}--show`);

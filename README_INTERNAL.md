@@ -1561,6 +1561,7 @@ All classes and id:s in the project are prefixed with the namespace `oltb`.
 14. [Jest 29.7.0](https://github.com/jestjs/jest)
 15. [Jest Environment JSDOM 29.7.0](https://github.com/jestjs/jest)
 16. [Identity Obj Proxy 3.0.0](https://github.com/keyz/identity-obj-proxy)
+17. [Cross Env 7.0.3](https://github.com/kentcdodds/cross-env)
 
 ## Maps
 1. [Open Street Map](https://www.openstreetmap.org/)

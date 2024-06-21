@@ -10,7 +10,3 @@ export default {
         '^jsts/dist/jsts.min$': '<rootDir>../__mocks__/jsts/dist/jsts.min.js'
     }
 };
-
-// Note:
-// <rootDir> points to the path of the jest.config.mjs
-// Thats why ../ is needed to find the __mocks__ directory

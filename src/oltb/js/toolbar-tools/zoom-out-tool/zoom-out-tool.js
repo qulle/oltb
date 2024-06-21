@@ -72,13 +72,13 @@ class ZoomOutTool extends BaseTool {
         }
     }
 
+    //--------------------------------------------------------------------
+    // # Section: Overridden
+    //--------------------------------------------------------------------
     getName() {
         return super.getName();
     }
 
-    //--------------------------------------------------------------------
-    // # Section: Tool Control
-    //--------------------------------------------------------------------
     onClickTool(event) {
         super.onClickTool(event);
         this.momentaryActivation();
@@ -90,6 +90,9 @@ class ZoomOutTool extends BaseTool {
         }
     }
 
+    //--------------------------------------------------------------------
+    // # Section: Tool Control
+    //--------------------------------------------------------------------
     momentaryActivation() {
         const map = this.getMap();
         if(!map) {
