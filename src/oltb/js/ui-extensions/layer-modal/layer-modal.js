@@ -217,12 +217,12 @@ class LayerModal extends BaseModal {
     //--------------------------------------------------------------------
     #onCreate(result) {
         this.close();
-        this.options.onCreate instanceof Function && this.options.onCreate(result);
+        this.options.onCreate && this.options.onCreate(result);
     }
 
     #onCancel() {
         this.close();
-        this.options.onCancel instanceof Function && this.options.onCancel();
+        this.options.onCancel && this.options.onCancel();
     }
 }
 

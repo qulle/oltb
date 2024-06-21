@@ -134,12 +134,12 @@ class SettingsModal extends BaseModal {
         this.#state.clear();
 
         this.close();
-        this.options.onSave instanceof Function && this.options.onSave();
+        this.options.onSave && this.options.onSave();
     }
 
     #onCancel() {
         this.close();
-        this.options.onCancel instanceof Function && this.options.onCancel();
+        this.options.onCancel && this.options.onCancel();
     }
 }
 

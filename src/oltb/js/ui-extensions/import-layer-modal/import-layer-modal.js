@@ -140,12 +140,12 @@ class ImportLayerModal extends BaseModal {
     //--------------------------------------------------------------------
     #onImport(result) {
         this.close();
-        this.options.onImport instanceof Function && this.options.onImport(result);
+        this.options.onImport && this.options.onImport(result);
     }
 
     #onCancel() {
         this.close();
-        this.options.onCancel instanceof Function && this.options.onCancel();
+        this.options.onCancel && this.options.onCancel();
     }
 }
 

@@ -126,12 +126,12 @@ class CoordinateModal extends BaseModal {
     //--------------------------------------------------------------------
     #onNavigate(result) {
         this.close();
-        this.options.onNavigate instanceof Function && this.options.onNavigate(result);
+        this.options.onNavigate && this.options.onNavigate(result);
     }
 
     #onCancel() {
         this.close();
-        this.options.onCancel instanceof Function && this.options.onCancel();
+        this.options.onCancel && this.options.onCancel();
     }
 }
 

@@ -111,12 +111,12 @@ class DownloadLayerModal extends BaseModal {
     //--------------------------------------------------------------------
     #onDownload(result) {
         this.close();
-        this.options.onDownload instanceof Function && this.options.onDownload(result);
+        this.options.onDownload && this.options.onDownload(result);
     }
 
     #onCancel() {
         this.close();
-        this.options.onCancel instanceof Function && this.options.onCancel();
+        this.options.onCancel && this.options.onCancel();
     }
 }
 
