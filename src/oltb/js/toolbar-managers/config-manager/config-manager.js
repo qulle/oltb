@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import axios from 'axios';
 import { LogManager } from '../log-manager/log-manager';
 import { BaseManager } from '../base-manager';
 import { DefaultConfig } from './default-config';
@@ -50,20 +51,24 @@ class ConfigManager extends BaseManager {
     static async #loadConfigFileAsync(url) {
         const timestamp = Date.now().toString();
         
-        return fetch(`${url}?cache=${timestamp}`, {
-            method: 'GET',
-            cache: 'no-cache',
-            headers: {
-                'Accept': 'application/json'
+        return axios.get(url, {
+            responseType: 'application/json',
+            params: {
+                cache: timestamp
             },
+            headers: {
+                'Cache-Control': 'no-cache',
+                'Pragma': 'no-cache',
+                'Expires': '0',
+            }
         }).then((response) => {
-            if(!response.ok) {
+            if(response.status !== 200) {
                 throw new Error('Bad response from server', {
                     cause: response
                 });
             }
 
-            return response.json();
+            return JSON.parse(response.data);
         }).then((config) => {
             // Note: 
             // Use _.mergeWith and not _.merge to have merging of empty arrays behave as 'expected'

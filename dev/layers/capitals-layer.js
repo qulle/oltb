@@ -1,4 +1,5 @@
-import urlCapitalsGeoJson from 'url:../geojson/capitals.geojson';
+import axios from 'axios';
+import urlGeoJson from 'url:../geojson/capitals.geojson';
 import { Toast } from '../../src/oltb/js/ui-common/ui-toasts/toast';
 import { LogManager } from '../../src/oltb/js/toolbar-managers/log-manager/log-manager';
 import { toStringHDMS } from 'ol/coordinate';
@@ -16,57 +17,57 @@ const LayerWrapper = LayerManager.addFeatureLayer({
     isSilent: true
 });
 
-const getMarkerColor = function(name) {
+const getMarkerColor = function (name) {
     const colors = Object.freeze({
         'Europe': {
-            fill: '#0166A5FF', 
+            fill: '#0166A5FF',
             stroke: '#0166A566'
         },
         'Africa': {
-            fill: '#00959AFF', 
+            fill: '#00959AFF',
             stroke: '#00959A66'
         },
         'Antarctica': {
-            fill: '#007C70FF', 
+            fill: '#007C70FF',
             stroke: '#007C7066'
         },
         'Asia': {
-            fill: '#2357B1FF', 
+            fill: '#2357B1FF',
             stroke: '#2357B166'
         },
         'Australia': {
-            fill: '#007C70FF', 
+            fill: '#007C70FF',
             stroke: '#007C7066'
         },
         'Central America': {
-            fill: '#0080C5FF', 
+            fill: '#0080C5FF',
             stroke: '#0080C566'
         },
         'North America': {
-            fill: '#0080C5FF', 
+            fill: '#0080C5FF',
             stroke: '#0080C566'
         },
         'South America': {
-            fill: '#0080C5FF', 
+            fill: '#0080C5FF',
             stroke: '#0080C566'
         },
         'UM': {
-            fill: '#0080C5FF', 
+            fill: '#0080C5FF',
             stroke: '#0080C566'
         },
         'US': {
-            fill: '#0080C5FF', 
+            fill: '#0080C5FF',
             stroke: '#0080C566'
         }
     });
 
     return colors[name] || {
-        fill: '#0166A5FF', 
+        fill: '#0166A5FF',
         stroke: '#0166A566'
     };
 }
 
-const parseGeoJson = function(data) {
+const parseGeoJson = function (data) {
     data.features.forEach((capital) => {
         const coordinates = [
             Number(capital.geometry.coordinates[0]),
@@ -127,28 +128,32 @@ const parseGeoJson = function(data) {
     });
 }
 
-fetch(urlCapitalsGeoJson)
-    .then((response) => {
-        if(!response.ok) {
-            throw new Error('Failed to fetch local geojson', {
-                cause: response
-            });
-        }
-
-        return response.json();
-    })
-    .then((data) => {
-        parseGeoJson(data);
-    })
-    .catch((error) => {
-        const errorMessage = 'Failed to load Capitals layer';
-        LogManager.logError(FILENAME, 'geoJsonPromise', {
-            message: errorMessage,
-            error: error
+axios.get(urlGeoJson, {
+    responseType: 'application/json',
+    headers: {
+        'Cache-Control': 'no-cache',
+        'Pragma': 'no-cache',
+        'Expires': '0',
+    }
+}).then((response) => {
+    if (response.status !== 200) {
+        throw new Error('Failed to fetch local geojson', {
+            cause: response
         });
+    }
 
-        Toast.error({
-            title: 'Error',
-            message: errorMessage
-        });
+    return JSON.parse(response.data);
+}).then((data) => {
+    parseGeoJson(data);
+}).catch((error) => {
+    const errorMessage = 'Failed to load Capitals layer';
+    LogManager.logError(FILENAME, 'geoJsonPromise', {
+        message: errorMessage,
+        error: error
     });
+
+    Toast.error({
+        title: 'Error',
+        message: errorMessage
+    });
+});

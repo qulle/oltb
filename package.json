@@ -51,6 +51,7 @@
     "type": "module",
     "dependencies": {
         "a-color-picker": "^1.2.1",
+        "axios": "^1.7.2",
         "browser-dtector": "^4.1.0",
         "html2canvas": "^1.4.1",
         "jsts": "^2.11.2",

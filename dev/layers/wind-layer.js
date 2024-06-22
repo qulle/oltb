@@ -1,5 +1,6 @@
 import _ from 'lodash';
-import urlCapitalsGeoJson from 'url:../geojson/capitals.geojson';
+import axios from 'axios';
+import urlGeoJson from 'url:../geojson/capitals.geojson';
 import { Toast } from '../../src/oltb/js/ui-common/ui-toasts/toast';
 import { LogManager } from '../../src/oltb/js/toolbar-managers/log-manager/log-manager';
 import { toStringHDMS } from 'ol/coordinate';
@@ -17,7 +18,7 @@ const LayerWrapper = LayerManager.addFeatureLayer({
     isSilent: true
 });
 
-const getWindDirection = function(continentName) {
+const getWindDirection = function (continentName) {
     const windDirections = Object.freeze({
         'Europe': 5,
         'Africa': 110,
@@ -34,7 +35,7 @@ const getWindDirection = function(continentName) {
     return windDirections[continentName] || 0;
 }
 
-const parseGeoJson = function(data) {
+const parseGeoJson = function (data) {
     data.features.forEach((capital) => {
         const coordinates = [
             Number(capital.geometry.coordinates[0]),
@@ -54,7 +55,7 @@ const parseGeoJson = function(data) {
         const description = `
             Current wind speed is ${windSpeed}m/s. The direction is ${windDirection}deg.
         `;
-        
+
         const infoWindow = {
             title: countryName,
             content: `
@@ -90,28 +91,32 @@ const parseGeoJson = function(data) {
     });
 }
 
-fetch(urlCapitalsGeoJson)
-    .then((response) => {
-        if(!response.ok) {
-            throw new Error('Failed to fetch local geojson', {
-                cause: response
-            });
-        }
-
-        return response.json();
-    })
-    .then((data) => {
-        parseGeoJson(data);
-    })
-    .catch((error) => {
-        const errorMessage = 'Failed to load Wind Barbs layer';
-        LogManager.logError(FILENAME, 'geoJsonPromise', {
-            message: errorMessage,
-            error: error
+axios.get(urlGeoJson, {
+    responseType: 'application/json',
+    headers: {
+        'Cache-Control': 'no-cache',
+        'Pragma': 'no-cache',
+        'Expires': '0',
+    }
+}).then((response) => {
+    if (response.status !== 200) {
+        throw new Error('Failed to fetch local geojson', {
+            cause: response
         });
+    }
 
-        Toast.error({
-            title: 'Error',
-            message: errorMessage
-        }); 
+    return JSON.parse(response.data);
+}).then((data) => {
+    parseGeoJson(data);
+}).catch((error) => {
+    const errorMessage = 'Failed to load Wind Barbs layer';
+    LogManager.logError(FILENAME, 'geoJsonPromise', {
+        message: errorMessage,
+        error: error
     });
+
+    Toast.error({
+        title: 'Error',
+        message: errorMessage
+    });
+});

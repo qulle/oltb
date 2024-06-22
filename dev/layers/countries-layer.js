@@ -1,4 +1,5 @@
-import urlCountriesGeoJson from 'url:../geojson/countries.geojson';
+import axios from 'axios';
+import urlGeoJson from 'url:../geojson/countries.geojson';
 import { bbox } from 'ol/loadingstrategy';
 import { Toast } from '../../src/oltb/js/ui-common/ui-toasts/toast';
 import { GeoJSON } from 'ol/format';
@@ -17,7 +18,7 @@ const FILENAME = 'layers/Countries.js';
 const CLASS__FUNC_BUTTON = 'oltb-func-btn';
 const ID__PREFIX_INFO_WINDOW = 'oltb-info-window-marker';
 
-const parseGeoJson = function(context, data, projection) {
+const parseGeoJson = function (context, data, projection) {
     const features = new GeoJSON({
         featureProjection: projection.getCode()
     }).readFeatures(data);
@@ -25,8 +26,8 @@ const parseGeoJson = function(context, data, projection) {
     const config = ConfigManager.getConfig();
     features.forEach((feature) => {
         const coordinates = transform(
-            getCenter(feature.getGeometry().getExtent()), 
-            config.projection.default, 
+            getCenter(feature.getGeometry().getExtent()),
+            config.projection.default,
             config.projection.wgs84
         );
 
@@ -66,39 +67,43 @@ const parseGeoJson = function(context, data, projection) {
     });
 
     context.addFeatures(features);
-    
+
     return features;
 }
 
-const loadGeoJson = function(extent, resolution, projection, success, failure) {
-    fetch(urlCountriesGeoJson)
-        .then((response) => {
-            if(!response.ok) {
-                throw new Error('Failed to fetch local geojson', {
-                    cause: response
-                });
-            }
-
-            return response.json();
-        })
-        .then((data) => {
-            const features = parseGeoJson(this, data, projection);
-            success(features);
-        })
-        .catch((error) => {
-            const errorMessage = 'Failed to load Countries layer';
-            LogManager.logError(FILENAME, 'geoJsonPromise', {
-                message: errorMessage,
-                error: error
+const loadGeoJson = function (extent, resolution, projection, success, failure) {
+    axios.get(urlGeoJson, {
+        responseType: 'application/json',
+        headers: {
+            'Cache-Control': 'no-cache',
+            'Pragma': 'no-cache',
+            'Expires': '0',
+        }
+    }).then((response) => {
+        if (response.status !== 200) {
+            throw new Error('Failed to fetch local geojson', {
+                cause: response
             });
+        }
 
-            Toast.error({
-                title: 'Error',
-                message: errorMessage
-            });
-
-            failure();
+        return JSON.parse(resolution.data);
+    }).then((data) => {
+        const features = parseGeoJson(this, data, projection);
+        success(features);
+    }).catch((error) => {
+        const errorMessage = 'Failed to load Countries layer';
+        LogManager.logError(FILENAME, 'geoJsonPromise', {
+            message: errorMessage,
+            error: error
         });
+
+        Toast.error({
+            title: 'Error',
+            message: errorMessage
+        });
+
+        failure();
+    });
 }
 
 LayerManager.addMapLayers([
@@ -110,7 +115,7 @@ LayerManager.addMapLayers([
                 format: new GeoJSON({
                     featureProjection: ConfigManager.getConfig().projection.default
                 }),
-                loader: loadGeoJson, 
+                loader: loadGeoJson,
                 strategy: bbox,
             }),
             visible: false

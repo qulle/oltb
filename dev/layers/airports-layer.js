@@ -1,4 +1,5 @@
-import urlAirportsGeoJson from 'url:../geojson/airports.geojson';
+import axios from 'axios';
+import urlGeoJson from 'url:../geojson/airports.geojson';
 import { Toast } from '../../src/oltb/js/ui-common/ui-toasts/toast';
 import { LogManager } from '../../src/oltb/js/toolbar-managers/log-manager/log-manager';
 import { toStringHDMS } from 'ol/coordinate';
@@ -16,9 +17,9 @@ const LayerWrapper = LayerManager.addFeatureLayer({
     isSilent: true
 });
 
-const getMarkerColor = function() {
+const getMarkerColor = function () {
     return {
-        fill: '#FCBE80FF', 
+        fill: '#FCBE80FF',
         stroke: '#FCBE8066'
     };
 }
@@ -84,28 +85,32 @@ const parseGeoJson = function(data) {
     });
 }
 
-fetch(urlAirportsGeoJson)
-    .then((response) => {
-        if(!response.ok) {
-            throw new Error('Failed to fetch local geojson', {
-                cause: response
-            });
-        }
-
-        return response.json();
-    })
-    .then((data) => {
-        parseGeoJson(data);
-    })
-    .catch((error) => {
-        const errorMessage = 'Failed to load Airports layer';
-        LogManager.logError(FILENAME, 'geoJsonPromise', {
-            message: errorMessage,
-            error: error
+axios.get(urlGeoJson, {
+    responseType: 'application/json',
+    headers: {
+        'Cache-Control': 'no-cache',
+        'Pragma': 'no-cache',
+        'Expires': '0',
+    }
+}).then((response) => {
+    if (response.status !== 200) {
+        throw new Error('Failed to fetch local geojson', {
+            cause: response
         });
+    }
 
-        Toast.error({
-            title: 'Error',
-            message: errorMessage
-        });
+    return JSON.parse(response.data);
+}).then((data) => {
+    parseGeoJson(data);
+}).catch((error) => {
+    const errorMessage = 'Failed to load Airports layer';
+    LogManager.logError(FILENAME, 'geoJsonPromise', {
+        message: errorMessage,
+        error: error
     });
+
+    Toast.error({
+        title: 'Error',
+        message: errorMessage
+    });
+});

@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import axios from 'axios';
 import { LogManager } from '../log-manager/log-manager';
 import { BaseManager } from '../base-manager';
 import { StateManager } from '../state-manager/state-manager';
@@ -83,14 +84,18 @@ class TranslationManager extends BaseManager {
     static async #fetchLanguagesAsync(values) {
         const timestamp = Date.now().toString();
         const requests = values.map(async (value) => {
-            return fetch(`${this.#options.url}/${value}.json?cache=${timestamp}`, {
-                method: 'GET',
-                cache: 'no-cache',
-                headers: {
-                    'Accept': 'application/json'
+            return axios.get(`${this.#options.url}/${value}.json`, {
+                responseType: 'application/json',
+                params: {
+                    cache: timestamp
                 },
+                headers: {
+                    'Cache-Control': 'no-cache',
+                    'Pragma': 'no-cache',
+                    'Expires': '0',
+                }
             }).then((result) => {
-                return result.json();
+                return JSON.parse(result.data);
             })
         });
 
