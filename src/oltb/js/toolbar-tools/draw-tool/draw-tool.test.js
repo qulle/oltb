@@ -17,7 +17,7 @@ const HTML__MOCK = (`
             <h4 class="${CLASS__TOOLBOX_SECTION}__title" data-oltb-i18n="${I18N__BASE}.toolbox.titles.draw">__JEST__</h4>
             <span class="${CLASS__TOOLBOX_SECTION}__icon oltb-tippy" data-oltb-i18n="${I18N__BASE_COMMON}.titles.toggleSection" title="__JEST__"></span>
         </div>
-        <div class="${CLASS__TOOLBOX_SECTION}__groups" id="${ID__PREFIX}-toolbox-collapsed" style="display: 'block'}">
+        <div class="${CLASS__TOOLBOX_SECTION}__groups" id="${ID__PREFIX}-toolbox-collapsed" style="display: block;">
             <div class="${CLASS__TOOLBOX_SECTION}__group">
                 <label class="oltb-label" for="${ID__PREFIX}-type" data-oltb-i18n="${I18N__BASE}.toolbox.groups.shapes.title">__JEST__</label>
                 <select id="${ID__PREFIX}-type" class="oltb-select">
@@ -60,13 +60,13 @@ const HTML__MOCK = (`
                 <div class="${CLASS__TOOLBOX_SECTION}__group-part">
                     <label class="oltb-label" for="${ID__PREFIX}-stroke-color" data-oltb-i18n="${I18N__BASE}.toolbox.groups.strokeColor.title">__JEST__</label>
                     <div id="${ID__PREFIX}-stroke-color" class="oltb-color-input oltb-color-tippy" data-oltb-color-target="#${ID__PREFIX}-stroke-color" data-oltb-color="__JEST__" tabindex="0">
-                        <div class="oltb-color-input__inner"></div>
+                        <div class="oltb-color-input__inner" style="background-color: #000000;"></div>
                     </div>
                 </div>
                 <div class="${CLASS__TOOLBOX_SECTION}__group-part">
                     <label class="oltb-label" for="${ID__PREFIX}-fill-color" data-oltb-i18n="${I18N__BASE}.toolbox.groups.fillColor.title">__JEST__</label>
                     <div id="${ID__PREFIX}-fill-color" class="oltb-color-input oltb-color-tippy" data-oltb-color-target="#${ID__PREFIX}-fill-color" data-oltb-color="__JEST__" tabindex="0">
-                        <div class="oltb-color-input__inner"></div>
+                        <div class="oltb-color-input__inner" style="background-color: #000000;"></div>
                     </div>
                 </div>
             </div>
