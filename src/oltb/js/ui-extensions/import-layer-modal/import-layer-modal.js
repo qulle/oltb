@@ -24,6 +24,8 @@ const DefaultOptions = Object.freeze({
  * Manager that handles importing of vector layers
  */
 class ImportLayerModal extends BaseModal {
+    #buttons = [];
+    
     constructor(options = {}) {
         super({
             filename: FILENAME,
@@ -32,7 +34,7 @@ class ImportLayerModal extends BaseModal {
         });
 
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
-        this.#createModal();
+        this.#createModalContent();
     }
 
     //--------------------------------------------------------------------
@@ -45,7 +47,7 @@ class ImportLayerModal extends BaseModal {
     //--------------------------------------------------------------------
     // # Section: User Interface
     //--------------------------------------------------------------------
-    #createModal() {
+    #createModalContent() {
         const i18n = TranslationManager.get(`${I18N__BASE}.form`);
         const featureProjectionOptions = [];
         const dataProjectionOptions = [];
@@ -132,6 +134,7 @@ class ImportLayerModal extends BaseModal {
             buttonsWrapper
         ]);
 
+        this.#buttons = [cancelButton, importButton];
         this.show(modalContent);
     }
 
@@ -146,6 +149,13 @@ class ImportLayerModal extends BaseModal {
     #onCancel() {
         this.close();
         this.options.onCancel && this.options.onCancel();
+    }
+
+    //--------------------------------------------------------------------
+    // # Section: Public API
+    //--------------------------------------------------------------------
+    getButtons() {
+        return this.#buttons;
     }
 }
 

@@ -23,6 +23,8 @@ const DefaultOptions = Object.freeze({
  * Manager that handles downloading of vector layers
  */
 class DownloadLayerModal extends BaseModal {
+    #buttons = [];
+    
     constructor(options = {}) {
         super({
             filename: FILENAME,
@@ -31,7 +33,7 @@ class DownloadLayerModal extends BaseModal {
         });
 
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
-        this.#createModal();
+        this.#createModalContent();
     }
 
     //--------------------------------------------------------------------
@@ -44,7 +46,7 @@ class DownloadLayerModal extends BaseModal {
     //--------------------------------------------------------------------
     // # Section: User Interface
     //--------------------------------------------------------------------
-    #createModal() {
+    #createModalContent() {
         const i18n = TranslationManager.get(`${I18N__BASE}.form`);
         const [ formatWrapper, formatSelect ] = createUISelect({
             idPrefix: ID__PREFIX,
@@ -103,6 +105,7 @@ class DownloadLayerModal extends BaseModal {
             buttonsWrapper
         ]);
 
+        this.#buttons = [cancelButton, downloadButton];
         this.show(modalContent);
     }
 
@@ -117,6 +120,13 @@ class DownloadLayerModal extends BaseModal {
     #onCancel() {
         this.close();
         this.options.onCancel && this.options.onCancel();
+    }
+
+    //--------------------------------------------------------------------
+    // # Section: Public API
+    //--------------------------------------------------------------------
+    getButtons() {
+        return this.#buttons;
     }
 }
 

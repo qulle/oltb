@@ -28,6 +28,8 @@ const DefaultOptions = Object.freeze({
  * Manager that handles creation of Map-Layers
  */
 class LayerModal extends BaseModal {
+    #buttons = [];
+    
     constructor(options = {}) {
         super({
             filename: FILENAME,
@@ -36,7 +38,7 @@ class LayerModal extends BaseModal {
         });
         
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
-        this.#createModal();
+        this.#createModalContent();
     }
 
     //--------------------------------------------------------------------
@@ -49,7 +51,7 @@ class LayerModal extends BaseModal {
     //--------------------------------------------------------------------
     // # Section: User Interface
     //--------------------------------------------------------------------
-    #createModal() {
+    #createModalContent() {
         const i18n = TranslationManager.get(`${I18N__BASE}.form`);
         const [ nameWrapper, nameInput ] = createUIInput({
             idPrefix: ID__PREFIX,
@@ -209,6 +211,7 @@ class LayerModal extends BaseModal {
             buttonsWrapper
         ]);
 
+        this.#buttons = [cancelButton, createButton];
         this.show(modalContent);
     }
 
@@ -223,6 +226,13 @@ class LayerModal extends BaseModal {
     #onCancel() {
         this.close();
         this.options.onCancel && this.options.onCancel();
+    }
+
+    //--------------------------------------------------------------------
+    // # Section: Public API
+    //--------------------------------------------------------------------
+    getButtons() {
+        return this.#buttons;
     }
 }
 

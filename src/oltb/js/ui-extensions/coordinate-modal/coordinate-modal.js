@@ -22,6 +22,8 @@ const DefaultOptions = Object.freeze({
  * Manager that handles navigation to entered coordinates
  */
 class CoordinateModal extends BaseModal {
+    #buttons = [];
+
     constructor(options = {}) {
         super({
             filename: FILENAME,
@@ -30,7 +32,7 @@ class CoordinateModal extends BaseModal {
         });
         
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
-        this.#createModal();
+        this.#createModalContent();
     }
 
     //--------------------------------------------------------------------
@@ -43,7 +45,7 @@ class CoordinateModal extends BaseModal {
     //--------------------------------------------------------------------
     // # Section: User Interface
     //--------------------------------------------------------------------
-    #createModal() {
+    #createModalContent() {
         const i18n = TranslationManager.get(`${I18N__BASE}.form`);
         const [ latWrapper, latInput ] = createUIInput({
             idPrefix: ID__PREFIX,
@@ -118,6 +120,7 @@ class CoordinateModal extends BaseModal {
             buttonsWrapper,
         ]);
 
+        this.#buttons = [cancelButton, navigateButton];
         this.show(modalContent);
     }
 
@@ -132,6 +135,13 @@ class CoordinateModal extends BaseModal {
     #onCancel() {
         this.close();
         this.options.onCancel && this.options.onCancel();
+    }
+
+    //--------------------------------------------------------------------
+    // # Section: Public API
+    //--------------------------------------------------------------------
+    getButtons() {
+        return this.#buttons;
     }
 }
 

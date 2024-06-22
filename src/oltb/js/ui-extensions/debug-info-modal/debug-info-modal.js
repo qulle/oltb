@@ -34,6 +34,8 @@ const DefaultOptions = Object.freeze({
  * Manager providing debugging information
  */
 class DebugInfoModal extends BaseModal {
+    #buttons = [];
+    
     constructor(options = {}) {
         super({
             filename: FILENAME,
@@ -43,7 +45,7 @@ class DebugInfoModal extends BaseModal {
         });
             
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
-        this.#createModal();
+        this.#createModalContent();
     }
 
     //--------------------------------------------------------------------
@@ -56,7 +58,7 @@ class DebugInfoModal extends BaseModal {
     //--------------------------------------------------------------------
     // # Section: User Interface
     //--------------------------------------------------------------------
-    #createModal() {
+    #createModalContent() {
         // Note:
         // Create a summary log-entry as the top item with some usefull information
         const logManagerSize = LogManager.getSize();

@@ -22,6 +22,7 @@ const DefaultOptions = Object.freeze({
  * Manager that handles settings
  */
 class SettingsModal extends BaseModal {
+    #buttons = [];
     #state = new Map();
 
     constructor(options = {}) {
@@ -32,7 +33,7 @@ class SettingsModal extends BaseModal {
         });
         
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
-        this.#createModal();
+        this.#createModalContent();
     }
 
     //--------------------------------------------------------------------
@@ -45,7 +46,7 @@ class SettingsModal extends BaseModal {
     //--------------------------------------------------------------------
     // # Section: User Interface
     //--------------------------------------------------------------------
-    #createModal() {
+    #createModalContent() {
         const i18n = TranslationManager.get(`${I18N__BASE}.form`);
         const settingsFragment = window.document.createDocumentFragment();
         const settings = SettingsManager.getSettings();
@@ -120,6 +121,7 @@ class SettingsModal extends BaseModal {
             buttonsWrapper,
         ]);
 
+        this.#buttons = [cancelButton, saveButton];
         this.show(modalContent);
     }
 
@@ -140,6 +142,13 @@ class SettingsModal extends BaseModal {
     #onCancel() {
         this.close();
         this.options.onCancel && this.options.onCancel();
+    }
+
+    //--------------------------------------------------------------------
+    // # Section: Public API
+    //--------------------------------------------------------------------
+    getButtons() {
+        return this.#buttons;
     }
 }
 

@@ -45,6 +45,8 @@ const DefaultOptions = Object.freeze({
  * Manager that handles creation of Icon-Markers
  */
 class IconMarkerModal extends BaseModal {
+    #buttons = [];
+    
     constructor(options = {}) {
         super({
             filename: FILENAME,
@@ -53,7 +55,7 @@ class IconMarkerModal extends BaseModal {
         });
         
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
-        this.#createModal();
+        this.#createModalContent();
     }
 
     //--------------------------------------------------------------------
@@ -66,7 +68,7 @@ class IconMarkerModal extends BaseModal {
     //--------------------------------------------------------------------
     // # Section: User Interface
     //--------------------------------------------------------------------
-    #createModal() {
+    #createModalContent() {
         const i18n = TranslationManager.get(`${I18N__BASE}.form`);
         const [ titleWrapper, titleInput ] = createUIInput({
             idPrefix: ID__PREFIX,
@@ -280,6 +282,7 @@ class IconMarkerModal extends BaseModal {
             buttonsWrapper
         ]);
 
+        this.#buttons = [cancelButton, createButton];
         this.show(modalContent);
     }
 
@@ -294,6 +297,13 @@ class IconMarkerModal extends BaseModal {
     #onCancel() {
         this.close();
         this.options.onCancel && this.options.onCancel();
+    }
+
+    //--------------------------------------------------------------------
+    // # Section: Public API
+    //--------------------------------------------------------------------
+    getButtons() {
+        return this.#buttons;
     }
 }
 

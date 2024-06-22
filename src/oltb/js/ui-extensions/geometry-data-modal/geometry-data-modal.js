@@ -18,6 +18,8 @@ const DefaultOptions = Object.freeze({
  * Manager that handles downloading of vector layers
  */
 class GeometryDataModal extends BaseModal {
+    #buttons = [];
+    
     constructor(options = {}) {
         super({
             filename: FILENAME,
@@ -26,7 +28,7 @@ class GeometryDataModal extends BaseModal {
         });
 
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
-        this.#createModal();
+        this.#createModalContent();
     }
 
     //--------------------------------------------------------------------
@@ -39,7 +41,7 @@ class GeometryDataModal extends BaseModal {
     //--------------------------------------------------------------------
     // # Section: User Interface
     //--------------------------------------------------------------------
-    #createModal() {
+    #createModalContent() {
         const modalContent = DOM.createElement({
             element: 'div',
             class: 'oltb-modal__content'
