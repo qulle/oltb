@@ -6,11 +6,20 @@ import { ElementManager } from '../../toolbar-managers/element-manager/element-m
 
 const FILENAME = 'toolbox-tool.js';
 
+//--------------------------------------------------------------------
+// # Section: Helpers
+//--------------------------------------------------------------------
 const hasToolActiveClass = (tool) => {
     return tool.button.classList.contains('oltb-tool-button--active');
 }
 
+//--------------------------------------------------------------------
+// # Section: Testing
+//--------------------------------------------------------------------
 describe('ToolboxTool', () => {
+    //--------------------------------------------------------------------
+    // # Section: Setup
+    //--------------------------------------------------------------------
     beforeAll(() => {
         jest.spyOn(ElementManager, 'getToolbarElement').mockImplementation(() => {
             return window.document.createElement('div');
@@ -29,6 +38,9 @@ describe('ToolboxTool', () => {
         });
     });
 
+    //--------------------------------------------------------------------
+    // # Section: Jesting
+    //--------------------------------------------------------------------
     it('should init the tool', () => {
         const options = {onInitiated: () => {}};
         const spyOnInitiated = jest.spyOn(options, 'onInitiated');

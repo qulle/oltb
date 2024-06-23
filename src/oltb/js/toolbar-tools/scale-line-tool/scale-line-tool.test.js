@@ -6,6 +6,9 @@ import { ElementManager } from '../../toolbar-managers/element-manager/element-m
 
 const FILENAME = 'scale-line-tool.js';
 
+//--------------------------------------------------------------------
+// # Section: Mocking
+//--------------------------------------------------------------------
 const mockMap = {
     addInteraction: (interaction) => {},
     removeInteraction: (interaction) => {},
@@ -14,11 +17,20 @@ const mockMap = {
     on: (event, callback) => {}
 };
 
+//--------------------------------------------------------------------
+// # Section: Helpers
+//--------------------------------------------------------------------
 const hasToolActiveClass = (tool) => {
     return tool.button.classList.contains('oltb-tool-button--active');
 }
 
+//--------------------------------------------------------------------
+// # Section: Testing
+//--------------------------------------------------------------------
 describe('ScaleLineTool', () => {
+    //--------------------------------------------------------------------
+    // # Section: Setup
+    //--------------------------------------------------------------------
     beforeAll(() => {
         jest.spyOn(ElementManager, 'getToolbarElement').mockImplementation(() => {
             return window.document.createElement('div');
@@ -45,6 +57,9 @@ describe('ScaleLineTool', () => {
         });
     });
 
+    //--------------------------------------------------------------------
+    // # Section: Jesting
+    //--------------------------------------------------------------------
     it('should init the tool', () => {
         const options = {onInitiated: () => {}};
         const spyOnInitiated = jest.spyOn(options, 'onInitiated');

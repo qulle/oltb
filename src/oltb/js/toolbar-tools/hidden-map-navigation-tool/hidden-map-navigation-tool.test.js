@@ -21,6 +21,10 @@ describe('HiddenMapNavigationTool', () => {
         jest.spyOn(StateManager, 'getStateObject').mockImplementation(() => {
             return {};
         });
+
+        jest.spyOn(StateManager, 'setStateObject').mockImplementation(() => {
+            return;
+        });
     });
 
     //--------------------------------------------------------------------

@@ -6,7 +6,13 @@ import { ElementManager } from '../../toolbar-managers/element-manager/element-m
 
 const FILENAME = 'theme-tool.js';
 
+//--------------------------------------------------------------------
+// # Section: Testing
+//--------------------------------------------------------------------
 describe('ThemeTool', () => {
+    //--------------------------------------------------------------------
+    // # Section: Setup
+    //--------------------------------------------------------------------
     beforeAll(() => {
         jest.spyOn(ElementManager, 'getToolbarElement').mockImplementation(() => {
             return window.document.createElement('div');
@@ -21,6 +27,9 @@ describe('ThemeTool', () => {
         });
     });
 
+    //--------------------------------------------------------------------
+    // # Section: Jesting
+    //--------------------------------------------------------------------
     it('should init the tool', () => {
         const options = {onInitiated: () => {}};
         const spyOnInitiated = jest.spyOn(options, 'onInitiated');

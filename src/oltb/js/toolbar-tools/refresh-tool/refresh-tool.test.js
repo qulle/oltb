@@ -5,9 +5,15 @@ import { ElementManager } from '../../toolbar-managers/element-manager/element-m
 
 const FILENAME = 'refresh-tool.js';
 
+//--------------------------------------------------------------------
+// # Section: Testing
+//--------------------------------------------------------------------
 describe('RefreshTool', () => {
     const original = window.location;
 
+    //--------------------------------------------------------------------
+    // # Section: Setup
+    //--------------------------------------------------------------------
     beforeAll(() => {
         Object.defineProperty(window, 'location', {
             configurable: true,
@@ -21,6 +27,9 @@ describe('RefreshTool', () => {
         });
     });
 
+    //--------------------------------------------------------------------
+    // # Section: Cleanup
+    //--------------------------------------------------------------------
     afterAll(() => {
         Object.defineProperty(window, 'location', { 
             configurable: true, 
@@ -28,6 +37,9 @@ describe('RefreshTool', () => {
         });
     });
 
+    //--------------------------------------------------------------------
+    // # Section: Jesting
+    //--------------------------------------------------------------------
     it('should init the tool', () => {
         const options = {onInitiated: () => {}};
         const spyOnInitiated = jest.spyOn(options, 'onInitiated');

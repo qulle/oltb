@@ -10,6 +10,10 @@ describe('SettingsManager', () => {
         jest.spyOn(StateManager, 'getStateObject').mockImplementation(() => {
             return {};
         });
+
+        jest.spyOn(StateManager, 'setStateObject').mockImplementation(() => {
+            return;
+        });
     });
 
     it('should init the manager', async () => {

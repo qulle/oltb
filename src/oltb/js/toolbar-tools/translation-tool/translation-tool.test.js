@@ -5,7 +5,13 @@ import { TranslationTool } from './translation-tool';
 
 const FILENAME = 'translation-tool.js';
 
+//--------------------------------------------------------------------
+// # Section: Testing
+//--------------------------------------------------------------------
 describe('TranslationTool', () => {
+    //--------------------------------------------------------------------
+    // # Section: Setup
+    //--------------------------------------------------------------------
     beforeAll(() => {
         jest.spyOn(ElementManager, 'getToolbarElement').mockImplementation(() => {
             return window.document.createElement('div');
@@ -16,6 +22,9 @@ describe('TranslationTool', () => {
         });
     });
 
+    //--------------------------------------------------------------------
+    // # Section: Jesting
+    //--------------------------------------------------------------------
     it('should init the tool', () => {
         const options = {onInitiated: () => {}};
         const spyOnInitiated = jest.spyOn(options, 'onInitiated');

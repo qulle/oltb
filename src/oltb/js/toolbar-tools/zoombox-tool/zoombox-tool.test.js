@@ -6,7 +6,13 @@ import { ElementManager } from '../../toolbar-managers/element-manager/element-m
 
 const FILENAME = 'zoombox-tool.js';
 
+//--------------------------------------------------------------------
+// # Section: Testing
+//--------------------------------------------------------------------
 describe('ZoomboxTool', () => {
+    //--------------------------------------------------------------------
+    // # Section: Setup
+    //--------------------------------------------------------------------
     beforeAll(() => {
         jest.spyOn(ElementManager, 'getToolbarElement').mockImplementation(() => {
             return window.document.createElement('div');
@@ -15,8 +21,15 @@ describe('ZoomboxTool', () => {
         jest.spyOn(StateManager, 'getStateObject').mockImplementation(() => {
             return {};
         });
+
+        jest.spyOn(StateManager, 'setStateObject').mockImplementation(() => {
+            return;
+        });
     });
 
+    //--------------------------------------------------------------------
+    // # Section: Jesting
+    //--------------------------------------------------------------------
     it('should init the tool', () => {
         const tool = new ZoomboxTool();
 

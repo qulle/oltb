@@ -51,7 +51,7 @@ describe('BookmarkTool', () => {
     beforeAll(() => {
         Element.prototype.scrollIntoView = jest.fn();
         window.document.body.innerHTML = HTML__MOCK;
-
+        
         jest.spyOn(ElementManager, 'getToolbarElement').mockImplementation(() => {
             return window.document.createElement('div');
         });

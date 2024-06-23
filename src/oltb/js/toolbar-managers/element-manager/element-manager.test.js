@@ -26,6 +26,10 @@ describe('ElementManager', () => {
             return {};
         });
 
+        jest.spyOn(StateManager, 'setStateObject').mockImplementation(() => {
+            return;
+        });
+
         jest.spyOn(window.document, 'getElementById').mockImplementation(() => {
             return window.document.createElement('div');
         });

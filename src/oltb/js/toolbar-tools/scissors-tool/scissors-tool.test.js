@@ -9,6 +9,9 @@ import { SettingsManager } from '../../toolbar-managers/settings-manager/setting
 
 const FILENAME = 'scissors-tool.js';
 
+//--------------------------------------------------------------------
+// # Section: Mocking
+//--------------------------------------------------------------------
 const mockMap = {
     addInteraction: (interaction) => {},
     removeInteraction: (interaction) => {},
@@ -17,11 +20,20 @@ const mockMap = {
     on: (event, callback) => {}
 };
 
+//--------------------------------------------------------------------
+// # Section: Helpers
+//--------------------------------------------------------------------
 const hasToolActiveClass = (tool) => {
     return tool.button.classList.contains('oltb-tool-button--active');
 }
 
+//--------------------------------------------------------------------
+// # Section: Testing
+//--------------------------------------------------------------------
 describe('ScissorsTool', () => {
+    //--------------------------------------------------------------------
+    // # Section: Setup
+    //--------------------------------------------------------------------
     beforeAll(() => {
         jest.spyOn(ElementManager, 'getToolbarElement').mockImplementation(() => {
             return window.document.createElement('div');
@@ -44,6 +56,9 @@ describe('ScissorsTool', () => {
         });
     });
 
+    //--------------------------------------------------------------------
+    // # Section: Jesting
+    //--------------------------------------------------------------------
     it('should init the tool', () => {
         const options = {onInitiated: () => {}};
         const spyOnInitiated = jest.spyOn(options, 'onInitiated');
