@@ -263,6 +263,7 @@ class DrawTool extends BaseTool {
             });
         }
 
+        // Important:
         // Triggers activation of the tool
         eventDispatcher([this.uiRefToolType], Events.browser.change);
 

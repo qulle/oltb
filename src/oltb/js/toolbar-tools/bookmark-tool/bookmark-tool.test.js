@@ -31,6 +31,10 @@ const HTML__MOCK = (`
     </div>
 `);
 
+const hasToolActiveClass = (tool) => {
+    return tool.button.classList.contains('oltb-tool-button--active');
+}
+
 describe('BookmarkTool', () => {
     beforeAll(() => {
         Element.prototype.scrollIntoView = jest.fn();
@@ -72,8 +76,12 @@ describe('BookmarkTool', () => {
         const spyDeactivate = jest.spyOn(BookmarkTool.prototype, 'deactivateTool');
 
         const tool = new BookmarkTool(options);
+        
+        expect(hasToolActiveClass(tool)).toBe(false);
         tool.onClickTool();
+        expect(hasToolActiveClass(tool)).toBe(true);
         tool.onClickTool();
+        expect(hasToolActiveClass(tool)).toBe(false);
 
         expect(spyActivate).toHaveBeenCalledTimes(1);
         expect(spyDeactivate).toHaveBeenCalledTimes(1);

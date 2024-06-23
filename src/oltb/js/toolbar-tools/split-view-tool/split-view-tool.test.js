@@ -37,6 +37,20 @@ const HTML__MOCK = (`
     </div>
 `);
 
+const mockMap = {
+    addLayer: (layer) => {},
+    removeLayer: (layer) => {}, 
+    addInteraction: (interaction) => {},
+    removeInteraction: (interaction) => {},
+    addOverlay: (overlay) => {},
+    removeOverlay: (overlay) => {},
+    on: (event, callback) => {}
+};
+
+const hasToolActiveClass = (tool) => {
+    return tool.button.classList.contains('oltb-tool-button--active');
+}
+
 describe('SplitViewTool', () => {
     beforeAll(() => {
         Element.prototype.scrollIntoView = jest.fn();
@@ -71,10 +85,27 @@ describe('SplitViewTool', () => {
             return;
         });
 
-        LayerManager.setMap({
-            addLayer: () => {},
-            removeLayer: () => {}
+        jest.spyOn(SplitViewTool.prototype, 'getMap').mockImplementation(() => {
+            return mockMap;
         });
+
+        jest.spyOn(SplitViewTool.prototype, 'doAddMapLayer').mockImplementation(() => {
+            return;
+        });
+
+        jest.spyOn(SplitViewTool.prototype, 'doRemoveMapLayer').mockImplementation(() => {
+            return;
+        });
+
+        jest.spyOn(SplitViewTool.prototype, 'doUpdateTool').mockImplementation(() => {
+            return;
+        });
+
+        jest.spyOn(LayerManager, 'setTopMapLayerAsOnlyVisible').mockImplementation(() => {
+            return;
+        });
+
+        LayerManager.setMap(mockMap);
         LayerManager.addMapLayers([
             {
                 id: '7b5399a8-9e57-4304-a233-cdf363c8ed93',
@@ -121,8 +152,12 @@ describe('SplitViewTool', () => {
         const spyDeactivate = jest.spyOn(SplitViewTool.prototype, 'deactivateTool');
 
         const tool = new SplitViewTool(options);
+
+        expect(hasToolActiveClass(tool)).toBe(false);
         tool.onClickTool();
+        expect(hasToolActiveClass(tool)).toBe(true);
         tool.onClickTool();
+        expect(hasToolActiveClass(tool)).toBe(false);
 
         expect(spyActivate).toHaveBeenCalledTimes(1);
         expect(spyDeactivate).toHaveBeenCalledTimes(1);

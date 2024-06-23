@@ -214,7 +214,6 @@ class SplitViewTool extends BaseTool {
         // The active switch must be enabled first
         // Events can be triggered by other tools that should not be handled if the tools is not in use 
         this.isActive = true;
-
         this.setDefaultSelectedIndexes().doDispatchChangeEvent();
 
         // Note:
@@ -523,7 +522,6 @@ class SplitViewTool extends BaseTool {
         // This should not happen, but just in case
         if(!leftLayerWrapper || !rightLayerWrapper) {
             this.setLoadingError();
-
             return;
         }
 

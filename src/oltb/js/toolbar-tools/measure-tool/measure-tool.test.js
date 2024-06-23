@@ -1,6 +1,7 @@
 import { jest, beforeAll, describe, it, expect } from '@jest/globals';
 import { BaseTool } from '../base-tool';
 import { MeasureTool } from './measure-tool';
+import { SnapManager } from '../../toolbar-managers/snap-manager/snap-manager';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 import { SettingsManager } from '../../toolbar-managers/settings-manager/settings-manager';
@@ -43,6 +44,18 @@ const HTML__MOCK = (`
     </div>
 `);
 
+const mockMap = {
+    addInteraction: (interaction) => {},
+    removeInteraction: (interaction) => {},
+    addOverlay: (overlay) => {},
+    removeOverlay: (overlay) => {},
+    on: (event, callback) => {}
+};
+
+const hasToolActiveClass = (tool) => {
+    return tool.button.classList.contains('oltb-tool-button--active');
+}
+
 describe('MeasureTool', () => {
     beforeAll(() => {
         Element.prototype.scrollIntoView = jest.fn();
@@ -67,6 +80,10 @@ describe('MeasureTool', () => {
         jest.spyOn(SettingsManager, 'getSetting').mockImplementation(() => {
             return true;
         });
+
+        jest.spyOn(MeasureTool.prototype, 'getMap').mockImplementation(() => {
+            return mockMap;
+        });
     });
 
     it('should init the tool', () => {
@@ -87,9 +104,16 @@ describe('MeasureTool', () => {
         const spyActivate = jest.spyOn(MeasureTool.prototype, 'activateTool');
         const spyDeactivate = jest.spyOn(MeasureTool.prototype, 'deactivateTool');
 
+        SnapManager.initAsync();
+        SnapManager.setMap(mockMap);
+
         const tool = new MeasureTool(options);
+
+        expect(hasToolActiveClass(tool)).toBe(false);
         tool.onClickTool();
+        expect(hasToolActiveClass(tool)).toBe(true);
         tool.onClickTool();
+        expect(hasToolActiveClass(tool)).toBe(false);
 
         expect(spyActivate).toHaveBeenCalledTimes(1);
         expect(spyDeactivate).toHaveBeenCalledTimes(1);

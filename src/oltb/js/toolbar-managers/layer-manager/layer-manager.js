@@ -333,8 +333,7 @@ class LayerManager extends BaseManager {
 
     static getOLMapLayers() {
         const layers = [];
-
-        // Filter out the actual ol layer
+        
         for(let index in this.#layers.mapLayers) {
             layers.push(this.#layers.mapLayers[index].getLayer());
         }

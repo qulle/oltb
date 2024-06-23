@@ -17,6 +17,10 @@ const mockMap = {
     on: (event, callback) => {}
 };
 
+const hasToolActiveClass = (tool) => {
+    return tool.button.classList.contains('oltb-tool-button--active');
+}
+
 describe('ScissorsTool', () => {
     beforeAll(() => {
         jest.spyOn(ElementManager, 'getToolbarElement').mockImplementation(() => {
@@ -63,8 +67,12 @@ describe('ScissorsTool', () => {
         SnapManager.setMap(mockMap);
 
         const tool = new ScissorsTool(options);
+
+        expect(hasToolActiveClass(tool)).toBe(false);
         tool.onClickTool();
+        expect(hasToolActiveClass(tool)).toBe(true);
         tool.onClickTool();
+        expect(hasToolActiveClass(tool)).toBe(false);
 
         expect(spyActivate).toHaveBeenCalledTimes(1);
         expect(spyDeactivate).toHaveBeenCalledTimes(1);

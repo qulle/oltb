@@ -223,7 +223,8 @@ class MeasureTool extends BaseTool {
             });
         }
 
-        // Triggers activation of the measure tool
+        // Important:
+        // Triggers activation of the tool
         eventDispatcher([this.uiRefToolType], Events.browser.change);
 
         this.localStorage.isActive = true;

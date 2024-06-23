@@ -59,6 +59,10 @@ const mockMap = {
     on: (event, callback) => {}
 };
 
+const hasToolActiveClass = (tool) => {
+    return tool.button.classList.contains('oltb-tool-button--active');
+}
+
 describe('EditTool', () => {
     beforeAll(() => {
         Element.prototype.scrollIntoView = jest.fn();
@@ -116,8 +120,12 @@ describe('EditTool', () => {
         SnapManager.setMap(mockMap);
 
         const tool = new EditTool(options);
+
+        expect(hasToolActiveClass(tool)).toBe(false);
         tool.onClickTool();
+        expect(hasToolActiveClass(tool)).toBe(true);
         tool.onClickTool();
+        expect(hasToolActiveClass(tool)).toBe(false);
 
         expect(spyActivate).toHaveBeenCalledTimes(1);
         expect(spyDeactivate).toHaveBeenCalledTimes(1);

@@ -6,6 +6,18 @@ import { ElementManager } from '../../toolbar-managers/element-manager/element-m
 
 const FILENAME = 'scale-line-tool.js';
 
+const mockMap = {
+    addInteraction: (interaction) => {},
+    removeInteraction: (interaction) => {},
+    addOverlay: (overlay) => {},
+    removeOverlay: (overlay) => {},
+    on: (event, callback) => {}
+};
+
+const hasToolActiveClass = (tool) => {
+    return tool.button.classList.contains('oltb-tool-button--active');
+}
+
 describe('ScaleLineTool', () => {
     beforeAll(() => {
         jest.spyOn(ElementManager, 'getToolbarElement').mockImplementation(() => {
@@ -21,7 +33,7 @@ describe('ScaleLineTool', () => {
         });
 
         jest.spyOn(ScaleLineTool.prototype, 'getMap').mockImplementation(() => {
-            return {};
+            return mockMap;
         });
 
         jest.spyOn(ScaleLineTool.prototype, 'doAddScaleLine').mockImplementation(() => {
@@ -52,8 +64,12 @@ describe('ScaleLineTool', () => {
         const spyDeactivate = jest.spyOn(ScaleLineTool.prototype, 'deactivateTool');
 
         const tool = new ScaleLineTool(options);
+
+        expect(hasToolActiveClass(tool)).toBe(false);
         tool.onClickTool();
+        expect(hasToolActiveClass(tool)).toBe(true);
         tool.onClickTool();
+        expect(hasToolActiveClass(tool)).toBe(false);
 
         expect(spyActivate).toHaveBeenCalledTimes(1);
         expect(spyDeactivate).toHaveBeenCalledTimes(1);

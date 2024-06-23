@@ -6,6 +6,18 @@ import { ElementManager } from '../../toolbar-managers/element-manager/element-m
 
 const FILENAME = 'graticule-tool.js';
 
+const mockMap = {
+    addInteraction: (interaction) => {},
+    removeInteraction: (interaction) => {},
+    addOverlay: (overlay) => {},
+    removeOverlay: (overlay) => {},
+    on: (event, callback) => {}
+};
+
+const hasToolActiveClass = (tool) => {
+    return tool.button.classList.contains('oltb-tool-button--active');
+}
+
 describe('GraticuleTool', () => {
     beforeAll(() => {
         jest.spyOn(ElementManager, 'getToolbarElement').mockImplementation(() => {
@@ -21,7 +33,7 @@ describe('GraticuleTool', () => {
         });
 
         jest.spyOn(GraticuleTool.prototype, 'getMap').mockImplementation(() => {
-            return {};
+            return mockMap;
         });
 
         jest.spyOn(GraticuleTool.prototype, 'doAddGraticuleLines').mockImplementation(() => {
@@ -52,8 +64,12 @@ describe('GraticuleTool', () => {
         const spyDeactivate = jest.spyOn(GraticuleTool.prototype, 'deactivateTool');
 
         const tool = new GraticuleTool(options);
+
+        expect(hasToolActiveClass(tool)).toBe(false);
         tool.onClickTool();
+        expect(hasToolActiveClass(tool)).toBe(true);
         tool.onClickTool();
+        expect(hasToolActiveClass(tool)).toBe(false);
 
         expect(spyActivate).toHaveBeenCalledTimes(1);
         expect(spyDeactivate).toHaveBeenCalledTimes(1);

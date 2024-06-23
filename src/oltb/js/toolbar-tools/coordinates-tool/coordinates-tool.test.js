@@ -34,6 +34,10 @@ const HTML__MOCK = (`
     </div>
 `);
 
+const hasToolActiveClass = (tool) => {
+    return tool.button.classList.contains('oltb-tool-button--active');
+}
+
 describe('CoordinatesTool', () => {
     beforeAll(() => {
         Element.prototype.scrollIntoView = jest.fn();
@@ -87,8 +91,12 @@ describe('CoordinatesTool', () => {
         const spyDeactivate = jest.spyOn(CoordinatesTool.prototype, 'deactivateTool');
 
         const tool = new CoordinatesTool(options);
+
+        expect(hasToolActiveClass(tool)).toBe(false);
         tool.onClickTool();
+        expect(hasToolActiveClass(tool)).toBe(true);
         tool.onClickTool();
+        expect(hasToolActiveClass(tool)).toBe(false);
 
         expect(spyActivate).toHaveBeenCalledTimes(1);
         expect(spyDeactivate).toHaveBeenCalledTimes(1);

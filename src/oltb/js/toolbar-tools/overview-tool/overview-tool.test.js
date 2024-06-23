@@ -29,6 +29,18 @@ class MockResizeObserver {
     unobserve() {}
 }
 
+const mockMap = {
+    addInteraction: (interaction) => {},
+    removeInteraction: (interaction) => {},
+    addOverlay: (overlay) => {},
+    removeOverlay: (overlay) => {},
+    on: (event, callback) => {}
+};
+
+const hasToolActiveClass = (tool) => {
+    return tool.button.classList.contains('oltb-tool-button--active');
+}
+
 describe('OverviewTool', () => {
     beforeAll(() => {
         Element.prototype.scrollIntoView = jest.fn();
@@ -52,7 +64,7 @@ describe('OverviewTool', () => {
         });
 
         jest.spyOn(OverviewTool.prototype, 'getMap').mockImplementation(() => {
-            return {};
+            return mockMap;
         });
 
         jest.spyOn(OverviewTool.prototype, 'doAddOverview').mockImplementation(() => {
@@ -83,8 +95,12 @@ describe('OverviewTool', () => {
         const spyDeactivate = jest.spyOn(OverviewTool.prototype, 'deactivateTool');
 
         const tool = new OverviewTool(options);
+
+        expect(hasToolActiveClass(tool)).toBe(false);
         tool.onClickTool();
+        expect(hasToolActiveClass(tool)).toBe(true);
         tool.onClickTool();
+        expect(hasToolActiveClass(tool)).toBe(false);
 
         expect(spyActivate).toHaveBeenCalledTimes(1);
         expect(spyDeactivate).toHaveBeenCalledTimes(1);

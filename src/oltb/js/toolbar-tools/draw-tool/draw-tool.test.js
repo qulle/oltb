@@ -1,6 +1,7 @@
 import { jest, beforeAll, describe, it, expect } from '@jest/globals';
 import { BaseTool } from '../base-tool';
 import { DrawTool } from './draw-tool';
+import { SnapManager } from '../../toolbar-managers/snap-manager/snap-manager';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 import { SettingsManager } from '../../toolbar-managers/settings-manager/settings-manager';
@@ -74,6 +75,18 @@ const HTML__MOCK = (`
     </div>
 `);
 
+const mockMap = {
+    addInteraction: (interaction) => {},
+    removeInteraction: (interaction) => {},
+    addOverlay: (overlay) => {},
+    removeOverlay: (overlay) => {},
+    on: (event, callback) => {}
+};
+
+const hasToolActiveClass = (tool) => {
+    return tool.button.classList.contains('oltb-tool-button--active');
+}
+
 describe('DrawTool', () => {
     beforeAll(() => {
         Element.prototype.scrollIntoView = jest.fn();
@@ -98,6 +111,10 @@ describe('DrawTool', () => {
         jest.spyOn(SettingsManager, 'getSetting').mockImplementation(() => {
             return true;
         });
+
+        jest.spyOn(DrawTool.prototype, 'getMap').mockImplementation(() => {
+            return mockMap;
+        });
     });
 
     it('should init the tool', () => {
@@ -118,9 +135,16 @@ describe('DrawTool', () => {
         const spyActivate = jest.spyOn(DrawTool.prototype, 'activateTool');
         const spyDeactivate = jest.spyOn(DrawTool.prototype, 'deactivateTool');
 
+        SnapManager.initAsync();
+        SnapManager.setMap(mockMap);
+
         const tool = new DrawTool(options);
+
+        expect(hasToolActiveClass(tool)).toBe(false);
         tool.onClickTool();
+        expect(hasToolActiveClass(tool)).toBe(true);
         tool.onClickTool();
+        expect(hasToolActiveClass(tool)).toBe(false);
 
         expect(spyActivate).toHaveBeenCalledTimes(1);
         expect(spyDeactivate).toHaveBeenCalledTimes(1);
