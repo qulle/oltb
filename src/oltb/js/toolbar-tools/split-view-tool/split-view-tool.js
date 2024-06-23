@@ -535,7 +535,7 @@ class SplitViewTool extends BaseTool {
         if(leftId !== rightId) {
             this.doAddMapLayer(rightLayer);
 
-            // Attach listeners to the right layer. 
+            // Attach listeners to the right layer
             // Pre/Post render will only show part of the right map
             this.onPreRenderListener = rightLayer.on(Events.openLayers.preRender, this.#onPreRender.bind(this));
             this.onPostRenderListener = rightLayer.on(Events.openLayers.postRender, this.#onPostRender.bind(this));
