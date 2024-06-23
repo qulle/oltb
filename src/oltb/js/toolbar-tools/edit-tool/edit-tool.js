@@ -37,15 +37,6 @@ import { Select, Modify, Translate } from 'ol/interaction';
 import { getMeasureCoordinates, getMeasureValue } from '../../ol-helpers/geometry-measurements';
 import { GeometryCollection, LinearRing, LineString, MultiLineString, MultiPoint, MultiPolygon, Point, Polygon } from 'ol/geom';
 
-/*!
- *  JSTS
- *  To avoid circular dependencies i include the full dist
- *  This increases the bundle size but removes errors/warnings in Rollup build process
- *  Also more features can be used from this lib in the future
- *   
- *  https://github.com/bjornharrtell/jsts#caveats
- */
-
 const FILENAME = 'edit-tool.js';
 const CLASS__TOOL_BUTTON = 'oltb-tool-button';
 const CLASS__TOOLBOX_SECTION = 'oltb-toolbox-section';
@@ -159,7 +150,6 @@ class EditTool extends BaseTool {
             LocalStorageDefaults
         );
 
-        // JSTS
         this.parser = new jsts.io.OL3Parser();
         this.parser.inject(Point, LineString, LinearRing, Polygon, MultiPoint, MultiLineString, MultiPolygon, GeometryCollection);
         

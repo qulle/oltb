@@ -177,9 +177,10 @@ class OverviewTool extends BaseTool {
             return;
         }
 
+        // Note:
         // The class must be added before setMap or the overview will not render correctly
         this.uiRefToolboxSection.classList.add(`${CLASS__TOOLBOX_SECTION}--show`);
-        this.overviewMap.setMap(map);
+        this.doAddOverview();
 
         this.isActive = true;
         this.button.classList.add(`${CLASS__TOOL_BUTTON}--active`);
@@ -195,7 +196,7 @@ class OverviewTool extends BaseTool {
     }
 
     deactivateTool() {
-        this.overviewMap.setMap(null);
+        this.doRemoveOverview();
 
         this.isActive = false;
         this.button.classList.remove(`${CLASS__TOOL_BUTTON}--active`);
@@ -270,6 +271,14 @@ class OverviewTool extends BaseTool {
             this.overviewMap.setMap(null);
             this.overviewMap.setMap(map);
         });
+    }
+
+    doAddOverview(map) {
+        this.overviewMap.setMap(map);
+    }
+
+    doRemoveOverview() {
+        this.overviewMap.setMap(null);
     }
 }
 

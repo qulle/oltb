@@ -93,7 +93,6 @@ class ScissorsTool extends BaseTool {
             LocalStorageDefaults
         );
 
-        // JSTS
         this.parser = new jsts.io.OL3Parser();
         this.parser.inject(Point, LineString, LinearRing, Polygon, MultiPoint, MultiLineString, MultiPolygon, GeometryCollection);
 

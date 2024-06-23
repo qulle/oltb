@@ -101,27 +101,29 @@ describe('DrawTool', () => {
     });
 
     it('should init the tool', () => {
-        const tool = new DrawTool();
+        const options = {onInitiated: () => {}};
+        const spyOnInitiated = jest.spyOn(options, 'onInitiated');
+        const tool = new DrawTool(options);
 
         expect(tool).toBeTruthy();
         expect(tool).toBeInstanceOf(BaseTool);
         expect(tool).toBeInstanceOf(DrawTool);
         expect(tool.getName()).toBe(FILENAME);
+        expect(spyOnInitiated).toHaveBeenCalledTimes(1);
     });
 
-    it('should test user callbacks [onInitiated, onClicked]', () => {
-        const options = {
-            onInitiated: () => {},
-            onClicked: () => {}
-        };
-
-        const spyOnInitiated = jest.spyOn(options, 'onInitiated');
+    it('should toggle the tool', () => {
+        const options = {onClicked: () => {}};
         const spyOnClicked = jest.spyOn(options, 'onClicked');
-        const tool = new DrawTool(options);
+        const spyActivate = jest.spyOn(DrawTool.prototype, 'activateTool');
+        const spyDeactivate = jest.spyOn(DrawTool.prototype, 'deactivateTool');
 
+        const tool = new DrawTool(options);
+        tool.onClickTool();
         tool.onClickTool();
 
-        expect(spyOnInitiated).toHaveBeenCalled();
-        expect(spyOnClicked).toHaveBeenCalled();
+        expect(spyActivate).toHaveBeenCalledTimes(1);
+        expect(spyDeactivate).toHaveBeenCalledTimes(1);
+        expect(spyOnClicked).toHaveBeenCalledTimes(2);
     });
 });

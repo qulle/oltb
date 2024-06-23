@@ -1,11 +1,21 @@
 import { jest, beforeAll, describe, it, expect } from '@jest/globals';
 import * as jsts from 'jsts/dist/jsts.min';
 import { BaseTool } from '../base-tool';
+import { SnapManager } from '../../toolbar-managers/snap-manager/snap-manager';
 import { ScissorsTool } from './scissors-tool';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
+import { SettingsManager } from '../../toolbar-managers/settings-manager/settings-manager';
 
 const FILENAME = 'scissors-tool.js';
+
+const mockMap = {
+    addInteraction: (interaction) => {},
+    removeInteraction: (interaction) => {},
+    addOverlay: (overlay) => {},
+    removeOverlay: (overlay) => {},
+    on: (event, callback) => {}
+};
 
 describe('ScissorsTool', () => {
     beforeAll(() => {
@@ -20,31 +30,44 @@ describe('ScissorsTool', () => {
         jest.spyOn(StateManager, 'setStateObject').mockImplementation(() => {
             return;
         });
+
+        jest.spyOn(SettingsManager, 'getSetting').mockImplementation(() => {
+            return true;
+        });
+
+        jest.spyOn(ScissorsTool.prototype, 'getMap').mockImplementation(() => {
+            return mockMap;
+        });
     });
 
     it('should init the tool', () => {
-        const tool = new ScissorsTool();
+        const options = {onInitiated: () => {}};
+        const spyOnInitiated = jest.spyOn(options, 'onInitiated');
+        const tool = new ScissorsTool(options);
 
         expect(tool).toBeTruthy();
         expect(tool).toBeInstanceOf(BaseTool);
         expect(tool).toBeInstanceOf(ScissorsTool);
         expect(tool.getName()).toBe(FILENAME);
+        expect(spyOnInitiated).toHaveBeenCalledTimes(1);
         expect(jsts.io.OL3Parser).toHaveBeenCalled();
     });
 
-    it('should test user callbacks [onInitiated, onClicked]', () => {
-        const options = {
-            onInitiated: () => {},
-            onClicked: () => {}
-        };
-
-        const spyOnInitiated = jest.spyOn(options, 'onInitiated');
+    it('should toggle the tool', () => {
+        const options = {onClicked: () => {}};
         const spyOnClicked = jest.spyOn(options, 'onClicked');
-        const tool = new ScissorsTool(options);
+        const spyActivate = jest.spyOn(ScissorsTool.prototype, 'activateTool');
+        const spyDeactivate = jest.spyOn(ScissorsTool.prototype, 'deactivateTool');
 
+        SnapManager.initAsync();
+        SnapManager.setMap(mockMap);
+
+        const tool = new ScissorsTool(options);
+        tool.onClickTool();
         tool.onClickTool();
 
-        expect(spyOnInitiated).toHaveBeenCalled();
-        expect(spyOnClicked).toHaveBeenCalled();
+        expect(spyActivate).toHaveBeenCalledTimes(1);
+        expect(spyDeactivate).toHaveBeenCalledTimes(1);
+        expect(spyOnClicked).toHaveBeenCalledTimes(2);
     });
 });

@@ -22,27 +22,26 @@ describe('ThemeTool', () => {
     });
 
     it('should init the tool', () => {
-        const tool = new ThemeTool();
+        const options = {onInitiated: () => {}};
+        const spyOnInitiated = jest.spyOn(options, 'onInitiated');
+        const tool = new ThemeTool(options);
 
         expect(tool).toBeTruthy();
         expect(tool).toBeInstanceOf(BaseTool);
         expect(tool).toBeInstanceOf(ThemeTool);
         expect(tool.getName()).toBe(FILENAME);
+        expect(spyOnInitiated).toHaveBeenCalledTimes(1);
     });
 
-    it('should test user callbacks [onInitiated, onClicked]', () => {
-        const options = {
-            onInitiated: () => {},
-            onClicked: () => {}
-        };
-
-        const spyOnInitiated = jest.spyOn(options, 'onInitiated');
+    it('should toggle the tool', () => {
+        const options = {onClicked: () => {}};
         const spyOnClicked = jest.spyOn(options, 'onClicked');
-        const tool = new ThemeTool(options);
+        const spyMomentary = jest.spyOn(ThemeTool.prototype, 'momentaryActivation');
 
+        const tool = new ThemeTool(options);
         tool.onClickTool();
 
-        expect(spyOnInitiated).toHaveBeenCalled();
-        expect(spyOnClicked).toHaveBeenCalled();
+        expect(spyMomentary).toHaveBeenCalledTimes(1);
+        expect(spyOnClicked).toHaveBeenCalledTimes(1);
     });
 });

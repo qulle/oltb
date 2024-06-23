@@ -2,6 +2,7 @@ import { jest, beforeAll, describe, it, expect } from '@jest/globals';
 import * as jsts from 'jsts/dist/jsts.min';
 import { BaseTool } from '../base-tool';
 import { EditTool } from './edit-tool';
+import { SnapManager } from '../../toolbar-managers/snap-manager/snap-manager';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 import { SettingsManager } from '../../toolbar-managers/settings-manager/settings-manager';
@@ -50,6 +51,14 @@ const HTML__MOCK = (`
     </div>
 `);
 
+const mockMap = {
+    addInteraction: (interaction) => {},
+    removeInteraction: (interaction) => {},
+    addOverlay: (overlay) => {},
+    removeOverlay: (overlay) => {},
+    on: (event, callback) => {}
+};
+
 describe('EditTool', () => {
     beforeAll(() => {
         Element.prototype.scrollIntoView = jest.fn();
@@ -78,31 +87,40 @@ describe('EditTool', () => {
         jest.spyOn(SettingsManager, 'addSetting').mockImplementation(() => {
             return;
         });
+
+        jest.spyOn(EditTool.prototype, 'getMap').mockImplementation(() => {
+            return mockMap;
+        });
     });
 
     it('should init the tool', () => {
-        const tool = new EditTool();
+        const options = {onInitiated: () => {}};
+        const spyOnInitiated = jest.spyOn(options, 'onInitiated');
+        const tool = new EditTool(options);
 
         expect(tool).toBeTruthy();
         expect(tool).toBeInstanceOf(BaseTool);
         expect(tool).toBeInstanceOf(EditTool);
         expect(tool.getName()).toBe(FILENAME);
+        expect(spyOnInitiated).toHaveBeenCalledTimes(1);
         expect(jsts.io.OL3Parser).toHaveBeenCalled();
     });
 
-    it('should test user callbacks [onInitiated, onClicked]', () => {
-        const options = {
-            onInitiated: () => {},
-            onClicked: () => {}
-        };
-
-        const spyOnInitiated = jest.spyOn(options, 'onInitiated');
+    it('should toggle the tool', () => {
+        const options = {onClicked: () => {}};
         const spyOnClicked = jest.spyOn(options, 'onClicked');
-        const tool = new EditTool(options);
+        const spyActivate = jest.spyOn(EditTool.prototype, 'activateTool');
+        const spyDeactivate = jest.spyOn(EditTool.prototype, 'deactivateTool');
 
+        SnapManager.initAsync();
+        SnapManager.setMap(mockMap);
+
+        const tool = new EditTool(options);
+        tool.onClickTool();
         tool.onClickTool();
 
-        expect(spyOnInitiated).toHaveBeenCalled();
-        expect(spyOnClicked).toHaveBeenCalled();
+        expect(spyActivate).toHaveBeenCalledTimes(1);
+        expect(spyDeactivate).toHaveBeenCalledTimes(1);
+        expect(spyOnClicked).toHaveBeenCalledTimes(2);
     });
 });

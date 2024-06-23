@@ -17,27 +17,26 @@ describe('TranslationTool', () => {
     });
 
     it('should init the tool', () => {
-        const tool = new TranslationTool();
+        const options = {onInitiated: () => {}};
+        const spyOnInitiated = jest.spyOn(options, 'onInitiated');
+        const tool = new TranslationTool(options);
 
         expect(tool).toBeTruthy();
         expect(tool).toBeInstanceOf(BaseTool);
         expect(tool).toBeInstanceOf(TranslationTool);
         expect(tool.getName()).toBe(FILENAME);
+        expect(spyOnInitiated).toHaveBeenCalledTimes(1);
     });
 
-    it('should test user callbacks [onInitiated, onClicked]', () => {
-        const options = {
-            onInitiated: () => {},
-            onClicked: () => {}
-        };
-
-        const spyOnInitiated = jest.spyOn(options, 'onInitiated');
+    it('should toggle the tool', () => {
+        const options = {onClicked: () => {}};
         const spyOnClicked = jest.spyOn(options, 'onClicked');
-        const tool = new TranslationTool(options);
+        const spyMomentary = jest.spyOn(TranslationTool.prototype, 'momentaryActivation');
 
+        const tool = new TranslationTool(options);
         tool.onClickTool();
 
-        expect(spyOnInitiated).toHaveBeenCalled();
-        expect(spyOnClicked).toHaveBeenCalled();
+        expect(spyMomentary).toHaveBeenCalledTimes(1);
+        expect(spyOnClicked).toHaveBeenCalledTimes(1);
     });
 });

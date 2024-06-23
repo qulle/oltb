@@ -46,30 +46,48 @@ describe('OverviewTool', () => {
         jest.spyOn(StateManager, 'getStateObject').mockImplementation(() => {
             return {};
         });
+
+        jest.spyOn(StateManager, 'setStateObject').mockImplementation(() => {
+            return;
+        });
+
+        jest.spyOn(OverviewTool.prototype, 'getMap').mockImplementation(() => {
+            return {};
+        });
+
+        jest.spyOn(OverviewTool.prototype, 'doAddOverview').mockImplementation(() => {
+            return;
+        });
+
+        jest.spyOn(OverviewTool.prototype, 'doRemoveOverview').mockImplementation(() => {
+            return;
+        });
     });
 
     it('should init the tool', () => {
-        const tool = new OverviewTool();
+        const options = {onInitiated: () => {}};
+        const spyOnInitiated = jest.spyOn(options, 'onInitiated');
+        const tool = new OverviewTool(options);
 
         expect(tool).toBeTruthy();
         expect(tool).toBeInstanceOf(BaseTool);
         expect(tool).toBeInstanceOf(OverviewTool);
         expect(tool.getName()).toBe(FILENAME);
+        expect(spyOnInitiated).toHaveBeenCalledTimes(1);
     });
 
-    it('should test user callbacks [onInitiated, onClicked]', () => {
-        const options = {
-            onInitiated: () => {},
-            onClicked: () => {}
-        };
-
-        const spyOnInitiated = jest.spyOn(options, 'onInitiated');
+    it('should toggle the tool', () => {
+        const options = {onClicked: () => {}};
         const spyOnClicked = jest.spyOn(options, 'onClicked');
-        const tool = new OverviewTool(options);
+        const spyActivate = jest.spyOn(OverviewTool.prototype, 'activateTool');
+        const spyDeactivate = jest.spyOn(OverviewTool.prototype, 'deactivateTool');
 
+        const tool = new OverviewTool(options);
+        tool.onClickTool();
         tool.onClickTool();
 
-        expect(spyOnInitiated).toHaveBeenCalled();
-        expect(spyOnClicked).toHaveBeenCalled();
+        expect(spyActivate).toHaveBeenCalledTimes(1);
+        expect(spyDeactivate).toHaveBeenCalledTimes(1);
+        expect(spyOnClicked).toHaveBeenCalledTimes(2);
     });
 });
