@@ -6,7 +6,13 @@ import { HiddenMapNavigationTool } from './hidden-map-navigation-tool';
 
 const FILENAME = 'hidden-map-navigation-tool.js';
 
+//--------------------------------------------------------------------
+// # Section: Testing
+//--------------------------------------------------------------------
 describe('HiddenMapNavigationTool', () => {
+    //--------------------------------------------------------------------
+    // # Section: Setup
+    //--------------------------------------------------------------------
     beforeAll(() => {
         jest.spyOn(ElementManager, 'getToolbarElement').mockImplementation(() => {
             return window.document.createElement('div');
@@ -17,6 +23,9 @@ describe('HiddenMapNavigationTool', () => {
         });
     });
 
+    //--------------------------------------------------------------------
+    // # Section: Jesting
+    //--------------------------------------------------------------------
     it('should init the tool', () => {
         const tool = new HiddenMapNavigationTool();
 

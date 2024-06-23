@@ -11,6 +11,9 @@ const ID__PREFIX = 'oltb-bookmark';
 const I18N__BASE = 'tools.bookmarkTool';
 const I18N__BASE_COMMON = 'commons';
 
+//--------------------------------------------------------------------
+// # Section: Mocking
+//--------------------------------------------------------------------
 const HTML__MOCK = (`
     <div id="${ID__PREFIX}-toolbox" class="${CLASS__TOOLBOX_SECTION}">
         <div class="${CLASS__TOOLBOX_SECTION}__header oltb-toggleable" data-oltb-toggleable-target="${ID__PREFIX}-toolbox-collapsed">
@@ -31,11 +34,20 @@ const HTML__MOCK = (`
     </div>
 `);
 
+//--------------------------------------------------------------------
+// # Section: Helpers
+//--------------------------------------------------------------------
 const hasToolActiveClass = (tool) => {
     return tool.button.classList.contains('oltb-tool-button--active');
 }
 
+//--------------------------------------------------------------------
+// # Section: Testing
+//--------------------------------------------------------------------
 describe('BookmarkTool', () => {
+    //--------------------------------------------------------------------
+    // # Section: Setup
+    //--------------------------------------------------------------------
     beforeAll(() => {
         Element.prototype.scrollIntoView = jest.fn();
         window.document.body.innerHTML = HTML__MOCK;
@@ -57,6 +69,9 @@ describe('BookmarkTool', () => {
         });
     });
 
+    //--------------------------------------------------------------------
+    // # Section: Jesting
+    //--------------------------------------------------------------------
     it('should init the tool', () => {
         const options = {onInitiated: () => {}};
         const spyOnInitiated = jest.spyOn(options, 'onInitiated');
