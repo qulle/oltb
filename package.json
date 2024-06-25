@@ -27,6 +27,7 @@
         "eslint:dev-fix": "eslint --fix --config ./config/.eslintrc.mjs ./dev/**/*.js",
         "test": "cross-env NODE_OPTIONS=--experimental-vm-modules NODE_NO_WARNINGS=1 jest ./src --config ./config/jest.config.mjs",
         "test:watch": "cross-env NODE_OPTIONS=--experimental-vm-modules NODE_NO_WARNINGS=1 jest ./src --watch --config ./config/jest.config.mjs",
+        "test:coverage": "cross-env NODE_OPTIONS=--experimental-vm-modules NODE_NO_WARNINGS=1 jest ./src --coverage --config ./config/jest.config.mjs",
         "build": "npm run build:demo && npm run build:lib",
         "build:lib": "rollup --config ./config/rollup.config.mjs",
         "build:demo": "parcel build --public-url . ./dev/index.html --dist-dir ./demo",

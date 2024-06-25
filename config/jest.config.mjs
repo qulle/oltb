@@ -4,6 +4,7 @@ export default {
     transform: {},
     rootDir: '../src',
     testEnvironment: 'jsdom',
+    coverageDirectory: '<rootDir>../coverage',
     moduleNameMapper: {
         '^uuid$': 'uuid',
         '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
