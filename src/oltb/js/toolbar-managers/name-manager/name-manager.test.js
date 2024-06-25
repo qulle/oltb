@@ -26,6 +26,7 @@ describe('NameManager', () => {
     it('should create a concatenated name', () => {
         const name = NameManager.generate();
         expect(name.length).toBeGreaterThan(0);
+        expect(name.startsWithCapital()).toBe(true);
         expect(name).toContain(' ');
     });
 });

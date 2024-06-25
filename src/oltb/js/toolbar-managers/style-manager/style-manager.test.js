@@ -43,6 +43,18 @@ describe('StyleManager', () => {
         expect(StyleManager.getStyle(feature, resolution)).toBeUndefined();
     });
 
+
+    it('should return void due to no/empty oltb property', () => {
+        const resolution = 5000;
+        const feature = {
+            get: () => {
+                return undefined;
+            }
+        };
+
+        expect(StyleManager.getStyle(feature, resolution)).toBe(void 0);
+    });
+
     it('should have two style [icon, label] after call to getStyle [WindBarb]', () => {
         const resolution = 1000;
         const options = {

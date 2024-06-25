@@ -15,6 +15,16 @@ describe('Dialog', () => {
         });
     });
 
+    it('should get success-class [oltb-btn--green-mid]', () => {
+        const className = Dialog.Success;
+        expect(className).toBe('oltb-btn--green-mid');
+    });
+
+    it('should get danger-class [oltb-btn--red-mid]', () => {
+        const className = Dialog.Danger;
+        expect(className).toBe('oltb-btn--red-mid');
+    });
+
     it('should create a default alert-dialog', () => {
         const dialog = Dialog.alert({});
         expect(dialog).toBeTruthy();

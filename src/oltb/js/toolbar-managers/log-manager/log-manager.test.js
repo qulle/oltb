@@ -60,6 +60,22 @@ describe('LogManager', () => {
         expect(logLevels.fatal.value).toBe(5);
     });
 
+    it('should log to window.console', () => {
+        LogManager.clearLog();
+        LogManager.setLogToConsole(true);
+
+        const logLevels = LogManager.getLogLevels();
+        const spy = jest.spyOn(logLevels.debug, 'method');
+        LogManager.logDebug(FILENAME, 'jest', {});
+
+        const size = LogManager.getSize();
+        const item = LogManager.getLog()[0];
+
+        expect(size).toBe(1);
+        expect(item.level.value).toBe(1);
+        expect(spy).toHaveBeenCalledTimes(1);
+    });
+
     it('should log a debug item', () => {
         LogManager.clearLog();
         LogManager.logDebug(FILENAME, 'jest', {});

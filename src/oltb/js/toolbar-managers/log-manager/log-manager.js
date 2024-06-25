@@ -4,9 +4,9 @@ import { BaseManager } from '../base-manager';
 const FILENAME = 'log-manager.js';
 
 const Config = Object.freeze({
-    logging: Object.freeze({
+    logging: {
         logToConsole: false
-    }),
+    },
     timeFormat: Object.freeze({
         pretty: 'YYYY-MM-DD HH:mm:ss:SSS',
         gmt: 'YYYY-MM-DDTHH:mm:ssZ:SSS'
@@ -129,6 +129,10 @@ class LogManager extends BaseManager {
     //--------------------------------------------------------------------
     // # Section: Public API
     //--------------------------------------------------------------------
+    static setLogToConsole(value) {
+        Config.logging.logToConsole = value;
+    }
+
     static getSize() {
         return this.#log.length || 0;
     }

@@ -1,3 +1,7 @@
+String.prototype.startsWithCapital = function() {
+    return (/^[A-Z]/).test(this);
+};
+
 String.prototype.capitalize = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
 }
