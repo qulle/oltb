@@ -5,7 +5,6 @@ import { ElementManager } from '../../toolbar-managers/element-manager/element-m
 import { simulateKeyPress } from '../../../../../__mocks__/simulate-key-press';
 
 describe('BaseDialog', () => {
-    const numDialogsInSuts = 3;
     let dialog = undefined;
 
     beforeAll(() => {
@@ -33,6 +32,10 @@ describe('BaseDialog', () => {
     it('should close dialog when Escape-key is pressed', () => {
         const spy = jest.spyOn(BaseDialog.prototype, 'close');
         simulateKeyPress(window, 'Escape');
-        expect(spy).toHaveBeenCalledTimes(numDialogsInSuts);
+
+        // Note:
+        // Since using prototype spye, more have-been-called-results than one first might expect.
+        // 3 times called by key-binding on window-object
+        expect(spy).toHaveBeenCalledTimes(3);
     });
 });

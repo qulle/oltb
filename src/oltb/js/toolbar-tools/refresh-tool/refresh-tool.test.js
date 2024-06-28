@@ -2,6 +2,7 @@ import { jest, beforeAll, afterAll, describe, it, expect } from '@jest/globals';
 import { BaseTool } from '../base-tool';
 import { RefreshTool } from './refresh-tool';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
+import { simulateKeyPress } from '../../../../../__mocks__/simulate-key-press';
 
 const FILENAME = 'refresh-tool.js';
 
@@ -61,6 +62,21 @@ describe('RefreshTool', () => {
         tool.onClickTool();
 
         expect(spyMomentary).toHaveBeenCalledTimes(1);
+        expect(spyOnClicked).toHaveBeenCalledTimes(1);
+    });
+
+    it('should toggle the tool using short-cut-key', () => {
+        const options = {onClicked: () => {}};
+        const spyOnClicked = jest.spyOn(options, 'onClicked');
+        const spyMomentary = jest.spyOn(RefreshTool.prototype, 'momentaryActivation');
+
+        new RefreshTool(options);
+        simulateKeyPress(window, 'R');
+
+        // Note:
+        // Since using prototype spye, more have-been-called-results than one first might expect.
+        // 4 -> 3 times called by key-binding on window-object and 1 using tool.onClickTool
+        expect(spyMomentary).toHaveBeenCalledTimes(4);
         expect(spyOnClicked).toHaveBeenCalledTimes(1);
     });
 });

@@ -42,8 +42,14 @@ describe('TooltipManager', () => {
         expect(tooltipPush.className).toBe('oltb-overlay-tooltip__item');
         expect(TooltipManager.getSize()).toBe(1);
 
+        const tooltipGet = TooltipManager.getTooltip(key);
+        expect(tooltipGet).toBeTruthy();
+
         const tooltipPop = TooltipManager.pop(key);
         expect(tooltipPop).toStrictEqual(tooltipPush);
         expect(TooltipManager.getSize()).toBe(0);
+
+        expect(tooltipGet).toEqual(tooltipPush);
+        expect(tooltipGet).toEqual(tooltipPop);
     });
 });
