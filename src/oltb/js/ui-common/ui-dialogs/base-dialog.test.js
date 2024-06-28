@@ -34,7 +34,7 @@ describe('BaseDialog', () => {
         simulateKeyPress(window, 'Escape');
 
         // Note:
-        // Since using prototype spye, more have-been-called-results than one first might expect.
+        // Since using prototype spy, more have-been-called-results than one first might expect.
         // 3 times called by key-binding on window-object
         expect(spy).toHaveBeenCalledTimes(3);
     });
