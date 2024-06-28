@@ -139,7 +139,7 @@ class SelectDialog extends BaseDialog {
     // # Section: Events
     //--------------------------------------------------------------------
     #onChange(select) {
-        this.options.onChange instanceof Function && this.options.onChange({
+        this.options.onChange && this.options.onChange({
             text: select.options[select.selectedIndex].text.trim(),
             value: select.value.trim()
         });
@@ -156,7 +156,7 @@ class SelectDialog extends BaseDialog {
         const toValue = select.value;
         const toOption = select.options[select.selectedIndex];
 
-        this.options.onConfirm instanceof Function && this.options.onConfirm({
+        this.options.onConfirm && this.options.onConfirm({
             from: {
                 text: fromOption.text.trim(),
                 value: fromValue.trim()
@@ -170,7 +170,7 @@ class SelectDialog extends BaseDialog {
 
     #onCancel() {
         this.close();
-        this.options.onCancel instanceof Function && this.options.onCancel();
+        this.options.onCancel && this.options.onCancel();
     }
 
     //--------------------------------------------------------------------

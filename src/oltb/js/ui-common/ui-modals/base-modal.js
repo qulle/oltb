@@ -182,7 +182,7 @@ class BaseModal {
 
         // Note: 
         // @Consumer callback
-        if(this.options.onClose instanceof Function) {
+        if(this.options.onClose) {
             this.options.onClose();
         }
     }

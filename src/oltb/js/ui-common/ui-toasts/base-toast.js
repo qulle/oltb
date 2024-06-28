@@ -115,7 +115,7 @@ class BaseToast {
         window.setTimeout(() => {
             DOM.removeElement(this.toast);
             
-            if(this.options.onRemove instanceof Function) {
+            if(this.options.onRemove) {
                 this.options.onRemove();
             }
         }, duration);

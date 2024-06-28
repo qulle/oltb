@@ -106,12 +106,12 @@ class ConfirmDialog extends BaseDialog {
     //--------------------------------------------------------------------
     #onConfirm() {
         this.close();
-        this.options.onConfirm instanceof Function && this.options.onConfirm();
+        this.options.onConfirm && this.options.onConfirm();
     }
 
     #onCancel() {
         this.close();
-        this.options.onCancel instanceof Function && this.options.onCancel();
+        this.options.onCancel && this.options.onCancel();
     }
 
     //--------------------------------------------------------------------

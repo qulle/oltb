@@ -134,17 +134,17 @@ class PromptDialog extends BaseDialog {
     // # Section: Events
     //--------------------------------------------------------------------
     #onInput(input) {
-        this.options.onInput instanceof Function && this.options.onInput(input.value.trim());
+        this.options.onInput && this.options.onInput(input.value.trim());
     }
 
     #onConfirm(input) {
         this.close();
-        this.options.onConfirm instanceof Function && this.options.onConfirm(input.value.trim());
+        this.options.onConfirm && this.options.onConfirm(input.value.trim());
     }
 
     #onCancel() {
         this.close();
-        this.options.onCancel instanceof Function && this.options.onCancel(); 
+        this.options.onCancel && this.options.onCancel(); 
     }
 
     //--------------------------------------------------------------------
