@@ -43,13 +43,12 @@ describe('RefreshTool', () => {
     //--------------------------------------------------------------------
     it('should init the tool', () => {
         const tool = new RefreshTool();
-        const options = tool.options;
 
         expect(tool).toBeTruthy();
         expect(tool).toBeInstanceOf(BaseTool);
         expect(tool).toBeInstanceOf(RefreshTool);
         expect(tool.getName()).toBe(FILENAME);
-        expect(options).toStrictEqual({
+        expect(tool.options).toStrictEqual({
             onInitiated: undefined,
             onClicked: undefined
         });
