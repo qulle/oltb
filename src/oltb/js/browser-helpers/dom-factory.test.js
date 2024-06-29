@@ -54,7 +54,27 @@ describe('DomFactory', () => {
         });
         
         element.click();
-        expect(spy).toHaveBeenCalled();
+        expect(spy).toHaveBeenCalledTimes(1);
+    });
+
+    it('should test listeners given as array', () => {
+        const callbacks = {onClick: () => {}, onSecondClick: () => {}};
+        const spyOne = jest.spyOn(callbacks, 'onClick');
+        const spyTwo = jest.spyOn(callbacks, 'onSecondClick');
+
+        const element = DOM.createElement({
+            element: 'div',
+            listeners: {
+                'click': [
+                    callbacks.onClick,
+                    callbacks.onSecondClick
+                ]
+            }
+        });
+        
+        element.click();
+        expect(spyOne).toHaveBeenCalledTimes(1);
+        expect(spyTwo).toHaveBeenCalledTimes(1);
     });
 
     it('should test clear-methods', () => {
@@ -105,5 +125,43 @@ describe('DomFactory', () => {
         expect(parent.childNodes.length).toBe(0);
         DOM.prependChildren(parent, [child]);
         expect(parent.childNodes.length).toBe(1);
+    });
+
+    it('should test removeElements', () => {
+        const parent = DOM.createElement({element: 'div'});
+        const childOne = DOM.createElement({element: 'div'});
+        const childTwo = DOM.createElement({element: 'div'});
+
+        DOM.appendChildren(parent, [childOne, childTwo]);
+        expect(parent.childNodes.length).toBe(2);
+        DOM.removeElements([childOne, childTwo]);
+        expect(parent.childNodes.length).toBe(0);
+    });
+
+    it('should test clearElements', () => {
+        const parent = DOM.createElement({element: 'div'});
+        const childOne = DOM.createElement({element: 'div', html: 'jest-one'});
+        const childTwo = DOM.createElement({element: 'div', html: 'jest-two'});
+
+        DOM.appendChildren(parent, [childOne, childTwo]);
+        expect(childOne.innerHTML).toBe('jest-one');
+        expect(childTwo.innerHTML).toBe('jest-two');
+
+        DOM.clearElements([childOne, childTwo]);
+        expect(childOne.innerHTML).toBe('');
+        expect(childTwo.innerHTML).toBe('');
+    });
+
+    it('should test runAnimation', () => {
+        const duration = 250;
+        const mockAnimationClass = 'jest-mock-animation-class';
+        const element = DOM.createElement({element: 'div'});
+
+        DOM.runAnimation(element, mockAnimationClass);
+        expect(element.classList.contains(mockAnimationClass)).toBe(true);
+
+        window.setTimeout(() => {
+            expect(element.classList.contains(mockAnimationClass)).toBe(false);
+        }, duration);
     });
 });
