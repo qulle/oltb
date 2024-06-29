@@ -26,14 +26,26 @@ describe('FullscreenTool', () => {
     // # Section: Jesting
     //--------------------------------------------------------------------
     it('should init the tool', () => {
-        const options = {onInitiated: () => {}};
-        const spyOnInitiated = jest.spyOn(options, 'onInitiated');
-        const tool = new FullscreenTool(options);
+        const tool = new FullscreenTool();
 
         expect(tool).toBeTruthy();
         expect(tool).toBeInstanceOf(BaseTool);
         expect(tool).toBeInstanceOf(FullscreenTool);
         expect(tool.getName()).toBe(FILENAME);
+        expect(tool.options).toStrictEqual({
+            onInitiated: undefined,
+            onClicked: undefined,
+            onEnter: undefined,
+            onLeave: undefined
+        });
+    });
+
+    it('should init the tool with options', () => {
+        const options = {onInitiated: () => {}};
+        const spyOnInitiated = jest.spyOn(options, 'onInitiated');
+        const tool = new FullscreenTool(options);
+
+        expect(tool).toBeTruthy();
         expect(spyOnInitiated).toHaveBeenCalledTimes(1);
     });
 

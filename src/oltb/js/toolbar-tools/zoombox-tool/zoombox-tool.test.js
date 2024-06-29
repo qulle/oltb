@@ -3,8 +3,27 @@ import { BaseTool } from '../base-tool';
 import { ZoomboxTool } from './zoombox-tool';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
+import { TooltipManager } from '../../toolbar-managers/tooltip-manager/tooltip-manager';
 
 const FILENAME = 'zoombox-tool.js';
+
+//--------------------------------------------------------------------
+// # Section: Mocking
+//--------------------------------------------------------------------
+const mockMap = {
+    addInteraction: (interaction) => {},
+    removeInteraction: (interaction) => {},
+    addOverlay: (overlay) => {},
+    removeOverlay: (overlay) => {},
+    on: (event, callback) => {}
+};
+
+//--------------------------------------------------------------------
+// # Section: Helpers
+//--------------------------------------------------------------------
+const hasToolActiveClass = (tool) => {
+    return tool.button.classList.contains('oltb-tool-button--active');
+}
 
 //--------------------------------------------------------------------
 // # Section: Testing
@@ -25,6 +44,10 @@ describe('ZoomboxTool', () => {
         jest.spyOn(StateManager, 'setStateObject').mockImplementation(() => {
             return;
         });
+
+        jest.spyOn(ZoomboxTool.prototype, 'getMap').mockImplementation(() => {
+            return mockMap;
+        });
     });
 
     //--------------------------------------------------------------------
@@ -37,21 +60,46 @@ describe('ZoomboxTool', () => {
         expect(tool).toBeInstanceOf(BaseTool);
         expect(tool).toBeInstanceOf(ZoomboxTool);
         expect(tool.getName()).toBe(FILENAME);
+        expect(tool.options).toStrictEqual({
+            onInitiated: undefined,
+            onClicked: undefined,
+            onBrowserStateCleared: undefined,
+            onStart: undefined,
+            onEnd: undefined,
+            onDrag: undefined,
+            onCancel: undefined,
+            onError: undefined
+        });
     });
 
-    it('should test user callbacks [onInitiated, onClicked]', () => {
-        const options = {
-            onInitiated: () => {},
-            onClicked: () => {}
-        };
-
+    it('should init the tool with options', () => {
+        const options = {onInitiated: () => {}};
         const spyOnInitiated = jest.spyOn(options, 'onInitiated');
-        const spyOnClicked = jest.spyOn(options, 'onClicked');
         const tool = new ZoomboxTool(options);
 
-        tool.onClickTool();
+        expect(tool).toBeTruthy();
+        expect(spyOnInitiated).toHaveBeenCalledTimes(1);
+    });
 
-        expect(spyOnInitiated).toHaveBeenCalled();
-        expect(spyOnClicked).toHaveBeenCalled();
+    it('should toggle the tool', () => {
+        const options = {onClicked: () => {}};
+        const spyOnClicked = jest.spyOn(options, 'onClicked');
+        const spyActivate = jest.spyOn(ZoomboxTool.prototype, 'activateTool');
+        const spyDeactivate = jest.spyOn(ZoomboxTool.prototype, 'deactivateTool');
+
+        TooltipManager.initAsync();
+        TooltipManager.setMap(mockMap);
+
+        const tool = new ZoomboxTool(options);
+        
+        expect(hasToolActiveClass(tool)).toBe(false);
+        tool.onClickTool();
+        expect(hasToolActiveClass(tool)).toBe(true);
+        tool.onClickTool();
+        expect(hasToolActiveClass(tool)).toBe(false);
+
+        expect(spyActivate).toHaveBeenCalledTimes(1);
+        expect(spyDeactivate).toHaveBeenCalledTimes(1);
+        expect(spyOnClicked).toHaveBeenCalledTimes(2);
     });
 });

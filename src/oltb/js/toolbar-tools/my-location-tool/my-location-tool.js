@@ -28,9 +28,9 @@ const I18N__BASE_COMMON = 'commons';
 
 const DefaultOptions = Object.freeze({
     title: 'My Location',
+    description: 'This is the location that the browser was able to find. It might not be your actual location.',
     enableHighAccuracy: true,
     timeout: 10000,
-    description: 'This is the location that the browser was able to find. It might not be your actual location.',
     markerLabelUseEllipsisAfter: 20,
     markerLabelUseUpperCase: false,
     onInitiated: undefined,

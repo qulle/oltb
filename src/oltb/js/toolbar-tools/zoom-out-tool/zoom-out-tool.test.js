@@ -22,14 +22,26 @@ describe('ZoomOutTool', () => {
     // # Section: Jesting
     //--------------------------------------------------------------------
     it('should init the tool', () => {
-        const options = {onInitiated: () => {}};
-        const spyOnInitiated = jest.spyOn(options, 'onInitiated');
-        const tool = new ZoomOutTool(options);
+        const tool = new ZoomOutTool();
 
         expect(tool).toBeTruthy();
         expect(tool).toBeInstanceOf(BaseTool);
         expect(tool).toBeInstanceOf(ZoomOutTool);
         expect(tool.getName()).toBe(FILENAME);
+        expect(tool.options).toStrictEqual({
+            delta: -1,
+            onInitiated: undefined,
+            onClicked: undefined,
+            onZoomed: undefined
+        });
+    });
+
+    it('should init the tool with options', () => {
+        const options = {onInitiated: () => {}};
+        const spyOnInitiated = jest.spyOn(options, 'onInitiated');
+        const tool = new ZoomOutTool(options);
+
+        expect(tool).toBeTruthy();
         expect(spyOnInitiated).toHaveBeenCalledTimes(1);
     });
 

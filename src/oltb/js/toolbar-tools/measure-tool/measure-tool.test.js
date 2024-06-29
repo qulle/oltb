@@ -102,14 +102,30 @@ describe('MeasureTool', () => {
     // # Section: Jesting
     //--------------------------------------------------------------------
     it('should init the tool', () => {
-        const options = {onInitiated: () => {}};
-        const spyOnInitiated = jest.spyOn(options, 'onInitiated');
-        const tool = new MeasureTool(options);
+        const tool = new MeasureTool();
 
         expect(tool).toBeTruthy();
         expect(tool).toBeInstanceOf(BaseTool);
         expect(tool).toBeInstanceOf(MeasureTool);
         expect(tool.getName()).toBe(FILENAME);
+        expect(tool.options).toStrictEqual({
+            onInitiated: undefined,
+            onClicked: undefined,
+            onBrowserStateCleared: undefined,
+            onStart: undefined,
+            onEnd: undefined,
+            onAbort: undefined,
+            onError: undefined,
+            onSnapped: undefined
+        });
+    });
+
+    it('should init the tool with options', () => {
+        const options = {onInitiated: () => {}};
+        const spyOnInitiated = jest.spyOn(options, 'onInitiated');
+        const tool = new MeasureTool(options);
+
+        expect(tool).toBeTruthy();
         expect(spyOnInitiated).toHaveBeenCalledTimes(1);
     });
 

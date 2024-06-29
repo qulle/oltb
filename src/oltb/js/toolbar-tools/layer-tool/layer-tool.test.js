@@ -88,14 +88,43 @@ describe('LayerTool', () => {
     // # Section: Jesting
     //--------------------------------------------------------------------
     it('should init the tool', () => {
-        const options = {onInitiated: () => {}};
-        const spyOnInitiated = jest.spyOn(options, 'onInitiated');
-        const tool = new LayerTool(options);
+        const tool = new LayerTool();
 
         expect(tool).toBeTruthy();
         expect(tool).toBeInstanceOf(BaseTool);
         expect(tool).toBeInstanceOf(LayerTool);
         expect(tool.getName()).toBe(FILENAME);
+        expect(tool.options).toStrictEqual({
+            disableMapCreateLayerButton: false,
+            disableMapLayerEditButton: false,
+            disableMapLayerDeleteButton: false,
+            disableFeatureCreateLayerButton: false,
+            disableFeatureLayerEditButton: false,
+            disableFeatureLayerDeleteButton: false,
+            disableFeatureLayerDownloadButton: false,
+            onClicked: undefined,
+            onInitiated: undefined,
+            onBrowserStateCleared: undefined,
+            onMapLayerAdded: undefined,
+            onMapLayerRemoved: undefined,
+            onMapLayerRenamed: undefined,
+            onMapLayerVisibilityChanged: undefined,
+            onMapLayerDragged: undefined,
+            onFeatureLayerAdded: undefined,
+            onFeatureLayerRemoved: undefined,
+            onFeatureLayerRenamed: undefined,
+            onFeatureLayerVisibilityChanged: undefined,
+            onFeatureLayerDownloaded: undefined,
+            onFeatureLayerDragged: undefined
+        });
+    });
+
+    it('should init the tool with options', () => {
+        const options = {onInitiated: () => {}};
+        const spyOnInitiated = jest.spyOn(options, 'onInitiated');
+        const tool = new LayerTool(options);
+
+        expect(tool).toBeTruthy();
         expect(spyOnInitiated).toHaveBeenCalledTimes(1);
     });
 

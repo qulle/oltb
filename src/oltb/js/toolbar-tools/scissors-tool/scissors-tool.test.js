@@ -60,16 +60,35 @@ describe('ScissorsTool', () => {
     // # Section: Jesting
     //--------------------------------------------------------------------
     it('should init the tool', () => {
-        const options = {onInitiated: () => {}};
-        const spyOnInitiated = jest.spyOn(options, 'onInitiated');
-        const tool = new ScissorsTool(options);
+        const tool = new ScissorsTool();
 
         expect(tool).toBeTruthy();
         expect(tool).toBeInstanceOf(BaseTool);
         expect(tool).toBeInstanceOf(ScissorsTool);
         expect(tool.getName()).toBe(FILENAME);
-        expect(spyOnInitiated).toHaveBeenCalledTimes(1);
         expect(jsts.io.OL3Parser).toHaveBeenCalled();
+        expect(tool.options).toStrictEqual({
+            strokeWidth: '2.5',
+            strokeColor: '#0166A5FF',
+            fillColor: '#D7E3FA80',
+            onInitiated: undefined,
+            onClicked: undefined,
+            onBrowserStateCleared: undefined,
+            onStart: undefined,
+            onEnd: undefined,
+            onAbort: undefined,
+            onError: undefined,
+            onSnapped: undefined
+        });
+    });
+
+    it('should init the tool with options', () => {
+        const options = {onInitiated: () => {}};
+        const spyOnInitiated = jest.spyOn(options, 'onInitiated');
+        const tool = new ScissorsTool(options);
+
+        expect(tool).toBeTruthy();
+        expect(spyOnInitiated).toHaveBeenCalledTimes(1);
     });
 
     it('should toggle the tool', () => {

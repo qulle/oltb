@@ -31,14 +31,20 @@ describe('HomeTool', () => {
     // # Section: Jesting
     //--------------------------------------------------------------------
     it('should init the tool', () => {
-        const options = {onInitiated: () => {}};
-        const spyOnInitiated = jest.spyOn(options, 'onInitiated');
-        const tool = new HomeTool(options);
+        const tool = new HomeTool();
 
         expect(tool).toBeTruthy();
         expect(tool).toBeInstanceOf(BaseTool);
         expect(tool).toBeInstanceOf(HomeTool);
         expect(tool.getName()).toBe(FILENAME);
+    });
+
+    it('should init the tool with options', () => {
+        const options = {onInitiated: () => {}};
+        const spyOnInitiated = jest.spyOn(options, 'onInitiated');
+        const tool = new HomeTool(options);
+
+        expect(tool).toBeTruthy();
         expect(spyOnInitiated).toHaveBeenCalledTimes(1);
     });
 

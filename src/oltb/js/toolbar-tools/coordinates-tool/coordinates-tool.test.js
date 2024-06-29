@@ -2,9 +2,10 @@ import { jest, beforeAll, describe, it, expect } from '@jest/globals';
 import { BaseTool } from '../base-tool';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
+import { TooltipManager } from '../../toolbar-managers/tooltip-manager/tooltip-manager';
 import { CoordinatesTool } from './coordinates-tool';
 import { SettingsManager } from '../../toolbar-managers/settings-manager/settings-manager';
-import { TooltipManager } from '../../toolbar-managers/tooltip-manager/tooltip-manager';
+import { simulateKeyPress } from '../../../../../__mocks__/simulate-key-press';
 
 const FILENAME = 'coordinates-tool.js';
 const CLASS__TOOLBOX_SECTION = 'oltb-toolbox-section';
@@ -88,14 +89,26 @@ describe('CoordinatesTool', () => {
     // # Section: Jesting
     //--------------------------------------------------------------------
     it('should init the tool', () => {
-        const options = {onInitiated: () => {}};
-        const spyOnInitiated = jest.spyOn(options, 'onInitiated');
-        const tool = new CoordinatesTool(options);
+        const tool = new CoordinatesTool();
 
         expect(tool).toBeTruthy();
         expect(tool).toBeInstanceOf(BaseTool);
         expect(tool).toBeInstanceOf(CoordinatesTool);
         expect(tool.getName()).toBe(FILENAME);
+        expect(tool.options).toStrictEqual({
+            onInitiated: undefined,
+            onClicked: undefined,
+            onMapClicked: undefined,
+            onBrowserStateCleared: undefined
+        });
+    });
+
+    it('should init the tool with options', () => {
+        const options = {onInitiated: () => {}};
+        const spyOnInitiated = jest.spyOn(options, 'onInitiated');
+        const tool = new CoordinatesTool(options);
+
+        expect(tool).toBeTruthy();
         expect(spyOnInitiated).toHaveBeenCalledTimes(1);
     });
 
@@ -116,5 +129,36 @@ describe('CoordinatesTool', () => {
         expect(spyActivate).toHaveBeenCalledTimes(1);
         expect(spyDeactivate).toHaveBeenCalledTimes(1);
         expect(spyOnClicked).toHaveBeenCalledTimes(2);
+    });
+
+    it('should toggle the tool using short-cut-key [C]', () => {
+        const options = {onClicked: () => {}};
+        const spyOnClicked = jest.spyOn(options, 'onClicked');
+        const spyActivate = jest.spyOn(CoordinatesTool.prototype, 'activateTool');
+        const spyDeactivate = jest.spyOn(CoordinatesTool.prototype, 'deactivateTool');
+
+        const tool = new CoordinatesTool(options);
+        
+        expect(hasToolActiveClass(tool)).toBe(false);
+        simulateKeyPress('keydown', window, 'C');
+        expect(hasToolActiveClass(tool)).toBe(true);
+        simulateKeyPress('keydown', window, 'C');
+        expect(hasToolActiveClass(tool)).toBe(false);
+
+        // Note:
+        // Since using prototype spy, more have-been-called-results than one first might expect.
+        // 5 -> 4 times called by key-binding on window-object and 1 using tool.onClickTool
+        expect(spyActivate).toHaveBeenCalledTimes(5);
+        expect(spyDeactivate).toHaveBeenCalledTimes(5);
+        expect(spyOnClicked).toHaveBeenCalledTimes(2);
+    });
+
+    it('should not toggle the tool using incorrect short-cut-key', () => {
+        const options = {onClicked: () => {}};
+        const spy = jest.spyOn(options, 'onClicked');
+
+        new CoordinatesTool(options);
+        simulateKeyPress('keydown', window, '!');
+        expect(spy).not.toHaveBeenCalled();
     });
 });

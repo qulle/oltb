@@ -31,7 +31,7 @@ describe('BaseDialog', () => {
 
     it('should close dialog when Escape-key is pressed', () => {
         const spy = jest.spyOn(BaseDialog.prototype, 'close');
-        simulateKeyPress(window, 'Escape');
+        simulateKeyPress('keyup', window, 'Escape');
 
         // Note:
         // Since using prototype spy, more have-been-called-results than one first might expect.

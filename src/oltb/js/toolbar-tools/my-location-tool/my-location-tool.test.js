@@ -30,14 +30,32 @@ describe('MagnifyTool', () => {
     // # Section: Jesting
     //--------------------------------------------------------------------
     it('should init the tool', () => {
-        const options = {onInitiated: () => {}};
-        const spyOnInitiated = jest.spyOn(options, 'onInitiated');
-        const tool = new MyLocationTool(options);
+        const tool = new MyLocationTool();
 
         expect(tool).toBeTruthy();
         expect(tool).toBeInstanceOf(BaseTool);
         expect(tool).toBeInstanceOf(MyLocationTool);
         expect(tool.getName()).toBe(FILENAME);
+        expect(tool.options).toStrictEqual({
+            title: 'My Location',
+            description: 'This is the location that the browser was able to find. It might not be your actual location.',
+            enableHighAccuracy: true,
+            timeout: 10000,
+            markerLabelUseEllipsisAfter: 20,
+            markerLabelUseUpperCase: false,
+            onInitiated: undefined,
+            onClicked: undefined,
+            onLocationFound: undefined,
+            onError: undefined
+        });
+    });
+
+    it('should init the tool with options', () => {
+        const options = {onInitiated: () => {}};
+        const spyOnInitiated = jest.spyOn(options, 'onInitiated');
+        const tool = new MyLocationTool(options);
+
+        expect(tool).toBeTruthy();
         expect(spyOnInitiated).toHaveBeenCalledTimes(1);
     });
 

@@ -1,5 +1,5 @@
- const simulateKeyPress = function(element, key) {
-    const event = new KeyboardEvent('keyup', {
+ const simulateKeyPress = function(type, element, key) {
+    const event = new KeyboardEvent(type, {
         key: key,
         code: key,
         keyCode: key.charCodeAt(0),

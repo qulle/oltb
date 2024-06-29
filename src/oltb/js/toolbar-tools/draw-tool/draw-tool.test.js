@@ -133,14 +133,32 @@ describe('DrawTool', () => {
     // # Section: Jesting
     //--------------------------------------------------------------------
     it('should init the tool', () => {
-        const options = {onInitiated: () => {}};
-        const spyOnInitiated = jest.spyOn(options, 'onInitiated');
-        const tool = new DrawTool(options);
+        const tool = new DrawTool();
 
         expect(tool).toBeTruthy();
         expect(tool).toBeInstanceOf(BaseTool);
         expect(tool).toBeInstanceOf(DrawTool);
         expect(tool.getName()).toBe(FILENAME);
+        expect(tool.options).toStrictEqual({
+            circleSize: 5,
+            onInitiated: undefined,
+            onClicked: undefined,
+            onBrowserStateCleared: undefined,
+            onStart: undefined,
+            onEnd: undefined,
+            onAbort: undefined,
+            onError: undefined,
+            onIntersected: undefined,
+            onSnapped: undefined
+        });
+    });
+
+    it('should init the tool with options', () => {
+        const options = {onInitiated: () => {}};
+        const spyOnInitiated = jest.spyOn(options, 'onInitiated');
+        const tool = new DrawTool(options);
+
+        expect(tool).toBeTruthy();
         expect(spyOnInitiated).toHaveBeenCalledTimes(1);
     });
 

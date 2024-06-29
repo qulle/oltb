@@ -113,16 +113,39 @@ describe('EditTool', () => {
     // # Section: Jesting
     //--------------------------------------------------------------------
     it('should init the tool', () => {
-        const options = {onInitiated: () => {}};
-        const spyOnInitiated = jest.spyOn(options, 'onInitiated');
-        const tool = new EditTool(options);
+        const tool = new EditTool();
 
         expect(tool).toBeTruthy();
         expect(tool).toBeInstanceOf(BaseTool);
         expect(tool).toBeInstanceOf(EditTool);
         expect(tool.getName()).toBe(FILENAME);
-        expect(spyOnInitiated).toHaveBeenCalledTimes(1);
+        expect(tool.options).toStrictEqual({
+            hitTolerance: 5,
+            onInitiated: undefined,
+            onClicked: undefined,
+            onBrowserStateCleared: undefined,
+            onStyleChange: undefined,
+            onShapeOperation: undefined,
+            onSelectAdd: undefined,
+            onSelectRemove: undefined,
+            onModifyStart: undefined,
+            onModifyEnd: undefined,
+            onTranslateStart: undefined,
+            onTranslatEnd: undefined,
+            onRemovedFeature: undefined,
+            onError: undefined,
+            onSnapped: undefined
+        });
         expect(jsts.io.OL3Parser).toHaveBeenCalled();
+    });
+
+    it('should init the tool with options', () => {
+        const options = {onInitiated: () => {}};
+        const spyOnInitiated = jest.spyOn(options, 'onInitiated');
+        const tool = new EditTool(options);
+
+        expect(tool).toBeTruthy();
+        expect(spyOnInitiated).toHaveBeenCalledTimes(1);
     });
 
     it('should toggle the tool', () => {

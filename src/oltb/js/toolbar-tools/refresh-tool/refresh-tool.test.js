@@ -81,7 +81,7 @@ describe('RefreshTool', () => {
         const spyMomentary = jest.spyOn(RefreshTool.prototype, 'momentaryActivation');
 
         new RefreshTool(options);
-        simulateKeyPress(window, 'R');
+        simulateKeyPress('keyup', window, 'R');
 
         // Note:
         // Since using prototype spy, more have-been-called-results than one first might expect.
@@ -95,7 +95,7 @@ describe('RefreshTool', () => {
         const spy = jest.spyOn(options, 'onClicked');
 
         new RefreshTool(options);
-        simulateKeyPress(window, '!');
+        simulateKeyPress('keyup', window, '!');
         expect(spy).not.toHaveBeenCalled();
     });
 });

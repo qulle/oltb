@@ -134,9 +134,9 @@ describe('BookmarkTool', () => {
         const tool = new BookmarkTool(options);
         
         expect(hasToolActiveClass(tool)).toBe(false);
-        simulateKeyPress(window, 'B');
+        simulateKeyPress('keyup', window, 'B');
         expect(hasToolActiveClass(tool)).toBe(true);
-        simulateKeyPress(window, 'B');
+        simulateKeyPress('keyup', window, 'B');
         expect(hasToolActiveClass(tool)).toBe(false);
 
         // Note:
@@ -152,7 +152,7 @@ describe('BookmarkTool', () => {
         const spy = jest.spyOn(options, 'onClicked');
 
         new BookmarkTool(options);
-        simulateKeyPress(window, '!');
+        simulateKeyPress('keyup', window, '!');
         expect(spy).not.toHaveBeenCalled();
     });
 });
