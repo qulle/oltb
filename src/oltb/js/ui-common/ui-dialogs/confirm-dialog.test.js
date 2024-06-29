@@ -13,7 +13,20 @@ describe('ConfirmDialog', () => {
     });
 
     beforeEach(() => {
-        dialog = new ConfirmDialog({});
+        dialog = new ConfirmDialog();
+    });
+
+    it('should create confirm-dialog', () => {
+        expect(dialog).toBeTruthy();
+        expect(dialog.options).toStrictEqual({
+            title: 'Confirm',
+            message: '',
+            confirmClass: 'oltb-btn--red-mid',
+            confirmText: 'Yes',
+            cancelText: 'Cancel',
+            onConfirm: undefined,
+            onCancel: undefined
+        });
     });
 
     it('should create confirm-dialog with correct HTML-structure', () => {

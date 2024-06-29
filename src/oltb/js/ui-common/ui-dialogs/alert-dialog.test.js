@@ -16,6 +16,16 @@ describe('AlertDialog', () => {
         dialog = new AlertDialog({});
     });
 
+    it('should create alert-dialog', () => {
+        expect(dialog).toBeTruthy();
+        expect(dialog.options).toStrictEqual({
+            title: 'Alert',
+            message: '',
+            confirmText: 'Ok',
+            onConfirm: undefined
+        });
+    });
+
     it('should create alert-dialog with correct HTML-structure', () => {
         expect(dialog).toBeTruthy();
         expect(dialog).toBeInstanceOf(AlertDialog);

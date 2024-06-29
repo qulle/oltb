@@ -24,6 +24,9 @@ describe('ProjectionManager', () => {
 
     it('should contain five default projections', () => {
         const projections = ProjectionManager.getProjections();
+        const size = ProjectionManager.getSize();
+
+        expect(size).toBe(5);
         expect(projections.length).toBe(5);
         expect(projections[0].code).toBe('EPSG:3857');
         expect(projections[1].code).toBe('EPSG:4326');

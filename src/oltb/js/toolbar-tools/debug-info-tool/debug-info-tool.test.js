@@ -1,5 +1,6 @@
 import { jest, beforeAll, describe, it, expect } from '@jest/globals';
 import { BaseTool } from '../base-tool';
+import { UrlManager } from '../../toolbar-managers/url-manager/url-manager';
 import { DebugInfoTool } from './debug-info-tool';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 import { simulateKeyPress } from '../../../../../__mocks__/simulate-key-press';
@@ -16,6 +17,10 @@ describe('DebugInfoTool', () => {
     beforeAll(() => {
         jest.spyOn(ElementManager, 'getToolbarElement').mockImplementation(() => {
             return window.document.createElement('div');
+        });
+
+        jest.spyOn(UrlManager, 'getParameter').mockImplementation(() => {
+            return 'false';
         });
     });
 
@@ -45,6 +50,15 @@ describe('DebugInfoTool', () => {
         expect(spyOnInitiated).toHaveBeenCalledTimes(1);
     });
 
+    it('should init the tool hidden if debug = false and onlyWhenGetParameter = true', () => {
+        const tool = new DebugInfoTool({
+            onlyWhenGetParameter: true
+        });
+
+        expect(tool).toBeTruthy();
+        expect(tool.button.classList.contains('oltb-tool-button--hidden'));
+    });
+
     it('should toggle the tool', () => {
         const options = {onClicked: () => {}};
         const spyOnClicked = jest.spyOn(options, 'onClicked');
@@ -68,7 +82,7 @@ describe('DebugInfoTool', () => {
         // Note:
         // Since using prototype spy, more have-been-called-results than one first might expect.
         // 5 -> 4 times called by key-binding on window-object and 1 using tool.onClickTool
-        expect(spyMomentary).toHaveBeenCalledTimes(5);
+        expect(spyMomentary).toHaveBeenCalledTimes(6);
         expect(spyOnClicked).toHaveBeenCalledTimes(1);
     });
 

@@ -13,7 +13,23 @@ describe('PromptDialog', () => {
     });
 
     beforeEach(() => {
-        dialog = new PromptDialog({});
+        dialog = new PromptDialog();
+    });
+
+    it('should create prompt-dialog', () => {
+        expect(dialog).toBeTruthy();
+        expect(dialog.options).toStrictEqual({
+            title: 'Prompt',
+            message: '',
+            placeholder: undefined,
+            value: undefined,
+            confirmClass: 'oltb-btn--green-mid',
+            confirmText: 'Confirm',
+            cancelText: 'Cancel',
+            onConfirm: undefined,
+            onCancel: undefined,
+            onInput: undefined
+        });
     });
 
     it('should create prompt-dialog with correct HTML-structure', () => {

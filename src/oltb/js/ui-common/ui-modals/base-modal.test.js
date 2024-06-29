@@ -2,6 +2,7 @@ import { jest, beforeAll, describe, it, expect } from '@jest/globals';
 import { DOM } from '../../browser-helpers/dom-factory';
 import { BaseModal } from './base-modal';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
+import { simulateKeyPress } from '../../../../../__mocks__/simulate-key-press';
 
 describe('BaseModal', () => {
     beforeAll(() => {
@@ -11,13 +12,20 @@ describe('BaseModal', () => {
     });
 
     it('should create a default modal', () => {
-        const modal = new BaseModal({});
+        const modal = new BaseModal();
         
         expect(modal).toBeTruthy();
         expect(modal.getTitle()).toBe('Modal');
         expect(modal.getContent()).toBeUndefined();
         expect(modal.getOnClose()).toBeUndefined();
         expect(modal.isMaximized()).toBe(false);
+        expect(modal.options).toStrictEqual({
+            title: 'Modal',
+            maximized: false,
+            pushWidth: false,
+            content: undefined,
+            onClose: undefined
+        });
     });
 
     it('should create a modal with title of "Simple modal"', () => {
@@ -54,9 +62,29 @@ describe('BaseModal', () => {
     });
 
     it('should create a modal and close it', () => {
-        const spy = jest.spyOn(DOM, 'removeElement');
-        const toast = new BaseModal({});
+        const options = {onClose: () => {}};
+        const spyOnClose = jest.spyOn(options, 'onClose');
+        const spyRemoveElement = jest.spyOn(DOM, 'removeElement');
+        const toast = new BaseModal(options);
         toast.close();
+
+        expect(spyRemoveElement).toHaveBeenCalled();
+        expect(spyOnClose).toHaveBeenCalled();
+    });
+
+    it('should close modal when Escape-key is pressed', () => {
+        const spy = jest.spyOn(BaseModal.prototype, 'close');
+
+        new BaseModal();
+        simulateKeyPress('keyup', window, 'Escape');
+
+        expect(spy).toHaveBeenCalled();
+    });
+
+    it('should modal if backdrop is clicked', () => {
+        const spy = jest.spyOn(DOM, 'runAnimation');
+        const modal = new BaseModal();
+        modal.backdrop.click();
 
         expect(spy).toHaveBeenCalled();
     });
