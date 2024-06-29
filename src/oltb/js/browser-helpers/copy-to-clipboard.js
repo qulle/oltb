@@ -15,14 +15,11 @@ const copyToClipboard = async function(text = '') {
             style: {
                 'position': 'absolute',
                 'left': '-999999px',
-                'opcaity': 0
+                'opacity': 0
             }
         });
-        
-        // Append element to body
-        window.document.body.prepend(textArea);
 
-        // Select all text so that copy-command can fetch the text
+        window.document.body.prepend(textArea);
         textArea.select();
 
         try {
