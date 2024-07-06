@@ -5,7 +5,14 @@ const FILENAME = 'bootstrap-manager.js';
 
 describe('BootstrapManager', () => {
     it('should init the manager', async () => {
-        return BootstrapManager.initAsync([]).then((result) => {
+        const items = [{
+            manager: {
+                initAsync: async () => {},
+                setMap: () => {}
+            }
+        }];
+
+        return BootstrapManager.initAsync(items).then((result) => {
             expect(result).toStrictEqual(void 0);
         });
     });

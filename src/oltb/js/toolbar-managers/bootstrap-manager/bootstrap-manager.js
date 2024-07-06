@@ -64,7 +64,6 @@ class BootstrapManager extends BaseManager {
     //--------------------------------------------------------------------
     static ready() {
         LogManager.logInformation(FILENAME, 'ready', 'OLTB is ready to use');
-
         window.dispatchEvent(new CustomEvent(Events.custom.ready));
     }
 }
