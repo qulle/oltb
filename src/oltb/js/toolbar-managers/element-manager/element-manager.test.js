@@ -6,22 +6,6 @@ const FILENAME = 'element-manager.js';
 
 describe('ElementManager', () => {
     beforeAll(() => {
-        jest.spyOn(ElementManager, 'getMapElement').mockImplementation(() => {
-            return window.document.createElement('div');
-        });
-
-        jest.spyOn(ElementManager, 'getToastElement').mockImplementation(() => {
-            return window.document.createElement('div');
-        });
-
-        jest.spyOn(ElementManager, 'getToolbarElement').mockImplementation(() => {
-            return window.document.createElement('div');
-        });
-
-        jest.spyOn(ElementManager, 'getToolboxElement').mockImplementation(() => {
-            return window.document.createElement('div');
-        });
-
         jest.spyOn(StateManager, 'getStateObject').mockImplementation(() => {
             return {};
         });

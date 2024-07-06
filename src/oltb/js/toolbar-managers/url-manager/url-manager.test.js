@@ -1,4 +1,4 @@
- import { describe, it, expect } from '@jest/globals';
+import { describe, it, expect } from '@jest/globals';
 import { UrlManager } from './url-manager';
 
 const FILENAME = 'url-manager.js';
