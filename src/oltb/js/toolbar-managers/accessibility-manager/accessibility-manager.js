@@ -21,8 +21,8 @@ class AccessibilityManager extends BaseManager {
     static async initAsync(options = {}) {
         LogManager.logDebug(FILENAME, 'initAsync', 'Initialization started');
 
-        window.document.body.addEventListener(Events.browser.mouseDown, this.#onMouseDown.bind(this));
-        window.document.body.addEventListener(Events.browser.keyDown, this.#onKeyboardDown.bind(this));
+        window.addEventListener(Events.browser.mouseDown, this.#onMouseDown.bind(this));
+        window.addEventListener(Events.browser.keyDown, this.#onKeyboardDown.bind(this));
 
         return new Promise((resolve) => {
             resolve({

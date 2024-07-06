@@ -154,6 +154,10 @@ class ColorPickerManager extends BaseManager {
         return this.#colorPicker;
     }
 
+    static getColorPickerElement() {
+        return this.#colorPickerElement;
+    }
+
     static show(instance) {
         const colorPickerWrapper = this.#createColorPickerWrapper();
         instance.setContent(colorPickerWrapper);

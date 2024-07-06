@@ -23,4 +23,26 @@ describe('ColorPickerManager', () => {
         expect(spy).toHaveBeenCalled();
         expect(ColorPickerManager.getName()).toBe(FILENAME);
     });
+
+    it('should return truthy color-picker-instance', () => {
+        expect(ColorPickerManager.getColorPicker()).toBeTruthy();
+    });
+
+    it('should return truthy color-picker-element', () => {
+        expect(ColorPickerManager.getColorPickerElement()).toBeTruthy();
+    });
+
+    it('should return truthy color-picker-element', () => {
+        const element = ColorPickerManager.getColorPickerElement();
+
+        expect(element).toBeTruthy();
+        expect(element.nodeName).toBe('DIV');
+        expect(element.getAttribute('id')).toBe('otlb-color-picker');
+        expect(element.getAttribute('class')).toBe('oltb-mt-05 oltb-mb-0313');
+        expect(element.getAttribute('acp-color')).toBe('#D7E3FA');
+        expect(element.getAttribute('acp-show-alpha')).toBe('yes');
+        expect(element.getAttribute('acp-show-rgb')).toBe('no');
+        expect(element.getAttribute('acp-show-hsl')).toBe('no');
+        expect(element.getAttribute('acp-show-hex')).toBe('yes');
+    });
 });
