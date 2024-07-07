@@ -42,7 +42,11 @@ class ConfigManager extends BaseManager {
         // Note: 
         // In some edge cases (LogManager as example)
         // The Config is required before it has loaded, return the DefaultConfig
-        return this.#config || DefaultConfig;
+        return this.#config || _.cloneDeep(DefaultConfig);
+    }
+
+    static clearConfig() {
+        this.#config = _.cloneDeep(DefaultConfig);
     }
 
     //--------------------------------------------------------------------

@@ -1,11 +1,17 @@
-import { jest, describe, it, expect } from '@jest/globals';
+import _ from 'lodash';
 import axios from 'axios';
+import { jest, beforeEach, describe, it, expect } from '@jest/globals';
 import { LogManager } from '../log-manager/log-manager';
 import { ConfigManager } from './config-manager';
+import { DefaultConfig } from './default-config';
 
 const FILENAME = 'config-manager.js';
 
 describe('ConfigManager', () => {
+    beforeEach(() => {
+        ConfigManager.clearConfig();
+    });
+
     it('should init the manager successful load [200 Ok]', async () => {
         const config = {
             localization: {
@@ -20,7 +26,16 @@ describe('ConfigManager', () => {
             });
         });
 
+        const expectedConfig = _.mergeWith(_.cloneDeep(DefaultConfig), config, (a, b) => {
+            if(_.isArray(b)) {
+                return b;
+            }
+            
+            return undefined;
+        });
+
         return ConfigManager.initAsync({}).then((result) => {
+            expect(ConfigManager.getConfig()).toStrictEqual(expectedConfig);
             expect(result).toStrictEqual({
                 filename: FILENAME,
                 result: true
@@ -41,6 +56,7 @@ describe('ConfigManager', () => {
 
         return ConfigManager.initAsync({}).then((result) => {
             expect(spy).toHaveBeenCalledTimes(1);
+            expect(ConfigManager.getConfig()).toStrictEqual(DefaultConfig);
             expect(result).toStrictEqual({
                 filename: FILENAME,
                 result: false
