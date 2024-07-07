@@ -60,6 +60,7 @@ class HelpTool extends BaseTool {
         ]);
 
         this.button = button;
+        this.helpDialog = undefined;
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
 
         // TODO:
@@ -95,7 +96,7 @@ class HelpTool extends BaseTool {
     // # Section: Tool Control
     //--------------------------------------------------------------------
     momentaryActivation() {
-        this.doOpenTabOrWindow();
+        this.askToOpenTabOrWindow();
     }
 
     //--------------------------------------------------------------------
@@ -111,9 +112,12 @@ class HelpTool extends BaseTool {
     // # Section: Ask User
     //--------------------------------------------------------------------
     askToOpenTabOrWindow() {
-        const i18n = TranslationManager.get(`${I18N__BASE}.dialogs.confirms.openHelp`);
+        if(this.helpDialog) {
+            return;
+        }
 
-        Dialog.confirm({
+        const i18n = TranslationManager.get(`${I18N__BASE}.dialogs.confirms.openHelp`);
+        this.helpDialog = Dialog.confirm({
             title: i18n.title,
             message: i18n.message,
             confirmClass: Dialog.Success,
@@ -121,6 +125,10 @@ class HelpTool extends BaseTool {
             cancelText: i18n.cancelText,
             onConfirm: () => {
                 this.doOpenTabOrWindow();
+                this.helpDialog = undefined;
+            },
+            onCancel: () => {
+                this.helpDialog = undefined;
             }
         });
     }
