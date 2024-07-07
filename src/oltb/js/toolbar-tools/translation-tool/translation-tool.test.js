@@ -4,6 +4,7 @@ import { LogManager } from '../../toolbar-managers/log-manager/log-manager';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 import { TranslationTool } from './translation-tool';
+import { simulateKeyPress } from '../../../../../__mocks__/simulate-key-press';
 import { TranslationManager } from '../../toolbar-managers/translation-manager/translation-manager';
 
 const FILENAME = 'translation-tool.js';
@@ -68,6 +69,30 @@ describe('TranslationTool', () => {
 
         expect(spyMomentary).toHaveBeenCalledTimes(1);
         expect(spyOnClicked).toHaveBeenCalledTimes(1);
+    });
+
+    it('should toggle the tool using short-cut-key [3]', () => {
+        const options = {onClicked: () => {}};
+        const spyOnClicked = jest.spyOn(options, 'onClicked');
+        const spyMomentary = jest.spyOn(TranslationTool.prototype, 'momentaryActivation');
+
+        new TranslationTool(options);
+        simulateKeyPress('keyup', window, '3');
+
+        // Note:
+        // Since using prototype spy, more have-been-called-results than one first might expect.
+        // 5 -> 4 times called by key-binding on window-object and 1 using tool.onClickTool
+        expect(spyMomentary).toHaveBeenCalledTimes(5);
+        expect(spyOnClicked).toHaveBeenCalledTimes(1);
+    });
+
+    it('should not toggle the tool using incorrect short-cut-key', () => {
+        const options = {onClicked: () => {}};
+        const spy = jest.spyOn(options, 'onClicked');
+
+        new TranslationTool(options);
+        simulateKeyPress('keyup', window, '!');
+        expect(spy).not.toHaveBeenCalled();
     });
 
     it('should change language from en-us to sv-se', async () => {
