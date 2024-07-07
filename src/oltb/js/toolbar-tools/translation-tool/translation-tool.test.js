@@ -92,4 +92,37 @@ describe('TranslationTool', () => {
 
         expect(spyOnTranslation).toHaveBeenCalledWith(to);
     });
+
+    it('should ask user to change language but user cancel', () => {
+        const tool = new TranslationTool();
+
+        // Note:
+        // Trigger twice to also let JEST verify the blocking of languageDialog when truthy
+        expect(tool.languageDialog).toBeUndefined();
+        tool.askToChangeLanguage();
+        tool.askToChangeLanguage();
+        expect(tool.languageDialog).not.toBeUndefined();
+
+        const buttons = tool.languageDialog.buttons;
+        const cancelButton = buttons[0];
+        cancelButton.click();
+        expect(tool.languageDialog).toBeUndefined();
+    });
+
+    it('should ask user to change language', async () => {
+        const tool = new TranslationTool();
+        const spy = jest.spyOn(TranslationTool.prototype, 'doChangeLanguage');
+        await TranslationManager.initAsync();
+
+        expect(tool.languageDialog).toBeUndefined();
+        tool.askToChangeLanguage();
+        expect(tool.languageDialog).not.toBeUndefined();
+
+        const buttons = tool.languageDialog.buttons;
+        const confirmButton = buttons[1];
+        confirmButton.click();
+
+        expect(spy).toHaveBeenCalledTimes(1);
+        expect(tool.languageDialog).toBeUndefined();
+    });
 });
