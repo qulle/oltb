@@ -27,17 +27,18 @@ describe('GoToView', () => {
     });
 
     it('should goToView [50, 100]', () => {
+        const view = {
+            getAnimating: () => {},
+            cancelAnimations: () => {},
+            animate: (options, onResult) => {
+                onResult();
+            }
+        };
         const options = {
             map: {
                 coordinates: [50, 100],
                 getView: () => {
-                    return {
-                        getAnimating: () => {},
-                        cancelAnimations: () => {},
-                        animate: (options, onResult) => {
-                            onResult();
-                        }
-                    }
+                    return view;
                 }
             },
             onDone: () => {}
@@ -46,5 +47,32 @@ describe('GoToView', () => {
 
         goToView(options)
         expect(spy).toHaveBeenCalled();
+    });
+
+    it('should goToView [50, 100] but cancel ongoing animation', () => {
+        const view = {
+            getAnimating: () => {
+                return true;
+            },
+            cancelAnimations: () => {},
+            animate: (options, onResult) => {
+                onResult();
+            }
+        };
+        const options = {
+            map: {
+                coordinates: [50, 100],
+                getView: () => {
+                    return view;
+                }
+            },
+            onDone: () => {}
+        };
+        const spyOnDone = jest.spyOn(options, 'onDone');
+        const spyCancelAnimation = jest.spyOn(view, 'cancelAnimations');
+
+        goToView(options)
+        expect(spyCancelAnimation).toHaveBeenCalled();
+        expect(spyOnDone).toHaveBeenCalled();
     });
 });
