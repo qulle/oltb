@@ -104,6 +104,7 @@ class BaseModal {
 
         window.addEventListener(Events.browser.keyUp, this.#onWindowKeyUp.bind(this));
 
+        this.buttons = [modalClose];
         if(this.options.content) {
             this.show(this.options.content);
         }
