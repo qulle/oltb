@@ -162,13 +162,13 @@ describe('DrawTool', () => {
         expect(spyOnInitiated).toHaveBeenCalledTimes(1);
     });
 
-    it('should toggle the tool', () => {
+    it('should toggle the tool', async () => {
         const options = {onClicked: () => {}};
         const spyOnClicked = jest.spyOn(options, 'onClicked');
         const spyActivate = jest.spyOn(DrawTool.prototype, 'activateTool');
         const spyDeactivate = jest.spyOn(DrawTool.prototype, 'deactivateTool');
 
-        SnapManager.initAsync();
+        await SnapManager.initAsync();
         SnapManager.setMap(mockMap);
 
         const tool = new DrawTool(options);

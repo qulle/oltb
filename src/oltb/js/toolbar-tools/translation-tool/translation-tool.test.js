@@ -1,7 +1,10 @@
 import { jest, beforeAll, describe, it, expect } from '@jest/globals';
 import { BaseTool } from '../base-tool';
+import { LogManager } from '../../toolbar-managers/log-manager/log-manager';
+import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 import { TranslationTool } from './translation-tool';
+import { TranslationManager } from '../../toolbar-managers/translation-manager/translation-manager';
 
 const FILENAME = 'translation-tool.js';
 
@@ -19,6 +22,14 @@ describe('TranslationTool', () => {
 
         jest.spyOn(ElementManager, 'getMapElement').mockImplementation(() => {
             return window.document.createElement('div');
+        });
+
+        jest.spyOn(StateManager, 'getStateObject').mockImplementation(() => {
+            return {};
+        });
+
+        jest.spyOn(StateManager, 'setStateObject').mockImplementation(() => {
+            return;
         });
     });
 
@@ -57,5 +68,28 @@ describe('TranslationTool', () => {
 
         expect(spyMomentary).toHaveBeenCalledTimes(1);
         expect(spyOnClicked).toHaveBeenCalledTimes(1);
+    });
+
+    it('should change language from en-us to sv-se', async () => {
+        const from = 'en-us';
+        const to = 'sv-se';
+
+        const spyOnLogInformation = jest.spyOn(LogManager, 'logInformation');
+        const spyOnTranslation = jest.spyOn(TranslationManager, 'setActiveLanguage');
+
+        await TranslationManager.initAsync();
+
+        const tool = new TranslationTool();
+        tool.doChangeLanguage({
+            from: from,
+            to: to
+        });
+
+        expect(spyOnLogInformation).toHaveBeenCalledWith(FILENAME, 'doChangeLanguage', {
+            from: from,
+            to: to
+        });
+
+        expect(spyOnTranslation).toHaveBeenCalledWith(to);
     });
 });

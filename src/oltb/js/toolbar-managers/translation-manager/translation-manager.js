@@ -266,6 +266,10 @@ class TranslationManager extends BaseManager {
     }
 
     static setActiveLanguage(toLanguage) {
+        if(!this.#activeLanguage) {
+            this.#activeLanguage = this.getDefaultLanguage();
+        }
+
         if(this.#activeLanguage.value === toLanguage.value) {
             LogManager.logWarning(FILENAME, 'setActiveLanguage', {
                 info: 'Aborting language change, selected language is already active',

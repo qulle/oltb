@@ -81,13 +81,13 @@ describe('ZoomboxTool', () => {
         expect(spyOnInitiated).toHaveBeenCalledTimes(1);
     });
 
-    it('should toggle the tool', () => {
+    it('should toggle the tool', async () => {
         const options = {onClicked: () => {}};
         const spyOnClicked = jest.spyOn(options, 'onClicked');
         const spyActivate = jest.spyOn(ZoomboxTool.prototype, 'activateTool');
         const spyDeactivate = jest.spyOn(ZoomboxTool.prototype, 'deactivateTool');
 
-        TooltipManager.initAsync();
+        await TooltipManager.initAsync();
         TooltipManager.setMap(mockMap);
 
         const tool = new ZoomboxTool(options);

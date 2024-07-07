@@ -91,13 +91,13 @@ describe('ScissorsTool', () => {
         expect(spyOnInitiated).toHaveBeenCalledTimes(1);
     });
 
-    it('should toggle the tool', () => {
+    it('should toggle the tool', async () => {
         const options = {onClicked: () => {}};
         const spyOnClicked = jest.spyOn(options, 'onClicked');
         const spyActivate = jest.spyOn(ScissorsTool.prototype, 'activateTool');
         const spyDeactivate = jest.spyOn(ScissorsTool.prototype, 'deactivateTool');
 
-        SnapManager.initAsync();
+        await SnapManager.initAsync();
         SnapManager.setMap(mockMap);
 
         const tool = new ScissorsTool(options);
