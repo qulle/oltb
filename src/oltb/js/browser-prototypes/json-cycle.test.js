@@ -22,7 +22,7 @@ describe('JSONCycle', () => {
         expect(output).toEqual('{"lon":1234,"lat":4321,"values":[0,1,2],"items":{"a":"foo","b":"bar"}}');
     });
 
-    it('should run [decycle]', () => {
+    it('should run [retrocycle]', () => {
         const input = '{"lon":1234,"lat":4321,"values":[0,1,2],"items":{"a":"foo","b":"bar"}}';
         const output = JSON.retrocycle(JSON.parse(input));
 
