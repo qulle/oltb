@@ -1,13 +1,13 @@
 import { jest, beforeAll, describe, it, expect } from '@jest/globals';
 import { Toast } from '../../ui-common/ui-toasts/toast';
 import { LogManager } from '../log-manager/log-manager';
+import { copyMarkerInfo } from './copy-marker-info';
 import { ElementManager } from '../element-manager/element-manager';
 import { copyToClipboard } from '../../browser-helpers/copy-to-clipboard';
-import { copyMarkerCoordinates } from './copy-marker-coordinates';
 
 const I18N__BASE = 'managers.infoWindowManager';
 
-describe('copyMarkerCoordinates', () => {
+describe('copyMarkerInfo', () => {
     beforeAll(() => {
         jest.spyOn(ElementManager, 'getToastElement').mockImplementation(() => {
             return window.document.createElement('div');
@@ -16,30 +16,30 @@ describe('copyMarkerCoordinates', () => {
 
     it('should resolve copy marker-coordinates', async () => {
         const manager = {};
-        const data = {lon: 12.34, lat: 43.21};
+        const data = 'Jest maker info';
         const spyToast = jest.spyOn(Toast, 'info');
 
         jest.spyOn(copyToClipboard, 'copy').mockImplementation(() => Promise.resolve());
-        await copyMarkerCoordinates(manager, data);
+        await copyMarkerInfo(manager, data);
 
         expect(spyToast).toHaveBeenCalledWith({
-            i18nKey: `${I18N__BASE}.toasts.infos.copyMarkerCoordinates`,
+            i18nKey: `${I18N__BASE}.toasts.infos.copyMarkerInfo`,
             autoremove: true
         });
     });
 
     it('should reject copy marker-coordinates', async () => {
         const manager = {};
-        const data = {lon: 12.34, lat: 43.21};
+        const data = 'Jest maker info';
         const spyToast = jest.spyOn(Toast, 'error');
         const spyLogManager = jest.spyOn(LogManager, 'logError');
 
         jest.spyOn(copyToClipboard, 'copy').mockImplementation(() => Promise.reject());
-        await copyMarkerCoordinates(manager, data);
+        await copyMarkerInfo(manager, data);
 
         expect(spyLogManager).toHaveBeenCalledTimes(1);
         expect(spyToast).toHaveBeenCalledWith({
-            i18nKey: `${I18N__BASE}.toasts.errors.copyMarkerCoordinates`
+            i18nKey: `${I18N__BASE}.toasts.errors.copyMarkerInfo`
         });
     });
 });
