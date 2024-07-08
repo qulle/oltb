@@ -28,6 +28,29 @@ https://cdn.jsdelivr.net/npm/oltb@v2.3.0/dist/oltb.min.js
 https://cdn.jsdelivr.net/npm/oltb@v2.3.0/dist/oltb.min.css
 ```
 
+## Get Started
+1. Clone
+```
+$ git clone https://github.com/qulle/oltb.git
+```
+
+2. Install Dependencies
+```
+$ npm install
+```
+
+3. Run Tests
+```
+$ npm run test
+$ npm run test:watch
+$ npm run test:coverage
+```
+
+4. Run Devserver
+```
+$ npm start
+```
+
 ## Examples
 Examples for both the NPM and CDN version can be viewed in the [examples directory](https://github.com/qulle/oltb/tree/main/examples/). Use Git history and the tagged releases to look at older examples.
 
