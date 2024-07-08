@@ -19,6 +19,7 @@ import { LocalStorageKeys } from './browser-constants/local-storage-keys';
 // Core Managers
 import { LogManager } from './toolbar-managers/log-manager/log-manager';
 import { UrlManager } from './toolbar-managers/url-manager/url-manager';
+import { NameManager } from './toolbar-managers/name-manager/name-manager';
 import { ToolManager } from './toolbar-managers/tool-manager/tool-manager';
 import { SnapManager } from './toolbar-managers/snap-manager/snap-manager';
 import { StyleManager } from './toolbar-managers/style-manager/style-manager';
@@ -32,13 +33,12 @@ import { TooltipManager } from './toolbar-managers/tooltip-manager/tooltip-manag
 import { FeatureManager } from './toolbar-managers/feature-manager/feature-manager';
 import { SettingsManager } from './toolbar-managers/settings-manager/settings-manager';
 import { BootstrapManager } from './toolbar-managers/bootstrap-manager/bootstrap-manager';
+import { ConversionManager } from './toolbar-managers/conversion-manager/conversion-manager';
 import { InfoWindowManager } from './toolbar-managers/info-window-manager/info-window-manager';
 import { ProjectionManager } from './toolbar-managers/projection-manager/projection-manager';
 import { TranslationManager } from './toolbar-managers/translation-manager/translation-manager';
 import { ColorPickerManager } from './toolbar-managers/color-picker-manager/color-picker-manager';
 import { AccessibilityManager } from './toolbar-managers/accessibility-manager/accessibility-manager';
-import { ConversionManager } from './toolbar-managers/conversion-manager/conversion-manager';
-import { NameManager } from './toolbar-managers/name-manager/name-manager';
 
 // Create UI functions
 import { createUITooltip } from './ui-creators/ui-tooltip/create-ui-tooltip';

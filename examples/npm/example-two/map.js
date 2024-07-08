@@ -23,6 +23,7 @@ import { LocalStorageKeys } from 'oltb/src/oltb/js/browser-constants/local-stora
 // Core Managers
 import { LogManager } from 'oltb/src/oltb/js/toolbar-managers/log-manager/log-manager';
 import { UrlManager } from 'oltb/src/oltb/js/toolbar-managers/url-manager/url-manager';
+import { NameManager } from 'oltb/src/oltb/js/toolbar-managers/name-manager/name-manager';
 import { ToolManager } from 'oltb/src/oltb/js/toolbar-managers/tool-manager/tool-manager';
 import { SnapManager } from 'oltb/src/oltb/js/toolbar-managers/snap-manager/snap-manager';
 import { StyleManager } from 'oltb/src/oltb/js/toolbar-managers/style-manager/style-manager';
@@ -36,13 +37,12 @@ import { TooltipManager } from 'oltb/src/oltb/js/toolbar-managers/tooltip-manage
 import { FeatureManager } from 'oltb/src/oltb/js/toolbar-managers/feature-manager/feature-manager';
 import { SettingsManager } from 'oltb/src/oltb/js/toolbar-managers/settings-manager/settings-manager';
 import { BootstrapManager } from 'oltb/src/oltb/js/toolbar-managers/bootstrap-manager/bootstrap-manager';
+import { ConversionManager } from 'oltb/src/oltb/js/toolbar-managers/conversion-manager/conversion-manager';
 import { InfoWindowManager } from 'oltb/src/oltb/js/toolbar-managers/info-window-manager/info-window-manager';
 import { ProjectionManager } from 'oltb/src/oltb/js/toolbar-managers/projection-manager/projection-manager';
 import { TranslationManager } from 'oltb/src/oltb/js/toolbar-managers/translation-manager/translation-manager';
 import { ColorPickerManager } from 'oltb/src/oltb/js/toolbar-managers/color-picker-manager/color-picker-manager';
 import { AccessibilityManager } from 'oltb/src/oltb/js/toolbar-managers/accessibility-manager/accessibility-manager';
-import { ConversionManager } from 'oltb/src/oltb/js/toolbar-managers/conversion-manager/conversion-manager';
-import { NameManager } from 'oltb/src/oltb/js/toolbar-managers/name-manager/name-manager';
 
 // Toolbar tools
 import { HomeTool } from 'oltb/src/oltb/js/toolbar-tools/home-tool/home-tool';

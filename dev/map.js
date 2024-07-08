@@ -28,6 +28,7 @@ import { LocalStorageKeys } from '../src/oltb/js/browser-constants/local-storage
 // Core Managers
 import { LogManager } from '../src/oltb/js/toolbar-managers/log-manager/log-manager';
 import { UrlManager } from '../src/oltb/js/toolbar-managers/url-manager/url-manager';
+import { NameManager } from '../src/oltb/js/toolbar-managers/name-manager/name-manager';
 import { ToolManager } from '../src/oltb/js/toolbar-managers/tool-manager/tool-manager';
 import { SnapManager } from '../src/oltb/js/toolbar-managers/snap-manager/snap-manager';
 import { StyleManager } from '../src/oltb/js/toolbar-managers/style-manager/style-manager';
@@ -41,13 +42,12 @@ import { TooltipManager } from '../src/oltb/js/toolbar-managers/tooltip-manager/
 import { FeatureManager } from '../src/oltb/js/toolbar-managers/feature-manager/feature-manager';
 import { SettingsManager } from '../src/oltb/js/toolbar-managers/settings-manager/settings-manager';
 import { BootstrapManager } from '../src/oltb/js/toolbar-managers/bootstrap-manager/bootstrap-manager';
+import { ConversionManager } from '../src/oltb/js/toolbar-managers/conversion-manager/conversion-manager';
 import { InfoWindowManager } from '../src/oltb/js/toolbar-managers/info-window-manager/info-window-manager';
 import { ProjectionManager } from '../src/oltb/js/toolbar-managers/projection-manager/projection-manager';
 import { TranslationManager } from '../src/oltb/js/toolbar-managers/translation-manager/translation-manager';
 import { ColorPickerManager } from '../src/oltb/js/toolbar-managers/color-picker-manager/color-picker-manager';
 import { AccessibilityManager } from '../src/oltb/js/toolbar-managers/accessibility-manager/accessibility-manager';
-import { ConversionManager } from '../src/oltb/js/toolbar-managers/conversion-manager/conversion-manager';
-import { NameManager } from '../src/oltb/js/toolbar-managers/name-manager/name-manager';
 
 // Toolbar tools
 import { HomeTool } from '../src/oltb/js/toolbar-tools/home-tool/home-tool';
