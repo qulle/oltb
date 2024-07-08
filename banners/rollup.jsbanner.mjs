@@ -39,5 +39,6 @@ export const banner = `/*!
  * | (+) Jest Environment JSDOM 29.7.0      - https://github.com/jestjs/jest                                      |
  * | (+) JIdentity Obj Proxy 3.0.0          - https://github.com/keyz/identity-obj-proxy                          |
  * | (+) Cross Env 7.0.3                    - https://github.com/kentcdodds/cross-env                             |
+ * | (+) Axios 1.7.2                        - https://github.com/axios/axios                                      |
  * +--------------------------------------------------------------------------------------------------------------+
  */`;

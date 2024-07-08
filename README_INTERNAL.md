@@ -1543,6 +1543,7 @@ All classes and id:s in the project are prefixed with the namespace `oltb`.
 12. [UUID JS 9.0.1](https://github.com/uuidjs/uuid)
 13. [Lodash 4.17.21](https://github.com/lodash/lodash)
 14. [Many Keys Map 2.0.1](https://github.com/fregante/many-keys-map)
+15. [Axios 1.7.2](https://github.com/axios/axios)
 
 ## Dev Dependencies
 1. [Parcel 2.12.0](https://parceljs.org/)
