@@ -26,6 +26,7 @@ const slideToggle = function(el, duration, callback, isDown) {
         isDown = false;
     }
   
+    // Note:
     // Fix to avoid jumping behaviour if no content is present
     const hasContentHeight = parseFloat(window.getComputedStyle(el).getPropertyValue('height'));
     if(hasContentHeight === 0) {
