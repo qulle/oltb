@@ -7,7 +7,7 @@ const I18N__BASE = 'managers.infoWindowManager';
 
 const copyMarkerCoordinates = async function(InfoWindowManager, data) {
     try {
-        await copyToClipboard(data);
+        await copyToClipboard.copy(data);
 
         Toast.info({
             i18nKey: `${I18N__BASE}.toasts.infos.copyMarkerCoordinates`,

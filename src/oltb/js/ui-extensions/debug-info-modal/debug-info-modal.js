@@ -757,7 +757,7 @@ class DebugInfoModal extends BaseModal {
                 indentation
             );
 
-            await copyToClipboard(serialized);
+            await copyToClipboard.copy(serialized);
 
             Toast.info({
                 i18nKey: `${I18N__BASE}.toasts.infos.copyEventLog`,

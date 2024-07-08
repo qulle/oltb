@@ -462,7 +462,7 @@ class CoordinatesTool extends BaseTool {
         const prettyCoordinates = toStringHDMS(coordinates);
         
         try {
-            await copyToClipboard(prettyCoordinates);
+            await copyToClipboard.copy(prettyCoordinates);
 
             Toast.info({
                 i18nKey: `${I18N__BASE}.toasts.infos.copyCoordinates`,
