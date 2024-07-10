@@ -8,14 +8,13 @@ const I18N__BASE = 'managers.infoWindowManager';
 const removeMarker = function(InfoWindowManager, marker) {
     const i18n = TranslationManager.get(`${I18N__BASE}.dialogs.confirms.deleteMarker`);
 
-    Dialog.confirm({
+    return Dialog.confirm({
         title: i18n.title,
         message: i18n.message,
         confirmText: i18n.confirmText,
         cancelText: i18n.cancelText,
         onConfirm: () => {
-            this.hideOverlay();
-
+            InfoWindowManager.hideOverlay();
             LayerManager.removeFeatureFromFeatureLayers(marker);
             
             // Note:
