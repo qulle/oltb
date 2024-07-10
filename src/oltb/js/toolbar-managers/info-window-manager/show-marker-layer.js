@@ -22,6 +22,8 @@ const showMarkerLayer = function(InfoWindowManager, marker) {
 
     layerElement.classList.add(CLASS__TOOLBOX_INDICATE_ITEM);
 
+    // TODO:
+    // Replace with DOM.flashClass(CLASS__TOOLBOX_INDICATE_ITEM);
     const timeout = ConfigManager.getConfig().animationDuration.slow;
     window.setTimeout(() => {
         layerElement.classList.remove(CLASS__TOOLBOX_INDICATE_ITEM);
