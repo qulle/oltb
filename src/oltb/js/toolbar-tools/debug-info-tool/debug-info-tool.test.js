@@ -107,15 +107,11 @@ describe('DebugInfoTool', () => {
         const options = {onClicked: () => {}};
         const spyOnClicked = jest.spyOn(options, 'onClicked');
         const spyMomentary = jest.spyOn(DebugInfoTool.prototype, 'momentaryActivation');
-        const spyGetMap = jest.spyOn(DebugInfoTool.prototype, 'getMap').mockImplementation(() => {
-            return mockMap;
-        });
 
         const tool = new DebugInfoTool(options);
         tool.onClickTool();
 
         expect(spyMomentary).toHaveBeenCalledTimes(1);
-        expect(spyGetMap).toHaveBeenCalledTimes(1);
         expect(spyOnClicked).toHaveBeenCalledTimes(1);
     });
 
@@ -141,5 +137,25 @@ describe('DebugInfoTool', () => {
         new DebugInfoTool(options);
         simulateKeyPress('keyup', window, '!');
         expect(spy).not.toHaveBeenCalled();
+    });
+
+    it('should open the debug-modal', () => {
+        const spyGetMap = jest.spyOn(DebugInfoTool.prototype, 'getMap').mockImplementation(() => {
+            return mockMap;
+        });
+
+        const tool = new DebugInfoTool();
+
+        // Note:
+        // Trigger twice to also let JEST verify the blocking of helpDialog when truthy
+        tool.doShowDebugInfoModal();
+        tool.doShowDebugInfoModal();
+
+        expect(spyGetMap).toHaveBeenCalledTimes(1);
+        expect(tool.debugInfoModal).toBeTruthy();
+
+        const closeButton = tool.debugInfoModal.buttons[0];
+        closeButton.click();
+        expect(tool.debugInfoModal).toBeFalsy();
     });
 });
