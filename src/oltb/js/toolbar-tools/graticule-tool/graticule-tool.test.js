@@ -9,6 +9,12 @@ const FILENAME = 'graticule-tool.js';
 //--------------------------------------------------------------------
 // # Section: Mocking
 //--------------------------------------------------------------------
+class MockGraticule {
+    constructor() {}
+
+    setMap(map) {}
+}
+
 const mockMap = {
     addInteraction: (interaction) => {},
     removeInteraction: (interaction) => {},
@@ -46,14 +52,6 @@ describe('GraticuleTool', () => {
 
         jest.spyOn(GraticuleTool.prototype, 'getMap').mockImplementation(() => {
             return mockMap;
-        });
-
-        jest.spyOn(GraticuleTool.prototype, 'doAddGraticuleLines').mockImplementation(() => {
-            return;
-        });
-
-        jest.spyOn(GraticuleTool.prototype, 'doRemoveGraticuleLines').mockImplementation(() => {
-            return;
         });
     });
 
@@ -93,8 +91,11 @@ describe('GraticuleTool', () => {
         const spyOnClicked = jest.spyOn(options, 'onClicked');
         const spyActivate = jest.spyOn(GraticuleTool.prototype, 'activateTool');
         const spyDeactivate = jest.spyOn(GraticuleTool.prototype, 'deactivateTool');
+        const spyGraticule = jest.spyOn(MockGraticule.prototype, 'setMap');
 
+        const mockGraticule = new MockGraticule();
         const tool = new GraticuleTool(options);
+        tool.graticule = mockGraticule;
 
         expect(hasToolActiveClass(tool)).toBe(false);
         tool.onClickTool();
@@ -105,5 +106,6 @@ describe('GraticuleTool', () => {
         expect(spyActivate).toHaveBeenCalledTimes(1);
         expect(spyDeactivate).toHaveBeenCalledTimes(1);
         expect(spyOnClicked).toHaveBeenCalledTimes(2);
+        expect(spyGraticule).toHaveBeenCalledTimes(2);
     });
 });
