@@ -164,4 +164,17 @@ describe('DomFactory', () => {
             expect(element.classList.contains(mockAnimationClass)).toBe(false);
         }, duration);
     });
+
+    it('should test flashClass', () => {
+        const duration = 250;
+        const mockAnimationClass = 'jest-mock-animation-class';
+        const element = DOM.createElement({element: 'div'});
+
+        DOM.flashClass(element, mockAnimationClass);
+        expect(element.classList.contains(mockAnimationClass)).toBe(true);
+
+        window.setTimeout(() => {
+            expect(element.classList.contains(mockAnimationClass)).toBe(false);
+        }, duration);
+    });
 });

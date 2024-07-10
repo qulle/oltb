@@ -116,6 +116,15 @@ class DOM {
             element.classList.remove(className);
         }, duration);
     }
+
+    static flashClass(element, className) {
+        element.classList.add(className);
+
+        const duration = ConfigManager.getConfig().animationDuration.slow;
+        window.setTimeout(() => {
+            element.classList.remove(className);
+        }, duration);
+    }
 }
 
 export { DOM };

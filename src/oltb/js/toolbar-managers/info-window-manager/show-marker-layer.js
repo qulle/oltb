@@ -1,6 +1,6 @@
+import { DOM } from '../../browser-helpers/dom-factory';
 import { LogManager } from '../log-manager/log-manager';
 import { LayerManager } from '../layer-manager/layer-manager';
-import { ConfigManager } from '../config-manager/config-manager';
 
 const FILENAME = 'show-marker-layer.js';
 const CLASS__TOOLBOX_INDICATE_ITEM = 'oltb-toolbox-list__item--indicate';
@@ -20,14 +20,7 @@ const showMarkerLayer = function(InfoWindowManager, marker) {
         return;
     }
 
-    layerElement.classList.add(CLASS__TOOLBOX_INDICATE_ITEM);
-
-    // TODO:
-    // Replace with DOM.flashClass(CLASS__TOOLBOX_INDICATE_ITEM);
-    const timeout = ConfigManager.getConfig().animationDuration.slow;
-    window.setTimeout(() => {
-        layerElement.classList.remove(CLASS__TOOLBOX_INDICATE_ITEM);
-    }, timeout);
+    DOM.flashClass(layerElement, CLASS__TOOLBOX_INDICATE_ITEM);
 }
 
 export { showMarkerLayer };
