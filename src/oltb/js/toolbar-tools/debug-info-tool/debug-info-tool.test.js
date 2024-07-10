@@ -1,11 +1,38 @@
 import { jest, beforeAll, describe, it, expect } from '@jest/globals';
 import { BaseTool } from '../base-tool';
 import { UrlManager } from '../../toolbar-managers/url-manager/url-manager';
+import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
+import { StyleManager } from '../../toolbar-managers/style-manager/style-manager';
 import { DebugInfoTool } from './debug-info-tool';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 import { simulateKeyPress } from '../../../../../__mocks__/simulate-key-press';
+import { TranslationManager } from '../../toolbar-managers/translation-manager/translation-manager';
+import '../../browser-prototypes/json-cycle';
 
 const FILENAME = 'debug-info-tool.js';
+
+//--------------------------------------------------------------------
+// # Section: Mocking
+//--------------------------------------------------------------------
+class MockResponse {
+    constructor() {}
+}
+
+const mockMap = {
+    addInteraction: (interaction) => {},
+    removeInteraction: (interaction) => {},
+    addOverlay: (overlay) => {},
+    removeOverlay: (overlay) => {},
+    on: (event, callback) => {},
+    getView: () => {
+        return {
+            getZoom: () => 1.234,
+            getProjection: () => 'jest',
+            getCenter: () => [1.123, 2.456],
+            getRotation: () => 1.234
+        }
+    }
+};
 
 //--------------------------------------------------------------------
 // # Section: Testing
@@ -14,14 +41,31 @@ describe('DebugInfoTool', () => {
     //--------------------------------------------------------------------
     // # Section: Setup
     //--------------------------------------------------------------------
-    beforeAll(() => {
+    beforeAll(async () => {
+        window.Response = MockResponse;
+
         jest.spyOn(ElementManager, 'getToolbarElement').mockImplementation(() => {
+            return window.document.createElement('div');
+        });
+
+        jest.spyOn(ElementManager, 'getMapElement').mockImplementation(() => {
             return window.document.createElement('div');
         });
 
         jest.spyOn(UrlManager, 'getParameter').mockImplementation(() => {
             return 'false';
         });
+
+        jest.spyOn(StateManager, 'getStateObject').mockImplementation(() => {
+            return {};
+        });
+
+        jest.spyOn(StateManager, 'setStateObject').mockImplementation(() => {
+            return;
+        });
+
+        await StyleManager.initAsync();
+        await TranslationManager.initAsync();
     });
 
     //--------------------------------------------------------------------
@@ -63,11 +107,15 @@ describe('DebugInfoTool', () => {
         const options = {onClicked: () => {}};
         const spyOnClicked = jest.spyOn(options, 'onClicked');
         const spyMomentary = jest.spyOn(DebugInfoTool.prototype, 'momentaryActivation');
+        const spyGetMap = jest.spyOn(DebugInfoTool.prototype, 'getMap').mockImplementation(() => {
+            return mockMap;
+        });
 
         const tool = new DebugInfoTool(options);
         tool.onClickTool();
 
         expect(spyMomentary).toHaveBeenCalledTimes(1);
+        expect(spyGetMap).toHaveBeenCalledTimes(1);
         expect(spyOnClicked).toHaveBeenCalledTimes(1);
     });
 
