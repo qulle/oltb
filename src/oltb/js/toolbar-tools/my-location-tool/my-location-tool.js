@@ -147,7 +147,7 @@ class MyLocationTool extends BaseTool {
     askToExitFullScreen() {
         const i18n = TranslationManager.get(`${I18N__BASE}.dialogs.confirms.exitFullscreen`);
 
-        Dialog.confirm({
+        return Dialog.confirm({
             title: i18n.title,
             message: i18n.message,
             confirmClass: Dialog.Success,

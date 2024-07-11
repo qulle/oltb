@@ -655,7 +655,7 @@ class EditTool extends BaseTool {
     askToDeleteFeatures(features) {
         const i18n = TranslationManager.get(`${I18N__BASE}.dialogs.confirms.deleteFeatures`);
 
-        Dialog.confirm({
+        return confirm({
             title: i18n.title,
             message: `${i18n.message} ${features.length}st?`,
             confirmText: i18n.confirmText,
@@ -669,7 +669,7 @@ class EditTool extends BaseTool {
     askToRotateSelectedFeatures(features) {
         const i18n = TranslationManager.get(`${I18N__BASE}.dialogs.prompts.rotateFeatures`);
 
-        Dialog.prompt({
+        return Dialog.prompt({
             title: i18n.title,
             message: `${i18n.message}`,
             value: '0',

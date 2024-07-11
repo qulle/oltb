@@ -1102,7 +1102,7 @@ class LayerTool extends BaseTool {
     askToRenameLayer(layerWrapper, callback, layerName) {
         const i18n = TranslationManager.get(`${I18N__BASE}.dialogs.prompts.renameLayer`);
 
-        Dialog.prompt({
+        return Dialog.prompt({
             title: i18n.title,
             message: `${i18n.message} <strong>${layerWrapper.getName()}</strong>`,
             value: layerWrapper.getName(),
@@ -1130,7 +1130,7 @@ class LayerTool extends BaseTool {
     askToDeleteLayer(layerWrapper, callback) {
         const i18n = TranslationManager.get(`${I18N__BASE}.dialogs.confirms.deleteLayer`);
 
-        Dialog.confirm({
+        return Dialog.confirm({
             title: i18n.title,
             message: `${i18n.message} <strong>${layerWrapper.getName()}</strong>?`,
             confirmText: i18n.confirmText,

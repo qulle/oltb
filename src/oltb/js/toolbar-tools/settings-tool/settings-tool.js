@@ -137,7 +137,7 @@ class SettingsTool extends BaseTool {
     askToClearBrowserState() {
         const i18n = TranslationManager.get(`${I18N__BASE}.dialogs.confirms.clearBrowserState`);
 
-        Dialog.confirm({
+        return Dialog.confirm({
             title: i18n.title,
             message: i18n.message,
             confirmText: i18n.confirmText,

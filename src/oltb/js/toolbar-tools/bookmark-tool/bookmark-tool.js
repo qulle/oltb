@@ -687,7 +687,7 @@ class BookmarkTool extends BaseTool {
     askClearBookmarks() {
         const i18n = TranslationManager.get(`${I18N__BASE}.dialogs.confirms.clearBookmarks`);
 
-        Dialog.confirm({
+        return Dialog.confirm({
             title: i18n.title,
             message: i18n.message,
             confirmText: i18n.confirmText,
@@ -706,7 +706,7 @@ class BookmarkTool extends BaseTool {
     askDeleteBookmark(bookmark, bookmarkElement) {
         const i18n = TranslationManager.get(`${I18N__BASE}.dialogs.confirms.clearBookmarks`);
 
-        Dialog.confirm({
+        return Dialog.confirm({
             title: i18n.title,
             message: `${i18n.message} <strong>${bookmark.name}</strong>?`,
             confirmText: i18n.confirmText,
@@ -721,7 +721,7 @@ class BookmarkTool extends BaseTool {
     askEditBookmark(bookmark, bookmarkName) {
         const i18n = TranslationManager.get(`${I18N__BASE}.dialogs.prompts.editBookmark`);
 
-        Dialog.prompt({
+        return Dialog.prompt({
             title: i18n.title,
             message: `${i18n.message} <strong>${bookmark.name}</strong>`,
             value: bookmark.name,
