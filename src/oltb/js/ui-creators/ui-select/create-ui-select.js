@@ -44,7 +44,13 @@ const createUISelect = function(options = {}) {
         ]);
     });
 
-    select.value = options.value ?? select.firstElementChild.value;
+    if(options.value) {
+        select.value = options.value;
+    }else if(select.firstElementChild) {
+        select.value = select.firstElementChild.value;
+    }else {
+        select.value = '';
+    }
 
     DOM.appendChildren(wrapper, [
         label,
