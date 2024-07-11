@@ -13,9 +13,13 @@ describe('CreateUICheckbox', () => {
     });
 
     it('should contain one DIV and one INPUT', () => {
-        const uiCheckbox = createUICheckbox({});
+        const uiCheckbox = createUICheckbox({
+            idPrefix: 'pre',
+            idPostfix: 'post',
+        });
         const [ wrapper, checkbox ] = uiCheckbox;
 
+        expect(checkbox.getAttribute('id')).toBe('prepost');
         expect(wrapper.nodeName).toBe('DIV');
         expect(checkbox.nodeName).toBe('INPUT');
     });
