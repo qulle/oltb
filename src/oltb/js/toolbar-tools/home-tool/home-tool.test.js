@@ -59,4 +59,50 @@ describe('HomeTool', () => {
         expect(spyMomentary).toHaveBeenCalledTimes(1);
         expect(spyOnClicked).toHaveBeenCalledTimes(1);
     });
+
+    it('should get zoom', () => {
+        const tool = new HomeTool();
+        const zoom = tool.getZoom();
+
+        expect(zoom).toBe(3);
+    });
+
+    it('should get rotation', () => {
+        const tool = new HomeTool();
+        const rotation = tool.getRotation();
+
+        expect(rotation).toBe(0);
+    });
+
+    it('should get location', () => {
+        const tool = new HomeTool();
+        const location = tool.getLocation();
+
+        expect(location).toStrictEqual([18.1201, 35.3518]);
+    });
+
+    it('should get modified zoom', () => {
+        const tool = new HomeTool();
+        tool.localStorage.zoom = 4;
+        const zoom = tool.getZoom();
+
+        expect(zoom).toBe(4);
+    });
+
+    it('should get modified rotation', () => {
+        const tool = new HomeTool();
+        tool.localStorage.rotation = 1;
+        const rotation = tool.getRotation();
+
+        expect(rotation).toBe(1);
+    });
+
+    it('should get modified location', () => {
+        const tool = new HomeTool();
+        tool.localStorage.lon = 20.1234;
+        tool.localStorage.lat = 40.5648;
+        const location = tool.getLocation();
+
+        expect(location).toStrictEqual([20.1234, 40.5648]);
+    });
 });
