@@ -7,6 +7,32 @@ import { ElementManager } from '../../toolbar-managers/element-manager/element-m
 const FILENAME = 'home-tool.js';
 
 //--------------------------------------------------------------------
+// # Section: Mocking
+//--------------------------------------------------------------------
+const mockView = {
+    animate: (options) => {},
+    cancelAnimations: () => {},
+    getAnimating: () => true,
+    getZoom: () => 1.234,
+    getProjection: () => 'jest',
+    getCenter: () => [1.123, 2.456],
+    getRotation: () => 1.234
+};
+
+const mockMap = {
+    addLayer: (layer) => {},
+    removeLayer: (layer) => {}, 
+    addInteraction: (interaction) => {},
+    removeInteraction: (interaction) => {},
+    addOverlay: (overlay) => {},
+    removeOverlay: (overlay) => {},
+    on: (event, callback) => {},
+    getView: () => {
+        return mockView;
+    }
+};
+
+//--------------------------------------------------------------------
 // # Section: Testing
 //--------------------------------------------------------------------
 describe('HomeTool', () => {
@@ -24,6 +50,10 @@ describe('HomeTool', () => {
 
         jest.spyOn(StateManager, 'setStateObject').mockImplementation(() => {
             return;
+        });
+
+        jest.spyOn(HomeTool.prototype, 'getMap').mockImplementation(() => {
+            return mockMap;
         });
     });
 
