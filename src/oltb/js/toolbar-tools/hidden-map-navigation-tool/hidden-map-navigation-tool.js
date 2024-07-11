@@ -353,7 +353,7 @@ class HiddenMapNavigationTool extends BaseTool {
         markerData.markerStroke = this.#validateHexColor(markerData.markerStroke);
         markerData.projection = this.#validateProjection(markerData.projection);
 
-        if(!this.hasProjection(markerData.projection)) {
+        if(!this.#hasProjection(markerData.projection)) {
             return;
         }
 
