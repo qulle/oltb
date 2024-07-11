@@ -4,6 +4,15 @@
 
 <h1 align="center">Toolbar for OpenLayers</h1>
 
+<div align="center">
+
+![License: BSD-2-Clause](https://img.shields.io/badge/License-BSD%202--Clause-blue.svg)
+![npm](https://img.shields.io/npm/dm/oltb.svg)
+![npm](https://img.shields.io/npm/v/oltb.svg)
+![jsDelivr](https://img.shields.io/jsdelivr/npm/hm/oltb)
+
+</div>
+
 ## OLTB v3.0.0-dev
 OLTB is a Vanilla JS, portable mobile friendly GIS Toolbar, developed using OpenLayers 9.1.0. The Toolbar can be filled with any number of tools and can be used in both horizontal and vertical mode and is available in both light and dark theme.
 
