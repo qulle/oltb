@@ -176,7 +176,7 @@ class ResetNorthTool extends BaseTool {
         const coordinates = toLonLat(view.getCenter());
         const i18n = TranslationManager.get(`${I18N__BASE}.dialogs.prompts.rotateMap`);
 
-        Dialog.prompt({
+        return Dialog.prompt({
             title: i18n.title,
             message: i18n.message,
             value: Math.round(normalizedRotation),
