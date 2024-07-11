@@ -1,10 +1,12 @@
 import { jest, beforeAll, describe, it, expect } from '@jest/globals';
+import { Toast } from '../../ui-common/ui-toasts/toast';
 import { BaseTool } from '../base-tool';
 import { HomeTool } from './home-tool';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 
 const FILENAME = 'home-tool.js';
+const I18N__BASE = 'tools.homeTool';
 
 //--------------------------------------------------------------------
 // # Section: Mocking
@@ -41,6 +43,10 @@ describe('HomeTool', () => {
     //--------------------------------------------------------------------
     beforeAll(() => {
         jest.spyOn(ElementManager, 'getToolbarElement').mockImplementation(() => {
+            return window.document.createElement('div');
+        });
+
+        jest.spyOn(ElementManager, 'getToastElement').mockImplementation(() => {
             return window.document.createElement('div');
         });
 
@@ -131,8 +137,27 @@ describe('HomeTool', () => {
         const tool = new HomeTool();
         tool.localStorage.lon = 20.1234;
         tool.localStorage.lat = 40.5648;
-        const location = tool.getLocation();
 
+        const location = tool.getLocation();
         expect(location).toStrictEqual([20.1234, 40.5648]);
+    });
+
+    it('should create new Home location', () => {
+        const tool = new HomeTool();
+        tool.localStorage.lon = 20.1234;
+        tool.localStorage.lat = 40.5648;
+
+        const location = tool.getLocation();
+        expect(location).toStrictEqual([20.1234, 40.5648]);
+
+        const spy = jest.spyOn(Toast, 'success');
+        tool.doCreateNewHome([10.123, 20.456]);
+
+        expect(tool.localStorage.lon).toBe(10.123);
+        expect(tool.localStorage.lat).toBe(20.456);
+        expect(spy).toHaveBeenCalledWith({
+            i18nKey: `${I18N__BASE}.toasts.infos.setHomeLocation`,
+            autoremove: true
+        });
     });
 });
