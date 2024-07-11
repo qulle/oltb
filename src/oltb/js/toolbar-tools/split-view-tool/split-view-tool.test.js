@@ -40,6 +40,16 @@ const HTML__MOCK = (`
     </div>
 `);
 
+const mockView = {
+    animate: (options) => {},
+    cancelAnimations: () => {},
+    getAnimating: () => true,
+    getZoom: () => 1.234,
+    getProjection: () => 'jest',
+    getCenter: () => [1.123, 2.456],
+    getRotation: () => 1.234
+};
+
 const mockMap = {
     addLayer: (layer) => {},
     removeLayer: (layer) => {}, 
@@ -47,7 +57,10 @@ const mockMap = {
     removeInteraction: (interaction) => {},
     addOverlay: (overlay) => {},
     removeOverlay: (overlay) => {},
-    on: (event, callback) => {}
+    on: (event, callback) => {},
+    getView: () => {
+        return mockView;
+    }
 };
 
 //--------------------------------------------------------------------

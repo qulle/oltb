@@ -23,6 +23,8 @@ const mockView = {
 };
 
 const mockMap = {
+    addLayer: (layer) => {},
+    removeLayer: (layer) => {}, 
     addInteraction: (interaction) => {},
     removeInteraction: (interaction) => {},
     addOverlay: (overlay) => {},
