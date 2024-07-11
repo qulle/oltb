@@ -4,19 +4,15 @@ import { ConfirmDialog } from './confirm-dialog';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 
 describe('ConfirmDialog', () => {
-    let dialog = undefined;
-
     beforeAll(() => {
         jest.spyOn(ElementManager, 'getMapElement').mockImplementation(() => {
             return window.document.createElement('div');
         });
     });
 
-    beforeEach(() => {
-        dialog = new ConfirmDialog();
-    });
-
     it('should create confirm-dialog', () => {
+        const dialog = new ConfirmDialog();
+
         expect(dialog).toBeTruthy();
         expect(dialog.options).toStrictEqual({
             title: 'Confirm',
@@ -30,6 +26,8 @@ describe('ConfirmDialog', () => {
     });
 
     it('should create confirm-dialog with correct HTML-structure', () => {
+        const dialog = new ConfirmDialog({});
+
         expect(dialog).toBeTruthy();
         expect(dialog).toBeInstanceOf(ConfirmDialog);
         expect(dialog.backdrop.nodeName).toBe('DIV');
@@ -40,12 +38,15 @@ describe('ConfirmDialog', () => {
     });
 
     it('should create confirm-dialog with two buttons', () => {
+        const dialog = new ConfirmDialog({});
+
         expect(dialog.buttons.length).toBe(2);
         expect(dialog.buttons[0].nodeName).toBe('BUTTON');
         expect(dialog.buttons[1].nodeName).toBe('BUTTON');
     });
 
     it('should close confirm-dialog when cancelButton is clicked', () => {
+        const dialog = new ConfirmDialog({});
         const spy = jest.spyOn(DOM, 'removeElement');
         const cancelButton = dialog.buttons[0];
 
@@ -54,6 +55,7 @@ describe('ConfirmDialog', () => {
     });
 
     it('should close confirm-dialog when confirmButton is clicked', () => {
+        const dialog = new ConfirmDialog({});
         const spy = jest.spyOn(DOM, 'removeElement');
         const confirmButton = dialog.buttons[1];
 
