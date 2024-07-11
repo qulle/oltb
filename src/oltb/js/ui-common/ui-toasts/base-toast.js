@@ -97,9 +97,10 @@ class BaseToast {
         uiRefToastElement.prepend(this.toast);
 
         if(this.options.autoremove) {
+            const duration = ConfigManager.getConfig().autoRemovalDuation.normal;
             window.setTimeout(() => {
                 DOM.removeElement(this);
-            }, ConfigManager.getConfig().autoRemovalDuation.normal);
+            }, duration);
         }
     }
 

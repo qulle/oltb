@@ -12,7 +12,7 @@ describe('BaseToast', () => {
     });
 
     it('should create a default toast', () => {
-        const toast = new BaseToast({});
+        const toast = new BaseToast();
         
         expect(toast).toBeTruthy();
         expect(toast.getTitle()).toBe('Toast');
@@ -62,6 +62,17 @@ describe('BaseToast', () => {
 
         window.setTimeout(() => {
             expect(toast.isAutoremove()).toBe(true);
+            expect(spy).toHaveBeenCalled();
+        }, timeout);
+    });
+
+    it('should create a toast and remove it', () => {
+        const spy = jest.spyOn(DOM, 'removeElement');
+        const timeout = ConfigManager.getConfig().autoRemovalDuation.normal;
+        const toast = new BaseToast();
+        toast.remove();
+
+        window.setTimeout(() => {
             expect(spy).toHaveBeenCalled();
         }, timeout);
     });
