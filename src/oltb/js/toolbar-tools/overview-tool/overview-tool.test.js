@@ -32,6 +32,12 @@ class MockResizeObserver {
     unobserve() {}
 }
 
+class MockOverviewMap {
+    constructor() {}
+
+    setMap(map) {}
+}
+
 const mockView = {
     animate: (options) => {},
     cancelAnimations: () => {},
@@ -86,14 +92,6 @@ describe('OverviewTool', () => {
             return mockMap;
         });
 
-        jest.spyOn(OverviewTool.prototype, 'doAddOverview').mockImplementation(() => {
-            return;
-        });
-
-        jest.spyOn(OverviewTool.prototype, 'doRemoveOverview').mockImplementation(() => {
-            return;
-        });
-
         await StateManager.initAsync();
     });
 
@@ -128,8 +126,11 @@ describe('OverviewTool', () => {
         const spyOnClicked = jest.spyOn(options, 'onClicked');
         const spyActivate = jest.spyOn(OverviewTool.prototype, 'activateTool');
         const spyDeactivate = jest.spyOn(OverviewTool.prototype, 'deactivateTool');
+        const spyOverviewMap = jest.spyOn(MockOverviewMap.prototype, 'setMap');
 
+        const mockOverviewMap = new MockOverviewMap();
         const tool = new OverviewTool(options);
+        tool.overviewMap = mockOverviewMap;
 
         expect(hasToolActiveClass(tool)).toBe(false);
         tool.onClickTool();
