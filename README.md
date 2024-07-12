@@ -51,7 +51,6 @@ $ npm install
 3. Run Tests
 ```
 $ npm run test
-$ npm run test:watch
 $ npm run test:coverage
 ```
 
