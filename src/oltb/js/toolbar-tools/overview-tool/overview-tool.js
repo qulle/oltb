@@ -259,15 +259,15 @@ class OverviewTool extends BaseTool {
     doToggleToolboxSection(targetName) {
         const targetNode = window.document.getElementById(targetName);
         const duration = ConfigManager.getConfig().animationDuration.fast;
-        const map = this.getMap();
 
         targetNode?.slideToggle(duration, (collapsed) => {
             this.localStorage.isCollapsed = collapsed;
             StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
-        
+
             // Note: 
             // Force render of overview, 
             // Other solutions will not render the dashed box correctly until the map is moved
+            const map = this.getMap();
             this.overviewMap.setMap(null);
             this.overviewMap.setMap(map);
         });
