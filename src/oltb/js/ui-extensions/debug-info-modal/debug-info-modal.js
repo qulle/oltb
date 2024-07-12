@@ -798,18 +798,22 @@ class DebugInfoModal extends BaseModal {
     }
 
     doActionClearStyleManager() {
-        const size = StyleManager.getSize();
+        const beforeSize = StyleManager.getSize();
         StyleManager.clearStyles();
+        const afterSize = StyleManager.getSize();
 
         LogManager.logInformation(FILENAME, 'doActionClearStyleManager', {
             info: 'StyleManager cleared',
-            size: size
+            beforeSize: beforeSize,
+            afterSize: afterSize
         });
 
         Toast.info({
             i18nKey: `${I18N__BASE}.toasts.infos.clearStyleManager`,
             autoremove: true
         });
+
+        return [beforeSize, afterSize];
     }
 }
 
