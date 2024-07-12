@@ -52,7 +52,7 @@ describe('CoordinatesTool', () => {
     //--------------------------------------------------------------------
     // # Section: Setup
     //--------------------------------------------------------------------
-    beforeAll(() => {
+    beforeAll(async () => {
         Element.prototype.scrollIntoView = jest.fn();
         window.document.body.innerHTML = HTML__MOCK;
 
@@ -62,14 +62,6 @@ describe('CoordinatesTool', () => {
 
         jest.spyOn(ElementManager, 'getToolboxElement').mockImplementation(() => {
             return window.document.createElement('div');
-        });
-
-        jest.spyOn(StateManager, 'getStateObject').mockImplementation(() => {
-            return {};
-        });
-
-        jest.spyOn(StateManager, 'setStateObject').mockImplementation(() => {
-            return;
         });
 
         jest.spyOn(SettingsManager, 'addSetting').mockImplementation(() => {
@@ -83,6 +75,8 @@ describe('CoordinatesTool', () => {
         jest.spyOn(TooltipManager, 'pop').mockImplementation(() => {
             return;
         });
+
+        await StateManager.initAsync();
     });
 
     //--------------------------------------------------------------------

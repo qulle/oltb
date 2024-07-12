@@ -63,14 +63,7 @@ describe('DebugInfoTool', () => {
             return 'false';
         });
 
-        jest.spyOn(StateManager, 'getStateObject').mockImplementation(() => {
-            return {};
-        });
-
-        jest.spyOn(StateManager, 'setStateObject').mockImplementation(() => {
-            return;
-        });
-
+        await StateManager.initAsync();
         await StyleManager.initAsync();
         await TranslationManager.initAsync();
     });

@@ -49,7 +49,7 @@ describe('BookmarkTool', () => {
     //--------------------------------------------------------------------
     // # Section: Setup
     //--------------------------------------------------------------------
-    beforeAll(() => {
+    beforeAll(async () => {
         Element.prototype.scrollIntoView = jest.fn();
         window.document.body.innerHTML = HTML__MOCK;
         
@@ -61,13 +61,7 @@ describe('BookmarkTool', () => {
             return window.document.createElement('div');
         });
 
-        jest.spyOn(StateManager, 'getStateObject').mockImplementation(() => {
-            return {};
-        });
-
-        jest.spyOn(StateManager, 'setStateObject').mockImplementation(() => {
-            return;
-        });
+        await StateManager.initAsync();
     });
 
     //--------------------------------------------------------------------

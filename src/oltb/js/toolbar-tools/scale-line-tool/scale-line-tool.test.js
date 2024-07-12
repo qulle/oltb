@@ -46,17 +46,9 @@ describe('ScaleLineTool', () => {
     //--------------------------------------------------------------------
     // # Section: Setup
     //--------------------------------------------------------------------
-    beforeAll(() => {
+    beforeAll(async () => {
         jest.spyOn(ElementManager, 'getToolbarElement').mockImplementation(() => {
             return window.document.createElement('div');
-        });
-
-        jest.spyOn(StateManager, 'getStateObject').mockImplementation(() => {
-            return {};
-        });
-
-        jest.spyOn(StateManager, 'setStateObject').mockImplementation(() => {
-            return;
         });
 
         jest.spyOn(ScaleLineTool.prototype, 'getMap').mockImplementation(() => {
@@ -70,6 +62,8 @@ describe('ScaleLineTool', () => {
         jest.spyOn(ScaleLineTool.prototype, 'doRemoveScaleLine').mockImplementation(() => {
             return;
         });
+
+        await StateManager.initAsync();
     });
 
     //--------------------------------------------------------------------

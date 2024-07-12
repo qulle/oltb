@@ -77,7 +77,7 @@ describe('SplitViewTool', () => {
     //--------------------------------------------------------------------
     // # Section: Setup
     //--------------------------------------------------------------------
-    beforeAll(() => {
+    beforeAll(async () => {
         Element.prototype.scrollIntoView = jest.fn();
         window.document.body.innerHTML = HTML__MOCK;
 
@@ -102,14 +102,6 @@ describe('SplitViewTool', () => {
             return mapElement;
         });
 
-        jest.spyOn(StateManager, 'getStateObject').mockImplementation(() => {
-            return {};
-        });
-
-        jest.spyOn(StateManager, 'setStateObject').mockImplementation(() => {
-            return;
-        });
-
         jest.spyOn(SplitViewTool.prototype, 'getMap').mockImplementation(() => {
             return mockMap;
         });
@@ -129,6 +121,8 @@ describe('SplitViewTool', () => {
         jest.spyOn(LayerManager, 'setTopMapLayerAsOnlyVisible').mockImplementation(() => {
             return;
         });
+
+        await StateManager.initAsync();
 
         LayerManager.setMap(mockMap);
         LayerManager.addMapLayers([

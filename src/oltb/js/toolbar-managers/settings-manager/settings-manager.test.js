@@ -6,14 +6,8 @@ import { DefaultSettings } from './default-settings';
 const FILENAME = 'settings-manager.js';
 
 describe('SettingsManager', () => {
-    beforeAll(() => {
-        jest.spyOn(StateManager, 'getStateObject').mockImplementation(() => {
-            return {};
-        });
-
-        jest.spyOn(StateManager, 'setStateObject').mockImplementation(() => {
-            return;
-        });
+    beforeAll(async () => {
+        await StateManager.initAsync();
     });
 
     it('should init the manager', async () => {

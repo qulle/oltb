@@ -63,7 +63,7 @@ describe('LayerTool', () => {
     //--------------------------------------------------------------------
     // # Section: Setup
     //--------------------------------------------------------------------
-    beforeAll(() => {
+    beforeAll(async () => {
         Element.prototype.scrollIntoView = jest.fn();
         window.document.body.innerHTML = HTML__MOCK;
         
@@ -75,13 +75,7 @@ describe('LayerTool', () => {
             return window.document.createElement('div');
         });
 
-        jest.spyOn(StateManager, 'getStateObject').mockImplementation(() => {
-            return {};
-        });
-
-        jest.spyOn(StateManager, 'setStateObject').mockImplementation(() => {
-            return;
-        });
+        await StateManager.initAsync();
     });
 
     //--------------------------------------------------------------------

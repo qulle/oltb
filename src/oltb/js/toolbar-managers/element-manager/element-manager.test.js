@@ -5,18 +5,12 @@ import { ElementManager } from './element-manager';
 const FILENAME = 'element-manager.js';
 
 describe('ElementManager', () => {
-    beforeAll(() => {
-        jest.spyOn(StateManager, 'getStateObject').mockImplementation(() => {
-            return {};
-        });
-
-        jest.spyOn(StateManager, 'setStateObject').mockImplementation(() => {
-            return;
-        });
-
+    beforeAll(async () => {
         jest.spyOn(window.document, 'getElementById').mockImplementation(() => {
             return window.document.createElement('div');
         });
+
+        await StateManager.initAsync();
     });
 
     it('should init the manager', async () => {

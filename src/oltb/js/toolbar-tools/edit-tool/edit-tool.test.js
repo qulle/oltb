@@ -91,7 +91,7 @@ describe('EditTool', () => {
     //--------------------------------------------------------------------
     // # Section: Setup
     //--------------------------------------------------------------------
-    beforeAll(() => {
+    beforeAll(async () => {
         Element.prototype.scrollIntoView = jest.fn();
         window.document.body.innerHTML = HTML__MOCK;
 
@@ -101,14 +101,6 @@ describe('EditTool', () => {
 
         jest.spyOn(ElementManager, 'getToolboxElement').mockImplementation(() => {
             return window.document.createElement('div');
-        });
-
-        jest.spyOn(StateManager, 'getStateObject').mockImplementation(() => {
-            return {};
-        });
-
-        jest.spyOn(StateManager, 'setStateObject').mockImplementation(() => {
-            return;
         });
 
         jest.spyOn(SettingsManager, 'getSetting').mockImplementation(() => {
@@ -122,6 +114,8 @@ describe('EditTool', () => {
         jest.spyOn(EditTool.prototype, 'getMap').mockImplementation(() => {
             return mockMap;
         });
+
+        await StateManager.initAsync();
     });
 
     //--------------------------------------------------------------------

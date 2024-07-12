@@ -20,7 +20,7 @@ describe('ToolboxTool', () => {
     //--------------------------------------------------------------------
     // # Section: Setup
     //--------------------------------------------------------------------
-    beforeAll(() => {
+    beforeAll(async () => {
         jest.spyOn(ElementManager, 'getToolbarElement').mockImplementation(() => {
             return window.document.createElement('div');
         });
@@ -29,13 +29,7 @@ describe('ToolboxTool', () => {
             return window.document.createElement('div');
         });
 
-        jest.spyOn(StateManager, 'getStateObject').mockImplementation(() => {
-            return {};
-        });
-
-        jest.spyOn(StateManager, 'setStateObject').mockImplementation(() => {
-            return;
-        });
+        await StateManager.initAsync();
     });
 
     //--------------------------------------------------------------------

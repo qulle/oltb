@@ -49,17 +49,9 @@ describe('ScissorsTool', () => {
     //--------------------------------------------------------------------
     // # Section: Setup
     //--------------------------------------------------------------------
-    beforeAll(() => {
+    beforeAll(async () => {
         jest.spyOn(ElementManager, 'getToolbarElement').mockImplementation(() => {
             return window.document.createElement('div');
-        });
-
-        jest.spyOn(StateManager, 'getStateObject').mockImplementation(() => {
-            return {};
-        });
-
-        jest.spyOn(StateManager, 'setStateObject').mockImplementation(() => {
-            return;
         });
 
         jest.spyOn(SettingsManager, 'getSetting').mockImplementation(() => {
@@ -69,6 +61,8 @@ describe('ScissorsTool', () => {
         jest.spyOn(ScissorsTool.prototype, 'getMap').mockImplementation(() => {
             return mockMap;
         });
+
+        await StateManager.initAsync();
     });
 
     //--------------------------------------------------------------------
