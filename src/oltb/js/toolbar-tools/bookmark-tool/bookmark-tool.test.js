@@ -149,4 +149,14 @@ describe('BookmarkTool', () => {
         simulateKeyPress('keyup', window, '!');
         expect(spy).not.toHaveBeenCalled();
     });
+
+    it('should clear tool state', () => {
+        // Note:
+        // Spy after new, to make sure it is triggered only one time
+        const tool = new BookmarkTool();
+        const spy = jest.spyOn(StateManager, 'setStateObject');
+
+        tool.doClearState();
+        expect(spy).toHaveBeenCalledTimes(1);
+    });
 });

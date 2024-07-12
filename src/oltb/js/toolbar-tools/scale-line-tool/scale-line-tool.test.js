@@ -9,6 +9,12 @@ const FILENAME = 'scale-line-tool.js';
 //--------------------------------------------------------------------
 // # Section: Mocking
 //--------------------------------------------------------------------
+class MockScaleLine {
+    constructor() {}
+
+    setMap(map) {}
+}
+
 const mockView = {
     animate: (options) => {},
     cancelAnimations: () => {},
@@ -55,14 +61,6 @@ describe('ScaleLineTool', () => {
             return mockMap;
         });
 
-        jest.spyOn(ScaleLineTool.prototype, 'doAddScaleLine').mockImplementation(() => {
-            return;
-        });
-
-        jest.spyOn(ScaleLineTool.prototype, 'doRemoveScaleLine').mockImplementation(() => {
-            return;
-        });
-
         await StateManager.initAsync();
     });
 
@@ -98,8 +96,11 @@ describe('ScaleLineTool', () => {
         const spyOnClicked = jest.spyOn(options, 'onClicked');
         const spyActivate = jest.spyOn(ScaleLineTool.prototype, 'activateTool');
         const spyDeactivate = jest.spyOn(ScaleLineTool.prototype, 'deactivateTool');
+        const spyScaleLine = jest.spyOn(MockScaleLine.prototype, 'setMap');
 
+        const mockScaleLine = new MockScaleLine();
         const tool = new ScaleLineTool(options);
+        tool.scaleLine = mockScaleLine;
 
         expect(hasToolActiveClass(tool)).toBe(false);
         tool.onClickTool();
@@ -110,5 +111,16 @@ describe('ScaleLineTool', () => {
         expect(spyActivate).toHaveBeenCalledTimes(1);
         expect(spyDeactivate).toHaveBeenCalledTimes(1);
         expect(spyOnClicked).toHaveBeenCalledTimes(2);
+        expect(spyScaleLine).toHaveBeenCalledTimes(2);
+    });
+
+    it('should clear tool state', () => {
+        // Note:
+        // Spy after new, to make sure it is triggered only one time
+        const tool = new ScaleLineTool();
+        const spy = jest.spyOn(StateManager, 'setStateObject');
+
+        tool.doClearState();
+        expect(spy).toHaveBeenCalledTimes(1);
     });
 });

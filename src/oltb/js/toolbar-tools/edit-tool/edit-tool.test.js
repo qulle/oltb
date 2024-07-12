@@ -178,4 +178,14 @@ describe('EditTool', () => {
         expect(spyDeactivate).toHaveBeenCalledTimes(1);
         expect(spyOnClicked).toHaveBeenCalledTimes(2);
     });
+
+    it('should clear tool state', () => {
+        // Note:
+        // Spy after new, to make sure it is triggered only one time
+        const tool = new EditTool();
+        const spy = jest.spyOn(StateManager, 'setStateObject');
+
+        tool.doClearState();
+        expect(spy).toHaveBeenCalledTimes(1);
+    });
 });
