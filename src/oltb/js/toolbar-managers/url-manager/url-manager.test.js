@@ -1,4 +1,4 @@
-import { describe, it, expect } from '@jest/globals';
+import { jest, describe, it, expect } from '@jest/globals';
 import { UrlManager } from './url-manager';
 
 const FILENAME = 'url-manager.js';
@@ -13,7 +13,12 @@ describe('UrlManager', () => {
         });
     });
 
-    it('should return the correct filename', () => {
+    it('should have two overridden methods [setMap, getName]', () => {
+        const spy = jest.spyOn(UrlManager, 'setMap');
+        const map = {};
+
+        UrlManager.setMap(map);
+        expect(spy).toHaveBeenCalled();
         expect(UrlManager.getName()).toBe(FILENAME);
     });
 });

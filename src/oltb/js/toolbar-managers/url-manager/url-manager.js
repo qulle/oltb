@@ -34,18 +34,6 @@ class UrlManager extends BaseManager {
     //--------------------------------------------------------------------
     // # Section: Public API
     //--------------------------------------------------------------------
-    static assign(path) {
-        window.location.assign(path);
-    }
-
-    static replace(path) {
-        window.location.replace(path);
-    }
-
-    static replaceParameter(parameters) {
-        window.history.replaceState(null, null, `?${parameters.toString()}`);
-    }
-
     static getParameters() {
         const uri = decodeURI(window.location.search);
         const urlParameters = new URLSearchParams(uri);
@@ -62,20 +50,6 @@ class UrlManager extends BaseManager {
         }
 
         return parameter;
-    }
-
-    static setParameter(name, value) {
-        const parameters = this.getParameters();
-        parameters.set(name, value);
-
-        this.replaceParameter(parameters);
-    }
-
-    static deleteParameter(name) {
-        const parameters = this.getParameters();
-        parameters.delete(name);
-
-        this.replaceParameter(parameters);
     }
 }
 
