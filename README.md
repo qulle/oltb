@@ -6,10 +6,10 @@
 
 <div align="center">
 
-![License: BSD-2-Clause](https://img.shields.io/badge/License-BSD%202--Clause-blue.svg)
-![npm](https://img.shields.io/npm/dm/oltb.svg)
-![npm](https://img.shields.io/npm/v/oltb.svg)
-![jsDelivr](https://img.shields.io/jsdelivr/npm/hm/oltb)
+![License: BSD-2-Clause](https://img.shields.io/badge/License-BSD%202--Clause-blue?logo=github&logoColor=fff)
+![npm downloads](https://img.shields.io/npm/dm/oltb?logo=npm&logoColor=fff)
+![npm version](https://img.shields.io/npm/v/oltb?logo=npm&logoColor=fff)
+![jsDelivr](https://img.shields.io/jsdelivr/npm/hm/oltb?logo=jsdelivr&logoColor=fff)
 
 </div>
 
