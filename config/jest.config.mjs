@@ -4,7 +4,9 @@ export default {
     transform: {},
     rootDir: '../src',
     testEnvironment: 'jsdom',
+    collectCoverage: true,
     coverageDirectory: '<rootDir>../coverage',
+    coverageReporters: ['json', 'lcov', 'text', 'clover'],
     moduleNameMapper: {
         '^uuid$': 'uuid',
         '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
