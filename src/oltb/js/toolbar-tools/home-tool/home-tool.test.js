@@ -18,7 +18,8 @@ const mockView = {
     getZoom: () => 1.234,
     getProjection: () => 'jest',
     getCenter: () => [1.123, 2.456],
-    getRotation: () => 1.234
+    getRotation: () => 1.234,
+    getConstrainedZoom: (zoom) => 1
 };
 
 const mockMap = {
