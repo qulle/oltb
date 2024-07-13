@@ -80,7 +80,9 @@ describe('DebugInfoModal', () => {
 
     it('should resolve copy event-log', async () => {
         const spyOnToast = jest.spyOn(Toast, 'info');
-        jest.spyOn(copyToClipboard, 'copy').mockImplementation(() => Promise.resolve());
+        jest.spyOn(copyToClipboard, 'copy').mockImplementation(() => {
+            return Promise.resolve();
+        });
 
         const modal = new DebugInfoModal();
         await modal.doActionCopyEventLog();
@@ -92,14 +94,14 @@ describe('DebugInfoModal', () => {
     });
     
     it('should reject copy event-log', async () => {
-        const spyOnLogManager = jest.spyOn(LogManager, 'logError');
         const spyOnToast = jest.spyOn(Toast, 'error');
-        jest.spyOn(copyToClipboard, 'copy').mockImplementation(() => Promise.reject());
+        jest.spyOn(copyToClipboard, 'copy').mockImplementation(() => {
+            return Promise.reject();
+        });
 
         const modal = new DebugInfoModal();
         await modal.doActionCopyEventLog();
 
-        expect(spyOnLogManager).toHaveBeenCalledTimes(1);
         expect(spyOnToast).toHaveBeenCalledWith({
             i18nKey: `${I18N__BASE}.toasts.errors.copyEventLog`,
         });

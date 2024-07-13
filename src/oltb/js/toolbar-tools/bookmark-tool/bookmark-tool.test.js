@@ -1,9 +1,11 @@
 import { jest, beforeAll, describe, it, expect } from '@jest/globals';
+import { Toast } from '../../ui-common/ui-toasts/toast';
 import { BaseTool } from '../base-tool';
 import { BookmarkTool } from './bookmark-tool';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 import { simulateKeyPress } from '../../../../../__mocks__/simulate-key-press';
+import { copyToClipboard } from '../../browser-helpers/copy-to-clipboard';
 
 const FILENAME = 'bookmark-tool.js';
 const CLASS__TOOLBOX_SECTION = 'oltb-toolbox-section';
@@ -58,6 +60,10 @@ describe('BookmarkTool', () => {
         });
 
         jest.spyOn(ElementManager, 'getToolboxElement').mockImplementation(() => {
+            return window.document.createElement('div');
+        });
+
+        jest.spyOn(ElementManager, 'getToastElement').mockImplementation(() => {
             return window.document.createElement('div');
         });
 
@@ -158,5 +164,42 @@ describe('BookmarkTool', () => {
 
         tool.doClearState();
         expect(spy).toHaveBeenCalledTimes(1);
+    });
+
+    it('should resolve copy bookmark-coordinates', async () => {
+        const spyToast = jest.spyOn(Toast, 'info');
+        const bookmark = {
+            coordinates: {lon: 12.34, lat: 43.21}
+        };
+
+        jest.spyOn(copyToClipboard, 'copy').mockImplementation(() => {
+            return Promise.resolve();
+        });
+        
+        const tool = new BookmarkTool();
+        await tool.doCopyBookmarkCoordinates(bookmark);
+
+        expect(spyToast).toHaveBeenCalledWith({
+            i18nKey: `${I18N__BASE}.toasts.infos.copyCoordinates`,
+            autoremove: true
+        });
+    });
+
+    it('should reject copy bookmark-coordinates', async () => {
+        const spyToast = jest.spyOn(Toast, 'error');
+        const bookmark = {
+            coordinates: {lon: 12.34, lat: 43.21}
+        };
+
+        jest.spyOn(copyToClipboard, 'copy').mockImplementation(() => {
+            return Promise.reject();
+        });
+        
+        const tool = new BookmarkTool();
+        await tool.doCopyBookmarkCoordinates(bookmark);
+
+        expect(spyToast).toHaveBeenCalledWith({
+            i18nKey: `${I18N__BASE}.toasts.errors.copyCoordinates`
+        });
     });
 });

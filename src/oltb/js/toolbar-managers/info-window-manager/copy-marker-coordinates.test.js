@@ -19,7 +19,10 @@ describe('copyMarkerCoordinates', () => {
         const data = {lon: 12.34, lat: 43.21};
         const spyToast = jest.spyOn(Toast, 'info');
 
-        jest.spyOn(copyToClipboard, 'copy').mockImplementation(() => Promise.resolve());
+        jest.spyOn(copyToClipboard, 'copy').mockImplementation(() => {
+            return  Promise.resolve();
+        });
+
         await copyMarkerCoordinates(manager, data);
 
         expect(spyToast).toHaveBeenCalledWith({
@@ -34,7 +37,10 @@ describe('copyMarkerCoordinates', () => {
         const spyToast = jest.spyOn(Toast, 'error');
         const spyLogManager = jest.spyOn(LogManager, 'logError');
 
-        jest.spyOn(copyToClipboard, 'copy').mockImplementation(() => Promise.reject());
+        jest.spyOn(copyToClipboard, 'copy').mockImplementation(() => {
+            return  Promise.reject();
+        });
+        
         await copyMarkerCoordinates(manager, data);
 
         expect(spyLogManager).toHaveBeenCalledTimes(1);

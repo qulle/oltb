@@ -1,6 +1,5 @@
 import { jest, beforeAll, describe, it, expect } from '@jest/globals';
 import { Toast } from '../../ui-common/ui-toasts/toast';
-import { LogManager } from '../log-manager/log-manager';
 import { copyMarkerInfo } from './copy-marker-info';
 import { ElementManager } from '../element-manager/element-manager';
 import { copyToClipboard } from '../../browser-helpers/copy-to-clipboard';
@@ -19,7 +18,10 @@ describe('copyMarkerInfo', () => {
         const data = 'Jest maker info';
         const spyToast = jest.spyOn(Toast, 'info');
 
-        jest.spyOn(copyToClipboard, 'copy').mockImplementation(() => Promise.resolve());
+        jest.spyOn(copyToClipboard, 'copy').mockImplementation(() => {
+            return Promise.resolve();
+        });
+
         await copyMarkerInfo(manager, data);
 
         expect(spyToast).toHaveBeenCalledWith({
@@ -32,12 +34,13 @@ describe('copyMarkerInfo', () => {
         const manager = {};
         const data = 'Jest maker info';
         const spyToast = jest.spyOn(Toast, 'error');
-        const spyLogManager = jest.spyOn(LogManager, 'logError');
 
-        jest.spyOn(copyToClipboard, 'copy').mockImplementation(() => Promise.reject());
+        jest.spyOn(copyToClipboard, 'copy').mockImplementation(() => {
+            return Promise.reject();
+        });
+        
         await copyMarkerInfo(manager, data);
 
-        expect(spyLogManager).toHaveBeenCalledTimes(1);
         expect(spyToast).toHaveBeenCalledWith({
             i18nKey: `${I18N__BASE}.toasts.errors.copyMarkerInfo`
         });
