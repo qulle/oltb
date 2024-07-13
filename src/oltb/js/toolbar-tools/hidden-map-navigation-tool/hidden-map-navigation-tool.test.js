@@ -1,10 +1,13 @@
 import { jest, beforeAll, describe, it, expect } from '@jest/globals';
+import { Toast } from '../../ui-common/ui-toasts/toast';
 import { BaseTool } from '../base-tool';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
+import { copyToClipboard } from '../../browser-helpers/copy-to-clipboard';
 import { HiddenMapNavigationTool } from './hidden-map-navigation-tool';
 
 const FILENAME = 'hidden-map-navigation-tool.js';
+const I18N__BASE = 'tools.hiddenMapNavigationTool';
 
 //--------------------------------------------------------------------
 // # Section: Mocking
@@ -44,6 +47,10 @@ describe('HiddenMapNavigationTool', () => {
             return window.document.createElement('div');
         });
 
+        jest.spyOn(ElementManager, 'getToastElement').mockImplementation(() => {
+            return window.document.createElement('div');
+        });
+
         await StateManager.initAsync();
     });
 
@@ -67,5 +74,38 @@ describe('HiddenMapNavigationTool', () => {
         expect(tool.localStorage.lat).toBe(0.00002206262337267617);
         expect(tool.localStorage.zoom).toBe(1.234);
         expect(tool.localStorage.rotation).toBe(1.234);
+    });
+
+    it('should resolve copy map-coordinates', async () => {
+        const spyToast = jest.spyOn(Toast, 'info');
+        const coordinates = {lon: 12.34, lat: 43.21};
+
+        jest.spyOn(copyToClipboard, 'copy').mockImplementation(() => {
+            return Promise.resolve();
+        });
+        
+        const tool = new HiddenMapNavigationTool();
+        await tool.doCopyCoordinates(coordinates);
+
+        expect(spyToast).toHaveBeenCalledWith({
+            i18nKey: `${I18N__BASE}.toasts.infos.coordinatesCopied`,
+            autoremove: true
+        });
+    });
+
+    it('should reject copy map-coordinates', async () => {
+        const spyToast = jest.spyOn(Toast, 'error');
+        const coordinates = {lon: 12.34, lat: 43.21};
+
+        jest.spyOn(copyToClipboard, 'copy').mockImplementation(() => {
+            return Promise.reject();
+        });
+        
+        const tool = new HiddenMapNavigationTool();
+        await tool.doCopyCoordinates(coordinates);
+
+        expect(spyToast).toHaveBeenCalledWith({
+            i18nKey: `${I18N__BASE}.toasts.errors.coordinatesCopy`
+        });
     });
 });
