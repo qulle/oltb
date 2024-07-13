@@ -2,6 +2,7 @@ import { jest, beforeAll, describe, it, expect } from '@jest/globals';
 import { BaseTool } from '../base-tool';
 import { ZoomOutTool } from './zoom-out-tool';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
+import { simulateKeyPress } from '../../../../../__mocks__/simulate-key-press';
 
 const FILENAME = 'zoom-out-tool.js';
 
@@ -86,5 +87,29 @@ describe('ZoomOutTool', () => {
 
         expect(spyMomentary).toHaveBeenCalledTimes(1);
         expect(spyOnClicked).toHaveBeenCalledTimes(1);
+    });
+
+    it('should toggle the tool using short-cut-key [W]', () => {
+        const options = {onClicked: () => {}};
+        const spyOnClicked = jest.spyOn(options, 'onClicked');
+        const spyMomentary = jest.spyOn(ZoomOutTool.prototype, 'momentaryActivation');
+
+        new ZoomOutTool(options);
+        simulateKeyPress('keyup', window, 'W');
+
+        // Note:
+        // Since using prototype spy, more have-been-called-results than one first might expect.
+        // 5 -> 4 times called by key-binding on window-object and 1 using tool.onClickTool
+        expect(spyMomentary).toHaveBeenCalledTimes(5);
+        expect(spyOnClicked).toHaveBeenCalledTimes(1);
+    });
+
+    it('should not toggle the tool using incorrect short-cut-key', () => {
+        const options = {onClicked: () => {}};
+        const spy = jest.spyOn(options, 'onClicked');
+
+        new ZoomOutTool(options);
+        simulateKeyPress('keyup', window, '!');
+        expect(spy).not.toHaveBeenCalled();
     });
 });
