@@ -60,8 +60,9 @@ describe('ToolboxTool', () => {
     });
 
     it('should toggle the tool', () => {
-        const options = {onClicked: () => {}};
+        const options = {onClicked: () => {}, onChanged: () => {}};
         const spyOnClicked = jest.spyOn(options, 'onClicked');
+        const spyonChanged = jest.spyOn(options, 'onChanged');
         const spyActivate = jest.spyOn(ToolboxTool.prototype, 'activateTool');
         const spyDeactivate = jest.spyOn(ToolboxTool.prototype, 'deactivateTool');
 
@@ -76,6 +77,7 @@ describe('ToolboxTool', () => {
         expect(spyActivate).toHaveBeenCalledTimes(1);
         expect(spyDeactivate).toHaveBeenCalledTimes(1);
         expect(spyOnClicked).toHaveBeenCalledTimes(2);
+        expect(spyonChanged).toHaveBeenCalledTimes(2);
     });
 
     it('should clear tool state', () => {

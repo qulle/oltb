@@ -6,6 +6,33 @@ import { ElementManager } from '../../toolbar-managers/element-manager/element-m
 const FILENAME = 'zoom-out-tool.js';
 
 //--------------------------------------------------------------------
+// # Section: Mocking
+//--------------------------------------------------------------------
+const mockView = {
+    animate: (options) => {},
+    cancelAnimations: () => {},
+    getAnimating: () => true,
+    getZoom: () => 1.234,
+    getProjection: () => 'jest',
+    getCenter: () => [1.123, 2.456],
+    getRotation: () => 1.234,
+    getConstrainedZoom: (zoom) => 1
+};
+
+const mockMap = {
+    addLayer: (layer) => {},
+    removeLayer: (layer) => {}, 
+    addInteraction: (interaction) => {},
+    removeInteraction: (interaction) => {},
+    addOverlay: (overlay) => {},
+    removeOverlay: (overlay) => {},
+    on: (event, callback) => {},
+    getView: () => {
+        return mockView;
+    }
+};
+
+//--------------------------------------------------------------------
 // # Section: Testing
 //--------------------------------------------------------------------
 describe('ZoomOutTool', () => {
@@ -15,6 +42,10 @@ describe('ZoomOutTool', () => {
     beforeAll(() => {
         jest.spyOn(ElementManager, 'getToolbarElement').mockImplementation(() => {
             return window.document.createElement('div');
+        });
+
+        jest.spyOn(ZoomOutTool.prototype, 'getMap').mockImplementation(() => {
+            return mockMap;
         });
     });
 
