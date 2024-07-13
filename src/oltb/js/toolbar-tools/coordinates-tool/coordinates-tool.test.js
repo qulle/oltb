@@ -1,8 +1,10 @@
 import { jest, beforeAll, describe, it, expect } from '@jest/globals';
+import { Toast } from '../../ui-common/ui-toasts/toast';
 import { BaseTool } from '../base-tool';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 import { TooltipManager } from '../../toolbar-managers/tooltip-manager/tooltip-manager';
+import { copyToClipboard } from '../../browser-helpers/copy-to-clipboard';
 import { CoordinatesTool } from './coordinates-tool';
 import { SettingsManager } from '../../toolbar-managers/settings-manager/settings-manager';
 import { simulateKeyPress } from '../../../../../__mocks__/simulate-key-press';
@@ -64,8 +66,8 @@ describe('CoordinatesTool', () => {
             return window.document.createElement('div');
         });
 
-        jest.spyOn(SettingsManager, 'addSetting').mockImplementation(() => {
-            return;
+        jest.spyOn(ElementManager, 'getToastElement').mockImplementation(() => {
+            return window.document.createElement('div');
         });
 
         jest.spyOn(TooltipManager, 'push').mockImplementation(() => {
@@ -77,6 +79,7 @@ describe('CoordinatesTool', () => {
         });
 
         await StateManager.initAsync();
+        await SettingsManager.initAsync();
     });
 
     //--------------------------------------------------------------------
@@ -164,5 +167,42 @@ describe('CoordinatesTool', () => {
 
         tool.doClearState();
         expect(spy).toHaveBeenCalledTimes(1);
+    });
+
+    it('should resolve copy coordinates', async () => {
+        const spyToast = jest.spyOn(Toast, 'info');
+        const event = {
+            coordinate: {lon: 12.34, lat: 43.21}
+        };
+
+        jest.spyOn(copyToClipboard, 'copy').mockImplementation(() => {
+            return Promise.resolve();
+        });
+        
+        const tool = new CoordinatesTool();
+        await tool.doCopyCoordinates(event);
+
+        expect(spyToast).toHaveBeenCalledWith({
+            i18nKey: `${I18N__BASE}.toasts.infos.copyCoordinates`,
+            autoremove: true
+        });
+    });
+
+    it('should reject copy coordinates', async () => {
+        const spyToast = jest.spyOn(Toast, 'error');
+        const event = {
+            coordinate: {lon: 12.34, lat: 43.21}
+        };
+
+        jest.spyOn(copyToClipboard, 'copy').mockImplementation(() => {
+            return Promise.reject();
+        });
+        
+        const tool = new CoordinatesTool();
+        await tool.doCopyCoordinates(event);
+
+        expect(spyToast).toHaveBeenCalledWith({
+            i18nKey: `${I18N__BASE}.toasts.errors.copyCoordinates`
+        });
     });
 });
