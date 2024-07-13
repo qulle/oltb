@@ -1,6 +1,7 @@
 import { jest, beforeAll, describe, it, expect } from '@jest/globals';
 import { BaseTool } from '../base-tool';
 import { MeasureTool } from './measure-tool';
+import { ToolManager } from '../../toolbar-managers/tool-manager/tool-manager';
 import { SnapManager } from '../../toolbar-managers/snap-manager/snap-manager';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
@@ -159,6 +160,16 @@ describe('MeasureTool', () => {
         expect(spyActivate).toHaveBeenCalledTimes(1);
         expect(spyDeactivate).toHaveBeenCalledTimes(1);
         expect(spyOnClicked).toHaveBeenCalledTimes(2);
+    });
+
+    it('should deactivate tool as done by ToolManager', () => {
+        const tool = new MeasureTool();
+        const spy = jest.spyOn(ToolManager, 'removeActiveTool');
+
+        tool.activateTool();
+        tool.deselectTool();
+
+        expect(spy).toHaveBeenCalled();
     });
 
     it('should clear tool state', () => {

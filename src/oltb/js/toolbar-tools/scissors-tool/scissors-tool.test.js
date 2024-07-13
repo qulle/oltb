@@ -1,6 +1,7 @@
 import { jest, beforeAll, describe, it, expect } from '@jest/globals';
 import * as jsts from 'jsts/dist/jsts.min';
 import { BaseTool } from '../base-tool';
+import { ToolManager } from '../../toolbar-managers/tool-manager/tool-manager';
 import { SnapManager } from '../../toolbar-managers/snap-manager/snap-manager';
 import { ScissorsTool } from './scissors-tool';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
@@ -121,6 +122,16 @@ describe('ScissorsTool', () => {
         expect(spyActivate).toHaveBeenCalledTimes(1);
         expect(spyDeactivate).toHaveBeenCalledTimes(1);
         expect(spyOnClicked).toHaveBeenCalledTimes(2);
+    });
+
+    it('should deactivate tool as done by ToolManager', () => {
+        const tool = new ScissorsTool();
+        const spy = jest.spyOn(ToolManager, 'removeActiveTool');
+
+        tool.activateTool();
+        tool.deselectTool();
+
+        expect(spy).toHaveBeenCalled();
     });
 
     it('should clear tool state', () => {

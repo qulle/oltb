@@ -1,6 +1,7 @@
 import { jest, beforeAll, describe, it, expect } from '@jest/globals';
 import { BaseTool } from '../base-tool';
 import { ZoomboxTool } from './zoombox-tool';
+import { ToolManager } from '../../toolbar-managers/tool-manager/tool-manager';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 import { TooltipManager } from '../../toolbar-managers/tooltip-manager/tooltip-manager';
@@ -113,6 +114,16 @@ describe('ZoomboxTool', () => {
         expect(spyOnClicked).toHaveBeenCalledTimes(2);
     });
 
+    it('should deactivate tool as done by ToolManager', () => {
+        const tool = new ZoomboxTool();
+        const spy = jest.spyOn(ToolManager, 'removeActiveTool');
+
+        tool.activateTool();
+        tool.deselectTool();
+
+        expect(spy).toHaveBeenCalled();
+    });
+
     it('should clear tool state', () => {
         // Note:
         // Spy after new, to make sure it is triggered only one time
@@ -121,5 +132,35 @@ describe('ZoomboxTool', () => {
 
         tool.doClearState();
         expect(spy).toHaveBeenCalledTimes(1);
+    });
+
+    it('should trigger drawing-related-events', () => {
+        const event = {id: 'jest'};
+        const options = {
+            onStart: () => {},
+            onEnd: () => {},
+            onDrag: () => {},
+            onCancel: () => {},
+            onError: () => {}
+        };
+
+        const spyOnStart = jest.spyOn(options, 'onStart');
+        const spyOnEnd = jest.spyOn(options, 'onEnd');
+        const spyOnDrag = jest.spyOn(options, 'onDrag');
+        const spyOnCancel = jest.spyOn(options, 'onCancel');
+        const spyOnError = jest.spyOn(options, 'onError');
+
+        const tool = new ZoomboxTool(options);
+        tool.doBoxDragStart(event);
+        tool.doBoxDragEnd(event);
+        tool.doBoxDragDrag(event);
+        tool.doBoxDragCancel(event);
+        tool.doBoxDragError(event);
+
+        expect(spyOnStart).toHaveBeenCalledWith(event);
+        expect(spyOnEnd).toHaveBeenCalledWith(event);
+        expect(spyOnDrag).toHaveBeenCalledWith(event);
+        expect(spyOnCancel).toHaveBeenCalledWith(event);
+        expect(spyOnError).toHaveBeenCalledWith(event);
     });
 });
