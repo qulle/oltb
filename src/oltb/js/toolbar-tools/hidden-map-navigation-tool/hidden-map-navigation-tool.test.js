@@ -53,7 +53,7 @@ describe('HiddenMapNavigationTool', () => {
             return window.document.createElement('div');
         });
 
-        const spyGetMap = jest.spyOn(HiddenMapNavigationTool.prototype, 'getMap').mockImplementation(() => {
+        jest.spyOn(HiddenMapNavigationTool.prototype, 'getMap').mockImplementation(() => {
             return mockMap;
         });
 
