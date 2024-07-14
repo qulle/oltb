@@ -339,11 +339,11 @@ class BookmarkTool extends BaseTool {
     }
 
     #onDeleteBookmark(bookmark, bookmarkElement) {
-        this.askDeleteBookmark(bookmark, bookmarkElement);
+        this.askToDeleteBookmark(bookmark, bookmarkElement);
     }
 
     #onEditBookmark(bookmark, bookmarkName) {        
-        this.askEditBookmark(bookmark, bookmarkName);
+        this.askToEditBookmark(bookmark, bookmarkName);
     }
 
     //--------------------------------------------------------------------
@@ -354,7 +354,7 @@ class BookmarkTool extends BaseTool {
     }
 
     #onContextMenuBookmarksClear(map, coordinates, target) {
-        this.askClearBookmarks();
+        this.askToClearBookmarks();
     }
 
     //--------------------------------------------------------------------
@@ -684,7 +684,7 @@ class BookmarkTool extends BaseTool {
     //--------------------------------------------------------------------
     // # Section: Ask User
     //--------------------------------------------------------------------
-    askClearBookmarks() {
+    askToClearBookmarks() {
         const i18n = TranslationManager.get(`${I18N__BASE}.dialogs.confirms.clearBookmarks`);
 
         return Dialog.confirm({
@@ -703,7 +703,7 @@ class BookmarkTool extends BaseTool {
         });
     }
 
-    askDeleteBookmark(bookmark, bookmarkElement) {
+    askToDeleteBookmark(bookmark, bookmarkElement) {
         const i18n = TranslationManager.get(`${I18N__BASE}.dialogs.confirms.clearBookmarks`);
 
         return Dialog.confirm({
@@ -718,7 +718,7 @@ class BookmarkTool extends BaseTool {
         });
     }
 
-    askEditBookmark(bookmark, bookmarkName) {
+    askToEditBookmark(bookmark, bookmarkName) {
         const i18n = TranslationManager.get(`${I18N__BASE}.dialogs.prompts.editBookmark`);
 
         return Dialog.prompt({

@@ -71,6 +71,9 @@ describe('LayerManager', () => {
         });
     });
 
+    // TODO:
+    // Testing map-lauer z-index requires mocking of the layer since the external layerWrapper
+    // is more complect parameter with both layer, and source gien to the add-function.
     it('should set feature-layer z-index', () => {
         const options = {name: 'Jest'};
         const layerWrapper = LayerManager.addFeatureLayer(options);

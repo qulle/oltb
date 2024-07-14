@@ -7,6 +7,7 @@ import { ElementManager } from '../../toolbar-managers/element-manager/element-m
 import { copyToClipboard } from '../../browser-helpers/copy-to-clipboard';
 import { eventDispatcher } from '../../browser-helpers/event-dispatcher';
 import { simulateKeyPress } from '../../../../../__mocks__/simulate-key-press';
+import { InfoWindowManager } from '../../toolbar-managers/info-window-manager/info-window-manager';
 
 const FILENAME = 'bookmark-tool.js';
 const CLASS__TOOLBOX_SECTION = 'oltb-toolbox-section';
@@ -56,6 +57,10 @@ describe('BookmarkTool', () => {
         Element.prototype.scrollIntoView = jest.fn();
         window.document.body.innerHTML = HTML__MOCK;
         
+        jest.spyOn(ElementManager, 'getMapElement').mockImplementation(() => {
+            return window.document.createElement('div');
+        });
+
         jest.spyOn(ElementManager, 'getToolbarElement').mockImplementation(() => {
             return window.document.createElement('div');
         });
@@ -223,5 +228,78 @@ describe('BookmarkTool', () => {
         expect(spyToast).toHaveBeenCalledWith({
             i18nKey: `${I18N__BASE}.toasts.errors.copyCoordinates`
         });
+    });
+
+    it('should ask user to clear bookmarks', () => {
+        const spyOnToast = jest.spyOn(Toast, 'info');
+        const spyOnDoClearBookmarks = jest.spyOn(BookmarkTool.prototype, 'doClearBookmarks').mockImplementation(() => {
+            return;
+        });
+
+        const tool = new BookmarkTool();
+        const dialog = tool.askToClearBookmarks();
+
+        const confirmButton = dialog.buttons[1];
+        confirmButton.click();
+
+        expect(spyOnDoClearBookmarks).toHaveBeenCalledTimes(1);
+        expect(spyOnToast).toHaveBeenCalledWith({
+            i18nKey: `${I18N__BASE}.toasts.infos.clearBookmarks`,
+            autoremove: true
+        });
+    });
+
+    it('should ask user to delete bookmark', () => {
+        const spyOnHideOverlay = jest.spyOn(InfoWindowManager, 'hideOverlay').mockImplementation(() => {
+            return;
+        });
+
+        const spyOnDoRemoveBookmark = jest.spyOn(BookmarkTool.prototype, 'doRemoveBookmark').mockImplementation(() => {
+            return;
+        });
+
+        const bookmark = {name: 'jest'};
+        const element = {name: 'jest-element'}
+        const tool = new BookmarkTool();
+        const dialog = tool.askToDeleteBookmark(bookmark, element);
+
+        const confirmButton = dialog.buttons[1];
+        confirmButton.click();
+
+        expect(spyOnHideOverlay).toHaveBeenCalled();
+        expect(spyOnDoRemoveBookmark).toHaveBeenCalledWith(bookmark, element);
+    });
+
+    it('should ask user to edit bookmark', () => {
+        const spyOnHideOverlay = jest.spyOn(InfoWindowManager, 'hideOverlay').mockImplementation(() => {
+            return;
+        });
+
+        const spyOnDoEditBookmark = jest.spyOn(BookmarkTool.prototype, 'doEditBookmark').mockImplementation(() => {
+            return;
+        });
+
+        const bookmark = {name: 'jest'};
+        const bookmarkName = 'jest';
+        const tool = new BookmarkTool();
+        const dialog = tool.askToEditBookmark(bookmark, bookmarkName);
+
+        const confirmButton = dialog.buttons[1];
+        confirmButton.click();
+
+        expect(spyOnHideOverlay).toHaveBeenCalled();
+        expect(spyOnDoEditBookmark).toHaveBeenCalledWith(bookmark, bookmarkName, 'jest');
+    });
+
+    it('should check if local storage has stored bookmark', () => {
+        const bookmark = {id: 1, name: 'jest'};
+        const tool = new BookmarkTool();
+        tool.localStorage.bookmarks.push(bookmark);
+
+        expect(tool.hasLocalStorageBookmarkById(1)).toBe(true);
+        expect(tool.getLocalStorageBookmarkById(1)).toStrictEqual(bookmark);
+
+        expect(tool.hasLocalStorageBookmarkById(2)).toBe(false);
+        expect(tool.getLocalStorageBookmarkById(2)).toBeUndefined();
     });
 });
