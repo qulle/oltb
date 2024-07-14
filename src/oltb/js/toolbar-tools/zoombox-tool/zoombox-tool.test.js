@@ -135,7 +135,6 @@ describe('ZoomboxTool', () => {
     });
 
     it('should trigger drawing-related-events', () => {
-        const event = {id: 'jest'};
         const options = {
             onStart: () => {},
             onEnd: () => {},
@@ -151,16 +150,16 @@ describe('ZoomboxTool', () => {
         const spyOnError = jest.spyOn(options, 'onError');
 
         const tool = new ZoomboxTool(options);
-        tool.doBoxDragStart(event);
-        tool.doBoxDragEnd(event);
-        tool.doBoxDragDrag(event);
-        tool.doBoxDragCancel(event);
-        tool.doBoxDragError(event);
+        tool.interactionDragZoom.dispatchEvent('boxstart');
+        tool.interactionDragZoom.dispatchEvent('boxend');
+        tool.interactionDragZoom.dispatchEvent('boxdrag');
+        tool.interactionDragZoom.dispatchEvent('boxcancel');
+        tool.interactionDragZoom.dispatchEvent('error');
 
-        expect(spyOnStart).toHaveBeenCalledWith(event);
-        expect(spyOnEnd).toHaveBeenCalledWith(event);
-        expect(spyOnDrag).toHaveBeenCalledWith(event);
-        expect(spyOnCancel).toHaveBeenCalledWith(event);
-        expect(spyOnError).toHaveBeenCalledWith(event);
+        expect(spyOnStart).toHaveBeenCalledTimes(1);
+        expect(spyOnEnd).toHaveBeenCalledTimes(1);
+        expect(spyOnDrag).toHaveBeenCalledTimes(1);
+        expect(spyOnCancel).toHaveBeenCalledTimes(1);
+        expect(spyOnError).toHaveBeenCalledTimes(1);
     });
 });
