@@ -445,6 +445,12 @@ class LayerManager extends BaseManager {
         return this.#layers.featureLayers[this.#layers.featureLayers.length - 1];
     }
 
+    static removeAllFeatureLayers() {
+        this.#layers.featureLayers.forEach((layerWrapper) => {
+            this.removeFeatureLayer(layerWrapper);
+        });
+    }
+
     static removeFeatureLayer(layerWrapper, isSilent = false) {
         LogManager.logDebug(FILENAME, 'removeFeatureLayer', layerWrapper.getName());
 

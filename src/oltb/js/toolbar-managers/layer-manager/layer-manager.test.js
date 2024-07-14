@@ -39,7 +39,10 @@ describe('LayerManager', () => {
         expect(layerWrapper.getName()).toBe('Jest');
 
         expect(LayerManager.getMapLayerSize()).toBe(1);
+        expect(LayerManager.getOLMapLayers().length).toBe(1);
         expect(LayerManager.isMapLayersEmpty()).toBe(false);
+        expect(LayerManager.hasMapLayerWithId(layerWrapper.getId())).toBe(true);
+        expect(LayerManager.getMapLayers()).toStrictEqual([layerWrapper]);
 
         ['getLayer', 'setLayer', 'getName', 'setName', 'getId', 'setId'].forEach((prop) => {
             expect(layerWrapper).toHaveProperty(prop);
@@ -57,10 +60,25 @@ describe('LayerManager', () => {
         expect(LayerManager.getFeatureLayerSize()).toBe(1);
         expect(LayerManager.isFeatureLayersEmpty()).toBe(false);
         expect(LayerManager.getActiveFeatureLayer()).toStrictEqual(layerWrapper);
+        expect(LayerManager.hasFeatureLayerWithId(layerWrapper.getId())).toBe(true);
+        expect(LayerManager.getFeatureLayers()).toStrictEqual([layerWrapper]);
+
+        expect(LayerManager.isVectorLayer(layerWrapper.getLayer())).toBe(true);
+        expect(LayerManager.isVectorSource(layerWrapper.getLayer().getSource())).toBe(true);
 
         ['getLayer', 'setLayer', 'getName', 'setName', 'getId', 'setId'].forEach((prop) => {
             expect(layerWrapper).toHaveProperty(prop);
         });
+    });
+
+    it('should set feature-layer z-index', () => {
+        const options = {name: 'Jest'};
+        const layerWrapper = LayerManager.addFeatureLayer(options);
+
+        expect(layerWrapper).toBeTruthy();
+        expect(layerWrapper.getLayer().getZIndex()).toBeUndefined();
+        LayerManager.setFeatureLayerZIndex(layerWrapper.getId(), 1);
+        expect(layerWrapper.getLayer().getZIndex()).toBe(1000001);
     });
 
     it('should create two feature-layers', () => {
@@ -100,5 +118,18 @@ describe('LayerManager', () => {
         window.addEventListener('oltb.featureLayer.removed', onCallback);
         LayerManager.removeFeatureLayer(layerWrapper, true);
         window.removeEventListener('oltb.featureLayer.removed', onCallback);
+    });
+
+    it('should return default feature-layer if empty', () => {
+        LayerManager.removeAllFeatureLayers();
+        expect(LayerManager.getFeatureLayerSize()).toBe(0);
+
+        const activeLayer = LayerManager.getActiveFeatureLayer({
+            fallback: 'jest'
+        });
+
+        expect(LayerManager.getFeatureLayerSize()).toBe(1);
+        expect(activeLayer).toHaveProperty('name', 'jest');
+        expect(activeLayer).toHaveProperty('isDynamicallyAdded', true);
     });
 });
