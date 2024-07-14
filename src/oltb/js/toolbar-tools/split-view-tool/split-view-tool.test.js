@@ -6,6 +6,7 @@ import { LayerManager } from '../../toolbar-managers/layer-manager/layer-manager
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
 import { SplitViewTool } from './split-view-tool';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
+import { eventDispatcher } from '../../browser-helpers/event-dispatcher';
 
 const FILENAME = 'split-view-tool.js';
 const CLASS__TOOLBOX_SECTION = 'oltb-toolbox-section';
@@ -196,6 +197,18 @@ describe('SplitViewTool', () => {
         expect(spyActivate).toHaveBeenCalledTimes(1);
         expect(spyDeactivate).toHaveBeenCalledTimes(1);
         expect(spyOnClicked).toHaveBeenCalledTimes(2);
+    });
+
+    it('should re-activate active tool after reload', () => {
+        const spy = jest.spyOn(SplitViewTool.prototype, 'activateTool').mockImplementation(() => {
+            return;
+        });
+
+        const tool = new SplitViewTool();
+        tool.localStorage.isActive = true;
+
+        eventDispatcher([window], 'oltb.is.ready');
+        expect(spy).toHaveBeenCalled();
     });
 
     it('should clear tool state', () => {

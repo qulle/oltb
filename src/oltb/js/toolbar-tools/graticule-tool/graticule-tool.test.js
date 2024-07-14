@@ -3,6 +3,7 @@ import { BaseTool } from '../base-tool';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
 import { GraticuleTool } from './graticule-tool';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
+import { eventDispatcher } from '../../browser-helpers/event-dispatcher';
 
 const FILENAME = 'graticule-tool.js';
 
@@ -117,6 +118,18 @@ describe('GraticuleTool', () => {
         expect(spyDeactivate).toHaveBeenCalledTimes(1);
         expect(spyOnClicked).toHaveBeenCalledTimes(2);
         expect(spyGraticule).toHaveBeenCalledTimes(2);
+    });
+
+    it('should re-activate active tool after reload', () => {
+        const spy = jest.spyOn(GraticuleTool.prototype, 'activateTool').mockImplementation(() => {
+            return;
+        });
+
+        const tool = new GraticuleTool();
+        tool.localStorage.isActive = true;
+
+        eventDispatcher([window], 'oltb.is.ready');
+        expect(spy).toHaveBeenCalled();
     });
 
     it('should clear tool state', () => {

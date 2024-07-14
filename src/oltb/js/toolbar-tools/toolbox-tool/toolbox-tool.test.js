@@ -3,6 +3,7 @@ import { BaseTool } from '../base-tool';
 import { ToolboxTool } from './toolbox-tool';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
+import { eventDispatcher } from '../../browser-helpers/event-dispatcher';
 
 const FILENAME = 'toolbox-tool.js';
 
@@ -78,6 +79,18 @@ describe('ToolboxTool', () => {
         expect(spyDeactivate).toHaveBeenCalledTimes(1);
         expect(spyOnClicked).toHaveBeenCalledTimes(2);
         expect(spyonChanged).toHaveBeenCalledTimes(2);
+    });
+
+    it('should re-activate active tool after reload', () => {
+        const spy = jest.spyOn(ToolboxTool.prototype, 'activateTool').mockImplementation(() => {
+            return;
+        });
+
+        const tool = new ToolboxTool();
+        tool.localStorage.isActive = true;
+
+        eventDispatcher([window], 'oltb.is.ready');
+        expect(spy).toHaveBeenCalled();
     });
 
     it('should clear tool state', () => {

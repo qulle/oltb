@@ -5,6 +5,7 @@ import { ToolManager } from '../../toolbar-managers/tool-manager/tool-manager';
 import { SnapManager } from '../../toolbar-managers/snap-manager/snap-manager';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
+import { eventDispatcher } from '../../browser-helpers/event-dispatcher';
 import { SettingsManager } from '../../toolbar-managers/settings-manager/settings-manager';
 
 const FILENAME = 'draw-tool.js';
@@ -202,6 +203,18 @@ describe('DrawTool', () => {
         tool.activateTool();
         tool.deselectTool();
 
+        expect(spy).toHaveBeenCalled();
+    });
+
+    it('should re-activate active tool after reload', () => {
+        const spy = jest.spyOn(DrawTool.prototype, 'activateTool').mockImplementation(() => {
+            return;
+        });
+
+        const tool = new DrawTool();
+        tool.localStorage.isActive = true;
+
+        eventDispatcher([window], 'oltb.is.ready');
         expect(spy).toHaveBeenCalled();
     });
 

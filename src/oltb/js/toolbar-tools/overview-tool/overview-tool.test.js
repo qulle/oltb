@@ -3,6 +3,7 @@ import { BaseTool } from '../base-tool';
 import { OverviewTool } from './overview-tool';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
+import { eventDispatcher } from '../../browser-helpers/event-dispatcher';
 
 const FILENAME = 'overview-tool.js';
 const CLASS__TOOLBOX_SECTION = 'oltb-toolbox-section';
@@ -142,6 +143,18 @@ describe('OverviewTool', () => {
         expect(spyActivate).toHaveBeenCalledTimes(1);
         expect(spyDeactivate).toHaveBeenCalledTimes(1);
         expect(spyOnClicked).toHaveBeenCalledTimes(2);
+    });
+
+    it('should re-activate active tool after reload', () => {
+        const spy = jest.spyOn(OverviewTool.prototype, 'activateTool').mockImplementation(() => {
+            return;
+        });
+
+        const tool = new OverviewTool();
+        tool.localStorage.isActive = true;
+
+        eventDispatcher([window], 'oltb.is.ready');
+        expect(spy).toHaveBeenCalled();
     });
 
     it('should clear tool state', () => {

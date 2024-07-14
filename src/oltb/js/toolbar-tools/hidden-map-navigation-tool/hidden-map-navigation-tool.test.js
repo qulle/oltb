@@ -3,6 +3,7 @@ import { Toast } from '../../ui-common/ui-toasts/toast';
 import { BaseTool } from '../base-tool';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
+import { eventDispatcher } from '../../browser-helpers/event-dispatcher';
 import { copyToClipboard } from '../../browser-helpers/copy-to-clipboard';
 import { HiddenMapNavigationTool } from './hidden-map-navigation-tool';
 
@@ -109,4 +110,15 @@ describe('HiddenMapNavigationTool', () => {
             i18nKey: `${I18N__BASE}.toasts.errors.coordinatesCopy`
         });
     });
+
+    // it('should re-activate active tool after reload', () => {
+    //     const spy = jest.spyOn(HiddenMapNavigationTool.prototype, 'doDetectUrlMarker').mockImplementation(() => {
+    //         return;
+    //     });
+
+    //     new HiddenMapNavigationTool();
+
+    //     eventDispatcher([window], 'oltb.is.ready');
+    //     expect(spy).toHaveBeenCalled();
+    // });
 });

@@ -6,6 +6,7 @@ import { ElementManager } from '../../toolbar-managers/element-manager/element-m
 import { TooltipManager } from '../../toolbar-managers/tooltip-manager/tooltip-manager';
 import { copyToClipboard } from '../../browser-helpers/copy-to-clipboard';
 import { CoordinatesTool } from './coordinates-tool';
+import { eventDispatcher } from '../../browser-helpers/event-dispatcher';
 import { SettingsManager } from '../../toolbar-managers/settings-manager/settings-manager';
 import { simulateKeyPress } from '../../../../../__mocks__/simulate-key-press';
 
@@ -157,6 +158,18 @@ describe('CoordinatesTool', () => {
         new CoordinatesTool(options);
         simulateKeyPress('keydown', window, '!');
         expect(spy).not.toHaveBeenCalled();
+    });
+
+    it('should re-activate active tool after reload', () => {
+        const spy = jest.spyOn(CoordinatesTool.prototype, 'activateTool').mockImplementation(() => {
+            return;
+        });
+
+        const tool = new CoordinatesTool();
+        tool.localStorage.isActive = true;
+
+        eventDispatcher([window], 'oltb.is.ready');
+        expect(spy).toHaveBeenCalled();
     });
 
     it('should clear tool state', () => {

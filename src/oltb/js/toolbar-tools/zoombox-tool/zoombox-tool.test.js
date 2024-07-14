@@ -5,6 +5,7 @@ import { ToolManager } from '../../toolbar-managers/tool-manager/tool-manager';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 import { TooltipManager } from '../../toolbar-managers/tooltip-manager/tooltip-manager';
+import { eventDispatcher } from '../../browser-helpers/event-dispatcher';
 
 const FILENAME = 'zoombox-tool.js';
 
@@ -121,6 +122,18 @@ describe('ZoomboxTool', () => {
         tool.activateTool();
         tool.deselectTool();
 
+        expect(spy).toHaveBeenCalled();
+    });
+
+    it('should re-activate active tool after reload', () => {
+        const spy = jest.spyOn(ZoomboxTool.prototype, 'activateTool').mockImplementation(() => {
+            return;
+        });
+
+        const tool = new ZoomboxTool();
+        tool.localStorage.isActive = true;
+
+        eventDispatcher([window], 'oltb.is.ready');
         expect(spy).toHaveBeenCalled();
     });
 

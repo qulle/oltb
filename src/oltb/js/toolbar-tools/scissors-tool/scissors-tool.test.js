@@ -6,6 +6,7 @@ import { SnapManager } from '../../toolbar-managers/snap-manager/snap-manager';
 import { ScissorsTool } from './scissors-tool';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
+import { eventDispatcher } from '../../browser-helpers/event-dispatcher';
 import { SettingsManager } from '../../toolbar-managers/settings-manager/settings-manager';
 
 const FILENAME = 'scissors-tool.js';
@@ -131,6 +132,18 @@ describe('ScissorsTool', () => {
         tool.activateTool();
         tool.deselectTool();
 
+        expect(spy).toHaveBeenCalled();
+    });
+
+    it('should re-activate active tool after reload', () => {
+        const spy = jest.spyOn(ScissorsTool.prototype, 'activateTool').mockImplementation(() => {
+            return;
+        });
+
+        const tool = new ScissorsTool();
+        tool.localStorage.isActive = true;
+
+        eventDispatcher([window], 'oltb.is.ready');
         expect(spy).toHaveBeenCalled();
     });
 

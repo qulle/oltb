@@ -2,6 +2,7 @@ import { jest, beforeAll, describe, it, expect } from '@jest/globals';
 import { BaseTool } from '../base-tool';
 import { ExportPngTool } from './export-png-tool';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
+import { eventDispatcher } from '../../browser-helpers/event-dispatcher';
 
 const FILENAME = 'export-png-tool.js';
 
@@ -57,5 +58,16 @@ describe('ExportPngTool', () => {
 
         expect(spyMomentary).toHaveBeenCalledTimes(1);
         expect(spyOnClicked).toHaveBeenCalledTimes(1);
+    });
+
+    it('should re-activate active tool after reload', () => {
+        const spy = jest.spyOn(ElementManager, 'getMapElement').mockImplementation(() => {
+            return window.document.createElement('div');
+        });
+
+        new ExportPngTool();
+
+        eventDispatcher([window], 'oltb.is.ready');
+        expect(spy).toHaveBeenCalled();
     });
 });

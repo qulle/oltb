@@ -4,8 +4,9 @@ import { BaseTool } from '../base-tool';
 import { BookmarkTool } from './bookmark-tool';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
-import { simulateKeyPress } from '../../../../../__mocks__/simulate-key-press';
 import { copyToClipboard } from '../../browser-helpers/copy-to-clipboard';
+import { eventDispatcher } from '../../browser-helpers/event-dispatcher';
+import { simulateKeyPress } from '../../../../../__mocks__/simulate-key-press';
 
 const FILENAME = 'bookmark-tool.js';
 const CLASS__TOOLBOX_SECTION = 'oltb-toolbox-section';
@@ -154,6 +155,18 @@ describe('BookmarkTool', () => {
         new BookmarkTool(options);
         simulateKeyPress('keyup', window, '!');
         expect(spy).not.toHaveBeenCalled();
+    });
+
+    it('should re-activate active tool after reload', () => {
+        const spy = jest.spyOn(BookmarkTool.prototype, 'activateTool').mockImplementation(() => {
+            return;
+        });
+
+        const tool = new BookmarkTool();
+        tool.localStorage.isActive = true;
+
+        eventDispatcher([window], 'oltb.is.ready');
+        expect(spy).toHaveBeenCalled();
     });
 
     it('should clear tool state', () => {
