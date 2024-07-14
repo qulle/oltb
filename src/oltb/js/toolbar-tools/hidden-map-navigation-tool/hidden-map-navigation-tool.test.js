@@ -53,6 +53,10 @@ describe('HiddenMapNavigationTool', () => {
             return window.document.createElement('div');
         });
 
+        const spyGetMap = jest.spyOn(HiddenMapNavigationTool.prototype, 'getMap').mockImplementation(() => {
+            return mockMap;
+        });
+
         await StateManager.initAsync();
     });
 
@@ -111,14 +115,14 @@ describe('HiddenMapNavigationTool', () => {
         });
     });
 
-    // it('should re-activate active tool after reload', () => {
-    //     const spy = jest.spyOn(HiddenMapNavigationTool.prototype, 'doDetectUrlMarker').mockImplementation(() => {
-    //         return;
-    //     });
+    it('should re-activate active tool after reload', () => {
+        const spy = jest.spyOn(HiddenMapNavigationTool.prototype, 'doDetectUrlMarker').mockImplementation(() => {
+            return;
+        });
 
-    //     new HiddenMapNavigationTool();
+        new HiddenMapNavigationTool();
 
-    //     eventDispatcher([window], 'oltb.is.ready');
-    //     expect(spy).toHaveBeenCalled();
-    // });
+        eventDispatcher([window], 'oltb.is.ready');
+        expect(spy).toHaveBeenCalled();
+    });
 });
