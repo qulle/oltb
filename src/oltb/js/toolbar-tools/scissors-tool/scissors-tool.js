@@ -215,8 +215,8 @@ class ScissorsTool extends BaseTool {
 
         // Note: 
         // @Consumer callback
-        if(this.options.onBrowserStateClear) {
-            this.options.onBrowserStateClear();
+        if(this.options.onBrowserStateCleared) {
+            this.options.onBrowserStateCleared();
         }
     }
 

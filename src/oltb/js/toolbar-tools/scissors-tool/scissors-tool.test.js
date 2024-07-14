@@ -147,6 +147,15 @@ describe('ScissorsTool', () => {
         expect(spy).toHaveBeenCalled();
     });
 
+    it('should clean up state after beeing cleared', () => {
+        const options = {onBrowserStateCleared: () =>{}};
+        const spy = jest.spyOn(options, 'onBrowserStateCleared');
+        new ScissorsTool(options);
+
+        eventDispatcher([window], 'oltb.browser.state.cleared');
+        expect(spy).toHaveBeenCalled();
+    });
+
     it('should clear tool state', () => {
         // Note:
         // Spy after new, to make sure it is triggered only one time

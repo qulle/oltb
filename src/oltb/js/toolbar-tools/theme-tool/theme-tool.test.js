@@ -3,6 +3,7 @@ import { BaseTool } from '../base-tool';
 import { ThemeTool } from './theme-tool';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
+import { eventDispatcher } from '../../browser-helpers/event-dispatcher';
 
 const FILENAME = 'theme-tool.js';
 
@@ -58,5 +59,14 @@ describe('ThemeTool', () => {
 
         expect(spyMomentary).toHaveBeenCalledTimes(1);
         expect(spyOnClicked).toHaveBeenCalledTimes(1);
+    });
+
+    it('should clean up state after beeing cleared', () => {
+        const options = {onBrowserStateCleared: () =>{}};
+        const spy = jest.spyOn(options, 'onBrowserStateCleared');
+        new ThemeTool(options);
+
+        eventDispatcher([window], 'oltb.browser.state.cleared');
+        expect(spy).toHaveBeenCalled();
     });
 });

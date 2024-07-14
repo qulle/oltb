@@ -3,6 +3,7 @@ import { BaseTool } from '../base-tool';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
 import { DirectionTool } from './direction-tool';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
+import { eventDispatcher } from '../../browser-helpers/event-dispatcher';
 import { simulateKeyPress } from '../../../../../__mocks__/simulate-key-press';
 
 const FILENAME = 'direction-tool.js';
@@ -83,5 +84,14 @@ describe('DirectionTool', () => {
         new DirectionTool(options);
         simulateKeyPress('keyup', window, '!');
         expect(spy).not.toHaveBeenCalled();
+    });
+
+    it('should clean up state after beeing cleared', () => {
+        const options = {onBrowserStateCleared: () =>{}};
+        const spy = jest.spyOn(options, 'onBrowserStateCleared');
+        new DirectionTool(options);
+
+        eventDispatcher([window], 'oltb.browser.state.cleared');
+        expect(spy).toHaveBeenCalled();
     });
 });

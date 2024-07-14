@@ -4,6 +4,7 @@ import { BaseTool } from '../base-tool';
 import { HomeTool } from './home-tool';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
+import { eventDispatcher } from '../../browser-helpers/event-dispatcher';
 
 const FILENAME = 'home-tool.js';
 const I18N__BASE = 'tools.homeTool';
@@ -154,6 +155,15 @@ describe('HomeTool', () => {
             i18nKey: `${I18N__BASE}.toasts.infos.setHomeLocation`,
             autoremove: true
         });
+    });
+
+    it('should clean up state after beeing cleared', () => {
+        const options = {onBrowserStateCleared: () =>{}};
+        const spy = jest.spyOn(options, 'onBrowserStateCleared');
+        new HomeTool(options);
+
+        eventDispatcher([window], 'oltb.browser.state.cleared');
+        expect(spy).toHaveBeenCalled();
     });
 
     it('should clear tool state', () => {
