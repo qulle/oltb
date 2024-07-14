@@ -90,7 +90,7 @@ describe('InfoTool', () => {
         const tool = new InfoTool();
 
         // Note:
-        // Trigger twice to also let JEST verify the blocking of infoModal when truthy
+        // Trigger twice to also let JEST verify the blocking of modal/dialog when truthy
         expect(tool.infoModal).toBeUndefined();
         tool.doShowInfoModal();
         tool.doShowInfoModal();

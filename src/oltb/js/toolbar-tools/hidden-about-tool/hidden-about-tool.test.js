@@ -16,6 +16,10 @@ describe('HiddenAboutTool', () => {
         jest.spyOn(ElementManager, 'getToolbarElement').mockImplementation(() => {
             return window.document.createElement('div');
         });
+
+        jest.spyOn(ElementManager, 'getMapElement').mockImplementation(() => {
+            return window.document.createElement('div');
+        });
     });
 
     //--------------------------------------------------------------------
@@ -28,5 +32,21 @@ describe('HiddenAboutTool', () => {
         expect(tool).toBeInstanceOf(BaseTool);
         expect(tool).toBeInstanceOf(HiddenAboutTool);
         expect(tool.getName()).toBe(FILENAME);
+    });
+
+    it('should show about-modal', () => {
+        const tool = new HiddenAboutTool();
+
+        // Note:
+        // Trigger twice to also let JEST verify the blocking of modal/dialog when truthy
+        expect(tool.aboutInfoModal).toBeUndefined();
+        tool.doShowAboutModal();
+        tool.doShowAboutModal();
+        expect(tool.aboutInfoModal).not.toBeUndefined();
+
+        const buttons = tool.aboutInfoModal.buttons;
+        const closeButton = buttons[0];
+        closeButton.click();
+        expect(tool.aboutInfoModal).toBeUndefined();
     });
 });

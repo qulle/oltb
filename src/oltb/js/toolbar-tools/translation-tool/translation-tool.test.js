@@ -116,7 +116,7 @@ describe('TranslationTool', () => {
         const tool = new TranslationTool();
 
         // Note:
-        // Trigger twice to also let JEST verify the blocking of languageDialog when truthy
+        // Trigger twice to also let JEST verify the blocking of modal/dialog when truthy
         expect(tool.languageDialog).toBeUndefined();
         tool.askToChangeLanguage();
         tool.askToChangeLanguage();

@@ -148,7 +148,7 @@ describe('DebugInfoTool', () => {
         const tool = new DebugInfoTool();
 
         // Note:
-        // Trigger twice to also let JEST verify the blocking of helpDialog when truthy
+        // Trigger twice to also let JEST verify the blocking of modal/dialog when truthy
         tool.doShowDebugInfoModal();
         tool.doShowDebugInfoModal();
 

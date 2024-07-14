@@ -107,7 +107,7 @@ describe('HelpTool', () => {
         const tool = new HelpTool();
 
         // Note:
-        // Trigger twice to also let JEST verify the blocking of helpDialog when truthy
+        // Trigger twice to also let JEST verify the blocking of modal/dialog when truthy
         expect(tool.helpDialog).toBeUndefined();
         tool.askToOpenTabOrWindow();
         tool.askToOpenTabOrWindow();
