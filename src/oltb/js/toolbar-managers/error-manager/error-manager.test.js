@@ -1,10 +1,20 @@
 import { jest, describe, it, expect } from '@jest/globals';
+import { Toast } from '../../ui-common/ui-toasts/toast';
 import { LogManager } from '../log-manager/log-manager';
 import { ErrorManager } from './error-manager';
+import { ElementManager } from '../element-manager/element-manager';
+import { eventDispatcher } from '../../browser-helpers/event-dispatcher';
 
 const FILENAME = 'error-manager.js';
+const I18N__BASE = 'managers.errorManager';
 
 describe('ErrorManager', () => {
+    beforeAll(() => {
+        jest.spyOn(ElementManager, 'getToastElement').mockImplementation(() => {
+            return window.document.createElement('div');
+        });
+    });
+
     it('should init the manager', async () => {
         return ErrorManager.initAsync({}).then((result) => {
             expect(result).toStrictEqual({
@@ -35,15 +45,15 @@ describe('ErrorManager', () => {
     });
 
     it('should catch un-handled error', () => {
-        // TODO:
-        // How to spy on the LogManager that is called by the #onError
-        // const spy = jest.spyOn(LogManager, 'logFatal');
-        // expect(spy).toHaveBeenCalled();
-        
-        const wrapper = () => {
-            throw new TypeError();
-        };
+        const spyOnWindowConsole = jest.spyOn(window.console, 'error');
+        const spyOnLogFatal = jest.spyOn(LogManager, 'logFatal');
+        const spyOnToastError = jest.spyOn(Toast, 'error');
 
-        expect(wrapper).toThrow(TypeError);
+        eventDispatcher([window], 'error');
+        expect(spyOnWindowConsole).toHaveBeenCalled();
+        expect(spyOnLogFatal).toHaveBeenCalled();
+        expect(spyOnToastError).toHaveBeenCalledWith({
+            i18nKey: `${I18N__BASE}.toasts.errors.uncaughtException`
+        });
     });
 });
