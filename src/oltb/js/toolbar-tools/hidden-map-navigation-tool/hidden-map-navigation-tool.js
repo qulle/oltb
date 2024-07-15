@@ -152,7 +152,7 @@ class HiddenMapNavigationTool extends BaseTool {
     // # Section: ContextMenu Callbacks
     //--------------------------------------------------------------------
     #onContextMenuCopyCoordinates(map, coordinates, target) {
-        this.doCopyCoordinates(coordinates);
+        this.doCopyCoordinatesAsync(coordinates);
     }
 
     #onContextMenuCenterAtCoordinates(map, coordinates, target) {
@@ -267,18 +267,18 @@ class HiddenMapNavigationTool extends BaseTool {
     //--------------------------------------------------------------------
     // # Section: Tool DoActions
     //--------------------------------------------------------------------
-    async doCopyCoordinates(coordinates) {
+    async doCopyCoordinatesAsync(coordinates) {
         const prettyCoordinates = toStringHDMS(coordinates);
 
         try {
-            await copyToClipboard.copy(prettyCoordinates);
+            await copyToClipboard.copyAsync(prettyCoordinates);
 
             Toast.info({
                 i18nKey: `${I18N__BASE}.toasts.infos.coordinatesCopied`,
                 autoremove: true
             });
         }catch(error) {
-            LogManager.logError(FILENAME, 'doCopyCoordinates', {
+            LogManager.logError(FILENAME, 'doCopyCoordinatesAsync', {
                 message: 'Failed to copy coordinates',
                 error: error
             });

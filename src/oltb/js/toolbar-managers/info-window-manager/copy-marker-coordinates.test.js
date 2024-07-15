@@ -3,11 +3,11 @@ import { Toast } from '../../ui-common/ui-toasts/toast';
 import { LogManager } from '../log-manager/log-manager';
 import { ElementManager } from '../element-manager/element-manager';
 import { copyToClipboard } from '../../browser-helpers/copy-to-clipboard';
-import { copyMarkerCoordinates } from './copy-marker-coordinates';
+import { copyMarkerCoordinatesAsync } from './copy-marker-coordinates';
 
 const I18N__BASE = 'managers.infoWindowManager';
 
-describe('copyMarkerCoordinates', () => {
+describe('copyMarkerCoordinatesAsync', () => {
     beforeAll(() => {
         jest.spyOn(ElementManager, 'getToastElement').mockImplementation(() => {
             return window.document.createElement('div');
@@ -19,11 +19,11 @@ describe('copyMarkerCoordinates', () => {
         const data = {lon: 12.34, lat: 43.21};
         const spyToast = jest.spyOn(Toast, 'info');
 
-        jest.spyOn(copyToClipboard, 'copy').mockImplementation(() => {
+        jest.spyOn(copyToClipboard, 'copyAsync').mockImplementation(() => {
             return  Promise.resolve();
         });
 
-        await copyMarkerCoordinates(manager, data);
+        await copyMarkerCoordinatesAsync(manager, data);
 
         expect(spyToast).toHaveBeenCalledWith({
             i18nKey: `${I18N__BASE}.toasts.infos.copyMarkerCoordinates`,
@@ -37,11 +37,11 @@ describe('copyMarkerCoordinates', () => {
         const spyToast = jest.spyOn(Toast, 'error');
         const spyLogManager = jest.spyOn(LogManager, 'logError');
 
-        jest.spyOn(copyToClipboard, 'copy').mockImplementation(() => {
+        jest.spyOn(copyToClipboard, 'copyAsync').mockImplementation(() => {
             return  Promise.reject();
         });
         
-        await copyMarkerCoordinates(manager, data);
+        await copyMarkerCoordinatesAsync(manager, data);
 
         expect(spyLogManager).toHaveBeenCalledTimes(1);
         expect(spyToast).toHaveBeenCalledWith({

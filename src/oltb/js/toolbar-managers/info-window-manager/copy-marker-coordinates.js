@@ -5,16 +5,16 @@ import { copyToClipboard } from '../../browser-helpers/copy-to-clipboard';
 const FILENAME = 'copy-marker-coordinates.js';
 const I18N__BASE = 'managers.infoWindowManager';
 
-const copyMarkerCoordinates = async function(InfoWindowManager, data) {
+const copyMarkerCoordinatesAsync = async function(InfoWindowManager, data) {
     try {
-        await copyToClipboard.copy(data);
+        await copyToClipboard.copyAsync(data);
 
         Toast.info({
             i18nKey: `${I18N__BASE}.toasts.infos.copyMarkerCoordinates`,
             autoremove: true
         });
     }catch(error) {
-        LogManager.logError(FILENAME, 'copyMarkerCoordinates', {
+        LogManager.logError(FILENAME, 'copyMarkerCoordinatesAsync', {
             message: 'Failed to copy Marker coordinates',
             error: error
         });
@@ -25,4 +25,4 @@ const copyMarkerCoordinates = async function(InfoWindowManager, data) {
     }
 }
 
-export { copyMarkerCoordinates };
+export { copyMarkerCoordinatesAsync };

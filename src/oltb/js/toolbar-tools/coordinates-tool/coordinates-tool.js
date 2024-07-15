@@ -275,7 +275,7 @@ class CoordinatesTool extends BaseTool {
     }
 
     #onMapClick(event) {        
-        this.doCopyCoordinates(event);
+        this.doCopyCoordinatesAsync(event);
 
         if(!this.shouldCopyCoordinatesOnClick()) {
             this.toolboxCoordinates(event);
@@ -447,7 +447,7 @@ class CoordinatesTool extends BaseTool {
         });
     }
 
-    async doCopyCoordinates(event) {
+    async doCopyCoordinatesAsync(event) {
         if(!this.shouldCopyCoordinatesOnClick() || ToolManager.hasActiveTool()) {
             return;
         }
@@ -462,14 +462,14 @@ class CoordinatesTool extends BaseTool {
         const prettyCoordinates = toStringHDMS(coordinates);
         
         try {
-            await copyToClipboard.copy(prettyCoordinates);
+            await copyToClipboard.copyAsync(prettyCoordinates);
 
             Toast.info({
                 i18nKey: `${I18N__BASE}.toasts.infos.copyCoordinates`,
                 autoremove: true
             });
         }catch(error) {
-            LogManager.logError(FILENAME, 'doCopyCoordinates', {
+            LogManager.logError(FILENAME, 'doCopyCoordinatesAsync', {
                 message: 'Failed to copy coordinates',
                 error: error
             });

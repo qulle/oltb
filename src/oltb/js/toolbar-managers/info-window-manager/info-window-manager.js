@@ -15,13 +15,13 @@ import { removeMarker } from './remove-marker';
 import { ConfigManager } from '../config-manager/config-manager';
 import { DefaultConfig } from '../config-manager/default-config';
 import { FeatureManager } from '../feature-manager/feature-manager';
-import { copyMarkerInfo } from './copy-marker-info';
 import { showMarkerLayer } from './show-marker-layer';
 import { getVectorContext } from 'ol/render';
-import { HexTransparencies } from '../../browser-constants/hex-transparencies';
 import { FeatureProperties } from '../../ol-helpers/feature-properties';
+import { HexTransparencies } from '../../browser-constants/hex-transparencies';
+import { copyMarkerInfoAsync } from './copy-marker-info';
 import { SvgPaths, getSvgIcon } from '../../ui-icons/get-svg-icon/get-svg-icon';
-import { copyMarkerCoordinates } from './copy-marker-coordinates';
+import { copyMarkerCoordinatesAsync } from './copy-marker-coordinates';
 import { Fill, Stroke, Style, Circle as CircleStyle } from 'ol/style';
 
 const FILENAME = 'info-window-manager.js';
@@ -471,7 +471,7 @@ class InfoWindowManager extends BaseManager {
                 const value = uiRefCopyCoordinatesButton.getAttribute('data-oltb-coordinates');
                 uiRefCopyCoordinatesButton.addEventListener(
                     Events.browser.click, 
-                    copyMarkerCoordinates.bind(this, InfoWindowManager, value)
+                    copyMarkerCoordinatesAsync.bind(this, InfoWindowManager, value)
                 );
             }
 
@@ -480,7 +480,7 @@ class InfoWindowManager extends BaseManager {
                 const value = uiRefCopyInfoButton.getAttribute('data-oltb-copy');
                 uiRefCopyInfoButton.addEventListener(
                     Events.browser.click, 
-                    copyMarkerInfo.bind(this, InfoWindowManager, value)
+                    copyMarkerInfoAsync.bind(this, InfoWindowManager, value)
                 );
             }
 

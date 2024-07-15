@@ -23,7 +23,7 @@ describe('copyToClipboard', () => {
             isSecureContext: true
         });
 
-        await copyToClipboard.copy('  test  ');
+        await copyToClipboard.copyAsync('  test  ');
 
         expect(writeTextMock).toHaveBeenCalledWith('test');
         expect(DOM.createElement).not.toHaveBeenCalled();
@@ -43,7 +43,7 @@ describe('copyToClipboard', () => {
         DOM.createElement.mockReturnValue(mockTextArea);
         document.execCommand = jest.fn().mockReturnValue(false);
 
-        await copyToClipboard.copy('  test  ');
+        await copyToClipboard.copyAsync('  test  ');
         
         expect(mockTextArea.select).toHaveBeenCalled();
         expect(document.execCommand).toHaveBeenCalledWith('copy');
@@ -75,7 +75,7 @@ describe('copyToClipboard', () => {
             throw new Error('execCommand failed');
         });
 
-        await expect(copyToClipboard.copy('  test  ')).rejects.toThrow();
+        await expect(copyToClipboard.copyAsync('  test  ')).rejects.toThrow();
 
         expect(mockTextArea.select).toHaveBeenCalled();
         expect(document.execCommand).toHaveBeenCalledWith('copy');

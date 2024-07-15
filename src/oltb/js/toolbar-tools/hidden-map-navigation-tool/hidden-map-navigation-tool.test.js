@@ -86,12 +86,12 @@ describe('HiddenMapNavigationTool', () => {
         const spyToast = jest.spyOn(Toast, 'info');
         const coordinates = {lon: 12.34, lat: 43.21};
 
-        jest.spyOn(copyToClipboard, 'copy').mockImplementation(() => {
+        jest.spyOn(copyToClipboard, 'copyAsync').mockImplementation(() => {
             return Promise.resolve();
         });
         
         const tool = new HiddenMapNavigationTool();
-        await tool.doCopyCoordinates(coordinates);
+        await tool.doCopyCoordinatesAsync(coordinates);
 
         expect(spyToast).toHaveBeenCalledWith({
             i18nKey: `${I18N__BASE}.toasts.infos.coordinatesCopied`,
@@ -103,12 +103,12 @@ describe('HiddenMapNavigationTool', () => {
         const spyToast = jest.spyOn(Toast, 'error');
         const coordinates = {lon: 12.34, lat: 43.21};
 
-        jest.spyOn(copyToClipboard, 'copy').mockImplementation(() => {
+        jest.spyOn(copyToClipboard, 'copyAsync').mockImplementation(() => {
             return Promise.reject();
         });
         
         const tool = new HiddenMapNavigationTool();
-        await tool.doCopyCoordinates(coordinates);
+        await tool.doCopyCoordinatesAsync(coordinates);
 
         expect(spyToast).toHaveBeenCalledWith({
             i18nKey: `${I18N__BASE}.toasts.errors.coordinatesCopy`

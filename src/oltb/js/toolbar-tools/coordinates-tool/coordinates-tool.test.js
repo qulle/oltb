@@ -197,12 +197,12 @@ describe('CoordinatesTool', () => {
             coordinate: {lon: 12.34, lat: 43.21}
         };
 
-        jest.spyOn(copyToClipboard, 'copy').mockImplementation(() => {
+        jest.spyOn(copyToClipboard, 'copyAsync').mockImplementation(() => {
             return Promise.resolve();
         });
         
         const tool = new CoordinatesTool();
-        await tool.doCopyCoordinates(event);
+        await tool.doCopyCoordinatesAsync(event);
 
         expect(spyToast).toHaveBeenCalledWith({
             i18nKey: `${I18N__BASE}.toasts.infos.copyCoordinates`,
@@ -216,12 +216,12 @@ describe('CoordinatesTool', () => {
             coordinate: {lon: 12.34, lat: 43.21}
         };
 
-        jest.spyOn(copyToClipboard, 'copy').mockImplementation(() => {
+        jest.spyOn(copyToClipboard, 'copyAsync').mockImplementation(() => {
             return Promise.reject();
         });
         
         const tool = new CoordinatesTool();
-        await tool.doCopyCoordinates(event);
+        await tool.doCopyCoordinatesAsync(event);
 
         expect(spyToast).toHaveBeenCalledWith({
             i18nKey: `${I18N__BASE}.toasts.errors.copyCoordinates`

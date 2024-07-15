@@ -691,7 +691,7 @@ class DebugInfoModal extends BaseModal {
         const actions = {
             'log.map.to.console': this.doActionLoggingMap.bind(this),
             'generate.uuid': this.doActionGenerateUUID.bind(this),
-            'copy.event.log': this.doActionCopyEventLog.bind(this),
+            'copy.event.log': this.doActionCopyEventLogAsync.bind(this),
             'clear.event.log': this.doActionClearEventLog.bind(this),
             'clear.style.manager': this.doActionClearStyleManager.bind(this)
         };
@@ -746,7 +746,7 @@ class DebugInfoModal extends BaseModal {
         ]);
     }
 
-    async doActionCopyEventLog() {
+    async doActionCopyEventLogAsync() {
         const eventLog = LogManager.getLog().slice().reverse();
         
         try {
@@ -757,14 +757,14 @@ class DebugInfoModal extends BaseModal {
                 indentation
             );
 
-            await copyToClipboard.copy(serialized);
+            await copyToClipboard.copyAsync(serialized);
 
             Toast.info({
                 i18nKey: `${I18N__BASE}.toasts.infos.copyEventLog`,
                 autoremove: true
             });
         }catch(error) {
-            LogManager.logError(FILENAME, 'doActionCopyEventLog', {
+            LogManager.logError(FILENAME, 'doActionCopyEventLogAsync', {
                 message: 'Failed to copy Event Log',
                 error: error
             });

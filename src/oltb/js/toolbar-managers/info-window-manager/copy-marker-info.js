@@ -5,16 +5,16 @@ import { copyToClipboard } from '../../browser-helpers/copy-to-clipboard';
 const FILENAME = 'copy-marker-info.js';
 const I18N__BASE = 'managers.infoWindowManager';
 
-const copyMarkerInfo = async function(InfoWindowManager, data) {
+const copyMarkerInfoAsync = async function(InfoWindowManager, data) {
     try {
-        await copyToClipboard.copy(data);
+        await copyToClipboard.copyAsync(data);
 
         Toast.info({
             i18nKey: `${I18N__BASE}.toasts.infos.copyMarkerInfo`,
             autoremove: true
         });
     }catch(error) {
-        LogManager.logError(FILENAME, 'copyMarkerInfo', {
+        LogManager.logError(FILENAME, 'copyMarkerInfoAsync', {
             message: 'Failed to copy Marker info',
             error: error
         });
@@ -25,4 +25,4 @@ const copyMarkerInfo = async function(InfoWindowManager, data) {
     }
 }
 
-export { copyMarkerInfo };
+export { copyMarkerInfoAsync };

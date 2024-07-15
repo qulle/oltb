@@ -335,7 +335,7 @@ class BookmarkTool extends BaseTool {
     }
     
     #onCopyBookmarkCoordinates(bookmark) {
-        this.doCopyBookmarkCoordinates(bookmark);
+        this.doCopyBookmarkCoordinatesAsync(bookmark);
     }
 
     #onDeleteBookmark(bookmark, bookmarkElement) {
@@ -938,18 +938,18 @@ class BookmarkTool extends BaseTool {
         }
     }
 
-    async doCopyBookmarkCoordinates(bookmark) {
+    async doCopyBookmarkCoordinatesAsync(bookmark) {
         const prettyCoordinates = toStringHDMS(bookmark.coordinates);
         
         try {
-            await copyToClipboard.copy(prettyCoordinates);
+            await copyToClipboard.copyAsync(prettyCoordinates);
 
             Toast.info({
                 i18nKey: `${I18N__BASE}.toasts.infos.copyCoordinates`,
                 autoremove: true
             });
         }catch(error) {
-            LogManager.logError(FILENAME, 'doCopyBookmarkCoordinates', {
+            LogManager.logError(FILENAME, 'doCopyBookmarkCoordinatesAsync', {
                 message: 'Failed to copy coordinates',
                 error: error
             });

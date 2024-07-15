@@ -199,12 +199,12 @@ describe('BookmarkTool', () => {
             coordinates: {lon: 12.34, lat: 43.21}
         };
 
-        jest.spyOn(copyToClipboard, 'copy').mockImplementation(() => {
+        jest.spyOn(copyToClipboard, 'copyAsync').mockImplementation(() => {
             return Promise.resolve();
         });
         
         const tool = new BookmarkTool();
-        await tool.doCopyBookmarkCoordinates(bookmark);
+        await tool.doCopyBookmarkCoordinatesAsync(bookmark);
 
         expect(spyToast).toHaveBeenCalledWith({
             i18nKey: `${I18N__BASE}.toasts.infos.copyCoordinates`,
@@ -218,12 +218,12 @@ describe('BookmarkTool', () => {
             coordinates: {lon: 12.34, lat: 43.21}
         };
 
-        jest.spyOn(copyToClipboard, 'copy').mockImplementation(() => {
+        jest.spyOn(copyToClipboard, 'copyAsync').mockImplementation(() => {
             return Promise.reject();
         });
         
         const tool = new BookmarkTool();
-        await tool.doCopyBookmarkCoordinates(bookmark);
+        await tool.doCopyBookmarkCoordinatesAsync(bookmark);
 
         expect(spyToast).toHaveBeenCalledWith({
             i18nKey: `${I18N__BASE}.toasts.errors.copyCoordinates`

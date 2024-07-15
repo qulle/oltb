@@ -1,6 +1,6 @@
 import { DOM } from './dom-factory';
 
-const copy = async function(text = '') {
+const copyAsync = async function(text = '') {
     const value = text.trim();
 
     // Note:
@@ -34,7 +34,7 @@ const copy = async function(text = '') {
 // Had to wrap the function with an object to be able to run unit tests.
 // Mocking or spying on the raw copy-function without an object never worked, not sure why.
 const copyToClipboard = {
-    copy: copy
+    copyAsync: copyAsync
 };
 
 export { copyToClipboard };
