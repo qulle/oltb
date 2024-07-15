@@ -1,19 +1,21 @@
-import { jest, beforeAll, describe, it, expect } from '@jest/globals';
+import { jest, beforeAll, beforeEach, afterEach, describe, it, expect } from '@jest/globals';
+import { Toast } from '../../ui-common/ui-toasts/toast';
 import { BaseTool } from '../base-tool';
 import { SettingsTool } from './settings-tool';
+import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 import { SettingsManager } from '../../toolbar-managers/settings-manager/settings-manager';
 
 const FILENAME = 'settings-tool.js';
+const I18N__BASE = 'tools.settingsTool';
 
-//--------------------------------------------------------------------
-// # Section: Testing
-//--------------------------------------------------------------------
 describe('SettingsTool', () => {
-    //--------------------------------------------------------------------
-    // # Section: Setup
-    //--------------------------------------------------------------------
-    beforeAll(() => {
+    beforeAll(async () => {
+        await StateManager.initAsync();
+        await SettingsManager.initAsync();
+    });
+
+    beforeEach(() => {
         jest.spyOn(ElementManager, 'getToolbarElement').mockImplementation(() => {
             return window.document.createElement('div');
         });
@@ -22,14 +24,16 @@ describe('SettingsTool', () => {
             return window.document.createElement('div');
         });
 
-        jest.spyOn(SettingsManager, 'getSettings').mockImplementation(() => {
-            return [];
+        jest.spyOn(ElementManager, 'getToastElement').mockImplementation(() => {
+            return window.document.createElement('div');
         });
     });
 
-    //--------------------------------------------------------------------
-    // # Section: Jesting
-    //--------------------------------------------------------------------
+    afterEach(() => {
+        jest.clearAllMocks();
+        jest.restoreAllMocks();
+    });
+
     it('should init the tool', () => {
         const tool = new SettingsTool();
 
@@ -63,5 +67,34 @@ describe('SettingsTool', () => {
 
         expect(spyMomentary).toHaveBeenCalledTimes(1);
         expect(spyOnClicked).toHaveBeenCalledTimes(1);
+    });
+
+    it('should ask user to clear browser state', () => {
+        const spyOnToast = jest.spyOn(Toast, 'info');
+        const spyOnDoDispatchEvent = jest.spyOn(SettingsTool.prototype, 'doDispatchBrowserStateCleared').mockImplementation(() => {
+            return;
+        });
+
+        const tool = new SettingsTool();
+        const dialog = tool.askToClearBrowserState();
+
+        const confirmButton = dialog.buttons[1];
+        confirmButton.click();
+
+        expect(spyOnDoDispatchEvent).toHaveBeenCalledTimes(1);
+        expect(spyOnToast).toHaveBeenCalledWith({
+            i18nKey: `${I18N__BASE}.toasts.infos.clearBrowserState`,
+            autoremove: true
+        });
+    });
+
+    it('should clear browser state and trigger event', () => {
+        const options = {onBrowserStateCleared: () => {}};
+        const spyOnBrowserStateCleared = jest.spyOn(options, 'onBrowserStateCleared');
+
+        const tool = new SettingsTool(options);
+        tool.doDispatchBrowserStateCleared();
+
+        expect(spyOnBrowserStateCleared).toHaveBeenCalledTimes(1);
     });
 });

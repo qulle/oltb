@@ -181,6 +181,8 @@ class SettingsTool extends BaseTool {
     doDispatchBrowserStateCleared() {
         // Note: 
         // Trigger event so that any tool can clean up
+        // TODO:
+        // Why not using the eventDispatcher?
         window.dispatchEvent(new CustomEvent(Events.custom.browserStateCleared));
 
         [
