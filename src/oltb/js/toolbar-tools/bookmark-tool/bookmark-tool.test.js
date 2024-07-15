@@ -147,7 +147,8 @@ describe('BookmarkTool', () => {
         expect(hasToolActiveClass(tool)).toBe(false);
 
         // TODO:
-        // Why is the counter 4? Are results comming from other assertions?
+        // Why is the counter 4? 
+        // Are results comming from other assertions?
         expect(spyOnActivateTool).toHaveBeenCalledTimes(4);
         expect(spyOnDeactivateTool).toHaveBeenCalledTimes(4);
         expect(spyOnOnClicked).toHaveBeenCalledTimes(2);
