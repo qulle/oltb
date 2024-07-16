@@ -1,4 +1,4 @@
-import { jest, beforeAll, describe, it, expect } from '@jest/globals';
+import { jest, beforeAll, beforeEach, afterEach, describe, it, expect } from '@jest/globals';
 import { OSM } from 'ol/source';
 import { Tile } from 'ol';
 import { BaseTool } from '../base-tool';
@@ -72,16 +72,38 @@ const hasToolActiveClass = (tool) => {
     return tool.button.classList.contains('oltb-tool-button--active');
 }
 
-//--------------------------------------------------------------------
-// # Section: Testing
-//--------------------------------------------------------------------
 describe('SplitViewTool', () => {
-    //--------------------------------------------------------------------
-    // # Section: Setup
-    //--------------------------------------------------------------------
     beforeAll(async () => {
-        Element.prototype.scrollIntoView = jest.fn();
         window.document.body.innerHTML = HTML__MOCK;
+
+        await StateManager.initAsync();
+
+        LayerManager.setMap(mockMap);
+        LayerManager.addMapLayers([
+            {
+                id: '7b5399a8-9e57-4304-a233-cdf363c8ed93',
+                name: 'Open Street Map',
+                layer: new Tile({
+                    source: new OSM({
+                        crossOrigin: 'anonymous'
+                    }),
+                    visible: true
+                })
+            }, {
+                id: '7b5399a8-9e57-4304-a233-cdf363c8ed93',
+                name: 'Open Street Map 2',
+                layer: new Tile({
+                    source: new OSM({
+                        crossOrigin: 'anonymous'
+                    }),
+                    visible: true
+                })
+            }
+        ]);
+    });
+
+    beforeEach(() => {
+        Element.prototype.scrollIntoView = jest.fn();
 
         jest.spyOn(ElementManager, 'getToolbarElement').mockImplementation(() => {
             return window.document.createElement('div');
@@ -123,36 +145,16 @@ describe('SplitViewTool', () => {
         jest.spyOn(LayerManager, 'setTopMapLayerAsOnlyVisible').mockImplementation(() => {
             return;
         });
-
-        await StateManager.initAsync();
-
-        LayerManager.setMap(mockMap);
-        LayerManager.addMapLayers([
-            {
-                id: '7b5399a8-9e57-4304-a233-cdf363c8ed93',
-                name: 'Open Street Map',
-                layer: new Tile({
-                    source: new OSM({
-                        crossOrigin: 'anonymous'
-                    }),
-                    visible: true
-                })
-            }, {
-                id: '7b5399a8-9e57-4304-a233-cdf363c8ed93',
-                name: 'Open Street Map 2',
-                layer: new Tile({
-                    source: new OSM({
-                        crossOrigin: 'anonymous'
-                    }),
-                    visible: true
-                })
-            }
-        ]);
     });
 
-    //--------------------------------------------------------------------
-    // # Section: Jesting
-    //--------------------------------------------------------------------
+    afterEach(() => {
+        window.onkeydown = function() {};
+        window.onkeyup = function() {};
+
+        jest.clearAllMocks();
+        jest.restoreAllMocks();
+    });
+
     it('should have two mock layers to be used by tool', () => {
         expect(LayerManager.getMapLayerSize()).toBe(2);
     });
@@ -173,20 +175,20 @@ describe('SplitViewTool', () => {
 
     it('should init the tool with options', () => {
         const options = {onInitiated: () => {}};
-        const spyOnInitiated = jest.spyOn(options, 'onInitiated');
+        const spyOnOnInitiated = jest.spyOn(options, 'onInitiated');
         const tool = new SplitViewTool(options);
 
         expect(tool).toBeTruthy();
-        expect(spyOnInitiated).toHaveBeenCalledTimes(1);
+        expect(spyOnOnInitiated).toHaveBeenCalledTimes(1);
     });
 
     it('should toggle the tool', () => {
         const options = {onClicked: () => {}};
-        const spyOnClicked = jest.spyOn(options, 'onClicked');
-        const spyActivate = jest.spyOn(SplitViewTool.prototype, 'activateTool');
-        const spyDeactivate = jest.spyOn(SplitViewTool.prototype, 'deactivateTool');
+        const spyOnOnClicked = jest.spyOn(options, 'onClicked');
 
         const tool = new SplitViewTool(options);
+        const spyOnActivateTool = jest.spyOn(tool, 'activateTool');
+        const spyOnDeactivateTool = jest.spyOn(tool, 'deactivateTool');
 
         expect(hasToolActiveClass(tool)).toBe(false);
         tool.onClickTool();
@@ -194,37 +196,37 @@ describe('SplitViewTool', () => {
         tool.onClickTool();
         expect(hasToolActiveClass(tool)).toBe(false);
 
-        expect(spyActivate).toHaveBeenCalledTimes(1);
-        expect(spyDeactivate).toHaveBeenCalledTimes(1);
-        expect(spyOnClicked).toHaveBeenCalledTimes(2);
+        expect(spyOnActivateTool).toHaveBeenCalledTimes(1);
+        expect(spyOnDeactivateTool).toHaveBeenCalledTimes(1);
+        expect(spyOnOnClicked).toHaveBeenCalledTimes(2);
     });
 
     it('should re-activate active tool after reload', () => {
-        const spy = jest.spyOn(SplitViewTool.prototype, 'activateTool').mockImplementation(() => {
-            return;
-        });
-
         const tool = new SplitViewTool();
         tool.localStorage.isActive = true;
 
+        const spyOnActivateTool = jest.spyOn(tool, 'activateTool').mockImplementation(() => {
+            return;
+        });
+
         eventDispatcher([window], 'oltb.is.ready');
-        expect(spy).toHaveBeenCalled();
+        expect(spyOnActivateTool).toHaveBeenCalled();
     });
 
     it('should clean up state after beeing cleared', () => {
         const options = {onBrowserStateCleared: () =>{}};
-        const spy = jest.spyOn(options, 'onBrowserStateCleared');
+        const spyOnOnBrowserStateCleared = jest.spyOn(options, 'onBrowserStateCleared');
         new SplitViewTool(options);
 
         eventDispatcher([window], 'oltb.browser.state.cleared');
-        expect(spy).toHaveBeenCalled();
+        expect(spyOnOnBrowserStateCleared).toHaveBeenCalled();
     });
 
     it('should clear tool state', () => {
         const tool = new SplitViewTool();
-        const spy = jest.spyOn(StateManager, 'setStateObject');
+        const spyOnSetStateObject = jest.spyOn(StateManager, 'setStateObject');
 
         tool.doClearState();
-        expect(spy).toHaveBeenCalledTimes(1);
+        expect(spyOnSetStateObject).toHaveBeenCalledTimes(1);
     });
 });

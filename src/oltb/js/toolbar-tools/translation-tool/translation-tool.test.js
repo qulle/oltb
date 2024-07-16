@@ -1,4 +1,4 @@
-import { jest, beforeAll, describe, it, expect } from '@jest/globals';
+import { jest, beforeAll, beforeEach, afterEach, describe, it, expect } from '@jest/globals';
 import { BaseTool } from '../base-tool';
 import { LogManager } from '../../toolbar-managers/log-manager/log-manager';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
@@ -9,14 +9,13 @@ import { TranslationManager } from '../../toolbar-managers/translation-manager/t
 
 const FILENAME = 'translation-tool.js';
 
-//--------------------------------------------------------------------
-// # Section: Testing
-//--------------------------------------------------------------------
 describe('TranslationTool', () => {
-    //--------------------------------------------------------------------
-    // # Section: Setup
-    //--------------------------------------------------------------------
     beforeAll(async () => {
+        await StateManager.initAsync();
+        await TranslationManager.initAsync();
+    });
+
+    beforeEach(() => {
         jest.spyOn(ElementManager, 'getToolbarElement').mockImplementation(() => {
             return window.document.createElement('div');
         });
@@ -24,13 +23,16 @@ describe('TranslationTool', () => {
         jest.spyOn(ElementManager, 'getMapElement').mockImplementation(() => {
             return window.document.createElement('div');
         });
-
-        await StateManager.initAsync();
     });
 
-    //--------------------------------------------------------------------
-    // # Section: Jesting
-    //--------------------------------------------------------------------
+    afterEach(() => {
+        window.onkeydown = function() {};
+        window.onkeyup = function() {};
+
+        jest.clearAllMocks();
+        jest.restoreAllMocks();
+    });
+
     it('should init the tool', () => {
         const tool = new TranslationTool();
 
@@ -46,47 +48,44 @@ describe('TranslationTool', () => {
 
     it('should init the tool with options', () => {
         const options = {onInitiated: () => {}};
-        const spyOnInitiated = jest.spyOn(options, 'onInitiated');
+        const spyOnOnInitiated = jest.spyOn(options, 'onInitiated');
         const tool = new TranslationTool(options);
 
         expect(tool).toBeTruthy();
-        expect(spyOnInitiated).toHaveBeenCalledTimes(1);
+        expect(spyOnOnInitiated).toHaveBeenCalledTimes(1);
     });
 
     it('should toggle the tool', () => {
         const options = {onClicked: () => {}};
-        const spyOnClicked = jest.spyOn(options, 'onClicked');
-        const spyMomentary = jest.spyOn(TranslationTool.prototype, 'momentaryActivation');
+        const spyOnOnClicked = jest.spyOn(options, 'onClicked');
 
         const tool = new TranslationTool(options);
+        const spyOnMomentaryActivation = jest.spyOn(tool, 'momentaryActivation');
         tool.onClickTool();
 
-        expect(spyMomentary).toHaveBeenCalledTimes(1);
-        expect(spyOnClicked).toHaveBeenCalledTimes(1);
+        expect(spyOnMomentaryActivation).toHaveBeenCalledTimes(1);
+        expect(spyOnOnClicked).toHaveBeenCalledTimes(1);
     });
 
     it('should toggle the tool using short-cut-key [3]', () => {
         const options = {onClicked: () => {}};
-        const spyOnClicked = jest.spyOn(options, 'onClicked');
-        const spyMomentary = jest.spyOn(TranslationTool.prototype, 'momentaryActivation');
+        const spyOnOnClicked = jest.spyOn(options, 'onClicked');
 
-        new TranslationTool(options);
+        const tool = new TranslationTool(options);
+        const spyOnMomentaryActivation = jest.spyOn(tool, 'momentaryActivation');
         simulateKeyPress('keyup', window, '3');
 
-        // Note:
-        // Since using prototype spy, more have-been-called-results than one first might expect.
-        // 5 -> 4 times called by key-binding on window-object and 1 using tool.onClickTool
-        expect(spyMomentary).toHaveBeenCalledTimes(5);
-        expect(spyOnClicked).toHaveBeenCalledTimes(1);
+        expect(spyOnMomentaryActivation).toHaveBeenCalledTimes(1);
+        expect(spyOnOnClicked).toHaveBeenCalledTimes(1);
     });
 
     it('should not toggle the tool using incorrect short-cut-key', () => {
         const options = {onClicked: () => {}};
-        const spy = jest.spyOn(options, 'onClicked');
+        const spyOnOnClicked = jest.spyOn(options, 'onClicked');
 
         new TranslationTool(options);
         simulateKeyPress('keyup', window, '!');
-        expect(spy).not.toHaveBeenCalled();
+        expect(spyOnOnClicked).not.toHaveBeenCalled();
     });
 
     it('should change language from en-us to sv-se', async () => {
@@ -94,9 +93,7 @@ describe('TranslationTool', () => {
         const to = 'sv-se';
 
         const spyOnLogInformation = jest.spyOn(LogManager, 'logInformation');
-        const spyOnTranslation = jest.spyOn(TranslationManager, 'setActiveLanguage');
-
-        await TranslationManager.initAsync();
+        const spyOnSetActiveLanguage = jest.spyOn(TranslationManager, 'setActiveLanguage');
 
         const tool = new TranslationTool();
         tool.doChangeLanguage({
@@ -109,7 +106,7 @@ describe('TranslationTool', () => {
             to: to
         });
 
-        expect(spyOnTranslation).toHaveBeenCalledWith(to);
+        expect(spyOnSetActiveLanguage).toHaveBeenCalledWith(to);
     });
 
     it('should ask user to change language but user cancel', () => {
@@ -130,8 +127,7 @@ describe('TranslationTool', () => {
 
     it('should ask user to change language', async () => {
         const tool = new TranslationTool();
-        const spy = jest.spyOn(TranslationTool.prototype, 'doChangeLanguage');
-        await TranslationManager.initAsync();
+        const spyOnDoChangeLanguage = jest.spyOn(tool, 'doChangeLanguage');
 
         expect(tool.languageDialog).toBeUndefined();
         tool.askToChangeLanguage();
@@ -141,7 +137,7 @@ describe('TranslationTool', () => {
         const confirmButton = buttons[1];
         confirmButton.click();
 
-        expect(spy).toHaveBeenCalledTimes(1);
+        expect(spyOnDoChangeLanguage).toHaveBeenCalledTimes(1);
         expect(tool.languageDialog).toBeUndefined();
     });
 });

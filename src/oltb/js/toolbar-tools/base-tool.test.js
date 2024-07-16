@@ -1,26 +1,25 @@
-import { jest, beforeAll, describe, it, expect } from '@jest/globals';
+import { jest, beforeEach, afterEach, describe, it, expect } from '@jest/globals';
 import { BaseTool } from './base-tool';
 import { LogManager } from '../toolbar-managers/log-manager/log-manager';
 import { ElementManager } from '../toolbar-managers/element-manager/element-manager';
 
 const FILENAME = 'base-tool.js';
 
-//--------------------------------------------------------------------
-// # Section: Testing
-//--------------------------------------------------------------------
 describe('BaseTool', () => {
-    //--------------------------------------------------------------------
-    // # Section: Setup
-    //--------------------------------------------------------------------
-    beforeAll(() => {
+    beforeEach(() => {
         jest.spyOn(ElementManager, 'getToolbarElement').mockImplementation(() => {
             return window.document.createElement('div');
         });
     });
 
-    //--------------------------------------------------------------------
-    // # Section: Jesting
-    //--------------------------------------------------------------------
+    afterEach(() => {
+        window.onkeydown = function() {};
+        window.onkeyup = function() {};
+
+        jest.clearAllMocks();
+        jest.restoreAllMocks();
+    });
+
     it('should init the tool', () => {
         const tool = new BaseTool();
 
@@ -30,10 +29,10 @@ describe('BaseTool', () => {
     });
 
     it('should test [onClickTool]', () => {
-        const spyOnClicked = jest.spyOn(LogManager, 'logDebug');
+        const spyOnLogDebug = jest.spyOn(LogManager, 'logDebug');
         const tool = new BaseTool();
 
         tool.onClickTool();
-        expect(spyOnClicked).toHaveBeenCalledWith(FILENAME, 'onClickTool', 'User clicked tool');
+        expect(spyOnLogDebug).toHaveBeenCalledWith(FILENAME, 'onClickTool', 'User clicked tool');
     });
 });

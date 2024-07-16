@@ -1,4 +1,4 @@
-import { jest, beforeAll, describe, it, expect } from '@jest/globals';
+import { jest, beforeAll, beforeEach, afterEach, describe, it, expect } from '@jest/globals';
 import { BaseTool } from '../base-tool';
 import { ThemeTool } from './theme-tool';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
@@ -7,24 +7,25 @@ import { eventDispatcher } from '../../browser-helpers/event-dispatcher';
 
 const FILENAME = 'theme-tool.js';
 
-//--------------------------------------------------------------------
-// # Section: Testing
-//--------------------------------------------------------------------
 describe('ThemeTool', () => {
-    //--------------------------------------------------------------------
-    // # Section: Setup
-    //--------------------------------------------------------------------
     beforeAll(async () => {
-        jest.spyOn(ElementManager, 'getToolbarElement').mockImplementation(() => {
-            return window.document.createElement('div');
-        });
-
         await StateManager.initAsync();
     });
 
-    //--------------------------------------------------------------------
-    // # Section: Jesting
-    //--------------------------------------------------------------------
+    beforeEach(() => {
+        jest.spyOn(ElementManager, 'getToolbarElement').mockImplementation(() => {
+            return window.document.createElement('div');
+        });
+    })
+
+    afterEach(() => {
+        window.onkeydown = function() {};
+        window.onkeyup = function() {};
+
+        jest.clearAllMocks();
+        jest.restoreAllMocks();
+    });
+
     it('should init the tool', () => {
         const tool = new ThemeTool();
 
@@ -42,31 +43,31 @@ describe('ThemeTool', () => {
 
     it('should init the tool with options', () => {
         const options = {onInitiated: () => {}};
-        const spyOnInitiated = jest.spyOn(options, 'onInitiated');
+        const spyOnOnInitiated = jest.spyOn(options, 'onInitiated');
         const tool = new ThemeTool(options);
 
         expect(tool).toBeTruthy();
-        expect(spyOnInitiated).toHaveBeenCalledTimes(1);
+        expect(spyOnOnInitiated).toHaveBeenCalledTimes(1);
     });
 
     it('should toggle the tool', () => {
         const options = {onClicked: () => {}};
-        const spyOnClicked = jest.spyOn(options, 'onClicked');
-        const spyMomentary = jest.spyOn(ThemeTool.prototype, 'momentaryActivation');
+        const spyOnOnClicked = jest.spyOn(options, 'onClicked');
 
         const tool = new ThemeTool(options);
+        const spyOnMomentaryActivation = jest.spyOn(tool, 'momentaryActivation');
         tool.onClickTool();
 
-        expect(spyMomentary).toHaveBeenCalledTimes(1);
-        expect(spyOnClicked).toHaveBeenCalledTimes(1);
+        expect(spyOnMomentaryActivation).toHaveBeenCalledTimes(1);
+        expect(spyOnOnClicked).toHaveBeenCalledTimes(1);
     });
 
     it('should clean up state after beeing cleared', () => {
         const options = {onBrowserStateCleared: () =>{}};
-        const spy = jest.spyOn(options, 'onBrowserStateCleared');
+        const spyOnOnBrowserStateCleared = jest.spyOn(options, 'onBrowserStateCleared');
         new ThemeTool(options);
 
         eventDispatcher([window], 'oltb.browser.state.cleared');
-        expect(spy).toHaveBeenCalled();
+        expect(spyOnOnBrowserStateCleared).toHaveBeenCalled();
     });
 });
