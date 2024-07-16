@@ -1,7 +1,7 @@
 import { describe, it, expect } from '@jest/globals';
 import { createUIInput } from './create-ui-input';
 
-describe('CreateUIInput', () => {
+describe('createUIInput', () => {
     it('should create a ui-input', () => {
         const uiInput = createUIInput();
 

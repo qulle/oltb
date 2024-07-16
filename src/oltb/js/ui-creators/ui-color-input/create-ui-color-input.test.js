@@ -1,7 +1,7 @@
 import { describe, it, expect } from '@jest/globals';
 import { createUIColorInput } from './create-ui-color-input';
 
-describe('CreateUIColorInput', () => {
+describe('createUIColorInput', () => {
     it('should create a ui-color-input', () => {
         const uiColorInput = createUIColorInput();
 

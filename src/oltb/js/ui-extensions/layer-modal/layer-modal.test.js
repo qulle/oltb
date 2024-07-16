@@ -1,14 +1,22 @@
-import { jest, beforeAll, describe, it, expect } from '@jest/globals';
+import { jest, beforeEach, afterEach, describe, it, expect } from '@jest/globals';
 import { LayerModal } from './layer-modal';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 
 const FILENAME = 'layer-modal.js';
 
 describe('LayerModal', () => {
-    beforeAll(() => {
+    beforeEach(() => {
         jest.spyOn(ElementManager, 'getMapElement').mockImplementation(() => {
             return window.document.createElement('div');
         });
+    });
+
+    afterEach(() => {
+        window.onkeydown = function() {};
+        window.onkeyup = function() {};
+
+        jest.clearAllMocks();
+        jest.restoreAllMocks();
     });
 
     it('should create modal-extension', () => {
@@ -24,7 +32,7 @@ describe('LayerModal', () => {
 
     it('should test callback [onCancel]', () => {
         const callback = {onCancel: () => {}};
-        const spy = jest.spyOn(callback, 'onCancel');
+        const spyOnOnCancel = jest.spyOn(callback, 'onCancel');
         const modal = new LayerModal({
             onCancel: callback.onCancel
         });
@@ -33,12 +41,12 @@ describe('LayerModal', () => {
         cancelButton.click();
 
         expect(cancelButton.nodeName).toBe('BUTTON');
-        expect(spy).toHaveBeenCalled();
+        expect(spyOnOnCancel).toHaveBeenCalled();
     });
 
     it('should test callback [onCreate]', () => {
         const callback = {onCreate: () => {}};
-        const spy = jest.spyOn(callback, 'onCreate');
+        const spyOnOnCreate = jest.spyOn(callback, 'onCreate');
         const modal = new LayerModal({
             onCreate: callback.onCreate
         });
@@ -47,7 +55,7 @@ describe('LayerModal', () => {
         createButton.click();
 
         expect(createButton.nodeName).toBe('BUTTON');
-        expect(spy).toHaveBeenCalledWith({
+        expect(spyOnOnCreate).toHaveBeenCalledWith({
             name: '',
             layer: 'Tile',
             source: 'TileWMS',

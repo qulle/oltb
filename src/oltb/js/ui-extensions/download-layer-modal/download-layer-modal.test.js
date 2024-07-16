@@ -1,14 +1,22 @@
-import { jest, beforeAll, describe, it, expect } from '@jest/globals';
+import { jest, beforeEach, afterEach, describe, it, expect } from '@jest/globals';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 import { DownloadLayerModal } from './download-layer-modal';
 
 const FILENAME = 'download-layer-modal.js';
 
 describe('DownloadLayerModal', () => {
-    beforeAll(() => {
+    beforeEach(() => {
         jest.spyOn(ElementManager, 'getMapElement').mockImplementation(() => {
             return window.document.createElement('div');
         });
+    });
+
+    afterEach(() => {
+        window.onkeydown = function() {};
+        window.onkeyup = function() {};
+
+        jest.clearAllMocks();
+        jest.restoreAllMocks();
     });
 
     it('should create modal-extension', () => {
@@ -24,7 +32,7 @@ describe('DownloadLayerModal', () => {
 
     it('should test callback [onCancel]', () => {
         const callback = {onCancel: () => {}};
-        const spy = jest.spyOn(callback, 'onCancel');
+        const spyOnOnCancel = jest.spyOn(callback, 'onCancel');
         const modal = new DownloadLayerModal({
             onCancel: callback.onCancel
         });
@@ -33,12 +41,12 @@ describe('DownloadLayerModal', () => {
         cancelButton.click();
 
         expect(cancelButton.nodeName).toBe('BUTTON');
-        expect(spy).toHaveBeenCalled();
+        expect(spyOnOnCancel).toHaveBeenCalled();
     });
 
     it('should test callback [onDownload]', () => {
         const callback = {onDownload: () => {}};
-        const spy = jest.spyOn(callback, 'onDownload');
+        const spyOnOnDownload = jest.spyOn(callback, 'onDownload');
         const modal = new DownloadLayerModal({
             onDownload: callback.onDownload
         });
@@ -47,7 +55,7 @@ describe('DownloadLayerModal', () => {
         downloadButton.click();
 
         expect(downloadButton.nodeName).toBe('BUTTON');
-        expect(spy).toHaveBeenCalledWith({
+        expect(spyOnOnDownload).toHaveBeenCalledWith({
             format: 'GeoJSON'
         });
     });

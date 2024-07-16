@@ -1,14 +1,22 @@
-import { jest, beforeAll, describe, it, expect } from '@jest/globals';
+import { jest, beforeEach, afterEach, describe, it, expect } from '@jest/globals';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 import { ImportLayerModal } from './import-layer-modal';
 
 const FILENAME = 'import-layer-modal.js';
 
 describe('ImportLayerModal', () => {
-    beforeAll(() => {
+    beforeEach(() => {
         jest.spyOn(ElementManager, 'getMapElement').mockImplementation(() => {
             return window.document.createElement('div');
         });
+    });
+
+    afterEach(() => {
+        window.onkeydown = function() {};
+        window.onkeyup = function() {};
+
+        jest.clearAllMocks();
+        jest.restoreAllMocks();
     });
 
     it('should create modal-extension', () => {
@@ -24,7 +32,7 @@ describe('ImportLayerModal', () => {
 
     it('should test callback [onCancel]', () => {
         const callback = {onCancel: () => {}};
-        const spy = jest.spyOn(callback, 'onCancel');
+        const spyOnOnCancel = jest.spyOn(callback, 'onCancel');
         const modal = new ImportLayerModal({
             onCancel: callback.onCancel
         });
@@ -33,12 +41,12 @@ describe('ImportLayerModal', () => {
         cancelButton.click();
 
         expect(cancelButton.nodeName).toBe('BUTTON');
-        expect(spy).toHaveBeenCalled();
+        expect(spyOnOnCancel).toHaveBeenCalled();
     });
 
     it('should test callback [onImport]', () => {
         const callback = {onImport: () => {}};
-        const spy = jest.spyOn(callback, 'onImport');
+        const spyOnOnImport = jest.spyOn(callback, 'onImport');
         const modal = new ImportLayerModal({
             onImport: callback.onImport
         });
@@ -47,7 +55,7 @@ describe('ImportLayerModal', () => {
         importButton.click();
 
         expect(importButton.nodeName).toBe('BUTTON');
-        expect(spy).toHaveBeenCalledWith({
+        expect(spyOnOnImport).toHaveBeenCalledWith({
             featureProjection: 'EPSG:3857',
             dataProjection: 'EPSG:4326'
         });

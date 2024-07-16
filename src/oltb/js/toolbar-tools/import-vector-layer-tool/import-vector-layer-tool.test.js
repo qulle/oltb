@@ -49,7 +49,7 @@ describe('ImportVectorLayerTool', () => {
         const spyOnOnClicked = jest.spyOn(options, 'onClicked');
         
         const tool = new ImportVectorLayerTool(options);
-        const spyOnMomentaryActivation = jest.spyOn(ImportVectorLayerTool.prototype, 'momentaryActivation');
+        const spyOnMomentaryActivation = jest.spyOn(tool, 'momentaryActivation');
         tool.onClickTool();
 
         expect(spyOnMomentaryActivation).toHaveBeenCalledTimes(1);

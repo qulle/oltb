@@ -1,7 +1,7 @@
 import { describe, it, expect } from '@jest/globals';
 import { createUITooltip } from './create-ui-tooltip';
 
-describe('CreateUITooltip', () => {
+describe('createUITooltip', () => {
     it('should create a ui-tooltip', () => {
         const uiTooltip = createUITooltip();
         expect(uiTooltip).toBeTruthy();

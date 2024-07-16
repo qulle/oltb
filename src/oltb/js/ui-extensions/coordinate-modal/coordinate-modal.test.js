@@ -1,14 +1,22 @@
-import { jest, beforeAll, describe, it, expect } from '@jest/globals';
+import { jest, beforeEach, afterEach, describe, it, expect } from '@jest/globals';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 import { CoordinateModal } from './coordinate-modal';
 
 const FILENAME = 'coordinate-model.js';
 
 describe('CoordinateModal', () => {
-    beforeAll(() => {
+    beforeEach(() => {
         jest.spyOn(ElementManager, 'getMapElement').mockImplementation(() => {
             return window.document.createElement('div');
         });
+    });
+
+    afterEach(() => {
+        window.onkeydown = function() {};
+        window.onkeyup = function() {};
+
+        jest.clearAllMocks();
+        jest.restoreAllMocks();
     });
 
     it('should create modal-extension', () => {
@@ -24,7 +32,7 @@ describe('CoordinateModal', () => {
 
     it('should test callback [onCancel]', () => {
         const callback = {onCancel: () => {}};
-        const spy = jest.spyOn(callback, 'onCancel');
+        const spyOnOnCancel = jest.spyOn(callback, 'onCancel');
         const modal = new CoordinateModal({
             onCancel: callback.onCancel
         });
@@ -33,12 +41,12 @@ describe('CoordinateModal', () => {
         cancelButton.click();
 
         expect(cancelButton.nodeName).toBe('BUTTON');
-        expect(spy).toHaveBeenCalled();
+        expect(spyOnOnCancel).toHaveBeenCalled();
     });
 
     it('should test callback [onNavigate]', () => {
         const callback = {onNavigate: () => {}};
-        const spy = jest.spyOn(callback, 'onNavigate');
+        const spyOnOnNavigate = jest.spyOn(callback, 'onNavigate');
         const modal = new CoordinateModal({
             onNavigate: callback.onNavigate
         });
@@ -47,6 +55,6 @@ describe('CoordinateModal', () => {
         navigateButton.click();
 
         expect(navigateButton.nodeName).toBe('BUTTON');
-        expect(spy).toHaveBeenCalledWith(['', '']);
+        expect(spyOnOnNavigate).toHaveBeenCalledWith(['', '']);
     });
 });

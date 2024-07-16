@@ -4,7 +4,7 @@ import { TranslationManager } from '../../toolbar-managers/translation-manager/t
 
 const CLASS__CHECKBOX_WRAPPER = 'oltb-checkbox-wrapper';
 
-describe('CreateUICheckbox', () => {
+describe('createUICheckbox', () => {
     it('should create a ui-checkbox', () => {
         const uiCheckbox = createUICheckbox();
 
@@ -64,7 +64,7 @@ describe('CreateUICheckbox', () => {
 
     it('should trigger one callback', () => {
         const callbacks = {onClick: () => {}};
-        const spyOne = jest.spyOn(callbacks, 'onClick');
+        const spyOnOnClick = jest.spyOn(callbacks, 'onClick');
         const uiCheckbox = createUICheckbox({
             listeners: {
                 'click': callbacks.onClick
@@ -74,7 +74,7 @@ describe('CreateUICheckbox', () => {
         const checkbox = uiCheckbox[1];
         checkbox.click();
 
-        expect(spyOne).toHaveBeenCalledTimes(1);
+        expect(spyOnOnClick).toHaveBeenCalledTimes(1);
     });
 
     it('should trigger two callbacks', () => {
@@ -83,8 +83,8 @@ describe('CreateUICheckbox', () => {
             onSecondClick: () => {}
         };
         
-        const spyOne = jest.spyOn(callbacks, 'onClick');
-        const spyTwo = jest.spyOn(callbacks, 'onSecondClick');
+        const spyOnOnClick = jest.spyOn(callbacks, 'onClick');
+        const spyOnOnSecondClick = jest.spyOn(callbacks, 'onSecondClick');
 
         const uiCheckbox = createUICheckbox({
             listeners: {
@@ -98,7 +98,7 @@ describe('CreateUICheckbox', () => {
         const checkbox = uiCheckbox[1];
         checkbox.click();
 
-        expect(spyOne).toHaveBeenCalledTimes(1);
-        expect(spyTwo).toHaveBeenCalledTimes(1);
+        expect(spyOnOnClick).toHaveBeenCalledTimes(1);
+        expect(spyOnOnSecondClick).toHaveBeenCalledTimes(1);
     });
 });

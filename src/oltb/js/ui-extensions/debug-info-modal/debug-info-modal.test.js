@@ -1,4 +1,4 @@
-import { jest, beforeAll, describe, it, expect } from '@jest/globals';
+import { jest, beforeAll, beforeEach, afterEach, describe, it, expect } from '@jest/globals';
 import { DOM } from '../../browser-helpers/dom-factory';
 import { Toast } from '../../ui-common/ui-toasts/toast';
 import { LogManager } from '../../toolbar-managers/log-manager/log-manager';
@@ -20,6 +20,10 @@ describe('DebugInfoModal', () => {
     beforeAll(async () => {
         window.Response = MockResponse;
 
+        await StyleManager.initAsync();
+    });
+
+    beforeEach(() => {
         jest.spyOn(ElementManager, 'getMapElement').mockImplementation(() => {
             return window.document.createElement('div');
         });
@@ -31,12 +35,14 @@ describe('DebugInfoModal', () => {
         jest.spyOn(TranslationManager, 'getLanguages').mockImplementation(() => {
             return [];
         });
-
-        await StyleManager.initAsync();
     });
 
     afterEach(() => {
-        jest.reset
+        window.onkeydown = function() {};
+        window.onkeyup = function() {};
+
+        jest.clearAllMocks();
+        jest.restoreAllMocks();
     });
 
     it('should create modal-extension', () => {
@@ -50,32 +56,32 @@ describe('DebugInfoModal', () => {
     });
 
     it('should log map to console', () => {
-        const spyOnConsole = jest.spyOn(window.console, 'dir');
-        const spyOnToast = jest.spyOn(Toast, 'info');
+        const spyOnConsoleDir = jest.spyOn(window.console, 'dir');
+        const spyOnToastInfo = jest.spyOn(Toast, 'info');
 
         const modal = new DebugInfoModal();
         modal.doActionLoggingMap();
 
-        expect(spyOnConsole).toHaveBeenCalled();
-        expect(spyOnToast).toHaveBeenCalledWith({
+        expect(spyOnConsoleDir).toHaveBeenCalled();
+        expect(spyOnToastInfo).toHaveBeenCalledWith({
             i18nKey: `${I18N__BASE}.toasts.infos.logMapObject`,
             autoremove: true
         });
     });
 
     it('should generate UUID', () => {
-        const spyOnLogger = jest.spyOn(LogManager, 'logInformation');
-        const spyOnDom = jest.spyOn(DOM, 'prependChildren');
-        const spyOnCreateElement = jest.spyOn(window.document, 'getElementById').mockImplementation(() => {
+        const spyOnLogInformation = jest.spyOn(LogManager, 'logInformation');
+        const spyOnPrependChildren = jest.spyOn(DOM, 'prependChildren');
+        const spyOnGetElementById = jest.spyOn(window.document, 'getElementById').mockImplementation(() => {
             return window.document.createElement('div');
         });
 
         const modal = new DebugInfoModal();
         modal.doActionGenerateUUID();
 
-        expect(spyOnLogger).toHaveBeenCalled();
-        expect(spyOnDom).toHaveBeenCalled();
-        expect(spyOnCreateElement).toHaveBeenCalled();
+        expect(spyOnLogInformation).toHaveBeenCalled();
+        expect(spyOnPrependChildren).toHaveBeenCalled();
+        expect(spyOnGetElementById).toHaveBeenCalled();
     });
 
     it('should resolve copy event-log', async () => {
@@ -108,12 +114,12 @@ describe('DebugInfoModal', () => {
     });
 
     it('should clear style-manager-buffer', async () => {
-        const spyOnToast = jest.spyOn(Toast, 'info');
+        const spyOnToastInfo = jest.spyOn(Toast, 'info');
         const modal = new DebugInfoModal();
         const result = modal.doActionClearStyleManager();
 
         expect(result).toStrictEqual([0, 0]);
-        expect(spyOnToast).toHaveBeenCalledWith({
+        expect(spyOnToastInfo).toHaveBeenCalledWith({
             i18nKey: `${I18N__BASE}.toasts.infos.clearStyleManager`,
             autoremove: true
         });

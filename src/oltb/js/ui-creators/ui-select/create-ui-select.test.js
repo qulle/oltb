@@ -1,7 +1,7 @@
 import { describe, it, expect } from '@jest/globals';
 import { createUISelect } from './create-ui-select';
 
-describe('CreateUISelect', () => {
+describe('createUISelect', () => {
     it('should create a ui-select', () => {
         const uiSelect = createUISelect();
 

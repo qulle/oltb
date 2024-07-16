@@ -126,6 +126,8 @@ describe('SplitViewTool', () => {
             return mapElement;
         });
 
+        // TODO:
+        // Remove spyOn-prototypes in future
         jest.spyOn(SplitViewTool.prototype, 'getMap').mockImplementation(() => {
             return mockMap;
         });

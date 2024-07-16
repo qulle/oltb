@@ -1,4 +1,4 @@
-import { jest, beforeAll, describe, it, expect } from '@jest/globals';
+import { jest, beforeEach, afterEach, describe, it, expect } from '@jest/globals';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 import { IconMarkerModal } from './icon-marker-modal';
 import '../../browser-prototypes/string';
@@ -6,10 +6,18 @@ import '../../browser-prototypes/string';
 const FILENAME = 'icon-marker-modal.js';
 
 describe('IconMarkerModal', () => {
-    beforeAll(() => {
+    beforeEach(() => {
         jest.spyOn(ElementManager, 'getMapElement').mockImplementation(() => {
             return window.document.createElement('div');
         });
+    });
+
+    afterEach(() => {
+        window.onkeydown = function() {};
+        window.onkeyup = function() {};
+
+        jest.clearAllMocks();
+        jest.restoreAllMocks();
     });
 
     it('should create modal-extension', () => {
@@ -25,7 +33,7 @@ describe('IconMarkerModal', () => {
 
     it('should test callback [onCancel]', () => {
         const callback = {onCancel: () => {}};
-        const spy = jest.spyOn(callback, 'onCancel');
+        const spyOnOnCancel = jest.spyOn(callback, 'onCancel');
         const modal = new IconMarkerModal({
             onCancel: callback.onCancel
         });
@@ -34,12 +42,12 @@ describe('IconMarkerModal', () => {
         cancelButton.click();
 
         expect(cancelButton.nodeName).toBe('BUTTON');
-        expect(spy).toHaveBeenCalled();
+        expect(spyOnOnCancel).toHaveBeenCalled();
     });
 
     it('should test callback [onCreate]', () => {
         const callback = {onCreate: () => {}};
-        const spy = jest.spyOn(callback, 'onCreate');
+        const spyOnOnCreate = jest.spyOn(callback, 'onCreate');
         const modal = new IconMarkerModal({
             onCreate: callback.onCreate
         });
@@ -48,7 +56,7 @@ describe('IconMarkerModal', () => {
         createButton.click();
 
         expect(createButton.nodeName).toBe('BUTTON');
-        expect(spy).toHaveBeenCalledWith({
+        expect(spyOnOnCreate).toHaveBeenCalledWith({
             latitude: NaN,
             longitude: NaN,
             title: 'Marker',
