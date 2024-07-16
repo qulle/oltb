@@ -1,4 +1,4 @@
-import { jest, beforeAll, describe, it, expect } from '@jest/globals';
+import { jest, beforeAll, beforeEach, afterEach, describe, it, expect } from '@jest/globals';
 import { Toast } from '../../ui-common/ui-toasts/toast';
 import { BaseTool } from '../base-tool';
 import { HomeTool } from './home-tool';
@@ -36,14 +36,12 @@ const mockMap = {
     }
 };
 
-//--------------------------------------------------------------------
-// # Section: Testing
-//--------------------------------------------------------------------
 describe('HomeTool', () => {
-    //--------------------------------------------------------------------
-    // # Section: Setup
-    //--------------------------------------------------------------------
     beforeAll(async () => {
+        await StateManager.initAsync();
+    });
+
+    beforeEach(() => {
         jest.spyOn(ElementManager, 'getToolbarElement').mockImplementation(() => {
             return window.document.createElement('div');
         });
@@ -55,8 +53,14 @@ describe('HomeTool', () => {
         jest.spyOn(HomeTool.prototype, 'getMap').mockImplementation(() => {
             return mockMap;
         });
+    });
 
-        await StateManager.initAsync();
+    afterEach(() => {
+        window.onkeydown = function() {};
+        window.onkeyup = function() {};
+
+        jest.clearAllMocks();
+        jest.restoreAllMocks();
     });
 
     //--------------------------------------------------------------------
@@ -73,23 +77,23 @@ describe('HomeTool', () => {
 
     it('should init the tool with options', () => {
         const options = {onInitiated: () => {}};
-        const spyOnInitiated = jest.spyOn(options, 'onInitiated');
+        const spyOnOnInitiated = jest.spyOn(options, 'onInitiated');
         const tool = new HomeTool(options);
 
         expect(tool).toBeTruthy();
-        expect(spyOnInitiated).toHaveBeenCalledTimes(1);
+        expect(spyOnOnInitiated).toHaveBeenCalledTimes(1);
     });
 
     it('should toggle the tool', () => {
         const options = {onClicked: () => {}};
-        const spyOnClicked = jest.spyOn(options, 'onClicked');
-        const spyMomentary = jest.spyOn(HomeTool.prototype, 'momentaryActivation');
+        const spyOnOnClicked = jest.spyOn(options, 'onClicked');
 
         const tool = new HomeTool(options);
+        const spyOnMomentaryActivation = jest.spyOn(HomeTool.prototype, 'momentaryActivation');
         tool.onClickTool();
 
-        expect(spyMomentary).toHaveBeenCalledTimes(1);
-        expect(spyOnClicked).toHaveBeenCalledTimes(1);
+        expect(spyOnMomentaryActivation).toHaveBeenCalledTimes(1);
+        expect(spyOnOnClicked).toHaveBeenCalledTimes(1);
     });
 
     it('should get zoom', () => {
@@ -146,12 +150,12 @@ describe('HomeTool', () => {
         const location = tool.getLocation();
         expect(location).toStrictEqual([20.1234, 40.5648]);
 
-        const spy = jest.spyOn(Toast, 'success');
+        const spyOnToastSuccess = jest.spyOn(Toast, 'success');
         tool.doCreateNewHome([10.123, 20.456]);
 
         expect(tool.localStorage.lon).toBe(10.123);
         expect(tool.localStorage.lat).toBe(20.456);
-        expect(spy).toHaveBeenCalledWith({
+        expect(spyOnToastSuccess).toHaveBeenCalledWith({
             i18nKey: `${I18N__BASE}.toasts.infos.setHomeLocation`,
             autoremove: true
         });
@@ -159,18 +163,18 @@ describe('HomeTool', () => {
 
     it('should clean up state after beeing cleared', () => {
         const options = {onBrowserStateCleared: () =>{}};
-        const spy = jest.spyOn(options, 'onBrowserStateCleared');
+        const spyOnOnBrowserStateCleared = jest.spyOn(options, 'onBrowserStateCleared');
         new HomeTool(options);
 
         eventDispatcher([window], 'oltb.browser.state.cleared');
-        expect(spy).toHaveBeenCalled();
+        expect(spyOnOnBrowserStateCleared).toHaveBeenCalled();
     });
 
     it('should clear tool state', () => {
         const tool = new HomeTool();
-        const spy = jest.spyOn(StateManager, 'setStateObject');
+        const spyOnSetStateObject = jest.spyOn(StateManager, 'setStateObject');
 
         tool.doClearState();
-        expect(spy).toHaveBeenCalledTimes(1);
+        expect(spyOnSetStateObject).toHaveBeenCalledTimes(1);
     });
 });

@@ -1,4 +1,4 @@
-import { jest, beforeAll, describe, it, expect } from '@jest/globals';
+import { jest, beforeAll, beforeEach, afterEach, describe, it, expect } from '@jest/globals';
 import { BaseTool } from '../base-tool';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
 import { GraticuleTool } from './graticule-tool';
@@ -47,14 +47,12 @@ const hasToolActiveClass = (tool) => {
     return tool.button.classList.contains('oltb-tool-button--active');
 }
 
-//--------------------------------------------------------------------
-// # Section: Testing
-//--------------------------------------------------------------------
 describe('GraticuleTool', () => {
-    //--------------------------------------------------------------------
-    // # Section: Setup
-    //--------------------------------------------------------------------
     beforeAll(async () => {
+        await StateManager.initAsync();
+    });
+
+    beforeEach(() => {
         jest.spyOn(ElementManager, 'getToolbarElement').mockImplementation(() => {
             return window.document.createElement('div');
         });
@@ -62,13 +60,16 @@ describe('GraticuleTool', () => {
         jest.spyOn(GraticuleTool.prototype, 'getMap').mockImplementation(() => {
             return mockMap;
         });
-
-        await StateManager.initAsync();
     });
 
-    //--------------------------------------------------------------------
-    // # Section: Jesting
-    //--------------------------------------------------------------------
+    afterEach(() => {
+        window.onkeydown = function() {};
+        window.onkeyup = function() {};
+
+        jest.clearAllMocks();
+        jest.restoreAllMocks();
+    });
+
     it('should init the tool', () => {
         const tool = new GraticuleTool();
 
@@ -90,23 +91,24 @@ describe('GraticuleTool', () => {
 
     it('should init the tool with options', () => {
         const options = {onInitiated: () => {}};
-        const spyOnInitiated = jest.spyOn(options, 'onInitiated');
+        const spyOnOnInitiated = jest.spyOn(options, 'onInitiated');
         const tool = new GraticuleTool(options);
 
         expect(tool).toBeTruthy();
-        expect(spyOnInitiated).toHaveBeenCalledTimes(1);
+        expect(spyOnOnInitiated).toHaveBeenCalledTimes(1);
     });
 
     it('should toggle the tool', () => {
         const options = {onClicked: () => {}};
-        const spyOnClicked = jest.spyOn(options, 'onClicked');
-        const spyActivate = jest.spyOn(GraticuleTool.prototype, 'activateTool');
-        const spyDeactivate = jest.spyOn(GraticuleTool.prototype, 'deactivateTool');
-        const spyGraticule = jest.spyOn(MockGraticule.prototype, 'setMap');
+        const spyOnOnClicked = jest.spyOn(options, 'onClicked');
 
         const mockGraticule = new MockGraticule();
         const tool = new GraticuleTool(options);
         tool.graticule = mockGraticule;
+
+        const spyOnActivateTool = jest.spyOn(tool, 'activateTool');
+        const spyOnDeactivateTool = jest.spyOn(tool, 'deactivateTool');
+        const spyOnGraticule = jest.spyOn(mockGraticule, 'setMap');
 
         expect(hasToolActiveClass(tool)).toBe(false);
         tool.onClickTool();
@@ -114,38 +116,38 @@ describe('GraticuleTool', () => {
         tool.onClickTool();
         expect(hasToolActiveClass(tool)).toBe(false);
 
-        expect(spyActivate).toHaveBeenCalledTimes(1);
-        expect(spyDeactivate).toHaveBeenCalledTimes(1);
-        expect(spyOnClicked).toHaveBeenCalledTimes(2);
-        expect(spyGraticule).toHaveBeenCalledTimes(2);
+        expect(spyOnActivateTool).toHaveBeenCalledTimes(1);
+        expect(spyOnDeactivateTool).toHaveBeenCalledTimes(1);
+        expect(spyOnOnClicked).toHaveBeenCalledTimes(2);
+        expect(spyOnGraticule).toHaveBeenCalledTimes(2);
     });
 
     it('should re-activate active tool after reload', () => {
-        const spy = jest.spyOn(GraticuleTool.prototype, 'activateTool').mockImplementation(() => {
-            return;
-        });
-
         const tool = new GraticuleTool();
         tool.localStorage.isActive = true;
 
+        const spyOnActivateTool = jest.spyOn(tool, 'activateTool').mockImplementation(() => {
+            return;
+        });
+
         eventDispatcher([window], 'oltb.is.ready');
-        expect(spy).toHaveBeenCalled();
+        expect(spyOnActivateTool).toHaveBeenCalled();
     });
 
     it('should clean up state after beeing cleared', () => {
         const options = {onBrowserStateCleared: () =>{}};
-        const spy = jest.spyOn(options, 'onBrowserStateCleared');
+        const spyOnBrowserStateCleared = jest.spyOn(options, 'onBrowserStateCleared');
         new GraticuleTool(options);
 
         eventDispatcher([window], 'oltb.browser.state.cleared');
-        expect(spy).toHaveBeenCalled();
+        expect(spyOnBrowserStateCleared).toHaveBeenCalled();
     });
 
     it('should clear tool state', () => {
         const tool = new GraticuleTool();
-        const spy = jest.spyOn(StateManager, 'setStateObject');
+        const spyOnSetStateObject = jest.spyOn(StateManager, 'setStateObject');
 
         tool.doClearState();
-        expect(spy).toHaveBeenCalledTimes(1);
+        expect(spyOnSetStateObject).toHaveBeenCalledTimes(1);
     });
 });

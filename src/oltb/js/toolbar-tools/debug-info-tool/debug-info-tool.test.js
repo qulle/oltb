@@ -1,4 +1,4 @@
-import { jest, beforeAll, describe, it, expect } from '@jest/globals';
+import { jest, beforeAll, beforeEach, describe, afterEach, it, expect } from '@jest/globals';
 import { BaseTool } from '../base-tool';
 import { UrlManager } from '../../toolbar-managers/url-manager/url-manager';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
@@ -42,16 +42,16 @@ const mockMap = {
     }
 };
 
-//--------------------------------------------------------------------
-// # Section: Testing
-//--------------------------------------------------------------------
 describe('DebugInfoTool', () => {
-    //--------------------------------------------------------------------
-    // # Section: Setup
-    //--------------------------------------------------------------------
     beforeAll(async () => {
         window.Response = MockResponse;
 
+        await StateManager.initAsync();
+        await StyleManager.initAsync();
+        await TranslationManager.initAsync();
+    });
+
+    beforeEach(() => {
         jest.spyOn(ElementManager, 'getToolbarElement').mockImplementation(() => {
             return window.document.createElement('div');
         });
@@ -64,14 +64,19 @@ describe('DebugInfoTool', () => {
             return 'false';
         });
 
-        await StateManager.initAsync();
-        await StyleManager.initAsync();
-        await TranslationManager.initAsync();
+        jest.spyOn(DebugInfoTool.prototype, 'getMap').mockImplementation(() => {
+            return mockMap;
+        });
     });
 
-    //--------------------------------------------------------------------
-    // # Section: Jesting
-    //--------------------------------------------------------------------
+    afterEach(() => {
+        window.onkeydown = function() {};
+        window.onkeyup = function() {};
+
+        jest.clearAllMocks();
+        jest.restoreAllMocks();
+    });
+
     it('should init the tool', () => {
         const tool = new DebugInfoTool();
 
@@ -88,11 +93,11 @@ describe('DebugInfoTool', () => {
 
     it('should init the tool with options', () => {
         const options = {onInitiated: () => {}};
-        const spyOnInitiated = jest.spyOn(options, 'onInitiated');
+        const spyOnOnInitiated = jest.spyOn(options, 'onInitiated');
         const tool = new DebugInfoTool(options);
 
         expect(tool).toBeTruthy();
-        expect(spyOnInitiated).toHaveBeenCalledTimes(1);
+        expect(spyOnOnInitiated).toHaveBeenCalledTimes(1);
     });
 
     it('should init the tool hidden if debug = false and onlyWhenGetParameter = true', () => {
@@ -106,45 +111,41 @@ describe('DebugInfoTool', () => {
 
     it('should toggle the tool', () => {
         const options = {onClicked: () => {}};
-        const spyOnClicked = jest.spyOn(options, 'onClicked');
-        const spyMomentary = jest.spyOn(DebugInfoTool.prototype, 'momentaryActivation');
+        const spyOnOnClicked = jest.spyOn(options, 'onClicked');
 
         const tool = new DebugInfoTool(options);
+        const spyOnMomentaryActivation = jest.spyOn(tool, 'momentaryActivation');
+
         tool.onClickTool();
 
-        expect(spyMomentary).toHaveBeenCalledTimes(1);
-        expect(spyOnClicked).toHaveBeenCalledTimes(1);
+        expect(spyOnMomentaryActivation).toHaveBeenCalledTimes(1);
+        expect(spyOnOnClicked).toHaveBeenCalledTimes(1);
     });
 
     it('should toggle the tool using short-cut-key [4]', () => {
         const options = {onClicked: () => {}};
-        const spyOnClicked = jest.spyOn(options, 'onClicked');
-        const spyMomentary = jest.spyOn(DebugInfoTool.prototype, 'momentaryActivation');
+        const spyOnOnClicked = jest.spyOn(options, 'onClicked');
 
-        new DebugInfoTool(options);
+        const tool = new DebugInfoTool(options);
+        const spyOnMomentaryActivation = jest.spyOn(tool, 'momentaryActivation');
+
         simulateKeyPress('keyup', window, '4');
 
-        // Note:
-        // Since using prototype spy, more have-been-called-results than one first might expect.
-        // 5 -> 4 times called by key-binding on window-object and 1 using tool.onClickTool
-        expect(spyMomentary).toHaveBeenCalledTimes(6);
-        expect(spyOnClicked).toHaveBeenCalledTimes(1);
+        expect(spyOnMomentaryActivation).toHaveBeenCalledTimes(1);
+        expect(spyOnOnClicked).toHaveBeenCalledTimes(1);
     });
 
     it('should not toggle the tool using incorrect short-cut-key', () => {
         const options = {onClicked: () => {}};
-        const spy = jest.spyOn(options, 'onClicked');
+        const spyOnOnClicked = jest.spyOn(options, 'onClicked');
 
         new DebugInfoTool(options);
         simulateKeyPress('keyup', window, '!');
-        expect(spy).not.toHaveBeenCalled();
+
+        expect(spyOnOnClicked).not.toHaveBeenCalled();
     });
 
     it('should open the debug-modal', () => {
-        const spyGetMap = jest.spyOn(DebugInfoTool.prototype, 'getMap').mockImplementation(() => {
-            return mockMap;
-        });
-
         const tool = new DebugInfoTool();
 
         // Note:
@@ -152,11 +153,11 @@ describe('DebugInfoTool', () => {
         tool.doShowDebugInfoModal();
         tool.doShowDebugInfoModal();
 
-        expect(spyGetMap).toHaveBeenCalledTimes(1);
         expect(tool.debugInfoModal).toBeTruthy();
 
         const closeButton = tool.debugInfoModal.buttons[0];
         closeButton.click();
+
         expect(tool.debugInfoModal).toBeFalsy();
     });
 });

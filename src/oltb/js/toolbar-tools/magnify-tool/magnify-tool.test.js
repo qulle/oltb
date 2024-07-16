@@ -14,24 +14,25 @@ const hasToolActiveClass = (tool) => {
     return tool.button.classList.contains('oltb-tool-button--active');
 }
 
-//--------------------------------------------------------------------
-// # Section: Testing
-//--------------------------------------------------------------------
 describe('MagnifyTool', () => {
-    //--------------------------------------------------------------------
-    // # Section: Setup
-    //--------------------------------------------------------------------
     beforeAll(async () => {
-        jest.spyOn(ElementManager, 'getToolbarElement').mockImplementation(() => {
-            return window.document.createElement('div');
-        });
-
         await StateManager.initAsync();
     });
 
-    //--------------------------------------------------------------------
-    // # Section: Jesting
-    //--------------------------------------------------------------------
+    beforeEach(() => {
+        jest.spyOn(ElementManager, 'getToolbarElement').mockImplementation(() => {
+            return window.document.createElement('div');
+        });
+    });
+
+    afterEach(() => {
+        window.onkeydown = function() {};
+        window.onkeyup = function() {};
+
+        jest.clearAllMocks();
+        jest.restoreAllMocks();
+    });
+
     it('should init the tool', () => {
         const tool = new MagnifyTool();
 
@@ -51,20 +52,20 @@ describe('MagnifyTool', () => {
 
     it('should init the tool with options', () => {
         const options = {onInitiated: () => {}};
-        const spyOnInitiated = jest.spyOn(options, 'onInitiated');
+        const spyOnOnInitiated = jest.spyOn(options, 'onInitiated');
         const tool = new MagnifyTool(options);
 
         expect(tool).toBeTruthy();
-        expect(spyOnInitiated).toHaveBeenCalledTimes(1);
+        expect(spyOnOnInitiated).toHaveBeenCalledTimes(1);
     });
 
     it('should toggle the tool', () => {
         const options = {onClicked: () => {}};
-        const spyOnClicked = jest.spyOn(options, 'onClicked');
-        const spyActivate = jest.spyOn(MagnifyTool.prototype, 'activateTool');
-        const spyDeactivate = jest.spyOn(MagnifyTool.prototype, 'deactivateTool');
+        const spyOnOnClicked = jest.spyOn(options, 'onClicked');
 
         const tool = new MagnifyTool(options);
+        const spyOnActivateTool = jest.spyOn(tool, 'activateTool');
+        const spyOnDeactivateTool = jest.spyOn(tool, 'deactivateTool');
 
         expect(hasToolActiveClass(tool)).toBe(false);
         tool.onClickTool();
@@ -72,37 +73,37 @@ describe('MagnifyTool', () => {
         tool.onClickTool();
         expect(hasToolActiveClass(tool)).toBe(false);
 
-        expect(spyActivate).toHaveBeenCalledTimes(1);
-        expect(spyDeactivate).toHaveBeenCalledTimes(1);
-        expect(spyOnClicked).toHaveBeenCalledTimes(2);
+        expect(spyOnActivateTool).toHaveBeenCalledTimes(1);
+        expect(spyOnDeactivateTool).toHaveBeenCalledTimes(1);
+        expect(spyOnOnClicked).toHaveBeenCalledTimes(2);
     });
 
     it('should re-activate active tool after reload', () => {
-        const spy = jest.spyOn(MagnifyTool.prototype, 'activateTool').mockImplementation(() => {
-            return;
-        });
-
         const tool = new MagnifyTool();
         tool.localStorage.isActive = true;
 
+        const spyOnActivateTool = jest.spyOn(tool, 'activateTool').mockImplementation(() => {
+            return;
+        });
+
         eventDispatcher([window], 'oltb.is.ready');
-        expect(spy).toHaveBeenCalled();
+        expect(spyOnActivateTool).toHaveBeenCalled();
     });
 
     it('should clean up state after beeing cleared', () => {
         const options = {onBrowserStateCleared: () =>{}};
-        const spy = jest.spyOn(options, 'onBrowserStateCleared');
+        const spyOnOnBrowserStateCleared = jest.spyOn(options, 'onBrowserStateCleared');
         new MagnifyTool(options);
 
         eventDispatcher([window], 'oltb.browser.state.cleared');
-        expect(spy).toHaveBeenCalled();
+        expect(spyOnOnBrowserStateCleared).toHaveBeenCalled();
     });
 
     it('should clear tool state', () => {
         const tool = new MagnifyTool();
-        const spy = jest.spyOn(StateManager, 'setStateObject');
+        const spyOnSetStateObject = jest.spyOn(StateManager, 'setStateObject');
 
         tool.doClearState();
-        expect(spy).toHaveBeenCalledTimes(1);
+        expect(spyOnSetStateObject).toHaveBeenCalledTimes(1);
     });
 });

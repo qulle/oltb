@@ -105,20 +105,20 @@ describe('CoordinatesTool', () => {
 
     it('should init the tool with options', () => {
         const options = {onInitiated: () => {}};
-        const spyOnInitiated = jest.spyOn(options, 'onInitiated');
+        const spyOnOnInitiated = jest.spyOn(options, 'onInitiated');
         const tool = new CoordinatesTool(options);
 
         expect(tool).toBeTruthy();
-        expect(spyOnInitiated).toHaveBeenCalledTimes(1);
+        expect(spyOnOnInitiated).toHaveBeenCalledTimes(1);
     });
 
     it('should toggle the tool', () => {
         const options = {onClicked: () => {}};
-        const spyOnClicked = jest.spyOn(options, 'onClicked');
+        const spyOnOnClicked = jest.spyOn(options, 'onClicked');
         
         const tool = new CoordinatesTool(options);
-        const spyActivate = jest.spyOn(tool, 'activateTool');
-        const spyDeactivate = jest.spyOn(tool, 'deactivateTool');
+        const spyOnActivateTool = jest.spyOn(tool, 'activateTool');
+        const spyOnDeactivateTool = jest.spyOn(tool, 'deactivateTool');
 
         expect(hasToolActiveClass(tool)).toBe(false);
         tool.onClickTool();
@@ -126,9 +126,9 @@ describe('CoordinatesTool', () => {
         tool.onClickTool();
         expect(hasToolActiveClass(tool)).toBe(false);
 
-        expect(spyActivate).toHaveBeenCalledTimes(1);
-        expect(spyDeactivate).toHaveBeenCalledTimes(1);
-        expect(spyOnClicked).toHaveBeenCalledTimes(2);
+        expect(spyOnActivateTool).toHaveBeenCalledTimes(1);
+        expect(spyOnDeactivateTool).toHaveBeenCalledTimes(1);
+        expect(spyOnOnClicked).toHaveBeenCalledTimes(2);
     });
 
     it('should toggle the tool using short-cut-key [C]', () => {
@@ -136,8 +136,8 @@ describe('CoordinatesTool', () => {
         const spyOnClicked = jest.spyOn(options, 'onClicked');
 
         const tool = new CoordinatesTool(options);
-        const spyActivate = jest.spyOn(tool, 'activateTool');
-        const spyDeactivate = jest.spyOn(tool, 'deactivateTool');
+        const spyOnActivateTool = jest.spyOn(tool, 'activateTool');
+        const spyOnDeactivateTool = jest.spyOn(tool, 'deactivateTool');
         
         expect(hasToolActiveClass(tool)).toBe(false);
         simulateKeyPress('keydown', window, 'C');
@@ -145,51 +145,51 @@ describe('CoordinatesTool', () => {
         simulateKeyPress('keydown', window, 'C');
         expect(hasToolActiveClass(tool)).toBe(false);
 
-        expect(spyActivate).toHaveBeenCalledTimes(1);
-        expect(spyDeactivate).toHaveBeenCalledTimes(1);
+        expect(spyOnActivateTool).toHaveBeenCalledTimes(1);
+        expect(spyOnDeactivateTool).toHaveBeenCalledTimes(1);
         expect(spyOnClicked).toHaveBeenCalledTimes(2);
     });
 
     it('should not toggle the tool using incorrect short-cut-key', () => {
         const options = {onClicked: () => {}};
-        const spy = jest.spyOn(options, 'onClicked');
+        const spyOnOnClicked = jest.spyOn(options, 'onClicked');
 
         new CoordinatesTool(options);
         simulateKeyPress('keydown', window, '!');
-        expect(spy).not.toHaveBeenCalled();
+        expect(spyOnOnClicked).not.toHaveBeenCalled();
     });
 
     it('should re-activate active tool after reload', () => {
         const tool = new CoordinatesTool();
         tool.localStorage.isActive = true;
 
-        const spy = jest.spyOn(tool, 'activateTool').mockImplementation(() => {
+        const spyOnActivateTool = jest.spyOn(tool, 'activateTool').mockImplementation(() => {
             return;
         });
 
         eventDispatcher([window], 'oltb.is.ready');
-        expect(spy).toHaveBeenCalled();
+        expect(spyOnActivateTool).toHaveBeenCalled();
     });
 
     it('should clean up state after beeing cleared', () => {
         const options = {onBrowserStateCleared: () =>{}};
-        const spy = jest.spyOn(options, 'onBrowserStateCleared');
+        const spyOnOnBrowserStateCleared = jest.spyOn(options, 'onBrowserStateCleared');
         new CoordinatesTool(options);
 
         eventDispatcher([window], 'oltb.browser.state.cleared');
-        expect(spy).toHaveBeenCalled();
+        expect(spyOnOnBrowserStateCleared).toHaveBeenCalled();
     });
 
     it('should clear tool state', () => {
         const tool = new CoordinatesTool();
-        const spy = jest.spyOn(StateManager, 'setStateObject');
+        const spyOnStateObject = jest.spyOn(StateManager, 'setStateObject');
 
         tool.doClearState();
-        expect(spy).toHaveBeenCalledTimes(1);
+        expect(spyOnStateObject).toHaveBeenCalledTimes(1);
     });
 
     it('should resolve copy coordinates', async () => {
-        const spyToast = jest.spyOn(Toast, 'info');
+        const spyOnToastInfo = jest.spyOn(Toast, 'info');
         const event = {
             coordinate: {lon: 12.34, lat: 43.21}
         };
@@ -201,14 +201,14 @@ describe('CoordinatesTool', () => {
         const tool = new CoordinatesTool();
         await tool.doCopyCoordinatesAsync(event);
 
-        expect(spyToast).toHaveBeenCalledWith({
+        expect(spyOnToastInfo).toHaveBeenCalledWith({
             i18nKey: `${I18N__BASE}.toasts.infos.copyCoordinates`,
             autoremove: true
         });
     });
 
     it('should reject copy coordinates', async () => {
-        const spyToast = jest.spyOn(Toast, 'error');
+        const spyOnToastError = jest.spyOn(Toast, 'error');
         const event = {
             coordinate: {lon: 12.34, lat: 43.21}
         };
@@ -220,7 +220,7 @@ describe('CoordinatesTool', () => {
         const tool = new CoordinatesTool();
         await tool.doCopyCoordinatesAsync(event);
 
-        expect(spyToast).toHaveBeenCalledWith({
+        expect(spyOnToastError).toHaveBeenCalledWith({
             i18nKey: `${I18N__BASE}.toasts.errors.copyCoordinates`
         });
     });

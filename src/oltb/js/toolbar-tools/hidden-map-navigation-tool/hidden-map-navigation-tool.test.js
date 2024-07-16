@@ -1,4 +1,4 @@
-import { jest, beforeAll, describe, it, expect } from '@jest/globals';
+import { jest, beforeAll, beforeEach, afterEach, describe, it, expect } from '@jest/globals';
 import { Toast } from '../../ui-common/ui-toasts/toast';
 import { BaseTool } from '../base-tool';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
@@ -37,14 +37,12 @@ const mockMap = {
     }
 };
 
-//--------------------------------------------------------------------
-// # Section: Testing
-//--------------------------------------------------------------------
 describe('HiddenMapNavigationTool', () => {
-    //--------------------------------------------------------------------
-    // # Section: Setup
-    //--------------------------------------------------------------------
     beforeAll(async () => {
+        await StateManager.initAsync();
+    });
+
+    beforeEach(() => {
         jest.spyOn(ElementManager, 'getToolbarElement').mockImplementation(() => {
             return window.document.createElement('div');
         });
@@ -56,13 +54,16 @@ describe('HiddenMapNavigationTool', () => {
         jest.spyOn(HiddenMapNavigationTool.prototype, 'getMap').mockImplementation(() => {
             return mockMap;
         });
-
-        await StateManager.initAsync();
     });
 
-    //--------------------------------------------------------------------
-    // # Section: Jesting
-    //--------------------------------------------------------------------
+    afterEach(() => {
+        window.onkeydown = function() {};
+        window.onkeyup = function() {};
+
+        jest.clearAllMocks();
+        jest.restoreAllMocks();
+    });
+    
     it('should init the tool', () => {
         const tool = new HiddenMapNavigationTool();
 
@@ -83,7 +84,7 @@ describe('HiddenMapNavigationTool', () => {
     });
 
     it('should resolve copy map-coordinates', async () => {
-        const spyToast = jest.spyOn(Toast, 'info');
+        const spyOnToastInfo = jest.spyOn(Toast, 'info');
         const coordinates = {lon: 12.34, lat: 43.21};
 
         jest.spyOn(copyToClipboard, 'copyAsync').mockImplementation(() => {
@@ -93,14 +94,14 @@ describe('HiddenMapNavigationTool', () => {
         const tool = new HiddenMapNavigationTool();
         await tool.doCopyCoordinatesAsync(coordinates);
 
-        expect(spyToast).toHaveBeenCalledWith({
+        expect(spyOnToastInfo).toHaveBeenCalledWith({
             i18nKey: `${I18N__BASE}.toasts.infos.coordinatesCopied`,
             autoremove: true
         });
     });
 
     it('should reject copy map-coordinates', async () => {
-        const spyToast = jest.spyOn(Toast, 'error');
+        const spyOnToastError = jest.spyOn(Toast, 'error');
         const coordinates = {lon: 12.34, lat: 43.21};
 
         jest.spyOn(copyToClipboard, 'copyAsync').mockImplementation(() => {
@@ -110,19 +111,18 @@ describe('HiddenMapNavigationTool', () => {
         const tool = new HiddenMapNavigationTool();
         await tool.doCopyCoordinatesAsync(coordinates);
 
-        expect(spyToast).toHaveBeenCalledWith({
+        expect(spyOnToastError).toHaveBeenCalledWith({
             i18nKey: `${I18N__BASE}.toasts.errors.coordinatesCopy`
         });
     });
 
     it('should re-activate active tool after reload', () => {
-        const spy = jest.spyOn(HiddenMapNavigationTool.prototype, 'doDetectUrlMarker').mockImplementation(() => {
+        const tool = new HiddenMapNavigationTool();
+        const spyOnDoDetectUrlMarker = jest.spyOn(tool, 'doDetectUrlMarker').mockImplementation(() => {
             return;
         });
 
-        new HiddenMapNavigationTool();
-
         eventDispatcher([window], 'oltb.is.ready');
-        expect(spy).toHaveBeenCalled();
+        expect(spyOnDoDetectUrlMarker).toHaveBeenCalled();
     });
 });
