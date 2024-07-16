@@ -7,7 +7,7 @@ import { StateManager } from '../../toolbar-managers/state-manager/state-manager
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 import { eventDispatcher } from '../../browser-helpers/event-dispatcher';
 import { SettingsManager } from '../../toolbar-managers/settings-manager/settings-manager';
-// import { simulateKeyPress } from '../../../../../__mocks__/simulate-key-press';
+import { simulateKeyPress } from '../../../../../__mocks__/simulate-key-press';
 
 const FILENAME = 'draw-tool.js';
 const CLASS__TOOLBOX_SECTION = 'oltb-toolbox-section';
@@ -113,6 +113,14 @@ const hasToolActiveClass = (tool) => {
 }
 
 describe('DrawTool', () => {
+    const toolInstances = [];
+    const initToolInstance = (options) => {
+        const tool = new DrawTool(options);
+        toolInstances.push(tool);
+    
+        return tool;
+    }
+
     beforeAll(async () => {
         window.document.body.innerHTML = HTML__MOCK;
         await StateManager.initAsync();
@@ -142,15 +150,17 @@ describe('DrawTool', () => {
     });
 
     afterEach(() => {
-        window.onkeydown = function() {};
-        window.onkeyup = function() {};
+        toolInstances.forEach((tool) => {
+            tool.destroy();
+        });
+        toolInstances.length = 0;
 
         jest.clearAllMocks();
         jest.restoreAllMocks();
     });
 
     it('should init the tool', () => {
-        const tool = new DrawTool();
+        const tool = initToolInstance();
 
         expect(tool).toBeTruthy();
         expect(tool).toBeInstanceOf(BaseTool);
@@ -173,7 +183,7 @@ describe('DrawTool', () => {
     it('should init the tool with options', () => {
         const options = {onInitiated: () => {}};
         const spyOnOnInitiated = jest.spyOn(options, 'onInitiated');
-        const tool = new DrawTool(options);
+        const tool = initToolInstance(options);
 
         expect(tool).toBeTruthy();
         expect(spyOnOnInitiated).toHaveBeenCalledTimes(1);
@@ -183,7 +193,7 @@ describe('DrawTool', () => {
         const options = {onClicked: () => {}};
         const spyOnClicked = jest.spyOn(options, 'onClicked');
 
-        const tool = new DrawTool(options);
+        const tool = initToolInstance(options);
         const spyOnActivateTool = jest.spyOn(tool, 'activateTool');
         const spyOnDeactivateTool = jest.spyOn(tool, 'deactivateTool');
 
@@ -198,36 +208,36 @@ describe('DrawTool', () => {
         expect(spyOnClicked).toHaveBeenCalledTimes(2);
     });
 
-    // it('should toggle the tool using short-cut-key [P]', () => {
-    //     const options = {onClicked: () => {}};
-    //     const spyOnClicked = jest.spyOn(options, 'onClicked');
+    it('should toggle the tool using short-cut-key [P]', () => {
+        const options = {onClicked: () => {}};
+        const spyOnClicked = jest.spyOn(options, 'onClicked');
 
-    //     const tool = new DrawTool(options);
-    //     const spyOnActivateTool = jest.spyOn(tool, 'activateTool');
-    //     const spyOnDeactivateTool = jest.spyOn(tool, 'deactivateTool');
+        const tool = initToolInstance(options);
+        const spyOnActivateTool = jest.spyOn(tool, 'activateTool');
+        const spyOnDeactivateTool = jest.spyOn(tool, 'deactivateTool');
         
-    //     expect(hasToolActiveClass(tool)).toBe(false);
-    //     simulateKeyPress('keyup', window, 'P');
-    //     expect(hasToolActiveClass(tool)).toBe(true);
-    //     simulateKeyPress('keyup', window, 'P');
-    //     expect(hasToolActiveClass(tool)).toBe(false);
+        expect(hasToolActiveClass(tool)).toBe(false);
+        simulateKeyPress('keyup', window, 'P');
+        expect(hasToolActiveClass(tool)).toBe(true);
+        simulateKeyPress('keyup', window, 'P');
+        expect(hasToolActiveClass(tool)).toBe(false);
 
-    //     expect(spyOnActivateTool).toHaveBeenCalledTimes(1);
-    //     expect(spyOnDeactivateTool).toHaveBeenCalledTimes(1);
-    //     expect(spyOnClicked).toHaveBeenCalledTimes(2);
-    // });
+        expect(spyOnActivateTool).toHaveBeenCalledTimes(1);
+        expect(spyOnDeactivateTool).toHaveBeenCalledTimes(1);
+        expect(spyOnClicked).toHaveBeenCalledTimes(2);
+    });
 
-    // it('should not toggle the tool using incorrect short-cut-key', () => {
-    //     const options = {onClicked: () => {}};
-    //     const spyOnOnClicked = jest.spyOn(options, 'onClicked');
+    it('should not toggle the tool using incorrect short-cut-key', () => {
+        const options = {onClicked: () => {}};
+        const spyOnOnClicked = jest.spyOn(options, 'onClicked');
 
-    //     new DrawTool(options);
-    //     simulateKeyPress('keyup', window, '!');
-    //     expect(spyOnOnClicked).not.toHaveBeenCalled();
-    // });
+        initToolInstance(options);
+        simulateKeyPress('keyup', window, '!');
+        expect(spyOnOnClicked).not.toHaveBeenCalled();
+    });
 
     it('should deactivate tool as done by ToolManager', () => {
-        const tool = new DrawTool();
+        const tool = initToolInstance();
         const spy = jest.spyOn(ToolManager, 'removeActiveTool');
 
         tool.activateTool();
@@ -237,7 +247,7 @@ describe('DrawTool', () => {
     });
 
     it('should re-activate active tool after reload', () => {
-        const tool = new DrawTool();
+        const tool = initToolInstance();
         tool.localStorage.isActive = true;
 
         const spyOnActivateTool = jest.spyOn(tool, 'activateTool').mockImplementation(() => {
@@ -251,14 +261,14 @@ describe('DrawTool', () => {
     it('should clean up state after beeing cleared', () => {
         const options = {onBrowserStateCleared: () =>{}};
         const spyOnOnBrowserStateCleared = jest.spyOn(options, 'onBrowserStateCleared');
-        new DrawTool(options);
+        initToolInstance(options);
 
         eventDispatcher([window], 'oltb.browser.state.cleared');
         expect(spyOnOnBrowserStateCleared).toHaveBeenCalled();
     });
 
     it('should clear tool state', () => {
-        const tool = new DrawTool();
+        const tool = initToolInstance();
         const spyOnSetStateObject = jest.spyOn(StateManager, 'setStateObject');
 
         tool.doClearState();
