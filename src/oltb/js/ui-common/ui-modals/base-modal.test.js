@@ -1,14 +1,22 @@
-import { jest, beforeAll, describe, it, expect } from '@jest/globals';
+import { jest, beforeEach, afterEach, describe, it, expect } from '@jest/globals';
 import { DOM } from '../../browser-helpers/dom-factory';
 import { BaseModal } from './base-modal';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 import { simulateKeyPress } from '../../../../../__mocks__/simulate-key-press';
 
 describe('BaseModal', () => {
-    beforeAll(() => {
+    beforeEach(() => {
         jest.spyOn(ElementManager, 'getMapElement').mockImplementation(() => {
             return window.document.createElement('div');
         });
+    });
+
+    afterEach(() => {
+        window.onkeydown = function() {};
+        window.onkeyup = function() {};
+
+        jest.clearAllMocks();
+        jest.restoreAllMocks();
     });
 
     it('should create a default modal', () => {
@@ -63,29 +71,29 @@ describe('BaseModal', () => {
 
     it('should create a modal and close it', () => {
         const options = {onClose: () => {}};
-        const spyOnClose = jest.spyOn(options, 'onClose');
-        const spyRemoveElement = jest.spyOn(DOM, 'removeElement');
+        const spyOnOnClose = jest.spyOn(options, 'onClose');
+        const spyOnRemoveElement = jest.spyOn(DOM, 'removeElement');
+
         const toast = new BaseModal(options);
         toast.close();
 
-        expect(spyRemoveElement).toHaveBeenCalled();
-        expect(spyOnClose).toHaveBeenCalled();
+        expect(spyOnRemoveElement).toHaveBeenCalled();
+        expect(spyOnOnClose).toHaveBeenCalled();
     });
 
     it('should close modal when Escape-key is pressed', () => {
-        const spy = jest.spyOn(BaseModal.prototype, 'close');
-
-        new BaseModal();
+        const modal = new BaseModal();
+        const spyOnClose = jest.spyOn(modal, 'close');
         simulateKeyPress('keyup', window, 'Escape');
 
-        expect(spy).toHaveBeenCalled();
+        expect(spyOnClose).toHaveBeenCalled();
     });
 
     it('should modal if backdrop is clicked', () => {
-        const spy = jest.spyOn(DOM, 'runAnimation');
+        const spyOnRunAnimation = jest.spyOn(DOM, 'runAnimation');
         const modal = new BaseModal();
         modal.backdrop.click();
 
-        expect(spy).toHaveBeenCalled();
+        expect(spyOnRunAnimation).toHaveBeenCalled();
     });
 });

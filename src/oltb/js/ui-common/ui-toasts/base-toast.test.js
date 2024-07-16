@@ -1,14 +1,22 @@
-import { jest, beforeAll, describe, it, expect } from '@jest/globals';
+import { jest, beforeEach, afterEach, describe, it, expect } from '@jest/globals';
 import { DOM } from '../../browser-helpers/dom-factory';
 import { BaseToast } from './base-toast';
 import { ConfigManager } from '../../toolbar-managers/config-manager/config-manager';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 
 describe('BaseToast', () => {
-    beforeAll(() => {
+    beforeEach(() => {
         jest.spyOn(ElementManager, 'getToastElement').mockImplementation(() => {
             return window.document.createElement('div');
         });
+    });
+
+    afterEach(() => {
+        window.onkeydown = function() {};
+        window.onkeyup = function() {};
+
+        jest.clearAllMocks();
+        jest.restoreAllMocks();
     });
 
     it('should create a default toast', () => {
@@ -54,7 +62,7 @@ describe('BaseToast', () => {
     });
 
     it('should create a toast that is removed after 5 seconds', () => {
-        const spy = jest.spyOn(DOM, 'removeElement');
+        const spyOnRemoveElement = jest.spyOn(DOM, 'removeElement');
         const timeout = ConfigManager.getConfig().autoRemovalDuation.normal;
         const toast = new BaseToast({
             autoremove: true
@@ -62,18 +70,18 @@ describe('BaseToast', () => {
 
         window.setTimeout(() => {
             expect(toast.isAutoremove()).toBe(true);
-            expect(spy).toHaveBeenCalled();
+            expect(spyOnRemoveElement).toHaveBeenCalled();
         }, timeout);
     });
 
     it('should create a toast and remove it', () => {
-        const spy = jest.spyOn(DOM, 'removeElement');
+        const spyOnRemoveElement = jest.spyOn(DOM, 'removeElement');
         const timeout = ConfigManager.getConfig().autoRemovalDuation.normal;
         const toast = new BaseToast();
         toast.remove();
 
         window.setTimeout(() => {
-            expect(spy).toHaveBeenCalled();
+            expect(spyOnRemoveElement).toHaveBeenCalled();
         }, timeout);
     });
 });
