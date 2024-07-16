@@ -3,6 +3,7 @@ import { BaseTool } from '../base-tool';
 import { ExportPngTool } from './export-png-tool';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 import { eventDispatcher } from '../../browser-helpers/event-dispatcher';
+import { simulateKeyPress } from '../../../../../__mocks__/simulate-key-press';
 
 const FILENAME = 'export-png-tool.js';
 
@@ -61,6 +62,27 @@ describe('ExportPngTool', () => {
 
         expect(spyOnMomentaryActivation).toHaveBeenCalledTimes(1);
         expect(spyOnOnClicked).toHaveBeenCalledTimes(1);
+    });
+
+    it('should toggle the tool using short-cut-key [E]', () => {
+        const options = {onClicked: () => {}};
+        const spyOnOnClicked = jest.spyOn(options, 'onClicked');
+
+        const tool = new ExportPngTool(options);
+        const spyOnMomentaryActivation = jest.spyOn(tool, 'momentaryActivation');
+        simulateKeyPress('keyup', window, 'E');
+
+        expect(spyOnMomentaryActivation).toHaveBeenCalledTimes(1);
+        expect(spyOnOnClicked).toHaveBeenCalledTimes(1);
+    });
+
+    it('should not toggle the tool using incorrect short-cut-key', () => {
+        const options = {onClicked: () => {}};
+        const spyOnOnClicked = jest.spyOn(options, 'onClicked');
+
+        new ExportPngTool(options);
+        simulateKeyPress('keyup', window, '!');
+        expect(spyOnOnClicked).not.toHaveBeenCalled();
     });
 
     // TODO:

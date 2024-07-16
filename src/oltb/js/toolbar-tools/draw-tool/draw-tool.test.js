@@ -7,6 +7,7 @@ import { StateManager } from '../../toolbar-managers/state-manager/state-manager
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 import { eventDispatcher } from '../../browser-helpers/event-dispatcher';
 import { SettingsManager } from '../../toolbar-managers/settings-manager/settings-manager';
+// import { simulateKeyPress } from '../../../../../__mocks__/simulate-key-press';
 
 const FILENAME = 'draw-tool.js';
 const CLASS__TOOLBOX_SECTION = 'oltb-toolbox-section';
@@ -196,6 +197,34 @@ describe('DrawTool', () => {
         expect(spyOnDeactivateTool).toHaveBeenCalledTimes(1);
         expect(spyOnClicked).toHaveBeenCalledTimes(2);
     });
+
+    // it('should toggle the tool using short-cut-key [P]', () => {
+    //     const options = {onClicked: () => {}};
+    //     const spyOnClicked = jest.spyOn(options, 'onClicked');
+
+    //     const tool = new DrawTool(options);
+    //     const spyOnActivateTool = jest.spyOn(tool, 'activateTool');
+    //     const spyOnDeactivateTool = jest.spyOn(tool, 'deactivateTool');
+        
+    //     expect(hasToolActiveClass(tool)).toBe(false);
+    //     simulateKeyPress('keyup', window, 'P');
+    //     expect(hasToolActiveClass(tool)).toBe(true);
+    //     simulateKeyPress('keyup', window, 'P');
+    //     expect(hasToolActiveClass(tool)).toBe(false);
+
+    //     expect(spyOnActivateTool).toHaveBeenCalledTimes(1);
+    //     expect(spyOnDeactivateTool).toHaveBeenCalledTimes(1);
+    //     expect(spyOnClicked).toHaveBeenCalledTimes(2);
+    // });
+
+    // it('should not toggle the tool using incorrect short-cut-key', () => {
+    //     const options = {onClicked: () => {}};
+    //     const spyOnOnClicked = jest.spyOn(options, 'onClicked');
+
+    //     new DrawTool(options);
+    //     simulateKeyPress('keyup', window, '!');
+    //     expect(spyOnOnClicked).not.toHaveBeenCalled();
+    // });
 
     it('should deactivate tool as done by ToolManager', () => {
         const tool = new DrawTool();

@@ -1,6 +1,7 @@
 import { jest, beforeEach, afterEach, describe, it, expect } from '@jest/globals';
 import { BaseTool } from '../base-tool';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
+import { simulateKeyPress } from '../../../../../__mocks__/simulate-key-press';
 import { ImportVectorLayerTool } from './import-vector-layer-tool';
 
 const FILENAME = 'import-vector-layer-tool.js';
@@ -54,5 +55,26 @@ describe('ImportVectorLayerTool', () => {
 
         expect(spyOnMomentaryActivation).toHaveBeenCalledTimes(1);
         expect(spyOnOnClicked).toHaveBeenCalledTimes(1);
+    });
+
+    it('should toggle the tool using short-cut-key [O]', () => {
+        const options = {onClicked: () => {}};
+        const spyOnOnClicked = jest.spyOn(options, 'onClicked');
+
+        const tool = new ImportVectorLayerTool(options);
+        const spyOnMomentaryActivation = jest.spyOn(tool, 'momentaryActivation');
+        simulateKeyPress('keyup', window, 'O');
+
+        expect(spyOnMomentaryActivation).toHaveBeenCalledTimes(1);
+        expect(spyOnOnClicked).toHaveBeenCalledTimes(1);
+    });
+
+    it('should not toggle the tool using incorrect short-cut-key', () => {
+        const options = {onClicked: () => {}};
+        const spyOnOnClicked = jest.spyOn(options, 'onClicked');
+
+        new ImportVectorLayerTool(options);
+        simulateKeyPress('keyup', window, '!');
+        expect(spyOnOnClicked).not.toHaveBeenCalled();
     });
 });

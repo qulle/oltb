@@ -200,16 +200,28 @@ class EditTool extends BaseTool {
 
         // TODO:
         // Replaced by EventManager in the future?
-        window.addEventListener(Events.browser.keyUp, this.#onWindowKeyUp.bind(this));
-        window.addEventListener(Events.custom.ready, this.#onOLTBReady.bind(this));
-        window.addEventListener(Events.custom.browserStateCleared, this.#onWindowBrowserStateCleared.bind(this));
-        window.addEventListener(Events.custom.featureLayerRemoved, this.#onWindowFeatureLayerRemoved.bind(this));
+        this.onWindowKeyUpBind = this.#onWindowKeyUp.bind(this);
+        this.onOLTBReadyBind = this.#onOLTBReady.bind(this);
+        this.onWindowBrowserStateClearedBind = this.#onWindowBrowserStateCleared.bind(this);
+        this.onWindowFeatureLayerRemovedBind = this.#onWindowFeatureLayerRemoved.bind(this);
+
+        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUpBind);
+        window.addEventListener(Events.custom.ready, this.onOLTBReadyBind);
+        window.addEventListener(Events.custom.browserStateCleared, this.onWindowBrowserStateClearedBind);
+        window.addEventListener(Events.custom.featureLayerRemoved, this.onWindowFeatureLayerRemovedBind);
 
         // Note: 
         // @Consumer callback
         if(this.options.onInitiated) {
             this.options.onInitiated();
         }
+    }
+
+    destroy() {
+        window.removeEventListener(Events.browser.keyUp, this.onWindowKeyUpBind);
+        window.removeEventListener(Events.custom.ready, this.onOLTBReadyBind);
+        window.removeEventListener(Events.custom.browserStateCleared, this.onWindowBrowserStateClearedBind);
+        window.removeEventListener(Events.custom.featureLayerRemoved, this.onWindowFeatureLayerRemovedBind);
     }
 
     //--------------------------------------------------------------------

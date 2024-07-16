@@ -5,6 +5,7 @@ import { HomeTool } from './home-tool';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 import { eventDispatcher } from '../../browser-helpers/event-dispatcher';
+import { simulateKeyPress } from '../../../../../__mocks__/simulate-key-press';
 
 const FILENAME = 'home-tool.js';
 const I18N__BASE = 'tools.homeTool';
@@ -94,6 +95,27 @@ describe('HomeTool', () => {
 
         expect(spyOnMomentaryActivation).toHaveBeenCalledTimes(1);
         expect(spyOnOnClicked).toHaveBeenCalledTimes(1);
+    });
+
+    it('should toggle the tool using short-cut-key [H]', () => {
+        const options = {onClicked: () => {}};
+        const spyOnOnClicked = jest.spyOn(options, 'onClicked');
+
+        const tool = new HomeTool(options);
+        const spyOnMomentaryActivation = jest.spyOn(tool, 'momentaryActivation');
+        simulateKeyPress('keyup', window, 'H');
+
+        expect(spyOnMomentaryActivation).toHaveBeenCalledTimes(1);
+        expect(spyOnOnClicked).toHaveBeenCalledTimes(1);
+    });
+
+    it('should not toggle the tool using incorrect short-cut-key', () => {
+        const options = {onClicked: () => {}};
+        const spyOnOnClicked = jest.spyOn(options, 'onClicked');
+
+        new HomeTool(options);
+        simulateKeyPress('keyup', window, '!');
+        expect(spyOnOnClicked).not.toHaveBeenCalled();
     });
 
     it('should get zoom', () => {

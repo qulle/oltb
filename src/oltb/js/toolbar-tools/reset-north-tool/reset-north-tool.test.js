@@ -4,6 +4,7 @@ import { BaseTool } from '../base-tool';
 import { LogManager } from '../../toolbar-managers/log-manager/log-manager';
 import { ResetNorthTool } from './reset-north-tool';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
+import { simulateKeyPress } from '../../../../../__mocks__/simulate-key-press';
 import '../../browser-prototypes/string';
 
 const FILENAME = 'reset-north-tool.js';
@@ -96,6 +97,27 @@ describe('MagnifyTool', () => {
 
         expect(spyOnMomentaryActivation).toHaveBeenCalledTimes(1);
         expect(spyOnOnClicked).toHaveBeenCalledTimes(1);
+    });
+
+    it('should toggle the tool using short-cut-key [N]', () => {
+        const options = {onClicked: () => {}};
+        const spyOnOnClicked = jest.spyOn(options, 'onClicked');
+
+        const tool = new ResetNorthTool(options);
+        const spyOnMomentaryActivation = jest.spyOn(tool, 'momentaryActivation');
+        simulateKeyPress('keyup', window, 'N');
+
+        expect(spyOnMomentaryActivation).toHaveBeenCalledTimes(1);
+        expect(spyOnOnClicked).toHaveBeenCalledTimes(1);
+    });
+
+    it('should not toggle the tool using incorrect short-cut-key', () => {
+        const options = {onClicked: () => {}};
+        const spyOnOnClicked = jest.spyOn(options, 'onClicked');
+
+        new ResetNorthTool(options);
+        simulateKeyPress('keyup', window, '!');
+        expect(spyOnOnClicked).not.toHaveBeenCalled();
     });
 
     it('should rotate the map', () => {

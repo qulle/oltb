@@ -6,6 +6,14 @@ import { ElementManager } from '../toolbar-managers/element-manager/element-mana
 const FILENAME = 'base-tool.js';
 
 describe('BaseTool', () => {
+    const toolInstances = [];
+    const initToolInstance = (options) => {
+        const tool = new BaseTool(options);
+        toolInstances.push(tool);
+    
+        return tool;
+    }
+
     beforeEach(() => {
         jest.spyOn(ElementManager, 'getToolbarElement').mockImplementation(() => {
             return window.document.createElement('div');
@@ -13,15 +21,17 @@ describe('BaseTool', () => {
     });
 
     afterEach(() => {
-        window.onkeydown = function() {};
-        window.onkeyup = function() {};
+        toolInstances.forEach((tool) => {
+            tool.destroy();
+        });
+        toolInstances.length = 0;
 
         jest.clearAllMocks();
         jest.restoreAllMocks();
     });
 
     it('should init the tool', () => {
-        const tool = new BaseTool();
+        const tool = initToolInstance();
 
         expect(tool).toBeTruthy();
         expect(tool).toBeInstanceOf(BaseTool);
@@ -30,7 +40,7 @@ describe('BaseTool', () => {
 
     it('should test [onClickTool]', () => {
         const spyOnLogDebug = jest.spyOn(LogManager, 'logDebug');
-        const tool = new BaseTool();
+        const tool = initToolInstance();
 
         tool.onClickTool();
         expect(spyOnLogDebug).toHaveBeenCalledWith(FILENAME, 'onClickTool', 'User clicked tool');

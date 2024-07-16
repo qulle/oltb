@@ -47,6 +47,14 @@ const hasToolActiveClass = (tool) => {
 }
 
 describe('BookmarkTool', () => {
+    const toolInstances = [];
+    const initToolInstance = (options) => {
+        const tool = new BookmarkTool(options);
+        toolInstances.push(tool);
+    
+        return tool;
+    }
+
     beforeAll(async () => {
         window.document.body.innerHTML = HTML__MOCK;
         await StateManager.initAsync();
@@ -73,15 +81,17 @@ describe('BookmarkTool', () => {
     });
 
     afterEach(() => {
-        window.onkeydown = function() {};
-        window.onkeyup = function() {};
+        toolInstances.forEach((tool) => {
+            tool.destroy();
+        });
+        toolInstances.length = 0;
 
         jest.clearAllMocks();
         jest.restoreAllMocks();
     });
 
     it('should init the tool', () => {
-        const tool = new BookmarkTool();
+        const tool = initToolInstance();
 
         expect(tool).toBeTruthy();
         expect(tool).toBeInstanceOf(BaseTool);
@@ -107,7 +117,7 @@ describe('BookmarkTool', () => {
     it('should init the tool with options', () => {
         const options = {onInitiated: () => {}};
         const spyOnOnInitiated = jest.spyOn(options, 'onInitiated');
-        const tool = new BookmarkTool(options);
+        const tool = initToolInstance(options);
 
         expect(tool).toBeTruthy();
         expect(spyOnOnInitiated).toHaveBeenCalledTimes(1);
@@ -117,7 +127,7 @@ describe('BookmarkTool', () => {
         const options = {onClicked: () => {}};
         const spyOnOnClicked = jest.spyOn(options, 'onClicked');
 
-        const tool = new BookmarkTool(options);
+        const tool = initToolInstance(options);
         const spyOnActivateTool = jest.spyOn(tool, 'activateTool');
         const spyOnDeactivateTool = jest.spyOn(tool, 'deactivateTool');
         
@@ -136,7 +146,7 @@ describe('BookmarkTool', () => {
         const options = {onClicked: () => {}};
         const spyOnOnClicked = jest.spyOn(options, 'onClicked');
 
-        const tool = new BookmarkTool(options);
+        const tool = initToolInstance(options);
         const spyOnActivateTool = jest.spyOn(tool, 'activateTool');
         const spyOnDeactivateTool = jest.spyOn(tool, 'deactivateTool');
         
@@ -155,13 +165,13 @@ describe('BookmarkTool', () => {
         const options = {onClicked: () => {}};
         const spyOnOnClicked = jest.spyOn(options, 'onClicked');
 
-        new BookmarkTool(options);
+        initToolInstance(options);
         simulateKeyPress('keyup', window, '!');
         expect(spyOnOnClicked).not.toHaveBeenCalled();
     });
 
     it('should re-activate active tool after reload', () => {
-        const tool = new BookmarkTool();
+        const tool = initToolInstance();
         const spyOnActivateTool = jest.spyOn(tool, 'activateTool');
         tool.localStorage.isActive = true;
         
@@ -172,14 +182,14 @@ describe('BookmarkTool', () => {
     it('should clean up state after beeing cleared', () => {
         const options = {onBrowserStateCleared: () =>{}};
         const spyOnOnBrowserStateCleared = jest.spyOn(options, 'onBrowserStateCleared');
-        new BookmarkTool(options);
+        initToolInstance(options);
 
         eventDispatcher([window], 'oltb.browser.state.cleared');
         expect(spyOnOnBrowserStateCleared).toHaveBeenCalled();
     });
 
     it('should clear tool state', () => {
-        const tool = new BookmarkTool();
+        const tool = initToolInstance();
         const spyOnSetStateObject = jest.spyOn(StateManager, 'setStateObject');
 
         tool.doClearState();
@@ -196,7 +206,7 @@ describe('BookmarkTool', () => {
             return Promise.resolve();
         });
         
-        const tool = new BookmarkTool();
+        const tool = initToolInstance();
         await tool.doCopyBookmarkCoordinatesAsync(bookmark);
 
         expect(spyOnToastInfo).toHaveBeenCalledWith({
@@ -215,7 +225,7 @@ describe('BookmarkTool', () => {
             return Promise.reject();
         });
         
-        const tool = new BookmarkTool();
+        const tool = initToolInstance();
         await tool.doCopyBookmarkCoordinatesAsync(bookmark);
 
         expect(spyOnToastError).toHaveBeenCalledWith({
@@ -224,7 +234,7 @@ describe('BookmarkTool', () => {
     });
 
     it('should ask user to clear bookmarks', () => {
-        const tool = new BookmarkTool();
+        const tool = initToolInstance();
         const spyOnToastInfo = jest.spyOn(Toast, 'info');
         const spyOnDoClearBookmarks = jest.spyOn(tool, 'doClearBookmarks').mockImplementation(() => {
             return;
@@ -244,7 +254,7 @@ describe('BookmarkTool', () => {
     it('should ask user to delete bookmark', () => {
         const bookmark = {name: 'jest'};
         const element = {name: 'jest-element'}
-        const tool = new BookmarkTool();
+        const tool = initToolInstance();
 
         const spyOnHideOverlay = jest.spyOn(InfoWindowManager, 'hideOverlay').mockImplementation(() => {
             return;
@@ -265,7 +275,7 @@ describe('BookmarkTool', () => {
     it('should ask user to edit bookmark', () => {
         const bookmark = {name: 'jest'};
         const bookmarkName = 'jest';
-        const tool = new BookmarkTool();
+        const tool = initToolInstance();
 
         const spyOnHideOverlay = jest.spyOn(InfoWindowManager, 'hideOverlay').mockImplementation(() => {
             return;
@@ -285,7 +295,7 @@ describe('BookmarkTool', () => {
 
     it('should check if local storage has stored bookmark', () => {
         const bookmark = {id: 1, name: 'jest'};
-        const tool = new BookmarkTool();
+        const tool = initToolInstance();
         tool.localStorage.bookmarks.push(bookmark);
 
         expect(tool.hasLocalStorageBookmarkById(1)).toBe(true);

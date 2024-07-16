@@ -8,6 +8,7 @@ import { StateManager } from '../../toolbar-managers/state-manager/state-manager
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 import { eventDispatcher } from '../../browser-helpers/event-dispatcher';
 import { SettingsManager } from '../../toolbar-managers/settings-manager/settings-manager';
+import { simulateKeyPress } from '../../../../../__mocks__/simulate-key-press';
 
 const FILENAME = 'edit-tool.js';
 const CLASS__TOOLBOX_SECTION = 'oltb-toolbox-section';
@@ -88,6 +89,14 @@ const hasToolActiveClass = (tool) => {
 }
 
 describe('EditTool', () => {
+    const toolInstances = [];
+    const initToolInstance = (options) => {
+        const tool = new EditTool(options);
+        toolInstances.push(tool);
+    
+        return tool;
+    }
+
     beforeAll(async () => {
         window.document.body.innerHTML = HTML__MOCK;
 
@@ -122,15 +131,17 @@ describe('EditTool', () => {
     });
 
     afterEach(() => {
-        window.onkeydown = function() {};
-        window.onkeyup = function() {};
+        toolInstances.forEach((tool) => {
+            tool.destroy();
+        });
+        toolInstances.length = 0;
 
         jest.clearAllMocks();
         jest.restoreAllMocks();
     });
 
     it('should init the tool', () => {
-        const tool = new EditTool();
+        const tool = initToolInstance();
 
         expect(tool).toBeTruthy();
         expect(tool).toBeInstanceOf(BaseTool);
@@ -159,7 +170,7 @@ describe('EditTool', () => {
     it('should init the tool with options', () => {
         const options = {onInitiated: () => {}};
         const spyOnOnInitiated = jest.spyOn(options, 'onInitiated');
-        const tool = new EditTool(options);
+        const tool = initToolInstance(options);
 
         expect(tool).toBeTruthy();
         expect(spyOnOnInitiated).toHaveBeenCalledTimes(1);
@@ -169,7 +180,7 @@ describe('EditTool', () => {
         const options = {onClicked: () => {}};
         const spyOnOnClicked = jest.spyOn(options, 'onClicked');
 
-        const tool = new EditTool(options);
+        const tool = initToolInstance(options);
         const spyOnActivateTool = jest.spyOn(tool, 'activateTool');
         const spyOnDeactivateTool = jest.spyOn(tool, 'deactivateTool');
 
@@ -184,8 +195,36 @@ describe('EditTool', () => {
         expect(spyOnOnClicked).toHaveBeenCalledTimes(2);
     });
 
+    it('should toggle the tool using short-cut-key [V]', () => {
+        const options = {onClicked: () => {}};
+        const spyOnClicked = jest.spyOn(options, 'onClicked');
+
+        const tool = initToolInstance(options);
+        const spyOnActivateTool = jest.spyOn(tool, 'activateTool');
+        const spyOnDeactivateTool = jest.spyOn(tool, 'deactivateTool');
+        
+        expect(hasToolActiveClass(tool)).toBe(false);
+        simulateKeyPress('keyup', window, 'V');
+        expect(hasToolActiveClass(tool)).toBe(true);
+        simulateKeyPress('keyup', window, 'V');
+        expect(hasToolActiveClass(tool)).toBe(false);
+
+        expect(spyOnActivateTool).toHaveBeenCalledTimes(1);
+        expect(spyOnDeactivateTool).toHaveBeenCalledTimes(1);
+        expect(spyOnClicked).toHaveBeenCalledTimes(2);
+    });
+
+    it('should not toggle the tool using incorrect short-cut-key', () => {
+        const options = {onClicked: () => {}};
+        const spyOnOnClicked = jest.spyOn(options, 'onClicked');
+
+        const tool = initToolInstance(options);
+        simulateKeyPress('keyup', window, '!');
+        expect(spyOnOnClicked).not.toHaveBeenCalled();
+    });
+
     it('should deactivate tool as done by ToolManager', () => {
-        const tool = new EditTool();
+        const tool = initToolInstance();
         const spyOnRemoveActiveTool = jest.spyOn(ToolManager, 'removeActiveTool');
 
         tool.activateTool();
@@ -195,7 +234,7 @@ describe('EditTool', () => {
     });
 
     it('should re-activate active tool after reload', () => {
-        const tool = new EditTool();
+        const tool = initToolInstance();
         tool.localStorage.isActive = true;
 
         const spyOnActivateTool = jest.spyOn(tool, 'activateTool').mockImplementation(() => {
@@ -209,14 +248,14 @@ describe('EditTool', () => {
     it('should clean up state after beeing cleared', () => {
         const options = {onBrowserStateCleared: () =>{}};
         const spyOnOnBrowserStateCleared = jest.spyOn(options, 'onBrowserStateCleared');
-        new EditTool(options);
+        const tool = initToolInstance(options);
 
         eventDispatcher([window], 'oltb.browser.state.cleared');
         expect(spyOnOnBrowserStateCleared).toHaveBeenCalled();
     });
 
     it('should clear tool state', () => {
-        const tool = new EditTool();
+        const tool = initToolInstance();
         const spyOnSetStateObject = jest.spyOn(StateManager, 'setStateObject');
 
         tool.doClearState();

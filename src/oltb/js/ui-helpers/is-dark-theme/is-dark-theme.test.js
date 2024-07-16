@@ -2,7 +2,7 @@ import { describe, it, expect } from '@jest/globals';
 import { isDarkTheme } from './is-dark-theme';
 import { ConfigManager } from '../../toolbar-managers/config-manager/config-manager';
 
-describe('IsDarkTheme', () => {
+describe('isDarkTheme', () => {
     it('should not be dark theme', () => {
         expect(isDarkTheme()).toEqual(false);
     });
