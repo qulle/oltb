@@ -7,6 +7,7 @@ import { StateManager } from '../../toolbar-managers/state-manager/state-manager
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 import { eventDispatcher } from '../../browser-helpers/event-dispatcher';
 import { SettingsManager } from '../../toolbar-managers/settings-manager/settings-manager';
+import { simulateKeyPress } from '../../../../../__mocks__/simulate-key-press';
 
 const FILENAME = 'measure-tool.js';
 const CLASS__TOOLBOX_SECTION = 'oltb-toolbox-section';
@@ -81,6 +82,14 @@ const hasToolActiveClass = (tool) => {
 }
 
 describe('MeasureTool', () => {
+    const toolInstances = [];
+    const initToolInstance = (options) => {
+        const tool = new MeasureTool(options);
+        toolInstances.push(tool);
+    
+        return tool;
+    }
+    
     beforeAll(async () => {
         window.document.body.innerHTML = HTML__MOCK;
 
@@ -111,15 +120,17 @@ describe('MeasureTool', () => {
     });
 
     afterEach(() => {
-        window.onkeydown = function() {};
-        window.onkeyup = function() {};
+        toolInstances.forEach((tool) => {
+            tool.destroy();
+        });
+        toolInstances.length = 0;
 
         jest.clearAllMocks();
         jest.restoreAllMocks();
     });
 
     it('should init the tool', () => {
-        const tool = new MeasureTool();
+        const tool = initToolInstance();
 
         expect(tool).toBeTruthy();
         expect(tool).toBeInstanceOf(BaseTool);
@@ -140,7 +151,7 @@ describe('MeasureTool', () => {
     it('should init the tool with options', () => {
         const options = {onInitiated: () => {}};
         const spyOnOnInitiated = jest.spyOn(options, 'onInitiated');
-        const tool = new MeasureTool(options);
+        const tool = initToolInstance(options);
 
         expect(tool).toBeTruthy();
         expect(spyOnOnInitiated).toHaveBeenCalledTimes(1);
@@ -150,7 +161,7 @@ describe('MeasureTool', () => {
         const options = {onClicked: () => {}};
         const spyOnOnClicked = jest.spyOn(options, 'onClicked');
 
-        const tool = new MeasureTool(options);
+        const tool = initToolInstance(options);
         const spyOnActivateTool = jest.spyOn(tool, 'activateTool');
         const spyOnDeactivateTool = jest.spyOn(tool, 'deactivateTool');
 
@@ -166,7 +177,7 @@ describe('MeasureTool', () => {
     });
 
     it('should deactivate tool as done by ToolManager', () => {
-        const tool = new MeasureTool();
+        const tool = initToolInstance();
         const spyOnRemoveActiveTool = jest.spyOn(ToolManager, 'removeActiveTool');
 
         tool.activateTool();
@@ -176,7 +187,7 @@ describe('MeasureTool', () => {
     });
 
     it('should re-activate active tool after reload', () => {
-        const tool = new MeasureTool();
+        const tool = initToolInstance();
         tool.localStorage.isActive = true;
 
         const spyOnActivateTool = jest.spyOn(tool, 'activateTool').mockImplementation(() => {
@@ -190,14 +201,14 @@ describe('MeasureTool', () => {
     it('should clean up state after beeing cleared', () => {
         const options = {onBrowserStateCleared: () =>{}};
         const spyOnOnBrowserStateCleared = jest.spyOn(options, 'onBrowserStateCleared');
-        new MeasureTool(options);
+        initToolInstance(options);
 
         eventDispatcher([window], 'oltb.browser.state.cleared');
         expect(spyOnOnBrowserStateCleared).toHaveBeenCalled();
     });
 
     it('should clear tool state', () => {
-        const tool = new MeasureTool();
+        const tool = initToolInstance();
         const spyOnSetStateObject = jest.spyOn(StateManager, 'setStateObject');
 
         tool.doClearState();
