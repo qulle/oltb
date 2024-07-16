@@ -1,14 +1,22 @@
-import { jest, beforeAll, describe, it, expect } from '@jest/globals';
+import { jest, beforeEach, afterEach, describe, it, expect } from '@jest/globals';
 import { DOM } from '../../browser-helpers/dom-factory';
 import { BaseDialog } from './base-dialog';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 import { simulateKeyPress } from '../../../../../__mocks__/simulate-key-press';
 
 describe('BaseDialog', () => {
-    beforeAll(() => {
+    beforeEach(() => {
         jest.spyOn(ElementManager, 'getMapElement').mockImplementation(() => {
             return window.document.createElement('div');
         });
+    });
+
+    afterEach(() => {
+        window.onkeydown = function() {};
+        window.onkeyup = function() {};
+
+        jest.clearAllMocks();
+        jest.restoreAllMocks();
     });
 
     it('should create base-dialog', () => {
@@ -21,19 +29,17 @@ describe('BaseDialog', () => {
 
     it('should trigger animation of dialog when backdrop is clicked', () => {
         const dialog = new BaseDialog({});
-        const spy = jest.spyOn(DOM, 'runAnimation');
+        const spyOnRunAnimation = jest.spyOn(DOM, 'runAnimation');
+
         dialog.backdrop.click();
-        expect(spy).toHaveBeenCalled();
+        expect(spyOnRunAnimation).toHaveBeenCalled();
     });
 
     it('should close dialog when Escape-key is pressed', () => {
-        new BaseDialog({});
-        const spy = jest.spyOn(BaseDialog.prototype, 'close');
+        const dialog = new BaseDialog({});
+        const spyOnClose = jest.spyOn(dialog, 'close');
         simulateKeyPress('keyup', window, 'Escape');
-
-        // Note:
-        // Since using prototype spy, more have-been-called-results than one first might expect.
-        // 3 times called by key-binding on window-object
-        expect(spy).toHaveBeenCalledTimes(3);
+        
+        expect(spyOnClose).toHaveBeenCalledTimes(1);
     });
 });

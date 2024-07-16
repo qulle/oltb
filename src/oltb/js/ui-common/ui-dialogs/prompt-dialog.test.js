@@ -1,13 +1,21 @@
-import { jest, beforeAll, describe, it, expect } from '@jest/globals';
+import { jest, beforeEach, afterEach, describe, it, expect } from '@jest/globals';
 import { DOM } from '../../browser-helpers/dom-factory';
 import { PromptDialog } from './prompt-dialog';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 
 describe('PromptDialog', () => {
-    beforeAll(() => {
+    beforeEach(() => {
         jest.spyOn(ElementManager, 'getMapElement').mockImplementation(() => {
             return window.document.createElement('div');
         });
+    });
+
+    afterEach(() => {
+        window.onkeydown = function() {};
+        window.onkeyup = function() {};
+
+        jest.clearAllMocks();
+        jest.restoreAllMocks();
     });
 
     it('should create prompt-dialog', () => {
@@ -49,19 +57,19 @@ describe('PromptDialog', () => {
 
     it('should close prompt-dialog when cancelButton is clicked', () => {
         const dialog = new PromptDialog({});
-        const spy = jest.spyOn(DOM, 'removeElement');
+        const spyOnRemoveElement = jest.spyOn(DOM, 'removeElement');
         const cancelButton = dialog.buttons[0];
 
         cancelButton.click();
-        expect(spy).toHaveBeenCalled();
+        expect(spyOnRemoveElement).toHaveBeenCalled();
     });
 
     it('should close prompt-dialog when confirmButton is clicked', () => {
         const dialog = new PromptDialog({});
-        const spy = jest.spyOn(DOM, 'removeElement');
+        const spyOnRemoveElement = jest.spyOn(DOM, 'removeElement');
         const confirmButton = dialog.buttons[1];
 
         confirmButton.click();
-        expect(spy).toHaveBeenCalled();
+        expect(spyOnRemoveElement).toHaveBeenCalled();
     });
 });

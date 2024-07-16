@@ -1,4 +1,4 @@
-import { jest, beforeAll, describe, it, expect } from '@jest/globals';
+import { jest, beforeEach, afterEach, describe, it, expect } from '@jest/globals';
 import { Dialog } from './dialog';
 import { AlertDialog } from './alert-dialog';
 import { PromptDialog } from './prompt-dialog';
@@ -9,10 +9,18 @@ import { ElementManager } from '../../toolbar-managers/element-manager/element-m
 const CLASS__DIALOG = 'oltb-dialog';
 
 describe('Dialog', () => {
-    beforeAll(() => {
+    beforeEach(() => {
         jest.spyOn(ElementManager, 'getMapElement').mockImplementation(() => {
             return window.document.createElement('div');
         });
+    });
+
+    afterEach(() => {
+        window.onkeydown = function() {};
+        window.onkeyup = function() {};
+
+        jest.clearAllMocks();
+        jest.restoreAllMocks();
     });
 
     it('should get success-class [oltb-btn--green-mid]', () => {
