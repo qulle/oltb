@@ -106,7 +106,7 @@ class ScissorsTool extends BaseTool {
         // TODO:
         // Replaced by EventManager in the future?
         window.addEventListener(Events.browser.keyUp, this.#onWindowKeyUp.bind(this));
-        window.addEventListener(Events.custom.read, this.#onOLTBReady.bind(this));
+        window.addEventListener(Events.custom.ready, this.#onOLTBReady.bind(this));
         window.addEventListener(Events.custom.browserStateCleared, this.#onWindowBrowserStateCleared.bind(this));
 
         // Note: 

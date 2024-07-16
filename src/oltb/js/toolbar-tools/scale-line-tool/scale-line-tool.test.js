@@ -1,4 +1,4 @@
-import { jest, beforeAll, describe, it, expect } from '@jest/globals';
+import { jest, beforeAll, beforeEach, afterEach, describe, it, expect } from '@jest/globals';
 import { BaseTool } from '../base-tool';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
 import { ScaleLineTool } from './scale-line-tool';
@@ -47,14 +47,12 @@ const hasToolActiveClass = (tool) => {
     return tool.button.classList.contains('oltb-tool-button--active');
 }
 
-//--------------------------------------------------------------------
-// # Section: Testing
-//--------------------------------------------------------------------
 describe('ScaleLineTool', () => {
-    //--------------------------------------------------------------------
-    // # Section: Setup
-    //--------------------------------------------------------------------
     beforeAll(async () => {
+        await StateManager.initAsync();
+    });
+
+    beforeEach(() => {
         jest.spyOn(ElementManager, 'getToolbarElement').mockImplementation(() => {
             return window.document.createElement('div');
         });
@@ -62,13 +60,16 @@ describe('ScaleLineTool', () => {
         jest.spyOn(ScaleLineTool.prototype, 'getMap').mockImplementation(() => {
             return mockMap;
         });
-
-        await StateManager.initAsync();
     });
 
-    //--------------------------------------------------------------------
-    // # Section: Jesting
-    //--------------------------------------------------------------------
+    afterEach(() => {
+        window.onkeydown = function() {};
+        window.onkeyup = function() {};
+
+        jest.clearAllMocks();
+        jest.restoreAllMocks();
+    });
+
     it('should init the tool', () => {
         const tool = new ScaleLineTool();
 
@@ -86,23 +87,24 @@ describe('ScaleLineTool', () => {
 
     it('should init the tool with options', () => {
         const options = {onInitiated: () => {}};
-        const spyOnInitiated = jest.spyOn(options, 'onInitiated');
+        const spyOnOnInitiated = jest.spyOn(options, 'onInitiated');
         const tool = new ScaleLineTool(options);
 
         expect(tool).toBeTruthy();
-        expect(spyOnInitiated).toHaveBeenCalledTimes(1);
+        expect(spyOnOnInitiated).toHaveBeenCalledTimes(1);
     });
 
     it('should toggle the tool', () => {
         const options = {onClicked: () => {}};
-        const spyOnClicked = jest.spyOn(options, 'onClicked');
-        const spyActivate = jest.spyOn(ScaleLineTool.prototype, 'activateTool');
-        const spyDeactivate = jest.spyOn(ScaleLineTool.prototype, 'deactivateTool');
-        const spyScaleLine = jest.spyOn(MockScaleLine.prototype, 'setMap');
+        const spyOnOnClicked = jest.spyOn(options, 'onClicked');
 
         const mockScaleLine = new MockScaleLine();
         const tool = new ScaleLineTool(options);
         tool.scaleLine = mockScaleLine;
+
+        const spyOnActivateTool = jest.spyOn(tool, 'activateTool');
+        const spyOnDeactivateTool = jest.spyOn(tool, 'deactivateTool');
+        const spyOnScaleLineSetMap = jest.spyOn(MockScaleLine.prototype, 'setMap');
 
         expect(hasToolActiveClass(tool)).toBe(false);
         tool.onClickTool();
@@ -110,38 +112,38 @@ describe('ScaleLineTool', () => {
         tool.onClickTool();
         expect(hasToolActiveClass(tool)).toBe(false);
 
-        expect(spyActivate).toHaveBeenCalledTimes(1);
-        expect(spyDeactivate).toHaveBeenCalledTimes(1);
-        expect(spyOnClicked).toHaveBeenCalledTimes(2);
-        expect(spyScaleLine).toHaveBeenCalledTimes(2);
+        expect(spyOnActivateTool).toHaveBeenCalledTimes(1);
+        expect(spyOnDeactivateTool).toHaveBeenCalledTimes(1);
+        expect(spyOnOnClicked).toHaveBeenCalledTimes(2);
+        expect(spyOnScaleLineSetMap).toHaveBeenCalledTimes(2);
     });
 
     it('should re-activate active tool after reload', () => {
-        const spy = jest.spyOn(ScaleLineTool.prototype, 'activateTool').mockImplementation(() => {
-            return;
-        });
-
         const tool = new ScaleLineTool();
         tool.localStorage.isActive = true;
 
+        const spyOnActivateTool = jest.spyOn(tool, 'activateTool').mockImplementation(() => {
+            return;
+        });
+
         eventDispatcher([window], 'oltb.is.ready');
-        expect(spy).toHaveBeenCalled();
+        expect(spyOnActivateTool).toHaveBeenCalled();
     });
 
     it('should clean up state after beeing cleared', () => {
         const options = {onBrowserStateCleared: () =>{}};
-        const spy = jest.spyOn(options, 'onBrowserStateCleared');
+        const spyOnOnBrowserStateCleared = jest.spyOn(options, 'onBrowserStateCleared');
         new ScaleLineTool(options);
 
         eventDispatcher([window], 'oltb.browser.state.cleared');
-        expect(spy).toHaveBeenCalled();
+        expect(spyOnOnBrowserStateCleared).toHaveBeenCalled();
     });
 
     it('should clear tool state', () => {
         const tool = new ScaleLineTool();
-        const spy = jest.spyOn(StateManager, 'setStateObject');
+        const spyOnSetStateObject = jest.spyOn(StateManager, 'setStateObject');
 
         tool.doClearState();
-        expect(spy).toHaveBeenCalledTimes(1);
+        expect(spyOnSetStateObject).toHaveBeenCalledTimes(1);
     });
 });

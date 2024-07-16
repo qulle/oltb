@@ -30,6 +30,9 @@ describe('SettingsTool', () => {
     });
 
     afterEach(() => {
+        window.onkeydown = function() {};
+        window.onkeyup = function() {};
+
         jest.clearAllMocks();
         jest.restoreAllMocks();
     });
@@ -50,39 +53,38 @@ describe('SettingsTool', () => {
 
     it('should init the tool with options', () => {
         const options = {onInitiated: () => {}};
-        const spyOnInitiated = jest.spyOn(options, 'onInitiated');
+        const spyOnOnInitiated = jest.spyOn(options, 'onInitiated');
         const tool = new SettingsTool(options);
 
         expect(tool).toBeTruthy();
-        expect(spyOnInitiated).toHaveBeenCalledTimes(1);
+        expect(spyOnOnInitiated).toHaveBeenCalledTimes(1);
     });
 
     it('should toggle the tool', () => {
         const options = {onClicked: () => {}};
-        const spyOnClicked = jest.spyOn(options, 'onClicked');
-        const spyMomentary = jest.spyOn(SettingsTool.prototype, 'momentaryActivation');
+        const spyOnOnClicked = jest.spyOn(options, 'onClicked');
 
         const tool = new SettingsTool(options);
+        const spyOnMomentaryActivation = jest.spyOn(tool, 'momentaryActivation');
         tool.onClickTool();
 
-        expect(spyMomentary).toHaveBeenCalledTimes(1);
-        expect(spyOnClicked).toHaveBeenCalledTimes(1);
+        expect(spyOnMomentaryActivation).toHaveBeenCalledTimes(1);
+        expect(spyOnOnClicked).toHaveBeenCalledTimes(1);
     });
 
     it('should ask user to clear browser state', () => {
-        const spyOnToast = jest.spyOn(Toast, 'info');
-        const spyOnDoDispatchEvent = jest.spyOn(SettingsTool.prototype, 'doDispatchBrowserStateCleared').mockImplementation(() => {
+        const spyOnToastInfo = jest.spyOn(Toast, 'info');
+        const tool = new SettingsTool();
+        const spyOnDoDispatchEvent = jest.spyOn(tool, 'doDispatchBrowserStateCleared').mockImplementation(() => {
             return;
         });
 
-        const tool = new SettingsTool();
         const dialog = tool.askToClearBrowserState();
-
         const confirmButton = dialog.buttons[1];
         confirmButton.click();
 
         expect(spyOnDoDispatchEvent).toHaveBeenCalledTimes(1);
-        expect(spyOnToast).toHaveBeenCalledWith({
+        expect(spyOnToastInfo).toHaveBeenCalledWith({
             i18nKey: `${I18N__BASE}.toasts.infos.clearBrowserState`,
             autoremove: true
         });
@@ -90,11 +92,11 @@ describe('SettingsTool', () => {
 
     it('should clear browser state and trigger event', () => {
         const options = {onBrowserStateCleared: () => {}};
-        const spyOnBrowserStateCleared = jest.spyOn(options, 'onBrowserStateCleared');
+        const spyOnOnBrowserStateCleared = jest.spyOn(options, 'onBrowserStateCleared');
 
         const tool = new SettingsTool(options);
         tool.doDispatchBrowserStateCleared();
 
-        expect(spyOnBrowserStateCleared).toHaveBeenCalledTimes(1);
+        expect(spyOnOnBrowserStateCleared).toHaveBeenCalledTimes(1);
     });
 });

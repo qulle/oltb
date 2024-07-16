@@ -1,4 +1,4 @@
-import { jest, beforeAll, describe, it, expect } from '@jest/globals';
+import { jest, beforeEach, afterEach, describe, it, expect } from '@jest/globals';
 import { Toast } from '../../ui-common/ui-toasts/toast';
 import { BaseTool } from '../base-tool';
 import { LogManager } from '../../toolbar-managers/log-manager/log-manager';
@@ -36,14 +36,8 @@ const mockMap = {
     }
 };
 
-//--------------------------------------------------------------------
-// # Section: Testing
-//--------------------------------------------------------------------
 describe('MagnifyTool', () => {
-    //--------------------------------------------------------------------
-    // # Section: Setup
-    //--------------------------------------------------------------------
-    beforeAll(() => {
+    beforeEach(() => {
         jest.spyOn(ElementManager, 'getToolbarElement').mockImplementation(() => {
             return window.document.createElement('div');
         });
@@ -61,9 +55,14 @@ describe('MagnifyTool', () => {
         });
     });
 
-    //--------------------------------------------------------------------
-    // # Section: Jesting
-    //--------------------------------------------------------------------
+    afterEach(() => {
+        window.onkeydown = function() {};
+        window.onkeyup = function() {};
+
+        jest.clearAllMocks();
+        jest.restoreAllMocks();
+    });
+
     it('should init the tool', () => {
         const tool = new ResetNorthTool();
 
@@ -80,45 +79,45 @@ describe('MagnifyTool', () => {
 
     it('should init the tool with options', () => {
         const options = {onInitiated: () => {}};
-        const spyOnInitiated = jest.spyOn(options, 'onInitiated');
+        const spyOnOnInitiated = jest.spyOn(options, 'onInitiated');
         const tool = new ResetNorthTool(options);
 
         expect(tool).toBeTruthy();
-        expect(spyOnInitiated).toHaveBeenCalledTimes(1);
+        expect(spyOnOnInitiated).toHaveBeenCalledTimes(1);
     });
 
     it('should toggle the tool', () => {
         const options = {onClicked: () => {}};
-        const spyOnClicked = jest.spyOn(options, 'onClicked');
-        const spyMomentary = jest.spyOn(ResetNorthTool.prototype, 'momentaryActivation');
+        const spyOnOnClicked = jest.spyOn(options, 'onClicked');
 
         const tool = new ResetNorthTool(options);
+        const spyOnMomentaryActivation = jest.spyOn(tool, 'momentaryActivation');
         tool.onClickTool();
 
-        expect(spyMomentary).toHaveBeenCalledTimes(1);
-        expect(spyOnClicked).toHaveBeenCalledTimes(1);
+        expect(spyOnMomentaryActivation).toHaveBeenCalledTimes(1);
+        expect(spyOnOnClicked).toHaveBeenCalledTimes(1);
     });
 
     it('should rotate the map', () => {
-        const spy = jest.spyOn(LogManager, 'logDebug');
+        const spyOnLogDebug = jest.spyOn(LogManager, 'logDebug');
         const tool = new ResetNorthTool();
         tool.doRotation(mockMap, [0, 0], 5, 90);
 
-        expect(spy).toHaveBeenCalledWith(FILENAME, 'doRotation', {
+        expect(spyOnLogDebug).toHaveBeenCalledWith(FILENAME, 'doRotation', {
             degrees: 90,
             radians: 1.5707963267948966
         });
     });
 
     it('should ask user to rotate the map', () => {
-        const spy = jest.spyOn(ResetNorthTool.prototype, 'doRotation');
         const tool = new ResetNorthTool();
+        const spyOnDoRotation = jest.spyOn(tool, 'doRotation');
         const dialog = tool.askToSetRotation(mockMap);
 
         const confirmButton = dialog.buttons[1];
         confirmButton.click();
 
-        expect(spy).toHaveBeenCalledTimes(1);
+        expect(spyOnDoRotation).toHaveBeenCalledTimes(1);
     });
 
     it('should ask user to rotate the map but fail due to letters', () => {
@@ -126,8 +125,8 @@ describe('MagnifyTool', () => {
             return 1.234 + 'jest';
         });
 
-        const spyOnLog = jest.spyOn(LogManager, 'logError');
-        const spyOnToast = jest.spyOn(Toast, 'error');
+        const spyOnLogError = jest.spyOn(LogManager, 'logError');
+        const spyOnToastError = jest.spyOn(Toast, 'error');
 
         const tool = new ResetNorthTool();
         const dialog = tool.askToSetRotation(mockMap);
@@ -135,12 +134,12 @@ describe('MagnifyTool', () => {
         const confirmButton = dialog.buttons[1];
         confirmButton.click();
 
-        expect(spyOnLog).toHaveBeenCalledWith(FILENAME, 'askToSetRotation', {
+        expect(spyOnLogError).toHaveBeenCalledWith(FILENAME, 'askToSetRotation', {
             message: 'Only digits are allowed as input',
             result: 'NaN'
         });
 
-        expect(spyOnToast).toHaveBeenCalledWith({
+        expect(spyOnToastError).toHaveBeenCalledWith({
             i18nKey: `${I18N__BASE}.toasts.errors.invalidValue`
         });
     });
