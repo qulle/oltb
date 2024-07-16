@@ -47,9 +47,6 @@ const hasToolActiveClass = (tool) => {
 }
 
 describe('BookmarkTool', () => {
-    let spyOnActivateTool = undefined;
-    let spyOnDeactivateTool = undefined;
-
     beforeAll(async () => {
         window.document.body.innerHTML = HTML__MOCK;
         await StateManager.initAsync();
@@ -57,7 +54,7 @@ describe('BookmarkTool', () => {
 
     beforeEach(() => {
         Element.prototype.scrollIntoView = jest.fn();
-        
+
         jest.spyOn(ElementManager, 'getMapElement').mockImplementation(() => {
             return window.document.createElement('div');
         });
@@ -73,9 +70,6 @@ describe('BookmarkTool', () => {
         jest.spyOn(ElementManager, 'getToastElement').mockImplementation(() => {
             return window.document.createElement('div');
         });
-
-        spyOnActivateTool = jest.spyOn(BookmarkTool.prototype, 'activateTool');
-        spyOnDeactivateTool = jest.spyOn(BookmarkTool.prototype, 'deactivateTool');
     });
 
     afterEach(() => {
@@ -122,7 +116,10 @@ describe('BookmarkTool', () => {
     it('should toggle the tool', () => {
         const options = {onClicked: () => {}};
         const spyOnOnClicked = jest.spyOn(options, 'onClicked');
+
         const tool = new BookmarkTool(options);
+        const spyOnActivateTool = jest.spyOn(tool, 'activateTool');
+        const spyOnDeactivateTool = jest.spyOn(tool, 'deactivateTool');
         
         expect(hasToolActiveClass(tool)).toBe(false);
         tool.onClickTool();
@@ -138,7 +135,10 @@ describe('BookmarkTool', () => {
     it('should toggle the tool using short-cut-key [B]', () => {
         const options = {onClicked: () => {}};
         const spyOnOnClicked = jest.spyOn(options, 'onClicked');
+
         const tool = new BookmarkTool(options);
+        const spyOnActivateTool = jest.spyOn(tool, 'activateTool');
+        const spyOnDeactivateTool = jest.spyOn(tool, 'deactivateTool');
         
         expect(hasToolActiveClass(tool)).toBe(false);
         simulateKeyPress('keyup', window, 'B');
@@ -146,11 +146,8 @@ describe('BookmarkTool', () => {
         simulateKeyPress('keyup', window, 'B');
         expect(hasToolActiveClass(tool)).toBe(false);
 
-        // TODO:
-        // Why is the counter 4? 
-        // Are results comming from other assertions?
-        expect(spyOnActivateTool).toHaveBeenCalledTimes(4);
-        expect(spyOnDeactivateTool).toHaveBeenCalledTimes(4);
+        expect(spyOnActivateTool).toHaveBeenCalledTimes(1);
+        expect(spyOnDeactivateTool).toHaveBeenCalledTimes(1);
         expect(spyOnOnClicked).toHaveBeenCalledTimes(2);
     });
 
@@ -164,13 +161,10 @@ describe('BookmarkTool', () => {
     });
 
     it('should re-activate active tool after reload', () => {
-        spyOnActivateTool.mockImplementation(() => {
-            return;
-        });
-
         const tool = new BookmarkTool();
+        const spyOnActivateTool = jest.spyOn(tool, 'activateTool');
         tool.localStorage.isActive = true;
-
+        
         eventDispatcher([window], 'oltb.is.ready');
         expect(spyOnActivateTool).toHaveBeenCalled();
     });
@@ -230,14 +224,13 @@ describe('BookmarkTool', () => {
     });
 
     it('should ask user to clear bookmarks', () => {
+        const tool = new BookmarkTool();
         const spyOnToastInfo = jest.spyOn(Toast, 'info');
-        const spyOnDoClearBookmarks = jest.spyOn(BookmarkTool.prototype, 'doClearBookmarks').mockImplementation(() => {
+        const spyOnDoClearBookmarks = jest.spyOn(tool, 'doClearBookmarks').mockImplementation(() => {
             return;
         });
 
-        const tool = new BookmarkTool();
         const dialog = tool.askToClearBookmarks();
-
         const confirmButton = dialog.buttons[1];
         confirmButton.click();
 
@@ -249,19 +242,19 @@ describe('BookmarkTool', () => {
     });
 
     it('should ask user to delete bookmark', () => {
+        const bookmark = {name: 'jest'};
+        const element = {name: 'jest-element'}
+        const tool = new BookmarkTool();
+
         const spyOnHideOverlay = jest.spyOn(InfoWindowManager, 'hideOverlay').mockImplementation(() => {
             return;
         });
 
-        const spyOnDoRemoveBookmark = jest.spyOn(BookmarkTool.prototype, 'doRemoveBookmark').mockImplementation(() => {
+        const spyOnDoRemoveBookmark = jest.spyOn(tool, 'doRemoveBookmark').mockImplementation(() => {
             return;
         });
 
-        const bookmark = {name: 'jest'};
-        const element = {name: 'jest-element'}
-        const tool = new BookmarkTool();
         const dialog = tool.askToDeleteBookmark(bookmark, element);
-
         const confirmButton = dialog.buttons[1];
         confirmButton.click();
 
@@ -270,19 +263,19 @@ describe('BookmarkTool', () => {
     });
 
     it('should ask user to edit bookmark', () => {
+        const bookmark = {name: 'jest'};
+        const bookmarkName = 'jest';
+        const tool = new BookmarkTool();
+
         const spyOnHideOverlay = jest.spyOn(InfoWindowManager, 'hideOverlay').mockImplementation(() => {
             return;
         });
 
-        const spyOnDoEditBookmark = jest.spyOn(BookmarkTool.prototype, 'doEditBookmark').mockImplementation(() => {
+        const spyOnDoEditBookmark = jest.spyOn(tool, 'doEditBookmark').mockImplementation(() => {
             return;
         });
-
-        const bookmark = {name: 'jest'};
-        const bookmarkName = 'jest';
-        const tool = new BookmarkTool();
+        
         const dialog = tool.askToEditBookmark(bookmark, bookmarkName);
-
         const confirmButton = dialog.buttons[1];
         confirmButton.click();
 

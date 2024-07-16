@@ -1,4 +1,4 @@
-import { jest, beforeAll, describe, it, expect } from '@jest/globals';
+import { jest, beforeAll, beforeEach, afterEach, describe, it, expect } from '@jest/globals';
 import { Toast } from '../../ui-common/ui-toasts/toast';
 import { BaseTool } from '../base-tool';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
@@ -48,16 +48,16 @@ const hasToolActiveClass = (tool) => {
     return tool.button.classList.contains('oltb-tool-button--active');
 }
 
-//--------------------------------------------------------------------
-// # Section: Testing
-//--------------------------------------------------------------------
 describe('CoordinatesTool', () => {
-    //--------------------------------------------------------------------
-    // # Section: Setup
-    //--------------------------------------------------------------------
     beforeAll(async () => {
-        Element.prototype.scrollIntoView = jest.fn();
         window.document.body.innerHTML = HTML__MOCK;
+
+        await StateManager.initAsync();
+        await SettingsManager.initAsync();
+    });
+
+    beforeEach(() => {
+        Element.prototype.scrollIntoView = jest.fn();
 
         jest.spyOn(ElementManager, 'getToolbarElement').mockImplementation(() => {
             return window.document.createElement('div');
@@ -78,14 +78,16 @@ describe('CoordinatesTool', () => {
         jest.spyOn(TooltipManager, 'pop').mockImplementation(() => {
             return;
         });
-
-        await StateManager.initAsync();
-        await SettingsManager.initAsync();
     });
 
-    //--------------------------------------------------------------------
-    // # Section: Jesting
-    //--------------------------------------------------------------------
+    afterEach(() => {
+        window.onkeydown = function() {};
+        window.onkeyup = function() {};
+
+        jest.clearAllMocks();
+        jest.restoreAllMocks();
+    });
+
     it('should init the tool', () => {
         const tool = new CoordinatesTool();
 
@@ -113,10 +115,10 @@ describe('CoordinatesTool', () => {
     it('should toggle the tool', () => {
         const options = {onClicked: () => {}};
         const spyOnClicked = jest.spyOn(options, 'onClicked');
-        const spyActivate = jest.spyOn(CoordinatesTool.prototype, 'activateTool');
-        const spyDeactivate = jest.spyOn(CoordinatesTool.prototype, 'deactivateTool');
-
+        
         const tool = new CoordinatesTool(options);
+        const spyActivate = jest.spyOn(tool, 'activateTool');
+        const spyDeactivate = jest.spyOn(tool, 'deactivateTool');
 
         expect(hasToolActiveClass(tool)).toBe(false);
         tool.onClickTool();
@@ -132,10 +134,10 @@ describe('CoordinatesTool', () => {
     it('should toggle the tool using short-cut-key [C]', () => {
         const options = {onClicked: () => {}};
         const spyOnClicked = jest.spyOn(options, 'onClicked');
-        const spyActivate = jest.spyOn(CoordinatesTool.prototype, 'activateTool');
-        const spyDeactivate = jest.spyOn(CoordinatesTool.prototype, 'deactivateTool');
 
         const tool = new CoordinatesTool(options);
+        const spyActivate = jest.spyOn(tool, 'activateTool');
+        const spyDeactivate = jest.spyOn(tool, 'deactivateTool');
         
         expect(hasToolActiveClass(tool)).toBe(false);
         simulateKeyPress('keydown', window, 'C');
@@ -143,11 +145,8 @@ describe('CoordinatesTool', () => {
         simulateKeyPress('keydown', window, 'C');
         expect(hasToolActiveClass(tool)).toBe(false);
 
-        // Note:
-        // Since using prototype spy, more have-been-called-results than one first might expect.
-        // 5 -> 4 times called by key-binding on window-object and 1 using tool.onClickTool
-        expect(spyActivate).toHaveBeenCalledTimes(5);
-        expect(spyDeactivate).toHaveBeenCalledTimes(5);
+        expect(spyActivate).toHaveBeenCalledTimes(1);
+        expect(spyDeactivate).toHaveBeenCalledTimes(1);
         expect(spyOnClicked).toHaveBeenCalledTimes(2);
     });
 
@@ -161,12 +160,12 @@ describe('CoordinatesTool', () => {
     });
 
     it('should re-activate active tool after reload', () => {
-        const spy = jest.spyOn(CoordinatesTool.prototype, 'activateTool').mockImplementation(() => {
-            return;
-        });
-
         const tool = new CoordinatesTool();
         tool.localStorage.isActive = true;
+
+        const spy = jest.spyOn(tool, 'activateTool').mockImplementation(() => {
+            return;
+        });
 
         eventDispatcher([window], 'oltb.is.ready');
         expect(spy).toHaveBeenCalled();
