@@ -19,11 +19,12 @@ const DefaultOptions = Object.freeze({
 });
 
 class ContextMenuTool extends BaseTool {
-    static #isDebug
-    static #items = [];
+    static #isDebug = false;
+    static #queue = [];
+    #items = [];
 
     static addItem(item) {
-        this.#items.push(item);
+        this.#queue.push(item);
     }
 
     constructor(options = {}) {
@@ -46,7 +47,7 @@ class ContextMenuTool extends BaseTool {
 
         const debugKey = ConfigManager.getConfig().urlParameter.debug;
         ContextMenuTool.#isDebug = UrlManager.getParameter(debugKey) === 'true';
-        ContextMenuTool.#items.forEach((item) => {
+        ContextMenuTool.#queue.forEach((item) => {
             this.addMenuItem(item);
         });
 
@@ -57,6 +58,8 @@ class ContextMenuTool extends BaseTool {
 
         uiRefMapElement.addEventListener(Events.browser.contextMenu, this.#onContextMenu.bind(this));
         uiRefMapElement.addEventListener(Events.browser.click, this.#onMapClick.bind(this));
+        uiRefMapElement.addEventListener(Events.browser.keyUp, this.#onMapKeyUp.bind(this));
+        this.uiRefMapElement = uiRefMapElement;
     }
 
     //--------------------------------------------------------------------
@@ -122,9 +125,21 @@ class ContextMenuTool extends BaseTool {
         this.hide(event);
     }
 
+    #onMapKeyUp(event) {
+        const key = event.key;
+
+        if(key === KeyboardKeys.valueEscape) {
+            this.hide();
+        }
+    }
+
     //--------------------------------------------------------------------
     // # Section: Public API
     //--------------------------------------------------------------------
+    getSize() {
+        return this.#items.length || 0;
+    }
+
     addMenuSeparator() {
         const li = DOM.createElement({
             element: 'li',
@@ -134,13 +149,16 @@ class ContextMenuTool extends BaseTool {
         DOM.appendChildren(this.menu, [
             li
         ]);
+
+        return li;
     }
 
     addMenuItem(item) {
         if(!this.#isMenuItem(item)) {
-            this.addMenuSeparator();
-            return;
+            return this.addMenuSeparator();
         }
+
+        this.#items.push(item);
 
         const i18n = TranslationManager.get(item.i18nKey);
         const li = DOM.createElement({
@@ -156,8 +174,6 @@ class ContextMenuTool extends BaseTool {
 
                     if(key === KeyboardKeys.valueEnter) {
                         this.click(item);
-                    }else if(key === KeyboardKeys.valueEscape) {
-                        this.hide();
                     }
                 }
             }
@@ -186,6 +202,8 @@ class ContextMenuTool extends BaseTool {
         DOM.appendChildren(this.menu, [
             li
         ]);
+
+        return li;
     }
 
     show(event) {
