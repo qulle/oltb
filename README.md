@@ -12,10 +12,14 @@
 ![npm version](https://img.shields.io/npm/v/oltb?logo=npm&logoColor=fff)
 ![jsDelivr](https://img.shields.io/jsdelivr/npm/hm/oltb?logo=jsdelivr&logoColor=fff)
 
-<!-- Perhaps add in future
+<!-- TODO: 
+    1. Perhaps add in future:
     ![GitHub issues](https://img.shields.io/github/issues/qulle/oltb?logo=github&logoColor=fff)
     ![GitHub pull requests](https://img.shields.io/github/issues-pr/qulle/oltb?logo=github&logoColor=fff)
--->
+
+    2. Add YML config for Build and Test using GitHub Actions
+    3. Add YML config for Snyk
+!-->
 
 </div>
 
