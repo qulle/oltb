@@ -34,7 +34,7 @@ class HiddenMarkerTool extends BaseTool {
             filename: FILENAME
         });
 
-        this.coordinatesModal = undefined;
+        this.iconMarkerModal = undefined;
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
 
         this.createIcon = getSvgIcon({
@@ -57,7 +57,8 @@ class HiddenMarkerTool extends BaseTool {
     }
 
     detachGlobalListeners() {
-        
+        window.removeEventListener(Events.custom.featureEdited, this.onWindowFeatureEditedBind);
+        window.removeEventListener(Events.custom.featureRemoved, this.onWindowFeatureRemovedBind);
     }
 
     //--------------------------------------------------------------------
@@ -84,7 +85,7 @@ class HiddenMarkerTool extends BaseTool {
     // # Section: ContextMenu Callbacks
     //--------------------------------------------------------------------
     #onContextMenuCreateMarker(map, coordinates, target) {
-        this.doShowCoordinatesModal(coordinates);
+        this.doShowIconMarkerModal(coordinates);
     }
 
     //--------------------------------------------------------------------
@@ -116,18 +117,18 @@ class HiddenMarkerTool extends BaseTool {
     //--------------------------------------------------------------------
     // # Section: Tool DoActions
     //--------------------------------------------------------------------
-    doShowCoordinatesModal(coordinates) {
-        if(this.coordinatesModal) {
+    doShowIconMarkerModal(coordinates) {
+        if(this.iconMarkerModal) {
             return;
         }
 
-        this.coordinatesModal = new IconMarkerModal({
+        this.iconMarkerModal = new IconMarkerModal({
             coordinates: coordinates,
             onCreate: (result) => {
                 this.#onCreateMarker(result);
             },
             onClose: () => {
-                this.coordinatesModal = undefined;
+                this.iconMarkerModal = undefined;
             }
         });
     }
