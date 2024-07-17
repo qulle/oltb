@@ -140,6 +140,8 @@ describe('ExportPngTool', () => {
         eventDispatcher([window], 'oltb.is.ready');
     });
 
+    // TODO:
+    // What to expect?
     it('should render the map async', async () => {
         const tool = initToolInstance();
         await tool.doRenderCompleteAsync(mockMap);
