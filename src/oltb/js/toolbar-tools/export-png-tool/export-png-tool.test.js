@@ -7,6 +7,36 @@ import { simulateKeyPress } from '../../../../../__mocks__/simulate-key-press';
 
 const FILENAME = 'export-png-tool.js';
 
+//--------------------------------------------------------------------
+// # Section: Mocking
+//--------------------------------------------------------------------
+const mockView = {
+    animate: (options) => {},
+    cancelAnimations: () => {},
+    getAnimating: () => true,
+    getZoom: () => 1.234,
+    getProjection: () => 'jest',
+    getCenter: () => [1.123, 2.456],
+    getRotation: () => 1.234,
+    getConstrainedZoom: (zoom) => 1
+};
+
+const mockMap = {
+    addLayer: (layer) => {},
+    removeLayer: (layer) => {}, 
+    addInteraction: (interaction) => {},
+    removeInteraction: (interaction) => {},
+    addOverlay: (overlay) => {},
+    removeOverlay: (overlay) => {},
+    on: (event, callback) => {},
+    once: (event, callback) => {},
+    renderSync: () => {},
+    getSize: () => [100, 100],
+    getView: () => {
+        return mockView;
+    }
+};
+
 describe('ExportPngTool', () => {
     const toolInstances = [];
     const initToolInstance = (options) => {
@@ -23,6 +53,14 @@ describe('ExportPngTool', () => {
 
         jest.spyOn(ElementManager, 'getMapElement').mockImplementation(() => {
             return window.document.createElement('div');
+        });
+
+        jest.spyOn(ElementManager, 'getToastElement').mockImplementation(() => {
+            return window.document.createElement('div');
+        });
+
+        jest.spyOn(ExportPngTool.prototype, 'getMap').mockImplementation(() => {
+            return mockMap;
         });
     });
 
@@ -100,5 +138,10 @@ describe('ExportPngTool', () => {
     it('should re-activate active tool after reload', () => {
         initToolInstance();
         eventDispatcher([window], 'oltb.is.ready');
+    });
+
+    it('should render the map async', async () => {
+        const tool = initToolInstance();
+        await tool.doRenderCompleteAsync(mockMap);
     });
 });
