@@ -45,8 +45,19 @@ class HiddenMarkerTool extends BaseTool {
 
         // TODO:
         // Replaced by EventManager in the future?
-        window.addEventListener(Events.custom.featureEdited, this.#onWindowFeatureEdited.bind(this));
-        window.addEventListener(Events.custom.featureRemoved, this.#onWindowFeatureRemoved.bind(this));
+        this.attachGlobalListeners();
+    }
+
+    attachGlobalListeners() {
+        this.onWindowFeatureEditedBind = this.#onWindowFeatureEdited.bind(this);
+        this.onWindowFeatureRemovedBind = this.#onWindowFeatureRemoved.bind(this);
+
+        window.addEventListener(Events.custom.featureEdited, this.onWindowFeatureEditedBind);
+        window.addEventListener(Events.custom.featureRemoved, this.onWindowFeatureRemovedBind);
+    }
+
+    detachGlobalListeners() {
+        
     }
 
     //--------------------------------------------------------------------

@@ -17,7 +17,7 @@ class BaseTool extends Control {
         }
     }
 
-    destroy() {}
+    detachGlobalListeners() {}
 
     //--------------------------------------------------------------------
     // # Section: Base Methods

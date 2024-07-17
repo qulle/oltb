@@ -97,16 +97,32 @@ class ZoomboxTool extends BaseTool {
 
         // TODO:
         // Replaced by EventManager in the future?
-        window.addEventListener(Events.browser.keyUp, this.#onWindowKeyUp.bind(this));
-        window.addEventListener(Events.browser.keyDown, this.#onWindowKeyDown.bind(this));
-        window.addEventListener(Events.custom.ready, this.#onOLTBReady.bind(this));
-        window.addEventListener(Events.custom.browserStateCleared, this.#onWindowBrowserStateCleared.bind(this));
+        this.attachGlobalListeners();
 
         // Note: 
         // @Consumer callback
         if(this.options.onInitiated) {
             this.options.onInitiated();
         }
+    }
+
+    attachGlobalListeners() {
+        this.onWindowKeyUpBind = this.#onWindowKeyUp.bind(this);
+        this.onWindowKeyDownBind = this.#onWindowKeyDown.bind(this);
+        this.onOLTBReadyBind = this.#onOLTBReady.bind(this);
+        this.onWindowBrowserStateClearedBind = this.#onWindowBrowserStateCleared.bind(this);
+
+        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUpBind);
+        window.addEventListener(Events.browser.keyDown, this.onWindowKeyDownBind);
+        window.addEventListener(Events.custom.ready, this.onOLTBReadyBind);
+        window.addEventListener(Events.custom.browserStateCleared, this.onWindowBrowserStateClearedBind);
+    }
+
+    detachGlobalListeners() {
+        window.removeEventListener(Events.browser.keyUp, this.onWindowKeyUpBind);
+        window.removeEventListener(Events.browser.keyDown, this.onWindowKeyDownBind);
+        window.removeEventListener(Events.custom.ready, this.onOLTBReadyBind);
+        window.removeEventListener(Events.custom.browserStateCleared, this.onWindowBrowserStateClearedBind);
     }
 
     //--------------------------------------------------------------------

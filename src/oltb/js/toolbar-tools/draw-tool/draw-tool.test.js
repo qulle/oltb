@@ -151,7 +151,7 @@ describe('DrawTool', () => {
 
     afterEach(() => {
         toolInstances.forEach((tool) => {
-            tool.destroy();
+            tool.detachGlobalListeners();
         });
         toolInstances.length = 0;
 

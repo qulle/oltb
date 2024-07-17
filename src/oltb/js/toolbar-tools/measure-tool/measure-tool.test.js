@@ -7,7 +7,6 @@ import { StateManager } from '../../toolbar-managers/state-manager/state-manager
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 import { eventDispatcher } from '../../browser-helpers/event-dispatcher';
 import { SettingsManager } from '../../toolbar-managers/settings-manager/settings-manager';
-import { simulateKeyPress } from '../../../../../__mocks__/simulate-key-press';
 
 const FILENAME = 'measure-tool.js';
 const CLASS__TOOLBOX_SECTION = 'oltb-toolbox-section';
@@ -121,7 +120,7 @@ describe('MeasureTool', () => {
 
     afterEach(() => {
         toolInstances.forEach((tool) => {
-            tool.destroy();
+            tool.detachGlobalListeners();
         });
         toolInstances.length = 0;
 

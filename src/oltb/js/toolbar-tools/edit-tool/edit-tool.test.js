@@ -132,7 +132,7 @@ describe('EditTool', () => {
 
     afterEach(() => {
         toolInstances.forEach((tool) => {
-            tool.destroy();
+            tool.detachGlobalListeners();
         });
         toolInstances.length = 0;
 
@@ -199,6 +199,9 @@ describe('EditTool', () => {
         const options = {onClicked: () => {}};
         const spyOnClicked = jest.spyOn(options, 'onClicked');
 
+        // Note:
+        // ESLint don't understand that tool reference is used.
+        // eslint-disable-next-line no-unused-vars
         const tool = initToolInstance(options);
         const spyOnActivateTool = jest.spyOn(tool, 'activateTool');
         const spyOnDeactivateTool = jest.spyOn(tool, 'deactivateTool');
@@ -218,7 +221,7 @@ describe('EditTool', () => {
         const options = {onClicked: () => {}};
         const spyOnOnClicked = jest.spyOn(options, 'onClicked');
 
-        const tool = initToolInstance(options);
+        initToolInstance(options);
         simulateKeyPress('keyup', window, '!');
         expect(spyOnOnClicked).not.toHaveBeenCalled();
     });
@@ -248,7 +251,7 @@ describe('EditTool', () => {
     it('should clean up state after beeing cleared', () => {
         const options = {onBrowserStateCleared: () =>{}};
         const spyOnOnBrowserStateCleared = jest.spyOn(options, 'onBrowserStateCleared');
-        const tool = initToolInstance(options);
+        initToolInstance(options);
 
         eventDispatcher([window], 'oltb.browser.state.cleared');
         expect(spyOnOnBrowserStateCleared).toHaveBeenCalled();

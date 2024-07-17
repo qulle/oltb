@@ -83,13 +83,22 @@ class MyLocationTool extends BaseTool {
 
         // TODO:
         // Replaced by EventManager in the future?
-        window.addEventListener(Events.browser.keyUp, this.#onWindowKeyUp.bind(this));
+        this.attachGlobalListeners();
 
         // Note: 
         // @Consumer callback
         if(this.options.onInitiated) {
             this.options.onInitiated();
         }
+    }
+
+    attachGlobalListeners() {
+        this.onWindowKeyUpBind = this.#onWindowKeyUp.bind(this);
+        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUpBind);
+    }
+
+    detachGlobalListeners() {
+        window.removeEventListener(Events.browser.keyUp, this.onWindowKeyUpBind);
     }
 
     //--------------------------------------------------------------------

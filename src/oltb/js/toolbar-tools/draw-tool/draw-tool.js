@@ -128,13 +128,7 @@ class DrawTool extends BaseTool {
 
         // TODO:
         // Replaced by EventManager in the future?
-        this.onWindowKeyUpBind = this.#onWindowKeyUp.bind(this);
-        this.onOLTBReadyBind = this.#onOLTBReady.bind(this);
-        this.onWindowBrowserStateClearedBind = this.#onWindowBrowserStateCleared.bind(this);
-
-        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUpBind);
-        window.addEventListener(Events.custom.ready, this.onOLTBReadyBind);
-        window.addEventListener(Events.custom.browserStateCleared, this.onWindowBrowserStateClearedBind);
+        this.attachGlobalListeners();
 
         // Note: 
         // @Consumer callback
@@ -143,7 +137,17 @@ class DrawTool extends BaseTool {
         }
     }
 
-    destroy() {
+    attachGlobalListeners() {
+        this.onWindowKeyUpBind = this.#onWindowKeyUp.bind(this);
+        this.onOLTBReadyBind = this.#onOLTBReady.bind(this);
+        this.onWindowBrowserStateClearedBind = this.#onWindowBrowserStateCleared.bind(this);
+
+        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUpBind);
+        window.addEventListener(Events.custom.ready, this.onOLTBReadyBind);
+        window.addEventListener(Events.custom.browserStateCleared, this.onWindowBrowserStateClearedBind);
+    }
+
+    detachGlobalListeners() {
         window.removeEventListener(Events.browser.keyUp, this.onWindowKeyUpBind);
         window.removeEventListener(Events.custom.ready, this.onOLTBReadyBind);
         window.removeEventListener(Events.custom.browserStateCleared, this.onWindowBrowserStateClearedBind);

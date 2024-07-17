@@ -77,14 +77,26 @@ class FullscreenTool extends BaseTool {
 
         // TODO:
         // Replaced by EventManager in the future?
-        window.addEventListener(Events.browser.keyUp, this.#onWindowKeyUp.bind(this));
-        window.document.addEventListener(Events.browser.fullScreenChange, this.#onFullScreenChange.bind(this));
+        this.attachGlobalListeners();
 
         // Note: 
         // @Consumer callback
         if(this.options.onInitiated) {
             this.options.onInitiated();
         }
+    }
+
+    attachGlobalListeners() {
+        this.onWindowKeyUpBind = this.#onWindowKeyUp.bind(this);
+        this.onFullScreenChangeBind = this.#onFullScreenChange.bind(this);
+
+        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUpBind);
+        window.document.addEventListener(Events.browser.fullScreenChange, this.onFullScreenChangeBind);
+    }
+
+    detachGlobalListeners() {
+        window.removeEventListener(Events.browser.keyUp, this.onWindowKeyUpBind);
+        window.document.removeEventListener(Events.browser.fullScreenChange, this.onFullScreenChangeBind);
     }
 
     //--------------------------------------------------------------------

@@ -200,6 +200,16 @@ class EditTool extends BaseTool {
 
         // TODO:
         // Replaced by EventManager in the future?
+        this.attachGlobalListeners();
+
+        // Note: 
+        // @Consumer callback
+        if(this.options.onInitiated) {
+            this.options.onInitiated();
+        }
+    }
+
+    attachGlobalListeners() {
         this.onWindowKeyUpBind = this.#onWindowKeyUp.bind(this);
         this.onOLTBReadyBind = this.#onOLTBReady.bind(this);
         this.onWindowBrowserStateClearedBind = this.#onWindowBrowserStateCleared.bind(this);
@@ -209,15 +219,9 @@ class EditTool extends BaseTool {
         window.addEventListener(Events.custom.ready, this.onOLTBReadyBind);
         window.addEventListener(Events.custom.browserStateCleared, this.onWindowBrowserStateClearedBind);
         window.addEventListener(Events.custom.featureLayerRemoved, this.onWindowFeatureLayerRemovedBind);
-
-        // Note: 
-        // @Consumer callback
-        if(this.options.onInitiated) {
-            this.options.onInitiated();
-        }
     }
 
-    destroy() {
+    detachGlobalListeners() {
         window.removeEventListener(Events.browser.keyUp, this.onWindowKeyUpBind);
         window.removeEventListener(Events.custom.ready, this.onOLTBReadyBind);
         window.removeEventListener(Events.custom.browserStateCleared, this.onWindowBrowserStateClearedBind);

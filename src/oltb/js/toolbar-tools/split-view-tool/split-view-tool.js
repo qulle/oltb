@@ -109,17 +109,35 @@ class SplitViewTool extends BaseTool {
 
         // TODO:
         // Replaced by EventManager in the future?
-        window.addEventListener(Events.browser.keyUp, this.#onWindowKeyUp.bind(this));
-        window.addEventListener(Events.custom.ready, this.#onOLTBReady.bind(this));
-        window.addEventListener(Events.custom.mapLayerAdded, this.#onWindowMapLayerAdded.bind(this));
-        window.addEventListener(Events.custom.mapLayerRemoved, this.#onWindowMapLayerRemoved.bind(this));
-        window.addEventListener(Events.custom.browserStateCleared, this.#onWindowBrowserStateCleared.bind(this));
+        this.attachGlobalListeners();
 
         // Note: 
         // @Consumer callback
         if(this.options.onInitiated) {
             this.options.onInitiated();
         }
+    }
+
+    attachGlobalListeners() {
+        this.onWindowKeyUpBind = this.#onWindowKeyUp.bind(this);
+        this.onOLTBReadyBind = this.#onOLTBReady.bind(this);
+        this.onWindowMapLayerAddedBind = this.#onWindowMapLayerAdded.bind(this);
+        this.onWindowMapLayerRemovedBind = this.#onWindowMapLayerRemoved.bind(this);
+        this.onWindowBrowserStateClearedBind = this.#onWindowBrowserStateCleared.bind(this);
+
+        window.addEventListener(Events.browser.keyUp, this.onWindowKeyUpBind);
+        window.addEventListener(Events.custom.ready, this.onOLTBReadyBind);
+        window.addEventListener(Events.custom.mapLayerAdded, this.onWindowMapLayerAddedBind);
+        window.addEventListener(Events.custom.mapLayerRemoved, this.onWindowMapLayerRemovedBind);
+        window.addEventListener(Events.custom.browserStateCleared, this.onWindowBrowserStateClearedBind);
+    }
+
+    detachGlobalListeners() {
+        window.removeEventListener(Events.browser.keyUp, this.onWindowKeyUpBind);
+        window.removeEventListener(Events.custom.ready, this.onOLTBReadyBind);
+        window.removeEventListener(Events.custom.mapLayerAdded, this.onWindowMapLayerAddedBind);
+        window.removeEventListener(Events.custom.mapLayerRemoved, this.onWindowMapLayerRemovedBind);
+        window.removeEventListener(Events.custom.browserStateCleared, this.onWindowBrowserStateClearedBind);
     }
 
     //--------------------------------------------------------------------

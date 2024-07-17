@@ -106,7 +106,16 @@ class HiddenMapNavigationTool extends BaseTool {
 
         // TODO:
         // Replaced by EventManager in the future?
-        window.addEventListener(Events.custom.ready, this.#onOLTBReady.bind(this));
+        this.attachGlobalListeners();
+    }
+
+    attachGlobalListeners() {
+        this.onOLTBReadyBind = this.#onOLTBReady.bind(this);
+        window.addEventListener(Events.custom.ready, this.onOLTBReadyBind);
+    }
+
+    detachGlobalListeners() {
+        window.removeEventListener(Events.custom.ready, this.onOLTBReadyBind);
     }
 
     //--------------------------------------------------------------------
