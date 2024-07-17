@@ -4,6 +4,7 @@ import { ToolboxTool } from './toolbox-tool';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 import { eventDispatcher } from '../../browser-helpers/event-dispatcher';
+import { simulateKeyPress } from '../../../../../__mocks__/simulate-key-press';
 
 const FILENAME = 'toolbox-tool.js';
 
@@ -15,6 +16,14 @@ const hasToolActiveClass = (tool) => {
 }
 
 describe('ToolboxTool', () => {
+    const toolInstances = [];
+    const initToolInstance = (options) => {
+        const tool = new ToolboxTool(options);
+        toolInstances.push(tool);
+    
+        return tool;
+    }
+
     beforeAll(async () => {
         await StateManager.initAsync();
     });
@@ -30,15 +39,17 @@ describe('ToolboxTool', () => {
     });
 
     afterEach(() => {
-        window.onkeydown = function() {};
-        window.onkeyup = function() {};
+        toolInstances.forEach((tool) => {
+            tool.detachGlobalListeners();
+        });
+        toolInstances.length = 0;
 
         jest.clearAllMocks();
         jest.restoreAllMocks();
     });
 
     it('should init the tool', () => {
-        const tool = new ToolboxTool();
+        const tool = initToolInstance();
 
         expect(tool).toBeTruthy();
         expect(tool).toBeInstanceOf(BaseTool);
@@ -55,7 +66,7 @@ describe('ToolboxTool', () => {
     it('should init the tool with options', () => {
         const options = {onInitiated: () => {}};
         const spyOnOnInitiated = jest.spyOn(options, 'onInitiated');
-        const tool = new ToolboxTool(options);
+        const tool = initToolInstance(options);
 
         expect(tool).toBeTruthy();
         expect(spyOnOnInitiated).toHaveBeenCalledTimes(1);
@@ -66,7 +77,7 @@ describe('ToolboxTool', () => {
         const spyOnOnClicked = jest.spyOn(options, 'onClicked');
         const spyOnOnChanged = jest.spyOn(options, 'onChanged');
 
-        const tool = new ToolboxTool(options);
+        const tool = initToolInstance(options);
         const spyOnActivateTool = jest.spyOn(tool, 'activateTool');
         const spyOnDeactivateTool = jest.spyOn(tool, 'deactivateTool');
 
@@ -82,8 +93,36 @@ describe('ToolboxTool', () => {
         expect(spyOnOnChanged).toHaveBeenCalledTimes(2);
     });
 
+    it('should toggle the tool using short-cut-key [Y]', () => {
+        const options = {onClicked: () => {}};
+        const spyOnClicked = jest.spyOn(options, 'onClicked');
+
+        const tool = initToolInstance(options);
+        const spyOnActivateTool = jest.spyOn(tool, 'activateTool');
+        const spyOnDeactivateTool = jest.spyOn(tool, 'deactivateTool');
+        
+        expect(hasToolActiveClass(tool)).toBe(false);
+        simulateKeyPress('keyup', window, 'Y');
+        expect(hasToolActiveClass(tool)).toBe(true);
+        simulateKeyPress('keyup', window, 'Y');
+        expect(hasToolActiveClass(tool)).toBe(false);
+
+        expect(spyOnActivateTool).toHaveBeenCalledTimes(1);
+        expect(spyOnDeactivateTool).toHaveBeenCalledTimes(1);
+        expect(spyOnClicked).toHaveBeenCalledTimes(2);
+    });
+
+    it('should not toggle the tool using incorrect short-cut-key', () => {
+        const options = {onClicked: () => {}};
+        const spyOnOnClicked = jest.spyOn(options, 'onClicked');
+
+        initToolInstance(options);
+        simulateKeyPress('keyup', window, '!');
+        expect(spyOnOnClicked).not.toHaveBeenCalled();
+    });
+
     it('should re-activate active tool after reload', () => {
-        const tool = new ToolboxTool();
+        const tool = initToolInstance();
         tool.localStorage.isActive = true;
 
         const spyOnActivateTool = jest.spyOn(tool, 'activateTool').mockImplementation(() => {
@@ -97,14 +136,14 @@ describe('ToolboxTool', () => {
     it('should clean up state after beeing cleared', () => {
         const options = {onBrowserStateCleared: () =>{}};
         const spyOnOnBrowserStateCleared = jest.spyOn(options, 'onBrowserStateCleared');
-        new ToolboxTool(options);
+        initToolInstance(options);
 
         eventDispatcher([window], 'oltb.browser.state.cleared');
         expect(spyOnOnBrowserStateCleared).toHaveBeenCalled();
     });
 
     it('should clear tool state', () => {
-        const tool = new ToolboxTool();
+        const tool = initToolInstance();
         const spyOnSetStateObject = jest.spyOn(StateManager, 'setStateObject');
 
         tool.doClearState();
