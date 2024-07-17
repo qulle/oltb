@@ -508,6 +508,8 @@ class DebugInfoModal extends BaseModal {
         const commandsWrapper = this.#generateCommandSection();
         const config = ConfigManager.getConfig();
 
+        // TODO:
+        // Move http-links to config.json? or central config-file?
         // App Information
         const appDataContent = {
             oltb: {
@@ -577,9 +579,9 @@ class DebugInfoModal extends BaseModal {
 
         // Browser LocalStorage
         const localStorageContent = {};
-        Object.keys(localStorage).forEach((key) => {
+        Object.keys(window.localStorage).forEach((key) => {
             try {
-                localStorageContent[key] = JSON.parse(localStorage.getItem(key)) || {};
+                localStorageContent[key] = JSON.parse(window.localStorage.getItem(key)) || {};
             }catch (error) {
                 LogManager.logError(FILENAME, 'generateModalContent', {
                     message: 'Error parsing localstorage',
@@ -590,9 +592,9 @@ class DebugInfoModal extends BaseModal {
 
         // Browser SessionStorage
         const sessionStorageContent = {};
-        Object.keys(sessionStorage).forEach((key) => {
+        Object.keys(window.sessionStorage).forEach((key) => {
             try {
-                sessionStorageContent[key] = JSON.parse(localStorage.getItem(key)) || {};
+                sessionStorageContent[key] = JSON.parse(window.sessionStorage.getItem(key)) || {};
             }catch (error) {
                 LogManager.logError(FILENAME, 'generateModalContent', {
                     message: 'Error parsing sessionStorage',

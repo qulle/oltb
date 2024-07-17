@@ -16,9 +16,6 @@ describe('Dialog', () => {
     });
 
     afterEach(() => {
-        window.onkeydown = function() {};
-        window.onkeyup = function() {};
-
         jest.clearAllMocks();
         jest.restoreAllMocks();
     });

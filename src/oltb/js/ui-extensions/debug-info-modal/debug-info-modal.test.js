@@ -38,9 +38,6 @@ describe('DebugInfoModal', () => {
     });
 
     afterEach(() => {
-        window.onkeydown = function() {};
-        window.onkeyup = function() {};
-
         jest.clearAllMocks();
         jest.restoreAllMocks();
     });
@@ -55,7 +52,7 @@ describe('DebugInfoModal', () => {
         expect(modal.getTitle()).toBe('jest');
     });
 
-    it('should log map to console', () => {
+    it('should log map to window.console', () => {
         const spyOnConsoleDir = jest.spyOn(window.console, 'dir');
         const spyOnToastInfo = jest.spyOn(Toast, 'info');
 
@@ -113,7 +110,7 @@ describe('DebugInfoModal', () => {
         });
     });
 
-    it('should clear style-manager-buffer', async () => {
+    it('should clear style-manager-buffer', () => {
         const spyOnToastInfo = jest.spyOn(Toast, 'info');
         const modal = new DebugInfoModal();
         const result = modal.doActionClearStyleManager();
@@ -123,5 +120,41 @@ describe('DebugInfoModal', () => {
             i18nKey: `${I18N__BASE}.toasts.infos.clearStyleManager`,
             autoremove: true
         });
+    });
+
+    it('should find and parse local- and session-storage', () => {
+        const value = JSON.stringify({
+            name: 'jest-storage'
+        });
+
+        window.localStorage.setItem('jest-local-key', value);
+        window.sessionStorage.setItem('jest-session-key', value);
+
+        const spyOnStorageGetItem = jest.spyOn(window.Storage.prototype, 'getItem');
+        const modal = new DebugInfoModal();
+
+        expect(modal).toBeTruthy();
+        expect(spyOnStorageGetItem).toHaveBeenCalledWith('jest-local-key');
+        expect(spyOnStorageGetItem).toHaveBeenCalledWith('jest-session-key');
+    });
+
+    it('should fail and parse local- and session-storage', () => {
+        const value = JSON.stringify({
+            name: 'jest-storage'
+        });
+
+        window.localStorage.setItem('jest-local-key', value);
+        window.sessionStorage.setItem('jest-session-key', value);
+
+        const brokenJSONValue = '{';
+        jest.spyOn(window.Storage.prototype, 'getItem').mockImplementation(() => {
+            return brokenJSONValue;
+        });
+
+        const spyOnLogError = jest.spyOn(LogManager, 'logError');
+        const modal = new DebugInfoModal();
+
+        expect(modal).toBeTruthy();
+        expect(spyOnLogError).toHaveBeenCalledTimes(2);
     });
 });
