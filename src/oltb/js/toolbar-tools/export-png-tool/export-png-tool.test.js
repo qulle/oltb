@@ -8,6 +8,14 @@ import { simulateKeyPress } from '../../../../../__mocks__/simulate-key-press';
 const FILENAME = 'export-png-tool.js';
 
 describe('ExportPngTool', () => {
+    const toolInstances = [];
+    const initToolInstance = (options) => {
+        const tool = new ExportPngTool(options);
+        toolInstances.push(tool);
+    
+        return tool;
+    }
+    
     beforeEach(() => {
         jest.spyOn(ElementManager, 'getToolbarElement').mockImplementation(() => {
             return window.document.createElement('div');
@@ -19,15 +27,17 @@ describe('ExportPngTool', () => {
     });
 
     afterEach(() => {
-        window.onkeydown = function() {};
-        window.onkeyup = function() {};
+        toolInstances.forEach((tool) => {
+            tool.detachGlobalListeners();
+        });
+        toolInstances.length = 0;
 
         jest.clearAllMocks();
         jest.restoreAllMocks();
     });
 
     it('should init the tool', () => {
-        const tool = new ExportPngTool();
+        const tool = initToolInstance();
 
         expect(tool).toBeTruthy();
         expect(tool).toBeInstanceOf(BaseTool);
@@ -46,7 +56,7 @@ describe('ExportPngTool', () => {
     it('should init the tool with options', () => {
         const options = {onInitiated: () => {}};
         const spyOnOnInitiated = jest.spyOn(options, 'onInitiated');
-        const tool = new ExportPngTool(options);
+        const tool = initToolInstance(options);
 
         expect(tool).toBeTruthy();
         expect(spyOnOnInitiated).toHaveBeenCalledTimes(1);
@@ -56,7 +66,7 @@ describe('ExportPngTool', () => {
         const options = {onClicked: () => {}};
         const spyOnOnClicked = jest.spyOn(options, 'onClicked');
 
-        const tool = new ExportPngTool(options);
+        const tool = initToolInstance(options);
         const spyOnMomentaryActivation = jest.spyOn(tool, 'momentaryActivation');
         tool.onClickTool();
 
@@ -68,7 +78,7 @@ describe('ExportPngTool', () => {
         const options = {onClicked: () => {}};
         const spyOnOnClicked = jest.spyOn(options, 'onClicked');
 
-        const tool = new ExportPngTool(options);
+        const tool = initToolInstance(options);
         const spyOnMomentaryActivation = jest.spyOn(tool, 'momentaryActivation');
         simulateKeyPress('keyup', window, 'E');
 
@@ -80,7 +90,7 @@ describe('ExportPngTool', () => {
         const options = {onClicked: () => {}};
         const spyOnOnClicked = jest.spyOn(options, 'onClicked');
 
-        new ExportPngTool(options);
+        initToolInstance(options);
         simulateKeyPress('keyup', window, '!');
         expect(spyOnOnClicked).not.toHaveBeenCalled();
     });
@@ -88,7 +98,7 @@ describe('ExportPngTool', () => {
     // TODO:
     // What to expect?
     it('should re-activate active tool after reload', () => {
-        new ExportPngTool();
+        initToolInstance();
         eventDispatcher([window], 'oltb.is.ready');
     });
 });

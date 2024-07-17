@@ -7,6 +7,14 @@ import { simulateKeyPress } from '../../../../../__mocks__/simulate-key-press';
 const FILENAME = 'info-tool.js';
 
 describe('InfoTool', () => {
+    const toolInstances = [];
+    const initToolInstance = (options) => {
+        const tool = new InfoTool(options);
+        toolInstances.push(tool);
+    
+        return tool;
+    }
+
     beforeEach(() => {
         jest.spyOn(ElementManager, 'getToolbarElement').mockImplementation(() => {
             return window.document.createElement('div');
@@ -18,15 +26,17 @@ describe('InfoTool', () => {
     });
 
     afterEach(() => {
-        window.onkeydown = function() {};
-        window.onkeyup = function() {};
+        toolInstances.forEach((tool) => {
+            tool.detachGlobalListeners();
+        });
+        toolInstances.length = 0;
 
         jest.clearAllMocks();
         jest.restoreAllMocks();
     });
 
     it('should init the tool', () => {
-        const tool = new InfoTool();
+        const tool = initToolInstance();
 
         expect(tool).toBeTruthy();
         expect(tool).toBeInstanceOf(BaseTool);
@@ -43,7 +53,7 @@ describe('InfoTool', () => {
     it('should init the tool with options', () => {
         const options = {onInitiated: () => {}};
         const spyOnOnInitiated = jest.spyOn(options, 'onInitiated');
-        const tool = new InfoTool(options);
+        const tool = initToolInstance(options);
 
         expect(tool).toBeTruthy();
         expect(spyOnOnInitiated).toHaveBeenCalledTimes(1);
@@ -53,7 +63,7 @@ describe('InfoTool', () => {
         const options = {onClicked: () => {}};
         const spyOnOnClicked = jest.spyOn(options, 'onClicked');
 
-        const tool = new InfoTool(options);
+        const tool = initToolInstance(options);
         const spyOnMomentaryActivation = jest.spyOn(tool, 'momentaryActivation');
         tool.onClickTool();
 
@@ -65,7 +75,7 @@ describe('InfoTool', () => {
         const options = {onClicked: () => {}};
         const spyOnOnClicked = jest.spyOn(options, 'onClicked');
 
-        const tool = new InfoTool(options);
+        const tool = initToolInstance(options);
         const spyOnMomentaryActivation = jest.spyOn(tool, 'momentaryActivation');
         simulateKeyPress('keyup', window, 'I');
 
@@ -77,13 +87,13 @@ describe('InfoTool', () => {
         const options = {onClicked: () => {}};
         const spyOnOnClicked = jest.spyOn(options, 'onClicked');
 
-        new InfoTool(options);
+        initToolInstance(options);
         simulateKeyPress('keyup', window, '!');
         expect(spyOnOnClicked).not.toHaveBeenCalled();
     });
 
     it('should open info modal', () => {
-        const tool = new InfoTool();
+        const tool = initToolInstance();
 
         // Note:
         // Trigger twice to also let JEST verify the blocking of modal/dialog when truthy

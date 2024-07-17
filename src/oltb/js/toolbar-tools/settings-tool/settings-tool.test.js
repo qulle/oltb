@@ -11,6 +11,14 @@ const FILENAME = 'settings-tool.js';
 const I18N__BASE = 'tools.settingsTool';
 
 describe('SettingsTool', () => {
+    const toolInstances = [];
+    const initToolInstance = (options) => {
+        const tool = new SettingsTool(options);
+        toolInstances.push(tool);
+    
+        return tool;
+    }
+
     beforeAll(async () => {
         await StateManager.initAsync();
         await SettingsManager.initAsync();
@@ -31,15 +39,17 @@ describe('SettingsTool', () => {
     });
 
     afterEach(() => {
-        window.onkeydown = function() {};
-        window.onkeyup = function() {};
+        toolInstances.forEach((tool) => {
+            tool.detachGlobalListeners();
+        });
+        toolInstances.length = 0;
 
         jest.clearAllMocks();
         jest.restoreAllMocks();
     });
 
     it('should init the tool', () => {
-        const tool = new SettingsTool();
+        const tool = initToolInstance();
 
         expect(tool).toBeTruthy();
         expect(tool).toBeInstanceOf(BaseTool);
@@ -55,7 +65,7 @@ describe('SettingsTool', () => {
     it('should init the tool with options', () => {
         const options = {onInitiated: () => {}};
         const spyOnOnInitiated = jest.spyOn(options, 'onInitiated');
-        const tool = new SettingsTool(options);
+        const tool = initToolInstance(options);
 
         expect(tool).toBeTruthy();
         expect(spyOnOnInitiated).toHaveBeenCalledTimes(1);
@@ -65,7 +75,7 @@ describe('SettingsTool', () => {
         const options = {onClicked: () => {}};
         const spyOnOnClicked = jest.spyOn(options, 'onClicked');
 
-        const tool = new SettingsTool(options);
+        const tool = initToolInstance(options);
         const spyOnMomentaryActivation = jest.spyOn(tool, 'momentaryActivation');
         tool.onClickTool();
 
@@ -77,7 +87,7 @@ describe('SettingsTool', () => {
         const options = {onClicked: () => {}};
         const spyOnOnClicked = jest.spyOn(options, 'onClicked');
 
-        const tool = new SettingsTool(options);
+        const tool = initToolInstance(options);
         const spyOnMomentaryActivation = jest.spyOn(tool, 'momentaryActivation');
         simulateKeyPress('keyup', window, '2');
 
@@ -89,14 +99,14 @@ describe('SettingsTool', () => {
         const options = {onClicked: () => {}};
         const spyOnOnClicked = jest.spyOn(options, 'onClicked');
 
-        new SettingsTool(options);
+        initToolInstance(options);
         simulateKeyPress('keyup', window, '!');
         expect(spyOnOnClicked).not.toHaveBeenCalled();
     });
 
     it('should ask user to clear browser state', () => {
         const spyOnToastInfo = jest.spyOn(Toast, 'info');
-        const tool = new SettingsTool();
+        const tool = initToolInstance();
         const spyOnDoDispatchEvent = jest.spyOn(tool, 'doDispatchBrowserStateCleared').mockImplementation(() => {
             return;
         });
@@ -116,7 +126,7 @@ describe('SettingsTool', () => {
         const options = {onBrowserStateCleared: () => {}};
         const spyOnOnBrowserStateCleared = jest.spyOn(options, 'onBrowserStateCleared');
 
-        const tool = new SettingsTool(options);
+        const tool = initToolInstance(options);
         tool.doDispatchBrowserStateCleared();
 
         expect(spyOnOnBrowserStateCleared).toHaveBeenCalledTimes(1);

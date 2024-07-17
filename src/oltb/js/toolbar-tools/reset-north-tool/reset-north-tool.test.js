@@ -38,6 +38,14 @@ const mockMap = {
 };
 
 describe('MagnifyTool', () => {
+    const toolInstances = [];
+    const initToolInstance = (options) => {
+        const tool = new ResetNorthTool(options);
+        toolInstances.push(tool);
+    
+        return tool;
+    }
+
     beforeEach(() => {
         jest.spyOn(ElementManager, 'getToolbarElement').mockImplementation(() => {
             return window.document.createElement('div');
@@ -57,15 +65,17 @@ describe('MagnifyTool', () => {
     });
 
     afterEach(() => {
-        window.onkeydown = function() {};
-        window.onkeyup = function() {};
+        toolInstances.forEach((tool) => {
+            tool.detachGlobalListeners();
+        });
+        toolInstances.length = 0;
 
         jest.clearAllMocks();
         jest.restoreAllMocks();
     });
 
     it('should init the tool', () => {
-        const tool = new ResetNorthTool();
+        const tool = initToolInstance();
 
         expect(tool).toBeTruthy();
         expect(tool).toBeInstanceOf(BaseTool);
@@ -81,7 +91,7 @@ describe('MagnifyTool', () => {
     it('should init the tool with options', () => {
         const options = {onInitiated: () => {}};
         const spyOnOnInitiated = jest.spyOn(options, 'onInitiated');
-        const tool = new ResetNorthTool(options);
+        const tool = initToolInstance(options);
 
         expect(tool).toBeTruthy();
         expect(spyOnOnInitiated).toHaveBeenCalledTimes(1);
@@ -91,7 +101,7 @@ describe('MagnifyTool', () => {
         const options = {onClicked: () => {}};
         const spyOnOnClicked = jest.spyOn(options, 'onClicked');
 
-        const tool = new ResetNorthTool(options);
+        const tool = initToolInstance(options);
         const spyOnMomentaryActivation = jest.spyOn(tool, 'momentaryActivation');
         tool.onClickTool();
 
@@ -103,7 +113,7 @@ describe('MagnifyTool', () => {
         const options = {onClicked: () => {}};
         const spyOnOnClicked = jest.spyOn(options, 'onClicked');
 
-        const tool = new ResetNorthTool(options);
+        const tool = initToolInstance(options);
         const spyOnMomentaryActivation = jest.spyOn(tool, 'momentaryActivation');
         simulateKeyPress('keyup', window, 'N');
 
@@ -115,14 +125,14 @@ describe('MagnifyTool', () => {
         const options = {onClicked: () => {}};
         const spyOnOnClicked = jest.spyOn(options, 'onClicked');
 
-        new ResetNorthTool(options);
+        initToolInstance(options);
         simulateKeyPress('keyup', window, '!');
         expect(spyOnOnClicked).not.toHaveBeenCalled();
     });
 
     it('should rotate the map', () => {
         const spyOnLogDebug = jest.spyOn(LogManager, 'logDebug');
-        const tool = new ResetNorthTool();
+        const tool = initToolInstance();
         tool.doRotation(mockMap, [0, 0], 5, 90);
 
         expect(spyOnLogDebug).toHaveBeenCalledWith(FILENAME, 'doRotation', {
@@ -132,7 +142,7 @@ describe('MagnifyTool', () => {
     });
 
     it('should ask user to rotate the map', () => {
-        const tool = new ResetNorthTool();
+        const tool = initToolInstance();
         const spyOnDoRotation = jest.spyOn(tool, 'doRotation');
         const dialog = tool.askToSetRotation(mockMap);
 
@@ -150,7 +160,7 @@ describe('MagnifyTool', () => {
         const spyOnLogError = jest.spyOn(LogManager, 'logError');
         const spyOnToastError = jest.spyOn(Toast, 'error');
 
-        const tool = new ResetNorthTool();
+        const tool = initToolInstance();
         const dialog = tool.askToSetRotation(mockMap);
 
         const confirmButton = dialog.buttons[1];

@@ -1,4 +1,4 @@
-import { jest, beforeEach, afterEach, describe, it, expect } from '@jest/globals';
+import { jest, beforeAll, beforeEach, afterEach, describe, it, expect } from '@jest/globals';
 import { BaseTool } from '../base-tool';
 import { MyLocationTool } from './my-location-tool';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
@@ -7,11 +7,21 @@ import { simulateKeyPress } from '../../../../../__mocks__/simulate-key-press';
 const FILENAME = 'my-location-tool.js';
 
 describe('MagnifyTool', () => {
-    beforeEach(() => {
+    const toolInstances = [];
+    const initToolInstance = (options) => {
+        const tool = new MyLocationTool(options);
+        toolInstances.push(tool);
+    
+        return tool;
+    }
+
+    beforeAll(() => {
         window.navigator.geolocation = {
             getCurrentPosition: (onSuccess, onError) => {}
         };
+    });
 
+    beforeEach(() => {
         jest.spyOn(ElementManager, 'getToolbarElement').mockImplementation(() => {
             return window.document.createElement('div');
         });
@@ -22,15 +32,17 @@ describe('MagnifyTool', () => {
     });
 
     afterEach(() => {
-        window.onkeydown = function() {};
-        window.onkeyup = function() {};
+        toolInstances.forEach((tool) => {
+            tool.detachGlobalListeners();
+        });
+        toolInstances.length = 0;
 
         jest.clearAllMocks();
         jest.restoreAllMocks();
     });
 
     it('should init the tool', () => {
-        const tool = new MyLocationTool();
+        const tool = initToolInstance();
 
         expect(tool).toBeTruthy();
         expect(tool).toBeInstanceOf(BaseTool);
@@ -53,7 +65,7 @@ describe('MagnifyTool', () => {
     it('should init the tool with options', () => {
         const options = {onInitiated: () => {}};
         const spyOnOnInitiated = jest.spyOn(options, 'onInitiated');
-        const tool = new MyLocationTool(options);
+        const tool = initToolInstance(options);
 
         expect(tool).toBeTruthy();
         expect(spyOnOnInitiated).toHaveBeenCalledTimes(1);
@@ -63,7 +75,7 @@ describe('MagnifyTool', () => {
         const options = {onClicked: () => {}};
         const spyOnOnClicked = jest.spyOn(options, 'onClicked');
 
-        const tool = new MyLocationTool(options);
+        const tool = initToolInstance(options);
         const spyOnMomentaryActivation = jest.spyOn(tool, 'momentaryActivation');
         tool.onClickTool();
 
@@ -75,7 +87,7 @@ describe('MagnifyTool', () => {
         const options = {onClicked: () => {}};
         const spyOnOnClicked = jest.spyOn(options, 'onClicked');
 
-        const tool = new MyLocationTool(options);
+        const tool = initToolInstance(options);
         const spyOnMomentaryActivation = jest.spyOn(tool, 'momentaryActivation');
         simulateKeyPress('keyup', window, 'G');
 
@@ -87,7 +99,7 @@ describe('MagnifyTool', () => {
         const options = {onClicked: () => {}};
         const spyOnOnClicked = jest.spyOn(options, 'onClicked');
 
-        new MyLocationTool(options);
+        initToolInstance(options);
         simulateKeyPress('keyup', window, '!');
         expect(spyOnOnClicked).not.toHaveBeenCalled();
     });

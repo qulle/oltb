@@ -7,6 +7,14 @@ import { ImportVectorLayerTool } from './import-vector-layer-tool';
 const FILENAME = 'import-vector-layer-tool.js';
 
 describe('ImportVectorLayerTool', () => {
+    const toolInstances = [];
+    const initToolInstance = (options) => {
+        const tool = new ImportVectorLayerTool(options);
+        toolInstances.push(tool);
+    
+        return tool;
+    }
+
     beforeEach(() => {
         jest.spyOn(ElementManager, 'getToolbarElement').mockImplementation(() => {
             return window.document.createElement('div');
@@ -14,15 +22,17 @@ describe('ImportVectorLayerTool', () => {
     });
 
     afterEach(() => {
-        window.onkeydown = function() {};
-        window.onkeyup = function() {};
+        toolInstances.forEach((tool) => {
+            tool.detachGlobalListeners();
+        });
+        toolInstances.length = 0;
 
         jest.clearAllMocks();
         jest.restoreAllMocks();
     });
 
     it('should init the tool', () => {
-        const tool = new ImportVectorLayerTool();
+        const tool = initToolInstance();
 
         expect(tool).toBeTruthy();
         expect(tool).toBeInstanceOf(BaseTool);
@@ -39,7 +49,7 @@ describe('ImportVectorLayerTool', () => {
     it('should init the tool with options', () => {
         const options = {onInitiated: () => {}};
         const spyOnOnInitiated = jest.spyOn(options, 'onInitiated');
-        const tool = new ImportVectorLayerTool(options);
+        const tool = initToolInstance(options);
 
         expect(tool).toBeTruthy();
         expect(spyOnOnInitiated).toHaveBeenCalledTimes(1);
@@ -49,7 +59,7 @@ describe('ImportVectorLayerTool', () => {
         const options = {onClicked: () => {}};
         const spyOnOnClicked = jest.spyOn(options, 'onClicked');
         
-        const tool = new ImportVectorLayerTool(options);
+        const tool = initToolInstance(options);
         const spyOnMomentaryActivation = jest.spyOn(tool, 'momentaryActivation');
         tool.onClickTool();
 
@@ -61,7 +71,7 @@ describe('ImportVectorLayerTool', () => {
         const options = {onClicked: () => {}};
         const spyOnOnClicked = jest.spyOn(options, 'onClicked');
 
-        const tool = new ImportVectorLayerTool(options);
+        const tool = initToolInstance(options);
         const spyOnMomentaryActivation = jest.spyOn(tool, 'momentaryActivation');
         simulateKeyPress('keyup', window, 'O');
 
@@ -73,7 +83,7 @@ describe('ImportVectorLayerTool', () => {
         const options = {onClicked: () => {}};
         const spyOnOnClicked = jest.spyOn(options, 'onClicked');
 
-        new ImportVectorLayerTool(options);
+        initToolInstance(options);
         simulateKeyPress('keyup', window, '!');
         expect(spyOnOnClicked).not.toHaveBeenCalled();
     });

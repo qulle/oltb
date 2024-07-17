@@ -49,6 +49,14 @@ const hasToolActiveClass = (tool) => {
 }
 
 describe('CoordinatesTool', () => {
+    const toolInstances = [];
+    const initToolInstance = (options) => {
+        const tool = new CoordinatesTool(options);
+        toolInstances.push(tool);
+    
+        return tool;
+    }
+
     beforeAll(async () => {
         window.document.body.innerHTML = HTML__MOCK;
 
@@ -81,15 +89,17 @@ describe('CoordinatesTool', () => {
     });
 
     afterEach(() => {
-        window.onkeydown = function() {};
-        window.onkeyup = function() {};
+        toolInstances.forEach((tool) => {
+            tool.detachGlobalListeners();
+        });
+        toolInstances.length = 0;
 
         jest.clearAllMocks();
         jest.restoreAllMocks();
     });
 
     it('should init the tool', () => {
-        const tool = new CoordinatesTool();
+        const tool = initToolInstance();
 
         expect(tool).toBeTruthy();
         expect(tool).toBeInstanceOf(BaseTool);
@@ -106,7 +116,7 @@ describe('CoordinatesTool', () => {
     it('should init the tool with options', () => {
         const options = {onInitiated: () => {}};
         const spyOnOnInitiated = jest.spyOn(options, 'onInitiated');
-        const tool = new CoordinatesTool(options);
+        const tool = initToolInstance(options);
 
         expect(tool).toBeTruthy();
         expect(spyOnOnInitiated).toHaveBeenCalledTimes(1);
@@ -116,7 +126,7 @@ describe('CoordinatesTool', () => {
         const options = {onClicked: () => {}};
         const spyOnOnClicked = jest.spyOn(options, 'onClicked');
         
-        const tool = new CoordinatesTool(options);
+        const tool = initToolInstance(options);
         const spyOnActivateTool = jest.spyOn(tool, 'activateTool');
         const spyOnDeactivateTool = jest.spyOn(tool, 'deactivateTool');
 
@@ -135,7 +145,7 @@ describe('CoordinatesTool', () => {
         const options = {onClicked: () => {}};
         const spyOnClicked = jest.spyOn(options, 'onClicked');
 
-        const tool = new CoordinatesTool(options);
+        const tool = initToolInstance(options);
         const spyOnActivateTool = jest.spyOn(tool, 'activateTool');
         const spyOnDeactivateTool = jest.spyOn(tool, 'deactivateTool');
         
@@ -154,13 +164,13 @@ describe('CoordinatesTool', () => {
         const options = {onClicked: () => {}};
         const spyOnOnClicked = jest.spyOn(options, 'onClicked');
 
-        new CoordinatesTool(options);
+        initToolInstance(options);
         simulateKeyPress('keydown', window, '!');
         expect(spyOnOnClicked).not.toHaveBeenCalled();
     });
 
     it('should re-activate active tool after reload', () => {
-        const tool = new CoordinatesTool();
+        const tool = initToolInstance();
         tool.localStorage.isActive = true;
 
         const spyOnActivateTool = jest.spyOn(tool, 'activateTool').mockImplementation(() => {
@@ -174,14 +184,14 @@ describe('CoordinatesTool', () => {
     it('should clean up state after beeing cleared', () => {
         const options = {onBrowserStateCleared: () =>{}};
         const spyOnOnBrowserStateCleared = jest.spyOn(options, 'onBrowserStateCleared');
-        new CoordinatesTool(options);
+        initToolInstance(options);
 
         eventDispatcher([window], 'oltb.browser.state.cleared');
         expect(spyOnOnBrowserStateCleared).toHaveBeenCalled();
     });
 
     it('should clear tool state', () => {
-        const tool = new CoordinatesTool();
+        const tool = initToolInstance();
         const spyOnStateObject = jest.spyOn(StateManager, 'setStateObject');
 
         tool.doClearState();
@@ -198,7 +208,7 @@ describe('CoordinatesTool', () => {
             return Promise.resolve();
         });
         
-        const tool = new CoordinatesTool();
+        const tool = initToolInstance();
         await tool.doCopyCoordinatesAsync(event);
 
         expect(spyOnToastInfo).toHaveBeenCalledWith({
@@ -217,7 +227,7 @@ describe('CoordinatesTool', () => {
             return Promise.reject();
         });
         
-        const tool = new CoordinatesTool();
+        const tool = initToolInstance();
         await tool.doCopyCoordinatesAsync(event);
 
         expect(spyOnToastError).toHaveBeenCalledWith({

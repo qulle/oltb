@@ -43,6 +43,14 @@ const mockMap = {
 };
 
 describe('DebugInfoTool', () => {
+    const toolInstances = [];
+    const initToolInstance = (options) => {
+        const tool = new DebugInfoTool(options);
+        toolInstances.push(tool);
+    
+        return tool;
+    }
+
     beforeAll(async () => {
         window.Response = MockResponse;
 
@@ -70,15 +78,17 @@ describe('DebugInfoTool', () => {
     });
 
     afterEach(() => {
-        window.onkeydown = function() {};
-        window.onkeyup = function() {};
+        toolInstances.forEach((tool) => {
+            tool.detachGlobalListeners();
+        });
+        toolInstances.length = 0;
 
         jest.clearAllMocks();
         jest.restoreAllMocks();
     });
 
     it('should init the tool', () => {
-        const tool = new DebugInfoTool();
+        const tool = initToolInstance();
 
         expect(tool).toBeTruthy();
         expect(tool).toBeInstanceOf(BaseTool);
@@ -94,14 +104,14 @@ describe('DebugInfoTool', () => {
     it('should init the tool with options', () => {
         const options = {onInitiated: () => {}};
         const spyOnOnInitiated = jest.spyOn(options, 'onInitiated');
-        const tool = new DebugInfoTool(options);
+        const tool = initToolInstance(options);
 
         expect(tool).toBeTruthy();
         expect(spyOnOnInitiated).toHaveBeenCalledTimes(1);
     });
 
     it('should init the tool hidden if debug = false and onlyWhenGetParameter = true', () => {
-        const tool = new DebugInfoTool({
+        const tool = initToolInstance({
             onlyWhenGetParameter: true
         });
 
@@ -113,7 +123,7 @@ describe('DebugInfoTool', () => {
         const options = {onClicked: () => {}};
         const spyOnOnClicked = jest.spyOn(options, 'onClicked');
 
-        const tool = new DebugInfoTool(options);
+        const tool = initToolInstance(options);
         const spyOnMomentaryActivation = jest.spyOn(tool, 'momentaryActivation');
 
         tool.onClickTool();
@@ -126,7 +136,7 @@ describe('DebugInfoTool', () => {
         const options = {onClicked: () => {}};
         const spyOnOnClicked = jest.spyOn(options, 'onClicked');
 
-        const tool = new DebugInfoTool(options);
+        const tool = initToolInstance(options);
         const spyOnMomentaryActivation = jest.spyOn(tool, 'momentaryActivation');
 
         simulateKeyPress('keyup', window, '4');
@@ -139,14 +149,14 @@ describe('DebugInfoTool', () => {
         const options = {onClicked: () => {}};
         const spyOnOnClicked = jest.spyOn(options, 'onClicked');
 
-        new DebugInfoTool(options);
+        initToolInstance(options);
         simulateKeyPress('keyup', window, '!');
 
         expect(spyOnOnClicked).not.toHaveBeenCalled();
     });
 
     it('should open the debug-modal', () => {
-        const tool = new DebugInfoTool();
+        const tool = initToolInstance();
 
         // Note:
         // Trigger twice to also let JEST verify the blocking of modal/dialog when truthy

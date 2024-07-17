@@ -6,6 +6,7 @@ import { StateManager } from '../../toolbar-managers/state-manager/state-manager
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 import { TooltipManager } from '../../toolbar-managers/tooltip-manager/tooltip-manager';
 import { eventDispatcher } from '../../browser-helpers/event-dispatcher';
+import { simulateKeyPress } from '../../../../../__mocks__/simulate-key-press';
 
 const FILENAME = 'zoombox-tool.js';
 
@@ -44,6 +45,14 @@ const hasToolActiveClass = (tool) => {
 }
 
 describe('ZoomboxTool', () => {
+    const toolInstances = [];
+    const initToolInstance = (options) => {
+        const tool = new ZoomboxTool(options);
+        toolInstances.push(tool);
+    
+        return tool;
+    }
+
     beforeAll(async () => {
         await StateManager.initAsync();
         await TooltipManager.initAsync();
@@ -62,15 +71,17 @@ describe('ZoomboxTool', () => {
     });
 
     afterEach(() => {
-        window.onkeydown = function() {};
-        window.onkeyup = function() {};
+        toolInstances.forEach((tool) => {
+            tool.detachGlobalListeners();
+        });
+        toolInstances.length = 0;
 
         jest.clearAllMocks();
         jest.restoreAllMocks();
     });
 
     it('should init the tool', () => {
-        const tool = new ZoomboxTool();
+        const tool = initToolInstance();
 
         expect(tool).toBeTruthy();
         expect(tool).toBeInstanceOf(BaseTool);
@@ -91,7 +102,7 @@ describe('ZoomboxTool', () => {
     it('should init the tool with options', () => {
         const options = {onInitiated: () => {}};
         const spyOnOnInitiated = jest.spyOn(options, 'onInitiated');
-        const tool = new ZoomboxTool(options);
+        const tool = initToolInstance(options);
 
         expect(tool).toBeTruthy();
         expect(spyOnOnInitiated).toHaveBeenCalledTimes(1);
@@ -101,7 +112,7 @@ describe('ZoomboxTool', () => {
         const options = {onClicked: () => {}};
         const spyOnOnClicked = jest.spyOn(options, 'onClicked');
 
-        const tool = new ZoomboxTool(options);
+        const tool = initToolInstance(options);
         const spyOnActivateTool = jest.spyOn(tool, 'activateTool');
         const spyOnDeactivateTool = jest.spyOn(tool, 'deactivateTool');
         
@@ -116,8 +127,36 @@ describe('ZoomboxTool', () => {
         expect(spyOnOnClicked).toHaveBeenCalledTimes(2);
     });
 
+    it('should toggle the tool using short-cut-key [U]', () => {
+        const options = {onClicked: () => {}};
+        const spyOnClicked = jest.spyOn(options, 'onClicked');
+
+        const tool = initToolInstance(options);
+        const spyOnActivateTool = jest.spyOn(tool, 'activateTool');
+        const spyOnDeactivateTool = jest.spyOn(tool, 'deactivateTool');
+        
+        expect(hasToolActiveClass(tool)).toBe(false);
+        simulateKeyPress('keyup', window, 'U');
+        expect(hasToolActiveClass(tool)).toBe(true);
+        simulateKeyPress('keyup', window, 'U');
+        expect(hasToolActiveClass(tool)).toBe(false);
+
+        expect(spyOnActivateTool).toHaveBeenCalledTimes(1);
+        expect(spyOnDeactivateTool).toHaveBeenCalledTimes(1);
+        expect(spyOnClicked).toHaveBeenCalledTimes(2);
+    });
+
+    it('should not toggle the tool using incorrect short-cut-key', () => {
+        const options = {onClicked: () => {}};
+        const spyOnOnClicked = jest.spyOn(options, 'onClicked');
+
+        initToolInstance(options);
+        simulateKeyPress('keyup', window, '!');
+        expect(spyOnOnClicked).not.toHaveBeenCalled();
+    });
+
     it('should deactivate tool as done by ToolManager', () => {
-        const tool = new ZoomboxTool();
+        const tool = initToolInstance();
         const spyOnRemoveActiveTool = jest.spyOn(ToolManager, 'removeActiveTool');
 
         tool.activateTool();
@@ -127,7 +166,7 @@ describe('ZoomboxTool', () => {
     });
 
     it('should re-activate active tool after reload', () => {
-        const tool = new ZoomboxTool();
+        const tool = initToolInstance();
         tool.localStorage.isActive = true;
 
         const spyOnActivateTool = jest.spyOn(tool, 'activateTool').mockImplementation(() => {
@@ -141,14 +180,14 @@ describe('ZoomboxTool', () => {
     it('should clean up state after beeing cleared', () => {
         const options = {onBrowserStateCleared: () =>{}};
         const spyOnOnBrowserStateCleared = jest.spyOn(options, 'onBrowserStateCleared');
-        new ZoomboxTool(options);
+        initToolInstance(options);
 
         eventDispatcher([window], 'oltb.browser.state.cleared');
         expect(spyOnOnBrowserStateCleared).toHaveBeenCalled();
     });
 
     it('should clear tool state', () => {
-        const tool = new ZoomboxTool();
+        const tool = initToolInstance();
         const spyOnSetStateObject = jest.spyOn(StateManager, 'setStateObject');
 
         tool.doClearState();
@@ -170,7 +209,7 @@ describe('ZoomboxTool', () => {
         const spyOnOnCancel = jest.spyOn(options, 'onCancel');
         const spyOnOnError = jest.spyOn(options, 'onError');
 
-        const tool = new ZoomboxTool(options);
+        const tool = initToolInstance(options);
         tool.interactionDragZoom.dispatchEvent('boxstart');
         tool.interactionDragZoom.dispatchEvent('boxend');
         tool.interactionDragZoom.dispatchEvent('boxdrag');

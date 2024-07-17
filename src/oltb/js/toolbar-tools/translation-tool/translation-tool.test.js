@@ -10,6 +10,14 @@ import { TranslationManager } from '../../toolbar-managers/translation-manager/t
 const FILENAME = 'translation-tool.js';
 
 describe('TranslationTool', () => {
+    const toolInstances = [];
+    const initToolInstance = (options) => {
+        const tool = new TranslationTool(options);
+        toolInstances.push(tool);
+    
+        return tool;
+    }
+
     beforeAll(async () => {
         await StateManager.initAsync();
         await TranslationManager.initAsync();
@@ -26,15 +34,17 @@ describe('TranslationTool', () => {
     });
 
     afterEach(() => {
-        window.onkeydown = function() {};
-        window.onkeyup = function() {};
+        toolInstances.forEach((tool) => {
+            tool.detachGlobalListeners();
+        });
+        toolInstances.length = 0;
 
         jest.clearAllMocks();
         jest.restoreAllMocks();
     });
 
     it('should init the tool', () => {
-        const tool = new TranslationTool();
+        const tool = initToolInstance();
 
         expect(tool).toBeTruthy();
         expect(tool).toBeInstanceOf(BaseTool);
@@ -49,7 +59,7 @@ describe('TranslationTool', () => {
     it('should init the tool with options', () => {
         const options = {onInitiated: () => {}};
         const spyOnOnInitiated = jest.spyOn(options, 'onInitiated');
-        const tool = new TranslationTool(options);
+        const tool = initToolInstance(options);
 
         expect(tool).toBeTruthy();
         expect(spyOnOnInitiated).toHaveBeenCalledTimes(1);
@@ -59,7 +69,7 @@ describe('TranslationTool', () => {
         const options = {onClicked: () => {}};
         const spyOnOnClicked = jest.spyOn(options, 'onClicked');
 
-        const tool = new TranslationTool(options);
+        const tool = initToolInstance(options);
         const spyOnMomentaryActivation = jest.spyOn(tool, 'momentaryActivation');
         tool.onClickTool();
 
@@ -71,7 +81,7 @@ describe('TranslationTool', () => {
         const options = {onClicked: () => {}};
         const spyOnOnClicked = jest.spyOn(options, 'onClicked');
 
-        const tool = new TranslationTool(options);
+        const tool = initToolInstance(options);
         const spyOnMomentaryActivation = jest.spyOn(tool, 'momentaryActivation');
         simulateKeyPress('keyup', window, '3');
 
@@ -83,7 +93,7 @@ describe('TranslationTool', () => {
         const options = {onClicked: () => {}};
         const spyOnOnClicked = jest.spyOn(options, 'onClicked');
 
-        new TranslationTool(options);
+        initToolInstance(options);
         simulateKeyPress('keyup', window, '!');
         expect(spyOnOnClicked).not.toHaveBeenCalled();
     });
@@ -95,7 +105,7 @@ describe('TranslationTool', () => {
         const spyOnLogInformation = jest.spyOn(LogManager, 'logInformation');
         const spyOnSetActiveLanguage = jest.spyOn(TranslationManager, 'setActiveLanguage');
 
-        const tool = new TranslationTool();
+        const tool = initToolInstance();
         tool.doChangeLanguage({
             from: from,
             to: to
@@ -110,7 +120,7 @@ describe('TranslationTool', () => {
     });
 
     it('should ask user to change language but user cancel', () => {
-        const tool = new TranslationTool();
+        const tool = initToolInstance();
 
         // Note:
         // Trigger twice to also let JEST verify the blocking of modal/dialog when truthy
@@ -126,7 +136,7 @@ describe('TranslationTool', () => {
     });
 
     it('should ask user to change language', async () => {
-        const tool = new TranslationTool();
+        const tool = initToolInstance();
         const spyOnDoChangeLanguage = jest.spyOn(tool, 'doChangeLanguage');
 
         expect(tool.languageDialog).toBeUndefined();

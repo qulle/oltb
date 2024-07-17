@@ -7,6 +7,14 @@ import { simulateKeyPress } from '../../../../../__mocks__/simulate-key-press';
 const FILENAME = 'help-tool.js';
 
 describe('HelpTool', () => {
+    const toolInstances = [];
+    const initToolInstance = (options) => {
+        const tool = new HelpTool(options);
+        toolInstances.push(tool);
+    
+        return tool;
+    }
+
     beforeEach(() => {
         jest.spyOn(ElementManager, 'getToolbarElement').mockImplementation(() => {
             return window.document.createElement('div');
@@ -26,15 +34,17 @@ describe('HelpTool', () => {
     });
 
     afterEach(() => {
-        window.onkeydown = function() {};
-        window.onkeyup = function() {};
+        toolInstances.forEach((tool) => {
+            tool.detachGlobalListeners();
+        });
+        toolInstances.length = 0;
 
         jest.clearAllMocks();
         jest.restoreAllMocks();
     });
 
     it('should init the tool', () => {
-        const tool = new HelpTool();
+        const tool = initToolInstance();
 
         expect(tool).toBeTruthy();
         expect(tool).toBeInstanceOf(BaseTool);
@@ -51,7 +61,7 @@ describe('HelpTool', () => {
     it('should init the tool with options', () => {
         const options = {onInitiated: () => {}};
         const spyOnOnInitiated = jest.spyOn(options, 'onInitiated');
-        const tool = new HelpTool(options);
+        const tool = initToolInstance(options);
 
         expect(tool).toBeTruthy();
         expect(spyOnOnInitiated).toHaveBeenCalledTimes(1);
@@ -61,7 +71,7 @@ describe('HelpTool', () => {
         const options = {onClicked: () => {}};
         const spyOnOnClicked = jest.spyOn(options, 'onClicked');
 
-        const tool = new HelpTool(options);
+        const tool = initToolInstance(options);
         const spyOnMomentaryActivation = jest.spyOn(tool, 'momentaryActivation');
         tool.onClickTool();
 
@@ -73,7 +83,7 @@ describe('HelpTool', () => {
         const options = {onClicked: () => {}};
         const spyOnOnClicked = jest.spyOn(options, 'onClicked');
 
-        const tool = new HelpTool(options);
+        const tool = initToolInstance(options);
         const spyOnMomentaryActivation = jest.spyOn(tool, 'momentaryActivation');
         simulateKeyPress('keyup', window, '1');
 
@@ -85,13 +95,13 @@ describe('HelpTool', () => {
         const options = {onClicked: () => {}};
         const spyOnOnClicked = jest.spyOn(options, 'onClicked');
 
-        new HelpTool(options);
+        initToolInstance(options);
         simulateKeyPress('keyup', window, '!');
         expect(spyOnOnClicked).not.toHaveBeenCalled();
     });
 
     it('should open help window', () => {
-        const tool = new HelpTool();
+        const tool = initToolInstance();
         const wrapper = () => {
             tool.doOpenTabOrWindow();
         };
@@ -100,7 +110,7 @@ describe('HelpTool', () => {
     });
 
     it('should ask user to open help window but user cancel', () => {
-        const tool = new HelpTool();
+        const tool = initToolInstance();
 
         // Note:
         // Trigger twice to also let JEST verify the blocking of modal/dialog when truthy
@@ -116,7 +126,7 @@ describe('HelpTool', () => {
     });
 
     it('should ask user to open help window', () => {
-        const tool = new HelpTool();
+        const tool = initToolInstance();
         const spyOnDoOpenTabOrWindow = jest.spyOn(tool, 'doOpenTabOrWindow');
 
         expect(tool.helpDialog).toBeUndefined();

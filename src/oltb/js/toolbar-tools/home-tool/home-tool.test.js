@@ -38,6 +38,14 @@ const mockMap = {
 };
 
 describe('HomeTool', () => {
+    const toolInstances = [];
+    const initToolInstance = (options) => {
+        const tool = new HomeTool(options);
+        toolInstances.push(tool);
+    
+        return tool;
+    }
+
     beforeAll(async () => {
         await StateManager.initAsync();
     });
@@ -57,8 +65,10 @@ describe('HomeTool', () => {
     });
 
     afterEach(() => {
-        window.onkeydown = function() {};
-        window.onkeyup = function() {};
+        toolInstances.forEach((tool) => {
+            tool.detachGlobalListeners();
+        });
+        toolInstances.length = 0;
 
         jest.clearAllMocks();
         jest.restoreAllMocks();
@@ -68,7 +78,7 @@ describe('HomeTool', () => {
     // # Section: Jesting
     //--------------------------------------------------------------------
     it('should init the tool', () => {
-        const tool = new HomeTool();
+        const tool = initToolInstance();
 
         expect(tool).toBeTruthy();
         expect(tool).toBeInstanceOf(BaseTool);
@@ -79,7 +89,7 @@ describe('HomeTool', () => {
     it('should init the tool with options', () => {
         const options = {onInitiated: () => {}};
         const spyOnOnInitiated = jest.spyOn(options, 'onInitiated');
-        const tool = new HomeTool(options);
+        const tool = initToolInstance(options);
 
         expect(tool).toBeTruthy();
         expect(spyOnOnInitiated).toHaveBeenCalledTimes(1);
@@ -89,7 +99,7 @@ describe('HomeTool', () => {
         const options = {onClicked: () => {}};
         const spyOnOnClicked = jest.spyOn(options, 'onClicked');
 
-        const tool = new HomeTool(options);
+        const tool = initToolInstance(options);
         const spyOnMomentaryActivation = jest.spyOn(HomeTool.prototype, 'momentaryActivation');
         tool.onClickTool();
 
@@ -101,7 +111,7 @@ describe('HomeTool', () => {
         const options = {onClicked: () => {}};
         const spyOnOnClicked = jest.spyOn(options, 'onClicked');
 
-        const tool = new HomeTool(options);
+        const tool = initToolInstance(options);
         const spyOnMomentaryActivation = jest.spyOn(tool, 'momentaryActivation');
         simulateKeyPress('keyup', window, 'H');
 
@@ -113,34 +123,34 @@ describe('HomeTool', () => {
         const options = {onClicked: () => {}};
         const spyOnOnClicked = jest.spyOn(options, 'onClicked');
 
-        new HomeTool(options);
+        initToolInstance(options);
         simulateKeyPress('keyup', window, '!');
         expect(spyOnOnClicked).not.toHaveBeenCalled();
     });
 
     it('should get zoom', () => {
-        const tool = new HomeTool();
+        const tool = initToolInstance();
         const zoom = tool.getZoom();
 
         expect(zoom).toBe(3);
     });
 
     it('should get rotation', () => {
-        const tool = new HomeTool();
+        const tool = initToolInstance();
         const rotation = tool.getRotation();
 
         expect(rotation).toBe(0);
     });
 
     it('should get location', () => {
-        const tool = new HomeTool();
+        const tool = initToolInstance();
         const location = tool.getLocation();
 
         expect(location).toStrictEqual([18.1201, 35.3518]);
     });
 
     it('should get modified zoom', () => {
-        const tool = new HomeTool();
+        const tool = initToolInstance();
         tool.localStorage.zoom = 4;
         const zoom = tool.getZoom();
 
@@ -148,7 +158,7 @@ describe('HomeTool', () => {
     });
 
     it('should get modified rotation', () => {
-        const tool = new HomeTool();
+        const tool = initToolInstance();
         tool.localStorage.rotation = 1;
         const rotation = tool.getRotation();
 
@@ -156,7 +166,7 @@ describe('HomeTool', () => {
     });
 
     it('should get modified location', () => {
-        const tool = new HomeTool();
+        const tool = initToolInstance();
         tool.localStorage.lon = 20.1234;
         tool.localStorage.lat = 40.5648;
 
@@ -165,7 +175,7 @@ describe('HomeTool', () => {
     });
 
     it('should create new Home location', () => {
-        const tool = new HomeTool();
+        const tool = initToolInstance();
         tool.localStorage.lon = 20.1234;
         tool.localStorage.lat = 40.5648;
 
@@ -186,14 +196,14 @@ describe('HomeTool', () => {
     it('should clean up state after beeing cleared', () => {
         const options = {onBrowserStateCleared: () =>{}};
         const spyOnOnBrowserStateCleared = jest.spyOn(options, 'onBrowserStateCleared');
-        new HomeTool(options);
+        initToolInstance(options);
 
         eventDispatcher([window], 'oltb.browser.state.cleared');
         expect(spyOnOnBrowserStateCleared).toHaveBeenCalled();
     });
 
     it('should clear tool state', () => {
-        const tool = new HomeTool();
+        const tool = initToolInstance();
         const spyOnSetStateObject = jest.spyOn(StateManager, 'setStateObject');
 
         tool.doClearState();

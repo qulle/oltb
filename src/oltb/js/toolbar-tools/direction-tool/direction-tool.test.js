@@ -9,6 +9,14 @@ import { simulateKeyPress } from '../../../../../__mocks__/simulate-key-press';
 const FILENAME = 'direction-tool.js';
 
 describe('DirectionTool', () => {
+    const toolInstances = [];
+    const initToolInstance = (options) => {
+        const tool = new DirectionTool(options);
+        toolInstances.push(tool);
+    
+        return tool;
+    }
+
     beforeAll(async () => {
         await StateManager.initAsync();
     });
@@ -20,15 +28,17 @@ describe('DirectionTool', () => {
     });
 
     afterEach(() => {
-        window.onkeydown = function() {};
-        window.onkeyup = function() {};
+        toolInstances.forEach((tool) => {
+            tool.detachGlobalListeners();
+        });
+        toolInstances.length = 0;
 
         jest.clearAllMocks();
         jest.restoreAllMocks();
     });
 
     it('should init the tool', () => {
-        const tool = new DirectionTool();
+        const tool = initToolInstance();
 
         expect(tool).toBeTruthy();
         expect(tool).toBeInstanceOf(BaseTool);
@@ -45,7 +55,7 @@ describe('DirectionTool', () => {
     it('should init the tool with options', () => {
         const options = {onInitiated: () => {}};
         const spyOnOnInitiated = jest.spyOn(options, 'onInitiated');
-        const tool = new DirectionTool(options);
+        const tool = initToolInstance(options);
 
         expect(tool).toBeTruthy();
         expect(spyOnOnInitiated).toHaveBeenCalledTimes(1);
@@ -55,7 +65,7 @@ describe('DirectionTool', () => {
         const options = {onClicked: () => {}};
         const spyOnOnClicked = jest.spyOn(options, 'onClicked');
 
-        const tool = new DirectionTool(options);
+        const tool = initToolInstance(options);
         const spyOnMomentaryActivation = jest.spyOn(tool, 'momentaryActivation');
         tool.onClickTool();
 
@@ -67,7 +77,7 @@ describe('DirectionTool', () => {
         const options = {onClicked: () => {}};
         const spyOnOnClicked = jest.spyOn(options, 'onClicked');
 
-        const tool = new DirectionTool(options);
+        const tool = initToolInstance(options);
         const spyOnMomentaryActivation = jest.spyOn(tool, 'momentaryActivation');
         simulateKeyPress('keyup', window, 'D');
 
@@ -79,7 +89,7 @@ describe('DirectionTool', () => {
         const options = {onClicked: () => {}};
         const spyOnOnClicked = jest.spyOn(options, 'onClicked');
 
-        new DirectionTool(options);
+        initToolInstance(options);
         simulateKeyPress('keyup', window, '!');
         expect(spyOnOnClicked).not.toHaveBeenCalled();
     });
@@ -87,7 +97,7 @@ describe('DirectionTool', () => {
     it('should clean up state after beeing cleared', () => {
         const options = {onBrowserStateCleared: () =>{}};
         const spyOnOnBrowserStateCleared = jest.spyOn(options, 'onBrowserStateCleared');
-        new DirectionTool(options);
+        initToolInstance(options);
 
         eventDispatcher([window], 'oltb.browser.state.cleared');
         expect(spyOnOnBrowserStateCleared).toHaveBeenCalled();
