@@ -109,6 +109,8 @@ const onEditMarker = function(InfoWindowManager, beforeMarker, result) {
 
     addMarkerToMap(afterMarker);
 
+    // TODO:
+    // Why not using the eventDispatcher?
     window.dispatchEvent(new CustomEvent(Events.custom.featureEdited, {
         detail: {
             before: beforeMarker,

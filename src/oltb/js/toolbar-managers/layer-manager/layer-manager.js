@@ -276,6 +276,8 @@ class LayerManager extends BaseManager {
         this.#layers.mapLayers.push(layerWrapper);
         this.#map.addLayer(layerWrapper.getLayer());
 
+        // TODO:
+        // Why not using the eventDispatcher?
         window.dispatchEvent(new CustomEvent(Events.custom.mapLayerAdded, {
             detail: {
                 layerWrapper: layerWrapper, 
@@ -305,6 +307,8 @@ class LayerManager extends BaseManager {
         // Remove the actual ol layer
         this.#map.removeLayer(layer);
 
+        // TODO:
+        // Why not using the eventDispatcher?
         window.dispatchEvent(new CustomEvent(Events.custom.mapLayerRemoved, {
             detail: {
                 layerWrapper: layerWrapper, 
@@ -426,6 +430,8 @@ class LayerManager extends BaseManager {
         this.#layers.featureLayers.push(layerWrapper);
         this.#map.addLayer(layerWrapper.getLayer());
 
+        // TODO:
+        // Why not using the eventDispatcher?
         window.dispatchEvent(new CustomEvent(Events.custom.featureLayerAdded, {
             detail: {
                 layerWrapper: layerWrapper, 
@@ -474,6 +480,8 @@ class LayerManager extends BaseManager {
         this.#map.removeLayer(layer);
         this.setNextActiveFeatureLayer();
 
+        // TODO:
+        // Why not using the eventDispatcher?
         window.dispatchEvent(new CustomEvent(Events.custom.featureLayerRemoved, {
             detail: {
                 layerWrapper: layerWrapper, 
@@ -501,6 +509,8 @@ class LayerManager extends BaseManager {
     static setActiveFeatureLayer(layerWrapper) {
         this.#activeFeatureLayer = layerWrapper;
 
+        // TODO:
+        // Why not using the eventDispatcher?
         window.dispatchEvent(new CustomEvent(Events.custom.activeFeatureLayerChange, {
             detail: {
                 layerWrapper: layerWrapper

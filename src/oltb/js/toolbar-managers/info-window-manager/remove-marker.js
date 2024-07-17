@@ -20,6 +20,8 @@ const removeMarker = function(InfoWindowManager, marker) {
             // Note:
             // Important to use feature as property key
             // Not only markers can be removed
+            // TODO:
+            // Why not using the eventDispatcher?
             window.dispatchEvent(new CustomEvent(Events.custom.featureRemoved, {
                 detail: {
                     feature: marker

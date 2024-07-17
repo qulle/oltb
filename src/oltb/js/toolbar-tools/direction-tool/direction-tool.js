@@ -145,6 +145,8 @@ class DirectionTool extends BaseTool {
     momentaryActivation() {
         this.doToggleDirection();
 
+        // TODO:
+        // Why not using the eventDispatcher?
         const active = this.getActiveDirection();
         window.dispatchEvent(new CustomEvent(Events.custom.toolbarDirectionChange, {
             detail: {
