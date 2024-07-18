@@ -1,4 +1,5 @@
 import { jest, beforeAll, beforeEach, afterEach, describe, it, expect } from '@jest/globals';
+// import tippy from 'tippy.js';
 import { Toast } from '../../ui-common/ui-toasts/toast';
 import { BaseTool } from '../base-tool';
 import { BookmarkTool } from './bookmark-tool';
@@ -8,6 +9,7 @@ import { copyToClipboard } from '../../browser-helpers/copy-to-clipboard';
 import { eventDispatcher } from '../../browser-helpers/event-dispatcher';
 import { simulateKeyPress } from '../../../../../__mocks__/simulate-key-press';
 import { InfoWindowManager } from '../../toolbar-managers/info-window-manager/info-window-manager';
+import '../../browser-prototypes/string';
 
 const FILENAME = 'bookmark-tool.js';
 const CLASS__TOOLBOX_SECTION = 'oltb-toolbox-section';
@@ -15,6 +17,11 @@ const CLASS__TOOLBOX_LIST = 'oltb-toolbox-list';
 const ID__PREFIX = 'oltb-bookmark';
 const I18N__BASE = 'tools.bookmarkTool';
 const I18N__BASE_COMMON = 'commons';
+
+//--------------------------------------------------------------------
+// # Section: Module-Mocking
+//--------------------------------------------------------------------
+// jest.mock('tippy.js');
 
 //--------------------------------------------------------------------
 // # Section: Mocking
@@ -38,6 +45,30 @@ const HTML__MOCK = (`
         </div>
     </div>
 `);
+
+const mockView = {
+    animate: (options) => {},
+    cancelAnimations: () => {},
+    getAnimating: () => true,
+    getZoom: () => 1.234,
+    getProjection: () => 'jest',
+    getCenter: () => [1.123, 2.456],
+    getRotation: () => 1.234,
+    getConstrainedZoom: (zoom) => 1
+};
+
+const mockMap = {
+    addLayer: (layer) => {},
+    removeLayer: (layer) => {}, 
+    addInteraction: (interaction) => {},
+    removeInteraction: (interaction) => {},
+    addOverlay: (overlay) => {},
+    removeOverlay: (overlay) => {},
+    on: (event, callback) => {},
+    getView: () => {
+        return mockView;
+    }
+};
 
 //--------------------------------------------------------------------
 // # Section: Helpers
@@ -77,6 +108,10 @@ describe('BookmarkTool', () => {
 
         jest.spyOn(ElementManager, 'getToastElement').mockImplementation(() => {
             return window.document.createElement('div');
+        });
+
+        jest.spyOn(BookmarkTool.prototype, 'getMap').mockImplementation(() => {
+            return mockMap;
         });
     });
 
@@ -304,4 +339,16 @@ describe('BookmarkTool', () => {
         expect(tool.hasLocalStorageBookmarkById(2)).toBe(false);
         expect(tool.getLocalStorageBookmarkById(2)).toBeUndefined();
     });
+
+    // it('should zoom to given bookmark', () => {
+    //     const bookmark = {id: 1, name: 'jest', coordinates: [57.0, 36.0]};
+    //     const options = {onZoomedTo: () => {}};
+    //     const spyOnOnZoomedTo = jest.spyOn(options, 'onZoomedTo');
+
+    //     const tool = initToolInstance(options);
+    //     tool.doZoomToBookmark(bookmark);
+        
+    //     expect(spyOnOnZoomedTo).toHaveBeenCalledTimes(1);
+    //     expect(tippy).toHaveBeenCalledTimes(1);
+    // });
 });
