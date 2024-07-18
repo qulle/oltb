@@ -9,6 +9,40 @@ import { simulateKeyPress } from '../../../../../__mocks__/simulate-key-press';
 const FILENAME = 'magnify-tool.js';
 
 //--------------------------------------------------------------------
+// # Section: Mocking
+//--------------------------------------------------------------------
+const mockView = {
+    animate: (options) => {},
+    cancelAnimations: () => {},
+    getAnimating: () => true,
+    getZoom: () => 1.234,
+    getProjection: () => 'jest',
+    getCenter: () => [1.123, 2.456],
+    getRotation: () => 1.234,
+    getConstrainedZoom: (zoom) => 1
+};
+
+const mockMap = {
+    addLayer: (layer) => {},
+    removeLayer: (layer) => {}, 
+    addInteraction: (interaction) => {},
+    removeInteraction: (interaction) => {},
+    addOverlay: (overlay) => {},
+    removeOverlay: (overlay) => {},
+    on: (event, callback) => {},
+    render: () => {},
+    getTarget: () => window.document.createElement('div'),
+    getView: () => {
+        return mockView;
+    },
+    getLayers: () => {
+        return {
+            getArray: () => []
+        }
+    }
+};
+
+//--------------------------------------------------------------------
 // # Section: Helpers
 //--------------------------------------------------------------------
 const hasToolActiveClass = (tool) => {
@@ -31,6 +65,10 @@ describe('MagnifyTool', () => {
     beforeEach(() => {
         jest.spyOn(ElementManager, 'getToolbarElement').mockImplementation(() => {
             return window.document.createElement('div');
+        });
+
+        jest.spyOn(MagnifyTool.prototype, 'getMap').mockImplementation(() => {
+            return mockMap;
         });
     });
 
@@ -144,5 +182,22 @@ describe('MagnifyTool', () => {
 
         tool.doClearState();
         expect(spyOnSetStateObject).toHaveBeenCalledTimes(1);
+    });
+
+    it('should attach map-listeners', () => {
+        const tool = initToolInstance();
+        const spyOnMapRender = jest.spyOn(mockMap, 'render');
+
+        expect(tool.onMousemoveListenert).toBeUndefined();
+        expect(tool.onMouseoutListenert).toBeUndefined();
+        expect(tool.onKeydownListener).toBeUndefined();
+
+        tool.attachMapListeners();
+        expect(tool.onMousemoveListenert).not.toBeUndefined();
+        expect(tool.onMouseoutListenert).not.toBeUndefined();
+        expect(tool.onKeydownListener).not.toBeUndefined();
+
+        tool.detachMapListeners();
+        expect(spyOnMapRender).toHaveBeenCalledTimes(1);
     });
 });
