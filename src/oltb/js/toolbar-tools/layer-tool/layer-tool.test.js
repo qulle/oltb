@@ -1,6 +1,8 @@
 import { jest, beforeAll, beforeEach, afterEach, describe, it, expect } from '@jest/globals';
+import { Toast } from '../../ui-common/ui-toasts/toast';
 import { BaseTool } from '../base-tool';
 import { LayerTool } from './layer-tool';
+import { LogManager } from '../../toolbar-managers/log-manager/log-manager';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 import { eventDispatcher } from '../../browser-helpers/event-dispatcher';
@@ -80,6 +82,10 @@ describe('LayerTool', () => {
         });
 
         jest.spyOn(ElementManager, 'getToolboxElement').mockImplementation(() => {
+            return window.document.createElement('div');
+        });
+
+        jest.spyOn(ElementManager, 'getToastElement').mockImplementation(() => {
             return window.document.createElement('div');
         });
     });
@@ -209,5 +215,84 @@ describe('LayerTool', () => {
 
         tool.doClearState();
         expect(spyOnSetStateObject).toHaveBeenCalledTimes(1);
+    });
+
+    it('should check if key-event is valid Enter-key', () => {
+        const tool = initToolInstance();
+        const validEnter = {type: 'keyup', key: 'Enter'};
+        const invalidEnter = {type: 'jest', key: 'Enter'};
+
+        expect(tool.isValidEnter(validEnter)).toBe(true);
+        expect(tool.isValidEnter(invalidEnter)).toBe(false);
+    });
+
+    it('should check layer has features', () => {
+        const tool = initToolInstance();
+        const validLayer = {
+            getSource: () => {
+                return {
+                    getFeatures: () => {
+                        return [{id: 1}, {id: 2}];
+                    }
+                }
+            }
+        };
+
+        const invalidLayer = {
+            getSource: () => {
+                return {
+                    getFeatures: () => {
+                        return [];
+                    }
+                }
+            }
+        };
+
+        expect(tool.hasLayerFeatures(validLayer)).toBe(true);
+        expect(tool.hasLayerFeatures(invalidLayer)).toBe(false);
+    });
+
+    it('should check if projection exists', () => {
+        const tool = initToolInstance();
+        const validProjection = 'EPSG:3857';
+        const invalidProjection = 'EPSG:1234';
+
+        const spyOnLogError = jest.spyOn(LogManager, 'logError');
+        const spyOnToastError = jest.spyOn(Toast, 'error');
+
+        expect(tool.hasProjection(validProjection)).toBe(true);
+        expect(tool.hasProjection(invalidProjection)).toBe(false);
+        expect(spyOnLogError).toHaveBeenCalled();
+        expect(spyOnToastError).toHaveBeenCalled();
+    });
+
+    it('should find map-layer with id 100, but not id 200 in localStorage', () => {
+        const tool = initToolInstance();
+        tool.localStorage.mapLayers.push({id: 100});
+
+        expect(tool.hasLocalStorageMapLayerById(100)).toBe(true);
+        expect(tool.hasLocalStorageMapLayerById(200)).toBe(false);
+    });
+
+    it('should find feature-layer with id 300, but not id 400 in localStorage', () => {
+        const tool = initToolInstance();
+        tool.localStorage.featureLayers.push({id: 300});
+
+        expect(tool.hasLocalStorageFeatureLayerById(300)).toBe(true);
+        expect(tool.hasLocalStorageFeatureLayerById(400)).toBe(false);
+    });
+
+    it('should remove one map- and one feature-layer that is stored in localStorage but not in LayerManager', () => {
+        const tool = initToolInstance();
+        tool.localStorage.mapLayers.push({id: 100});
+        tool.localStorage.featureLayers.push({id: 200});
+
+        const spyOnLogDebug = jest.spyOn(LogManager, 'logDebug');
+        tool.removeUnusedLayers();
+        expect(spyOnLogDebug).toHaveBeenCalledWith(FILENAME, 'removeUnusedLayers', {
+            info: 'Removing unused layers',
+            mapLayers: [{id: 100}],
+            featureLayers: [{id: 200}]
+        });
     });
 });
