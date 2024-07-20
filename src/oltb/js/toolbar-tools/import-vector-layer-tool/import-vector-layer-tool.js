@@ -159,7 +159,7 @@ class ImportVectorLayerTool extends BaseTool {
         }
         
         const file = fileDialog.files[0].name;
-        this.doShowImportLayerModal(file);
+        this.askToImportLayer(file);
     }
 
     #onImportLayer(file, result) {
@@ -167,9 +167,9 @@ class ImportVectorLayerTool extends BaseTool {
     }
 
     //--------------------------------------------------------------------
-    // # Section: Tool DoActions
+    // # Section: Ask User
     //--------------------------------------------------------------------
-    doShowImportLayerModal(file) {
+    askToImportLayer(file) {
         if(this.importLayerModal) {
             return;
         }
@@ -184,6 +184,9 @@ class ImportVectorLayerTool extends BaseTool {
         });
     }
 
+    //--------------------------------------------------------------------
+    // # Section: Tool DoActions
+    //--------------------------------------------------------------------
     doAddFeaturesToMap(features, filename) {
         const layerWrapper = LayerManager.addFeatureLayer({
             name: filename

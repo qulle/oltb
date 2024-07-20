@@ -135,7 +135,7 @@ describe('TranslationTool', () => {
         expect(tool.languageDialog).toBeUndefined();
     });
 
-    it('should ask user to change language', async () => {
+    it('should ask user to change language', () => {
         const tool = initToolInstance();
         const spyOnDoChangeLanguage = jest.spyOn(tool, 'doChangeLanguage');
 
