@@ -30,13 +30,13 @@ OLTB is a Vanilla JS, portable mobile friendly GIS Toolbar, developed using Open
 A picture says a thousand words but a **[Demo 🚀](https://qulle.github.io/oltb/)** says a million.
 
 ## Screenshots
-![Screenshot Light Theme](https://raw.githubusercontent.com/qulle/oltb/wip-3.0.0/images/demo-light.png?raw=true "Screenshot Light Theme")
+![Screenshot Light Theme](https://raw.githubusercontent.com/qulle/oltb/wip-v3.0.0/images/demo-light.png?raw=true "Screenshot Light Theme")
 <p align="center"><em>Light theme</em></p>
 
-![Screenshot Dark Theme](https://raw.githubusercontent.com/qulle/oltb/wip-3.0.0/images/demo-dark.png?raw=true "Screenshot Dark Theme")
+![Screenshot Dark Theme](https://raw.githubusercontent.com/qulle/oltb/wip-v3.0.0/images/demo-dark.png?raw=true "Screenshot Dark Theme")
 <p align="center"><em>Dark theme</em></p>
 
-![Screenshot Sprite](https://raw.githubusercontent.com/qulle/oltb/wip-3.0.0/images/demo-sprite.png?raw=true "Screenshot Sprite")
+![Screenshot Sprite](https://raw.githubusercontent.com/qulle/oltb/wip-v3.0.0/images/demo-sprite.png?raw=true "Screenshot Sprite")
 <p align="center"><em>Add Map Layer | Debug Information | Add Marker</em></p>
 
 ## NPM
