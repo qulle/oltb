@@ -11,7 +11,7 @@ const FILENAME = 'fullscreen-tool.js';
 // # Section: Mocking
 //--------------------------------------------------------------------
 // Note:
-// Neede to "mock" the request and exit methods
+// Needed to "mock" the request and exit methods
 // Keep trying to mock the lib using the __mocks__
 screenfull.request = jest.fn().mockImplementation(() => {
     return new Promise((resolve) => {
