@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import screenfull from 'screenfull';
 import { DOM } from '../../browser-helpers/dom-factory';
 import { Toast } from '../../ui-common/ui-toasts/toast';
 import { Dialog } from '../../ui-common/ui-dialogs/dialog';
@@ -16,7 +17,6 @@ import { isShortcutKeyOnly } from '../../browser-helpers/is-shortcut-key-only';
 import { InfoWindowManager } from '../../toolbar-managers/info-window-manager/info-window-manager';
 import { TranslationManager } from '../../toolbar-managers/translation-manager/translation-manager';
 import { SvgPaths, getSvgIcon } from '../../ui-icons/get-svg-icon/get-svg-icon';
-import { isFullScreen, exitFullScreen } from '../../browser-helpers/fullscreen-handler';
 
 const FILENAME = 'my-location-tool.js';
 const CLASS__TOOL_BUTTON = 'oltb-tool-button';
@@ -123,7 +123,7 @@ class MyLocationTool extends BaseTool {
     // # Section: Tool Control
     //--------------------------------------------------------------------
     momentaryActivation() {
-        if(isFullScreen()) {
+        if(screenfull.isFullscreen) {
             this.askToExitFullScreen();
         }else {
             this.doGeoLocationSearch();
@@ -163,7 +163,7 @@ class MyLocationTool extends BaseTool {
             confirmText: i18n.confirmText,
             cancelText: i18n.cancelText,
             onConfirm: () => {
-                exitFullScreen()
+                screenfull.exit()
                     .then(() => {
                         this.doGeoLocationSearch();
                     })

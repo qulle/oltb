@@ -1,3 +1,4 @@
+import screenfull from 'screenfull';
 import { jest, beforeAll, beforeEach, afterEach, describe, it, expect } from '@jest/globals';
 import { BaseTool } from '../base-tool';
 import { MyLocationTool } from './my-location-tool';
@@ -5,6 +6,24 @@ import { ElementManager } from '../../toolbar-managers/element-manager/element-m
 import { simulateKeyPress } from '../../../../../__mocks__/simulate-key-press';
 
 const FILENAME = 'my-location-tool.js';
+
+//--------------------------------------------------------------------
+// # Section: Mocking
+//--------------------------------------------------------------------
+// Note:
+// Neede to "mock" the request and exit methods
+// Keep trying to mock the lib using the __mocks__
+screenfull.request = jest.fn().mockImplementation(() => {
+    return new Promise((resolve) => {
+        resolve();
+    });
+});
+
+screenfull.exit = jest.fn().mockImplementation(() => {
+    return new Promise((resolve) => {
+        resolve();
+    });
+});
 
 describe('MagnifyTool', () => {
     const toolInstances = [];

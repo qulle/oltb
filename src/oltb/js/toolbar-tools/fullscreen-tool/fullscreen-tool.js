@@ -1,7 +1,7 @@
 import _ from 'lodash';
+import screenfull from 'screenfull';
 import { DOM } from '../../browser-helpers/dom-factory';
 import { Toast } from '../../ui-common/ui-toasts/toast';
-import { listen } from 'ol/events';
 import { Events } from '../../browser-constants/events';
 import { BaseTool } from '../base-tool';
 import { LogManager } from '../../toolbar-managers/log-manager/log-manager';
@@ -9,7 +9,6 @@ import { ShortcutKeys } from '../../browser-constants/shortcut-keys';
 import { isShortcutKeyOnly } from '../../browser-helpers/is-shortcut-key-only';
 import { TranslationManager } from '../../toolbar-managers/translation-manager/translation-manager';
 import { SvgPaths, getSvgIcon } from '../../ui-icons/get-svg-icon/get-svg-icon';
-import { FullscreenEvents, FullscreenEventTypes, isFullScreenSupported, isFullScreen, requestFullScreen, exitFullScreen } from '../../browser-helpers/fullscreen-handler';
 
 const FILENAME = 'fullscreen-tool.js';
 const CLASS__TOOL_BUTTON = 'oltb-tool-button';
@@ -125,10 +124,10 @@ class FullscreenTool extends BaseTool {
             return;
         }
         
-        if(isFullScreen()) {
-            exitFullScreen();
+        if(screenfull.isFullscreen) {
+            this.doRequestExitFullScreen();
         }else {
-            this.doRequestFullScreen();
+            this.doRequestEnterFullScreen();
         }
     }
 
@@ -149,9 +148,7 @@ class FullscreenTool extends BaseTool {
     // # Section: Conversions/Validation
     //--------------------------------------------------------------------
     isFullScreenSupportedByBrowser() {
-        const isSupported = isFullScreenSupported();
-
-        if(!isSupported) {
+        if(!screenfull.isEnabled) {
             LogManager.logError(FILENAME, 'isFullScreenSupportedByBrowser', {
                 title: 'Error',
                 error: 'Fullscreen is not supported by this browser'
@@ -162,49 +159,43 @@ class FullscreenTool extends BaseTool {
             });
         }
 
-        return isSupported;
+        return screenfull.isEnabled;
     }
 
     //--------------------------------------------------------------------
     // # Section: Getters and Setters
     //--------------------------------------------------------------------
     getToolIcon() {
-        return isFullScreen() 
+        return screenfull.isFullscreen 
             ? this.exitFullscreenIcon 
             : this.enterFullscreenIcon;
     }
 
     setMap(map) {
         super.setMap(map);
-        
-        for(let i = 0, ii = FullscreenEvents.length; i < ii; ++i) {
-            this.listenerKeys.push(listen(document, FullscreenEvents[i], this.doHandleFullScreenChange, this));
-        }
     }
 
     //--------------------------------------------------------------------
     // # Section: Tool DoActions
     //--------------------------------------------------------------------
-    doRequestFullScreen() {
+    doRequestExitFullScreen() {
+        return screenfull.exit();
+    }
+
+    doRequestEnterFullScreen() {
         const map = this.getMap();
         if(!map) {
             return;
         }
 
         const element = map.getTargetElement();
-        requestFullScreen(element);
+        return screenfull.request(element);
     }
-
-    doHandleFullScreenChange() {
+    
+    doUpdateMapSize() {
         const map = this.getMap();
         if(!map) {
             return;
-        }
-
-        if(isFullScreen()) {
-            this.dispatchEvent(FullscreenEventTypes.enterFullScreen);
-        }else {
-            this.dispatchEvent(FullscreenEventTypes.leaveFullScreen);
         }
 
         map.updateSize();
