@@ -1,10 +1,36 @@
 import { jest, beforeEach, afterEach, describe, it, expect } from '@jest/globals';
 import { BaseTool } from '../base-tool';
+import { isFullScreen } from '../../browser-helpers/fullscreen-handler';
 import { FullscreenTool } from './fullscreen-tool';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 import { simulateKeyPress } from '../../../../../__mocks__/simulate-key-press';
 
 const FILENAME = 'fullscreen-tool.js';
+
+const mockView = {
+    animate: (options) => {},
+    cancelAnimations: () => {},
+    getAnimating: () => true,
+    getZoom: () => 1.234,
+    getProjection: () => 'jest',
+    getCenter: () => [1.123, 2.456],
+    getRotation: () => 1.234,
+    getConstrainedZoom: (zoom) => 1
+};
+
+const mockMap = {
+    addLayer: (layer) => {},
+    removeLayer: (layer) => {}, 
+    addInteraction: (interaction) => {},
+    removeInteraction: (interaction) => {},
+    getTargetElement: () => window.document.createElement('div'),
+    addOverlay: (overlay) => {},
+    removeOverlay: (overlay) => {},
+    on: (event, callback) => {},
+    getView: () => {
+        return mockView;
+    }
+};
 
 describe('FullscreenTool', () => {
     const toolInstances = [];
@@ -22,6 +48,10 @@ describe('FullscreenTool', () => {
 
         jest.spyOn(ElementManager, 'getToastElement').mockImplementation(() => {
             return window.document.createElement('div');
+        });
+
+        jest.spyOn(FullscreenTool.prototype, 'getMap').mockImplementation(() => {
+            return mockMap;
         });
     });
 
@@ -90,5 +120,19 @@ describe('FullscreenTool', () => {
         initToolInstance(options);
         simulateKeyPress('keyup', window, '!');
         expect(spyOnOnClicked).not.toHaveBeenCalled();
+    });
+
+    // TODO:
+    // Add support to check for full-screen
+    // Check if npm-package to handle fullscreen support in a better way
+    it('should request full-screen for the map-element', () => {
+        const tool = initToolInstance();
+        expect(isFullScreen()).toBe(false);
+        tool.doRequestFullScreen();
+        // expect(isFullScreen()).toBe(true);
+
+        console.log(document['webkitIsFullScreen']);
+        console.log(document['msFullscreenElement']);
+        console.log(window.document.fullscreenElement);
     });
 });

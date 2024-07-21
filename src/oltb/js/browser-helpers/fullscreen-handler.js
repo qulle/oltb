@@ -12,15 +12,15 @@ const FullscreenEventTypes = Object.freeze({
 const isFullScreenSupported = function() {
     return !!(
         (window.document.body['webkitRequestFullscreen']) ||
-        (window.document.body['msRequestFullscreen'] && document['msFullscreenEnabled']) ||
+        (window.document.body['msRequestFullscreen'] && window.document['msFullscreenEnabled']) ||
         (window.document.body.requestFullscreen && window.document.fullscreenEnabled)
     );
 }
 
 const isFullScreen = function() {
     return !!(
-        document['webkitIsFullScreen'] ||
-        document['msFullscreenElement'] ||
+        window.document['webkitIsFullScreen'] ||
+        window.document['msFullscreenElement'] ||
         window.document.fullscreenElement
     );
 }
@@ -46,10 +46,10 @@ const requestFullScreenWithKeys = function(element) {
 const exitFullScreen = function() {
     if(window.document.exitFullscreen) {
         return window.document.exitFullscreen();
-    }else if(document['msExitFullscreen']) {
-        return document['msExitFullscreen']();
-    }else if(document['webkitExitFullscreen']) {
-        return document['webkitExitFullscreen']();
+    }else if(window.document['msExitFullscreen']) {
+        return window.document['msExitFullscreen']();
+    }else if(window.document['webkitExitFullscreen']) {
+        return window.document['webkitExitFullscreen']();
     }
 }
 
