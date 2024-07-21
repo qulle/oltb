@@ -2,11 +2,13 @@ import { jest, beforeAll, beforeEach, afterEach, describe, it, expect } from '@j
 import { BaseTool } from '../base-tool';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
 import { DirectionTool } from './direction-tool';
+import { ConfigManager } from '../../toolbar-managers/config-manager/config-manager';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 import { eventDispatcher } from '../../browser-helpers/event-dispatcher';
 import { simulateKeyPress } from '../../../../../__mocks__/simulate-key-press';
 
 const FILENAME = 'direction-tool.js';
+const CLASS__TOOL_BUTTON = 'oltb-tool-button';
 
 describe('DirectionTool', () => {
     const toolInstances = [];
@@ -62,8 +64,9 @@ describe('DirectionTool', () => {
     });
 
     it('should toggle the tool', () => {
-        const options = {onClicked: () => {}};
+        const options = {onClicked: () => {}, onChanged: () => {}};
         const spyOnOnClicked = jest.spyOn(options, 'onClicked');
+        const spyOnOnChanged = jest.spyOn(options, 'onChanged');
 
         const tool = initToolInstance(options);
         const spyOnMomentaryActivation = jest.spyOn(tool, 'momentaryActivation');
@@ -71,6 +74,7 @@ describe('DirectionTool', () => {
 
         expect(spyOnMomentaryActivation).toHaveBeenCalledTimes(1);
         expect(spyOnOnClicked).toHaveBeenCalledTimes(1);
+        expect(spyOnOnChanged).toHaveBeenCalledTimes(1);
     });
 
     it('should toggle the tool using short-cut-key [D]', () => {
@@ -101,5 +105,21 @@ describe('DirectionTool', () => {
 
         eventDispatcher([window], 'oltb.browser.state.cleared');
         expect(spyOnOnBrowserStateCleared).toHaveBeenCalled();
+    });
+
+    it('should check visibility of tool-button after resize event', () => {
+        const tool = initToolInstance();
+        const spyOnGetConfig = jest.spyOn(ConfigManager, 'getConfig').mockImplementation(() => {
+            return {
+                deviceWidth: {
+                    sm: 5000
+                }
+            }
+        });
+        
+        expect(tool.button.classList.contains(`${CLASS__TOOL_BUTTON}--hidden`)).toBe(false);
+        eventDispatcher([window], 'resize');
+        expect(spyOnGetConfig).toHaveBeenCalled();
+        expect(tool.button.classList.contains(`${CLASS__TOOL_BUTTON}--hidden`)).toBe(true);
     });
 });
