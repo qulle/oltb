@@ -276,7 +276,7 @@ class BookmarkTool extends BaseTool {
         return LayerManager.addFeatureLayer({
             id: ID__BOOKMARK_LAYER_UUID,
             name: TranslationManager.get(`${I18N__BASE}.layers.bookmarks`), 
-            visible: this.options.markerLayerVisibleOnLoad, 
+            isVisible: this.options.markerLayerVisibleOnLoad, 
             isSilent: true,
             disableFeatureLayerEditButton: false,
             disableFeatureLayerDownloadButton: true,
@@ -773,6 +773,8 @@ class BookmarkTool extends BaseTool {
         const i18n = TranslationManager.get(`${I18N__BASE_COMMON}.titles`);
         const coordinates = bookmark.coordinates;
         const prettyCoordinates = toStringHDMS(coordinates);
+
+        console.dir(bookmark);
 
         const infoWindow = {
             title: bookmark.name,

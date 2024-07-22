@@ -1,5 +1,5 @@
 import { jest, beforeAll, beforeEach, afterEach, describe, it, expect } from '@jest/globals';
-// import tippy from 'tippy.js';
+import tippy from 'tippy.js';
 import { Toast } from '../../ui-common/ui-toasts/toast';
 import { BaseTool } from '../base-tool';
 import { BookmarkTool } from './bookmark-tool';
@@ -17,11 +17,6 @@ const CLASS__TOOLBOX_LIST = 'oltb-toolbox-list';
 const ID__PREFIX = 'oltb-bookmark';
 const I18N__BASE = 'tools.bookmarkTool';
 const I18N__BASE_COMMON = 'commons';
-
-//--------------------------------------------------------------------
-// # Section: Module-Mocking
-//--------------------------------------------------------------------
-// jest.mock('tippy.js');
 
 //--------------------------------------------------------------------
 // # Section: Mocking
@@ -329,7 +324,7 @@ describe('BookmarkTool', () => {
     });
 
     it('should check if local storage has stored bookmark', () => {
-        const bookmark = {id: 1, name: 'jest'};
+        const bookmark = {id: 1, name: 'jest', coordinates: [57.0, 36.0]};
         const tool = initToolInstance();
         tool.localStorage.bookmarks.push(bookmark);
 
@@ -340,15 +335,80 @@ describe('BookmarkTool', () => {
         expect(tool.getLocalStorageBookmarkById(2)).toBeUndefined();
     });
 
-    // it('should zoom to given bookmark', () => {
-    //     const bookmark = {id: 1, name: 'jest', coordinates: [57.0, 36.0]};
-    //     const options = {onZoomedTo: () => {}};
-    //     const spyOnOnZoomedTo = jest.spyOn(options, 'onZoomedTo');
+    it('should zoom to given bookmark', () => {
+        const bookmark = {id: 1, name: 'jest', coordinates: [57.0, 36.0]};
+        const options = {onZoomedTo: () => {}};
+        const spyOnOnZoomedTo = jest.spyOn(options, 'onZoomedTo');
 
-    //     const tool = initToolInstance(options);
-    //     tool.doZoomToBookmark(bookmark);
+        const tool = initToolInstance(options);
+        tool.doZoomToBookmark(bookmark);
         
-    //     expect(spyOnOnZoomedTo).toHaveBeenCalledTimes(1);
-    //     expect(tippy).toHaveBeenCalledTimes(1);
-    // });
+        expect(spyOnOnZoomedTo).toHaveBeenCalledTimes(1);
+        expect(tippy).toHaveBeenCalledTimes(1);
+    });
+
+    it('should add bookmark', () => {
+        const options = {onAdded: () => {}};
+        const spyOnOnAdded = jest.spyOn(options, 'onAdded');
+
+        const tool = initToolInstance(options);
+        const bookmark = tool.doAddBookmark('jest-bookmark', [36.0, 57.0]);
+        
+        expect(spyOnOnAdded).toHaveBeenCalledTimes(1);
+        expect(bookmark).toHaveProperty('name', 'jest-bookmark');
+        expect(bookmark).toHaveProperty('coordinates', [36.0, 57.0]);
+    });
+
+    it('should remove bookmark', () => {
+        const options = {onRemoved: (bookmark) => {
+            expect(bookmark).toHaveProperty('id', 1);
+            expect(bookmark).toHaveProperty('name', 'jest');
+            expect(bookmark).toHaveProperty('coordinates', [57.0, 36.0]);
+        }};
+        const spyOnOnRemoved = jest.spyOn(options, 'onRemoved');
+
+        const bookmark = {id: 1, name: 'jest', coordinates: [57.0, 36.0]};
+        const bookmarkElement = window.document.createElement('div');
+
+        const tool = initToolInstance(options);
+        tool.doRemoveBookmark(bookmark, bookmarkElement);
+        
+        expect(spyOnOnRemoved).toHaveBeenCalledTimes(1);
+    });
+
+    it('should edit bookmark', () => {
+        const options = {onRenamed: (bookmark) => {
+            expect(bookmark).toHaveProperty('id', 1);
+            expect(bookmark).toHaveProperty('name', 'foobar');
+            expect(bookmark).toHaveProperty('coordinates', [57.0, 36.0]);
+        }};
+        const spyOnOnRenamed = jest.spyOn(options, 'onRenamed');
+
+        const result = 'foobar';
+        const bookmark = {id: 1, name: 'jest', coordinates: [57.0, 36.0]};
+        const bookmarkName = {
+            getTippy: () => {
+                return {
+                    setContent: () => {}
+                }
+            }
+        };
+
+        const tool = initToolInstance(options);
+        tool.doEditBookmark(bookmark, bookmarkName, result);
+        
+        expect(spyOnOnRenamed).toHaveBeenCalledTimes(1);
+    });
+
+    it('should have visible layer at load', () => {
+        const options = {markerLayerVisibleOnLoad: true};
+        const tool = initToolInstance(options);
+        expect(tool.isLayerVisible()).toBe(true);
+    });
+
+    it('should not have visible layer at load', () => {
+        const options = {markerLayerVisibleOnLoad: false};
+        const tool = initToolInstance(options);
+        expect(tool.isLayerVisible()).toBe(false);
+    });
 });
