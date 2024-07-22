@@ -171,10 +171,6 @@ class FullscreenTool extends BaseTool {
             : this.enterFullscreenIcon;
     }
 
-    setMap(map) {
-        super.setMap(map);
-    }
-
     //--------------------------------------------------------------------
     // # Section: Tool DoActions
     //--------------------------------------------------------------------

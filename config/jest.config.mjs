@@ -11,6 +11,7 @@ export default {
         '^uuid$': 'uuid',
         '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
         '^a-color-picker$': '<rootDir>../__mocks__/a-color-picker.js',
+        '^screenfull$': '<rootDir>../__mocks__/screenfull.js',
         '^jsts/dist/jsts.min$': '<rootDir>../__mocks__/jsts/dist/jsts.min.js'
     }
 };

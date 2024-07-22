@@ -1,29 +1,14 @@
 import screenfull from 'screenfull';
 import { jest, beforeAll, beforeEach, afterEach, describe, it, expect } from '@jest/globals';
+import { Toast } from '../../ui-common/ui-toasts/toast';
 import { BaseTool } from '../base-tool';
+import { LogManager } from '../../toolbar-managers/log-manager/log-manager';
 import { MyLocationTool } from './my-location-tool';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 import { simulateKeyPress } from '../../../../../__mocks__/simulate-key-press';
 
 const FILENAME = 'my-location-tool.js';
-
-//--------------------------------------------------------------------
-// # Section: Mocking
-//--------------------------------------------------------------------
-// Note:
-// Needed to "mock" the request and exit methods
-// Keep trying to mock the lib using the __mocks__
-screenfull.request = jest.fn().mockImplementation(() => {
-    return new Promise((resolve) => {
-        resolve();
-    });
-});
-
-screenfull.exit = jest.fn().mockImplementation(() => {
-    return new Promise((resolve) => {
-        resolve();
-    });
-});
+const I18N__BASE = 'tools.myLocationTool';
 
 describe('MagnifyTool', () => {
     const toolInstances = [];
@@ -46,6 +31,10 @@ describe('MagnifyTool', () => {
         });
 
         jest.spyOn(ElementManager, 'getToastElement').mockImplementation(() => {
+            return window.document.createElement('div');
+        });
+
+        jest.spyOn(ElementManager, 'getMapElement').mockImplementation(() => {
             return window.document.createElement('div');
         });
     });
@@ -102,6 +91,18 @@ describe('MagnifyTool', () => {
         expect(spyOnOnClicked).toHaveBeenCalledTimes(1);
     });
 
+    it('should toggle the tool when in fullscreen mode', () => {
+        const tool = initToolInstance();
+        const spyOnAskToExitFullscreen = jest.spyOn(tool, 'askToExitFullscreen').mockImplementation(() => {
+            return;
+        });
+
+        screenfull.isFullscreen = true;
+        tool.onClickTool();
+
+        expect(spyOnAskToExitFullscreen).toHaveBeenCalledTimes(1);
+    });
+
     it('should toggle the tool using short-cut-key [G]', () => {
         const options = {onClicked: () => {}};
         const spyOnOnClicked = jest.spyOn(options, 'onClicked');
@@ -121,5 +122,40 @@ describe('MagnifyTool', () => {
         initToolInstance(options);
         simulateKeyPress('keyup', window, '!');
         expect(spyOnOnClicked).not.toHaveBeenCalled();
+    });
+
+    it('should resolve ask user to exit fullscreen mode', async () => {
+        const spyOnExitFullscreen = jest.spyOn(screenfull, 'exit').mockImplementation(() => {
+            return Promise.resolve();
+        })
+
+        const tool = initToolInstance();
+        const spyOnGeoLocationSearch = jest.spyOn(tool, 'doGeoLocationSearch').mockImplementation(() => {
+            return;
+        });
+
+        const dialog = tool.askToExitFullscreen();
+        await dialog.options.onConfirm();
+
+        expect(spyOnExitFullscreen).toHaveBeenCalledTimes(1);
+        expect(spyOnGeoLocationSearch).toHaveBeenCalledTimes(1);
+    });
+
+    it('should reject ask user to exit fullscreen mode', async () => {
+        const spyOnLogError = jest.spyOn(LogManager, 'logError');
+        const spyOnToastError = jest.spyOn(Toast, 'error');
+        const spyOnExitFullscreen = jest.spyOn(screenfull, 'exit').mockImplementation(() => {
+            return Promise.reject();
+        })
+
+        const tool = initToolInstance();
+        const dialog = tool.askToExitFullscreen();
+        await dialog.options.onConfirm();
+
+        expect(spyOnExitFullscreen).toHaveBeenCalledTimes(1);
+        expect(spyOnLogError).toHaveBeenCalled();
+        expect(spyOnToastError).toHaveBeenCalledWith({
+            i18nKey: `${I18N__BASE}.toasts.errors.exitFullscreen`
+        });
     });
 });

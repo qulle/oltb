@@ -3,6 +3,7 @@ import { jest, beforeEach, afterEach, describe, it, expect } from '@jest/globals
 import { BaseTool } from '../base-tool';
 import { FullscreenTool } from './fullscreen-tool';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
+import { eventDispatcher } from '../../browser-helpers/event-dispatcher';
 import { simulateKeyPress } from '../../../../../__mocks__/simulate-key-press';
 
 const FILENAME = 'fullscreen-tool.js';
@@ -10,21 +11,6 @@ const FILENAME = 'fullscreen-tool.js';
 //--------------------------------------------------------------------
 // # Section: Mocking
 //--------------------------------------------------------------------
-// Note:
-// Needed to "mock" the request and exit methods
-// Keep trying to mock the lib using the __mocks__
-screenfull.request = jest.fn().mockImplementation(() => {
-    return new Promise((resolve) => {
-        resolve();
-    });
-});
-
-screenfull.exit = jest.fn().mockImplementation(() => {
-    return new Promise((resolve) => {
-        resolve();
-    });
-});
-
 const mockView = {
     animate: (options) => {},
     cancelAnimations: () => {},
@@ -45,6 +31,7 @@ const mockMap = {
     addOverlay: (overlay) => {},
     removeOverlay: (overlay) => {},
     on: (event, callback) => {},
+    updateSize: () => {},
     getView: () => {
         return mockView;
     }
@@ -107,16 +94,34 @@ describe('FullscreenTool', () => {
         expect(spyOnOnInitiated).toHaveBeenCalledTimes(1);
     });
 
-    it('should toggle the tool', () => {
+    it('should toggle the tool - request fullscreen', () => {
         const options = {onClicked: () => {}};
         const spyOnClicked = jest.spyOn(options, 'onClicked');
+        const spyOnRequestFullscreen = jest.spyOn(screenfull, 'request');
         
+        screenfull.isFullscreen = false;
         const tool = initToolInstance(options);
         const spyOnMomentaryActivation = jest.spyOn(tool, 'momentaryActivation');
         tool.onClickTool();
 
         expect(spyOnMomentaryActivation).toHaveBeenCalledTimes(1);
         expect(spyOnClicked).toHaveBeenCalledTimes(1);
+        expect(spyOnRequestFullscreen).toHaveBeenCalledTimes(1);
+    });
+
+    it('should toggle the tool - exit fullscreen', () => {
+        const options = {onClicked: () => {}};
+        const spyOnClicked = jest.spyOn(options, 'onClicked');
+        const spyOnExitFullscreen = jest.spyOn(screenfull, 'exit');
+
+        screenfull.isFullscreen = true;
+        const tool = initToolInstance(options);
+        const spyOnMomentaryActivation = jest.spyOn(tool, 'momentaryActivation');
+        tool.onClickTool();
+
+        expect(spyOnMomentaryActivation).toHaveBeenCalledTimes(1);
+        expect(spyOnClicked).toHaveBeenCalledTimes(1);
+        expect(spyOnExitFullscreen).toHaveBeenCalledTimes(1);
     });
 
     it('should toggle the tool using short-cut-key [F]', () => {
@@ -140,17 +145,35 @@ describe('FullscreenTool', () => {
         expect(spyOnOnClicked).not.toHaveBeenCalled();
     });
 
-    // TODO:
-    // Add support to check for full-screen
-    // Check if npm-package to handle fullscreen support in a better way
-    it('should request full-screen for the map-element', () => {
+    it('should update map-size', () => {
+        const spyOnUpdateMapSize = jest.spyOn(mockMap, 'updateSize');
         const tool = initToolInstance();
-        // expect(isFullScreen()).toBe(false);
-        tool.doRequestEnterFullScreen();
-        // expect(isFullScreen()).toBe(true);
 
-        console.log(document['webkitIsFullScreen']);
-        console.log(document['msFullscreenElement']);
-        console.log(window.document.fullscreenElement);
+        tool.doUpdateMapSize();
+        expect(spyOnUpdateMapSize).toHaveBeenCalledTimes(1);
+    });
+
+    it('should simulate on-enter-fullscreen-event', () => {
+        const mockElement = window.document.createElement('div');
+        window.document.fullscreenElement = mockElement;
+
+        const options = {onEnter: () => {}};
+        const spyOnOnEnter = jest.spyOn(options, 'onEnter');
+        initToolInstance(options);
+
+        eventDispatcher([window.document], 'fullscreenchange');
+        expect(spyOnOnEnter).toHaveBeenCalledTimes(1);
+    });
+
+    it('should simulate on-leave-fullscreen-event', () => {
+        const mockElement = undefined;
+        window.document.fullscreenElement = mockElement;
+
+        const options = {onLeave: () => {}};
+        const spyOnOnLeave = jest.spyOn(options, 'onLeave');
+        initToolInstance(options);
+
+        eventDispatcher([window.document], 'fullscreenchange');
+        expect(spyOnOnLeave).toHaveBeenCalledTimes(1);
     });
 });

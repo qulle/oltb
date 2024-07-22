@@ -124,7 +124,7 @@ class MyLocationTool extends BaseTool {
     //--------------------------------------------------------------------
     momentaryActivation() {
         if(screenfull.isFullscreen) {
-            this.askToExitFullScreen();
+            this.askToExitFullscreen();
         }else {
             this.doGeoLocationSearch();
         }
@@ -153,7 +153,7 @@ class MyLocationTool extends BaseTool {
     //--------------------------------------------------------------------
     // # Section: Ask User
     //--------------------------------------------------------------------
-    askToExitFullScreen() {
+    askToExitFullscreen() {
         const i18n = TranslationManager.get(`${I18N__BASE}.dialogs.confirms.exitFullscreen`);
 
         return Dialog.confirm({
@@ -162,13 +162,13 @@ class MyLocationTool extends BaseTool {
             confirmClass: Dialog.Success,
             confirmText: i18n.confirmText,
             cancelText: i18n.cancelText,
-            onConfirm: () => {
-                screenfull.exit()
+            onConfirm: async () => {
+                return screenfull.exit()
                     .then(() => {
                         this.doGeoLocationSearch();
                     })
                     .catch((error) => {
-                        LogManager.logError(FILENAME, 'askToExitFullScreen', {
+                        LogManager.logError(FILENAME, 'askToExitFullscreen', {
                             message: 'Failed to exit fullscreen',
                             error: error
                         });
