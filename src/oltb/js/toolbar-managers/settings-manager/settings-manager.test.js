@@ -49,6 +49,17 @@ describe('SettingsManager', () => {
         SettingsManager.addSetting('jest', {
             state: true
         });
+
         expect(SettingsManager.getSetting('jest')).toBe(true);
+    });
+
+    it('should set setting with name [jest = false]', () => {
+        SettingsManager.setSetting('jest', {
+            state: false
+        });
+
+        expect(SettingsManager.getSetting('jest')).toStrictEqual({
+            state: false
+        });
     });
 });
