@@ -1,5 +1,6 @@
 import screenfull from 'screenfull';
-import { jest, beforeAll, beforeEach, afterEach, describe, it, expect } from '@jest/globals';
+import { jest, beforeEach, afterEach, describe, it, expect } from '@jest/globals';
+import { DOM } from '../../browser-helpers/dom-factory';
 import { Toast } from '../../ui-common/ui-toasts/toast';
 import { BaseTool } from '../base-tool';
 import { LogManager } from '../../toolbar-managers/log-manager/log-manager';
@@ -10,6 +11,35 @@ import { simulateKeyPress } from '../../../../../__mocks__/simulate-key-press';
 const FILENAME = 'my-location-tool.js';
 const I18N__BASE = 'tools.myLocationTool';
 
+//--------------------------------------------------------------------
+// # Section: Mocking
+//--------------------------------------------------------------------
+const mockView = {
+    animate: (options) => {},
+    cancelAnimations: () => {},
+    getAnimating: () => true,
+    getZoom: () => 1.234,
+    getProjection: () => 'jest',
+    getCenter: () => [1.123, 2.456],
+    getRotation: () => 1.234,
+    getConstrainedZoom: (zoom) => 1
+};
+
+const mockMap = {
+    addLayer: (layer) => {},
+    removeLayer: (layer) => {}, 
+    addInteraction: (interaction) => {},
+    removeInteraction: (interaction) => {},
+    getTargetElement: () => window.document.createElement('div'),
+    addOverlay: (overlay) => {},
+    removeOverlay: (overlay) => {},
+    on: (event, callback) => {},
+    updateSize: () => {},
+    getView: () => {
+        return mockView;
+    }
+};
+
 describe('MagnifyTool', () => {
     const toolInstances = [];
     const initToolInstance = (options) => {
@@ -19,13 +49,11 @@ describe('MagnifyTool', () => {
         return tool;
     }
 
-    beforeAll(() => {
+    beforeEach(() => {
         window.navigator.geolocation = {
             getCurrentPosition: (onSuccess, onError) => {}
         };
-    });
 
-    beforeEach(() => {
         jest.spyOn(ElementManager, 'getToolbarElement').mockImplementation(() => {
             return window.document.createElement('div');
         });
@@ -36,6 +64,10 @@ describe('MagnifyTool', () => {
 
         jest.spyOn(ElementManager, 'getMapElement').mockImplementation(() => {
             return window.document.createElement('div');
+        });
+
+        jest.spyOn(MyLocationTool.prototype, 'getMap').mockImplementation(() => {
+            return mockMap;
         });
     });
 
@@ -157,5 +189,54 @@ describe('MagnifyTool', () => {
         expect(spyOnToastError).toHaveBeenCalledWith({
             i18nKey: `${I18N__BASE}.toasts.errors.exitFullscreen`
         });
+    });
+
+    it('should fetch location but fail do to no window.navigator.geolocation', () => {
+        delete window.navigator.geolocation;
+
+        const options = {onError: () => {}};
+        const spyOnOnError = jest.spyOn(options, 'onError');
+        const tool = initToolInstance(options);
+        const spyOnDoLocationError = jest.spyOn(tool, 'doLocationError');
+        
+        tool.doGeoLocationSearch();
+        
+        expect(spyOnOnError).toHaveBeenCalled();
+        expect(spyOnDoLocationError).toHaveBeenCalledTimes(1);
+    });
+
+    it('should resolve location', async () => {
+        const spyOnRemoveElement = jest.spyOn(DOM, 'removeElement');
+        const options = {onLocationFound: () => {}};
+        const tool = initToolInstance(options);
+        const spyOnGetCurrentPosition = jest.spyOn(window.navigator.geolocation, 'getCurrentPosition').mockImplementation((onSuccess, onError) => {
+            return onSuccess({
+                coords: {
+                    longitude: '10.20',
+                    latitude: '57.36'
+                }
+            });
+        });
+
+        tool.doGeoLocationSearch();
+
+        expect(spyOnGetCurrentPosition).toHaveBeenCalledTimes(1);
+        expect(spyOnRemoveElement).toHaveBeenCalled();
+    });
+
+    it('should reject location', async () => {
+        const spyOnRemoveElement = jest.spyOn(DOM, 'removeElement');
+        const options = {onLocationFound: () => {}};
+        const tool = initToolInstance(options);
+        const spyOnGetCurrentPosition = jest.spyOn(window.navigator.geolocation, 'getCurrentPosition').mockImplementation((onSuccess, onError) => {
+            return onError({
+                message: 'Failed to find location'
+            });
+        });
+
+        tool.doGeoLocationSearch();
+
+        expect(spyOnGetCurrentPosition).toHaveBeenCalledTimes(1);
+        expect(spyOnRemoveElement).toHaveBeenCalled();
     });
 });

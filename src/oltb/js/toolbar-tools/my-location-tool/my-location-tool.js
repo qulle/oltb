@@ -291,8 +291,8 @@ class MyLocationTool extends BaseTool {
             return;
         }
 
-        if(!window.navigator.geolocation) {
-            this.onError({
+        if(!window.navigator || !window.navigator.geolocation) {
+            this.#onError({
                 message: 'Geolocation is not supported'
             });
 
