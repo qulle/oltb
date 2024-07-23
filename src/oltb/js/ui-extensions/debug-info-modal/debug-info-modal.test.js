@@ -10,6 +10,7 @@ import { TranslationManager } from '../../toolbar-managers/translation-manager/t
 import '../../browser-prototypes/json-cycle';
 
 const FILENAME = 'debug-info-modal.js';
+const ID__EVENT_LOG = 'oltb-event-log';
 const I18N__BASE = 'modalExtensions.debugInfoModal';
 
 class MockResponse {
@@ -156,5 +157,31 @@ describe('DebugInfoModal', () => {
 
         expect(modal).toBeTruthy();
         expect(spyOnLogError).toHaveBeenCalledTimes(2);
+    });
+
+    it('should clear event-log from all items', () => {
+        const spyOnClearLog = jest.spyOn(LogManager, 'clearLog');
+        const spyOnClearElement = jest.spyOn(DOM, 'clearElement');
+        const spyOnToastInfo = jest.spyOn(Toast, 'info');
+
+        window.document.body.innerHTML = `
+            <div id="jest-modal">
+                <div data-oltb-reset-value="jest-1"></div>
+                <div data-oltb-reset-value="jest-2"></div>
+                <div data-oltb-reset-value="jest-3"></div>
+                <div data-oltb-reset-value="jest-4"></div>
+                <div id="${ID__EVENT_LOG}"></div>
+            </div>
+        `;
+
+        const modal = new DebugInfoModal();
+        modal.doActionClearEventLog();
+
+        expect(spyOnClearLog).toHaveBeenCalled();
+        expect(spyOnClearElement).toHaveBeenCalled();
+        expect(spyOnToastInfo).toHaveBeenCalledWith({
+            i18nKey: `${I18N__BASE}.toasts.infos.clearEventLog`,
+            autoremove: true
+        });
     });
 });
