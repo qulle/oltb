@@ -774,8 +774,6 @@ class BookmarkTool extends BaseTool {
         const coordinates = bookmark.coordinates;
         const prettyCoordinates = toStringHDMS(coordinates);
 
-        console.dir(bookmark);
-
         const infoWindow = {
             title: bookmark.name,
             content: '',

@@ -111,6 +111,8 @@ const onEditMarker = function(InfoWindowManager, beforeMarker, result) {
 
     // TODO:
     // Why not using the eventDispatcher?
+    // TODO:
+    // Eventmanager to have better flow-controll of the events
     window.dispatchEvent(new CustomEvent(Events.custom.featureEdited, {
         detail: {
             before: beforeMarker,
