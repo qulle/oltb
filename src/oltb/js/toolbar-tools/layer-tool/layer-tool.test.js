@@ -7,6 +7,7 @@ import { StateManager } from '../../toolbar-managers/state-manager/state-manager
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 import { eventDispatcher } from '../../browser-helpers/event-dispatcher';
 import { simulateKeyPress } from '../../../../../__mocks__/simulate-key-press';
+import '../../browser-prototypes/string';
 
 const FILENAME = 'layer-tool.js';
 const CLASS__TOOLBOX_SECTION = 'oltb-toolbox-section';
@@ -86,6 +87,10 @@ describe('LayerTool', () => {
         });
 
         jest.spyOn(ElementManager, 'getToastElement').mockImplementation(() => {
+            return window.document.createElement('div');
+        });
+
+        jest.spyOn(ElementManager, 'getMapElement').mockImplementation(() => {
             return window.document.createElement('div');
         });
     });
@@ -294,5 +299,84 @@ describe('LayerTool', () => {
             mapLayers: [{id: 100}],
             featureLayers: [{id: 200}]
         });
+    });
+
+    it('should ask user to download layer', () => {
+        const tool = initToolInstance();
+        const spyOnDownloadLayer = jest.spyOn(tool, 'doDownloadLayer').mockImplementation(() => {
+            return;
+        });
+
+        const callback = {onDownload: () => {}};
+        const layerWrapper = {
+            getName: () => {
+                return 'jest';
+            },
+            getId: () => {
+                return 'jest-1';
+            }
+        };
+
+        const modal = tool.askToDownloadLayer(layerWrapper, callback.onDownload);
+        const buttons = modal.getButtons();
+        const downloadButton = buttons[1];
+        downloadButton.click();
+
+        expect(spyOnDownloadLayer).toHaveBeenCalledTimes(1);
+    });
+
+    it('should ask user to rename layer', () => {
+        const tool = initToolInstance();
+        const callback = {onRenamed: () => {}};
+        const spyOnOnRenamed = jest.spyOn(callback, 'onRenamed');
+
+        const layerName = {
+            innerText: '',
+            getTippy: () => {
+                return {
+                    setContent: () => {}
+                }
+            }
+        };
+
+        const layerWrapper = {
+            getName: () => {
+                return 'jest';
+            },
+            getId: () => {
+                return 'jest-1';
+            },
+            setName: (name) => {} 
+        };
+
+        const dialog = tool.askToRenameLayer(layerWrapper, callback.onRenamed, layerName);
+        const buttons = dialog.buttons;
+        const confirmButton = buttons[1];
+        confirmButton.click();
+
+        expect(spyOnOnRenamed).toHaveBeenCalledWith(layerWrapper);
+    });
+
+    it('should ask user to delete layer', () => {
+        const tool = initToolInstance();
+        const callback = {onDeleted: () => {}};
+        const spyOnOnDeleted = jest.spyOn(callback, 'onDeleted');
+        
+        const layerWrapper = {
+            getName: () => {
+                return 'jest';
+            },
+            getId: () => {
+                return 'jest-1';
+            },
+            setName: (name) => {} 
+        };
+
+        const dialog = tool.askToDeleteLayer(layerWrapper, callback.onDeleted);
+        const buttons = dialog.buttons;
+        const confirmButton = buttons[1];
+        confirmButton.click();
+    
+        expect(spyOnOnDeleted).toHaveBeenCalledWith(layerWrapper);
     });
 });

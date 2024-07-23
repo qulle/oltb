@@ -298,8 +298,6 @@ describe('SplitViewTool', () => {
         const event = {
             detail: {
                 layerWrapper: {
-                    id: 'jest-1',
-                    name: 'jest',
                     getName: () => {
                         return 'jest';
                     },
