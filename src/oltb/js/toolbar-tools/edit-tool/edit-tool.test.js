@@ -1,14 +1,21 @@
 import { jest, beforeAll, beforeEach, afterEach, describe, it, expect } from '@jest/globals';
 import * as jsts from 'jsts/dist/jsts.min';
+import { Toast } from '../../ui-common/ui-toasts/toast';
+import { Feature } from 'ol';
+import { Polygon } from 'ol/geom';
 import { BaseTool } from '../base-tool';
 import { EditTool } from './edit-tool';
+import { LogManager } from '../../toolbar-managers/log-manager/log-manager';
 import { ToolManager } from '../../toolbar-managers/tool-manager/tool-manager';
 import { SnapManager } from '../../toolbar-managers/snap-manager/snap-manager';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
+import { FeatureManager } from '../../toolbar-managers/feature-manager/feature-manager';
 import { eventDispatcher } from '../../browser-helpers/event-dispatcher';
 import { SettingsManager } from '../../toolbar-managers/settings-manager/settings-manager';
 import { simulateKeyPress } from '../../../../../__mocks__/simulate-key-press';
+import '../../browser-prototypes/string';
+import '../../browser-prototypes/json-cycle';
 
 const FILENAME = 'edit-tool.js';
 const CLASS__TOOLBOX_SECTION = 'oltb-toolbox-section';
@@ -57,6 +64,10 @@ const HTML__MOCK = (`
     </div>
 `);
 
+class MockResponse {
+    constructor() {}
+}
+
 const mockView = {
     animate: (options) => {},
     cancelAnimations: () => {},
@@ -98,6 +109,7 @@ describe('EditTool', () => {
     }
 
     beforeAll(async () => {
+        window.Response = MockResponse;
         window.document.body.innerHTML = HTML__MOCK;
 
         await StateManager.initAsync();
@@ -114,6 +126,14 @@ describe('EditTool', () => {
         });
 
         jest.spyOn(ElementManager, 'getToolboxElement').mockImplementation(() => {
+            return window.document.createElement('div');
+        });
+
+        jest.spyOn(ElementManager, 'getMapElement').mockImplementation(() => {
+            return window.document.createElement('div');
+        });
+
+        jest.spyOn(ElementManager, 'getToastElement').mockImplementation(() => {
             return window.document.createElement('div');
         });
 
@@ -281,5 +301,96 @@ describe('EditTool', () => {
 
         tool.doClearState();
         expect(spyOnSetStateObject).toHaveBeenCalledTimes(1);
+    });
+
+    it('should verify that two shapes', () => {
+        const tool = initToolInstance();
+        const zero = [];
+        const one = [{}];
+        const two = [{}, {}];
+        const three = [{}, {}, {}];
+
+        expect(tool.isTwoAndOnlyTwoShapes(zero)).toBe(false);
+        expect(tool.isTwoAndOnlyTwoShapes(one)).toBe(false);
+        expect(tool.isTwoAndOnlyTwoShapes(two)).toBe(true);
+        expect(tool.isTwoAndOnlyTwoShapes(three)).toBe(false);
+    });
+
+    it('should ask user to delete feature', () => {
+        const tool = initToolInstance();
+        const spyOnDeleteFeatures = jest.spyOn(tool, 'doDeleteFeatures').mockImplementation(() => {
+            return;
+        });
+
+        const options = {
+            lon: 0,
+            lat: 0
+        };
+
+        const marker = FeatureManager.generateIconMarker(options);
+        const dialog = tool.askToDeleteFeatures([marker]);
+        const buttons = dialog.buttons;
+        const confirmButton = buttons[1];
+        confirmButton.click();
+
+        expect(spyOnDeleteFeatures).toHaveBeenCalledTimes(1);
+    });
+
+    it('should ask user to rotate features but fail due to invalid chars', () => {
+        const tool = initToolInstance();
+        const spyOnLogError = jest.spyOn(LogManager, 'logError');
+        const spyOnToastError = jest.spyOn(Toast, 'error');
+
+        const options = {
+            lon: 0,
+            lat: 0
+        };
+
+        const marker = FeatureManager.generateIconMarker(options);
+        const dialog = tool.askToRotateSelectedFeatures([marker], '0-jest');
+        const buttons = dialog.buttons;
+        const confirmButton = buttons[1];
+        confirmButton.click();
+
+        expect(spyOnLogError).toHaveBeenCalled();
+        expect(spyOnToastError).toHaveBeenCalledWith({
+            i18nKey: `${I18N__BASE}.toasts.errors.invalidValue`
+        });
+    });
+
+    it('should ask user to rotate features', () => {
+        const tool = initToolInstance();
+        const spyOnDoRotateFeatures = jest.spyOn(tool, 'doRotateFeatures');
+
+        const options = {
+            lon: 0,
+            lat: 0
+        };
+
+        const marker = FeatureManager.generateIconMarker(options);
+        const dialog = tool.askToRotateSelectedFeatures([marker]);
+        const buttons = dialog.buttons;
+        const confirmButton = buttons[1];
+        confirmButton.click();
+
+        expect(spyOnDoRotateFeatures).toHaveBeenNthCalledWith(1, [marker], '0');
+    });
+
+    it('should show data-modal with info about feature', () => {
+        const tool = initToolInstance();
+        const geometry = new Polygon([[
+            [-263258.05497133266,7259891.741364763],
+            [-263210.0832504495,7259891.741364763],
+            [-263210.0832504495,7259924.362134964],
+            [-263258.05497133266,7259924.362134964],
+            [-263258.05497133266,7259891.741364763]
+        ]]);
+
+        const feature = new Feature({
+            geometry: geometry
+        })
+
+        const modal = tool.doShowFeatureInfo(feature);
+        expect(modal.options.data.coordinates.replace(/\s+/g, ' ').trim()).toEqual("<pre><code>[ [ -263258.05497133266, 7259891.741364763 ], [ -263210.0832504495, 7259891.741364763 ], [ -263210.0832504495, 7259924.362134964 ], [ -263258.05497133266, 7259924.362134964 ], [ -263258.05497133266, 7259891.741364763 ] ]</code></pre>");
     });
 });

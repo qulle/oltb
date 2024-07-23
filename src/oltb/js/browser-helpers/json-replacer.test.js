@@ -1,4 +1,4 @@
-import { describe, it, expect } from '@jest/globals';
+import { describe, beforeAll, it, expect } from '@jest/globals';
 import { jsonReplacer } from './json-replacer';
 
 class MockResponse {
@@ -6,7 +6,9 @@ class MockResponse {
 }
 
 describe('JsonReplacer', () => {
-    window.Response = MockResponse;
+    beforeAll(async () => {
+        window.Response = MockResponse;
+    });
 
     it('should return undefined for ignored key', () => {
         const key = 'marker';
