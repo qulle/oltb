@@ -689,7 +689,13 @@ class DebugInfoModal extends BaseModal {
     }
 
     #onAction() {
-        const action = this.commandsCollection.value;
+        this.doActionByName(this.commandsCollection.value);
+    }
+
+    //--------------------------------------------------------------------
+    // # Section: DoActions
+    //--------------------------------------------------------------------
+    doActionByName(name) {
         const actions = {
             'log.map.to.console': this.doActionLoggingMap.bind(this),
             'generate.uuid': this.doActionGenerateUUID.bind(this),
@@ -698,15 +704,17 @@ class DebugInfoModal extends BaseModal {
             'clear.style.manager': this.doActionClearStyleManager.bind(this)
         };
 
-        const actionMethod = actions[action];
+        const actionMethod = actions[name];
         if(actionMethod) {
             actionMethod.call();
+        }else {
+            LogManager.logWarning(FILENAME, 'doActionByName', {
+                info: 'Missing action',
+                name: name
+            });
         }
     }
-
-    //--------------------------------------------------------------------
-    // # Section: DoActions
-    //--------------------------------------------------------------------
+    
     doFilterEventLog(chip, value, eventLog) {
         chip.classList.toggle('oltb-chip--deactivated');
 

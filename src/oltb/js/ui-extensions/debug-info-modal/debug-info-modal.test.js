@@ -184,4 +184,88 @@ describe('DebugInfoModal', () => {
             autoremove: true
         });
     });
+
+    it('should filter event-log', () => {
+        const eventLog = window.document.createElement('div');
+        eventLog.classList.add('oltb-log--empty');
+
+        const itemOne = window.document.createElement('div');
+        itemOne.classList.add('oltb-log__item');
+        itemOne.setAttribute('data-oltb-log-name', 'debug');
+        
+        const itemTwo = window.document.createElement('div');
+        itemTwo.classList.add('oltb-log__item');
+        itemTwo.setAttribute('data-oltb-log-name', 'info');
+        
+        const itemThree = window.document.createElement('div');
+        itemThree.classList.add('oltb-log__item');
+        itemThree.setAttribute('data-oltb-log-name', 'info');
+        
+        const itemFour = window.document.createElement('div');
+        itemFour.classList.add('oltb-log__item');
+        itemFour.setAttribute('data-oltb-log-name', 'error');
+        
+        eventLog.appendChild(itemOne);
+        eventLog.appendChild(itemTwo);
+        eventLog.appendChild(itemThree);
+        eventLog.appendChild(itemFour);
+        
+        const value = 'info';
+        const infoChip = window.document.createElement('div');
+        const modal = new DebugInfoModal();
+
+        expect(infoChip.classList.contains('oltb-chip--deactivated')).toBe(false);
+        modal.doFilterEventLog(infoChip, value, eventLog);
+        expect(infoChip.classList.contains('oltb-chip--deactivated')).toBe(true);
+        
+        expect(eventLog.classList.contains('oltb-log--empty')).toBe(false);
+        expect(itemOne.classList.contains('oltb-log__item--hidden')).toBe(false);
+        expect(itemTwo.classList.contains('oltb-log__item--hidden')).toBe(true);
+        expect(itemThree.classList.contains('oltb-log__item--hidden')).toBe(true);
+        expect(itemFour.classList.contains('oltb-log__item--hidden')).toBe(false);
+    });
+
+    it('should filter event-log making it empty', () => {
+        const eventLog = window.document.createElement('div');
+        eventLog.classList.add('oltb-log--empty');
+
+        const itemOne = window.document.createElement('div');
+        itemOne.classList.add('oltb-log__item');
+        itemOne.setAttribute('data-oltb-log-name', 'info');
+        
+        const itemTwo = window.document.createElement('div');
+        itemTwo.classList.add('oltb-log__item');
+        itemTwo.setAttribute('data-oltb-log-name', 'info');
+        
+        eventLog.appendChild(itemOne);
+        eventLog.appendChild(itemTwo);
+        
+        const value = 'info';
+        const infoChip = window.document.createElement('div');
+        const modal = new DebugInfoModal();
+
+        modal.doFilterEventLog(infoChip, value, eventLog);
+        expect(eventLog.classList.contains('oltb-log--empty')).toBe(true);
+    });
+
+    it('should do action by name', () => {
+        const modal = new DebugInfoModal();
+        const spyOnClearEventLog = jest.spyOn(modal, 'doActionClearEventLog').mockImplementation(() => {
+            return;
+        });
+
+        modal.doActionByName('clear.event.log');
+        expect(spyOnClearEventLog).toHaveBeenCalledTimes(1);
+    });
+
+    it('should not do action with missing name', () => {
+        const modal = new DebugInfoModal();
+        const spyOnLogWarning = jest.spyOn(LogManager, 'logWarning');
+
+        modal.doActionByName('jest.missing.action.name');
+        expect(spyOnLogWarning).toHaveBeenCalledWith(FILENAME, 'doActionByName', {
+            info: 'Missing action',
+            name: 'jest.missing.action.name'
+        });
+    });
 });
