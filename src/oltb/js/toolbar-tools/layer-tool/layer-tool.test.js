@@ -193,6 +193,24 @@ describe('LayerTool', () => {
         expect(spyOnOnClicked).not.toHaveBeenCalled();
     });
 
+    it('should slide-toggle the toolbox section', () => {
+        const tool = initToolInstance();
+        const spyOnSetStateObject = jest.spyOn(StateManager, 'setStateObject');
+        const spyOnGetElementById = jest.spyOn(window.document, 'getElementById').mockImplementation(() => {
+            return {
+                slideToggle: (duration, callback) => {
+                    callback(true);
+                }
+            }
+        });
+
+        tool.doToggleToolboxSection('jest-mock-name');
+
+        expect(tool.localStorage['jest-mock-name']).toBe(true);
+        expect(spyOnGetElementById).toHaveBeenCalled();
+        expect(spyOnSetStateObject).toHaveBeenCalled();
+    });
+
     it('should re-activate active tool after reload', () => {
         const tool = initToolInstance();
         tool.localStorage.isActive = true;

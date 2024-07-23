@@ -186,6 +186,27 @@ describe('OverviewTool', () => {
         expect(spyOnOnClicked).not.toHaveBeenCalled();
     });
 
+    it('should slide-toggle the toolbox section', () => {
+        const mockOverviewMap = new MockOverviewMap();
+        const tool = initToolInstance();
+        tool.overviewMap = mockOverviewMap;
+
+        const spyOnSetStateObject = jest.spyOn(StateManager, 'setStateObject');
+        const spyOnGetElementById = jest.spyOn(window.document, 'getElementById').mockImplementation(() => {
+            return {
+                slideToggle: (duration, callback) => {
+                    callback(true);
+                }
+            }
+        });
+
+        tool.doToggleToolboxSection('jest-mock-name');
+
+        expect(tool.localStorage.isCollapsed).toBe(true);
+        expect(spyOnGetElementById).toHaveBeenCalled();
+        expect(spyOnSetStateObject).toHaveBeenCalled();
+    });
+
     it('should re-activate active tool after reload', () => {
         const tool = initToolInstance();
         tool.localStorage.isActive = true;

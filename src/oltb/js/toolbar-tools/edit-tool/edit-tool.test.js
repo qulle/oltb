@@ -217,6 +217,24 @@ describe('EditTool', () => {
         expect(spyOnClicked).toHaveBeenCalledTimes(2);
     });
 
+    it('should slide-toggle the toolbox section', () => {
+        const tool = initToolInstance();
+        const spyOnSetStateObject = jest.spyOn(StateManager, 'setStateObject');
+        const spyOnGetElementById = jest.spyOn(window.document, 'getElementById').mockImplementation(() => {
+            return {
+                slideToggle: (duration, callback) => {
+                    callback(true);
+                }
+            }
+        });
+
+        tool.doToggleToolboxSection('jest-mock-name');
+
+        expect(tool.localStorage.isCollapsed).toBe(true);
+        expect(spyOnGetElementById).toHaveBeenCalled();
+        expect(spyOnSetStateObject).toHaveBeenCalled();
+    });
+
     it('should not toggle the tool using incorrect short-cut-key', () => {
         const options = {onClicked: () => {}};
         const spyOnOnClicked = jest.spyOn(options, 'onClicked');
