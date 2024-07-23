@@ -1,7 +1,9 @@
 import { jest, beforeAll, beforeEach, afterEach, describe, it, expect } from '@jest/globals';
 import { OSM } from 'ol/source';
 import { Tile } from 'ol';
+import { Toast } from '../../ui-common/ui-toasts/toast';
 import { BaseTool } from '../base-tool';
+import { LogManager } from '../../toolbar-managers/log-manager/log-manager';
 import { LayerManager } from '../../toolbar-managers/layer-manager/layer-manager';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
 import { SplitViewTool } from './split-view-tool';
@@ -141,14 +143,6 @@ describe('SplitViewTool', () => {
             return mockMap;
         });
 
-        jest.spyOn(SplitViewTool.prototype, 'doAddMapLayer').mockImplementation(() => {
-            return;
-        });
-
-        jest.spyOn(SplitViewTool.prototype, 'doRemoveMapLayer').mockImplementation(() => {
-            return;
-        });
-
         jest.spyOn(SplitViewTool.prototype, 'doUpdateTool').mockImplementation(() => {
             return;
         });
@@ -269,5 +263,78 @@ describe('SplitViewTool', () => {
 
         tool.doClearState();
         expect(spyOnSetStateObject).toHaveBeenCalledTimes(1);
+    });
+
+    it('should add map-layer', () => {
+        const spyOnAddLayer = jest.spyOn(mockMap, 'addLayer');
+        const layer = {
+            name: 'jest',
+            setVisible: () => {}
+        };
+        const tool = initToolInstance();
+
+        tool.doAddMapLayer(layer);
+        expect(spyOnAddLayer).toHaveBeenCalledWith(layer);
+    });
+
+    it('should remove map-layer', () => {
+        const spyOnRemoveLayer = jest.spyOn(mockMap, 'removeLayer');
+        const layer = {
+            name: 'jest',
+            setVisible: () => {}
+        };
+        const tool = initToolInstance();
+        
+        tool.doRemoveMapLayer(layer);
+        expect(spyOnRemoveLayer).toHaveBeenCalledWith(layer);
+    });
+
+    it('should add and remove map-layer from ui-select', () => {
+        const tool = initToolInstance();
+
+        expect(tool.uiRefLeftSource.length).toBe(0);
+        expect(tool.uiRefRightSource.length).toBe(0);
+
+        const event = {
+            detail: {
+                layerWrapper: {
+                    id: 'jest-1',
+                    name: 'jest',
+                    getName: () => {
+                        return 'jest';
+                    },
+                    getId: () => {
+                        return 'jest-1';
+                    }
+                }
+            }
+        };
+
+        tool.doMapLayerAdded(event);
+
+        expect(tool.uiRefLeftSource.length).toBe(1);
+        expect(tool.uiRefRightSource.length).toBe(1);
+
+        tool.doMapLayerRemoved(event);
+
+        expect(tool.uiRefLeftSource.length).toBe(0);
+        expect(tool.uiRefRightSource.length).toBe(0);
+    });
+
+    it('should set loading error', () => {
+        const spyOnLogError = jest.spyOn(LogManager, 'logError');
+        const spyOnToastError = jest.spyOn(Toast, 'error');
+
+        const tool = initToolInstance();
+        tool.setLoadingError();
+        expect(tool.layerLoadingError).toBe(true);
+
+        expect(spyOnLogError).toHaveBeenCalledWith(FILENAME, 'setLoadingError', {
+            message: 'One or both of the layers could not be loaded'
+        });
+
+        expect(spyOnToastError).toHaveBeenCalledWith({
+            i18nKey: `${I18N__BASE}.toasts.errors.layerFailedToLoad`
+        });
     });
 });
