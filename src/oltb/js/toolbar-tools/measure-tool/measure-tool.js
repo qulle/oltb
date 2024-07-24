@@ -421,10 +421,12 @@ class MeasureTool extends BaseTool {
         const feature = event.feature;
         const tooltipItem = TooltipManager.push(KEY__TOOLTIP);
         
-        this.onChangeListener = feature.getGeometry().on(Events.openLayers.change, (event) => {
-            const measureValue = getMeasureValue(event.target);
-            tooltipItem.innerHTML = `${measureValue.value} ${measureValue.unit}`;
-        });
+        if(feature) {
+            this.onChangeListener = feature.getGeometry().on(Events.openLayers.change, (event) => {
+                const measureValue = getMeasureValue(event.target);
+                tooltipItem.innerHTML = `${measureValue.value} ${measureValue.unit}`;
+            });
+        }
 
         // Note: 
         // @Consumer callback
@@ -440,47 +442,49 @@ class MeasureTool extends BaseTool {
         }
 
         unByKey(this.onChangeListener);
-
         const feature = event.feature;
-        feature.setStyle(this.styles);
-        
-        TooltipManager.pop(KEY__TOOLTIP);
-        const tooltip = createUITooltip();
 
-        feature.setProperties({
-            oltb: {
-                type: FeatureProperties.type.measurement,
-                tooltip: tooltip.getOverlay()
-            }
-        });
+        if(feature) {
+            feature.setStyle(this.styles);
         
-        const geometry = feature.getGeometry();
-        tooltip.setPosition(getMeasureCoordinates(geometry));
-        
-        const measureValue = getMeasureValue(geometry);
-        tooltip.setData(`${measureValue.value} ${measureValue.unit}`);
+            TooltipManager.pop(KEY__TOOLTIP);
+            const tooltip = createUITooltip();
 
-        const layerWrapper = LayerManager.getActiveFeatureLayer({
-            fallback: TranslationManager.get(`${I18N__BASE}.layers.defaultName`)
-        });
-        
-        LayerManager.addFeatureToLayer(feature, layerWrapper);
-        const layer = layerWrapper.getLayer();
-        
-        if(!layer.getVisible()) {
-            Toast.info({
-                i18nKey: `${I18N__BASE}.toasts.infos.drawInHiddenLayer`, 
-                autoremove: true
+            feature.setProperties({
+                oltb: {
+                    type: FeatureProperties.type.measurement,
+                    tooltip: tooltip.getOverlay()
+                }
             });
-        }
+            
+            const geometry = feature.getGeometry();
+            tooltip.setPosition(getMeasureCoordinates(geometry));
+            
+            const measureValue = getMeasureValue(geometry);
+            tooltip.setData(`${measureValue.value} ${measureValue.unit}`);
 
-        map.addOverlay(tooltip.getOverlay());
+            const layerWrapper = LayerManager.getActiveFeatureLayer({
+                fallback: TranslationManager.get(`${I18N__BASE}.layers.defaultName`)
+            });
+            
+            LayerManager.addFeatureToLayer(feature, layerWrapper);
+            const layer = layerWrapper.getLayer();
+            
+            if(!layer.getVisible()) {
+                Toast.info({
+                    i18nKey: `${I18N__BASE}.toasts.infos.drawInHiddenLayer`, 
+                    autoremove: true
+                });
+            }
 
-        // The layer might be hidden, check if the tooltip also should be hidden
-        if(layer.getVisible()) {
-            tooltip.getOverlay().setMap(map);
-        }else {
-            tooltip.getOverlay().setMap(null);
+            map.addOverlay(tooltip.getOverlay());
+
+            // The layer might be hidden, check if the tooltip also should be hidden
+            if(layer.getVisible()) {
+                tooltip.getOverlay().setMap(map);
+            }else {
+                tooltip.getOverlay().setMap(null);
+            }
         }
 
         // Note: 
@@ -492,7 +496,6 @@ class MeasureTool extends BaseTool {
 
     doDrawAbort(event) {
         unByKey(this.onChangeListener);
-        
         TooltipManager.pop(KEY__TOOLTIP);
 
         // Note: 

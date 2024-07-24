@@ -4,10 +4,14 @@ import { MeasureTool } from './measure-tool';
 import { ToolManager } from '../../toolbar-managers/tool-manager/tool-manager';
 import { SnapManager } from '../../toolbar-managers/snap-manager/snap-manager';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
+import { TooltipManager } from '../../toolbar-managers/tooltip-manager/tooltip-manager';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 import { eventDispatcher } from '../../browser-helpers/event-dispatcher';
 import { SettingsManager } from '../../toolbar-managers/settings-manager/settings-manager';
 import { simulateKeyPress } from '../../../../../__mocks__/simulate-key-press';
+import { Feature } from 'ol';
+import { Polygon } from 'ol/geom';
+import Target from 'ol/events/Target';
 
 const FILENAME = 'measure-tool.js';
 const CLASS__TOOLBOX_SECTION = 'oltb-toolbox-section';
@@ -95,8 +99,10 @@ describe('MeasureTool', () => {
 
         await StateManager.initAsync();
         await SnapManager.initAsync();
+        await TooltipManager.initAsync();
 
         SnapManager.setMap(mockMap);
+        TooltipManager.setMap(mockMap);
     });
 
     beforeEach(() => {
@@ -259,5 +265,35 @@ describe('MeasureTool', () => {
 
         tool.doClearState();
         expect(spyOnSetStateObject).toHaveBeenCalledTimes(1);
+    });
+
+    // TODO:
+    // At this point it is hard to simulate the events due to missing feature
+    it('should trigger drawing-related-events', () => {
+        const options = {
+            onStart: () => {},
+            onEnd: () => {},
+            onDrag: () => {},
+            onAbort: () => {},
+            onError: () => {}
+        };
+
+        const spyOnOnStart = jest.spyOn(options, 'onStart');
+        const spyOnOnEnd = jest.spyOn(options, 'onEnd');
+        const spyOnOnAbort = jest.spyOn(options, 'onAbort');
+        const spyOnOnError = jest.spyOn(options, 'onError');
+
+        const tool = initToolInstance(options);
+        tool.doUpdateTool('Polygon', '#009922', '#0099FF');
+
+        tool.interactionDraw.dispatchEvent('drawstart');
+        tool.interactionDraw.dispatchEvent('drawend');
+        tool.interactionDraw.dispatchEvent('drawabort');
+        tool.interactionDraw.dispatchEvent('error');
+
+        expect(spyOnOnStart).toHaveBeenCalledTimes(1);
+        expect(spyOnOnEnd).toHaveBeenCalledTimes(1);
+        expect(spyOnOnAbort).toHaveBeenCalledTimes(1);
+        expect(spyOnOnError).toHaveBeenCalledTimes(1);
     });
 });

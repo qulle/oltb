@@ -507,14 +507,16 @@ class DrawTool extends BaseTool {
     doDrawEndNormal(layerWrapper, event) {
         const feature = event.feature;
         
-        feature.setStyle(this.style);
-        feature.setProperties({
-            oltb: {
-                type: FeatureProperties.type.drawing
-            }
-        });
+        if(feature) {
+            feature.setStyle(this.style);
+            feature.setProperties({
+                oltb: {
+                    type: FeatureProperties.type.drawing
+                }
+            });
 
-        LayerManager.addFeatureToLayer(feature, layerWrapper);
+            LayerManager.addFeatureToLayer(feature, layerWrapper);
+        }
 
         // Note: 
         // @Consumer callback

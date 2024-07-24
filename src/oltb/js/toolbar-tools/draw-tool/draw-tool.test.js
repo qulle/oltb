@@ -292,4 +292,39 @@ describe('DrawTool', () => {
         tool.doClearState();
         expect(spyOnSetStateObject).toHaveBeenCalledTimes(1);
     });
+
+    it('should check if intersection mode is enabled', () => {
+        const tool = initToolInstance();
+        expect(tool.isIntersectionEnabled()).toBe(false);
+    });
+
+    // TODO:
+    // At this point it is hard to simulate the events due to missing feature
+    it('should trigger drawing-related-events', () => {
+        const options = {
+            onStart: () => {},
+            onEnd: () => {},
+            onDrag: () => {},
+            onAbort: () => {},
+            onError: () => {}
+        };
+
+        const spyOnOnStart = jest.spyOn(options, 'onStart');
+        const spyOnOnEnd = jest.spyOn(options, 'onEnd');
+        const spyOnOnAbort = jest.spyOn(options, 'onAbort');
+        const spyOnOnError = jest.spyOn(options, 'onError');
+
+        const tool = initToolInstance(options);
+        tool.doUpdateTool('Polygon', 3, '#009922', '#0099FF');
+
+        tool.interactionDraw.dispatchEvent('drawstart');
+        tool.interactionDraw.dispatchEvent('drawend');
+        tool.interactionDraw.dispatchEvent('drawabort');
+        tool.interactionDraw.dispatchEvent('error');
+
+        expect(spyOnOnStart).toHaveBeenCalledTimes(1);
+        expect(spyOnOnEnd).toHaveBeenCalledTimes(1);
+        expect(spyOnOnAbort).toHaveBeenCalledTimes(1);
+        expect(spyOnOnError).toHaveBeenCalledTimes(1);
+    });
 });
