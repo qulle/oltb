@@ -139,7 +139,7 @@ describe('ScissorsTool', () => {
 
     it('should toggle the tool using short-cut-key [X]', () => {
         const options = {onClicked: () => {}};
-        const spyOnClicked = jest.spyOn(options, 'onClicked');
+        const spyOnOnClicked = jest.spyOn(options, 'onClicked');
 
         const tool = initToolInstance(options);
         const spyOnActivateTool = jest.spyOn(tool, 'activateTool');
@@ -153,7 +153,7 @@ describe('ScissorsTool', () => {
 
         expect(spyOnActivateTool).toHaveBeenCalledTimes(1);
         expect(spyOnDeactivateTool).toHaveBeenCalledTimes(1);
-        expect(spyOnClicked).toHaveBeenCalledTimes(2);
+        expect(spyOnOnClicked).toHaveBeenCalledTimes(2);
     });
 
     it('should not toggle the tool using incorrect short-cut-key', () => {

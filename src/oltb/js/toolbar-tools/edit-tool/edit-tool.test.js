@@ -217,7 +217,7 @@ describe('EditTool', () => {
 
     it('should toggle the tool using short-cut-key [V]', () => {
         const options = {onClicked: () => {}};
-        const spyOnClicked = jest.spyOn(options, 'onClicked');
+        const spyOnOnClicked = jest.spyOn(options, 'onClicked');
 
         // Note:
         // ESLint don't understand that tool reference is used.
@@ -234,7 +234,7 @@ describe('EditTool', () => {
 
         expect(spyOnActivateTool).toHaveBeenCalledTimes(1);
         expect(spyOnDeactivateTool).toHaveBeenCalledTimes(1);
-        expect(spyOnClicked).toHaveBeenCalledTimes(2);
+        expect(spyOnOnClicked).toHaveBeenCalledTimes(2);
     });
 
     it('should slide-toggle the toolbox section', () => {

@@ -127,7 +127,7 @@ class CoordinatesTool extends BaseTool {
     }
 
     detachGlobalListeners() {
-        window.removeEventListener(Events.browser.keyUp, this.onWindowKeyDownBind);
+        window.removeEventListener(Events.browser.keyDown, this.onWindowKeyDownBind);
         window.removeEventListener(Events.custom.ready, this.onOLTBReadyBind);
         window.removeEventListener(Events.custom.browserStateCleared, this.onWindowBrowserStateClearedBind);
     }

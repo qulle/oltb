@@ -9,9 +9,6 @@ import { ElementManager } from '../../toolbar-managers/element-manager/element-m
 import { eventDispatcher } from '../../browser-helpers/event-dispatcher';
 import { SettingsManager } from '../../toolbar-managers/settings-manager/settings-manager';
 import { simulateKeyPress } from '../../../../../__mocks__/simulate-key-press';
-import { Feature } from 'ol';
-import { Polygon } from 'ol/geom';
-import Target from 'ol/events/Target';
 
 const FILENAME = 'measure-tool.js';
 const CLASS__TOOLBOX_SECTION = 'oltb-toolbox-section';
@@ -184,7 +181,7 @@ describe('MeasureTool', () => {
 
     it('should toggle the tool using short-cut-key [M]', () => {
         const options = {onClicked: () => {}};
-        const spyOnClicked = jest.spyOn(options, 'onClicked');
+        const spyOnOnClicked = jest.spyOn(options, 'onClicked');
 
         const tool = initToolInstance(options);
         const spyOnActivateTool = jest.spyOn(tool, 'activateTool');
@@ -198,7 +195,7 @@ describe('MeasureTool', () => {
 
         expect(spyOnActivateTool).toHaveBeenCalledTimes(1);
         expect(spyOnDeactivateTool).toHaveBeenCalledTimes(1);
-        expect(spyOnClicked).toHaveBeenCalledTimes(2);
+        expect(spyOnOnClicked).toHaveBeenCalledTimes(2);
     });
 
     it('should not toggle the tool using incorrect short-cut-key', () => {

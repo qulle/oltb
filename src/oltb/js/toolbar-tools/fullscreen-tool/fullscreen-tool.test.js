@@ -96,7 +96,7 @@ describe('FullscreenTool', () => {
 
     it('should toggle the tool - request fullscreen', () => {
         const options = {onClicked: () => {}};
-        const spyOnClicked = jest.spyOn(options, 'onClicked');
+        const spyOnOnClicked = jest.spyOn(options, 'onClicked');
         const spyOnRequestFullscreen = jest.spyOn(screenfull, 'request');
         
         screenfull.isFullscreen = false;
@@ -105,13 +105,13 @@ describe('FullscreenTool', () => {
         tool.onClickTool();
 
         expect(spyOnMomentaryActivation).toHaveBeenCalledTimes(1);
-        expect(spyOnClicked).toHaveBeenCalledTimes(1);
+        expect(spyOnOnClicked).toHaveBeenCalledTimes(1);
         expect(spyOnRequestFullscreen).toHaveBeenCalledTimes(1);
     });
 
     it('should toggle the tool - exit fullscreen', () => {
         const options = {onClicked: () => {}};
-        const spyOnClicked = jest.spyOn(options, 'onClicked');
+        const spyOnOnClicked = jest.spyOn(options, 'onClicked');
         const spyOnExitFullscreen = jest.spyOn(screenfull, 'exit');
 
         screenfull.isFullscreen = true;
@@ -120,7 +120,7 @@ describe('FullscreenTool', () => {
         tool.onClickTool();
 
         expect(spyOnMomentaryActivation).toHaveBeenCalledTimes(1);
-        expect(spyOnClicked).toHaveBeenCalledTimes(1);
+        expect(spyOnOnClicked).toHaveBeenCalledTimes(1);
         expect(spyOnExitFullscreen).toHaveBeenCalledTimes(1);
     });
 

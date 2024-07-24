@@ -9,6 +9,7 @@ import { CoordinatesTool } from './coordinates-tool';
 import { eventDispatcher } from '../../browser-helpers/event-dispatcher';
 import { SettingsManager } from '../../toolbar-managers/settings-manager/settings-manager';
 import { simulateKeyPress } from '../../../../../__mocks__/simulate-key-press';
+import { ProjectionManager } from '../../toolbar-managers/projection-manager/projection-manager';
 
 const FILENAME = 'coordinates-tool.js';
 const CLASS__TOOLBOX_SECTION = 'oltb-toolbox-section';
@@ -41,6 +42,30 @@ const HTML__MOCK = (`
     </div>
 `);
 
+const mockView = {
+    animate: (options) => {},
+    cancelAnimations: () => {},
+    getAnimating: () => true,
+    getZoom: () => 1.234,
+    getProjection: () => 'jest',
+    getCenter: () => [1.123, 2.456],
+    getRotation: () => 1.234,
+    getConstrainedZoom: (zoom) => 1
+};
+
+const mockMap = {
+    addLayer: (layer) => {},
+    removeLayer: (layer) => {}, 
+    addInteraction: (interaction) => {},
+    removeInteraction: (interaction) => {},
+    addOverlay: (overlay) => {},
+    removeOverlay: (overlay) => {},
+    on: (event, callback) => {},
+    getView: () => {
+        return mockView;
+    }
+};
+
 //--------------------------------------------------------------------
 // # Section: Helpers
 //--------------------------------------------------------------------
@@ -60,8 +85,12 @@ describe('CoordinatesTool', () => {
     beforeAll(async () => {
         window.document.body.innerHTML = HTML__MOCK;
 
+        await TooltipManager.initAsync();
         await StateManager.initAsync();
         await SettingsManager.initAsync();
+        await ProjectionManager.initAsync();
+
+        TooltipManager.setMap(mockMap);
     });
 
     beforeEach(() => {
@@ -79,12 +108,8 @@ describe('CoordinatesTool', () => {
             return window.document.createElement('div');
         });
 
-        jest.spyOn(TooltipManager, 'push').mockImplementation(() => {
-            return;
-        });
-
-        jest.spyOn(TooltipManager, 'pop').mockImplementation(() => {
-            return;
+        jest.spyOn(CoordinatesTool.prototype, 'getMap').mockImplementation(() => {
+            return mockMap;
         });
     });
 
@@ -143,7 +168,7 @@ describe('CoordinatesTool', () => {
 
     it('should toggle the tool using short-cut-key [C]', () => {
         const options = {onClicked: () => {}};
-        const spyOnClicked = jest.spyOn(options, 'onClicked');
+        const spyOnOnClicked = jest.spyOn(options, 'onClicked');
 
         const tool = initToolInstance(options);
         const spyOnActivateTool = jest.spyOn(tool, 'activateTool');
@@ -157,7 +182,7 @@ describe('CoordinatesTool', () => {
 
         expect(spyOnActivateTool).toHaveBeenCalledTimes(1);
         expect(spyOnDeactivateTool).toHaveBeenCalledTimes(1);
-        expect(spyOnClicked).toHaveBeenCalledTimes(2);
+        expect(spyOnOnClicked).toHaveBeenCalledTimes(2);
     });
 
     it('should not toggle the tool using incorrect short-cut-key', () => {
@@ -190,10 +215,7 @@ describe('CoordinatesTool', () => {
     it('should re-activate active tool after reload', () => {
         const tool = initToolInstance();
         tool.localStorage.isActive = true;
-
-        const spyOnActivateTool = jest.spyOn(tool, 'activateTool').mockImplementation(() => {
-            return;
-        });
+        const spyOnActivateTool = jest.spyOn(tool, 'activateTool');
 
         eventDispatcher([window], 'oltb.is.ready');
         expect(spyOnActivateTool).toHaveBeenCalled();
@@ -251,5 +273,69 @@ describe('CoordinatesTool', () => {
         expect(spyOnToastError).toHaveBeenCalledWith({
             i18nKey: `${I18N__BASE}.toasts.errors.copyCoordinates`
         });
+    });
+
+    it('should create list of tooltip coordinates', () => {
+        const tool = initToolInstance();
+        const result = tool.doCreateToolCoordinatesList([57.36, 16.10]);
+
+        expect(result).toStrictEqual([
+            {
+                code: 'EPSG:3857',
+                coordinates: [
+                    57.36,
+                    16.1
+                ],
+                name: 'WGS 84 / Pseudo-Mercator',
+                prettyCoordinates: '16° 06′ N 57° 21′ 36″ E'
+            },
+            {
+                code: 'EPSG:4326',
+                coordinates: [
+                    0.0005152736469709574,
+                    0.00014462876073650932
+                ],
+                name: 'WGS 84',
+                prettyCoordinates: '0° 00′ 01″ N 0° 00′ 02″ E'
+            },
+            {
+                code: 'EPSG:7789',
+                coordinates: [
+                    6378136.99972189,
+                    57.35999999904528
+                ],
+                name: 'ITRF2014',
+                prettyCoordinates: '57° 21′ 36″ N 16° 59′ 59″ E'
+            },
+            {
+                code: 'EPSG:3006',
+                coordinates: [
+                    -1188600.039276576,
+                    16.55370831247003,
+                ],
+                name: 'SWEREF99 TM',
+                prettyCoordinates: '16° 33′ 13″ N 119° 57′ 39″ E'
+            },
+            {
+                code: 'EPSG:3021',
+                coordinates: [
+                    -282691.5360820275,
+                    -679.1421153766157,
+                ],
+                name: 'RT90 2.5 gon V',
+                prettyCoordinates: '40° 51′ 28″ N 91° 32′ 10″ W'
+            }
+        ]);
+    });
+
+    it('should create tooltip coordinates', () => {
+        const tool = initToolInstance();
+        tool.onClickTool();
+
+        tool.doCreateTooltipCoordinates({
+            coordinate: [57.36, 16.10]
+        });
+
+        expect(tool.tooltipItem.innerHTML).toBe('0° 00′ 01″ N 0° 00′ 02″ E');
     });
 });
