@@ -267,6 +267,19 @@ describe('MeasureTool', () => {
         expect(spyOnSetStateObject).toHaveBeenCalledTimes(1);
     });
 
+    it('should check if intersection mode is enabled', () => {
+        const options = {onSnapped: () => {}};
+        const spyOnOnSnapped = jest.spyOn(options, 'onSnapped');
+
+        const tool = initToolInstance(options);
+        SnapManager.addSnap(tool);
+        
+        const interaction = SnapManager.getInteraction();
+        interaction.dispatchEvent('snap');
+
+        expect(spyOnOnSnapped).toHaveBeenCalledTimes(1);
+    });
+
     // TODO:
     // At this point it is hard to simulate the events due to missing feature
     it('should trigger drawing-related-events', () => {

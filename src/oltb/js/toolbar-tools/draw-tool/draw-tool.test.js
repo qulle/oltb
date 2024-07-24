@@ -236,6 +236,16 @@ describe('DrawTool', () => {
         expect(spyOnOnClicked).not.toHaveBeenCalled();
     });
 
+    it('should abort draw when Escape-key is pressed', () => {
+        const tool = initToolInstance();
+        tool.doUpdateTool('Polygon', 3, '#009922', '#0099FF');
+
+        const spyOnDrawAbort = jest.spyOn(tool.interactionDraw, 'abortDrawing');
+        simulateKeyPress('keyup', window, 'Escape');
+
+        expect(spyOnDrawAbort).toHaveBeenCalled();
+    });
+
     it('should slide-toggle the toolbox section', () => {
         const tool = initToolInstance();
         const spyOnSetStateObject = jest.spyOn(StateManager, 'setStateObject');
@@ -291,6 +301,19 @@ describe('DrawTool', () => {
 
         tool.doClearState();
         expect(spyOnSetStateObject).toHaveBeenCalledTimes(1);
+    });
+
+    it('should check if intersection mode is enabled', () => {
+        const options = {onSnapped: () => {}};
+        const spyOnOnSnapped = jest.spyOn(options, 'onSnapped');
+
+        const tool = initToolInstance(options);
+        SnapManager.addSnap(tool);
+        
+        const interaction = SnapManager.getInteraction();
+        interaction.dispatchEvent('snap');
+
+        expect(spyOnOnSnapped).toHaveBeenCalledTimes(1);
     });
 
     it('should check if intersection mode is enabled', () => {

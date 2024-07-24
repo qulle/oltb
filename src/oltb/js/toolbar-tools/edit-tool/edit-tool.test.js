@@ -303,6 +303,19 @@ describe('EditTool', () => {
         expect(spyOnSetStateObject).toHaveBeenCalledTimes(1);
     });
 
+    it('should check if intersection mode is enabled', () => {
+        const options = {onSnapped: () => {}};
+        const spyOnOnSnapped = jest.spyOn(options, 'onSnapped');
+
+        const tool = initToolInstance(options);
+        SnapManager.addSnap(tool);
+        
+        const interaction = SnapManager.getInteraction();
+        interaction.dispatchEvent('snap');
+
+        expect(spyOnOnSnapped).toHaveBeenCalledTimes(1);
+    });
+
     it('should verify that two shapes', () => {
         const tool = initToolInstance();
         const zero = [];

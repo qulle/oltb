@@ -223,6 +223,10 @@ class SnapManager extends BaseManager {
     static hasActiveTool() {
         return !!this.getActivatedBy();
     }
+
+    static getInteraction() {
+        return this.#interaction;
+    }
 }
 
 export { SnapManager };

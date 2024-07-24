@@ -153,6 +153,20 @@ describe('BookmarkTool', () => {
         expect(spyOnOnInitiated).toHaveBeenCalledTimes(1);
     });
 
+    it('should init the tool with one Bookmark', () => {
+        const options = {bookmarks: [{
+            id: '6812cc22-f490-46b7-a9f3-42eb9ea58ac2',
+            name: 'Custom Bookmark',
+            zoom: 5,
+            coordinates: [57.123, 16.456]
+        }]};
+        const tool = initToolInstance(options);
+
+        expect(tool).toBeTruthy();
+        expect(tool.localStorage.bookmarks.length).toBe(1);
+        expect(tool.localStorage.bookmarks[0].id).toEqual(options.bookmarks[0].id);
+    });
+
     it('should toggle the tool', () => {
         const options = {onClicked: () => {}};
         const spyOnOnClicked = jest.spyOn(options, 'onClicked');
