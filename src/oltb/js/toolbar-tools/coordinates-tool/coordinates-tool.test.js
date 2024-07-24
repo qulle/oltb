@@ -338,4 +338,15 @@ describe('CoordinatesTool', () => {
 
         expect(tool.tooltipItem.innerHTML).toBe('0° 00′ 01″ N 0° 00′ 02″ E');
     });
+
+    it('should create toolbox coordinates', () => {
+        const tool = initToolInstance();
+        tool.onClickTool();
+
+        tool.doCreateToolboxCoordinates({
+            coordinate: [57.36, 16.10]
+        });
+
+        expect(tool.uiRefCoordinatesTable.innerHTML.replace(/\s+/g, ' ').trim()).toBe('<tr><th class="oltb-tippy" title="EPSG:3857"></th></tr><tr><td></td></tr><tr><th class="oltb-tippy" title="EPSG:4326"></th></tr><tr><td></td></tr><tr><th class="oltb-tippy" title="EPSG:7789"></th></tr><tr><td></td></tr><tr><th class="oltb-tippy" title="EPSG:3006"></th></tr><tr><td></td></tr><tr><th class="oltb-tippy" title="EPSG:3021"></th></tr><tr><td></td></tr><tr><th class="oltb-tippy" title="EPSG:3857"></th></tr><tr><td></td></tr><tr><th class="oltb-tippy" title="EPSG:4326"></th></tr><tr><td></td></tr><tr><th class="oltb-tippy" title="EPSG:7789"></th></tr><tr><td></td></tr><tr><th class="oltb-tippy" title="EPSG:3006"></th></tr><tr><td></td></tr><tr><th class="oltb-tippy" title="EPSG:3021"></th></tr><tr><td></td></tr><tr><th class="oltb-tippy" title="EPSG:3857"></th></tr><tr><td> 16.1000, 57.3600 </td></tr><tr><th class="oltb-tippy" title="EPSG:4326"></th></tr><tr><td> 0.0001, 0.0005 </td></tr><tr><th class="oltb-tippy" title="EPSG:7789"></th></tr><tr><td> 57.3600, 6378136.9997 </td></tr><tr><th class="oltb-tippy" title="EPSG:3006"></th></tr><tr><td> 16.5537, -1188600.0393 </td></tr><tr><th class="oltb-tippy" title="EPSG:3021"></th></tr><tr><td> -679.1421, -282691.5361 </td></tr>');
+    });
 });
