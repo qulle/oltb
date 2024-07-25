@@ -81,11 +81,11 @@ class ColorPickerManager extends BaseManager {
         const displayClass = 'oltb-d-none';
         const maxIncludedIndex = 2;
         const acpRows = this.#colorPickerElement.querySelectorAll('.a-color-picker-row');
-        
+
         // Note:
         // The user can opt-out from hiding the full controls using the showPaletteAsDefault parameter
         const showPaletteAsDefault = ConfigManager.getConfig().aColorPicker.showPaletteAsDefault;
-        if(showPaletteAsDefault) {
+        if(showPaletteAsDefault && acpRows.length >= maxIncludedIndex) {
             for(let i = 0; i <= maxIncludedIndex; ++i) {
                 acpRows[i].classList.add(displayClass);
             }
@@ -193,6 +193,8 @@ class ColorPickerManager extends BaseManager {
     
             eventDispatcher([instance.reference], Events.custom.colorChange);
         });
+
+        return colorPickerWrapper;
     }
 }
 

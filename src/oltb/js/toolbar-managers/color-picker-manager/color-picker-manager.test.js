@@ -45,4 +45,36 @@ describe('ColorPickerManager', () => {
         expect(element.getAttribute('acp-show-hsl')).toBe('no');
         expect(element.getAttribute('acp-show-hex')).toBe('yes');
     });
+
+    it('should show color picker and toggle section', () => {
+        const popper = window.document.createElement('div');
+        const reference = window.document.createElement('div');
+        const instance = {
+            setContent: (wrapper) => {},
+            setProps: (props) => {},
+            popper: popper,
+            reference: reference
+        };
+
+        const colorPickerWrapper = ColorPickerManager.show(instance);
+
+        expect(colorPickerWrapper).toBeTruthy();
+        expect(colorPickerWrapper.nodeName).toBe('DIV');
+        expect(colorPickerWrapper.classList.contains('oltb-acp')).toBe(true);
+
+        const displayClass = 'oltb-d-none';
+        const maxIncludedIndex = 2;
+
+        const colorPickerElement = colorPickerWrapper.lastElementChild;
+        const acpRows = colorPickerElement.querySelectorAll('.a-color-picker-row');
+        for(let i = 0; i <= maxIncludedIndex; ++i) {
+            expect(acpRows[i].classList.contains(displayClass)).toBe(true);
+        }
+
+        const acpHeader = colorPickerWrapper.firstElementChild;
+        acpHeader.click();
+        for(let i = 0; i <= maxIncludedIndex; ++i) {
+            expect(acpRows[i].classList.contains(displayClass)).toBe(false);
+        }
+    });
 });
