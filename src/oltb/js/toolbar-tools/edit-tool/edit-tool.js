@@ -740,7 +740,7 @@ class EditTool extends BaseTool {
         // Note: 
         // The setTimeout must be used
         // If not, the style will be reset to the style used before the feature was selected
-        window.setTimeout(() => {
+        feature && window.setTimeout(() => {
             if(!this.colorHasChanged) {
                 return;
             }
@@ -785,7 +785,7 @@ class EditTool extends BaseTool {
     }
 
     doModifyStart(event) {
-        const features = event.features;
+        const features = event.features || [];
         features.forEach((feature) => {
             if(FeatureManager.hasTooltip(feature)) {
                 this.attachOnChange(feature);
@@ -800,7 +800,7 @@ class EditTool extends BaseTool {
     }
 
     doModifyEnd(event) {
-        const features = event.features;
+        const features = event.features || [];
         features.forEach((feature) => {
             if(FeatureManager.hasTooltip(feature)) {
                 this.detachOnChange(feature);
@@ -815,7 +815,7 @@ class EditTool extends BaseTool {
     }
 
     doTranslateStart(event) {
-        const features = event.features;
+        const features = event.features || [];
         features.forEach((feature) => {
             if(FeatureManager.hasTooltip(feature)) {
                 this.attachOnChange(feature);
@@ -830,7 +830,7 @@ class EditTool extends BaseTool {
     }
 
     doTranslateEnd(event) {
-        const features = event.features;
+        const features = event.features || [];
         features.forEach((feature) => {
             if(FeatureManager.hasTooltip(feature)) {
                 this.detachOnChange(feature);

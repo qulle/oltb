@@ -113,6 +113,7 @@ describe('EditTool', () => {
         window.document.body.innerHTML = HTML__MOCK;
 
         await StateManager.initAsync();
+        await SettingsManager.initAsync();
         await SnapManager.initAsync();
 
         SnapManager.setMap(mockMap);
@@ -135,14 +136,6 @@ describe('EditTool', () => {
 
         jest.spyOn(ElementManager, 'getToastElement').mockImplementation(() => {
             return window.document.createElement('div');
-        });
-
-        jest.spyOn(SettingsManager, 'getSetting').mockImplementation(() => {
-            return true;
-        });
-
-        jest.spyOn(SettingsManager, 'addSetting').mockImplementation(() => {
-            return;
         });
 
         jest.spyOn(EditTool.prototype, 'getMap').mockImplementation(() => {
@@ -329,6 +322,11 @@ describe('EditTool', () => {
         expect(tool.isTwoAndOnlyTwoShapes(three)).toBe(false);
     });
 
+    it('should verify mouse only settings vector shapes', () => {
+        const tool = initToolInstance();
+        expect(tool.useMouseOnlyToEditVectorShapes()).toBe(true);
+    });
+
     it('should ask user to delete feature', () => {
         const tool = initToolInstance();
         const spyOnDeleteFeatures = jest.spyOn(tool, 'doDeleteFeatures').mockImplementation(() => {
@@ -405,5 +403,35 @@ describe('EditTool', () => {
 
         const modal = tool.doShowFeatureInfo(feature);
         expect(modal.options.data.coordinates.replace(/\s+/g, ' ').trim()).toEqual("<pre><code>[ [ -263258.05497133266, 7259891.741364763 ], [ -263210.0832504495, 7259891.741364763 ], [ -263210.0832504495, 7259924.362134964 ], [ -263258.05497133266, 7259924.362134964 ], [ -263258.05497133266, 7259891.741364763 ] ]</code></pre>");
+    });
+
+    // TODO:
+    // At this point it is hard to simulate the events due to missing feature
+    // TODO:
+    // Add SelectAdd, SelectRemove on feature collection
+    it('should trigger drawing-related-events', () => {
+        const options = {
+            onModifyStart: () => {},
+            onModifyEnd: () => {},
+            onTranslateStart: () => {},
+            onTranslatEnd: () => {}
+        };
+
+        const spyOnOnModifyStart = jest.spyOn(options, 'onModifyStart');
+        const spyOnOnModifyEnd = jest.spyOn(options, 'onModifyEnd');
+        const spyOnOnTranslateStart = jest.spyOn(options, 'onTranslateStart');
+        const spyOnOntranslateEnd = jest.spyOn(options, 'onTranslatEnd');
+
+        const tool = initToolInstance(options);
+
+        tool.interactionModify.dispatchEvent('modifystart');
+        tool.interactionModify.dispatchEvent('modifyend');
+        tool.interactionTranslate.dispatchEvent('translatestart');
+        tool.interactionTranslate.dispatchEvent('translateend');
+        
+        expect(spyOnOnModifyStart).toHaveBeenCalledTimes(1);
+        expect(spyOnOnModifyEnd).toHaveBeenCalledTimes(1);
+        expect(spyOnOnTranslateStart).toHaveBeenCalledTimes(1);
+        expect(spyOnOntranslateEnd).toHaveBeenCalledTimes(1);
     });
 });
