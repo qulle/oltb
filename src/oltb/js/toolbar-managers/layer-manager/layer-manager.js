@@ -5,6 +5,7 @@ import { LogManager } from '../log-manager/log-manager';
 import { BaseManager } from '../base-manager';
 import { v4 as uuidv4 } from 'uuid';
 import { StyleManager } from '../style-manager/style-manager';
+import { EventManager } from '../event-manager/event-manager';
 import { FeatureManager } from '../feature-manager/feature-manager';
 import { Vector as VectorLayer } from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';
@@ -278,16 +279,14 @@ class LayerManager extends BaseManager {
         this.#layers.mapLayers.push(layerWrapper);
         this.#map.addLayer(layerWrapper.getLayer());
 
-        // TODO:
-        // Why not using the eventDispatcher?
-        window.dispatchEvent(new CustomEvent(Events.custom.mapLayerAdded, {
+        EventManager.dispatchCustomEvent([window], Events.custom.mapLayerAdded, {
             detail: {
                 layerWrapper: layerWrapper, 
                 isSilent: options.isSilent,
                 disableMapLayerEditButton: options.disableMapLayerEditButton,
                 disableMapLayerDeleteButton: options.disableMapLayerDeleteButton
             }
-        }));
+        });
     }
 
     static removeMapLayer(layerWrapper, isSilent = false) {
@@ -309,14 +308,12 @@ class LayerManager extends BaseManager {
         // Remove the actual ol layer
         this.#map.removeLayer(layer);
 
-        // TODO:
-        // Why not using the eventDispatcher?
-        window.dispatchEvent(new CustomEvent(Events.custom.mapLayerRemoved, {
+        EventManager.dispatchCustomEvent([window], Events.custom.mapLayerRemoved, {
             detail: {
                 layerWrapper: layerWrapper, 
                 isSilent: isSilent
             }
-        }));
+        });
     }
 
     static hasMapLayerWithId(id) {
@@ -432,9 +429,7 @@ class LayerManager extends BaseManager {
         this.#layers.featureLayers.push(layerWrapper);
         this.#map.addLayer(layerWrapper.getLayer());
 
-        // TODO:
-        // Why not using the eventDispatcher?
-        window.dispatchEvent(new CustomEvent(Events.custom.featureLayerAdded, {
+        EventManager.dispatchCustomEvent([window], Events.custom.featureLayerAdded, {
             detail: {
                 layerWrapper: layerWrapper, 
                 isSilent: options.isSilent,
@@ -442,7 +437,7 @@ class LayerManager extends BaseManager {
                 disableFeatureLayerDownloadButton: options.disableFeatureLayerDownloadButton,
                 disableFeatureLayerDeleteButton: options.disableFeatureLayerDeleteButton,
             }
-        }));
+        });
     }
 
     static #getNextActiveFeatureLayer() {
@@ -482,14 +477,12 @@ class LayerManager extends BaseManager {
         this.#map.removeLayer(layer);
         this.setNextActiveFeatureLayer();
 
-        // TODO:
-        // Why not using the eventDispatcher?
-        window.dispatchEvent(new CustomEvent(Events.custom.featureLayerRemoved, {
+        EventManager.dispatchCustomEvent([window], Events.custom.featureLayerRemoved, {
             detail: {
                 layerWrapper: layerWrapper, 
                 isSilent: isSilent
             }
-        }));
+        });
     }
 
     static getActiveFeatureLayer(options = {}) {
@@ -511,13 +504,11 @@ class LayerManager extends BaseManager {
     static setActiveFeatureLayer(layerWrapper) {
         this.#activeFeatureLayer = layerWrapper;
 
-        // TODO:
-        // Why not using the eventDispatcher?
-        window.dispatchEvent(new CustomEvent(Events.custom.activeFeatureLayerChange, {
+        EventManager.dispatchCustomEvent([window], Events.custom.activeFeatureLayerChange, {
             detail: {
                 layerWrapper: layerWrapper
             }
-        }));
+        });
     }
 
     static hasFeatureLayerWithId(id) {

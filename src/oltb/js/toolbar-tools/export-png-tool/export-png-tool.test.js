@@ -1,8 +1,8 @@
 import { jest, beforeEach, afterEach, describe, it, expect } from '@jest/globals';
 import { BaseTool } from '../base-tool';
+import { EventManager } from '../../toolbar-managers/event-manager/event-manager';
 import { ExportPngTool } from './export-png-tool';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
-import { eventDispatcher } from '../../browser-helpers/event-dispatcher';
 import { simulateKeyPress } from '../../../../../__mocks__/simulate-key-press';
 
 const FILENAME = 'export-png-tool.js';
@@ -140,6 +140,6 @@ describe('ExportPngTool', () => {
     // What to expect?
     it('should re-activate active tool after reload', () => {
         initToolInstance();
-        eventDispatcher([window], 'oltb.is.ready');
+        EventManager.dispatchEvent([window], 'oltb.is.ready');
     });
 });

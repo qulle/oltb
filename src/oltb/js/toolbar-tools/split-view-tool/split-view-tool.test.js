@@ -5,10 +5,10 @@ import { Toast } from '../../ui-common/ui-toasts/toast';
 import { BaseTool } from '../base-tool';
 import { LogManager } from '../../toolbar-managers/log-manager/log-manager';
 import { LayerManager } from '../../toolbar-managers/layer-manager/layer-manager';
+import { EventManager } from '../../toolbar-managers/event-manager/event-manager';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
 import { SplitViewTool } from './split-view-tool';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
-import { eventDispatcher } from '../../browser-helpers/event-dispatcher';
 import { simulateKeyPress } from '../../../../../__mocks__/simulate-key-press';
 
 const FILENAME = 'split-view-tool.js';
@@ -265,7 +265,7 @@ describe('SplitViewTool', () => {
             return;
         });
 
-        eventDispatcher([window], 'oltb.is.ready');
+        EventManager.dispatchEvent([window], 'oltb.is.ready');
         expect(spyOnActivateTool).toHaveBeenCalled();
     });
 
@@ -274,7 +274,7 @@ describe('SplitViewTool', () => {
         const spyOnOnBrowserStateCleared = jest.spyOn(options, 'onBrowserStateCleared');
         initToolInstance(options);
 
-        eventDispatcher([window], 'oltb.browser.state.cleared');
+        EventManager.dispatchEvent([window], 'oltb.browser.state.cleared');
         expect(spyOnOnBrowserStateCleared).toHaveBeenCalled();
     });
 

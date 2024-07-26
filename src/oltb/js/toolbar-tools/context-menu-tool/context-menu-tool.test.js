@@ -1,8 +1,8 @@
 import { jest, beforeEach, afterEach, describe, it, expect } from '@jest/globals';
 import { BaseTool } from '../base-tool';
+import { EventManager } from '../../toolbar-managers/event-manager/event-manager';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 import { ContextMenuTool } from './context-menu-tool';
-import { eventDispatcher } from '../../browser-helpers/event-dispatcher';
 import { simulateKeyPress } from '../../../../../__mocks__/simulate-key-press';
 
 const FILENAME = 'context-menu-tool.js';
@@ -68,14 +68,15 @@ describe('ContextMenuTool', () => {
     it('should show the context-menu', () => {
         const tool = initToolInstance();
 
-        eventDispatcher([tool.uiRefMapElement], 'contextmenu');
+        EventManager.dispatchEvent([tool.uiRefMapElement], 'contextmenu');
         expect(tool.menu.classList.contains(`${CLASS__CONTEXT_MENU}--show`)).toBe(true);
     });
 
     it('should show and hide the context-menu', () => {
         const tool = initToolInstance();
 
-        eventDispatcher([tool.uiRefMapElement], 'contextmenu');
+        EventManager.dispatchEvent([tool.uiRefMapElement], 'contextmenu');
+        
         expect(tool.menu.classList.contains(`${CLASS__CONTEXT_MENU}--show`)).toBe(true);
         simulateKeyPress('keyup', tool.uiRefMapElement, 'Escape');
         expect(tool.menu.classList.contains(`${CLASS__CONTEXT_MENU}--show`)).toBe(false);

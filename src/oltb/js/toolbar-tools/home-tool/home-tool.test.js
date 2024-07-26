@@ -3,8 +3,8 @@ import { Toast } from '../../ui-common/ui-toasts/toast';
 import { BaseTool } from '../base-tool';
 import { HomeTool } from './home-tool';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
+import { EventManager } from '../../toolbar-managers/event-manager/event-manager';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
-import { eventDispatcher } from '../../browser-helpers/event-dispatcher';
 import { simulateKeyPress } from '../../../../../__mocks__/simulate-key-press';
 
 const FILENAME = 'home-tool.js';
@@ -201,7 +201,7 @@ describe('HomeTool', () => {
         const spyOnOnBrowserStateCleared = jest.spyOn(options, 'onBrowserStateCleared');
         initToolInstance(options);
 
-        eventDispatcher([window], 'oltb.browser.state.cleared');
+        EventManager.dispatchEvent([window], 'oltb.browser.state.cleared');
         expect(spyOnOnBrowserStateCleared).toHaveBeenCalled();
     });
 

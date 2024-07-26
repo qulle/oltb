@@ -2,8 +2,8 @@ import { jest, beforeAll, describe, it, expect } from '@jest/globals';
 import { BaseTool } from '../base-tool';
 import { MagnifyTool } from './magnify-tool';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
+import { EventManager } from '../../toolbar-managers/event-manager/event-manager';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
-import { eventDispatcher } from '../../browser-helpers/event-dispatcher';
 import { simulateKeyPress } from '../../../../../__mocks__/simulate-key-press';
 
 const FILENAME = 'magnify-tool.js';
@@ -166,7 +166,7 @@ describe('MagnifyTool', () => {
             return;
         });
 
-        eventDispatcher([window], 'oltb.is.ready');
+        EventManager.dispatchEvent([window], 'oltb.is.ready');
         expect(spyOnActivateTool).toHaveBeenCalled();
     });
 
@@ -175,7 +175,7 @@ describe('MagnifyTool', () => {
         const spyOnOnBrowserStateCleared = jest.spyOn(options, 'onBrowserStateCleared');
         initToolInstance(options);
 
-        eventDispatcher([window], 'oltb.browser.state.cleared');
+        EventManager.dispatchEvent([window], 'oltb.browser.state.cleared');
         expect(spyOnOnBrowserStateCleared).toHaveBeenCalled();
     });
 

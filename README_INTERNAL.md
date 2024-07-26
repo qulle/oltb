@@ -904,6 +904,7 @@ The managers are initiated in two steps. The first one is the base initiation th
 ```javascript
 BootstrapManager.initAsync([
     { manager: LogManager },
+    { manager: EventManager },
     { manager: StyleManager },
     { manager: ErrorManager },
     { manager: FeatureManager },

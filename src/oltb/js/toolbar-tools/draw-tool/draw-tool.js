@@ -7,6 +7,7 @@ import { BaseTool } from '../base-tool';
 import { Settings } from '../../browser-constants/settings';
 import { ToolManager } from '../../toolbar-managers/tool-manager/tool-manager';
 import { SnapManager } from '../../toolbar-managers/snap-manager/snap-manager';
+import { EventManager } from '../../toolbar-managers/event-manager/event-manager';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
 import { LayerManager } from '../../toolbar-managers/layer-manager/layer-manager';
 import { ShortcutKeys } from '../../browser-constants/shortcut-keys';
@@ -15,7 +16,6 @@ import { ConfigManager } from '../../toolbar-managers/config-manager/config-mana
 import { DefaultConfig } from '../../toolbar-managers/config-manager/default-config';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 import { SettingsManager } from '../../toolbar-managers/settings-manager/settings-manager';
-import { eventDispatcher } from '../../browser-helpers/event-dispatcher';
 import { LocalStorageKeys } from '../../browser-constants/local-storage-keys';
 import { isShortcutKeyOnly } from '../../browser-helpers/is-shortcut-key-only';
 import { FeatureProperties } from '../../ol-helpers/feature-properties';
@@ -279,7 +279,7 @@ class DrawTool extends BaseTool {
 
         // Important:
         // Triggers activation of the tool
-        eventDispatcher([this.uiRefToolType], Events.browser.change);
+        EventManager.dispatchEvent([this.uiRefToolType], Events.browser.change);
 
         this.localStorage.isActive = true;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);

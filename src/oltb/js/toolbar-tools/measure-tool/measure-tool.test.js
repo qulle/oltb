@@ -4,9 +4,9 @@ import { MeasureTool } from './measure-tool';
 import { ToolManager } from '../../toolbar-managers/tool-manager/tool-manager';
 import { SnapManager } from '../../toolbar-managers/snap-manager/snap-manager';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
+import { EventManager } from '../../toolbar-managers/event-manager/event-manager';
 import { TooltipManager } from '../../toolbar-managers/tooltip-manager/tooltip-manager';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
-import { eventDispatcher } from '../../browser-helpers/event-dispatcher';
 import { SettingsManager } from '../../toolbar-managers/settings-manager/settings-manager';
 import { simulateKeyPress } from '../../../../../__mocks__/simulate-key-press';
 
@@ -246,7 +246,7 @@ describe('MeasureTool', () => {
             return;
         });
 
-        eventDispatcher([window], 'oltb.is.ready');
+        EventManager.dispatchEvent([window], 'oltb.is.ready');
         expect(spyOnActivateTool).toHaveBeenCalled();
     });
 
@@ -255,7 +255,7 @@ describe('MeasureTool', () => {
         const spyOnOnBrowserStateCleared = jest.spyOn(options, 'onBrowserStateCleared');
         initToolInstance(options);
 
-        eventDispatcher([window], 'oltb.browser.state.cleared');
+        EventManager.dispatchEvent([window], 'oltb.browser.state.cleared');
         expect(spyOnOnBrowserStateCleared).toHaveBeenCalled();
     });
 

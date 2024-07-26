@@ -1,5 +1,6 @@
 import { jest, beforeAll, describe, it, expect } from '@jest/globals';
 import { Events } from '../../browser-constants/events';
+import { EventManager } from '../event-manager/event-manager';
 import { StateManager } from '../state-manager/state-manager';
 import { ElementManager } from './element-manager';
 
@@ -20,10 +21,8 @@ describe('ElementManager', () => {
                 filename: FILENAME,
                 result: true
             });
-
-            // TODO:
-            // Why not using the eventDispatcher?
-            window.dispatchEvent(new CustomEvent(Events.custom.ready));
+            
+            EventManager.dispatchCustomEvent([window], Events.custom.ready);
         });
     });
 

@@ -3,9 +3,9 @@ import { BaseTool } from '../base-tool';
 import { ZoomboxTool } from './zoombox-tool';
 import { ToolManager } from '../../toolbar-managers/tool-manager/tool-manager';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
+import { EventManager } from '../../toolbar-managers/event-manager/event-manager';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 import { TooltipManager } from '../../toolbar-managers/tooltip-manager/tooltip-manager';
-import { eventDispatcher } from '../../browser-helpers/event-dispatcher';
 import { simulateKeyPress } from '../../../../../__mocks__/simulate-key-press';
 
 const FILENAME = 'zoombox-tool.js';
@@ -176,7 +176,7 @@ describe('ZoomboxTool', () => {
             return;
         });
 
-        eventDispatcher([window], 'oltb.is.ready');
+        EventManager.dispatchEvent([window], 'oltb.is.ready');
         expect(spyOnActivateTool).toHaveBeenCalled();
     });
 
@@ -185,7 +185,7 @@ describe('ZoomboxTool', () => {
         const spyOnOnBrowserStateCleared = jest.spyOn(options, 'onBrowserStateCleared');
         initToolInstance(options);
 
-        eventDispatcher([window], 'oltb.browser.state.cleared');
+        EventManager.dispatchEvent([window], 'oltb.browser.state.cleared');
         expect(spyOnOnBrowserStateCleared).toHaveBeenCalled();
     });
 

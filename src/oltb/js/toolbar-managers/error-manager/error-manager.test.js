@@ -2,8 +2,8 @@ import { jest, describe, it, expect } from '@jest/globals';
 import { Toast } from '../../ui-common/ui-toasts/toast';
 import { LogManager } from '../log-manager/log-manager';
 import { ErrorManager } from './error-manager';
+import { EventManager } from '../event-manager/event-manager';
 import { ElementManager } from '../element-manager/element-manager';
-import { eventDispatcher } from '../../browser-helpers/event-dispatcher';
 
 const FILENAME = 'error-manager.js';
 const I18N__BASE = 'managers.errorManager';
@@ -49,7 +49,8 @@ describe('ErrorManager', () => {
         const spyOnLogFatal = jest.spyOn(LogManager, 'logFatal');
         const spyOnToastError = jest.spyOn(Toast, 'error');
 
-        eventDispatcher([window], 'error');
+        EventManager.dispatchEvent([window], 'error');
+        
         expect(spyOnWindowConsole).toHaveBeenCalled();
         expect(spyOnLogFatal).toHaveBeenCalled();
         expect(spyOnToastError).toHaveBeenCalledWith({

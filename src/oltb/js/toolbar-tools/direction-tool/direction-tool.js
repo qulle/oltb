@@ -4,6 +4,7 @@ import { Events } from '../../browser-constants/events';
 import { BaseTool } from '../base-tool';
 import { isHorizontal } from '../../ui-helpers/is-row-direction/is-row-direction';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
+import { EventManager } from '../../toolbar-managers/event-manager/event-manager';
 import { ShortcutKeys } from '../../browser-constants/shortcut-keys';
 import { ConfigManager } from '../../toolbar-managers/config-manager/config-manager';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
@@ -144,15 +145,13 @@ class DirectionTool extends BaseTool {
     //--------------------------------------------------------------------
     momentaryActivation() {
         this.doToggleDirection();
-
-        // TODO:
-        // Why not using the eventDispatcher?
+        
         const active = this.getActiveDirection();
-        window.dispatchEvent(new CustomEvent(Events.custom.toolbarDirectionChange, {
+        EventManager.dispatchCustomEvent([window], Events.custom.toolbarDirectionChange, {
             detail: {
                 direction: active.class
             }
-        }));
+        });
     }
 
     //--------------------------------------------------------------------

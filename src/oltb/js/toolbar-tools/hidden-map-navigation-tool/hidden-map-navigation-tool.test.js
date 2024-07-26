@@ -3,9 +3,9 @@ import { Toast } from '../../ui-common/ui-toasts/toast';
 import { BaseTool } from '../base-tool';
 import { UrlManager } from '../../toolbar-managers/url-manager/url-manager';
 import { LogManager } from '../../toolbar-managers/log-manager/log-manager';
+import { EventManager } from '../../toolbar-managers/event-manager/event-manager';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
-import { eventDispatcher } from '../../browser-helpers/event-dispatcher';
 import { copyToClipboard } from '../../browser-helpers/copy-to-clipboard';
 import { HiddenMapNavigationTool } from './hidden-map-navigation-tool';
 
@@ -141,7 +141,7 @@ describe('HiddenMapNavigationTool', () => {
             return;
         });
 
-        eventDispatcher([window], 'oltb.is.ready');
+        EventManager.dispatchEvent([window], 'oltb.is.ready');
         expect(spyOnDoDetectUrlMarker).toHaveBeenCalled();
     });
 

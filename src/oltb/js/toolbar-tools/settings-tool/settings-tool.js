@@ -4,6 +4,7 @@ import { Toast } from '../../ui-common/ui-toasts/toast';
 import { Dialog } from '../../ui-common/ui-dialogs/dialog';
 import { Events } from '../../browser-constants/events';
 import { BaseTool } from '../base-tool';
+import { EventManager } from '../../toolbar-managers/event-manager/event-manager';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
 import { ShortcutKeys } from '../../browser-constants/shortcut-keys';
 import { SettingsModal } from '../../ui-extensions/settings-modal/settings-modal';
@@ -190,9 +191,7 @@ class SettingsTool extends BaseTool {
     doDispatchBrowserStateCleared() {
         // Note: 
         // Trigger event so that any tool can clean up
-        // TODO:
-        // Why not using the eventDispatcher?
-        window.dispatchEvent(new CustomEvent(Events.custom.browserStateCleared));
+        EventManager.dispatchCustomEvent([window], Events.custom.browserStateCleared);
 
         [
             SettingsManager, 

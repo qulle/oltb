@@ -1,9 +1,9 @@
 import screenfull from 'screenfull';
 import { jest, beforeEach, afterEach, describe, it, expect } from '@jest/globals';
 import { BaseTool } from '../base-tool';
+import { EventManager } from '../../toolbar-managers/event-manager/event-manager';
 import { FullscreenTool } from './fullscreen-tool';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
-import { eventDispatcher } from '../../browser-helpers/event-dispatcher';
 import { simulateKeyPress } from '../../../../../__mocks__/simulate-key-press';
 
 const FILENAME = 'fullscreen-tool.js';
@@ -164,7 +164,7 @@ describe('FullscreenTool', () => {
         const spyOnOnEnter = jest.spyOn(options, 'onEnter');
         initToolInstance(options);
 
-        eventDispatcher([window.document], 'fullscreenchange');
+        EventManager.dispatchEvent([window.document], 'fullscreenchange');
         expect(spyOnOnEnter).toHaveBeenCalledTimes(1);
     });
 
@@ -176,7 +176,7 @@ describe('FullscreenTool', () => {
         const spyOnOnLeave = jest.spyOn(options, 'onLeave');
         initToolInstance(options);
 
-        eventDispatcher([window.document], 'fullscreenchange');
+        EventManager.dispatchEvent([window.document], 'fullscreenchange');
         expect(spyOnOnLeave).toHaveBeenCalledTimes(1);
     });
 });

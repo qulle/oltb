@@ -2,6 +2,7 @@ import { Events } from '../../browser-constants/events';
 import { transform } from 'ol/proj';
 import { toStringHDMS } from 'ol/coordinate';
 import { LayerManager } from '../layer-manager/layer-manager';
+import { EventManager } from '../event-manager/event-manager';
 import { ConfigManager } from '../config-manager/config-manager';
 import { DefaultConfig } from '../config-manager/default-config';
 import { FeatureManager } from '../feature-manager/feature-manager';
@@ -108,17 +109,13 @@ const onEditMarker = function(InfoWindowManager, beforeMarker, result) {
     });
 
     addMarkerToMap(afterMarker);
-
-    // TODO:
-    // Why not using the eventDispatcher?
-    // TODO:
-    // Eventmanager to have better flow-controll of the events
-    window.dispatchEvent(new CustomEvent(Events.custom.featureEdited, {
+    
+    EventManager.dispatchCustomEvent([window], Events.custom.featureEdited, {
         detail: {
             before: beforeMarker,
             after: afterMarker
         }
-    }));
+    });
 }
 
 export { editMarker };

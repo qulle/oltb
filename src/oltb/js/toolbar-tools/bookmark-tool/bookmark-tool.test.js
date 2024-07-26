@@ -3,10 +3,10 @@ import tippy from 'tippy.js';
 import { Toast } from '../../ui-common/ui-toasts/toast';
 import { BaseTool } from '../base-tool';
 import { BookmarkTool } from './bookmark-tool';
+import { EventManager } from '../../toolbar-managers/event-manager/event-manager';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 import { copyToClipboard } from '../../browser-helpers/copy-to-clipboard';
-import { eventDispatcher } from '../../browser-helpers/event-dispatcher';
 import { simulateKeyPress } from '../../../../../__mocks__/simulate-key-press';
 import { InfoWindowManager } from '../../toolbar-managers/info-window-manager/info-window-manager';
 import '../../browser-prototypes/string';
@@ -240,7 +240,7 @@ describe('BookmarkTool', () => {
         const spyOnActivateTool = jest.spyOn(tool, 'activateTool');
         tool.localStorage.isActive = true;
         
-        eventDispatcher([window], 'oltb.is.ready');
+        EventManager.dispatchEvent([window], 'oltb.is.ready');
         expect(spyOnActivateTool).toHaveBeenCalled();
     });
 
@@ -249,7 +249,7 @@ describe('BookmarkTool', () => {
         const spyOnOnBrowserStateCleared = jest.spyOn(options, 'onBrowserStateCleared');
         initToolInstance(options);
 
-        eventDispatcher([window], 'oltb.browser.state.cleared');
+        EventManager.dispatchEvent([window], 'oltb.browser.state.cleared');
         expect(spyOnOnBrowserStateCleared).toHaveBeenCalled();
     });
 

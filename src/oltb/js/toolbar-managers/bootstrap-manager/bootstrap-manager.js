@@ -1,6 +1,7 @@
 import { Events } from '../../browser-constants/events';
 import { LogManager } from '../log-manager/log-manager';
 import { BaseManager } from '../base-manager';
+import { EventManager } from '../event-manager/event-manager';
 import { ConfigManager } from '../config-manager/config-manager';
 
 const FILENAME = 'bootstrap-manager.js';
@@ -64,10 +65,7 @@ class BootstrapManager extends BaseManager {
     //--------------------------------------------------------------------
     static ready() {
         LogManager.logInformation(FILENAME, 'ready', 'OLTB is ready to use');
-        
-        // TODO:
-        // Why not using the eventDispatcher?
-        window.dispatchEvent(new CustomEvent(Events.custom.ready));
+        EventManager.dispatchEvent([window], Events.custom.ready);
     }
 }
 

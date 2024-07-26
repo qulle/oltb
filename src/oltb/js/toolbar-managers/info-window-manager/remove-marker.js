@@ -1,5 +1,6 @@
 import { Dialog } from '../../ui-common/ui-dialogs/dialog';
 import { Events } from '../../browser-constants/events';
+import { EventManager } from '../event-manager/event-manager';
 import { LayerManager } from '../layer-manager/layer-manager';
 import { TranslationManager } from '../translation-manager/translation-manager';
 
@@ -18,15 +19,12 @@ const removeMarker = function(InfoWindowManager, marker) {
             LayerManager.removeFeatureFromFeatureLayers(marker);
             
             // Note:
-            // Important to use feature as property key
-            // Not only markers can be removed
-            // TODO:
-            // Why not using the eventDispatcher?
-            window.dispatchEvent(new CustomEvent(Events.custom.featureRemoved, {
+            // Important to use feature as property key, not only markers can be removed
+            EventManager.dispatchCustomEvent([window], Events.custom.featureRemoved, {
                 detail: {
                     feature: marker
                 }
-            }));
+            });
         }
     });
 }

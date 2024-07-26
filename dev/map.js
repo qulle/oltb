@@ -31,6 +31,7 @@ import { UrlManager } from '../src/oltb/js/toolbar-managers/url-manager/url-mana
 import { NameManager } from '../src/oltb/js/toolbar-managers/name-manager/name-manager';
 import { ToolManager } from '../src/oltb/js/toolbar-managers/tool-manager/tool-manager';
 import { SnapManager } from '../src/oltb/js/toolbar-managers/snap-manager/snap-manager';
+import { EventManager } from '../src/oltb/js/toolbar-managers/event-manager/event-manager';
 import { StyleManager } from '../src/oltb/js/toolbar-managers/style-manager/style-manager';
 import { LayerManager } from '../src/oltb/js/toolbar-managers/layer-manager/layer-manager';
 import { StateManager } from '../src/oltb/js/toolbar-managers/state-manager/state-manager';
@@ -89,6 +90,7 @@ import { HiddenMapNavigationTool } from '../src/oltb/js/toolbar-tools/hidden-map
 // The init order is important
 BootstrapManager.initAsync([
     { manager: LogManager },
+    { manager: EventManager },
     { manager: StyleManager },
     { manager: ErrorManager },
     { manager: FeatureManager },

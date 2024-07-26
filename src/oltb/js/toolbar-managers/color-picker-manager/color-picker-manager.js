@@ -3,9 +3,9 @@ import { DOM } from '../../browser-helpers/dom-factory';
 import { Events } from '../../browser-constants/events';
 import { LogManager } from '../log-manager/log-manager';
 import { BaseManager } from '../base-manager';
+import { EventManager } from '../event-manager/event-manager';
 import { isHorizontal } from '../../ui-helpers/is-row-direction/is-row-direction';
 import { ConfigManager } from '../config-manager/config-manager';
-import { eventDispatcher } from '../../browser-helpers/event-dispatcher';
 
 const FILENAME = 'color-picker-manager.js';
 
@@ -191,7 +191,7 @@ class ColorPickerManager extends BaseManager {
             uiRefTarget.setAttribute('data-oltb-color', color);
             uiRefTarget.firstElementChild.style.backgroundColor = color;
     
-            eventDispatcher([instance.reference], Events.custom.colorChange);
+            EventManager.dispatchEvent([instance.reference], Events.custom.colorChange);
         });
 
         return colorPickerWrapper;
