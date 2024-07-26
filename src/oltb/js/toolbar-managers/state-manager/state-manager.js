@@ -104,6 +104,10 @@ class StateManager extends BaseManager {
     //--------------------------------------------------------------------
     // # Section: Public API
     //--------------------------------------------------------------------
+    static loadRuntimeState() {
+        this.#runtimeState = this.#getBrowserData();
+    }
+
     static getIngoredKeys() {
         return this.#ignoredKeys;
     }

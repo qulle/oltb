@@ -5,6 +5,9 @@ import { ElementManager } from './element-manager';
 
 const FILENAME = 'element-manager.js';
 
+//--------------------------------------------------------------------
+// # Section: Mocking
+//--------------------------------------------------------------------
 describe('ElementManager', () => {
     beforeAll(async () => {
         jest.spyOn(window.document, 'getElementById').mockImplementation(() => {
@@ -24,6 +27,64 @@ describe('ElementManager', () => {
             // TODO:
             // Why not using the eventDispatcher?
             window.dispatchEvent(new CustomEvent(Events.custom.ready));
+        });
+    });
+
+    it('should init the manager with [light and col in localStorage]', async () => {
+        window.localStorage.setItem('oltb', JSON.stringify({
+            themeTool: {
+                theme: 'light'
+            },
+            directionTool: {
+                direction: 'col'
+            }
+        }));
+
+        // Note:
+        // At this point the StateManager has already been initialized.
+        // It need to load the runtime state one more time to fetch the mocked values set above.
+        StateManager.loadRuntimeState();
+
+        return ElementManager.initAsync({}).then((result) => {
+            expect(ElementManager.getToolbarElement().classList.contains('light')).toBe(false);
+            expect(ElementManager.getToolbarElement().classList.contains('dark')).toBe(false);
+
+            expect(ElementManager.getToolbarElement().classList.contains('row')).toBe(false);
+            expect(ElementManager.getToolbarElement().classList.contains('col')).toBe(false);
+
+            expect(result).toStrictEqual({
+                filename: FILENAME,
+                result: true
+            });
+        });
+    });
+
+    it('should init the manager with [dark and row in localStorage]', async () => {
+        window.localStorage.setItem('oltb', JSON.stringify({
+            themeTool: {
+                theme: 'dark'
+            },
+            directionTool: {
+                direction: 'row'
+            }
+        }));
+
+        // Note:
+        // At this point the StateManager has already been initialized.
+        // It need to load the runtime state one more time to fetch the mocked values set above.
+        StateManager.loadRuntimeState();
+
+        return ElementManager.initAsync({}).then((result) => {
+            expect(ElementManager.getToolbarElement().classList.contains('dark')).toBe(true);
+            expect(ElementManager.getToolbarElement().classList.contains('row')).toBe(true);
+
+            expect(window.document.body.classList.contains('oltb-dark')).toBe(true);
+            expect(window.document.body.classList.contains('oltb-row')).toBe(true);
+
+            expect(result).toStrictEqual({
+                filename: FILENAME,
+                result: true
+            });
         });
     });
 

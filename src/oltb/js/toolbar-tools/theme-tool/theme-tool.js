@@ -201,13 +201,14 @@ class ThemeTool extends BaseTool {
         this.localStorage.theme = to.class;
         StateManager.setStateObject(LocalStorageNodeName, this.localStorage);
 
+        const baseClass = 'oltb';
         const uiRefToolbarElement = ElementManager.getToolbarElement();
 
         uiRefToolbarElement.classList.remove(from.class);
-        window.document.body.classList.remove(`oltb-${from.class}`);
+        window.document.body.classList.remove(`${baseClass}-${from.class}`);
 
         uiRefToolbarElement.classList.add(to.class);
-        window.document.body.classList.add(`oltb-${to.class}`);
+        window.document.body.classList.add(`${baseClass}-${to.class}`);
 
         this.button.removeChild(this.button.firstElementChild);
         this.button.insertAdjacentHTML('afterbegin', to.icon);
