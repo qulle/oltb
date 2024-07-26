@@ -79,8 +79,6 @@ class ToolboxTool extends BaseTool {
             LocalStorageDefaults
         );
 
-        // TODO:
-        // Replaced by EventManager in the future?
         this.attachGlobalListeners();
 
         // Note: 

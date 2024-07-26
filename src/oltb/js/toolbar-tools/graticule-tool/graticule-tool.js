@@ -81,9 +81,6 @@ class GraticuleTool extends BaseTool {
         );
         
         this.graticule = this.#generateOLGraticule();
-
-        // TODO:
-        // Replaced by EventManager in the future?
         this.attachGlobalListeners();
 
         // Note: 

@@ -94,9 +94,6 @@ class DirectionTool extends BaseTool {
         );
 
         this.shouldToolButtonBeHidden();
-
-        // TODO:
-        // Replaced by EventManager in the future?
         this.attachGlobalListeners();
 
         // Note: 

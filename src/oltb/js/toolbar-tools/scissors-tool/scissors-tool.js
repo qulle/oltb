@@ -103,8 +103,6 @@ class ScissorsTool extends BaseTool {
         this.interactionDraw.on(Events.openLayers.drawAbort, this.#onDrawAbort.bind(this));
         this.interactionDraw.on(Events.openLayers.error, this.#onDrawError.bind(this));
 
-        // TODO:
-        // Replaced by EventManager in the future?
         this.attachGlobalListeners();
 
         // Note: 

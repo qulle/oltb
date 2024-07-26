@@ -61,8 +61,6 @@ class ZoomOutTool extends BaseTool {
         this.button = button;
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
 
-        // TODO:
-        // Replaced by EventManager in the future?
         this.attachGlobalListeners();
 
         // Note: 

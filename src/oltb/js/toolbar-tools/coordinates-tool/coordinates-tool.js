@@ -104,9 +104,7 @@ class CoordinatesTool extends BaseTool {
         this.uiRefCoordinatesFormat = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-format`);
         this.uiRefCoordinatesFormat.value = this.localStorage.coordinatesFormat;
         this.uiRefCoordinatesFormat.addEventListener(Events.browser.change, this.#onCoordinatesFormatChange.bind(this));
-
-        // TODO:
-        // Replaced by EventManager in the future?
+        
         this.attachGlobalListeners();
 
         // Note: 

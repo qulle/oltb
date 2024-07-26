@@ -87,9 +87,6 @@ class OverviewTool extends BaseTool {
         this.#initToggleables();
 
         this.overviewMap = this.#generateOLOverviewMap();
-
-        // TODO:
-        // Replaced by EventManager in the future?
         this.attachGlobalListeners();
 
         // Note: 

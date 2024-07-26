@@ -34,6 +34,14 @@ class EventManager extends BaseManager {
     //--------------------------------------------------------------------
     // # Section: Public API
     //--------------------------------------------------------------------
+    static on(context, type, callback) {
+
+    }
+
+    static off(context, type) {
+        
+    }
+
     static dispatchEvent(elements, type, options = {}) {
         const event = new Event(type, options);
     

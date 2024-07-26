@@ -95,8 +95,6 @@ class ZoomboxTool extends BaseTool {
         this.interactionDragZoom.on(Events.openLayers.boxCancel, this.#onBoxDragCancel.bind(this));
         this.interactionDragZoom.on(Events.openLayers.error, this.#onBoxDragError.bind(this));
 
-        // TODO:
-        // Replaced by EventManager in the future?
         this.attachGlobalListeners();
 
         // Note: 

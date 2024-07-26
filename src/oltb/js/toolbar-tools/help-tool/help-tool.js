@@ -62,9 +62,7 @@ class HelpTool extends BaseTool {
         this.button = button;
         this.helpDialog = undefined;
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
-
-        // TODO:
-        // Replaced by EventManager in the future?
+        
         this.attachGlobalListeners();
 
         // Note: 

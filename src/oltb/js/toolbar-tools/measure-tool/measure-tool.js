@@ -118,9 +118,6 @@ class MeasureTool extends BaseTool {
         this.uiRefStrokeColor.addEventListener(Events.custom.colorChange, this.updateTool.bind(this));
 
         this.#initDefaultValues();
-
-        // TODO:
-        // Replaced by EventManager in the future?
         this.attachGlobalListeners();
 
         // Note: 

@@ -71,9 +71,6 @@ class ResetNorthTool extends BaseTool {
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
 
         this.#initContextMenuItems();
-
-        // TODO:
-        // Replaced by EventManager in the future?
         this.attachGlobalListeners();
 
         // Note: 

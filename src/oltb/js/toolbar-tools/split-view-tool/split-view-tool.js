@@ -107,8 +107,6 @@ class SplitViewTool extends BaseTool {
         this.uiRefSplitViewSlider = ElementManager.getMapElement().querySelector(`#${ID__PREFIX}-slider`);
         this.uiRefSplitViewSlider.addEventListener(Events.browser.input, this.#onSliderInput.bind(this));
 
-        // TODO:
-        // Replaced by EventManager in the future?
         this.attachGlobalListeners();
 
         // Note: 

@@ -174,9 +174,6 @@ class LayerTool extends BaseTool {
         }
 
         this.#initContextMenuItems();
-
-        // TODO:
-        // Replaced by EventManager in the future?
         this.attachGlobalListeners();
 
         // Note: 

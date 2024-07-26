@@ -68,8 +68,6 @@ class ImportVectorLayerTool extends BaseTool {
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
         this.inputDialog = this.#createUIInputDialog();
         
-        // TODO:
-        // Replaced by EventManager in the future?
         this.attachGlobalListeners();
 
         // Note: 

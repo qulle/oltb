@@ -138,9 +138,6 @@ class BookmarkTool extends BaseTool {
 
         this.#initState();
         this.#initContextMenuItems();
-
-        // TODO:
-        // Replaced by EventManager in the future?
         this.attachGlobalListeners();
 
         // Note: 

@@ -42,9 +42,6 @@ class HiddenMarkerTool extends BaseTool {
         });
 
         this.#initContextMenuItems();
-
-        // TODO:
-        // Replaced by EventManager in the future?
         this.attachGlobalListeners();
     }
 

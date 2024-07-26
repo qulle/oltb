@@ -75,9 +75,6 @@ class ScaleLineTool extends BaseTool {
         );
 
         this.scaleLine = this.#generateOLScaleLine();
-        
-        // TODO:
-        // Replaced by EventManager in the future?
         this.attachGlobalListeners();
 
         // Note: 

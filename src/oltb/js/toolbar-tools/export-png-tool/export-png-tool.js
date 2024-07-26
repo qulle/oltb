@@ -70,9 +70,6 @@ class ExportPngTool extends BaseTool {
         this.options = _.merge(_.cloneDeep(DefaultOptions), options);
         
         this.#initDebugState();
-
-        // TODO:
-        // Replaced by EventManager in the future?
         this.attachGlobalListeners();
 
         // Note: 

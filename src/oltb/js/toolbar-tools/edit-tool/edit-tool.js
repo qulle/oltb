@@ -198,8 +198,6 @@ class EditTool extends BaseTool {
         this.interactionTranslate.addEventListener(Events.openLayers.translateStart, this.#onTranslateStart.bind(this));
         this.interactionTranslate.addEventListener(Events.openLayers.translateEnd, this.#onTranslateEnd.bind(this));
 
-        // TODO:
-        // Replaced by EventManager in the future?
         this.attachGlobalListeners();
 
         // Note: 
