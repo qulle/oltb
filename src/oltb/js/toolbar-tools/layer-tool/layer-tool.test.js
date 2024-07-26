@@ -444,6 +444,32 @@ describe('LayerTool', () => {
         expect(LayerManager.getFeatureLayerSize()).toBe(1);
     });
 
+    it('should remove feature-layer', () => {
+        const layerWrapper = {
+            getId: () => {
+                return 'jest-1';
+            }
+        };
+
+        const event = {
+            detail: {
+                isSilent: false,
+                layerWrapper: layerWrapper
+            }
+        };
+        
+        const options = {onFeatureLayerRemoved: () => {}};
+        const spyOnOnFeatureLayerRemoved = jest.spyOn(options, 'onFeatureLayerRemoved');
+        const layers = '<li id="oltb-layer-feature-jest-1"></li>';
+
+        const tool = initToolInstance(options);
+        tool.uiRefFeatureLayerStack.innerHTML = layers;
+        tool.doFeatureLayerRemoved(event);
+
+        expect(spyOnOnFeatureLayerRemoved).toHaveBeenCalledWith(layerWrapper);
+        expect(tool.uiRefFeatureLayerStack.innerHTML).toBe('');
+    });
+
     it('should add map-layer', () => {
         const options = {onMapLayerRenamed: () => {}};
         const tool = initToolInstance(options);
@@ -462,6 +488,32 @@ describe('LayerTool', () => {
 
         expect(layerWrapper).toBeTruthy();
         expect(LayerManager.getFeatureLayerSize()).toBe(1);
+    });
+
+    it('should remove map-layer', () => {
+        const layerWrapper = {
+            getId: () => {
+                return 'jest-1';
+            }
+        };
+
+        const event = {
+            detail: {
+                isSilent: false,
+                layerWrapper: layerWrapper
+            }
+        };
+        
+        const options = {onMapLayerRemoved: () => {}};
+        const spyOnOnMapLayerRemoved = jest.spyOn(options, 'onMapLayerRemoved');
+        const layers = '<li id="oltb-layer-map-jest-1"></li>';
+
+        const tool = initToolInstance(options);
+        tool.uiRefMapLayerStack.innerHTML = layers;
+        tool.doMapLayerRemoved(event);
+
+        expect(spyOnOnMapLayerRemoved).toHaveBeenCalledWith(layerWrapper);
+        expect(tool.uiRefMapLayerStack.innerHTML).toBe('');
     });
 
     it('should remove active class from all feature-layers but one', () => {

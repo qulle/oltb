@@ -1215,6 +1215,13 @@ class LayerTool extends BaseTool {
         }
     }
 
+    doRemoveUILayerItem(uiRefStack, selector) {
+        const uiRefLayer = uiRefStack.querySelector(selector);
+        if(uiRefLayer) {
+            DOM.removeElement(uiRefLayer);
+        }
+    }
+
     doMapLayerRemoved(event) {
         InfoWindowManager.hideOverlay();
 
@@ -1222,11 +1229,7 @@ class LayerTool extends BaseTool {
         const layerWrapper = event.detail.layerWrapper;
         const layerId = layerWrapper.getId();
 
-        // Remove layer from UI
-        const uiRefLayer = this.uiRefMapLayerStack.querySelector(`#${ID__PREFIX}-map-${layerId}`);
-        if(uiRefLayer) {
-            DOM.removeElement(uiRefLayer);
-        }
+        this.doRemoveUILayerItem(this.uiRefMapLayerStack, `#${ID__PREFIX}-map-${layerId}`);
 
         // Note: 
         // @Consumer callback
@@ -1280,28 +1283,27 @@ class LayerTool extends BaseTool {
         }
     }
 
-    doFeatureLayerRemoved(event) {
-        InfoWindowManager.hideOverlay();
-
-        const isSilent = event.detail.isSilent;
-        const layerWrapper = event.detail.layerWrapper;
-
-        // Remove layer from UI
-        const uiRefLayer = this.uiRefFeatureLayerStack.querySelector(`#${ID__PREFIX}-feature-${layerWrapper.getId()}`);
-        if(uiRefLayer) {
-            DOM.removeElement(uiRefLayer);
-        }
-
-        // Set new active feature layer
-        this.doRemoveActiveFeatureLayerClass();
+    doSetActiveLayerAsSelected(uiRefStack) {
         const activeFeatureLayer = LayerManager.getActiveFeatureLayer();
         if(activeFeatureLayer) {
-            this.uiRefFeatureLayerStack.querySelectorAll('li').forEach((item) => {
+            uiRefStack.querySelectorAll('li').forEach((item) => {
                 if(activeFeatureLayer.getId() === item.getAttribute('data-oltb-id')) {
                     item.classList.add(`${CLASS__TOOLBOX_LIST}__item--active`);
                 }
             });
         }
+    }
+
+    doFeatureLayerRemoved(event) {
+        InfoWindowManager.hideOverlay();
+
+        const isSilent = event.detail.isSilent;
+        const layerWrapper = event.detail.layerWrapper;
+        const layerId = layerWrapper.getId();
+
+        this.doRemoveUILayerItem(this.uiRefFeatureLayerStack, `#${ID__PREFIX}-feature-${layerId}`);
+        this.doRemoveActiveFeatureLayerClass();
+        this.doSetActiveLayerAsSelected(this.uiRefFeatureLayerStack);
 
         // Note: 
         // @Consumer callback
