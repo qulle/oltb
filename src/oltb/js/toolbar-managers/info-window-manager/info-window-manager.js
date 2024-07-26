@@ -388,14 +388,15 @@ class InfoWindowManager extends BaseManager {
     //--------------------------------------------------------------------
     static tryPulseAnimation(feature, layer = undefined) {
         // TODO:
-        // This was a messy method.
-        // Works best on IconMarkers, remove for WindBarbs?
+        // This was a messy method, make it prettier in future.
+
+        // Note:
+        // Works best on IconMarkers, removed FeatureProperties.type.windBarb from the types collection for now.
         const oltb = DefaultConfig.toolbar.id;
         const properties = feature.get(oltb);
         const animationConfig = ConfigManager.getConfig().marker.pulseAnimation;
         const types = [
-            FeatureProperties.type.iconMarker, 
-            FeatureProperties.type.windBarb
+            FeatureProperties.type.iconMarker
         ];
 
         // Note:
