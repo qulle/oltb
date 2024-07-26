@@ -1326,6 +1326,25 @@ class LayerTool extends BaseTool {
         });
     }
 
+    doToggleLayerVisibility(layerWrapper) {
+        const layer = layerWrapper.getLayer();
+        const flippedVisibility = !layer.getVisible();
+        layer.setVisible(flippedVisibility);
+    }
+
+    doHideLayerFeatures(layerWrapper) {
+        const layer = layerWrapper.getLayer();
+        if(!this.hasLayerFeatures(layer)) {
+            return;
+        }
+
+        layer.getSource().getFeatures().forEach((feature) => {
+            if(FeatureManager.hasTooltip(feature)) {
+                FeatureManager.getTooltip(feature).setMap(flippedVisibility ? map : null)
+            }
+        });
+    }
+
     doChangeLayerVisibility(layerWrapper, callback) {
         const map = this.getMap();
         if(!map) {
@@ -1333,19 +1352,9 @@ class LayerTool extends BaseTool {
         }
         
         InfoWindowManager.hideOverlay();
-
-        const layer = layerWrapper.getLayer();
-        const flippedVisibility = !layer.getVisible();
-        layer.setVisible(flippedVisibility);
-                     
-        // Hide overlays associated with the layer
-        if(this.hasLayerFeatures(layer)) {
-            layer.getSource().getFeatures().forEach((feature) => {
-                if(FeatureManager.hasTooltip(feature)) {
-                    FeatureManager.getTooltip(feature).setMap(flippedVisibility ? map : null)
-                }
-            });
-        }
+        
+        this.doToggleLayerVisibility(layerWrapper);
+        this.doHideLayerFeatures(layerWrapper);
 
         // Note: 
         // @Consumer callback
@@ -1385,7 +1394,7 @@ class LayerTool extends BaseTool {
             })
         });
 
-        LayerManager.addMapLayer({
+        return LayerManager.addMapLayer({
             name: options.name,
             sortIndex: 0,
             isDynamicallyAdded: options.isDynamicallyAdded,
@@ -1394,7 +1403,7 @@ class LayerTool extends BaseTool {
     }
 
     doAddFeatureLayer(options) {
-        LayerManager.addFeatureLayer({
+        return LayerManager.addFeatureLayer({
             name: options.name,
             sortIndex: 0,
             isDynamicallyAdded: options.isDynamicallyAdded

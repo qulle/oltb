@@ -3,10 +3,12 @@ import { Toast } from '../../ui-common/ui-toasts/toast';
 import { BaseTool } from '../base-tool';
 import { LayerTool } from './layer-tool';
 import { LogManager } from '../../toolbar-managers/log-manager/log-manager';
+import { LayerManager } from '../../toolbar-managers/layer-manager/layer-manager';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 import { eventDispatcher } from '../../browser-helpers/event-dispatcher';
 import { simulateKeyPress } from '../../../../../__mocks__/simulate-key-press';
+import { InfoWindowManager } from '../../toolbar-managers/info-window-manager/info-window-manager';
 import '../../browser-prototypes/string';
 
 const FILENAME = 'layer-tool.js';
@@ -54,6 +56,30 @@ const HTML__MOCK = (`
     </div>
 `);
 
+const mockView = {
+    animate: (options) => {},
+    cancelAnimations: () => {},
+    getAnimating: () => true,
+    getZoom: () => 1.234,
+    getProjection: () => 'jest',
+    getCenter: () => [1.123, 2.456],
+    getRotation: () => 1.234,
+    getConstrainedZoom: (zoom) => 1
+};
+
+const mockMap = {
+    addLayer: (layer) => {},
+    removeLayer: (layer) => {}, 
+    addInteraction: (interaction) => {},
+    removeInteraction: (interaction) => {},
+    addOverlay: (overlay) => {},
+    removeOverlay: (overlay) => {},
+    on: (event, callback) => {},
+    getView: () => {
+        return mockView;
+    }
+};
+
 //--------------------------------------------------------------------
 // # Section: Helpers
 //--------------------------------------------------------------------
@@ -73,6 +99,10 @@ describe('LayerTool', () => {
     beforeAll(async () => {
         window.document.body.innerHTML = HTML__MOCK;
         await StateManager.initAsync();
+        await LayerManager.initAsync();
+        await InfoWindowManager.initAsync();
+
+        LayerManager.setMap(mockMap);
     });
 
     beforeEach(() => {
@@ -92,6 +122,10 @@ describe('LayerTool', () => {
 
         jest.spyOn(ElementManager, 'getMapElement').mockImplementation(() => {
             return window.document.createElement('div');
+        });
+
+        jest.spyOn(LayerTool.prototype, 'getMap').mockImplementation(() => {
+            return mockMap;
         });
     });
 
@@ -396,5 +430,143 @@ describe('LayerTool', () => {
         confirmButton.click();
     
         expect(spyOnOnDeleted).toHaveBeenCalledWith(layerWrapper);
+    });
+
+    it('should add feature-layer', () => {
+        const tool = initToolInstance();
+
+        expect(LayerManager.getFeatureLayerSize()).toBe(0);
+        const layerWrapper = tool.doAddFeatureLayer({
+            name: 'jest'
+        });
+
+        expect(layerWrapper).toBeTruthy();
+        expect(LayerManager.getFeatureLayerSize()).toBe(1);
+    });
+
+    it('should add map-layer', () => {
+        const options = {onMapLayerRenamed: () => {}};
+        const tool = initToolInstance(options);
+
+        expect(LayerManager.getMapLayerSize()).toBe(0);
+        const layerWrapper = tool.doAddMapLayer({
+            name: 'jest',
+            layer: 'Vector',
+            projection: 'EPSG:3857',
+            url: 'localhost:1234/jest',
+            parameters: '{}',
+            wrapX: true,
+            attributions: 'jest',
+            format: 'GeoJSON'
+        });
+
+        expect(layerWrapper).toBeTruthy();
+        expect(LayerManager.getFeatureLayerSize()).toBe(1);
+    });
+
+    it('should remove active class from all feature-layers but one', () => {
+        const layerWrapper = {};
+        const targetLayer = window.document.createElement('li');
+        const layers = `
+            <li class="oltb-toolbox-list__item--active"></li>
+            <li class="oltb-toolbox-list__item--active"></li>
+            <li class="oltb-toolbox-list__item--active"></li>
+        `;
+
+        const tool = initToolInstance();
+        tool.uiRefFeatureLayerStack.innerHTML = layers;
+        tool.uiRefFeatureLayerStack.appendChild(targetLayer);
+
+        tool.doSetFeatureLayerAsActive(layerWrapper, targetLayer);
+        let classCounter = 0;
+
+        tool.uiRefFeatureLayerStack.querySelectorAll('li').forEach((item) => {
+            if(item.classList.contains('oltb-toolbox-list__item--active')) {
+                classCounter += 1;
+            }
+        });
+
+        expect(classCounter).toBe(1);
+        expect(LayerManager.getActiveFeatureLayer()).toBe(layerWrapper);
+    });
+
+    it('should change layer visibility', () => {
+        const callbacks = {onFeatureLayerVisibilityChanged: () => {}};
+        const spyOnOnFeatureLayerVisibilityChanged = jest.spyOn(callbacks, 'onFeatureLayerVisibilityChanged');
+        const spyOnHideOverlay = jest.spyOn(InfoWindowManager, 'hideOverlay').mockImplementation(() => {
+            return;
+        });
+
+        const data = {
+            visible: true
+        };
+
+        const layer = {
+            setVisible: (visible) => {
+                data.visible = visible;
+            },
+            getVisible: () => {
+                return data.visible;
+            },
+            getSource: () => {
+                return {
+                    getFeatures: () => {
+                        return [];
+                    }
+                }
+            }
+        };
+
+        const layerWrapper = {
+            getLayer: () => {
+                return layer;
+            }
+        };
+
+        const tool = initToolInstance();
+        tool.doChangeLayerVisibility(layerWrapper, callbacks.onFeatureLayerVisibilityChanged);
+
+        expect(data.visible).toBe(false);
+        expect(spyOnHideOverlay).toHaveBeenCalled();
+        expect(spyOnOnFeatureLayerVisibilityChanged).toHaveBeenCalledTimes(1);
+    });
+
+    it('should download layer', () => {
+        const layerWrapper = {
+            getName: () => {
+                return 'jest';
+            },
+            getLayer: () => {
+                return {
+                    getSource: () => {
+                        return {
+                            getFeatures: () => {
+                                return [{
+                                    name: 'jest'
+                                }];
+                            }
+                        }
+                    }
+                }
+            }
+        };
+
+        const format = {
+            writeFeatures: (features, options) => {
+                return JSON.stringify(features);
+            }
+        };
+
+        const result = {
+            format: 'GEOJSON'
+        };
+
+        const callbacks = {onDownload: () => {}};
+        const spyOnOnDownload = jest.spyOn(callbacks, 'onDownload');
+
+        const tool = initToolInstance();
+        tool.doDownloadLayer(layerWrapper, format, result, callbacks.onDownload);
+
+        expect(spyOnOnDownload).toHaveBeenCalledWith(layerWrapper, 'jest.geojson', '[{"name":"jest"}]');
     });
 });

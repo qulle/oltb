@@ -270,6 +270,8 @@ class LayerManager extends BaseManager {
                 options: mergedOptions
             });
         }
+
+        return layerWrapper;
     }
 
     static #addMapLayerToMap(layerWrapper, options) {
