@@ -49,6 +49,9 @@ const hasToolActiveClass = (tool) => {
     return tool.button.classList.contains('oltb-tool-button--active');
 }
 
+//--------------------------------------------------------------------
+// # Section: Testing
+//--------------------------------------------------------------------
 describe('MagnifyTool', () => {
     const toolInstances = [];
     const initToolInstance = (options) => {
@@ -199,5 +202,14 @@ describe('MagnifyTool', () => {
 
         tool.detachMapListeners();
         expect(spyOnMapRender).toHaveBeenCalledTimes(1);
+    });
+
+    it('should change size of magnifier', () => {
+        const tool = initToolInstance();
+        expect(tool.options.radius).toBe(75);
+        tool.doChangeMagnifyerSize('+');
+        expect(tool.options.radius).toBe(80);
+        tool.doChangeMagnifyerSize('-');
+        expect(tool.options.radius).toBe(75);
     });
 });

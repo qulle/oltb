@@ -5,9 +5,6 @@ import { ElementManager } from './element-manager';
 
 const FILENAME = 'element-manager.js';
 
-//--------------------------------------------------------------------
-// # Section: Mocking
-//--------------------------------------------------------------------
 describe('ElementManager', () => {
     beforeAll(async () => {
         jest.spyOn(window.document, 'getElementById').mockImplementation(() => {

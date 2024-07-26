@@ -87,6 +87,9 @@ const hasToolActiveClass = (tool) => {
     return tool.button.classList.contains('oltb-tool-button--active');
 }
 
+//--------------------------------------------------------------------
+// # Section: Testing
+//--------------------------------------------------------------------
 describe('LayerTool', () => {
     const toolInstances = [];
     const initToolInstance = (options) => {

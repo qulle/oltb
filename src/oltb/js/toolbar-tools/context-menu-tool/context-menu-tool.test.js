@@ -33,6 +33,9 @@ const mockMap = {
     }
 };
 
+//--------------------------------------------------------------------
+// # Section: Testing
+//--------------------------------------------------------------------
 describe('ContextMenuTool', () => {
     const initToolInstance = (options) => {
         return new ContextMenuTool(options);;

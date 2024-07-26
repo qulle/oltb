@@ -37,6 +37,9 @@ const mockMap = {
     }
 };
 
+//--------------------------------------------------------------------
+// # Section: Testing
+//--------------------------------------------------------------------
 describe('HomeTool', () => {
     const toolInstances = [];
     const initToolInstance = (options) => {

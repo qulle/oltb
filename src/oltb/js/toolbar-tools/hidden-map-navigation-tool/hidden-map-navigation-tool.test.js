@@ -39,6 +39,9 @@ const mockMap = {
     }
 };
 
+//--------------------------------------------------------------------
+// # Section: Testing
+//--------------------------------------------------------------------
 describe('HiddenMapNavigationTool', () => {
     const toolInstances = [];
     const initToolInstance = (options) => {

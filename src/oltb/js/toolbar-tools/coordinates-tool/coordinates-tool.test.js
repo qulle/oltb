@@ -73,6 +73,9 @@ const hasToolActiveClass = (tool) => {
     return tool.button.classList.contains('oltb-tool-button--active');
 }
 
+//--------------------------------------------------------------------
+// # Section: Testing
+//--------------------------------------------------------------------
 describe('CoordinatesTool', () => {
     const toolInstances = [];
     const initToolInstance = (options) => {

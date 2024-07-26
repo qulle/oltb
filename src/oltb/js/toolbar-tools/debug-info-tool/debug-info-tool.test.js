@@ -42,6 +42,9 @@ const mockMap = {
     }
 };
 
+//--------------------------------------------------------------------
+// # Section: Testing
+//--------------------------------------------------------------------
 describe('DebugInfoTool', () => {
     const toolInstances = [];
     const initToolInstance = (options) => {

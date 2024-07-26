@@ -33,6 +33,9 @@ const mockMap = {
     }
 };
 
+//--------------------------------------------------------------------
+// # Section: Testing
+//--------------------------------------------------------------------
 describe('ZoomOutTool', () => {
     const toolInstances = [];
     const initToolInstance = (options) => {

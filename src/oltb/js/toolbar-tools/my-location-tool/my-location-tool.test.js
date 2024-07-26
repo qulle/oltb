@@ -40,6 +40,9 @@ const mockMap = {
     }
 };
 
+//--------------------------------------------------------------------
+// # Section: Testing
+//--------------------------------------------------------------------
 describe('MagnifyTool', () => {
     const toolInstances = [];
     const initToolInstance = (options) => {

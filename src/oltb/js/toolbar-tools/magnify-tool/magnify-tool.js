@@ -171,19 +171,13 @@ class MagnifyTool extends BaseTool {
         // Disable map-zoom when changing size of magnifier
         event.preventDefault();
 
+        const key = event.key;
         const map = this.getMap();
         if(!map) {
             return;
         }
-        
-        const distance = 5;
-        const key = event.key;
-        if(key === KeyboardKeys.valueAdd) {
-            this.options.radius = Math.min(this.options.radius + distance, this.options.max);
-        }else if(key === KeyboardKeys.valueSubtract) {
-            this.options.radius = Math.max(this.options.radius - distance, this.options.min);
-        }
-
+    
+        this.doChangeMagnifyerSize(key);
         map.render();
     }
 
@@ -244,12 +238,11 @@ class MagnifyTool extends BaseTool {
         const mapContainer = map.getTarget();
     
         this.onMousemoveListenert = this.#onMousemove.bind(this);
-        mapContainer.addEventListener(Events.browser.mouseMove, this.onMousemoveListenert);
-
         this.onMouseoutListenert = this.#onMouseout.bind(this);
-        mapContainer.addEventListener(Events.browser.mouseOut, this.onMouseoutListenert);
-
         this.onKeydownListener = this.#onKeydown.bind(this);
+
+        mapContainer.addEventListener(Events.browser.mouseMove, this.onMousemoveListenert);
+        mapContainer.addEventListener(Events.browser.mouseOut, this.onMouseoutListenert);
         window.document.addEventListener(Events.browser.keyDown, this.onKeydownListener);
 
         this.onPostrenderListeners = [];
@@ -266,7 +259,6 @@ class MagnifyTool extends BaseTool {
 
         const mapContainer = map.getTarget();
 
-        // Remove the eventlisteners
         mapContainer.removeEventListener(Events.browser.mouseMove, this.onMousemoveListenert);
         mapContainer.removeEventListener(Events.browser.mouseOut, this.onMouseoutListenert);
         window.document.removeEventListener(Events.browser.keyDown, this.onKeydownListener);
@@ -283,6 +275,15 @@ class MagnifyTool extends BaseTool {
     //--------------------------------------------------------------------
     // # Section: Tool DoActions
     //--------------------------------------------------------------------
+    doChangeMagnifyerSize(key) {
+        const distance = 5;
+        if(key === KeyboardKeys.valueAdd) {
+            this.options.radius = Math.min(this.options.radius + distance, this.options.max);
+        }else if(key === KeyboardKeys.valueSubtract) {
+            this.options.radius = Math.max(this.options.radius - distance, this.options.min);
+        }
+    }
+
     doClearState() {
         this.localStorage = _.cloneDeep(LocalStorageDefaults);
         StateManager.setStateObject(LocalStorageNodeName, LocalStorageDefaults);
@@ -345,8 +346,7 @@ class MagnifyTool extends BaseTool {
             context.stroke();
             context.restore();
         }catch(error) {
-            // Click the tool-button to deactivate
-            this.button.click();
+            this.deactivateTool();
 
             LogManager.logError(FILENAME, 'onPostrender', {
                 message: 'Unexpected error using magnifyer',

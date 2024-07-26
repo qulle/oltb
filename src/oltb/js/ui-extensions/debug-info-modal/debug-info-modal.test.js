@@ -13,10 +13,16 @@ const FILENAME = 'debug-info-modal.js';
 const ID__EVENT_LOG = 'oltb-event-log';
 const I18N__BASE = 'modalExtensions.debugInfoModal';
 
+//--------------------------------------------------------------------
+// # Section: Mocking
+//--------------------------------------------------------------------
 class MockResponse {
     constructor() {}
 }
 
+//--------------------------------------------------------------------
+// # Section: Testing
+//--------------------------------------------------------------------
 describe('DebugInfoModal', () => {
     beforeAll(async () => {
         window.Response = MockResponse;

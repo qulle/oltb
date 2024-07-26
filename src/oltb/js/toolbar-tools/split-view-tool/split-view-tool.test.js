@@ -75,6 +75,9 @@ const hasToolActiveClass = (tool) => {
     return tool.button.classList.contains('oltb-tool-button--active');
 }
 
+//--------------------------------------------------------------------
+// # Section: Testing
+//--------------------------------------------------------------------
 describe('SplitViewTool', () => {
     const toolInstances = [];
     const initToolInstance = (options) => {

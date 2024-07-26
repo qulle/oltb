@@ -37,6 +37,9 @@ const mockMap = {
     }
 };
 
+//--------------------------------------------------------------------
+// # Section: Testing
+//--------------------------------------------------------------------
 describe('FullscreenTool', () => {
     const toolInstances = [];
     const initToolInstance = (options) => {

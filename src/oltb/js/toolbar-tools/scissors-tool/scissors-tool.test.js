@@ -46,6 +46,9 @@ const hasToolActiveClass = (tool) => {
     return tool.button.classList.contains('oltb-tool-button--active');
 }
 
+//--------------------------------------------------------------------
+// # Section: Testing
+//--------------------------------------------------------------------
 describe('ScissorsTool', () => {
     const toolInstances = [];
     const initToolInstance = (options) => {

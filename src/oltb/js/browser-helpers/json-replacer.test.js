@@ -1,10 +1,16 @@
 import { describe, beforeAll, it, expect } from '@jest/globals';
 import { jsonReplacer } from './json-replacer';
 
+//--------------------------------------------------------------------
+// # Section: Mocking
+//--------------------------------------------------------------------
 class MockResponse {
     constructor() {}
 }
 
+//--------------------------------------------------------------------
+// # Section: Testing
+//--------------------------------------------------------------------
 describe('JsonReplacer', () => {
     beforeAll(async () => {
         window.Response = MockResponse;

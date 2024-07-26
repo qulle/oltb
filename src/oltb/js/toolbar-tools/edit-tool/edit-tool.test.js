@@ -99,6 +99,9 @@ const hasToolActiveClass = (tool) => {
     return tool.button.classList.contains('oltb-tool-button--active');
 }
 
+//--------------------------------------------------------------------
+// # Section: Testing
+//--------------------------------------------------------------------
 describe('EditTool', () => {
     const toolInstances = [];
     const initToolInstance = (options) => {

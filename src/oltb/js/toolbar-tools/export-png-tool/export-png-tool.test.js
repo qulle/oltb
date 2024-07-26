@@ -37,6 +37,9 @@ const mockMap = {
     }
 };
 
+//--------------------------------------------------------------------
+// # Section: Testing
+//--------------------------------------------------------------------
 describe('ExportPngTool', () => {
     const toolInstances = [];
     const initToolInstance = (options) => {
@@ -138,12 +141,5 @@ describe('ExportPngTool', () => {
     it('should re-activate active tool after reload', () => {
         initToolInstance();
         eventDispatcher([window], 'oltb.is.ready');
-    });
-
-    // TODO:
-    // What to expect?
-    it('should render the map async', async () => {
-        const tool = initToolInstance();
-        await tool.doRenderCompleteAsync(mockMap);
     });
 });
