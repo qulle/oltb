@@ -21,11 +21,11 @@ describe('TippyManager', () => {
     });
 
     it('should have two overridden methods [setMap, getName]', () => {
-        const spy = jest.spyOn(TippyManager, 'setMap');
+        const spyOnSetMap = jest.spyOn(TippyManager, 'setMap');
         const map = {};
 
         TippyManager.setMap(map);
-        expect(spy).toHaveBeenCalled();
+        expect(spyOnSetMap).toHaveBeenCalled();
         expect(TippyManager.getName()).toBe(FILENAME);
     });
 

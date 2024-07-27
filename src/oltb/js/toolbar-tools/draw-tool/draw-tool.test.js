@@ -269,12 +269,12 @@ describe('DrawTool', () => {
 
     it('should deactivate tool as done by ToolManager', () => {
         const tool = initToolInstance();
-        const spy = jest.spyOn(ToolManager, 'removeActiveTool');
+        const spyOnRemoveActiveTool = jest.spyOn(ToolManager, 'removeActiveTool');
 
         tool.activateTool();
         tool.deselectTool();
 
-        expect(spy).toHaveBeenCalled();
+        expect(spyOnRemoveActiveTool).toHaveBeenCalled();
     });
 
     it('should re-activate active tool after reload', () => {

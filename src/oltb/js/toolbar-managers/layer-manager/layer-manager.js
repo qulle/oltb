@@ -183,7 +183,6 @@ class LayerManager extends BaseManager {
         const source = layer.getSource();
 
         source.addFeature(feature);
-
         this.#snapFeatures.push(feature);
     }
 
@@ -289,6 +288,12 @@ class LayerManager extends BaseManager {
         });
     }
 
+    static removeAllMapLayers() {
+        this.#layers.mapLayers.forEach((layerWrapper) => {
+            this.removeMapLayer(layerWrapper);
+        });
+    }
+
     static removeMapLayer(layerWrapper, isSilent = false) {
         LogManager.logDebug(FILENAME, 'removeMapLayer', layerWrapper.getName());
 
@@ -368,7 +373,7 @@ class LayerManager extends BaseManager {
     }
 
     static belongsToMapLayer(feature) {
-        return this.#layers.mapLayers.find((layerWrapper) => {
+        return !!this.#layers.mapLayers.find((layerWrapper) => {
             return layerWrapper.getLayer().getSource().hasFeature(feature);
         });
     }
@@ -385,7 +390,7 @@ class LayerManager extends BaseManager {
         // Note:
         // Previously the styles for both IconMarkers and WindBarbs was generated
         // in each of the Generator-function. By using the vector-style-function
-        // the render process can be better controlled and more effective
+        // the render process can be better controlled and more effective.
         const layerWrapper = {
             id: mergedOptions.id,
             name: mergedOptions.name,
@@ -454,6 +459,8 @@ class LayerManager extends BaseManager {
         });
     }
 
+    // TODO:
+    // Make helper functions
     static removeFeatureLayer(layerWrapper, isSilent = false) {
         LogManager.logDebug(FILENAME, 'removeFeatureLayer', layerWrapper.getName());
 
@@ -549,7 +556,7 @@ class LayerManager extends BaseManager {
     }
 
     static belongsToFeatureLayer(feature) {
-        return this.#layers.featureLayers.find((layerWrapper) => {
+        return !!this.#layers.featureLayers.find((layerWrapper) => {
             return layerWrapper.getLayer().getSource().hasFeature(feature);
         });
     }

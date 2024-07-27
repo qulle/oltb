@@ -15,11 +15,11 @@ describe('StateManager', () => {
     });
 
     it('should have two overridden methods [setMap, getName]', () => {
-        const spy = jest.spyOn(StateManager, 'setMap');
+        const spyOnSetMap = jest.spyOn(StateManager, 'setMap');
         const map = {};
 
         StateManager.setMap(map);
-        expect(spy).toHaveBeenCalled();
+        expect(spyOnSetMap).toHaveBeenCalled();
         expect(StateManager.getName()).toBe(FILENAME);
     });
 
@@ -67,9 +67,9 @@ describe('StateManager', () => {
     // TODO:
     // Is this behaviour correct, that clear also fetches the saved state?
     it('should clear state', () => {
-        const spy = jest.spyOn(LogManager, 'logDebug');
+        const spyOnLogDebug = jest.spyOn(LogManager, 'logDebug');
         StateManager.clear();
 
-        expect(spy).toHaveBeenCalled();
+        expect(spyOnLogDebug).toHaveBeenCalled();
     });
 });

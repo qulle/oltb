@@ -14,11 +14,11 @@ describe('TooltipManager', () => {
     });
 
     it('should have two overridden methods [setMap, getName]', () => {
-        const spy = jest.spyOn(TooltipManager, 'setMap');
+        const spyOnSetMap = jest.spyOn(TooltipManager, 'setMap');
         const map = {};
 
         TooltipManager.setMap(map);
-        expect(spy).toHaveBeenCalled();
+        expect(spyOnSetMap).toHaveBeenCalled();
         expect(TooltipManager.getName()).toBe(FILENAME);
     });
 

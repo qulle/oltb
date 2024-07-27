@@ -20,11 +20,11 @@ describe('SettingsManager', () => {
     });
 
     it('should have two overridden methods [setMap, getName]', () => {
-        const spy = jest.spyOn(SettingsManager, 'setMap');
+        const spyOnSetMap = jest.spyOn(SettingsManager, 'setMap');
         const map = {};
 
         SettingsManager.setMap(map);
-        expect(spy).toHaveBeenCalled();
+        expect(spyOnSetMap).toHaveBeenCalled();
         expect(SettingsManager.getName()).toBe(FILENAME);
     });
 

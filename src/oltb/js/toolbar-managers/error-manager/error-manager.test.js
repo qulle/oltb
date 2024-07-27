@@ -25,22 +25,22 @@ describe('ErrorManager', () => {
     });
 
     it('should have two overridden methods [setMap, getName]', () => {
-        const spy = jest.spyOn(ErrorManager, 'setMap');
+        const spyOnSetMap = jest.spyOn(ErrorManager, 'setMap');
         const map = {};
 
         ErrorManager.setMap(map);
-        expect(spy).toHaveBeenCalled();
+        expect(spyOnSetMap).toHaveBeenCalled();
         expect(ErrorManager.getName()).toBe(FILENAME);
     });
 
     it('should not catch handled error', () => {
-        const spy = jest.spyOn(LogManager, 'logFatal');
+        const spyOnLogFatal = jest.spyOn(LogManager, 'logFatal');
 
         try {
             throw new Error();
         }catch(error) {
             expect(error).toBeTruthy();
-            expect(spy).not.toHaveBeenCalled();
+            expect(spyOnLogFatal).not.toHaveBeenCalled();
         }
     });
 

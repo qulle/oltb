@@ -16,11 +16,11 @@ describe('ColorPickerManager', () => {
     });
 
     it('should have two overridden methods [setMap, getName]', () => {
-        const spy = jest.spyOn(ColorPickerManager, 'setMap');
+        const spyOnSetMap = jest.spyOn(ColorPickerManager, 'setMap');
         const map = {};
 
         ColorPickerManager.setMap(map);
-        expect(spy).toHaveBeenCalled();
+        expect(spyOnSetMap).toHaveBeenCalled();
         expect(ColorPickerManager.getName()).toBe(FILENAME);
     });
 

@@ -21,11 +21,11 @@ describe('SnapManager', () => {
     });
 
     it('should have two overridden methods [setMap, getName]', () => {
-        const spy = jest.spyOn(SnapManager, 'setMap');
+        const spyOnSetMap = jest.spyOn(SnapManager, 'setMap');
         const map = {};
 
         SnapManager.setMap(map);
-        expect(spy).toHaveBeenCalled();
+        expect(spyOnSetMap).toHaveBeenCalled();
         expect(SnapManager.getName()).toBe(FILENAME);
     });
 

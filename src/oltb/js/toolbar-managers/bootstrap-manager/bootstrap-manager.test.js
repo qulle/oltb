@@ -18,11 +18,11 @@ describe('BootstrapManager', () => {
     });
 
     it('should have two overridden methods [setMap, getName]', () => {
-        const spy = jest.spyOn(BootstrapManager, 'setMap');
+        const spyOnSetMap = jest.spyOn(BootstrapManager, 'setMap');
         const map = {};
 
         BootstrapManager.setMap(map);
-        expect(spy).toHaveBeenCalled();
+        expect(spyOnSetMap).toHaveBeenCalled();
         expect(BootstrapManager.getName()).toBe(FILENAME);
     });
 

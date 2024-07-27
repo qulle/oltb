@@ -1,5 +1,9 @@
 import { jest, describe, it, expect } from '@jest/globals';
+import { GeoJSON } from 'ol/format';
 import { LayerManager } from './layer-manager';
+import { FeatureManager } from '../feature-manager/feature-manager';
+import { Vector as VectorLayer } from 'ol/layer';
+import { Vector as VectorSource } from 'ol/source';
 import { validate as isValidUUID } from 'uuid';
 
 const FILENAME = 'layer-manager.js';
@@ -15,14 +19,14 @@ describe('LayerManager', () => {
     });
 
     it('should have two overridden methods [setMap, getName]', () => {
-        const spy = jest.spyOn(LayerManager, 'setMap');
+        const spyOnSetMap = jest.spyOn(LayerManager, 'setMap');
         const map = {
             addLayer: (layer) => {},
             removeLayer: (layer) => {}
         };
 
         LayerManager.setMap(map);
-        expect(spy).toHaveBeenCalled();
+        expect(spyOnSetMap).toHaveBeenCalled();
         expect(LayerManager.getName()).toBe(FILENAME);
     });
 
@@ -137,6 +141,10 @@ describe('LayerManager', () => {
     });
 
     it('should add, remove and clear feature from layer', () => {
+        const feature = {
+            id: 'jest'
+        };
+
         const source = {
             addFeature: (feature) => {},
             removeFeature: (feature) => {}
@@ -154,8 +162,6 @@ describe('LayerManager', () => {
             }
         };
 
-        const feature = {};
-
         expect(LayerManager.getSnapFeatures().getLength()).toBe(0);
         LayerManager.addFeatureToLayer(feature, layerWrapper);
         LayerManager.addFeatureToLayer(feature, layerWrapper);
@@ -165,5 +171,54 @@ describe('LayerManager', () => {
         expect(LayerManager.getSnapFeatures().getLength()).toBe(1);
         LayerManager.clearSnapFeatures();
         expect(LayerManager.getSnapFeatures().getLength()).toBe(0);
+    });
+
+    it('should find layer from feature', () => {
+        const optionsOne = {name: 'Jest-One'};
+        const optionsTwo = {name: 'Jest-Two'};
+
+        const layerWrapperOne = LayerManager.addFeatureLayer(optionsOne);
+        const layerWrapperTwo = LayerManager.addFeatureLayer(optionsTwo);
+
+        const featureOne = FeatureManager.generateIconMarker({lon: 0, lat: 0});
+        const featureTwo = FeatureManager.generateIconMarker({lon: 0, lat: 0});
+        const featureThree = FeatureManager.generateIconMarker({lon: 0, lat: 0});
+
+        LayerManager.addFeatureToLayer(featureOne, layerWrapperOne);
+        LayerManager.addFeatureToLayer(featureTwo, layerWrapperTwo);
+
+        expect(LayerManager.getLayerFromFeature(featureOne)).toStrictEqual(layerWrapperOne.getLayer());
+        expect(LayerManager.getLayerFromFeature(featureTwo)).toStrictEqual(layerWrapperTwo.getLayer());
+        expect(LayerManager.getLayerFromFeature(featureThree)).toBeUndefined();
+    });
+
+    it('should check if feature belongs to map-layer or feature-layer', () => {
+        LayerManager.removeAllFeatureLayers();
+        LayerManager.removeAllMapLayers();
+
+        const layerWrapper = {
+            id: '90fcb696-0eca-43cf-897c-268f1d7d070f',
+            name: 'Countries Overlay',
+            layer: new VectorLayer({
+                source: new VectorSource({}),
+                visible: true
+            })
+        }
+        
+        const options = {name: 'jest'};
+        const mapLayerWrapper = LayerManager.addMapLayer(layerWrapper, options);
+        const featureLayerWrapper = LayerManager.addFeatureLayer(options);
+
+        const featureOne = FeatureManager.generateIconMarker({lon: 0, lat: 0});
+        const featureTwo = FeatureManager.generateIconMarker({lon: 0, lat: 0});
+
+        LayerManager.addFeatureToLayer(featureOne, featureLayerWrapper);
+        LayerManager.addFeatureToLayer(featureTwo, mapLayerWrapper);
+        
+        expect(LayerManager.belongsToMapLayer(featureOne)).toBe(false);
+        expect(LayerManager.belongsToMapLayer(featureTwo)).toBe(true);
+
+        expect(LayerManager.belongsToFeatureLayer(featureOne)).toBe(true);
+        expect(LayerManager.belongsToFeatureLayer(featureTwo)).toBe(false);
     });
 });

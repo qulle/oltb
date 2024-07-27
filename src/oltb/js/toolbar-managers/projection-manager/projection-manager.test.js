@@ -14,11 +14,11 @@ describe('ProjectionManager', () => {
     });
 
     it('should have two overridden methods [setMap, getName]', () => {
-        const spy = jest.spyOn(ProjectionManager, 'setMap');
+        const spyOnSetMap = jest.spyOn(ProjectionManager, 'setMap');
         const map = {};
 
         ProjectionManager.setMap(map);
-        expect(spy).toHaveBeenCalled();
+        expect(spyOnSetMap).toHaveBeenCalled();
         expect(ProjectionManager.getName()).toBe(FILENAME);
     });
 

@@ -47,7 +47,7 @@ describe('createUICheckbox', () => {
     });
 
     it('should be translated using i18n', () => {
-        const spy = jest.spyOn(TranslationManager, 'get').mockImplementation(() => {
+        const spyOnGetTranslatedValue = jest.spyOn(TranslationManager, 'get').mockImplementation(() => {
             return 'jest-translated-value';
         });
 
@@ -58,7 +58,7 @@ describe('createUICheckbox', () => {
         const wrapper = uiCheckbox[0];
         const label = wrapper.childNodes[1];
 
-        expect(spy).toHaveBeenCalledTimes(1);
+        expect(spyOnGetTranslatedValue).toHaveBeenCalledTimes(1);
         expect(label.innerText).toBe('jest-translated-value');
     });
 

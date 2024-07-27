@@ -14,11 +14,11 @@ describe('UrlManager', () => {
     });
 
     it('should have two overridden methods [setMap, getName]', () => {
-        const spy = jest.spyOn(UrlManager, 'setMap');
+        const spyOnSetMap = jest.spyOn(UrlManager, 'setMap');
         const map = {};
 
         UrlManager.setMap(map);
-        expect(spy).toHaveBeenCalled();
+        expect(spyOnSetMap).toHaveBeenCalled();
         expect(UrlManager.getName()).toBe(FILENAME);
     });
 });

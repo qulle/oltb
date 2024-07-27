@@ -14,11 +14,11 @@ describe('Conversions', () => {
     });
 
     it('should have two overridden methods [setMap, getName]', () => {
-        const spy = jest.spyOn(ConversionManager, 'setMap');
+        const spyOnSetMap = jest.spyOn(ConversionManager, 'setMap');
         const map = {};
 
         ConversionManager.setMap(map);
-        expect(spy).toHaveBeenCalled();
+        expect(spyOnSetMap).toHaveBeenCalled();
         expect(ConversionManager.getName()).toBe(FILENAME);
     });
 

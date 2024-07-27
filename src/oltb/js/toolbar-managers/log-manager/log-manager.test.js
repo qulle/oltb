@@ -14,11 +14,11 @@ describe('LogManager', () => {
     });
 
     it('should have two overridden methods [setMap, getName]', () => {
-        const spy = jest.spyOn(LogManager, 'setMap');
+        const spyOnSetMap = jest.spyOn(LogManager, 'setMap');
         const map = {};
 
         LogManager.setMap(map);
-        expect(spy).toHaveBeenCalled();
+        expect(spyOnSetMap).toHaveBeenCalled();
         expect(LogManager.getName()).toBe(FILENAME);
     });
 
@@ -65,7 +65,7 @@ describe('LogManager', () => {
         LogManager.setLogToConsole(true);
 
         const logLevels = LogManager.getLogLevels();
-        const spy = jest.spyOn(logLevels.debug, 'method');
+        const spyOnLogMethod = jest.spyOn(logLevels.debug, 'method');
         LogManager.logDebug(FILENAME, 'jest', {});
 
         const size = LogManager.getSize();
@@ -73,7 +73,7 @@ describe('LogManager', () => {
 
         expect(size).toBe(1);
         expect(item.level.value).toBe(1);
-        expect(spy).toHaveBeenCalledTimes(1);
+        expect(spyOnLogMethod).toHaveBeenCalledTimes(1);
     });
 
     it('should log a debug item', () => {

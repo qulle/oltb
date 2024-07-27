@@ -44,7 +44,7 @@ describe('DomFactory', () => {
 
     it('should test listeners', () => {
         const callbacks = {onClick: () => {}};
-        const spy = jest.spyOn(callbacks, 'onClick');
+        const spyOnOnClick = jest.spyOn(callbacks, 'onClick');
 
         const element = DOM.createElement({
             element: 'div',
@@ -54,7 +54,7 @@ describe('DomFactory', () => {
         });
         
         element.click();
-        expect(spy).toHaveBeenCalledTimes(1);
+        expect(spyOnOnClick).toHaveBeenCalledTimes(1);
     });
 
     it('should test listeners given as array', () => {

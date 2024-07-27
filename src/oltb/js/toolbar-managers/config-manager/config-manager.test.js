@@ -45,7 +45,7 @@ describe('ConfigManager', () => {
 
     it('should init the manager failed load [404 Not Found]', async () => {
         const config = {};
-        const spy = jest.spyOn(LogManager, 'logWarning');
+        const spyOnLogWarning = jest.spyOn(LogManager, 'logWarning');
 
         jest.spyOn(axios, 'get').mockImplementation(async () => {
             return Promise.resolve({
@@ -55,7 +55,7 @@ describe('ConfigManager', () => {
         });
 
         return ConfigManager.initAsync({}).then((result) => {
-            expect(spy).toHaveBeenCalledTimes(1);
+            expect(spyOnLogWarning).toHaveBeenCalledTimes(1);
             expect(ConfigManager.getConfig()).toStrictEqual(DefaultConfig);
             expect(result).toStrictEqual({
                 filename: FILENAME,
@@ -65,11 +65,11 @@ describe('ConfigManager', () => {
     });
 
     it('should have two overridden methods [setMap, getName]', () => {
-        const spy = jest.spyOn(ConfigManager, 'setMap');
+        const spyOnSetMap = jest.spyOn(ConfigManager, 'setMap');
         const map = {};
 
         ConfigManager.setMap(map);
-        expect(spy).toHaveBeenCalled();
+        expect(spyOnSetMap).toHaveBeenCalled();
         expect(ConfigManager.getName()).toBe(FILENAME);
     });
 });

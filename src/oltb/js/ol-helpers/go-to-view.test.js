@@ -7,10 +7,10 @@ describe('GoToView', () => {
             map: undefined,
             onDone: () => {}
         };
-        const spy = jest.spyOn(options, 'onDone');
+        const spyOnOnDone = jest.spyOn(options, 'onDone');
 
         goToView(options)
-        expect(spy).not.toHaveBeenCalled();
+        expect(spyOnOnDone).not.toHaveBeenCalled();
     });
 
     it('should block due to falsy view', () => {
@@ -20,10 +20,10 @@ describe('GoToView', () => {
             },
             onDone: () => {}
         };
-        const spy = jest.spyOn(options, 'onDone');
+        const spyOnOnDone = jest.spyOn(options, 'onDone');
 
         goToView(options)
-        expect(spy).not.toHaveBeenCalled();
+        expect(spyOnOnDone).not.toHaveBeenCalled();
     });
 
     it('should goToView [50, 100]', () => {
@@ -43,10 +43,10 @@ describe('GoToView', () => {
             },
             onDone: () => {}
         };
-        const spy = jest.spyOn(options, 'onDone');
+        const spyOnOnDone = jest.spyOn(options, 'onDone');
 
         goToView(options)
-        expect(spy).toHaveBeenCalled();
+        expect(spyOnOnDone).toHaveBeenCalled();
     });
 
     it('should goToView [50, 100] but cancel ongoing animation', () => {

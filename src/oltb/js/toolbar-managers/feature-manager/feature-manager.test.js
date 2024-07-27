@@ -14,11 +14,11 @@ describe('FeatureManager', () => {
     });
 
     it('should have two overridden methods [setMap, getName]', () => {
-        const spy = jest.spyOn(FeatureManager, 'setMap');
+        const spyOnSetMap = jest.spyOn(FeatureManager, 'setMap');
         const map = {};
 
         FeatureManager.setMap(map);
-        expect(spy).toHaveBeenCalled();
+        expect(spyOnSetMap).toHaveBeenCalled();
         expect(FeatureManager.getName()).toBe(FILENAME);
     });
 

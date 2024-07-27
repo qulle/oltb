@@ -14,11 +14,11 @@ describe('EventManager', () => {
     });
 
     it('should have two overridden methods [setMap, getName]', () => {
-        const spy = jest.spyOn(EventManager, 'setMap');
+        const spyOnSetMap = jest.spyOn(EventManager, 'setMap');
         const map = {};
 
         EventManager.setMap(map);
-        expect(spy).toHaveBeenCalled();
+        expect(spyOnSetMap).toHaveBeenCalled();
         expect(EventManager.getName()).toBe(FILENAME);
     });
 
