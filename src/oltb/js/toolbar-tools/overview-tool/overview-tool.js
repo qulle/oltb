@@ -19,7 +19,7 @@ const CLASS__TOOL_BUTTON = 'oltb-tool-button';
 const CLASS__TOOLBOX_SECTION = 'oltb-toolbox-section';
 const CLASS__TOGGLEABLE = 'oltb-toggleable';
 const ID__PREFIX = 'oltb-overview';
-const ID__CLASS__OVERVIEW_TARGET = 'oltb-overview-target';
+const ID__OVERVIEW_TARGET = `${ID__PREFIX}-target`;
 const I18N__BASE = 'tools.overviewTool';
 const I18N__BASE_COMMON = 'commons';
 
@@ -149,7 +149,7 @@ class OverviewTool extends BaseTool {
                     <span class="${CLASS__TOOLBOX_SECTION}__icon oltb-tippy" data-oltb-i18n="${I18N__BASE_COMMON}.titles.toggleSection" title="${i18nCommon.toggleSection}"></span>
                 </div>
                 <div class="${CLASS__TOOLBOX_SECTION}__groups" id="${ID__PREFIX}-toolbox-collapsed" style="display: ${this.localStorage.isCollapsed ? 'none' : 'block'}">
-                    <div class="${CLASS__TOOLBOX_SECTION}__group" id="${ID__PREFIX}-target"></div>
+                    <div class="${CLASS__TOOLBOX_SECTION}__group" id="${ID__OVERVIEW_TARGET}"></div>
                 </div>
             </div>
         `);
@@ -168,7 +168,7 @@ class OverviewTool extends BaseTool {
     //--------------------------------------------------------------------
     #generateOLOverviewMap() {
         return new OverviewMap({
-            target: ID__CLASS__OVERVIEW_TARGET,
+            target: ID__OVERVIEW_TARGET,
             isCollapsed: false,
             collapsible: false,
             layers: [
@@ -191,7 +191,7 @@ class OverviewTool extends BaseTool {
         // Note:
         // The class must be added before setMap or the overview will not render correctly
         this.uiRefToolboxSection.classList.add(`${CLASS__TOOLBOX_SECTION}--show`);
-        this.doAddOverview();
+        this.doAddOverview(map);
 
         this.isActive = true;
         this.button.classList.add(`${CLASS__TOOL_BUTTON}--active`);
