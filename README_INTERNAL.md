@@ -256,46 +256,51 @@ SCSS and HTML is written with [BEM](http://getbem.com/introduction/) naming conv
 All modules uses named exports exclusively throughout the project. The one exception is the `oltb.js` file which is the main entry for Rollup to create the portable CDN version.
 
 ### JavaScript
-The tools are located in the directory `src/oltb/js/tools`. Every tool has its own class and extend the Control-class from OpenLayers.
+The tools are located in the directory `src/oltb/js/toolbar-tools`. Every tool has its own class and extend the BaseTool-class.
+```javascript
+class CoordinatesTool extends BaseTool {}
+```
+
+The BaseTool-class extends the Control-class from OpenLayers.
 ```javascript
 class CoordinatesTool extends Control {}
 ```
 
 When using the custom tools, all that is needed is to import the module(s) you want to have in your Toolbar.
 ```javascript
-import { HomeTool } from 'oltb/js/tools/HomeTool';
-import { DrawTool } from 'oltb/js/tools/DrawTool';
-import { EditTool } from 'oltb/js/tools/EditTool';
-import { InfoTool } from 'oltb/js/tools/InfoTool';
-import { HelpTool } from 'oltb/js/tools/HelpTool';
-import { ThemeTool } from 'oltb/js/tools/ThemeTool';
-import { LayerTool } from 'oltb/js/tools/LayerTool';
-import { ZoomInTool } from 'oltb/js/tools/ZoomInTool';
-import { ZoomboxTool } from 'oltb/js/tools/ZoomboxTool';
-import { ToolboxTool } from 'oltb/js/tools/ToolboxTool';
-import { MeasureTool } from 'oltb/js/tools/MeasureTool';
-import { MagnifyTool } from 'oltb/js/tools/MagnifyTool';
-import { ZoomOutTool } from 'oltb/js/tools/ZoomOutTool';
-import { RefreshTool } from 'oltb/js/tools/RefreshTool';
-import { SettingsTool } from 'oltb/js/tools/SettingsTool';
-import { OverviewTool } from 'oltb/js/tools/OverviewTool';
-import { ScissorsTool } from 'oltb/js/tools/ScissorsTool';
-import { BookmarkTool } from 'oltb/js/tools/BookmarkTool';
-import { DirectionTool } from 'oltb/js/tools/DirectionTool';
-import { DebugInfoTool } from 'oltb/js/tools/DebugInfoTool';
-import { SplitViewTool } from 'oltb/js/tools/SplitViewTool';
-import { ExportPngTool } from 'oltb/js/tools/ExportPngTool';
-import { ScaleLineTool } from 'oltb/js/tools/ScaleLineTool';
-import { GraticuleTool } from 'oltb/js/tools/GraticuleTool';
-import { MyLocationTool } from 'oltb/js/tools/MyLocationTool';
-import { ResetNorthTool } from 'oltb/js/tools/ResetNorthTool';
-import { FullscreenTool } from 'oltb/js/tools/FullscreenTool';
-import { CoordinatesTool } from 'oltb/js/tools/CoordinatesTool';
-import { TranslationTool } from 'oltb/js/tools/TranslationTool';
-import { HiddenAboutTool } from 'oltb/js/tools/hidden-tools/HiddenAboutTool';
-import { HiddenMarkerTool } from 'oltb/js/tools/hidden-tools/HiddenMarkerTool';
-import { ImportVectorLayerTool } from 'oltb/js/tools/ImportVectorLayerTool';
-import { HiddenMapNavigationTool } from 'oltb/js/tools/hidden-tools/HiddenMapNavigationTool';
+import { HomeTool } from 'oltb/js/toolbar-tools/HomeTool';
+import { DrawTool } from 'oltb/js/toolbar-tools/DrawTool';
+import { EditTool } from 'oltb/js/toolbar-tools/EditTool';
+import { InfoTool } from 'oltb/js/toolbar-tools/InfoTool';
+import { HelpTool } from 'oltb/js/toolbar-tools/HelpTool';
+import { ThemeTool } from 'oltb/js/toolbar-tools/ThemeTool';
+import { LayerTool } from 'oltb/js/toolbar-tools/LayerTool';
+import { ZoomInTool } from 'oltb/js/toolbar-tools/ZoomInTool';
+import { ZoomboxTool } from 'oltb/js/toolbar-tools/ZoomboxTool';
+import { ToolboxTool } from 'oltb/js/toolbar-tools/ToolboxTool';
+import { MeasureTool } from 'oltb/js/toolbar-tools/MeasureTool';
+import { MagnifyTool } from 'oltb/js/toolbar-tools/MagnifyTool';
+import { ZoomOutTool } from 'oltb/js/toolbar-tools/ZoomOutTool';
+import { RefreshTool } from 'oltb/js/toolbar-tools/RefreshTool';
+import { SettingsTool } from 'oltb/js/toolbar-tools/SettingsTool';
+import { OverviewTool } from 'oltb/js/toolbar-tools/OverviewTool';
+import { ScissorsTool } from 'oltb/js/toolbar-tools/ScissorsTool';
+import { BookmarkTool } from 'oltb/js/toolbar-tools/BookmarkTool';
+import { DirectionTool } from 'oltb/js/toolbar-tools/DirectionTool';
+import { DebugInfoTool } from 'oltb/js/toolbar-tools/DebugInfoTool';
+import { SplitViewTool } from 'oltb/js/toolbar-tools/SplitViewTool';
+import { ExportPngTool } from 'oltb/js/toolbar-tools/ExportPngTool';
+import { ScaleLineTool } from 'oltb/js/toolbar-tools/ScaleLineTool';
+import { GraticuleTool } from 'oltb/js/toolbar-tools/GraticuleTool';
+import { MyLocationTool } from 'oltb/js/toolbar-tools/MyLocationTool';
+import { ResetNorthTool } from 'oltb/js/toolbar-tools/ResetNorthTool';
+import { FullscreenTool } from 'oltb/js/toolbar-tools/FullscreenTool';
+import { CoordinatesTool } from 'oltb/js/toolbar-tools/CoordinatesTool';
+import { TranslationTool } from 'oltb/js/toolbar-tools/TranslationTool';
+import { HiddenAboutTool } from 'oltb/js/toolbar-tools/hidden-tools/HiddenAboutTool';
+import { HiddenMarkerTool } from 'oltb/js/toolbar-tools/hidden-tools/HiddenMarkerTool';
+import { ImportVectorLayerTool } from 'oltb/js/toolbar-tools/ImportVectorLayerTool';
+import { HiddenMapNavigationTool } from 'oltb/js/toolbar-tools/hidden-tools/HiddenMapNavigationTool';
 ```
 
 Then call the constructor for each tool in the extend method. The tools are added to the Toolbar in the order you include them in the array.
@@ -887,7 +892,7 @@ controls: defaultControls({
 Tools refered to as hidden tools are tools that only add functionality via the context menu. The hidden tools are used to enable the same type of setup and callback functions that exists on all other tools. 
 
 ### Shortcut Keys
-All tools have a shortcut key for ease of use and speeds up the handling of the Toolbar. The shortcut key is displayed in the tooltip on the corresponding tool. All shortcut keys are stored in the module `oltb/js/helpers/Constants/ShortcutKeys`.
+All tools have a shortcut key for ease of use and speeds up the handling of the Toolbar. The shortcut key is displayed in the tooltip on the corresponding tool. All shortcut keys are stored in the module `oltb/js/browser-constants/shortcut-keys.js`.
 ```javascript
 const ShortcutKeys = Object.freeze({
     areaOverview: 'A',
@@ -898,7 +903,7 @@ const ShortcutKeys = Object.freeze({
 ```
 
 ### Managers
-There are a number of so-called managers located in `oltb/js/managers`. These are to be considered as self-isolated classes that have no dependencies to the tools, but the other way around. The managers are the central hub of the application that provides data to all other parties and among themselves.
+There are a number of so-called managers located in `oltb/js/toolbar-managers`. These are to be considered as self-isolated classes that have no dependencies to the tools, but the other way around. The managers are the central hub of the application that provides data to all other parties and among themselves.
 
 The managers are initiated in two steps. The first one is the base initiation that is done before the map is created.
 ```javascript
@@ -928,13 +933,13 @@ BootstrapManager.initAsync([
 ]);
 ```
 
-The second and third step is to pass the created map as reference to all managers. After that the ready method is called which will fire of a event that components and managers will listen for in order to do the final configurations now when both the DOM, Map and Toolbar is ready to be used. 
+The second step is to pass the created map as reference to all managers. After that the ready method is called which will fire of a event that components and managers will listen for in order to do the final configurations now when both the DOM, Map and Toolbar is ready to be used. 
 ```javascript
 BootstrapManager.setMap(map);
 ```
 
 ### Custom Projections
-You can define custom projections in the file `oltb/js/managers/ProjectionManager.js`. This manager keeps track of all added projections. If you want to change the default projection used, there is a general config module `oltb/js/Config` where you can change that. More projections can be fetched at [https://epsg.io/](https://epsg.io/).
+You can define custom projections in the file `oltb/js/toolbar-managers/projection-manager/projection-manager.js`. This manager keeps track of all added projections. If you want to change the default projection used, there is a general config module `oltb/js/toolbar-managers/config-manager/default-config.js` where you can change that. More projections can be fetched at [https://epsg.io/](https://epsg.io/).
 
 The map uses `EPSG:3857` as the default projection. Tools that can receive coordinates expect these to be given in the projection `EPSG:4326`:
 
@@ -973,7 +978,7 @@ The following projections are added by default.
 </table>
 
 ### Layers
-Layers are added to the map using the `LayerManager`. The manager handels internal functionality and fires of events that the LayerTool captures to create the UI.
+Layers are added to the map using the `LayerManager`. The manager handels internal functionality and fires of events that the `LayerTool` captures to create the UI.
 
 Layers can be added at any time during the applications lifetime. If the map is not ready to recieve a layer the manager will queue the layer and add it to the map once the manager is initiated with a reference to the map.
 
@@ -984,7 +989,7 @@ There are two types of layers, `map`- and `feature`-layers. Exampels of adding d
 ### Markers
 Markers can be created in the map using the following Manager.
 ```javascript
-import { FeatureManager } from 'oltb/js/managers/FeatureManager';
+import { FeatureManager } from 'oltb/js/toolbar-managers/feature-manager/feature-manager.js';
 ```
 
 To create a marker use the following object properties.
@@ -1079,7 +1084,7 @@ The JSON object has the following structure.
 ### Wind Barbs
 Wind Barbs can be created in the map using the following manager.
 ```javascript
-import { FeatureManager } from 'oltb/js/managers/FeatureManager';
+import { FeatureManager } from 'oltb/js/toolbar-managers/feature-manager/feature-manager.js';
 ```
 
 To create a wind barb use the following object properties.
@@ -1136,9 +1141,9 @@ All available properties:
 ```
 
 ### Dialogs
-To use the custom dialogs in the map, include the following module. All the dialogs uses trap focus and circles the tab-key to always stay in the opened dialog.
+To use the custom dialogs in the map, include the following module. All the dialogs uses trap focus and circles the tab-key to always stay in the opened dialog. A reference to the created dialog is returned.
 ```javascript
-import { Dialog } from 'oltb/js/common/Dialog';
+import { Dialog } from 'oltb/js/ui-common/ui-dialogs/dialog.js';
 ```
 
 #### Alert
@@ -1267,9 +1272,9 @@ All available properties:
 ```
 
 ### Modal
-To use the custom modal in the map, include the following module.
+To use the custom modal in the map, include the following module. A reference to the created modal is returned.
 ```javascript
-import { Modal } from 'oltb/js/common/Modal';
+import { Modal } from 'oltb/js/ui-common/ui-modals/modal.js';
 ```
 
 The modal uses trap focus to circle the tab-key.
@@ -1284,7 +1289,7 @@ Modal.create({
 });
 ```
 
-A reference to the created modal is returned from the create function. This can be used to block the creation of a second modal if a button or shortcut key is pressed again. The `onClose` callback can be used to release the lock.
+The returned reference can be used to block the creation of a second modal if a button or shortcut key is pressed again. The `onClose` callback can be used to release the lock.
 ```javascript
 infoToolClick() {
     if(this.infoModal) {
@@ -1302,9 +1307,9 @@ infoToolClick() {
 ```
 
 ### Toast
-To use the custom toasts in the map, include the following module.
+To use the custom toasts in the map, include the following module. A reference to the created toast is returned.
 ```javascript
-import { Toast } from 'oltb/js/common/Toast';
+import { Toast } from 'oltb/js/ui-common/ui-toasts/toast.js';
 ```
 
 There are four types of toast messages.
@@ -1430,10 +1435,10 @@ const icon = getSvgWindBarb({
 ### Context Menu
 To use the context menu start by importing the following module.
 ```javascript
-import { ContextMenu } from 'oltb/js/common/ContextMenu';
+import { ContextMenu } from 'oltb/js/toolbar-tools/context-menu-tool/context-menu-tool.js';
 ```
 
-To create a context menu in the map call the constructor as any other tool. The context menu class extends the Control-class from OpenLayers.
+To create a context menu in the map call the constructor as any other tool.
 ```javascript
 map.addControl(new ContextMenu());
 ```
@@ -1453,7 +1458,7 @@ ContextMenu.addItem({
     icon: '<svg>...</svg>', 
     name: 'Clear settings', 
     fn: function(map, coordinates, target) {
-        Dialog.confirm({
+        return Dialog.confirm({
             text: 'Do you want to clear all settings?',
             onConfirm: () => {
                 localStorage.clear();
@@ -1473,7 +1478,7 @@ ContextMenu.addItem({});
 ### State Management
 To use state management start by importing the following module.
 ```javascript
-import { StateManager } from 'oltb/js/managers/StateManager';
+import { StateManager } from 'oltb/js/toolbar-managers/state-manager/state-mananger.js';
 ```
 
 State management is done through localStorage under the key `oltb-state`. First add a node name and an object to store default values.
