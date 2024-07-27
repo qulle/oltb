@@ -1535,7 +1535,7 @@ LogManager.logDebug(FILENAME, 'handleClick', {
 All classes and id:s in the project are prefixed with the namespace `oltb`.
 
 ## Dependencies
-1. [OpenLayers 9.2.4](https://openlayers.org/en/v9.2.4/apidoc/)
+1. [OpenLayers 10.0.0](https://openlayers.org/en/v10.0.0/apidoc/)
 2. [Proj4 2.11.0](http://proj4js.org/)   
 3. [Tippy.js 6.3.7](https://atomiks.github.io/tippyjs/)
 4. [Bootstrap Icons](https://icons.getbootstrap.com/)

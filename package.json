@@ -3,7 +3,7 @@
     "version": "3.0.0-dev",
     "author": "Qulle",
     "license": "BSD-2-Clause license",
-    "description": "OLTB is a portable mobile friendly GIS toolbar developed for OpenLayers 9.2.4",
+    "description": "OLTB is a portable mobile friendly GIS toolbar developed for OpenLayers 10.0.0",
     "keywords": [
         "gis",
         "map",
@@ -60,7 +60,7 @@
         "lodash": "^4.17.21",
         "many-keys-map": "^2.0.1",
         "moment": "^2.30.1",
-        "ol": "^9.2.4",
+        "ol": "^10.0.0",
         "proj4": "^2.11.0",
         "screenfull": "^6.0.2",
         "sortablejs": "^1.15.2",
