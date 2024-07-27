@@ -135,4 +135,35 @@ describe('LayerManager', () => {
         expect(activeLayer).toHaveProperty('name', 'jest');
         expect(activeLayer).toHaveProperty('isDynamicallyAdded', true);
     });
+
+    it('should add, remove and clear feature from layer', () => {
+        const source = {
+            addFeature: (feature) => {},
+            removeFeature: (feature) => {}
+        };
+
+        const layer = {
+            getSource: () => {
+                return source;
+            }
+        };
+        
+        const layerWrapper = {
+            getLayer: () => {
+                return layer;
+            }
+        };
+
+        const feature = {};
+
+        expect(LayerManager.getSnapFeatures().getLength()).toBe(0);
+        LayerManager.addFeatureToLayer(feature, layerWrapper);
+        LayerManager.addFeatureToLayer(feature, layerWrapper);
+        expect(LayerManager.getSnapFeatures().getLength()).toBe(2);
+
+        LayerManager.removeFeatureFromLayer(feature, layerWrapper);
+        expect(LayerManager.getSnapFeatures().getLength()).toBe(1);
+        LayerManager.clearSnapFeatures();
+        expect(LayerManager.getSnapFeatures().getLength()).toBe(0);
+    });
 });

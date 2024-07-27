@@ -165,7 +165,10 @@ describe('OverviewTool', () => {
         const options = {onClicked: () => {}};
         const spyOnOnClicked = jest.spyOn(options, 'onClicked');
 
+        const mockOverviewMap = new MockOverviewMap();
         const tool = initToolInstance(options);
+        tool.overviewMap = mockOverviewMap;
+        
         const spyOnActivateTool = jest.spyOn(tool, 'activateTool');
         const spyOnDeactivateTool = jest.spyOn(tool, 'deactivateTool');
         
