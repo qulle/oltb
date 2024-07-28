@@ -2,7 +2,7 @@ import { describe, it, expect } from '@jest/globals';
 import { FeatureProperties } from './feature-properties';
 import { isFeatureIntersectable } from "./is-feature-intersectable";
 
-describe('IsFeatureIntersectable', () => {
+describe('isFeatureIntersectable', () => {
     it('should test other types as intersectable', () => {
         const type = FeatureProperties.type.drawing;
         const geometry = {

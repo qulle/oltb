@@ -45,7 +45,7 @@ describe('ErrorManager', () => {
     });
 
     it('should catch un-handled error', () => {
-        const spyOnWindowConsole = jest.spyOn(window.console, 'error');
+        const spyOnWindowConsole = jest.spyOn(window.console, 'error').mockImplementation(() => {});
         const spyOnLogFatal = jest.spyOn(LogManager, 'logFatal');
         const spyOnToastError = jest.spyOn(Toast, 'error');
 

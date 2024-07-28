@@ -82,7 +82,7 @@ Have a look at the **[Internal Development Documentation 👓](https://github.co
 ## Key Features
 - Draggable layers
 - Create Map- and Feature layers on the fly
-- Stores state in local storage
+- Stores state in local-storage
 - Draw objects including intersections
 - Measure both length and areas
 - Snap interactions
@@ -92,8 +92,8 @@ Have a look at the **[Internal Development Documentation 👓](https://github.co
 - Save locations as Bookmarks
 - Export PNG of canvas and additional HTML objects
 - Compare maps side by side
-- Light and Dark mode
-- Vertical and Horizontal mode
+- Light and Dark theme
+- Vertical and Horizontal layout
 - Built in debugging help
 - Parameters for customizability
 - Callback functions for integrations
