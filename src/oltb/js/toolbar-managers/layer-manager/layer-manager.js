@@ -175,6 +175,10 @@ class LayerManager extends BaseManager {
         return undefined
     }
 
+    static #removeLayerFromMap(layerWrapper) {
+        this.#map.removeLayer(layerWrapper.getLayer());
+    }
+
     //--------------------------------------------------------------------
     // Section: Common Layers
     //--------------------------------------------------------------------
@@ -239,6 +243,35 @@ class LayerManager extends BaseManager {
     //--------------------------------------------------------------------
     // Section: Map Layers Specific
     //--------------------------------------------------------------------
+    static #removeMapLayerFromInternal(layerWrapper) {
+        this.#layers.mapLayers = this.#layers.mapLayers.filter((layer) => {
+            return layer.getId() !== layerWrapper.getId();
+        });
+    }
+
+    static #removeMapOverlaysAndSnapFromInternal(layerWrapper) {
+        const layer = layerWrapper.getLayer();
+        if(this.isVectorLayer(layer)) {
+            layer.getSource().getFeatures().forEach((feature) => {
+                this.#snapFeatures.remove(feature);
+            });
+        }
+    }
+
+    static #addMapLayerToMap(layerWrapper, options) {
+        this.#layers.mapLayers.push(layerWrapper);
+        this.#map.addLayer(layerWrapper.getLayer());
+
+        EventManager.dispatchCustomEvent([window], Events.custom.mapLayerAdded, {
+            detail: {
+                layerWrapper: layerWrapper, 
+                isSilent: options.isSilent,
+                disableMapLayerEditButton: options.disableMapLayerEditButton,
+                disableMapLayerDeleteButton: options.disableMapLayerDeleteButton
+            }
+        });
+    }
+
     static addMapLayers(layerWrappers, options = {}) {
         for(let index in layerWrappers) {
             this.addMapLayer(layerWrappers[index], options);
@@ -274,20 +307,6 @@ class LayerManager extends BaseManager {
         return layerWrapper;
     }
 
-    static #addMapLayerToMap(layerWrapper, options) {
-        this.#layers.mapLayers.push(layerWrapper);
-        this.#map.addLayer(layerWrapper.getLayer());
-
-        EventManager.dispatchCustomEvent([window], Events.custom.mapLayerAdded, {
-            detail: {
-                layerWrapper: layerWrapper, 
-                isSilent: options.isSilent,
-                disableMapLayerEditButton: options.disableMapLayerEditButton,
-                disableMapLayerDeleteButton: options.disableMapLayerDeleteButton
-            }
-        });
-    }
-
     static removeAllMapLayers() {
         this.#layers.mapLayers.forEach((layerWrapper) => {
             this.removeMapLayer(layerWrapper);
@@ -297,21 +316,9 @@ class LayerManager extends BaseManager {
     static removeMapLayer(layerWrapper, isSilent = false) {
         LogManager.logDebug(FILENAME, 'removeMapLayer', layerWrapper.getName());
 
-        // Remove the layer from the internal collection
-        this.#layers.mapLayers = this.#layers.mapLayers.filter((layer) => {
-            return layer.getId() !== layerWrapper.getId();
-        }); 
-
-        // Remove all features from the Snap collection
-        const layer = layerWrapper.getLayer();
-        if(this.isVectorLayer(layer)) {
-            layer.getSource().getFeatures().forEach((feature) => {
-                this.#snapFeatures.remove(feature);
-            });
-        }
-
-        // Remove the actual ol layer
-        this.#map.removeLayer(layer);
+        this.#removeMapLayerFromInternal(layerWrapper);
+        this.#removeMapOverlaysAndSnapFromInternal(layerWrapper);
+        this.#removeLayerFromMap(layerWrapper);
 
         EventManager.dispatchCustomEvent([window], Events.custom.mapLayerRemoved, {
             detail: {
@@ -330,13 +337,9 @@ class LayerManager extends BaseManager {
     }
 
     static getMapLayerById(id) {
-        // Note: 
-        // The id is a string UUID
-        const result = this.#layers.mapLayers.find((layerWrapper) => {
+        return this.#layers.mapLayers.find((layerWrapper) => {
             return layerWrapper.getId() === id;
         });
-
-        return result;
     }
 
     static getOLMapLayers() {
@@ -381,6 +384,45 @@ class LayerManager extends BaseManager {
     //--------------------------------------------------------------------
     // Section: Feature Layers Specific
     //--------------------------------------------------------------------
+    static #removeFeatureLayerFromInternal(layerWrapper) {
+        this.#layers.featureLayers = this.#layers.featureLayers.filter((layer) => {
+            return layer.getId() !== layerWrapper.getId();
+        });
+    }
+
+    static #removeFeatureOverlaysAndSnapFromInternal(layerWrapper) {
+        layerWrapper.getLayer().getSource().getFeatures().forEach((feature) => {
+            this.#snapFeatures.remove(feature);
+
+            if(FeatureManager.hasTooltip(feature)) {
+                this.#map.removeOverlay(FeatureManager.getTooltip(feature));
+            }
+        });
+    }
+
+    static #addFeatureLayerToMap(layerWrapper, options) {
+        this.#layers.featureLayers.push(layerWrapper);
+        this.#map.addLayer(layerWrapper.getLayer());
+
+        EventManager.dispatchCustomEvent([window], Events.custom.featureLayerAdded, {
+            detail: {
+                layerWrapper: layerWrapper, 
+                isSilent: options.isSilent,
+                disableFeatureLayerEditButton: options.disableFeatureLayerEditButton,
+                disableFeatureLayerDownloadButton: options.disableFeatureLayerDownloadButton,
+                disableFeatureLayerDeleteButton: options.disableFeatureLayerDeleteButton,
+            }
+        });
+    }
+
+    static #getNextActiveFeatureLayer() {
+        if(this.isFeatureLayersEmpty()) {
+            return null;
+        }
+
+        return this.#layers.featureLayers[this.#layers.featureLayers.length - 1];
+    }
+
     static addFeatureLayer(options = {}) {
         const mergedOptions = _.merge(_.cloneDeep(DefaultFeatureLayerOptions), options);
         mergedOptions.name = this.#validateName(mergedOptions.name);
@@ -430,58 +472,19 @@ class LayerManager extends BaseManager {
         return layerWrapper;
     }
 
-    static #addFeatureLayerToMap(layerWrapper, options) {
-        this.#layers.featureLayers.push(layerWrapper);
-        this.#map.addLayer(layerWrapper.getLayer());
-
-        EventManager.dispatchCustomEvent([window], Events.custom.featureLayerAdded, {
-            detail: {
-                layerWrapper: layerWrapper, 
-                isSilent: options.isSilent,
-                disableFeatureLayerEditButton: options.disableFeatureLayerEditButton,
-                disableFeatureLayerDownloadButton: options.disableFeatureLayerDownloadButton,
-                disableFeatureLayerDeleteButton: options.disableFeatureLayerDeleteButton,
-            }
-        });
-    }
-
-    static #getNextActiveFeatureLayer() {
-        if(this.isFeatureLayersEmpty()) {
-            return null;
-        }
-
-        return this.#layers.featureLayers[this.#layers.featureLayers.length - 1];
-    }
-
     static removeAllFeatureLayers() {
         this.#layers.featureLayers.forEach((layerWrapper) => {
             this.removeFeatureLayer(layerWrapper);
         });
     }
 
-    // TODO:
-    // Make helper functions
     static removeFeatureLayer(layerWrapper, isSilent = false) {
         LogManager.logDebug(FILENAME, 'removeFeatureLayer', layerWrapper.getName());
 
-        // Remove the layer from the internal collection
-        this.#layers.featureLayers = this.#layers.featureLayers.filter((layer) => {
-            return layer.getId() !== layerWrapper.getId();
-        });
+        this.#removeFeatureLayerFromInternal(layerWrapper);
+        this.#removeFeatureOverlaysAndSnapFromInternal(layerWrapper);
+        this.#removeLayerFromMap(layerWrapper);
 
-        // Remove overlays associated with each feature
-        // Remove all features from the Snap collection
-        const layer = layerWrapper.getLayer();
-        layer.getSource().getFeatures().forEach((feature) => {
-            this.#snapFeatures.remove(feature);
-
-            if(FeatureManager.hasTooltip(feature)) {
-                this.#map.removeOverlay(FeatureManager.getTooltip(feature));
-            }
-        });
-
-        // Remove the actual ol layer
-        this.#map.removeLayer(layer);
         this.setNextActiveFeatureLayer();
 
         EventManager.dispatchCustomEvent([window], Events.custom.featureLayerRemoved, {
@@ -527,13 +530,9 @@ class LayerManager extends BaseManager {
     }
 
     static getFeatureLayerById(id) {
-        // Note: 
-        // The id is a string UUID
-        const result = this.#layers.featureLayers.find((layerWrapper) => {
+        return this.#layers.featureLayers.find((layerWrapper) => {
             return layerWrapper.getId() === id;
         });
-
-        return result;
     }
 
     static removeFeatureFromFeatureLayers(feature) {
