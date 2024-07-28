@@ -86,7 +86,7 @@ const loadGeoJson = function (extent, resolution, projection, success, failure) 
             });
         }
 
-        return JSON.parse(resolution.data);
+        return JSON.parse(response.data);
     }).then((data) => {
         const features = parseGeoJson(this, data, projection);
         success(features);

@@ -30,6 +30,18 @@ const CLASS__ANIMATION_CENTERED_BOUNCE = `${CLASS__ANIMATION}--centered-bounce`;
 const CLASS__INFO_WINDOW = 'oltb-info-window';
 const ID__PREFIX_INFO_WINDOW = 'oltb-info-window-marker';
 
+const MouseCursors = Object.freeze({
+    default: 'default',
+    pointer: 'pointer'
+});
+
+// Note:
+// Works best on IconMarkers.
+// FeatureProperties.type.windBarb is removed from the types collection for now.
+const AnimationTypes = [
+    FeatureProperties.type.iconMarker
+];
+
 const DefaultHighlightStyle = new Style({
     fill: new Fill({
         color: '#254372AA'
@@ -46,14 +58,6 @@ const DefaultHighlightStyle = new Style({
  * 
  * Description:
  * Manages the Information Window that can be attached on Markers in the Map.
- * 
- * TODO:
- * This class should be refactored in the future, break down into smaller parts
- * Especially:
- * - Animation
- * - Attaching of function-buttons
- * - onSingleClick
- * - onMouseMove
  */
 class InfoWindowManager extends BaseManager {
     static #map;
@@ -153,8 +157,7 @@ class InfoWindowManager extends BaseManager {
             this.#content,
             this.#footer
         ]);
-
-        // Create ol overlay to host infoWindow
+        
         const config = ConfigManager.getConfig();
         this.#overlay = new Overlay({
             element: this.#infoWindow,
@@ -179,16 +182,40 @@ class InfoWindowManager extends BaseManager {
         });
 
         if(!results) {
-            this.hideOverlay();
-            this.#deselectFeature();
-            this.#deselectHoveredVectorSection();
-            this.#deselectVectorSection();
-
+            this.#doSingleClickNoResults();
             return;
         }
 
-        const feature = results[0];
-        const layer = results[1];
+        this.#doSingleClickWithResuls(results);
+    }
+
+    static #onPointerMove(event) {
+        const feature = this.#map.forEachFeatureAtPixel(event.pixel, function(feature) {
+            return feature;
+        });
+
+        this.#handleVectorHoverSections(feature);
+
+        if(!feature) {
+            this.#setViewPortCursor(MouseCursors.default);
+            return;
+        }
+
+        this.#doPointerMoveWithResults(event, feature);
+    }
+
+    //--------------------------------------------------------------------
+    // # Section: Internal
+    //--------------------------------------------------------------------
+    static #doSingleClickNoResults() {
+        this.hideOverlay();
+        this.#deselectFeature();
+        this.#deselectHoveredVectorSection();
+        this.#deselectVectorSection();
+    }
+
+    static #doSingleClickWithResuls(results) {
+        const [ feature, layer ] = results;
 
         this.tryPulseAnimation(feature, layer);
        
@@ -207,12 +234,22 @@ class InfoWindowManager extends BaseManager {
         }
     }
 
-    static #onPointerMove(event) {
-        const viewPort = this.#map.getViewport();
-        const feature = this.#map.forEachFeatureAtPixel(event.pixel, function(feature) {
-            return feature;
-        });
+    static #doPointerMoveWithResults(event, feature) {
+        const shouldHighlight = FeatureManager.shouldHighlightOnHover(feature);
+        if(shouldHighlight) {
+            this.#selectHoveredVectorSection(feature);
+        }
 
+        const nodeName = event.originalEvent.target.nodeName;
+        const hasInfoWindow = FeatureManager.hasInfoWindow(feature);
+        if(hasInfoWindow && nodeName === 'CANVAS') {
+            this.#setViewPortCursor(MouseCursors.pointer);
+        }else {
+            this.#setViewPortCursor(MouseCursors.default);
+        }
+    }
+
+    static #handleVectorHoverSections(feature) {
         if(
             !feature && 
             !this.#selectedVectorSection
@@ -228,30 +265,12 @@ class InfoWindowManager extends BaseManager {
         ) {
             this.#deselectHoveredVectorSection();
         }
-
-        if(!feature) {
-            viewPort.style.cursor = 'default';
-
-            return;
-        }
-
-        const shouldHighlight = FeatureManager.shouldHighlightOnHover(feature);
-        if(shouldHighlight) {
-            this.#selectHoveredVectorSection(feature);
-        }
-
-        const nodeName = event.originalEvent.target.nodeName;
-        const hasInfoWindow = FeatureManager.hasInfoWindow(feature);
-        if(hasInfoWindow && nodeName === 'CANVAS') {
-            viewPort.style.cursor = 'pointer';
-        }else {
-            viewPort.style.cursor = 'default';
-        }
     }
 
-    //--------------------------------------------------------------------
-    // # Section: Internal
-    //--------------------------------------------------------------------
+    static #setViewPortCursor(cursor) {
+        this.#map.getViewport().style.cursor = cursor;
+    }
+
     static #selectFeature(feature) {
         this.#selectedFeature = feature;
         this.#deselectVectorSection();
@@ -383,6 +402,50 @@ class InfoWindowManager extends BaseManager {
         }
     }
 
+    static #attachFunctionButtons(feature) {
+        const uiRefRemoveButton = this.#footer.querySelector(`#${ID__PREFIX_INFO_WINDOW}-remove`);
+            if(uiRefRemoveButton) {
+                uiRefRemoveButton.addEventListener(
+                    Events.browser.click, 
+                    removeMarker.bind(this, InfoWindowManager, feature)
+                );
+            }
+
+            const uiRefCopyCoordinatesButton = this.#footer.querySelector(`#${ID__PREFIX_INFO_WINDOW}-copy-coordinates`);
+            if(uiRefCopyCoordinatesButton) {
+                const value = uiRefCopyCoordinatesButton.getAttribute('data-oltb-coordinates');
+                uiRefCopyCoordinatesButton.addEventListener(
+                    Events.browser.click, 
+                    copyMarkerCoordinatesAsync.bind(this, InfoWindowManager, value)
+                );
+            }
+
+            const uiRefCopyInfoButton = this.#footer.querySelector(`#${ID__PREFIX_INFO_WINDOW}-copy-text`);
+            if(uiRefCopyInfoButton) {
+                const value = uiRefCopyInfoButton.getAttribute('data-oltb-copy');
+                uiRefCopyInfoButton.addEventListener(
+                    Events.browser.click, 
+                    copyMarkerInfoAsync.bind(this, InfoWindowManager, value)
+                );
+            }
+
+            const uiRefEditButton = this.#footer.querySelector(`#${ID__PREFIX_INFO_WINDOW}-edit`);
+            if(uiRefEditButton) {
+                uiRefEditButton.addEventListener(
+                    Events.browser.click, 
+                    editMarker.bind(this, InfoWindowManager, feature)
+                );
+            }
+
+            const uiRefShowLayer = this.#footer.querySelector(`#${ID__PREFIX_INFO_WINDOW}-show-layer`);
+            if(uiRefShowLayer) {
+                uiRefShowLayer.addEventListener(
+                    Events.browser.click, 
+                    showMarkerLayer.bind(this, InfoWindowManager, feature)
+                );
+            }
+    }
+
     //--------------------------------------------------------------------
     // # Section: Public API
     //--------------------------------------------------------------------
@@ -394,14 +457,8 @@ class InfoWindowManager extends BaseManager {
         const animationConfig = ConfigManager.getConfig().marker.pulseAnimation;
 
         // Note:
-        // Works best on IconMarkers, removed FeatureProperties.type.windBarb from the types collection for now.
-        const types = [
-            FeatureProperties.type.iconMarker
-        ];
-
-        // Note:
         // Only animate oltb markers and wind-barbs
-        if(!properties || !types.includes(properties.type) || !animationConfig.isEnabled) {
+        if(!properties || !AnimationTypes.includes(properties.type) || !animationConfig.isEnabled) {
             return;
         }
 
@@ -455,51 +512,8 @@ class InfoWindowManager extends BaseManager {
             }
 
             this.#infoWindow.focus();
-            
             DOM.runAnimation(this.#infoWindow, CLASS__ANIMATION_CENTERED_BOUNCE);
-
-            // Attach listeners to the function-buttons inside the infoWindow
-            const uiRefRemoveButton = this.#footer.querySelector(`#${ID__PREFIX_INFO_WINDOW}-remove`);
-            if(uiRefRemoveButton) {
-                uiRefRemoveButton.addEventListener(
-                    Events.browser.click, 
-                    removeMarker.bind(this, InfoWindowManager, feature)
-                );
-            }
-
-            const uiRefCopyCoordinatesButton = this.#footer.querySelector(`#${ID__PREFIX_INFO_WINDOW}-copy-coordinates`);
-            if(uiRefCopyCoordinatesButton) {
-                const value = uiRefCopyCoordinatesButton.getAttribute('data-oltb-coordinates');
-                uiRefCopyCoordinatesButton.addEventListener(
-                    Events.browser.click, 
-                    copyMarkerCoordinatesAsync.bind(this, InfoWindowManager, value)
-                );
-            }
-
-            const uiRefCopyInfoButton = this.#footer.querySelector(`#${ID__PREFIX_INFO_WINDOW}-copy-text`);
-            if(uiRefCopyInfoButton) {
-                const value = uiRefCopyInfoButton.getAttribute('data-oltb-copy');
-                uiRefCopyInfoButton.addEventListener(
-                    Events.browser.click, 
-                    copyMarkerInfoAsync.bind(this, InfoWindowManager, value)
-                );
-            }
-
-            const uiRefEditButton = this.#footer.querySelector(`#${ID__PREFIX_INFO_WINDOW}-edit`);
-            if(uiRefEditButton) {
-                uiRefEditButton.addEventListener(
-                    Events.browser.click, 
-                    editMarker.bind(this, InfoWindowManager, feature)
-                );
-            }
-
-            const uiRefShowLayer = this.#footer.querySelector(`#${ID__PREFIX_INFO_WINDOW}-show-layer`);
-            if(uiRefShowLayer) {
-                uiRefShowLayer.addEventListener(
-                    Events.browser.click, 
-                    showMarkerLayer.bind(this, InfoWindowManager, feature)
-                );
-            }
+            this.#attachFunctionButtons(feature);
         }, delay);
     }
 
