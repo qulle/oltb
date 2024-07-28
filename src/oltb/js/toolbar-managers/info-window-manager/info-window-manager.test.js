@@ -24,4 +24,44 @@ describe('InfoWindowManager', () => {
         expect(spyOnSetMap).toHaveBeenCalled();
         expect(InfoWindowManager.getName()).toBe(FILENAME);
     });
+
+    it('should set view-port-cursor', () => {
+        const cursor = 'pointer';
+        const viewport = {
+            style: {
+                cursor: 'default'
+            }
+        };
+
+        const map = {
+            on: (event, callback) => {},
+            addOverlay: (overlay) => {},
+            getViewport: () => {
+                return viewport;
+            }
+        };
+
+        InfoWindowManager.setMap(map);
+        expect(InfoWindowManager.getViewportCursor()).toBe('default');
+        InfoWindowManager.setViewportCursor(cursor);
+        expect(InfoWindowManager.getViewportCursor()).toBe('pointer');
+    });
+
+    it('should check if same feature', () => {
+        const a = {};
+        const b = {};
+        expect(InfoWindowManager.isSameFeature(a, b)).toBe(false);
+        expect(InfoWindowManager.isSameFeature(a, undefined)).toBe(false);
+
+        a['ol_uid'] = 'jest';
+        expect(InfoWindowManager.isSameFeature(a, b)).toBe(false);
+
+        a['ol_uid'] = 'foo';
+        b['ol_uid'] = 'bar';
+        expect(InfoWindowManager.isSameFeature(a, b)).toBe(false);
+
+        a['ol_uid'] = 'jest';
+        b['ol_uid'] = 'jest';
+        expect(InfoWindowManager.isSameFeature(a, b)).toBe(true);
+    });
 });

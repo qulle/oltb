@@ -197,7 +197,7 @@ class InfoWindowManager extends BaseManager {
         this.#handleVectorHoverSections(feature);
 
         if(!feature) {
-            this.#setViewPortCursor(MouseCursors.default);
+            this.setViewportCursor(MouseCursors.default);
             return;
         }
 
@@ -243,9 +243,9 @@ class InfoWindowManager extends BaseManager {
         const nodeName = event.originalEvent.target.nodeName;
         const hasInfoWindow = FeatureManager.hasInfoWindow(feature);
         if(hasInfoWindow && nodeName === 'CANVAS') {
-            this.#setViewPortCursor(MouseCursors.pointer);
+            this.setViewportCursor(MouseCursors.pointer);
         }else {
-            this.#setViewPortCursor(MouseCursors.default);
+            this.setViewportCursor(MouseCursors.default);
         }
     }
 
@@ -265,10 +265,6 @@ class InfoWindowManager extends BaseManager {
         ) {
             this.#deselectHoveredVectorSection();
         }
-    }
-
-    static #setViewPortCursor(cursor) {
-        this.#map.getViewport().style.cursor = cursor;
     }
 
     static #selectFeature(feature) {
@@ -329,14 +325,6 @@ class InfoWindowManager extends BaseManager {
         return DefaultConfig.marker.pulseAnimation.defaultColor;
     }
 
-    static #isSameFeature(a, b) {
-        if(!a || !b) {
-            return false;
-        }
-
-        return a.ol_uid === b.ol_uid;
-    }
-
     static #pulseAnimation(feature, layer, properties, animationConfig) {
         this.#selectFeature(feature);
 
@@ -367,7 +355,7 @@ class InfoWindowManager extends BaseManager {
 
                 // Note:
                 // If the feature is still selected, rerun the animation
-                if(this.#isSameFeature(this.#selectedFeature, feature) && shouldLoop) {
+                if(this.isSameFeature(this.#selectedFeature, feature) && shouldLoop) {
                     this.#pulseAnimation(feature, layer, properties, animationConfig);
                 }
 
@@ -481,7 +469,7 @@ class InfoWindowManager extends BaseManager {
         // Note:
         // Already animating this feature
         // Example if the user repeatedly navigates to the same Bookmark
-        if(this.#selectedFeature && this.#isSameFeature(this.#selectedFeature, feature)) {
+        if(this.#selectedFeature && this.isSameFeature(this.#selectedFeature, feature)) {
             return;
         }
 
@@ -529,6 +517,26 @@ class InfoWindowManager extends BaseManager {
         ])
         
         this.#overlay.setPosition(undefined);
+    }
+
+    static setViewportCursor(cursor) {
+        this.#map.getViewport().style.cursor = cursor;
+    }
+
+    static getViewportCursor() {
+        return this.#map.getViewport().style.cursor;
+    }
+
+    static isSameFeature(a, b) {
+        if(!a || !b) {
+            return false;
+        }
+
+        if(!a['ol_uid'] || !b['ol_uid']) {
+            return false;
+        }
+
+        return a.ol_uid === b.ol_uid;
     }
 }
 
