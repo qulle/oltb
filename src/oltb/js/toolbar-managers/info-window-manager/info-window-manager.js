@@ -209,9 +209,9 @@ class InfoWindowManager extends BaseManager {
     //--------------------------------------------------------------------
     static #doSingleClickNoResults() {
         this.hideOverlay();
-        this.#deselectFeature();
-        this.#deselectHoveredVectorSection();
-        this.#deselectVectorSection();
+        this.deselectFeature();
+        this.deselectHoveredVectorSection();
+        this.deselectVectorSection();
     }
 
     static #doSingleClickWithResuls(results) {
@@ -222,22 +222,22 @@ class InfoWindowManager extends BaseManager {
         const hasInfoWindow = FeatureManager.hasInfoWindow(feature);
         if(hasInfoWindow) {
             this.showOverlay(feature);
-            this.#deselectVectorSection();
+            this.deselectVectorSection();
         }else {
             this.hideOverlay();
-            this.#deselectVectorSection();
+            this.deselectVectorSection();
         }
 
         const shouldHighlight = FeatureManager.shouldHighlightOnHover(feature);
         if(hasInfoWindow && shouldHighlight) {
-            this.#selectVectorSection(feature);
+            this.selectVectorSection(feature);
         }
     }
 
     static #doPointerMoveWithResults(event, feature) {
         const shouldHighlight = FeatureManager.shouldHighlightOnHover(feature);
         if(shouldHighlight) {
-            this.#selectHoveredVectorSection(feature);
+            this.selectHoveredVectorSection(feature);
         }
 
         const nodeName = event.originalEvent.target.nodeName;
@@ -254,8 +254,8 @@ class InfoWindowManager extends BaseManager {
             !feature && 
             !this.#selectedVectorSection
         ) {
-            this.#deselectHoveredVectorSection();
-            this.#deselectVectorSection();
+            this.deselectHoveredVectorSection();
+            this.deselectVectorSection();
         }
 
         if(
@@ -263,38 +263,8 @@ class InfoWindowManager extends BaseManager {
             this.#hoveredVectorSection !== feature &&
             this.#hoveredVectorSection !== this.#selectedVectorSection
         ) {
-            this.#deselectHoveredVectorSection();
+            this.deselectHoveredVectorSection();
         }
-    }
-
-    static #selectFeature(feature) {
-        this.#selectedFeature = feature;
-        this.#deselectVectorSection();
-    }
-
-    static #deselectFeature() {
-        this.#selectedFeature = undefined;
-    }
-
-    static #selectVectorSection(section) {
-        section?.setStyle(DefaultHighlightStyle);
-        this.#selectedVectorSection = section;
-        this.#deselectFeature();
-    }
-
-    static #deselectVectorSection() {
-        this.#selectedVectorSection?.setStyle(null);
-        this.#selectedVectorSection = undefined;
-    }
-
-    static #selectHoveredVectorSection(section) {
-        section?.setStyle(DefaultHighlightStyle);
-        this.#hoveredVectorSection = section;
-    }
-
-    static #deselectHoveredVectorSection() {
-        this.#hoveredVectorSection?.setStyle(null);
-        this.#hoveredVectorSection = undefined;
     }
 
     static #getAnimationMin(properties) {
@@ -326,7 +296,7 @@ class InfoWindowManager extends BaseManager {
     }
 
     static #pulseAnimation(feature, layer, properties, animationConfig) {
-        this.#selectFeature(feature);
+        this.selectFeature(feature);
 
         const start = Date.now();
         const color = this.#getAnimationColor(properties);
@@ -355,7 +325,7 @@ class InfoWindowManager extends BaseManager {
 
                 // Note:
                 // If the feature is still selected, rerun the animation
-                if(this.isSameFeature(this.#selectedFeature, feature) && shouldLoop) {
+                if(FeatureManager.isSameFeature(this.#selectedFeature, feature) && shouldLoop) {
                     this.#pulseAnimation(feature, layer, properties, animationConfig);
                 }
 
@@ -469,7 +439,7 @@ class InfoWindowManager extends BaseManager {
         // Note:
         // Already animating this feature
         // Example if the user repeatedly navigates to the same Bookmark
-        if(this.#selectedFeature && this.isSameFeature(this.#selectedFeature, feature)) {
+        if(this.#selectedFeature && FeatureManager.isSameFeature(this.#selectedFeature, feature)) {
             return;
         }
 
@@ -487,28 +457,33 @@ class InfoWindowManager extends BaseManager {
                 return;
             }
 
-            this.#title.innerHTML = infoWindow.title;
-            this.#content.innerHTML = infoWindow.content;
-            this.#footer.innerHTML = infoWindow.footer;
-
-            if(position) {
-                this.#overlay.setPosition(position);
-            }else {
-                this.#overlay.setPosition(getCenter(
-                    feature.getGeometry().getExtent()
-                ));
-            }
-
-            this.#infoWindow.focus();
-            DOM.runAnimation(this.#infoWindow, CLASS__ANIMATION_CENTERED_BOUNCE);
-            this.#attachFunctionButtons(feature);
+            this.doShowOverlayWithResult(infoWindow, feature, position);
         }, delay);
     }
 
+    static doShowOverlayWithResult(infoWindow, feature, position) {
+        this.#title.innerHTML = infoWindow.title;
+        this.#content.innerHTML = infoWindow.content;
+        this.#footer.innerHTML = infoWindow.footer;
+
+        if(position) {
+            this.#overlay.setPosition(position);
+        }else {
+            this.#overlay.setPosition(getCenter(
+                feature.getGeometry().getExtent()
+            ));
+        }
+
+        this.#attachFunctionButtons(feature);
+        this.#infoWindow.focus();
+        
+        DOM.runAnimation(this.#infoWindow, CLASS__ANIMATION_CENTERED_BOUNCE);
+    }
+
     static hideOverlay() {
-        this.#deselectFeature();
-        this.#deselectHoveredVectorSection();
-        this.#deselectVectorSection();
+        this.deselectFeature();
+        this.deselectHoveredVectorSection();
+        this.deselectVectorSection();
 
         DOM.clearElements([
             this.#title,
@@ -519,6 +494,10 @@ class InfoWindowManager extends BaseManager {
         this.#overlay.setPosition(undefined);
     }
 
+    static getInfoWindow() {
+        return this.#infoWindow;
+    }
+
     static setViewportCursor(cursor) {
         this.#map.getViewport().style.cursor = cursor;
     }
@@ -527,16 +506,46 @@ class InfoWindowManager extends BaseManager {
         return this.#map.getViewport().style.cursor;
     }
 
-    static isSameFeature(a, b) {
-        if(!a || !b) {
-            return false;
-        }
+    static selectFeature(feature) {
+        this.#selectedFeature = feature;
+        this.deselectVectorSection();
+    }
 
-        if(!a['ol_uid'] || !b['ol_uid']) {
-            return false;
-        }
+    static deselectFeature() {
+        this.#selectedFeature = undefined;
+    }
 
-        return a.ol_uid === b.ol_uid;
+    static isFeatureSelected() {
+        return !!this.#selectedFeature;
+    }
+
+    static selectHoveredVectorSection(section) {
+        section?.setStyle(DefaultHighlightStyle);
+        this.#hoveredVectorSection = section;
+    }
+
+    static deselectHoveredVectorSection() {
+        this.#hoveredVectorSection?.setStyle(null);
+        this.#hoveredVectorSection = undefined;
+    }
+
+    static isHoveredVectorSectionSelected() {
+        return !!this.#hoveredVectorSection;
+    }
+
+    static selectVectorSection(section) {
+        section?.setStyle(DefaultHighlightStyle);
+        this.#selectedVectorSection = section;
+        this.deselectFeature();
+    }
+
+    static deselectVectorSection() {
+        this.#selectedVectorSection?.setStyle(null);
+        this.#selectedVectorSection = undefined;
+    }
+
+    static isVectorSectionSelected() {
+        return !!this.#selectedVectorSection;
     }
 }
 

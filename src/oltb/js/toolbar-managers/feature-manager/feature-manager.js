@@ -158,6 +158,18 @@ class FeatureManager extends BaseManager {
     
         return feature;
     }
+
+    static isSameFeature(a, b) {
+        if(!a || !b) {
+            return false;
+        }
+
+        if(!a['ol_uid'] || !b['ol_uid']) {
+            return false;
+        }
+
+        return a.ol_uid === b.ol_uid;
+    }
 }
 
 export { FeatureManager };

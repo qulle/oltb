@@ -193,4 +193,22 @@ describe('FeatureManager', () => {
         expect(FeatureManager.isWindBarbType(marker)).toBe(false);
         expect(FeatureManager.isMeasurementType(marker)).toBe(false);
     });
+
+    it('should check if same feature', () => {
+        const a = {};
+        const b = {};
+        expect(FeatureManager.isSameFeature(a, b)).toBe(false);
+        expect(FeatureManager.isSameFeature(a, undefined)).toBe(false);
+
+        a['ol_uid'] = 'jest';
+        expect(FeatureManager.isSameFeature(a, b)).toBe(false);
+
+        a['ol_uid'] = 'foo';
+        b['ol_uid'] = 'bar';
+        expect(FeatureManager.isSameFeature(a, b)).toBe(false);
+
+        a['ol_uid'] = 'jest';
+        b['ol_uid'] = 'jest';
+        expect(FeatureManager.isSameFeature(a, b)).toBe(true);
+    });
 });

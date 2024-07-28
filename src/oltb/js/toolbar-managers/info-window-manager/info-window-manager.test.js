@@ -6,6 +6,7 @@ const FILENAME = 'info-window-manager.js';
 describe('InfoWindowManager', () => {
     it('should init the manager', async () => {
         return InfoWindowManager.initAsync({}).then((result) => {
+            expect(InfoWindowManager.getInfoWindow()).toBeTruthy();
             expect(result).toStrictEqual({
                 filename: FILENAME,
                 result: true
@@ -47,21 +48,31 @@ describe('InfoWindowManager', () => {
         expect(InfoWindowManager.getViewportCursor()).toBe('pointer');
     });
 
-    it('should check if same feature', () => {
-        const a = {};
-        const b = {};
-        expect(InfoWindowManager.isSameFeature(a, b)).toBe(false);
-        expect(InfoWindowManager.isSameFeature(a, undefined)).toBe(false);
+    it('should check if feature is selected', () => {
+        expect(InfoWindowManager.isFeatureSelected()).toBe(false);
+        InfoWindowManager.selectFeature({});
+        expect(InfoWindowManager.isFeatureSelected()).toBe(true);
+        InfoWindowManager.deselectFeature();
+        expect(InfoWindowManager.isFeatureSelected()).toBe(false);
+    });
 
-        a['ol_uid'] = 'jest';
-        expect(InfoWindowManager.isSameFeature(a, b)).toBe(false);
+    it('should select and deselect hover-vector-section', () => {
+        expect(InfoWindowManager.isHoveredVectorSectionSelected()).toBe(false);
+        InfoWindowManager.selectHoveredVectorSection({
+            setStyle: () => {}
+        });
+        expect(InfoWindowManager.isHoveredVectorSectionSelected()).toBe(true);
+        InfoWindowManager.deselectHoveredVectorSection();
+        expect(InfoWindowManager.isHoveredVectorSectionSelected()).toBe(false);
+    });
 
-        a['ol_uid'] = 'foo';
-        b['ol_uid'] = 'bar';
-        expect(InfoWindowManager.isSameFeature(a, b)).toBe(false);
-
-        a['ol_uid'] = 'jest';
-        b['ol_uid'] = 'jest';
-        expect(InfoWindowManager.isSameFeature(a, b)).toBe(true);
+    it('should select and deselect vector-section', () => {
+        expect(InfoWindowManager.isVectorSectionSelected()).toBe(false);
+        InfoWindowManager.selectVectorSection({
+            setStyle: () => {}
+        });
+        expect(InfoWindowManager.isVectorSectionSelected()).toBe(true);
+        InfoWindowManager.deselectVectorSection();
+        expect(InfoWindowManager.isVectorSectionSelected()).toBe(false);
     });
 });
