@@ -73,10 +73,11 @@ $ npm start
 ```
 
 ## Examples
-Examples for both the NPM and CDN version can be viewed in the [examples directory](https://github.com/qulle/oltb/tree/main/examples/). Use Git history and the tagged releases to look at older examples.
+Examples for both the NPM and CDN version can be viewed in the **[Examples Directory 👀](https://github.com/qulle/oltb/tree/main/examples/)**. Use Git history and the tagged releases to look at older examples.
+
 
 ## Documentation
-Have a look at the [Internal Development Documentation](https://github.com/qulle/oltb/blob/main/README_INTERNAL.md). Here you find detailed descriptions and code examples of how individual parts can be used.
+Have a look at the **[Internal Development Documentation 👓](https://github.com/qulle/oltb/blob/main/README_INTERNAL.md)**. Here you find detailed descriptions and code examples of how individual parts can be used.
 
 ## Key Features
 - Draggable layers
@@ -139,6 +140,23 @@ The following tools are implemented in the project. The tools are devided in two
 - ZoomboxTool
 - ZoomInTool
 - ZoomOutTool
+
+## Versions
+<table>
+    <tr>
+        <th>OpenLayers Toolbar (OLTB)</th>
+        <th>OpenLayers (OL)</th>
+        <th>Released (OLTB)</th>
+    </tr>
+    <tr><td>3.0.0</td><td>10.0.0</td><td>2024-08-01</td></tr>
+    <tr><td>2.3.0</td><td>9.1.0</td><td>2024-05-12</td></tr>
+    <tr><td>2.2.0</td><td>8.2.0</td><td>2024-02-12</td></tr>
+    <tr><td>2.1.0</td><td>8.2.0</td><td>2024-01-31</td></tr>
+    <tr><td>2.0.0</td><td>8.2.0</td><td>2024-01-14</td></tr>
+    <tr><td>1.1.0</td><td>7.4.0</td><td>2023-06-21</td></tr>
+    <tr><td>1.0.1</td><td>7.3.0</td><td>2023-03-20</td></tr>
+    <tr><td>1.0.0</td><td>7.3.0</td><td>2023-03-20</td></tr>
+</table>
 
 ## License
 [BSD-2-Clause License](https://github.com/qulle/oltb/blob/main/LICENSE)
