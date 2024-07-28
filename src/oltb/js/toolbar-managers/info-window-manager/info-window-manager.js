@@ -267,41 +267,13 @@ class InfoWindowManager extends BaseManager {
         }
     }
 
-    static #getAnimationMin(properties) {
-        if(_.has(properties, ['marker'])) {
-            return properties.marker.radius;
-        }
-
-        return DefaultConfig.marker.pulseAnimation.defaultStartSize;
-    }
-
-    static #getAnimationMax(properties) {
-        if(_.has(properties, ['marker'])) {
-            return properties.marker.radius + (properties.marker.radius / 2);
-        }
-
-        return DefaultConfig.marker.pulseAnimation.defaultEndSize;
-    }
-
-    static #getAnimationColor(properties) {
-        if(_.has(properties, ['marker'])) {
-            return properties.marker.fill;
-        }
-
-        if(_.has(properties, ['icon'])) {
-            return properties.icon.stroke;
-        }
-
-        return DefaultConfig.marker.pulseAnimation.defaultColor;
-    }
-
     static #pulseAnimation(feature, layer, properties, animationConfig) {
         this.selectFeature(feature);
 
         const start = Date.now();
-        const color = this.#getAnimationColor(properties);
-        const minSize = this.#getAnimationMin(properties);
-        const maxSize = this.#getAnimationMax(properties);
+        const color = this.getAnimationColor(properties);
+        const minSize = this.getAnimationMin(properties);
+        const maxSize = this.getAnimationMax(properties);
         
         const duration = animationConfig.duration;
         const shouldLoop = animationConfig.shouldLoop;
@@ -407,7 +379,7 @@ class InfoWindowManager extends BaseManager {
     //--------------------------------------------------------------------
     // # Section: Public API
     //--------------------------------------------------------------------
-    static tryPulseAnimation(feature, layer = undefined) {
+    static tryPulseAnimation(feature, layer) {
         // TODO:
         // This was a messy method, make it prettier in future.
         const oltb = DefaultConfig.toolbar.id;
@@ -492,6 +464,38 @@ class InfoWindowManager extends BaseManager {
         ])
         
         this.#overlay.setPosition(undefined);
+    }
+
+    static getAnimationMin(properties) {
+        if(_.has(properties, ['marker'])) {
+            return properties.marker.radius;
+        }
+
+        return DefaultConfig.marker.pulseAnimation.defaultStartSize;
+    }
+
+    static getAnimationMax(properties) {
+        if(_.has(properties, ['marker'])) {
+            return properties.marker.radius + (properties.marker.radius / 2);
+        }
+
+        return DefaultConfig.marker.pulseAnimation.defaultEndSize;
+    }
+
+    static getAnimationColor(properties) {
+        if(_.has(properties, ['marker'])) {
+            return properties.marker.fill;
+        }
+
+        if(_.has(properties, ['icon'])) {
+            return properties.icon.stroke;
+        }
+
+        return DefaultConfig.marker.pulseAnimation.defaultColor;
+    }
+
+    static isContentEmpty() {
+        return this.#content.innerHTML.length === 0;
     }
 
     static getInfoWindow() {
