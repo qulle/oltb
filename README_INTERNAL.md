@@ -12,10 +12,7 @@ Detailed documentation how the Toolbar is structured, internal dependencies and 
 2. [Browser Support](#browser-support)
 3. [Migrating](#migrating)
 4. [Localizations](#localizations)
-5. [Colors](#colors) 
-    1. [Theme Colors](#theme-colors)
-    2. [Color Palette](#color-palette)
-6. [About The Code](#about-the-code)
+5. [About The Code](#about-the-code)
     1. [HTML](#html)
     2. [SCSS](#scss)
     3. [Import And Export](#import-and-export)
@@ -41,6 +38,9 @@ Detailed documentation how the Toolbar is structured, internal dependencies and 
     18. [Debug Tool](#debug-tool)
     19. [Logging](#logging)
     20. [OLTB Namespace](#oltb-namespace)
+6. [Colors](#colors) 
+    1. [Theme Colors](#theme-colors)
+    2. [Color Palette](#color-palette)
 7. [License](#license)
 8. [Making A Release](#making-a-release)
 9. [Update Dependencies](#update-dependencies)
@@ -86,131 +86,6 @@ localStorage.clear();
 
 ## Localizations
 English is the default language. However the Toolbar can be extended with any other language. A second language (Swedish) is also shipped with the Toolbar in order to show how it is done. The available languages are controlled from `/assets/config/config.json`. The translation files are put in to `/assets/i18n/<ab-cd>.json`.
-
-## Colors
-The project's Theme colors and the full color palette are described below.
-
-### Theme Colors
-The Toolbar is available in both `light` and `dark` mode. I have decided to go for a small set of colors in both themes. This enables for a solid look-and-feel and association between colors and functionality. The `mid` color is to consider as the default normal color. For some situations the `light` and `dark` color is used in the normal state.
-<table>
-    <tr>
-        <th>Blue</th>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/blue-100.svg"> #F0F6FF - $color-blue-100</td>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/blue-200.svg"> #D7E3FA - $color-blue-200</td>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/blue-300.svg"> #6397C2 - $color-blue-300</td>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/blue-400.svg"> #0166A5 - $color-blue-400</td>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/blue-500.svg"> #00385B - $color-blue-500</td>
-    </tr>
-    <tr>
-        <th>Green</th>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/green-100.svg"> #DFFFFC - $color-green-100</td>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/green-200.svg"> #BCFAF4 - $color-green-200</td>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/green-300.svg"> #3CAEA3 - $color-green-300</td>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/green-400.svg"> #007C70 - $color-green-400</td>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/green-500.svg"> #004942 - $color-green-500</td>
-    </tr>
-    <tr>
-        <th>Gray</th>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/gray-100.svg"> #F3F4F5 - $color-gray-100</td>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/gray-200.svg"> #D3D9E6 - $color-gray-200</td>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/gray-300.svg"> #959DAD - $color-gray-300</td>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/gray-400.svg"> #3B4352 - $color-gray-400</td>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/gray-500.svg"> #212529 - $color-gray-500</td>
-    </tr>
-</table>
-
-### Color Palette
-The full color palette is displayed below.
-<table>
-    <tr>
-        <th>Blue</th>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/blue-100.svg"> #F0F6FF - $color-blue-100</td>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/blue-200.svg"> #D7E3FA - $color-blue-200</td>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/blue-300.svg"> #6397C2 - $color-blue-300</td>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/blue-400.svg"> #0166A5 - $color-blue-400</td>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/blue-500.svg"> #00385B - $color-blue-500</td>
-    </tr>
-    <tr>
-        <th>Indigo</th>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/indigo-100.svg"> #E7EFFF - $color-indigo-100</td>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/indigo-200.svg"> #C7D9F8 - $color-indigo-200</td>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/indigo-300.svg"> #5B88D6 - $color-indigo-300</td>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/indigo-400.svg"> #2357B1 - $color-indigo-400</td>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/indigo-500.svg"> #103677 - $color-indigo-500</td>
-    </tr>
-    <tr>
-        <th>Purple</th>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/purple-100.svg"> #E8E6FF - $color-purple-100</td>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/purple-200.svg"> #D0CAFF - $color-purple-200</td>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/purple-300.svg"> #9085E4 - $color-purple-300</td>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/purple-400.svg"> #52489B - $color-purple-400</td>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/purple-500.svg"> #2E2769 - $color-purple-500</td>
-    </tr>
-    <tr>
-        <th>Pink</th>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/pink-100.svg"> #FEEDFF - $color-pink-100</td>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/pink-200.svg"> #FEE6FF - $color-pink-200</td>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/pink-300.svg"> #E8A2EA - $color-pink-300</td>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/pink-400.svg"> #914594 - $color-pink-400</td>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/pink-500.svg"> #59275A - $color-pink-500</td>
-    </tr>
-    <tr>
-        <th>Teal</th>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/teal-100.svg"> #DDFEFF - $color-teal-100</td>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/teal-200.svg"> #BCF8FA - $color-teal-200</td>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/teal-300.svg"> #56BABD - $color-teal-300</td>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/teal-400.svg"> #00959A - $color-teal-400</td>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/teal-500.svg"> #005255 - $color-teal-500</td>
-    </tr>
-    <tr>
-        <th>Green</th>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/green-100.svg"> #DFFFFC - $color-green-100</td>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/green-200.svg"> #BCFAF4 - $color-green-200</td>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/green-300.svg"> #3CAEA3 - $color-green-300</td>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/green-400.svg"> #007C70 - $color-green-400</td>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/green-500.svg"> #004942 - $color-green-500</td>
-    </tr>
-    <tr>
-        <th>Cyan</th>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/cyan-100.svg"> #E0F4FF - $color-cyan-100</td>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/cyan-200.svg"> #CEEEFF - $color-cyan-200</td>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/cyan-300.svg"> #68B9E5 - $color-cyan-300</td>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/cyan-400.svg"> #0080C5 - $color-cyan-400</td>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/cyan-500.svg"> #004367 - $color-cyan-500</td>
-    </tr>
-    <tr>
-        <th>Yellow</th>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/yellow-100.svg"> #FFF8E1 - $color-yellow-100</td>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/yellow-200.svg"> #FAE59D - $color-yellow-200</td>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/yellow-300.svg"> #F6D574 - $color-yellow-300</td>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/yellow-400.svg"> #FBBD02 - $color-yellow-400</td>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/yellow-500.svg"> #493B10 - $color-yellow-500</td>
-    </tr>
-    <tr>
-        <th>Orange</th>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/orange-100.svg"> #FFEDDB - $color-orange-100</td>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/orange-200.svg"> #FFDDBC - $color-orange-200</td>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/orange-300.svg"> #FCBE80 - $color-orange-300</td>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/orange-400.svg"> #F08741 - $color-orange-400</td>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/orange-500.svg"> #6B310A - $color-orange-500</td>
-    </tr>
-    <tr>
-        <th>Red</th>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/red-100.svg"> #FFE6E6 - $color-red-100</td>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/red-200.svg"> #FDB5B4 - $color-red-200</td>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/red-300.svg"> #E96B69 - $color-red-300</td>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/red-400.svg"> #D64B49 - $color-red-400</td>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/red-500.svg"> #8D2120 - $color-red-500</td>
-    </tr>
-    <tr>
-        <th>Gray</th>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/gray-100.svg"> #F3F4F5 - $color-gray-100</td>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/gray-200.svg"> #D3D9E6 - $color-gray-200</td>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/gray-300.svg"> #959DAD - $color-gray-300</td>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/gray-400.svg"> #3B4352 - $color-gray-400</td>
-        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/gray-500.svg"> #212529 - $color-gray-500</td>
-    </tr>
-</table>
 
 ## About The Code
 Below is the basic HTML and JavaScript structure used in the project. For a complete example of how to set up the code go to the [examples directory](https://github.com/qulle/oltb/tree/main/examples/).
@@ -268,39 +143,39 @@ class CoordinatesTool extends Control {}
 
 When using the custom tools, all that is needed is to import the module(s) you want to have in your Toolbar.
 ```javascript
-import { HomeTool } from 'oltb/js/toolbar-tools/HomeTool';
-import { DrawTool } from 'oltb/js/toolbar-tools/DrawTool';
-import { EditTool } from 'oltb/js/toolbar-tools/EditTool';
-import { InfoTool } from 'oltb/js/toolbar-tools/InfoTool';
-import { HelpTool } from 'oltb/js/toolbar-tools/HelpTool';
-import { ThemeTool } from 'oltb/js/toolbar-tools/ThemeTool';
-import { LayerTool } from 'oltb/js/toolbar-tools/LayerTool';
-import { ZoomInTool } from 'oltb/js/toolbar-tools/ZoomInTool';
-import { ZoomboxTool } from 'oltb/js/toolbar-tools/ZoomboxTool';
-import { ToolboxTool } from 'oltb/js/toolbar-tools/ToolboxTool';
-import { MeasureTool } from 'oltb/js/toolbar-tools/MeasureTool';
-import { MagnifyTool } from 'oltb/js/toolbar-tools/MagnifyTool';
-import { ZoomOutTool } from 'oltb/js/toolbar-tools/ZoomOutTool';
-import { RefreshTool } from 'oltb/js/toolbar-tools/RefreshTool';
-import { SettingsTool } from 'oltb/js/toolbar-tools/SettingsTool';
-import { OverviewTool } from 'oltb/js/toolbar-tools/OverviewTool';
-import { ScissorsTool } from 'oltb/js/toolbar-tools/ScissorsTool';
-import { BookmarkTool } from 'oltb/js/toolbar-tools/BookmarkTool';
-import { DirectionTool } from 'oltb/js/toolbar-tools/DirectionTool';
-import { DebugInfoTool } from 'oltb/js/toolbar-tools/DebugInfoTool';
-import { SplitViewTool } from 'oltb/js/toolbar-tools/SplitViewTool';
-import { ExportPngTool } from 'oltb/js/toolbar-tools/ExportPngTool';
-import { ScaleLineTool } from 'oltb/js/toolbar-tools/ScaleLineTool';
-import { GraticuleTool } from 'oltb/js/toolbar-tools/GraticuleTool';
-import { MyLocationTool } from 'oltb/js/toolbar-tools/MyLocationTool';
-import { ResetNorthTool } from 'oltb/js/toolbar-tools/ResetNorthTool';
-import { FullscreenTool } from 'oltb/js/toolbar-tools/FullscreenTool';
-import { CoordinatesTool } from 'oltb/js/toolbar-tools/CoordinatesTool';
-import { TranslationTool } from 'oltb/js/toolbar-tools/TranslationTool';
-import { HiddenAboutTool } from 'oltb/js/toolbar-tools/hidden-tools/HiddenAboutTool';
-import { HiddenMarkerTool } from 'oltb/js/toolbar-tools/hidden-tools/HiddenMarkerTool';
-import { ImportVectorLayerTool } from 'oltb/js/toolbar-tools/ImportVectorLayerTool';
-import { HiddenMapNavigationTool } from 'oltb/js/toolbar-tools/hidden-tools/HiddenMapNavigationTool';
+import { HomeTool } from 'oltb/js/toolbar-tools/home-tool/home-tool';
+import { DrawTool } from 'oltb/js/toolbar-tools/draw-tool/draw-tool';
+import { EditTool } from 'oltb/js/toolbar-tools/edit-tool/edit-tool';
+import { InfoTool } from 'oltb/js/toolbar-tools/info-tool/info-tool';
+import { HelpTool } from 'oltb/js/toolbar-tools/help-tool/help-tool';
+import { ThemeTool } from 'oltb/js/toolbar-tools/theme-tool/theme-tool';
+import { LayerTool } from 'oltb/js/toolbar-tools/layer-tool/layer-tool';
+import { ZoomInTool } from 'oltb/js/toolbar-tools/zoom-in-tool/zoom-in-tool';
+import { ZoomboxTool } from 'oltb/js/toolbar-tools/zoombox-tool/zoombox-tool';
+import { ToolboxTool } from 'oltb/js/toolbar-tools/toolbox-tool/toolbox/tool';
+import { MeasureTool } from 'oltb/js/toolbar-tools/measure-tool/measure-tool';
+import { MagnifyTool } from 'oltb/js/toolbar-tools/magnify-tool/magnify-tool';
+import { ZoomOutTool } from 'oltb/js/toolbar-tools/zoom-out-tool/zoom-out-tool';
+import { RefreshTool } from 'oltb/js/toolbar-tools/refresh-tool/refresh-tool';
+import { SettingsTool } from 'oltb/js/toolbar-tools/settings-tool/settings-tool';
+import { OverviewTool } from 'oltb/js/toolbar-tools/overview-tool/overview-tool';
+import { ScissorsTool } from 'oltb/js/toolbar-tools/scissors-tool/scissors-tool';
+import { BookmarkTool } from 'oltb/js/toolbar-tools/bookmark-tool/bookmark-tool';
+import { DirectionTool } from 'oltb/js/toolbar-tools/direction-tool/direction-tool';
+import { DebugInfoTool } from 'oltb/js/toolbar-tools/debug-info-tool/debug-info-tool';
+import { SplitViewTool } from 'oltb/js/toolbar-tools/split-view-tool/split-view-tool';
+import { ExportPngTool } from 'oltb/js/toolbar-tools/export-png-tool/export-png-tool';
+import { ScaleLineTool } from 'oltb/js/toolbar-tools/scale-line-tool/scale-line-tool';
+import { GraticuleTool } from 'oltb/js/toolbar-tools/graticule-tool/graticule-tool';
+import { MyLocationTool } from 'oltb/js/toolbar-tools/my-location-tool/my-location-tool';
+import { ResetNorthTool } from 'oltb/js/toolbar-tools/reset-north-tool/reset-north-tool';
+import { FullscreenTool } from 'oltb/js/toolbar-tools/fullscreen-tool/fullscreen-tool';
+import { CoordinatesTool } from 'oltb/js/toolbar-tools/coordinates-tool/coordinates-tool';
+import { TranslationTool } from 'oltb/js/toolbar-tools/translation-tool/translation-tool';
+import { HiddenAboutTool } from 'oltb/js/toolbar-tools/hidden-tools/hidden-about-tool/hidden-about-tool';
+import { HiddenMarkerTool } from 'oltb/js/toolbar-tools/hidden-tools/hidden-marker-tool/hidden-marker-tool';
+import { ImportVectorLayerTool } from 'oltb/js/toolbar-tools/import-vector-layer-tool/import-vector-layer-tool';
+import { HiddenMapNavigationTool } from 'oltb/js/toolbar-tools/hidden-tools/hidden-map-navigation-tool/hidden-map-navigation-tool';
 ```
 
 Then call the constructor for each tool in the extend method. The tools are added to the Toolbar in the order you include them in the array.
@@ -1533,6 +1408,131 @@ LogManager.logDebug(FILENAME, 'handleClick', {
 
 ### OLTB Namespace
 All classes and id:s in the project are prefixed with the namespace `oltb`.
+
+## Colors
+The project's Theme colors and the full color palette are described below.
+
+### Theme Colors
+The Toolbar is available in both `light` and `dark` mode. I have decided to go for a small set of colors in both themes. This enables for a solid look-and-feel and association between colors and functionality. The `mid` color is to consider as the default normal color. For some situations the `light` and `dark` color is used in the normal state.
+<table>
+    <tr>
+        <th>Blue</th>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/blue-100.svg"> #F0F6FF - $color-blue-100</td>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/blue-200.svg"> #D7E3FA - $color-blue-200</td>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/blue-300.svg"> #6397C2 - $color-blue-300</td>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/blue-400.svg"> #0166A5 - $color-blue-400</td>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/blue-500.svg"> #00385B - $color-blue-500</td>
+    </tr>
+    <tr>
+        <th>Green</th>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/green-100.svg"> #DFFFFC - $color-green-100</td>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/green-200.svg"> #BCFAF4 - $color-green-200</td>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/green-300.svg"> #3CAEA3 - $color-green-300</td>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/green-400.svg"> #007C70 - $color-green-400</td>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/green-500.svg"> #004942 - $color-green-500</td>
+    </tr>
+    <tr>
+        <th>Gray</th>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/gray-100.svg"> #F3F4F5 - $color-gray-100</td>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/gray-200.svg"> #D3D9E6 - $color-gray-200</td>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/gray-300.svg"> #959DAD - $color-gray-300</td>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/gray-400.svg"> #364159 - $color-gray-400</td>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/gray-500.svg"> #191E29 - $color-gray-500</td>
+    </tr>
+</table>
+
+### Color Palette
+The full color palette is displayed below.
+<table>
+    <tr>
+        <th>Blue</th>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/blue-100.svg"> #F0F6FF - $color-blue-100</td>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/blue-200.svg"> #D7E3FA - $color-blue-200</td>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/blue-300.svg"> #6397C2 - $color-blue-300</td>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/blue-400.svg"> #0166A5 - $color-blue-400</td>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/blue-500.svg"> #00385B - $color-blue-500</td>
+    </tr>
+    <tr>
+        <th>Indigo</th>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/indigo-100.svg"> #E7EFFF - $color-indigo-100</td>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/indigo-200.svg"> #C7D9F8 - $color-indigo-200</td>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/indigo-300.svg"> #5B88D6 - $color-indigo-300</td>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/indigo-400.svg"> #2357B1 - $color-indigo-400</td>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/indigo-500.svg"> #103677 - $color-indigo-500</td>
+    </tr>
+    <tr>
+        <th>Purple</th>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/purple-100.svg"> #E8E6FF - $color-purple-100</td>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/purple-200.svg"> #D0CAFF - $color-purple-200</td>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/purple-300.svg"> #9085E4 - $color-purple-300</td>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/purple-400.svg"> #52489B - $color-purple-400</td>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/purple-500.svg"> #2E2769 - $color-purple-500</td>
+    </tr>
+    <tr>
+        <th>Pink</th>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/pink-100.svg"> #FEEDFF - $color-pink-100</td>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/pink-200.svg"> #FEE6FF - $color-pink-200</td>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/pink-300.svg"> #E8A2EA - $color-pink-300</td>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/pink-400.svg"> #914594 - $color-pink-400</td>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/pink-500.svg"> #59275A - $color-pink-500</td>
+    </tr>
+    <tr>
+        <th>Teal</th>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/teal-100.svg"> #DDFEFF - $color-teal-100</td>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/teal-200.svg"> #BCF8FA - $color-teal-200</td>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/teal-300.svg"> #56BABD - $color-teal-300</td>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/teal-400.svg"> #00959A - $color-teal-400</td>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/teal-500.svg"> #005255 - $color-teal-500</td>
+    </tr>
+    <tr>
+        <th>Green</th>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/green-100.svg"> #DFFFFC - $color-green-100</td>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/green-200.svg"> #BCFAF4 - $color-green-200</td>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/green-300.svg"> #3CAEA3 - $color-green-300</td>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/green-400.svg"> #007C70 - $color-green-400</td>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/green-500.svg"> #004942 - $color-green-500</td>
+    </tr>
+    <tr>
+        <th>Cyan</th>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/cyan-100.svg"> #E0F4FF - $color-cyan-100</td>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/cyan-200.svg"> #CEEEFF - $color-cyan-200</td>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/cyan-300.svg"> #68B9E5 - $color-cyan-300</td>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/cyan-400.svg"> #0080C5 - $color-cyan-400</td>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/cyan-500.svg"> #004367 - $color-cyan-500</td>
+    </tr>
+    <tr>
+        <th>Yellow</th>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/yellow-100.svg"> #FFF8E1 - $color-yellow-100</td>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/yellow-200.svg"> #FAE59D - $color-yellow-200</td>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/yellow-300.svg"> #F6D574 - $color-yellow-300</td>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/yellow-400.svg"> #FBBD02 - $color-yellow-400</td>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/yellow-500.svg"> #493B10 - $color-yellow-500</td>
+    </tr>
+    <tr>
+        <th>Orange</th>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/orange-100.svg"> #FFEDDB - $color-orange-100</td>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/orange-200.svg"> #FFDDBC - $color-orange-200</td>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/orange-300.svg"> #FCBE80 - $color-orange-300</td>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/orange-400.svg"> #F08741 - $color-orange-400</td>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/orange-500.svg"> #6B310A - $color-orange-500</td>
+    </tr>
+    <tr>
+        <th>Red</th>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/red-100.svg"> #FFE6E6 - $color-red-100</td>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/red-200.svg"> #FDB5B4 - $color-red-200</td>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/red-300.svg"> #E96B69 - $color-red-300</td>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/red-400.svg"> #D64B49 - $color-red-400</td>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/red-500.svg"> #8D2120 - $color-red-500</td>
+    </tr>
+    <tr>
+        <th>Gray</th>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/gray-100.svg"> #F3F4F5 - $color-gray-100</td>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/gray-200.svg"> #D3D9E6 - $color-gray-200</td>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/gray-300.svg"> #959DAD - $color-gray-300</td>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/gray-400.svg"> #3B4352 - $color-gray-400</td>
+        <td><img valign="middle" src="https://raw.githubusercontent.com/qulle/oltb/main/images/colors/gray-500.svg"> #212529 - $color-gray-500</td>
+    </tr>
+</table>
 
 ## Dependencies
 1. [OpenLayers 10.0.0](https://openlayers.org/en/v10.0.0/apidoc/)
