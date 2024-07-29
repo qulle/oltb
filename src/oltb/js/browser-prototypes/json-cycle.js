@@ -1,7 +1,7 @@
 // Cycle.js
 // @ https://github.com/douglascrockford/JSON-js
 
-if (typeof JSON.decycle !== 'function') {
+if(typeof JSON.decycle !== 'function') {
     JSON.decycle = function decycle(object, replacer) {
         'use strict';
 
@@ -40,14 +40,14 @@ if (typeof JSON.decycle !== 'function') {
 
             // If a replacer function was provided, then call it to get a replacement value.
 
-            if (replacer !== undefined) {
+            if(replacer !== undefined) {
                 value = replacer(value);
             }
 
             // typeof null === 'object', so go on if this value is really an object but not
             // one of the weird builtin objects.
 
-            if (
+            if(
                 typeof value === 'object'
                 && value !== null
                 && !(value instanceof Boolean)
@@ -62,7 +62,7 @@ if (typeof JSON.decycle !== 'function') {
                 // ES6 WeakMap.
 
                 oldPath = objects.get(value);
-                if (oldPath !== undefined) {
+                if(oldPath !== undefined) {
                     return { $ref: oldPath };
                 }
 
@@ -72,12 +72,12 @@ if (typeof JSON.decycle !== 'function') {
 
                 // If it is an array, replicate the array.
 
-                if (Array.isArray(value)) {
+                if(Array.isArray(value)) {
                     nu = [];
                     value.forEach(function (element, i) {
                         nu[i] = derez(element, path + '[' + i + ']');
                     });
-                } else {
+                }else {
 
                     // If it is an object, replicate the object.
 
@@ -97,7 +97,7 @@ if (typeof JSON.decycle !== 'function') {
 }
 
 
-if (typeof JSON.retrocycle !== 'function') {
+if(typeof JSON.retrocycle !== 'function') {
     JSON.retrocycle = function retrocycle($) {
         'use strict';
 
@@ -129,28 +129,28 @@ if (typeof JSON.retrocycle !== 'function') {
             // replaces the $ref object with a reference to the value that is found by
             // the path.
 
-            if (value && typeof value === 'object') {
-                if (Array.isArray(value)) {
+            if(value && typeof value === 'object') {
+                if(Array.isArray(value)) {
                     value.forEach(function (element, i) {
-                        if (typeof element === 'object' && element !== null) {
+                        if(typeof element === 'object' && element !== null) {
                             var path = element.$ref;
-                            if (typeof path === 'string' && px.test(path)) {
+                            if(typeof path === 'string' && px.test(path)) {
                                 // value[i] = eval(path);
                                 value[i] = Function(path);
-                            } else {
+                            }else {
                                 rez(element);
                             }
                         }
                     });
-                } else {
+                }else {
                     Object.keys(value).forEach(function (name) {
                         var item = value[name];
-                        if (typeof item === 'object' && item !== null) {
+                        if(typeof item === 'object' && item !== null) {
                             var path = item.$ref;
-                            if (typeof path === 'string' && px.test(path)) {
+                            if(typeof path === 'string' && px.test(path)) {
                                 // value[name] = eval(path);
                                 value[name] = Function(path);
-                            } else {
+                            }else {
                                 rez(item);
                             }
                         }

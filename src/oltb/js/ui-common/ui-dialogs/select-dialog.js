@@ -72,7 +72,7 @@ class SelectDialog extends BaseDialog {
 
         if(this.options.value) {
             select.value = this.options.value;
-        }else if (this.options.options.length > 0) {
+        }else if(this.options.options.length > 0) {
             select.value = this.options.options[0].value;
         }else {
             select.value = '';

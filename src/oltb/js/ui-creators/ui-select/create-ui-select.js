@@ -46,7 +46,7 @@ const createUISelect = function(options = {}) {
 
     if(options.value) {
         select.value = options.value;
-    }else if (options.options.length > 0) {
+    }else if(options.options.length > 0) {
         select.value = options.options[0].value;
     }else {
         select.value = '';

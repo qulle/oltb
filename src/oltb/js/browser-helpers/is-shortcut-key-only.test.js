@@ -21,7 +21,7 @@ describe('isShortcutKeyOnly', () => {
     });
 
     afterAll(() => {
-        if (originalActiveElement && originalActiveElement.focus) {
+        if(originalActiveElement && originalActiveElement.focus) {
             originalActiveElement.focus();
         }
     });

@@ -290,7 +290,7 @@ class InfoWindowManager extends BaseManager {
             const frameState = event.frameState;
             const elapsed = frameState.time - start;
             
-            if (elapsed >= duration || !this.#selectedFeature) {
+            if(elapsed >= duration || !this.#selectedFeature) {
                 // Note:
                 // Cancel active animation
                 unByKey(listenerKey);
