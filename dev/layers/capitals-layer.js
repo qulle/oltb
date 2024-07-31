@@ -80,7 +80,7 @@ const parseGeoJson = function (data) {
         const capitalName = capital.properties.capitalName;
         const continentName = capital.properties.continentName;
         const timestamp = Date.now().toString();
-        const landmarkImage = 'landmark.jpg';
+        const landmarkImage = 'landmark-1.jpeg';
         const description = `
             ${countryName} is a country located in ${continentName}.
             Its capital is ${capitalName} and its country code is ${countryCode}.
