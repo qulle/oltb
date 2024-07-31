@@ -74,7 +74,7 @@ if(typeof JSON.decycle !== 'function') {
 
                 if(Array.isArray(value)) {
                     nu = [];
-                    value.forEach(function (element, i) {
+                    value.forEach(function(element, i) {
                         nu[i] = derez(element, path + '[' + i + ']');
                     });
                 }else {
@@ -82,7 +82,7 @@ if(typeof JSON.decycle !== 'function') {
                     // If it is an object, replicate the object.
 
                     nu = {};
-                    Object.keys(value).forEach(function (name) {
+                    Object.keys(value).forEach(function(name) {
                         nu[name] = derez(
                             value[name],
                             path + '[' + JSON.stringify(name) + ']'
@@ -131,7 +131,7 @@ if(typeof JSON.retrocycle !== 'function') {
 
             if(value && typeof value === 'object') {
                 if(Array.isArray(value)) {
-                    value.forEach(function (element, i) {
+                    value.forEach(function(element, i) {
                         if(typeof element === 'object' && element !== null) {
                             var path = element.$ref;
                             if(typeof path === 'string' && px.test(path)) {
@@ -143,7 +143,7 @@ if(typeof JSON.retrocycle !== 'function') {
                         }
                     });
                 }else {
-                    Object.keys(value).forEach(function (name) {
+                    Object.keys(value).forEach(function(name) {
                         var item = value[name];
                         if(typeof item === 'object' && item !== null) {
                             var path = item.$ref;

@@ -17,7 +17,7 @@ const LayerWrapper = LayerManager.addFeatureLayer({
     isSilent: true
 });
 
-const getMarkerColor = function (name) {
+const getMarkerColor = function(name) {
     const colors = Object.freeze({
         'Europe': {
             fill: '#0166A5FF',
@@ -67,7 +67,7 @@ const getMarkerColor = function (name) {
     };
 }
 
-const parseGeoJson = function (data) {
+const parseGeoJson = function(data) {
     data.features.forEach((capital) => {
         const coordinates = [
             Number(capital.geometry.coordinates[0]),
@@ -137,7 +137,7 @@ axios.get(urlGeoJson, {
         'Expires': '0',
     }
 }).then((response) => {
-    if (response.status !== 200) {
+    if(response.status !== 200) {
         throw new Error('Failed to fetch local geojson', {
             cause: response
         });

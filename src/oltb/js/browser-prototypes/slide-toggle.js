@@ -13,7 +13,7 @@ HTMLElement.prototype.slideUp = function(duration, callback) {
     slideToggle(this, duration, callback);
 };
 
-HTMLElement.prototype.slideDown = function (duration, callback) {
+HTMLElement.prototype.slideDown = function(duration, callback) {
     slideToggle(this, duration, callback, true);
 };
 

@@ -18,7 +18,7 @@ const LayerWrapper = LayerManager.addFeatureLayer({
     isSilent: true
 });
 
-const getWindDirection = function (continentName) {
+const getWindDirection = function(continentName) {
     const windDirections = Object.freeze({
         'Europe': 5,
         'Africa': 110,
@@ -35,7 +35,7 @@ const getWindDirection = function (continentName) {
     return windDirections[continentName] || 0;
 }
 
-const parseGeoJson = function (data) {
+const parseGeoJson = function(data) {
     data.features.forEach((capital) => {
         const coordinates = [
             Number(capital.geometry.coordinates[0]),
@@ -51,7 +51,8 @@ const parseGeoJson = function (data) {
         // Get example direction to not have all wind barbs facing the same way
         const windSpeed = _.random(0, 40);
         const windDirection = getWindDirection(continentName);
-
+        const timestamp = Date.now().toString();
+        const landmarkImage = 'landmark-5.jpeg';
         const description = `
             Current wind speed is ${windSpeed}m/s. The direction is ${windDirection}deg.
         `;
@@ -60,6 +61,7 @@ const parseGeoJson = function (data) {
             title: countryName,
             content: `
                 <p>${description}</p>
+                <img src="/${landmarkImage}?cache=${timestamp}" alt="<img Landmark>" draggable="false" />
             `,
             footer: `
                 <span class="oltb-info-window__coordinates">${prettyCoordinates}</span>
@@ -99,7 +101,7 @@ axios.get(urlGeoJson, {
         'Expires': '0',
     }
 }).then((response) => {
-    if (response.status !== 200) {
+    if(response.status !== 200) {
         throw new Error('Failed to fetch local geojson', {
             cause: response
         });

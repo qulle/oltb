@@ -18,7 +18,7 @@ const FILENAME = 'layers/Countries.js';
 const CLASS__FUNC_BUTTON = 'oltb-func-btn';
 const ID__PREFIX_INFO_WINDOW = 'oltb-info-window-marker';
 
-const parseGeoJson = function (context, data, projection) {
+const parseGeoJson = function(context, data, projection) {
     const features = new GeoJSON({
         featureProjection: projection.getCode()
     }).readFeatures(data);
@@ -71,7 +71,7 @@ const parseGeoJson = function (context, data, projection) {
     return features;
 }
 
-const loadGeoJson = function (extent, resolution, projection, success, failure) {
+const loadGeoJson = function(extent, resolution, projection, success, failure) {
     axios.get(urlGeoJson, {
         responseType: 'application/json',
         headers: {
@@ -80,7 +80,7 @@ const loadGeoJson = function (extent, resolution, projection, success, failure) 
             'Expires': '0',
         }
     }).then((response) => {
-        if (response.status !== 200) {
+        if(response.status !== 200) {
             throw new Error('Failed to fetch local geojson', {
                 cause: response
             });

@@ -17,7 +17,7 @@ const LayerWrapper = LayerManager.addFeatureLayer({
     isSilent: true
 });
 
-const getMarkerColor = function () {
+const getMarkerColor = function() {
     return {
         fill: '#FCBE80FF',
         stroke: '#FCBE8066'
@@ -93,7 +93,7 @@ axios.get(urlGeoJson, {
         'Expires': '0',
     }
 }).then((response) => {
-    if (response.status !== 200) {
+    if(response.status !== 200) {
         throw new Error('Failed to fetch local geojson', {
             cause: response
         });
