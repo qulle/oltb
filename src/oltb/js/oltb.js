@@ -22,6 +22,7 @@ import { UrlManager } from './toolbar-managers/url-manager/url-manager';
 import { NameManager } from './toolbar-managers/name-manager/name-manager';
 import { ToolManager } from './toolbar-managers/tool-manager/tool-manager';
 import { SnapManager } from './toolbar-managers/snap-manager/snap-manager';
+import { EventManager } from './toolbar-managers/event-manager/event-manager';
 import { StyleManager } from './toolbar-managers/style-manager/style-manager';
 import { LayerManager } from './toolbar-managers/layer-manager/layer-manager';
 import { StateManager } from './toolbar-managers/state-manager/state-manager';
@@ -140,6 +141,7 @@ class OLTB {
         // The init order is important due to dependencies between the managers
         BootstrapManager.initAsync([
             { manager: LogManager },
+            { manager: EventManager },
             { manager: StyleManager },
             { manager: ErrorManager },
             { manager: FeatureManager },
