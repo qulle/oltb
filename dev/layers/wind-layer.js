@@ -52,7 +52,7 @@ const parseGeoJson = function(data) {
         const windSpeed = _.random(0, 40);
         const windDirection = getWindDirection(continentName);
         const timestamp = Date.now().toString();
-        const placeholderImage = 'placeholder-5.jpeg';
+        const placeholderImage = 'placeholder-9.jpeg';
         const description = `
             Current wind speed is ${windSpeed}m/s. The direction is ${windDirection}deg.
         `;
@@ -61,7 +61,7 @@ const parseGeoJson = function(data) {
             title: countryName,
             content: `
                 <p>${description}</p>
-                <img src="/${placeholderImage}?cache=${timestamp}" alt="<img Landmark>" draggable="false" />
+                <img src="/${placeholderImage}?cache=${timestamp}" alt="Placeholder Image" draggable="false" />
             `,
             footer: `
                 <span class="oltb-info-window__coordinates">${prettyCoordinates}</span>

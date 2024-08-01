@@ -90,7 +90,7 @@ const parseGeoJson = function(data) {
             title: countryName,
             content: `
                 <p>${description}</p>
-                <img src="/${placeholderImage}?cache=${timestamp}" alt="<img Landmark>" draggable="false" />
+                <img src="/${placeholderImage}?cache=${timestamp}" alt="Placeholder Image" draggable="false" />
                 <p>
                     Google has more information about <a href="//www.google.com/search?q=${countryName}" target="_blank" class="oltb-link">${countryName}</a>.
                 </p>
