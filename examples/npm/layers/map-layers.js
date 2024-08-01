@@ -25,5 +25,5 @@ LayerManager.addMapLayers([
         })
     }
 ], {
-    silent: true
+    isSilent: true
 });

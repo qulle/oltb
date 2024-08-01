@@ -17,7 +17,9 @@ export default {
         name: 'oltb'
     },
     plugins: [
-        resolve(),
+        resolve({
+            browser: true
+        }),
         commonjs(),
         replace({
             preventAssignment: true,
