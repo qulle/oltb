@@ -43,8 +43,8 @@ $ npm install oltb
 
 ## CDN 
 ```
-https://cdn.jsdelivr.net/npm/oltb@v2.3.0/dist/oltb.min.js
-https://cdn.jsdelivr.net/npm/oltb@v2.3.0/dist/oltb.min.css
+https://cdn.jsdelivr.net/npm/oltb@v3.0.0/dist/oltb.min.js
+https://cdn.jsdelivr.net/npm/oltb@v3.0.0/dist/oltb.min.css
 ```
 
 ## Get Started
