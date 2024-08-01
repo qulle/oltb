@@ -4,46 +4,47 @@ import { MouseWheelZoom, DragPan, DragRotate, KeyboardZoom, KeyboardPan } from '
 import { platformModifierKeyOnly, altShiftKeysOnly, shiftKeyOnly, targetNotEditable } from 'ol/events/condition';
 
 // Browser prototype extensions
-import './helpers/extensions/Cycle';
-import './helpers/prototypes/String';
-import './helpers/prototypes/SlideToggle';
+import './browser-prototypes/json-cycle';
+import './browser-prototypes/string';
+import './browser-prototypes/slide-toggle';
 
 // Core Toolbar
 import '../scss/oltb.scss';
-import { Toast } from './common/Toast';
-import { Modal } from './common/Modal';
-import { Dialog } from './common/Dialog';
-import { Settings } from './helpers/constants/Settings';
-import { ContextMenu } from './common/ContextMenu';
-import { LocalStorageKeys } from './helpers/constants/LocalStorageKeys';
+import { Toast } from './ui-common/ui-toasts/toast';
+import { Modal } from './ui-common/ui-modals/modal';
+import { Dialog } from './ui-common/ui-dialogs/dialog';
+import { Settings } from './browser-constants/settings';
+import { LocalStorageKeys } from './browser-constants/local-storage-keys';
 
 // Core Managers
-import { LogManager } from './managers/LogManager';
-import { UrlManager } from './managers/UrlManager';
-import { ToolManager } from './managers/ToolManager';
-import { SnapManager } from './managers/SnapManager';
-import { StyleManager } from './managers/StyleManager';
-import { LayerManager } from './managers/LayerManager';
-import { StateManager } from './managers/StateManager';
-import { TippyManager } from './managers/TippyManager';
-import { ErrorManager } from './managers/ErrorManager';
-import { ConfigManager } from './managers/ConfigManager';
-import { ElementManager } from './managers/ElementManager';
-import { TooltipManager } from './managers/TooltipManager';
-import { FeatureManager } from './managers/FeatureManager';
-import { SettingsManager } from './managers/SettingsManager';
-import { BootstrapManager } from './managers/BootstrapManager';
-import { InfoWindowManager } from './managers/InfoWindowManager';
-import { ProjectionManager } from './managers/ProjectionManager';
-import { TranslationManager } from './managers/TranslationManager';
-import { ColorPickerManager } from './managers/ColorPickerManager';
-import { AccessibilityManager } from './managers/AccessibilityManager';
+import { LogManager } from './toolbar-managers/log-manager/log-manager';
+import { UrlManager } from './toolbar-managers/url-manager/url-manager';
+import { NameManager } from './toolbar-managers/name-manager/name-manager';
+import { ToolManager } from './toolbar-managers/tool-manager/tool-manager';
+import { SnapManager } from './toolbar-managers/snap-manager/snap-manager';
+import { StyleManager } from './toolbar-managers/style-manager/style-manager';
+import { LayerManager } from './toolbar-managers/layer-manager/layer-manager';
+import { StateManager } from './toolbar-managers/state-manager/state-manager';
+import { TippyManager } from './toolbar-managers/tippy-manager/tippy-manager';
+import { ErrorManager } from './toolbar-managers/error-manager/error-manager';
+import { ConfigManager } from './toolbar-managers/config-manager/config-manager';
+import { ElementManager } from './toolbar-managers/element-manager/element-manager';
+import { TooltipManager } from './toolbar-managers/tooltip-manager/tooltip-manager';
+import { FeatureManager } from './toolbar-managers/feature-manager/feature-manager';
+import { SettingsManager } from './toolbar-managers/settings-manager/settings-manager';
+import { BootstrapManager } from './toolbar-managers/bootstrap-manager/bootstrap-manager';
+import { ConversionManager } from './toolbar-managers/conversion-manager/conversion-manager';
+import { InfoWindowManager } from './toolbar-managers/info-window-manager/info-window-manager';
+import { ProjectionManager } from './toolbar-managers/projection-manager/projection-manager';
+import { TranslationManager } from './toolbar-managers/translation-manager/translation-manager';
+import { ColorPickerManager } from './toolbar-managers/color-picker-manager/color-picker-manager';
+import { AccessibilityManager } from './toolbar-managers/accessibility-manager/accessibility-manager';
 
 // Create UI functions
-import { createUITooltip } from './creators/CreateUITooltip';
+import { createUITooltip } from './ui-creators/ui-tooltip/create-ui-tooltip';
 
-// Toolbar tools
-import { AllTools } from './tools/index';
+// Toolbar Tools
+import { AllTools } from './toolbar-tools/index';
 
 class OLTB {
     static LogManager = LogManager;
@@ -65,6 +66,8 @@ class OLTB {
     static InfoWindowManager = InfoWindowManager;
     static ColorPickerManager = ColorPickerManager;
     static AccessibilityManager = AccessibilityManager;
+    static ConversionManager = ConversionManager;
+    static NameManager = NameManager;
     
     static Toast = Toast;
     static Modal = Modal;
@@ -112,8 +115,8 @@ class OLTB {
         });
 
         // Note: 
-        // Always add the ContextMenu last
-        this.#tools['ContextMenu'] = new ContextMenu({});
+        // Always add the ContextMenuTool last
+        this.#tools['ContextMenuTool'] = new AllTools.ContextMenuTool({});
     }
 
     #initLocalStorage() {
@@ -134,7 +137,7 @@ class OLTB {
 
     constructor(options = {}) {
         // Note: 
-        // The init order is important
+        // The init order is important due to dependencies between the managers
         BootstrapManager.initAsync([
             { manager: LogManager },
             { manager: StyleManager },

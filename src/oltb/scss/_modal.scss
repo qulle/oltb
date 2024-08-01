@@ -1,7 +1,7 @@
 .oltb-modal {
     background-color: $background-theme-light;
     display: inline-block;
-    max-width: 1350px;
+    max-width: 1100px;
     min-width: 450px;
     margin: 2rem 1rem;
     padding: $top-level-padding;
@@ -9,7 +9,12 @@
     box-shadow: $box-shadow-dark;
 
     &--maximized {
-        width: calc(100% - 3rem);
+        max-width: 100%;
+        width: calc(100% - 2rem);
+    }
+
+    &--push-width {
+        width: calc(100% - 2rem);
     }
 
     &-backdrop {

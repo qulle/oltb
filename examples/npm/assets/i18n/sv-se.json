@@ -589,6 +589,7 @@
                 },
                 "groups": {
                     "createMapLayer": {
+                        "placeholder": "Namn", 
                         "create": "Skapa Kartlager"
                     },
                     "createFeatureLayer": {

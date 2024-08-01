@@ -1,6 +1,8 @@
 .oltb-toolbox-container {
-    // Help for collision detection
+    // Note:
+    // min-width is help for collision detection
     min-width: 320px;
+    max-width: 380px;
     position: absolute;
     pointer-events: auto;
     z-index: 800;
@@ -12,7 +14,6 @@
     box-shadow: $box-shadow-mid;
     padding: 0 1rem;
     transition: transform 450ms ease-in-out;
-
     overflow-y: auto;
     -ms-overflow-style: none;
     scrollbar-width: none;
