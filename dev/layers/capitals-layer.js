@@ -80,7 +80,7 @@ const parseGeoJson = function(data) {
         const capitalName = capital.properties.capitalName;
         const continentName = capital.properties.continentName;
         const timestamp = Date.now().toString();
-        const landmarkImage = 'landmark-1.jpeg';
+        const placeholderImage = 'placeholder-1.jpeg';
         const description = `
             ${countryName} is a country located in ${continentName}.
             Its capital is ${capitalName} and its country code is ${countryCode}.
@@ -90,7 +90,7 @@ const parseGeoJson = function(data) {
             title: countryName,
             content: `
                 <p>${description}</p>
-                <img src="/${landmarkImage}?cache=${timestamp}" alt="<img Landmark>" draggable="false" />
+                <img src="/${placeholderImage}?cache=${timestamp}" alt="<img Landmark>" draggable="false" />
                 <p>
                     Google has more information about <a href="//www.google.com/search?q=${countryName}" target="_blank" class="oltb-link">${countryName}</a>.
                 </p>
