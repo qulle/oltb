@@ -30,8 +30,8 @@ echo -e "\n$TCyan[4/6]$TReset. Copied documentation files";
 
 # 5
 find dist -type f -name '*.test.js' -exec rm -f {} \;
-echo -e "\n$TCyan[6/6]$TReset. Cleaned dist from .test.js files";
+echo -e "\n$TCyan[5/6]$TReset. Cleaned dist from .test.js files";
 
 # 6
 npm run build:lib
-echo -e "\n$TCyan[5/6]$TReset. Rollup created IIFE lib";
+echo -e "\n$TCyan[6/6]$TReset. Rollup created IIFE lib";
