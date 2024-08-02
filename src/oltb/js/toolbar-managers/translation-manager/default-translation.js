@@ -440,6 +440,12 @@ export const DefaultTranslation = Object.freeze({
                         rotate: 'Rotate',
                         geometryData: 'Geometry Data'
                     },
+                    copying: {
+                        title: 'Copy Functions',
+                        cut: 'Cut',
+                        copy: 'Copy',
+                        paste: 'Paste'
+                    },
                     shapes: {
                         title: 'Shapes',
                         union: 'Union',

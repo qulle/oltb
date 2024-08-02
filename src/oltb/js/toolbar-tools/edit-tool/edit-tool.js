@@ -167,6 +167,15 @@ class EditTool extends BaseTool {
         this.uiRefInfoSelectedButton = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-info-button`);
         this.uiRefInfoSelectedButton.addEventListener(Events.browser.click, this.#onInfoSelectedFeatures.bind(this));
 
+        this.uiRefCutSelectedButton = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-cut-selected-button`);
+        this.uiRefCutSelectedButton.addEventListener(Events.browser.click, this.#onCutSelectedFeatures.bind(this));
+
+        this.uiRefCopySelectedButton = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-copy-selected-button`);
+        this.uiRefCopySelectedButton.addEventListener(Events.browser.click, this.#onCopySelectedFeatures.bind(this));
+
+        this.uiRefPasteSelectedButton = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-paste-selected-button`);
+        this.uiRefPasteSelectedButton.addEventListener(Events.browser.click, this.#onPasteSelectedFeatures.bind(this));
+
         this.uiRefUnionSelectedButton = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-union-selected-button`);
         this.uiRefUnionSelectedButton.addEventListener(Events.browser.click, this.#onShapeOperator.bind(this, this.unionFeatures, 'union'));
 
@@ -277,6 +286,18 @@ class EditTool extends BaseTool {
                         </button>
                     </div>
                     <div class="${CLASS__TOOLBOX_SECTION}__group ${CLASS__TOOLBOX_SECTION}__group--sub-toolbar">
+                        <label class="oltb-label" data-oltb-i18n="${I18N__BASE}.toolbox.groups.copying.title">${i18n.groups.copying.title}</label>
+                        <button type="button" id="${ID__PREFIX}-cut-selected-button" ${buttonClasses} data-oltb-i18n="${I18N__BASE}.toolbox.groups.copying.cut" title="${i18n.groups.copying.cut}">
+                            ${getSvgIcon({...DefaultButtonProps, path: SvgPaths.scissors.filled})}
+                        </button>
+                        <button type="button" id="${ID__PREFIX}-copy-selected-button" ${buttonClasses} data-oltb-i18n="${I18N__BASE}.toolbox.groups.copying.copy" title="${i18n.groups.copying.copy}">
+                            ${getSvgIcon({...DefaultButtonProps, path: SvgPaths.copy.stroked})}
+                        </button>
+                        <button type="button" id="${ID__PREFIX}-paste-selected-button" ${buttonClasses} data-oltb-i18n="${I18N__BASE}.toolbox.groups.copying.paste" title="${i18n.groups.copying.paste}">
+                            ${getSvgIcon({...DefaultButtonProps, path: SvgPaths.clipboard.stroked})}
+                        </button>
+                    </div>
+                    <div class="${CLASS__TOOLBOX_SECTION}__group ${CLASS__TOOLBOX_SECTION}__group--sub-toolbar ${CLASS__TOOLBOX_SECTION}__group--split-group">
                         <label class="oltb-label" data-oltb-i18n="${I18N__BASE}.toolbox.groups.shapes.title">${i18n.groups.shapes.title}</label>
                         <button type="button" id="${ID__PREFIX}-union-selected-button" ${buttonClasses} data-oltb-i18n="${I18N__BASE}.toolbox.groups.shapes.union" title="${i18n.groups.shapes.union}">
                             ${getSvgIcon({...DefaultButtonProps, path: SvgPaths.union.mixed})}
@@ -557,6 +578,29 @@ class EditTool extends BaseTool {
         }
 
         this.doShowFeatureInfo(features[0]);
+    }
+
+    #onCutSelectedFeatures(event) {
+        console.log('CUT');
+    }
+
+    #onCopySelectedFeatures(event) {
+        const features = [...this.interactionSelect.getFeatures().getArray()];
+
+        if(features.length === 0) {
+            Toast.info({
+                i18nKey: `${I18N__BASE}.toasts.infos.missingFeatures`,
+                autoremove: true
+            });
+
+            return;
+        }
+
+        this.doCopyFeatures(features);
+    }
+
+    #onPasteSelectedFeatures(event) {
+        console.log('PASTE');
     }
 
     #onFeatureColorChange(event) {
@@ -1018,6 +1062,23 @@ class EditTool extends BaseTool {
             const geometry = feature.getGeometry();
             const center = getCenter(geometry.getExtent());
             geometry.rotate(radians, center);
+        });
+    }
+
+    doCopyFeatures(features) {
+        const copies = [];
+        features.forEach((feature) => {
+            const clonedFeature = feature.clone();
+            const clonedProperties = JSON.parse(JSON.stringify(feature.getProperties()));
+            clonedProperties.geometry = clonedFeature.getGeometry();
+            clonedFeature.setProperties(clonedProperties, true);
+
+            copies.push(clonedFeature);
+        });
+
+        copies.forEach((feature) => {
+            const layerWrapper = LayerManager.getActiveFeatureLayer();
+            LayerManager.addFeatureToLayer(feature, layerWrapper);
         });
     }
 

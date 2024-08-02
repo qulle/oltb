@@ -86,8 +86,8 @@ class HiddenMapNavigationTool extends BaseTool {
             LocalStorageDefaults
         );
 
-        this.clipboardIcon = getSvgIcon({
-            path: SvgPaths.clipboard.stroked
+        this.copyIcon = getSvgIcon({
+            path: SvgPaths.copy.stroked
         });
 
         this.coordinatesIcon = getSvgIcon({
@@ -127,7 +127,7 @@ class HiddenMapNavigationTool extends BaseTool {
     //--------------------------------------------------------------------
     #initContextMenuItems() {
         ContextMenuTool.addItem({
-            icon: this.clipboardIcon,
+            icon: this.copyIcon,
             i18nKey: `${I18N__BASE}.contextItems.copyCoordinates`,
             fn: this.#onContextMenuCopyCoordinates.bind(this)
         });

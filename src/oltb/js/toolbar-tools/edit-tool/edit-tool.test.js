@@ -40,6 +40,12 @@ const HTML__MOCK = (`
                 <button type="button" id="${ID__PREFIX}-info-button" class="oltb-btn oltb-btn--blue-mid oltb-tippy" data-oltb-i18n="${I18N__BASE}.toolbox.groups.misc.geometryData" title="__JEST__">__JEST__</button>
             </div>
             <div class="${CLASS__TOOLBOX_SECTION}__group ${CLASS__TOOLBOX_SECTION}__group--sub-toolbar">
+                <label class="oltb-label" data-oltb-i18n="${I18N__BASE}.toolbox.groups.copying.title">${i18n.groups.copying.title}</label>
+                <button type="button" id="${ID__PREFIX}-cut-selected-button" class="oltb-btn oltb-btn--blue-mid oltb-tippy" data-oltb-i18n="${I18N__BASE}.toolbox.groups.copying.cut" title="__JEST__">__JEST__</button>
+                <button type="button" id="${ID__PREFIX}-copy-selected-button" class="oltb-btn oltb-btn--blue-mid oltb-tippy" data-oltb-i18n="${I18N__BASE}.toolbox.groups.copying.copy" title="__JEST__">__JEST__</button>
+                <button type="button" id="${ID__PREFIX}-paste-selected-button" class="oltb-btn oltb-btn--blue-mid oltb-tippy" data-oltb-i18n="${I18N__BASE}.toolbox.groups.copying.paste" title="__JEST__">__JEST__</button>
+            </div>
+            <div class="${CLASS__TOOLBOX_SECTION}__group ${CLASS__TOOLBOX_SECTION}__group--sub-toolbar">
                 <label class="oltb-label" data-oltb-i18n="${I18N__BASE}.toolbox.groups.shapes.title">__JEST__</label>
                 <button type="button" id="${ID__PREFIX}-union-selected-button" class="oltb-btn oltb-btn--blue-mid oltb-tippy" data-oltb-i18n="${I18N__BASE}.toolbox.groups.shapes.union" title="__JEST__">__JEST__</button>
                 <button type="button" id="${ID__PREFIX}-intersect-selected-button" class="oltb-btn oltb-btn--blue-mid oltb-tippy" data-oltb-i18n="${I18N__BASE}.toolbox.groups.shapes.intersect" title="__JEST__">__JEST__</button>
