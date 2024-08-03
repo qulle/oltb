@@ -464,7 +464,7 @@ class EditTool extends BaseTool {
     }
 
     //--------------------------------------------------------------------
-    // # Section: Internal Helpers
+    // # Section: Internal
     //--------------------------------------------------------------------
     #deleteFeatures(features) {
         // Note: 
@@ -830,7 +830,6 @@ class EditTool extends BaseTool {
 
     doSelectFeatureRemove(event) {
         const feature = event.element;
-        this.doPopFeatureStyle(feature);
 
         // Note: 
         // The setTimeout must be used
@@ -1158,7 +1157,7 @@ class EditTool extends BaseTool {
 
         const indentation = 4;
         const coordinatesText = JSON.stringify(
-            JSON.retrocycle(coordinates),
+            JSON.decycle(coordinates),
             jsonReplacer, 
             indentation
         );
@@ -1166,7 +1165,7 @@ class EditTool extends BaseTool {
         const oltb = DefaultConfig.toolbar.id;
         const properties = feature.get(oltb);
         const propertiesText = JSON.stringify(
-            JSON.retrocycle(properties),
+            JSON.decycle(properties),
             jsonReplacer, 
             indentation
         );

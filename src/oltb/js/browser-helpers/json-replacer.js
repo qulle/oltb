@@ -3,7 +3,8 @@
 // Example: Bookmarks have a reference to the marker on the Map
 const IgnoredKeys = Object.freeze([
     'marker',
-    'tooltip'
+    'tooltip',
+    'onChangeListener'
 ]);
 
 const jsonReplacer = function(key, value) {

@@ -10,7 +10,8 @@ const FILENAME = 'state-manager.js';
 // Example: Bookmarks have a reference to the marker on the Map
 const IgnoredKeys = Object.freeze([
     'marker',
-    'tooltip'
+    'tooltip',
+    'onChangeListener'
 ]);
 
 /**

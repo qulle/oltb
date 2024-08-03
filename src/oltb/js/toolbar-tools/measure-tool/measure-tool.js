@@ -475,8 +475,6 @@ class MeasureTool extends BaseTool {
                 });
             }
 
-            map.addOverlay(tooltip.getOverlay());
-
             // The layer might be hidden, check if the tooltip also should be hidden
             if(layer.getVisible()) {
                 tooltip.getOverlay().setMap(map);

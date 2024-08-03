@@ -80,6 +80,27 @@ class FeatureManager extends BaseManager {
         };
     }
 
+    static #checkOLTBObjectAfterClone(feature) {
+        if(this.isMeasurementType(feature)) {
+            const tooltip = createUITooltip();
+            feature.setProperties({
+                oltb: {
+                    type: FeatureProperties.type.measurement,
+                    tooltip: tooltip.getOverlay()
+                }
+            });
+
+            const geometry = feature.getGeometry();
+            const measureCoordinates = getMeasureCoordinates(geometry);
+            const measureValue = getMeasureValue(geometry);
+
+            tooltip.setPosition(measureCoordinates);
+            tooltip.setData(`${measureValue.value} ${measureValue.unit}`);
+        }
+
+        return feature;
+    }
+
     //--------------------------------------------------------------------
     // # Section: Public API
     //--------------------------------------------------------------------
@@ -187,24 +208,7 @@ class FeatureManager extends BaseManager {
         clonedFeature.setProperties(clonedProperties, true);
         clonedFeature.setStyle(originalFeatureStyles[featureId]);
 
-        if(this.isMeasurementType(clonedFeature)) {
-            const tooltip = createUITooltip();
-            clonedFeature.setProperties({
-                oltb: {
-                    type: FeatureProperties.type.measurement,
-                    tooltip: tooltip.getOverlay()
-                }
-            });
-
-            const geometry = clonedFeature.getGeometry();
-            const measureCoordinates = getMeasureCoordinates(geometry);
-            const measureValue = getMeasureValue(geometry);
-
-            tooltip.setPosition(measureCoordinates);
-            tooltip.setData(`${measureValue.value} ${measureValue.unit}`);
-        }
-
-        return clonedFeature;
+        return this.#checkOLTBObjectAfterClone(clonedFeature);
     }
 }
 
