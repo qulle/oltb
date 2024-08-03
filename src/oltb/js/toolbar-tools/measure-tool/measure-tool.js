@@ -455,9 +455,10 @@ class MeasureTool extends BaseTool {
             });
             
             const geometry = feature.getGeometry();
-            tooltip.setPosition(getMeasureCoordinates(geometry));
-            
+            const measureCoordinates = getMeasureCoordinates(geometry);
             const measureValue = getMeasureValue(geometry);
+
+            tooltip.setPosition(measureCoordinates);
             tooltip.setData(`${measureValue.value} ${measureValue.unit}`);
 
             const layerWrapper = LayerManager.getActiveFeatureLayer({

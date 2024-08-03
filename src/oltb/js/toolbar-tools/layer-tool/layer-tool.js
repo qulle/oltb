@@ -633,7 +633,7 @@ class LayerTool extends BaseTool {
             return;
         }
 
-        this.onAddFeatureLayerByClick(event);
+        this.#onAddFeatureLayerByClick(event);
     }
 
     #onAddFeatureLayerByClick(event) {
@@ -1329,9 +1329,11 @@ class LayerTool extends BaseTool {
         const layer = layerWrapper.getLayer();
         const flippedVisibility = !layer.getVisible();
         layer.setVisible(flippedVisibility);
+
+        return flippedVisibility;
     }
 
-    doHideLayerFeatures(layerWrapper) {
+    doSetLayerFeaturesVisibility(layerWrapper, map, visibility = false) {
         const layer = layerWrapper.getLayer();
         if(!this.hasLayerFeatures(layer)) {
             return;
@@ -1339,7 +1341,7 @@ class LayerTool extends BaseTool {
 
         layer.getSource().getFeatures().forEach((feature) => {
             if(FeatureManager.hasTooltip(feature)) {
-                FeatureManager.getTooltip(feature).setMap(flippedVisibility ? map : null)
+                FeatureManager.getTooltip(feature).setMap(visibility ? map : null)
             }
         });
     }
@@ -1352,8 +1354,8 @@ class LayerTool extends BaseTool {
         
         InfoWindowManager.hideOverlay();
         
-        this.doToggleLayerVisibility(layerWrapper);
-        this.doHideLayerFeatures(layerWrapper);
+        const visibility = this.doToggleLayerVisibility(layerWrapper);
+        this.doSetLayerFeaturesVisibility(layerWrapper, map, visibility);
 
         // Note: 
         // @Consumer callback

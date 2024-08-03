@@ -466,6 +466,18 @@ export const DefaultTranslation = Object.freeze({
             },
             toasts: {
                 infos: {
+                    copiedFeatures: {
+                        title: 'Copied',
+                        message: 'Features has been copied'
+                    },
+                    pastedFeatures: {
+                        title: 'Pasted',
+                        message: 'Features has been pasted'
+                    },
+                    cutFeatures: {
+                        title: 'Cut',
+                        message: 'Features has been cut'
+                    },
                     missingFeatures: {
                         title: 'Oops',
                         message: 'No objects are selected'

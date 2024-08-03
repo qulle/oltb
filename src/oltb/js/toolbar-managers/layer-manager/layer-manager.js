@@ -186,6 +186,10 @@ class LayerManager extends BaseManager {
         const layer = layerWrapper.getLayer();
         const source = layer.getSource();
 
+        if(FeatureManager.hasTooltip(feature)) {
+            this.#map.addOverlay(FeatureManager.getTooltip(feature));
+        }
+
         source.addFeature(feature);
         this.#snapFeatures.push(feature);
     }
@@ -193,6 +197,10 @@ class LayerManager extends BaseManager {
     static removeFeatureFromLayer(feature, layerWrapper) {
         const layer = layerWrapper.getLayer();
         const source = layer.getSource();
+
+        if(FeatureManager.hasTooltip(feature)) {
+            this.#map.removeOverlay(FeatureManager.getTooltip(feature));
+        }
 
         source.removeFeature(feature);
         this.#snapFeatures.remove(feature);

@@ -9,7 +9,8 @@ const FILENAME = 'state-manager.js';
 // Some objects have properties that we don't want to store in localStorage
 // Example: Bookmarks have a reference to the marker on the Map
 const IgnoredKeys = Object.freeze([
-    'marker'
+    'marker',
+    'tooltip'
 ]);
 
 /**

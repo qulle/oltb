@@ -1,12 +1,16 @@
-import _ from 'lodash';
+import _, { clone } from 'lodash';
 import { Point } from 'ol/geom';
+import { getUid } from 'ol/util';
 import { Feature } from 'ol';
 import { fromLonLat } from 'ol/proj';
 import { LogManager } from '../log-manager/log-manager';
 import { BaseManager } from '../base-manager';
+import { jsonReplacer } from '../../browser-helpers/json-replacer';
+import { createUITooltip } from '../../ui-creators/ui-tooltip/create-ui-tooltip';
 import { FeatureProperties } from '../../ol-helpers/feature-properties';
 import { DefaultWindBarbOptions } from './default-wind-barb-options';
 import { DefaultIconMarkerOptions } from './default-icon-marker-options';
+import { getMeasureCoordinates, getMeasureValue } from '../../ol-helpers/geometry-measurements';
 
 const FILENAME = 'feature-manager.js';
 
@@ -169,6 +173,38 @@ class FeatureManager extends BaseManager {
         }
 
         return a.ol_uid === b.ol_uid;
+    }
+
+    static deepCopyVectorFeatureWithStyle(feature, originalFeatureStyles) {
+        const featureId = getUid(feature);
+        const clonedFeature = feature.clone();
+        const clonedProperties = JSON.parse(JSON.stringify(
+            JSON.decycle(feature.getProperties()),
+            jsonReplacer
+        ));
+
+        clonedProperties.geometry = clonedFeature.getGeometry();
+        clonedFeature.setProperties(clonedProperties, true);
+        clonedFeature.setStyle(originalFeatureStyles[featureId]);
+
+        if(this.isMeasurementType(clonedFeature)) {
+            const tooltip = createUITooltip();
+            clonedFeature.setProperties({
+                oltb: {
+                    type: FeatureProperties.type.measurement,
+                    tooltip: tooltip.getOverlay()
+                }
+            });
+
+            const geometry = clonedFeature.getGeometry();
+            const measureCoordinates = getMeasureCoordinates(geometry);
+            const measureValue = getMeasureValue(geometry);
+
+            tooltip.setPosition(measureCoordinates);
+            tooltip.setData(`${measureValue.value} ${measureValue.unit}`);
+        }
+
+        return clonedFeature;
     }
 }
 

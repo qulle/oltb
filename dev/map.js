@@ -363,6 +363,15 @@ const initMapAndToolbar = () => {
                 onStyleChange: function(event, style) {
                     console.log('EditTool: Style changed');
                 },
+                onCopyFeatures: function(features) {
+                    console.log('EditTool: Copied features', features);
+                },
+                onPasteFeatures: function(features) {
+                    console.log('EditTool: Pasted features', features);
+                },
+                onCutFeatures: function(features) {
+                    console.log('EditTool: Cut features', features);
+                },
                 onShapeOperation: function(type, a, b, result) {
                     console.log('EditTool: Shape operation', type);
                 },
@@ -384,8 +393,8 @@ const initMapAndToolbar = () => {
                 onTranslatEend: function(event) {
                     console.log('EditTool: Translate end');
                 },
-                onRemovedFeature: function(feature) {
-                    console.log('EditTool: Removed feature', feature);
+                onRemovedFeatures: function(features) {
+                    console.log('EditTool: Removed features', features);
                 },
                 onError: function(event) {
                     console.log('EditTool: Error');

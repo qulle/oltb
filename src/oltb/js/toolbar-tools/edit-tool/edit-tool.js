@@ -2,6 +2,7 @@ import _ from 'lodash';
 import * as jsts from 'jsts/dist/jsts.min';
 import { DOM } from '../../browser-helpers/dom-factory';
 import { Toast } from '../../ui-common/ui-toasts/toast';
+import { getUid } from 'ol/util';
 import { Dialog } from '../../ui-common/ui-dialogs/dialog';
 import { Events } from '../../browser-constants/events';
 import { Feature } from 'ol';
@@ -52,6 +53,9 @@ const DefaultOptions = Object.freeze({
     onClicked: undefined,
     onBrowserStateCleared: undefined,
     onStyleChange: undefined,
+    onCopyFeatures: undefined,
+    onPasteFeatures: undefined,
+    onCutFeatures: undefined,
     onShapeOperation: undefined,
     onSelectAdd: undefined,
     onSelectRemove: undefined,
@@ -59,7 +63,7 @@ const DefaultOptions = Object.freeze({
     onModifyEnd: undefined,
     onTranslateStart: undefined,
     onTranslatEnd: undefined,
-    onRemovedFeature: undefined,
+    onRemovedFeatures: undefined,
     onError: undefined,
     onSnapped: undefined
 });
@@ -149,6 +153,9 @@ class EditTool extends BaseTool {
             LocalStorageNodeName, 
             LocalStorageDefaults
         );
+
+        this.originalFeatureStyles = {};
+        this.featureClipboard = [];
 
         this.parser = new jsts.io.OL3Parser();
         this.parser.inject(Point, LineString, LinearRing, Polygon, MultiPoint, MultiLineString, MultiPolygon, GeometryCollection);
@@ -457,6 +464,26 @@ class EditTool extends BaseTool {
     }
 
     //--------------------------------------------------------------------
+    // # Section: Internal Helpers
+    //--------------------------------------------------------------------
+    #deleteFeatures(features) {
+        // Note: 
+        // The user can select features from any layer
+        // Each feature needs to be removed from its associated layer
+        const layerWrappers = LayerManager.getFeatureLayers();
+        features.forEach((feature) => {
+            layerWrappers.forEach((layerWrapper) => {
+                if(!layerWrapper.getLayer().getSource().hasFeature(feature)) {
+                    return;
+                }
+
+                LayerManager.removeFeatureFromLayer(feature, layerWrapper);
+                this.interactionSelect.getFeatures().remove(feature);
+            });
+        });
+    }
+
+    //--------------------------------------------------------------------
     // # Section: Browser Events
     //--------------------------------------------------------------------
     #onOLTBReady(event) {
@@ -581,7 +608,18 @@ class EditTool extends BaseTool {
     }
 
     #onCutSelectedFeatures(event) {
-        console.log('CUT');
+        const features = [...this.interactionSelect.getFeatures().getArray()];
+
+        if(features.length === 0) {
+            Toast.info({
+                i18nKey: `${I18N__BASE}.toasts.infos.missingFeatures`,
+                autoremove: true
+            });
+
+            return;
+        }
+
+        this.doCutFeatures(features);
     }
 
     #onCopySelectedFeatures(event) {
@@ -600,7 +638,7 @@ class EditTool extends BaseTool {
     }
 
     #onPasteSelectedFeatures(event) {
-        console.log('PASTE');
+        this.doPasteFeatures();
     }
 
     #onFeatureColorChange(event) {
@@ -753,6 +791,17 @@ class EditTool extends BaseTool {
     //--------------------------------------------------------------------
     // # Section: Tool DoActions
     //--------------------------------------------------------------------
+    doPushFeatureStyle(feature) {
+        const featureId = getUid(feature);
+        this.originalFeatureStyles[featureId] = feature.getStyle();
+    }
+
+    doPopFeatureStyle(feature) {
+        const featureId = getUid(feature);
+        feature.setStyle(this.originalFeatureStyles[featureId]);
+        delete this.originalFeatureStyles[featureId];
+    }
+
     doClearState() {
         this.localStorage = _.cloneDeep(LocalStorageDefaults);
         StateManager.setStateObject(LocalStorageNodeName, LocalStorageDefaults);
@@ -769,6 +818,9 @@ class EditTool extends BaseTool {
     }
 
     doSelectFeatureAdd(event) {
+        const feature = event.element;
+        this.doPushFeatureStyle(feature);
+
         // Note: 
         // @Consumer callback
         if(this.options.onSelectAdd) {
@@ -778,6 +830,7 @@ class EditTool extends BaseTool {
 
     doSelectFeatureRemove(event) {
         const feature = event.element;
+        this.doPopFeatureStyle(feature);
 
         // Note: 
         // The setTimeout must be used
@@ -941,11 +994,6 @@ class EditTool extends BaseTool {
     }
 
     doShapeOperation(features, operation, type) {
-        const map = this.getMap();
-        if(!map) {
-            return;
-        }
-
         try {
             const a = features[0];
             const b = features[1];
@@ -972,12 +1020,11 @@ class EditTool extends BaseTool {
                 });
 
                 const geometry = feature.getGeometry();
-                tooltip.setPosition(getMeasureCoordinates(geometry));
-
+                const measureCoordinates = getMeasureCoordinates(geometry);
                 const measureValue = getMeasureValue(geometry);
-                tooltip.setData(`${measureValue.value} ${measureValue.unit}`);
 
-                map.addOverlay(tooltip.getOverlay());
+                tooltip.setPosition(measureCoordinates);
+                tooltip.setData(`${measureValue.value} ${measureValue.unit}`);
                 feature.setStyle(DefaultMeasureStyle);
             }else {
                 feature.setStyle(DefaultDrawingStyle);
@@ -1022,37 +1069,13 @@ class EditTool extends BaseTool {
     }
 
     doDeleteFeatures(features) {
-        const map = this.getMap();
-        if(!map) {
-            return;
-        }
-        
+        this.#deleteFeatures(features);
+
         // Note: 
-        // The user can select features from any layer
-        // Each feature needs to be removed from its associated layer
-        const layerWrappers = LayerManager.getFeatureLayers();
-        features.forEach((feature) => {
-            layerWrappers.forEach((layerWrapper) => {
-                const source = layerWrapper.getLayer().getSource();
-                if(!source.hasFeature(feature)) {
-                    return;
-                }
-
-                LayerManager.removeFeatureFromLayer(feature, layerWrapper);
-                this.interactionSelect.getFeatures().remove(feature);
-
-                // Remove overlays associated with the feature
-                if(FeatureManager.hasTooltip(feature)) {
-                    map.removeOverlay(FeatureManager.getTooltip(feature));
-                }
-
-                // Note: 
-                // @Consumer callback
-                if(this.options.onRemovedFeature) {
-                    this.options.onRemovedFeature(feature);
-                }
-            });
-        });
+        // @Consumer callback
+        if(this.options.onRemovedFeatures) {
+            this.options.onRemovedFeatures(features);
+        }
     }
 
     doRotateFeatures(features, rotation) {
@@ -1065,27 +1088,69 @@ class EditTool extends BaseTool {
         });
     }
 
-    doCopyFeatures(features) {
-        const copies = [];
+    doCutFeatures(features) {
         features.forEach((feature) => {
-            const clonedFeature = feature.clone();
-            const clonedProperties = JSON.parse(JSON.stringify(feature.getProperties()));
-            clonedProperties.geometry = clonedFeature.getGeometry();
-            clonedFeature.setProperties(clonedProperties, true);
-
-            copies.push(clonedFeature);
+            const clonedFeature = FeatureManager.deepCopyVectorFeatureWithStyle(feature, this.originalFeatureStyles);
+            this.featureClipboard.push(clonedFeature);
         });
+
+        this.#deleteFeatures(features);
+
+        Toast.info({
+            i18nKey: `${I18N__BASE}.toasts.infos.cutFeatures`,
+            autoremove: true
+        });
+
+        // Note: 
+        // @Consumer callback
+        if(this.options.onCutFeatures) {
+            this.options.onCutFeatures(features);
+        }
+    }
+
+    doCopyFeatures(features) {
+        features.forEach((feature) => {
+            const clonedFeature = FeatureManager.deepCopyVectorFeatureWithStyle(feature, this.originalFeatureStyles);
+            this.featureClipboard.push(clonedFeature);
+        });
+
+        Toast.info({
+            i18nKey: `${I18N__BASE}.toasts.infos.copiedFeatures`,
+            autoremove: true
+        });
+
+        // Note: 
+        // @Consumer callback
+        if(this.options.onCopyFeatures) {
+            this.options.onCopyFeatures(features);
+        }
+    }
+
+    doPasteFeatures() {
+        const copies = [...this.featureClipboard];
+        this.featureClipboard = [];
 
         copies.forEach((feature) => {
             const layerWrapper = LayerManager.getActiveFeatureLayer();
             LayerManager.addFeatureToLayer(feature, layerWrapper);
         });
+
+        Toast.info({
+            i18nKey: `${I18N__BASE}.toasts.infos.pastedFeatures`,
+            autoremove: true
+        });
+
+        // Note: 
+        // @Consumer callback
+        if(this.options.onPasteFeatures) {
+            this.options.onPasteFeatures(copies);
+        }
     }
 
     doShowFeatureInfo(feature) {
         // TODO:
         // Why is the [0] on the coordiantes required?
-        const id = feature.ol_uid;
+        const featureId = getUid(feature);
         const geometry = feature.getGeometry();
         const measurement = getMeasureValue(geometry);
         const coordinates = geometry.getCoordinates()[0];
@@ -1110,10 +1175,10 @@ class EditTool extends BaseTool {
         // The data properties are used as keys in the translation-files
         const options = {
             data: {
-                id: id,
+                id: featureId,
                 measurement: `${measurement.value} ${measurement.unit}`,
                 oltbProperties: `<pre><code>${propertiesText}</code></pre>`,
-                vertices: vertices,
+                vertices: `${vertices} (${vertices - 1} unique)`,
                 coordinates: `<pre><code>${coordinatesText}</code></pre>`
             }
         };

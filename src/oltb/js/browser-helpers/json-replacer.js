@@ -2,7 +2,8 @@
 // Some objects have properties that we don't want to serialize due to size
 // Example: Bookmarks have a reference to the marker on the Map
 const IgnoredKeys = Object.freeze([
-    'marker'
+    'marker',
+    'tooltip'
 ]);
 
 const jsonReplacer = function(key, value) {
