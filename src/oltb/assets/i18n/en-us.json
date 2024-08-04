@@ -439,6 +439,12 @@
                         "rotate": "Rotate",
                         "geometryData": "Geometry Data"
                     },
+                    "copying": {
+                        "title": "Clipboard",
+                        "cut": "Cut",
+                        "copy": "Copy",
+                        "paste": "Paste"
+                    },
                     "shapes": {
                         "title": "Shapes",
                         "union": "Union",

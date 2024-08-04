@@ -441,7 +441,7 @@ export const DefaultTranslation = Object.freeze({
                         geometryData: 'Geometry Data'
                     },
                     copying: {
-                        title: 'Copy Functions',
+                        title: 'Clipboard',
                         cut: 'Cut',
                         copy: 'Copy',
                         paste: 'Paste'
