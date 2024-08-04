@@ -468,15 +468,15 @@ export const DefaultTranslation = Object.freeze({
                 infos: {
                     copiedFeatures: {
                         title: 'Copied',
-                        message: 'Features has been copied'
+                        message: 'features has been copied'
                     },
                     pastedFeatures: {
                         title: 'Pasted',
-                        message: 'Features has been pasted'
+                        message: 'features has been pasted'
                     },
                     cutFeatures: {
                         title: 'Cut',
-                        message: 'Features has been cut'
+                        message: 'features has been cut'
                     },
                     missingFeatures: {
                         title: 'Oops',

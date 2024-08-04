@@ -433,11 +433,6 @@ class MeasureTool extends BaseTool {
     }
 
     doDrawEnd(event) {
-        const map = this.getMap();
-        if(!map) {
-            return;
-        }
-
         unByKey(this.onChangeListener);
         const feature = event.feature;
 
@@ -465,22 +460,7 @@ class MeasureTool extends BaseTool {
                 fallback: TranslationManager.get(`${I18N__BASE}.layers.defaultName`)
             });
             
-            LayerManager.addFeatureToLayer(feature, layerWrapper);
-            const layer = layerWrapper.getLayer();
-            
-            if(!layer.getVisible()) {
-                Toast.info({
-                    i18nKey: `${I18N__BASE}.toasts.infos.drawInHiddenLayer`, 
-                    autoremove: true
-                });
-            }
-
-            // The layer might be hidden, check if the tooltip also should be hidden
-            if(layer.getVisible()) {
-                tooltip.getOverlay().setMap(map);
-            }else {
-                tooltip.getOverlay().setMap(null);
-            }
+            LayerManager.addFeatureToLayer(feature, layerWrapper, `${I18N__BASE}.toasts.infos.drawInHiddenLayer`);
         }
 
         // Note: 

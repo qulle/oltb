@@ -53,9 +53,9 @@ const DefaultOptions = Object.freeze({
     onClicked: undefined,
     onBrowserStateCleared: undefined,
     onStyleChange: undefined,
+    onCutFeatures: undefined,
     onCopyFeatures: undefined,
     onPasteFeatures: undefined,
-    onCutFeatures: undefined,
     onShapeOperation: undefined,
     onSelectAdd: undefined,
     onSelectRemove: undefined,
@@ -496,7 +496,7 @@ class EditTool extends BaseTool {
         if(isShortcutKeyOnly(event, ShortcutKeys.editTool)) {
             this.onClickTool(event);
         }else if(this.isActive && event.key === KeyboardKeys.valueDelete) {
-            this.onDeleteSelectedFeatures();
+            this.#onDeleteSelectedFeatures();
         }
     }
     
@@ -638,6 +638,15 @@ class EditTool extends BaseTool {
     }
 
     #onPasteSelectedFeatures(event) {
+        if(this.featureClipboard.length === 0) {
+            Toast.info({
+                i18nKey: `${I18N__BASE}.toasts.infos.missingFeatures`,
+                autoremove: true
+            });
+
+            return;
+        }
+
         this.doPasteFeatures();
     }
 
@@ -951,7 +960,6 @@ class EditTool extends BaseTool {
 
         const fillColor = this.uiRefFillColor.getAttribute('data-oltb-color');
         const strokeColor = this.uiRefStrokeColor.getAttribute('data-oltb-color');
-
         const features = [...this.interactionSelect.getFeatures().getArray()];
 
         this.lastStyle = new Style({
@@ -1001,7 +1009,7 @@ class EditTool extends BaseTool {
             const bGeometry = this.parser.read(b.getGeometry());
 
             const shape = operation(aGeometry, bGeometry);
-            const feature = new Feature({
+            const shapedFeature = new Feature({
                 geometry: new Polygon(this.parser.write(shape).getCoordinates()),
             });
 
@@ -1009,35 +1017,33 @@ class EditTool extends BaseTool {
                 // TODO:
                 // This code is repeated on 3/4 places, create a common way for this
                 const tooltip = createUITooltip();
-                feature.setProperties({
+                shapedFeature.setProperties({
                     oltb: {
                         type: FeatureProperties.type.measurement,
                         tooltip: tooltip.getOverlay()
                     }
                 });
 
-                const geometry = feature.getGeometry();
+                const geometry = shapedFeature.getGeometry();
                 const measureCoordinates = getMeasureCoordinates(geometry);
                 const measureValue = getMeasureValue(geometry);
 
                 tooltip.setPosition(measureCoordinates);
                 tooltip.setData(`${measureValue.value} ${measureValue.unit}`);
-                feature.setStyle(DefaultMeasureStyle);
+                shapedFeature.setStyle(DefaultMeasureStyle);
             }else {
-                feature.setStyle(DefaultDrawingStyle);
+                shapedFeature.setStyle(DefaultDrawingStyle);
             }
 
-            // Add the unioned shape
             const layerWrapper = LayerManager.getActiveFeatureLayer();
-            LayerManager.addFeatureToLayer(feature, layerWrapper);
+            LayerManager.addFeatureToLayer(shapedFeature, layerWrapper);
 
-            // Remove two original shapes
             this.doDeleteFeatures(features);
 
             // Note: 
             // @Consumer callback
             if(this.options.onShapeOperation) {
-                this.options.onShapeOperation(type, a, b, feature);
+                this.options.onShapeOperation(type, a, b, shapedFeature);
             }
         }catch(error) {
             LogManager.logError(FILENAME, 'onShapeOperator', {
@@ -1094,6 +1100,7 @@ class EditTool extends BaseTool {
         this.#deleteFeatures(features);
 
         Toast.info({
+            prefix: features.length,
             i18nKey: `${I18N__BASE}.toasts.infos.cutFeatures`,
             autoremove: true
         });
@@ -1112,6 +1119,7 @@ class EditTool extends BaseTool {
         });
 
         Toast.info({
+            prefix: features.length,
             i18nKey: `${I18N__BASE}.toasts.infos.copiedFeatures`,
             autoremove: true
         });
@@ -1133,6 +1141,7 @@ class EditTool extends BaseTool {
         });
 
         Toast.info({
+            prefix: copies.length,
             i18nKey: `${I18N__BASE}.toasts.infos.pastedFeatures`,
             autoremove: true
         });
@@ -1175,7 +1184,7 @@ class EditTool extends BaseTool {
                 id: featureId,
                 measurement: `${measurement.value} ${measurement.unit}`,
                 oltbProperties: `<pre><code>${propertiesText}</code></pre>`,
-                vertices: `${vertices} (${vertices - 1} unique)`,
+                vertices: vertices,
                 coordinates: `<pre><code>${coordinatesText}</code></pre>`
             }
         };

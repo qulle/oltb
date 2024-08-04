@@ -13,6 +13,8 @@ const CLASS__ANIMATION_LINEAR_SPINNER = `${CLASS__ANIMATION}--linear-spinner`;
 
 const DefaultOptions = Object.freeze({
     title: 'Toast',
+    prefix: '',
+    postfix: '',
     message: '',
     i18nKey: undefined,
     type: 'info',
@@ -75,9 +77,10 @@ class BaseToast {
             }}),
         });
 
+        const concatMessage = `${this.options.prefix} ${this.options.message} ${this.options.postfix}`;
         const message = DOM.createElement({
             element: 'p', 
-            html: this.options.message,
+            html: concatMessage,
             class: `${CLASS__TOAST}__message`,
             ...(this.options.i18nKey && { attributes: {
                 'data-oltb-i18n': `${this.options.i18nKey}.message`
