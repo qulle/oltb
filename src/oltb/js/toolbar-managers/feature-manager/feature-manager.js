@@ -1,4 +1,4 @@
-import _, { clone } from 'lodash';
+import _ from 'lodash';
 import { Point } from 'ol/geom';
 import { getUid } from 'ol/util';
 import { Feature } from 'ol';
@@ -78,27 +78,6 @@ class FeatureManager extends BaseManager {
                 }
             }
         };
-    }
-
-    static #checkOLTBObjectAfterClone(feature) {
-        if(this.isMeasurementType(feature)) {
-            const tooltip = createUITooltip();
-            feature.setProperties({
-                oltb: {
-                    type: FeatureProperties.type.measurement,
-                    tooltip: tooltip.getOverlay()
-                }
-            });
-
-            const geometry = feature.getGeometry();
-            const measureCoordinates = getMeasureCoordinates(geometry);
-            const measureValue = getMeasureValue(geometry);
-
-            tooltip.setPosition(measureCoordinates);
-            tooltip.setData(`${measureValue.value} ${measureValue.unit}`);
-        }
-
-        return feature;
     }
 
     //--------------------------------------------------------------------
@@ -208,7 +187,28 @@ class FeatureManager extends BaseManager {
         clonedFeature.setProperties(clonedProperties, true);
         clonedFeature.setStyle(originalFeatureStyles[featureId]);
 
-        return this.#checkOLTBObjectAfterClone(clonedFeature);
+        if(this.isMeasurementType(feature)) {
+            this.attachMeasurementTooltip(clonedFeature);
+        }
+
+        return clonedFeature;
+    }
+
+    static attachMeasurementTooltip(feature) {
+        const tooltip = createUITooltip();
+        feature.setProperties({
+            oltb: {
+                type: FeatureProperties.type.measurement,
+                tooltip: tooltip.getOverlay()
+            }
+        });
+
+        const geometry = feature.getGeometry();
+        const measureCoordinates = getMeasureCoordinates(geometry);
+        const measureValue = getMeasureValue(geometry);
+
+        tooltip.setPosition(measureCoordinates);
+        tooltip.setData(`${measureValue.value} ${measureValue.unit}`);
     }
 }
 

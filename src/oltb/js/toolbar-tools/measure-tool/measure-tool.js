@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import { DOM } from '../../browser-helpers/dom-factory';
 import { Draw } from 'ol/interaction';
-import { Toast } from '../../ui-common/ui-toasts/toast';
 import { Events } from '../../browser-constants/events';
 import { unByKey } from 'ol/Observable';
 import { BaseTool } from '../base-tool';
@@ -17,15 +16,14 @@ import { KeyboardKeys } from '../../browser-constants/keyboard-keys';
 import { ConfigManager } from '../../toolbar-managers/config-manager/config-manager';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 import { TooltipManager } from '../../toolbar-managers/tooltip-manager/tooltip-manager';
-import { createUITooltip } from '../../ui-creators/ui-tooltip/create-ui-tooltip';
+import { FeatureManager } from '../../toolbar-managers/feature-manager/feature-manager';
+import { getMeasureValue } from '../../ol-helpers/geometry-measurements';
 import { SettingsManager } from '../../toolbar-managers/settings-manager/settings-manager';
 import { LocalStorageKeys } from '../../browser-constants/local-storage-keys';
 import { isShortcutKeyOnly } from '../../browser-helpers/is-shortcut-key-only';
-import { FeatureProperties } from '../../ol-helpers/feature-properties';
 import { TranslationManager } from '../../toolbar-managers/translation-manager/translation-manager';
 import { SvgPaths, getSvgIcon } from '../../ui-icons/get-svg-icon/get-svg-icon';
 import { Fill, Stroke, Circle, Style } from 'ol/style';
-import { getMeasureCoordinates, getMeasureValue } from '../../ol-helpers/geometry-measurements';
 
 const FILENAME = 'measure-tool.js';
 const CLASS__TOOL_BUTTON = 'oltb-tool-button';
@@ -437,24 +435,9 @@ class MeasureTool extends BaseTool {
         const feature = event.feature;
 
         if(feature) {
-            feature.setStyle(this.styles);
-        
             TooltipManager.pop(KEY__TOOLTIP);
-            const tooltip = createUITooltip();
-
-            feature.setProperties({
-                oltb: {
-                    type: FeatureProperties.type.measurement,
-                    tooltip: tooltip.getOverlay()
-                }
-            });
-            
-            const geometry = feature.getGeometry();
-            const measureCoordinates = getMeasureCoordinates(geometry);
-            const measureValue = getMeasureValue(geometry);
-
-            tooltip.setPosition(measureCoordinates);
-            tooltip.setData(`${measureValue.value} ${measureValue.unit}`);
+            FeatureManager.attachMeasurementTooltip(feature);
+            feature.setStyle(this.styles);
 
             const layerWrapper = LayerManager.getActiveFeatureLayer({
                 fallback: TranslationManager.get(`${I18N__BASE}.layers.defaultName`)

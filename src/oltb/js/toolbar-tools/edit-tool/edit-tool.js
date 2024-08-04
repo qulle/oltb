@@ -24,12 +24,10 @@ import { DefaultConfig } from '../../toolbar-managers/config-manager/default-con
 import { FeatureManager } from '../../toolbar-managers/feature-manager/feature-manager';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 import { TooltipManager } from '../../toolbar-managers/tooltip-manager/tooltip-manager';
-import { createUITooltip } from '../../ui-creators/ui-tooltip/create-ui-tooltip';
 import { SettingsManager } from '../../toolbar-managers/settings-manager/settings-manager';
 import { LocalStorageKeys } from '../../browser-constants/local-storage-keys';
 import { GeometryDataModal } from '../../ui-extensions/geometry-data-modal/geometry-data-modal';
 import { isShortcutKeyOnly } from '../../browser-helpers/is-shortcut-key-only';
-import { FeatureProperties } from '../../ol-helpers/feature-properties';
 import { ConversionManager } from '../../toolbar-managers/conversion-manager/conversion-manager';
 import { TranslationManager } from '../../toolbar-managers/translation-manager/translation-manager';
 import { Fill, Stroke, Style } from 'ol/style';
@@ -1014,22 +1012,7 @@ class EditTool extends BaseTool {
             });
 
             if(FeatureManager.isMeasurementType(a) || FeatureManager.isMeasurementType(b)) {
-                // TODO:
-                // This code is repeated on 3/4 places, create a common way for this
-                const tooltip = createUITooltip();
-                shapedFeature.setProperties({
-                    oltb: {
-                        type: FeatureProperties.type.measurement,
-                        tooltip: tooltip.getOverlay()
-                    }
-                });
-
-                const geometry = shapedFeature.getGeometry();
-                const measureCoordinates = getMeasureCoordinates(geometry);
-                const measureValue = getMeasureValue(geometry);
-
-                tooltip.setPosition(measureCoordinates);
-                tooltip.setData(`${measureValue.value} ${measureValue.unit}`);
+                FeatureManager.attachMeasurementTooltip(shapedFeature);
                 shapedFeature.setStyle(DefaultMeasureStyle);
             }else {
                 shapedFeature.setStyle(DefaultDrawingStyle);

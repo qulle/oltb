@@ -1,18 +1,10 @@
 import _ from 'lodash';
 import { LogManager } from '../log-manager/log-manager';
 import { BaseManager } from '../base-manager';
+import { IgnoredKeys } from '../../browser-constants/ignored-keys';
 import { ConfigManager } from '../config-manager/config-manager';
 
 const FILENAME = 'state-manager.js';
-
-// Note: 
-// Some objects have properties that we don't want to store in localStorage
-// Example: Bookmarks have a reference to the marker on the Map
-const IgnoredKeys = Object.freeze([
-    'marker',
-    'tooltip',
-    'onChangeListener'
-]);
 
 /**
  * About:
