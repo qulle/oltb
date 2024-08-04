@@ -60,7 +60,7 @@ const DefaultOptions = Object.freeze({
     onModifyStart: undefined,
     onModifyEnd: undefined,
     onTranslateStart: undefined,
-    onTranslatEnd: undefined,
+    onTranslateEnd: undefined,
     onRemovedFeatures: undefined,
     onError: undefined,
     onSnapped: undefined
@@ -940,8 +940,8 @@ class EditTool extends BaseTool {
 
         // Note: 
         // @Consumer callback
-        if(this.options.onTranslatEnd) {
-            this.options.onTranslatEnd(event);
+        if(this.options.onTranslateEnd) {
+            this.options.onTranslateEnd(event);
         }
     }
 

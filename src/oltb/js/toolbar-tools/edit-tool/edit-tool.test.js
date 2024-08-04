@@ -187,7 +187,7 @@ describe('EditTool', () => {
             onModifyStart: undefined,
             onModifyEnd: undefined,
             onTranslateStart: undefined,
-            onTranslatEnd: undefined,
+            onTranslateEnd: undefined,
             onRemovedFeatures: undefined,
             onError: undefined,
             onSnapped: undefined
@@ -429,13 +429,13 @@ describe('EditTool', () => {
             onModifyStart: () => {},
             onModifyEnd: () => {},
             onTranslateStart: () => {},
-            onTranslatEnd: () => {}
+            onTranslateEnd: () => {}
         };
 
         const spyOnOnModifyStart = jest.spyOn(options, 'onModifyStart');
         const spyOnOnModifyEnd = jest.spyOn(options, 'onModifyEnd');
         const spyOnOnTranslateStart = jest.spyOn(options, 'onTranslateStart');
-        const spyOnOntranslateEnd = jest.spyOn(options, 'onTranslatEnd');
+        const spyOnOntranslateEnd = jest.spyOn(options, 'onTranslateEnd');
 
         const tool = initToolInstance(options);
 

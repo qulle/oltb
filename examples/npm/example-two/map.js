@@ -385,7 +385,7 @@ const initMapAndToolbar = () => {
                 onTranslateStart: function(event) {
                     console.log('EditTool: Translate start');
                 },
-                onTranslatEend: function(event) {
+                onTranslateEnd: function(event) {
                     console.log('EditTool: Translate end');
                 },
                 onRemovedFeatures: function(features) {
