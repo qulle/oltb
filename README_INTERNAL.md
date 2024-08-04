@@ -405,6 +405,15 @@ controls: defaultControls({
         onStyleChange: function(event, style) {
             console.log('EditTool: Style changed');
         },
+        onCutFeatures: function(features) {
+            console.log('EditTool: Cut features', features);
+        },
+        onCopyFeatures: function(features) {
+            console.log('EditTool: Copied features', features);
+        },
+        onPasteFeatures: function(features, layerWrapper) {
+            console.log('EditTool: Pasted features', features);
+        },
         onShapeOperation: function(type, a, b, result) {
             console.log('EditTool: Shape operation', type);
         },
@@ -426,8 +435,8 @@ controls: defaultControls({
         onTranslateEnd: function(event) {
             console.log('EditTool: Translate end');
         },
-        onRemovedFeature: function(feature) {
-            console.log('EditTool: Removed feature', feature);
+        onRemovedFeatures: function(features) {
+            console.log('EditTool: Removed features', features);
         },
         onError: function(event) {
             console.log('EditTool: Error');
