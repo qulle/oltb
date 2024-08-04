@@ -102,7 +102,7 @@ class StateManager extends BaseManager {
         this.#runtimeState = this.#getBrowserData();
     }
 
-    static getIngoredKeys() {
+    static getIgnoredKeys() {
         return this.#ignoredKeys;
     }
 

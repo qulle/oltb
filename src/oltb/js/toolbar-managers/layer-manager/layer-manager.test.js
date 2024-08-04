@@ -1,5 +1,4 @@
 import { jest, describe, it, expect } from '@jest/globals';
-import { GeoJSON } from 'ol/format';
 import { LayerManager } from './layer-manager';
 import { FeatureManager } from '../feature-manager/feature-manager';
 import { Vector as VectorLayer } from 'ol/layer';
@@ -142,7 +141,10 @@ describe('LayerManager', () => {
 
     it('should add, remove and clear feature from layer', () => {
         const feature = {
-            id: 'jest'
+            id: 'jest',
+            getProperties: () => {
+                return {};
+            }
         };
 
         const source = {

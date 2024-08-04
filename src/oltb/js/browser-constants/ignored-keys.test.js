@@ -1,5 +1,5 @@
 import { describe, it, expect } from '@jest/globals';
-import { IgnoredKeys } from './igenored-keys';
+import { IgnoredKeys } from './ignored-keys';
 
 describe('IgnoredKeys', () => {
     const sut = Object.freeze([

@@ -23,9 +23,11 @@ describe('StateManager', () => {
         expect(StateManager.getName()).toBe(FILENAME);
     });
 
-    it('should have one ignored key [marker]', () => {
-        expect(StateManager.getIngoredKeys().length).toBe(1);
-        expect(StateManager.getIngoredKeys()[0]).toBe('marker');
+    it('should have three ignored keys', () => {
+        expect(StateManager.getIgnoredKeys().length).toBe(3);
+        expect(StateManager.getIgnoredKeys()[0]).toBe('marker');
+        expect(StateManager.getIgnoredKeys()[1]).toBe('tooltip');
+        expect(StateManager.getIgnoredKeys()[2]).toBe('onChangeListener');
     });
 
     it('should not have state-object for [jest]', () => {

@@ -1,7 +1,6 @@
 import { jest, beforeAll, beforeEach, afterEach, describe, it, expect } from '@jest/globals';
 import * as jsts from 'jsts/dist/jsts.min';
 import { Toast } from '../../ui-common/ui-toasts/toast';
-import { Feature } from 'ol';
 import { Polygon } from 'ol/geom';
 import { BaseTool } from '../base-tool';
 import { EditTool } from './edit-tool';
@@ -10,9 +9,11 @@ import { ToolManager } from '../../toolbar-managers/tool-manager/tool-manager';
 import { SnapManager } from '../../toolbar-managers/snap-manager/snap-manager';
 import { EventManager } from '../../toolbar-managers/event-manager/event-manager';
 import { StateManager } from '../../toolbar-managers/state-manager/state-manager';
+import { LayerManager } from '../../toolbar-managers/layer-manager/layer-manager';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 import { FeatureManager } from '../../toolbar-managers/feature-manager/feature-manager';
 import { SettingsManager } from '../../toolbar-managers/settings-manager/settings-manager';
+import { Feature, Overlay } from 'ol';
 import { simulateKeyPress } from '../../../../../__mocks__/simulate-key-press';
 import '../../browser-prototypes/string';
 import '../../browser-prototypes/json-cycle';
@@ -40,7 +41,7 @@ const HTML__MOCK = (`
                 <button type="button" id="${ID__PREFIX}-info-button" class="oltb-btn oltb-btn--blue-mid oltb-tippy" data-oltb-i18n="${I18N__BASE}.toolbox.groups.misc.geometryData" title="__JEST__">__JEST__</button>
             </div>
             <div class="${CLASS__TOOLBOX_SECTION}__group ${CLASS__TOOLBOX_SECTION}__group--sub-toolbar">
-                <label class="oltb-label" data-oltb-i18n="${I18N__BASE}.toolbox.groups.copying.title">${i18n.groups.copying.title}</label>
+                <label class="oltb-label" data-oltb-i18n="${I18N__BASE}.toolbox.groups.copying.title">__JEST__</label>
                 <button type="button" id="${ID__PREFIX}-cut-selected-button" class="oltb-btn oltb-btn--blue-mid oltb-tippy" data-oltb-i18n="${I18N__BASE}.toolbox.groups.copying.cut" title="__JEST__">__JEST__</button>
                 <button type="button" id="${ID__PREFIX}-copy-selected-button" class="oltb-btn oltb-btn--blue-mid oltb-tippy" data-oltb-i18n="${I18N__BASE}.toolbox.groups.copying.copy" title="__JEST__">__JEST__</button>
                 <button type="button" id="${ID__PREFIX}-paste-selected-button" class="oltb-btn oltb-btn--blue-mid oltb-tippy" data-oltb-i18n="${I18N__BASE}.toolbox.groups.copying.paste" title="__JEST__">__JEST__</button>
@@ -124,8 +125,10 @@ describe('EditTool', () => {
         await StateManager.initAsync();
         await SettingsManager.initAsync();
         await SnapManager.initAsync();
+        await LayerManager.initAsync();
 
         SnapManager.setMap(mockMap);
+        LayerManager.setMap(mockMap);
     });
 
     beforeEach(() => {
@@ -175,6 +178,9 @@ describe('EditTool', () => {
             onClicked: undefined,
             onBrowserStateCleared: undefined,
             onStyleChange: undefined,
+            onCutFeatures: undefined,
+            onCopyFeatures: undefined,
+            onPasteFeatures: undefined,
             onShapeOperation: undefined,
             onSelectAdd: undefined,
             onSelectRemove: undefined,
@@ -182,7 +188,7 @@ describe('EditTool', () => {
             onModifyEnd: undefined,
             onTranslateStart: undefined,
             onTranslatEnd: undefined,
-            onRemovedFeature: undefined,
+            onRemovedFeatures: undefined,
             onError: undefined,
             onSnapped: undefined
         });
@@ -408,7 +414,7 @@ describe('EditTool', () => {
 
         const feature = new Feature({
             geometry: geometry
-        })
+        });
 
         const modal = tool.doShowFeatureInfo(feature);
         expect(modal.options.data.coordinates.replace(/\s+/g, ' ').trim()).toEqual("<pre><code>[ [ -263258.05497133266, 7259891.741364763 ], [ -263210.0832504495, 7259891.741364763 ], [ -263210.0832504495, 7259924.362134964 ], [ -263258.05497133266, 7259924.362134964 ], [ -263258.05497133266, 7259891.741364763 ] ]</code></pre>");
@@ -442,5 +448,80 @@ describe('EditTool', () => {
         expect(spyOnOnModifyEnd).toHaveBeenCalledTimes(1);
         expect(spyOnOnTranslateStart).toHaveBeenCalledTimes(1);
         expect(spyOnOntranslateEnd).toHaveBeenCalledTimes(1);
+    });
+
+    it('should trigger drawing-related-events', () => {
+        const options = {
+            onCutFeatures: () => {},
+            onCopyFeatures: () => {},
+            onPasteFeatures: () => {}
+        };
+
+        // Note:
+        // The setMap function is called by OL somewhere in the chain and causes an error
+        // TODO: 
+        // Try and find why this throws an error 'target.addEventListener is not a function'
+        jest.spyOn(Overlay.prototype, 'setMap').mockImplementation(() => {
+            return;
+        });
+
+        const spyOnOnCutFeatures = jest.spyOn(options, 'onCutFeatures');
+        const spyOnOnCopyFeatures = jest.spyOn(options, 'onCopyFeatures');
+        const spyOnOnPasteFeatures = jest.spyOn(options, 'onPasteFeatures');
+        const spyOnToastInfo = jest.spyOn(Toast, 'info');
+
+        const geometry = new Polygon([[
+            [-263258.05497133266,7259891.741364763],
+            [-263210.0832504495,7259891.741364763],
+            [-263210.0832504495,7259924.362134964],
+            [-263258.05497133266,7259924.362134964],
+            [-263258.05497133266,7259891.741364763]
+        ]]);
+
+        const featureOne = new Feature({
+            geometry: geometry,
+            oltb: {
+                type: 'drawing'
+            }
+        });
+
+        const featureTwo = new Feature({
+            geometry: geometry,
+            oltb: {
+                type: 'measurement'
+            }
+        });
+
+        FeatureManager.attachMeasurementTooltip(featureTwo);
+
+        const features = [featureOne, featureTwo];
+        const tool = initToolInstance(options);
+
+        tool.doCopyFeatures(features);
+        expect(tool.featureClipboard.length).toBe(2);
+        expect(spyOnOnCopyFeatures).toHaveBeenCalledTimes(1);
+        expect(spyOnToastInfo).toHaveBeenCalledWith({
+            prefix: 2,
+            i18nKey: `${I18N__BASE}.toasts.infos.copiedFeatures`,
+            autoremove: true
+        });
+
+        tool.doPasteFeatures();
+        expect(tool.featureClipboard.length).toBe(0);
+        expect(spyOnOnPasteFeatures).toHaveBeenCalledTimes(1);
+        expect(spyOnToastInfo).toHaveBeenCalledWith({
+            prefix: 2,
+            i18nKey: `${I18N__BASE}.toasts.infos.pastedFeatures`,
+            autoremove: true
+        });
+
+        tool.doCutFeatures(features);
+        expect(tool.featureClipboard.length).toBe(2);
+        expect(spyOnOnCutFeatures).toHaveBeenCalledTimes(1);
+        expect(spyOnToastInfo).toHaveBeenCalledWith({
+            prefix: 2,
+            i18nKey: `${I18N__BASE}.toasts.infos.cutFeatures`,
+            autoremove: true
+        });
     });
 });
