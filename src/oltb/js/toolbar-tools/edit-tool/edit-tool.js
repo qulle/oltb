@@ -2,6 +2,7 @@ import _ from 'lodash';
 import * as jsts from 'jsts/dist/jsts.min';
 import { DOM } from '../../browser-helpers/dom-factory';
 import { Toast } from '../../ui-common/ui-toasts/toast';
+import { getUid } from 'ol/util';
 import { Dialog } from '../../ui-common/ui-dialogs/dialog';
 import { Events } from '../../browser-constants/events';
 import { Feature } from 'ol';
@@ -23,12 +24,10 @@ import { DefaultConfig } from '../../toolbar-managers/config-manager/default-con
 import { FeatureManager } from '../../toolbar-managers/feature-manager/feature-manager';
 import { ElementManager } from '../../toolbar-managers/element-manager/element-manager';
 import { TooltipManager } from '../../toolbar-managers/tooltip-manager/tooltip-manager';
-import { createUITooltip } from '../../ui-creators/ui-tooltip/create-ui-tooltip';
 import { SettingsManager } from '../../toolbar-managers/settings-manager/settings-manager';
 import { LocalStorageKeys } from '../../browser-constants/local-storage-keys';
 import { GeometryDataModal } from '../../ui-extensions/geometry-data-modal/geometry-data-modal';
 import { isShortcutKeyOnly } from '../../browser-helpers/is-shortcut-key-only';
-import { FeatureProperties } from '../../ol-helpers/feature-properties';
 import { ConversionManager } from '../../toolbar-managers/conversion-manager/conversion-manager';
 import { TranslationManager } from '../../toolbar-managers/translation-manager/translation-manager';
 import { Fill, Stroke, Style } from 'ol/style';
@@ -52,14 +51,17 @@ const DefaultOptions = Object.freeze({
     onClicked: undefined,
     onBrowserStateCleared: undefined,
     onStyleChange: undefined,
+    onCutFeatures: undefined,
+    onCopyFeatures: undefined,
+    onPasteFeatures: undefined,
     onShapeOperation: undefined,
     onSelectAdd: undefined,
     onSelectRemove: undefined,
     onModifyStart: undefined,
     onModifyEnd: undefined,
     onTranslateStart: undefined,
-    onTranslatEnd: undefined,
-    onRemovedFeature: undefined,
+    onTranslateEnd: undefined,
+    onRemovedFeatures: undefined,
     onError: undefined,
     onSnapped: undefined
 });
@@ -150,6 +152,9 @@ class EditTool extends BaseTool {
             LocalStorageDefaults
         );
 
+        this.originalFeatureStyles = {};
+        this.featureClipboard = [];
+
         this.parser = new jsts.io.OL3Parser();
         this.parser.inject(Point, LineString, LinearRing, Polygon, MultiPoint, MultiLineString, MultiPolygon, GeometryCollection);
         
@@ -166,6 +171,15 @@ class EditTool extends BaseTool {
 
         this.uiRefInfoSelectedButton = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-info-button`);
         this.uiRefInfoSelectedButton.addEventListener(Events.browser.click, this.#onInfoSelectedFeatures.bind(this));
+
+        this.uiRefCutSelectedButton = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-cut-selected-button`);
+        this.uiRefCutSelectedButton.addEventListener(Events.browser.click, this.#onCutSelectedFeatures.bind(this));
+
+        this.uiRefCopySelectedButton = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-copy-selected-button`);
+        this.uiRefCopySelectedButton.addEventListener(Events.browser.click, this.#onCopySelectedFeatures.bind(this));
+
+        this.uiRefPasteSelectedButton = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-paste-selected-button`);
+        this.uiRefPasteSelectedButton.addEventListener(Events.browser.click, this.#onPasteSelectedFeatures.bind(this));
 
         this.uiRefUnionSelectedButton = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-union-selected-button`);
         this.uiRefUnionSelectedButton.addEventListener(Events.browser.click, this.#onShapeOperator.bind(this, this.unionFeatures, 'union'));
@@ -277,6 +291,18 @@ class EditTool extends BaseTool {
                         </button>
                     </div>
                     <div class="${CLASS__TOOLBOX_SECTION}__group ${CLASS__TOOLBOX_SECTION}__group--sub-toolbar">
+                        <label class="oltb-label" data-oltb-i18n="${I18N__BASE}.toolbox.groups.copying.title">${i18n.groups.copying.title}</label>
+                        <button type="button" id="${ID__PREFIX}-cut-selected-button" ${buttonClasses} data-oltb-i18n="${I18N__BASE}.toolbox.groups.copying.cut" title="${i18n.groups.copying.cut}">
+                            ${getSvgIcon({...DefaultButtonProps, path: SvgPaths.scissors.filled})}
+                        </button>
+                        <button type="button" id="${ID__PREFIX}-copy-selected-button" ${buttonClasses} data-oltb-i18n="${I18N__BASE}.toolbox.groups.copying.copy" title="${i18n.groups.copying.copy}">
+                            ${getSvgIcon({...DefaultButtonProps, path: SvgPaths.copy.stroked})}
+                        </button>
+                        <button type="button" id="${ID__PREFIX}-paste-selected-button" ${buttonClasses} data-oltb-i18n="${I18N__BASE}.toolbox.groups.copying.paste" title="${i18n.groups.copying.paste}">
+                            ${getSvgIcon({...DefaultButtonProps, path: SvgPaths.clipboard.stroked})}
+                        </button>
+                    </div>
+                    <div class="${CLASS__TOOLBOX_SECTION}__group ${CLASS__TOOLBOX_SECTION}__group--sub-toolbar ${CLASS__TOOLBOX_SECTION}__group--split-group">
                         <label class="oltb-label" data-oltb-i18n="${I18N__BASE}.toolbox.groups.shapes.title">${i18n.groups.shapes.title}</label>
                         <button type="button" id="${ID__PREFIX}-union-selected-button" ${buttonClasses} data-oltb-i18n="${I18N__BASE}.toolbox.groups.shapes.union" title="${i18n.groups.shapes.union}">
                             ${getSvgIcon({...DefaultButtonProps, path: SvgPaths.union.mixed})}
@@ -436,6 +462,26 @@ class EditTool extends BaseTool {
     }
 
     //--------------------------------------------------------------------
+    // # Section: Internal
+    //--------------------------------------------------------------------
+    #deleteFeatures(features) {
+        // Note: 
+        // The user can select features from any layer
+        // Each feature needs to be removed from its associated layer
+        const layerWrappers = LayerManager.getFeatureLayers();
+        features.forEach((feature) => {
+            layerWrappers.forEach((layerWrapper) => {
+                if(!layerWrapper.getLayer().getSource().hasFeature(feature)) {
+                    return;
+                }
+
+                LayerManager.removeFeatureFromLayer(feature, layerWrapper);
+                this.interactionSelect.getFeatures().remove(feature);
+            });
+        });
+    }
+
+    //--------------------------------------------------------------------
     // # Section: Browser Events
     //--------------------------------------------------------------------
     #onOLTBReady(event) {
@@ -448,7 +494,7 @@ class EditTool extends BaseTool {
         if(isShortcutKeyOnly(event, ShortcutKeys.editTool)) {
             this.onClickTool(event);
         }else if(this.isActive && event.key === KeyboardKeys.valueDelete) {
-            this.onDeleteSelectedFeatures();
+            this.#onDeleteSelectedFeatures();
         }
     }
     
@@ -559,6 +605,49 @@ class EditTool extends BaseTool {
         this.doShowFeatureInfo(features[0]);
     }
 
+    #onCutSelectedFeatures(event) {
+        const features = [...this.interactionSelect.getFeatures().getArray()];
+
+        if(features.length === 0) {
+            Toast.info({
+                i18nKey: `${I18N__BASE}.toasts.infos.missingFeatures`,
+                autoremove: true
+            });
+
+            return;
+        }
+
+        this.doCutFeatures(features);
+    }
+
+    #onCopySelectedFeatures(event) {
+        const features = [...this.interactionSelect.getFeatures().getArray()];
+
+        if(features.length === 0) {
+            Toast.info({
+                i18nKey: `${I18N__BASE}.toasts.infos.missingFeatures`,
+                autoremove: true
+            });
+
+            return;
+        }
+
+        this.doCopyFeatures(features);
+    }
+
+    #onPasteSelectedFeatures(event) {
+        if(this.featureClipboard.length === 0) {
+            Toast.info({
+                i18nKey: `${I18N__BASE}.toasts.infos.missingFeatures`,
+                autoremove: true
+            });
+
+            return;
+        }
+
+        this.doPasteFeatures();
+    }
+
     #onFeatureColorChange(event) {
         this.doFeatureColorChange(event);
     }
@@ -624,12 +713,12 @@ class EditTool extends BaseTool {
         unByKey(properties.onChangeListener);
 
         const overlay = properties.tooltip;
-        overlay.setPosition(getMeasureCoordinates(geometry));
-
         const tooltip = overlay.getElement();
-        tooltip.className = 'oltb-overlay-tooltip';
-
+        const measureCoordinates = getMeasureCoordinates(geometry);
         const measureValue = getMeasureValue(geometry);
+
+        overlay.setPosition(measureCoordinates);
+        tooltip.className = 'oltb-overlay-tooltip';
         tooltip.firstElementChild.innerHTML = `${measureValue.value} ${measureValue.unit}`;
     }
 
@@ -709,6 +798,17 @@ class EditTool extends BaseTool {
     //--------------------------------------------------------------------
     // # Section: Tool DoActions
     //--------------------------------------------------------------------
+    doPushFeatureStyle(feature) {
+        const featureId = getUid(feature);
+        this.originalFeatureStyles[featureId] = feature.getStyle();
+    }
+
+    doPopFeatureStyle(feature) {
+        const featureId = getUid(feature);
+        feature.setStyle(this.originalFeatureStyles[featureId]);
+        delete this.originalFeatureStyles[featureId];
+    }
+
     doClearState() {
         this.localStorage = _.cloneDeep(LocalStorageDefaults);
         StateManager.setStateObject(LocalStorageNodeName, LocalStorageDefaults);
@@ -725,6 +825,9 @@ class EditTool extends BaseTool {
     }
 
     doSelectFeatureAdd(event) {
+        const feature = event.element;
+        this.doPushFeatureStyle(feature);
+
         // Note: 
         // @Consumer callback
         if(this.options.onSelectAdd) {
@@ -837,8 +940,8 @@ class EditTool extends BaseTool {
 
         // Note: 
         // @Consumer callback
-        if(this.options.onTranslatEnd) {
-            this.options.onTranslatEnd(event);
+        if(this.options.onTranslateEnd) {
+            this.options.onTranslateEnd(event);
         }
     }
 
@@ -855,7 +958,6 @@ class EditTool extends BaseTool {
 
         const fillColor = this.uiRefFillColor.getAttribute('data-oltb-color');
         const strokeColor = this.uiRefStrokeColor.getAttribute('data-oltb-color');
-
         const features = [...this.interactionSelect.getFeatures().getArray()];
 
         this.lastStyle = new Style({
@@ -897,11 +999,6 @@ class EditTool extends BaseTool {
     }
 
     doShapeOperation(features, operation, type) {
-        const map = this.getMap();
-        if(!map) {
-            return;
-        }
-
         try {
             const a = features[0];
             const b = features[1];
@@ -909,47 +1006,27 @@ class EditTool extends BaseTool {
             const aGeometry = this.parser.read(a.getGeometry());
             const bGeometry = this.parser.read(b.getGeometry());
 
-            // JSTS Lib operation
             const shape = operation(aGeometry, bGeometry);
-
-            // Create new feature with that shape
-            const feature = new Feature({
+            const shapedFeature = new Feature({
                 geometry: new Polygon(this.parser.write(shape).getCoordinates()),
             });
 
-            // Check if a or b was a measurement, if so, create a new tooltip
             if(FeatureManager.isMeasurementType(a) || FeatureManager.isMeasurementType(b)) {
-                const tooltip = createUITooltip();
-                feature.setProperties({
-                    oltb: {
-                        type: FeatureProperties.type.measurement,
-                        tooltip: tooltip.getOverlay()
-                    }
-                });
-
-                const geometry = feature.getGeometry();
-                tooltip.setPosition(getMeasureCoordinates(geometry));
-
-                const measureValue = getMeasureValue(geometry);
-                tooltip.setData(`${measureValue.value} ${measureValue.unit}`);
-
-                map.addOverlay(tooltip.getOverlay());
-                feature.setStyle(DefaultMeasureStyle);
+                FeatureManager.attachMeasurementTooltip(shapedFeature);
+                shapedFeature.setStyle(DefaultMeasureStyle);
             }else {
-                feature.setStyle(DefaultDrawingStyle);
+                shapedFeature.setStyle(DefaultDrawingStyle);
             }
 
-            // Add the unioned shape
             const layerWrapper = LayerManager.getActiveFeatureLayer();
-            LayerManager.addFeatureToLayer(feature, layerWrapper);
+            LayerManager.addFeatureToLayer(shapedFeature, layerWrapper);
 
-            // Remove two original shapes
             this.doDeleteFeatures(features);
 
             // Note: 
             // @Consumer callback
             if(this.options.onShapeOperation) {
-                this.options.onShapeOperation(type, a, b, feature);
+                this.options.onShapeOperation(type, a, b, shapedFeature);
             }
         }catch(error) {
             LogManager.logError(FILENAME, 'onShapeOperator', {
@@ -978,37 +1055,13 @@ class EditTool extends BaseTool {
     }
 
     doDeleteFeatures(features) {
-        const map = this.getMap();
-        if(!map) {
-            return;
-        }
-        
+        this.#deleteFeatures(features);
+
         // Note: 
-        // The user can select features from any layer
-        // Each feature needs to be removed from its associated layer
-        const layerWrappers = LayerManager.getFeatureLayers();
-        features.forEach((feature) => {
-            layerWrappers.forEach((layerWrapper) => {
-                const source = layerWrapper.getLayer().getSource();
-                if(!source.hasFeature(feature)) {
-                    return;
-                }
-
-                LayerManager.removeFeatureFromLayer(feature, layerWrapper);
-                this.interactionSelect.getFeatures().remove(feature);
-
-                // Remove overlays associated with the feature
-                if(FeatureManager.hasTooltip(feature)) {
-                    map.removeOverlay(FeatureManager.getTooltip(feature));
-                }
-
-                // Note: 
-                // @Consumer callback
-                if(this.options.onRemovedFeature) {
-                    this.options.onRemovedFeature(feature);
-                }
-            });
-        });
+        // @Consumer callback
+        if(this.options.onRemovedFeatures) {
+            this.options.onRemovedFeatures(features);
+        }
     }
 
     doRotateFeatures(features, rotation) {
@@ -1021,10 +1074,72 @@ class EditTool extends BaseTool {
         });
     }
 
+    doCutFeatures(features) {
+        features.forEach((feature) => {
+            const clonedFeature = FeatureManager.deepCopyVectorFeatureWithStyle(feature, this.originalFeatureStyles);
+            this.featureClipboard.push(clonedFeature);
+        });
+
+        this.#deleteFeatures(features);
+
+        Toast.info({
+            prefix: features.length,
+            i18nKey: `${I18N__BASE}.toasts.infos.cutFeatures`,
+            autoremove: true
+        });
+
+        // Note: 
+        // @Consumer callback
+        if(this.options.onCutFeatures) {
+            this.options.onCutFeatures(features);
+        }
+    }
+
+    doCopyFeatures(features) {
+        features.forEach((feature) => {
+            const clonedFeature = FeatureManager.deepCopyVectorFeatureWithStyle(feature, this.originalFeatureStyles);
+            this.featureClipboard.push(clonedFeature);
+        });
+
+        Toast.info({
+            prefix: features.length,
+            i18nKey: `${I18N__BASE}.toasts.infos.copiedFeatures`,
+            autoremove: true
+        });
+
+        // Note: 
+        // @Consumer callback
+        if(this.options.onCopyFeatures) {
+            this.options.onCopyFeatures(features);
+        }
+    }
+
+    doPasteFeatures() {
+        const copies = [...this.featureClipboard];
+        this.featureClipboard = [];
+
+        const layerWrapper = LayerManager.getActiveFeatureLayer();
+        copies.forEach((feature) => {
+            LayerManager.addFeatureToLayer(feature, layerWrapper);
+        });
+
+        Toast.info({
+            prefix: copies.length,
+            i18nKey: `${I18N__BASE}.toasts.infos.pastedFeatures`,
+            autoremove: true
+        });
+
+        // Note: 
+        // @Consumer callback
+        if(this.options.onPasteFeatures) {
+            this.options.onPasteFeatures(copies, layerWrapper);
+        }
+    }
+
     doShowFeatureInfo(feature) {
         // TODO:
         // Why is the [0] on the coordiantes required?
-        const id = feature.ol_uid;
+        const featureId = getUid(feature);
         const geometry = feature.getGeometry();
         const measurement = getMeasureValue(geometry);
         const coordinates = geometry.getCoordinates()[0];
@@ -1032,7 +1147,7 @@ class EditTool extends BaseTool {
 
         const indentation = 4;
         const coordinatesText = JSON.stringify(
-            JSON.retrocycle(coordinates),
+            JSON.decycle(coordinates),
             jsonReplacer, 
             indentation
         );
@@ -1040,7 +1155,7 @@ class EditTool extends BaseTool {
         const oltb = DefaultConfig.toolbar.id;
         const properties = feature.get(oltb);
         const propertiesText = JSON.stringify(
-            JSON.retrocycle(properties),
+            JSON.decycle(properties),
             jsonReplacer, 
             indentation
         );
@@ -1049,7 +1164,7 @@ class EditTool extends BaseTool {
         // The data properties are used as keys in the translation-files
         const options = {
             data: {
-                id: id,
+                id: featureId,
                 measurement: `${measurement.value} ${measurement.unit}`,
                 oltbProperties: `<pre><code>${propertiesText}</code></pre>`,
                 vertices: vertices,

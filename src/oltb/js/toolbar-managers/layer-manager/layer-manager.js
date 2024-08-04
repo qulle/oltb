@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import { Toast } from '../../ui-common/ui-toasts/toast';
 import { Events } from '../../browser-constants/events';
 import { Collection } from 'ol';
 import { LogManager } from '../log-manager/log-manager';
@@ -179,20 +180,51 @@ class LayerManager extends BaseManager {
         this.#map.removeLayer(layerWrapper.getLayer());
     }
 
+    static #handleFeatureOverlays(feature, layerWrapper) {
+        const layer = layerWrapper.getLayer();
+        const tooltip = FeatureManager.getTooltip(feature);
+
+        if(!tooltip) {
+            return;
+        }
+
+        if(layer.getVisible()) {
+            tooltip.setMap(this.#map);
+        }else {
+            tooltip.setMap(null);
+        }
+    }
+
     //--------------------------------------------------------------------
     // Section: Common Layers
     //--------------------------------------------------------------------
-    static addFeatureToLayer(feature, layerWrapper) {
+    static addFeatureToLayer(feature, layerWrapper, i18nKey) {
         const layer = layerWrapper.getLayer();
         const source = layer.getSource();
 
+        if(FeatureManager.hasTooltip(feature)) {
+            this.#map.addOverlay(FeatureManager.getTooltip(feature));
+        }
+
         source.addFeature(feature);
         this.#snapFeatures.push(feature);
+        this.#handleFeatureOverlays(feature, layerWrapper);
+
+        if(i18nKey && !layer.getVisible()) {
+            Toast.info({
+                i18nKey: i18nKey, 
+                autoremove: true
+            });
+        }
     }
 
     static removeFeatureFromLayer(feature, layerWrapper) {
         const layer = layerWrapper.getLayer();
         const source = layer.getSource();
+
+        if(FeatureManager.hasTooltip(feature)) {
+            this.#map.removeOverlay(FeatureManager.getTooltip(feature));
+        }
 
         source.removeFeature(feature);
         this.#snapFeatures.remove(feature);

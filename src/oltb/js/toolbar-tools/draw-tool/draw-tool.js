@@ -492,13 +492,6 @@ class DrawTool extends BaseTool {
         }else {
             this.doDrawEndNormal(layerWrapper, event);
         }
-        
-        if(!layerWrapper.getLayer().getVisible()) {
-            Toast.info({
-                i18nKey: `${I18N__BASE}.toasts.infos.drawInHiddenLayer`,
-                autoremove: true
-            });
-        }
     }
 
     doDrawEndNormal(layerWrapper, event) {
@@ -512,7 +505,7 @@ class DrawTool extends BaseTool {
                 }
             });
 
-            LayerManager.addFeatureToLayer(feature, layerWrapper);
+            LayerManager.addFeatureToLayer(feature, layerWrapper, `${I18N__BASE}.toasts.infos.drawInHiddenLayer`);
         }
 
         // Note: 

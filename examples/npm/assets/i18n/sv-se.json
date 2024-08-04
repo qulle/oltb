@@ -439,6 +439,12 @@
                         "rotate": "Rotera",
                         "geometryData": "Geometridata"
                     },
+                    "copying": {
+                        "title": "Urklipp",
+                        "cut": "Klipp ut",
+                        "copy": "Kopiera",
+                        "paste": "Klistra in"
+                    },
                     "shapes": {
                         "title": "Former",
                         "union": "Union",

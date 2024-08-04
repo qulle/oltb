@@ -49,7 +49,7 @@ class OverviewTool extends BaseTool {
         });
         
         const icon = getSvgIcon({
-            path: SvgPaths.aspectRatio.stroked,
+            path: SvgPaths.pip.stroked,
             class: `${CLASS__TOOL_BUTTON}__icon`
         });
 

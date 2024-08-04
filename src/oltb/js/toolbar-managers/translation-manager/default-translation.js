@@ -440,6 +440,12 @@ export const DefaultTranslation = Object.freeze({
                         rotate: 'Rotate',
                         geometryData: 'Geometry Data'
                     },
+                    copying: {
+                        title: 'Clipboard',
+                        cut: 'Cut',
+                        copy: 'Copy',
+                        paste: 'Paste'
+                    },
                     shapes: {
                         title: 'Shapes',
                         union: 'Union',
@@ -460,6 +466,18 @@ export const DefaultTranslation = Object.freeze({
             },
             toasts: {
                 infos: {
+                    copiedFeatures: {
+                        title: 'Copied',
+                        message: 'features has been copied'
+                    },
+                    pastedFeatures: {
+                        title: 'Pasted',
+                        message: 'features has been pasted'
+                    },
+                    cutFeatures: {
+                        title: 'Cut',
+                        message: 'features has been cut'
+                    },
                     missingFeatures: {
                         title: 'Oops',
                         message: 'No objects are selected'

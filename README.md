@@ -82,6 +82,7 @@ Have a look at the **[Internal Development Documentation 👓](https://github.co
 - Stores state in local-storage
 - Draw objects including intersections
 - Measure both length and areas
+- Move vector-objects between feature-layers using cut, copy, paste
 - Snap interactions
 - Merge drawings and measurements with different shape operations
 - Generate Markers
