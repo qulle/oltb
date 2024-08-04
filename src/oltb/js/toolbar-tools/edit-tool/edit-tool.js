@@ -706,12 +706,12 @@ class EditTool extends BaseTool {
         unByKey(properties.onChangeListener);
 
         const overlay = properties.tooltip;
-        overlay.setPosition(getMeasureCoordinates(geometry));
-
         const tooltip = overlay.getElement();
-        tooltip.className = 'oltb-overlay-tooltip';
-
+        const measureCoordinates = getMeasureCoordinates(geometry);
         const measureValue = getMeasureValue(geometry);
+
+        overlay.setPosition(measureCoordinates);
+        tooltip.className = 'oltb-overlay-tooltip';
         tooltip.firstElementChild.innerHTML = `${measureValue.value} ${measureValue.unit}`;
     }
 
@@ -1000,16 +1000,14 @@ class EditTool extends BaseTool {
             const aGeometry = this.parser.read(a.getGeometry());
             const bGeometry = this.parser.read(b.getGeometry());
 
-            // JSTS Lib operation
             const shape = operation(aGeometry, bGeometry);
-
-            // Create new feature with that shape
             const feature = new Feature({
                 geometry: new Polygon(this.parser.write(shape).getCoordinates()),
             });
 
-            // Check if a or b was a measurement, if so, create a new tooltip
             if(FeatureManager.isMeasurementType(a) || FeatureManager.isMeasurementType(b)) {
+                // TODO:
+                // This code is repeated on 3/4 places, create a common way for this
                 const tooltip = createUITooltip();
                 feature.setProperties({
                     oltb: {
@@ -1129,8 +1127,8 @@ class EditTool extends BaseTool {
         const copies = [...this.featureClipboard];
         this.featureClipboard = [];
 
+        const layerWrapper = LayerManager.getActiveFeatureLayer();
         copies.forEach((feature) => {
-            const layerWrapper = LayerManager.getActiveFeatureLayer();
             LayerManager.addFeatureToLayer(feature, layerWrapper);
         });
 
@@ -1142,7 +1140,7 @@ class EditTool extends BaseTool {
         // Note: 
         // @Consumer callback
         if(this.options.onPasteFeatures) {
-            this.options.onPasteFeatures(copies);
+            this.options.onPasteFeatures(copies, layerWrapper);
         }
     }
 

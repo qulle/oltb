@@ -366,7 +366,7 @@ const initMapAndToolbar = () => {
                 onCopyFeatures: function(features) {
                     console.log('EditTool: Copied features', features);
                 },
-                onPasteFeatures: function(features) {
+                onPasteFeatures: function(features, layerWrapper) {
                     console.log('EditTool: Pasted features', features);
                 },
                 onCutFeatures: function(features) {
