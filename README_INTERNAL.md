@@ -1599,6 +1599,9 @@ $ npm run clean
 #      - package.json
 #      - package-lock.json
 #      - README.md
+#          - Text
+#          - CDN-links
+#          - Version table 
 
 # (4). Update version, date and dependencies in:
 #      - rollup.cssbanner.mjs
