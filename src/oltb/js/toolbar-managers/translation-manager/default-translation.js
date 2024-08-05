@@ -1,7 +1,7 @@
 export const DefaultTranslation = Object.freeze({
-    lang: {
+    meta: {
         text: 'English',
-        code: 'en-us',
+        value: 'en-us',
         info: 'This is the default translation instance and not the loaded en-us.json file'
     },
     commons: {
@@ -468,15 +468,15 @@ export const DefaultTranslation = Object.freeze({
                 infos: {
                     copiedFeatures: {
                         title: 'Copied',
-                        message: 'features has been copied'
+                        message: 'objects has been copied'
                     },
                     pastedFeatures: {
                         title: 'Pasted',
-                        message: 'features has been pasted'
+                        message: 'objects has been pasted'
                     },
                     cutFeatures: {
                         title: 'Cut',
-                        message: 'features has been cut'
+                        message: 'objects has been cut'
                     },
                     missingFeatures: {
                         title: 'Oops',

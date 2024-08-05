@@ -1,7 +1,8 @@
 {
     "meta": {
         "text": "Swedish",
-        "value": "sv-se"
+        "value": "sv-se",
+        "info": "This is the loaded sv-se.json file"
     },
     "commons": {
         "titles": {
@@ -465,6 +466,18 @@
             },
             "toasts": {
                 "infos": {
+                    "copiedFeatures": {
+                        "title": "Kopierad",
+                        "message": "objekt har kopierats"
+                    },
+                    "pastedFeatures": {
+                        "title": "Inklistrat",
+                        "message": "objekt har klistrats in"
+                    },
+                    "cutFeatures": {
+                        "title": "Utklippt",
+                        "message": "objekt har klippts ut"
+                    },
                     "missingFeatures": {
                         "title": "Hoppsan",
                         "message": "Inga objekt har markerats"

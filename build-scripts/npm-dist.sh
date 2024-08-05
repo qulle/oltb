@@ -19,6 +19,7 @@ echo -e "\n$TCyan[2/6]$TReset. New dist directory created";
 # 3
 cp -r ./src/oltb/js ./dist/src/oltb
 cp -r ./src/oltb/scss ./dist/src/oltb
+cp -r ./src/oltb/assets ./dist/src/assets
 echo -e "\n$TCyan[3/6]$TReset. Copied src files";
 
 # 4

@@ -1,7 +1,8 @@
 {
     "meta": {
         "text": "English",
-        "value": "en-us"
+        "value": "en-us",
+        "info": "This is the loaded en-us.json file"
     },
     "commons": {
         "titles": {
@@ -465,6 +466,18 @@
             },
             "toasts": {
                 "infos": {
+                    "copiedFeatures": {
+                        "title": "Copied",
+                        "message": "objects has been copied"
+                    },
+                    "pastedFeatures": {
+                        "title": "Pasted",
+                        "message": "featobjectsures has been pasted"
+                    },
+                    "cutFeatures": {
+                        "title": "Cut",
+                        "message": "objects has been cut"
+                    },
                     "missingFeatures": {
                         "title": "Oops",
                         "message": "No objects are selected"
