@@ -19,6 +19,7 @@ import { StateManager } from '../../toolbar-managers/state-manager/state-manager
 import { ShortcutKeys } from '../../browser-constants/shortcut-keys';
 import { jsonReplacer } from '../../browser-helpers/json-replacer';
 import { KeyboardKeys } from '../../browser-constants/keyboard-keys';
+import { StyleManager } from '../../toolbar-managers/style-manager/style-manager';
 import { ConfigManager } from '../../toolbar-managers/config-manager/config-manager';
 import { DefaultConfig } from '../../toolbar-managers/config-manager/default-config';
 import { FeatureManager } from '../../toolbar-managers/feature-manager/feature-manager';
@@ -26,6 +27,7 @@ import { ElementManager } from '../../toolbar-managers/element-manager/element-m
 import { TooltipManager } from '../../toolbar-managers/tooltip-manager/tooltip-manager';
 import { SettingsManager } from '../../toolbar-managers/settings-manager/settings-manager';
 import { LocalStorageKeys } from '../../browser-constants/local-storage-keys';
+import { FeatureProperties } from '../../ol-helpers/feature-properties';
 import { GeometryDataModal } from '../../ui-extensions/geometry-data-modal/geometry-data-modal';
 import { isShortcutKeyOnly } from '../../browser-helpers/is-shortcut-key-only';
 import { ConversionManager } from '../../toolbar-managers/conversion-manager/conversion-manager';
@@ -80,27 +82,6 @@ const DefaultButtonProps = Object.freeze({
     fill: '#FFFFFFFF',
     stroke: 'none',
     class: 'oltb-btn__icon'
-});
-
-const DefaultDrawingStyle = new Style({
-    fill: new Fill({
-        color: '#D7E3FA80'
-    }),
-    stroke: new Stroke({
-        color: '#0166A5FF',
-        width: 2.5
-    })
-});
-
-const DefaultMeasureStyle = new Style({
-    fill: new Fill({
-        color: '#FFFFFF66'
-    }),
-    stroke: new Stroke({
-        color: '#3B4352FF',
-        lineDash: [2, 5],
-        width: 2.5
-    })
 });
 
 /**
@@ -171,6 +152,9 @@ class EditTool extends BaseTool {
 
         this.uiRefInfoSelectedButton = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-info-button`);
         this.uiRefInfoSelectedButton.addEventListener(Events.browser.click, this.#onInfoSelectedFeatures.bind(this));
+
+        this.uiRefConvertSelectedButton = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-convert-button`);
+        this.uiRefConvertSelectedButton.addEventListener(Events.browser.click, this.#onConvertSelectedFeatures.bind(this));
 
         this.uiRefCutSelectedButton = this.uiRefToolboxSection.querySelector(`#${ID__PREFIX}-cut-selected-button`);
         this.uiRefCutSelectedButton.addEventListener(Events.browser.click, this.#onCutSelectedFeatures.bind(this));
@@ -288,6 +272,9 @@ class EditTool extends BaseTool {
                         </button>
                         <button type="button" id="${ID__PREFIX}-info-button" ${buttonClasses} data-oltb-i18n="${I18N__BASE}.toolbox.groups.misc.geometryData" title="${i18n.groups.misc.geometryData}">
                             ${getSvgIcon({...DefaultButtonProps, path: SvgPaths.infoCircle.stroked})}
+                        </button>
+                        <button type="button" id="${ID__PREFIX}-convert-button" ${buttonClasses} data-oltb-i18n="${I18N__BASE}.toolbox.groups.misc.convertFeature" title="${i18n.groups.misc.convertFeature}">
+                            ${getSvgIcon({...DefaultButtonProps, path: SvgPaths.shuffle.stroked})}
                         </button>
                     </div>
                     <div class="${CLASS__TOOLBOX_SECTION}__group ${CLASS__TOOLBOX_SECTION}__group--sub-toolbar">
@@ -605,6 +592,21 @@ class EditTool extends BaseTool {
         this.doShowFeatureInfo(features[0]);
     }
 
+    #onConvertSelectedFeatures() {
+        const features = [...this.interactionSelect.getFeatures().getArray()];
+
+        if(features.length === 0) {
+            Toast.info({
+                i18nKey: `${I18N__BASE}.toasts.infos.missingFeatures`,
+                autoremove: true
+            });
+
+            return;
+        }
+
+        this.askToConvertSelectedFeatures(features);
+    }
+
     #onCutSelectedFeatures(event) {
         const features = [...this.interactionSelect.getFeatures().getArray()];
 
@@ -791,6 +793,29 @@ class EditTool extends BaseTool {
                         i18nKey: `${I18N__BASE}.toasts.errors.invalidValue`
                     });
                 }
+            }
+        });
+    }
+
+    askToConvertSelectedFeatures(features) {
+        // TODO:
+        // Add translation
+        return Dialog.select({
+            title: 'Convert',
+            message: 'Convert selected objects to',
+            value: FeatureProperties.type.measurement,
+            options: [
+                {
+                    text: 'Drawing',
+                    value: FeatureProperties.type.drawing
+                }, {
+                    text: 'Measurement',
+                    value: FeatureProperties.type.measurement
+                }
+            ],
+            confirmText: 'Convert',
+            onConfirm: (result) => {
+                this.doConvertFeatures(features, result);
             }
         });
     }
@@ -1012,10 +1037,10 @@ class EditTool extends BaseTool {
             });
 
             if(FeatureManager.isMeasurementType(a) || FeatureManager.isMeasurementType(b)) {
-                FeatureManager.attachMeasurementTooltip(shapedFeature);
-                shapedFeature.setStyle(DefaultMeasureStyle);
+                FeatureManager.applyMeasurementProperties(shapedFeature);
+                shapedFeature.setStyle(StyleManager.getDefaultMeasurementStyle());
             }else {
-                shapedFeature.setStyle(DefaultDrawingStyle);
+                shapedFeature.setStyle(StyleManager.getDefaultDrawingStyle());
             }
 
             const layerWrapper = LayerManager.getActiveFeatureLayer();
@@ -1134,6 +1159,15 @@ class EditTool extends BaseTool {
         if(this.options.onPasteFeatures) {
             this.options.onPasteFeatures(copies, layerWrapper);
         }
+    }
+
+    doClearSelectedFeatures() {
+        this.interactionSelect.getFeatures().clear();
+    }
+
+    doConvertFeatures(features, format) {
+        this.doClearSelectedFeatures();
+        FeatureManager.convertFeaturesTo(features, format.to);
     }
 
     doShowFeatureInfo(feature) {

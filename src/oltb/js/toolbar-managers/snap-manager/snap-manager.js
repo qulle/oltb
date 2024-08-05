@@ -124,7 +124,6 @@ class SnapManager extends BaseManager {
     //--------------------------------------------------------------------
     static #onSnap(event) {
         this.#snapCounter += 1;
-
         this.#tool.onSnap(event);
         
         // Note: 

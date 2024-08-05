@@ -39,6 +39,7 @@ const HTML__MOCK = (`
                 <button type="button" id="${ID__PREFIX}-delete-selected-button" class="oltb-btn oltb-btn--blue-mid oltb-tippy" data-oltb-i18n="${I18N__BASE}.toolbox.groups.misc.delete" title="__JEST__">__JEST__</button>
                 <button type="button" id="${ID__PREFIX}-rotate-selected-button" class="oltb-btn oltb-btn--blue-mid oltb-tippy" data-oltb-i18n="${I18N__BASE}.toolbox.groups.misc.rotate" title="__JEST__">__JEST__</button>
                 <button type="button" id="${ID__PREFIX}-info-button" class="oltb-btn oltb-btn--blue-mid oltb-tippy" data-oltb-i18n="${I18N__BASE}.toolbox.groups.misc.geometryData" title="__JEST__">__JEST__</button>
+                <button type="button" id="${ID__PREFIX}-convert-button" class="oltb-btn oltb-btn--blue-mid oltb-tippy" data-oltb-i18n="${I18N__BASE}.toolbox.groups.misc.convertFeature" title="__JEST__">__JEST__</button>
             </div>
             <div class="${CLASS__TOOLBOX_SECTION}__group ${CLASS__TOOLBOX_SECTION}__group--sub-toolbar">
                 <label class="oltb-label" data-oltb-i18n="${I18N__BASE}.toolbox.groups.copying.title">__JEST__</label>
@@ -492,7 +493,7 @@ describe('EditTool', () => {
             }
         });
 
-        FeatureManager.attachMeasurementTooltip(featureTwo);
+        FeatureManager.applyMeasurementProperties(featureTwo);
 
         const features = [featureOne, featureTwo];
         const tool = initToolInstance(options);

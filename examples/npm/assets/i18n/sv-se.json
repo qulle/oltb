@@ -438,7 +438,8 @@
                         "title": "Övrigt",
                         "delete": "Radera",
                         "rotate": "Rotera",
-                        "geometryData": "Geometridata"
+                        "geometryData": "Geometridata",
+                        "convertFeature": "Konvertera"
                     },
                     "copying": {
                         "title": "Urklipp",

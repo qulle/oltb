@@ -11,6 +11,27 @@ import { Circle, Fill, Icon, Text, Stroke, Style } from 'ol/style';
 
 const FILENAME = 'style-manager.js';
 
+const DefaultDrawingStyle = new Style({
+    fill: new Fill({
+        color: '#D7E3FA80'
+    }),
+    stroke: new Stroke({
+        color: '#0166A5FF',
+        width: 2.5
+    })
+});
+
+const DefaultMeaasurementStyle = new Style({
+    fill: new Fill({
+        color: '#FFFFFF66'
+    }),
+    stroke: new Stroke({
+        color: '#3B4352FF',
+        lineDash: [2, 5],
+        width: 2.5
+    })
+});
+
 /**
  * About:
  * StyleManager
@@ -309,6 +330,14 @@ class StyleManager extends BaseManager {
 
     static getSize() {
         return this.#styles.size || 0;
+    }
+
+    static getDefaultMeasurementStyle() {
+        return DefaultMeaasurementStyle;
+    }
+
+    static getDefaultDrawingStyle() {
+        return DefaultDrawingStyle;
     }
 }
 

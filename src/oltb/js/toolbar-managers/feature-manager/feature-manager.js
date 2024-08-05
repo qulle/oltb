@@ -5,6 +5,7 @@ import { Feature } from 'ol';
 import { fromLonLat } from 'ol/proj';
 import { LogManager } from '../log-manager/log-manager';
 import { BaseManager } from '../base-manager';
+import { StyleManager } from '../style-manager/style-manager';
 import { jsonReplacer } from '../../browser-helpers/json-replacer';
 import { createUITooltip } from '../../ui-creators/ui-tooltip/create-ui-tooltip';
 import { FeatureProperties } from '../../ol-helpers/feature-properties';
@@ -22,6 +23,8 @@ const FILENAME = 'feature-manager.js';
  * Used to create IconMarkers and WindBarbs and to check for internal properties on those generated Features.
  */
 class FeatureManager extends BaseManager {
+    static #map;
+
     //--------------------------------------------------------------------
     // # Section: Base Overrides
     //--------------------------------------------------------------------
@@ -36,7 +39,9 @@ class FeatureManager extends BaseManager {
         });
     }
 
-    static setMap(map) { }
+    static setMap(map) {
+        this.#map = map;
+    }
 
     static getName() {
         return FILENAME;
@@ -188,13 +193,17 @@ class FeatureManager extends BaseManager {
         clonedFeature.setStyle(originalFeatureStyles[featureId]);
 
         if(this.isMeasurementType(feature)) {
-            this.attachMeasurementTooltip(clonedFeature);
+            this.applyMeasurementProperties(clonedFeature);
         }
 
         return clonedFeature;
     }
 
-    static attachMeasurementTooltip(feature) {
+    static applyMeasurementProperties(feature) {
+        if(this.hasTooltip(feature)) {
+            this.#map.removeOverlay(this.getTooltip(feature));
+        }
+
         const tooltip = createUITooltip();
         feature.setProperties({
             oltb: {
@@ -209,6 +218,44 @@ class FeatureManager extends BaseManager {
 
         tooltip.setPosition(measureCoordinates);
         tooltip.setData(`${measureValue.value} ${measureValue.unit}`);
+    }
+
+    static applyDrawingProperties(feature) {
+        if(this.hasTooltip(feature)) {
+            this.#map.removeOverlay(this.getTooltip(feature));
+        }
+
+        feature.setProperties({
+            oltb: {
+                type: FeatureProperties.type.drawing,
+            }
+        });
+    }
+
+    static convertFeaturesTo(features, format) {
+        // TODO:
+        // Make it less messy
+        features.forEach((feature) => {
+            const geometryType = feature.getGeometry().getType();
+            if(geometryType === 'Polygon' || feature === 'LineString') {
+                switch(format.value) {
+                    case FeatureProperties.type.drawing:
+                        this.applyDrawingProperties(feature);
+                        feature.setStyle(StyleManager.getDefaultDrawingStyle());
+                        break;
+                    case FeatureProperties.type.measurement:
+                        this.applyMeasurementProperties(feature);
+                        this.#map.addOverlay(this.getTooltip(feature));
+                        feature.setStyle(StyleManager.getDefaultMeasurementStyle());
+                        break;
+                    default: 
+                        LogManager.logWarning(FILENAME, 'convertFeaturesTo', {
+                            info: 'Unsupported format',
+                            format: format
+                        });
+                }
+            }
+        });
     }
 }
 
