@@ -47,19 +47,25 @@ Detailed documentation how the Toolbar is structured, internal dependencies and 
 10. [Author](#author)
 
 ## Get Started
-The dev-environment uses NPM so you need to have [Node.js](https://nodejs.org/en/) installed. I use Node version *18.12.0* and NPM version *9.8.1*.
+The dev-environment uses NPM so you need to have [Node.js](https://nodejs.org/en/) installed. I use Node version *20.12.0* and NPM version *10.7.0*.
 
-Clone the repo
+1. Clone
 ```
 $ git clone https://github.com/qulle/oltb.git
 ```
 
-Install all dependencies from package.json
+2. Install Dependencies
 ```
 $ npm install
 ```
 
-Start the dev server
+3. Run Tests
+```
+$ npm run test
+$ npm run test:coverage
+```
+
+4. Run Devserver
 ```
 $ npm start
 ```
@@ -85,10 +91,10 @@ localStorage.clear();
 ```
 
 ## Localizations
-English is the default language. However the Toolbar can be extended with any other language. A second language (Swedish) is also shipped with the Toolbar in order to show how it is done. The available languages are controlled from `/assets/config/config.json`. The translation files are put in to `/assets/i18n/<ab-cd>.json`.
+English is the default language. However the Toolbar can be extended with any other language. A second language (Swedish) is also shipped with the Toolbar in order to show how it is done. The available languages are controlled from `oltb/assets/config/config.json`. The translation files are put in to `oltb/assets/i18n/<ab-cd>.json`.
 
 ## About The Code
-Below is the basic HTML and JavaScript structure used in the project. For a complete example of how to set up the code go to the [examples directory](https://github.com/qulle/oltb/tree/main/examples/).
+Below is the basic HTML and JavaScript structure used in the project. For a complete example of how to set up the code go to the [Examples Directory](https://github.com/qulle/oltb/tree/main/examples/).
 
 ### HTML
 ```HTML
@@ -131,14 +137,14 @@ SCSS and HTML is written with [BEM](http://getbem.com/introduction/) naming conv
 All modules uses named exports exclusively throughout the project. The one exception is the `oltb.js` file which is the main entry for Rollup to create the portable CDN version.
 
 ### JavaScript
-The tools are located in the directory `src/oltb/js/toolbar-tools`. Every tool has its own class and extend the BaseTool-class.
+The tools are located in the directory `oltb/js/toolbar-tools`. Every tool has its own class and extend the BaseTool-class.
 ```javascript
 class CoordinatesTool extends BaseTool {}
 ```
 
 The BaseTool-class extends the Control-class from OpenLayers.
 ```javascript
-class CoordinatesTool extends Control {}
+class BaseTool extends Control {}
 ```
 
 When using the custom tools, all that is needed is to import the module(s) you want to have in your Toolbar.
@@ -172,10 +178,11 @@ import { ResetNorthTool } from 'oltb/js/toolbar-tools/reset-north-tool/reset-nor
 import { FullscreenTool } from 'oltb/js/toolbar-tools/fullscreen-tool/fullscreen-tool';
 import { CoordinatesTool } from 'oltb/js/toolbar-tools/coordinates-tool/coordinates-tool';
 import { TranslationTool } from 'oltb/js/toolbar-tools/translation-tool/translation-tool';
-import { HiddenAboutTool } from 'oltb/js/toolbar-tools/hidden-tools/hidden-about-tool/hidden-about-tool';
-import { HiddenMarkerTool } from 'oltb/js/toolbar-tools/hidden-tools/hidden-marker-tool/hidden-marker-tool';
+import { HiddenAboutTool } from 'oltb/js/toolbar-tools/hidden-about-tool/hidden-about-tool';
+import { ContextMenuTool } from 'oltb/js/toolbar-tools/context-menu-tool/context-menu-tool';
+import { HiddenMarkerTool } from 'oltb/js/toolbar-tools/hidden-marker-tool/hidden-marker-tool';
 import { ImportVectorLayerTool } from 'oltb/js/toolbar-tools/import-vector-layer-tool/import-vector-layer-tool';
-import { HiddenMapNavigationTool } from 'oltb/js/toolbar-tools/hidden-tools/hidden-map-navigation-tool/hidden-map-navigation-tool';
+import { HiddenMapNavigationTool } from 'oltb/js/toolbar-tools/hidden-map-navigation-tool/hidden-map-navigation-tool';
 ```
 
 Then call the constructor for each tool in the extend method. The tools are added to the Toolbar in the order you include them in the array.
@@ -768,7 +775,7 @@ controls: defaultControls({
         }
     }),
     new HiddenAboutTool(),
-    new ContextMenu()
+    new ContextMenuTool()
 ])
 ```
 
@@ -863,17 +870,20 @@ The following projections are added by default.
 
 ### Layers
 Layers are added to the map using the `LayerManager`. The manager handels internal functionality and fires of events that the `LayerTool` captures to create the UI.
+```javascript
+import { LayerManager } from 'oltb/js/toolbar-managers/layer-manager/layer-manager';
+```
 
 Layers can be added at any time during the applications lifetime. If the map is not ready to recieve a layer the manager will queue the layer and add it to the map once the manager is initiated with a reference to the map.
 
-There are two types of layers, `map`- and `feature`-layers. Exampels of adding different types of layers are available in the [examples directory](https://github.com/qulle/oltb/tree/main/examples/).
+There are two types of layers, `map`- and `feature`-layers. Exampels of adding different types of layers are available in the [Examples Directory](https://github.com/qulle/oltb/tree/main/examples/).
 
 **Note:** Both the DrawTool and MeasureTool add features through the LayerManager and not directly to the source of the layer. This is because the LayerManager also keeps tracks of all features so that the Snap interaction can work.
 
 ### Markers
 Markers can be created in the map using the following Manager.
 ```javascript
-import { FeatureManager } from 'oltb/js/toolbar-managers/feature-manager/feature-manager.js';
+import { FeatureManager } from 'oltb/js/toolbar-managers/feature-manager/feature-manager';
 ```
 
 To create a marker use the following object properties.
@@ -968,7 +978,7 @@ The JSON object has the following structure.
 ### Wind Barbs
 Wind Barbs can be created in the map using the following manager.
 ```javascript
-import { FeatureManager } from 'oltb/js/toolbar-managers/feature-manager/feature-manager.js';
+import { FeatureManager } from 'oltb/js/toolbar-managers/feature-manager/feature-manager';
 ```
 
 To create a wind barb use the following object properties.
@@ -1027,7 +1037,7 @@ All available properties:
 ### Dialogs
 To use the custom dialogs in the map, include the following module. All the dialogs uses trap focus and circles the tab-key to always stay in the opened dialog. A reference to the created dialog is returned.
 ```javascript
-import { Dialog } from 'oltb/js/ui-common/ui-dialogs/dialog.js';
+import { Dialog } from 'oltb/js/ui-common/ui-dialogs/dialog';
 ```
 
 #### Alert
@@ -1158,7 +1168,7 @@ All available properties:
 ### Modal
 To use the custom modal in the map, include the following module. A reference to the created modal is returned.
 ```javascript
-import { Modal } from 'oltb/js/ui-common/ui-modals/modal.js';
+import { Modal } from 'oltb/js/ui-common/ui-modals/modal';
 ```
 
 The modal uses trap focus to circle the tab-key.
@@ -1175,7 +1185,7 @@ Modal.create({
 
 The returned reference can be used to block the creation of a second modal if a button or shortcut key is pressed again. The `onClose` callback can be used to release the lock.
 ```javascript
-infoToolClick() {
+onInfoToolClick() {
     if(this.infoModal) {
         return;
     }
@@ -1193,7 +1203,7 @@ infoToolClick() {
 ### Toast
 To use the custom toasts in the map, include the following module. A reference to the created toast is returned.
 ```javascript
-import { Toast } from 'oltb/js/ui-common/ui-toasts/toast.js';
+import { Toast } from 'oltb/js/ui-common/ui-toasts/toast';
 ```
 
 There are four types of toast messages.
@@ -1222,6 +1232,14 @@ Toast.error({
 Another usecase is to only supply the key to the property in the translation file. The toast will now handle fetching of the title and message of the active language. This will also make it possible for the toast to do hot-swapping of the language if it is changed while a toast is displayed.
 ```javascript
 Toast.info({
+    i18nKey: 'bookmarkTool.toasts.infos.clearBookmarks'
+});
+```
+
+Both pre- and post-fix can be added to the text. Example appending quantity to a toast: '4 bookmarks was cleared'.
+```javascript
+Toast.info({
+    prefix: 4,
     i18nKey: 'bookmarkTool.toasts.infos.clearBookmarks'
 });
 ```
@@ -1319,17 +1337,17 @@ const icon = getSvgWindBarb({
 ### Context Menu
 To use the context menu start by importing the following module.
 ```javascript
-import { ContextMenu } from 'oltb/js/toolbar-tools/context-menu-tool/context-menu-tool.js';
+import { ContextMenuTool } from 'oltb/js/toolbar-tools/context-menu-tool/context-menu-tool';
 ```
 
 To create a context menu in the map call the constructor as any other tool.
 ```javascript
-map.addControl(new ContextMenu());
+map.addControl(new ContextMenuTool());
 ```
 
-To add items to the context menu use the static method `ContextMenu.addItem` and give a name and icon as well as a function to call when the item is clicked.
+To add items to the context menu use the static method `ContextMenuTool.addItem` and give a name and icon as well as a function to call when the item is clicked.
 ```javascript
-ContextMenu.addItem({
+ContextMenuTool.addItem({
     icon: '<svg>...</svg>', 
     name: 'Zoom home', 
     fn: this.handleResetToHome.bind(this)
@@ -1338,7 +1356,7 @@ ContextMenu.addItem({
 
 The callback function recieves a references to the map, the clicked coordinates and the target element (the canvas).
 ```javascript
-ContextMenu.addItem({
+ContextMenuTool.addItem({
     icon: '<svg>...</svg>', 
     name: 'Clear settings', 
     fn: function(map, coordinates, target) {
@@ -1356,13 +1374,13 @@ It is not important in what order the menu or its items are added. If no menu ex
 
 To insert a separator in the menu add an empty object.
 ```javascript
-ContextMenu.addItem({});
+ContextMenuTool.addItem({});
 ```
 
 ### State Management
 To use state management start by importing the following module.
 ```javascript
-import { StateManager } from 'oltb/js/toolbar-managers/state-manager/state-mananger.js';
+import { StateManager } from 'oltb/js/toolbar-managers/state-manager/state-mananger';
 ```
 
 State management is done through localStorage under the key `oltb-state`. First add a node name and an object to store default values.
