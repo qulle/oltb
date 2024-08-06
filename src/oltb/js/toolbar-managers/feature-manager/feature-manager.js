@@ -12,6 +12,7 @@ import { FeatureProperties } from '../../ol-helpers/feature-properties';
 import { DefaultWindBarbOptions } from './default-wind-barb-options';
 import { DefaultIconMarkerOptions } from './default-icon-marker-options';
 import { getMeasureCoordinates, getMeasureValue } from '../../ol-helpers/geometry-measurements';
+import { GeometryType } from '../../ol-mappers/ol-geometry/ol-geometry';
 
 const FILENAME = 'feature-manager.js';
 
@@ -83,6 +84,32 @@ class FeatureManager extends BaseManager {
                 }
             }
         };
+    }
+
+    static #convertFeatureToDrawing(feature) {
+        this.applyDrawingProperties(feature);
+        feature.setStyle(StyleManager.getDefaultDrawingStyle());
+    }
+
+    static #converFeatureToMeasurement(feature) {
+        this.applyMeasurementProperties(feature);
+        this.#map.addOverlay(this.getTooltip(feature));
+        feature.setStyle(StyleManager.getDefaultMeasurementStyle());
+    }
+
+    static #isConvertableType(type) {
+        const types = [
+            GeometryType.Circle,
+            GeometryType.LineString,
+            GeometryType.LinearRing,
+            GeometryType.MultiLineString,
+            GeometryType.MultiPolygon,
+            GeometryType.Polygon,
+            GeometryType.Rectangle,
+            GeometryType.Square
+        ];
+
+        return types.includes(type);
     }
 
     //--------------------------------------------------------------------
@@ -233,27 +260,28 @@ class FeatureManager extends BaseManager {
     }
 
     static convertFeaturesTo(features, format) {
-        // TODO:
-        // Make it less messy
+        const formats = new Map([
+            [
+                FeatureProperties.type.drawing,
+                this.#convertFeatureToDrawing.bind(this)
+            ], [
+                FeatureProperties.type.measurement,
+                this.#converFeatureToMeasurement.bind(this)
+            ]
+        ]);
+
         features.forEach((feature) => {
-            const geometryType = feature.getGeometry().getType();
-            if(geometryType === 'Polygon' || feature === 'LineString') {
-                switch(format.value) {
-                    case FeatureProperties.type.drawing:
-                        this.applyDrawingProperties(feature);
-                        feature.setStyle(StyleManager.getDefaultDrawingStyle());
-                        break;
-                    case FeatureProperties.type.measurement:
-                        this.applyMeasurementProperties(feature);
-                        this.#map.addOverlay(this.getTooltip(feature));
-                        feature.setStyle(StyleManager.getDefaultMeasurementStyle());
-                        break;
-                    default: 
-                        LogManager.logWarning(FILENAME, 'convertFeaturesTo', {
-                            info: 'Unsupported format',
-                            format: format
-                        });
-                }
+            const converter = formats.get(format.value);
+            const type = feature.getGeometry().getType();
+
+            if(converter && this.#isConvertableType(type)) {
+                converter(feature);
+            }else {
+                LogManager.logWarning(FILENAME, 'convertFeaturesTo', {
+                    info: 'Unsupported format or geometry-type',
+                    format: format,
+                    type: type
+                });
             }
         });
     }

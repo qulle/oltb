@@ -755,6 +755,13 @@ class EditTool extends BaseTool {
     }
 
     //--------------------------------------------------------------------
+    // # Section: Getters and Setters
+    //--------------------------------------------------------------------
+    getNumSelectedFeatures() {
+        return this.interactionSelect.getFeatures().getLength();
+    }
+
+    //--------------------------------------------------------------------
     // # Section: Ask User
     //--------------------------------------------------------------------
     askToDeleteFeatures(features) {
@@ -798,22 +805,24 @@ class EditTool extends BaseTool {
     }
 
     askToConvertSelectedFeatures(features) {
-        // TODO:
-        // Add translation
+        const i18n = TranslationManager.get(`${I18N__BASE}.dialogs.prompts.convertFeatures`);
+        const i18nCommon = TranslationManager.get(`${I18N__BASE_COMMON}.types.convertable`);
+
         return Dialog.select({
-            title: 'Convert',
-            message: 'Convert selected objects to',
+            title: i18n.title,
+            message: i18n.message,
             value: FeatureProperties.type.measurement,
             options: [
                 {
-                    text: 'Drawing',
+                    text: i18nCommon.drawing,
                     value: FeatureProperties.type.drawing
                 }, {
-                    text: 'Measurement',
+                    text: i18nCommon.measurement,
                     value: FeatureProperties.type.measurement
                 }
             ],
-            confirmText: 'Convert',
+            confirmText: i18n.confirmText,
+            cancelText: i18n.cancelText,
             onConfirm: (result) => {
                 this.doConvertFeatures(features, result);
             }
@@ -1159,6 +1168,14 @@ class EditTool extends BaseTool {
         if(this.options.onPasteFeatures) {
             this.options.onPasteFeatures(copies, layerWrapper);
         }
+    }
+
+    doAddSelectedFeature(feature) {
+        this.interactionSelect.getFeatures().push(feature);
+    }
+
+    doRemoveSelectedFeature(feature) {
+        this.interactionSelect.getFeatures().remove(feature);
     }
 
     doClearSelectedFeatures() {

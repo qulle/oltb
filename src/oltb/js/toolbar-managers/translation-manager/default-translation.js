@@ -17,6 +17,12 @@ export const DefaultTranslation = Object.freeze({
             toggleSection: 'Toggle Section',
             toggleVisibility: 'Toggle Visibility',
             zoomToCoordinates: 'Zoom To Coordinates'
+        },
+        types: {
+            convertable: {
+                drawing: 'Drawing',
+                measurement: 'Measurement'
+            }
         }
     },
     managers: {
@@ -506,17 +512,23 @@ export const DefaultTranslation = Object.freeze({
             dialogs: {
                 confirms: {
                     deleteFeatures: {
-                        title: 'Delete Features',
-                        message: 'Delete selected feature',
+                        title: 'Delete',
+                        message: 'Delete selected objects',
                         confirmText: 'Delete',
                         cancelText: 'Cancel'
                     }
                 },
                 prompts: {
                     rotateFeatures: {
-                        title: 'Rotate Features',
-                        message: 'Rotate Features by N-degrees',
-                        confirmText: 'Rotate Features',
+                        title: 'Rotate',
+                        message: 'Rotate objects by N-degrees',
+                        confirmText: 'Rotate',
+                        cancelText: 'Cancel'
+                    },
+                    convertFeatures: {
+                        title: 'Convert',
+                        message: 'Convert selected objects to',
+                        confirmText: 'Convert',
                         cancelText: 'Cancel'
                     }
                 }

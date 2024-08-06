@@ -127,9 +127,11 @@ describe('EditTool', () => {
         await SettingsManager.initAsync();
         await SnapManager.initAsync();
         await LayerManager.initAsync();
+        await FeatureManager.initAsync();
 
         SnapManager.setMap(mockMap);
         LayerManager.setMap(mockMap);
+        FeatureManager.setMap(mockMap);
     });
 
     beforeEach(() => {
@@ -451,7 +453,7 @@ describe('EditTool', () => {
         expect(spyOnOntranslateEnd).toHaveBeenCalledTimes(1);
     });
 
-    it('should trigger drawing-related-events', () => {
+    it('should cut, copy, paste vector-features', () => {
         const options = {
             onCutFeatures: () => {},
             onCopyFeatures: () => {},
@@ -524,5 +526,87 @@ describe('EditTool', () => {
             i18nKey: `${I18N__BASE}.toasts.infos.cutFeatures`,
             autoremove: true
         });
+    });
+
+    it('should verify selection interaction', () => {
+        const geometry = new Polygon([[
+            [-263258.05497133266,7259891.741364763],
+            [-263210.0832504495,7259891.741364763],
+            [-263210.0832504495,7259924.362134964],
+            [-263258.05497133266,7259924.362134964],
+            [-263258.05497133266,7259891.741364763]
+        ]]);
+
+        const featureOne = new Feature({
+            geometry: geometry,
+            oltb: {
+                type: 'drawing'
+            }
+        });
+
+        const featureTwo = new Feature({
+            geometry: geometry,
+            oltb: {
+                type: 'drawing'
+            }
+        });
+
+        const tool = initToolInstance();
+        tool.doAddSelectedFeature(featureOne);
+        expect(tool.getNumSelectedFeatures()).toBe(1);
+        
+        tool.doRemoveSelectedFeature(featureOne);
+        expect(tool.getNumSelectedFeatures()).toBe(0);
+
+        tool.doAddSelectedFeature(featureOne);
+        tool.doAddSelectedFeature(featureTwo);
+        expect(tool.getNumSelectedFeatures()).toBe(2);
+
+        tool.doClearSelectedFeatures();
+        expect(tool.getNumSelectedFeatures()).toBe(0);
+    });
+
+    it('should convert vector-features from drawing to measurement to drawing', () => {
+        const geometry = new Polygon([[
+            [-263258.05497133266,7259891.741364763],
+            [-263210.0832504495,7259891.741364763],
+            [-263210.0832504495,7259924.362134964],
+            [-263258.05497133266,7259924.362134964],
+            [-263258.05497133266,7259891.741364763]
+        ]]);
+
+        const feature = new Feature({
+            geometry: geometry,
+            oltb: {
+                type: 'drawing'
+            }
+        });
+
+        const features = [feature];
+        const tool = initToolInstance();
+        expect(tool.getNumSelectedFeatures()).toBe(0);
+
+        tool.doAddSelectedFeature(feature);
+        expect(tool.getNumSelectedFeatures()).toBe(1);
+
+        tool.doConvertFeatures(features, {
+            to: {
+                text: 'Measurement', 
+                value: 'measurement'
+            }
+        });
+
+        expect(FeatureManager.getType(feature)).toBe('measurement');
+        expect(FeatureManager.getTooltip(feature)).toBeTruthy();
+
+        tool.doConvertFeatures(features, {
+            to: {
+                text: 'Drawing', 
+                value: 'drawing'
+            }
+        });
+
+        expect(FeatureManager.getType(feature)).toBe('drawing');
+        expect(FeatureManager.getTooltip(feature)).toBeUndefined();
     });
 });
