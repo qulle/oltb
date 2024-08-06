@@ -3,6 +3,7 @@ import ManyKeysMap from 'many-keys-map';
 import { LogManager } from '../log-manager/log-manager';
 import { BaseManager } from '../base-manager';
 import { DefaultConfig } from '../config-manager/default-config';
+import { FeatureManager } from '../feature-manager/feature-manager';
 import { getSvgWindBarb } from '../../ui-icons/get-svg-wind-barb/get-svg-wind-barb';
 import { ConversionManager } from '../conversion-manager/conversion-manager';
 import { FeatureProperties } from '../../ol-helpers/feature-properties';
@@ -21,12 +22,33 @@ const DefaultDrawingStyle = new Style({
     })
 });
 
-const DefaultMeaasurementStyle = new Style({
+const DefaultMeasurementStyle = new Style({
     fill: new Fill({
         color: '#FFFFFF66'
     }),
     stroke: new Stroke({
         color: '#3B4352FF',
+        lineDash: [2, 5],
+        width: 2.5
+    })
+});
+
+const DefaultSelectDrawingStyle = new Style({
+    fill: new Fill({
+        color: '#FF009980'
+    }),
+    stroke: new Stroke({
+        color: '#0099FFFF',
+        width: 2.5
+    })
+});
+
+const DefaultSelectMeasurementStyle = new Style({
+    fill: new Fill({
+        color: '#FF009980'
+    }),
+    stroke: new Stroke({
+        color: '#0099FFFF',
         lineDash: [2, 5],
         width: 2.5
     })
@@ -333,11 +355,31 @@ class StyleManager extends BaseManager {
     }
 
     static getDefaultMeasurementStyle() {
-        return DefaultMeaasurementStyle;
+        return DefaultMeasurementStyle;
     }
 
     static getDefaultDrawingStyle() {
         return DefaultDrawingStyle;
+    }
+
+    static getSelectedStyle(feature, resolution) {
+        const type = FeatureManager.getType(feature);
+        switch(type) {
+            case FeatureProperties.type.measurement:
+                return this.getDefaultSelectMeasurementStyle();
+            case FeatureProperties.type.drawing:
+                return this.getDefaultSelectDrawingStyle();
+            default:
+                return null; 
+        }
+    }
+
+    static getDefaultSelectDrawingStyle() {
+        return DefaultSelectDrawingStyle;
+    }
+
+    static getDefaultSelectMeasurementStyle() {
+        return DefaultSelectMeasurementStyle;
     }
 }
 

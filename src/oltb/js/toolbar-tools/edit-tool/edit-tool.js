@@ -345,6 +345,9 @@ class EditTool extends BaseTool {
     #generateOLInteractionSelect() {
         return new Select({
             hitTolerance: this.options.hitTolerance,
+            style: (feature, resolution) => {
+                return StyleManager.getSelectedStyle(feature, resolution);
+            },
             filter: (feature, layer) => {
                 const isIconMarker = FeatureManager.isIconMarkerType(feature);
                 if(isIconMarker) {
@@ -368,8 +371,7 @@ class EditTool extends BaseTool {
                 }
 
                 return false;
-            },
-            style: this.lastStyle
+            }
         });
     }
 
@@ -886,6 +888,8 @@ class EditTool extends BaseTool {
             if(FeatureManager.isMeasurementType(feature)) {
                 // To add lineDash, a new Style object must be used
                 // If the lastStyle is used all object that is referenced with that object will get a dashed line
+                // TODO:
+                // This should be a method in the style-manager to convert
                 const style = new Style({
                     fill: new Fill({
                         color: this.lastStyle.getFill().getColor()
