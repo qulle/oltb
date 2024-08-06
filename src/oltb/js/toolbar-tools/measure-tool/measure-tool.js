@@ -436,7 +436,7 @@ class MeasureTool extends BaseTool {
 
         if(feature) {
             TooltipManager.pop(KEY__TOOLTIP);
-            FeatureManager.attachMeasurementTooltip(feature);
+            FeatureManager.applyMeasurementProperties(feature);
             feature.setStyle(this.styles);
 
             const layerWrapper = LayerManager.getActiveFeatureLayer({

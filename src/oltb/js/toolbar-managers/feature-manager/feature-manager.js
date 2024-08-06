@@ -5,12 +5,14 @@ import { Feature } from 'ol';
 import { fromLonLat } from 'ol/proj';
 import { LogManager } from '../log-manager/log-manager';
 import { BaseManager } from '../base-manager';
+import { StyleManager } from '../style-manager/style-manager';
 import { jsonReplacer } from '../../browser-helpers/json-replacer';
 import { createUITooltip } from '../../ui-creators/ui-tooltip/create-ui-tooltip';
 import { FeatureProperties } from '../../ol-helpers/feature-properties';
 import { DefaultWindBarbOptions } from './default-wind-barb-options';
 import { DefaultIconMarkerOptions } from './default-icon-marker-options';
 import { getMeasureCoordinates, getMeasureValue } from '../../ol-helpers/geometry-measurements';
+import { GeometryType } from '../../ol-mappers/ol-geometry/ol-geometry';
 
 const FILENAME = 'feature-manager.js';
 
@@ -22,6 +24,8 @@ const FILENAME = 'feature-manager.js';
  * Used to create IconMarkers and WindBarbs and to check for internal properties on those generated Features.
  */
 class FeatureManager extends BaseManager {
+    static #map;
+
     //--------------------------------------------------------------------
     // # Section: Base Overrides
     //--------------------------------------------------------------------
@@ -36,7 +40,9 @@ class FeatureManager extends BaseManager {
         });
     }
 
-    static setMap(map) { }
+    static setMap(map) {
+        this.#map = map;
+    }
 
     static getName() {
         return FILENAME;
@@ -78,6 +84,32 @@ class FeatureManager extends BaseManager {
                 }
             }
         };
+    }
+
+    static #convertFeatureToDrawing(feature) {
+        this.applyDrawingProperties(feature);
+        feature.setStyle(StyleManager.getDefaultDrawingStyle());
+    }
+
+    static #converFeatureToMeasurement(feature) {
+        this.applyMeasurementProperties(feature);
+        this.#map.addOverlay(this.getTooltip(feature));
+        feature.setStyle(StyleManager.getDefaultMeasurementStyle());
+    }
+
+    static #isConvertableType(type) {
+        const types = [
+            GeometryType.Circle,
+            GeometryType.LineString,
+            GeometryType.LinearRing,
+            GeometryType.MultiLineString,
+            GeometryType.MultiPolygon,
+            GeometryType.Polygon,
+            GeometryType.Rectangle,
+            GeometryType.Square
+        ];
+
+        return types.includes(type);
     }
 
     //--------------------------------------------------------------------
@@ -188,13 +220,17 @@ class FeatureManager extends BaseManager {
         clonedFeature.setStyle(originalFeatureStyles[featureId]);
 
         if(this.isMeasurementType(feature)) {
-            this.attachMeasurementTooltip(clonedFeature);
+            this.applyMeasurementProperties(clonedFeature);
         }
 
         return clonedFeature;
     }
 
-    static attachMeasurementTooltip(feature) {
+    static applyMeasurementProperties(feature) {
+        if(this.hasTooltip(feature)) {
+            this.#map.removeOverlay(this.getTooltip(feature));
+        }
+
         const tooltip = createUITooltip();
         feature.setProperties({
             oltb: {
@@ -209,6 +245,45 @@ class FeatureManager extends BaseManager {
 
         tooltip.setPosition(measureCoordinates);
         tooltip.setData(`${measureValue.value} ${measureValue.unit}`);
+    }
+
+    static applyDrawingProperties(feature) {
+        if(this.hasTooltip(feature)) {
+            this.#map.removeOverlay(this.getTooltip(feature));
+        }
+
+        feature.setProperties({
+            oltb: {
+                type: FeatureProperties.type.drawing,
+            }
+        });
+    }
+
+    static convertFeaturesTo(features, format) {
+        const formats = new Map([
+            [
+                FeatureProperties.type.drawing,
+                this.#convertFeatureToDrawing.bind(this)
+            ], [
+                FeatureProperties.type.measurement,
+                this.#converFeatureToMeasurement.bind(this)
+            ]
+        ]);
+
+        features.forEach((feature) => {
+            const converter = formats.get(format.value);
+            const type = feature.getGeometry().getType();
+
+            if(converter && this.#isConvertableType(type)) {
+                converter(feature);
+            }else {
+                LogManager.logWarning(FILENAME, 'convertFeaturesTo', {
+                    info: 'Unsupported format or geometry-type',
+                    format: format,
+                    type: type
+                });
+            }
+        });
     }
 }
 
