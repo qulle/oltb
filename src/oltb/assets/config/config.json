@@ -3,7 +3,8 @@
         "active": "en-us",
         "languages": [
             "en-us",
-            "sv-se"
+            "sv-se",
+            "fr-FR"
         ]
     }
 }
