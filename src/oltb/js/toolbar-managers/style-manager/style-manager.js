@@ -1,14 +1,15 @@
 import _ from 'lodash';
 import ManyKeysMap from 'many-keys-map';
+import { MultiPoint } from 'ol/geom';
 import { LogManager } from '../log-manager/log-manager';
 import { BaseManager } from '../base-manager';
 import { DefaultConfig } from '../config-manager/default-config';
-import { FeatureManager } from '../feature-manager/feature-manager';
 import { getSvgWindBarb } from '../../ui-icons/get-svg-wind-barb/get-svg-wind-barb';
 import { ConversionManager } from '../conversion-manager/conversion-manager';
 import { FeatureProperties } from '../../ol-helpers/feature-properties';
 import { SvgPaths, getSvgIcon } from '../../ui-icons/get-svg-icon/get-svg-icon';
 import { Circle, Fill, Icon, Text, Stroke, Style } from 'ol/style';
+import { flattenGeometryCoordinates } from '../../ol-helpers/flatten-geometry-coordinates';
 
 const FILENAME = 'style-manager.js';
 
@@ -35,23 +36,39 @@ const DefaultMeasurementStyle = new Style({
 
 const DefaultSelectDrawingStyle = new Style({
     fill: new Fill({
-        color: '#FF009980'
+        color: '#CEEEFF80'
     }),
     stroke: new Stroke({
-        color: '#0099FFFF',
+        color: '#0080C5FF',
         width: 2.5
     })
 });
 
 const DefaultSelectMeasurementStyle = new Style({
     fill: new Fill({
-        color: '#FF009980'
+        color: '#CEEEFF80'
     }),
     stroke: new Stroke({
-        color: '#0099FFFF',
+        color: '#0080C5FF',
         lineDash: [2, 5],
         width: 2.5
     })
+});
+
+const DefaultSelectedVertices = new Style({
+    image: new Circle({
+        radius: 6,
+        fill: new Fill({
+            color: '#0080C5FF',
+        }),
+        stroke: new Stroke({
+            color: '#FFFFFFFF',
+            width: 2
+        })
+    }),
+    geometry: (feature) => {
+        return new MultiPoint(flattenGeometryCoordinates(feature.getGeometry().getCoordinates()));
+    },
 });
 
 /**
@@ -325,6 +342,12 @@ class StyleManager extends BaseManager {
         return undefined;
     }
 
+    // Note:
+    // Needed to duplicate the FeatureManager.getType to avoid circular dependencies
+    static #getType(feature) {
+        return _.get(feature.getProperties(), ['oltb', 'type'], undefined);
+    }
+
     //--------------------------------------------------------------------
     // # Section: Public API
     //--------------------------------------------------------------------
@@ -363,7 +386,7 @@ class StyleManager extends BaseManager {
     }
 
     static getSelectedStyle(feature, resolution) {
-        const type = FeatureManager.getType(feature);
+        const type = this.#getType(feature);
         switch(type) {
             case FeatureProperties.type.measurement:
                 return this.getDefaultSelectMeasurementStyle();
@@ -375,11 +398,11 @@ class StyleManager extends BaseManager {
     }
 
     static getDefaultSelectDrawingStyle() {
-        return DefaultSelectDrawingStyle;
+        return [DefaultSelectDrawingStyle, DefaultSelectedVertices];
     }
 
     static getDefaultSelectMeasurementStyle() {
-        return DefaultSelectMeasurementStyle;
+        return [DefaultSelectMeasurementStyle, DefaultSelectedVertices];
     }
 }
 

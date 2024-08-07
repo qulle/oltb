@@ -1,7 +1,7 @@
 import { jest, describe, it, expect } from '@jest/globals';
 import { goToView } from './go-to-view';
 
-describe('GoToView', () => {
+describe('goToView', () => {
     it('should block due to falsy map', () => {
         const options = {
             map: undefined,
