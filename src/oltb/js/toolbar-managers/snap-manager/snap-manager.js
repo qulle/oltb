@@ -1,13 +1,14 @@
 import { DOM } from '../../browser-helpers/dom-factory';
 import { Snap } from 'ol/interaction';
 import { Events } from '../../browser-constants/events';
-import { Overlay } from 'ol';
 import { unByKey } from 'ol/Observable';
 import { Settings } from '../../browser-constants/settings';
+import { LineString } from 'ol/geom';
 import { LogManager } from '../log-manager/log-manager';
 import { BaseManager } from '../base-manager';
 import { LayerManager } from '../layer-manager/layer-manager';
 import { SettingsManager } from '../settings-manager/settings-manager';
+import { Feature, Overlay } from 'ol';
 
 const FILENAME = 'snap-manager.js';
 const CLASS__OVERLAY_SNAP = 'oltb-overlay-snap';
@@ -133,6 +134,13 @@ class SnapManager extends BaseManager {
     }
 
     static #onPointerMove(event) {
+        // TODO:
+        // 1. Create help function
+        // 2. Track all help-lines
+        // 3. Remove help-lines when not needed
+        // Limit on amount?, only one x and one y line?
+        this.#drawHelpLines(event)
+
         // Note: 
         // Only follow the mouse exactly if we are not snapped
         // The onSnap sets the positon to the vertex when Snapped
@@ -162,6 +170,30 @@ class SnapManager extends BaseManager {
     //--------------------------------------------------------------------
     // # Section: Internal
     //--------------------------------------------------------------------
+    static #drawHelpLines(event) {
+        // TODO:
+        // Optimize, only visible features, track help-lines etc.
+        const trackedFeatures = LayerManager.getSnapFeatures();
+        trackedFeatures.forEach((feature) => {
+            const mouseCoordinates = event.coordinate;
+            const featureCoordinates = feature.getGeometry().getCoordinates()[0];
+
+            featureCoordinates.forEach((coordinates) => {
+                if(
+                    mouseCoordinates[0] === coordinates[0] ||
+                    mouseCoordinates[1] === coordinates[1]
+                ) {
+                    const points = [mouseCoordinates, coordinates];
+                    const helpLine = new Feature({
+                        geometry: new LineString(points)
+                    });
+
+                    this.#interaction.addFeature(helpLine);
+                }
+            });
+        });
+    }
+
     static #setCountersTo(value) {
         this.#snapCounter = value;
         this.#moveCounter = value;

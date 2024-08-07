@@ -393,7 +393,7 @@ class StyleManager extends BaseManager {
             case FeatureProperties.type.drawing:
                 return this.getDefaultSelectDrawingStyle();
             default:
-                return null; 
+                return this.getDefaultSelectDrawingStyle();
         }
     }
 
