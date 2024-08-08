@@ -1,19 +1,19 @@
-import { DOM } from '../../browser-helpers/dom-factory';
 import { Snap } from 'ol/interaction';
 import { Events } from '../../browser-constants/events';
+import { Feature } from 'ol';
 import { unByKey } from 'ol/Observable';
 import { Settings } from '../../browser-constants/settings';
 import { LineString } from 'ol/geom';
 import { LogManager } from '../log-manager/log-manager';
 import { BaseManager } from '../base-manager';
 import { LayerManager } from '../layer-manager/layer-manager';
+import { Stroke, Style } from 'ol/style';
 import { SettingsManager } from '../settings-manager/settings-manager';
-import { Feature, Overlay } from 'ol';
+import { Vector as VectorLayer } from 'ol/layer';
+import { Vector as VectorSource } from 'ol/source';
+import { flattenGeometryCoordinates } from '../../ol-helpers/flatten-geometry-coordinates';
 
 const FILENAME = 'snap-manager.js';
-const CLASS__OVERLAY_SNAP = 'oltb-overlay-snap';
-const STYLE__SNAPPED = 'border: 1px dashed #007C70;';
-const STYLE__NOT_SNAPPED = 'border: 1px dashed #EB4542;';
 
 /**
  * About:
@@ -26,15 +26,9 @@ const STYLE__NOT_SNAPPED = 'border: 1px dashed #EB4542;';
 class SnapManager extends BaseManager {
     static #map;
     static #tool;
+    static #helpLinesLayer;
     static #interaction;
-    static #snapOverlay;
     static #onPointerMoveListener;
-
-    static #snapCounter;
-    static #moveCounter;
-
-    static #xLine;
-    static #yLine;
 
     //--------------------------------------------------------------------
     // # Section: Base Overrides
@@ -42,13 +36,9 @@ class SnapManager extends BaseManager {
     static async initAsync(options = {}) {
         LogManager.logDebug(FILENAME, 'initAsync', 'Initialization started');
 
+        this.#helpLinesLayer = this.#createHelpLinesLayer();
         this.#interaction = this.#createInteraction();
         this.#interaction.on(Events.openLayers.snap, this.#onSnap.bind(this));
-
-        this.#snapOverlay = this.#createSnapOverlay();
-
-        this.#setCountersTo(0);
-        this.#setLineColorTo(STYLE__NOT_SNAPPED);
 
         return new Promise((resolve) => {
             resolve({
@@ -66,46 +56,17 @@ class SnapManager extends BaseManager {
         return FILENAME;
     }
 
-    //--------------------------------------------------------------------
-    // # Section: User Interface
-    //--------------------------------------------------------------------
-    static #createSnapOverlay() {
-        // Note: 
-        // Not a perfect solution but will work for now.
-        // The problem is that the overlay follows the cursor (and that is correct) but the lines only goes to the edges of the overlay
-        // Making the overlay element bigger "solves" the problem (if the user not dragging the mouse to another screen)
-        const dimensionFactor = 2;
-        const screenWidth = window.screen.width * dimensionFactor;
-        const screenHeight = window.screen.height * dimensionFactor;
-
-        const snapOverlayElement = DOM.createElement({
-            element: 'div',
-            class: CLASS__OVERLAY_SNAP,
-            style: {
-                'width': `${screenWidth}px`,
-                'height': `${screenHeight}px`
-            }
-        });
-
-        this.#xLine = DOM.createElement({
-            element: 'div',
-            class: `${CLASS__OVERLAY_SNAP}__x-line`
-        });
-
-        this.#yLine = DOM.createElement({
-            element: 'div',
-            class: `${CLASS__OVERLAY_SNAP}__y-line`,
-        });
-
-        DOM.appendChildren(snapOverlayElement, [
-            this.#xLine, 
-            this.#yLine
-        ]);
-
-        return new Overlay({
-            stopEvent: false,
-            element: snapOverlayElement,
-            positioning: 'center-center',
+    static #createHelpLinesLayer() {
+        return new VectorLayer({
+            zIndex: 1000000000,
+            source: new VectorSource(),
+            style: new Style({
+                stroke: new Stroke({
+                    color: '#EB4542FF',
+                    lineDash: [2, 5],
+                    width: 2.5
+                })
+            })
         });
     }
 
@@ -115,7 +76,7 @@ class SnapManager extends BaseManager {
         return new Snap({
             features: features,
             pixelTolerance: 10,
-            edge: true,
+                edge: true,
             vertex: true
         });
     }
@@ -124,47 +85,11 @@ class SnapManager extends BaseManager {
     // # Section: Events
     //--------------------------------------------------------------------
     static #onSnap(event) {
-        this.#snapCounter += 1;
         this.#tool.onSnap(event);
-        
-        // Note: 
-        // The help lines should now follow the Snapped vertext and not the mouse
-        this.#snapOverlay.setPosition(event.vertex);
-        this.#setLineColorTo(STYLE__SNAPPED);
     }
 
     static #onPointerMove(event) {
-        // TODO:
-        // 1. Create help function
-        // 2. Track all help-lines
-        // 3. Remove help-lines when not needed
-        // Limit on amount?, only one x and one y line?
-        this.#drawHelpLines(event)
-
-        // Note: 
-        // Only follow the mouse exactly if we are not snapped
-        // The onSnap sets the positon to the vertex when Snapped
-        if(this.#snapCounter === 0 && this.#moveCounter === 0) {
-            this.#snapOverlay.setPosition(event.coordinate);
-        }
-        
-        // Note: 
-        // A snap event must first have triggered
-        if(this.#snapCounter !== 0) {
-            this.#moveCounter += 1;
-        }
-
-        // Note: 
-        // No snap event or is still snapped
-        if(this.#snapCounter === this.#moveCounter) {
-            return;
-        }
-
-        // Note: 
-        // Snap is released
-        this.#setCountersTo(0);
-        this.#setLineColorTo(STYLE__NOT_SNAPPED);
-        this.#snapOverlay.setPosition(event.coordinate);
+        this.#drawHelpLines(event);
     }
 
     //--------------------------------------------------------------------
@@ -172,11 +97,23 @@ class SnapManager extends BaseManager {
     //--------------------------------------------------------------------
     static #drawHelpLines(event) {
         // TODO:
-        // Optimize, only visible features, track help-lines etc.
+        // Doing tests with tracking pointer, comparing it to known points and drawing help-lines so the mouse can snap to the help line
+        // 1. Fetch only features that are visible in view
+        // 2. How to know when to remove a line that is not used?
+        // 3. Optimize methods that are used each cycle
+        // 4. Smarter tracking of drawn features, needs to be removed from two collections, layer + snapp-interaction
+
+        // const helpLines = this.#helpLinesLayer.getSource().getFeatures();
+        // helpLines.forEach((helpLine) => {
+        //     this.#interaction.removeFeature(helpLine);
+        // });
+
+        // this.#helpLinesLayer.getSource().clear();
+
         const trackedFeatures = LayerManager.getSnapFeatures();
         trackedFeatures.forEach((feature) => {
             const mouseCoordinates = event.coordinate;
-            const featureCoordinates = feature.getGeometry().getCoordinates()[0];
+            const featureCoordinates = flattenGeometryCoordinates(feature.getGeometry().getCoordinates());
 
             featureCoordinates.forEach((coordinates) => {
                 if(
@@ -185,23 +122,14 @@ class SnapManager extends BaseManager {
                 ) {
                     const points = [mouseCoordinates, coordinates];
                     const helpLine = new Feature({
-                        geometry: new LineString(points)
+                        geometry: new LineString(points),
                     });
 
+                    this.#helpLinesLayer.getSource().addFeature(helpLine);
                     this.#interaction.addFeature(helpLine);
                 }
             });
         });
-    }
-
-    static #setCountersTo(value) {
-        this.#snapCounter = value;
-        this.#moveCounter = value;
-    }
-
-    static #setLineColorTo(value) {
-        this.#xLine.style = value;
-        this.#yLine.style = value;
     }
 
     static #isSnapEnabled() {
@@ -234,15 +162,15 @@ class SnapManager extends BaseManager {
         this.#map.addInteraction(this.#interaction);
 
         if(this.#useSnapHelpLines()) {
-            this.#map.addOverlay(this.#snapOverlay);
+            this.#map.addLayer(this.#helpLinesLayer);
             this.#onPointerMoveListener = this.#map.on(Events.openLayers.pointerMove, this.#onPointerMove.bind(this));
         }
     }
 
     static removeSnap() {
         this.#tool = undefined;
+        this.#map.removeLayer(this.#helpLinesLayer);
         this.#map.removeInteraction(this.#interaction);
-        this.#map.removeOverlay(this.#snapOverlay);
 
         unByKey(this.#onPointerMoveListener);
     }
