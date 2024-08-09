@@ -98,7 +98,6 @@ class ScissorsTool extends BaseTool {
         this.parser.inject(Point, LineString, LinearRing, Polygon, MultiPoint, MultiLineString, MultiPolygon, GeometryCollection);
 
         this.interactionDraw = this.#generateOLInteractionDraw();
-
         this.interactionDraw.on(Events.openLayers.drawStart, this.#onDrawStart.bind(this));
         this.interactionDraw.on(Events.openLayers.drawEnd, this.#onDrawEnd.bind(this));
         this.interactionDraw.on(Events.openLayers.drawAbort, this.#onDrawAbort.bind(this));
@@ -431,7 +430,6 @@ class ScissorsTool extends BaseTool {
             // Apply style and add the polygons to the layer
             const style = this.#generateOLStyleObject();
             const featureCoordiantes = this.parser.write(geometry).getCoordinates();
-
             const splittedPolygonFeature = new Feature({
                 geometry: new Polygon(featureCoordiantes),
                 oltb: {
