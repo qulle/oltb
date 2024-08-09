@@ -47,8 +47,8 @@ describe('SnapManager', () => {
             on: (event, callback) => {},
             addInteraction: (interaction) => {},
             removeInteraction: (interaction) => {},
-            addOverlay: (overlay) => {},
-            removeOverlay: (overlay) => {}
+            addLayer: (overlay) => {},
+            removeLayer: (overlay) => {}
         };
 
         SnapManager.setMap(map);

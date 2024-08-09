@@ -12,7 +12,8 @@ describe('FeatureProperties', () => {
             iconMarker: 'iconMarker',
             windBarb: 'windBarb',
             measurement: 'measurement',
-            drawing: 'drawing'
+            drawing: 'drawing',
+            snapLine: 'snapLine'
         });
     });
 });

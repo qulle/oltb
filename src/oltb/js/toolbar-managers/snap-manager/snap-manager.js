@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { Snap } from 'ol/interaction';
 import { Events } from '../../browser-constants/events';
 import { Feature } from 'ol';
@@ -9,11 +10,14 @@ import { BaseManager } from '../base-manager';
 import { LayerManager } from '../layer-manager/layer-manager';
 import { Stroke, Style } from 'ol/style';
 import { SettingsManager } from '../settings-manager/settings-manager';
+import { FeatureProperties } from '../../ol-helpers/feature-properties';
 import { Vector as VectorLayer } from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';
 import { flattenGeometryCoordinates } from '../../ol-helpers/flatten-geometry-coordinates';
 
 const FILENAME = 'snap-manager.js';
+const PIXEL_TOLERANCE = 10;
+const ZINDEX_SNAP_LINES_LAYER = 1e9;
 
 /**
  * About:
@@ -26,7 +30,7 @@ const FILENAME = 'snap-manager.js';
 class SnapManager extends BaseManager {
     static #map;
     static #tool;
-    static #helpLinesLayer;
+    static #snapLines;
     static #interaction;
     static #onPointerMoveListener;
 
@@ -36,7 +40,7 @@ class SnapManager extends BaseManager {
     static async initAsync(options = {}) {
         LogManager.logDebug(FILENAME, 'initAsync', 'Initialization started');
 
-        this.#helpLinesLayer = this.#createHelpLinesLayer();
+        this.#snapLines = this.#createSnapLayer();
         this.#interaction = this.#createInteraction();
         this.#interaction.on(Events.openLayers.snap, this.#onSnap.bind(this));
 
@@ -56,9 +60,9 @@ class SnapManager extends BaseManager {
         return FILENAME;
     }
 
-    static #createHelpLinesLayer() {
+    static #createSnapLayer() {
         return new VectorLayer({
-            zIndex: 1000000000,
+            zIndex: ZINDEX_SNAP_LINES_LAYER,
             source: new VectorSource(),
             style: new Style({
                 stroke: new Stroke({
@@ -75,8 +79,8 @@ class SnapManager extends BaseManager {
         
         return new Snap({
             features: features,
-            pixelTolerance: 10,
-                edge: true,
+            pixelTolerance: PIXEL_TOLERANCE,
+            edge: true,
             vertex: true
         });
     }
@@ -89,27 +93,56 @@ class SnapManager extends BaseManager {
     }
 
     static #onPointerMove(event) {
-        this.#drawHelpLines(event);
+        this.#handleSnapLines(event);
     }
 
     //--------------------------------------------------------------------
     // # Section: Internal
     //--------------------------------------------------------------------
-    static #drawHelpLines(event) {
+    static #getClosestFeatures(event, source, pixelTolerance = PIXEL_TOLERANCE) {
+        const coordinates = event.coordinate;
+        const resolution = this.#map.getView().getResolution();
+
+        const extentBuffer = resolution * pixelTolerance;
+        const mouseExtent = [
+            coordinates[0] - extentBuffer,
+            coordinates[1] - extentBuffer,
+            coordinates[0] + extentBuffer,
+            coordinates[1] + extentBuffer
+        ];
+
+        const allFeatures = source.getFeaturesInExtent(mouseExtent);
+        const snapFeatures = allFeatures.filter((feature) => {
+            return _.get(feature.getProperties(), ['oltb', 'type'], undefined) === FeatureProperties.type.snapLine;
+        });
+
+        return snapFeatures;
+    }
+
+    static #handleSnapLines(event) {
         // TODO:
         // Doing tests with tracking pointer, comparing it to known points and drawing help-lines so the mouse can snap to the help line
         // 1. Fetch only features that are visible in view
         // 2. How to know when to remove a line that is not used?
         // 3. Optimize methods that are used each cycle
         // 4. Smarter tracking of drawn features, needs to be removed from two collections, layer + snapp-interaction
+        // 5. Handle if the mouse is moved shorter or longer on the same snapline, do not create a new
+        // 6. Handle zooming of map, seems to fail to find new snapLines
+        const snapSource = this.#snapLines.getSource();
+        const snapLines = snapSource.getFeatures();
+        const closeSnapLines = this.#getClosestFeatures(event, snapSource);
+        
+        // Note:
+        // Remove old snapLines that are not relevant anymore as to the mouse location
+        snapLines.forEach((snapLine) => {
+            if(!closeSnapLines.includes(snapLine)) {
+                snapSource.removeFeature(snapLine);
+                this.#interaction.removeFeature(snapLine);
+            }
+        });
 
-        // const helpLines = this.#helpLinesLayer.getSource().getFeatures();
-        // helpLines.forEach((helpLine) => {
-        //     this.#interaction.removeFeature(helpLine);
-        // });
-
-        // this.#helpLinesLayer.getSource().clear();
-
+        // Note:
+        // Find new vertices that are close to the current mouse location
         const trackedFeatures = LayerManager.getSnapFeatures();
         trackedFeatures.forEach((feature) => {
             const mouseCoordinates = event.coordinate;
@@ -120,16 +153,29 @@ class SnapManager extends BaseManager {
                     mouseCoordinates[0] === coordinates[0] ||
                     mouseCoordinates[1] === coordinates[1]
                 ) {
-                    const points = [mouseCoordinates, coordinates];
-                    const helpLine = new Feature({
-                        geometry: new LineString(points),
+                    const snapLine = new Feature({
+                        geometry: new LineString([mouseCoordinates, coordinates]),
+                        oltb: {
+                            type: FeatureProperties.type.snapLine
+                        }
                     });
 
-                    this.#helpLinesLayer.getSource().addFeature(helpLine);
-                    this.#interaction.addFeature(helpLine);
+                    snapSource.addFeature(snapLine);
+                    this.#interaction.addFeature(snapLine);
                 }
             });
         });
+    }
+
+    static #cleanSnapLines() {
+        const snapSource = this.#snapLines.getSource();
+        const snapLines = snapSource.getFeatures();
+
+        snapLines.forEach((snapLine) => {
+            this.#interaction.addFeature(snapLine);
+        });
+
+        snapSource.clear();
     }
 
     static #isSnapEnabled() {
@@ -162,14 +208,16 @@ class SnapManager extends BaseManager {
         this.#map.addInteraction(this.#interaction);
 
         if(this.#useSnapHelpLines()) {
-            this.#map.addLayer(this.#helpLinesLayer);
+            this.#map.addLayer(this.#snapLines);
             this.#onPointerMoveListener = this.#map.on(Events.openLayers.pointerMove, this.#onPointerMove.bind(this));
         }
     }
 
     static removeSnap() {
         this.#tool = undefined;
-        this.#map.removeLayer(this.#helpLinesLayer);
+
+        this.#cleanSnapLines();
+        this.#map.removeLayer(this.#snapLines);
         this.#map.removeInteraction(this.#interaction);
 
         unByKey(this.#onPointerMoveListener);
