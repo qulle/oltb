@@ -19,6 +19,10 @@ const FILENAME = 'snap-manager.js';
 const PIXEL_TOLERANCE = 10;
 const ZINDEX_SNAP_LINES_LAYER = 1e9;
 
+const STYLE__SNAP_LINE_COLOR = '#EB4542FF';
+const STYLE__SNAP_LINE_DASH = Object.freeze([2, 5]);
+const STYLE__SNAP_LINE_WIDTH = 2.5;
+
 /**
  * About:
  * SnapManager
@@ -66,9 +70,9 @@ class SnapManager extends BaseManager {
             source: new VectorSource(),
             style: new Style({
                 stroke: new Stroke({
-                    color: '#EB4542FF',
-                    lineDash: [2, 5],
-                    width: 2.5
+                    color: STYLE__SNAP_LINE_COLOR,
+                    lineDash: STYLE__SNAP_LINE_DASH,
+                    width: STYLE__SNAP_LINE_WIDTH
                 })
             })
         });
@@ -89,7 +93,9 @@ class SnapManager extends BaseManager {
     // # Section: Events
     //--------------------------------------------------------------------
     static #onSnap(event) {
-        this.#tool.onSnap(event);
+        if(!this.#isSnapLine(event.feature)) {
+            this.#tool.onSnap(event);
+        }
     }
 
     static #onPointerMove(event) {
@@ -99,6 +105,18 @@ class SnapManager extends BaseManager {
     //--------------------------------------------------------------------
     // # Section: Internal
     //--------------------------------------------------------------------
+    static #isSnapEnabled() {
+        return SettingsManager.getSetting(Settings.snapInteraction);
+    }
+
+    static #useSnapHelpLines() {
+        return SettingsManager.getSetting(Settings.snapHelpLines);
+    }
+
+    static #isSnapLine(feature) {
+        return _.get(feature.getProperties(), ['oltb', 'type'], undefined) === FeatureProperties.type.snapLine;
+    }
+
     static #getClosestFeatures(event, source, pixelTolerance = PIXEL_TOLERANCE) {
         const coordinates = event.coordinate;
         const resolution = this.#map.getView().getResolution();
@@ -113,7 +131,7 @@ class SnapManager extends BaseManager {
 
         const allFeatures = source.getFeaturesInExtent(mouseExtent);
         const snapFeatures = allFeatures.filter((feature) => {
-            return _.get(feature.getProperties(), ['oltb', 'type'], undefined) === FeatureProperties.type.snapLine;
+            return this.#isSnapLine(feature);
         });
 
         return snapFeatures;
@@ -129,13 +147,13 @@ class SnapManager extends BaseManager {
         // 5. Handle if the mouse is moved shorter or longer on the same snapline, do not create a new
         // 6. Handle zooming of map, seems to fail to find new snapLines
         const snapSource = this.#snapLines.getSource();
-        const snapLines = snapSource.getFeatures();
-        const closeSnapLines = this.#getClosestFeatures(event, snapSource);
+        const currentSnapLines = snapSource.getFeatures();
+        const closestSnapLines = this.#getClosestFeatures(event, snapSource);
         
         // Note:
         // Remove old snapLines that are not relevant anymore as to the mouse location
-        snapLines.forEach((snapLine) => {
-            if(!closeSnapLines.includes(snapLine)) {
+        currentSnapLines.forEach((snapLine) => {
+            if(!closestSnapLines.includes(snapLine)) {
                 snapSource.removeFeature(snapLine);
                 this.#interaction.removeFeature(snapLine);
             }
@@ -143,6 +161,7 @@ class SnapManager extends BaseManager {
 
         // Note:
         // Find new vertices that are close to the current mouse location
+        const snapLinesBuffer = [];
         const trackedFeatures = LayerManager.getSnapFeatures();
         trackedFeatures.forEach((feature) => {
             const mouseCoordinates = event.coordinate;
@@ -160,10 +179,14 @@ class SnapManager extends BaseManager {
                         }
                     });
 
-                    snapSource.addFeature(snapLine);
-                    this.#interaction.addFeature(snapLine);
+                    snapLinesBuffer.push(snapLine);
                 }
             });
+        });
+
+        snapLinesBuffer.forEach((snapLine) => {
+            snapSource.addFeature(snapLine);
+            this.#interaction.addFeature(snapLine);
         });
     }
 
@@ -176,14 +199,6 @@ class SnapManager extends BaseManager {
         });
 
         snapSource.clear();
-    }
-
-    static #isSnapEnabled() {
-        return SettingsManager.getSetting(Settings.snapInteraction);
-    }
-
-    static #useSnapHelpLines() {
-        return SettingsManager.getSetting(Settings.snapHelpLines);
     }
 
     //--------------------------------------------------------------------
@@ -215,11 +230,10 @@ class SnapManager extends BaseManager {
 
     static removeSnap() {
         this.#tool = undefined;
-
-        this.#cleanSnapLines();
         this.#map.removeLayer(this.#snapLines);
         this.#map.removeInteraction(this.#interaction);
 
+        this.#cleanSnapLines();
         unByKey(this.#onPointerMoveListener);
     }
 
