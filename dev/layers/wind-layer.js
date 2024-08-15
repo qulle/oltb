@@ -61,7 +61,7 @@ const parseGeoJson = function(data) {
             title: countryName,
             content: `
                 <p>${description}</p>
-                <img src="/images/${placeholderImage}?cache=${timestamp}" alt="Placeholder Image" draggable="false" />
+                <img src="./images/${placeholderImage}?cache=${timestamp}" alt="Placeholder Image" draggable="false" />
             `,
             footer: `
                 <span class="oltb-info-window__coordinates">${prettyCoordinates}</span>

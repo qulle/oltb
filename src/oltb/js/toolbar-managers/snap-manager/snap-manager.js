@@ -16,12 +16,12 @@ import { Vector as VectorSource } from 'ol/source';
 import { flattenGeometryCoordinates } from '../../ol-helpers/flatten-geometry-coordinates';
 
 const FILENAME = 'snap-manager.js';
-const PIXEL_TOLERANCE = 10;
-const ZINDEX_SNAP_LINES_LAYER = 1e9;
+const PIXEL__TOLERANCE = 10;
+const ZINDEX__SNAP_LINES_LAYER = 1e9;
 
 const STYLE__SNAP_LINE_COLOR = '#EB4542FF';
 const STYLE__SNAP_LINE_DASH = Object.freeze([2, 5]);
-const STYLE__SNAP_LINE_WIDTH = 2.5;
+const STYLE__SNAP_LINE_WIDTH = 1.5;
 
 /**
  * About:
@@ -66,7 +66,7 @@ class SnapManager extends BaseManager {
 
     static #createSnapLayer() {
         return new VectorLayer({
-            zIndex: ZINDEX_SNAP_LINES_LAYER,
+            zIndex: ZINDEX__SNAP_LINES_LAYER,
             source: new VectorSource(),
             style: new Style({
                 stroke: new Stroke({
@@ -83,7 +83,7 @@ class SnapManager extends BaseManager {
         
         return new Snap({
             features: features,
-            pixelTolerance: PIXEL_TOLERANCE,
+            pixelTolerance: PIXEL__TOLERANCE,
             edge: true,
             vertex: true
         });
@@ -117,7 +117,7 @@ class SnapManager extends BaseManager {
         return _.get(feature.getProperties(), ['oltb', 'type'], undefined) === FeatureProperties.type.snapLine;
     }
 
-    static #getClosestFeatures(event, source, pixelTolerance = PIXEL_TOLERANCE) {
+    static #getClosestFeatures(event, source, pixelTolerance = PIXEL__TOLERANCE) {
         const coordinates = event.coordinate;
         const resolution = this.#map.getView().getResolution();
 
@@ -137,43 +137,46 @@ class SnapManager extends BaseManager {
         return snapFeatures;
     }
 
+    static #getStraightLinePoint(mouseCoordinate, featureCoordinate, proximity) {
+        const [mX, mY] = mouseCoordinate;
+        const [fX, fY] = featureCoordinate;
+    
+        const isNearVertical = Math.abs(mX - fX) <= proximity;
+        const isNearHorizontal = Math.abs(mY - fY) <= proximity;
+    
+        if(isNearHorizontal) {
+            return [mX, fY];
+        }
+        
+        if(isNearVertical) {
+            return [fX, mY];
+        }
+
+        return null;
+    }
+
     static #handleSnapLines(event) {
         // TODO:
-        // Doing tests with tracking pointer, comparing it to known points and drawing help-lines so the mouse can snap to the help line
-        // 1. Fetch only features that are visible in view
-        // 2. How to know when to remove a line that is not used?
-        // 3. Optimize methods that are used each cycle
-        // 4. Smarter tracking of drawn features, needs to be removed from two collections, layer + snapp-interaction
-        // 5. Handle if the mouse is moved shorter or longer on the same snapline, do not create a new
-        // 6. Handle zooming of map, seems to fail to find new snapLines
-        const snapSource = this.#snapLines.getSource();
-        const currentSnapLines = snapSource.getFeatures();
-        const closestSnapLines = this.#getClosestFeatures(event, snapSource);
+        // Don't use snap-lines if the mouse has snapped to a feature segment or vertext
+        const mouseCoordinates = event.coordinate;
+        const trackedFeatures = LayerManager.getSnapFeatures();
+        const mapProximity = this.#map.getView().getResolution() * PIXEL__TOLERANCE;
         
         // Note:
-        // Remove old snapLines that are not relevant anymore as to the mouse location
-        currentSnapLines.forEach((snapLine) => {
-            if(!closestSnapLines.includes(snapLine)) {
-                snapSource.removeFeature(snapLine);
-                this.#interaction.removeFeature(snapLine);
-            }
-        });
+        // Remove old snapLines that are not relevant anymore
+        this.#cleanSnapLines();
 
         // Note:
         // Find new vertices that are close to the current mouse location
         const snapLinesBuffer = [];
-        const trackedFeatures = LayerManager.getSnapFeatures();
         trackedFeatures.forEach((feature) => {
-            const mouseCoordinates = event.coordinate;
-            const featureCoordinates = flattenGeometryCoordinates(feature.getGeometry().getCoordinates());
-
-            featureCoordinates.forEach((coordinates) => {
-                if(
-                    mouseCoordinates[0] === coordinates[0] ||
-                    mouseCoordinates[1] === coordinates[1]
-                ) {
+            flattenGeometryCoordinates(
+                feature.getGeometry().getCoordinates()
+            ).forEach((coordinates) => {
+                const nearestPoint = this.#getStraightLinePoint(mouseCoordinates, coordinates, mapProximity);
+                if(nearestPoint) {
                     const snapLine = new Feature({
-                        geometry: new LineString([mouseCoordinates, coordinates]),
+                        geometry: new LineString([coordinates, nearestPoint]),
                         oltb: {
                             type: FeatureProperties.type.snapLine
                         }
@@ -185,7 +188,7 @@ class SnapManager extends BaseManager {
         });
 
         snapLinesBuffer.forEach((snapLine) => {
-            snapSource.addFeature(snapLine);
+            this.#snapLines.getSource().addFeature(snapLine);
             this.#interaction.addFeature(snapLine);
         });
     }

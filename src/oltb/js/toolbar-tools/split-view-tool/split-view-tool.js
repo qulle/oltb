@@ -23,9 +23,9 @@ const CLASS__TOOLBOX_SECTION = 'oltb-toolbox-section';
 const CLASS__SLIDER = 'oltb-slider';
 const CLASS__TOGGLEABLE = 'oltb-toggleable';
 const ID__PREFIX = 'oltb-split-view';
-const INDEX_DEFAULT_RIGHT = 0;
-const INDEX_DEFAULT_LEFT = 1;
-const MIN_NUM_LAYERS = 2;
+const INDEX__DEFAULT_RIGHT = 0;
+const INDEX__DEFAULT_LEFT = 1;
+const DEFAULT__MIN_NUM_LAYERS = 2;
 const I18N__BASE = 'tools.splitViewTool';
 const I18N__BASE_COMMON = 'commons';
 
@@ -148,7 +148,7 @@ class SplitViewTool extends BaseTool {
     onClickTool(event) {
         super.onClickTool(event);
 
-        if(LayerManager.getMapLayerSize() < MIN_NUM_LAYERS) {
+        if(LayerManager.getMapLayerSize() < DEFAULT__MIN_NUM_LAYERS) {
             Toast.info({
                 i18nKey: `${I18N__BASE}.toasts.infos.strictOneLayer`
             });
@@ -373,8 +373,8 @@ class SplitViewTool extends BaseTool {
     // # Getters and Setters
     //--------------------------------------------------------------------
     setDefaultSelectedIndexes() {
-        this.uiRefLeftSource.selectedIndex = String(INDEX_DEFAULT_LEFT);
-        this.uiRefRightSource.selectedIndex = String(INDEX_DEFAULT_RIGHT);
+        this.uiRefLeftSource.selectedIndex = String(INDEX__DEFAULT_LEFT);
+        this.uiRefRightSource.selectedIndex = String(INDEX__DEFAULT_RIGHT);
 
         return this;
     }
