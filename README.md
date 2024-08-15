@@ -103,7 +103,7 @@ Have a look at the **[Internal Development Documentation 👓](https://github.co
     - Easily extend with your own JSON language file
 
 ## Language Files
-There is a project **[github.com/qulle/oltb-language-files](https://github.com/qulle/oltb-language-files)** where all available JSON files are kept. If you have a language file, feel free to post a PR to include it for others to use in that repo.
+There is a **[Language Project 🌎](https://github.com/qulle/oltb-language-files)** where all available JSON files are kept. If you have a language file, feel free to post a PR to include it for others to use in that repo.
 
 ## Tools
 The following tools are implemented in the project. The tools are devided in two different categories, Hidden and Non-Hidden tools. The differenc is that Hidden tools are not displayed in the Toolbar, but only add functionality in the contextmenu.
