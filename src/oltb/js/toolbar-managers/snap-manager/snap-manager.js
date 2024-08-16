@@ -21,7 +21,7 @@ const ZINDEX__SNAP_LINES_LAYER = 1e9;
 
 const STYLE__SNAP_LINE_COLOR = '#EB4542FF';
 const STYLE__SNAP_LINE_DASH = Object.freeze([2, 5]);
-const STYLE__SNAP_LINE_WIDTH = 1.5;
+const STYLE__SNAP_LINE_WIDTH = 2.0;
 
 /**
  * About:
@@ -93,7 +93,7 @@ class SnapManager extends BaseManager {
     // # Section: Events
     //--------------------------------------------------------------------
     static #onSnap(event) {
-        if(!this.#isSnapLine(event.feature)) {
+        if(!this.isSnapLine(event.feature)) {
             this.#tool.onSnap(event);
         }
     }
@@ -113,36 +113,12 @@ class SnapManager extends BaseManager {
         return SettingsManager.getSetting(Settings.snapHelpLines);
     }
 
-    static #isSnapLine(feature) {
-        return _.get(feature.getProperties(), ['oltb', 'type'], undefined) === FeatureProperties.type.snapLine;
-    }
-
-    static #getClosestFeatures(event, source, pixelTolerance = PIXEL__TOLERANCE) {
-        const coordinates = event.coordinate;
-        const resolution = this.#map.getView().getResolution();
-
-        const extentBuffer = resolution * pixelTolerance;
-        const mouseExtent = [
-            coordinates[0] - extentBuffer,
-            coordinates[1] - extentBuffer,
-            coordinates[0] + extentBuffer,
-            coordinates[1] + extentBuffer
-        ];
-
-        const allFeatures = source.getFeaturesInExtent(mouseExtent);
-        const snapFeatures = allFeatures.filter((feature) => {
-            return this.#isSnapLine(feature);
-        });
-
-        return snapFeatures;
-    }
-
-    static #getStraightLinePoint(mouseCoordinate, featureCoordinate, proximity) {
+    static #getStraightLinePoint(mouseCoordinate, featureCoordinate, tolerance) {
         const [mX, mY] = mouseCoordinate;
         const [fX, fY] = featureCoordinate;
     
-        const isNearVertical = Math.abs(mX - fX) <= proximity;
-        const isNearHorizontal = Math.abs(mY - fY) <= proximity;
+        const isNearVertical = Math.abs(mX - fX) <= tolerance;
+        const isNearHorizontal = Math.abs(mY - fY) <= tolerance;
     
         if(isNearHorizontal) {
             return [mX, fY];
@@ -160,7 +136,7 @@ class SnapManager extends BaseManager {
         // Don't use snap-lines if the mouse has snapped to a feature segment or vertext
         const mouseCoordinates = event.coordinate;
         const trackedFeatures = LayerManager.getSnapFeatures();
-        const mapProximity = this.#map.getView().getResolution() * PIXEL__TOLERANCE;
+        const tolerance = this.#map.getView().getResolution() * PIXEL__TOLERANCE;
         
         // Note:
         // Remove old snapLines that are not relevant anymore
@@ -168,12 +144,13 @@ class SnapManager extends BaseManager {
 
         // Note:
         // Find new vertices that are close to the current mouse location
+        const snapSource = this.#snapLines.getSource();
         const snapLinesBuffer = [];
         trackedFeatures.forEach((feature) => {
             flattenGeometryCoordinates(
                 feature.getGeometry().getCoordinates()
             ).forEach((coordinates) => {
-                const nearestPoint = this.#getStraightLinePoint(mouseCoordinates, coordinates, mapProximity);
+                const nearestPoint = this.#getStraightLinePoint(mouseCoordinates, coordinates, tolerance);
                 if(nearestPoint) {
                     const snapLine = new Feature({
                         geometry: new LineString([coordinates, nearestPoint]),
@@ -188,7 +165,7 @@ class SnapManager extends BaseManager {
         });
 
         snapLinesBuffer.forEach((snapLine) => {
-            this.#snapLines.getSource().addFeature(snapLine);
+            snapSource.addFeature(snapLine);
             this.#interaction.addFeature(snapLine);
         });
     }
@@ -198,7 +175,7 @@ class SnapManager extends BaseManager {
         const snapLines = snapSource.getFeatures();
 
         snapLines.forEach((snapLine) => {
-            this.#interaction.addFeature(snapLine);
+            this.#interaction.removeFeature(snapLine);
         });
 
         snapSource.clear();
@@ -207,6 +184,10 @@ class SnapManager extends BaseManager {
     //--------------------------------------------------------------------
     // # Section: Public API
     //--------------------------------------------------------------------
+    static isSnapLine(feature) {
+        return _.get(feature.getProperties(), ['oltb', 'type'], undefined) === FeatureProperties.type.snapLine;
+    }
+    
     static addSnap(tool) {
         const isEnabled = this.#isSnapEnabled();
         const useSnapHelpLines = this.#useSnapHelpLines();

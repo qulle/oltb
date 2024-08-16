@@ -409,7 +409,10 @@ class LayerManager extends BaseManager {
 
     static belongsToMapLayer(feature) {
         return !!this.#layers.mapLayers.find((layerWrapper) => {
-            return layerWrapper.getLayer().getSource().hasFeature(feature);
+            return (
+                layerWrapper.getLayer().getSource().hasFeature !== undefined &&
+                layerWrapper.getLayer().getSource().hasFeature(feature)
+            );
         });
     }
 
@@ -588,7 +591,10 @@ class LayerManager extends BaseManager {
 
     static belongsToFeatureLayer(feature) {
         return !!this.#layers.featureLayers.find((layerWrapper) => {
-            return layerWrapper.getLayer().getSource().hasFeature(feature);
+            return (
+                layerWrapper.getLayer().getSource().hasFeature !== undefined &&
+                layerWrapper.getLayer().getSource().hasFeature(feature)
+            );
         });
     }
 }

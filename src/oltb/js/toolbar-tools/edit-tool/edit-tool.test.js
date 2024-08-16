@@ -317,6 +317,9 @@ describe('EditTool', () => {
     it('should check if intersection mode is enabled', () => {
         const options = {onSnapped: () => {}};
         const spyOnOnSnapped = jest.spyOn(options, 'onSnapped');
+        const spyOnIsSnapLine = jest.spyOn(SnapManager, 'isSnapLine').mockImplementation(() => {
+            return false;
+        });
 
         const tool = initToolInstance(options);
         SnapManager.addSnap(tool);
@@ -324,6 +327,7 @@ describe('EditTool', () => {
         const interaction = SnapManager.getInteraction();
         interaction.dispatchEvent('snap');
 
+        expect(spyOnIsSnapLine).toHaveBeenCalledTimes(1);
         expect(spyOnOnSnapped).toHaveBeenCalledTimes(1);
     });
 
