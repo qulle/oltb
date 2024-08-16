@@ -1,6 +1,6 @@
 {
     "name": "oltb",
-    "version": "3.1.0",
+    "version": "3.2.0",
     "author": "Qulle",
     "license": "BSD-2-Clause license",
     "description": "OLTB is a portable mobile friendly GIS toolbar developed for OpenLayers 10.0.0",
