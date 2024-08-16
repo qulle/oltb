@@ -1,18 +1,27 @@
-import { DOM } from '../../browser-helpers/dom-factory';
+import _ from 'lodash';
 import { Snap } from 'ol/interaction';
 import { Events } from '../../browser-constants/events';
-import { Overlay } from 'ol';
+import { Feature } from 'ol';
 import { unByKey } from 'ol/Observable';
 import { Settings } from '../../browser-constants/settings';
+import { LineString } from 'ol/geom';
 import { LogManager } from '../log-manager/log-manager';
 import { BaseManager } from '../base-manager';
 import { LayerManager } from '../layer-manager/layer-manager';
+import { Stroke, Style } from 'ol/style';
 import { SettingsManager } from '../settings-manager/settings-manager';
+import { FeatureProperties } from '../../ol-helpers/feature-properties';
+import { Vector as VectorLayer } from 'ol/layer';
+import { Vector as VectorSource } from 'ol/source';
+import { flattenGeometryCoordinates } from '../../ol-helpers/flatten-geometry-coordinates';
 
 const FILENAME = 'snap-manager.js';
-const CLASS__OVERLAY_SNAP = 'oltb-overlay-snap';
-const STYLE__SNAPPED = 'border: 1px dashed #007C70;';
-const STYLE__NOT_SNAPPED = 'border: 1px dashed #EB4542;';
+const PIXEL__TOLERANCE = 10;
+const ZINDEX__SNAP_LINES_LAYER = 1e9;
+
+const STYLE__SNAP_LINE_COLOR = '#EB4542FF';
+const STYLE__SNAP_LINE_DASH = Object.freeze([2, 5]);
+const STYLE__SNAP_LINE_WIDTH = 2.0;
 
 /**
  * About:
@@ -25,15 +34,9 @@ const STYLE__NOT_SNAPPED = 'border: 1px dashed #EB4542;';
 class SnapManager extends BaseManager {
     static #map;
     static #tool;
+    static #snapLines;
     static #interaction;
-    static #snapOverlay;
     static #onPointerMoveListener;
-
-    static #snapCounter;
-    static #moveCounter;
-
-    static #xLine;
-    static #yLine;
 
     //--------------------------------------------------------------------
     // # Section: Base Overrides
@@ -41,13 +44,9 @@ class SnapManager extends BaseManager {
     static async initAsync(options = {}) {
         LogManager.logDebug(FILENAME, 'initAsync', 'Initialization started');
 
+        this.#snapLines = this.#createSnapLayer();
         this.#interaction = this.#createInteraction();
         this.#interaction.on(Events.openLayers.snap, this.#onSnap.bind(this));
-
-        this.#snapOverlay = this.#createSnapOverlay();
-
-        this.#setCountersTo(0);
-        this.#setLineColorTo(STYLE__NOT_SNAPPED);
 
         return new Promise((resolve) => {
             resolve({
@@ -65,46 +64,17 @@ class SnapManager extends BaseManager {
         return FILENAME;
     }
 
-    //--------------------------------------------------------------------
-    // # Section: User Interface
-    //--------------------------------------------------------------------
-    static #createSnapOverlay() {
-        // Note: 
-        // Not a perfect solution but will work for now.
-        // The problem is that the overlay follows the cursor (and that is correct) but the lines only goes to the edges of the overlay
-        // Making the overlay element bigger "solves" the problem (if the user not dragging the mouse to another screen)
-        const dimensionFactor = 2;
-        const screenWidth = window.screen.width * dimensionFactor;
-        const screenHeight = window.screen.height * dimensionFactor;
-
-        const snapOverlayElement = DOM.createElement({
-            element: 'div',
-            class: CLASS__OVERLAY_SNAP,
-            style: {
-                'width': `${screenWidth}px`,
-                'height': `${screenHeight}px`
-            }
-        });
-
-        this.#xLine = DOM.createElement({
-            element: 'div',
-            class: `${CLASS__OVERLAY_SNAP}__x-line`
-        });
-
-        this.#yLine = DOM.createElement({
-            element: 'div',
-            class: `${CLASS__OVERLAY_SNAP}__y-line`,
-        });
-
-        DOM.appendChildren(snapOverlayElement, [
-            this.#xLine, 
-            this.#yLine
-        ]);
-
-        return new Overlay({
-            stopEvent: false,
-            element: snapOverlayElement,
-            positioning: 'center-center',
+    static #createSnapLayer() {
+        return new VectorLayer({
+            zIndex: ZINDEX__SNAP_LINES_LAYER,
+            source: new VectorSource(),
+            style: new Style({
+                stroke: new Stroke({
+                    color: STYLE__SNAP_LINE_COLOR,
+                    lineDash: STYLE__SNAP_LINE_DASH,
+                    width: STYLE__SNAP_LINE_WIDTH
+                })
+            })
         });
     }
 
@@ -113,7 +83,7 @@ class SnapManager extends BaseManager {
         
         return new Snap({
             features: features,
-            pixelTolerance: 10,
+            pixelTolerance: PIXEL__TOLERANCE,
             edge: true,
             vertex: true
         });
@@ -123,55 +93,18 @@ class SnapManager extends BaseManager {
     // # Section: Events
     //--------------------------------------------------------------------
     static #onSnap(event) {
-        this.#snapCounter += 1;
-        this.#tool.onSnap(event);
-        
-        // Note: 
-        // The help lines should now follow the Snapped vertext and not the mouse
-        this.#snapOverlay.setPosition(event.vertex);
-        this.#setLineColorTo(STYLE__SNAPPED);
+        if(!this.isSnapLine(event.feature)) {
+            this.#tool.onSnap(event);
+        }
     }
 
     static #onPointerMove(event) {
-        // Note: 
-        // Only follow the mouse exactly if we are not snapped
-        // The onSnap sets the positon to the vertex when Snapped
-        if(this.#snapCounter === 0 && this.#moveCounter === 0) {
-            this.#snapOverlay.setPosition(event.coordinate);
-        }
-        
-        // Note: 
-        // A snap event must first have triggered
-        if(this.#snapCounter !== 0) {
-            this.#moveCounter += 1;
-        }
-
-        // Note: 
-        // No snap event or is still snapped
-        if(this.#snapCounter === this.#moveCounter) {
-            return;
-        }
-
-        // Note: 
-        // Snap is released
-        this.#setCountersTo(0);
-        this.#setLineColorTo(STYLE__NOT_SNAPPED);
-        this.#snapOverlay.setPosition(event.coordinate);
+        this.#handleSnapLines(event);
     }
 
     //--------------------------------------------------------------------
     // # Section: Internal
     //--------------------------------------------------------------------
-    static #setCountersTo(value) {
-        this.#snapCounter = value;
-        this.#moveCounter = value;
-    }
-
-    static #setLineColorTo(value) {
-        this.#xLine.style = value;
-        this.#yLine.style = value;
-    }
-
     static #isSnapEnabled() {
         return SettingsManager.getSetting(Settings.snapInteraction);
     }
@@ -180,9 +113,81 @@ class SnapManager extends BaseManager {
         return SettingsManager.getSetting(Settings.snapHelpLines);
     }
 
+    static #getStraightLinePoint(mouseCoordinate, featureCoordinate, tolerance) {
+        const [mX, mY] = mouseCoordinate;
+        const [fX, fY] = featureCoordinate;
+    
+        const isNearVertical = Math.abs(mX - fX) <= tolerance;
+        const isNearHorizontal = Math.abs(mY - fY) <= tolerance;
+    
+        if(isNearHorizontal) {
+            return [mX, fY];
+        }
+        
+        if(isNearVertical) {
+            return [fX, mY];
+        }
+
+        return null;
+    }
+
+    static #handleSnapLines(event) {
+        // TODO:
+        // Don't use snap-lines if the mouse has snapped to a feature segment or vertext
+        const mouseCoordinates = event.coordinate;
+        const trackedFeatures = LayerManager.getSnapFeatures();
+        const tolerance = this.#map.getView().getResolution() * PIXEL__TOLERANCE;
+        
+        // Note:
+        // Remove old snapLines that are not relevant anymore
+        this.#cleanSnapLines();
+
+        // Note:
+        // Find new vertices that are close to the current mouse location
+        const snapSource = this.#snapLines.getSource();
+        const snapLinesBuffer = [];
+        trackedFeatures.forEach((feature) => {
+            flattenGeometryCoordinates(
+                feature.getGeometry().getCoordinates()
+            ).forEach((coordinates) => {
+                const nearestPoint = this.#getStraightLinePoint(mouseCoordinates, coordinates, tolerance);
+                if(nearestPoint) {
+                    const snapLine = new Feature({
+                        geometry: new LineString([coordinates, nearestPoint]),
+                        oltb: {
+                            type: FeatureProperties.type.snapLine
+                        }
+                    });
+
+                    snapLinesBuffer.push(snapLine);
+                }
+            });
+        });
+
+        snapLinesBuffer.forEach((snapLine) => {
+            snapSource.addFeature(snapLine);
+            this.#interaction.addFeature(snapLine);
+        });
+    }
+
+    static #cleanSnapLines() {
+        const snapSource = this.#snapLines.getSource();
+        const snapLines = snapSource.getFeatures();
+
+        snapLines.forEach((snapLine) => {
+            this.#interaction.removeFeature(snapLine);
+        });
+
+        snapSource.clear();
+    }
+
     //--------------------------------------------------------------------
     // # Section: Public API
     //--------------------------------------------------------------------
+    static isSnapLine(feature) {
+        return _.get(feature.getProperties(), ['oltb', 'type'], undefined) === FeatureProperties.type.snapLine;
+    }
+    
     static addSnap(tool) {
         const isEnabled = this.#isSnapEnabled();
         const useSnapHelpLines = this.#useSnapHelpLines();
@@ -202,16 +207,17 @@ class SnapManager extends BaseManager {
         this.#map.addInteraction(this.#interaction);
 
         if(this.#useSnapHelpLines()) {
-            this.#map.addOverlay(this.#snapOverlay);
+            this.#map.addLayer(this.#snapLines);
             this.#onPointerMoveListener = this.#map.on(Events.openLayers.pointerMove, this.#onPointerMove.bind(this));
         }
     }
 
     static removeSnap() {
         this.#tool = undefined;
+        this.#map.removeLayer(this.#snapLines);
         this.#map.removeInteraction(this.#interaction);
-        this.#map.removeOverlay(this.#snapOverlay);
 
+        this.#cleanSnapLines();
         unByKey(this.#onPointerMoveListener);
     }
 

@@ -460,7 +460,10 @@ class EditTool extends BaseTool {
         const layerWrappers = LayerManager.getFeatureLayers();
         features.forEach((feature) => {
             layerWrappers.forEach((layerWrapper) => {
-                if(!layerWrapper.getLayer().getSource().hasFeature(feature)) {
+                if((
+                    layerWrapper.getLayer().getSource().hasFeature === undefined ||
+                    !layerWrapper.getLayer().getSource().hasFeature(feature)
+                )) {
                     return;
                 }
 

@@ -15,6 +15,7 @@ import { GeometryType } from '../../ol-mappers/ol-geometry/ol-geometry';
 import { ShortcutKeys } from '../../browser-constants/shortcut-keys';
 import { FeatureManager } from '../../toolbar-managers/feature-manager/feature-manager';
 import { LocalStorageKeys } from '../../browser-constants/local-storage-keys';
+import { FeatureProperties } from '../../ol-helpers/feature-properties';
 import { isShortcutKeyOnly } from '../../browser-helpers/is-shortcut-key-only';
 import { TranslationManager } from '../../toolbar-managers/translation-manager/translation-manager';
 import { SvgPaths, getSvgIcon } from '../../ui-icons/get-svg-icon/get-svg-icon';
@@ -97,7 +98,6 @@ class ScissorsTool extends BaseTool {
         this.parser.inject(Point, LineString, LinearRing, Polygon, MultiPoint, MultiLineString, MultiPolygon, GeometryCollection);
 
         this.interactionDraw = this.#generateOLInteractionDraw();
-
         this.interactionDraw.on(Events.openLayers.drawStart, this.#onDrawStart.bind(this));
         this.interactionDraw.on(Events.openLayers.drawEnd, this.#onDrawEnd.bind(this));
         this.interactionDraw.on(Events.openLayers.drawAbort, this.#onDrawAbort.bind(this));
@@ -392,6 +392,9 @@ class ScissorsTool extends BaseTool {
     }
 
     doSplitPolygon(polygonFeature, lineFeature) {
+        // Check if original feature has any custom type
+        const featureType = FeatureManager.getType(polygonFeature) || FeatureProperties.type.drawing;
+
         // Parse into JSTS objects
         const parsedPolygon = this.parser.read(polygonFeature.getGeometry());
         const parsedLine = this.parser.read(lineFeature.getGeometry());             
@@ -427,9 +430,11 @@ class ScissorsTool extends BaseTool {
             // Apply style and add the polygons to the layer
             const style = this.#generateOLStyleObject();
             const featureCoordiantes = this.parser.write(geometry).getCoordinates();
-
             const splittedPolygonFeature = new Feature({
                 geometry: new Polygon(featureCoordiantes),
+                oltb: {
+                    type: featureType
+                }
             });
 
             splittedPolygonFeature.setStyle(style);

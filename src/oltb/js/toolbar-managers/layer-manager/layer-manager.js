@@ -12,9 +12,9 @@ import { Vector as VectorLayer } from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';
 
 const FILENAME = 'layer-manager.js';
-const DEFAULT_LAYER_NAME = 'New layer';
-const ZINDEX_BASE_MAP_LAYER = 1;
-const ZINDEX_BASE_FEATURE_LAYER = 1e6;
+const DEFAULT__LAYER_NAME = 'New layer';
+const ZINDEX__BASE_MAP_LAYER = 1;
+const ZINDEX__BASE_FEATURE_LAYER = 1e6;
 
 const DefaultFeatureLayerOptions = Object.freeze({
     name: '',
@@ -146,7 +146,7 @@ class LayerManager extends BaseManager {
         name = name.trim();
 
         if(!name.length) {
-            name = DEFAULT_LAYER_NAME;
+            name = DEFAULT__LAYER_NAME;
         }
 
         return name;
@@ -404,12 +404,15 @@ class LayerManager extends BaseManager {
 
     static setMapLayerZIndex(layerId, index) {
         const layerWrapper = this.getMapLayerById(layerId);
-        layerWrapper.getLayer().setZIndex(ZINDEX_BASE_MAP_LAYER + index);
+        layerWrapper.getLayer().setZIndex(ZINDEX__BASE_MAP_LAYER + index);
     }
 
     static belongsToMapLayer(feature) {
         return !!this.#layers.mapLayers.find((layerWrapper) => {
-            return layerWrapper.getLayer().getSource().hasFeature(feature);
+            return (
+                layerWrapper.getLayer().getSource().hasFeature !== undefined &&
+                layerWrapper.getLayer().getSource().hasFeature(feature)
+            );
         });
     }
 
@@ -583,12 +586,15 @@ class LayerManager extends BaseManager {
 
     static setFeatureLayerZIndex(layerId, index) {
         const layerWrapper = this.getFeatureLayerById(layerId);
-        layerWrapper.getLayer().setZIndex(ZINDEX_BASE_FEATURE_LAYER + index);
+        layerWrapper.getLayer().setZIndex(ZINDEX__BASE_FEATURE_LAYER + index);
     }
 
     static belongsToFeatureLayer(feature) {
         return !!this.#layers.featureLayers.find((layerWrapper) => {
-            return layerWrapper.getLayer().getSource().hasFeature(feature);
+            return (
+                layerWrapper.getLayer().getSource().hasFeature !== undefined &&
+                layerWrapper.getLayer().getSource().hasFeature(feature)
+            );
         });
     }
 }
