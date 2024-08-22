@@ -7,7 +7,7 @@ import { toStringHDMS } from 'ol/coordinate';
 import { LayerManager } from '../../src/oltb/js/toolbar-managers/layer-manager/layer-manager';
 import { FeatureManager } from '../../src/oltb/js/toolbar-managers/feature-manager/feature-manager';
 
-const FILENAME = 'layers/Wind.js';
+const FILENAME = 'wind-layer.js';
 const CLASS__FUNC_BUTTON = 'oltb-func-btn';
 const ID__PREFIX_INFO_WINDOW = 'oltb-info-window-marker';
 

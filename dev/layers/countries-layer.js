@@ -14,7 +14,7 @@ import { FeatureProperties } from '../../src/oltb/js/ol-helpers/feature-properti
 import { Vector as VectorLayer } from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';
 
-const FILENAME = 'layers/Countries.js';
+const FILENAME = 'countries-layer.js';
 const CLASS__FUNC_BUTTON = 'oltb-func-btn';
 const ID__PREFIX_INFO_WINDOW = 'oltb-info-window-marker';
 

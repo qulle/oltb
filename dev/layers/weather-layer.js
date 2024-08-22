@@ -1,53 +1,98 @@
 import axios from 'axios';
-import urlGeoJson from 'url:../geojson/airports.geojson';
+import urlGeoJson from 'url:../geojson/capitals.geojson';
 import { Toast } from '../../src/oltb/js/ui-common/ui-toasts/toast';
 import { LogManager } from '../../src/oltb/js/toolbar-managers/log-manager/log-manager';
 import { toStringHDMS } from 'ol/coordinate';
 import { LayerManager } from '../../src/oltb/js/toolbar-managers/layer-manager/layer-manager';
 import { FeatureManager } from '../../src/oltb/js/toolbar-managers/feature-manager/feature-manager';
 
-const FILENAME = 'airports-layer.js';
+const FILENAME = 'weather-layer.js';
 const CLASS__FUNC_BUTTON = 'oltb-func-btn';
 const ID__PREFIX_INFO_WINDOW = 'oltb-info-window-marker';
 
 const LayerWrapper = LayerManager.addFeatureLayer({
-    id: '91a9a06f-7e49-4f85-a204-58dc7ab6a95e',
-    name: '50 Airports',
-    isVisible: false,
+    id: '6c9751fc-a4cf-433b-8898-5cb7ca2f6d26',
+    name: 'Weather',
+    isVisible: true,
     isSilent: true
 });
 
-const getMarkerColor = function() {
-    return {
-        fill: '#FCBE80FF',
-        stroke: '#FCBE8066'
+const getMarkerColor = function(name) {
+    const colors = Object.freeze({
+        'Europe': {
+            fill: '#0166A5FF',
+            stroke: '#0166A566'
+        },
+        'Africa': {
+            fill: '#00959AFF',
+            stroke: '#00959A66'
+        },
+        'Antarctica': {
+            fill: '#007C70FF',
+            stroke: '#007C7066'
+        },
+        'Asia': {
+            fill: '#2357B1FF',
+            stroke: '#2357B166'
+        },
+        'Australia': {
+            fill: '#007C70FF',
+            stroke: '#007C7066'
+        },
+        'Central America': {
+            fill: '#0080C5FF',
+            stroke: '#0080C566'
+        },
+        'North America': {
+            fill: '#0080C5FF',
+            stroke: '#0080C566'
+        },
+        'South America': {
+            fill: '#0080C5FF',
+            stroke: '#0080C566'
+        },
+        'UM': {
+            fill: '#0080C5FF',
+            stroke: '#0080C566'
+        },
+        'US': {
+            fill: '#0080C5FF',
+            stroke: '#0080C566'
+        }
+    });
+
+    return colors[name] || {
+        fill: '#0166A5FF',
+        stroke: '#0166A566'
     };
 }
 
 const parseGeoJson = function(data) {
-    data.features.forEach((airport) => {
+    data.features.forEach((capital) => {
         const coordinates = [
-            Number(airport.geometry.coordinates[0]),
-            Number(airport.geometry.coordinates[1])
+            Number(capital.geometry.coordinates[0]),
+            Number(capital.geometry.coordinates[1])
         ];
 
         const prettyCoordinates = toStringHDMS(coordinates);
-        const name = airport.properties.name;
-        const location = airport.properties.location;
-        const country = airport.properties.country;
-        const totalPassengers = airport.properties.totalPassengers;
-
+        const countryName = capital.properties.countryName;
+        const countryCode = capital.properties.countryCode;
+        const capitalName = capital.properties.capitalName;
+        const continentName = capital.properties.continentName;
+        const timestamp = Date.now().toString();
+        const placeholderImage = 'placeholder-1.jpeg';
         const description = `
-            ${name} is a airport located in ${location} in ${country}.
-            Its total number of passenger is estimated to ${totalPassengers}.
+            ${countryName} is a country located in ${continentName}.
+            Its capital is ${capitalName} and its country code is ${countryCode}.
         `;
 
         const infoWindow = {
-            title: name,
+            title: countryName,
             content: `
                 <p>${description}</p>
+                <img src="./images/${placeholderImage}?cache=${timestamp}" alt="Placeholder Image" draggable="false" />
                 <p>
-                    Google has more information about <a href="//www.google.com/search?q=${name}" target="_blank" class="oltb-link">${name}</a> 
+                    Google has more information about <a href="//www.google.com/search?q=${countryName}" target="_blank" class="oltb-link">${countryName}</a>.
                 </p>
             `,
             footer: `
@@ -61,11 +106,11 @@ const parseGeoJson = function(data) {
             `
         };
 
-        const markerColor = getMarkerColor();
+        const markerColor = getMarkerColor(continentName);
         const marker = FeatureManager.generateIconMarker({
             lon: coordinates[0],
             lat: coordinates[1],
-            title: name,
+            title: countryName,
             description: description,
             infoWindow: infoWindow,
             marker: {
@@ -73,11 +118,10 @@ const parseGeoJson = function(data) {
                 stroke: markerColor.stroke
             },
             icon: {
-                key: 'airplane.filled',
-                fill: '#6B310AFF',
+                key: 'cloudLightningRain.filled'
             },
             label: {
-                text: name
+                text: countryName
             }
         });
 
@@ -103,7 +147,7 @@ axios.get(urlGeoJson, {
 }).then((data) => {
     parseGeoJson(data);
 }).catch((error) => {
-    const errorMessage = 'Failed to load Airports layer';
+    const errorMessage = 'Failed to load Capitals layer';
     LogManager.logError(FILENAME, 'geoJsonPromise', {
         message: errorMessage,
         error: error
