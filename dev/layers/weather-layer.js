@@ -2,13 +2,10 @@ import axios from 'axios';
 import urlGeoJson from 'url:../geojson/capitals.geojson';
 import { Toast } from '../../src/oltb/js/ui-common/ui-toasts/toast';
 import { LogManager } from '../../src/oltb/js/toolbar-managers/log-manager/log-manager';
-import { toStringHDMS } from 'ol/coordinate';
 import { LayerManager } from '../../src/oltb/js/toolbar-managers/layer-manager/layer-manager';
 import { FeatureManager } from '../../src/oltb/js/toolbar-managers/feature-manager/feature-manager';
 
 const FILENAME = 'weather-layer.js';
-const CLASS__FUNC_BUTTON = 'oltb-func-btn';
-const ID__PREFIX_INFO_WINDOW = 'oltb-info-window-marker';
 
 const LayerWrapper = LayerManager.addFeatureLayer({
     id: '6c9751fc-a4cf-433b-8898-5cb7ca2f6d26',
@@ -74,39 +71,27 @@ const parseGeoJson = function(data) {
             Number(capital.geometry.coordinates[1])
         ];
 
-        const prettyCoordinates = toStringHDMS(coordinates);
         const countryName = capital.properties.countryName;
         const countryCode = capital.properties.countryCode;
         const capitalName = capital.properties.capitalName;
         const continentName = capital.properties.continentName;
-        const timestamp = Date.now().toString();
-        const placeholderImage = 'placeholder-1.jpeg';
         const description = `
             ${countryName} is a country located in ${continentName}.
             Its capital is ${capitalName} and its country code is ${countryCode}.
         `;
 
+        const markerColor = getMarkerColor(continentName);
         const infoWindow = {
-            title: countryName,
+            title: '',
             content: `
-                <p>${description}</p>
-                <img src="./images/${placeholderImage}?cache=${timestamp}" alt="Placeholder Image" draggable="false" />
-                <p>
-                    Google has more information about <a href="//www.google.com/search?q=${countryName}" target="_blank" class="oltb-link">${countryName}</a>.
-                </p>
-            `,
-            footer: `
-                <span class="oltb-info-window__coordinates">${prettyCoordinates}</span>
-                <div class="oltb-info-window__buttons-wrapper">
-                    <button class="${CLASS__FUNC_BUTTON} ${CLASS__FUNC_BUTTON}--delete oltb-tippy" title="Delete Marker" id="${ID__PREFIX_INFO_WINDOW}-remove"></button>
-                    <button class="${CLASS__FUNC_BUTTON} ${CLASS__FUNC_BUTTON}--crosshair oltb-tippy" title="Copy Marker Coordinates" id="${ID__PREFIX_INFO_WINDOW}-copy-coordinates" data-oltb-coordinates="${prettyCoordinates}"></button>
-                    <button class="${CLASS__FUNC_BUTTON} ${CLASS__FUNC_BUTTON}--copy oltb-tippy" title="Copy Marker Text" id="${ID__PREFIX_INFO_WINDOW}-copy-text" data-oltb-copy="${description}"></button>
-                    <button class="${CLASS__FUNC_BUTTON} ${CLASS__FUNC_BUTTON}--layer oltb-tippy" title="Show Layer" id="${ID__PREFIX_INFO_WINDOW}-show-layer"></button>
+                <div style="text-align: center;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="${markerColor.fill}" viewBox="0 0 16 16">
+                        <path d="M2.658 11.026a.5.5 0 0 1 .316.632l-.5 1.5a.5.5 0 1 1-.948-.316l.5-1.5a.5.5 0 0 1 .632-.316m9.5 0a.5.5 0 0 1 .316.632l-.5 1.5a.5.5 0 0 1-.948-.316l.5-1.5a.5.5 0 0 1 .632-.316m-7.5 1.5a.5.5 0 0 1 .316.632l-.5 1.5a.5.5 0 1 1-.948-.316l.5-1.5a.5.5 0 0 1 .632-.316m9.5 0a.5.5 0 0 1 .316.632l-.5 1.5a.5.5 0 0 1-.948-.316l.5-1.5a.5.5 0 0 1 .632-.316m-7.105-1.25A.5.5 0 0 1 7.5 11h1a.5.5 0 0 1 .474.658l-.28.842H9.5a.5.5 0 0 1 .39.812l-2 2.5a.5.5 0 0 1-.875-.433L7.36 14H6.5a.5.5 0 0 1-.447-.724zm6.352-7.249a5.001 5.001 0 0 0-9.499-1.004A3.5 3.5 0 1 0 3.5 10H13a3 3 0 0 0 .405-5.973"/>
+                    </svg>
                 </div>
             `
         };
 
-        const markerColor = getMarkerColor(continentName);
         const marker = FeatureManager.generateIconMarker({
             lon: coordinates[0],
             lat: coordinates[1],
