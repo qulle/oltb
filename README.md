@@ -70,8 +70,16 @@ $ npm start
 ```
 
 ## Examples
-Examples for both the NPM and CDN version can be viewed in the **[Examples Directory 👀](https://github.com/qulle/oltb/tree/main/examples/)**. Use Git history and the tagged releases to look at older examples.
+Examples for both the NPM and CDN version can be viewed in the **[Examples Directory 👀](https://github.com/qulle/oltb/tree/main/examples/)**.
+- CDN
+    - Vanilla JS (jsdelivr)
+- NPM
+    - Vanilla JS (Single OLTB module import)
+    - Vanilla JS (Individual module import)
+    - Angular 19
+    - React 18
 
+**Note:** To run Angular and React example, first run **npm install** in each of the example directories.
 
 ## Documentation
 Have a look at the **[Internal Development Documentation 👓](https://github.com/qulle/oltb/blob/main/README_INTERNAL.md)**. Here you find detailed descriptions and code examples of how individual parts can be used.
