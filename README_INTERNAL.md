@@ -1643,9 +1643,9 @@ $ bash build-scripts/dist-examples-setup.sh
 #      - CDN (also bump ol CDN-links in index.html)
 
 # (9). Verify examples
-$ npm run example:cdn:one
-$ npm run example:npm:one
-$ npm run example:npm:two
+$ npm run example:cdn:1
+$ npm run example:npm:1
+$ npm run example:npm:2
 
 # (10). Cleanup examples
 $ bash build-scripts/dist-examples-cleanup.sh

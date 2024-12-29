@@ -32,9 +32,9 @@
         "build": "npm run build:demo && npm run build:lib",
         "build:lib": "rollup --config ./config/rollup.config.mjs",
         "build:demo": "parcel build --public-url . ./dev/index.html --dist-dir ./demo",
-        "example:cdn:one": "sh -c 'start firefox -url \"file://C:$(cut -c3- <<< $(readlink -m ./examples/cdn/index.html))\"'",
-        "example:npm:one": "parcel serve ./examples/npm/example-one/index.html --open --dist-dir ./serve",
-        "example:npm:two": "parcel serve ./examples/npm/example-two/index.html --open --dist-dir ./serve",
+        "example:cdn:1": "sh -c 'start firefox -url \"file://C:$(cut -c3- <<< $(readlink -m ./examples/cdn/example-1/index.html))\"'",
+        "example:npm:1": "parcel serve ./examples/npm/example-1/index.html --open --dist-dir ./serve",
+        "example:npm:2": "parcel serve ./examples/npm/example-2/index.html --open --dist-dir ./serve",
         "clean": "rm -rf ./serve ./dist ./demo ./.parcel-cache",
         "install-husky": "npx husky install",
         "configure-husky": "npx husky install && npx husky add .husky/pre-commit \"npx lint-staged\""
