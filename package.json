@@ -35,6 +35,7 @@
         "example:cdn:1": "sh -c 'start firefox -url \"file://C:$(cut -c3- <<< $(readlink -m ./examples/cdn/example-1/index.html))\"'",
         "example:npm:1": "parcel serve ./examples/npm/example-1/index.html --open --dist-dir ./serve",
         "example:npm:2": "parcel serve ./examples/npm/example-2/index.html --open --dist-dir ./serve",
+        "example:npm:3": "npm --prefix ./examples/npm/example-3-angular start",
         "clean": "rm -rf ./serve ./dist ./demo ./.parcel-cache",
         "install-husky": "npx husky install",
         "configure-husky": "npx husky install && npx husky add .husky/pre-commit \"npx lint-staged\""
