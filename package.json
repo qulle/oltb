@@ -54,9 +54,6 @@
     ],
     "type": "module",
     "dependencies": {
-        "@rollup/plugin-commonjs": "^28.0.3",
-        "@rollup/plugin-node-resolve": "^16.0.1",
-        "@rollup/plugin-replace": "^6.0.2",
         "a-color-picker": "^1.2.1",
         "axios": "^1.8.3",
         "browser-dtector": "^4.1.0",
@@ -75,7 +72,10 @@
     "devDependencies": {
         "@eslint/js": "^9.2.0",
         "@parcel/transformer-sass": "^2.13.3",
+        "@rollup/plugin-commonjs": "^28.0.3",
         "@rollup/plugin-json": "^6.1.0",
+        "@rollup/plugin-node-resolve": "^16.0.1",
+        "@rollup/plugin-replace": "^6.0.2",
         "@rollup/plugin-terser": "^0.4.4",
         "buffer": "^6.0.3",
         "cross-env": "^7.0.3",
