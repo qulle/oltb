@@ -1,3 +1,5 @@
+@use './variables' as *;
+
 // @Override : default dragzoom style from ol
 body .ol-dragzoom {
     border-width: 2px;

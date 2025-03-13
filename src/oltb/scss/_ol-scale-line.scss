@@ -1,3 +1,5 @@
+@use './variables' as *;
+
 // @Override : default scale-line style from ol
 body .ol-scale-line {
     border-radius: $border-radius;

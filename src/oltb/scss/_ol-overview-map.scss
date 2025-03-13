@@ -1,3 +1,5 @@
+@use './variables' as *;
+
 // @Override : default overviewmap style from ol
 #oltb-overview-toolbox .ol-overviewmap {
     position: relative;

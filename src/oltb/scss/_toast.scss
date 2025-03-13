@@ -1,3 +1,5 @@
+@use './variables' as *;
+
 .oltb-toast {
     color: $color-dark;
     background-color: $background-theme-light;

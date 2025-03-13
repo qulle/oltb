@@ -1,3 +1,5 @@
+@use './variables' as *;
+
 .tippy-box[data-theme~='oltb'] {
     background-color: $background-theme-dark;
     color: $background-theme-light;

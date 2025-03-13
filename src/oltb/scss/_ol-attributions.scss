@@ -1,3 +1,5 @@
+@use './variables' as *;
+
 // @Override : default attribution style from ol
 body #map .ol-attribution {
     padding: .25rem;

@@ -1,3 +1,5 @@
+@use './variables' as *;
+
 .oltb-dialog {
     background-color: $background-theme-light;
     display: inline-block;

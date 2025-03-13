@@ -1,3 +1,5 @@
+@use './variables' as *;
+
 .oltb-overlay-tooltip {
     display: block;
     background-color: $color-gray-400;
