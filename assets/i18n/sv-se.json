@@ -17,6 +17,12 @@
             "toggleSection": "Toggla Sektion",
             "toggleVisibility": "Toggla Synlighet",
             "zoomToCoordinates": "Zooma Till Koordinater"
+        },
+        "types": {
+            "convertable": {
+                "drawing": "Ritning",
+                "measurement": "Mätning"
+            }
         }
     },
     "managers": {
@@ -438,7 +444,8 @@
                         "title": "Övrigt",
                         "delete": "Radera",
                         "rotate": "Rotera",
-                        "geometryData": "Geometridata"
+                        "geometryData": "Geometridata",
+                        "convertFeature": "Konvertera"
                     },
                     "copying": {
                         "title": "Urklipp",
@@ -505,7 +512,7 @@
             "dialogs": {
                 "confirms": {
                     "deleteFeatures": {
-                        "title": "Radera Objekt",
+                        "title": "Radera",
                         "message": "Radera markerade objekt",
                         "confirmText": "Radera",
                         "cancelText": "Avbryt"
@@ -513,9 +520,15 @@
                 },
                 "prompts": {
                     "rotateFeatures": {
-                        "title": "Rotera Objekt",
-                        "message": "Rotera Objekten med N-grader",
-                        "confirmText": "Rotera Objekt",
+                        "title": "Rotera",
+                        "message": "Rotera objekten med N-grader",
+                        "confirmText": "Rotera",
+                        "cancelText": "Avbryt"
+                    },
+                    "convertFeatures": {
+                        "title": "Konvertera",
+                        "message": "Konvertera objekt till",
+                        "confirmText": "Konvertera",
                         "cancelText": "Avbryt"
                     }
                 }
