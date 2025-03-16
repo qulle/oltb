@@ -1641,6 +1641,8 @@ $ bash build-scripts/dist-examples-setup.sh
 # (8). Manually update examples:
 #      - NPM x 2
 #      - CDN (also bump ol CDN-links in index.html)
+#      - Angular (bump oltb version)
+#      - React (bump oltb version)
 
 # (9). Verify examples
 $ npm run example:cdn:1
