@@ -1610,10 +1610,15 @@ The full color palette is displayed below.
 $ git checkout main
 $ git pull
 
-# (2). Clean old data
+# (2). Run tests
+# Update test coverage shield in README.md with line coverage
+$ npm run test
+$ npm run test:coverage
+
+# (3). Clean old data
 $ npm run clean
 
-# (3). Update version in: 
+# (4). Update version in: 
 #      - package.json
 #      - package-lock.json
 #      - README.md
@@ -1621,63 +1626,66 @@ $ npm run clean
 #          - CDN-links
 #          - Version table 
 
-# (4). Update version, date and dependencies in:
+# (5). Update version, date and dependencies in:
 #      - rollup.cssbanner.mjs
 #      - rollup.jsbanner.mjs
 
-# (5). Create new dist
+# (6). Create new dist
 $ bash build-scripts/npm-dist.sh
 
-# (6). Clean package.json in dist:
+# (7). Clean package.json in dist:
 #      - repository
 #      - scripts
 #      - lint-staged
 #      - files
 #      - devDependencies
 
-# (7). Setup examples
+# (8). Setup examples
 $ bash build-scripts/dist-examples-setup.sh
 
-# (8). Manually update examples:
+# (9). Manually update examples:
 #      - NPM x 2
 #      - CDN (also bump ol CDN-links in index.html)
 #      - Angular (bump oltb version)
 #      - React (bump oltb version)
 
-# (9). Verify examples
+# (10). Verify examples
 $ npm run example:cdn:1
 $ npm run example:npm:1
 $ npm run example:npm:2
 
-# (10). Cleanup examples
+# (11). Cleanup examples
 $ bash build-scripts/dist-examples-cleanup.sh
 
-# (11). Publish package to NPM
+# (12). Publish package to NPM
 $ bash build-scripts/npm-publish.sh
 
-# (12). Commit and push updated examples to GitHub
+# (13). Commit and push updated examples to GitHub
 $ git add .
 $ git commit -m "New release vx.y.z"
 $ git push
 
-# (13). Create new demo, this will build the GitHub demo using the NPM version
+# (14). Create new demo, this will build the GitHub demo using the NPM version
 $ bash build-scripts/github-demo.sh
 
-# (14). Commit and push demo to GitHub
+# (15). Commit and push demo to GitHub
 $ git push origin --delete gh-pages
 $ git add demo -f
 $ git commit -m "gh-pages demo release vx.y.z"
 $ git subtree push --prefix demo origin gh-pages
 
-# (15). Verify new demo
+# (16). Verify new demo
 # https://qulle.github.io/oltb/
 
-# (16). Clean temp demo commit
+# (17). Clean temp demo commit
 $ git reset --hard HEAD~1
 
-# (17). Tag the release
+# (18). Tag the release
 $ git tag -a vx.y.z -m "vx.y.z"
 $ git push origin --tags
+
+# (19). Update the translation-repo with the <ab-cd>.json files for this release.
+# https://github.com/qulle/oltb-language-files
 ```
 
 ## Update Dependencies

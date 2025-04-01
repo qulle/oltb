@@ -11,15 +11,7 @@
 ![npm downloads](https://img.shields.io/npm/dm/oltb?logo=npm&logoColor=fff)
 ![npm version](https://img.shields.io/npm/v/oltb?logo=npm&logoColor=fff)
 ![jsDelivr](https://img.shields.io/jsdelivr/npm/hm/oltb?logo=jsdelivr&logoColor=fff)
-
-<!-- TODO: 
-    1. Perhaps add in future:
-    ![GitHub issues](https://img.shields.io/github/issues/qulle/oltb?logo=github&logoColor=fff)
-    ![GitHub pull requests](https://img.shields.io/github/issues-pr/qulle/oltb?logo=github&logoColor=fff)
-
-    2. Add YML config for Build and Test using GitHub Actions
-    3. Add YML config for Snyk
-!-->
+![Test Coverage](https://img.shields.io/badge/coverage-83.1%25-brightgreen?logo=jest)
 
 </div>
 
