@@ -42,7 +42,8 @@ const DefaultOptions = Object.freeze({
     onEnd: undefined,
     onAbort: undefined,
     onError: undefined,
-    onSnapped: undefined
+    onSnapped: undefined,
+    onUnSnapped: undefined
 });
 
 const LocalStorageNodeName = LocalStorageKeys.measureTool;
@@ -353,6 +354,10 @@ class MeasureTool extends BaseTool {
         this.doSnap(event);
     }
 
+    onUnSnap(event) {
+        this.doUnSnap(event);
+    }
+
     //--------------------------------------------------------------------
     // # Section: Conversions/Validation
     //--------------------------------------------------------------------
@@ -477,6 +482,14 @@ class MeasureTool extends BaseTool {
         // @Consumer callback
         if(this.options.onSnapped) {
             this.options.onSnapped(event);
+        }
+    }
+
+    doUnSnap(event) {
+        // Note: 
+        // @Consumer callback
+        if(this.options.onUnSnapped) {
+            this.options.onUnSnapped(event);
         }
     }
 

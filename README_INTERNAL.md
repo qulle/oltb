@@ -373,6 +373,9 @@ controls: defaultControls({
         },
         onSnapped: function(event) {
             console.log('DrawTool: Snapped');
+        },
+        onUnSnapped: function(event) {
+            console.log('DrawTool: UnSnapped');
         }
     }),
     new MeasureTool({
@@ -450,6 +453,9 @@ controls: defaultControls({
         },
         onSnapped: function(event) {
             console.log('EditTool: Snapped');
+        },
+        onUnSnapped: function(event) {
+            console.log('EditTool: UnSnapped');
         }
     }),
     new ScissorsTool({
@@ -467,6 +473,9 @@ controls: defaultControls({
         },
         onSnapped: function(event) {
             console.log('ScissorsTool: Snapped');
+        },
+        onUnSnapped: function(event) {
+            console.log('ScissorsTool: UnSnapped');
         }
     }),
     new BookmarkTool({
@@ -626,9 +635,6 @@ controls: defaultControls({
         },
         onMapClicked: function(coordinates) {
             console.log('CoordinatesTool: Map clicked at', coordinates);
-        },
-        onSnapped: function(event) {
-            console.log('CoordinatesTool: Snapped');
         }
     }),
     new MyLocationTool({

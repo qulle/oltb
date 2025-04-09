@@ -47,6 +47,7 @@ class SnapManager extends BaseManager {
         this.#snapLines = this.#createSnapLayer();
         this.#interaction = this.#createInteraction();
         this.#interaction.on(Events.openLayers.snap, this.#onSnap.bind(this));
+        this.#interaction.on(Events.openLayers.unSnap, this.#onUnSnap.bind(this));
 
         return new Promise((resolve) => {
             resolve({
@@ -85,7 +86,8 @@ class SnapManager extends BaseManager {
             features: features,
             pixelTolerance: PIXEL__TOLERANCE,
             edge: true,
-            vertex: true
+            vertex: true,
+            intersection: true
         });
     }
 
@@ -95,6 +97,12 @@ class SnapManager extends BaseManager {
     static #onSnap(event) {
         if(!this.isSnapLine(event.feature)) {
             this.#tool.onSnap(event);
+        }
+    }
+
+    static #onUnSnap(event) {
+        if(!this.isSnapLine(event.feature)) {
+            this.#tool.onUnSnap(event);
         }
     }
 
