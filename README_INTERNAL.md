@@ -1624,7 +1624,7 @@ $ npm run test:coverage
 # (3). Clean old data
 $ npm run clean
 
-# (4). Update version in: 
+# (4). Update oltb and ol version in: 
 #      - package.json
 #      - package-lock.json
 #      - README.md
