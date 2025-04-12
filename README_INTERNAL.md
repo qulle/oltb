@@ -1568,7 +1568,7 @@ The full color palette is displayed below.
 </table>
 
 ## Dependencies
-1. [OpenLayers 10.4.0](https://openlayers.org/en/v10.4.0/apidoc/)
+1. [OpenLayers 10.5.0](https://openlayers.org/en/v10.5.0/apidoc/)
 2. [Proj4 2.15.0](http://proj4js.org/)   
 3. [Tippy.js 6.3.7](https://atomiks.github.io/tippyjs/)
 4. [Bootstrap Icons](https://icons.getbootstrap.com/)
@@ -1582,12 +1582,12 @@ The full color palette is displayed below.
 12. [UUID JS 11.1.0](https://github.com/uuidjs/uuid)
 13. [Lodash 4.17.21](https://github.com/lodash/lodash)
 14. [Many Keys Map 2.0.1](https://github.com/fregante/many-keys-map)
-15. [Axios 1.8.3](https://github.com/axios/axios)
+15. [Axios 1.8.4](https://github.com/axios/axios)
 
 ## Dev Dependencies
-1. [Parcel 2.13.3](https://parceljs.org/)
-2. [@parcel/transformer-sass 2.13.3](https://github.com/parcel-bundler/parcel)
-3. [Rollup 4.35.0](https://github.com/rollup/rollup)
+1. [Parcel 2.14.4](https://parceljs.org/)
+2. [@parcel/transformer-sass 2.14.4](https://github.com/parcel-bundler/parcel)
+3. [Rollup 4.39.0](https://github.com/rollup/rollup)
 4. [@rollup/plugin-commonjs 28.0.3](https://github.com/rollup/plugins/tree/master/packages/commonjs)
 5. [@rollup/plugin-json 6.1.0](https://github.com/rollup/plugins/tree/master/packages/json)
 6. [@rollup/plugin-node-resolve 16.0.1](https://github.com/rollup/plugins/tree/master/packages/node-resolve)
@@ -1595,7 +1595,7 @@ The full color palette is displayed below.
 8. [@rollup/plugin-terser 0.4.4](https://github.com/rollup/plugins/tree/master/packages/terser)
 9. [rollup-plugin-license 3.6.0](https://github.com/mjeanroy/rollup-plugin-license)
 10. [rollup-plugin-scss 4.0.1](https://github.com/thgh/rollup-plugin-scss)
-11. [ESLint 9.22.0](https://github.com/eslint/eslint)
+11. [ESLint 9.24.0](https://github.com/eslint/eslint)
 12. [Husky 9.1.7](https://github.com/typicode/husky)
 13. [Lint Staged 15.5.0](https://github.com/lint-staged/lint-staged)
 14. [Jest 29.7.0](https://github.com/jestjs/jest)
