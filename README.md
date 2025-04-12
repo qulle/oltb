@@ -11,7 +11,7 @@
 ![npm downloads](https://img.shields.io/npm/dm/oltb?logo=npm&logoColor=fff)
 ![npm version](https://img.shields.io/npm/v/oltb?logo=npm&logoColor=fff)
 ![jsDelivr](https://img.shields.io/jsdelivr/npm/hm/oltb?logo=jsdelivr&logoColor=fff)
-![Test Coverage](https://img.shields.io/badge/coverage-83.1%25-brightgreen?logo=jest)
+![Test Coverage](https://img.shields.io/badge/coverage-83.15%25-brightgreen?logo=jest)
 
 </div>
 
