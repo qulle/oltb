@@ -319,6 +319,9 @@ const initMapAndToolbar = () => {
                 },
                 onSnapped: function(event) {
                     console.log('DrawTool: Snapped');
+                },
+                onUnSnapped: function(event) {
+                    console.log('DrawTool: UnSnapped');
                 }
             }),
             new MeasureTool({
@@ -396,6 +399,9 @@ const initMapAndToolbar = () => {
                 },
                 onSnapped: function(event) {
                     console.log('EditTool: Snapped');
+                },
+                onUnSnapped: function(event) {
+                    console.log('EditTool: UnSnapped');
                 }
             }),
             new ScissorsTool({
@@ -413,6 +419,9 @@ const initMapAndToolbar = () => {
                 },
                 onSnapped: function(event) {
                     console.log('ScissorsTool: Snapped');
+                },
+                onUnSnapped: function(event) {
+                    console.log('ScissorsTool: UnSnapped');
                 }
             }),
             new BookmarkTool({

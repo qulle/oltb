@@ -42,6 +42,7 @@ describe('Events', () => {
             renderComplete: 'rendercomplete',
             singleClick: 'singleclick',
             snap: 'snap',
+            unSnap: 'unsnap',
             translateEnd: 'translateend',
             translateStart: 'translatestart'
         }),

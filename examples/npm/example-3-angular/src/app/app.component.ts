@@ -366,6 +366,9 @@ export class AppComponent implements OnInit {
                     },
                     onSnapped: function (event: any) {
                         console.log('DrawTool: Snapped');
+                    },
+                    onUnSnapped: function (event: any) {
+                        console.log('DrawTool: UnSnapped');
                     }
                 }),
                 new MeasureTool({
@@ -443,6 +446,9 @@ export class AppComponent implements OnInit {
                     },
                     onSnapped: function (event: any) {
                         console.log('EditTool: Snapped');
+                    },
+                    onUnSnapped: function (event: any) {
+                        console.log('EditTool: UnSnapped');
                     }
                 }),
                 new ScissorsTool({
@@ -460,6 +466,9 @@ export class AppComponent implements OnInit {
                     },
                     onSnapped: function (event: any) {
                         console.log('ScissorsTool: Snapped');
+                    },
+                    onUnSnapped: function (event: any) {
+                        console.log('ScissorsTool: UnSnapped');
                     }
                 }),
                 new BookmarkTool({

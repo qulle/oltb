@@ -38,6 +38,7 @@ const Events = Object.freeze({
         renderComplete: 'rendercomplete',
         singleClick: 'singleclick',
         snap: 'snap',
+        unSnap: 'unsnap',
         translateEnd: 'translateend',
         translateStart: 'translatestart'
     }),

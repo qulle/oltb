@@ -179,6 +179,9 @@ const toolbar = new oltb({
             },
             onSnapped: function(event) {
                 console.log('DrawTool: Snapped');
+            },
+            onUnSnapped: function(event) {
+                console.log('DrawTool: UnSnapped');
             }
         },
         MeasureTool: {
@@ -256,6 +259,9 @@ const toolbar = new oltb({
             },
             onSnapped: function(event) {
                 console.log('EditTool: Snapped');
+            },
+            onUnSnapped: function(event) {
+                console.log('EditTool: UnSnapped');
             }
         },
         ScissorsTool: {
@@ -273,6 +279,9 @@ const toolbar = new oltb({
             },
             onSnapped: function(event) {
                 console.log('ScissorsTool: Snapped');
+            },
+            onUnSnapped: function(event) {
+                console.log('ScissorsTool: UnSnapped');
             }
         },
         BookmarkTool: {

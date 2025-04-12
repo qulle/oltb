@@ -193,7 +193,8 @@ describe('EditTool', () => {
             onTranslateEnd: undefined,
             onRemovedFeatures: undefined,
             onError: undefined,
-            onSnapped: undefined
+            onSnapped: undefined,
+            onUnSnapped: undefined
         });
         expect(jsts.io.OL3Parser).toHaveBeenCalled();
     });
@@ -315,8 +316,9 @@ describe('EditTool', () => {
     });
 
     it('should check if intersection mode is enabled', () => {
-        const options = {onSnapped: () => {}};
+        const options = {onSnapped: () => {}, onUnSnapped: () => {}};
         const spyOnOnSnapped = jest.spyOn(options, 'onSnapped');
+        const spyOnOnUnSnapped = jest.spyOn(options, 'onUnSnapped');
         const spyOnIsSnapLine = jest.spyOn(SnapManager, 'isSnapLine').mockImplementation(() => {
             return false;
         });
@@ -326,9 +328,11 @@ describe('EditTool', () => {
         
         const interaction = SnapManager.getInteraction();
         interaction.dispatchEvent('snap');
+        interaction.dispatchEvent('unsnap');
 
-        expect(spyOnIsSnapLine).toHaveBeenCalledTimes(1);
+        expect(spyOnIsSnapLine).toHaveBeenCalledTimes(2);
         expect(spyOnOnSnapped).toHaveBeenCalledTimes(1);
+        expect(spyOnOnUnSnapped).toHaveBeenCalledTimes(1);
     });
 
     it('should verify that two shapes', () => {
