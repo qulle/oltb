@@ -1,4 +1,4 @@
-@use './variables' as *;
+@use './variables' as oltb;
 
 .oltb-toolbox-container {
     // Note:
@@ -11,9 +11,9 @@
     top: 1rem;
     right: 1rem;
     max-height: calc(100% - 2rem);
-    border-radius: $border-radius;
-    background-color: $background-theme-light;
-    box-shadow: $box-shadow-mid;
+    border-radius: oltb.$border-radius;
+    background-color: oltb.$background-theme-light;
+    box-shadow: oltb.$box-shadow-mid;
     padding: 0 1rem;
     transition: transform 450ms ease-in-out;
     overflow-y: auto;
@@ -35,10 +35,10 @@
 }
 
 body.oltb-dark .oltb-toolbox-container {
-    background-color: $background-theme-dark;
+    background-color: oltb.$background-theme-dark;
 }
 
-@media only screen and (max-width: $breakpoint-sm) {
+@media only screen and (max-width: oltb.$breakpoint-sm) {
     .oltb-toolbox-container {
         width: calc(100% - 2rem);
         top: 4.5rem;

@@ -1,13 +1,13 @@
-@use './variables' as *;
+@use './variables' as oltb;
 
 .oltb-toast {
-    color: $color-dark;
-    background-color: $background-theme-light;
+    color: oltb.$color-dark;
+    background-color: oltb.$background-theme-light;
     cursor: default;
     min-width: 320px;
     padding: .75rem .875rem;
-    border-radius: $border-radius;
-    box-shadow: $box-shadow-mid;
+    border-radius: oltb.$border-radius;
+    box-shadow: oltb.$box-shadow-mid;
     margin: 0 1rem 1rem 1rem;
     border-left: 4px solid;
     display: flex;
@@ -28,14 +28,14 @@
     }
 
     &__title {
-        text-shadow: $text-shadow-light;
+        text-shadow: oltb.$text-shadow-light;
         margin: 0;
     }
 
     &__message {
         font-size: 1rem;
         margin: .5rem 0 0 0;
-        text-shadow: $text-shadow-light;
+        text-shadow: oltb.$text-shadow-light;
 
         &:empty {
             display: none;
@@ -51,23 +51,23 @@
     }
 
     &--info {
-        border-left-color: $color-blue-300;
+        border-left-color: oltb.$color-blue-300;
     }
 
     &--warning {
-        border-left-color: $color-orange-300;
+        border-left-color: oltb.$color-orange-300;
     }
 
     &--error {
-        border-left-color: $color-red-300;
+        border-left-color: oltb.$color-red-300;
     }
 
     &--success {
-        border-left-color: $color-green-300;
+        border-left-color: oltb.$color-green-300;
     }
 }
 
 body.oltb-dark .oltb-toast {
-    color: $color-light;
-    background-color: $background-theme-dark;
+    color: oltb.$color-light;
+    background-color: oltb.$background-theme-dark;
 }

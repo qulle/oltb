@@ -1,4 +1,4 @@
-@use './variables' as *;
+@use './variables' as oltb;
 
 *, *::before, *::after {
     -webkit-box-sizing: border-box; 
@@ -23,13 +23,13 @@ textarea {
 
 /* Chrome, Firefox, Opera, Safari 10.1+ */
 ::placeholder { 
-    color: $color-dark;
+    color: oltb.$color-dark;
     opacity: 1;
 }
 
 /* Microsoft Edge */
 ::-ms-input-placeholder { 
-    color: $color-dark;
+    color: oltb.$color-dark;
     opacity: 1;
 }
 

@@ -1,4 +1,4 @@
-@use './variables' as *;
+@use './variables' as oltb;
 
 .oltb-context-menu {
     display: none;
@@ -9,10 +9,10 @@
     padding: 0;
     position: fixed;
     user-select: none;
-    background-color: $background-theme-light;
-    box-shadow: $box-shadow-mid;
-    text-shadow: $text-shadow-light;
-    border-radius: $border-radius;
+    background-color: oltb.$background-theme-light;
+    box-shadow: oltb.$box-shadow-mid;
+    text-shadow: oltb.$text-shadow-light;
+    border-radius: oltb.$border-radius;
     font-size: .875rem;
   
     &__item {
@@ -22,17 +22,17 @@
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-        color: $color-dark;
+        color: oltb.$color-dark;
         display: flex;
         align-items: center;
         margin: .25rem;
-        border-radius: $border-radius;
+        border-radius: oltb.$border-radius;
         transition: background-color 100ms ease-in-out;
   
         &:hover,
         &:focus {
-            background-color: $color-blue-200;
-            color: $color-blue-400;
+            background-color: oltb.$color-blue-200;
+            color: oltb.$color-blue-400;
         }
     }
 
@@ -41,7 +41,7 @@
         display: flex;
         padding-right: .625rem;
         margin: 0;
-        filter: $drop-shadow-filter-light;
+        filter: oltb.$drop-shadow-filter-light;
 
         svg {
             width: 20px;
@@ -65,15 +65,15 @@
 }
 
 body.oltb-dark .oltb-context-menu {
-    background-color: $background-theme-dark;
+    background-color: oltb.$background-theme-dark;
 
     &__item {
-        color: $background-theme-light;
+        color: oltb.$background-theme-light;
 
         &:hover,
         &:focus {
-            background-color: $color-blue-300;
-            color: $color-light;
+            background-color: oltb.$color-blue-300;
+            color: oltb.$color-light;
         }
     }
 }

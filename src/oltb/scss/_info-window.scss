@@ -1,4 +1,4 @@
-@use './variables' as *;
+@use './variables' as oltb;
 
 .oltb-info-window {
     position: absolute;
@@ -6,10 +6,10 @@
     bottom: 0;
     transform: scale(1.0) translateX(-50%);
     min-width: 360px;
-    padding: $top-level-padding;
-    background-color: $background-theme-light;
-    color: $color-light;
-    border-radius: $border-radius;
+    padding: oltb.$top-level-padding;
+    background-color: oltb.$background-theme-light;
+    color: oltb.$color-light;
+    border-radius: oltb.$border-radius;
     -webkit-filter: drop-shadow(0 0 .25rem rgba(0, 0, 0, .4));
     filter: drop-shadow(0 0 .25rem rgba(0, 0, 0, .4));
     user-select: none;
@@ -20,7 +20,7 @@
         bottom: 1px;
         left: 50%;
         transform: translate(-50%, 100%);
-        border-top: .625rem solid $background-theme-light;
+        border-top: .625rem solid oltb.$background-theme-light;
         border-left: .625rem solid transparent;
         border-right: .625rem solid transparent;
     }
@@ -33,16 +33,16 @@
     }
 
     &__title {
-        color: $color-dark;
+        color: oltb.$color-dark;
         margin: 0;
     }
 
     &__close {
-        color: $color-dark;
+        color: oltb.$color-dark;
     }
 
     &__content {
-        color: $color-dark;
+        color: oltb.$color-dark;
 
         p {
             font-size: 1rem;
@@ -50,8 +50,8 @@
 
         img {
             width: 350px;
-            border-radius: $border-radius;
-            box-shadow: $box-shadow-mid;
+            border-radius: oltb.$border-radius;
+            box-shadow: oltb.$box-shadow-mid;
         }
     }
 
@@ -68,7 +68,7 @@
     }
 
     &__footer {
-        color: $color-dark;
+        color: oltb.$color-dark;
         margin: 1.25rem -0.25rem -0.25rem -0.25rem;
         display: flex;
         align-items: center;
@@ -83,21 +83,21 @@
 }
 
 body.oltb-dark .oltb-info-window {
-    background-color: $background-theme-dark;
+    background-color: oltb.$background-theme-dark;
         
     &::after {
-        border-top: .625rem solid $background-theme-dark;
+        border-top: .625rem solid oltb.$background-theme-dark;
     }
 
     &__title,
     &__close,
     &__content,
     &__footer {
-        color: $background-theme-light;
+        color: oltb.$background-theme-light;
     }
 }
 
-@media only screen and (max-width: $breakpoint-sm) {
+@media only screen and (max-width: oltb.$breakpoint-sm) {
     .oltb-info-window {
         min-width: 330px;
     }

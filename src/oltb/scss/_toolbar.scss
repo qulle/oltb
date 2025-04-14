@@ -1,4 +1,4 @@
-@use './variables' as *;
+@use './variables' as oltb;
 
 #oltb {
     position: absolute;
@@ -9,9 +9,9 @@
     flex-direction: column;
     padding: .25rem;
     padding-top: 0;
-    background-color: $background-theme-light;
-    border-radius: $border-radius;
-    box-shadow: $box-shadow-mid;
+    background-color: oltb.$background-theme-light;
+    border-radius: oltb.$border-radius;
+    box-shadow: oltb.$box-shadow-mid;
     overflow: scroll;
     -ms-overflow-style: none;
     scrollbar-width: none;
@@ -46,15 +46,15 @@
     }
 
     &.dark {
-        background-color: $background-theme-dark;
+        background-color: oltb.$background-theme-dark;
 
         .oltb-tool-button {
-            color: $color-light;
+            color: oltb.$color-light;
             
             &:hover,
             &--active {
-                background-color: $color-blue-300;
-                color: $color-light;
+                background-color: oltb.$color-blue-300;
+                color: oltb.$color-light;
             }
         }
     }
@@ -62,9 +62,9 @@
 
 .oltb-tool-button {
     flex-shrink: 0;
-    border-radius: $border-radius;
+    border-radius: oltb.$border-radius;
     margin: .25rem 0 0 0;
-    color: $color-dark;
+    color: oltb.$color-dark;
     height: 2.25rem;
     width: 2.25rem;
     padding: 0;
@@ -76,8 +76,8 @@
 
     &:hover,
     &--active {
-        background-color: $color-blue-200;
-        color: $color-blue-400;
+        background-color: oltb.$color-blue-200;
+        color: oltb.$color-blue-400;
     }
 
     &--hidden {
@@ -87,7 +87,7 @@
     &__icon {
         display: inline-block;
         vertical-align: middle;
-        filter: $drop-shadow-filter-light;
+        filter: oltb.$drop-shadow-filter-light;
     }
 }
 
@@ -99,8 +99,8 @@ body.oltb-using-keyboard #oltb {
         .oltb-tool-button {
             &:focus,
             &:active {
-                background-color: $color-blue-300;
-                color: $color-light;
+                background-color: oltb.$color-blue-300;
+                color: oltb.$color-light;
             }
         }
     }
@@ -108,15 +108,15 @@ body.oltb-using-keyboard #oltb {
     .oltb-tool-button {
         &:focus,
         &:active {
-            background-color: $color-blue-200;
-            color: $color-blue-400;
+            background-color: oltb.$color-blue-200;
+            color: oltb.$color-blue-400;
         }
     }
 }
 
 // Note:
 // Always use horizontal toolbar for mobiles
-@media only screen and (max-width: $breakpoint-sm) {
+@media only screen and (max-width: oltb.$breakpoint-sm) {
     #oltb {
         max-width: calc(100% - 2rem);
         flex-direction: row;

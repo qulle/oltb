@@ -1,15 +1,15 @@
-@use './variables' as *;
+@use './variables' as oltb;
 
 .oltb-dialog {
-    background-color: $background-theme-light;
+    background-color: oltb.$background-theme-light;
     display: inline-block;
     min-width: 400px;
     max-width: 400px;
     margin: 2rem auto;
-    padding: $top-level-padding;
-    border-radius: $border-radius;
-    box-shadow: $box-shadow-dark;
-    color: $color-dark;
+    padding: oltb.$top-level-padding;
+    border-radius: oltb.$border-radius;
+    box-shadow: oltb.$box-shadow-dark;
+    color: oltb.$color-dark;
 
     &-backdrop {
         position: absolute;
@@ -53,11 +53,11 @@
 }
 
 body.oltb-dark .oltb-dialog {
-    background-color: $background-theme-dark;
-    color: $color-light;
+    background-color: oltb.$background-theme-dark;
+    color: oltb.$color-light;
 }
 
-@media only screen and (max-width: $breakpoint-sm) {
+@media only screen and (max-width: oltb.$breakpoint-sm) {
     .oltb-dialog {
         min-width: calc(100% - 2rem);
         max-width: calc(100% - 2rem);

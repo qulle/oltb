@@ -1,27 +1,27 @@
-@use './variables' as *;
+@use './variables' as oltb;
 
 // @Override : default scale-line style from ol
 body .ol-scale-line {
-    border-radius: $border-radius;
+    border-radius: oltb.$border-radius;
     left: 50%;
     transform: translateX(-50%);
-    background-color: $background-theme-light;
+    background-color: oltb.$background-theme-light;
     padding: .5rem;
-    box-shadow: $box-shadow-mid;
+    box-shadow: oltb.$box-shadow-mid;
 
     &-inner {
         border-width: 2px;
         padding-bottom: 4px;
-        border-color: $background-theme-dark;
-        color: $background-theme-dark;
+        border-color: oltb.$background-theme-dark;
+        color: oltb.$background-theme-dark;
     }
 }
 
 body.oltb-dark .ol-scale-line {
-    background-color: $background-theme-dark;
+    background-color: oltb.$background-theme-dark;
 
     &-inner {
-        border-color: $background-theme-light;
-        color: $color-light;
+        border-color: oltb.$background-theme-light;
+        color: oltb.$color-light;
     }
 }

@@ -1,23 +1,23 @@
-@use './variables' as *;
+@use './variables' as oltb;
 
 // @Override : default overviewmap style from ol
 #oltb-overview-toolbox .ol-overviewmap {
     position: relative;
     padding: 0;
-    border-radius: $border-radius;
+    border-radius: oltb.$border-radius;
 
     .ol-overviewmap-map {
         display: block;
         width: 100%;
         margin: 0;
-        border-radius: $border-radius;
+        border-radius: oltb.$border-radius;
     }
 
     .ol-overviewmap-box {
-        border: 2px dotted $color-gray-400;
+        border: 2px dotted oltb.$color-gray-400;
     }
 
     .ol-viewport {
-        border-radius: $border-radius;
+        border-radius: oltb.$border-radius;
     }
 }

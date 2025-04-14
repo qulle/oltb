@@ -1,11 +1,11 @@
-@use './variables' as *;
+@use './variables' as oltb;
 
 .tippy-box[data-theme~='oltb'] {
-    background-color: $background-theme-dark;
-    color: $background-theme-light;
-    box-shadow: $box-shadow-light;
-    text-shadow: $text-shadow-light;
-    border-radius: $border-radius;
+    background-color: oltb.$background-theme-dark;
+    color: oltb.$background-theme-light;
+    box-shadow: oltb.$box-shadow-light;
+    text-shadow: oltb.$text-shadow-light;
+    border-radius: oltb.$border-radius;
 
     .tippy-content {
         padding: .25rem .5rem;
@@ -15,22 +15,22 @@
 
 .tippy-box[data-theme~='oltb'] {
     &[data-placement^='top'] > .tippy-arrow::before {
-        border-top-color: $background-theme-dark;
-        filter: $drop-shadow-filter-mid;
+        border-top-color: oltb.$background-theme-dark;
+        filter: oltb.$drop-shadow-filter-mid;
     }
 
     &[data-placement^='bottom'] > .tippy-arrow::before {
-        border-bottom-color: $background-theme-dark;
+        border-bottom-color: oltb.$background-theme-dark;
         filter: drop-shadow(1px 0 0 rgba(0, 0, 0, .1));
     }
 
     &[data-placement^='left'] > .tippy-arrow::before {
-        border-left-color: $background-theme-dark;
-        filter: $drop-shadow-filter-mid;
+        border-left-color: oltb.$background-theme-dark;
+        filter: oltb.$drop-shadow-filter-mid;
     }
 
     &[data-placement^='right'] > .tippy-arrow::before {
-        border-right-color: $background-theme-dark;
+        border-right-color: oltb.$background-theme-dark;
         filter: drop-shadow(0 1px 0 rgba(0, 0, 0, .1));
     }
 }
@@ -40,29 +40,29 @@ body.oltb-dark {
     // This class is added to the popper element in the onShow callback
     // To give the tooltip a bit more constrast
     .tippy-color-picker {
-        border-radius: $border-radius;
-        border: 1px solid $form-input-border-color-dark;
+        border-radius: oltb.$border-radius;
+        border: 1px solid oltb.$form-input-border-color-dark;
     }
     
     .tippy-box[data-theme~='oltb-themed'] {
-        background-color: $background-theme-light;
-        color: $background-theme-dark;
+        background-color: oltb.$background-theme-light;
+        color: oltb.$background-theme-dark;
 
         &.tippy-box[data-theme~='oltb'] {
             &[data-placement^='top'] > .tippy-arrow::before {
-                border-top-color: $background-theme-light;
+                border-top-color: oltb.$background-theme-light;
             }
 
             &[data-placement^='bottom'] > .tippy-arrow::before {
-                border-bottom-color: $background-theme-light;
+                border-bottom-color: oltb.$background-theme-light;
             }
 
             &[data-placement^='left'] > .tippy-arrow::before {
-                border-left-color: $background-theme-light;
+                border-left-color: oltb.$background-theme-light;
             }
 
             &[data-placement^='right'] > .tippy-arrow::before {
-                border-right-color: $background-theme-light;
+                border-right-color: oltb.$background-theme-light;
             }
         }
     }
@@ -73,29 +73,29 @@ body:not(.oltb-dark) {
     // This class is added to the popper element in the onShow callback
     // To give the tooltip a bit more constrast
     .tippy-color-picker {
-        border-radius: $border-radius;
-        border: 1px solid $form-input-border-color-light;
+        border-radius: oltb.$border-radius;
+        border: 1px solid oltb.$form-input-border-color-light;
     }
 
     .tippy-box[data-theme~='oltb-inverted-themed'] {
-        background-color: $background-theme-light;
-        color: $background-theme-dark;
+        background-color: oltb.$background-theme-light;
+        color: oltb.$background-theme-dark;
 
         &.tippy-box[data-theme~='oltb'] {
             &[data-placement^='top'] > .tippy-arrow::before {
-                border-top-color: $background-theme-light;
+                border-top-color: oltb.$background-theme-light;
             }
 
             &[data-placement^='bottom'] > .tippy-arrow::before {
-                border-bottom-color: $background-theme-light;
+                border-bottom-color: oltb.$background-theme-light;
             }
 
             &[data-placement^='left'] > .tippy-arrow::before {
-                border-left-color: $background-theme-light;
+                border-left-color: oltb.$background-theme-light;
             }
 
             &[data-placement^='right'] > .tippy-arrow::before {
-                border-right-color: $background-theme-light;
+                border-right-color: oltb.$background-theme-light;
             }
         }
     }

@@ -1,23 +1,23 @@
-@use './variables' as *;
+@use './variables' as oltb;
 
 // TODO:
 // Refactor to make it configurable, borders, backgrounds, padding etc.
 .oltb-table {
     border-collapse: collapse;
     width: 100%;
-    color: $color-gray-400;
+    color: oltb.$color-gray-400;
     cursor: default;
 
     th {
         text-align: left;
-        background-color: $color-gray-100;
+        background-color: oltb.$color-gray-100;
     }
 
     &--vertical {
         th,
         td {
             padding: 0.5rem;
-            border: 1px dashed $color-gray-300;
+            border: 1px dashed oltb.$color-gray-300;
         }
 
         td {
@@ -35,7 +35,7 @@
         }
 
         tr:not(:last-child):nth-child(2n) > td {
-            border-bottom: 1px dashed $color-gray-300;
+            border-bottom: 1px dashed oltb.$color-gray-300;
         }
     }
 
@@ -61,7 +61,7 @@
 }
 
 body.oltb-dark .oltb-table {
-    color: $color-light;
+    color: oltb.$color-light;
 
     th {
         background-color: rgba(0, 0, 0, .2);

@@ -1,14 +1,14 @@
-@use './variables' as *;
+@use './variables' as oltb;
 
 .oltb-modal {
-    background-color: $background-theme-light;
+    background-color: oltb.$background-theme-light;
     display: inline-block;
     max-width: 1100px;
     min-width: 450px;
     margin: 2rem 1rem;
-    padding: $top-level-padding;
-    border-radius: $border-radius;
-    box-shadow: $box-shadow-dark;
+    padding: oltb.$top-level-padding;
+    border-radius: oltb.$border-radius;
+    box-shadow: oltb.$box-shadow-dark;
 
     &--maximized {
         max-width: 100%;
@@ -45,17 +45,17 @@
 
     &__title {
         margin: 0;
-        color: $color-dark;
+        color: oltb.$color-dark;
         text-align: left;
     }
 
     &__close {
         margin: 0;
-        color: $color-dark;
+        color: oltb.$color-dark;
         display: flex;
         align-items: center;
         justify-content: center;
-        border-radius: $border-radius;
+        border-radius: oltb.$border-radius;
         width: 1.75rem;
         height: 1.75rem;
     }
@@ -66,7 +66,7 @@
     
     &__content {
         text-align: left;
-        color: $color-dark;
+        color: oltb.$color-dark;
 
         > :last-child {
             margin-bottom: 0 !important;
@@ -79,16 +79,16 @@
 }
 
 body.oltb-dark .oltb-modal {
-    background-color: $background-theme-dark;
+    background-color: oltb.$background-theme-dark;
 
     &__close,
     &__title,
     &__content {
-        color: $color-light;
+        color: oltb.$color-light;
     }
 }
 
-@media only screen and (max-width: $breakpoint-sm) {
+@media only screen and (max-width: oltb.$breakpoint-sm) {
     .oltb-modal {
         min-width: calc(100% - 2rem);
     }

@@ -1,4 +1,4 @@
-@use './variables' as *;
+@use './variables' as oltb;
 
 .oltb-func-btn {
     display: inline-flex;
@@ -9,12 +9,12 @@
     user-select: none;
     font-weight: 400;
     text-align: center;
-    box-shadow: $box-shadow-mid;
+    box-shadow: oltb.$box-shadow-mid;
     border: none;
     border-radius: 50%;
     width: 1.875rem;
     height: 1.875rem;
-    background-color: $color-blue-300;
+    background-color: oltb.$color-blue-300;
     background-repeat: no-repeat;
     background-position: center center;
     background-size: 16px 16px;
@@ -22,7 +22,7 @@
     margin-left: 5px;
 
     &:focus {
-        box-shadow: 0 0 0 $shadow-focus-width rgba($color-blue-300, .5);
+        box-shadow: 0 0 0 oltb.$shadow-focus-width rgba(oltb.$color-blue-300, .5);
     }
 
     &:first-child {
@@ -31,7 +31,7 @@
 
     &:hover,
     &:focus {
-        background-color: $color-blue-400;
+        background-color: oltb.$color-blue-400;
     }
 
     &--crosshair {

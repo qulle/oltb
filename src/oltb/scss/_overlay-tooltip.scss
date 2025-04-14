@@ -1,10 +1,10 @@
-@use './variables' as *;
+@use './variables' as oltb;
 
 .oltb-overlay-tooltip {
     display: block;
-    background-color: $color-gray-400;
-    color: $color-light;
-    border-radius: $border-radius;
+    background-color: oltb.$color-gray-400;
+    color: oltb.$color-light;
+    border-radius: oltb.$border-radius;
     -webkit-filter: drop-shadow(1px 1px 0 rgba(0, 0, 0, .2));
     filter: drop-shadow(1px 1px 0 rgba(0, 0, 0, .2));
     position: relative;
@@ -16,7 +16,7 @@
         bottom: 0;
         left: 50%;
         transform: translate(-50%, 100%);
-        border-top: .375rem solid $color-gray-400;
+        border-top: .375rem solid oltb.$color-gray-400;
         border-right: .375rem solid transparent;
         border-left: .375rem solid transparent;
     }

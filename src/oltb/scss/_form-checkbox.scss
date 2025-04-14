@@ -1,4 +1,4 @@
-@use './variables' as *;
+@use './variables' as oltb;
 
 .oltb-checkbox-wrapper {
     display: flex;
@@ -17,22 +17,22 @@
         width: 1.25rem;
         height: 1.25rem;
         flex-shrink: 0;
-        background-color: $background-theme-light;
+        background-color: oltb.$background-theme-light;
         background-repeat: no-repeat;
         background-position: center;
         background-size: contain;
-        border: 1px solid $form-input-border-color-light;
+        border: 1px solid oltb.$form-input-border-color-light;
         -webkit-appearance: none;
         -moz-appearance: none;
         appearance: none;
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
-        border-radius: $border-radius;
+        border-radius: oltb.$border-radius;
         transition: border-color 150ms ease-in-out, box-shadow 150ms ease-in-out;
     
         &:checked {
-            background-color: $color-blue-300;
-            border-color: $color-blue-300;
+            background-color: oltb.$color-blue-300;
+            border-color: oltb.$color-blue-300;
         }
     
         &:checked[type="checkbox"] {
@@ -41,28 +41,28 @@
         }
     
         &:focus {
-            border: 1px solid $color-blue-300;
-            box-shadow: 0 0 0 $shadow-focus-width rgba($color-blue-300, .3);
+            border: 1px solid oltb.$color-blue-300;
+            box-shadow: 0 0 0 oltb.$shadow-focus-width rgba(oltb.$color-blue-300, .3);
         }
     }
 }
 
 body.oltb-dark .oltb-checkbox-wrapper {
     &__title {
-        color: $color-light;
+        color: oltb.$color-light;
     }
 
     &__checkbox {
-        background-color: $color-gray-300;
+        background-color: oltb.$color-gray-300;
         border: none;
 
         &:checked {
-            background-color: $color-blue-300;
+            background-color: oltb.$color-blue-300;
         }
 
         &:focus {
             border: none;
-            box-shadow: 0 0 0 $shadow-focus-width rgba($color-blue-200, .7);
+            box-shadow: 0 0 0 oltb.$shadow-focus-width rgba(oltb.$color-blue-200, .7);
         }
     }
 }

@@ -1,4 +1,4 @@
-@use './variables' as *;
+@use './variables' as oltb;
 
 // Note:
 // Default version, none selected items
@@ -18,7 +18,7 @@
         bottom: 0;
         top: 0;
         margin-left: -.75rem;
-        border: 1px dashed $color-gray-200;
+        border: 1px dashed oltb.$color-gray-200;
     }
 
     &__wrapper {
@@ -33,17 +33,17 @@
         height: .5rem;
         margin-right: .75rem;
         margin-left: -1.25rem;
-        background-color: $color-gray-200;
-        border-radius: $border-radius;
-        box-shadow: 0 0 0 $shadow-focus-width rgba($color-gray-200, .3);
+        background-color: oltb.$color-gray-200;
+        border-radius: oltb.$border-radius;
+        box-shadow: 0 0 0 oltb.$shadow-focus-width rgba(oltb.$color-gray-200, .3);
     }
 
     &__item {
         min-height: 33px; // Help when no layer function buttons exists
         padding: 4px;
         margin-bottom: .25rem;
-        border-radius: $border-radius;
-        color: $color-dark;
+        border-radius: oltb.$border-radius;
+        color: oltb.$color-dark;
         font-size: 1rem;
         display: flex;
         align-items: center;
@@ -58,17 +58,17 @@
         // Sortable.js
         // Item is clicked and not dragged yet
         &--chosen {
-            color: $color-blue-400;
-            border-color: $color-blue-400;
-            background-color: $color-blue-200;
+            color: oltb.$color-blue-400;
+            border-color: oltb.$color-blue-400;
+            background-color: oltb.$color-blue-200;
         }
         
         // Sortable.js
         // Item is beeing dragged
         &--drag {
-            color: $color-gray-400;
-            border-color: $color-gray-400;
-            background-color: $color-gray-200;
+            color: oltb.$color-gray-400;
+            border-color: oltb.$color-gray-400;
+            background-color: oltb.$color-gray-200;
 
             .oltb-toolbox-list__handle {
                 background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='rgb(59, 67, 82)' viewBox='0 0 16 16'><path d='M7 2a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm3 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zM7 5a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm3 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zM7 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm3 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm-3 3a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm3 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm-3 3a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm3 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z'/></svg>") !important;
@@ -78,9 +78,9 @@
         // Sortable.js
         // Item mock to show where it will go after dragged
         &--ghost {
-            color: $color-blue-400;
-            border-color: $color-blue-400;
-            background-color: $color-blue-200;
+            color: oltb.$color-blue-400;
+            border-color: oltb.$color-blue-400;
+            background-color: oltb.$color-blue-200;
 
             .oltb-toolbox-list__handle {
                 background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='rgb(1, 102, 165)' viewBox='0 0 16 16'><path d='M7 2a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm3 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zM7 5a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm3 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zM7 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm3 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm-3 3a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm3 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm-3 3a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm3 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z'/></svg>") !important;
@@ -89,13 +89,13 @@
 
         &--indicate {
             font-weight: bold;
-            color: $color-blue-400 !important;
-            border-color: $color-blue-400;
-            background-color: $color-blue-200;
+            color: oltb.$color-blue-400 !important;
+            border-color: oltb.$color-blue-400;
+            background-color: oltb.$color-blue-200;
 
             .oltb-toolbox-list__dot {
-                background-color: $color-green-300;
-                box-shadow: 0 0 0 $shadow-focus-width rgba($color-green-300, .3);
+                background-color: oltb.$color-green-300;
+                box-shadow: 0 0 0 oltb.$shadow-focus-width rgba(oltb.$color-green-300, .3);
             }
 
             .oltb-toolbox-list__handle {
@@ -131,8 +131,8 @@
         font-weight: bold;
 
         .oltb-toolbox-list__dot {
-            background-color: $color-green-300;
-            box-shadow: 0 0 0 $shadow-focus-width rgba($color-green-300, .3);
+            background-color: oltb.$color-green-300;
+            box-shadow: 0 0 0 oltb.$shadow-focus-width rgba(oltb.$color-green-300, .3);
         }
     }
 
@@ -143,18 +143,18 @@
 
 body.oltb-dark .oltb-toolbox-list {
     &__item {
-        color: $color-light;
+        color: oltb.$color-light;
 
         &--chosen {
-            color: $color-blue-400;
+            color: oltb.$color-blue-400;
         }
         
         &--drag {
-            color: $color-gray-400;
+            color: oltb.$color-gray-400;
         }
 
         &--ghost {
-            color: $color-blue-400;
+            color: oltb.$color-blue-400;
         }
     }
 
