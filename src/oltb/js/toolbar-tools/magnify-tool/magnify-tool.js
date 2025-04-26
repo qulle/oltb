@@ -166,6 +166,7 @@ class MagnifyTool extends BaseTool {
     }
 
     #onKeydown(event) {
+        // Note:
         // Disable map-zoom when changing size of magnifier
         event.preventDefault();
 
