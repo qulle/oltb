@@ -1568,7 +1568,7 @@ The full color palette is displayed below.
 </table>
 
 ## Dependencies
-1. [OpenLayers 10.5.0](https://openlayers.org/en/v10.5.0/apidoc/)
+1. [OpenLayers 10.6.1](https://openlayers.org/en/v10.6.1/apidoc/)
 2. [Proj4 2.15.0](http://proj4js.org/)   
 3. [Tippy.js 6.3.7](https://atomiks.github.io/tippyjs/)
 4. [Bootstrap Icons](https://icons.getbootstrap.com/)

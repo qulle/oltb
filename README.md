@@ -15,7 +15,7 @@
 
 </div>
 
-## OLTB v3.4.1
+## OLTB v3.5.0
 OLTB is a Vanilla JS, portable mobile friendly GIS Toolbar, developed using OpenLayers 10.5.0. The Toolbar can be filled with any number of tools and can be used in both horizontal and vertical mode and is available in both light and dark theme.
 
 ## Demo
@@ -35,8 +35,8 @@ $ npm install oltb
 
 ## CDN 
 ```
-https://cdn.jsdelivr.net/npm/oltb@v3.4.1/dist/oltb.min.js
-https://cdn.jsdelivr.net/npm/oltb@v3.4.1/dist/oltb.min.css
+https://cdn.jsdelivr.net/npm/oltb@v3.5.0/dist/oltb.min.js
+https://cdn.jsdelivr.net/npm/oltb@v3.5.0/dist/oltb.min.css
 ```
 
 ## Get Started
@@ -152,6 +152,7 @@ The following tools are implemented in the project. The tools are devided in two
         <th>Released (OLTB)</th>
         <th>Changelog (OLTB)</th>
     </tr>
+    <tr><td>3.5.0</td><td>10.6.1</td><td>2025-10-04</td><td><a href="/changelog/v3.5.0.md">v3.5.0.md</a></td></tr>
     <tr><td>3.4.1</td><td>10.5.0</td><td>2025-04-14</td><td><a href="/changelog/v3.4.1.md">v3.4.1.md</a></td></tr>
     <tr><td>3.4.0</td><td>10.5.0</td><td>2025-04-12</td><td><a href="/changelog/v3.4.0.md">v3.4.0.md</a></td></tr>
     <tr><td>3.3.0</td><td>10.4.0</td><td>2025-03-13</td><td><a href="/changelog/v3.3.0.md">v3.3.0.md</a></td></tr>
