@@ -16,7 +16,7 @@
 </div>
 
 ## OLTB v3.5.0
-OLTB is a Vanilla JS, portable mobile friendly GIS Toolbar, developed using OpenLayers 10.5.0. The Toolbar can be filled with any number of tools and can be used in both horizontal and vertical mode and is available in both light and dark theme.
+OLTB is a Vanilla JS, portable mobile friendly GIS Toolbar, developed using OpenLayers 10.6.1. The Toolbar can be filled with any number of tools and can be used in both horizontal and vertical mode and is available in both light and dark theme.
 
 ## Demo
 A picture says a thousand words but a **[Demo 🚀](https://qulle.github.io/oltb/)** says a million.
